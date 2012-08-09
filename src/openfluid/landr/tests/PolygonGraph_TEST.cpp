@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(check_construction_onePolygon)
   BOOST_CHECK_EQUAL(Nodes.size(), 1);
   BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighboursAndEdges()->size(), 0);
 
   delete Graph;
 }
@@ -427,9 +427,9 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   BOOST_CHECK_EQUAL(Nodes.size(), 6);
   BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 3);
-  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 3);
-  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighboursAndEdges()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighboursAndEdges()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighboursAndEdges()->size(), 3);
 
   delete Graph;
   delete TmpGraph;
@@ -488,8 +488,8 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
   BOOST_CHECK_EQUAL(Nodes.size(), 2);
   BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 0);
-  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighboursAndEdges()->size(), 0);
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighboursAndEdges()->size(), 0);
 
   delete Graph;
 }
@@ -512,9 +512,9 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_linesContact)
   BOOST_CHECK_EQUAL(Nodes.size(), 4);
   BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 2);
-  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 2);
-  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighboursAndEdges()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighboursAndEdges()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighboursAndEdges()->size(), 2);
 
   delete Graph;
   delete Val;
@@ -538,9 +538,9 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_pointContact)
   BOOST_CHECK_EQUAL(Nodes.size(), 3);
   BOOST_CHECK(Graph->isComplete());
 
-  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 2);
-  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 2);
-  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighboursAndEdges()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighboursAndEdges()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighboursAndEdges()->size(), 2);
 
   delete Graph;
   delete Val;

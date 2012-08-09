@@ -310,6 +310,14 @@ void LandRGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
 // =====================================================================
 // =====================================================================
 
+bool LandRGraph::hasAnAssociatedRaster()
+{
+  return (mp_Raster != 0);
+}
+
+// =====================================================================
+// =====================================================================
+
 openfluid::core::GeoVectorValue* LandRGraph::getRasterPolygonized()
 {
   if (!mp_RasterPolygonized)

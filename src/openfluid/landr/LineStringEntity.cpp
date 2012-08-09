@@ -68,8 +68,8 @@ namespace landr {
 
 LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
                                    unsigned int SelfId) :
-    LandREntity(NewLine, SelfId), geos::planargraph::Edge(), mp_LOUpNeighbours(0), mp_LODownNeighbours(
-        0)
+    LandREntity(NewLine, SelfId), geos::planargraph::Edge(), mp_LOUpNeighbours(
+        0), mp_LODownNeighbours(0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_LINESTRING)
   {
@@ -136,6 +136,38 @@ geos::planargraph::Node* LineStringEntity::getStartNode()
 geos::planargraph::Node* LineStringEntity::getEndNode()
 {
   return getDirEdge(0)->getToNode();
+}
+
+// =====================================================================
+// =====================================================================
+
+void LineStringEntity::computeNeighbours()
+{
+  std::vector<LineStringEntity*> Ups = getLineOrientUpNeighbours();
+  std::vector<LineStringEntity*> Downs = getLineOrientDownNeighbours();
+
+  delete mp_Neighbours;
+
+  mp_Neighbours = new std::set<LandREntity*>;
+
+  geos::planargraph::DirectedEdgeStar* UpStar = getStartNode()->getOutEdges();
+  geos::planargraph::DirectedEdgeStar* DownStar = getEndNode()->getOutEdges();
+
+  std::vector<geos::planargraph::DirectedEdge*>::iterator it;
+  for (it = UpStar->iterator(); it != UpStar->end(); ++it)
+  {
+    LandREntity* Ent = dynamic_cast<LandREntity*>((*it)->getEdge());
+
+    if (Ent != this)
+      mp_Neighbours->insert(Ent);
+  }
+  for (it = DownStar->iterator(); it != DownStar->end(); ++it)
+  {
+    LandREntity* Ent = dynamic_cast<LandREntity*>((*it)->getEdge());
+    if (Ent != this)
+      mp_Neighbours->insert(Ent);
+  }
+
 }
 
 // =====================================================================

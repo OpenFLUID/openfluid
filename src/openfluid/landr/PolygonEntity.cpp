@@ -73,7 +73,7 @@ namespace landr {
 
 PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
                              unsigned int SelfId) :
-    LandREntity(NewPolygon, SelfId), mp_Neighbours(0)
+    LandREntity(NewPolygon, SelfId), mp_NeighboursMap(0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
   {
@@ -104,7 +104,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
 
 PolygonEntity::~PolygonEntity()
 {
-  delete mp_Neighbours;
+  delete mp_NeighboursMap;
 }
 
 // =====================================================================
@@ -136,7 +136,7 @@ void PolygonEntity::addEdge(PolygonEdge& Edge)
 
   m_PolyEdges.push_back(&Edge);
 
-  mp_Neighbours = 0;
+  mp_NeighboursMap = 0;
 }
 
 // =====================================================================
@@ -155,7 +155,7 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
                                        "PolygonEntity::removeEdge",
                                        "Edge doesn't exists in Edge vector.");
 
-  mp_Neighbours = 0;
+  mp_NeighboursMap = 0;
 
   delete Edge;
 }
@@ -204,12 +204,12 @@ PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(
 // =====================================================================
 // =====================================================================
 
-const PolygonEntity::NeigboursMap_t* PolygonEntity::getNeighbours()
+const PolygonEntity::NeigboursMap_t* PolygonEntity::getNeighboursAndEdges()
 {
-  if (!mp_Neighbours)
+  if (!mp_NeighboursMap)
     computeNeighbours();
 
-  return mp_Neighbours;
+  return mp_NeighboursMap;
 }
 
 // =====================================================================
@@ -219,11 +219,11 @@ std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
 {
   std::vector<int> Ids;
 
-  if (!mp_Neighbours)
+  if (!mp_NeighboursMap)
     computeNeighbours();
 
-  for (NeigboursMap_t::iterator it = mp_Neighbours->begin();
-      it != mp_Neighbours->end(); ++it)
+  for (NeigboursMap_t::iterator it = mp_NeighboursMap->begin();
+      it != mp_NeighboursMap->end(); ++it)
     Ids.push_back(it->first->getSelfId());
 
   std::sort(Ids.begin(), Ids.end());
@@ -237,8 +237,10 @@ std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
 void PolygonEntity::computeNeighbours()
 {
   delete mp_Neighbours;
+  mp_Neighbours = new std::set<LandREntity*>;
 
-  mp_Neighbours = new NeigboursMap_t();
+  delete mp_NeighboursMap;
+  mp_NeighboursMap = new NeigboursMap_t();
 
   for (unsigned int i = 0; i < m_PolyEdges.size(); i++)
   {
@@ -252,7 +254,10 @@ void PolygonEntity::computeNeighbours()
                                         Edge->getFaces()[0];
 
     if (OtherFace)
-      ((*mp_Neighbours)[OtherFace]).push_back(Edge);
+    {
+      ((*mp_NeighboursMap)[OtherFace]).push_back(Edge);
+      mp_Neighbours->insert(dynamic_cast<LandREntity*>(OtherFace));
+    }
   }
 
 }
@@ -285,53 +290,18 @@ bool PolygonEntity::isComplete()
 // =====================================================================
 // =====================================================================
 
-double PolygonEntity::getDistCentroCentro(PolygonEntity& Other)
-{
-  return mp_Centroide->distance(Other.getCentroide());
-}
-
-// =====================================================================
-// =====================================================================
-
 std::vector<PolygonEdge*> PolygonEntity::getCommonEdgesWith(
     PolygonEntity& Other)
 {
   std::vector<PolygonEdge*> Edges;
 
-  if (!mp_Neighbours)
+  if (!mp_NeighboursMap)
     computeNeighbours();
 
-  if (mp_Neighbours->count(&Other))
-    Edges = mp_Neighbours->at(&Other);
+  if (mp_NeighboursMap->count(&Other))
+    Edges = mp_NeighboursMap->at(&Other);
 
   return Edges;
-}
-
-// =====================================================================
-// =====================================================================
-
-PolygonEntity* PolygonEntity::getNeighbour_MinDistCentroCentro()
-{
-  openfluid::landr::PolygonEntity::NeigboursMap_t NeighMap = *getNeighbours();
-
-  std::map<double, PolygonEntity*> NeighByDist;
-
-  for (openfluid::landr::PolygonEntity::NeigboursMap_t::iterator it =
-      NeighMap.begin(); it != NeighMap.end(); ++it)
-  {
-    PolygonEntity* Neigh = it->first;
-
-    double Dist = std::abs(getDistCentroCentro(*Neigh));
-
-    NeighByDist[Dist] = Neigh;
-  }
-
-  std::map<double, PolygonEntity*>::iterator itMin = std::min_element(
-      NeighByDist.begin(), NeighByDist.end());
-
-  return
-      (itMin != NeighByDist.end() && itMin->first > 0) ? itMin->second :
-                                                         (PolygonEntity*) 0;
 }
 
 // =====================================================================

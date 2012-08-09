@@ -129,6 +129,14 @@ PolygonGraph* PolygonGraph::clone()
 // =====================================================================
 // =====================================================================
 
+LandRGraph::GraphType PolygonGraph::getType()
+{
+  return POLYGON;
+}
+
+// =====================================================================
+// =====================================================================
+
 void PolygonGraph::addEntity(LandREntity* Entity)
 {
   PolygonEntity* NewEntity = dynamic_cast<PolygonEntity*>(Entity);

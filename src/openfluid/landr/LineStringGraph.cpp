@@ -129,6 +129,14 @@ LineStringGraph* LineStringGraph::clone()
 // =====================================================================
 // =====================================================================
 
+LandRGraph::GraphType LineStringGraph::getType()
+{
+  return LINESTRING;
+}
+
+// =====================================================================
+// =====================================================================
+
 void LineStringGraph::addEntity(LandREntity* Entity)
 {
   LineStringEntity* Edge = dynamic_cast<LineStringEntity*>(Entity);
@@ -168,8 +176,8 @@ void LineStringGraph::addEntity(LandREntity* Entity)
 // =====================================================================
 // =====================================================================
 
-LandREntity* LineStringGraph::getNewEntity(
-    const geos::geom::Geometry* Geom, unsigned int SelfId)
+LandREntity* LineStringGraph::getNewEntity(const geos::geom::Geometry* Geom,
+                                           unsigned int SelfId)
 {
   return new LineStringEntity(Geom, SelfId);
 }
@@ -266,17 +274,18 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
   return StartEntities;
 }
 
-
 // =====================================================================
 // =====================================================================
 
-float* LineStringGraph::getRasterValueForEntityStartNode( LineStringEntity& Entity)
+float* LineStringGraph::getRasterValueForEntityStartNode(
+    LineStringEntity& Entity)
 {
   float* Val = 0;
 
   if (!mp_Raster)
     throw openfluid::base::OFException(
-        "OpenFLUID Framework", "LineStringGraph::getRasterValueForEntityStartNode",
+        "OpenFLUID Framework",
+        "LineStringGraph::getRasterValueForEntityStartNode",
         "No raster associated to the LineStringGraph");
   else
   {
@@ -291,96 +300,81 @@ float* LineStringGraph::getRasterValueForEntityStartNode( LineStringEntity& Enti
 // =====================================================================
 // =====================================================================
 
-float* LineStringGraph::getRasterValueForEntityEndNode( LineStringEntity& Entity)
+float* LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 {
   float* Val = 0;
 
   if (!mp_Raster)
     throw openfluid::base::OFException(
-        "OpenFLUID Framework", "LineStringGraph::getRasterValueForEntityEndNode",
+        "OpenFLUID Framework",
+        "LineStringGraph::getRasterValueForEntityEndNode",
         "No raster associated to the LineStringGraph");
   else
   {
     Val = new float(
-        mp_Raster->getValueOfCoordinate(
-            Entity.getEndNode()->getCoordinate()));
+        mp_Raster->getValueOfCoordinate(Entity.getEndNode()->getCoordinate()));
   }
 
   return Val;
 }
 
-
-
-
-
-
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::setAttributeFromRasterValueAtStartNode(std::string AttributeName)
+void LineStringGraph::setAttributeFromRasterValueAtStartNode(
+    std::string AttributeName)
 {
   addAttribute(AttributeName);
   for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
-       it != m_Entities.end(); ++it)
-   {
-     float* Val = getRasterValueForEntityStartNode(
-         *dynamic_cast<LineStringEntity*>(*it));
+      it != m_Entities.end(); ++it)
+  {
+    float* Val = getRasterValueForEntityStartNode(
+        *dynamic_cast<LineStringEntity*>(*it));
 
-     if (!Val)
-     {
-       std::ostringstream s;
-       s << "No raster value for entity " << (*it)->getSelfId() << " StartNode.";
+    if (!Val)
+    {
+      std::ostringstream s;
+      s << "No raster value for entity " << (*it)->getSelfId() << " StartNode.";
 
-       throw openfluid::base::OFException(
-           "OpenFLUID Framework",
-           "LineStringGraph::setAttributeFromRasterValueAtStartNode", s.str());
-       return;
-     }
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework",
+          "LineStringGraph::setAttributeFromRasterValueAtStartNode", s.str());
+      return;
+    }
 
-     (*it)->setAttributeValue(AttributeName, *Val);
-   }
-
+    (*it)->setAttributeValue(AttributeName, *Val);
+  }
 
 }
 
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::setAttributeFromRasterValueAtEndNode(std::string AttributeName)
+void LineStringGraph::setAttributeFromRasterValueAtEndNode(
+    std::string AttributeName)
 {
   addAttribute(AttributeName);
   for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
-         it != m_Entities.end(); ++it)
-     {
-       float* Val = getRasterValueForEntityEndNode(
-           *dynamic_cast<LineStringEntity*>(*it));
+      it != m_Entities.end(); ++it)
+  {
+    float* Val = getRasterValueForEntityEndNode(
+        *dynamic_cast<LineStringEntity*>(*it));
 
-       if (!Val)
-       {
-         std::ostringstream s;
-         s << "No raster value for entity " << (*it)->getSelfId() << " EndNode.";
+    if (!Val)
+    {
+      std::ostringstream s;
+      s << "No raster value for entity " << (*it)->getSelfId() << " EndNode.";
 
-         throw openfluid::base::OFException(
-             "OpenFLUID Framework",
-             "LineStringGraph::setAttributeFromRasterValueAtEndNode", s.str());
-         return;
-       }
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework",
+          "LineStringGraph::setAttributeFromRasterValueAtEndNode", s.str());
+      return;
+    }
 
-       (*it)->setAttributeValue(AttributeName, *Val);
-     }
+    (*it)->setAttributeValue(AttributeName, *Val);
+  }
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-}// namespace landr
+} // namespace landr
 } /* namespace openfluid */

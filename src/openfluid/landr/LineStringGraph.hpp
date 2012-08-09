@@ -145,6 +145,8 @@ class LineStringGraph: public LandRGraph
      */
     LineStringGraph* clone();
 
+    LandRGraph::GraphType getType();
+
     LineStringEntity* getEntity(int SelfId);
 
     void removeEntity(int SelfId);
@@ -155,46 +157,37 @@ class LineStringGraph: public LandRGraph
 
     std::vector<LineStringEntity*> getStartLineStringEntities();
 
-
-
+    /**
+     * @brief Fetch the raster value corresponding to the entity StartNode coordinate.
+     *
+     * @param Entity The LandREntity to get the StartNode coordinate from.
+     * @return The raster value corresponding to the Entity StartNode coordinate.
+     */
+    float* getRasterValueForEntityStartNode(LineStringEntity& Entity);
 
     /**
-       * @brief Fetch the raster value corresponding to the entity StartNode coordinate.
-       *
-       * @param Entity The LandREntity to get the StartNode coordinate from.
-       * @return The raster value corresponding to the Entity StartNode coordinate.
-       */
-      float* getRasterValueForEntityStartNode(LineStringEntity& Entity);
+     * @brief Fetch the raster value corresponding to the entity EndNode coordinate.
+     *
+     * @param Entity The LandREntity to get the EndNode coordinate from.
+     * @return The raster value corresponding to the Entity EndNode coordinate.
+     */
+    float* getRasterValueForEntityEndNode(LineStringEntity& Entity);
 
-      /**
-       * @brief Fetch the raster value corresponding to the entity EndNode coordinate.
-       *
-       * @param Entity The LandREntity to get the EndNode coordinate from.
-       * @return The raster value corresponding to the Entity EndNode coordinate.
-       */
-      float* getRasterValueForEntityEndNode(LineStringEntity& Entity);
+    /**
+     * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
+     * this attribute value as the raster values corresponding to the StartNode LineStringEntity coordinates.
+     *
+     * @param AttributeName The name of the attribute to create for the StartNode
+     */
+    void setAttributeFromRasterValueAtStartNode(std::string AttributeName);
 
-
-      /**
-       * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
-       * this attribute value as the raster values corresponding to the StartNode LineStringEntity coordinates.
-       *
-       * @param AttributeName The name of the attribute to create for the StartNode
-       */
-      void setAttributeFromRasterValueAtStartNode(std::string AttributeName);
-
-      /**
-       * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
-       * this attribute value as the raster values corresponding to the EndNode LineStringEntity coordinates.
-       *
-       * @param AttributeName The name of the attribute to create for the EndNode
-       */
-      void setAttributeFromRasterValueAtEndNode(std::string AttributeName);
-
-
-
-
-
+    /**
+     * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
+     * this attribute value as the raster values corresponding to the EndNode LineStringEntity coordinates.
+     *
+     * @param AttributeName The name of the attribute to create for the EndNode
+     */
+    void setAttributeFromRasterValueAtEndNode(std::string AttributeName);
 
 };
 

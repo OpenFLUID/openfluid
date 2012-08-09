@@ -64,7 +64,7 @@ namespace landr {
 // =====================================================================
 
 LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int SelfId) :
-    mp_Geom(Geom), m_SelfId(SelfId)
+    mp_Geom(Geom), m_SelfId(SelfId), mp_Neighbours(0)
 {
   mp_Centroide = mp_Geom->getCentroid();
   m_Area = mp_Geom->getArea();
@@ -78,6 +78,7 @@ LandREntity::~LandREntity()
 {
   delete mp_Centroide;
   delete mp_Geom;
+  delete mp_Neighbours;
 }
 
 // =====================================================================
@@ -123,6 +124,17 @@ double LandREntity::getLength() const
 // =====================================================================
 // =====================================================================
 
+std::set<LandREntity*>* LandREntity::getNeighbours()
+{
+  if (!mp_Neighbours)
+    computeNeighbours();
+
+  return mp_Neighbours;
+}
+
+// =====================================================================
+// =====================================================================
+
 bool LandREntity::getAttributeValue(std::string AttributeName,
                                     boost::any& Value) const
 {
@@ -147,6 +159,41 @@ bool LandREntity::setAttributeValue(std::string AttributeName, boost::any Value)
   }
 
   return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+double LandREntity::getDistCentroCentro(LandREntity& Other)
+{
+  return mp_Centroide->distance(Other.getCentroide());
+}
+
+// =====================================================================
+// =====================================================================
+
+LandREntity* LandREntity::getNeighbour_MinDistCentroCentro()
+{
+  std::set<LandREntity*> Neigh = *getNeighbours();
+
+  std::map<double, LandREntity*> NeighByDist;
+
+  for (std::set<LandREntity*>::iterator it = Neigh.begin(); it != Neigh.end();
+      ++it)
+  {
+    LandREntity* Neigh = *it;
+
+    double Dist = getDistCentroCentro(*Neigh);
+
+    NeighByDist[Dist] = Neigh;
+  }
+
+  std::map<double, LandREntity*>::iterator itMin = std::min_element(
+      NeighByDist.begin(), NeighByDist.end());
+
+  return
+      (itMin != NeighByDist.end() && itMin->first > 0) ? itMin->second :
+                                                         (LandREntity*) 0;
 }
 
 // =====================================================================

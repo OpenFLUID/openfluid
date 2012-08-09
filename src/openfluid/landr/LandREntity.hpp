@@ -58,6 +58,7 @@
 #include <geos/planargraph/GraphComponent.h>
 #include <boost/any.hpp>
 #include <map>
+#include <set>
 #include <string>
 
 namespace geos {
@@ -90,10 +91,14 @@ class LandREntity: public geos::planargraph::GraphComponent
 
     double m_Lenght;
 
+    std::set<LandREntity*>* mp_Neighbours;
+
     std::map<std::string, boost::any> m_Attributes;
 
     // for limiting access to m_Attributes creation/deletion to LandRGraph class
     friend class LandRGraph;
+
+    virtual void computeNeighbours() = 0;
 
   public:
 
@@ -113,9 +118,18 @@ class LandREntity: public geos::planargraph::GraphComponent
 
     double getLength() const;
 
+    std::set<LandREntity*>* getNeighbours();
+
     bool getAttributeValue(std::string AttributeName, boost::any& Value) const;
 
     bool setAttributeValue(std::string AttributeName, boost::any Value);
+
+    /**
+     * Get the distance between this entity centroid and Other entity centroid.
+     */
+    double getDistCentroCentro(LandREntity& Other);
+
+    LandREntity* getNeighbour_MinDistCentroCentro();
 
 };
 

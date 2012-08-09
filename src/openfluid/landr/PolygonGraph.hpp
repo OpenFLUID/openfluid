@@ -113,6 +113,8 @@ class PolygonGraph: public LandRGraph
      */
     PolygonGraph* clone();
 
+    LandRGraph::GraphType getType();
+
     PolygonEntity* getEntity(int SelfId);
 
     /**

@@ -174,7 +174,7 @@ BOOST_AUTO_TEST_CASE(check_nodes)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_neighbours)
+BOOST_AUTO_TEST_CASE(check_LineOrientNeighbours)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
@@ -199,11 +199,16 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   std::vector<openfluid::landr::LineStringEntity*> U4Down =
       U4->getLineOrientDownNeighbours();
 
-  std::vector<openfluid::landr::LineStringEntity*> U1Up = U1->getLineOrientUpNeighbours();
-  std::vector<openfluid::landr::LineStringEntity*> U2Up = U2->getLineOrientUpNeighbours();
-  std::vector<openfluid::landr::LineStringEntity*> U3Up = U3->getLineOrientUpNeighbours();
-  std::vector<openfluid::landr::LineStringEntity*> U8Up = U8->getLineOrientUpNeighbours();
-  std::vector<openfluid::landr::LineStringEntity*> U4Up = U4->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U1Up =
+      U1->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U2Up =
+      U2->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U3Up =
+      U3->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U8Up =
+      U8->getLineOrientUpNeighbours();
+  std::vector<openfluid::landr::LineStringEntity*> U4Up =
+      U4->getLineOrientUpNeighbours();
 
   BOOST_CHECK_EQUAL(U1Down.size(), 0);
   BOOST_CHECK_EQUAL(U2Down.size(), 1);
@@ -222,6 +227,34 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   BOOST_CHECK_EQUAL(U8Up.size(), 0);
   BOOST_CHECK_EQUAL(U4Up.size(), 1);
   BOOST_CHECK_EQUAL((*U4Up.begin())->getSelfId(), 5);
+
+  delete Graph;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_Neighbours)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Val);
+
+  BOOST_CHECK_EQUAL(Graph->getEntity(1)->getNeighbours()->size(), 1);
+  BOOST_CHECK_EQUAL(*Graph->getEntity(1)->getNeighbours()->begin(),
+                    Graph->getEntity(2));
+  BOOST_CHECK_EQUAL(Graph->getEntity(2)->getNeighbours()->size(), 4);
+  BOOST_CHECK_EQUAL(Graph->getEntity(3)->getNeighbours()->size(), 5);
+  BOOST_CHECK_EQUAL(Graph->getEntity(4)->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEntity(5)->getNeighbours()->size(), 1);
+  BOOST_CHECK_EQUAL(*Graph->getEntity(5)->getNeighbours()->begin(),
+                    Graph->getEntity(4));
+  BOOST_CHECK_EQUAL(Graph->getEntity(6)->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(Graph->getEntity(7)->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(Graph->getEntity(8)->getNeighbours()->size(), 3);
 
   delete Graph;
   delete Val;

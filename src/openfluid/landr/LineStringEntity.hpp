@@ -79,6 +79,8 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
     LineStringEntity();
     LineStringEntity(const LineStringEntity&);
 
+    void computeNeighbours();
+
     void computeLineOrientUpNeighbours();
     void computeLineOrientDownNeighbours();
 

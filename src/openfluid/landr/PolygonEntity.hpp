@@ -77,13 +77,14 @@ class PolygonEntity: public LandREntity
     const geos::geom::Polygon* mp_Polygon;
 
     PolygonEntity();
-
     PolygonEntity(const PolygonEntity&);
+
+    void computeNeighbours();
 
   public:
 
     typedef std::map<PolygonEntity*, std::vector<PolygonEdge*> > NeigboursMap_t;
-    NeigboursMap_t* mp_Neighbours;
+    NeigboursMap_t* mp_NeighboursMap;
 
     std::vector<PolygonEdge*> m_PolyEdges;
 
@@ -126,11 +127,11 @@ class PolygonEntity: public LandREntity
      */
     PolygonEdge* findEdgeLineIntersectingWith(geos::geom::LineString& Segment);
 
-    const NeigboursMap_t* getNeighbours();
+    std::vector<LandREntity*> getNeighbours();
+
+    const NeigboursMap_t* getNeighboursAndEdges();
 
     std::vector<int> getOrderedNeighbourSelfIds();
-
-    void computeNeighbours();
 
     /**
      * @brief Check if this Entity is complete, that is if all edges of this Entity,
@@ -140,14 +141,7 @@ class PolygonEntity: public LandREntity
      */
     bool isComplete();
 
-    /**
-     * Get the distance between this unity centroid and Other unity centroid.
-     */
-    double getDistCentroCentro(PolygonEntity& Other);
-
     std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
-
-    PolygonEntity* getNeighbour_MinDistCentroCentro();
 
 };
 

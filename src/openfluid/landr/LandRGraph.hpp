@@ -86,6 +86,13 @@ class LandREntity;
 
 class LandRGraph: public geos::planargraph::PlanarGraph
 {
+  public:
+
+    enum GraphType
+    {
+      POLYGON, LINESTRING
+    };
+
   protected:
 
     openfluid::core::GeoVectorValue* mp_Vector;
@@ -133,6 +140,8 @@ class LandRGraph: public geos::planargraph::PlanarGraph
      */
     virtual ~LandRGraph();
 
+    virtual GraphType getType() = 0;
+
     virtual LandREntity* getEntity(int SelfId);
 
     std::vector<LandREntity*> getEntities();
@@ -164,6 +173,8 @@ class LandRGraph: public geos::planargraph::PlanarGraph
      * Replace associated raster if exists.
      */
     void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
+
+    bool hasAnAssociatedRaster();
 
     openfluid::core::GeoVectorValue* getRasterPolygonized();
 
