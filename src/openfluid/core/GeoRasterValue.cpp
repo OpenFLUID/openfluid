@@ -246,8 +246,12 @@ float GeoRasterValue::getValueOfPixel(int ColIndex, int LineIndex)
   float* ScanLine = (float *) CPLMalloc(sizeof(float));
 
   //  The pixel values will automatically be translated from the GDALRasterBand data type as needed.
-  getRasterBand1()->RasterIO(GF_Read, ColIndex, LineIndex, 1, 1, ScanLine, 1, 1,
-                             GDT_Float32, 0, 0);
+  if (getRasterBand1()->RasterIO(GF_Read, ColIndex, LineIndex, 1, 1, ScanLine,
+                                 1, 1, GDT_Float32, 0, 0)
+      != CE_None)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "GeoRasterValue::getValueOfPixel",
+        "Error while getting value from raster.");
 
   Val = ScanLine[0];
 

@@ -84,6 +84,10 @@ class PolygonEntity: public LandREntity
   public:
 
     typedef std::map<PolygonEntity*, std::vector<PolygonEdge*> > NeigboursMap_t;
+
+    /**
+     * Map of neighbours of PolygonEntity type and the related vector of edges that are between this Polygon and the neighbour.
+     */
     NeigboursMap_t* mp_NeighboursMap;
 
     std::vector<PolygonEdge*> m_PolyEdges;
@@ -126,8 +130,6 @@ class PolygonEntity: public LandREntity
      * or 0 if not found.
      */
     PolygonEdge* findEdgeLineIntersectingWith(geos::geom::LineString& Segment);
-
-    std::vector<LandREntity*> getNeighbours();
 
     const NeigboursMap_t* getNeighboursAndEdges();
 

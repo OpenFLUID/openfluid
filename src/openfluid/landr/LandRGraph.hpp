@@ -196,6 +196,8 @@ class LandRGraph: public geos::planargraph::PlanarGraph
      */
     void setAttributeFromRasterValueAtCentroid(std::string AttributeName);
 
+    void computeNeighbours();
+
 };
 
 } // namespace landr

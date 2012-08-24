@@ -441,5 +441,15 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
 // =====================================================================
 // =====================================================================
 
+void LandRGraph::computeNeighbours()
+{
+  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
+    (*it)->computeNeighbours();
+}
+
+// =====================================================================
+// =====================================================================
+
 }// namespace landr
 } /* namespace openfluid */

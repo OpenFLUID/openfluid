@@ -73,6 +73,9 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
 
     const geos::geom::LineString* mp_Line;
 
+    /**
+     * Up and down neighbours of LineStringEntity type, according to the LineString orientation
+     */
     std::vector<LineStringEntity*>* mp_LOUpNeighbours;
     std::vector<LineStringEntity*>* mp_LODownNeighbours;
 
