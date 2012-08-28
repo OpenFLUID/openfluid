@@ -65,8 +65,8 @@
  @param[in] loopid ID of the loop
  */
 #define DECLARE_ENTITIES_GRAPH_LOOP(loopid) \
-  std::vector<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
-  std::vector<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
+  std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
+  std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
 
 
 /**
@@ -74,8 +74,8 @@
  @param[in] loopid ID of the loop
  */
 #define DECLARE_ENTITIES_ORDERED_LOOP(loopid) \
-  std::vector<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
-  std::vector<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
+  std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
+  std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
 
 /**
  Macro for the beginning of a loop processing all entities of a graph
@@ -136,7 +136,7 @@ class LineStringGraph: public LandRGraph
 
     static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
 
-    static LineStringGraph* create(const std::vector<LandREntity*>& Entities);
+    static LineStringGraph* create(const LandRGraph::Entities_t& Entities);
 
     virtual ~LineStringGraph();
 

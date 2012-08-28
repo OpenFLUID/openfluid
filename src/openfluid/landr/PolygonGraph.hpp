@@ -104,7 +104,7 @@ class PolygonGraph: public LandRGraph
 
     static PolygonGraph* create(openfluid::core::GeoVectorValue& Val);
 
-    static PolygonGraph* create(const std::vector<LandREntity*>& Entities);
+    static PolygonGraph* create(const LandRGraph::Entities_t& Entities);
 
     virtual ~PolygonGraph();
 

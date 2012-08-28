@@ -102,7 +102,7 @@ PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
 // =====================================================================
 // =====================================================================
 
-PolygonGraph* PolygonGraph::create(const std::vector<LandREntity*>& Entities)
+PolygonGraph* PolygonGraph::create(const LandRGraph::Entities_t& Entities)
 {
   PolygonGraph* Graph = new PolygonGraph();
   Graph->addEntitiesFromEntityList(Entities);
@@ -148,7 +148,7 @@ void PolygonGraph::addEntity(LandREntity* Entity)
 
   try
   {
-    for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+    for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
         it != m_Entities.end(); ++it)
     {
       PolygonEntity* Poly = dynamic_cast<PolygonEntity*>(*it);
@@ -321,7 +321,7 @@ PolygonEntity* PolygonGraph::getEntity(int SelfId)
 
 bool PolygonGraph::isComplete()
 {
-  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
     if (!(dynamic_cast<PolygonEntity*>(*it))->isComplete())
@@ -379,7 +379,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
 {
   addAttribute(AttributeName);
 
-  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
     PolygonGraph::RastValByRastPoly_t RastPolys = getRasterPolyOverlapping(

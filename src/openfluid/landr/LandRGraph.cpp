@@ -108,8 +108,9 @@ LandRGraph::~LandRGraph()
       it != nodeEnd(); ++it)
     delete it->second;
 
-  for (unsigned int i = 0; i < m_Entities.size(); i++)
-    delete m_Entities[i];
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
+    delete (*it);
 
   if (mp_RasterPolygonized)
   {
@@ -169,9 +170,9 @@ void LandRGraph::addEntitiesFromGeoVector()
 // =====================================================================
 
 void LandRGraph::addEntitiesFromEntityList(
-    const std::vector<LandREntity*>& Entities)
+    const LandRGraph::Entities_t& Entities)
 {
-  for (std::vector<LandREntity*>::const_iterator it = Entities.begin();
+  for (LandRGraph::Entities_t::const_iterator it = Entities.begin();
       it != Entities.end(); ++it)
   {
     addEntity(getNewEntity((*it)->getGeometry()->clone(), (*it)->getSelfId()));
@@ -224,7 +225,7 @@ LandREntity* LandRGraph::getEntity(int SelfId)
 // =====================================================================
 // =====================================================================
 
-std::vector<LandREntity*> LandRGraph::getEntities()
+std::list<LandREntity*> LandRGraph::getEntities()
 {
   return m_Entities;
 }
@@ -232,9 +233,9 @@ std::vector<LandREntity*> LandRGraph::getEntities()
 // =====================================================================
 // =====================================================================
 
-std::vector<LandREntity*> LandRGraph::getSelfIdOrderedEntities()
+LandRGraph::Entities_t LandRGraph::getSelfIdOrderedEntities()
 {
-  std::vector<LandREntity*> Entities;
+  LandRGraph::Entities_t Entities;
 
   for (std::map<int, LandREntity*>::iterator it = m_EntitiesBySelfId.begin();
       it != m_EntitiesBySelfId.end(); ++it)
@@ -264,7 +265,7 @@ unsigned int LandRGraph::getSize()
 
 void LandRGraph::addAttribute(std::string AttributeName)
 {
-  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
     if (!(*it)->m_Attributes.count(AttributeName))
@@ -277,7 +278,7 @@ void LandRGraph::addAttribute(std::string AttributeName)
 
 void LandRGraph::removeAttribute(std::string AttributeName)
 {
-  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
     delete (*it)->m_Attributes[AttributeName];
@@ -425,7 +426,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
 {
   addAttribute(AttributeName);
 
-  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
     float* Val = getRasterValueForEntityCentroid(
@@ -451,7 +452,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
 
 void LandRGraph::computeNeighbours()
 {
-  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
     (*it)->computeNeighbours();
 }

@@ -108,8 +108,7 @@ LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
 // =====================================================================
 // =====================================================================
 
-LineStringGraph* LineStringGraph::create(
-    const std::vector<LandREntity*>& Entities)
+LineStringGraph* LineStringGraph::create(const LandRGraph::Entities_t& Entities)
 {
   LineStringGraph* Graph = new LineStringGraph();
   Graph->addEntitiesFromEntityList(Entities);
@@ -327,7 +326,7 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(
     std::string AttributeName)
 {
   addAttribute(AttributeName);
-  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
     float* Val = getRasterValueForEntityStartNode(
@@ -356,7 +355,7 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(
     std::string AttributeName)
 {
   addAttribute(AttributeName);
-  for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
   {
     float* Val = getRasterValueForEntityEndNode(

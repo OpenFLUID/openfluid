@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
-  std::vector<openfluid::landr::LandREntity*> Entities;
+  openfluid::landr::LandRGraph::Entities_t Entities;
 
   OGRLayer* Layer0 = Val->getLayer0();
 
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
-  std::vector<openfluid::landr::LandREntity*> Entities;
+  openfluid::landr::LandRGraph::Entities_t Entities;
 
   OGRLayer* Layer0 = Val->getLayer0();
 
@@ -263,11 +263,13 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(*Val);
 
-  std::vector<openfluid::landr::LandREntity*> OrderedEntities =
+  openfluid::landr::LandRGraph::Entities_t OrderedEntities =
       Graph->getSelfIdOrderedEntities();
 
-  for (unsigned int i = 0; i < OrderedEntities.size(); i++)
-    BOOST_CHECK_EQUAL(OrderedEntities.at(i)->getSelfId(), i+1);
+  int i = 0;
+  for (openfluid::landr::LandRGraph::Entities_t::iterator it =
+      OrderedEntities.begin(); it != OrderedEntities.end(); ++it)
+    BOOST_CHECK_EQUAL((*it)->getSelfId(), ++i);
 
   delete Graph;
   delete Val;

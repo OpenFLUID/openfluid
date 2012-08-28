@@ -58,6 +58,7 @@
 #include <geos/planargraph/PlanarGraph.h>
 
 #include <ogrsf_frmts.h>
+#include <list>
 
 namespace geos {
 namespace geom {
@@ -93,6 +94,8 @@ class LandRGraph: public geos::planargraph::PlanarGraph
       POLYGON, LINESTRING
     };
 
+    typedef std::list<LandREntity*> Entities_t;
+
   protected:
 
     openfluid::core::GeoVectorValue* mp_Vector;
@@ -101,8 +104,7 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     std::map<int, LandREntity*> m_EntitiesBySelfId;
 
-    //TODO change for a list
-    std::vector<LandREntity*> m_Entities;
+    Entities_t m_Entities;
 
     openfluid::core::GeoRasterValue* mp_Raster;
 
@@ -120,7 +122,7 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     void addEntitiesFromGeoVector();
 
-    void addEntitiesFromEntityList(const std::vector<LandREntity*>& Entities);
+    void addEntitiesFromEntityList(const LandRGraph::Entities_t& Entities);
 
     virtual void addEntity(LandREntity* Entity) = 0;
 
@@ -144,9 +146,9 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     virtual LandREntity* getEntity(int SelfId);
 
-    std::vector<LandREntity*> getEntities();
+    Entities_t getEntities();
 
-    std::vector<LandREntity*> getSelfIdOrderedEntities();
+    Entities_t getSelfIdOrderedEntities();
 
     std::map<int, LandREntity*> getEntitiesBySelfId();
 
