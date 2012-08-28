@@ -57,11 +57,13 @@
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/CoordinateSequence.h>
 #include <geos/geom/LineString.h>
+#include <algorithm>
 
 namespace openfluid {
 namespace landr {
@@ -342,7 +344,7 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(
       return;
     }
 
-    (*it)->setAttributeValue(AttributeName, *Val);
+    (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
   }
 
 }
@@ -371,7 +373,7 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(
       return;
     }
 
-    (*it)->setAttributeValue(AttributeName, *Val);
+    (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
   }
 
 }

@@ -56,7 +56,6 @@
 #define LANDRENTITY_HPP_
 
 #include <geos/planargraph/GraphComponent.h>
-#include <boost/any.hpp>
 #include <map>
 #include <set>
 #include <string>
@@ -69,6 +68,11 @@ class Point;
 }
 
 namespace openfluid {
+
+namespace core {
+class Value;
+
+}
 namespace landr {
 
 class LandREntity: public geos::planargraph::GraphComponent
@@ -93,7 +97,7 @@ class LandREntity: public geos::planargraph::GraphComponent
 
     std::set<LandREntity*>* mp_Neighbours;
 
-    std::map<std::string, boost::any> m_Attributes;
+    std::map<std::string, core::Value*> m_Attributes;
 
     // for limiting access to m_Attributes creation/deletion to LandRGraph class
     friend class LandRGraph;
@@ -120,9 +124,15 @@ class LandREntity: public geos::planargraph::GraphComponent
 
     std::set<LandREntity*>* getNeighbours();
 
-    bool getAttributeValue(std::string AttributeName, boost::any& Value) const;
+    bool getAttributeValue(std::string AttributeName, core::Value& Value) const;
 
-    bool setAttributeValue(std::string AttributeName, boost::any Value);
+    /**
+     * Takes the ownership of Value.
+     * @param AttributeName
+     * @param Value
+     * @return
+     */
+    bool setAttributeValue(std::string AttributeName, const core::Value* Value);
 
     /**
      * Get the distance between this entity centroid and Other entity centroid.

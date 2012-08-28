@@ -57,6 +57,7 @@
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/Polygon.h>
@@ -265,7 +266,10 @@ void LandRGraph::addAttribute(std::string AttributeName)
 {
   for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
-    (*it)->m_Attributes[AttributeName];
+  {
+    if (!(*it)->m_Attributes.count(AttributeName))
+      (*it)->m_Attributes[AttributeName] = 0;
+  }
 }
 
 // =====================================================================
@@ -275,7 +279,10 @@ void LandRGraph::removeAttribute(std::string AttributeName)
 {
   for (std::vector<LandREntity*>::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
+  {
+    delete (*it)->m_Attributes[AttributeName];
     (*it)->m_Attributes.erase(AttributeName);
+  }
 }
 
 // =====================================================================
@@ -287,9 +294,10 @@ std::vector<std::string> LandRGraph::getAttributeNames()
 
   if (getSize() > 0)
   {
-    std::map<std::string, boost::any> Attr = (*m_Entities.begin())->m_Attributes;
+    std::map<std::string, core::Value*> Attr =
+        (*m_Entities.begin())->m_Attributes;
 
-    for (std::map<std::string, boost::any>::iterator it = Attr.begin();
+    for (std::map<std::string, core::Value*>::iterator it = Attr.begin();
         it != Attr.end(); ++it)
       Names.push_back(it->first);
   }
@@ -433,7 +441,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
           "PolygonGraph::setAttributeFromRasterValueAtCentroid", s.str());
     }
 
-    (*it)->setAttributeValue(AttributeName, *Val);
+    (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
   }
 
 }

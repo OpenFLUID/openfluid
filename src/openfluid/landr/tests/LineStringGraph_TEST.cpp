@@ -63,6 +63,7 @@
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/tools.hpp>
 #include <geos/geom/Geometry.h>
@@ -373,13 +374,13 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_intPixelType)
 
   Graph->setAttributeFromRasterValueAtStartNode("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK_EQUAL(boost::any_cast<float>(Val), 62);
+  BOOST_CHECK_EQUAL(Val.get(), 62);
 
   Graph->getEntity(3)->getAttributeValue("test_val", Val);
-  BOOST_CHECK_EQUAL(boost::any_cast<float>(Val), 72);
+  BOOST_CHECK_EQUAL(Val.get(), 72);
 
   delete Graph;
   delete Vector;
@@ -387,8 +388,6 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_intPixelType)
 }
 // =====================================================================
 // =====================================================================
-
-
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float32PixelType)
 {
@@ -405,15 +404,13 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float32PixelTy
 
   Graph->setAttributeFromRasterValueAtStartNode("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 59.5801));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 59.5801));
 
   Graph->getEntity(3)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 72.1662));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 72.1662));
 
   delete Graph;
   delete Vector;
@@ -438,15 +435,13 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float64PixelTy
 
   Graph->setAttributeFromRasterValueAtStartNode("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 59.5801));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 59.5801));
 
   Graph->getEntity(3)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 72.1662));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 72.1662));
 
   delete Graph;
   delete Vector;
@@ -470,13 +465,13 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_intPixelType)
 
   Graph->setAttributeFromRasterValueAtEndNode("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK_EQUAL(boost::any_cast<float>(Val), 46);
+  BOOST_CHECK_EQUAL(Val.get(), 46);
 
   Graph->getEntity(3)->getAttributeValue("test_val", Val);
-  BOOST_CHECK_EQUAL(boost::any_cast<float>(Val), 62);
+  BOOST_CHECK_EQUAL(Val.get(), 62);
 
   delete Graph;
   delete Vector;
@@ -500,15 +495,13 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float32PixelType
 
   Graph->setAttributeFromRasterValueAtEndNode("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 42.3272));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 42.3272));
 
   Graph->getEntity(3)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 59.5801));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 59.5801));
 
   delete Graph;
   delete Vector;
@@ -517,7 +510,6 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float32PixelType
 
 // =====================================================================
 // =====================================================================
-
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType)
 {
@@ -534,15 +526,13 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType
 
   Graph->setAttributeFromRasterValueAtEndNode("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 42.3272));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 42.3272));
 
   Graph->getEntity(3)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 59.5801));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 59.5801));
 
   delete Graph;
   delete Vector;
@@ -550,7 +540,6 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType
 }
 // =====================================================================
 // =====================================================================
-
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
 {
@@ -567,13 +556,13 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
 
   Graph->setAttributeFromRasterValueAtCentroid("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK_EQUAL(boost::any_cast<float>(Val), 36);
+  BOOST_CHECK_EQUAL(Val.get(), 36);
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK_EQUAL(boost::any_cast<float>(Val), 53);
+  BOOST_CHECK_EQUAL(Val.get(), 53);
 
   delete Graph;
   delete Vector;
@@ -598,15 +587,13 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelTyp
 
   Graph->setAttributeFromRasterValueAtCentroid("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 35.324));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 35.324));
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 51.0379));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0379));
 
   delete Graph;
   delete Vector;
@@ -631,21 +618,18 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelTyp
 
   Graph->setAttributeFromRasterValueAtCentroid("test_val");
 
-  boost::any Val;
+  openfluid::core::DoubleValue Val;
 
   Graph->getEntity(1)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 35.324));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 35.324));
 
   Graph->getEntity(2)->getAttributeValue("test_val", Val);
-  BOOST_CHECK(
-      openfluid::tools::IsVeryClose(boost::any_cast<float>(Val), 51.0379));
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0379));
 
   delete Graph;
   delete Vector;
   delete Raster;
 }
-
 
 // =====================================================================
 // =====================================================================

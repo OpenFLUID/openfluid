@@ -60,6 +60,7 @@
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/MultiLineString.h>
@@ -413,7 +414,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
       Mean += *PixelVal * (OverlappingArea / PolyArea);
     }
 
-    (*it)->setAttributeValue(AttributeName, Mean);
+    (*it)->setAttributeValue(AttributeName, new core::DoubleValue(Mean));
   }
 
 }

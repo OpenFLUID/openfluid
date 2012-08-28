@@ -54,8 +54,10 @@
 
 #include "LandREntity.hpp"
 
+#include <openfluid/core/Value.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/Point.h>
+#include <algorithm>
 
 namespace openfluid {
 namespace landr {
@@ -79,6 +81,10 @@ LandREntity::~LandREntity()
   delete mp_Centroide;
   delete mp_Geom;
   delete mp_Neighbours;
+
+  for (std::map<std::string, core::Value*>::iterator it = m_Attributes.begin();
+      it != m_Attributes.end(); ++it)
+    delete it->second;
 }
 
 // =====================================================================
@@ -136,11 +142,14 @@ std::set<LandREntity*>* LandREntity::getNeighbours()
 // =====================================================================
 
 bool LandREntity::getAttributeValue(std::string AttributeName,
-                                    boost::any& Value) const
+                                    core::Value& Value) const
 {
-  if (m_Attributes.count(AttributeName))
+  std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(
+      AttributeName);
+
+  if (it != m_Attributes.end() && it->second)
   {
-    Value = m_Attributes.find(AttributeName)->second;
+    Value = *it->second;
     return true;
   }
 
@@ -150,11 +159,17 @@ bool LandREntity::getAttributeValue(std::string AttributeName,
 // =====================================================================
 // =====================================================================
 
-bool LandREntity::setAttributeValue(std::string AttributeName, boost::any Value)
+bool LandREntity::setAttributeValue(std::string AttributeName,
+                                    const core::Value* Value)
 {
-  if (m_Attributes.count(AttributeName))
+  std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(
+      AttributeName);
+
+  if (it != m_Attributes.end())
   {
-    m_Attributes[AttributeName] = Value;
+    if (it->second)
+      delete it->second;
+    m_Attributes[AttributeName] = const_cast<core::Value*>(Value);
     return true;
   }
 

@@ -59,6 +59,7 @@
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
 #include <geos/planargraph/DirectedEdge.h>
+#include <algorithm>
 
 namespace openfluid {
 namespace landr {
