@@ -151,6 +151,9 @@ class PolygonGraph: public LandRGraph
      * @param FileName A Name for the out file to create, with a .shp extension.
      */
     void createVectorRepresentation(std::string FilePath, std::string FileName);
+
+    void computeLineStringNeighbours(LineStringGraph& Graph,
+                                     double BufferDistance);
 };
 
 } // namespace landr

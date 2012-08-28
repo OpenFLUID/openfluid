@@ -69,6 +69,8 @@ namespace openfluid {
 namespace landr {
 
 class PolygonEdge;
+class LineStringGraph;
+class LineStringEntity;
 
 class PolygonEntity: public LandREntity
 {
@@ -84,11 +86,17 @@ class PolygonEntity: public LandREntity
   public:
 
     typedef std::map<PolygonEntity*, std::vector<PolygonEdge*> > NeigboursMap_t;
+    typedef std::map<LineStringEntity*, PolygonEdge*> LineStringNeigboursMap_t;
 
     /**
      * Map of neighbours of PolygonEntity type and the related vector of edges that are between this Polygon and the neighbour.
      */
     NeigboursMap_t* mp_NeighboursMap;
+
+    /**
+     * Map of neighbours of LineStringEntity type and the related edge that is between this Polygon and the neighbour, if exists.
+     */
+    LineStringNeigboursMap_t* mp_LineStringNeighboursMap;
 
     std::vector<PolygonEdge*> m_PolyEdges;
 
@@ -100,7 +108,7 @@ class PolygonEntity: public LandREntity
     virtual ~PolygonEntity();
 
     /**
-     * ! Doesn't deep-copy m_PolyEdges
+     * ! Doesn't deep-copy m_PolyEdges nor neighbours
      */
     PolygonEntity* clone();
 
@@ -144,6 +152,16 @@ class PolygonEntity: public LandREntity
     bool isComplete();
 
     std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
+
+    geos::geom::Geometry* getBufferedBoundary(double BufferDistance);
+
+    /**
+     * A LineString is considered as a neighbour if it lies within the buffer of the Polygon boundary
+     */
+    void computeLineStringNeighbours(LineStringGraph& Graph,
+                                     double BufferDistance);
+
+    LineStringNeigboursMap_t* getLineStringNeighbours();
 
 };
 

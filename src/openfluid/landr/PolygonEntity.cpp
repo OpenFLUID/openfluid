@@ -56,6 +56,8 @@
 
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/LandRTools.hpp>
+#include <openfluid/landr/LineStringEntity.hpp>
+#include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/LineString.h>
@@ -74,7 +76,8 @@ namespace landr {
 
 PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
                              unsigned int SelfId) :
-    LandREntity(NewPolygon, SelfId), mp_NeighboursMap(0)
+    LandREntity(NewPolygon, SelfId), mp_NeighboursMap(0), mp_LineStringNeighboursMap(
+        0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
   {
@@ -106,6 +109,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
 PolygonEntity::~PolygonEntity()
 {
   delete mp_NeighboursMap;
+  delete mp_LineStringNeighboursMap;
 }
 
 // =====================================================================
@@ -303,6 +307,64 @@ std::vector<PolygonEdge*> PolygonEntity::getCommonEdgesWith(
     Edges = mp_NeighboursMap->at(&Other);
 
   return Edges;
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::geom::Geometry* PolygonEntity::getBufferedBoundary(double BufferDistance)
+{
+  return mp_Polygon->getBoundary()->buffer(BufferDistance);
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
+                                                double BufferDistance)
+{
+  if (!mp_NeighboursMap)
+    computeNeighbours();
+
+  delete mp_LineStringNeighboursMap;
+  mp_LineStringNeighboursMap = new PolygonEntity::LineStringNeigboursMap_t;
+
+  geos::geom::Geometry* PolyBuff = getBufferedBoundary(BufferDistance);
+
+  openfluid::landr::LandRGraph::Entities_t LSs = Graph.getEntities();
+
+  for (openfluid::landr::LandRGraph::Entities_t::const_iterator it =
+      LSs.begin(); it != LSs.end(); ++it)
+  {
+    LineStringEntity* LS = dynamic_cast<LineStringEntity*>(*it);
+
+    if (LS->getLine()->within(PolyBuff))
+    {
+      geos::geom::Geometry* EdgeBuff;
+      for (unsigned j = 0; j < m_PolyEdges.size(); j++)
+      {
+        EdgeBuff = m_PolyEdges[j]->getLine()->buffer(BufferDistance);
+        if (LS->getLine()->within(EdgeBuff))
+        {
+          mp_LineStringNeighboursMap->insert(
+              std::make_pair(LS, m_PolyEdges[j]));
+          mp_Neighbours->insert(*it);
+        }
+        delete EdgeBuff;
+      }
+
+    }
+  }
+
+  delete PolyBuff;
+}
+
+// =====================================================================
+// =====================================================================
+
+PolygonEntity::LineStringNeigboursMap_t* PolygonEntity::getLineStringNeighbours()
+{
+  return mp_LineStringNeighboursMap;
 }
 
 // =====================================================================

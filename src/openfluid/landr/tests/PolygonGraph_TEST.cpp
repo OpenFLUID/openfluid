@@ -67,6 +67,8 @@
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
+#include <openfluid/landr/LineStringGraph.hpp>
+#include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/tools.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
@@ -975,6 +977,62 @@ BOOST_AUTO_TEST_CASE(check_createVectorRepresentation)
   delete GraphVal;
   delete Graph;
   delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph)
+{
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::LineStringGraph* RSGraph =
+      openfluid::landr::LineStringGraph::create(*ValRS);
+  openfluid::landr::PolygonGraph* SUGraph =
+      openfluid::landr::PolygonGraph::create(*ValSU);
+
+  openfluid::landr::PolygonEntity* SU1 = SUGraph->getEntity(1);
+  openfluid::landr::PolygonEntity* SU4 = SUGraph->getEntity(4);
+  openfluid::landr::PolygonEntity* SU17 = SUGraph->getEntity(17);
+
+  BOOST_CHECK(!SU1->getLineStringNeighbours());
+  BOOST_CHECK(!SU4->getLineStringNeighbours());
+  BOOST_CHECK(!SU17->getLineStringNeighbours());
+
+  SUGraph->computeLineStringNeighbours(*RSGraph, 0);
+
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(SU17->getLineStringNeighbours()->size(), 0);
+
+  BOOST_CHECK_EQUAL(SU1->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(SU4->getNeighbours()->size(), 4);
+  BOOST_CHECK_EQUAL(SU17->getNeighbours()->size(), 4);
+
+  SUGraph->computeLineStringNeighbours(*RSGraph, 0.0001);
+
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 1);
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->begin()->first->getSelfId(),
+                    1);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 1);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->begin()->first->getSelfId(),
+                    3);
+  BOOST_CHECK_EQUAL(SU17->getLineStringNeighbours()->size(), 1);
+  BOOST_CHECK_EQUAL(
+      SU17->getLineStringNeighbours()->begin()->first->getSelfId(), 6);
+
+  BOOST_CHECK_EQUAL(SU1->getNeighbours()->size(), 3);
+  BOOST_CHECK_EQUAL(SU4->getNeighbours()->size(), 5);
+  BOOST_CHECK_EQUAL(SU17->getNeighbours()->size(), 5);
+
+  delete RSGraph;
+  delete SUGraph;
+  delete ValRS;
+  delete ValSU;
 }
 
 // =====================================================================
