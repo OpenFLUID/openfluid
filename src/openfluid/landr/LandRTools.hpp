@@ -71,6 +71,11 @@ class LandRTools
 {
   public:
 
+    enum Relationship
+    {
+      NONE, INTERSECTS, CONTAINS, EQUALS
+    };
+
     /**
      * @brief Returns a LineString representing the linearized input Geometry.
      *

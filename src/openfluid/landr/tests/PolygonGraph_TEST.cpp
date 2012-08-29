@@ -982,7 +982,7 @@ BOOST_AUTO_TEST_CASE(check_createVectorRepresentation)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph)
+BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains)
 {
   openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
@@ -1003,7 +1003,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph)
   BOOST_CHECK(!SU4->getLineStringNeighbours());
   BOOST_CHECK(!SU17->getLineStringNeighbours());
 
-  SUGraph->computeLineStringNeighbours(*RSGraph, 0);
+  SUGraph->computeLineStringNeighbours(*RSGraph,
+                                       openfluid::landr::LandRTools::CONTAINS,
+                                       0);
 
   BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 0);
   BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 0);
@@ -1013,7 +1015,9 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph)
   BOOST_CHECK_EQUAL(SU4->getNeighbours()->size(), 4);
   BOOST_CHECK_EQUAL(SU17->getNeighbours()->size(), 4);
 
-  SUGraph->computeLineStringNeighbours(*RSGraph, 0.0001);
+  SUGraph->computeLineStringNeighbours(*RSGraph,
+                                       openfluid::landr::LandRTools::CONTAINS,
+                                       0.0001);
 
   BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 1);
   BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->begin()->first->getSelfId(),
@@ -1028,6 +1032,60 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph)
   BOOST_CHECK_EQUAL(SU1->getNeighbours()->size(), 3);
   BOOST_CHECK_EQUAL(SU4->getNeighbours()->size(), 5);
   BOOST_CHECK_EQUAL(SU17->getNeighbours()->size(), 5);
+
+  delete RSGraph;
+  delete SUGraph;
+  delete ValRS;
+  delete ValSU;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersect)
+{
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::LineStringGraph* RSGraph =
+      openfluid::landr::LineStringGraph::create(*ValRS);
+  openfluid::landr::PolygonGraph* SUGraph =
+      openfluid::landr::PolygonGraph::create(*ValSU);
+
+  openfluid::landr::PolygonEntity* SU1 = SUGraph->getEntity(1);
+  openfluid::landr::PolygonEntity* SU4 = SUGraph->getEntity(4);
+  openfluid::landr::PolygonEntity* SU17 = SUGraph->getEntity(17);
+
+  BOOST_CHECK(!SU1->getLineStringNeighbours());
+  BOOST_CHECK(!SU4->getLineStringNeighbours());
+  BOOST_CHECK(!SU17->getLineStringNeighbours());
+
+  SUGraph->computeLineStringNeighbours(*RSGraph,
+                                       openfluid::landr::LandRTools::INTERSECTS,
+                                       0);
+
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 0);
+  BOOST_CHECK_EQUAL(SU17->getLineStringNeighbours()->size(), 0);
+
+  BOOST_CHECK_EQUAL(SU1->getNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(SU4->getNeighbours()->size(), 4);
+  BOOST_CHECK_EQUAL(SU17->getNeighbours()->size(), 4);
+
+  SUGraph->computeLineStringNeighbours(*RSGraph,
+                                       openfluid::landr::LandRTools::INTERSECTS,
+                                       0.0001);
+
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 2);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 6);
+  BOOST_CHECK_EQUAL(SU17->getLineStringNeighbours()->size(), 3);
+
+  BOOST_CHECK_EQUAL(SU1->getNeighbours()->size(), 4);
+  BOOST_CHECK_EQUAL(SU4->getNeighbours()->size(), 10);
+  BOOST_CHECK_EQUAL(SU17->getNeighbours()->size(), 7);
 
   delete RSGraph;
   delete SUGraph;

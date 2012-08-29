@@ -56,6 +56,7 @@
 #define POLYGONENTITY_HPP_
 
 #include <openfluid/landr/LandREntity.hpp>
+#include <openfluid/landr/LandRTools.hpp>
 #include <vector>
 
 namespace geos {
@@ -80,8 +81,6 @@ class PolygonEntity: public LandREntity
 
     PolygonEntity();
     PolygonEntity(const PolygonEntity&);
-
-    void computeNeighbours();
 
   public:
 
@@ -155,10 +154,13 @@ class PolygonEntity: public LandREntity
 
     geos::geom::Geometry* getBufferedBoundary(double BufferDistance);
 
+    void computeNeighbours();
+
     /**
      * A LineString is considered as a neighbour if it lies within the buffer of the Polygon boundary
      */
     void computeLineStringNeighbours(LineStringGraph& Graph,
+                                     LandRTools::Relationship Relation,
                                      double BufferDistance);
 
     LineStringNeigboursMap_t* getLineStringNeighbours();

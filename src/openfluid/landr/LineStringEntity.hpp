@@ -82,8 +82,6 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
     LineStringEntity();
     LineStringEntity(const LineStringEntity&);
 
-    void computeNeighbours();
-
     void computeLineOrientUpNeighbours();
     void computeLineOrientDownNeighbours();
 
@@ -113,6 +111,8 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
      * Return down-neighbours against line orientation
      */
     std::vector<LineStringEntity*> getLineOrientDownNeighbours();
+
+    void computeNeighbours();
 
 };
 

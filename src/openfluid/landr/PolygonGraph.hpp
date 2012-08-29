@@ -152,8 +152,10 @@ class PolygonGraph: public LandRGraph
      */
     void createVectorRepresentation(std::string FilePath, std::string FileName);
 
-    void computeLineStringNeighbours(LineStringGraph& Graph,
-                                     double BufferDistance);
+    void computeLineStringNeighbours(
+        LineStringGraph& Graph,
+        openfluid::landr::LandRTools::Relationship Relation,
+        double BufferDistance);
 };
 
 } // namespace landr

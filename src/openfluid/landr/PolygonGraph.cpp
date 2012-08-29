@@ -483,13 +483,14 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::computeLineStringNeighbours(LineStringGraph& Graph,
-                                               double BufferDistance)
+void PolygonGraph::computeLineStringNeighbours(
+    LineStringGraph& Graph, openfluid::landr::LandRTools::Relationship Relation,
+    double BufferDistance)
 {
   for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
       it != m_Entities.end(); ++it)
     dynamic_cast<PolygonEntity*>(*it)->computeLineStringNeighbours(
-        Graph, BufferDistance);
+        Graph, Relation, BufferDistance);
 }
 
 // =====================================================================

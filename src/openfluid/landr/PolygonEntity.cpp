@@ -320,8 +320,9 @@ geos::geom::Geometry* PolygonEntity::getBufferedBoundary(double BufferDistance)
 // =====================================================================
 // =====================================================================
 
-void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
-                                                double BufferDistance)
+void PolygonEntity::computeLineStringNeighbours(
+    LineStringGraph& Graph, LandRTools::Relationship Relation,
+    double BufferDistance)
 {
   if (!mp_NeighboursMap)
     computeNeighbours();
@@ -338,7 +339,7 @@ void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
   {
     LineStringEntity* LS = dynamic_cast<LineStringEntity*>(*it);
 
-    if (LS->getLine()->within(PolyBuff))
+    if (Relation == LandRTools::CONTAINS && LS->getLine()->within(PolyBuff))
     {
       geos::geom::Geometry* EdgeBuff;
       for (unsigned j = 0; j < m_PolyEdges.size(); j++)
@@ -353,6 +354,14 @@ void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
         delete EdgeBuff;
       }
 
+    }
+
+    else if (Relation == LandRTools::INTERSECTS
+             && LS->getLine()->intersects(PolyBuff))
+    {
+      mp_LineStringNeighboursMap->insert(
+          std::make_pair(LS, (openfluid::landr::PolygonEdge*) 0));
+      mp_Neighbours->insert(*it);
     }
   }
 
