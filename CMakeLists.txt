@@ -126,7 +126,7 @@ ENDIF(BUILD_APP_BUILDER)
 IF(BUILD_APP_MARKETCLIENT)
   MESSAGE(STATUS "Build openfluid-market-client application : yes")  
 ELSE(BUILD_APP_MARKETCLIENT)
-  MESSAGE(STATUS "Build openfluid--market-client application : no")  
+  MESSAGE(STATUS "Build openfluid-market-client application : no")  
 ENDIF(BUILD_APP_MARKETCLIENT)  
   
 MESSAGE(STATUS "****************************************")
