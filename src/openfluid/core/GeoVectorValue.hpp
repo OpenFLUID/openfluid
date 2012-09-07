@@ -58,6 +58,13 @@
 #include <openfluid/core/GeoValue.hpp>
 
 #include <ogrsf_frmts.h>
+#include <list>
+
+namespace geos {
+namespace geom {
+class Geometry;
+}
+}
 
 namespace openfluid {
 namespace core {
@@ -68,6 +75,10 @@ namespace core {
  */
 class GeoVectorValue: public openfluid::core::GeoValue
 {
+  public:
+
+    typedef std::list<std::pair<OGRFeature*, geos::geom::Geometry*> > FeaturesList_t;
+
   protected:
 
     std::string mp_ShpDriverName;
@@ -89,11 +100,23 @@ class GeoVectorValue: public openfluid::core::GeoValue
      */
     OGRFeatureDefn* mp_LayerDef;
 
+    /**
+     * List of all features of the layer 0 of this GeoVectorValue
+     */
+    FeaturesList_t m_Features;
+
+    /**
+     * A Geometry representing a collection of all the geometries of the layer 0 of this GeoVectorValue
+     */
+    geos::geom::Geometry* mp_Geometries;
+
     void tryToOpenSource(bool UpdateMode);
 
     OGRSFDriver* tryToGetShpDriver();
 
     void destroyDataSource();
+
+    void parse();
 
   public:
 
@@ -227,6 +250,16 @@ class GeoVectorValue: public openfluid::core::GeoValue
      * @return True if the field has at least a feature containing the value Value, False otherwise.
      */
     bool isIntValueSet(std::string FieldName, int Value);
+
+    /**
+     * Get the list of all features of the layer 0 of this GeoVectorValue
+     */
+    GeoVectorValue::FeaturesList_t getFeatures();
+
+    /**
+     * Get a Geometry representing a collection of all the geometries of the layer 0 of this GeoVectorValue
+     */
+    geos::geom::Geometry* getGeometries();
 
 };
 

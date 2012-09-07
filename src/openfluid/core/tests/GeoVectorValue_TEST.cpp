@@ -62,6 +62,7 @@
 #include <tests-config.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <geos/geom/Geometry.h>
 
 // =====================================================================
 // =====================================================================
@@ -393,3 +394,59 @@ BOOST_AUTO_TEST_CASE(check_addFieldOnReadWriteShp)
   delete Val;
 }
 
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_parse)
+{
+  GeoVectorValueSub* Val = new GeoVectorValueSub(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoVectorValue", "SU.shp");
+
+  openfluid::core::GeoVectorValue::FeaturesList_t Features = Val->getFeatures();
+
+  BOOST_CHECK_EQUAL(Features.size(), 24);
+
+  for (openfluid::core::GeoVectorValue::FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) it->first->GetGeometryRef()->exportToGEOS();
+
+    BOOST_CHECK_EQUAL(GeosGeom->toString(), it->second->toString());
+  }
+
+  geos::geom::Geometry* Geom = Val->getGeometries();
+
+  BOOST_CHECK_EQUAL(Geom->getNumGeometries(), 24);
+  BOOST_CHECK_EQUAL(Geom->getDimension(), 2 /* means Polygons */);
+
+  delete Val;
+  delete Geom;
+
+  Val = new GeoVectorValueSub(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoVectorValue", "RS.shp");
+
+  Features = Val->getFeatures();
+
+  BOOST_CHECK_EQUAL(Features.size(), 8);
+
+  for (openfluid::core::GeoVectorValue::FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) it->first->GetGeometryRef()->exportToGEOS();
+
+    BOOST_CHECK_EQUAL(GeosGeom->toString(), it->second->toString());
+  }
+
+  Geom = Val->getGeometries();
+
+  BOOST_CHECK_EQUAL(Geom->getNumGeometries(), 8);
+  BOOST_CHECK_EQUAL(Geom->getDimension(), 1 /* means LineStrings */);
+
+  delete Val;
+  delete Geom;
+}
+
+// =====================================================================
+// =====================================================================

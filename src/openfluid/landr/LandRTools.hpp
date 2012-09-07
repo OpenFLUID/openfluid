@@ -61,10 +61,16 @@ namespace geos {
 namespace geom {
 class Geometry;
 class LineString;
+class Polygon;
 }
 }
 
 namespace openfluid {
+
+namespace core {
+class GeoVectorValue;
+}
+
 namespace landr {
 
 class LandRTools
@@ -94,6 +100,38 @@ class LandRTools
      * or 0 if the Geometry is not \"Line\" typed.
      */
     static std::vector<geos::geom::LineString*>* getMergedLineStringsFromGeometry(
+        geos::geom::Geometry* Geom);
+
+    /**
+     * @brief Return all exterior rings of the polygon-typed GeoVectorValue
+     *
+     * @param Val A GeoVectorValue of polygons
+     * @return A vector of new allocated Geometries representing exterior rings
+     * @throw An OFException if the GeoVectorValue is not polygon-typed
+     */
+    static std::vector<geos::geom::Geometry*> getVectorOfExteriorRings(
+        openfluid::core::GeoVectorValue& Val);
+
+    /**
+     * @brief Return all lines composing of the linestring-typed GeoVectorValue
+     *
+     * @param Val A GeoVectorValue of linestrings
+     * @return A vector of new allocated Geometries representing lines
+     * @throw An OFException if the GeoVectorValue is not linestring-typed
+     */
+    static std::vector<geos::geom::Geometry*> getVectorOfLines(
+        openfluid::core::GeoVectorValue& Val);
+
+    /**
+     * @brief Get all full noded lines of a set of Geometries
+     *
+     * @param Geoms A vector of Geometries
+     * @return A collection of lines, representing all input lines, cut at each node
+     */
+    static geos::geom::Geometry* getNodedLines(
+        std::vector<geos::geom::Geometry*> Geoms);
+
+    static std::vector<geos::geom::Polygon*>* getPolygonizedGeometry(
         geos::geom::Geometry* Geom);
 };
 

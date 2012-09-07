@@ -55,9 +55,10 @@
 #include "GeoVectorValue.hpp"
 
 #include <openfluid/base/OFException.hpp>
-#include <iostream>
 #include <geos/geom/Geometry.h>
+#include <geos/geom/GeometryFactory.h>
 #include <geos/geom/LineString.h>
+#include <utility>
 
 namespace openfluid {
 namespace core {
@@ -67,7 +68,7 @@ namespace core {
 
 GeoVectorValue::GeoVectorValue(std::string FilePath, std::string FileName) :
     GeoValue(FilePath, FileName), mp_ShpDriverName("ESRI Shapefile"), mp_ShpDriver(
-        0), mp_Data(0), mp_Layer(0), mp_LayerDef(0)
+        0), mp_Data(0), mp_Layer(0), mp_LayerDef(0), mp_Geometries(0)
 {
   OGRRegisterAll();
 }
@@ -386,6 +387,70 @@ bool GeoVectorValue::isIntValueSet(std::string FieldName, int Value)
   }
 
   return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+GeoVectorValue::FeaturesList_t GeoVectorValue::getFeatures()
+{
+  if (!mp_Geometries)
+    parse();
+
+  return m_Features;
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::geom::Geometry* GeoVectorValue::getGeometries()
+{
+  if (!mp_Geometries)
+    parse();
+
+  return mp_Geometries;
+}
+
+// =====================================================================
+// =====================================================================
+
+void GeoVectorValue::parse()
+{
+  std::vector<geos::geom::Geometry*> Geoms;
+
+  // TODO move to... ?
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 = getLayer0();
+
+  Layer0->ResetReading();
+
+  OGRFeature* Feat;
+
+  // GetNextFeature returns a copy of the feature
+  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  {
+    OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+    // c++ cast doesn't work (have to use the C API instead)
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+    geos::geom::Geometry* GeomClone = GeosGeom->clone();
+    OGRFeature* FeatClone = Feat->Clone();
+
+    Geoms.push_back(GeomClone);
+    m_Features.push_back(
+        std::make_pair<OGRFeature*, geos::geom::Geometry*>(FeatClone,
+                                                           GeomClone));
+
+    // destroying the feature destroys also the associated OGRGeom
+    OGRFeature::DestroyFeature(Feat);
+    delete GeosGeom;
+  }
+
+  mp_Geometries =
+      geos::geom::GeometryFactory::getDefaultInstance()->buildGeometry(Geoms);
 }
 
 // =====================================================================
