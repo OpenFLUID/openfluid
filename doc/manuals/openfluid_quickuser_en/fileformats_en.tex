@@ -286,6 +286,34 @@ tag, and must be structured following these rules:
 \end{lstlisting}
 \bigskip
 
+\subsection{Datastore}
+
+The datastore lists external data which is available during the simulation.\\
+\noindent The datastore content must be defined in a section delimited by the
+\texttt{<datastore>} tag, and must be structured following these rules:
+\begin{itemize}
+  \item Inside the \texttt{<datastore>} tag, there must be a set of \texttt{<dataitem>} tags
+  \item Each \texttt{<dataitem>} tag must bring an \texttt{id} attribute giving
+  the unique identifier of the dataitem, a \texttt{type} attribute giving the type
+  of the dataitem (only the geovector type is usable right now), and a \texttt{source} 
+  attribute giving the source of the dataitem (only the geovector file path relative
+  to the dataset is usable right now). An optional \texttt{unitclass} 
+  attribute is possible for giving the spatial unit class associated to the data. 
+\end{itemize}
+
+\begin{lstlisting}[language=xml,title=\footnotesize\textit{example}]
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <datastore>
+  
+    <dataitem id="SUlayer" type="geovector" source="SU_wgs84.shp" unitclass="SU" />
+    <dataitem id="Ground" type="geovector" source="data/ground.shp" />
+
+  </datastore>
+</openfluid>
+\end{lstlisting}
+\bigskip
+
 \subsection{Run configuration}
 
 The configuration of the simulation gives the simulation period, the data
