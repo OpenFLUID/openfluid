@@ -131,8 +131,16 @@ class LandRTools
     static geos::geom::Geometry* getNodedLines(
         std::vector<geos::geom::Geometry*> Geoms);
 
-    static std::vector<geos::geom::Polygon*>* getPolygonizedGeometry(
-        geos::geom::Geometry* Geom);
+    /**
+     * @brief Create all possible Polygons from a Geometry.
+     *
+     * @param Geom The input Geometry to polygonize
+     * @param Polygons The output vector of newly created Polygons
+     * @param Dangles The output vector of dangle lines
+     */
+    static void polygonizeGeometry(
+        geos::geom::Geometry* Geom, std::vector<geos::geom::Polygon*>& Polygons,
+        std::vector<const geos::geom::LineString*>& Dangles);
 };
 
 }

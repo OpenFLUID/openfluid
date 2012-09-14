@@ -189,19 +189,25 @@ geos::geom::Geometry* LandRTools::getNodedLines(
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::Polygon*>* LandRTools::getPolygonizedGeometry(
-    geos::geom::Geometry* Geom)
+void LandRTools::polygonizeGeometry(
+    geos::geom::Geometry* Geom, std::vector<geos::geom::Polygon*>& Polygons,
+    std::vector<const geos::geom::LineString*>& Dangles)
 {
   geos::operation::polygonize::Polygonizer* P =
       new geos::operation::polygonize::Polygonizer();
 
   P->add(Geom);
 
-  std::vector<geos::geom::Polygon*>* Polys = P->getPolygons();
+  // ! ask for Dangles BEFORE asking for polys (cf. Polygonizer code...)
+  std::vector<const geos::geom::LineString*>* TheDangles = P->getDangles();
+  if (TheDangles)
+    Dangles = *TheDangles;
+
+  std::vector<geos::geom::Polygon*>* ThePolygons = P->getPolygons();
+  if (ThePolygons)
+    Polygons = *ThePolygons;
 
   delete P;
-
-  return Polys;
 }
 
 // =====================================================================
