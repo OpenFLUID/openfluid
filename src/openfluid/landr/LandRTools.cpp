@@ -63,6 +63,7 @@
 #include <geos/geom/GeometryFactory.h>
 #include <geos/operation/linemerge/LineMerger.h>
 #include <geos/operation/polygonize/Polygonizer.h>
+#include "CascadedUnion.hpp"
 
 namespace openfluid {
 namespace landr {
@@ -173,15 +174,8 @@ std::vector<geos::geom::Geometry*> LandRTools::getVectorOfLines(
 geos::geom::Geometry* LandRTools::getNodedLines(
     std::vector<geos::geom::Geometry*> Geoms)
 {
-  const geos::geom::GeometryFactory* Factory =
-      geos::geom::GeometryFactory::getDefaultInstance();
-
-  geos::geom::Geometry* MultiLS = Factory->buildGeometry(Geoms);
-
-  geos::geom::Point* MlsPt = Factory->createPoint(*MultiLS->getCoordinate());
-
-  geos::geom::Geometry* NodedLines = MultiLS->Union(
-      dynamic_cast<geos::geom::Geometry*>(MlsPt));
+  geos::geom::Geometry* NodedLines =
+      geos::operation::geounion::CascadedUnion::Union(&Geoms);
 
   return NodedLines;
 }
