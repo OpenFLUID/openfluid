@@ -59,6 +59,7 @@
 #include <fstream>
 #include <cmath>
 #include <boost/filesystem/convenience.hpp>
+#include <boost/algorithm/string/trim.hpp>
 #include <glibmm/i18n.h>
 
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -116,12 +117,22 @@ bool ViewWithGNUplot::IsGNUplotAvailable()
   return !m_GNUplotProgram.empty();
 };
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<std::string> ViewWithGNUplot::getOrderedScalarVariablesNames(const std::string& Data)
+
+std::map<std::string,unsigned int> ViewWithGNUplot::getPlottableColumns(const std::string& Data,
+                                                                        const std::string& ColSeparator,
+                                                                        const std::string& CommentChar)
 {
+
+  std::map<std::string,unsigned int> PlottableColumns;
+
+  // Determine variables order
   std::string BeginStr("variables order (after date and time columns): ");
+
+  std::vector<std::string> VarOrder;
 
   std::size_t FoundBegin = Data.find(BeginStr);
 
@@ -133,38 +144,44 @@ std::vector<std::string> ViewWithGNUplot::getOrderedScalarVariablesNames(const s
       FoundBegin = FoundBegin +BeginStr.size();
       std::string VarsStr = Data.substr(FoundBegin,FoundEnd-FoundBegin);
 
-      return openfluid::tools::SplitString(VarsStr," ",false);
+      VarOrder = openfluid::tools::SplitString(VarsStr," ",false);
     }
   }
 
 
-  return std::vector<std::string>();
-}
+  // Extract first line of data
 
+  std::string TmpLine = "";
+  unsigned int BeginLinePos = 0;
+  unsigned int EndLinePos = 0;
 
-// =====================================================================
-// =====================================================================
-
-
-std::string ViewWithGNUplot::getVectorVariableName(const std::string& Data)
-{
-  std::string BeginStr("vector variable: ");
-
-  std::size_t FoundBegin = Data.find(BeginStr);
-
-  if (FoundBegin != std::string::npos)
+  while (TmpLine == "" || TmpLine.substr(0,1) == CommentChar)
   {
-    std::size_t FoundEnd = Data.find("\n",FoundBegin+1);
-    if (FoundEnd != std::string::npos)
-    {
-      FoundBegin = FoundBegin +BeginStr.size();
-      std::string VarStr = Data.substr(FoundBegin,FoundEnd-FoundBegin);
+    EndLinePos = Data.find("\n",BeginLinePos);
+    TmpLine = Data.substr(BeginLinePos,EndLinePos-BeginLinePos);
+    boost::algorithm::trim(TmpLine);
+    BeginLinePos = EndLinePos+1;
+  }
 
-      return VarStr;
+
+
+  // Check which values are scalar values = can be plotted
+
+  std::vector<std::string> FirstLineValues = openfluid::tools::SplitString(TmpLine,ColSeparator,false);
+
+  if (!FirstLineValues.empty()) FirstLineValues.erase(FirstLineValues.begin());
+
+  if (FirstLineValues.size() == VarOrder.size())
+  {
+    double TmpDouble;
+    for (unsigned int i=0;i<FirstLineValues.size();i++)
+    {
+      if (openfluid::tools::ConvertString(FirstLineValues[i],&TmpDouble))
+        PlottableColumns[VarOrder[i]] = i;
     }
   }
 
-  return "";
+  return PlottableColumns;
 }
 
 
@@ -178,12 +195,6 @@ void ViewWithGNUplot::run(const std::string& Data,
                           const std::string& CommentChar,
                           bool SingleWindow)
 {
-
-  if (!getVectorVariableName(Data).empty())
-  {
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(_("Unable to plot file with GNUplot:\nVector variables are not currently supported."));
-    return;
-  }
 
   if (DateFormat.find(ColSeparator) != std::string::npos)
   {
@@ -200,27 +211,32 @@ void ViewWithGNUplot::run(const std::string& Data,
   DataFile << Data;
   DataFile.close();
 
-  std::vector<std::string> VarNames = getOrderedScalarVariablesNames(Data);
+  std::map<std::string,unsigned int> VarColumns = getPlottableColumns(Data,ColSeparator,CommentChar);
 
 
-  if (VarNames.size() <1 )
+
+  if (VarColumns.size() <1 )
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("No data found for plotting"));
     return;
   }
 
-  // determine columns and rows
+
+  std::map<std::string,unsigned int>::iterator bVC = VarColumns.begin();
+  std::map<std::string,unsigned int>::iterator eVC = VarColumns.end();
+  std::map<std::string,unsigned int>::iterator iVC;
+
 
   if (SingleWindow)
   {
-
+    // determine columns and rows
     unsigned int Columns = 1;
     unsigned int Rows = 1;
 
-    if (VarNames.size() > 1)
+    if (VarColumns.size() > 1)
     {
-      Columns = (unsigned int)(std::ceil(std::sqrt(VarNames.size())));
-      Rows = (unsigned int)(std::ceil(VarNames.size() / Columns));
+      Columns = (unsigned int)(std::ceil(std::sqrt(VarColumns.size())));
+      Rows = (unsigned int)(std::ceil(double(VarColumns.size()) / double(Columns)));
     }
 
 
@@ -238,10 +254,10 @@ void ViewWithGNUplot::run(const std::string& Data,
     ScriptFile << "set origin 0,0\n";
     ScriptFile << "set multiplot layout " << Rows << "," << Columns << " rowsfirst scale 1,1\n";
 
-    for (unsigned int i=0; i< VarNames.size();i++)
+    for (iVC=bVC; iVC!=eVC;++iVC)
     {
-      ScriptFile << "set title \"" << VarNames[i] << "\" font \",9\"\n";
-      ScriptFile << "plot \""<< DataFilename << "\" using 1:"<< (i+2) <<" with lines\n";
+      ScriptFile << "set title \"" << (*iVC).first << "\" font \",9\"\n";
+      ScriptFile << "plot \""<< DataFilename << "\" using 1:"<< ((*iVC).second+2) <<" with lines\n";
     }
 
     ScriptFile << "unset multiplot\n";
@@ -253,7 +269,7 @@ void ViewWithGNUplot::run(const std::string& Data,
   }
   else
   {
-    for (unsigned int i=0; i< VarNames.size();i++)
+    for (iVC=bVC; iVC!=eVC;++iVC)
     {
       // generate script
       std::ofstream ScriptFile(ScriptFilename.c_str());
@@ -265,8 +281,8 @@ void ViewWithGNUplot::run(const std::string& Data,
       ScriptFile << "set format x \"%Y-%m-%d\\n%H:%M:%S\"\n";
       ScriptFile << "set xtics autofreq font \",7\"\n";
       ScriptFile << "set ytics autofreq font \",7\"\n";
-      ScriptFile << "set title \"" << VarNames[i] << "\" font \",9\"\n";
-      ScriptFile << "plot \""<< DataFilename << "\" using 1:"<< (i+2) <<" with lines\n";
+      ScriptFile << "set title \"" << (*iVC).first << "\" font \",9\"\n";
+      ScriptFile << "plot \""<< DataFilename << "\" using 1:"<< ((*iVC).second+2) <<" with lines\n";
       ScriptFile.close();
 
       if(system(std::string(m_GNUplotProgram + " --persist " + ScriptFilename).c_str()) != 0)

@@ -58,6 +58,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 // =====================================================================
 // =====================================================================
@@ -69,10 +70,9 @@ class ViewWithGNUplot
 
     static std::string m_GNUplotProgram;
 
-    static std::vector<std::string> getOrderedScalarVariablesNames(const std::string& Data);
-
-    static std::string getVectorVariableName(const std::string& Data);
-
+    static std::map<std::string,unsigned int> getPlottableColumns(const std::string& Data,
+                                                                  const std::string& ColSeparator,
+                                                                  const std::string& CommentChar);
 
   public:
 
