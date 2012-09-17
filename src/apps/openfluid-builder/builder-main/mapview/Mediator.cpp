@@ -129,12 +129,18 @@ Mediator::Mediator(DrawingArea& DrawingArea, Gtk::Statusbar& StatusBar,
 
 void Mediator::addAvailableLayersFromDatastore()
 {
+  std::set<std::string> DisplayedLayers;
+
   openfluid::core::Datastore::DataItemsById_t Items = mp_Datastore->getItems();
 
   for (openfluid::core::Datastore::DataItemsById_t::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
     openfluid::core::DatastoreItem* Item = it->second;
+
+    // check for automatically adding only one layer for a given unit class
+    if (DisplayedLayers.count((*Item).getUnitClass()))
+      continue;
 
     if (!(hasADisplayableVectorValue(*Item, *mp_CoreRepos)
         || hasADisplayableRasterValue(*Item)))
@@ -146,6 +152,7 @@ void Mediator::addAvailableLayersFromDatastore()
       continue;
 
     addALayer(*ALayer);
+    DisplayedLayers.insert((*Item).getUnitClass());
   }
 
   if (!m_Layers.empty())
