@@ -232,20 +232,10 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_DefaultPlugsDirs.push_back(PluginsInstallPath);
 
   // set ignition date time
-  m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();
+  resetIgnitionDateTime();
 
   // build simulation ID
-  std::string BaseStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-  m_SimulationID = boost::gregorian::to_iso_string(m_IgnitionDateTime.date())
-      + "-";
-
-  srand(time(NULL));
-
-  for (int i = 0; i < 6; i++)
-  {
-    m_SimulationID = m_SimulationID + BaseStr[rand() % 26];
-  }
+  resetSimulationID();
 
   m_EffectiveSimulationDuration = boost::posix_time::time_duration();
 
@@ -380,6 +370,36 @@ std::string RuntimeEnvironment::getAppResourceFilePath(std::string AppName,
 std::string RuntimeEnvironment::getLocaleDir() const
 {
   return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::NLS_SHARE_LOCALE_PATH).string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RuntimeEnvironment::resetSimulationID()
+{
+  std::string BaseStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+  m_SimulationID = boost::gregorian::to_iso_string(m_IgnitionDateTime.date())
+      + "-";
+
+  srand(time(NULL));
+
+  for (int i = 0; i < 6; i++)
+  {
+    m_SimulationID = m_SimulationID + BaseStr[rand() % 26];
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RuntimeEnvironment::resetIgnitionDateTime()
+{
+  m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();
 }
 
 

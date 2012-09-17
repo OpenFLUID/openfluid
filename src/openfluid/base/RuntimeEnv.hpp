@@ -396,12 +396,22 @@ class DLLEXPORT RuntimeEnvironment
     boost::posix_time::ptime getIgnitionDateTime() const
       { return m_IgnitionDateTime; };
 
+
+    void resetSimulationID();
+
+
+    void resetIgnitionDateTime();
+
+
     inline std::string getSimulationID() const {return m_SimulationID; };
+
 
     void setSimulationID(const std::string SimID) { m_SimulationID = SimID; };
 
+
     boost::posix_time::time_duration getEffectiveSimulationDuration() const
       { return m_EffectiveSimulationDuration; };
+
 
     void setEffectiveSimulationDuration(const boost::posix_time::time_duration& TimeDuration)
       { m_EffectiveSimulationDuration = TimeDuration; };

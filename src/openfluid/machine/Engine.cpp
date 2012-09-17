@@ -639,6 +639,8 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
 
 void Engine::initialize()
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->resetSimulationID();
+  openfluid::base::RuntimeEnvironment::getInstance()->resetIgnitionDateTime();
   m_ModelInstance.initialize();
 }
 
