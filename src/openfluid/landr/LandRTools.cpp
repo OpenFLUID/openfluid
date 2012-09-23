@@ -123,7 +123,7 @@ std::vector<geos::geom::LineString*>* LandRTools::getMergedLineStringsFromGeomet
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::Geometry*> LandRTools::getVectorOfExteriorRings(
+std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(
     openfluid::core::GeoVectorValue& Val)
 {
   if (!Val.isPolygonType())
@@ -131,25 +131,22 @@ std::vector<geos::geom::Geometry*> LandRTools::getVectorOfExteriorRings(
         "OpenFLUID Framework", "LandRTools::getVectorOfExteriorRings",
         " The GeoVectorValue is not polygon-typed.");
 
-  // TODO move to... ?
-  setlocale(LC_NUMERIC, "C");
+  std::vector<geos::geom::LineString*> Lines;
 
-  std::vector<geos::geom::Geometry*> Geoms;
+  geos::geom::Geometry* Geom = Val.getGeometries();
 
-  openfluid::core::GeoVectorValue::FeaturesList_t Features = Val.getFeatures();
+  for (unsigned int i = 0; i < Geom->getNumGeometries(); i++)
+    Lines.push_back(
+        const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(
+            i)))->getExteriorRing()));
 
-  for (openfluid::core::GeoVectorValue::FeaturesList_t::iterator it =
-      Features.begin(); it != Features.end(); ++it)
-    Geoms.push_back(
-        const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>(it->second)->getExteriorRing()));
-
-  return Geoms;
+  return Lines;
 }
 
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::Geometry*> LandRTools::getVectorOfLines(
+std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(
     openfluid::core::GeoVectorValue& Val)
 {
   if (!Val.isLineType())
@@ -157,28 +154,29 @@ std::vector<geos::geom::Geometry*> LandRTools::getVectorOfLines(
         "OpenFLUID Framework", "LandRTools::getVectorOfLines",
         " The GeoVectorValue is not linestring-typed.");
 
-  std::vector<geos::geom::Geometry*> Geoms;
+  std::vector<geos::geom::LineString*> Lines;
 
-  openfluid::core::GeoVectorValue::FeaturesList_t Features = Val.getFeatures();
+  geos::geom::Geometry* Geom = Val.getGeometries();
 
-  for (openfluid::core::GeoVectorValue::FeaturesList_t::iterator it =
-      Features.begin(); it != Features.end(); ++it)
-    Geoms.push_back(it->second);
+  for (unsigned int i = 0; i < Geom->getNumGeometries(); i++)
+    Lines.push_back(
+        dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(
+            i))));
 
-  return Geoms;
+  return Lines;
 }
 
 // =====================================================================
 // =====================================================================
 
-geos::geom::Geometry* LandRTools::getNodedLines(
-    std::vector<geos::geom::Geometry*> Geoms)
-{
-  geos::geom::Geometry* NodedLines =
-      geos::operation::geounion::CascadedUnion::Union(&Geoms);
-
-  return NodedLines;
-}
+//geos::geom::Geometry* LandRTools::getNodedLines(
+//    std::vector<geos::geom::Geometry*> Geoms)
+//{
+//  geos::geom::Geometry* NodedLines =
+//      geos::operation::geounion::CascadedUnion::Union(&Geoms);
+//
+//  return NodedLines;
+//}
 
 // =====================================================================
 // =====================================================================

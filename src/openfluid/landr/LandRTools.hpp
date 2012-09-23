@@ -109,7 +109,7 @@ class LandRTools
      * @return A vector of new allocated Geometries representing exterior rings
      * @throw An OFException if the GeoVectorValue is not polygon-typed
      */
-    static std::vector<geos::geom::Geometry*> getVectorOfExteriorRings(
+    static std::vector<geos::geom::LineString*> getVectorOfExteriorRings(
         openfluid::core::GeoVectorValue& Val);
 
     /**
@@ -119,17 +119,18 @@ class LandRTools
      * @return A vector of new allocated Geometries representing lines
      * @throw An OFException if the GeoVectorValue is not linestring-typed
      */
-    static std::vector<geos::geom::Geometry*> getVectorOfLines(
+    static std::vector<geos::geom::LineString*> getVectorOfLines(
         openfluid::core::GeoVectorValue& Val);
 
-    /**
-     * @brief Get all full noded lines of a set of Geometries
-     *
-     * @param Geoms A vector of Geometries
-     * @return A collection of lines, representing all input lines, cut at each node
-     */
-    static geos::geom::Geometry* getNodedLines(
-        std::vector<geos::geom::Geometry*> Geoms);
+//    /**
+//     * @brief Get all full noded lines of a set of Geometries
+//     *
+//     * @param Geoms A vector of Geometries
+//     * @return A collection of lines, representing all input lines, cut at each node
+//     */
+//    // Not efficient enough
+//    static geos::geom::Geometry* getNodedLines(
+//        std::vector<geos::geom::Geometry*> Geoms);
 
     /**
      * @brief Create all possible Polygons from a Geometry.
