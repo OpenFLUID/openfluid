@@ -56,6 +56,7 @@
 #define LANDRTOOLS_HPP_
 
 #include <vector>
+#include <list>
 
 namespace geos {
 namespace geom {
@@ -122,25 +123,50 @@ class LandRTools
     static std::vector<geos::geom::LineString*> getVectorOfLines(
         openfluid::core::GeoVectorValue& Val);
 
-//    /**
-//     * @brief Get all full noded lines of a set of Geometries
-//     *
-//     * @param Geoms A vector of Geometries
-//     * @return A collection of lines, representing all input lines, cut at each node
-//     */
-//    // Not efficient enough
-//    static geos::geom::Geometry* getNodedLines(
-//        std::vector<geos::geom::Geometry*> Geoms);
+    /**
+     * @brief Get all full noded lines from intersection between geom1 and geom2, with snap tolerance
+     *
+     * @param Geom1 The Geometry to node with Geom2
+     * @param Geom2 The other Geometry
+     * @param SnapTolerance The tolerance to use while computing intersections and equality of lines
+     * @return A vector of LineStrings, representing all input lines, cut at each node
+     */
+    static std::vector<geos::geom::LineString*>* getNodedLines(
+        geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2,
+        double SnapTolerance = 0);
+
+    /**
+     * @brief Same as from geos::operation::overlay::snap::SnapOverlayOp::Union(),
+     * but with ability to use the wished snap tolerance value
+     *
+     * @param Geom1 The Geometry to join with Geom2
+     * @param Geom2 The other Geometry
+     * @param SnapTolerance The tolerance to use
+     * @return A new Geometry representing the union of Geom1 and Geom2 according to SnapTolerance value
+     */
+    static geos::geom::Geometry* computeSnapOverlayUnion(
+        geos::geom::Geometry& Geom1, geos::geom::Geometry& Geom2,
+        double SnapTolerance = 0);
+
+    /**
+     * @brief Returns true if Line exactly equals an element of RefLines, up to a specified tolerance
+     * @param Line The Line to compare
+     * @param RefLines The list of lines to compare to
+     * @param Tolerance The tolerance to use
+     */
+    static bool exists(geos::geom::LineString* Line,
+                std::list<geos::geom::LineString*> RefLines, double Tolerance = 0);
 
     /**
      * @brief Create all possible Polygons from a Geometry.
      *
-     * @param Geom The input Geometry to polygonize
+     * @param Lines The input vector of Geometries to polygonize
      * @param Polygons The output vector of newly created Polygons
      * @param Dangles The output vector of dangle lines
      */
     static void polygonizeGeometry(
-        geos::geom::Geometry* Geom, std::vector<geos::geom::Polygon*>& Polygons,
+        std::vector<geos::geom::Geometry*>& Lines,
+        std::vector<geos::geom::Polygon*>& Polygons,
         std::vector<const geos::geom::LineString*>& Dangles);
 };
 

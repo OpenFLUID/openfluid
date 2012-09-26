@@ -63,7 +63,9 @@
 #include <geos/geom/GeometryFactory.h>
 #include <geos/operation/linemerge/LineMerger.h>
 #include <geos/operation/polygonize/Polygonizer.h>
-#include "CascadedUnion.hpp"
+#include <geos/operation/overlay/OverlayOp.h>
+#include <geos/operation/overlay/snap/GeometrySnapper.h>
+#include <geos/precision/CommonBitsRemover.h>
 
 namespace openfluid {
 namespace landr {
@@ -169,26 +171,99 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(
 // =====================================================================
 // =====================================================================
 
-//geos::geom::Geometry* LandRTools::getNodedLines(
-//    std::vector<geos::geom::Geometry*> Geoms)
-//{
-//  geos::geom::Geometry* NodedLines =
-//      geos::operation::geounion::CascadedUnion::Union(&Geoms);
-//
-//  return NodedLines;
-//}
+std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
+    geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2,
+    double SnapTolerance)
+{
+  geos::geom::Geometry* UnionGeom = computeSnapOverlayUnion(*Geom1, *Geom2,
+                                                            SnapTolerance);
+
+  std::list<geos::geom::LineString*> ExistingLines;
+
+  geos::operation::linemerge::LineMerger lm;
+
+  for (unsigned int i = 0; i < UnionGeom->getNumGeometries(); i++)
+  {
+    geos::geom::LineString* Line =
+        dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(UnionGeom->getGeometryN(
+            i)));
+
+    Line->normalize();
+
+    if (!exists(Line, ExistingLines, SnapTolerance))
+    {
+      ExistingLines.push_back(Line);
+      lm.add(Line);
+    }
+  }
+
+  return lm.getMergedLineStrings();
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
+    geos::geom::Geometry& Geom1, geos::geom::Geometry& Geom2,
+    double SnapTolerance)
+{
+  std::pair<std::auto_ptr<geos::geom::Geometry>,
+      std::auto_ptr<geos::geom::Geometry> > PrepGeom;
+
+  std::pair<std::auto_ptr<geos::geom::Geometry>,
+      std::auto_ptr<geos::geom::Geometry> > RemGeom;
+
+  std::auto_ptr<geos::precision::CommonBitsRemover> cbr;
+  cbr.reset(new geos::precision::CommonBitsRemover());
+  cbr->add(&Geom1);
+  cbr->add(&Geom2);
+  RemGeom.first.reset(cbr->removeCommonBits(Geom1.clone()));
+  RemGeom.second.reset(cbr->removeCommonBits(Geom2.clone()));
+
+  geos::operation::overlay::snap::GeometrySnapper::snap(*RemGeom.first,
+                                                        *RemGeom.second,
+                                                        SnapTolerance,
+                                                        PrepGeom);
+
+  std::auto_ptr<geos::geom::Geometry> Result(
+      geos::operation::overlay::OverlayOp::overlayOp(
+          PrepGeom.first.get(), PrepGeom.second.get(),
+          geos::operation::overlay::OverlayOp::opUNION));
+
+  cbr->addCommonBits(&(*Result));
+
+  return Result.release();
+}
+
+// =====================================================================
+// =====================================================================
+
+bool LandRTools::exists(geos::geom::LineString* Line,
+                        std::list<geos::geom::LineString*> RefLines,
+                        double Tolerance)
+{
+  for (std::list<geos::geom::LineString*>::iterator it = RefLines.begin();
+      it != RefLines.end(); ++it)
+  {
+    if ((*it)->equalsExact(Line, Tolerance))
+      return true;
+  }
+
+  return false;
+}
 
 // =====================================================================
 // =====================================================================
 
 void LandRTools::polygonizeGeometry(
-    geos::geom::Geometry* Geom, std::vector<geos::geom::Polygon*>& Polygons,
+    std::vector<geos::geom::Geometry*>& Lines,
+    std::vector<geos::geom::Polygon*>& Polygons,
     std::vector<const geos::geom::LineString*>& Dangles)
 {
   geos::operation::polygonize::Polygonizer* P =
       new geos::operation::polygonize::Polygonizer();
 
-  P->add(Geom);
+  P->add(&Lines);
 
   // ! ask for Dangles BEFORE asking for polys (cf. Polygonizer code...)
   std::vector<const geos::geom::LineString*>* TheDangles = P->getDangles();

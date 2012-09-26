@@ -60,6 +60,9 @@
 #include <geos/geom/LineString.h>
 #include <utility>
 
+#include <geos/operation/valid/IsValidOp.h>
+#include <geos/geom/GeometryCollection.h>
+
 namespace openfluid {
 namespace core {
 
@@ -414,6 +417,7 @@ geos::geom::Geometry* GeoVectorValue::getGeometries()
 // =====================================================================
 // =====================================================================
 
+// TODO add an option to allow choice of check validity or not (because it's time consuming)
 void GeoVectorValue::parse()
 {
   std::vector<geos::geom::Geometry*> Geoms;
@@ -436,6 +440,15 @@ void GeoVectorValue::parse()
     geos::geom::Geometry* GeosGeom =
         (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
+    geos::operation::valid::IsValidOp ValidOp(GeosGeom);
+
+    if (!ValidOp.isValid())
+      throw openfluid::base::OFException(
+          "OpenFLUID framework",
+          "GeoVectorValue::parse",
+          ValidOp.getValidationError()->toString() + " \nwhile parsing "
+          + GeosGeom->toString());
+
     geos::geom::Geometry* GeomClone = GeosGeom->clone();
     OGRFeature* FeatClone = Feat->Clone();
 
@@ -449,8 +462,20 @@ void GeoVectorValue::parse()
     delete GeosGeom;
   }
 
+  // ! do not use buildGeometry, because it may build a MultiPolygon if all geometries are Polygons, what may produce an invalid MultiPolygon!
+  // (because the boundaries of any two Polygons of a valid MultiPolygon may touch, *but only at a finite number of points*)
   mp_Geometries =
-      geos::geom::GeometryFactory::getDefaultInstance()->buildGeometry(Geoms);
+      geos::geom::GeometryFactory::getDefaultInstance()->createGeometryCollection(
+          Geoms);
+
+  geos::operation::valid::IsValidOp ValidOpColl(mp_Geometries);
+
+  if (!ValidOpColl.isValid())
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "GeoVectorValue::parse",
+        ValidOpColl.getValidationError()->toString() + " \nwhile creating "
+        + mp_Geometries->toString());
 }
 
 // =====================================================================
