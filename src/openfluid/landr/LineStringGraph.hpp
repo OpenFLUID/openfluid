@@ -115,6 +115,9 @@
 namespace openfluid {
 namespace landr {
 
+/**
+ * @brief A LandRGraph composed of LineStringEntities.
+ */
 class LineStringGraph: public LandRGraph
 {
   private:
@@ -134,27 +137,54 @@ class LineStringGraph: public LandRGraph
 
   public:
 
+    /**
+     * @brief Create a new graph initialized with Val elements.
+     * @details Val must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
+     */
     static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
 
+    /**
+     * @brief Create a new graph initialized with Entities.
+     * @details Entities must be LineStringEntities.
+     */
     static LineStringGraph* create(const LandRGraph::Entities_t& Entities);
 
     virtual ~LineStringGraph();
 
     /**
-     * Do not copy associated raster.
+     * @attention Do not copy associated raster.
      */
     LineStringGraph* clone();
 
     LandRGraph::GraphType getType();
 
+    /**
+     * @see LandRGraph::getEntity;
+     */
     LineStringEntity* getEntity(int SelfId);
 
+    /**
+     * @brief Remove from the graph the entity with SelfId and its associated nodes.
+     * @param SelfId
+     */
     void removeEntity(int SelfId);
 
+    /**
+     * @brief Return the last LineStringEntity of the graph, according to LineString orientations,
+     * ie the one that has no down neighbour.
+     *
+     * @return The last LineStringEntity or 0 if there is zero or more than one LineStringENtity whith no down neighbour.
+     */
     LineStringEntity* getLastLineStringEntity();
 
+    /**
+     * @brief Return a vector of LineStringEntities that have no down neighbour, according to LineString orientations.
+     */
     std::vector<LineStringEntity*> getEndLineStringEntities();
 
+    /**
+     * @brief Return a vector of LineStringEntities that have no up neighbour, according to LineString orientations.
+     */
     std::vector<LineStringEntity*> getStartLineStringEntities();
 
     /**

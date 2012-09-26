@@ -67,6 +67,10 @@ class LineString;
 namespace openfluid {
 namespace landr {
 
+/**
+ * @brief A LandREntity representing a geos::geom::LineString.
+ * @details A LineStringEntity has a StartNode and an EndNode, relatives to its LineString orientation.
+ */
 class LineStringEntity: public LandREntity, public geos::planargraph::Edge
 {
   private:
@@ -74,9 +78,15 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
     const geos::geom::LineString* mp_Line;
 
     /**
-     * Up and down neighbours of LineStringEntity type, according to the LineString orientation
+     * @brief Up neighbours of LineStringEntity type, according to the LineString orientation.
+     * @details An up neighbour is another LineStringEntity whose EndNode is this LineStringEntity StartNode.
      */
     std::vector<LineStringEntity*>* mp_LOUpNeighbours;
+
+    /**
+     * @brief Down neighbours of LineStringEntity type, according to the LineString orientation.
+     * @details A down neighbour is another LineStringEntity whose StartNode is this LineStringEntity EndNode.
+     */
     std::vector<LineStringEntity*>* mp_LODownNeighbours;
 
     LineStringEntity();
@@ -88,7 +98,10 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
   public:
 
     /**
-     * Takes ownership of LineString
+     * @brief Create a new LineStringEntity.
+     * @details Takes ownership of NewLine.
+     *
+     *  @throw base::OFException if NewLine is not a geos::geom::LineString or is an empty geometry.
      */
     LineStringEntity(const geos::geom::Geometry* NewLine, unsigned int SelfId);
 
@@ -103,15 +116,18 @@ class LineStringEntity: public LandREntity, public geos::planargraph::Edge
     geos::planargraph::Node* getEndNode();
 
     /**
-     * Return up-neighbours against line orientation
+     * @brief Return up-neighbours against line orientation.
      */
     std::vector<LineStringEntity*> getLineOrientUpNeighbours();
 
     /**
-     * Return down-neighbours against line orientation
+     * @brief Return down-neighbours against line orientation.
      */
     std::vector<LineStringEntity*> getLineOrientDownNeighbours();
 
+    /**
+     * @brief Compute neighbours against line orientation.
+     */
     void computeNeighbours();
 
 };

@@ -81,10 +81,16 @@ class GeoVectorValue;
 class GeoRasterValue;
 }
 
+/**
+ * @brief Classes for landscape representation management.
+ */
 namespace landr {
 
 class LandREntity;
 
+/**
+ * @brief Interface for a graph composed of LandREntities.
+ */
 class LandRGraph: public geos::planargraph::PlanarGraph
 {
   public:
@@ -138,12 +144,15 @@ class LandRGraph: public geos::planargraph::PlanarGraph
   public:
 
     /**
-     * Delete also associated RasterPolygonized if present.
+     * @attention Delete also associated RasterPolygonized if present.
      */
     virtual ~LandRGraph();
 
     virtual GraphType getType() = 0;
 
+    /**
+     * @brief Return the entity with SelfId, or 0 if it doesn't exist.
+     */
     virtual LandREntity* getEntity(int SelfId);
 
     Entities_t getEntities();
@@ -152,6 +161,9 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     std::map<int, LandREntity*> getEntitiesBySelfId();
 
+    /**
+     * @brief Get the number of elements in the graph.
+     */
     unsigned int getSize();
 
     /**
@@ -160,26 +172,36 @@ class LandRGraph: public geos::planargraph::PlanarGraph
     void removeUnusedNodes();
 
     /**
-     * Doesn't reset if the AttributeName already exists.
+     * @details Doesn't reset if the AttributeName already exists.
      */
     void addAttribute(std::string AttributeName);
 
     /**
-     * Does nothing if AttributeName doesn't exist.
+     * @details Does nothing if AttributeName doesn't exist.
      */
     void removeAttribute(std::string AttributeName);
 
     std::vector<std::string> getAttributeNames();
 
     /**
-     * Replace associated raster if exists.
+     * @details Replace associated raster if exists.
      */
     void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
 
     bool hasAnAssociatedRaster();
 
+    /**
+     * @brief Transform the associated raster value into polygons.
+     *
+     * @return A geometry collection of the created polygons.
+     */
     openfluid::core::GeoVectorValue* getRasterPolygonized();
 
+    /**
+     * @brief Transform the associated raster value into polygons.
+     *
+     * @return A vector of the created polygons.
+     */
     std::vector<geos::geom::Polygon*>* getRasterPolygonizedPolys();
 
     /**
@@ -191,13 +213,16 @@ class LandRGraph: public geos::planargraph::PlanarGraph
     virtual float* getRasterValueForEntityCentroid(const LandREntity& Entity);
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity
+     * @brief Create a new attribute for this Graph entities, and set for each entity.
      * this attribute value as the raster value corresponding to the entity centroid coordinate.
      *
-     * @param AttributeName The name of the attribute to create
+     * @param AttributeName The name of the attribute to create.
      */
     void setAttributeFromRasterValueAtCentroid(std::string AttributeName);
 
+    /**
+     * @brief Compute the neighbours of each element of the graph, according to its type.
+     */
     void computeNeighbours();
 
 };

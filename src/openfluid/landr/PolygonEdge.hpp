@@ -72,6 +72,10 @@ namespace landr {
 
 class PolygonEntity;
 
+/**
+ * @brief A part of a PolygonEntity exterior ring, that may be share between to adjacent PolygoneEntities.
+ * @details A PolygonEdge  has one or two Faces. The Faces are the PolygonEntities that share this PolygonEdge.
+ */
 class PolygonEdge: public geos::planargraph::Edge
 {
   private:
@@ -79,7 +83,7 @@ class PolygonEdge: public geos::planargraph::Edge
     geos::geom::LineString& m_Line;
 
     /**
-     * Two elements vector
+     * @details At most two elements vector.
      */
     std::vector<PolygonEntity*> m_Faces;
 
@@ -89,14 +93,32 @@ class PolygonEdge: public geos::planargraph::Edge
 
     ~PolygonEdge();
 
+    /**
+     * @brief Return the LineString representing this PolygonEdge.
+     */
     geos::geom::LineString* getLine();
 
+    /**
+     * @brief Add a PolygonEntity as a Face to this PolygonEdge.
+     * @throw base::OFException if this PolygonEdge is not in the boundary of the input PolygonEntity,
+     * or if this PolygonEdge has already two Faces.
+     */
     void addFace(PolygonEntity& NewFace);
 
+    /**
+     * @brief Check that this PolygonEdge is in the boundary of the input PolygonEntity.
+     */
     bool isLineInFace(PolygonEntity& Face);
 
+    /**
+     * @brief Return the Faces of this PolygonEdge.
+     */
     const std::vector<PolygonEntity*> getFaces();
 
+    /**
+     * @brief Remove a Face from the Faces of this PolygonEdge.
+     * @details Does nothing if the input Face is not a part of this PolygonEdge Faces.
+     */
     void removeFace(PolygonEntity* Face);
 };
 

@@ -63,6 +63,9 @@
 namespace openfluid {
 namespace landr {
 
+/**
+ * @brief A LandRGraph composed of PolygonEntities.
+ */
 class PolygonGraph: public LandRGraph
 {
   public:
@@ -102,19 +105,30 @@ class PolygonGraph: public LandRGraph
 
   public:
 
+    /**
+     * @brief Create a new graph initialized with Val elements.
+     * @details Val must be composed of one or many Polygons, and each of them must contain a "SELF_ID" attribute.
+     */
     static PolygonGraph* create(openfluid::core::GeoVectorValue& Val);
 
+    /**
+     * @brief Create a new graph initialized with Entities.
+     * @details Entities must be PolygonEntities.
+     */
     static PolygonGraph* create(const LandRGraph::Entities_t& Entities);
 
     virtual ~PolygonGraph();
 
     /**
-     * Do not copy associated raster.
+     * @attention Do not copy associated raster.
      */
     PolygonGraph* clone();
 
     LandRGraph::GraphType getType();
 
+    /**
+     * @see LandRGraph::getEntity;
+     */
     PolygonEntity* getEntity(int SelfId);
 
     /**
@@ -152,6 +166,13 @@ class PolygonGraph: public LandRGraph
      */
     void createVectorRepresentation(std::string FilePath, std::string FileName);
 
+    /**
+     * @brief Compute neighbours between PolygonEntities elements of this graph and LineStringEntities of Graph.
+     *
+     * @param Graph The LineStringGraph to compare to.
+     * @param Relation The Relationship to use for comparison.
+     * @param BufferDistance The distance below which we consider that two elements are related.
+     */
     void computeLineStringNeighbours(
         LineStringGraph& Graph,
         openfluid::landr::LandRTools::Relationship Relation,

@@ -73,6 +73,10 @@ class PolygonEdge;
 class LineStringGraph;
 class LineStringEntity;
 
+/**
+ * @brief A LandREntity representing a geos::geom::Polygon.
+ * @details A PolygonEntity has at least a PolygonEdge, all edges representing the Polygon exterior ring.
+ */
 class PolygonEntity: public LandREntity
 {
   private:
@@ -88,26 +92,32 @@ class PolygonEntity: public LandREntity
     typedef std::map<LineStringEntity*, PolygonEdge*> LineStringNeigboursMap_t;
 
     /**
-     * Map of neighbours of PolygonEntity type and the related vector of edges that are between this Polygon and the neighbour.
+     * @brief Map of neighbours of PolygonEntity type and the related vector of edges that are between this Polygon and the neighbour.
      */
     NeigboursMap_t* mp_NeighboursMap;
 
     /**
-     * Map of neighbours of LineStringEntity type and the related edge that is between this Polygon and the neighbour, if exists.
+     * @brief Map of neighbours of LineStringEntity type and the related edge that is between this Polygon and the neighbour, if exists.
      */
     LineStringNeigboursMap_t* mp_LineStringNeighboursMap;
 
+    /**
+     * @brief PolygonEdges of this PolygonEntity.
+     */
     std::vector<PolygonEdge*> m_PolyEdges;
 
     /**
-     * Takes ownership of Polygon
+     * @brief Create a new PolygonEntity.
+     * @details Takes ownership of NewPolygon.
+     *
+     *  @throw base::OFException if NewPolygon is not a geos::geom::Polygon or is not a valid geometry.
      */
     PolygonEntity(const geos::geom::Geometry* NewPolygon, unsigned int SelfId);
 
     virtual ~PolygonEntity();
 
     /**
-     * ! Doesn't deep-copy m_PolyEdges nor neighbours
+     * @attention Doesn't deep-copy m_PolyEdges nor neighbours.
      */
     PolygonEntity* clone();
 
@@ -116,7 +126,7 @@ class PolygonEntity: public LandREntity
     void addEdge(PolygonEdge& Edge);
 
     /**
-     * Also delete input Edge.
+     * @attention Also delete input parameter Edge.
      */
     void removeEdge(PolygonEdge* Edge);
 
@@ -138,8 +148,15 @@ class PolygonEntity: public LandREntity
      */
     PolygonEdge* findEdgeLineIntersectingWith(geos::geom::LineString& Segment);
 
+    /**
+     * @brief Return a map of this PolygonEntity neighbours with for each a vector of the shared PolygoneEdges.
+     * @return
+     */
     const NeigboursMap_t* getNeighboursAndEdges();
 
+    /**
+     * @brief Return the SELF_IDs of this PolygonEntity neighbours, ascending ordered.
+     */
     std::vector<int> getOrderedNeighbourSelfIds();
 
     /**
@@ -150,19 +167,37 @@ class PolygonEntity: public LandREntity
      */
     bool isComplete();
 
+    /**
+     * @brief Get the PolygonEdges of this PolygonEntity that are shared with Other.
+     */
     std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
 
+    /**
+     * @brief Get the boundary of this PolygonEntity polygon, with a buffer of BufferDistance.
+     */
     geos::geom::Geometry* getBufferedBoundary(double BufferDistance);
 
+    /**
+     * @brief Compute neighbours of this PolygonEntity.
+     * @details A neighbour is another PolygonEntity that shares at least a PolygonEdge with this PolygonEntity.
+     */
     void computeNeighbours();
 
     /**
-     * A LineString is considered as a neighbour if it lies within the buffer of the Polygon boundary
+     * @brief Compute the relations between this PolygonEntity and LineStringEntities of input LineStringGraph.
+     * @details A LineString is considered as a neighbour if it lies within the buffer of this PolygonEntitys polygon boundary.
+     *
+     * @param Graph The LineStringGraph to compare to.
+     * @param Relation The Relationship to use for comparison.
+     * @param BufferDistance The distance below which we consider that two elements are related.
      */
     void computeLineStringNeighbours(LineStringGraph& Graph,
                                      LandRTools::Relationship Relation,
                                      double BufferDistance);
 
+    /**
+     * @brief Return the LineStringEntities neighbours of this PolygonEntity.
+     */
     LineStringNeigboursMap_t* getLineStringNeighbours();
 
 };

@@ -74,6 +74,9 @@ class GeoVectorValue;
 
 namespace landr {
 
+/**
+ * @brief Set of tools to manage LandR elements.
+ */
 class LandRTools
 {
   public:
@@ -104,32 +107,32 @@ class LandRTools
         geos::geom::Geometry* Geom);
 
     /**
-     * @brief Return all exterior rings of the polygon-typed GeoVectorValue
+     * @brief Return all exterior rings of the polygon-typed GeoVectorValue.
      *
-     * @param Val A GeoVectorValue of polygons
-     * @return A vector of new allocated Geometries representing exterior rings
-     * @throw An OFException if the GeoVectorValue is not polygon-typed
+     * @param Val A GeoVectorValue of polygons.
+     * @return A vector of new allocated Geometries representing exterior rings.
+     * @throw base::OFException if the GeoVectorValue is not polygon-typed.
      */
     static std::vector<geos::geom::LineString*> getVectorOfExteriorRings(
         openfluid::core::GeoVectorValue& Val);
 
     /**
-     * @brief Return all lines composing of the linestring-typed GeoVectorValue
+     * @brief Return all lines composing of the linestring-typed GeoVectorValue.
      *
-     * @param Val A GeoVectorValue of linestrings
-     * @return A vector of new allocated Geometries representing lines
-     * @throw An OFException if the GeoVectorValue is not linestring-typed
+     * @param Val A GeoVectorValue of linestrings.
+     * @return A vector of new allocated Geometries representing lines.
+     * @throw base::OFException if the GeoVectorValue is not linestring-typed.
      */
     static std::vector<geos::geom::LineString*> getVectorOfLines(
         openfluid::core::GeoVectorValue& Val);
 
     /**
-     * @brief Get all full noded lines from intersection between geom1 and geom2, with snap tolerance
+     * @brief Get all full noded lines from intersection between geom1 and geom2, with snap tolerance.
      *
-     * @param Geom1 The Geometry to node with Geom2
-     * @param Geom2 The other Geometry
-     * @param SnapTolerance The tolerance to use while computing intersections and equality of lines
-     * @return A vector of LineStrings, representing all input lines, cut at each node
+     * @param Geom1 The Geometry to node with Geom2.
+     * @param Geom2 The other Geometry.
+     * @param SnapTolerance The tolerance to use while computing intersections and equality of lines.
+     * @return A vector of LineStrings, representing all input lines, cut at each node.
      */
     static std::vector<geos::geom::LineString*>* getNodedLines(
         geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2,
@@ -137,22 +140,22 @@ class LandRTools
 
     /**
      * @brief Same as from geos::operation::overlay::snap::SnapOverlayOp::Union(),
-     * but with ability to use the wished snap tolerance value
+     * but with ability to use the wished snap tolerance value.
      *
-     * @param Geom1 The Geometry to join with Geom2
-     * @param Geom2 The other Geometry
-     * @param SnapTolerance The tolerance to use
-     * @return A new Geometry representing the union of Geom1 and Geom2 according to SnapTolerance value
+     * @param Geom1 The Geometry to join with Geom2.
+     * @param Geom2 The other Geometry.
+     * @param SnapTolerance The tolerance to use.
+     * @return A new Geometry representing the union of Geom1 and Geom2 according to SnapTolerance value.
      */
     static geos::geom::Geometry* computeSnapOverlayUnion(
         geos::geom::Geometry& Geom1, geos::geom::Geometry& Geom2,
         double SnapTolerance = 0);
 
     /**
-     * @brief Returns true if Line exactly equals an element of RefLines, up to a specified tolerance
-     * @param Line The Line to compare
-     * @param RefLines The list of lines to compare to
-     * @param Tolerance The tolerance to use
+     * @brief Returns true if Line exactly equals an element of RefLines, up to a specified tolerance.
+     * @param Line The Line to compare.
+     * @param RefLines The list of lines to compare to.
+     * @param Tolerance The tolerance to use.
      */
     static bool exists(geos::geom::LineString* Line,
                 std::list<geos::geom::LineString*> RefLines, double Tolerance = 0);
@@ -160,9 +163,9 @@ class LandRTools
     /**
      * @brief Create all possible Polygons from a Geometry.
      *
-     * @param Lines The input vector of Geometries to polygonize
-     * @param Polygons The output vector of newly created Polygons
-     * @param Dangles The output vector of dangle lines
+     * @param Lines The input vector of Geometries to polygonize.
+     * @param Polygons The output vector of newly created Polygons.
+     * @param Dangles The output vector of dangle lines.
      */
     static void polygonizeGeometry(
         std::vector<geos::geom::Geometry*>& Lines,

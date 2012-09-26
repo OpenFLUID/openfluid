@@ -75,6 +75,9 @@ class Value;
 }
 namespace landr {
 
+/**
+ * @brief Interface for a landscape representation element.
+ */
 class LandREntity: public geos::planargraph::GraphComponent
 {
   private:
@@ -124,21 +127,33 @@ class LandREntity: public geos::planargraph::GraphComponent
 
     std::set<LandREntity*>* getNeighbours();
 
+    /**
+     * @brief Get the value of an attribute.
+     *
+     * @param AttributeName The name of the attribute to get.
+     * @param Value The core::Value to assign the attribute value.
+     * @return True if the attribute exists, false otherwise.
+     */
     bool getAttributeValue(std::string AttributeName, core::Value& Value) const;
 
     /**
-     * Takes the ownership of Value.
-     * @param AttributeName
-     * @param Value
-     * @return
+     * @brief Set the value of an attribute.
+     * @details Takes the ownership of Value.
+     *
+     * @param AttributeName The name of the attribute to set.
+     * @param Value The core::Value assign to the attribute value.
+     * @return True if the attribute exists, false otherwise.
      */
     bool setAttributeValue(std::string AttributeName, const core::Value* Value);
 
     /**
-     * Get the distance between this entity centroid and Other entity centroid.
+     * @brief Get the distance between this entity centroid and Other entity centroid.
      */
     double getDistCentroCentro(LandREntity& Other);
 
+    /**
+     * @brief Get the neighbour that has the minimum centroid-to-centroid distance.
+     */
     LandREntity* getNeighbour_MinDistCentroCentro();
 
 };
