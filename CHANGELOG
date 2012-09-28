@@ -1,3 +1,18 @@
+1.7.2
+
+  * Added ROpenFLUID package for using OpenFLUID within the GNU R environment
+  * Added improved macros for spatial units loops, as a preview of future
+    releases
+  * Improved management of simulation functions plugins
+  * Refactored pkg-config configuration files, now splitted into 
+    openfluid, openfluid-gui and openfluid-other for better build configuration
+    of simulation functions and builder extensions 
+  * Improved CMake configuration for RelWithDebInfo build type
+  * Fixed various bugs : external call of GNUplot, duplicate layers in MapView, 
+    output files headers
+
+
+
 1.7.1
 
   * Added map view component in OpenFLUID-Builder, for spatial geometry

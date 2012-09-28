@@ -2,19 +2,18 @@ OpenFLUID sources
 =================
 
 The OpenFLUID source tree is organized as follow
+- cmake : CMake files included in main build system 
 - doc/manuals : latex sources of the manuals
 - doc/API-doxygen : doxygen files for API documentation
 - doc/examples : latex sources of the examples documentation
 - po : i18n files
-- resources/dist : files to include in packages for distribution
 - resources/examples : examples of simulation functions, with build system files
-- resources/func2doc : func2doc buddy resources files
+- resources/packaging : files used for packaging
 - resources/graphics : source graphics used in documentation
 - share : shared resources at runtime
 - src/apps/openfluid-engine : sources of the openfluid-engine application
 - src/apps/openfluid-builder : sources of the openfluid-builder application
-- src/openfluid : sources of the support libraries and API
-- tests : data, sources and configuration for testing using CTest
+- src/openfluid : sources of the OpenFLUID framework
 
 
 The required libraries are:
@@ -24,6 +23,7 @@ for the OpenFLUID framework libraries:
   - libXML2
   - Glibmm 
   - libCURL
+  - GDAL/OGR
 for openfluid-engine application: 
   - OpenFLUID framework libraries
   - C++ STL
