@@ -138,7 +138,7 @@ void DLLEXPORT TokenizeString(const std::string& StrToTokenize,
   @param[in] B the firts term of the equality
   @param[in] Epsilon the comparison tolerance factor
 
-  @see http://www.ensta.fr/~diam/c++/online/c++-faq-lite/newbie.html#faq-29.17
+  @see http://www.parashift.com/c++-faq-lite/floating-point-arith.html
   @see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
 */
 inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
@@ -159,7 +159,7 @@ inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
   @param[in] B the firts term of the equality
   @param[in] Epsilon the comparison tolerance factor
 
-  @see http://www.ensta.fr/~diam/c++/online/c++-faq-lite/newbie.html#faq-29.17
+  @see http://www.parashift.com/c++-faq-lite/floating-point-arith.html
   @see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
 */
 inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001)
