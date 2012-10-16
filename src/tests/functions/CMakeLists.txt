@@ -59,12 +59,6 @@ ADD_TEST(functions-Loops "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Loops" 
                         "-p${TEST_OUTPUT_PATH}")
 
-ADD_FUNCTION(tests.loops.deprecated tests.loops.deprecated ${TEST_OUTPUT_PATH})
-ADD_TEST(functions-LoopsDeprecated "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.LoopsDeprecated"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LoopsDeprecated" 
-                        "-p${TEST_OUTPUT_PATH}")
-
 ADD_FUNCTION(tests.threadedloops tests.threadedloops ${TEST_OUTPUT_PATH})
 TARGET_LINK_LIBRARIES(tests.threadedloops ${GLIBMM_LIBRARIES})
 ADD_TEST(functions-ThreadedLoopsDefault "${BIN_OUTPUT_PATH}/openfluid-engine" 
@@ -114,11 +108,6 @@ ADD_TEST(functions-Events "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Events" 
                         "-p${TEST_OUTPUT_PATH}")                              
                         
-ADD_FUNCTION(tests.events.deprecated tests.events.deprecated ${TEST_OUTPUT_PATH})
-ADD_TEST(functions-EventsDeprecated "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.EventsDeprecated"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.EventsDeprecated" 
-                        "-p${TEST_OUTPUT_PATH}")                        
 
 ADD_FUNCTION(tests.outbuffers tests.outbuffers ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Buffers "${BIN_OUTPUT_PATH}/openfluid-engine" 
