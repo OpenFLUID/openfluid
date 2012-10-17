@@ -353,10 +353,13 @@ bool DistributeInterpolate::getValue(int ID, openfluid::core::DateTime DT, openf
 
 bool DistributeInterpolate::getValue(int ID, int Index, openfluid::core::DoubleValue *Value)
 {
+  UnitsIndexedSeriesMap::iterator UISMit = m_UnitsIndexedData.find(ID);
 
-  if (Index>m_UnitsIndexedData[ID]->Count) return false;
+  if (UISMit == m_UnitsIndexedData.end()) return false;
 
-  *Value = (m_UnitsIndexedData[ID]->Values[Index]);
+  if (Index>(*UISMit).second->Count) return false;
+
+  *Value = ((*UISMit).second->Values[Index]);
   return true;
 }
 

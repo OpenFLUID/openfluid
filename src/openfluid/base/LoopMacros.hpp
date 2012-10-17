@@ -61,110 +61,6 @@
 // =====================================================================
 // =====================================================================
 
-/**
-  Macro for declaration of a loop processing all units of a class, following their process order
-  @param[in] loopid ID of the loop
-  @deprecated
-*/
-#define DECLARE_UNITS_ORDERED_LOOP(loopid) \
-  openfluid::core::UnitsList_t::iterator _M_##loopid##_ordit;\
-  openfluid::core::UnitsList_t* _M_##loopid##_UList;
-
-
-/**
-  Macro for declaration of a loop processing all units, following their process order
-  @param[in] loopid ID of the loop
-  @deprecated
-*/
-#define DECLARE_GLOBAL_UNITS_ORDERED_LOOP(loopid) \
-  openfluid::core::UnitsPtrList_t::iterator _M_##loopid##_ordit;\
-  openfluid::core::UnitsPtrList_t* _M_##loopid##_GUList;
-
-
-/**
-  Macro for the beginning of a loop processing all units of a class, following their process order
-  @param[in] loopid ID of the loop, must match declaration
-  @param[in] unitclass name of the unit class
-  @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
-  @deprecated
-*/
-#define BEGIN_UNITS_ORDERED_LOOP(loopid,unitclass,unit) \
-  _M_##loopid##_UList = mp_CoreData->getUnits(unitclass)->getList(); \
-  if (_M_##loopid##_UList != NULL) \
-    { \
-    for (_M_##loopid##_ordit = _M_##loopid##_UList->begin();_M_##loopid##_ordit != _M_##loopid##_UList->end();++_M_##loopid##_ordit) \
-    { \
-      unit = &(*_M_##loopid##_ordit);
-
-
-/**
-  Macro for the beginning of a loop processing all units, following their process order
-  @param[in] loopid ID of the loop, must match declaration
-  @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
-  @deprecated
-*/
-#define BEGIN_GLOBAL_UNITS_ORDERED_LOOP(loopid,unit) \
-  { \
-    _M_##loopid##_GUList = mp_CoreData->getUnitsGlobally(); \
-    for (_M_##loopid##_ordit = _M_##loopid##_GUList->begin();_M_##loopid##_ordit != _M_##loopid##_GUList->end();++_M_##loopid##_ordit) \
-    { \
-      unit = (*_M_##loopid##_ordit);
-
-
-/**
-  Macro for declaration of a loop processing a list of units
-  @param[in] loopid ID of the loop
-  @deprecated
-*/
-#define DECLARE_UNITS_LIST_LOOP(loopid) \
-  openfluid::core::UnitsPtrList_t::iterator _M_##loopid##_lstit;\
-
-
-/**
-  Macro for the beginning of a loop processing a list of units
-  @param[in] loopid ID of the loop, must match declaration
-  @param[in] ulist pointer to a list of openfluid::core::Unit
-  @param[out] unit pointer to a openfluid::core::Unit objects, pointing to the current processed SU
-  @deprecated
-*/
-#define BEGIN_UNITS_LIST_LOOP(loopid,ulist,unit) \
-  if ((ulist) != NULL) \
-  { \
-    for(_M_##loopid##_lstit=ulist->begin(); _M_##loopid##_lstit != ulist->end(); _M_##loopid##_lstit++) \
-    { \
-      unit = *_M_##loopid##_lstit; \
-
-
-/**
-  Macro for declaration of a loop processing events in an event collection
-  @deprecated
-*/
-#define DECLARE_EVENT_COLLECTION_LOOP \
-  openfluid::core::EventsList_t::iterator _M_EvListiter;
-
-/**
-  Macro for the beginning of a loop processing an event list from an event collection
-  @param[in] evlist pointer to a list of events
-  @param[out] evobj the current processed event
-  @deprecated
-*/
-#define BEGIN_EVENT_COLLECTION_LOOP(evlist,evobj) \
-  { \
-    for(_M_EvListiter=(evlist)->begin(); _M_EvListiter != (evlist)->end(); _M_EvListiter++) \
-    { \
-      evobj = &(*_M_EvListiter);
-
-/**
-  Macro for the ending of a loop
-  @deprecated
-*/
-#define END_LOOP \
-    } \
-  }
-
-
-// =====================================================================
-// =====================================================================
 
 #define _UNITID(_id) _M_##_id##_Unit
 
@@ -186,7 +82,7 @@
 
 #define _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitclass,unitptr,id) \
     openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_CoreData->getUnits(unitclass)->getList(); \
-    if (_UNITSLISTID(id) != 0) \
+    if (_UNITSLISTID(id) != NULL && !(_UNITSLISTID(id)->empty())) \
       for (openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
            unitptr = &(*_UNITSLISTITERID(id)),_UNITSLISTITERID(id) != _UNITSLISTID(id)->end(); \
            ++_UNITSLISTITERID(id))
@@ -282,7 +178,7 @@
 
 
 #define _OPENFLUID_UNITSLIST_LOOP_WITHID(unitslist,unitptr,id) \
-    if (unitslist != 0) \
+    if (unitslist != NULL) \
       for (openfluid::core::UnitsPtrList_t::iterator _UNITSLISTITERID(id) = unitslist->begin(); \
            unitptr = *_UNITSLISTITERID(id),_UNITSLISTITERID(id) != unitslist->end(); \
            ++_UNITSLISTITERID(id))

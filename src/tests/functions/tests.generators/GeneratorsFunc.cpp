@@ -160,7 +160,6 @@ class GeneratorsFunction : public openfluid::base::PluggableFunction
   bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
   {
 
-
     return true;
   }
 
@@ -171,13 +170,13 @@ class GeneratorsFunction : public openfluid::base::PluggableFunction
   bool runStep(const openfluid::base::SimulationStatus* SimStatus)
   {
     openfluid::core::Unit* TU;
-    DECLARE_UNITS_ORDERED_LOOP(1);
 
     openfluid::core::DoubleValue SValue;
     openfluid::core::VectorValue VValue;
 
 
-    BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
 
       OPENFLUID_GetVariable(TU,"tests.fixed",SimStatus->getCurrentStep(),&SValue);
       if (!openfluid::tools::IsCloseEnough(SValue,12.7))
@@ -223,7 +222,6 @@ class GeneratorsFunction : public openfluid::base::PluggableFunction
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interpminmax variable");
 
 
-
       OPENFLUID_GetVariable(TU,"tests.inject",SimStatus->getCurrentStep(),&SValue);
 
       if (TU->getID() % 2 != 0)
@@ -246,8 +244,7 @@ class GeneratorsFunction : public openfluid::base::PluggableFunction
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixedprev variable");
       }
 
-
-    END_LOOP
+    }
 
 
     return true;

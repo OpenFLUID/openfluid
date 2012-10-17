@@ -172,15 +172,14 @@ class OutputsBuffersFunction : public openfluid::base::PluggableFunction
     openfluid::core::VectorValue TheVector;
 
 
-    DECLARE_UNITS_ORDERED_LOOP(1);
-
-    BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
 
       TheVector = openfluid::core::VectorValue(VectorSize,double(TU->getID()));
       OPENFLUID_AppendVariable(TU,"tests.vector",TheVector);
       OPENFLUID_AppendVariable(TU,"tests.scalar",double(TU->getID()));
 
-    END_LOOP
+    }
 
 
     return true;

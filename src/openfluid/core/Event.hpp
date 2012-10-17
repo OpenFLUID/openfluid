@@ -57,6 +57,7 @@
 
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/core/InstantiationInfo.hpp>

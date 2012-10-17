@@ -278,7 +278,6 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
   std::string TheInputStr;
   openfluid::core::EventsCollection TheEvents;
   openfluid::core::Event Ev;
-  DECLARE_UNITS_ORDERED_LOOP(1);
   std::string RunEnvStr;
   bool RunEnvBool;
   unsigned int UnitsCount;
@@ -336,7 +335,8 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 
 
 //  std::cout << "*** PrimitiveUseFunc runStep Start Loop" << std::endl;
-  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+  OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+  {
 
 //  std::cout << "PrimitiveUseFunc runStep child/parents..." << std::endl;
 //  std::cout << "TU->getID() : " << TU->getID() << std::endl;
@@ -574,7 +574,7 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
     OPENFLUID_AppendEvent(TU,Ev);
 
 
-  END_LOOP
+  }
 //  std::cout << "*** PrimitiveUseFunc runStep End Loop" << std::endl;
 
 

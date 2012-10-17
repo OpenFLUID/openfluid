@@ -59,7 +59,6 @@
 #include <list>
 #include <map>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/StringValue.hpp>
@@ -106,18 +105,6 @@ typedef std::pair<UnitClassID_t,UnitClassID_t> UnitsLink_t;
 
 
 /**
- Type definition for scalar values
- @deprecated
- */
-typedef DoubleValue ScalarValue OPENFLUID_DEPRECATED;
-
-/**
- Type definition for a time serie of scalar values
- @deprecated
- */
-typedef std::vector<double> SerieOfScalarValue OPENFLUID_DEPRECATED;
-
-/**
  Type definition for a time serie of double values
  */
 typedef std::vector<DoubleValue> SerieOfDoubleValue;
@@ -154,12 +141,6 @@ typedef std::map<UnitID_t,float> IDFloatMap;
 typedef std::map<UnitID_t,double> IDDoubleMap;
 
 /**
-  Map associating an openfluid::core::ScalarValue value to a unit, indexed by its ID
-  @deprecated
-*/
-typedef std::map<UnitID_t,double> IDScalarValueMap OPENFLUID_DEPRECATED;
-
-/**
   Map associating a DoubleValue value to a unit, indexed by its ID
 */
 typedef std::map<UnitID_t,DoubleValue> IDDoubleValueMap;
@@ -184,17 +165,7 @@ typedef std::map<UnitID_t,VectorValue> IDVectorValueMap;
 */
 typedef std::map<UnitID_t,VectorValue*> IDVectorValuePtrMap;
 
-/**
-  @deprecated
-*/
-typedef std::map<UnitID_t,std::vector<double> > IDSerieOfScalarValueMap OPENFLUID_DEPRECATED;
-
 typedef std::map<UnitID_t,SerieOfDoubleValue> IDSerieOfDoubleValueMap;
-
-/**
-  @deprecated
- */
-typedef std::map<UnitID_t,std::vector<double>* > IDSerieOfScalarValuePtrMap OPENFLUID_DEPRECATED;
 
 typedef std::map<UnitID_t,SerieOfDoubleValue*> IDSerieOfDoubleValuePtrMap;
 

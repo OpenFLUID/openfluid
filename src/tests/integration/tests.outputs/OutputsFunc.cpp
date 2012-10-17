@@ -166,10 +166,8 @@ class OutputsFunction : public openfluid::base::PluggableFunction
 
     openfluid::tools::ConvertValue(SimStatus->getCurrentStep(),&TSStr);
 
-    DECLARE_UNITS_ORDERED_LOOP(1);
-    DECLARE_UNITS_ORDERED_LOOP(5);
-
-    BEGIN_UNITS_ORDERED_LOOP(1,"UnitsA",TUA)
+    OPENFLUID_UNITS_ORDERED_LOOP("UnitsA",TUA)
+    {
 
       TheVector = openfluid::core::VectorValue(VectorSize,double(TUA->getID()));
       OPENFLUID_AppendVariable(TUA,"tests.vector",TheVector);
@@ -178,9 +176,10 @@ class OutputsFunction : public openfluid::base::PluggableFunction
       openfluid::tools::ConvertValue(TUA->getID(),&IDStr);
       OPENFLUID_RaiseWarning("tests.messages",SimStatus->getCurrentStep(),"["+TUA->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
 
-    END_LOOP
+    }
 
-    BEGIN_UNITS_ORDERED_LOOP(5,"UnitsB",TUB)
+    OPENFLUID_UNITS_ORDERED_LOOP("UnitsB",TUB)
+    {
 
       TheVector = openfluid::core::VectorValue(VectorSize,double(TUB->getID()));
       OPENFLUID_AppendVariable(TUB,"tests.vector",TheVector);
@@ -189,7 +188,7 @@ class OutputsFunction : public openfluid::base::PluggableFunction
       openfluid::tools::ConvertValue(TUB->getID(),&IDStr);
       OPENFLUID_RaiseWarning("tests.messages",SimStatus->getCurrentStep(),"["+TUB->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
 
-    END_LOOP
+    }
 
 
     return true;

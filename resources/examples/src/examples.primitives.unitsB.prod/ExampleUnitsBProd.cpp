@@ -132,11 +132,9 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
       openfluid::core::UnitsPtrList_t *FromAList, *FromBList;
       openfluid::core::DoubleValue Value5, AuxValue;
 
-      DECLARE_UNITS_ORDERED_LOOP(1);
-      DECLARE_UNITS_LIST_LOOP(5);
-      DECLARE_UNITS_LIST_LOOP(18);
 
-      BEGIN_UNITS_ORDERED_LOOP(1,"unitsB",B)
+      OPENFLUID_UNITS_ORDERED_LOOP("unitsB",B)
+      {
 
         Value5 = 0.0;
         FromAList = NULL;
@@ -146,7 +144,8 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
 
         if (FromAList != NULL)
         {
-          BEGIN_UNITS_LIST_LOOP(5,FromAList,FromA)
+          OPENFLUID_UNITSLIST_LOOP(FromAList,FromA)
+          {
 
             if (OPENFLUID_IsVariableExist(FromA,"var2",SimStatus->getCurrentStep()))
             {
@@ -162,7 +161,7 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
             }
             else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod",SimStatus->getCurrentStep(),"var3 is not present, ignored");
 
-          END_LOOP
+          }
         }
 
         if (!SimStatus->isFirstStep())
@@ -171,18 +170,18 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
 
           if (FromBList != NULL)
           {
-            BEGIN_UNITS_LIST_LOOP(18,FromBList,FromB)
-
+            OPENFLUID_UNITSLIST_LOOP(FromBList,FromB)
+            {
               OPENFLUID_GetVariable(FromB,"var5",SimStatus->getCurrentStep()-1,AuxValue);
               Value5 = Value5 + AuxValue;
 
-            END_LOOP
+            }
           }
         }
 
         OPENFLUID_AppendVariable(B,"var5",Value5);
 
-      END_LOOP
+      }
 
 
       return true;

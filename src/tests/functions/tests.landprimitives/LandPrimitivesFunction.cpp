@@ -209,13 +209,13 @@ class LandPrimitivesFunction : public openfluid::base::PluggableFunction
 
 
       openfluid::core::Unit* TU;
-      DECLARE_UNITS_ORDERED_LOOP(1);
 
 
-      BEGIN_UNITS_ORDERED_LOOP(1,"TU", TU)
+      OPENFLUID_UNITS_ORDERED_LOOP("TU", TU)
+      {
         OPENFLUID_SetInputData(TU,"indatadbl",double(TU->getID())*0.1);
         OPENFLUID_SetInputData(TU,"indatastr","C0DE1");
-      END_LOOP
+      }
 
 
 
@@ -297,11 +297,11 @@ class LandPrimitivesFunction : public openfluid::base::PluggableFunction
     bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
     {
       openfluid::core::Unit* TU;
-      DECLARE_UNITS_ORDERED_LOOP(1);
       double DblValue;
       std::string StrValue;
 
-      BEGIN_UNITS_ORDERED_LOOP(1,"TU", TU)
+      OPENFLUID_UNITS_ORDERED_LOOP("TU", TU)
+      {
         OPENFLUID_GetInputData(TU,"indatadbl",&DblValue);
         if (!openfluid::tools::IsVeryClose(double(TU->getID())*0.1,DblValue))
           OPENFLUID_RaiseError("tests.landprimitives","inputdata error for indatadbl");
@@ -310,7 +310,7 @@ class LandPrimitivesFunction : public openfluid::base::PluggableFunction
         if (StrValue != "C0DE1")
           OPENFLUID_RaiseError("tests.landprimitives","inputdata error for indatastr");
 
-      END_LOOP
+      }
 
       return true;
     }

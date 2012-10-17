@@ -30,17 +30,15 @@ or similar C++ facilities.
  bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
 {
   openfluid::core::Unit* TU;
-  DECLARE_UNITS_ORDERED_LOOP(1);
-
 
   OPENFLUID_Logger.get() << "This is a message to both file and console" << std::endl;
   OPENFLUID_Logger.getFile() << "This is a message to file only" << std::endl;
   OPENFLUID_Logger.getStdout() << "This is a message to console only" << std::endl;
 
-
-  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+  OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+  {
     OPENFLUID_Logger.get() << "TestUnits " << TU->getID() << std::endl;
-  END_LOOP
+  }
 
   return true;
 }
@@ -69,10 +67,9 @@ bool Myfunction::checkConsistency()
 {
   double TmpValue;
   openfluid::core::Unit* SU;
-  DECLARE_SU_ORDERED_LOOP(1);
-  
-  BEGIN_SU_ORDERED_LOOP(1,"SU",SU)
-
+    
+  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+  {
     OPENFLUID_GetInputData(SU,"MyVar",TmpValue);
     
     if (TmpValue <= 0)
@@ -80,8 +77,7 @@ bool Myfunction::checkConsistency()
       OPENFLUID_RaiseError("my.function","Wrong value for the MyProp distributed property on SU");
       return false;
     }    
-
-  END_LOOP
+  }
 
   return true;
 }

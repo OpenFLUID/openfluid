@@ -165,17 +165,12 @@ bool VectorProdFunction::runStep(const openfluid::base::SimulationStatus* /*SimS
   long VectorSize = 40;
   openfluid::core::VectorValue TheVector;
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
 
-
-
-  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
-
+  OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+  {
     TheVector =openfluid::core::VectorValue(VectorSize,double(TU->getID()));
     OPENFLUID_AppendVariable(TU,"tests.vector",TheVector);
-
-
-  END_LOOP
+  }
 
   return true;
 }

@@ -119,10 +119,8 @@ bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatu
 
   openfluid::core::Unit* LU;
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
-
-  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU)
-
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
     if (isVectorVariable())
     {
       openfluid::core::VectorValue VV(m_VarSize,m_VarValue);
@@ -130,8 +128,7 @@ bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatu
     }
     else
       OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
-
-  END_LOOP
+  }
 
   return true;
 }

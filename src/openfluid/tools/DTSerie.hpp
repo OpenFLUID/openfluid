@@ -87,7 +87,7 @@ class IndexedSerie
 
 
 /**
-  Class for management of a time ordered serie of data (ScalarValue)
+  Class for management of a time ordered serie of data (DoubleValue)
 */
 class DLLEXPORT DateTimeSerie
 {

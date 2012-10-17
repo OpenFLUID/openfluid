@@ -165,7 +165,6 @@ class DebugFunction : public openfluid::base::PluggableFunction
   bool runStep(const openfluid::base::SimulationStatus* SimStatus)
   {
     openfluid::core::Unit* TU;
-    DECLARE_UNITS_ORDERED_LOOP(1);
     openfluid::core::DateTime BeginDate,EndDate;
     openfluid::core::EventsCollection EvColl;
 
@@ -175,7 +174,8 @@ class DebugFunction : public openfluid::base::PluggableFunction
     EndDate = SimStatus->getCurrentTime() + SimStatus->getTimeStep() -1;
 
 
-    BEGIN_UNITS_ORDERED_LOOP(1,"TU",TU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
+    {
       OFDBG_MESSAGE(TU->getClass() << "#" << TU->getID());
 
       EvColl.clear();
@@ -186,7 +186,7 @@ class DebugFunction : public openfluid::base::PluggableFunction
 
       if (SimStatus->isFirstStep()) {OFDBG_UNIT_EXTENDED(TU)}
       else {OFDBG_UNIT(TU)}
-    END_LOOP
+    }
 
     return true;
   }

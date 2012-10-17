@@ -287,9 +287,8 @@ bool InjectGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
   }
 
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
-  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU);
-
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
     CurrentValue = m_Series[m_SerieIDByUnit[LU->getID()]].front().second;
 
     if (m_IsMax && CurrentValue > m_Max) CurrentValue = m_Max;
@@ -302,9 +301,7 @@ bool InjectGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
     }
     else
       OPENFLUID_AppendVariable(LU,m_VarName,CurrentValue);
-
-
-  END_LOOP;
+  }
 
 
   return true;

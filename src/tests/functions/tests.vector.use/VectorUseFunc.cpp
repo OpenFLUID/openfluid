@@ -166,18 +166,14 @@ bool VectorUseFunction::runStep(const openfluid::base::SimulationStatus* SimStat
   unsigned long VectorSize = 40;
   openfluid::core::VectorValue TheVector;
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
 
-
-
-  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
-
+  OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+  {
     OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),&TheVector);
 
     if (TheVector.getSize() != VectorSize)
       throw openfluid::base::OFException("incorrect vector size");
-
-  END_LOOP
+  }
 
   return true;
 }

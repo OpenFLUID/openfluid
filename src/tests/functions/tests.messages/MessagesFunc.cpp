@@ -171,10 +171,9 @@ bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
   openfluid::tools::ConvertValue(SimStatus->getCurrentStep(),&TSStr);
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
 
-  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
-
+  OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+  {
     openfluid::tools::ConvertValue(TU->getID(),&IDStr);
 
     for (i = 0; i< m_RepeatMessages; i++)
@@ -183,7 +182,7 @@ bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
       OPENFLUID_RaiseWarning("tests.messages","runStep()",SimStatus->getCurrentStep(),"["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
     }
 
-  END_LOOP
+  }
 
 
   return true;

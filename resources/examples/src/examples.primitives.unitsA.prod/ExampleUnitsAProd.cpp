@@ -129,10 +129,10 @@ class ExampleUnitsAProduction : public openfluid::base::PluggableFunction
     {
       openfluid::core::Unit* A;
       openfluid::core::DoubleValue Value1;
-      DECLARE_UNITS_ORDERED_LOOP(25);
 
 
-      BEGIN_UNITS_ORDERED_LOOP(25,"unitsA",A)
+      OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
+      {
         if (SimStatus->isFirstStep())
         {
            OPENFLUID_GetInputData(A,"inivar1",Value1);
@@ -145,7 +145,7 @@ class ExampleUnitsAProduction : public openfluid::base::PluggableFunction
 
         OPENFLUID_AppendVariable(A,"var1",Value1);
         OPENFLUID_AppendVariable(A,"var2",1.5);
-      END_LOOP
+      }
 
       return true;
     }

@@ -133,10 +133,9 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStat
   boost::variate_generator<boost::mt19937&, boost::uniform_real<> > Random (m_RandomEngine, Distribution);
 
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
 
-  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU)
-
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
     Value = Random();
 
     if (isVectorVariable())
@@ -147,7 +146,7 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStat
     else
       OPENFLUID_AppendVariable(LU,m_VarName,Value);
 
-  END_LOOP
+  }
 
   return true;
 }

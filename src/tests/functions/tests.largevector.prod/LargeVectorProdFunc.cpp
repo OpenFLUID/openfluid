@@ -176,7 +176,7 @@ bool LargeVectorProdFunction::runStep(const openfluid::base::SimulationStatus* S
     OPENFLUID_AppendVariable(TU,"tests.largevector",TheVector);
 
 
-  END_LOOP
+  }
 
 
   return true;

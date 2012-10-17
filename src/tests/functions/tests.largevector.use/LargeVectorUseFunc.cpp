@@ -176,7 +176,7 @@ bool LargeVectorUseFunction::runStep(const openfluid::base::SimulationStatus* Si
     if (TheVector.getSize() != VectorSize)
       throw openfluid::base::OFException("incorrect vector size");
 
-  END_LOOP
+  }
 
 
   return true;

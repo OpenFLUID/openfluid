@@ -165,10 +165,8 @@ bool PrimitivesProdFunction::runStep(const openfluid::base::SimulationStatus* Si
   openfluid::core::VectorValue TheVector;
 
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
-
-  BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
-
+  OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+  {
     // vector value
 
     if (!OPENFLUID_IsVariableExist(TU,"tests.vector"))
@@ -250,7 +248,7 @@ bool PrimitivesProdFunction::runStep(const openfluid::base::SimulationStatus* Si
       OPENFLUID_RaiseError("tests.primitives.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.scalar, timestep+1, NONE) after append");
 
 
-  END_LOOP
+  }
 
 
   return true;

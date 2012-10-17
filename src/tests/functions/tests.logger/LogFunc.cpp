@@ -169,14 +169,12 @@ class LoggerFunction : public openfluid::base::PluggableFunction
   {
     openfluid::core::Unit* TU;
 
-
-    DECLARE_UNITS_ORDERED_LOOP(1);
-
-    BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
 
       OPENFLUID_Logger.get() << "TestUnits #" << TU->getID() << std::endl;
 
-    END_LOOP
+    }
 
 
     return true;

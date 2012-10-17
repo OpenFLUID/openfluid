@@ -64,18 +64,16 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
   int CurrentStep;
   double TmpValue;
   openfluid::core::Unit* SU;
-  DECLARE_UNITS_ORDERED_LOOP(12);
 
   CurrentStep = SimStatus->getCurrentStep();
 
-  BEGIN_UNITS_ORDERED_LOOP(12,"SU",SU)
-
+  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+  {
     OPENFLUID_GetVariable(SU,"MyVar",CurrentStep,TmpValue);
     TmpValue = TmpValue * 2;
     OPENFLUID_AppendVariable(SU,"MyVarX2",TmpValue);
-
-  END_LOOP
-
+  }
+  
   return true;
 }
 \endcode
@@ -120,27 +118,28 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
   openfluid::core::Event* Ev;
   std::list<openfluid::core::Event* > *EvList;
   openfluid::core::DateTime BTime, ETime;
-  DECLARE_EVENT_COLLECTION_LOOP;
-  DECLARE_UNITS_ORDERED_LOOP(1);
+
 
   BTime = SimStatus->getCurrentTime();
   ETime = BTime + SimStatus->getTimeStep()-1;
 
-  BEGIN_UNITS_ORDERED_LOOP(1,"SU",SU)
+  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+  {
 
     EvColl.clear();
 
     OPENFLUID_GetEvents(SU,BTime,ETime,EvColl);
     EvList = EvColl.getEventsList();
 
-    BEGIN_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Ev)
+    OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Ev)
+    {
       if (Ev->isInfoEquals("molecule","glyphosate"))
       {
         // process the event
       }
-    END_LOOP;
+    }
 
-  END_LOOP;
+  }
 
   return true;
 }

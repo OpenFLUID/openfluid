@@ -44,9 +44,8 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
   double TmpValue;
   openfluid::core::Unit* SU;
 
-
-  DECLARE_UNITS_ORDERED_LOOP(7);
-  BEGIN_UNITS_ORDERED_LOOP(7,"SU",SU)
+  OPENFLUID_UNITS_ORDERED_LOOP("SU",SU)
+  {
 
     ID = SU->getID();
 
@@ -56,7 +55,7 @@ bool MyFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
 
     m_LastValue[ID] = TmpValue;
 
-  END_LOOP
+  }
 
   return true;
 }

@@ -60,6 +60,7 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 
 
+
 namespace openfluid { namespace machine {
 
 
@@ -146,9 +147,8 @@ bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
   openfluid::core::DoubleValue CurrentValue;
   int ID;
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
-  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU);
-
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
     ID = LU->getID();
 
     if (m_DataPool.getValue(ID,SimStatus->getCurrentStep(),&CurrentValue))
@@ -158,7 +158,6 @@ bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
 
       if (m_IsMax && CurrentValue > m_IsMax) CurrentValue = m_Max;
       if (m_IsMin && CurrentValue < m_IsMin) CurrentValue = m_Min;
-
 
       if (isVectorVariable())
       {
@@ -170,9 +169,7 @@ bool InterpGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
     }
     else
       throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","error interpolating value for variable " + m_VarName);
-
-
-  END_LOOP;
+  }
 
 
   return true;
