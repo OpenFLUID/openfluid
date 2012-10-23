@@ -21,7 +21,7 @@ integer Fsize,ifrom
 real*8 vect(Fsize)
 
 write(*,*) 'size',Fsize
-write(*,*) (Vect(i),i=1,Fsize)
+write(*,*) (vect(i),i=1,Fsize)
 
 return
 end
@@ -30,7 +30,7 @@ end
 <I>Declaration block int the .cpp file, located just after the function signature (MyFunc.cpp):</I>
 \code
 BEGIN_EXTERN_FORTRAN
-  EXTERN_FSUBROUTINE(toto)(FINT *Size, FREAL8 *Vect);
+  EXTERN_FSUBROUTINE(displayvector)(FINT *Size, FREAL8 *Vect);
 END_EXTERN_FORTRAN
 \endcode
 \n
@@ -46,7 +46,7 @@ bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
   MyVect = openfluid::core::VectorValue(15,9);
   int Size = MyVect.getSize();
 
-  CALL_FSUBROUTINE(toto)(&Size,(MyVect.getData()));
+  CALL_FSUBROUTINE(displayvector)(&Size,(MyVect.getData()));
 
   return true;
 }
