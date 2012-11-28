@@ -1,0 +1,7 @@
+.cproject
+.project
+.pydevproject
+.settings
+_*
+CMake.in.local.config
+CMake.in.local.cmake
