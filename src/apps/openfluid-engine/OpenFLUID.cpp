@@ -62,7 +62,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/machine/Engine.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
@@ -159,7 +159,8 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 void OpenFLUIDApp::printPluginsList()
 {
 
-  openfluid::machine::ArrayOfSignatureItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
+  std::vector<openfluid::machine::SignatureItemInstance*> PlugContainers =
+    openfluid::machine::FunctionPluginsManager::getInstance()->getAvailableWaresSignatures();
 
   std::cout << "Available simulation functions:" << std::endl;
 
@@ -285,7 +286,8 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandl
 void OpenFLUIDApp::printPluginsReport(const std::string Pattern)
 {
 
-  openfluid::machine::ArrayOfSignatureItemInstance PlugContainers = openfluid::machine::PluginManager::getInstance()->getAvailableFunctions(Pattern);
+  std::vector<openfluid::machine::SignatureItemInstance*> PlugContainers =
+      openfluid::machine::FunctionPluginsManager::getInstance()->getAvailableWaresSignatures(Pattern);
   std::string StatusStr;
 
 

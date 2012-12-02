@@ -45,93 +45,28 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file FunctionPluginsManager.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#ifndef __PLUGINMANAGER_HPP__
-#define __PLUGINMANAGER_HPP__
+#ifndef __FUNCTIONPLUGINSMANAGER_HPP__
+#define __FUNCTIONPLUGINSMANAGER_HPP__
 
-#include <vector>
-#include <map>
-#include <string>
+#include <openfluid/machine/WarePluginsManager.hpp>
 
-#include <glibmm/module.h>
-
-#include <openfluid/dllexport.hpp>
-
-namespace openfluid {
-
-namespace base {
-class PluggableFunction;
-}  // namespace base
-
-namespace machine {
+namespace openfluid { namespace machine {
 
 class SignatureItemInstance;
 class ModelItemInstance;
 
 
-typedef std::vector<SignatureItemInstance*> ArrayOfSignatureItemInstance;
-
-/**
-  Management class for plugins
-*/
-class DLLEXPORT PluginManager
-{
-  private:
-
-    static PluginManager* mp_Singleton;
-
-    std::map<std::string,Glib::Module*> m_LoadedPlugins;
-
-    ModelItemInstance* buildUncompletedPluginContainer(std::string PluginFilename);
+typedef WarePluginsManager<SignatureItemInstance,ModelItemInstance> FunctionPluginsManager;
 
 
-    /**
-      Constructor
-    */
-    PluginManager();
+} }  // namespaces
 
-
-  public:
-
-    /**
-      Destructor
-    */
-    ~PluginManager();
-
-    static PluginManager* getInstance();
-
-    /**
-      Lists available simulation functions
-    */
-    ArrayOfSignatureItemInstance getAvailableFunctions(const std::string Pattern = "");
-
-
-    /**
-      Returns function and function types
-    */
-
-    ModelItemInstance* getUncompletedPlugin(std::string PluginName);
-
-    openfluid::base::PluggableFunction* completePluginWithFunction(ModelItemInstance* Item);
-
-    SignatureItemInstance* getSignatureFromPlugin(std::string PluginFilename);
-
-    void unloadAllPlugins();
-
-};
-
-
-} } //namespaces
-
-
-#endif
-
-
-
+#endif /* __FUNCTIONPLUGINSMANAGER_HPP__ */

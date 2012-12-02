@@ -68,7 +68,6 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/io/IOListener.hpp>
 #include <openfluid/io/OutputsWriter.hpp>
 #include <openfluid/io/MessagesWriter.hpp>

@@ -68,7 +68,7 @@
 #include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 
@@ -255,7 +255,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction))
     {
       // instanciation of a pluggeg simulation function using the plugin manager
-      IInstance = PluginManager::getInstance()->getUncompletedPlugin(((openfluid::base::FunctionDescriptor*)(*it))->getFileID());
+      IInstance = FunctionPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::base::FunctionDescriptor*)(*it))->getFileID());
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
 

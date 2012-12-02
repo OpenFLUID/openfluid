@@ -59,7 +59,7 @@
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
@@ -245,7 +245,7 @@ void ModelInstance::clear()
 
 void ModelInstance::initialize()
 {
-  openfluid::machine::PluginManager* PlugMgr = openfluid::machine::PluginManager::getInstance();
+  openfluid::machine::FunctionPluginsManager* FPlugsMgr = openfluid::machine::FunctionPluginsManager::getInstance();
 
   std::list<ModelItemInstance*>::const_iterator FuncIter;
   ModelItemInstance* CurrentFunction;
@@ -256,7 +256,7 @@ void ModelInstance::initialize()
     CurrentFunction = (*FuncIter);
 
     if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::PluggedFunction)
-      PlugMgr->completePluginWithFunction(CurrentFunction);
+      FPlugsMgr->completeSignatureWithWareBody(CurrentFunction);
 
     if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::Generator && CurrentFunction->GeneratorInfo != NULL)
     {

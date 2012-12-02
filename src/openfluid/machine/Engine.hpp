@@ -80,7 +80,6 @@ class MessagesWriter;
 
 namespace openfluid { namespace machine {
 
-class PluginManager;
 class ModelInstance;
 class MachineListener;
 class SimulationBlob;
