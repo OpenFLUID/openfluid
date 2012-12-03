@@ -98,7 +98,7 @@ class DLLEXPORT MarketPackage
 
 
 
-    openfluid::base::FuncID_t m_ID;
+    openfluid::ware::WareID_t m_ID;
 
     std::string m_PackageURL;
 
@@ -119,7 +119,7 @@ class DLLEXPORT MarketPackage
 
   public:
 
-    MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
+    MarketPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
 
     virtual ~MarketPackage();
 
@@ -145,7 +145,7 @@ class DLLEXPORT MarketPackage
 
     static std::string composeFullBuildOptions(std::string BuildOptions);
 
-    openfluid::base::FuncID_t getID() const { return m_ID; };
+    openfluid::ware::WareID_t getID() const { return m_ID; };
 
     virtual MetaPackageInfo::SelectionType getFormat() const = 0;
 

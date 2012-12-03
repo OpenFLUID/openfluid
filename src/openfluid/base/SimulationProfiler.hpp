@@ -57,7 +57,7 @@
 #ifndef __SIMULATIONPROFILER_HPP___
 #define __SIMULATIONPROFILER_HPP___
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 #include <openfluid/dllexport.hpp>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -82,9 +82,9 @@ class DLLEXPORT SimulationProfiler
 
     typedef std::map<TimeProfilePart,boost::posix_time::time_duration> FunctionTimeProfile_t;
 
-    typedef std::map<openfluid::base::FuncID_t,FunctionTimeProfile_t> ModelTimeProfile_t;
+    typedef std::map<openfluid::ware::WareID_t,FunctionTimeProfile_t> ModelTimeProfile_t;
 
-    typedef std::map<openfluid::base::FuncID_t,std::list<boost::posix_time::time_duration> > RunStepTimeProfile_t;
+    typedef std::map<openfluid::ware::WareID_t,std::list<boost::posix_time::time_duration> > RunStepTimeProfile_t;
 
   private:
 
@@ -109,7 +109,7 @@ class DLLEXPORT SimulationProfiler
 
     void reset() { m_ModelTimeProfile.clear(); m_RunStepTimeProfile.clear(); };
 
-    void addDuration(const openfluid::base::FuncID_t& FuncID, TimeProfilePart ProfilePart,
+    void addDuration(const openfluid::ware::WareID_t& FuncID, TimeProfilePart ProfilePart,
                      const boost::posix_time::time_duration& Duration);
 
     const ModelTimeProfile_t& getModelTimeProfile() const { return m_ModelTimeProfile; };

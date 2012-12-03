@@ -47,64 +47,8 @@
 
 
 /**
-  \file PrimitivesValuesUseFunc.h
-  \brief Header of ...
-*/
+  \file PluggableObserver.cpp
+  \brief Implements ...
 
-#ifndef __PRIMITIVESVALUESUSEFUNC_H__
-#define __PRIMITIVESVALUESUSEFUNC_H__
-
-#include <openfluid/ware/PluggableFunction.hpp>
-
-
-// =====================================================================
-// =====================================================================
-
-
-DECLARE_FUNCTION_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-
-*/
-class PrimitivesValuesUseFunction : public openfluid::ware::PluggableFunction
-{
-  private:
-
-    long m_ParamLong;
-
-    double m_ParamDouble;
-
-    std::string m_ParamString;
-
-  public:
-    /**
-      Constructor
-    */
-    PrimitivesValuesUseFunction();
-
-    /**
-      Destructor
-    */
-    ~PrimitivesValuesUseFunction();
-
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
-
-    bool prepareData();
-
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-};
-
-
-#endif  // __PRIMITIVESVALUESUSEFUNC_H__
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */

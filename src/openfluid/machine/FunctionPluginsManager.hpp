@@ -56,6 +56,8 @@
 #ifndef __FUNCTIONPLUGINSMANAGER_HPP__
 #define __FUNCTIONPLUGINSMANAGER_HPP__
 
+#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
 
 namespace openfluid { namespace machine {
@@ -64,7 +66,12 @@ class SignatureItemInstance;
 class ModelItemInstance;
 
 
-typedef WarePluginsManager<SignatureItemInstance,ModelItemInstance> FunctionPluginsManager;
+// =====================================================================
+// =====================================================================
+
+typedef WarePluginsManager<SignatureItemInstance,ModelItemInstance,
+                           openfluid::ware::GetPluggableFunctionSignatureProc,
+                           openfluid::ware::GetPluggableFunctionBodyProc> FunctionPluginsManager;
 
 
 } }  // namespaces

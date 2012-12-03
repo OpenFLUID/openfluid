@@ -192,7 +192,7 @@ void OpenFLUIDApp::printPluginsList()
 
 
 
-void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type)
+void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type)
 {
   std::string TypeStr = ("");
 
@@ -231,7 +231,7 @@ void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::base::SignatureH
 // =====================================================================
 
 
-void OpenFLUIDApp::printPluginsHandledUnitsGraphReport(openfluid::base::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix)
+void OpenFLUIDApp::printPluginsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix)
 {
   unsigned int i;
   if (!HandledUnitsGraph.UpdatedUnitsGraph.empty())
@@ -248,7 +248,7 @@ void OpenFLUIDApp::printPluginsHandledUnitsGraphReport(openfluid::base::Signatur
 // =====================================================================
 
 
-void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, std::string Suffix)
+void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix)
 {
 
   unsigned int i;
@@ -298,8 +298,8 @@ void OpenFLUIDApp::printPluginsReport(const std::string Pattern)
 
       // Status string
       StatusStr = "experimental";
-      if (PlugContainers[i]->Signature->Status == openfluid::base::BETA) StatusStr = "beta";
-      if (PlugContainers[i]->Signature->Status == openfluid::base::STABLE) StatusStr = "stable";
+      if (PlugContainers[i]->Signature->Status == openfluid::ware::BETA) StatusStr = "beta";
+      if (PlugContainers[i]->Signature->Status == openfluid::ware::STABLE) StatusStr = "stable";
 
 
       std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
@@ -310,7 +310,7 @@ void OpenFLUIDApp::printPluginsReport(const std::string Pattern)
       std::cout << "   - Method: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
       std::cout << "   - Description: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
       std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
-      std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->SDKVersion <<  std::endl;
+      std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->ABIVersion <<  std::endl;
       std::cout << "   - Development status: " << StatusStr <<  std::endl;
       std::cout << "   - Author(s): " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)")) << std::endl;
       std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;

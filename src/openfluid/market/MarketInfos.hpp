@@ -57,7 +57,7 @@
 #define __MARKETINFOS_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 
 
 namespace openfluid { namespace market {
@@ -136,7 +136,7 @@ class DLLEXPORT MetaPackageInfo
 
     enum SelectionType { NONE, BIN, SRC};
 
-    openfluid::base::FuncID_t ID;
+    openfluid::ware::WareID_t ID;
 
     std::map<SelectionType,PackageInfo> AvailablePackages;
 
@@ -173,7 +173,7 @@ class DLLEXPORT MetaPackageInfo
 // =====================================================================
 
 
-typedef std::map<openfluid::base::FuncID_t,MetaPackageInfo> MetaPackagesCatalog_t;
+typedef std::map<openfluid::ware::WareID_t,MetaPackageInfo> MetaPackagesCatalog_t;
 
 
 } } // namespaces

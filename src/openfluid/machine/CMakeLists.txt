@@ -21,7 +21,8 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-io 
                       openfluid-tools
                       openfluid-core
-                      openfluid-base                     
+                      openfluid-base
+                      openfluid-ware                     
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
 
 

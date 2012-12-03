@@ -83,21 +83,21 @@ This is the \LaTeX -style documentation of the \funcID\ function (\funcNAME, ver
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(OFEFunc2DocFunction)
+DEFINE_FUNCTION_CLASS(OFEFunc2DocFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("tests.ofefunc2doc"));
   DECLARE_SIGNATURE_NAME(("test function for ofefunc2doc"));
   DECLARE_SIGNATURE_DESCRIPTION(("This function is a test for the ofefunc2doc doc extraction tool. Do not use it in a model."));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::BETA);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::BETA);
 
   DECLARE_SIGNATURE_DOMAIN(("Test"));
   DECLARE_SIGNATURE_PROCESS(("No process"));
@@ -129,7 +129,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_USED_EXTRAFILE("test02.txt");
   DECLARE_REQUIRED_EXTRAFILE("test03req.txt");
 
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 
 // =====================================================================

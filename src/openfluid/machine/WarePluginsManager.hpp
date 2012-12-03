@@ -63,23 +63,30 @@
 #include <glibmm/module.h>
 
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
+
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid {
+
+namespace openfluid { namespace machine {
 
 
-namespace machine {
+typedef std::string (*GetWareABIVersionProc)();
+
+
+// =====================================================================
+// =====================================================================
 
 
 /**
   Management class for pluggable ware
 */
-template<class S, class M>
+template<class S, class M, typename SP, typename BP>
 class DLLEXPORT WarePluginsManager
 {
   private:
 
-    static WarePluginsManager<S,M>* mp_Singleton;
+    static WarePluginsManager<S,M,SP,BP>* mp_Singleton;
 
     std::map<std::string,Glib::Module*> m_LoadedPlugins;
 
@@ -108,16 +115,18 @@ class DLLEXPORT WarePluginsManager
         Plug = new M();
         Plug->Filename = PluginFile;
 
-        void* SDKVersionSymbol;
+        void* ABIVersionSymbol;
 
-        if(PlugLib->get_symbol(PLUGSDKVERSION_PROC_NAME,SDKVersionSymbol))
+        if(PlugLib->get_symbol(WAREABIVERSION_PROC_NAME,ABIVersionSymbol))
         {
-          openfluid::base::GetSDKVersionProc SDKProc;
+          GetWareABIVersionProc ABIProc;
 
-          SDKProc = (openfluid::base::GetSDKVersionProc)SDKVersionSymbol;
-          Plug->SDKCompatible = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,SDKProc(),false) == 0);
+          ABIProc = (GetWareABIVersionProc)ABIVersionSymbol;
+
+          Plug->SDKCompatible = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,ABIProc(),false) == 0);
         }
         else Plug->SDKCompatible = false;
+
 
 
         if (Plug->SDKCompatible)
@@ -126,12 +135,12 @@ class DLLEXPORT WarePluginsManager
           void* SignatureSymbol;
 
           // checks if the handle proc exists
-          if(PlugLib->get_symbol(PLUGFUNCTION_PROC_NAME,FunctionSymbol)
-              && PlugLib->get_symbol(PLUGSIGNATURE_PROC_NAME,SignatureSymbol))
+          if(PlugLib->get_symbol(WAREBODY_PROC_NAME,FunctionSymbol)
+              && PlugLib->get_symbol(WARESIGNATURE_PROC_NAME,SignatureSymbol))
           {
 
             // hooks the handle proc
-            openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)SignatureSymbol;
+            SP SignProc = (SP)SignatureSymbol;
 
 
             if (SignProc != NULL)
@@ -139,18 +148,18 @@ class DLLEXPORT WarePluginsManager
               Plug->Signature = SignProc();
 
               if (Plug->Signature == NULL)
-                throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildUnloadedPluginContainer","Signature from plugin file " + PluginFilename + " cannot be instanciated");
+                throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Signature from plugin file " + PluginFilename + " cannot be instanciated");
 
                 Plug->Function = 0;
             }
-            else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildUnloadedPluginContainer","Unable to find signature in plugin file " + PluginFilename);
+            else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Unable to find signature in plugin file " + PluginFilename);
 
           }
-          else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildUnloadedPluginContainer","Format error in plugin file " + PluginFilename);
+          else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Format error in plugin file " + PluginFilename);
         }
-        else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildUnloadedPluginContainer","Compatibility version mismatch for plugin file " + PluginFilename);
+        else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Compatibility version mismatch for plugin file " + PluginFilename);
       }
-      else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildUnloadedPluginContainer","Unable to find plugin file " + PluginFilename);
+      else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Unable to find plugin file " + PluginFilename);
 
       return Plug;
     }
@@ -181,9 +190,9 @@ class DLLEXPORT WarePluginsManager
     // =====================================================================
 
 
-    static WarePluginsManager<S,M>* getInstance()
+    static WarePluginsManager<S,M,SP,BP>* getInstance()
     {
-      if (mp_Singleton == NULL) mp_Singleton = new WarePluginsManager<S,M>();
+      if (mp_Singleton == NULL) mp_Singleton = new WarePluginsManager<S,M,SP,BP>();
        return mp_Singleton;
     }
 
@@ -268,25 +277,25 @@ class DLLEXPORT WarePluginsManager
         void* FunctionSymbol;
 
         // checks if the handle proc exists
-        if(PlugLib->get_symbol(PLUGFUNCTION_PROC_NAME,FunctionSymbol))
+        if(PlugLib->get_symbol(WAREBODY_PROC_NAME,FunctionSymbol))
         {
 
           // hooks the handle proc
-          openfluid::base::GetPluggableFunctionProc PlugProc = (openfluid::base::GetPluggableFunctionProc)FunctionSymbol;
+          BP PlugProc = (BP)FunctionSymbol;
 
           if (PlugProc != NULL)
           {
             Item->Function = PlugProc();
 
             if (Item->Function == NULL)
-              throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::loadPluginFunction","Function from plugin file " + PluginFilename + " cannot be instanciated");
+              throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::completeSignatureWithWareBody","Function from plugin file " + PluginFilename + " cannot be instanciated");
 
           }
-          else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::loadPluginFunction","Unable to find function in plugin file " + PluginFilename);
+          else throw openfluid::base::OFException("OpenFLUID framework","completeSignatureWithWareBody","Unable to find function in plugin file " + PluginFilename);
         }
-        else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::loadPluginFunction","Format error in plugin file " + PluginFilename);
+        else throw openfluid::base::OFException("OpenFLUID framework","completeSignatureWithWareBody","Format error in plugin file " + PluginFilename);
       }
-      else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::loadPluginFunction","Unable to find plugin file " + PluginFilename);
+      else throw openfluid::base::OFException("OpenFLUID framework","completeSignatureWithWareBody","Unable to find plugin file " + PluginFilename);
     }
 
 
@@ -313,31 +322,31 @@ class DLLEXPORT WarePluginsManager
         Plug = new M();
         Plug->Filename = PluginFile;
 
-        void* SDKVersionSymbol = 0;
+        void* ABIVersionSymbol = 0;
 
-          if(PlugLib->get_symbol(PLUGSDKVERSION_PROC_NAME,SDKVersionSymbol))
+        if(PlugLib->get_symbol(WAREABIVERSION_PROC_NAME,ABIVersionSymbol))
         {
-          openfluid::base::GetSDKVersionProc SDKProc;
+          GetWareABIVersionProc ABIProc;
 
-          SDKProc = (openfluid::base::GetSDKVersionProc)SDKVersionSymbol;
+          ABIProc = (GetWareABIVersionProc)ABIVersionSymbol;
 
-          Plug->SDKCompatible = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,SDKProc(),false) == 0);
+          Plug->SDKCompatible = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,ABIProc(),false) == 0);
         }
         else Plug->SDKCompatible = false;
 
 
         if (Plug->SDKCompatible)
         {
-          void* FunctionSymbol = 0;
           void* SignatureSymbol = 0;
+          void* BodySymbol = 0;
 
           // checks if the handle proc exists
-          if(PlugLib->get_symbol(PLUGFUNCTION_PROC_NAME,FunctionSymbol)
-              && PlugLib->get_symbol(PLUGSIGNATURE_PROC_NAME,SignatureSymbol))
+          if(PlugLib->get_symbol(WAREBODY_PROC_NAME,BodySymbol)
+              && PlugLib->get_symbol(WARESIGNATURE_PROC_NAME,SignatureSymbol))
           {
 
             // hooks the handle proc
-            openfluid::base::GetSignatureProc SignProc = (openfluid::base::GetSignatureProc)SignatureSymbol;
+            SP SignProc = (SP)SignatureSymbol;
 
 
             if (SignProc != NULL)
@@ -345,15 +354,15 @@ class DLLEXPORT WarePluginsManager
               Plug->Signature = SignProc();
 
               if (Plug->Signature == NULL)
-                throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::getSignatureFromPlugin","Signature from plugin file " + PluginFilename + " cannot be instanciated");
+                throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::getWareSignature","Signature from plugin file " + PluginFilename + " cannot be instanciated");
 
             }
-            else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::getSignatureFromPlugin","Unable to find signature in plugin file " + PluginFilename);
+            else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::getWareSignature","Unable to find signature in plugin file " + PluginFilename);
           }
-          else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::getSignatureFromPlugin","Format error in plugin file " + PluginFilename);
+          else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::getWareSignature","Format error in plugin file " + PluginFilename);
         }
       }
-      else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::getSignatureFromPlugin","Unable to find plugin file " + PluginFilename);
+      else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::getWareSignature","Unable to find plugin file " + PluginFilename);
 
       return Plug;
     }
@@ -383,8 +392,8 @@ class DLLEXPORT WarePluginsManager
 // =====================================================================
 
 
-template<class S, class M>
-WarePluginsManager<S,M>* WarePluginsManager<S,M>::mp_Singleton = NULL;
+template<class S, class M, typename SP, typename BP>
+WarePluginsManager<S,M,SP,BP>* WarePluginsManager<S,M,SP,BP>::mp_Singleton = NULL;
 
 
 } } //namespaces

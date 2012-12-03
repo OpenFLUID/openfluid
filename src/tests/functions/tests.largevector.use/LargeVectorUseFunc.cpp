@@ -59,21 +59,21 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(LargeVectorUseFunction)
+DEFINE_FUNCTION_CLASS(LargeVectorUseFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("tests.largevector.use"));
   DECLARE_SIGNATURE_NAME(("test function for large vector use"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN((""));
   DECLARE_SIGNATURE_PROCESS((""));
@@ -83,7 +83,7 @@ BEGIN_SIGNATURE_HOOK
 
   DECLARE_REQUIRED_VAR("tests.largevector[]","TestUnits","vector for tests","");
 
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 
 // =====================================================================

@@ -54,27 +54,27 @@
  */
 
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("tests.logger"));
   DECLARE_SIGNATURE_NAME(("test function for logger"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN((""));
   DECLARE_SIGNATURE_PROCESS((""));
@@ -82,12 +82,12 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
 
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 /**
 
 */
-class LoggerFunction : public openfluid::base::PluggableFunction
+class LoggerFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
@@ -195,5 +195,5 @@ class LoggerFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(LoggerFunction)
+DEFINE_FUNCTION_CLASS(LoggerFunction)
 

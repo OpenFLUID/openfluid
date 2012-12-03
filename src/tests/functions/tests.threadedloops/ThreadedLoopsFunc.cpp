@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 #include <cmath>
 #include <boost/date_time.hpp>
 
@@ -65,20 +65,20 @@
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("tests.threadedloops"));
   DECLARE_SIGNATURE_NAME(("test function for threaded loops"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN((""));
   DECLARE_SIGNATURE_PROCESS((""));
@@ -91,12 +91,12 @@ BEGIN_SIGNATURE_HOOK
 
 
 
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 /**
 
 */
-class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
+class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
 {
   private:
     Glib::RecMutex m_Mutex;
@@ -339,5 +339,5 @@ class ThreadedLoopsFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(ThreadedLoopsFunction)
+DEFINE_FUNCTION_CLASS(ThreadedLoopsFunction)
 

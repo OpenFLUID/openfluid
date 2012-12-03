@@ -81,7 +81,7 @@ std::string MarketPackage::m_CommonBuildConfigOptions = openfluid::config::MARKE
 bool MarketPackage::m_Initialized = false;
 
 
-MarketPackage::MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL)
+MarketPackage::MarketPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
               : m_ID(ID), m_PackageURL(PackageURL), m_Downloaded(false)
 {
   m_PackageFilename = boost::filesystem::path(PackageURL).leaf();

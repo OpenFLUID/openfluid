@@ -45,66 +45,62 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file PrimitivesValuesUseFunc.h
+  \file ObserverSignature.hpp
   \brief Header of ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
+
+
+#ifndef __OBSERVERSIGNATURE_HPP__
+#define __OBSERVERSIGNATURE_HPP__
+
+#include <openfluid/config.hpp>
+#include <openfluid/dllexport.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/ware/WareSignature.hpp>
+
+
+// =====================================================================
+// =====================================================================
+
+/**
+  Macro for the beginning of definition of observer hook
 */
-
-#ifndef __PRIMITIVESVALUESUSEFUNC_H__
-#define __PRIMITIVESVALUESUSEFUNC_H__
-
-#include <openfluid/ware/PluggableFunction.hpp>
-
-
-// =====================================================================
-// =====================================================================
-
-
-DECLARE_FUNCTION_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
+#define BEGIN_OBSERVER_SIGNATURE \
+  openfluid::ware::ObserverSignature* GetWareSignature() \
+  { \
+    openfluid::ware::ObserverSignature* Signature = new openfluid::ware::ObserverSignature(); \
+    Signature->setABIVersion(openfluid::config::FULL_VERSION);
 
 
 /**
-
+  Macro for the end of definition of signature hook
 */
-class PrimitivesValuesUseFunction : public openfluid::ware::PluggableFunction
+#define END_OBSERVER_SIGNATURE \
+    return Signature; \
+  }
+
+
+// =====================================================================
+// =====================================================================
+
+
+namespace openfluid { namespace ware {
+
+class DLLEXPORT ObserverSignature : public WareSignature
 {
-  private:
-
-    long m_ParamLong;
-
-    double m_ParamDouble;
-
-    std::string m_ParamString;
 
   public:
-    /**
-      Constructor
-    */
-    PrimitivesValuesUseFunction();
 
-    /**
-      Destructor
-    */
-    ~PrimitivesValuesUseFunction();
-
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
-
-    bool prepareData();
-
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    ObserverSignature() : WareSignature()
+      {}
 
 };
 
 
-#endif  // __PRIMITIVESVALUESUSEFUNC_H__
+} }  // namespaces
+
+
+#endif /* __OBSERVERSIGNATURE_HPP__ */

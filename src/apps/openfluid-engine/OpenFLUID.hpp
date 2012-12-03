@@ -57,7 +57,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 
 namespace openfluid {
 namespace base {
@@ -105,11 +105,11 @@ class OpenFLUIDApp
 
     void printPluginsList();
 
-    void printPluginsHandledUnitsGraphReport(openfluid::base::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix);
+    void printPluginsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix);
 
-    void printPluginsHandledDataReport(openfluid::base::SignatureHandledData HandledData, std::string Suffix);
+    void printPluginsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix);
 
-    void printPluginsHandledDataItemReport(openfluid::base::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type);
+    void printPluginsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type);
 
     void printPluginsReport(const std::string Pattern);
 

@@ -59,21 +59,21 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(PrimitivesUseFunction)
+DEFINE_FUNCTION_CLASS(PrimitivesUseFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("tests.primitives.use"));
   DECLARE_SIGNATURE_NAME(("test function for primitives (use)"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN((""));
   DECLARE_SIGNATURE_PROCESS((""));
@@ -97,7 +97,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_FUNCTION_PARAM ("doublearrayparam","=1.1;1.3;1.3;1.4","-");
   DECLARE_FUNCTION_PARAM ("longarrayparam","=11;12;13;14;15","-");
 
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 
 // =====================================================================

@@ -54,35 +54,35 @@
  */
 
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID("tests.outputs");
   DECLARE_SIGNATURE_NAME("test function for outputs");
   DECLARE_SIGNATURE_SDKVERSION;
 
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_PRODUCED_VAR("tests.vector[]","UnitsA","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.scalar","UnitsA","scalar for tests","");
   DECLARE_PRODUCED_VAR("tests.vector[]","UnitsB","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.scalar","UnitsB","scalar for tests","");
 
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 
-class OutputsFunction : public openfluid::base::PluggableFunction
+class OutputsFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
@@ -210,5 +210,5 @@ class OutputsFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(OutputsFunction)
+DEFINE_FUNCTION_CLASS(OutputsFunction)
 

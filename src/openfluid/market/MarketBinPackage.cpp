@@ -63,7 +63,7 @@
 namespace openfluid { namespace market {
 
 
-MarketBinPackage::MarketBinPackage(openfluid::base::FuncID_t ID, std::string PackageURL)
+MarketBinPackage::MarketBinPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
                 : MarketPackage(ID,PackageURL)
 {
 

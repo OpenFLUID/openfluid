@@ -55,39 +55,39 @@
 
 
 #include <openfluid/debug.hpp>
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("tests.debug"));
   DECLARE_SIGNATURE_NAME(("test function for debugging macros"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN((""));
   DECLARE_SIGNATURE_PROCESS((""));
   DECLARE_SIGNATURE_METHOD((""));
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 /**
 
 */
-class DebugFunction : public openfluid::base::PluggableFunction
+class DebugFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
@@ -208,5 +208,5 @@ class DebugFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(DebugFunction)
+DEFINE_FUNCTION_CLASS(DebugFunction)
 

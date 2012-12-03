@@ -45,66 +45,42 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file PrimitivesValuesUseFunc.h
+  \file SimulationDrivenWare.hpp
   \brief Header of ...
-*/
 
-#ifndef __PRIMITIVESVALUESUSEFUNC_H__
-#define __PRIMITIVESVALUESUSEFUNC_H__
-
-#include <openfluid/ware/PluggableFunction.hpp>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-// =====================================================================
-// =====================================================================
+#ifndef __SIMULATIONDRIVENWARE_HPP__
+#define __SIMULATIONDRIVENWARE_HPP__
 
 
-DECLARE_FUNCTION_PLUGIN
+namespace openfluid { namespace ware {
 
 
-// =====================================================================
-// =====================================================================
 
-
-/**
-
-*/
-class PrimitivesValuesUseFunction : public openfluid::ware::PluggableFunction
+class SimulationDrivenWare
 {
-  private:
-
-    long m_ParamLong;
-
-    double m_ParamDouble;
-
-    std::string m_ParamString;
-
   public:
-    /**
-      Constructor
-    */
-    PrimitivesValuesUseFunction();
 
-    /**
-      Destructor
-    */
-    ~PrimitivesValuesUseFunction();
+    SimulationDrivenWare() {};
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    virtual ~SimulationDrivenWare() {};
 
-    bool prepareData();
+  // TODO define and develop methods
+  // - OPENFLUID_GetCurrentDateTime
+  // - OPENFLUID_GetCurrentTimeIndex
+  //...
 
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
 
 };
 
 
-#endif  // __PRIMITIVESVALUESUSEFUNC_H__
+
+} } // openfluid::ware
+
+
+
+#endif /* __SIMULATIONDRIVENWARE_HPP__ */

@@ -63,28 +63,28 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(FortranFunction)
+DEFINE_FUNCTION_CLASS(FortranFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("tests.fortran"));
   DECLARE_SIGNATURE_NAME(("test function for fortran code wrapping"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN((""));
   DECLARE_SIGNATURE_PROCESS((""));
   DECLARE_SIGNATURE_METHOD((""));
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 // =====================================================================
 // =====================================================================

@@ -127,11 +127,11 @@ class DLLEXPORT MarketClient
 
     const MetaPackagesCatalog_t& getMetaPackagesCatalog();
 
-    bool setSelectionFlag(const openfluid::base::FuncID_t& ID, const MetaPackageInfo::SelectionType& Flag);
+    bool setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag);
 
-    void setSRCBuildOptions(const openfluid::base::FuncID_t& ID, const std::string& BuildOpts);
+    void setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const std::string& BuildOpts);
 
-    MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::base::FuncID_t& ID) const;
+    MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::ware::WareID_t& ID) const;
 
     void installSelection(const bool IgnoreMissing = true);
 

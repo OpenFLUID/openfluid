@@ -52,13 +52,15 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#ifndef __FUNCSIGNATURE_H__
-#define __FUNCSIGNATURE_H__
+#ifndef __FUNCTIONSIGNATURE_HPP__
+#define __FUNCTIONSIGNATURE_HPP__
 
 #include <boost/regex.hpp>
 
 #include <openfluid/config.hpp>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/ware/WareSignature.hpp>
 
 
 // =====================================================================
@@ -67,17 +69,17 @@
 /**
   Macro for the beginning of definition of signature hook
 */
-#define BEGIN_SIGNATURE_HOOK \
-  openfluid::base::FunctionSignature* GetPlugSignature() \
+#define BEGIN_FUNCTION_SIGNATURE \
+  openfluid::ware::FunctionSignature* GetWareSignature() \
   { \
-    openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature(); \
-    Signature->setSDKVersion(openfluid::config::FULL_VERSION);
+    openfluid::ware::FunctionSignature* Signature = new openfluid::ware::FunctionSignature(); \
+    Signature->setABIVersion(openfluid::config::FULL_VERSION);
 
 
 /**
   Macro for the end of definition of signature hook
 */
-#define END_SIGNATURE_HOOK \
+#define END_FUNCTION_SIGNATURE \
     return Signature; \
   }
 
@@ -85,21 +87,6 @@
 // =====================================================================
 // =====================================================================
 
-
-/**
-  Macro for declaration of the function ID
-*/
-#define DECLARE_SIGNATURE_ID(id) Signature->ID = id;
-
-/**
-  Macro for declaration of the function name
-*/
-#define DECLARE_SIGNATURE_NAME(name) Signature->Name = name;
-
-/**
-  Macro for declaration of the function description
-*/
-#define DECLARE_SIGNATURE_DESCRIPTION(desc) Signature->Description = desc;
 
 /**
   Macro for declaration of the function application domain
@@ -116,30 +103,6 @@
 */
 #define DECLARE_SIGNATURE_METHOD(method) Signature->Method = method;
 
-/**
-  Macro for declaration of the function author name
-*/
-#define DECLARE_SIGNATURE_AUTHORNAME(name) Signature->Author = name;
-
-/**
-  Macro for declaration of the function author email
-*/
-#define DECLARE_SIGNATURE_AUTHOREMAIL(email) Signature->AuthorEmail = email;
-
-/**
-  Macro for declaration of the function version
-*/
-#define DECLARE_SIGNATURE_VERSION(version) Signature->Version = version;
-
-/**
-  Macro for declaration of the function status
-*/
-#define DECLARE_SIGNATURE_STATUS(status) Signature->Status = status;
-
-/**
-  Macro for declaration of SDK version used to build the function
-*/
-#define DECLARE_SIGNATURE_SDKVERSION Signature->setSDKVersion(openfluid::config::FULL_VERSION);
 
 // =====================================================================
 // =====================================================================
@@ -152,7 +115,7 @@
   @param[in] unit unit of the parameter. Could be an empty string if there is no unit
 */
 #define DECLARE_FUNCTION_PARAM(name,description,unit) \
-  Signature->HandledData.FunctionParams.push_back(openfluid::base::SignatureHandledDataItem((name),(""),description,unit));
+  Signature->HandledData.FunctionParams.push_back(openfluid::ware::SignatureHandledDataItem((name),(""),description,unit));
 
 
 
@@ -168,7 +131,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_PRODUCED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of an updated variable
@@ -178,7 +141,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_UPDATED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.UpdatedVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.UpdatedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required variable
@@ -188,7 +151,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.RequiredVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 
 
@@ -200,7 +163,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_PREVVAR(name,uclass,description,unit) \
-  Signature->HandledData.RequiredPrevVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of an used variable
@@ -210,7 +173,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_VAR(name,uclass,description,unit) \
-  Signature->HandledData.UsedVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 
 /**
@@ -221,7 +184,7 @@
   @param[in] unit unit of the variable. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_PREVVAR(name,uclass,description,unit) \
-  Signature->HandledData.UsedPrevVars.push_back(openfluid::base::SignatureHandledTypedDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required input data
@@ -231,7 +194,7 @@
   @param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_INPUTDATA(name,uclass,description,unit) \
-  Signature->HandledData.RequiredInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredInput.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used input data
@@ -241,7 +204,7 @@
   @param[in] unit unit of the property. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_INPUTDATA(name,uclass,description,unit) \
-  Signature->HandledData.UsedInput.push_back(openfluid::base::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedInput.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of used events
@@ -265,7 +228,7 @@
   @param[in] description description of the updated class
 
 */
-#define DECLARE_UPDATED_UNITSCLASS(uclass,description) Signature->HandledUnitsGraph.UpdatedUnitsClass.push_back(openfluid::base::SignatureHandledUnitsClassItem(uclass,description));
+#define DECLARE_UPDATED_UNITSCLASS(uclass,description) Signature->HandledUnitsGraph.UpdatedUnitsClass.push_back(openfluid::ware::SignatureHandledUnitsClassItem(uclass,description));
 
 
 /**
@@ -288,41 +251,20 @@
 
 
 
-namespace openfluid { namespace base {
+namespace openfluid { namespace ware {
 
 
-typedef std::string FuncID_t;
-typedef std::string FuncName_t;
-typedef std::string FuncVersion_t;
 typedef std::string FuncMethod_t;
+
 typedef std::string FuncProcess_t;
+
 typedef std::string FuncDomain_t;
 
 
-/**
-  Function status
-*/
-enum FuncStatus_t
-{
-  /**
-    Experimental status, for testing only
-  */
-  EXPERIMENTAL,
-
-  /**
-    Beta status, on the road to a stable status
-  */
-  BETA,
-
-  /**
-    Stable status
-  */
-  STABLE
-};
-
-
 // =====================================================================
 // =====================================================================
+
+
 /**
 Class for storage of the definition of data handled by the function.
 */
@@ -480,25 +422,11 @@ class SignatureHandledUnitsGraph
   Class encapsulating the plugin signature,
   returned from the plugin to the host app for registering
 */
-class FunctionSignature
+class DLLEXPORT FunctionSignature : public WareSignature
 {
 
   public:
 
-    /**
-    Function ID
-    */
-    FuncID_t ID;
-
-    /**
-    Plugin name
-    */
-    FuncName_t Name;
-
-    /**
-    Plugin Description
-    */
-    std::string Description;
 
     /**
     Plugin domain (i.e. hydrology, pop, erosion, ...)
@@ -516,31 +444,6 @@ class FunctionSignature
     FuncMethod_t Method;
 
     /**
-    Plug-in version number
-    */
-    FuncVersion_t Version;
-
-    /**
-    Development status
-    */
-    FuncStatus_t Status;
-
-    /**
-    SDK version number used to build the function
-    */
-    std::string SDKVersion;
-
-    /**
-    Author's name
-    */
-    std::string Author;
-
-    /**
-    Author's email
-    */
-    std::string AuthorEmail;
-
-    /**
     Handled data
     */
     SignatureHandledData HandledData;
@@ -551,14 +454,9 @@ class FunctionSignature
     SignatureHandledUnitsGraph HandledUnitsGraph;
 
 
-    FunctionSignature() :
-      ID(""),Name(""),Description(""),Domain(""),Process(""),Method(""),Version(""),
-      Status(EXPERIMENTAL),SDKVersion(""),Author(""),AuthorEmail("") {}
-
-    void setSDKVersion(FuncVersion_t Version)
-    {
-      SDKVersion = Version;
-    }
+    FunctionSignature() : WareSignature(),
+      Domain(""),Process(""),Method("")
+      {}
 
 };
 

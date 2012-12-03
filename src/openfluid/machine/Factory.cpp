@@ -254,7 +254,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
 
     if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction))
     {
-      // instanciation of a pluggeg simulation function using the plugin manager
+      // instanciation of a plugged simulation function using the plugin manager
       IInstance = FunctionPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::base::FunctionDescriptor*)(*it))->getFileID());
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
@@ -272,14 +272,14 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::base::ModelItemDescriptor::Generator;
 
-      openfluid::base::FunctionSignature* Signature = new openfluid::base::FunctionSignature();
+      openfluid::ware::FunctionSignature* Signature = new openfluid::ware::FunctionSignature();
 
       std::string VarName = GenDesc->getVariableName();
       GenDesc->isVectorVariable() ? VarName += "[vector]" : VarName += "[double]";
 
       Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
 
-      Signature->HandledData.ProducedVars.push_back(openfluid::base::SignatureHandledTypedDataItem(VarName,GenDesc->getUnitClass(),"",""));
+      Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem(VarName,GenDesc->getUnitClass(),"",""));
 
       IInstance->GeneratorInfo = new GeneratorExtraInfo();
       IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();

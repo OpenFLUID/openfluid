@@ -61,7 +61,6 @@
 #include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/base/EventDescriptor.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FuncSignature.hpp>
 #include <openfluid/base/FunctionDescriptor.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
 #include <openfluid/base/IDataDescriptor.hpp>
@@ -74,7 +73,6 @@
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/OutputFilesDescriptor.hpp>
 #include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/PlugFunction.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>

@@ -397,7 +397,7 @@ const MarketLicensesTexts_t& MarketClient::getLicensesTexts()
 // =====================================================================
 
 
-bool MarketClient::setSelectionFlag(const openfluid::base::FuncID_t& ID, const MetaPackageInfo::SelectionType& Flag)
+bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag)
 {
   MetaPackagesCatalog_t::iterator PCit = m_MetaPackagesCatalog.find(ID);
 
@@ -423,7 +423,7 @@ bool MarketClient::setSelectionFlag(const openfluid::base::FuncID_t& ID, const M
 // =====================================================================
 
 
-void MarketClient::setSRCBuildOptions(const openfluid::base::FuncID_t& ID, const std::string& BuildOpts)
+void MarketClient::setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const std::string& BuildOpts)
 {
   MetaPackagesCatalog_t::iterator PCit = m_MetaPackagesCatalog.find(ID);
 
@@ -440,7 +440,7 @@ void MarketClient::setSRCBuildOptions(const openfluid::base::FuncID_t& ID, const
 // =====================================================================
 
 
-MetaPackageInfo::SelectionType MarketClient::getSelectionFlag(const openfluid::base::FuncID_t& ID) const
+MetaPackageInfo::SelectionType MarketClient::getSelectionFlag(const openfluid::ware::WareID_t& ID) const
 {
   MetaPackagesCatalog_t::const_iterator PCit = m_MetaPackagesCatalog.find(ID);
 

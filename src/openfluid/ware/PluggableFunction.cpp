@@ -47,31 +47,33 @@
 
 
 /**
-  @file
-  @brief implementation file for generic pluggable function interface definition
+  \file PluggableFunction.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/base/PlugFunction.hpp>
+
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-namespace openfluid { namespace base {
+namespace openfluid { namespace ware {
 
 
 
 PluggableFunction::PluggableFunction()
-  : mp_InternalCoreData(NULL), mp_ExecMsgs(NULL),
+  : PluggableWare(), SimulationDrivenWare(),
+    mp_InternalCoreData(NULL), mp_ExecMsgs(NULL),
     m_MaxThreads(openfluid::config::FUNCTIONS_MAXNUMTHREADS),
     m_Initialized(false), mp_CoreData(NULL)
 {
@@ -97,7 +99,7 @@ void PluggableFunction::initializeFunction(openfluid::core::CoreRepository* Core
     openfluid::base::ExecutionMessages* ExecMsgs,
     openfluid::base::EnvironmentProperties* FuncEnv,
     const unsigned int& MaxThreads,
-    const openfluid::base::FuncID_t& FuncID)
+    const WareID_t& FuncID)
 {
   if (m_Initialized) return;
 
@@ -187,9 +189,9 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
   if (&aUnit != NULL)
   {
     if (!aUnit.getVariables()->appendValue(VarName,Val))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
 }
 
 // =====================================================================
@@ -206,9 +208,9 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::DoubleValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending double value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending double value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
 }
 
 
@@ -223,9 +225,9 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::IntegerValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending long value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending long value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
 }
 
 
@@ -240,9 +242,9 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::BooleanValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending boolean value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending boolean value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
 }
 
 
@@ -257,9 +259,9 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::StringValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending string value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending string value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
 }
 
 
@@ -275,9 +277,9 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,Step,Val))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
 }
 
 
@@ -296,9 +298,9 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::DoubleValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting double value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting double value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
 }
 
 
@@ -314,9 +316,9 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::IntegerValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting long value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting long value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
 }
 
 
@@ -332,9 +334,9 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::BooleanValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting boolean value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting boolean value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
 }
 
 
@@ -350,9 +352,9 @@ void PluggableFunction::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::StringValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting string value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Error setting string value for variable "+ VarName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetVariable","Unit is NULL");
 }
 
 
@@ -384,10 +386,10 @@ void PluggableFunction::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitP
     {
       std::string TimeStr;
       openfluid::tools::ConvertValue(Step,&TimeStr);
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetVariable","Value for variable "+ VarName +" does not exist or is not right type at time step "+ TimeStr);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetVariable","Value for variable "+ VarName +" does not exist or is not right type at time step "+ TimeStr);
     }
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetVariable","Unit is NULL");
 }
 
 
@@ -575,9 +577,9 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->setValue(InputName,Val))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set value for input data "+ InputName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set value for input data "+ InputName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
 }
 
 
@@ -592,9 +594,9 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::DoubleValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set double value for input data "+ InputName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set double value for input data "+ InputName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
 }
 
 
@@ -609,9 +611,9 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::IntegerValue(Val)))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set long value for input data "+ InputName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set long value for input data "+ InputName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
 }
 
 
@@ -626,9 +628,9 @@ void PluggableFunction::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->setValue(InputName,Val))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set string value for input data "+ InputName);
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unable to set string value for input data "+ InputName);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_SetInputData","Unit is NULL");
 }
 
 
@@ -643,9 +645,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValue(InputName,Val))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","StringValue for input data "+ InputName +" does not exist");
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","StringValue for input data "+ InputName +" does not exist");
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
 
 
@@ -738,9 +740,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValueAsDouble(InputName,Val))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Double value for input data "+ InputName +" does not exist");
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Double value for input data "+ InputName +" does not exist");
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
 
 
@@ -768,9 +770,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValueAsLong(InputName,Val))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Long integer for input data "+ InputName +" does not exist");
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Long integer for input data "+ InputName +" does not exist");
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
 
 
@@ -797,9 +799,9 @@ void PluggableFunction::OPENFLUID_GetInputData(const openfluid::core::Unit *Unit
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->getValue(InputName,Val))
-      throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","String value for input data "+ InputName +" does not exist");
+      throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","String value for input data "+ InputName +" does not exist");
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetInputData","Unit is NULL");
 }
 
 
@@ -813,7 +815,7 @@ bool PluggableFunction::OPENFLUID_IsInputDataExist(const openfluid::core::Unit *
   if (UnitPtr != NULL)
     return UnitPtr->getInputData()->isDataExist(InputName);
 
-  throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_IsInputDataExist","Unit is NULL");
+  throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_IsInputDataExist","Unit is NULL");
   return false;
 }
 
@@ -1197,7 +1199,7 @@ void PluggableFunction::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
     Ev.setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
     UnitPtr->getEvents()->addEvent(Ev);
   }
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendEvent","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendEvent","Unit is NULL");
 }
 
 
@@ -1226,7 +1228,7 @@ void PluggableFunction::OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr
   if (UnitPtr != NULL)
     UnitPtr->getEvents()->getEventsBetween(BeginDate,EndDate,Events);
 
-  else throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetEvents","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_GetEvents","Unit is NULL");
 }
 
 
@@ -1317,7 +1319,7 @@ void PluggableFunction::OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName
                                           openfluid::core::PcsOrd_t PcsOrder)
 {
   if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder, openfluid::core::InstantiationInfo::SIMULATION)))
-   throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddUnit","Error adding unit");
+   throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddUnit","Error adding unit");
 
   mp_CoreData->sortUnitsByProcessOrder();
 }
@@ -1334,7 +1336,7 @@ void PluggableFunction::OPENFLUID_DeleteUnit(openfluid::core::UnitClass_t ClassN
   openfluid::core::Unit* TheUnit = mp_CoreData->getUnit(ClassName,ID);
 
   if (TheUnit == NULL)
-    OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_DeleteUnit","error deleting unit");
+    openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_DeleteUnit","error deleting unit");
 
   mp_CoreData->deleteUnit(TheUnit);
 
@@ -1369,7 +1371,7 @@ bool PluggableFunction::OPENFLUID_AddFromToConnection(openfluid::core::Unit* Fro
     return (FromUnit->addToUnit(ToUnit) && ToUnit->addFromUnit(FromUnit));
   }
   else
-    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddFromToConnection","Error adding from-to connection");
+    throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddFromToConnection","Error adding from-to connection");
 }
 
 
@@ -1397,7 +1399,7 @@ bool PluggableFunction::OPENFLUID_RemoveFromToConnection(openfluid::core::Unit* 
                                                          openfluid::core::Unit* ToUnit)
 {
   if (FromUnit == NULL || ToUnit == NULL)
-    throw OFException("OpenFLUID framework","CoreRepository::removeFromToConnection","Error removing from-to connection");
+    throw openfluid::base::OFException("OpenFLUID framework","CoreRepository::removeFromToConnection","Error removing from-to connection");
   else
     return mp_CoreData->removeFromToConnection(FromUnit,ToUnit);
 }
@@ -1431,7 +1433,7 @@ bool PluggableFunction::OPENFLUID_AddChildParentConnection(openfluid::core::Unit
     return (ChildUnit->addParentUnit(ParentUnit) && ParentUnit->addChildUnit(ChildUnit));
   }
   else
-    throw OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddChildParentConnection","Error adding child-parent connection");
+    throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AddChildParentConnection","Error adding child-parent connection");
 }
 
 
@@ -1459,7 +1461,7 @@ bool PluggableFunction::OPENFLUID_RemoveChildParentConnection(openfluid::core::U
                                                            openfluid::core::Unit* ParentUnit)
 {
   if (ChildUnit == NULL || ParentUnit == NULL)
-    throw OFException("OpenFLUID framework","CoreRepository::removeChildParentConnection","Error removing child-parent connection");
+    throw openfluid::base::OFException("OpenFLUID framework","CoreRepository::removeChildParentConnection","Error removing child-parent connection");
   else
     return mp_CoreData->removeChildParentConnection(ChildUnit,ParentUnit);
 }
@@ -1843,7 +1845,7 @@ void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, std::string S
 
 void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg)
 {
-  throw OFException(Sender,TimeStep,Msg);
+  throw openfluid::base::OFException(Sender,TimeStep,Msg);
 }
 
 
@@ -1853,7 +1855,7 @@ void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, openfluid::core
 
 void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Msg)
 {
-  throw OFException(Sender,Msg);
+  throw openfluid::base::OFException(Sender,Msg);
 }
 
 
@@ -1863,7 +1865,7 @@ void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Msg
 
 void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg)
 {
-  throw OFException(Sender,Source,TimeStep,Msg);
+  throw openfluid::base::OFException(Sender,Source,TimeStep,Msg);
 }
 
 
@@ -1873,7 +1875,7 @@ void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Sou
 
 void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg)
 {
-  throw OFException(Sender,Source,Msg);
+  throw openfluid::base::OFException(Sender,Source,Msg);
 }
 
 
@@ -1907,8 +1909,4 @@ void PluggableFunction::OPENFLUID_SetFunctionMaxThreads(const unsigned int& MaxN
 }
 
 
-} } // namespace openfluid::base
-
-
-
-
+} } // namespaces

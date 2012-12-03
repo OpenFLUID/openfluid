@@ -45,66 +45,22 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file PrimitivesValuesUseFunc.h
+  \file ware.hpp
   \brief Header of ...
-*/
 
-#ifndef __PRIMITIVESVALUESUSEFUNC_H__
-#define __PRIMITIVESVALUESUSEFUNC_H__
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
+
+#ifndef __WARE_HPP__
+#define __WARE_HPP__
+
+
+#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableObserver.hpp>
 
 
-// =====================================================================
-// =====================================================================
-
-
-DECLARE_FUNCTION_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-
-*/
-class PrimitivesValuesUseFunction : public openfluid::ware::PluggableFunction
-{
-  private:
-
-    long m_ParamLong;
-
-    double m_ParamDouble;
-
-    std::string m_ParamString;
-
-  public:
-    /**
-      Constructor
-    */
-    PrimitivesValuesUseFunction();
-
-    /**
-      Destructor
-    */
-    ~PrimitivesValuesUseFunction();
-
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
-
-    bool prepareData();
-
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-};
-
-
-#endif  // __PRIMITIVESVALUESUSEFUNC_H__
+#endif /* __WARE_HPP__ */

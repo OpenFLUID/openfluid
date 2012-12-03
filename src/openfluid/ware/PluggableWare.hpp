@@ -45,66 +45,60 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file PrimitivesValuesUseFunc.h
+  \file PluggableWare.hpp
   \brief Header of ...
-*/
 
-#ifndef __PRIMITIVESVALUESUSEFUNC_H__
-#define __PRIMITIVESVALUESUSEFUNC_H__
-
-#include <openfluid/ware/PluggableFunction.hpp>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-// =====================================================================
-// =====================================================================
+#ifndef __PLUGGABLEWARE_HPP__
+#define __PLUGGABLEWARE_HPP__
 
-
-DECLARE_FUNCTION_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace ware {
 
 
 /**
-
+  Hook function name of ware plugin body
 */
-class PrimitivesValuesUseFunction : public openfluid::ware::PluggableFunction
+#define WAREBODY_PROC_NAME "GetWareBody"
+
+/**
+  Hook function name of ware plugin signature
+*/
+#define WARESIGNATURE_PROC_NAME "GetWareSignature"
+
+/**
+  Hook function name of ware ABI version
+*/
+#define WAREABIVERSION_PROC_NAME "GetWareABIVersion"
+
+
+// =====================================================================
+// =====================================================================
+
+
+class PluggableWare
 {
-  private:
-
-    long m_ParamLong;
-
-    double m_ParamDouble;
-
-    std::string m_ParamString;
-
   public:
-    /**
-      Constructor
-    */
-    PrimitivesValuesUseFunction();
 
-    /**
-      Destructor
-    */
-    ~PrimitivesValuesUseFunction();
+    PluggableWare() {};
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    virtual ~PluggableWare() {};
 
-    bool prepareData();
-
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    // TODO define and develop methods
+    // - OPENFLUID_RaiseWarning
+    // - OPENFLUID_RaiseError
+    // - OPENFLUID_Logger
+    // - OPENFLUID_GetRunEnvironment
 
 };
 
 
-#endif  // __PRIMITIVESVALUESUSEFUNC_H__
+
+} } // openfluid::ware
+
+
+
+#endif /* __PLUGGABLEWARE_HPP__ */

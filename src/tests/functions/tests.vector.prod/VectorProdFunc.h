@@ -54,14 +54,14 @@
 #ifndef __VECTORPRODFUNC_H__
 #define __VECTORPRODFUNC_H__
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 
 // =====================================================================
@@ -71,7 +71,7 @@ DECLARE_PLUGIN_HOOKS
 /**
 
 */
-class VectorProdFunction : public openfluid::base::PluggableFunction
+class VectorProdFunction : public openfluid::ware::PluggableFunction
 {
   private:
 

@@ -67,7 +67,7 @@
 namespace openfluid { namespace market {
 
 
-MarketSrcPackage::MarketSrcPackage(openfluid::base::FuncID_t ID, std::string PackageURL)
+MarketSrcPackage::MarketSrcPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
                 : MarketPackage(ID,PackageURL),
                   m_KeepSources(true)
 {

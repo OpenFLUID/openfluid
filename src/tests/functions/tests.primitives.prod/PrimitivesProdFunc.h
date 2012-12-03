@@ -54,14 +54,14 @@
 #ifndef __PRIMITIVESPRODFUNC_H__
 #define __PRIMITIVESPRODFUNC_H__
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 
 // =====================================================================
@@ -71,7 +71,7 @@ DECLARE_PLUGIN_HOOKS
 /**
 
 */
-class PrimitivesProdFunction : public openfluid::base::PluggableFunction
+class PrimitivesProdFunction : public openfluid::ware::PluggableFunction
 {
   private:
 

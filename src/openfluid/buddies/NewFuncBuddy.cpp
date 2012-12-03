@@ -120,18 +120,17 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "</func2doc>" << std::endl;
   CPPContent << "*/" << std::endl;
   CPPContent << std::endl;
-  CPPContent << "#include <openfluid/base.hpp>" << std::endl;
-  CPPContent << "#include <openfluid/core.hpp>" << std::endl;
+  CPPContent << "#include <openfluid/ware/PluggableFunction.hpp>" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "DECLARE_PLUGIN_HOOKS" << std::endl;
+  CPPContent << "DECLARE_FUNCTION_PLUGIN" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "BEGIN_SIGNATURE_HOOK" << std::endl;
+  CPPContent << "BEGIN_FUNCTION_SIGNATURE" << std::endl;
   CPPContent << "" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_ID(\"" << m_Options["funcid"] << "\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_NAME(\"\");" << std::endl;
@@ -139,7 +138,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_VERSION(\""+FuncVersionStr.str()+"\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_SDKVERSION;" << std::endl;
-  CPPContent << "  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);" << std::endl;
+  CPPContent << "  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);" << std::endl;
   CPPContent << "" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_DOMAIN(\"\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_PROCESS(\"\");" << std::endl;
@@ -147,14 +146,14 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "  DECLARE_SIGNATURE_AUTHORNAME(\"" << m_Options["authorname"] << "\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_AUTHOREMAIL(\"" << m_Options["authoremail"] << "\");" << std::endl;
   CPPContent << "" << std::endl;
-  CPPContent << "END_SIGNATURE_HOOK" << std::endl;
+  CPPContent << "END_FUNCTION_SIGNATURE" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "class " << m_Options["cppclass"] << " : public openfluid::base::PluggableFunction" << std::endl;
+  CPPContent << "class " << m_Options["cppclass"] << " : public openfluid::ware::PluggableFunction" << std::endl;
   CPPContent << "{" << std::endl;
   CPPContent << "  private:" << std::endl;
   CPPContent << std::endl;
@@ -246,7 +245,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << std::endl;
-  CPPContent << "DEFINE_FUNCTION_HOOK(" << m_Options["cppclass"] << ")" << std::endl;
+  CPPContent << "DEFINE_FUNCTION_CLASS(" << m_Options["cppclass"] << ")" << std::endl;
   CPPContent << std::endl;
 
   std::ofstream OutFile;

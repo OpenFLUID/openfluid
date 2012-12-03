@@ -3,7 +3,7 @@
 */
 
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 
@@ -11,21 +11,21 @@
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS;
+DECLARE_FUNCTION_PLUGIN;
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("examples.primitives.unitsB.prod"));
   DECLARE_SIGNATURE_NAME(("Example of data production on units of class B"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN(("examples"));
   DECLARE_SIGNATURE_PROCESS((""));
@@ -39,7 +39,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_PRODUCED_VAR("var5","unitsB","the variable 5","");
   
 
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 
 // =====================================================================
@@ -49,7 +49,7 @@ END_SIGNATURE_HOOK
 /**
 
 */
-class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
+class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
 {
   private:
 
@@ -205,5 +205,5 @@ class ExampleUnitsBProduction : public openfluid::base::PluggableFunction
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(ExampleUnitsBProduction);
+DEFINE_FUNCTION_CLASS(ExampleUnitsBProduction);
 

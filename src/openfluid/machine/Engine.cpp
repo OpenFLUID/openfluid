@@ -262,7 +262,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
 void Engine::checkModelConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator FuncIter;
-  openfluid::base::SignatureHandledData HData;
+  openfluid::ware::SignatureHandledData HData;
   ModelItemInstance* CurrentFunction;
   unsigned int i;
 
@@ -340,7 +340,7 @@ void Engine::checkModelConsistency()
 void Engine::checkInputDataConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator FuncIter;
-  openfluid::base::SignatureHandledData HData;
+  openfluid::ware::SignatureHandledData HData;
   ModelItemInstance* CurrentFunction;
   unsigned int i;
 
@@ -371,7 +371,7 @@ void Engine::checkInputDataConsistency()
 void Engine::checkExtraFilesConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator FuncIter;
-  openfluid::base::SignatureHandledData HData;
+  openfluid::ware::SignatureHandledData HData;
   ModelItemInstance* CurrentFunction;
 
 
@@ -523,7 +523,7 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
       std::set<std::pair<openfluid::core::UnitClass_t,openfluid::core::VariableName_t> > VarsUnits;
       std::set<std::pair<openfluid::core::UnitClass_t,std::pair<openfluid::core::VariableName_t,openfluid::core::Value::Type> > > TypedVarsUnits;
       std::list<ModelItemInstance*>::const_iterator FuncIter;
-      openfluid::base::SignatureHandledData HData;
+      openfluid::ware::SignatureHandledData HData;
       ModelItemInstance* CurrentFunction;
       unsigned int i;
 

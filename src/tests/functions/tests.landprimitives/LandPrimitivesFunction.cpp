@@ -6,17 +6,17 @@
  */
 
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
 
   DECLARE_SIGNATURE_ID("tests.landprimitives");
   DECLARE_SIGNATURE_NAME("");
@@ -24,7 +24,7 @@ BEGIN_SIGNATURE_HOOK
 
   DECLARE_SIGNATURE_VERSION("10.07");
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN("");
   DECLARE_SIGNATURE_PROCESS("");
@@ -37,14 +37,14 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_UPDATED_UNITSCLASS("TU","Test Units class");
   DECLARE_UPDATED_UNITSCLASS("OU","Other Units class");
   DECLARE_UPDATED_UNITSCLASS("MU","Matrix Units class");
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 
 // =====================================================================
 // =====================================================================
 
 
-class LandPrimitivesFunction : public openfluid::base::PluggableFunction
+class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
@@ -340,5 +340,5 @@ class LandPrimitivesFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(LandPrimitivesFunction)
+DEFINE_FUNCTION_CLASS(LandPrimitivesFunction)
 

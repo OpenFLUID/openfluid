@@ -63,21 +63,21 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_HOOK(PrimitivesValuesUseFunction)
+DEFINE_FUNCTION_CLASS(PrimitivesValuesUseFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
+BEGIN_FUNCTION_SIGNATURE
   DECLARE_SIGNATURE_ID(("tests.primitivesvalues.use"));
   DECLARE_SIGNATURE_NAME(("test function for primitives values (use)"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN((""));
   DECLARE_SIGNATURE_PROCESS((""));
@@ -120,7 +120,7 @@ BEGIN_SIGNATURE_HOOK
   DECLARE_FUNCTION_PARAM ("matrixparam","=1.1;1.2|2.1;2.2|3.1;3.2","-");
   DECLARE_FUNCTION_PARAM ("mapparam","=key1=1.1;key2=a string;key3=true","-");
 
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 
 // =====================================================================

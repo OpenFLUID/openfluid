@@ -45,38 +45,24 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file PluggableFunction.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-
-  Every simulation function must :
-  \li define its own signature
-  \li define a class inherited from the PluggableFunction class.
-
-  To be linked to an OpenFLUID application, the simulation function must have two hooks declarations.
-  \code
-  extern "C"
-  {
-    DLLIMPORT PluggableFunction* GetPlugFunction();
-    DLLIMPORT PluggableFunction* GetPlugSignature();
-  };
-  \endcode
-  returning the signature and  an instance of the derived class inherited from the PluggableFunction class.
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
+#ifndef __PLUGGABLEFUNCTION_HPP__
+#define __PLUGGABLEFUNCTION_HPP__
 
-#ifndef __PLUGFUNCTION_HPP__
-#define __PLUGFUNCTION_HPP__
 
 #include <string>
 #include <boost/filesystem/path.hpp>
 #include <glibmm/threadpool.h>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
 #include <openfluid/base/EnvProperties.hpp>
@@ -88,40 +74,24 @@
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/Event.hpp>
 #include <openfluid/core/EventsColl.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/ware/SimulationDrivenWare.hpp>
 
 
 // =====================================================================
 // =====================================================================
-
-/**
-  Function hook name
-*/
-#define PLUGFUNCTION_PROC_NAME "GetPlugFunction"
-
-/**
-  Signature hook name
-*/
-#define PLUGSIGNATURE_PROC_NAME "GetPlugSignature"
-
-/**
-  SDK version hook name
-*/
-#define PLUGSDKVERSION_PROC_NAME "GetPlugSDKVersion"
-
 
 
 /**
   Macro for declaration of function and signature hooks
 */
-#define DECLARE_PLUGIN_HOOKS \
+#define DECLARE_FUNCTION_PLUGIN \
   extern "C" \
   { \
-    DLLEXPORT std::string GetPlugSDKVersion(); \
-    DLLEXPORT openfluid::base::PluggableFunction* GetPlugFunction(); \
-    DLLEXPORT openfluid::base::FunctionSignature* GetPlugSignature(); \
+    DLLEXPORT std::string GetWareABIVersion(); \
+    DLLEXPORT openfluid::ware::PluggableFunction* GetWareBody(); \
+    DLLEXPORT openfluid::ware::FunctionSignature* GetWareSignature(); \
   }
-
-
 
 
 // =====================================================================
@@ -130,15 +100,15 @@
 
 /**
   Macro for definition of function hook
-  @param[in] pluginclassname The name of the class to instanciate
+  @param[in] pluginclassname The name of the class to instantiate
 */
-#define DEFINE_FUNCTION_HOOK(pluginclassname) \
-  std::string GetPlugSDKVersion() \
+#define DEFINE_FUNCTION_CLASS(pluginclassname) \
+  std::string GetWareABIVersion() \
   { \
     return std::string(openfluid::config::FULL_VERSION); \
   } \
   \
-  openfluid::base::PluggableFunction* GetPlugFunction() \
+  openfluid::ware::PluggableFunction* GetWareBody() \
   { \
     return new pluginclassname(); \
   }
@@ -149,20 +119,21 @@
 // =====================================================================
 
 
-namespace openfluid { namespace base {
+namespace openfluid { namespace ware {
 
 
 
 /**
-  @brief Abstract class for plugin interface
+  @brief Abstract class for simulation function plugin
 
-  Abstract class for plugin interface, defining the minimal structure for a
-  simulation function. \n
+  Abstract class for simulation function plugin interface,
+  defining the minimal structure for a simulation function. \n
   All simulation functions must inherit from this class.
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
-class DLLEXPORT PluggableFunction
+class DLLEXPORT PluggableFunction : public PluggableWare,
+                                    public SimulationDrivenWare
 {
 
   private:
@@ -180,7 +151,7 @@ class DLLEXPORT PluggableFunction
 
 
     /**
-      Function execution environmentAdd
+      Function execution environment
     */
     const openfluid::base::EnvironmentProperties* mp_FunctionEnv;
 
@@ -193,7 +164,7 @@ class DLLEXPORT PluggableFunction
     /**
       Function ID
     */
-    openfluid::base::FuncID_t m_FunctionID;
+    WareID_t m_FunctionID;
 
     unsigned int m_MaxThreads;
 
@@ -1251,7 +1222,7 @@ class DLLEXPORT PluggableFunction
     void OPENFLUID_SetFunctionMaxThreads(const unsigned int& MaxNumThreads);
 
 
-    StdoutAndFileOutputStream OPENFLUID_Logger;
+    openfluid::base::StdoutAndFileOutputStream OPENFLUID_Logger;
 
 
   public:
@@ -1272,7 +1243,7 @@ class DLLEXPORT PluggableFunction
                             openfluid::base::ExecutionMessages* ExecMsgs,
                             openfluid::base::EnvironmentProperties* FuncEnv,
                             const unsigned int& MaxThreads,
-                            const openfluid::base::FuncID_t& FuncID);
+                            const WareID_t& FuncID);
 
     /**
       Internally called by the framework.
@@ -1299,32 +1270,25 @@ class DLLEXPORT PluggableFunction
     /**
       Internally called by the framework.
     */
-    virtual bool initializeRun(const SimulationInfo* SimInfo)=0;
+    virtual bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)=0;
 
     /**
       Internally called by the framework.
     */
-    virtual bool runStep(const SimulationStatus* SimStatus)=0;
+    virtual bool runStep(const openfluid::base::SimulationStatus* SimStatus)=0;
 
     /**
       Internally called by the framework.
     */
-    virtual bool finalizeRun(const SimulationInfo* SimInfo)=0;
+    virtual bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)=0;
 
 };
 
+typedef PluggableFunction* (*GetPluggableFunctionBodyProc)();
 
-typedef PluggableFunction* (*GetPluggableFunctionProc)();
+typedef FunctionSignature* (*GetPluggableFunctionSignatureProc)();
 
-typedef FunctionSignature* (*GetSignatureProc)();
-
-typedef std::string (*GetSDKVersionProc)();
-
+} } // namespaces
 
 
-} } // namespace openfluid::base
-
-
-
-#endif
-
+#endif /* __PLUGGABLEFUNCTION_HPP__ */

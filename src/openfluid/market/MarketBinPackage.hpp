@@ -66,7 +66,7 @@ class DLLEXPORT MarketBinPackage : public MarketPackage
 {
   public:
 
-    MarketBinPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
+    MarketBinPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
 
     void process();
 

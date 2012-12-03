@@ -57,12 +57,12 @@
 #define __GENERATOR_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
 
 namespace openfluid { namespace machine {
 
-class DLLEXPORT Generator : public openfluid::base::PluggableFunction
+class DLLEXPORT Generator : public openfluid::ware::PluggableFunction
 {
   protected:
 

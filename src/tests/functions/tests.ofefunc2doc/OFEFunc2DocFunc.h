@@ -54,14 +54,14 @@
 #ifndef __OFEFUNC2DOCFUNC_H__
 #define __OFEFUNC2DOCFUNC_H__
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 
 // =====================================================================
@@ -71,7 +71,7 @@ DECLARE_PLUGIN_HOOKS
 /**
 
 */
-class OFEFunc2DocFunction : public openfluid::base::PluggableFunction
+class OFEFunc2DocFunction : public openfluid::ware::PluggableFunction
 {
   private:
 

@@ -89,7 +89,7 @@ SimulationProfiler* SimulationProfiler::getInstance()
 // =====================================================================
 
 
-void SimulationProfiler::addDuration(const openfluid::base::FuncID_t& FuncID,
+void SimulationProfiler::addDuration(const openfluid::ware::WareID_t& FuncID,
                                      TimeProfilePart ProfilePart,
                                      const boost::posix_time::time_duration& Duration)
 {

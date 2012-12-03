@@ -45,66 +45,158 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file PrimitivesValuesUseFunc.h
+  \file WareSignature.hpp
   \brief Header of ...
-*/
 
-#ifndef __PRIMITIVESVALUESUSEFUNC_H__
-#define __PRIMITIVESVALUESUSEFUNC_H__
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
-#include <openfluid/ware/PluggableFunction.hpp>
-
-
-// =====================================================================
-// =====================================================================
+#include <openfluid/dllexport.hpp>
 
 
-DECLARE_FUNCTION_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
+#ifndef __WARESIGNATURE_HPP__
+#define __WARESIGNATURE_HPP__
 
 
 /**
-
+  Macro for declaration of the ware ID
 */
-class PrimitivesValuesUseFunction : public openfluid::ware::PluggableFunction
+#define DECLARE_SIGNATURE_ID(id) Signature->ID = id;
+
+/**
+  Macro for declaration of the ware name
+*/
+#define DECLARE_SIGNATURE_NAME(name) Signature->Name = name;
+
+/**
+  Macro for declaration of the ware description
+*/
+#define DECLARE_SIGNATURE_DESCRIPTION(desc) Signature->Description = desc;
+
+/**
+  Macro for declaration of the ware author name
+*/
+#define DECLARE_SIGNATURE_AUTHORNAME(name) Signature->Author = name;
+
+/**
+  Macro for declaration of the ware author email
+*/
+#define DECLARE_SIGNATURE_AUTHOREMAIL(email) Signature->AuthorEmail = email;
+
+/**
+  Macro for declaration of the ware version
+*/
+#define DECLARE_SIGNATURE_VERSION(version) Signature->Version = version;
+
+/**
+  Macro for declaration of the ware status
+*/
+#define DECLARE_SIGNATURE_STATUS(status) Signature->Status = status;
+
+/**
+  Macro for declaration of ABI version used to build the ware
+*/
+#define DECLARE_SIGNATURE_SDKVERSION Signature->setABIVersion(openfluid::config::FULL_VERSION);
+
+
+// =====================================================================
+// =====================================================================
+
+
+namespace openfluid { namespace ware {
+
+
+typedef std::string WareID_t;
+
+typedef std::string WareName_t;
+
+typedef std::string WareVersion_t;
+
+
+/**
+  Ware status
+*/
+enum WareStatus_t
 {
-  private:
+  /**
+    Experimental status, for testing only
+  */
+  EXPERIMENTAL,
 
-    long m_ParamLong;
+  /**
+    Beta status, on the road to a stable status
+  */
+  BETA,
 
-    double m_ParamDouble;
+  /**
+    Stable status
+  */
+  STABLE
+};
 
-    std::string m_ParamString;
 
+// =====================================================================
+// =====================================================================
+
+
+class DLLEXPORT WareSignature
+{
   public:
-    /**
-      Constructor
-    */
-    PrimitivesValuesUseFunction();
+
+    WareID_t ID;
+
+    WareName_t Name;
+
+    std::string Description;
 
     /**
-      Destructor
+    Version number
     */
-    ~PrimitivesValuesUseFunction();
+    WareVersion_t Version;
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    /**
+    Development status
+    */
+    WareStatus_t Status;
 
-    bool prepareData();
+    /**
+    ABI version number used to build the ware
+    */
+    WareVersion_t ABIVersion;
 
-    bool checkConsistency();
+    /**
+    Author name
+    */
+    std::string Author;
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+    /**
+    Author email
+    */
+    std::string AuthorEmail;
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    WareSignature() :
+      ID(""),Name(""),Description(""),Version(""),
+      Status(EXPERIMENTAL),ABIVersion(""),Author(""),AuthorEmail("")
+      {}
+
+
+    virtual ~WareSignature()
+      {}
+
+
+    void setABIVersion(WareVersion_t Version)
+    {
+      ABIVersion = Version;
+    }
 
 };
 
 
-#endif  // __PRIMITIVESVALUESUSEFUNC_H__
+
+} } // openfluid::ware
+
+
+
+#endif /* __WARESIGNATURE_HPP__ */

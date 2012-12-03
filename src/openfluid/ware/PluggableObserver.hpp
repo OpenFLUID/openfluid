@@ -45,23 +45,19 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file PrimitivesValuesUseFunc.h
+  \file PluggableObserver.hpp
   \brief Header of ...
-*/
 
-#ifndef __PRIMITIVESVALUESUSEFUNC_H__
-#define __PRIMITIVESVALUESUSEFUNC_H__
-
-#include <openfluid/ware/PluggableFunction.hpp>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-// =====================================================================
-// =====================================================================
+#ifndef __PLUGGABLEOBSERVER_HPP__
+#define __PLUGGABLEOBSERVER_HPP__
 
-
-DECLARE_FUNCTION_PLUGIN
+#include <openfluid/dllexport.hpp>
+#include <openfluid/ware/ObserverSignature.hpp>
 
 
 // =====================================================================
@@ -69,42 +65,59 @@ DECLARE_FUNCTION_PLUGIN
 
 
 /**
-
+  Macro for declaration of observer and signature hooks
 */
-class PrimitivesValuesUseFunction : public openfluid::ware::PluggableFunction
+#define DECLARE_OBSERVER_PLUGIN \
+  extern "C" \
+  { \
+    DLLEXPORT std::string GetWareABIVersion(); \
+    DLLEXPORT openfluid::ware::PluggableObserver* GetWareBody(); \
+    DLLEXPORT openfluid::ware::ObserverSignature* GetWareSignature(); \
+  }
+
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+/**
+  Macro for definition of observer class hook
+  @param[in] pluginclassname The name of the class to instantiate
+*/
+#define DEFINE_OBSERVER_CLASS(pluginclassname) \
+  std::string GetWareABIVersion() \
+  { \
+    return std::string(openfluid::config::FULL_VERSION); \
+  } \
+  \
+  openfluid::ware::PluggableObserver* GetWareBody() \
+  { \
+    return new pluginclassname(); \
+  }
+
+
+// =====================================================================
+// =====================================================================
+
+
+namespace openfluid { namespace ware {
+
+
+class DLLEXPORT PluggableObserver : public PluggableWare,
+                                    public SimulationDrivenWare
 {
-  private:
-
-    long m_ParamLong;
-
-    double m_ParamDouble;
-
-    std::string m_ParamString;
-
   public:
-    /**
-      Constructor
-    */
-    PrimitivesValuesUseFunction();
 
-    /**
-      Destructor
-    */
-    ~PrimitivesValuesUseFunction();
+    PluggableObserver();
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
-
-    bool prepareData();
-
-    bool checkConsistency();
-
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
-
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
-
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
-
+    virtual ~PluggableObserver();
 };
 
 
-#endif  // __PRIMITIVESVALUESUSEFUNC_H__
+} } // openfluid::ware
+
+
+
+#endif /* __PLUGGABLEOBSERVER_HPP__ */
