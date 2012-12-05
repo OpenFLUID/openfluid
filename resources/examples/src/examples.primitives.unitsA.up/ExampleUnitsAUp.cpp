@@ -79,23 +79,19 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    bool initParams(openfluid::core::FuncParamsMap_t Params)
+    void initParams(const openfluid::core::FuncParamsMap_t& Params)
     {
-  
       m_Mult = 1.0;
       OPENFLUID_GetFunctionParameter(Params,"gmult",&m_Mult);
-      return true;
     }
   
     // =====================================================================
     // =====================================================================
   
   
-    bool prepareData()
+    void prepareData()
     {
   
-  
-      return true;
     }
   
   
@@ -103,11 +99,9 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    bool checkConsistency()
+    void checkConsistency()
     {
   
-  
-      return true;
     }
   
   
@@ -115,38 +109,37 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+    void initializeRun()
     {
   
-  
-      return true;
     }
   
     // =====================================================================
     // =====================================================================
   
   
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+    openfluid::core::Duration_t runStep()
     {
       openfluid::core::Unit* A;
       openfluid::core::DoubleValue Value1, Value2;
 
+      unsigned int CurrentStep = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT());
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
       {
 
-        OPENFLUID_GetVariable(A,"var1",SimStatus->getCurrentStep(),Value1);
+        OPENFLUID_GetVariable(A,"var1",CurrentStep,Value1);
 
 
-        if (OPENFLUID_IsVariableExist(A,"var2",SimStatus->getCurrentStep(),openfluid::core::Value::DOUBLE))
+        if (OPENFLUID_IsVariableExist(A,"var2",CurrentStep,openfluid::core::Value::DOUBLE))
         {
-          OPENFLUID_GetVariable(A,"var2",SimStatus->getCurrentStep(),Value2);
+          OPENFLUID_GetVariable(A,"var2",CurrentStep,Value2);
           Value2 = Value2 * m_Mult;
-          OPENFLUID_SetVariable(A,"var2",SimStatus->getCurrentStep(),Value2);
+          OPENFLUID_SetVariable(A,"var2",CurrentStep,Value2);
         }
         else
         {
-          OPENFLUID_RaiseWarning("examples.primitives.unitsA.up",SimStatus->getCurrentStep(),"var2 not present, init to value 1.0");
+          OPENFLUID_RaiseWarning("examples.primitives.unitsA.up",CurrentStep,"var2 not present, init to value 1.0");
           Value2 = 1.0;
           OPENFLUID_AppendVariable(A,"var2",Value2);
         }
@@ -155,18 +148,16 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
 
       }
   
-      return true;
+      return DefaultDeltaT();
     }
   
     // =====================================================================
     // =====================================================================
   
   
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+    void finalizeRun()
     {
   
-  
-      return true;
     }
 
 };

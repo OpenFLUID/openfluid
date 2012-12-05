@@ -111,34 +111,24 @@ class OutputsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
+  void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+  { }
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void prepareData()
+  { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency()
   {
 
-
-    return true;
-  }
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool prepareData()
-  {
-
-
-    return true;
-  }
-
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool checkConsistency()
-  {
-
-
-    return true;
   }
 
 
@@ -146,25 +136,21 @@ class OutputsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-
-    return true;
-  }
+  void initializeRun()
+  { }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+  openfluid::core::Duration_t runStep()
   {
     openfluid::core::Unit *TUA, *TUB;
-    long VectorSize = SimStatus->getCurrentStep() % 40;
+    long VectorSize = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()) % 40;
     openfluid::core::VectorValue TheVector;
     std::string IDStr, TSStr;
 
-    openfluid::tools::ConvertValue(SimStatus->getCurrentStep(),&TSStr);
+    openfluid::tools::ConvertValue((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TSStr);
 
     OPENFLUID_UNITS_ORDERED_LOOP("UnitsA",TUA)
     {
@@ -174,7 +160,7 @@ class OutputsFunction : public openfluid::ware::PluggableFunction
       OPENFLUID_AppendVariable(TUA,"tests.scalar",double(TUA->getID()));
 
       openfluid::tools::ConvertValue(TUA->getID(),&IDStr);
-      OPENFLUID_RaiseWarning("tests.messages",SimStatus->getCurrentStep(),"["+TUA->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
+      OPENFLUID_RaiseWarning("tests.messages",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),"["+TUA->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
 
     }
 
@@ -186,24 +172,20 @@ class OutputsFunction : public openfluid::ware::PluggableFunction
       OPENFLUID_AppendVariable(TUB,"tests.scalar",double(TUB->getID()));
 
       openfluid::tools::ConvertValue(TUB->getID(),&IDStr);
-      OPENFLUID_RaiseWarning("tests.messages",SimStatus->getCurrentStep(),"["+TUB->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
+      OPENFLUID_RaiseWarning("tests.messages",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),"["+TUB->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
 
     }
 
 
-    return true;
+    return DefaultDeltaT();
   }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-
-    return true;
-  }
+  void finalizeRun()
+  { }
 
 };
 

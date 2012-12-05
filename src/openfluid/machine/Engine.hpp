@@ -64,7 +64,6 @@ namespace openfluid {
 namespace base {
 class RuntimeEnvironment;
 class SimulationStatus;
-class SimulationInfo;
 }
 namespace core {
 class Value;
@@ -120,8 +119,6 @@ class DLLEXPORT Engine
      openfluid::base::RuntimeEnvironment* mp_RunEnv;
 
      openfluid::base::SimulationStatus* mp_SimStatus;
-
-
 
      MachineListener* mp_MachineListener;
 
@@ -203,7 +200,7 @@ class DLLEXPORT Engine
 
     void closeOutputs();
 
-    openfluid::base::SimulationInfo* getSimulationInfo() { return (openfluid::base::SimulationInfo*)mp_SimStatus; };
+    const openfluid::base::SimulationStatus* getSimulationStatus() { return mp_SimStatus; };
 
     SimulationBlob*  getSimulationBlob() { return &m_SimulationBlob; };
 

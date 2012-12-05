@@ -45,81 +45,92 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file SimStatus_TEST.cpp
-  \brief Implements ...
+  \file SimulationStatus.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_simstatus
-#include <boost/test/unit_test.hpp>
-#include <boost/test/auto_unit_test.hpp>
-#include <openfluid/base/SimStatus.hpp>
+#ifndef __SIMULATIONSTATUS_HPP__
+#define __SIMULATIONSTATUS_HPP__
+
+
+#include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/TypeDefs.hpp>
+
+
+namespace openfluid { namespace base {
 
 
 // =====================================================================
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_construction)
+typedef long long TimeIndex_t;
+
+typedef openfluid::core::RawTime_t Duration_t;
+
+
+// =====================================================================
+// =====================================================================
+
+
+class DLLEXPORT SimulationStatus
 {
-  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
-                                    openfluid::core::DateTime(2001,1,1,0,0,0),
-                                    60);
+  public:
+
+    enum SimulationStage { PRE, INITPARAMS, PREPAREDATA, CHECKCONSISTENCY, INITIALIZERUN, RUNSTEP, FINALIZERUN, POST, UNKNOWN };
 
 
-  BOOST_REQUIRE(SimStatus.getStartTime() == openfluid::core::DateTime(2000,1,1,0,0,0));
-  BOOST_REQUIRE(SimStatus.getEndTime() == openfluid::core::DateTime(2001,1,1,0,0,0));
-  BOOST_REQUIRE_EQUAL(SimStatus.getTimeStep(),60);
+  private:
+
+    openfluid::core::DateTime m_BeginDate;
+
+    openfluid::core::DateTime m_EndDate;
+
+    Duration_t m_Duration;
+
+    openfluid::core::DateTime m_CurrentDate;
+
+    TimeIndex_t m_CurrentTimeIndex;
+
+    Duration_t m_DefaultDeltaT;
+
+    SimulationStage m_CurrentStage;
+
+  public:
+
+    SimulationStatus(const openfluid::core::DateTime& Begin,
+                     const openfluid::core::DateTime& End,
+                     const Duration_t DeltaT);
+
+    ~SimulationStatus() {}
+
+    inline openfluid::core::DateTime getBeginDate() const { return m_BeginDate; }
+
+    inline openfluid::core::DateTime getEndDate() const { return m_EndDate; }
+
+    inline openfluid::core::DateTime getCurrentDate() const { return m_CurrentDate; }
+
+    inline Duration_t getDefaultDeltaT() const { return m_DefaultDeltaT; }
+
+    inline Duration_t getSimulationDuration() const { return m_Duration; }
+
+    inline TimeIndex_t getCurrentTimeIndex() const { return m_CurrentTimeIndex; }
+
+    inline bool isFirstTimeIndex() const { return m_CurrentTimeIndex == 0; }
+
+    void setCurrentTimeIndex(const TimeIndex_t& Index);
+
+    inline SimulationStage getCurrentStage() const { return m_CurrentStage; }
+
+    void setCurrentStage(const SimulationStage& Stage);
+
+};
+
+}  }  // namespaces
 
 
-  BOOST_REQUIRE_EQUAL(SimStatus.isFirstStep(),true);
-  BOOST_REQUIRE_EQUAL(SimStatus.isLastStep(),false);
-  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStep(),0);
-  BOOST_REQUIRE(SimStatus.getCurrentTime() == openfluid::core::DateTime(2000,1,1,0,0,0));
-
-}
-
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(check_operations)
-{
-  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
-                                      openfluid::core::DateTime(2001,1,1,0,0,0),
-                                      76);
-
-  openfluid::core::DateTime PrevTime;
-  openfluid::core::TimeStep_t PrevStep = 0;
-
-  do
-  {
-    if (!SimStatus.isFirstStep())
-    {
-      BOOST_REQUIRE(SimStatus.getCurrentTime() == (PrevTime + SimStatus.getTimeStep()));
-      BOOST_REQUIRE(SimStatus.getCurrentStep() == (PrevStep + 1));
-    }
-
-    PrevTime = SimStatus.getCurrentTime();
-    PrevStep = SimStatus.getCurrentStep();
-
-    if (SimStatus.isLastStep())
-    {
-      BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStep(),SimStatus.getStepsCount()-1);
-      BOOST_REQUIRE((SimStatus.getCurrentTime()+SimStatus.getTimeStep()) >= SimStatus.getEndTime());
-    }
-
-  } while (SimStatus.switchToNextStep());
-
-}
-
-// =====================================================================
-// =====================================================================
+#endif /* __SIMULATIONSTATUS_HPP__ */

@@ -84,7 +84,7 @@ DateTime::DateTime(int Year, int Month, int Day, int Hour, int Minute, int Secon
 // =====================================================================
 
 
-DateTime::DateTime(rawtime_t SecondsSince0000)
+DateTime::DateTime(RawTime_t SecondsSince0000)
 {
   set(SecondsSince0000);
 }
@@ -147,7 +147,7 @@ bool DateTime::setFromISOString(const std::string& DateTimeStr)
 // =====================================================================
 
 
-void DateTime::set(const rawtime_t& SecondsSince0000)
+void DateTime::set(const RawTime_t& SecondsSince0000)
 {
   m_RawTime = SecondsSince0000;
 
@@ -172,10 +172,10 @@ void DateTime::updateYMDHMSFromRawTime()
   */
 
 
-  rawtime_t n, c, y, m, a, Year, Month, Day;
+  RawTime_t n, c, y, m, a, Year, Month, Day;
 
-  rawtime_t JDN = (rawtime_t)(m_RawTime / 86400) + 1721059;  // added to set refererence to JDN base
-  rawtime_t SecsLeft = (rawtime_t)(m_RawTime % 86400);
+  RawTime_t JDN = (RawTime_t)(m_RawTime / 86400) + 1721059;  // added to set refererence to JDN base
+  RawTime_t SecsLeft = (RawTime_t)(m_RawTime % 86400);
 
   //n = JDN + 32082;
 
@@ -196,11 +196,11 @@ void DateTime::updateYMDHMSFromRawTime()
   m_TM.tm_mon = (int)Month - 1;
   m_TM.tm_year = (int)Year - 1900;
 
-  m_TM.tm_hour = (rawtime_t)(SecsLeft / 3600);
-  SecsLeft = (rawtime_t)(SecsLeft % 3600);
+  m_TM.tm_hour = (RawTime_t)(SecsLeft / 3600);
+  SecsLeft = (RawTime_t)(SecsLeft % 3600);
 
-  m_TM.tm_min = (rawtime_t)(SecsLeft / 60);
-  SecsLeft = (rawtime_t)(SecsLeft % 60);
+  m_TM.tm_min = (RawTime_t)(SecsLeft / 60);
+  SecsLeft = (RawTime_t)(SecsLeft % 60);
 
   m_TM.tm_sec = SecsLeft;
 
@@ -233,7 +233,7 @@ void DateTime::updateRawTimeFromYMDHMS()
   */
 
 
-  rawtime_t JDN;
+  RawTime_t JDN;
 
   int Day,Year,Month;
 
@@ -241,9 +241,9 @@ void DateTime::updateRawTimeFromYMDHMS()
   Year = m_TM.tm_year+1900;
   Month = m_TM.tm_mon+1;
 
-  JDN = (rawtime_t)((Day-32075+1461*(Year+4800+(Month-14)/12)/4+367*(Month-2-(Month-14)/12*12)/12-3*((Year+4900+(Month-14)/12)/100)/4)-1721059);
+  JDN = (RawTime_t)((Day-32075+1461*(Year+4800+(Month-14)/12)/4+367*(Month-2-(Month-14)/12*12)/12-3*((Year+4900+(Month-14)/12)/100)/4)-1721059);
 
-  m_RawTime = (rawtime_t)((JDN*86400) + (m_TM.tm_hour*3600) + (m_TM.tm_min*60) + m_TM.tm_sec);
+  m_RawTime = (RawTime_t)((JDN*86400) + (m_TM.tm_hour*3600) + (m_TM.tm_min*60) + m_TM.tm_sec);
 
   #if 0
   std::cerr << "JDN: " << JDN << "    RawTime: " << m_RawTime << std::endl;
@@ -257,7 +257,7 @@ void DateTime::updateRawTimeFromYMDHMS()
 // =====================================================================
 
 
-rawtime_t DateTime::getRawTime() const
+RawTime_t DateTime::getRawTime() const
 {
 
 
@@ -349,7 +349,7 @@ std::string DateTime::getTimeAsISOString() const
 // =====================================================================
 
 
-void DateTime::addSeconds(const rawtime_t& Seconds)
+void DateTime::addSeconds(const RawTime_t& Seconds)
 {
   m_RawTime = m_RawTime + Seconds;
   updateYMDHMSFromRawTime();
@@ -359,7 +359,7 @@ void DateTime::addSeconds(const rawtime_t& Seconds)
 // =====================================================================
 
 
-void DateTime::subtractSeconds(const rawtime_t& Seconds)
+void DateTime::subtractSeconds(const RawTime_t& Seconds)
 {
   m_RawTime = m_RawTime - Seconds;
   updateYMDHMSFromRawTime();
@@ -388,7 +388,7 @@ bool DateTime::isStrictlyBetween(const DateTime& FirstDT, const DateTime& Second
 // =====================================================================
 
 
-rawtime_t DateTime::diffInSeconds(const DateTime& DT) const
+RawTime_t DateTime::diffInSeconds(const DateTime& DT) const
 {
   return (m_RawTime - DT.getRawTime());
 }
@@ -458,7 +458,7 @@ bool DateTime::operator <=(const DateTime &Right) const
 // =====================================================================
 
 
-DateTime DateTime::operator +(const rawtime_t& Seconds) const
+DateTime DateTime::operator +(const RawTime_t& Seconds) const
 {
   DateTime DT(m_RawTime+Seconds);
 
@@ -469,7 +469,7 @@ DateTime DateTime::operator +(const rawtime_t& Seconds) const
 // =====================================================================
 
 
-DateTime DateTime::operator -(const rawtime_t& Seconds) const
+DateTime DateTime::operator -(const RawTime_t& Seconds) const
 {
   DateTime DT(m_RawTime-Seconds);
 

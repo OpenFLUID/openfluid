@@ -115,22 +115,14 @@ LargeVectorProdFunction::~LargeVectorProdFunction()
 
 
 bool LargeVectorProdFunction::initParams(openfluid::core::FuncParamsMap_t Params)
-{
-
-
-  return true;
-}
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
 bool LargeVectorProdFunction::prepareData()
-{
-
-
-  return true;
-}
+{  }
 
 
 // =====================================================================
@@ -138,11 +130,7 @@ bool LargeVectorProdFunction::prepareData()
 
 
 bool LargeVectorProdFunction::checkConsistency()
-{
-
-
-  return true;
-}
+{  }
 
 
 // =====================================================================
@@ -150,11 +138,7 @@ bool LargeVectorProdFunction::checkConsistency()
 
 
 bool LargeVectorProdFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
-{
-
-
-  return true;
-}
+{  }
 
 // =====================================================================
 // =====================================================================
@@ -187,9 +171,5 @@ bool LargeVectorProdFunction::runStep(const openfluid::base::SimulationStatus* S
 
 
 bool LargeVectorProdFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
-{
-
-
-  return true;
-}
+{  }
 

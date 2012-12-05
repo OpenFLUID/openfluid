@@ -80,23 +80,10 @@ FixedGenerator::~FixedGenerator()
 // =====================================================================
 
 
-bool FixedGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
+void FixedGenerator::initParams(const openfluid::core::FuncParamsMap_t& Params)
 {
   if (!OPENFLUID_GetFunctionParameter(Params,"fixedvalue",m_VarValue))
     throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::initParams","missing fixed value for generator");
-
-  return true;
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool FixedGenerator::checkConsistency()
-{
-
-  return true;
 }
 
 
@@ -104,17 +91,7 @@ bool FixedGenerator::checkConsistency()
 // =====================================================================
 
 
-bool FixedGenerator::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+openfluid::core::Duration_t FixedGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;
@@ -129,16 +106,6 @@ bool FixedGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatu
     else
       OPENFLUID_AppendVariable(LU,m_VarName,m_VarValue);
   }
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool FixedGenerator::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
 
   return true;
 }

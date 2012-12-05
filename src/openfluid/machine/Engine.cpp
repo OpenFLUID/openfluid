@@ -100,9 +100,7 @@ Engine::Engine(SimulationBlob& SimBlob, ModelInstance& MInstance,
   mp_IOListener = IOListener;
   if (mp_IOListener == NULL) mp_IOListener = new openfluid::io::IOListener();
 
-
-  mp_SimStatus = NULL;
-
+  mp_SimStatus = &(m_SimulationBlob.getSimulationStatus());
 
   prepareOutputDir();
 }
@@ -239,6 +237,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   const openfluid::core::UnitsList_t* UnitsList;
   std::vector<std::string> VarsNames;
 
+
   AllUnits = m_SimulationBlob.getCoreRepository().getUnitsByClass();
 
   for (UnitsClassesIter = AllUnits->begin(); UnitsClassesIter != AllUnits->end();++UnitsClassesIter)
@@ -253,7 +252,6 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
     }
 
   }
-
 }
 
 // =====================================================================
@@ -461,7 +459,7 @@ void Engine::saveOutputs(const openfluid::core::DateTime& CurrentDT)
 void Engine::saveSimulationInfos()
 {
   openfluid::io::SimulationReportWriter::saveToFile(mp_RunEnv->getOutputFullPath(openfluid::config::SIMINFOFILE),
-                                                    (openfluid::base::SimulationInfo*)mp_SimStatus,
+                                                    mp_SimStatus,
                                                     m_SimulationBlob.getCoreRepository());
 }
 
@@ -654,6 +652,7 @@ void Engine::initParams()
   mp_MachineListener->onInitParams();
   try
   {
+    mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::INITPARAMS);
     m_ModelInstance.call_initParams();
   }
   catch (openfluid::base::OFException& E)
@@ -675,6 +674,7 @@ void Engine::prepareData()
 {
   try
   {
+    mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::PREPAREDATA);
     m_ModelInstance.call_prepareData();
   }
   catch (openfluid::base::OFException& E)
@@ -695,17 +695,13 @@ void Engine::checkConsistency()
 
   // inits the simulation infos and status
 
-  mp_SimStatus = new openfluid::base::SimulationStatus(mp_RunEnv->getSimulationStartTime(),
-                                                       mp_RunEnv->getSimulationEndTime(),
-                                                       mp_RunEnv->getSimulationTimeStep());
-
   if (mp_RunEnv->isUserValuesBufferSize())
   {
     openfluid::core::ValuesBufferProperties::setBufferSize(mp_RunEnv->getValuesBufferSize());
   }
   else
   {
-    openfluid::core::ValuesBufferProperties::setBufferSize(mp_SimStatus->getStepsCount());
+    openfluid::core::ValuesBufferProperties::setBufferSize((mp_SimStatus->getSimulationDuration()/mp_SimStatus->getDefaultDeltaT())+1);
   }
 
 
@@ -731,6 +727,7 @@ void Engine::checkConsistency()
 
   try
   {
+    mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::CHECKCONSISTENCY);
     m_ModelInstance.call_checkConsistency();
   }
   catch (openfluid::base::OFException& E)
@@ -769,9 +766,11 @@ void Engine::run()
 
   mp_MachineListener->onInitializeRun();
 
+
   try
   {
-    m_ModelInstance.call_initializeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
+    mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::INITIALIZERUN);
+    m_ModelInstance.call_initializeRun();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -794,6 +793,9 @@ void Engine::run()
 
 
   mp_MachineListener->onBeforeRunSteps();
+  mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
+
+  bool OKToGoOnSimulation = true;
 
   do // time loop
   {
@@ -804,10 +806,10 @@ void Engine::run()
 
     try
     {
-      m_ModelInstance.call_runStep(mp_SimStatus);
+      m_ModelInstance.call_runStep();
 
       // check simulation vars production at each time step
-      checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
+      //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
     }
     catch (openfluid::base::OFException& E)
     {
@@ -815,13 +817,21 @@ void Engine::run()
       throw;
     }
 
-
     if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
     mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::OK);
 
-    if (mp_RunEnv->isWriteResults()) saveOutputs(mp_SimStatus->getCurrentTime());
+    if (mp_RunEnv->isWriteResults()) saveOutputs(mp_SimStatus->getCurrentDate());
 
-  } while (mp_SimStatus->switchToNextStep());  // end time loop
+    try
+    {
+      mp_SimStatus->setCurrentTimeIndex(mp_SimStatus->getCurrentTimeIndex() + mp_SimStatus->getDefaultDeltaT());
+    }
+    catch (openfluid::base::OFException& E)
+    {
+      OKToGoOnSimulation = false;
+    }
+
+  } while (OKToGoOnSimulation);  // end time loop
 
 
   mp_MachineListener->onAfterRunSteps();
@@ -833,9 +843,11 @@ void Engine::run()
 
   mp_MachineListener->onFinalizeRun();
 
+
   try
   {
-    m_ModelInstance.call_finalizeRun((openfluid::base::SimulationStatus*)mp_SimStatus);
+    mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::FINALIZERUN);
+    m_ModelInstance.call_finalizeRun();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -851,10 +863,12 @@ void Engine::run()
   m_SimulationBlob.getExecutionMessages().resetWarningFlag();
 
   // check simulation vars production after finalize
-  checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
+  //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
 
   // final save
   closeOutputs();
+
+  mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::POST);
 }
 
 

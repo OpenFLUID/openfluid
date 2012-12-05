@@ -57,23 +57,60 @@
 #define __SIMULATIONDRIVENWARE_HPP__
 
 
-namespace openfluid { namespace ware {
+#include <openfluid/base/SimulationStatus.hpp>
+#include <openfluid/base/OFException.hpp>
 
+
+namespace openfluid { namespace ware {
 
 
 class SimulationDrivenWare
 {
+  private:
+
+    const openfluid::base::SimulationStatus* mp_SimStatus;
+
+    bool m_IsLinked;
+
+  protected:
+
+    openfluid::core::DateTime OPENFLUID_GetBeginDate() const;
+
+    openfluid::core::DateTime OPENFLUID_GetEndDate() const;
+
+    openfluid::core::DateTime OPENFLUID_GetCurrentDate() const;
+
+    openfluid::base::Duration_t OPENFLUID_GetSimulationDuration() const;
+
+    openfluid::base::Duration_t OPENFLUID_GetDefaultDeltaT() const;
+
+    openfluid::base::TimeIndex_t OPENFLUID_GetCurrentTimeIndex() const;
+
+    openfluid::base::SimulationStatus::SimulationStage OPENFLUID_GetCurrentStage() const;
+
+    inline openfluid::core::Duration_t AtTheEnd() const { return openfluid::core::Duration_t(-1); };
+
+    inline openfluid::core::Duration_t Never() const { return -2; };
+
+    inline openfluid::core::Duration_t Again() const { return 0; };
+
+    inline openfluid::core::Duration_t DefaultDeltaT() const
+    {
+      if (mp_SimStatus == NULL)
+        throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::DefaultDeltaT","Simulation status is not set");
+
+      return mp_SimStatus->getDefaultDeltaT();
+    };
+
+
   public:
 
-    SimulationDrivenWare() {};
+    SimulationDrivenWare() : mp_SimStatus(NULL), m_IsLinked(false)
+    {};
 
     virtual ~SimulationDrivenWare() {};
 
-  // TODO define and develop methods
-  // - OPENFLUID_GetCurrentDateTime
-  // - OPENFLUID_GetCurrentTimeIndex
-  //...
-
+    void linkToSimulation(const openfluid::base::SimulationStatus* SimStatus);
 
 };
 

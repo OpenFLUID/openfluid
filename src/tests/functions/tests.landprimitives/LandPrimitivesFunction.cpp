@@ -73,17 +73,14 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-    {
-
-      return true;
-    }
+    void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+    {  }
 
     // =====================================================================
     // =====================================================================
 
 
-    bool prepareData()
+    void prepareData()
     {
 
  /*
@@ -275,7 +272,6 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
         OPENFLUID_RaiseError("tests.landprimitives","incorrect removing of child-parent connection between units TU#18 and VU#1");
 
 
-      return true;
     }
 
 
@@ -283,18 +279,15 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    bool checkConsistency()
-    {
-
-      return true;
-    }
+    void checkConsistency()
+    { }
 
 
     // =====================================================================
     // =====================================================================
 
 
-    bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+    void initializeRun()
     {
       openfluid::core::Unit* TU;
       double DblValue;
@@ -312,27 +305,25 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       }
 
-      return true;
     }
 
     // =====================================================================
     // =====================================================================
 
 
-    bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+    openfluid::core::Duration_t runStep()
     {
 
-      return true;
+      return Never();
     }
 
     // =====================================================================
     // =====================================================================
 
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+    void finalizeRun()
     {
       OPENFLUID_ExportUnitsGraphAsDotFile("landgraph.dot");
-      return true;
     }
 
 };

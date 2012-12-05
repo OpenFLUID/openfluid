@@ -113,53 +113,37 @@ VectorUseFunction::~VectorUseFunction()
 // =====================================================================
 
 
-bool VectorUseFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-{
-
-
-  return true;
-}
+void VectorUseFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorUseFunction::prepareData()
-{
-
-
-  return true;
-}
+void VectorUseFunction::prepareData()
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorUseFunction::checkConsistency()
-{
-
-
-  return true;
-}
+void VectorUseFunction::checkConsistency()
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorUseFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-
-  return true;
-}
+void VectorUseFunction::initializeRun()
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorUseFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+openfluid::core::Duration_t VectorUseFunction::runStep()
 {
 
   openfluid::core::Unit* TU;
@@ -169,23 +153,19 @@ bool VectorUseFunction::runStep(const openfluid::base::SimulationStatus* SimStat
 
   OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
   {
-    OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),&TheVector);
+    OPENFLUID_GetVariable(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TheVector);
 
     if (TheVector.getSize() != VectorSize)
       throw openfluid::base::OFException("incorrect vector size");
   }
 
-  return true;
+  return DefaultDeltaT();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorUseFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-
-  return true;
-}
+void VectorUseFunction::finalizeRun()
+{  }
 

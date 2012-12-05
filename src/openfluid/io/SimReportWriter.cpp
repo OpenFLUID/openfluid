@@ -57,7 +57,6 @@
 #include <openfluid/io/SimReportWriter.hpp>
 
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SimStatus.hpp>
 #include <openfluid/core/Unit.hpp>
 #include <openfluid/core/CoreRepository.hpp>
 
@@ -89,7 +88,7 @@ SimulationReportWriter::~SimulationReportWriter()
 // =====================================================================
 
 
-void SimulationReportWriter::saveToFile(std::string FilePath,openfluid::base::SimulationInfo *SimInfo,
+void SimulationReportWriter::saveToFile(std::string FilePath,const openfluid::base::SimulationStatus *SimInfo,
                                         const openfluid::core::CoreRepository& CoreRepos)
 {
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
@@ -126,8 +125,8 @@ void SimulationReportWriter::saveToFile(std::string FilePath,openfluid::base::Si
   if (SimInfo != NULL)
   {
     FileContents << std::endl;
-    FileContents << ("Simulation period: ") << (SimInfo->getStartTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << (" to ") << (SimInfo->getEndTime().getAsString(("%Y-%m-%d %H:%M:%S"))) << std::endl;
-    FileContents << ("Time steps: ") << SimInfo->getStepsCount() << (" of ") << SimInfo->getTimeStep() << (" seconds") << std::endl;
+    FileContents << ("Simulation period: ") << (SimInfo->getBeginDate().getAsString(("%Y-%m-%d %H:%M:%S"))) << (" to ") << (SimInfo->getEndDate().getAsString(("%Y-%m-%d %H:%M:%S"))) << std::endl;
+    FileContents << ("Time steps: ") << (SimInfo->getSimulationDuration()/SimInfo->getDefaultDeltaT()) << (" of ") << SimInfo->getDefaultDeltaT() << (" seconds") << std::endl;
   }
 
 

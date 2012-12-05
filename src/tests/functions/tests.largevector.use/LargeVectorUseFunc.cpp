@@ -114,22 +114,14 @@ LargeVectorUseFunction::~LargeVectorUseFunction()
 
 
 bool LargeVectorUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
-{
-
-
-  return true;
-}
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
 bool LargeVectorUseFunction::prepareData()
-{
-
-
-  return true;
-}
+{  }
 
 
 // =====================================================================
@@ -137,11 +129,7 @@ bool LargeVectorUseFunction::prepareData()
 
 
 bool LargeVectorUseFunction::checkConsistency()
-{
-
-
-  return true;
-}
+{  }
 
 
 // =====================================================================
@@ -149,11 +137,7 @@ bool LargeVectorUseFunction::checkConsistency()
 
 
 bool LargeVectorUseFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
-{
-
-
-  return true;
-}
+{  }
 
 // =====================================================================
 // =====================================================================
@@ -171,7 +155,7 @@ bool LargeVectorUseFunction::runStep(const openfluid::base::SimulationStatus* Si
 
   BEGIN_UNITS_ORDERED_LOOP(1,"TestUnits",TU)
 
-    OPENFLUID_GetVariable(TU,"tests.largevector",SimStatus->getCurrentStep(),&TheVector);
+    OPENFLUID_GetVariable(TU,"tests.largevector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TheVector);
 
     if (TheVector.getSize() != VectorSize)
       throw openfluid::base::OFException("incorrect vector size");
@@ -187,9 +171,5 @@ bool LargeVectorUseFunction::runStep(const openfluid::base::SimulationStatus* Si
 
 
 bool LargeVectorUseFunction::finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
-{
-
-
-  return true;
-}
+{  }
 

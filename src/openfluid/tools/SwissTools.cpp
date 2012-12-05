@@ -456,4 +456,24 @@ bool OpenURLInBrowser(const std::string& URL)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+unsigned int computeTimeStepsCount(const openfluid::core::DateTime& BeginDate,
+                                   const openfluid::core::DateTime& EndDate,
+                                   const openfluid::core::Duration_t& TimeStep)
+{
+  int StepsCount;
+
+  openfluid::core::RawTime_t DeltaTime;
+
+  DeltaTime = EndDate.diffInSeconds(BeginDate);
+  StepsCount = int(DeltaTime / TimeStep);
+  if ((DeltaTime % TimeStep) != 0) StepsCount++;
+
+  return StepsCount;
+}
+
+
 } } // namespaces

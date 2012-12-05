@@ -60,8 +60,10 @@ namespace openfluid { namespace machine {
 
 
 SimulationBlob::SimulationBlob()
+: m_Status(openfluid::base::SimulationStatus(openfluid::core::DateTime(),
+                                             openfluid::core::DateTime(),
+                                             1))
 {
-
 }
 
 

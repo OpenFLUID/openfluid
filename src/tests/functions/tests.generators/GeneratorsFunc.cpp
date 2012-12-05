@@ -122,52 +122,37 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-  {
-
-
-    return true;
-  }
+  void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+  { }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool prepareData()
-  {
-
-
-    return true;
-  }
+  void prepareData()
+  { }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  bool checkConsistency()
-  {
-
-
-    return true;
-  }
+  void checkConsistency()
+  { }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-    return true;
-  }
+  void initializeRun()
+  { }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+  openfluid::core::Duration_t runStep()
   {
     openfluid::core::Unit* TU;
 
@@ -178,17 +163,17 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
 
-      OPENFLUID_GetVariable(TU,"tests.fixed",SimStatus->getCurrentStep(),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.fixed",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
       if (!openfluid::tools::IsCloseEnough(SValue,12.7))
         OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixed variable");
 
 
-      OPENFLUID_GetVariable(TU,"tests.random",SimStatus->getCurrentStep(),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.random",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
       if (!(SValue >= 20.53 && SValue<= 50.0))
         OPENFLUID_RaiseError("tests.generators","incorrect value for tests.random variable");
 
 
-      OPENFLUID_GetVariable(TU,"tests.interp",SimStatus->getCurrentStep(),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.interp",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
 
       if (TU->getID() % 2 != 0)
       {
@@ -202,7 +187,7 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
       }
 
 
-      OPENFLUID_GetVariable(TU,"tests.interpmin",SimStatus->getCurrentStep(),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.interpmin",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
 
       if (TU->getID() % 2 != 0)
       {
@@ -216,18 +201,18 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
       }
 
 
-      OPENFLUID_GetVariable(TU,"tests.interpminmax",SimStatus->getCurrentStep(),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.interpminmax",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
 
       if (!(SValue >= 0.0 && SValue<= 20.0))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interpminmax variable");
 
 
-      OPENFLUID_GetVariable(TU,"tests.inject",SimStatus->getCurrentStep(),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.inject",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
 
       if (TU->getID() % 2 != 0)
       {
 
-        if (!openfluid::tools::IsCloseEnough(SValue,double(SimStatus->getCurrentStep())))
+        if (!openfluid::tools::IsCloseEnough(SValue,double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()))))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source3.dat)");
       }
       else
@@ -237,9 +222,9 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
       }
 
 
-      if (SimStatus->getCurrentStep()>0)
+      if ((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())>0)
       {
-        OPENFLUID_GetVariable(TU,"tests.fixedprev",SimStatus->getCurrentStep()-1,&VValue);
+        OPENFLUID_GetVariable(TU,"tests.fixedprev",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())-1,&VValue);
         if (!openfluid::tools::IsCloseEnough(VValue[0],5.3))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixedprev variable");
       }
@@ -254,12 +239,8 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-
-    return true;
-  }
+  void finalizeRun()
+  { }
 
 };
 

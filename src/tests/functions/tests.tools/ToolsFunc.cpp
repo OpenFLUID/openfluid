@@ -86,17 +86,17 @@ class ToolsFunction : public openfluid::ware::PluggableFunction
     */
     ~ToolsFunction();
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    void initParams(const openfluid::core::FuncParamsMap_t& Params);
 
-    bool prepareData();
+    void prepareData();
 
-    bool checkConsistency();
+    void checkConsistency();
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void initializeRun();
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+    openfluid::core::Duration_t runStep();
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void finalizeRun();
 
 };
 
@@ -158,41 +158,32 @@ ToolsFunction::~ToolsFunction()
 // =====================================================================
 
 
-bool ToolsFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
+void ToolsFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
 {
 
-  return true;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool ToolsFunction::prepareData()
-{
-
-
-  return true;
-}
+void ToolsFunction::prepareData()
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool ToolsFunction::checkConsistency()
-{
-
-
-  return true;
-}
+void ToolsFunction::checkConsistency()
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool ToolsFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+void ToolsFunction::initializeRun()
 {
 
   openfluid::tools::ColumnTextParser CTParser("#");
@@ -227,31 +218,24 @@ bool ToolsFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimIn
       OPENFLUID_RaiseError("tests.tools","error : found value out of range (5,5) in " + FileName.string());
   }
   else OPENFLUID_RaiseError("tests.tools","file " + FileName.string() + " not found!");
-
-
-
-
-
-  return true;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool ToolsFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+openfluid::core::Duration_t ToolsFunction::runStep()
 {
 
-  return true;
+  return Never();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool ToolsFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+void ToolsFunction::finalizeRun()
 {
 
-  return true;
 }
 

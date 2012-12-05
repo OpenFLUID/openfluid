@@ -116,45 +116,31 @@ class DebugFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-  {
-
-    return true;
-  }
+  void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/) { }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool prepareData()
-  {
-
-    return true;
-  }
+  void prepareData() { }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  bool checkConsistency()
-  {
-
-
-    return true;
-  }
+  void checkConsistency() { }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+  void initializeRun()
   {
 
     OFDBG_LOCATE;
 
-    return true;
   }
 
 
@@ -162,7 +148,7 @@ class DebugFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+  openfluid::core::Duration_t runStep()
   {
     openfluid::core::Unit* TU;
     openfluid::core::DateTime BeginDate,EndDate;
@@ -170,8 +156,8 @@ class DebugFunction : public openfluid::ware::PluggableFunction
 
     OFDBG_LOCATE;
 
-    BeginDate = SimStatus->getCurrentTime();
-    EndDate = SimStatus->getCurrentTime() + SimStatus->getTimeStep() -1;
+    BeginDate = OPENFLUID_GetCurrentDate();
+    EndDate = OPENFLUID_GetCurrentDate() + OPENFLUID_GetDefaultDeltaT() -1;
 
 
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
@@ -184,23 +170,22 @@ class DebugFunction : public openfluid::ware::PluggableFunction
       OFDBG_EVENTCOLLECTION(EvColl);
 
 
-      if (SimStatus->isFirstStep()) {OFDBG_UNIT_EXTENDED(TU)}
+      if (OPENFLUID_GetCurrentTimeIndex() == 0) {OFDBG_UNIT_EXTENDED(TU)}
       else {OFDBG_UNIT(TU)}
     }
 
-    return true;
+    return DefaultDeltaT();
   }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+  void finalizeRun()
   {
 
     OFDBG_LOCATE;
 
-    return true;
   }
 
 };

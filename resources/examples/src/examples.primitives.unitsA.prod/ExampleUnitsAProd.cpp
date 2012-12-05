@@ -79,22 +79,18 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    bool initParams(openfluid::core::FuncParamsMap_t Params)
+    void initParams(const openfluid::core::FuncParamsMap_t& Params)
     {
-  
-  
-      return true;
+
     }
   
     // =====================================================================
     // =====================================================================
   
   
-    bool prepareData()
+    void prepareData()
     {
-  
-  
-      return true;
+
     }
   
   
@@ -102,11 +98,9 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    bool checkConsistency()
+    void checkConsistency()
     {
   
-  
-      return true;
     }
   
   
@@ -114,32 +108,31 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+    void initializeRun()
     {
   
-  
-      return true;
     }
   
     // =====================================================================
     // =====================================================================
   
   
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+    openfluid::core::Duration_t runStep()
     {
       openfluid::core::Unit* A;
       openfluid::core::DoubleValue Value1;
 
+      unsigned int CurrentStep = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT());
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
       {
-        if (SimStatus->isFirstStep())
+        if (OPENFLUID_GetCurrentTimeIndex() == 0)
         {
            OPENFLUID_GetInputData(A,"inivar1",Value1);
         }
         else
         {
-          OPENFLUID_GetVariable(A,"var1",SimStatus->getCurrentStep()-1,Value1);
+          OPENFLUID_GetVariable(A,"var1",CurrentStep-1,Value1);
           Value1 = Value1 + 2.0;
         }
 
@@ -147,18 +140,16 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
         OPENFLUID_AppendVariable(A,"var2",1.5);
       }
 
-      return true;
+      return DefaultDeltaT();
     }
   
     // =====================================================================
     // =====================================================================
   
   
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)
+    void finalizeRun()
     {
   
-  
-      return true;
     }
 
 };

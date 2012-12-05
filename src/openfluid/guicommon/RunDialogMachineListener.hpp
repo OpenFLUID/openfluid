@@ -271,7 +271,8 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
     {
-      m_CurrentStep = SimStatus->getCurrentStep();
+      // TODO to adapt later
+      m_CurrentStep = SimStatus->getCurrentTimeIndex() / SimStatus->getDefaultDeltaT();
       openfluid::tools::ConvertValue(m_CurrentStep,&m_CurrentStepStr);
       updateProgressBar();
     };

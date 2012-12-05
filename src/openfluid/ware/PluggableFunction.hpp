@@ -66,7 +66,6 @@
 #include <openfluid/base/StdoutFileOStream.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
 #include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/SimStatus.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/LoopMacros.hpp>
 #include <openfluid/core/DateTime.hpp>
@@ -120,7 +119,6 @@
 
 
 namespace openfluid { namespace ware {
-
 
 
 /**
@@ -1255,32 +1253,32 @@ class DLLEXPORT PluggableFunction : public PluggableWare,
     /**
       Initializes function parameters of the function, given as a hash map. Internally called by the framework.
     */
-    virtual bool initParams(openfluid::core::FuncParamsMap_t Params)=0;
+    virtual void initParams(const openfluid::core::FuncParamsMap_t& Params)=0;
 
     /**
       Prepares data. Internally called by the framework.
     */
-    virtual bool prepareData()=0;
+    virtual void prepareData()=0;
 
     /**
       Checks the function consistency. Internally called by the framework.
     */
-    virtual bool checkConsistency()=0;
+    virtual void checkConsistency()=0;
 
     /**
       Internally called by the framework.
     */
-    virtual bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)=0;
+    virtual void initializeRun()=0;
 
     /**
       Internally called by the framework.
     */
-    virtual bool runStep(const openfluid::base::SimulationStatus* SimStatus)=0;
+    virtual openfluid::core::Duration_t runStep()=0;
 
     /**
       Internally called by the framework.
     */
-    virtual bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo)=0;
+    virtual void finalizeRun()=0;
 
 };
 

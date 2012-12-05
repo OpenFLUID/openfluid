@@ -65,6 +65,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/core/DateTime.hpp>
 
 namespace openfluid {
 namespace core {
@@ -241,6 +242,11 @@ int DLLEXPORT CompareVersions(const std::string& VersionA, const std::string& Ve
 
 
 bool DLLEXPORT OpenURLInBrowser(const std::string& URL);
+
+
+unsigned int DLLEXPORT computeTimeStepsCount(const openfluid::core::DateTime& BeginDate,
+                                             const openfluid::core::DateTime& EndDate,
+                                             const openfluid::core::Duration_t& TimeStep);
 
 
 } } //namespaces

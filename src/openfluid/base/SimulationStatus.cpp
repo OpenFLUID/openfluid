@@ -47,28 +47,30 @@
 
 
 /**
-  @file
-  @brief implements ...
+  \file SimulationStatus.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-
-#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
+#include <openfluid/base/OFException.hpp>
 
 
 namespace openfluid { namespace base {
 
 
-SimulationInfo::SimulationInfo(openfluid::core::DateTime StartTime,
-                               openfluid::core::DateTime EndTime,
-                               int TimeStep):
-  m_StartTime(StartTime), m_EndTime(EndTime), m_TimeStep(TimeStep)
+// =====================================================================
+// =====================================================================
+
+SimulationStatus::SimulationStatus(const openfluid::core::DateTime& Begin,
+                                   const openfluid::core::DateTime& End,
+                                   const Duration_t DeltaT)
+: m_BeginDate(Begin), m_EndDate(End), m_CurrentDate(Begin),
+  m_CurrentTimeIndex(0), m_DefaultDeltaT(DeltaT),m_CurrentStage(PRE)
 {
-
-  m_StepsCount = computeTimeStepsCount(StartTime,EndTime,TimeStep);
-
+  m_Duration = Duration_t(End.diffInSeconds(Begin));
 }
 
 
@@ -76,9 +78,19 @@ SimulationInfo::SimulationInfo(openfluid::core::DateTime StartTime,
 // =====================================================================
 
 
-SimulationInfo::~SimulationInfo()
+void SimulationStatus::setCurrentTimeIndex(const TimeIndex_t& Index)
 {
+  if (m_CurrentStage != RUNSTEP)
+    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index is allowed during RUNSTEP stage only");
 
+  if (Index >= m_Duration)
+    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index greater than simulation duration is not allowed");
+
+  if (Index < m_CurrentTimeIndex)
+    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index lesser than current time index is not allowed");
+
+  m_CurrentTimeIndex = Index;
+  m_CurrentDate = m_BeginDate+m_CurrentTimeIndex;
 }
 
 
@@ -86,73 +98,14 @@ SimulationInfo::~SimulationInfo()
 // =====================================================================
 
 
-int SimulationInfo::computeTimeStepsCount(const openfluid::core::DateTime& StartTime,
-                                          const openfluid::core::DateTime& EndTime,
-                                          const int& TimeStep)
+void SimulationStatus::setCurrentStage(const SimulationStage& Stage)
 {
-  int StepsCount;
+  if (Stage < m_CurrentStage)
+    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentStage()","Setting a simulation stage previous to the current stage is not allowed");
 
-  openfluid::core::rawtime_t DeltaTime;
-
-  DeltaTime = EndTime.diffInSeconds(StartTime);
-  StepsCount = int(DeltaTime / TimeStep);
-  if ((DeltaTime % TimeStep) != 0) StepsCount++;
-
-  return StepsCount;
-
-}
-
-// =====================================================================
-// =====================================================================
-
-
-SimulationStatus::SimulationStatus(openfluid::core::DateTime StartTime,
-                                   openfluid::core::DateTime EndTime,
-                                   int TimeStep):
-  SimulationInfo(StartTime,EndTime,TimeStep),
-  m_CurrentStep(0), m_CurrentTime(StartTime),
-  m_IsFirstStep(true), m_IsLastStep(false)
-
-{
-
-  if (m_StepsCount == 1) m_IsLastStep = true;
-
+  m_CurrentStage = Stage;
 }
 
 
-// =====================================================================
-// =====================================================================
 
-
-SimulationStatus::~SimulationStatus()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool SimulationStatus::switchToNextStep()
-{
-  openfluid::core::DateTime NextTime(m_CurrentTime + m_TimeStep);
-
-  if (NextTime < m_EndTime)
-  {
-    m_CurrentStep++;
-
-    m_CurrentTime = NextTime;
-
-    m_IsFirstStep = (m_CurrentStep == 0);
-    m_IsLastStep = (m_CurrentStep == (m_StepsCount-1));
-
-    return true;
-  }
-  else return false;
-
-}
-
-
-} } // namespace openfluid::base
-
+}  }  // namespaces

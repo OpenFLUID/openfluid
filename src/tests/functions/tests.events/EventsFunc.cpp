@@ -123,37 +123,31 @@ class EventsFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-    {
-      return true;
-    }
+    void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+    { }
 
 
     // =====================================================================
     // =====================================================================
 
 
-    bool prepareData()
-    {
-      return true;
-    }
+    void prepareData()
+    { }
 
 
     // =====================================================================
     // =====================================================================
 
 
-    bool checkConsistency()
-    {
-      return true;
-    }
+    void checkConsistency()
+    { }
 
 
     // =====================================================================
     // =====================================================================
 
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)
+    void initializeRun()
     {
       openfluid::core::Unit* aUnit;
       openfluid::core::EventsCollection EvColl;
@@ -162,9 +156,9 @@ class EventsFunction : public openfluid::ware::PluggableFunction
 
       openfluid::core::DateTime BeginDate,EndDate;
 
-      BeginDate = SimInfo->getStartTime() - openfluid::core::DateTime::Days(60);
+      BeginDate = OPENFLUID_GetBeginDate() - openfluid::core::DateTime::Days(60);
 
-      EndDate = SimInfo->getStartTime() - 1;
+      EndDate = OPENFLUID_GetBeginDate() - 1;
 
     //  std::cout << BeginDate.getAsISOString() << " -->" << EndDate.getAsISOString() << std::endl;
 
@@ -218,9 +212,9 @@ class EventsFunction : public openfluid::ware::PluggableFunction
       }
 
 
-      BeginDate = SimInfo->getStartTime();
+      BeginDate = OPENFLUID_GetBeginDate();
 
-      EndDate = SimInfo->getEndTime();
+      EndDate = OPENFLUID_GetEndDate();
 
     //  std::cout << BeginDate.getAsISOString() << " -->" << EndDate.getAsISOString() << std::endl;
 
@@ -235,8 +229,6 @@ class EventsFunction : public openfluid::ware::PluggableFunction
         }
 
       }
-
-      return true;
     }
 
 
@@ -244,7 +236,7 @@ class EventsFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+    openfluid::core::Duration_t runStep()
     {
       openfluid::core::Unit *aUnit;
       openfluid::core::EventsCollection EvColl;
@@ -253,9 +245,9 @@ class EventsFunction : public openfluid::ware::PluggableFunction
 
       openfluid::core::DateTime BeginDate,EndDate;
 
-      BeginDate = SimStatus->getCurrentTime();
+      BeginDate = OPENFLUID_GetBeginDate();
 
-      EndDate = SimStatus->getCurrentTime() + SimStatus->getTimeStep() -1;
+      EndDate = OPENFLUID_GetCurrentDate() + OPENFLUID_GetDefaultDeltaT() - 1;
 
 
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",aUnit)
@@ -278,14 +270,15 @@ class EventsFunction : public openfluid::ware::PluggableFunction
 
 
         bool FoundEvent = false;
-        AddedEvent = openfluid::core::Event(openfluid::core::DateTime(SimStatus->getCurrentTime()+(SimStatus->getTimeStep()*2)));
-        openfluid::tools::ConvertValue(SimStatus->getTimeStep(),&TmpStr);
+        AddedEvent = openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)));
+        openfluid::tools::ConvertValue(OPENFLUID_GetDefaultDeltaT(),&TmpStr);
         AddedEvent.addInfo("addingstep",TmpStr);
 
         OPENFLUID_AppendEvent(aUnit,AddedEvent);
 
         EvColl.clear();
-        OPENFLUID_GetEvents(aUnit,openfluid::core::DateTime(SimStatus->getCurrentTime()+SimStatus->getTimeStep()),openfluid::core::DateTime(SimStatus->getCurrentTime()+(SimStatus->getTimeStep()*2)),&EvColl);
+        OPENFLUID_GetEvents(aUnit,openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+OPENFLUID_GetDefaultDeltaT()),
+                                  openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)),&EvColl);
 
         OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
           if (Event->isInfoEqual("addingstep",TmpStr)) FoundEvent = true;
@@ -294,7 +287,7 @@ class EventsFunction : public openfluid::ware::PluggableFunction
 
       }
 
-      return true;
+      return DefaultDeltaT();
     }
 
 
@@ -302,10 +295,8 @@ class EventsFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-    {
-      return true;
-    }
+    void finalizeRun()
+    { }
 };
 
 

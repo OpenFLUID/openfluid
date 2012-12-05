@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_rawtime)
 {
   openfluid::core::DateTime DT,DT2;
-  openfluid::core::rawtime_t RawTime;
+  openfluid::core::RawTime_t RawTime;
   const unsigned int CasesCount = 4;
 
 
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::core::DateTime DTResult;
 
-  openfluid::core::rawtime_t DiffInSeconds;
+  openfluid::core::RawTime_t DiffInSeconds;
 
   DTResult = DT + 37;
   BOOST_REQUIRE_EQUAL(DTResult.getYear(),2008);

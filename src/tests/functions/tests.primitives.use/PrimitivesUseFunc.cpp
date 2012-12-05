@@ -127,7 +127,7 @@ PrimitivesUseFunction::~PrimitivesUseFunction()
 // =====================================================================
 
 
-bool PrimitivesUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+void PrimitivesUseFunction::initParams(const openfluid::core::FuncParamsMap_t& Params)
 {
 
   long LongParam;
@@ -221,21 +221,15 @@ bool PrimitivesUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
 
   if (OPENFLUID_GetFunctionParameter(Params,"wronglongarrayparam",&LongArrayParam))
     OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetFunctionParameter (wronglongarrayparam)");
-
-
-
-  return true;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesUseFunction::prepareData()
+void PrimitivesUseFunction::prepareData()
 {
 
-
-  return true;
 }
 
 
@@ -243,11 +237,9 @@ bool PrimitivesUseFunction::prepareData()
 // =====================================================================
 
 
-bool PrimitivesUseFunction::checkConsistency()
+void PrimitivesUseFunction::checkConsistency()
 {
 
-
-  return true;
 }
 
 
@@ -255,18 +247,16 @@ bool PrimitivesUseFunction::checkConsistency()
 // =====================================================================
 
 
-bool PrimitivesUseFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+void PrimitivesUseFunction::initializeRun()
 {
 
-
-  return true;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+openfluid::core::Duration_t PrimitivesUseFunction::runStep()
 {
 //  std::cout << "PrimitiveUseFunc runStep begin" << std::endl;
   openfluid::core::Unit* TU;
@@ -363,23 +353,23 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 //    std::cout << "PrimitiveUseFunc runStep scalar..." << std::endl;
     // ====== Scalar ======
 
-    OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
+    OPENFLUID_GetVariable(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TheScalar);
     if ((openfluid::core::UnitID_t)TheScalar != TU->getID())
       OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value (tests.scalar)");
 
-    OPENFLUID_SetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),(double)(TU->getID()*SimStatus->getCurrentStep()));
+    OPENFLUID_SetVariable(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),(double)(TU->getID()*(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
 
-    if (SimStatus->getCurrentStep() > 0 )
+    if ((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()) > 0 )
     {
-      OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep()-1,&TheScalar);
-      if (!openfluid::tools::IsCloseEnough(TheScalar,(double)(TU->getID()*(SimStatus->getCurrentStep()-1)),0.00001))
+      OPENFLUID_GetVariable(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())-1,&TheScalar);
+      if (!openfluid::tools::IsCloseEnough(TheScalar,(double)(TU->getID()*((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())-1)),0.00001))
         OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value at t-1 (tests.scalar)");
     }
 
 
-    OPENFLUID_GetVariable(TU,"tests.scalar",SimStatus->getCurrentStep(),&TheScalar);
+    OPENFLUID_GetVariable(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TheScalar);
 
-    if (!openfluid::tools::IsCloseEnough(TheScalar,(double)(TU->getID()*SimStatus->getCurrentStep()),0.00001))
+    if (!openfluid::tools::IsCloseEnough(TheScalar,(double)(TU->getID()*(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())),0.00001))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect scalar value after update (tests.scalar)");
 
 
@@ -395,86 +385,86 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.wrongscalar, NONE)");
 
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep()))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.scalar, timestep)");
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep(),openfluid::core::Value::NONE))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.scalar, timestep, NONE)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep()+1))
+    if (OPENFLUID_IsVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+1))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.scalar, timestep+1)");
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep()+1,openfluid::core::Value::NONE))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+1,openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.scalar, timestep+1, NONE)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.wrongscalar",SimStatus->getCurrentStep()))
+    if (OPENFLUID_IsVariableExist(TU,"tests.wrongscalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.wrongscalar, timestep)");
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.wrongscalar",SimStatus->getCurrentStep(),openfluid::core::Value::NONE))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.wrongscalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.wrongscalar, timestep, NONE)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.wrongscalar",SimStatus->getCurrentStep()+1))
+    if (OPENFLUID_IsVariableExist(TU,"tests.wrongscalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+1))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.wrongscalar, timestep+1)");
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.wrongscalar",SimStatus->getCurrentStep()+1,openfluid::core::Value::NONE))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.wrongscalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+1,openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.wrongscalar, timestep+1, NONE)");
 
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep(), openfluid::core::Value::DOUBLE))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.scalar, timestep, DOUBLE)");
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep(), openfluid::core::Value::NONE))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.scalar, timestep, NONE)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep()+2000, openfluid::core::Value::DOUBLE))
+    if (OPENFLUID_IsVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+2000, openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.scalar, timestep+2000, DOUBLE)");
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep()+2000, openfluid::core::Value::NONE))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+2000, openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.scalar, timestep+2000, NONE)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.wrongscalar",SimStatus->getCurrentStep(), openfluid::core::Value::DOUBLE))
+    if (OPENFLUID_IsVariableExist(TU,"tests.wrongscalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.wrongscalar, timestep, DOUBLE)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.wrongscalar",SimStatus->getCurrentStep()+1920, openfluid::core::Value::DOUBLE))
+    if (OPENFLUID_IsVariableExist(TU,"tests.wrongscalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+1920, openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.wrongscalar, timestep+1920, DOUBLE)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.scalar",SimStatus->getCurrentStep(), openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsVariableExist(TU,"tests.scalar",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.scalar, timestep, VECTOR)");
 
 
 //    std::cout << "PrimitiveUseFunc runStep Vector..." << std::endl;
     // ====== Vector ======
 
-    OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),&TheVector);
+    OPENFLUID_GetVariable(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TheVector);
     if (TheVector.getSize() != VectorSize)
       OPENFLUID_RaiseError("tests.primitives.use","incorrect vector size");
 
-    openfluid::core::VectorValue NewVect(NewVectorSize,SimStatus->getCurrentStep());
-    OPENFLUID_SetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),NewVect);
+    openfluid::core::VectorValue NewVect(NewVectorSize,(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()));
+    OPENFLUID_SetVariable(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),NewVect);
 
-    OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep(),&TheVector);
+    OPENFLUID_GetVariable(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TheVector);
     if (TheVector.getSize() != NewVectorSize)
       OPENFLUID_RaiseError("tests.primitives.use","incorrect vector size after update");
 
-    if (!openfluid::tools::IsCloseEnough(TheVector[0],(double)SimStatus->getCurrentStep(),0.00001))
+    if (!openfluid::tools::IsCloseEnough(TheVector[0],(double)(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),0.00001))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect vector value at index 0 after update");
 
-    if (!openfluid::tools::IsCloseEnough(TheVector[4],(double)SimStatus->getCurrentStep(),0.00001))
+    if (!openfluid::tools::IsCloseEnough(TheVector[4],(double)(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),0.00001))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect vector value at index 4 after update");
 
 
-    if (SimStatus->getCurrentStep() > 0)
+    if ((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()) > 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.vector",SimStatus->getCurrentStep()-1,&TheVector);
+      OPENFLUID_GetVariable(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())-1,&TheVector);
 
       if (TheVector.getSize() != NewVectorSize)
         OPENFLUID_RaiseError("tests.primitives.use","incorrect vector size at t-1");
 
-      if (!openfluid::tools::IsCloseEnough(TheVector[0],(double)(SimStatus->getCurrentStep()-1),0.00001))
+      if (!openfluid::tools::IsCloseEnough(TheVector[0],(double)((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())-1),0.00001))
         OPENFLUID_RaiseError("tests.primitives.use","incorrect vector value at index 0 at t-1");
 
-      if (!openfluid::tools::IsCloseEnough(TheVector[4],(double)(SimStatus->getCurrentStep()-1),0.00001))
+      if (!openfluid::tools::IsCloseEnough(TheVector[4],(double)((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())-1),0.00001))
         OPENFLUID_RaiseError("tests.primitives.use","incorrect vector value at index 4 at t-1");
 
     }
@@ -493,39 +483,39 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.wrongvector, VECTOR)");
 
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.vector",SimStatus->getCurrentStep()))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.vector, timestep)");
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.vector",SimStatus->getCurrentStep(),openfluid::core::Value::VECTOR))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.vector, timestep, VECTOR)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.wrongvector",SimStatus->getCurrentStep()))
+    if (OPENFLUID_IsVariableExist(TU,"tests.wrongvector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.wrongvector, timestep)");
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.wrongvector",SimStatus->getCurrentStep(),openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.wrongvector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.wrongvector, timestep, VECTOR)");
 
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.vector",SimStatus->getCurrentStep(), openfluid::core::Value::VECTOR))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.vector, timestep, VECTOR)");
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.vector",SimStatus->getCurrentStep(), openfluid::core::Value::VECTOR))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.vector, timestep, VECTOR)");
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.vector",SimStatus->getCurrentStep()+1, openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+1, openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.vector, timestep+1, VECTOR)");
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.vector",SimStatus->getCurrentStep()+1, openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+1, openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.vector, timestep+1, VECTOR)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.wrongvector",SimStatus->getCurrentStep(), openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsVariableExist(TU,"tests.wrongvector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.wrongvector, timestep, VECTOR)");
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.wrongvector",SimStatus->getCurrentStep(), openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.wrongvector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsTypedVariableExist (tests.wrongvector, timestep, VECTOR)");
 
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.wrongvector",SimStatus->getCurrentStep()+21, openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsVariableExist(TU,"tests.wrongvector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())+21, openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.wrongvector, timestep+21, VECTOR)");
 
-    if (OPENFLUID_IsVariableExist(TU,"tests.vector",SimStatus->getCurrentStep(), openfluid::core::Value::DOUBLE))
+    if (OPENFLUID_IsVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_IsVariableExist (tests.vector, timestep, DOUBLE)");
 
 //    std::cout << "PrimitiveUseFunc runStep InputData..." << std::endl;
@@ -564,13 +554,13 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 
     TheEvents.clear();
 
-    OPENFLUID_GetEvents(TU,SimStatus->getCurrentTime(),SimStatus->getCurrentTime() + SimStatus->getTimeStep(),&TheEvents);
+    OPENFLUID_GetEvents(TU,OPENFLUID_GetCurrentDate(),OPENFLUID_GetCurrentDate() + OPENFLUID_GetDefaultDeltaT(),&TheEvents);
 
     if (TheEvents.getCount() > 2)
       OPENFLUID_RaiseError("tests.primitives.use","incorrect OPENFLUID_GetEvents");
 
 
-    Ev = openfluid::core::Event(openfluid::core::DateTime(SimStatus->getCurrentTime()+(SimStatus->getTimeStep()*2)));
+    Ev = openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)));
     OPENFLUID_AppendEvent(TU,Ev);
 
 
@@ -578,17 +568,13 @@ bool PrimitivesUseFunction::runStep(const openfluid::base::SimulationStatus* Sim
 //  std::cout << "*** PrimitiveUseFunc runStep End Loop" << std::endl;
 
 
-  return true;
+  return DefaultDeltaT();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesUseFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-
-  return true;
-}
+void PrimitivesUseFunction::finalizeRun()
+{ }
 

@@ -58,7 +58,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Listener.hpp>
-#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
 #include <string>
 
 namespace openfluid { namespace machine {

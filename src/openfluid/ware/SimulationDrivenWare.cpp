@@ -47,28 +47,26 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  \file SimulationDrivenWare.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
+#include <openfluid/ware/SimulationDrivenWare.hpp>
 
-#include <openfluid/machine/InterpGenerator.hpp>
-
-#include <boost/math/special_functions/fpclassify.hpp>
-
+namespace openfluid { namespace ware {
 
 
-namespace openfluid { namespace machine {
+// =====================================================================
+// =====================================================================
 
 
-InterpGenerator::InterpGenerator() : Generator(),
-  m_IsMin(false), m_IsMax(false), m_Min(0.0), m_Max(0.0),
-  m_SourcesFile(""),m_DistriFile("")
+void SimulationDrivenWare::linkToSimulation(const openfluid::base::SimulationStatus* SimStatus)
 {
-
+  if (!m_IsLinked) mp_SimStatus = SimStatus;
+  m_IsLinked = true;
 }
 
 
@@ -76,28 +74,12 @@ InterpGenerator::InterpGenerator() : Generator(),
 // =====================================================================
 
 
-InterpGenerator::~InterpGenerator()
+openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetBeginDate() const
 {
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetBeginDate()","Simulation status is not set");
 
-
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void InterpGenerator::initParams(const openfluid::core::FuncParamsMap_t& Params)
-{
-  if (!OPENFLUID_GetFunctionParameter(Params,"sources",&m_SourcesFile))
-    throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::initParams","missing sources value for generator");
-
-  if (!OPENFLUID_GetFunctionParameter(Params,"distribution",&m_DistriFile))
-    throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::initParams","missing distribution value for generator");
-
-
-  if (OPENFLUID_GetFunctionParameter(Params,"thresholdmin",&m_Min)) m_IsMin = true;
-
-  if (OPENFLUID_GetFunctionParameter(Params,"thresholdmax",&m_Max)) m_IsMax = true;
+  return mp_SimStatus->getBeginDate();
 }
 
 
@@ -105,10 +87,12 @@ void InterpGenerator::initParams(const openfluid::core::FuncParamsMap_t& Params)
 // =====================================================================
 
 
-void InterpGenerator::checkConsistency()
+openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetEndDate() const
 {
-  if (m_IsMin && m_IsMax && m_Min > m_Max)
-    throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::checkConsistency","threshold max value must be greater or equal to threshold min value for generator");
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetEndDate()","Simulation status is not set");
+
+  return mp_SimStatus->getEndDate();
 }
 
 
@@ -116,66 +100,65 @@ void InterpGenerator::checkConsistency()
 // =====================================================================
 
 
-void InterpGenerator::initializeRun()
+openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetCurrentDate() const
 {
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetCurrentDate()","Simulation status is not set");
 
-  std::string InputDir;
-
-  OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
-
-  m_DataPool.setConfig(InputDir,m_SourcesFile,m_DistriFile,
-                       //openfluid::tools::SERIEPREPCS_CUMULATE,
-                       openfluid::tools::SERIEPREPCS_NONE,
-                       OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),OPENFLUID_GetDefaultDeltaT());
-
-  m_DataPool.loadAndPrepareData();
-
-  m_CurrentStep = 0;
+  return mp_SimStatus->getCurrentDate();
 }
+
 
 // =====================================================================
 // =====================================================================
 
 
-openfluid::core::Duration_t InterpGenerator::runStep()
+openfluid::base::Duration_t SimulationDrivenWare::OPENFLUID_GetSimulationDuration() const
 {
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetSimulationDuration()","Simulation status is not set");
 
-  openfluid::core::Unit* LU;
-  openfluid::core::DoubleValue CurrentValue;
-  int ID;
-
-
-
-  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
-  {
-    ID = LU->getID();
-
-    if (m_DataPool.getValue(ID,m_CurrentStep,&CurrentValue))
-    {
-      if (boost::math::isnan(CurrentValue))
-        throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","interpolated value for variable " + m_VarName + " is NaN");
-
-      if (m_IsMax && CurrentValue > m_IsMax) CurrentValue = m_Max;
-      if (m_IsMin && CurrentValue < m_IsMin) CurrentValue = m_Min;
-
-      if (isVectorVariable())
-      {
-        openfluid::core::VectorValue VV(m_VarSize,CurrentValue);
-        OPENFLUID_AppendVariable(LU,m_VarName,VV);
-      }
-      else
-        OPENFLUID_AppendVariable(LU,m_VarName,CurrentValue);
-    }
-    else
-      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","error interpolating value for variable " + m_VarName);
-  }
-
-  m_CurrentStep++;
-
-  return OPENFLUID_GetDefaultDeltaT();
+  return mp_SimStatus->getSimulationDuration();
 }
 
 
-} } //namespaces
+// =====================================================================
+// =====================================================================
 
 
+openfluid::base::Duration_t SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT() const
+{
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT()","Simulation status is not set");
+
+  return mp_SimStatus->getDefaultDeltaT();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex() const
+{
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex()","Simulation status is not set");
+
+  return mp_SimStatus->getCurrentTimeIndex();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::SimulationStatus::SimulationStage SimulationDrivenWare::OPENFLUID_GetCurrentStage() const
+{
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetCurrentStage()","Simulation status is not set");
+
+  return mp_SimStatus->getCurrentStage();
+}
+
+
+}  }  //namespaces

@@ -183,37 +183,31 @@ class LoopsFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-    {
-      return true;
-    }
+    void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+    { }
 
 
     // =====================================================================
     // =====================================================================
 
 
-    bool prepareData()
-    {
-      return true;
-    }
+    void prepareData()
+    { }
 
 
     // =====================================================================
     // =====================================================================
 
 
-    bool checkConsistency()
-    {
-      return true;
-    }
+    void checkConsistency()
+    { }
 
 
     // =====================================================================
     // =====================================================================
 
 
-    bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+    void initializeRun()
     {
 
       openfluid::core::Unit* CurrentUnit;
@@ -315,8 +309,6 @@ class LoopsFunction : public openfluid::ware::PluggableFunction
 
 
       }
-
-      return true;
     }
 
 
@@ -324,7 +316,7 @@ class LoopsFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+    openfluid::core::Duration_t runStep()
     {
       openfluid::core::Unit *TU = NULL;
       openfluid::core::Unit *OU = NULL;
@@ -508,7 +500,7 @@ class LoopsFunction : public openfluid::ware::PluggableFunction
       }
 
 
-      return true;
+      return DefaultDeltaT();
     }
 
 
@@ -516,10 +508,8 @@ class LoopsFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-    {
-      return true;
-    }
+    void finalizeRun()
+    { }
 
 };
 

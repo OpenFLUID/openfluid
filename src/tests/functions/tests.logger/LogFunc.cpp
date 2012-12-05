@@ -116,56 +116,44 @@ class LoggerFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
+  void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
   {
 
     OPENFLUID_Logger.get() << "This is a message to both file and console" << std::endl;
     OPENFLUID_Logger.getFile() << "This is a message to file only" << std::endl;
     OPENFLUID_Logger.getStdout() << "This is a message to console only" << std::endl;
-
-    return true;
   }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool prepareData()
+  void prepareData()
+  { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency()
+  { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void initializeRun()
   {
-
-
-    return true;
-  }
-
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool checkConsistency()
-  {
-
-
-    return true;
-  }
-
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool initializeRun(const openfluid::base::SimulationInfo* SimInfo)
-  {
-    OPENFLUID_Logger.get() << "Time step duration" << SimInfo->getTimeStep() << std::endl;
-
-    return true;
+    OPENFLUID_Logger.get() << "Time step duration" << OPENFLUID_GetDefaultDeltaT() << std::endl;
   }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+  openfluid::core::Duration_t runStep()
   {
     openfluid::core::Unit* TU;
 
@@ -184,11 +172,8 @@ class LoggerFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-    return true;
-  }
+  void finalizeRun()
+  { }
 
 };
 

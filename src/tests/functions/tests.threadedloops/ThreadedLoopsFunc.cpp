@@ -128,22 +128,18 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-  {
-
-    return true;
-  }
+  void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+  {  }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool prepareData()
+  void prepareData()
   {
 
     std::cout << std::endl << "Max threads: " << OPENFLUID_GetFunctionMaxThreads() << std::endl;
 
-    return true;
   }
 
 
@@ -151,24 +147,16 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool checkConsistency()
-  {
-
-
-    return true;
-  }
+  void checkConsistency()
+  {  }
 
 
   // =====================================================================
   // =====================================================================
 
 
-  bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-
-    return true;
-  }
+  void initializeRun()
+  {  }
 
 
   // =====================================================================
@@ -225,7 +213,7 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
 
 
 
-  bool runStep(const openfluid::base::SimulationStatus* SimStatus)
+  openfluid::core::Duration_t runStep()
   {
     openfluid::core::Unit* TU;
 
@@ -255,7 +243,7 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
 
     StartTime = boost::posix_time::microsec_clock::local_time();
     OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
-      produceDataOnTUSequenced(TU,double(SimStatus->getCurrentStep()));
+      produceDataOnTUSequenced(TU,double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
 
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
@@ -263,7 +251,7 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
 
 
     StartTime = boost::posix_time::microsec_clock::local_time();
-    APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsFunction::produceDataOnTUThreaded,double(SimStatus->getCurrentStep()));
+    APPLY_UNITS_ORDERED_LOOP_THREADED("TU",ThreadedLoopsFunction::produceDataOnTUThreaded,double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())));
     EndTime = boost::posix_time::microsec_clock::local_time();
     Duration = EndTime - StartTime;
     std::cout << "TU Production Threaded: " << boost::posix_time::to_simple_string(Duration) << std::endl;
@@ -327,12 +315,8 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-
-    return true;
-  }
+  void finalizeRun()
+  {  }
 
 };
 

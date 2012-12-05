@@ -74,15 +74,15 @@ class DLLEXPORT FixedGenerator : public Generator
 
     ~FixedGenerator();
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    void initParams(const openfluid::core::FuncParamsMap_t& Params);
 
-    bool checkConsistency();
+    void checkConsistency() {};
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void initializeRun() {};
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+    openfluid::core::Duration_t runStep();
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void finalizeRun() {};
 
 };
 

@@ -368,6 +368,9 @@ void Factory::buildSimulationBlobFromDescriptors(openfluid::base::DomainDescript
 
   buildDatastoreFromDescriptor(DataDesc,SimBlob.getDatastore());
 
+  SimBlob.getSimulationStatus() = openfluid::base::SimulationStatus(RunDesc.getBeginDate(),RunDesc.getEndDate(),
+                                                   RunDesc.getDeltaT());
+
   SimBlob.getRunDescriptor() = RunDesc;
 
   SimBlob.getOutputDescriptor() = OutDesc;

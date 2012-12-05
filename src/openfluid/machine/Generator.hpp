@@ -99,7 +99,7 @@ class DLLEXPORT Generator : public openfluid::ware::PluggableFunction
     inline unsigned int getVariableSize() const { return m_VarSize; };
 
 
-    bool prepareData()  { return true; };
+    void prepareData() {};
 
 };
 

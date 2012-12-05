@@ -116,13 +116,13 @@ class GlobalParamsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  bool initParams(openfluid::core::FuncParamsMap_t Params)
+  void initParams(const openfluid::core::FuncParamsMap_t& Params)
   {
     std::string StrParam;
     long LongParam;
     double DoubleParam;
 
-    openfluid::core::FuncParamsMap_t::iterator itParams;
+    openfluid::core::FuncParamsMap_t::const_iterator itParams;
 
     for (itParams=Params.begin();itParams!=Params.end();++itParams)
       std::cout << (*itParams).first << " -> " << (*itParams).second << std::endl;
@@ -153,66 +153,46 @@ class GlobalParamsFunction : public openfluid::ware::PluggableFunction
 
     if (!openfluid::tools::IsCloseEnough(DoubleParam,0.1,0.00001))
       OPENFLUID_RaiseError("tests.globalparams","wrong value for gparam3");
-
-
-    return true;
   }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool prepareData()
+  void prepareData()
+  { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency()
+  { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void initializeRun()
+  { }
+
+  // =====================================================================
+  // =====================================================================
+
+
+  openfluid::core::Duration_t runStep()
   {
-
-
-    return true;
-  }
-
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool checkConsistency()
-  {
-
-
-    return true;
-  }
-
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-
-    return true;
+    return DefaultDeltaT();
   }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
-  {
-
-    return true;
-  }
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-
-    return true;
-  }
+  void finalizeRun()
+  { }
 
 };
 

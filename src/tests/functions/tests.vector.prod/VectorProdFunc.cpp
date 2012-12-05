@@ -113,53 +113,37 @@ VectorProdFunction::~VectorProdFunction()
 // =====================================================================
 
 
-bool VectorProdFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-{
-
-
-  return true;
-}
+void VectorProdFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorProdFunction::prepareData()
-{
-
-
-  return true;
-}
+void VectorProdFunction::prepareData()
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorProdFunction::checkConsistency()
-{
-
-
-  return true;
-}
+void VectorProdFunction::checkConsistency()
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorProdFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-
-  return true;
-}
+void VectorProdFunction::initializeRun()
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorProdFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+openfluid::core::Duration_t VectorProdFunction::runStep()
 {
   openfluid::core::Unit* TU;
   long VectorSize = 40;
@@ -172,17 +156,13 @@ bool VectorProdFunction::runStep(const openfluid::base::SimulationStatus* /*SimS
     OPENFLUID_AppendVariable(TU,"tests.vector",TheVector);
   }
 
-  return true;
+  return DefaultDeltaT();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool VectorProdFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-
-  return true;
-}
+void VectorProdFunction::finalizeRun()
+{  }
 

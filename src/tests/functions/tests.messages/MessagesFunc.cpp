@@ -111,25 +111,21 @@ MessagesFunction::~MessagesFunction()
 // =====================================================================
 
 
-bool MessagesFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+void MessagesFunction::initParams(const openfluid::core::FuncParamsMap_t& Params)
 {
 
   m_RepeatMessages = 1;
 
   OPENFLUID_GetFunctionParameter(Params,"rptmsgs",&m_RepeatMessages);
-
-  return true;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool MessagesFunction::prepareData()
+void MessagesFunction::prepareData()
 {
 
-
-  return true;
 }
 
 
@@ -137,11 +133,9 @@ bool MessagesFunction::prepareData()
 // =====================================================================
 
 
-bool MessagesFunction::checkConsistency()
+void MessagesFunction::checkConsistency()
 {
 
-
-  return true;
 }
 
 
@@ -149,19 +143,17 @@ bool MessagesFunction::checkConsistency()
 // =====================================================================
 
 
-bool MessagesFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+void MessagesFunction::initializeRun()
 {
 
   OPENFLUID_RaiseWarning("tests.messages","initializeRun()","Message from tests.messages function");
-
-  return true;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+openfluid::core::Duration_t MessagesFunction::runStep()
 {
   openfluid::core::Unit* TU;
 
@@ -169,7 +161,7 @@ bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
 
   std::string RptStr, IDStr, TSStr;
 
-  openfluid::tools::ConvertValue(SimStatus->getCurrentStep(),&TSStr);
+  openfluid::tools::ConvertValue((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&TSStr);
 
 
   OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -179,24 +171,21 @@ bool MessagesFunction::runStep(const openfluid::base::SimulationStatus* SimStatu
     for (i = 0; i< m_RepeatMessages; i++)
     {
       openfluid::tools::ConvertValue((i+1),&RptStr);
-      OPENFLUID_RaiseWarning("tests.messages","runStep()",SimStatus->getCurrentStep(),"["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
+      OPENFLUID_RaiseWarning("tests.messages","runStep()",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),"["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
     }
 
   }
 
-
-  return true;
+  return DefaultDeltaT();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool MessagesFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+void MessagesFunction::finalizeRun()
 {
 
   OPENFLUID_RaiseWarning("tests.messages","finalizeRun()","Message from tests.messages function");
-
-  return true;
 }
 

@@ -83,7 +83,7 @@ RandomGenerator::~RandomGenerator()
 // =====================================================================
 
 
-bool RandomGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
+void RandomGenerator::initParams(const openfluid::core::FuncParamsMap_t& Params)
 {
   if (!OPENFLUID_GetFunctionParameter(Params,"min",m_Min))
     throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing min value for generator");
@@ -91,8 +91,6 @@ bool RandomGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
   if (!OPENFLUID_GetFunctionParameter(Params,"max",m_Max))
     throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing max value for generator");
 
-
-  return true;
 };
 
 
@@ -100,12 +98,10 @@ bool RandomGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
 // =====================================================================
 
 
-bool RandomGenerator::checkConsistency()
+void RandomGenerator::checkConsistency()
 {
   if ( m_Min > m_Max)
     throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
-
-  return true;
 }
 
 
@@ -113,17 +109,7 @@ bool RandomGenerator::checkConsistency()
 // =====================================================================
 
 
-bool RandomGenerator::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+openfluid::core::Duration_t RandomGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;
@@ -147,18 +133,6 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStat
       OPENFLUID_AppendVariable(LU,m_VarName,Value);
 
   }
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool RandomGenerator::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-  return true;
 }
 
 

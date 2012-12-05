@@ -78,28 +78,20 @@ namespace openfluid { namespace machine {
   @param[in] calledmethod the method to call on each function
   @param[out] statevar the globalized return of the method calls
  */
-#define PARSE_FUNCTION_LIST(calledmethod,listenermethod,timeprofilepart,statevar) \
+#define PARSE_FUNCTION_LIST(calledmethod,listenermethod,timeprofilepart) \
     _M_FuncIter = m_ModelItems.begin(); \
-    while (_M_FuncIter != m_ModelItems.end() && statevar) \
+    while (_M_FuncIter != m_ModelItems.end()) \
     { \
       ModelItemInstance* _M_CurrentFunction = *_M_FuncIter; \
       if (_M_CurrentFunction != NULL) \
       { \
         mp_Listener->onFunction##listenermethod(_M_CurrentFunction->Signature->ID); \
         boost::posix_time::ptime _M_TimeProfileStart = boost::posix_time::microsec_clock::universal_time(); \
-        statevar = (statevar && _M_CurrentFunction->Function->calledmethod); \
+        _M_CurrentFunction->Function->calledmethod; \
         openfluid::base::SimulationProfiler::getInstance()->addDuration(_M_CurrentFunction->Signature->ID,timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length()); \
-        if (!statevar) \
-        { \
-          mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::ERROR,_M_CurrentFunction->Signature->ID); \
-          throw openfluid::base::OFException("OpenFLUID framework","Bad return value while calling function method"); \
-        }  \
-        else \
-        { \
-          if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
-          else  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentFunction->Signature->ID); \
-          m_SimulationBlob.getExecutionMessages().resetWarningFlag(); \
-        } \
+        if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
+        else  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentFunction->Signature->ID); \
+        m_SimulationBlob.getExecutionMessages().resetWarningFlag(); \
       } \
       _M_FuncIter++; \
     } \
@@ -283,6 +275,9 @@ void ModelInstance::initialize()
                                     openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment(),
                                     openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads(),
                                     CurrentFunction->Signature->ID);
+
+    CurrentFunction->Function->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
+
     FuncIter++;
   }
 
@@ -328,18 +323,14 @@ void ModelInstance::finalize()
 // =====================================================================
 
 
-bool ModelInstance::call_initParams() const
+void ModelInstance::call_initParams() const
 {
   if (!m_Initialized)
     throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_initParams()","Model not initialized");
 
 
   DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(initParams(mergeParamsWithGlobalParams(_M_CurrentFunction->Params)),InitParams,openfluid::base::SimulationProfiler::INITPARAMS,IsOK);
-
-  return IsOK;
+  PARSE_FUNCTION_LIST(initParams(mergeParamsWithGlobalParams(_M_CurrentFunction->Params)),InitParams,openfluid::base::SimulationProfiler::INITPARAMS);
 }
 
 
@@ -347,18 +338,14 @@ bool ModelInstance::call_initParams() const
 // =====================================================================
 
 
-bool ModelInstance::call_prepareData() const
+void ModelInstance::call_prepareData() const
 {
   if (!m_Initialized)
     throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_prepareData()","Model not initialized");
 
 
   DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(prepareData(),PrepareData,openfluid::base::SimulationProfiler::PREPAREDATA,IsOK);
-
-  return IsOK;
+  PARSE_FUNCTION_LIST(prepareData(),PrepareData,openfluid::base::SimulationProfiler::PREPAREDATA);
 }
 
 
@@ -366,18 +353,14 @@ bool ModelInstance::call_prepareData() const
 // =====================================================================
 
 
-bool ModelInstance::call_checkConsistency() const
+void ModelInstance::call_checkConsistency() const
 {
   if (!m_Initialized)
     throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_checkConsistency()","Model not initialized");
 
 
   DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(checkConsistency(),CheckConsistency,openfluid::base::SimulationProfiler::CHECKCONSISTENCY,IsOK);
-
-  return IsOK;
+  PARSE_FUNCTION_LIST(checkConsistency(),CheckConsistency,openfluid::base::SimulationProfiler::CHECKCONSISTENCY);
 }
 
 
@@ -385,18 +368,14 @@ bool ModelInstance::call_checkConsistency() const
 // =====================================================================
 
 
-bool ModelInstance::call_initializeRun(const openfluid::base::SimulationInfo* SimInfo) const
+void ModelInstance::call_initializeRun() const
 {
   if (!m_Initialized)
     throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_initializeRun()","Model not initialized");
 
 
   DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(initializeRun(SimInfo),InitializeRun,openfluid::base::SimulationProfiler::INITIALIZERUN,IsOK);
-
-  return IsOK;
+  PARSE_FUNCTION_LIST(initializeRun(),InitializeRun,openfluid::base::SimulationProfiler::INITIALIZERUN);
 }
 
 
@@ -404,18 +383,14 @@ bool ModelInstance::call_initializeRun(const openfluid::base::SimulationInfo* Si
 // =====================================================================
 
 
-bool ModelInstance::call_runStep(const openfluid::base::SimulationStatus* SimStatus) const
+void ModelInstance::call_runStep() const
 {
   if (!m_Initialized)
     throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_runStep()","Model not initialized");
 
 
   DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(runStep(SimStatus),RunStep,openfluid::base::SimulationProfiler::RUNSTEP,IsOK);
-
-  return IsOK;
+  PARSE_FUNCTION_LIST(runStep(),RunStep,openfluid::base::SimulationProfiler::RUNSTEP);
 }
 
 
@@ -423,18 +398,14 @@ bool ModelInstance::call_runStep(const openfluid::base::SimulationStatus* SimSta
 // =====================================================================
 
 
-bool ModelInstance::call_finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const
+void ModelInstance::call_finalizeRun() const
 {
   if (!m_Initialized)
     throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_finalizeRun()","Model not initialized");
 
 
   DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(finalizeRun(SimInfo),FinalizeRun,openfluid::base::SimulationProfiler::FINALIZERUN,IsOK);
-
-  return IsOK;
+  PARSE_FUNCTION_LIST(finalizeRun(),FinalizeRun,openfluid::base::SimulationProfiler::FINALIZERUN);
 }
 
 

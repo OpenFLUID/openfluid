@@ -189,8 +189,8 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 
     virtual void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
     {
-      std::cout << std::setw(8) << SimStatus->getCurrentStep();
-      std::cout << std::setw(25) << SimStatus->getCurrentTime().getAsISOString();
+      std::cout << std::setw(8) << (SimStatus->getCurrentTimeIndex() / SimStatus->getDefaultDeltaT());
+      std::cout << std::setw(25) << SimStatus->getCurrentDate().getAsISOString();
       std::cout.flush();
     };
 

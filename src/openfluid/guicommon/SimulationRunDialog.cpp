@@ -79,7 +79,7 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::Engine* Engine)
     mp_Model(Engine->getModelInstance()), mp_MachineListen((RunDialogMachineListener*)(Engine->getMachineListener()))
 {
 
-  m_StepsCount = openfluid::base::SimulationInfo::computeTimeStepsCount(mp_SBlob->getRunDescriptor().getBeginDate(),
+  m_StepsCount = openfluid::tools::computeTimeStepsCount(mp_SBlob->getRunDescriptor().getBeginDate(),
                                                                         mp_SBlob->getRunDescriptor().getEndDate(),
                                                                         mp_SBlob->getRunDescriptor().getDeltaT());
 

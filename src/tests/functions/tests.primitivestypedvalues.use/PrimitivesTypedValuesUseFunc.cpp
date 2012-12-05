@@ -128,49 +128,37 @@ PrimitivesTypedValuesUseFunction::~PrimitivesTypedValuesUseFunction()
 // =====================================================================
 
 
-bool PrimitivesTypedValuesUseFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-{
-  return true;
-}
+void PrimitivesTypedValuesUseFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesTypedValuesUseFunction::prepareData()
-{
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PrimitivesTypedValuesUseFunction::checkConsistency()
-{
-
-
-  return true;
-}
+void PrimitivesTypedValuesUseFunction::prepareData()
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesTypedValuesUseFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
+void PrimitivesTypedValuesUseFunction::checkConsistency()
+{  }
 
-
-  return true;
-}
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesTypedValuesUseFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+void PrimitivesTypedValuesUseFunction::initializeRun()
+{  }
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 {
   openfluid::core::Unit* TU;
   unsigned int TUID;
@@ -206,7 +194,7 @@ bool PrimitivesTypedValuesUseFunction::runStep(const openfluid::base::Simulation
 
 
     TUID = TU->getID();
-    CurStep = SimStatus->getCurrentStep();
+    CurStep = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT());
 
     RefDouble = (double)TUID/10;
     RefLong = TUID;
@@ -473,15 +461,13 @@ bool PrimitivesTypedValuesUseFunction::runStep(const openfluid::base::Simulation
   }
 
 
-  return true;
+  return DefaultDeltaT();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesTypedValuesUseFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-  return true;
-}
+void PrimitivesTypedValuesUseFunction::finalizeRun()
+{  }
 

@@ -131,17 +131,17 @@ class DLLEXPORT ModelInstance
 
     void finalize();
 
-    bool call_initParams() const;
+    void call_initParams() const;
 
-    bool call_prepareData() const;
+    void call_prepareData() const;
 
-    bool call_checkConsistency() const;
+    void call_checkConsistency() const;
 
-    bool call_initializeRun(const openfluid::base::SimulationInfo* SimInfo) const;
+    void call_initializeRun() const;
 
-    bool call_runStep(const openfluid::base::SimulationStatus* SimStatus) const;
+    void call_runStep() const;
 
-    bool call_finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const;
+    void call_finalizeRun() const;
 
     void resetInitialized() { m_Initialized = false; }
 

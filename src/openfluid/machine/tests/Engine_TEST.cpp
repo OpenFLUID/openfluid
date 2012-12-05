@@ -76,17 +76,17 @@ class EmptyFunction : public openfluid::ware::PluggableFunction
 {
   public:
 
-  bool initParams(openfluid::core::FuncParamsMap_t /*Params*/) { return true; };
+  void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/) { };
 
-  bool prepareData() {  return true; };
+  void prepareData() { };
 
-  bool checkConsistency() {  return true; };
+  void checkConsistency() { };
 
-  bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/) {  return true; };
+  void initializeRun() { };
 
-  bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/) {  return true; };
+  openfluid::core::Duration_t runStep() {  return 1; };
 
-  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/) {  return true; };
+  void finalizeRun() { };
 };
 
 

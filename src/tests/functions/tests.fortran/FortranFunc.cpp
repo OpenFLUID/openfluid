@@ -126,22 +126,14 @@ FortranFunction::~FortranFunction()
 
 
 bool FortranFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
-{
-
-
-  return true;
-}
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
 bool FortranFunction::prepareData()
-{
-
-
-  return true;
-}
+{  }
 
 
 // =====================================================================
@@ -149,18 +141,14 @@ bool FortranFunction::prepareData()
 
 
 bool FortranFunction::checkConsistency()
-{
-
-
-  return true;
-}
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool FortranFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+bool FortranFunction::initializeRun()
 {
 
   m_Precision = 0.000001;
@@ -303,10 +291,6 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* /*SimStat
 // =====================================================================
 
 
-bool FortranFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-
-  return true;
-}
+bool FortranFunction::finalizeRun()
+{  }
 

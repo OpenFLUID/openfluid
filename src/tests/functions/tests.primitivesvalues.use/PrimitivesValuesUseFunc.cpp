@@ -149,7 +149,7 @@ PrimitivesValuesUseFunction::~PrimitivesValuesUseFunction()
 // =====================================================================
 
 
-bool PrimitivesValuesUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+void PrimitivesValuesUseFunction::initParams(const openfluid::core::FuncParamsMap_t& Params)
 {
   openfluid::core::StringValue ParamStrVal;
   openfluid::core::DoubleValue ParamDoubleVal;
@@ -437,16 +437,13 @@ bool PrimitivesValuesUseFunction::initParams(openfluid::core::FuncParamsMap_t Pa
     OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, type for key key3)");
   if(aBool != true)
     OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (mapparam, value for key key3)");
-
-
-  return true;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesValuesUseFunction::prepareData()
+void PrimitivesValuesUseFunction::prepareData()
 {
   openfluid::core::Unit* TU;
   openfluid::core::VectorValue aVector(3);
@@ -498,8 +495,6 @@ bool PrimitivesValuesUseFunction::prepareData()
     OPENFLUID_SetInputData(TU,"indataNull3",openfluid::core::NullValue());
 
   };
-
-  return true;
 }
 
 
@@ -507,26 +502,22 @@ bool PrimitivesValuesUseFunction::prepareData()
 // =====================================================================
 
 
-bool PrimitivesValuesUseFunction::checkConsistency()
-{
-  return true;
-}
+void PrimitivesValuesUseFunction::checkConsistency()
+{  }
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesValuesUseFunction::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-  return true;
-}
+void PrimitivesValuesUseFunction::initializeRun()
+{  }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatus* SimStatus)
+openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
 {
   openfluid::core::Unit* TU;
   unsigned int TUID;
@@ -574,7 +565,7 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
 
 
     TUID = TU->getID();
-    CurStep = SimStatus->getCurrentStep();
+    CurStep = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT());
 
     RefDouble = (double)TUID/10;
     RefLong = TUID;
@@ -1461,28 +1452,26 @@ bool PrimitivesValuesUseFunction::runStep(const openfluid::base::SimulationStatu
 
     TheEvents.clear();
 
-    OPENFLUID_GetEvents(TU,SimStatus->getCurrentTime(),SimStatus->getCurrentTime() + SimStatus->getTimeStep(),&TheEvents);
+    OPENFLUID_GetEvents(TU,OPENFLUID_GetCurrentDate(),OPENFLUID_GetCurrentDate() + OPENFLUID_GetDefaultDeltaT(),&TheEvents);
 
     if (TheEvents.getCount() > 2)
       OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetEvents");
 
 
-    Ev = openfluid::core::Event(openfluid::core::DateTime(SimStatus->getCurrentTime()+(SimStatus->getTimeStep()*2)));
+    Ev = openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)));
     OPENFLUID_AppendEvent(TU,Ev);
 
 
   }
 
 
-  return true;
+  return DefaultDeltaT();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool PrimitivesValuesUseFunction::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-  return true;
-}
+void PrimitivesValuesUseFunction::finalizeRun()
+{  }
 

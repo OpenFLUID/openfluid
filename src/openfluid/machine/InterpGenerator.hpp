@@ -77,21 +77,23 @@ class DLLEXPORT InterpGenerator : public Generator
     std::string m_SourcesFile;
     std::string m_DistriFile;
 
+    openfluid::core::TimeIndex_t m_CurrentStep;
+
   public:
 
     InterpGenerator();
 
     ~InterpGenerator();
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    void initParams(const openfluid::core::FuncParamsMap_t& Params);
 
-    bool checkConsistency();
+    void checkConsistency();
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void initializeRun();
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+    openfluid::core::Duration_t runStep();
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void finalizeRun() {};
 
 };
 

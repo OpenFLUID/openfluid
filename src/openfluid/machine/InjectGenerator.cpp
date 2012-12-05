@@ -88,7 +88,7 @@ InjectGenerator::~InjectGenerator()
 // =====================================================================
 
 
-bool InjectGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
+void InjectGenerator::initParams(const openfluid::core::FuncParamsMap_t& Params)
 {
   if (!OPENFLUID_GetFunctionParameter(Params,"sources",&m_SourcesFile))
     throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::initParams","missing sources value for generator");
@@ -101,7 +101,6 @@ bool InjectGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
 
   if (OPENFLUID_GetFunctionParameter(Params,"thresholdmax",&m_Max)) m_IsMax = true;
 
-  return true;
 };
 
 
@@ -109,12 +108,10 @@ bool InjectGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
 // =====================================================================
 
 
-bool InjectGenerator::checkConsistency()
+void InjectGenerator::checkConsistency()
 {
   if (m_IsMin && m_IsMax && m_Min > m_Max)
     throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::checkConsistency","threshold max value must be greater or equal to threshold min value for generator");
-
-  return true;
 }
 
 
@@ -218,7 +215,7 @@ void InjectGenerator::LoadDataAsSerie(const std::string& FilePath, const int& ID
 // =====================================================================
 
 
-bool InjectGenerator::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+void InjectGenerator::initializeRun()
 {
   openfluid::tools::DataSourcesFile DSFile;
   std::string InputDir;
@@ -230,7 +227,6 @@ bool InjectGenerator::initializeRun(const openfluid::base::SimulationInfo* /*Sim
   if (!DSFile.load(DSFilePath.string()) && DSFile.getIDs().size() <= 1)
   {
     throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::initializeRun","Error loading file " + m_SourcesFile);
-    return false;
   }
   else
   {
@@ -255,16 +251,13 @@ bool InjectGenerator::initializeRun(const openfluid::base::SimulationInfo* /*Sim
 
     LoadDistribution(DistriFilePath.string());
   }
-
-
-  return true;
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool InjectGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus)
+openfluid::core::Duration_t InjectGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;
@@ -274,7 +267,7 @@ bool InjectGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
   {
 
     // accessing the next correct value
-    while (!((*it).second.empty()) && !((*it).second.front().first == SimStatus->getCurrentTime()))
+    while (!((*it).second.empty()) && !((*it).second.front().first == OPENFLUID_GetCurrentDate()))
       (*it).second.pop();
 
     // exit if the next correct value doesn't exist
@@ -303,18 +296,7 @@ bool InjectGenerator::runStep(const openfluid::base::SimulationStatus* SimStatus
       OPENFLUID_AppendVariable(LU,m_VarName,CurrentValue);
   }
 
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool InjectGenerator::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-  return true;
+  return DefaultDeltaT();
 }
 
 
