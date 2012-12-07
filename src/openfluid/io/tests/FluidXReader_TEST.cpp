@@ -530,4 +530,10 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
               "/OPENFLUID.IN.FluidXReader/wrong-unknowndatatype").string()),
               openfluid::base::OFException);
 
+  BOOST_REQUIRE_THROW(openfluid::io::FluidXReader(
+      new openfluid::io::IOListener()).loadFromDirectory(
+          boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+
+              "/OPENFLUID.IN.FluidXReader/wrong-missingdataid").string()),
+              openfluid::base::OFException);
+
 }

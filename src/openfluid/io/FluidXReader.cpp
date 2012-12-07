@@ -312,27 +312,6 @@ openfluid::core::FuncParamsMap_t FluidXReader::mergeParams(const openfluid::core
 // =====================================================================
 // =====================================================================
 
-/*
-void FluidXReader::propagateGlobalParamsInModel()
-{
-  openfluid::base::ModelDescriptor::ModelDescription_t::iterator itM;
-
-  openfluid::base::ModelItemDescriptor* Item;
-
-  for (itM=m_ModelDescriptor.getItems().begin();itM!=m_ModelDescriptor.getItems().end();++itM)
-  {
-    openfluid::core::FuncParamsMap_t::iterator itP;
-
-    Item = (*itM);
-
-    Item->setParameters(mergeParams(m_ModelGlobalParams,Item->getParameters()));
-  }
-}
-
-*/
-// =====================================================================
-// =====================================================================
-
 
 void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
 {
@@ -866,6 +845,11 @@ void FluidXReader::extractDatastoreFromNode(xmlNodePtr NodePtr)
 
       if (xmlDataID != NULL && xmlDataType != NULL && xmlDataSrc != NULL)
       {
+        std::string DataID;
+
+        if (!openfluid::tools::ConvertString(std::string((char*)xmlDataID),&DataID) || DataID.empty())
+          throw openfluid::base::OFException("OpenFLUID framework","FluidXReader::extractDatastoreFromNode","wrong format or missing data ID in datastore (" + m_CurrentFile + ")");
+
         openfluid::core::UnstructuredValue::UnstructuredType DataType;
 
         if(!openfluid::core::UnstructuredValue::getValueTypeFromString(
@@ -876,7 +860,7 @@ void FluidXReader::extractDatastoreFromNode(xmlNodePtr NodePtr)
 
         openfluid::base::DatastoreItemDescriptor* Item =
             new openfluid::base::DatastoreItemDescriptor(
-                std::string((char*)xmlDataID),
+                DataID,
                 m_CurrentDir,
                 std::string((char*)xmlDataSrc),
                 DataType);
