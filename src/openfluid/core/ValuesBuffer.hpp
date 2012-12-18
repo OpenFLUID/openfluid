@@ -57,6 +57,8 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/ValuesBufferProperties.hpp>
 #include <openfluid/core/Value.hpp>
+#include <openfluid/core/NullValue.hpp>
+#include <openfluid/core/DateTime.hpp>
 
 #include <boost/circular_buffer.hpp>
 #include <boost/shared_ptr.hpp>
@@ -66,12 +68,35 @@
 namespace openfluid {
 namespace core {
 
+
+class IndexedValue
+{
+  public:
+
+    TimeIndex_t Index;
+
+    boost::shared_ptr<Value> Data;
+
+    IndexedValue():
+      Index(0),Data(boost::shared_ptr<Value>(new NullValue())) {};
+
+    IndexedValue(const TimeIndex_t& Ind, const Value& Val):
+      Index(Ind),Data(boost::shared_ptr<Value>(Val.clone())) {};
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
 class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 {
 
   private:
 
-    boost::circular_buffer<boost::shared_ptr<Value> > m_Data;
+    // TODO Replace by std::list with garbage collector after each insertion?
+    boost::circular_buffer<IndexedValue> m_Data;
 
     unsigned int m_NextStep;
 
@@ -94,7 +119,7 @@ class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 
     bool modifyValue(const unsigned int StepNbr, const Value& aValue);
 
-    bool appendValue(const Value& aValue);
+    bool appendValue(const TimeIndex_t& anIndex, const Value& aValue);
 
     unsigned int getNextStep() const;
 

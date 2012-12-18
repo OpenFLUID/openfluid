@@ -75,7 +75,7 @@ class DLLEXPORT Variables
     bool modifyValue(const VariableName_t aName, const TimeStep_t aStep,
         const Value& aValue);
 
-    bool appendValue(const VariableName_t aName, const Value& aValue);
+    bool appendValue(const VariableName_t aName, const TimeIndex_t& anIndex, const Value& aValue);
 
     bool getValue(const VariableName_t aName, const TimeStep_t aStep,
         Value* aValue) const;

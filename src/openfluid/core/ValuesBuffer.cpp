@@ -119,9 +119,9 @@ bool ValuesBuffer::getValue(const unsigned int StepNbr, Value* aValue) const
 {
   unsigned int Index;
 
-  if (TranslateStepNbrToIndex(StepNbr, Index) && aValue->getType() == m_Data[Index]->getType())
+  if (TranslateStepNbrToIndex(StepNbr, Index) && aValue->getType() == m_Data[Index].Data->getType())
   {
-    *aValue = *m_Data[Index];
+    *aValue = *m_Data[Index].Data;
 
     return true;
   }
@@ -140,7 +140,7 @@ Value* ValuesBuffer::getValue(const unsigned int StepNbr) const
 
   if (TranslateStepNbrToIndex(StepNbr, Index))
   {
-    return m_Data[Index].get();
+    return m_Data[Index].Data.get();
   }
 
   return (Value*)0;
@@ -152,7 +152,7 @@ Value* ValuesBuffer::getValue(const unsigned int StepNbr) const
 
 Value* ValuesBuffer::getCurrentValue() const
 {
-  return m_Data.back().get();
+  return m_Data.back().Data.get();
 }
 
 
@@ -162,9 +162,9 @@ Value* ValuesBuffer::getCurrentValue() const
 
 bool ValuesBuffer::getCurrentValue(Value* aValue) const
 {
-  if(aValue->getType() == m_Data.back()->getType())
+  if(aValue->getType() == m_Data.back().Data->getType())
   {
-    *aValue = *m_Data.back();
+    *aValue = *m_Data.back().Data;
 
     return true;
   }
@@ -181,7 +181,7 @@ bool ValuesBuffer::modifyValue(const unsigned int StepNbr, const Value& aValue)
 
   if (TranslateStepNbrToIndex(StepNbr, Index))
   {
-    m_Data[Index].reset(aValue.clone());
+    m_Data[Index].Data.reset(aValue.clone());
     return true;
   }
   return false;
@@ -191,9 +191,11 @@ bool ValuesBuffer::modifyValue(const unsigned int StepNbr, const Value& aValue)
 // =====================================================================
 
 
-bool ValuesBuffer::appendValue(const openfluid::core::Value& aValue)
+bool ValuesBuffer::appendValue(const TimeIndex_t& anIndex, const openfluid::core::Value& aValue)
 {
-  m_Data.push_back(boost::shared_ptr<Value>(aValue.clone()));
+  if (!m_Data.empty() && anIndex <= m_Data.back().Index) return false;
+
+  m_Data.push_back(IndexedValue(anIndex,aValue));
   m_NextStep++;
 
   return true;

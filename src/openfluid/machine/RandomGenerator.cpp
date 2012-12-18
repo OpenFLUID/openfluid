@@ -133,6 +133,8 @@ openfluid::core::Duration_t RandomGenerator::runStep()
       OPENFLUID_AppendVariable(LU,m_VarName,Value);
 
   }
+
+  return DefaultDeltaT();
 }
 
 

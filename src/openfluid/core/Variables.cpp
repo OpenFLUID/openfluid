@@ -133,13 +133,13 @@ bool Variables::modifyValue(const VariableName_t aName, const TimeStep_t aStep,
  * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
  * either a NullValue or the same type than the existing Variable.
  */
-bool Variables::appendValue(const VariableName_t aName, const Value& aValue)
+bool Variables::appendValue(const VariableName_t aName, const TimeIndex_t& anIndex, const Value& aValue)
 {
   if (isVariableExist(aName)
       && (m_Data[aName].second == openfluid::core::Value::NONE
           || aValue.getType() == openfluid::core::Value::NULLL
           || m_Data[aName].second == aValue.getType()))
-    return m_Data[aName].first.appendValue(aValue);
+    return m_Data[aName].first.appendValue(anIndex,aValue);
 
   return false;
 }

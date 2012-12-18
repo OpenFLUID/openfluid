@@ -188,7 +188,7 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
 {
   if (&aUnit != NULL)
   {
-    if (!aUnit.getVariables()->appendValue(VarName,Val))
+    if (!aUnit.getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
       throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -207,7 +207,7 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
    */
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::DoubleValue(Val)))
+    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending double value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -224,7 +224,7 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::IntegerValue(Val)))
+    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending long value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -241,7 +241,7 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::BooleanValue(Val)))
+    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending boolean value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
@@ -258,7 +258,7 @@ void PluggableFunction::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->appendValue(VarName,openfluid::core::StringValue(Val)))
+    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Error appending string value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","PluggableFunction::OPENFLUID_AppendVariable","Unit is NULL");
