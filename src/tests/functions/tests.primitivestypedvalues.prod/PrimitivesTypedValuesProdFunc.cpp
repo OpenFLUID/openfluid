@@ -146,8 +146,10 @@ void PrimitivesTypedValuesProdFunction::checkConsistency()
 // =====================================================================
 
 
-void PrimitivesTypedValuesProdFunction::initializeRun()
-{  }
+openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::initializeRun()
+{
+  return DefaultDeltaT();
+}
 
 // =====================================================================
 // =====================================================================

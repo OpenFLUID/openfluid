@@ -136,8 +136,10 @@ void VectorProdFunction::checkConsistency()
 // =====================================================================
 
 
-void VectorProdFunction::initializeRun()
-{  }
+openfluid::core::Duration_t VectorProdFunction::initializeRun()
+{
+  return DefaultDeltaT();
+}
 
 // =====================================================================
 // =====================================================================

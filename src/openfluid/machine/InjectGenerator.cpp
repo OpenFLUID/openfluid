@@ -215,7 +215,7 @@ void InjectGenerator::LoadDataAsSerie(const std::string& FilePath, const int& ID
 // =====================================================================
 
 
-void InjectGenerator::initializeRun()
+openfluid::core::Duration_t InjectGenerator::initializeRun()
 {
   openfluid::tools::DataSourcesFile DSFile;
   std::string InputDir;
@@ -251,6 +251,8 @@ void InjectGenerator::initializeRun()
 
     LoadDistribution(DistriFilePath.string());
   }
+
+  return DefaultDeltaT();
 }
 
 // =====================================================================

@@ -54,14 +54,14 @@
 #ifndef __FORTRANFUNC_H__
 #define __FORTRANFUNC_H__
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 
 // =====================================================================
@@ -71,7 +71,7 @@ DECLARE_PLUGIN_HOOKS
 /**
 
 */
-class FortranFunction : public openfluid::base::PluggableFunction
+class FortranFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
@@ -88,17 +88,17 @@ class FortranFunction : public openfluid::base::PluggableFunction
     */
     ~FortranFunction();
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    void initParams(const openfluid::core::FuncParamsMap_t& Params);
 
-    bool prepareData();
+    void prepareData();
 
-    bool checkConsistency();
+    void checkConsistency();
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+    openfluid::core::Duration_t initializeRun();
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+    openfluid::core::Duration_t runStep();
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void finalizeRun();
 
 };
 

@@ -143,8 +143,10 @@ class WrongProductionFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  void initializeRun()
-  {  }
+  openfluid::core::Duration_t initializeRun()
+  {
+    return DefaultDeltaT();
+  }
 
   // =====================================================================
   // =====================================================================
@@ -161,7 +163,7 @@ class WrongProductionFunction : public openfluid::ware::PluggableFunction
     }
 
 
-    return true;
+    return DefaultDeltaT();
   }
 
   // =====================================================================

@@ -143,10 +143,11 @@ void MessagesFunction::checkConsistency()
 // =====================================================================
 
 
-void MessagesFunction::initializeRun()
+openfluid::core::Duration_t MessagesFunction::initializeRun()
 {
-
   OPENFLUID_RaiseWarning("tests.messages","initializeRun()","Message from tests.messages function");
+
+  return DefaultDeltaT();
 }
 
 // =====================================================================

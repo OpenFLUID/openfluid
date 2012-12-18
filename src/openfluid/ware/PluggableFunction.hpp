@@ -1268,7 +1268,7 @@ class DLLEXPORT PluggableFunction : public PluggableWare,
     /**
       Internally called by the framework.
     */
-    virtual void initializeRun()=0;
+    virtual openfluid::core::Duration_t initializeRun()=0;
 
     /**
       Internally called by the framework.

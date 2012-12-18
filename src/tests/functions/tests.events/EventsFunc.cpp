@@ -147,7 +147,7 @@ class EventsFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    void initializeRun()
+    openfluid::core::Duration_t initializeRun()
     {
       openfluid::core::Unit* aUnit;
       openfluid::core::EventsCollection EvColl;
@@ -229,6 +229,8 @@ class EventsFunction : public openfluid::ware::PluggableFunction
         }
 
       }
+
+      return DefaultDeltaT();
     }
 
 

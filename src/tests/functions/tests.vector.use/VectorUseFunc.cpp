@@ -136,8 +136,10 @@ void VectorUseFunction::checkConsistency()
 // =====================================================================
 
 
-void VectorUseFunction::initializeRun()
-{  }
+openfluid::core::Duration_t VectorUseFunction::initializeRun()
+{
+  return DefaultDeltaT();
+}
 
 // =====================================================================
 // =====================================================================

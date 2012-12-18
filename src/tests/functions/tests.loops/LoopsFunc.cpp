@@ -207,7 +207,7 @@ class LoopsFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    void initializeRun()
+    openfluid::core::Duration_t initializeRun()
     {
 
       openfluid::core::Unit* CurrentUnit;
@@ -309,6 +309,8 @@ class LoopsFunction : public openfluid::ware::PluggableFunction
 
 
       }
+
+      return DefaultDeltaT();
     }
 
 

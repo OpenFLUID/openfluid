@@ -144,9 +144,11 @@ class LoggerFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  void initializeRun()
+  openfluid::core::Duration_t initializeRun()
   {
     OPENFLUID_Logger.get() << "Time step duration" << OPENFLUID_GetDefaultDeltaT() << std::endl;
+
+    return DefaultDeltaT();
   }
 
   // =====================================================================

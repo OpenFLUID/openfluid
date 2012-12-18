@@ -287,7 +287,7 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    void initializeRun()
+    openfluid::core::Duration_t initializeRun()
     {
       openfluid::core::Unit* TU;
       double DblValue;
@@ -305,6 +305,7 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       }
 
+      return DefaultDeltaT();
     }
 
     // =====================================================================

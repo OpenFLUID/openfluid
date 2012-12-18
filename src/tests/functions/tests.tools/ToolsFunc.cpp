@@ -92,7 +92,7 @@ class ToolsFunction : public openfluid::ware::PluggableFunction
 
     void checkConsistency();
 
-    void initializeRun();
+    openfluid::core::Duration_t initializeRun();
 
     openfluid::core::Duration_t runStep();
 
@@ -183,7 +183,7 @@ void ToolsFunction::checkConsistency()
 // =====================================================================
 
 
-void ToolsFunction::initializeRun()
+openfluid::core::Duration_t ToolsFunction::initializeRun()
 {
 
   openfluid::tools::ColumnTextParser CTParser("#");
@@ -218,6 +218,8 @@ void ToolsFunction::initializeRun()
       OPENFLUID_RaiseError("tests.tools","error : found value out of range (5,5) in " + FileName.string());
   }
   else OPENFLUID_RaiseError("tests.tools","file " + FileName.string() + " not found!");
+
+  return DefaultDeltaT();
 }
 
 // =====================================================================

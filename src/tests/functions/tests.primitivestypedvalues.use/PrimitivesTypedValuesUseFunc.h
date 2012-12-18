@@ -90,7 +90,7 @@ class PrimitivesTypedValuesUseFunction : public openfluid::ware::PluggableFuncti
 
     void checkConsistency();
 
-    void initializeRun();
+    openfluid::core::Duration_t initializeRun();
 
     openfluid::core::Duration_t runStep();
 

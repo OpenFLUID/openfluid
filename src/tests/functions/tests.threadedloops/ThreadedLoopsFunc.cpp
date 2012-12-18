@@ -155,8 +155,10 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  void initializeRun()
-  {  }
+  openfluid::core::Duration_t initializeRun()
+  {
+    return DefaultDeltaT();
+  }
 
 
   // =====================================================================

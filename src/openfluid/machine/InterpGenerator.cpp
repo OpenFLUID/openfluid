@@ -116,7 +116,7 @@ void InterpGenerator::checkConsistency()
 // =====================================================================
 
 
-void InterpGenerator::initializeRun()
+openfluid::core::Duration_t InterpGenerator::initializeRun()
 {
 
   std::string InputDir;
@@ -131,6 +131,8 @@ void InterpGenerator::initializeRun()
   m_DataPool.loadAndPrepareData();
 
   m_CurrentStep = 0;
+
+  return DefaultDeltaT();
 }
 
 // =====================================================================

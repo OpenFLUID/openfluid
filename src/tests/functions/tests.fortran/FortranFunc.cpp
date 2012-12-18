@@ -125,22 +125,14 @@ FortranFunction::~FortranFunction()
 // =====================================================================
 
 
-bool FortranFunction::initParams(openfluid::core::FuncParamsMap_t /*Params*/)
+void FortranFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
 {  }
 
 // =====================================================================
 // =====================================================================
 
 
-bool FortranFunction::prepareData()
-{  }
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool FortranFunction::checkConsistency()
+void FortranFunction::prepareData()
 {  }
 
 
@@ -148,19 +140,27 @@ bool FortranFunction::checkConsistency()
 // =====================================================================
 
 
-bool FortranFunction::initializeRun()
+void FortranFunction::checkConsistency()
+{  }
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::Duration_t FortranFunction::initializeRun()
 {
 
   m_Precision = 0.000001;
 
-  return true;
+  return DefaultDeltaT();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool FortranFunction::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+openfluid::core::Duration_t FortranFunction::runStep()
 {
   int i,j;
 
@@ -284,13 +284,13 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* /*SimStat
     }
   }
 
-  return true;
+  return DefaultDeltaT();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool FortranFunction::finalizeRun()
+void FortranFunction::finalizeRun()
 {  }
 

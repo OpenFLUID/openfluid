@@ -89,7 +89,7 @@ class DLLEXPORT InterpGenerator : public Generator
 
     void checkConsistency();
 
-    void initializeRun();
+    openfluid::core::Duration_t initializeRun();
 
     openfluid::core::Duration_t runStep();
 

@@ -510,8 +510,10 @@ void PrimitivesValuesUseFunction::checkConsistency()
 // =====================================================================
 
 
-void PrimitivesValuesUseFunction::initializeRun()
-{  }
+openfluid::core::Duration_t PrimitivesValuesUseFunction::initializeRun()
+{
+  return DefaultDeltaT();
+}
 
 // =====================================================================
 // =====================================================================

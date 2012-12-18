@@ -211,9 +211,10 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "    // =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    void initializeRun()" << std::endl;
+  CPPContent << "    openfluid::core::Duration_t initializeRun()" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << std::endl;
+  CPPContent << "      return Never();" << std::endl;
   CPPContent << "    }" << std::endl;
   CPPContent << std::endl;
   CPPContent << "    // =====================================================================" << std::endl;

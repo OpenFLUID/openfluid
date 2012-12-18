@@ -142,9 +142,9 @@ void PrimitivesProdFunction::checkConsistency()
 // =====================================================================
 
 
-void PrimitivesProdFunction::initializeRun()
+openfluid::core::Duration_t PrimitivesProdFunction::initializeRun()
 {
-
+  return DefaultDeltaT();
 }
 
 // =====================================================================

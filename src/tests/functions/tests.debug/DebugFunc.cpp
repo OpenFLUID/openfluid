@@ -136,11 +136,12 @@ class DebugFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  void initializeRun()
+  openfluid::core::Duration_t initializeRun()
   {
 
     OFDBG_LOCATE;
 
+    return DefaultDeltaT();
   }
 
 

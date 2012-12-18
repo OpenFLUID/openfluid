@@ -189,9 +189,9 @@ void OFEFunc2DocFunction::checkConsistency()
 // =====================================================================
 
 
-void OFEFunc2DocFunction::initializeRun()
+openfluid::core::Duration_t OFEFunc2DocFunction::initializeRun()
 {
-
+  return DefaultDeltaT();
 }
 
 

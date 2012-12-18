@@ -78,7 +78,7 @@ class DLLEXPORT FixedGenerator : public Generator
 
     void checkConsistency() {};
 
-    void initializeRun() {};
+    openfluid::core::Duration_t initializeRun() { return DefaultDeltaT(); };
 
     openfluid::core::Duration_t runStep();
 

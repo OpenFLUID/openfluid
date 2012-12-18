@@ -92,7 +92,7 @@ class PrimitivesTypedValuesProdFunction : public openfluid::ware::PluggableFunct
 
     void checkConsistency();
 
-    void initializeRun();
+    openfluid::core::Duration_t initializeRun();
 
     openfluid::core::Duration_t runStep();
 

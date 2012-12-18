@@ -247,9 +247,9 @@ void PrimitivesUseFunction::checkConsistency()
 // =====================================================================
 
 
-void PrimitivesUseFunction::initializeRun()
+openfluid::core::Duration_t PrimitivesUseFunction::initializeRun()
 {
-
+  return DefaultDeltaT();
 }
 
 // =====================================================================
