@@ -33,6 +33,7 @@ MACRO(ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
   						${Boost_REGEX_LIBRARY}
                         openfluid-core
                         openfluid-base
+                        openfluid-ware
                         openfluid-tools)
       
 ENDMACRO(ADD_FUNCTION)

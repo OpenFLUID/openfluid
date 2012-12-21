@@ -59,12 +59,13 @@
 
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/OFException.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace ware {
 
 
-class SimulationDrivenWare
+class DLLEXPORT SimulationDrivenWare
 {
   private:
 

@@ -56,6 +56,8 @@
 #ifndef __PLUGGABLEWARE_HPP__
 #define __PLUGGABLEWARE_HPP__
 
+#include <openfluid/dllexport.hpp>
+
 namespace openfluid { namespace ware {
 
 
@@ -79,7 +81,7 @@ namespace openfluid { namespace ware {
 // =====================================================================
 
 
-class PluggableWare
+class DLLEXPORT PluggableWare
 {
   public:
 
