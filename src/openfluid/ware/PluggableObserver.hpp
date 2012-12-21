@@ -57,6 +57,7 @@
 #define __PLUGGABLEOBSERVER_HPP__
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ware/SimulationInspectorWare.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
 
 
@@ -105,8 +106,7 @@
 namespace openfluid { namespace ware {
 
 
-class DLLEXPORT PluggableObserver : public PluggableWare,
-                                    public SimulationDrivenWare
+class DLLEXPORT PluggableObserver : public PluggableInspectorWare
 {
   public:
 

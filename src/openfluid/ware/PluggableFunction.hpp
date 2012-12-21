@@ -74,7 +74,7 @@
 #include <openfluid/core/Event.hpp>
 #include <openfluid/core/EventsColl.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/ware/SimulationDrivenWare.hpp>
+#include <openfluid/ware/SimulationContributorWare.hpp>
 
 
 // =====================================================================
@@ -130,8 +130,7 @@ namespace openfluid { namespace ware {
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
-class DLLEXPORT PluggableFunction : public PluggableWare,
-                                    public SimulationDrivenWare
+class DLLEXPORT PluggableFunction : public SimulationContributorWare
 {
 
   private:

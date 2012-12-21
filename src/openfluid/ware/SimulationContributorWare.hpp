@@ -46,73 +46,37 @@
 */
 
 /**
-  \file SimulationDrivenWare.hpp
+  \file SimulationContributorWare.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SIMULATIONDRIVENWARE_HPP__
-#define __SIMULATIONDRIVENWARE_HPP__
+#ifndef __SIMULATIONCONTRIBUTORWARE_HPP__
+#define __SIMULATIONCONTRIBUTORWARE_HPP__
 
-
-#include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/base/SimulationStatus.hpp>
-#include <openfluid/base/OFException.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/ware/SimulationInspectorWare.hpp>
 
 
 namespace openfluid { namespace ware {
 
 
-class DLLEXPORT SimulationDrivenWare : public PluggableWare
+class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
 {
   private:
 
-    const openfluid::base::SimulationStatus* mp_SimStatus;
-
-    bool m_IsLinked;
-
   protected:
-
-    openfluid::core::DateTime OPENFLUID_GetBeginDate() const;
-
-    openfluid::core::DateTime OPENFLUID_GetEndDate() const;
-
-    openfluid::core::DateTime OPENFLUID_GetCurrentDate() const;
-
-    openfluid::base::Duration_t OPENFLUID_GetSimulationDuration() const;
-
-    openfluid::base::Duration_t OPENFLUID_GetDefaultDeltaT() const;
-
-    openfluid::base::TimeIndex_t OPENFLUID_GetCurrentTimeIndex() const;
-
-    openfluid::base::SimulationStatus::SimulationStage OPENFLUID_GetCurrentStage() const;
-
-    inline openfluid::core::Duration_t AtTheEnd() const { return openfluid::core::Duration_t(-1); };
-
-    inline openfluid::core::Duration_t Never() const { return -2; };
-
-    inline openfluid::core::Duration_t Again() const { return 0; };
-
-    inline openfluid::core::Duration_t DefaultDeltaT() const
-    {
-      if (mp_SimStatus == NULL)
-        throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::DefaultDeltaT","Simulation status is not set");
-
-      return mp_SimStatus->getDefaultDeltaT();
-    };
 
 
   public:
 
-    SimulationDrivenWare() : PluggableWare(),
-      mp_SimStatus(NULL), m_IsLinked(false) { };
+    SimulationContributorWare() : SimulationInspectorWare()
+    {};
 
-    virtual ~SimulationDrivenWare() { };
+    virtual ~SimulationContributorWare() {};
 
-    void linkToSimulation(const openfluid::base::SimulationStatus* SimStatus);
 
 };
 
@@ -122,4 +86,4 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
 
 
-#endif /* __SIMULATIONDRIVENWARE_HPP__ */
+#endif /* __SIMULATIONCONTRIBUTORWARE_HPP__ */
