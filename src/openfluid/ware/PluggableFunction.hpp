@@ -58,14 +58,10 @@
 
 
 #include <string>
-#include <boost/filesystem/path.hpp>
 #include <glibmm/threadpool.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/LoopMacros.hpp>
 #include <openfluid/core/DateTime.hpp>
@@ -73,7 +69,6 @@
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/Event.hpp>
 #include <openfluid/core/EventsColl.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/ware/SimulationContributorWare.hpp>
 
 
@@ -138,30 +133,13 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     /**
       Pointer to the core repository, for internal use only
     */
-    openfluid::core::CoreRepository* mp_InternalCoreData;
-
-
-    /**
-      Pointer to the execution messages repository
-    */
-    openfluid::base::ExecutionMessages* mp_ExecMsgs;
-
-
-    /**
-      Function execution environment
-    */
-    const openfluid::base::EnvironmentProperties* mp_FunctionEnv;
+   // openfluid::core::CoreRepository* mp_InternalCoreData;
 
 
     /**
       Function parameters
     */
-    openfluid::core::FuncParamsMap_t m_ParamsMap;
-
-    /**
-      Function ID
-    */
-    WareID_t m_FunctionID;
+    //openfluid::core::FuncParamsMap_t m_ParamsMap;
 
     unsigned int m_MaxThreads;
 
@@ -177,11 +155,6 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
 
   protected:
 
-    // TODO check if const
-    /**
-      Pointer to the core repository (const). It should be used with care. Prefer to use the OPENFLUID_Xxxx methods.
-    */
-    openfluid::core::CoreRepository* mp_CoreData;
 
     /**
       Appends a distributed variable value for a unit at the end of the previously added values for this variable
@@ -1127,86 +1100,6 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     void OPENFLUID_ExportUnitsGraphAsDotFile(const std::string& Filename);
 
     /**
-      Raises a time-marked warning message to the kernel. This do not stops the simulation
-      @param[in] Sender the sender of the message
-      @param[in] TimeStep the time step number when the message occurred
-      @param[in] Msg the content of the message
-    */
-    void OPENFLUID_RaiseWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg);
-
-    /**
-      Raises a warning message to the kernel. This do not stops the simulation
-      @param[in] Sender the sender of the message
-      @param[in] Msg the content of the message
-    */
-    void OPENFLUID_RaiseWarning(std::string Sender, std::string Msg);
-
-    /**
-      Raises a time-marked warning message to the kernel. This do not stops the simulation
-      @param[in] Sender the sender of the message
-      @param[in] Source the source of the message
-      @param[in] TimeStep the time step number when the message occurred
-      @param[in] Msg the content of the message
-    */
-    void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg);
-
-    /**
-      Raises a warning message to the kernel. This do not stops the simulation
-      @param[in] Sender the sender of the message
-      @param[in] Source the source of the message
-      @param[in] Msg the content of the message
-    */
-    void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg);
-
-
-    /**
-      Raises a time-marked error message to the kernel. This stops the simulation the next time the kernel has the control
-      @param[in] Sender the sender of the message
-      @param[in] TimeStep the time step number when the message occurred
-      @param[in] Msg the content of the message
-    */
-    void OPENFLUID_RaiseError(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg);
-
-    /**
-      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
-      @param[in] Sender the sender of the message
-      @param[in] Msg the content of the message
-    */
-    void OPENFLUID_RaiseError(std::string Sender, std::string Msg);
-
-    /**
-      Raises a time-marked error message to the kernel. This stops the simulation the next time the kernel has the control
-      @param[in] Sender the sender of the message
-      @param[in] Source of the message (location in the sender)
-      @param[in] TimeStep the time step number when the message occurred
-      @param[in] Msg the content of the message
-    */
-    void OPENFLUID_RaiseError(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg);
-
-    /**
-      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
-      @param[in] Sender the sender of the message
-      @param[in] Source of the message (location in the sender)
-      @param[in] Msg the content of the message
-    */
-    void OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg);
-
-
-    /**
-      Gets an environment string value associated to a Key
-      @param[in] Key the sender of the message
-      @param[out] Val the value associated with the environment key
-    */
-    bool OPENFLUID_GetRunEnvironment(std::string Key, std::string *Val);
-
-    /**
-      Gets an environment boolean value associated to a Key
-      @param[in] Key the sender of the message
-      @param[out] Val the value associated with the environment key
-    */
-    bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Val);
-
-    /**
       Returns the maximum number of threads that can be concurrently run in threaded spatial loops
       @return the number of threads
     */
@@ -1218,8 +1111,6 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     */
     void OPENFLUID_SetFunctionMaxThreads(const unsigned int& MaxNumThreads);
 
-
-    openfluid::base::StdoutAndFileOutputStream OPENFLUID_Logger;
 
 
   public:
@@ -1236,18 +1127,7 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     /**
       Internally called by the framework.
     */
-    void initializeFunction(openfluid::core::CoreRepository* CoreData,
-                            openfluid::base::ExecutionMessages* ExecMsgs,
-                            openfluid::base::EnvironmentProperties* FuncEnv,
-                            const unsigned int& MaxThreads,
-                            const WareID_t& FuncID);
-
-    /**
-      Internally called by the framework.
-    */
-    void finalizeFunction();
-
-
+    void initializeWare(const WareID_t& FuncID,const unsigned int& MaxThreads);
 
     /**
       Initializes function parameters of the function, given as a hash map. Internally called by the framework.

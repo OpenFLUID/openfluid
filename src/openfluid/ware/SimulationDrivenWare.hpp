@@ -72,9 +72,10 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
     const openfluid::base::SimulationStatus* mp_SimStatus;
 
-    bool m_IsLinked;
 
   protected:
+
+    bool isLinked() { return (PluggableWare::isLinked() && mp_SimStatus != NULL); };
 
     openfluid::core::DateTime OPENFLUID_GetBeginDate() const;
 
@@ -105,10 +106,42 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
     };
 
 
+    /**
+      Raises a time-marked warning message to the kernel. This do not stops the simulation
+      @param[in] Sender the sender of the message
+      @param[in] Msg the content of the message
+    */
+    virtual void OPENFLUID_RaiseWarning(std::string Sender, std::string Msg);
+
+    /**
+      Raises a time-marked warning message to the kernel. This do not stops the simulation
+      @param[in] Sender the sender of the message
+      @param[in] Source the source of the message
+      @param[in] Msg the content of the message
+    */
+    virtual void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg);
+
+    /**
+      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
+      @param[in] Sender the sender of the message
+      @param[in] Msg the content of the message
+    */
+    virtual void OPENFLUID_RaiseError(std::string Sender, std::string Msg);
+
+    /**
+      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
+      @param[in] Sender the sender of the message
+      @param[in] Source of the message (location in the sender)
+      @param[in] Msg the content of the message
+    */
+    virtual void OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg);
+
+
+
   public:
 
     SimulationDrivenWare() : PluggableWare(),
-      mp_SimStatus(NULL), m_IsLinked(false) { };
+      mp_SimStatus(NULL) { };
 
     virtual ~SimulationDrivenWare() { };
 

@@ -162,7 +162,7 @@ class OutputsFunction : public openfluid::ware::PluggableFunction
       OPENFLUID_AppendVariable(TUA,"tests.scalar",double(TUA->getID()));
 
       openfluid::tools::ConvertValue(TUA->getID(),&IDStr);
-      OPENFLUID_RaiseWarning("tests.messages",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),"["+TUA->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
+      OPENFLUID_RaiseWarning("tests.messages","["+TUA->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
 
     }
 
@@ -174,7 +174,7 @@ class OutputsFunction : public openfluid::ware::PluggableFunction
       OPENFLUID_AppendVariable(TUB,"tests.scalar",double(TUB->getID()));
 
       openfluid::tools::ConvertValue(TUB->getID(),&IDStr);
-      OPENFLUID_RaiseWarning("tests.messages",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),"["+TUB->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
+      OPENFLUID_RaiseWarning("tests.messages","["+TUB->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
 
     }
 

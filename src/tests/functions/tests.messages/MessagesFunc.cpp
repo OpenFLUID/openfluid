@@ -172,7 +172,7 @@ openfluid::core::Duration_t MessagesFunction::runStep()
     for (i = 0; i< m_RepeatMessages; i++)
     {
       openfluid::tools::ConvertValue((i+1),&RptStr);
-      OPENFLUID_RaiseWarning("tests.messages","runStep()",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),"["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
+      OPENFLUID_RaiseWarning("tests.messages","runStep()","["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages function");
     }
 
   }

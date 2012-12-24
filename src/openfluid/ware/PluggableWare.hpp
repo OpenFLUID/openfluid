@@ -56,7 +56,15 @@
 #ifndef __PLUGGABLEWARE_HPP__
 #define __PLUGGABLEWARE_HPP__
 
+#include <boost/filesystem/path.hpp>
+#include <string>
+
 #include <openfluid/dllexport.hpp>
+#include <openfluid/base/ExecMsgs.hpp>
+#include <openfluid/base/EnvProperties.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/base/StdoutFileOStream.hpp>
+
 
 namespace openfluid { namespace ware {
 
@@ -83,17 +91,99 @@ namespace openfluid { namespace ware {
 
 class DLLEXPORT PluggableWare
 {
+  private:
+
+    /**
+      Ware execution environment
+    */
+    const openfluid::base::EnvironmentProperties* mp_WareEnv;
+
+    /**
+      Function ID
+    */
+    WareID_t m_WareID;
+
+
+  protected:
+
+    bool isLinked() { return (mp_WareEnv != NULL && mp_ExecMsgs != NULL); };
+
+    /**
+      Pointer to the execution messages repository
+     */
+    openfluid::base::ExecutionMessages* mp_ExecMsgs;
+
+
+    /**
+      Raises a warning message to the kernel. This do not stops the simulation
+      @param[in] Sender the sender of the message
+      @param[in] Msg the content of the message
+    */
+    virtual void OPENFLUID_RaiseWarning(std::string Sender, std::string Msg);
+
+    /**
+      Raises a warning message to the kernel. This do not stops the simulation
+      @param[in] Sender the sender of the message
+      @param[in] Source the source of the message
+      @param[in] Msg the content of the message
+    */
+    virtual void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg);
+
+    /**
+      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
+      @param[in] Sender the sender of the message
+      @param[in] Msg the content of the message
+    */
+    virtual void OPENFLUID_RaiseError(std::string Sender, std::string Msg);
+
+    /**
+      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
+      @param[in] Sender the sender of the message
+      @param[in] Source of the message (location in the sender)
+      @param[in] Msg the content of the message
+    */
+    virtual void OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg);
+
+    /**
+      Gets an environment string value associated to a Key
+      @param[in] Key the sender of the message
+      @param[out] Val the value associated with the environment key
+    */
+    bool OPENFLUID_GetRunEnvironment(std::string Key, std::string *Val);
+
+    /**
+      Gets an environment boolean value associated to a Key
+      @param[in] Key the sender of the message
+      @param[out] Val the value associated with the environment key
+    */
+    bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Val);
+
+    WareID_t OPENFLUID_GetWareID() { return m_WareID; };
+
+    openfluid::base::StdoutAndFileOutputStream OPENFLUID_Logger;
+
+
   public:
 
-    PluggableWare() {};
+    PluggableWare()
+    : mp_ExecMsgs(NULL),mp_WareEnv(NULL),m_WareID("")
+    {};
 
     virtual ~PluggableWare() {};
 
-    // TODO define and develop methods
-    // - OPENFLUID_RaiseWarning
-    // - OPENFLUID_RaiseError
-    // - OPENFLUID_Logger
-    // - OPENFLUID_GetRunEnvironment
+    void linkToExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs)
+    {
+      mp_ExecMsgs = ExecMsgs;
+    };
+
+    void linkToRunEnvironment(const openfluid::base::EnvironmentProperties* Env)
+    {
+      mp_WareEnv = Env;
+    };
+
+    void initializeWare(const WareID_t& ID);
+
+    void finalizeWare();
 
 };
 

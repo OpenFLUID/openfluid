@@ -270,13 +270,13 @@ void ModelInstance::initialize()
                                                                               CurrentFunction->GeneratorInfo->VariableSize);
     }
 
-
-    CurrentFunction->Function->initializeFunction(&(m_SimulationBlob.getCoreRepository()),&(m_SimulationBlob.getExecutionMessages()),
-                                    openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment(),
-                                    openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads(),
-                                    CurrentFunction->Signature->ID);
-
+    CurrentFunction->Function->linkToExecutionMessages(&(m_SimulationBlob.getExecutionMessages()));
     CurrentFunction->Function->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
+    CurrentFunction->Function->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment());
+    CurrentFunction->Function->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
+    CurrentFunction->Function->initializeWare(CurrentFunction->Signature->ID,
+                                    openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads());
+
 
     FuncIter++;
   }
@@ -302,7 +302,7 @@ void ModelInstance::finalize()
   FuncIter = m_ModelItems.begin();
   while (FuncIter != m_ModelItems.end())
   {
-    (*FuncIter)->Function->finalizeFunction();
+    (*FuncIter)->Function->finalizeWare();
     FuncIter++;
   }
 

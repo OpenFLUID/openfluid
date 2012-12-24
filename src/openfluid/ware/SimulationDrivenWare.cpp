@@ -65,8 +65,7 @@ namespace openfluid { namespace ware {
 
 void SimulationDrivenWare::linkToSimulation(const openfluid::base::SimulationStatus* SimStatus)
 {
-  if (!m_IsLinked) mp_SimStatus = SimStatus;
-  m_IsLinked = true;
+  if (!isLinked()) mp_SimStatus = SimStatus;
 }
 
 
@@ -159,6 +158,68 @@ openfluid::base::SimulationStatus::SimulationStage SimulationDrivenWare::OPENFLU
 
   return mp_SimStatus->getCurrentStage();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationDrivenWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Msg)
+{
+  if (mp_SimStatus == NULL || mp_ExecMsgs == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_RaiseWarning()","Simulation status or execution messages not set");
+
+  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
+      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
+    mp_ExecMsgs->addWarning(Sender,mp_SimStatus->getCurrentTimeIndex(),Msg);
+  else
+    mp_ExecMsgs->addWarning(Sender,Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationDrivenWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg)
+{
+  if (mp_SimStatus == NULL || mp_ExecMsgs == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_RaiseWarning()","Simulation status or execution messages not set");
+
+  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
+      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
+    mp_ExecMsgs->addWarning(Sender,Source,mp_SimStatus->getCurrentTimeIndex(),Msg);
+  else
+    mp_ExecMsgs->addWarning(Sender,Source,Msg);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationDrivenWare::OPENFLUID_RaiseError(std::string Sender, std::string Msg)
+{
+  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
+      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
+    throw openfluid::base::OFException(Sender,mp_SimStatus->getCurrentTimeIndex(),Msg);
+  else
+    throw openfluid::base::OFException(Sender,Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationDrivenWare::OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg)
+{
+  if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
+      mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
+    throw openfluid::base::OFException(Sender,Source,mp_SimStatus->getCurrentTimeIndex(),Msg);
+  else
+    throw openfluid::base::OFException(Sender,Source,Msg);
+}
+
 
 
 }  }  //namespaces

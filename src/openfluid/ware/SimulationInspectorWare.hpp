@@ -58,7 +58,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationDrivenWare.hpp>
-
+#include <openfluid/core/CoreRepository.hpp>
 
 namespace openfluid { namespace ware {
 
@@ -69,14 +69,23 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
 
   protected:
 
+    // TODO check if const
+    /**
+         Pointer to the core repository (const). It should be used with care. Prefer to use the OPENFLUID_Xxxx methods.
+     */
+    openfluid::core::CoreRepository* mp_CoreData;
 
   public:
 
-    SimulationInspectorWare() : SimulationDrivenWare()
+    SimulationInspectorWare() : SimulationDrivenWare(), mp_CoreData(NULL)
     {};
 
     virtual ~SimulationInspectorWare() {};
 
+    void linkToCoreRepository(openfluid::core::CoreRepository* CoreRepos)
+    {
+      mp_CoreData = CoreRepos;
+    };
 
 };
 

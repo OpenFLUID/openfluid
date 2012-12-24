@@ -73,9 +73,8 @@ namespace openfluid { namespace ware {
 
 PluggableFunction::PluggableFunction()
   : SimulationContributorWare(),
-    mp_InternalCoreData(NULL), mp_ExecMsgs(NULL), mp_FunctionEnv(NULL),
     m_MaxThreads(openfluid::config::FUNCTIONS_MAXNUMTHREADS),
-    m_Initialized(false), mp_CoreData(NULL)
+    m_Initialized(false)
 {
 
 }
@@ -87,7 +86,7 @@ PluggableFunction::PluggableFunction()
 
 PluggableFunction::~PluggableFunction()
 {
-  finalizeFunction();
+  finalizeWare();
 }
 
 
@@ -95,40 +94,13 @@ PluggableFunction::~PluggableFunction()
 // =====================================================================
 
 
-void PluggableFunction::initializeFunction(openfluid::core::CoreRepository* CoreData,
-    openfluid::base::ExecutionMessages* ExecMsgs,
-    openfluid::base::EnvironmentProperties* FuncEnv,
-    const unsigned int& MaxThreads,
-    const WareID_t& FuncID)
+void PluggableFunction::initializeWare(const WareID_t& ID,const unsigned int& MaxThreads)
 {
   if (m_Initialized) return;
 
+  SimulationContributorWare::initializeWare(ID);
 
-  mp_CoreData = CoreData;
-  mp_ExecMsgs = ExecMsgs;
-  mp_FunctionEnv = FuncEnv;
-  m_FunctionID = FuncID;
   m_MaxThreads = MaxThreads;
-
-  // initialize loggers
-
-  std::string LogFile;
-  std::string LogDir;
-
-  mp_FunctionEnv->getValue("dir.output",&LogDir);
-  LogFile = boost::filesystem::path(LogDir + "/" + m_FunctionID + ".log").string();
-
-  OPENFLUID_Logger.open(LogFile.c_str());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::finalizeFunction()
-{
-  OPENFLUID_Logger.close();
 }
 
 
@@ -1794,108 +1766,6 @@ void PluggableFunction::OPENFLUID_ExportUnitsGraphAsDotFile(const std::string& F
   DotFile << "}" << "\n";
 
   DotFile.close();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-
-
-void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg)
-{
-  mp_ExecMsgs->addWarning(Sender,TimeStep,Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, std::string Msg)
-{
-  mp_ExecMsgs->addWarning(Sender,Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg)
-{
-  mp_ExecMsgs->addWarning(Sender, Source, TimeStep,Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg)
-{
-  mp_ExecMsgs->addWarning(Sender,Source, Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, openfluid::core::TimeStep_t TimeStep, std::string Msg)
-{
-  throw openfluid::base::OFException(Sender,TimeStep,Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Msg)
-{
-  throw openfluid::base::OFException(Sender,Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Msg)
-{
-  throw openfluid::base::OFException(Sender,Source,TimeStep,Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg)
-{
-  throw openfluid::base::OFException(Sender,Source,Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value)
-{
-  return mp_FunctionEnv->getValue(Key,Value);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetRunEnvironment(std::string Key, bool *Value)
-{
-  return mp_FunctionEnv->getValue(Key,Value);
 }
 
 

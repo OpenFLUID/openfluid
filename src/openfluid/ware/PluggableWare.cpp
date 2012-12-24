@@ -52,3 +52,105 @@
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
+
+
+#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/base/OFException.hpp>
+
+
+namespace openfluid { namespace ware {
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Msg)
+{
+  mp_ExecMsgs->addWarning(Sender,Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg)
+{
+  mp_ExecMsgs->addWarning(Sender,Source, Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableWare::OPENFLUID_RaiseError(std::string Sender, std::string Msg)
+{
+  throw openfluid::base::OFException(Sender,Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableWare::OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg)
+{
+  throw openfluid::base::OFException(Sender,Source,Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value)
+{
+  return mp_WareEnv->getValue(Key,Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, bool *Value)
+{
+  return mp_WareEnv->getValue(Key,Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableWare::initializeWare(const WareID_t& ID)
+{
+  if(!isLinked())
+    throw openfluid::base::OFException("initialized ware that is not fully linked");
+
+  m_WareID = ID;
+
+  // initialize loggers
+  std::string LogFile;
+  std::string LogDir;
+
+  OPENFLUID_GetRunEnvironment("dir.output",&LogDir);
+  LogFile = boost::filesystem::path(LogDir + "/" + m_WareID + ".log").string();
+
+  OPENFLUID_Logger.open(LogFile.c_str());
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableWare::finalizeWare()
+{
+  OPENFLUID_Logger.close();
+}
+
+
+}  }  // namespaces
