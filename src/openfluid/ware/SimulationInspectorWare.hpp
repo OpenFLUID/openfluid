@@ -59,6 +59,9 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationDrivenWare.hpp>
 #include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/core/BooleanValue.hpp>
+#include <openfluid/core/MatrixValue.hpp>
+
 
 namespace openfluid { namespace ware {
 
@@ -67,6 +70,9 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
 {
   private:
 
+    static bool IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
+                                  const openfluid::core::UnitID_t& ID);
+
   protected:
 
     // TODO check if const
@@ -74,6 +80,436 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
          Pointer to the core repository (const). It should be used with care. Prefer to use the OPENFLUID_Xxxx methods.
      */
     openfluid::core::CoreRepository* mp_CoreData;
+
+
+    /**
+      Returns true if a distributed input data exists, false otherwise
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the queried variable
+    */
+    bool OPENFLUID_IsInputDataExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::InputDataName_t InputName) const;
+
+    /**
+      Gets input data for a unit, as a StringValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::StringValue& Val) const;
+
+    /**
+      Gets input data for a unit, as a DoubleValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::DoubleValue* Val) const;
+
+    /**
+      Gets input data for a unit, as a DoubleValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::DoubleValue& Val) const;
+
+    /**
+      Gets input data for a unit, as a VectorValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::VectorValue* Val) const;
+
+    /**
+      Gets input data for a unit, as a VectorValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::VectorValue& Val) const;
+
+    /**
+      Gets input data for a unit, as a MatrixValue
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                openfluid::core::MatrixValue& Val) const;
+
+    /**
+      Gets input data for a unit, as a double
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                double *Val) const;
+
+    /**
+      Gets input data for a unit, as a double
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                double& Val) const;
+
+    /**
+      Gets input data for a unit, as a long integer
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                long *Val) const;
+
+    /**
+      Gets input data for a unit, as a long integer
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                long& Val) const;
+
+    /**
+      Gets input data for a unit, as a string
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+      @deprecated
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                std::string *Val) const;
+
+    /**
+      Gets input data for a unit, as a string
+      @param[in] UnitPtr a Unit
+      @param[in] InputName the name of the requested property
+      @param[out] Val the value of the requested property
+    */
+    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t InputName,
+                                std::string& Val) const;
+
+    /**
+       Returns true if a distributed variable exists, false otherwise
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+     */
+     bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::VariableName_t VarName) const;
+
+    /**
+       Returns true if a distributed variable exists and if a value has been set for the given step, false otherwise
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the requested variable
+       @param[in] Step the time step for the value of the variable
+     */
+     bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::VariableName_t VarName,
+                                    const openfluid::core::TimeStep_t Step) const;
+
+     /**
+        Returns true if a distributed variable exists and if a value has been set for the given step
+        and if the value type is the given type, false otherwise
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the variable
+        @param[in] ValueType the type of the value
+      */
+      bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+                                     const openfluid::core::VariableName_t VarName,
+                                     const openfluid::core::TimeStep_t Step,
+                                     const openfluid::core::Value::Type ValueType) const;
+
+     /**
+        Returns true if a distributed variable exists
+        and if the type set for this variable is the given type, false otherwise
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] VarType the type of the variable
+      */
+     bool OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::VariableName_t VarName,
+                                    const openfluid::core::Value::Type VarType) const;
+
+     /**
+        Returns true if a distributed variable exists and if a value has been set for the given step
+        and if the type set for this variable is the given type, false otherwise
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the variable
+        @param[in] VarType the type of the variable
+      */
+      bool OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+                                     const openfluid::core::VariableName_t VarName,
+                                     const openfluid::core::TimeStep_t Step,
+                                     const openfluid::core::Value::Type VarType) const;
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+        @deprecated
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 openfluid::core::Value* Val) const;
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 openfluid::core::Value& Val) const;
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+        @deprecated
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 double* Val) const;
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 double& Val) const;
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+        @deprecated
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 long* Val) const;
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 long& Val) const;
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+        @deprecated
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 bool* Val) const;
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 bool& Val) const;
+
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+        @deprecated
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 std::string* Val) const;
+
+      /**
+        Gets the distributed variable value for a unit at a time step
+        @param[in] UnitPtr a Unit
+        @param[in] VarName the name of the requested variable
+        @param[in] Step the time step for the value of the requested variable
+        @param[out] Val the value of the requested variable
+      */
+      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+                                 const openfluid::core::VariableName_t VarName,
+                                 const openfluid::core::TimeStep_t Step,
+                                 std::string& Val) const;
+
+      /**
+        Gets discrete events happening on a unit during a time period
+        @param[in] UnitPtr a Unit
+        @param[in] BeginDate the beginning of the time period
+        @param[in] EndDate the ending of the time period
+        @param[out] Events the collection of event corresponding to the request
+        @deprecated
+      */
+      void OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+                               const openfluid::core::DateTime BeginDate,
+                               const openfluid::core::DateTime EndDate,
+                               openfluid::core::EventsCollection* Events) const;
+
+      /**
+        Gets discrete events happening on a unit during a time period
+        @param[in] UnitPtr a Unit
+        @param[in] BeginDate the beginning of the time period
+        @param[in] EndDate the ending of the time period
+        @param[out] Events the collection of event corresponding to the request
+      */
+      void OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+                               const openfluid::core::DateTime BeginDate,
+                               const openfluid::core::DateTime EndDate,
+                               openfluid::core::EventsCollection& Events) const;
+
+      /**
+        Returns true if the queried unit class exists
+        @param[in] ClassName the queried class name
+      */
+      bool OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t ClassName) const;
+
+      /**
+        Returns true if the queried unit exists
+        @param[in] ClassName the class of the queried unit
+        @param[in] ID the ID of the queried unit
+      */
+      bool OPENFLUID_IsUnitExist(openfluid::core::UnitClass_t ClassName,
+                                 openfluid::core::UnitID_t ID) const;
+
+      /**
+        Returns the total number of units
+        @param[out] UnitsCount the queried class name
+      */
+      void OPENFLUID_GetUnitsCount(unsigned int& UnitsCount) const;
+
+      /**
+        Returns the number of units of the class if the queried unit class exists
+        @param[in] ClassName the queried class name
+        @param[out] UnitsCount the queried class name
+        @return false if the unit class does not exist
+      */
+      bool OPENFLUID_GetUnitsCount(const openfluid::core::UnitClass_t ClassName,
+                                   unsigned int& UnitsCount) const;
+
+      /**
+        Returns a pointer to the queried unit if exists
+        @param[in] ClassName the queried class name
+        @param[in] ID the queried unit ID
+        @param[out] aUnit a pointer to the requested Unit, NULL if the unit does not exist
+        @return false if the unit does not exist
+      */
+      bool OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+                             const openfluid::core::UnitID_t& ID,
+                             openfluid::core::Unit* aUnit) const;
+
+      openfluid::core::Unit* OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+                                               const openfluid::core::UnitID_t& ID) const;
+
+      /**
+        Returns true if a given unit is connected "to" another unit
+        @param[in] aUnit the given unit
+        @param[in] ClassNameTo the class name of the other unit to test
+        @param[in] IDTo the ID of the other unit to test
+        @return true if the given unit is connected "to" the other unit
+      */
+      bool OPENFLUID_IsUnitConnectedTo(openfluid::core::Unit* aUnit,
+                                       const openfluid::core::UnitClass_t& ClassNameTo,
+                                       const openfluid::core::UnitID_t& IDTo) const;
+
+
+      /**
+        Returns true if a given unit is connected "from" another unit
+        @param[in] aUnit the given unit
+        @param[in] ClassNameFrom the class name of the other unit to test
+        @param[in] IDFrom the ID of the other unit to test
+        @return true if the given unit is connected "from" the other unit
+      */
+      bool OPENFLUID_IsUnitConnectedFrom(openfluid::core::Unit* aUnit,
+                                         const openfluid::core::UnitClass_t& ClassNameFrom,
+                                         const openfluid::core::UnitID_t& IDFrom) const;
+
+
+      /**
+        Returns true if a given unit is "a child of" another unit
+        @param[in] aUnit the given unit
+        @param[in] ClassNameParent the class name of the other unit to test
+        @param[in] IDParent the ID of the other unit to test
+        @return true if the given unit is "a child of" the other unit
+      */
+      bool OPENFLUID_IsUnitChildOf(openfluid::core::Unit* aUnit,
+                                   const openfluid::core::UnitClass_t& ClassNameParent,
+                                   const openfluid::core::UnitID_t& IDParent) const;
+
+
+      /**
+        Returns true if a given unit is "parent of" another unit
+        @param[in] aUnit the given unit
+        @param[in] ClassNameChild the class name of the other unit to test
+        @param[in] IDChild the ID of the other unit to test
+        @return true if the given unit is "parent of" the other unit
+      */
+      bool OPENFLUID_IsUnitParentOf(openfluid::core::Unit* aUnit,
+                                    const openfluid::core::UnitClass_t& ClassNameChild,
+                                    const openfluid::core::UnitID_t& IDChild) const;
+
 
   public:
 

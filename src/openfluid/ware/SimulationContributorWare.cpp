@@ -60,6 +60,611 @@
 namespace openfluid { namespace ware {
 
 
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::InputDataName_t& InputName,
+                                const openfluid::core::Value& Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->setValue(InputName,Val))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unable to set value for input data "+ InputName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::InputDataName_t& InputName,
+                                               const double& Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::DoubleValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unable to set double value for input data "+ InputName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::InputDataName_t& InputName,
+                                               const long& Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::IntegerValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unable to set long value for input data "+ InputName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::InputDataName_t& InputName,
+                                               const std::string& Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getInputData()->setValue(InputName,Val))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unable to set string value for input data "+ InputName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::Value& Val)
+{
+  OPENFLUID_AppendVariable(*UnitPtr,VarName,Val);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::Value& Val)
+{
+  if (&aUnit != NULL)
+  {
+    if (!aUnit.getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const double Val)
+{
+  /* Do not call OPENFLUID_AppendVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
+   * because of cast operator, this function is called (recursively)
+   */
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending double value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const long Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending long value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const bool Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending boolean value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const std::string& Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->appendValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending string value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::TimeStep_t Step,
+                                        const openfluid::core::Value& Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,Val))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::TimeStep_t Step,
+                                        const double Val)
+{
+  /* Do not call OPENFLUID_SetVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
+   * because of cast operator, THIS function is called (recursively)
+   */
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::DoubleValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting double value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                                       const openfluid::core::VariableName_t VarName,
+                                       const openfluid::core::TimeStep_t Step,
+                                       const long Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::IntegerValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting long value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                                       const openfluid::core::VariableName_t VarName,
+                                       const openfluid::core::TimeStep_t Step,
+                                       const bool Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::BooleanValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting boolean value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
+                                       const openfluid::core::VariableName_t VarName,
+                                       const openfluid::core::TimeStep_t Step,
+                                       const std::string Val)
+{
+  if (UnitPtr != NULL)
+  {
+    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::StringValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting string value for variable "+ VarName);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
+                                              openfluid::core::Event& Ev)
+{
+  if (UnitPtr != NULL)
+  {
+    Ev.setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
+    UnitPtr->getEvents()->addEvent(Ev);
+  }
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendEvent","Unit is NULL");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_AddUnit(openfluid::core::UnitClass_t ClassName,
+                                          openfluid::core::UnitID_t ID,
+                                          openfluid::core::PcsOrd_t PcsOrder)
+{
+  if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder, openfluid::core::InstantiationInfo::SIMULATION)))
+   throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AddUnit","Error adding unit");
+
+  mp_CoreData->sortUnitsByProcessOrder();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_DeleteUnit(openfluid::core::UnitClass_t ClassName,
+                                             openfluid::core::UnitID_t ID)
+{
+
+  openfluid::core::Unit* TheUnit = mp_CoreData->getUnit(ClassName,ID);
+
+  if (TheUnit == NULL)
+    openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_DeleteUnit","error deleting unit");
+
+  mp_CoreData->deleteUnit(TheUnit);
+
+  mp_CoreData->sortUnitsByProcessOrder();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
+                                                      openfluid::core::UnitID_t IDFrom,
+                                                      openfluid::core::UnitClass_t ClassNameTo,
+                                                      openfluid::core::UnitID_t IDTo)
+{
+  openfluid::core::Unit* FromUnit = mp_CoreData->getUnit(ClassNameFrom, IDFrom);
+  openfluid::core::Unit* ToUnit = mp_CoreData->getUnit(ClassNameTo, IDTo);
+
+  return OPENFLUID_AddFromToConnection(FromUnit, ToUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::Unit* FromUnit,
+                                                      openfluid::core::Unit* ToUnit)
+{
+  if (FromUnit != NULL || ToUnit != NULL)
+  {
+    return (FromUnit->addToUnit(ToUnit) && ToUnit->addFromUnit(FromUnit));
+  }
+  else
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AddFromToConnection","Error adding from-to connection");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core::UnitClass_t ClassNameFrom,
+                                                         openfluid::core::UnitID_t IDFrom,
+                                                         openfluid::core::UnitClass_t ClassNameTo,
+                                                         openfluid::core::UnitID_t IDTo)
+{
+  openfluid::core::Unit* FromUnit = mp_CoreData->getUnit(ClassNameFrom, IDFrom);
+  openfluid::core::Unit* ToUnit = mp_CoreData->getUnit(ClassNameTo, IDTo);
+
+  return OPENFLUID_RemoveFromToConnection(FromUnit, ToUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core::Unit* FromUnit,
+                                                         openfluid::core::Unit* ToUnit)
+{
+  if (FromUnit == NULL || ToUnit == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","CoreRepository::removeFromToConnection","Error removing from-to connection");
+  else
+    return mp_CoreData->removeFromToConnection(FromUnit,ToUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
+                                                           openfluid::core::UnitID_t IDChild,
+                                                           openfluid::core::UnitClass_t ClassNameParent,
+                                                           openfluid::core::UnitID_t IDParent)
+{
+  openfluid::core::Unit* ChildUnit = mp_CoreData->getUnit(ClassNameChild, IDChild);
+  openfluid::core::Unit* ParentUnit = mp_CoreData->getUnit(ClassNameParent, IDParent);
+
+  return OPENFLUID_AddChildParentConnection(ChildUnit, ParentUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::core::Unit* ChildUnit,
+                                                           openfluid::core::Unit* ParentUnit)
+{
+  if (ChildUnit != NULL || ParentUnit != NULL)
+  {
+    return (ChildUnit->addParentUnit(ParentUnit) && ParentUnit->addChildUnit(ChildUnit));
+  }
+  else
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AddChildParentConnection","Error adding child-parent connection");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid::core::UnitClass_t ClassNameChild,
+                                                           openfluid::core::UnitID_t IDChild,
+                                                           openfluid::core::UnitClass_t ClassNameParent,
+                                                           openfluid::core::UnitID_t IDParent)
+{
+  openfluid::core::Unit* ChildUnit = mp_CoreData->getUnit(ClassNameChild, IDChild);
+  openfluid::core::Unit* ParentUnit = mp_CoreData->getUnit(ClassNameParent, IDParent);
+
+  return OPENFLUID_RemoveChildParentConnection(ChildUnit, ParentUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid::core::Unit* ChildUnit,
+                                                           openfluid::core::Unit* ParentUnit)
+{
+  if (ChildUnit == NULL || ParentUnit == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","CoreRepository::removeChildParentConnection","Error removing child-parent connection");
+  else
+    return mp_CoreData->removeChildParentConnection(ChildUnit,ParentUnit);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationContributorWare::OPENFLUID_BuildUnitsMatrix(const openfluid::core::UnitClass_t& UnitsClass,
+                                                   const unsigned int& ColsNbr,
+                                                   const unsigned int& RowsNbr)
+{
+  openfluid::core::UnitID_t CurrID = 0;
+  openfluid::core::UnitID_t ToID = 0;
+
+  for (unsigned int i=0; i<RowsNbr;i++)
+  {
+    for (unsigned int j=0; j<ColsNbr;j++)
+    {
+      CurrID = 1+((ColsNbr*i)+j);
+      OPENFLUID_AddUnit(UnitsClass,CurrID,1);
+    }
+  }
+
+  for (unsigned int i=0; i<RowsNbr;i++)
+  {
+    for (unsigned int j=0; j<ColsNbr;j++)
+    {
+      CurrID = 1+((ColsNbr*i)+j);
+
+      if (i == 0)
+      {
+        // top
+
+        if (j == 0)
+        {
+          // top-left
+          ToID = CurrID+1;
+          OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+          ToID = CurrID+ColsNbr;
+          OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+        }
+        else
+        {
+          if (j == ColsNbr-1)
+          {
+            // top-right
+            ToID = CurrID-1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID+ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+          }
+          else
+          {
+            // top-center
+            ToID = CurrID-1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID+1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID+ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+          }
+        }
+
+      }
+      else
+      {
+        if (i == RowsNbr-1)
+        {
+          // bottom
+
+          if (j == 0)
+          {
+            // bottom-left
+            ToID = CurrID+1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID-ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+          }
+          else
+          {
+            if (j == ColsNbr-1)
+            {
+              // bottom-right
+              ToID = CurrID-1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID-ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            }
+            else
+            {
+              // bottom-center
+              ToID = CurrID-1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID+1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID-ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+            }
+          }
+
+        }
+        else
+        {
+          // middle
+
+          if (j == 0)
+          {
+            // middle-left
+            ToID = CurrID+1;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID-ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            ToID = CurrID+ColsNbr;
+            OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+          }
+          else
+          {
+            if (j == ColsNbr-1)
+            {
+              // middle-right
+              ToID = CurrID-1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID-ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID+ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            }
+            else
+            {
+              // middle-center
+              ToID = CurrID-1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID+1;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID-ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+              ToID = CurrID+ColsNbr;
+              OPENFLUID_AddFromToConnection(UnitsClass,CurrID,UnitsClass,ToID);
+
+            }
+          }
+
+
+        }
+      }
+    }
+  }
+
+//  throw openfluid::base::OFException("SimulationContributorWare::OPENFLUID_BuildUnitsMatrix : under construction");
+
+}
+
+
+
 } } // openfluid::ware
 
 
