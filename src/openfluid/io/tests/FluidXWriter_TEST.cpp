@@ -81,7 +81,7 @@ int main()
 
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
 
-    RunEnv->addExtraPluginsPaths(PlugsDir);
+    RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
 
     Reader.loadFromDirectory(InputDir);
 

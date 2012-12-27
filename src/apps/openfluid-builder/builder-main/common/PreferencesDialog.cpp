@@ -195,7 +195,7 @@ void PreferencesDialog::show()
 
     // update plugs paths
 
-    std::vector<std::string> ExistingPlugPaths = RunEnv->getExtraPluginsPaths();
+    std::vector<std::string> ExistingPlugPaths = RunEnv->getExtraFunctionsPluginsPaths();
     std::vector<std::string> PrefPlugPaths = PrefMgr->getExtraPlugPaths();
 
     if (!(ExistingPlugPaths.size() == PrefPlugPaths.size() && std::equal(
@@ -204,10 +204,10 @@ void PreferencesDialog::show()
     {
       m_PlugPathsHaveChanged = true;
 
-      RunEnv->resetExtraPluginsPaths();
+      RunEnv->resetExtraFunctionsPluginsPaths();
 
       for (int i = PrefPlugPaths.size() - 1; i >= 0; i--)
-        RunEnv->addExtraPluginsPaths(PrefPlugPaths[i]);
+        RunEnv->addExtraFunctionsPluginsPaths(PrefPlugPaths[i]);
 
       FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
     }

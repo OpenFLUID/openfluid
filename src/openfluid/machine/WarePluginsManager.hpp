@@ -62,9 +62,7 @@
 
 #include <glibmm/module.h>
 
-#include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
-
 #include <openfluid/dllexport.hpp>
 
 
@@ -86,19 +84,10 @@ class DLLEXPORT WarePluginsManager
 {
   private:
 
-    static WarePluginsManager<S,M,SP,BP>* mp_Singleton;
-
-    std::map<std::string,Glib::Module*> m_LoadedPlugins;
-
-
-    // =====================================================================
-    // =====================================================================
-
-
     M* buildWareContainerWithSignatureOnly(std::string PluginFilename)
     {
 
-      std::string PluginFile = openfluid::base::RuntimeEnvironment::getInstance()->getPluginFullPath(PluginFilename);
+      std::string PluginFile = getPluginFullPath(PluginFilename);
       M* Plug = NULL;
 
       if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
@@ -169,6 +158,11 @@ class DLLEXPORT WarePluginsManager
     // =====================================================================
 
 
+  protected:
+
+    std::map<std::string,Glib::Module*> m_LoadedPlugins;
+
+
     WarePluginsManager()
     {
 
@@ -177,10 +171,7 @@ class DLLEXPORT WarePluginsManager
 
   public:
 
-    /**
-      Destructor
-    */
-    ~WarePluginsManager()
+    virtual ~WarePluginsManager()
     {
 
     }
@@ -190,11 +181,21 @@ class DLLEXPORT WarePluginsManager
     // =====================================================================
 
 
-    static WarePluginsManager<S,M,SP,BP>* getInstance()
-    {
-      if (mp_Singleton == NULL) mp_Singleton = new WarePluginsManager<S,M,SP,BP>();
-       return mp_Singleton;
-    }
+    virtual std::string getPluginFullPath(const std::string& Filename) = 0;
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    virtual std::vector<std::string> getPluginsSearchPaths() = 0;
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    virtual std::string getPluginFilenameSuffix() = 0;
 
 
     // =====================================================================
@@ -207,7 +208,7 @@ class DLLEXPORT WarePluginsManager
     std::vector<S*> getAvailableWaresSignatures(const std::string Pattern = "")
     {
       std::vector<S*> PluginsContainers;
-      std::vector<std::string> PluginsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
+      std::vector<std::string> PluginsPaths = getPluginsSearchPaths();
       std::vector<std::string> PluginFiles;
       std::vector<std::string> TmpFiles;
       unsigned int i,j;
@@ -215,7 +216,7 @@ class DLLEXPORT WarePluginsManager
 
       for (i=0;i<PluginsPaths.size();i++)
       {
-        TmpFiles = openfluid::tools::GetFilesByExt(PluginsPaths[i],openfluid::config::PLUGINS_EXT,false,true);
+        TmpFiles = openfluid::tools::GetFilesBySuffixAndExt(PluginsPaths[i],getPluginFilenameSuffix(),openfluid::config::PLUGINS_EXT,false,true);
         for (j=0;j<TmpFiles.size();j++) PluginFiles.push_back(TmpFiles[j]);
       }
 
@@ -245,9 +246,9 @@ class DLLEXPORT WarePluginsManager
     // =====================================================================
 
 
-    M* loadWareSignatureOnly(std::string PluginName)
+    M* loadWareSignatureOnly(const std::string& ID)
     {
-      M* Plug = buildWareContainerWithSignatureOnly(PluginName+openfluid::config::PLUGINS_EXT);
+      M* Plug = buildWareContainerWithSignatureOnly(ID+getPluginFilenameSuffix()+openfluid::config::PLUGINS_EXT);
 
       if (Plug != NULL && Plug->SDKCompatible) return Plug;
 
@@ -305,7 +306,7 @@ class DLLEXPORT WarePluginsManager
 
     S* getWareSignature(std::string PluginFilename)
     {
-      std::string PluginFile = openfluid::base::RuntimeEnvironment::getInstance()->getPluginFullPath(PluginFilename);
+      std::string PluginFile = getPluginFullPath(PluginFilename);
       S* Plug = NULL;
 
       if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
@@ -387,13 +388,6 @@ class DLLEXPORT WarePluginsManager
 
 };
 
-
-// =====================================================================
-// =====================================================================
-
-
-template<class S, class M, typename SP, typename BP>
-WarePluginsManager<S,M,SP,BP>* WarePluginsManager<S,M,SP,BP>::mp_Singleton = NULL;
 
 
 } } //namespaces

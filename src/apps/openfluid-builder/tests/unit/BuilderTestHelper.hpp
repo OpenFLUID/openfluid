@@ -72,7 +72,7 @@ class BuilderTestHelper
 
     BuilderTestHelper()
     {
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
       FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
     }
 

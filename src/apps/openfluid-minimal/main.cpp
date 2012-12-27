@@ -98,7 +98,7 @@ int main(int argc, char **argv)
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
     RunEnv->setInputDir(InputDir);
     RunEnv->setOutputDir(OutputDir);
-    RunEnv->addExtraPluginsPaths(PlugsDir);
+    RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
 
 
     FXReader.loadFromDirectory(InputDir);

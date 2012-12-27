@@ -196,6 +196,19 @@ std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore,
                                                  bool ExtIncludeDot = false);
 
 /**
+  Get list of files with specified extension contained in the specified dir
+  @param[in] DirToExplore the directory to explore
+  @param[in] Ext the file extension
+  @param[in] WithPath return full path with file name if true, file name only otherwise
+  @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
+*/
+std::vector<std::string> DLLEXPORT GetFilesBySuffixAndExt(const std::string& DirToExplore,
+                                                          const std::string& Suffix,
+                                                          const std::string& Ext,
+                                                          bool WithPath = false,
+                                                          bool ExtIncludeDot = false);
+
+/**
   Splits the passed string into a std::string array, split using the given SepString
   @param[in] StrToSplit the string to split
   @param[in] Separators the string of separators used to split the string

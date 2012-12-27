@@ -45,86 +45,22 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file FunctionPluginsManager.hpp
-  \brief Header of ...
+  \file FunctionPluginsManager.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __FUNCTIONPLUGINSMANAGER_HPP__
-#define __FUNCTIONPLUGINSMANAGER_HPP__
-
-#include <openfluid/ware/PluggableFunction.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/machine/WarePluginsManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 
 
 namespace openfluid { namespace machine {
 
-class SignatureItemInstance;
-class ModelItemInstance;
 
-
-// =====================================================================
-// =====================================================================
-
-class DLLEXPORT FunctionPluginsManager : public WarePluginsManager<SignatureItemInstance,ModelItemInstance,
-                                                         openfluid::ware::GetPluggableFunctionSignatureProc,
-                                                         openfluid::ware::GetPluggableFunctionBodyProc>
-{
-
-  private:
-
-    static FunctionPluginsManager* mp_Singleton;
-
-    FunctionPluginsManager() : WarePluginsManager()
-    { };
-
-
-  public:
-
-    static FunctionPluginsManager* getInstance()
-    {
-      if (mp_Singleton == NULL) mp_Singleton = new FunctionPluginsManager();
-       return mp_Singleton;
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    std::string getPluginFullPath(const std::string& Filename)
-    {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getPluginFullPath(Filename);
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    std::vector<std::string> getPluginsSearchPaths()
-    {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths();
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    std::string getPluginFilenameSuffix()
-    {
-      return openfluid::config::FUNCTIONS_PLUGINS_SUFFIX;
-    }
-
-};
+FunctionPluginsManager* FunctionPluginsManager::mp_Singleton = NULL;
 
 
 } }  // namespaces
-
-#endif /* __FUNCTIONPLUGINSMANAGER_HPP__ */

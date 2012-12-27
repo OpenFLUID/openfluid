@@ -75,15 +75,23 @@ const std::string DEFAULT_OUTDIR = "@OPENFLUID_OUTPUTDIR@";
 const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
 
 
-// Plugins dirs
-const std::string PLUGINS_SUBDIR = "@OPENFLUID_FUNCSDIR@";
-const std::string PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCSDIR@";
+// Plugins extension
+const std::string PLUGINS_EXT = "@PLUGINS_BINARY_EXTENSION@";
+
+// Plugins suffixes
+const std::string FUNCTIONS_PLUGINS_SUFFIX = "@OPENFLUID_FUNCTIONS_SUFFIX@";
+const std::string OBSERVERS_PLUGINS_SUFFIX = "@OPENFLUID_OBSERVERS_SUFFIX@";
 
 
-// Default files
-const std::string MODELFILE = "model.xml";
-const std::string RUNFILE = "run.xml";
-const std::string OUTPUTCONFFILE = "output.xml";
+// Functions plugins dirs
+const std::string FUNCTIONS_PLUGINS_SUBDIR = "@OPENFLUID_FUNCPLUGSDIR@";
+const std::string FUNCTIONS_PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCPLUGSDIR@";
+
+// Observers plugins dirs
+const std::string OBSERVERS_PLUGINS_SUBDIR = "@OPENFLUID_OBSPLUGSDIR@";
+const std::string OBSERVERS_PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_OBSPLUGSDIR@";
+
+
 const std::string SIMINFOFILE = "siminfo.out";
 const std::string OUTMSGSFILE = "messages.out";
 const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
@@ -94,7 +102,6 @@ const std::string PROFILESTEPSFILE = "profile_steps.dat";
 
 // Default file extensions
 const std::string OUTFILES_EXT = "out";
-const std::string TRACEFILES_EXT = "trace";
 
 
 // Market
@@ -118,10 +125,6 @@ const std::string SHARE_APPS_INSTALL_PATH = "@SHARE_APPS_INSTALL_PATH@";
 
 // func2doc default template file path  
 const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
-
-
-// Plugins extension
-const std::string PLUGINS_EXT = "@FUNCTIONS_BINARY_EXTENSION@";
 
 
 // Version information

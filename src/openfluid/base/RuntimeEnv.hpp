@@ -97,8 +97,8 @@ class DLLEXPORT RuntimeEnvironment
 
     std::string m_InstallPrefix;
 
-    std::vector<std::string> m_DefaultPlugsDirs;
-    std::vector<std::string> m_ExtraPlugsDirs;
+    std::vector<std::string> m_DefaultFunctionsPlugsDirs;
+    std::vector<std::string> m_ExtraFunctionsPlugsDirs;
 
     std::string m_UserID;
     std::string m_HostName;
@@ -282,22 +282,22 @@ class DLLEXPORT RuntimeEnvironment
       These paths are added at the top of the search paths list.
       @param[in] SemicolonSeparatedPaths a collection of paths separated by semicolons, as a std::string
     */
-    void addExtraPluginsPaths(std::string SemicolonSeparatedPaths);
+    void addExtraFunctionsPluginsPaths(std::string SemicolonSeparatedPaths);
 
-    inline void resetExtraPluginsPaths() { m_ExtraPlugsDirs.clear(); };
+    inline void resetExtraFunctionsPluginsPaths() { m_ExtraFunctionsPlugsDirs.clear(); };
 
-    inline std::vector<std::string> getDefaultPluginsPaths() const  { return m_DefaultPlugsDirs;  };
+    inline std::vector<std::string> getDefaultFunctionsPluginsPaths() const  { return m_DefaultFunctionsPlugsDirs;  };
 
-    inline std::vector<std::string> getExtraPluginsPaths() const  { return m_ExtraPlugsDirs;  };
+    inline std::vector<std::string> getExtraFunctionsPluginsPaths() const  { return m_ExtraFunctionsPlugsDirs;  };
 
     /**
       Returns the ordered list of paths used to search for plugins
       @return the ordered list of paths
     */
-    inline std::vector<std::string> getPluginsPaths() const
+    inline std::vector<std::string> getFunctionsPluginsPaths() const
     {
-      std::vector<std::string> ComposedPaths(m_ExtraPlugsDirs);
-      ComposedPaths.insert(ComposedPaths.end(), m_DefaultPlugsDirs.begin(), m_DefaultPlugsDirs.end());
+      std::vector<std::string> ComposedPaths(m_ExtraFunctionsPlugsDirs);
+      ComposedPaths.insert(ComposedPaths.end(), m_DefaultFunctionsPlugsDirs.begin(), m_DefaultFunctionsPlugsDirs.end());
       return ComposedPaths;
     };
 

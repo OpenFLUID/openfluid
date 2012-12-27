@@ -697,7 +697,7 @@ void ProjectCoordinator::updatePluginPathsMonitors()
   m_DirMonitors.clear();
 
   std::vector<std::string> PluginPaths =
-      openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
+      openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths();
 
   for (unsigned int i = 0; i < PluginPaths.size(); i++)
   {

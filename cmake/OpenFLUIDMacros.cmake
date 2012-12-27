@@ -10,26 +10,23 @@
 
 
 # Macro for compiling a simulation function
-# FUNC_NAME : the name of the simulation function (without extension)
-# FUNC_DIR : the sub-directory of the simulation function
-# ARGN : install targets
 MACRO(ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
 
   FILE(GLOB FUNC_CPP ${FUNC_SRCDIR}/*.cpp)  
     
-  ADD_LIBRARY(${FUNC_NAME} MODULE ${FUNC_CPP})
+  ADD_LIBRARY("${FUNC_NAME}${OPENFLUID_FUNCTIONS_SUFFIX}" MODULE ${FUNC_CPP})
   
-  SET_TARGET_PROPERTIES(${FUNC_NAME} PROPERTIES 
+  SET_TARGET_PROPERTIES("${FUNC_NAME}${OPENFLUID_FUNCTIONS_SUFFIX}" PROPERTIES 
                         PREFIX ""
-                        SUFFIX "${FUNCTIONS_BINARY_EXTENSION}"
+                        SUFFIX "${PLUGINS_BINARY_EXTENSION}"
                         LIBRARY_OUTPUT_DIRECTORY "${FUNC_BINDIR}")
 
   # Fix for win32 compatibility
   IF(WIN32)
-    SET_TARGET_PROPERTIES(${FUNC_NAME} PROPERTIES LINK_FLAGS "-shared")                                                
+    SET_TARGET_PROPERTIES("${FUNC_NAME}${OPENFLUID_FUNCTIONS_SUFFIX}" PROPERTIES LINK_FLAGS "-shared")                                                
   ENDIF(WIN32)
                                                 
-  TARGET_LINK_LIBRARIES(${FUNC_NAME}
+  TARGET_LINK_LIBRARIES("${FUNC_NAME}${OPENFLUID_FUNCTIONS_SUFFIX}"
   						${Boost_REGEX_LIBRARY}
                         openfluid-core
                         openfluid-base
@@ -38,6 +35,31 @@ MACRO(ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
       
 ENDMACRO(ADD_FUNCTION)
 
+
+# Macro for compiling a simulation observer
+MACRO(ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
+
+  FILE(GLOB OBS_CPP ${OBS_SRCDIR}/*.cpp)  
+    
+  ADD_LIBRARY("${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}" MODULE ${OBS_CPP})
+  
+  SET_TARGET_PROPERTIES("${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}" PROPERTIES 
+                        PREFIX ""
+                        SUFFIX "${PLUGINS_BINARY_EXTENSION}"
+                        LIBRARY_OUTPUT_DIRECTORY "${OBS_BINDIR}")
+
+  # Fix for win32 compatibility
+  IF(WIN32)
+    SET_TARGET_PROPERTIES($"${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}" PROPERTIES LINK_FLAGS "-shared")                                                
+  ENDIF(WIN32)
+                                                
+  TARGET_LINK_LIBRARIES("${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}"
+                        openfluid-core
+                        openfluid-base
+                        openfluid-ware
+                        openfluid-tools)
+      
+ENDMACRO(ADD_OBSERVER)
 
 
 # Macro for compiling a builder extension

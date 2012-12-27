@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir(),"");
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir(),"");
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),"");
-  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().size(),0);
+  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths().size(),0);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir(),false);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport(),true);
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   std::cout << "InputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
   std::cout << "OutputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
   std::cout << "TempDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
-  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().size();i++) std::cout << "Plugins search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().at(i) << std::endl;
+  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths().size();i++) std::cout << "Plugins search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths().at(i) << std::endl;
   std::cout << "Arch: " << openfluid::base::RuntimeEnvironment::getInstance()->getArch() << std::endl;
 
 }
@@ -102,16 +102,16 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),"");
 
 
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths().size(),0);
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar");
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar/bar/bar");
-  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().size(),2);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths().size(),2);
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraFunctionsPluginsPaths().size(),0);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths("/bar/foo/foo/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths("/bar/foo/foo/bar/bar/bar");
+  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths().size(),2);
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraFunctionsPluginsPaths().size(),2);
 
-  openfluid::base::RuntimeEnvironment::getInstance()->resetExtraPluginsPaths();
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths().size(),0);
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar");
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar/bar/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->resetExtraFunctionsPluginsPaths();
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraFunctionsPluginsPaths().size(),0);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths("/bar/foo/foo/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths("/bar/foo/foo/bar/bar/bar");
 
 
 

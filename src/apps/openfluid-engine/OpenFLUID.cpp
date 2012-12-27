@@ -170,9 +170,7 @@ void OpenFLUIDApp::printPluginsList()
   {
     if (PlugContainers[i]->SDKCompatible && PlugContainers[i]->Signature!=NULL)
     {
-      boost::filesystem::path TmpPath(PlugContainers[i]->Filename);
-      TmpPath = boost::filesystem::change_extension(TmpPath,"");
-      std::cout << "  - " << openfluid::tools::ReplaceEmptyString(TmpPath.leaf(),"(unknown simulation function)") << std::endl;
+      std::cout << "  - " << PlugContainers[i]->Signature->ID << std::endl;
       OneAtLeast = true;
     }
   }
@@ -366,7 +364,7 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
-  std::vector<std::string> FunctionsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths();
+  std::vector<std::string> FunctionsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths();
   unsigned int i;
 
   std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
@@ -654,7 +652,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("functions-paths"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
   }
 
 

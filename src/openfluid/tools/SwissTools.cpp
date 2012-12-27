@@ -183,8 +183,56 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
 }
 
 
+
 // =====================================================================
 // =====================================================================
+
+
+std::vector<std::string> GetFilesBySuffixAndExt(const std::string& DirToExplore,
+                                                const std::string& Suffix,
+                                                const std::string& Ext,
+                                                bool WithPath,
+                                                bool ExtIncludeDot)
+
+{
+
+  std::vector<std::string> FileList;
+
+
+  std::string FileEnd = Suffix+Ext;
+  if (!ExtIncludeDot) FileEnd = Suffix+"."+Ext;
+
+  boost::filesystem::path PathToExplore(DirToExplore);
+
+  if (boost::filesystem::is_directory(PathToExplore))
+  {
+
+    boost::filesystem::directory_iterator it;
+
+    std::string FoundFile;
+
+    for (it = boost::filesystem::directory_iterator(PathToExplore);it != boost::filesystem::directory_iterator(); ++it)
+    {
+
+      // lists files with specified extension
+
+      if (boost::filesystem::is_regular(it->status()) && boost::ends_with(it->path().string(),FileEnd))
+      {
+        if (WithPath) FileList.push_back(it->string());
+        else FileList.push_back(it->path().leaf());
+      }
+    }
+  }
+
+  return FileList;
+
+  return FileList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 bool EmptyDirectoryRecursively(const std::string DirPath)
 {

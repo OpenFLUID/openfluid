@@ -216,20 +216,20 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   if (PATHEnvVar != NULL)
   {
-    addExtraPluginsPaths(std::string(PATHEnvVar));
+    addExtraFunctionsPluginsPaths(std::string(PATHEnvVar));
   }
 
   // user dir
-  m_DefaultPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::PLUGINS_SUBDIR).string());
+  m_DefaultFunctionsPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
+      + openfluid::config::FUNCTIONS_PLUGINS_SUBDIR).string());
 
   // market-bag dir (for current version)
-  m_DefaultPlugsDirs.push_back(m_MarketBagBinVersionDir);
+  m_DefaultFunctionsPlugsDirs.push_back(m_MarketBagBinVersionDir);
 
   // install directory
   std::string PluginsInstallPath = boost::filesystem::path(m_InstallPrefix
-      + "/" + openfluid::config::PLUGINS_STDDIR).string();
-  m_DefaultPlugsDirs.push_back(PluginsInstallPath);
+      + "/" + openfluid::config::FUNCTIONS_PLUGINS_STDDIR).string();
+  m_DefaultFunctionsPlugsDirs.push_back(PluginsInstallPath);
 
   // set ignition date time
   resetIgnitionDateTime();
@@ -274,7 +274,7 @@ void RuntimeEnvironment::setDateTimeOutputDir()
 // =====================================================================
 // =====================================================================
 
-void RuntimeEnvironment::addExtraPluginsPaths(
+void RuntimeEnvironment::addExtraFunctionsPluginsPaths(
     std::string SemicolonSeparatedPaths)
 {
   std::vector<std::string> ExtraPaths;
@@ -288,7 +288,7 @@ void RuntimeEnvironment::addExtraPluginsPaths(
 #endif
 
   for (int i = ExtraPaths.size() - 1; i >= 0; i--)
-    m_ExtraPlugsDirs.insert(m_ExtraPlugsDirs.begin(), 1,
+    m_ExtraFunctionsPlugsDirs.insert(m_ExtraFunctionsPlugsDirs.begin(), 1,
         openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
 }
 
@@ -299,7 +299,7 @@ void RuntimeEnvironment::addExtraPluginsPaths(
 std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
 {
 
-  std::vector<std::string> PluginsPaths = getPluginsPaths();
+  std::vector<std::string> PluginsPaths = getFunctionsPluginsPaths();
   std::string PlugFullPath = "";
   boost::filesystem::path TmpPath;
 
