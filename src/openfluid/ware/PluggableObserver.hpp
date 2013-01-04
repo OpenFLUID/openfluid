@@ -106,7 +106,7 @@
 namespace openfluid { namespace ware {
 
 
-class DLLEXPORT PluggableObserver : public PluggableInspectorWare
+class DLLEXPORT PluggableObserver //: public PluggableInspectorWare
 {
   public:
 

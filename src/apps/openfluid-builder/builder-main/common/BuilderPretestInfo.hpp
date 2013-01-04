@@ -61,10 +61,12 @@
 namespace openfluid {
 namespace base {
 class RunDescriptor;
-class SignatureHandledDataItem;
 }
 namespace machine {
 class ModelItemInstance;
+}
+namespace ware {
+class SignatureHandledDataItem;
 }
 }
 
@@ -131,7 +133,7 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 
     void checkModelItemVars(openfluid::machine::ModelItemInstance* Item);
 
-    bool checkVar(openfluid::base::SignatureHandledDataItem Var);
+    bool checkVar(openfluid::ware::SignatureHandledDataItem Var);
 
   private:
 

@@ -162,11 +162,11 @@ void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
   {
     Gtk::TreeRow Row = *(m_refListStore->append());
 
-    unsigned int Step = SimStatus->getCurrentStep();
+    unsigned int Step = (SimStatus->getCurrentTimeIndex() / SimStatus->getDefaultDeltaT());
 
     Row[*mp_Columns->getStepColumn()] = Step;
     Row[*mp_Columns->getDateColumn()]
-        = SimStatus->getCurrentTime().getAsISOString();
+        = SimStatus->getCurrentDate().getAsISOString();
 
     for (unsigned int i = 0; i < VarNames.size(); i++)
     {
@@ -179,7 +179,7 @@ void ResViewerAdapterModelImpl::init(openfluid::core::Unit* Unit, std::vector<
 
     }
 
-  } while (SimStatus->switchToNextStep());
+  } while ((SimStatus->getCurrentTimeIndex() + SimStatus->getDefaultDeltaT()) > SimStatus->getSimulationDuration());
 
 }
 

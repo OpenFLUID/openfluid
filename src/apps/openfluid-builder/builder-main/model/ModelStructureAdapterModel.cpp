@@ -56,7 +56,7 @@
 
 #include <boost/foreach.hpp>
 
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 

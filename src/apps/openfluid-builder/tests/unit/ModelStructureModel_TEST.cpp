@@ -59,7 +59,7 @@
 
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(test_AppendARegularFunction)
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   openfluid::machine::SignatureItemInstance FctSignature =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
       "tests.primitives.use");
 
   openfluid::machine::ModelItemInstance* Item = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature);
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
 
   openfluid::machine::SignatureItemInstance FctSignature =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
       "tests.vector.prod");
   openfluid::machine::ModelItemInstance* Item = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature);
 
@@ -184,17 +184,17 @@ BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
 
   // add three new functions
   openfluid::machine::SignatureItemInstance FctSignature1 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
       "tests.vector.prod");
   openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
 
   openfluid::machine::SignatureItemInstance FctSignature2 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
       "tests.vector.use");
   openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
 
   openfluid::machine::SignatureItemInstance FctSignature3 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
       "tests.primitives.prod");
   openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
 
@@ -221,15 +221,15 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
   std::string idC = "tests.vector.prod";
 
   openfluid::machine::SignatureItemInstance FctSignature1 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idA);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
   openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
 
   openfluid::machine::SignatureItemInstance FctSignature2 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idB);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
   openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
 
   openfluid::machine::SignatureItemInstance FctSignature3 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idC);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
   openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
 
   mp_Model->appendFunction(Item1);
@@ -303,15 +303,15 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
   std::string idC = "tests.vector.prod";
 
   openfluid::machine::SignatureItemInstance FctSignature1 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idA);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
   openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
 
   openfluid::machine::SignatureItemInstance FctSignature2 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idB);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
   openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
 
   openfluid::machine::SignatureItemInstance FctSignature3 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idC);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
   openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
 
   mp_Model->appendFunction(Item1);
@@ -354,15 +354,15 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   std::string idC = "tests.vector.prod";
 
   openfluid::machine::SignatureItemInstance FctSignature1 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idA);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
   openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
 
   openfluid::machine::SignatureItemInstance FctSignature2 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idB);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
   openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
 
   openfluid::machine::SignatureItemInstance FctSignature3 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idC);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
   openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
 
   mp_Model->appendFunction(Item1);
@@ -423,15 +423,15 @@ BOOST_AUTO_TEST_CASE(test_requestSelectionByApp)
   std::string idC = "tests.vector.prod";
 
   openfluid::machine::SignatureItemInstance FctSignature1 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idA);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
   openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
 
   openfluid::machine::SignatureItemInstance FctSignature2 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idB);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
   openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
 
   openfluid::machine::SignatureItemInstance FctSignature3 =
-  *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(idC);
+  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
   openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
 
   mp_Model->appendFunction(Item1);

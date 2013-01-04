@@ -55,7 +55,7 @@
 #include "ModelItemInstanceFactory.hpp"
 
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
@@ -82,7 +82,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createPluggable
         "Function Signature is not set. Creation is impossible.");
   else
   {
-    Item = openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
+    Item = openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
         Signature.Signature->ID);
 
     if (Item)
@@ -144,7 +144,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
       VarName, (VarSizeInt > 1), ClassName);
 
   GeneratorSign->HandledData.ProducedVars.push_back(
-       openfluid::base::SignatureHandledTypedDataItem(VarName, ClassName, "", ""));
+       openfluid::ware::SignatureHandledTypedDataItem(VarName, ClassName, "", ""));
 
   Item = new openfluid::machine::ModelItemInstance();
   Item->Signature = GeneratorSign;

@@ -60,7 +60,7 @@
 #include <glibmm/i18n.h>
 
 #include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
@@ -116,7 +116,7 @@ std::set<std::string> EngineHelper::getProducedVarNames(std::string ClassName,
   std::set<std::string> VarNames;
 
   BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,ModelInstance->getItems())
-  {  BOOST_FOREACH(openfluid::base::SignatureHandledTypedDataItem Var,Item->Signature->HandledData.ProducedVars)
+  {  BOOST_FOREACH(openfluid::ware::SignatureHandledTypedDataItem Var,Item->Signature->HandledData.ProducedVars)
     {
       if(Var.UnitClass == ClassName)
         VarNames.insert(Var.DataName);

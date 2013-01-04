@@ -94,7 +94,7 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParams()
 {
   std::map<std::string, std::string> ParamsMap;
 
-  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, mp_Item->Signature->HandledData.FunctionParams)
+  BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Param, mp_Item->Signature->HandledData.FunctionParams)
 {  ParamsMap[Param.DataName] = Param.DataUnit;
 }
 

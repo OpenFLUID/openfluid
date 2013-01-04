@@ -70,8 +70,9 @@
 
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -119,11 +120,11 @@ BOOST_AUTO_TEST_CASE(test_addItems_Empty)
 {
   EngineProject* EngProject = new EngineProject();
 
-  EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin("tests.primitives.prod"));
+  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.primitives.prod"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),1);
 
-  EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin("tests.primitives.use"));
+  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.primitives.use"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),2);
 
@@ -168,11 +169,11 @@ BOOST_AUTO_TEST_CASE(test_addItems_FromFolder)
   + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin("tests.vector.prod"));
+  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.vector.prod"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),3);
 
-  EngProject->getModelInstance()->appendItem(openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin("tests.vector.use"));
+  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.vector.use"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),4);
 

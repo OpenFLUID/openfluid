@@ -92,7 +92,7 @@ class ModelFctDetailExtraFilesTreeStore: public ModelFctDetailTreeStore
         Row[m_Columns.m_Name] = Items[i];
       }
     }
-    void extractItems(openfluid::base::FunctionSignature* Signature)
+    void extractItems(openfluid::ware::FunctionSignature* Signature)
     {
       extractInnerItems(Signature->HandledData.RequiredExtraFiles,
           m_RequiredTitleRow);

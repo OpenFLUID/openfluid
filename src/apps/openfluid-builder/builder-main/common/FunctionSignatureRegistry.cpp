@@ -55,7 +55,7 @@
 #include "FunctionSignatureRegistry.hpp"
 
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 
 #include "GeneratorSignature.hpp"
 
@@ -157,10 +157,10 @@ void FunctionSignatureRegistry::updatePluggableSignatures()
 {
   m_Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].clear();
 
-  openfluid::machine::PluginManager::getInstance()->unloadAllPlugins();
+  openfluid::machine::FunctionPluginsManager::getInstance()->unloadAllWares();
 
-  openfluid::machine::ArrayOfSignatureItemInstance Signatures =
-      openfluid::machine::PluginManager::getInstance()->getAvailableFunctions();
+  std::vector<openfluid::machine::SignatureItemInstance*> Signatures =
+      openfluid::machine::FunctionPluginsManager::getInstance()->getAvailableWaresSignatures();
 
   for (unsigned int i = 0; i < Signatures.size(); i++)
   {
@@ -204,7 +204,7 @@ openfluid::machine::SignatureItemInstance * FunctionSignatureRegistry::getEmptyP
 {
   openfluid::machine::SignatureItemInstance* Signature =
       new openfluid::machine::SignatureItemInstance();
-  Signature->Signature = new openfluid::base::FunctionSignature();
+  Signature->Signature = new openfluid::ware::FunctionSignature();
 
   return Signature;
 }

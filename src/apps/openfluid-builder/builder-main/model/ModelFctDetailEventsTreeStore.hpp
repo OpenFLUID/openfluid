@@ -74,7 +74,7 @@ class ModelFctDetailEventsTreeStore: public ModelFctDetailTreeStore
     ~ModelFctDetailEventsTreeStore()
     {
     }
-    void extractItems(openfluid::base::FunctionSignature* Signature)
+    void extractItems(openfluid::ware::FunctionSignature* Signature)
     {
       for (unsigned int i = 0; i
           < Signature->HandledData.UsedEventsOnUnits.size(); i++)

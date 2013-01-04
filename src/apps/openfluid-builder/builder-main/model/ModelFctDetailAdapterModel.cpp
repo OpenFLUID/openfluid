@@ -99,13 +99,13 @@ void ModelFctDetailAdapterModelImpl::extractInfos()
 
   switch (mp_Signature->Signature->Status)
   {
-    case openfluid::base::EXPERIMENTAL:
+    case openfluid::ware::EXPERIMENTAL:
       m_Infos["status"] = "Experimental";
       break;
-    case openfluid::base::BETA:
+    case openfluid::ware::BETA:
       m_Infos["status"] = "Beta";
       break;
-    case openfluid::base::STABLE:
+    case openfluid::ware::STABLE:
       m_Infos["status"] = "Stable";
       break;
     default:

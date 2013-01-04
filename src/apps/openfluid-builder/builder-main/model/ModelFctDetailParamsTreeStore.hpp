@@ -71,7 +71,7 @@ class ModelFctDetailParamsTreeStore: public ModelFctDetailTreeStore
       return Glib::RefPtr<ModelFctDetailTreeStore>(
           new ModelFctDetailParamsTreeStore(Columns));
     }
-    void extractItems(openfluid::base::FunctionSignature* Signature)
+    void extractItems(openfluid::ware::FunctionSignature* Signature)
     {
       extractInnerItems(Signature->HandledData.FunctionParams);
     }

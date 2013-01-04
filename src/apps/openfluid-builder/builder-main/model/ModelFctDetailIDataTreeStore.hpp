@@ -83,7 +83,7 @@ class ModelFctDetailIDataTreeStore: public ModelFctDetailTreeStore
       m_RequiredTitleRow = appendATitleRow(_("Required"));
       m_UsedTitleRow = appendATitleRow(_("Used"));
     }
-    void extractItems(openfluid::base::FunctionSignature* Signature)
+    void extractItems(openfluid::ware::FunctionSignature* Signature)
     {
       extractInnerItems(Signature->HandledData.RequiredInput,
           m_RequiredTitleRow);

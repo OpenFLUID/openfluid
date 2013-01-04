@@ -56,7 +56,7 @@
 
 #include <boost/foreach.hpp>
 
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 
@@ -114,7 +114,7 @@ void ModelGlobalParamsModelImpl::update()
       mp_ModelInstance->getItems().begin(); it
       != mp_ModelInstance->getItems().end(); ++it)
   {
-    BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, (*it)->Signature->HandledData.FunctionParams)
+    BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Param, (*it)->Signature->HandledData.FunctionParams)
 {    if(mp_ModelInstance->getGlobalParameters().find(Param.DataName)
         == mp_ModelInstance->getGlobalParameters().end())
     m_GloballyNotUsed.insert(Param.DataName);

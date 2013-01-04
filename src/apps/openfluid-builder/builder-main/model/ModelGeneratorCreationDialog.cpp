@@ -61,7 +61,7 @@
 
 #include <glibmm/i18n.h>
 
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -205,7 +205,7 @@ void ModelGeneratorCreationDialog::init()
       mp_ModelInstance->getItems().begin(); it
       != mp_ModelInstance->getItems().end(); ++it)
   {
-    std::vector<openfluid::base::SignatureHandledTypedDataItem> Vars =
+    std::vector<openfluid::ware::SignatureHandledTypedDataItem> Vars =
         (*it)->Signature->HandledData.ProducedVars;
 
     for (unsigned int i = 0; i < Vars.size(); i++)

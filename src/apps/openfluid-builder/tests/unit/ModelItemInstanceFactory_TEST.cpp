@@ -56,13 +56,13 @@
 #include "tests-builderconfig.hpp"
 
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
 BOOST_AUTO_TEST_CASE(test_init)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
 }
 
 BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
@@ -73,12 +73,12 @@ BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
   BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
 
   // create an unavailable function
-  openfluid::base::FunctionSignature* PlugSignature =
-      new openfluid::base::FunctionSignature();
+  openfluid::ware::FunctionSignature* PlugSignature =
+      new openfluid::ware::FunctionSignature();
   PlugSignature->ID = "inexistant function id";
   Plug.Signature = PlugSignature;
 
-  // throw OFException from openfluid::machine::PluginManager
+  // throw OFException from openfluid::machine::FunctionPluginsManager
   BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
 
   delete PlugSignature;
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
 BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation)
 {
   openfluid::machine::SignatureItemInstance FctSignature =
-      *openfluid::machine::PluginManager::getInstance()->getUncompletedPlugin(
+      *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
           "tests.primitives.use");
 
   openfluid::machine::ModelItemInstance* Item =

@@ -54,7 +54,7 @@
 
 #include "ResViewerModel.hpp"
 
-#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/core/Unit.hpp>

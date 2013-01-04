@@ -95,7 +95,7 @@ class ModelFctDetailVarsTreeStore: public ModelFctDetailTreeStore
       m_RequiredPrevTitleRow = appendATitleRow(_("Required t-1"));
       m_UsedPrevTitleRow = appendATitleRow(_("Used t-1"));
     }
-    void extractItems(openfluid::base::FunctionSignature* Signature)
+    void extractItems(openfluid::ware::FunctionSignature* Signature)
     {
       extractInnerItems(Signature->HandledData.ProducedVars, m_ProducedTitleRow);
       extractInnerItems(Signature->HandledData.UpdatedVars, m_UpdatedTitleRow);

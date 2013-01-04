@@ -58,7 +58,7 @@
 
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 
 #include "ModelAvailFctComponent.hpp"
 #include "ModelFctDetailComponent.hpp"

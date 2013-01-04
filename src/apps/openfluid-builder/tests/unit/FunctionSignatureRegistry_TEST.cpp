@@ -67,7 +67,7 @@
 #include "FunctionSignatureRegistry.hpp"
 
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 
 // =====================================================================
 // =====================================================================

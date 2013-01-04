@@ -61,7 +61,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 
 #include "GeneratorSignature.hpp"
 
@@ -180,7 +180,7 @@ void BuilderPretestInfo::checkModelItemParams(
   m_InterpMinMaxChecked = false;
   m_InjectMinMaxChecked = false;
 
-  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
+  BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
 {  checkParamFilled(Item, Param.DataName);
 
   if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
@@ -326,7 +326,7 @@ bool BuilderPretestInfo::globalParamIsSet(std::string ParamName)
 void BuilderPretestInfo::checkModelItemVars(
     openfluid::machine::ModelItemInstance* Item)
 {
-  BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
+  BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Var,Item->Signature->HandledData.ProducedVars)
 {  if(!checkVar(Var))
   {
     Project = false;
@@ -336,7 +336,7 @@ void BuilderPretestInfo::checkModelItemVars(
 
 }
 
-BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredVars)
+BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredVars)
 {
   if(!checkVar(Var))
   {
@@ -346,7 +346,7 @@ BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->Han
   }
 }
 
-BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredPrevVars)
+BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Var,Item->Signature->HandledData.RequiredPrevVars)
 {
   if(!checkVar(Var))
   {
@@ -356,7 +356,7 @@ BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->Han
   }
 }
 
-BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
+BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Var,Item->Signature->HandledData.UpdatedVars)
 {
   if(!checkVar(Var))
   {
@@ -371,7 +371,7 @@ BOOST_FOREACH(openfluid::base::SignatureHandledDataItem Var,Item->Signature->Han
 // =====================================================================
 
 
-bool BuilderPretestInfo::checkVar(openfluid::base::SignatureHandledDataItem Var)
+bool BuilderPretestInfo::checkVar(openfluid::ware::SignatureHandledDataItem Var)
 {
   return (mp_SimBlob->getCoreRepository().getUnits(Var.UnitClass) != NULL)
       && (!mp_SimBlob->getCoreRepository().getUnits(Var.UnitClass)->getList()->empty());

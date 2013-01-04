@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(test_SetSignatures)
   for(int i=0; i<3; i++)
   {
     openfluid::machine::SignatureItemInstance* Plug = new openfluid::machine::SignatureItemInstance();
-    openfluid::base::FunctionSignature* PlugSignature = new openfluid::base::FunctionSignature();
+    openfluid::ware::FunctionSignature* PlugSignature = new openfluid::ware::FunctionSignature();
     PlugSignature->ID = i;
     Plug->Signature = PlugSignature;
     Signatures.addAPluggableSignature(Plug);

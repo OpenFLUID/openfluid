@@ -54,7 +54,7 @@
 
 #include <gtkmm/treerowreference.h>
 
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
 #include "ModelAvailFctAdapterModel.hpp"
@@ -114,16 +114,16 @@ void ModelAvailFctAdapterModelImpl::setAPluggableFunction(
 
   switch (Function->Signature->Status)
   {
-    case openfluid::base::EXPERIMENTAL:
+    case openfluid::ware::EXPERIMENTAL:
       TitleRow[m_Columns.m_Status]
           = BuilderGraphicsHelper::createPixbufFromFile(
               "fct_status_experimental.png");
       break;
-    case openfluid::base::BETA:
+    case openfluid::ware::BETA:
       TitleRow[m_Columns.m_Status]
           = BuilderGraphicsHelper::createPixbufFromFile("fct_status_beta.png");
       break;
-    case openfluid::base::STABLE:
+    case openfluid::ware::STABLE:
       TitleRow[m_Columns.m_Status]
           = BuilderGraphicsHelper::createPixbufFromFile("fct_status_stable.png");
       break;

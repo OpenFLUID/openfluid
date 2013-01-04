@@ -58,7 +58,7 @@
 
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/FuncSignature.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/core/Unit.hpp>
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -125,12 +125,12 @@ void ResUnitChooserModelImpl::extractVarsInfo()
   else
   {
     BOOST_FOREACH(openfluid::machine::ModelItemInstance* Item,mp_ModelInstance->getItems())
-    {    BOOST_FOREACH(openfluid::base::SignatureHandledTypedDataItem Var,Item->Signature->HandledData.ProducedVars)
+    {    BOOST_FOREACH(openfluid::ware::SignatureHandledTypedDataItem Var,Item->Signature->HandledData.ProducedVars)
       {
         if(Var.UnitClass == m_ClassName)
           m_Variables.push_back(Var.DataName);
       }
-    BOOST_FOREACH(openfluid::base::SignatureHandledTypedDataItem Var,Item->Signature->HandledData.UpdatedVars)
+    BOOST_FOREACH(openfluid::ware::SignatureHandledTypedDataItem Var,Item->Signature->HandledData.UpdatedVars)
     {
       if(Var.UnitClass == m_ClassName)
         m_Variables.push_back(Var.DataName);
