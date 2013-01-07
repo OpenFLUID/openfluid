@@ -60,7 +60,6 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/PluginManager.hpp>
 
 #include "ModelAvailFctModel.hpp"
 #include "ModelFctDetailModel.hpp"

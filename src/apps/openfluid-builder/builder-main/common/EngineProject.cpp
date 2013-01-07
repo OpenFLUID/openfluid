@@ -74,7 +74,6 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
-#include <openfluid/machine/PluginManager.hpp>
 #include <openfluid/machine/Generator.hpp>
 
 #include "GeneratorSignature.hpp"
