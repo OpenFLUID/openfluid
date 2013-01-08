@@ -970,7 +970,7 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
 
   std::sort(FluidXFilesToLoad.begin(),FluidXFilesToLoad.end());
 
-  m_ModelDescriptor = openfluid::base::ModelDescriptor();
+  m_ModelDescriptor = openfluid::base::CoupledModelDescriptor();
   m_RunDescriptor = openfluid::base::RunDescriptor();
   m_OutputDescriptor = openfluid::base::OutputDescriptor();
   m_DomainDescriptor = openfluid::base::DomainDescriptor();

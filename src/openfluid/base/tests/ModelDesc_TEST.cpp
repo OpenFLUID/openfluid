@@ -62,7 +62,7 @@
 
 #include <openfluid/base/FunctionDescriptor.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
+#include <openfluid/base/CoupledModelDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(GenDesc2.getVariableSize(),13);
   BOOST_REQUIRE_EQUAL(GenDesc2.getParameters().size(),0);
 
-  openfluid::base::ModelDescriptor ModelDesc;
+  openfluid::base::CoupledModelDescriptor ModelDesc;
 
   BOOST_REQUIRE_EQUAL(ModelDesc.getItems().size(),0);
 
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   GenDesc2.setParameter("sources","datasources.xml");
   GenDesc2.setParameter("distribution","distribution.dat");
 
-  openfluid::base::ModelDescriptor ModelDesc;
+  openfluid::base::CoupledModelDescriptor ModelDesc;
 
   ModelDesc.appendItem(&GenDesc1);
   ModelDesc.appendItem(&FuncDesc);
@@ -124,13 +124,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(ModelDesc.getItems().size(),3);
 
-  openfluid::base::ModelDescriptor::ModelDescription_t ModelItems;
+  openfluid::base::CoupledModelDescriptor::SetDescription_t ModelItems;
 
   ModelItems = ModelDesc.getItems();
 
   BOOST_REQUIRE_EQUAL(ModelItems.size(),3);
 
-  openfluid::base::ModelDescriptor::ModelDescription_t::iterator it;
+  openfluid::base::CoupledModelDescriptor::SetDescription_t::iterator it;
 
 
 

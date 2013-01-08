@@ -45,78 +45,49 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
-  @brief Implements ...
+  \file WareDescriptor.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/base/ModelItemDescriptor.hpp>
+#ifndef __WAREDESCRIPTOR_HPP__
+#define __WAREDESCRIPTOR_HPP__
 
+#include <openfluid/ware/PluggableWare.hpp>
 
 namespace openfluid { namespace base {
 
 
-// =====================================================================
-// =====================================================================
-
-
-ModelItemDescriptor::ModelItemDescriptor():
-  m_ModelItemType(NoModelItemType)
+class WareDescriptor
 {
+  public:
+    enum ModelItemType { NoModelItemType, PluggedFunction, Generator, PluggedObserver };
 
-}
+  protected:
 
-// =====================================================================
-// =====================================================================
+    ModelItemType m_ModelItemType;
+    openfluid::ware::WareParams_t m_Params;  // Function parameters set
 
+  public:
 
-ModelItemDescriptor::~ModelItemDescriptor()
-{
-}
+    WareDescriptor();
 
+    virtual ~WareDescriptor();
 
-// =====================================================================
-// =====================================================================
+    void setParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value);
 
+    void setParameters(const openfluid::ware::WareParams_t& Params);
 
-void ModelItemDescriptor::setParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value)
-{
-  m_Params.put(Key,Value);
-}
+    openfluid::ware::WareParams_t getParameters();
 
-
-// =====================================================================
-// =====================================================================
+    bool isType(ModelItemType MIType) const;
+};
 
 
-void ModelItemDescriptor::setParameters(const openfluid::ware::WareParams_t& Params)
-{
-  m_Params.insert(m_Params.end(),Params.begin(),Params.end());
-}
+} }  // namespaces
 
 
-// =====================================================================
-// =====================================================================
-
-
-openfluid::ware::WareParams_t ModelItemDescriptor::getParameters()
-{
-  return m_Params;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool ModelItemDescriptor::isType(ModelItemType MIType) const
-{
-  return (m_ModelItemType == MIType);
-}
-
-
-} } // namespaces
-
+#endif /* __WAREDESCRIPTOR_HPP__ */

@@ -60,12 +60,12 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/base/CoupledModelDescriptor.hpp>
 
 namespace openfluid {
 namespace base {
 class DomainDescriptor;
 class ExecutionMessages;
-class ModelDescriptor;
 class RunDescriptor;
 class OutputDescriptor;
 class DatastoreDescriptor;
@@ -95,7 +95,7 @@ class DLLEXPORT Factory
                                              openfluid::core::Datastore& Store);
 
 
-    static void buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor& ModelDesc,
+    static void buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDescriptor& ModelDesc,
                                                  ModelInstance& MInstance);
 
     static void fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& RunDescr);

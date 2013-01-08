@@ -166,7 +166,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     openfluid::base::OutputDescriptor OutDesc = FXReader->getOutputDescriptor();
     checkAndSetDefaultOutputValues(OutDesc);
 
-    openfluid::base::ModelDescriptor ModelDesc = FXReader->getModelDescriptor();
+    openfluid::base::CoupledModelDescriptor ModelDesc = FXReader->getModelDescriptor();
 
     checkModelDesc(ModelDesc);
 
@@ -341,11 +341,11 @@ void EngineProject::checkAndSetDefaultOutputValues(
 // =====================================================================
 
 
-void EngineProject::checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc)
+void EngineProject::checkModelDesc(openfluid::base::CoupledModelDescriptor& ModelDesc)
 {
   std::string MissingFunctions = "";
 
-  openfluid::base::ModelDescriptor::ModelDescription_t::iterator it =
+  openfluid::base::CoupledModelDescriptor::SetDescription_t::iterator it =
       ModelDesc.getItems().begin();
 
   FunctionSignatureRegistry* SignaturesReg =

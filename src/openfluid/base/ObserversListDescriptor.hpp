@@ -45,41 +45,26 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file ObserversListDescriptor.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
+#ifndef __OBSERVERSLISTDESCRIPTOR_HPP__
+#define __OBSERVERSLISTDESCRIPTOR_HPP__
+
+#include <openfluid/base/WareSetDescriptor.hpp>
+#include <openfluid/base/ObserverDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
+
+namespace openfluid { namespace base {
+
+typedef DLLEXPORT WareSetDescriptor<ObserverDescriptor> ObserversListDescriptor;
+
+} } // namespaces
 
 
-#include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
-#include <openfluid/base/Init.hpp>
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
-#include <openfluid/base/CoupledModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SimulationProfiler.hpp>
-#include <openfluid/base/SimulationStatus.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
-
-
-#endif /* __BASE_HPP___ */
+#endif /* __OBSERVERSLISTDESCRIPTOR_HPP__ */

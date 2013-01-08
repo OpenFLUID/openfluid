@@ -107,13 +107,13 @@ void TestDataset(std::string DatasetPath)
 
 
 
-  openfluid::base::ModelDescriptor::ModelDescription_t ModelItems;
+  openfluid::base::CoupledModelDescriptor::SetDescription_t ModelItems;
 
   ModelItems = FXR.getModelDescriptor().getItems();
 
   BOOST_REQUIRE_EQUAL(ModelItems.size(),5);
 
-  openfluid::base::ModelDescriptor::ModelDescription_t::iterator it;
+  openfluid::base::CoupledModelDescriptor::SetDescription_t::iterator it;
 
   it = ModelItems.begin();
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::base::ModelItemDescriptor::Generator),true);

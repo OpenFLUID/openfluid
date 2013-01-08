@@ -62,12 +62,12 @@
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/machine/Engine.hpp>
+#include <openfluid/base/CoupledModelDescriptor.hpp>
 
 namespace openfluid {
 namespace base {
 class RuntimeEnvironment;
 class RunDescriptor;
-class ModelDescriptor;
 class ExecutionMessages;
 class OutputDescriptor;
 }
@@ -124,7 +124,7 @@ class EngineProject
     void checkAndSetDefaultOutputValues(
         openfluid::base::OutputDescriptor& OutDesc);
 
-    void checkModelDesc(openfluid::base::ModelDescriptor& ModelDesc);
+    void checkModelDesc(openfluid::base::CoupledModelDescriptor& ModelDesc);
 
     void checkInputData();
 

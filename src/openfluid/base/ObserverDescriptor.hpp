@@ -45,68 +45,32 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
-  @brief Implements ...
+  \file ObserverDescriptor.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/base/ModelDescriptor.hpp>
+
+#ifndef __OBSERVERDESCRIPTOR_HPP__
+#define __OBSERVERDESCRIPTOR_HPP__
+
+#include <openfluid/base/WareDescriptor.hpp>
 
 namespace openfluid { namespace base {
 
 
-// =====================================================================
-// =====================================================================
-
-
-ModelDescriptor::ModelDescriptor()
+class ObserverDescriptor : public WareDescriptor
 {
+  public:
 
-}
+    ObserverDescriptor() : WareDescriptor()
+    { };
 
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelDescriptor::appendItem(ModelItemDescriptor *Item)
-{
-  m_ModelDescription.push_back(Item);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelDescriptor::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value)
-{
-  m_Params.put(Key,Value);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelDescriptor::setGlobalParameters(const openfluid::ware::WareParams_t& Params)
-{
-  m_Params.insert(m_Params.end(),Params.begin(),Params.end());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::ware::WareParams_t ModelDescriptor::getGlobalParameters()
-{
-  return m_Params;
-}
-
+};
 
 } } // namespaces
 
+
+#endif /* __OBSERVERDESCRIPTOR_HPP__ */

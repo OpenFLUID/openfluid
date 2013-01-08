@@ -53,8 +53,8 @@
  */
 
 
-#ifndef __MODELDESCRIPTOR_HPP__
-#define __MODELDESCRIPTOR_HPP__
+#ifndef __WARESETDESCRIPTOR_HPP__
+#define __WARESETDESCRIPTOR_HPP__
 
 #include <list>
 #include <openfluid/base/ModelItemDescriptor.hpp>
@@ -62,32 +62,70 @@
 
 namespace openfluid { namespace base {
 
-
-class DLLEXPORT ModelDescriptor
+template <class T>
+class DLLEXPORT WareSetDescriptor
 {
   public:
-    typedef std::list<ModelItemDescriptor*> ModelDescription_t;
+    typedef std::list<T*> SetDescription_t;
 
   private:
-    ModelDescription_t m_ModelDescription;
+    SetDescription_t m_SetDescription;
 
     openfluid::ware::WareParams_t m_Params;
 
 
   public:
-    ModelDescriptor();
 
-    inline ModelDescription_t& getItems() { return (m_ModelDescription); };
+    WareSetDescriptor<T>()
+    { };
 
-    inline const ModelDescription_t& getItems() const { return (m_ModelDescription); };
+    inline SetDescription_t& getItems() { return (m_SetDescription); };
 
-    void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value);
 
-    void setGlobalParameters(const openfluid::ware::WareParams_t& Params);
+    // =====================================================================
+    // =====================================================================
 
-    openfluid::ware::WareParams_t getGlobalParameters();
 
-    void appendItem(ModelItemDescriptor *Item);
+    inline const SetDescription_t& getItems() const { return (m_SetDescription); };
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value)
+    {
+      m_Params.put(Key,Value);
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void setGlobalParameters(const openfluid::ware::WareParams_t& Params)
+    {
+      m_Params.insert(m_Params.end(),Params.begin(),Params.end());
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    openfluid::ware::WareParams_t getGlobalParameters()
+    {
+      return m_Params;
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void appendItem(T *Item)
+    {
+      m_SetDescription.push_back(Item);
+    }
 
 };
 

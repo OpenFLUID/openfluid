@@ -61,7 +61,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
+#include <openfluid/base/CoupledModelDescriptor.hpp>
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/DatastoreDescriptor.hpp>
@@ -86,7 +86,7 @@ class DLLEXPORT FluidXReader
 
     openfluid::io::IOListener* mp_Listener;
 
-    openfluid::base::ModelDescriptor m_ModelDescriptor;
+    openfluid::base::CoupledModelDescriptor m_ModelDescriptor;
 
     openfluid::base::RunDescriptor m_RunDescriptor;
 
@@ -142,7 +142,7 @@ class DLLEXPORT FluidXReader
 
     void loadFromDirectory(std::string DirPath);
 
-    openfluid::base::ModelDescriptor& getModelDescriptor() {return m_ModelDescriptor; };
+    openfluid::base::CoupledModelDescriptor& getModelDescriptor() {return m_ModelDescriptor; };
 
     openfluid::base::RunDescriptor& getRunDescriptor() {return m_RunDescriptor; };
 

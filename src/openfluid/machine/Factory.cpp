@@ -57,7 +57,7 @@
 
 #include <openfluid/base/DomainDescriptor.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/ModelDescriptor.hpp>
+#include <openfluid/base/CoupledModelDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/FunctionDescriptor.hpp>
@@ -235,11 +235,11 @@ void Factory::buildDatastoreFromDescriptor(openfluid::base::DatastoreDescriptor&
 // =====================================================================
 
 
-void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor& ModelDesc,
+void Factory::buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDescriptor& ModelDesc,
                                                ModelInstance& MInstance)
 {
 
-  openfluid::base::ModelDescriptor::ModelDescription_t::const_iterator it;
+  openfluid::base::CoupledModelDescriptor::SetDescription_t::const_iterator it;
   ModelItemInstance* IInstance;
 
 

@@ -47,39 +47,75 @@
 
 
 /**
-  @file
+  \file WareDescriptor.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
+#include <openfluid/base/WareDescriptor.hpp>
 
 
-#include <openfluid/base/DomainDescriptor.hpp>
-#include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
-#include <openfluid/base/Init.hpp>
-#include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
-#include <openfluid/base/CoupledModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
-#include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SimulationProfiler.hpp>
-#include <openfluid/base/SimulationStatus.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
+namespace openfluid { namespace base {
 
 
-#endif /* __BASE_HPP___ */
+// =====================================================================
+// =====================================================================
+
+
+WareDescriptor::WareDescriptor():
+  m_ModelItemType(NoModelItemType)
+{
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+WareDescriptor::~WareDescriptor()
+{
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareDescriptor::setParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value)
+{
+  m_Params.put(Key,Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareDescriptor::setParameters(const openfluid::ware::WareParams_t& Params)
+{
+  m_Params.insert(m_Params.end(),Params.begin(),Params.end());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::ware::WareParams_t WareDescriptor::getParameters()
+{
+  return m_Params;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareDescriptor::isType(ModelItemType MIType) const
+{
+  return (m_ModelItemType == MIType);
+}
+
+
+} } // namespaces

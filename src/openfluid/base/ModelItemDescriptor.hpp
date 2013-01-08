@@ -57,35 +57,21 @@
 #define __MODELITEMDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/base/WareDescriptor.hpp>
 
 
 namespace openfluid { namespace base {
 
 
-class DLLEXPORT ModelItemDescriptor
+class DLLEXPORT ModelItemDescriptor : public WareDescriptor
 {
   public:
-    enum ModelItemType { NoModelItemType, PluggedFunction, Generator };
+    ModelItemDescriptor() : WareDescriptor()
+    { };
 
-  protected:
+    virtual ~ModelItemDescriptor()
+    { };
 
-    ModelItemType m_ModelItemType;
-    openfluid::ware::WareParams_t m_Params;  // Function parameters set
-
-  public:
-
-    ModelItemDescriptor();
-
-    virtual ~ModelItemDescriptor();
-
-    void setParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value);
-
-    void setParameters(const openfluid::ware::WareParams_t& Params);
-
-    openfluid::ware::WareParams_t getParameters();
-
-    bool isType(ModelItemType MIType) const;
 };
 
 } } // namespaces
