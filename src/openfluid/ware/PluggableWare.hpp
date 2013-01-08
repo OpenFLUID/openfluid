@@ -175,7 +175,7 @@ class DLLEXPORT PluggableWare
   public:
 
     PluggableWare()
-    : mp_ExecMsgs(NULL),mp_WareEnv(NULL),m_WareID("")
+    : mp_WareEnv(NULL),m_WareID(""),mp_ExecMsgs(NULL)
     {};
 
     virtual ~PluggableWare() {};
