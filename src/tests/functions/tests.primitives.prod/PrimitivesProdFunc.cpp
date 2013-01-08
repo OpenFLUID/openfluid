@@ -112,7 +112,7 @@ PrimitivesProdFunction::~PrimitivesProdFunction()
 // =====================================================================
 
 
-void PrimitivesProdFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+void PrimitivesProdFunction::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {
 
 }

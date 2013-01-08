@@ -57,7 +57,7 @@
 #define __MODELITEMDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
 
 
 namespace openfluid { namespace base {
@@ -71,7 +71,7 @@ class DLLEXPORT ModelItemDescriptor
   protected:
 
     ModelItemType m_ModelItemType;
-    openfluid::core::FuncParamsMap_t m_Params;  // Function parameters set
+    openfluid::ware::WareParams_t m_Params;  // Function parameters set
 
   public:
 
@@ -79,11 +79,11 @@ class DLLEXPORT ModelItemDescriptor
 
     virtual ~ModelItemDescriptor();
 
-    void setParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value);
+    void setParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value);
 
-    void setParameters(const openfluid::core::FuncParamsMap_t& Params);
+    void setParameters(const openfluid::ware::WareParams_t& Params);
 
-    openfluid::core::FuncParamsMap_t getParameters();
+    openfluid::ware::WareParams_t getParameters();
 
     bool isType(ModelItemType MIType) const;
 };

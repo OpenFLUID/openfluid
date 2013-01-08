@@ -119,14 +119,14 @@ std::string FluidXWriter::getGeneratorMethodAsStr(openfluid::base::GeneratorDesc
 // =====================================================================
 
 
-std::string FluidXWriter::getParamsAsStr(const openfluid::core::FuncParamsMap_t& Params) const
+std::string FluidXWriter::getParamsAsStr(const openfluid::ware::WareParams_t& Params) const
 {
   std::string ParamsStr = "";
 
-  openfluid::core::FuncParamsMap_t::const_iterator itParams;
+  openfluid::ware::WareParams_t::const_iterator itParams;
 
   for (itParams = Params.begin();itParams != Params.end() ; ++itParams)
-    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\"" + (*itParams).first +"\" value=\"" + (*itParams).second.get() +"\"/>\n";
+    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\"" + (*itParams).first +"\" value=\"" + (*itParams).second.data() +"\"/>\n";
 
   return ParamsStr;
 }

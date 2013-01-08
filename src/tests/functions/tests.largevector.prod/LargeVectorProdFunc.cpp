@@ -114,7 +114,7 @@ LargeVectorProdFunction::~LargeVectorProdFunction()
 // =====================================================================
 
 
-bool LargeVectorProdFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool LargeVectorProdFunction::initParams(openfluid::ware::WareParams_t Params)
 {  }
 
 // =====================================================================

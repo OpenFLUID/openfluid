@@ -86,7 +86,7 @@ class LargeVectorProdFunction : public openfluid::base::PluggableFunction
     */
     ~LargeVectorProdFunction();
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    bool initParams(openfluid::ware::WareParams_t Params);
 
     bool prepareData();
 

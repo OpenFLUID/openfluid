@@ -115,21 +115,11 @@ typedef std::vector<DoubleValue> SerieOfDoubleValue;
  */
 typedef std::vector<VectorValue> SerieOfVectorValue;
 
-// =====================================================================
-// =====================================================================
-
-
-typedef std::string FuncParamKey_t;
-typedef openfluid::core::StringValue FuncParamValue_t;
-
-/**
-  Hash table for parameters (distributed properties, distributed initial conditions, ...)
-*/
-typedef std::map<FuncParamKey_t,FuncParamValue_t> FuncParamsMap_t;
-
 
 // =====================================================================
 // =====================================================================
+
+
 /**
   Map associating a float value to a unit, indexed by its ID
 */

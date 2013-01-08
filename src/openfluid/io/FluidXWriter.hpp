@@ -102,7 +102,7 @@ class DLLEXPORT FluidXWriter
 
     std::string getGeneratorMethodAsStr(openfluid::base::GeneratorDescriptor::GeneratorMethod Method) const;
 
-    std::string getParamsAsStr(const openfluid::core::FuncParamsMap_t& Params) const;
+    std::string getParamsAsStr(const openfluid::ware::WareParams_t& Params) const;
 
   public:
 

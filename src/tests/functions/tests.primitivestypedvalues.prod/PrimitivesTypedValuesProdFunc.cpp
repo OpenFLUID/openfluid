@@ -123,7 +123,7 @@ PrimitivesTypedValuesProdFunction::~PrimitivesTypedValuesProdFunction()
 // =====================================================================
 
 
-void PrimitivesTypedValuesProdFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+void PrimitivesTypedValuesProdFunction::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {  }
 
 // =====================================================================

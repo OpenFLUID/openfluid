@@ -127,13 +127,13 @@ ModelInstance::~ModelInstance()
 // =====================================================================
 
 
-openfluid::core::FuncParamsMap_t ModelInstance::mergeParamsWithGlobalParams(const openfluid::core::FuncParamsMap_t& Params) const
+openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const
 {
-  openfluid::core::FuncParamsMap_t MergedParams = m_GlobalParams;
-  openfluid::core::FuncParamsMap_t::const_iterator itParams;
+  openfluid::ware::WareParams_t MergedParams = m_GlobalParams;
+  openfluid::ware::WareParams_t::const_iterator itParams;
 
   for(itParams = Params.begin();itParams != Params.end();++itParams)
-    MergedParams[(*itParams).first] = (*itParams).second;
+    MergedParams.put((*itParams).first,(*itParams).second.data());
 
   return MergedParams;
 }
@@ -143,9 +143,9 @@ openfluid::core::FuncParamsMap_t ModelInstance::mergeParamsWithGlobalParams(cons
 // =====================================================================
 
 
-void ModelInstance::setGlobalParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value)
+void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value)
 {
-  m_GlobalParams[Key] = Value;
+  m_GlobalParams.put(Key,Value);
 }
 
 

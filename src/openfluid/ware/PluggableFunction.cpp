@@ -118,20 +118,19 @@ std::string PluggableFunction::generateDotEdge(std::string SrcClass, std::string
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       openfluid::core::StringValue& Val) const
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
+  try
   {
-    Val = it->second;
-
+    Val = openfluid::core::StringValue(Params.get<std::string>(ParamName));
     return true;
   }
-
-  return false;
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -139,16 +138,18 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       openfluid::core::DoubleValue& Val) const
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-    return it->second.toDoubleValue(Val);
-
-  return false;
+  try
+  {
+    return openfluid::core::StringValue(Params.get<std::string>(ParamName)).toDoubleValue(Val);
+  }
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -156,16 +157,18 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       openfluid::core::VectorValue& Val) const
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-    return it->second.toVectorValue(Val.getStreamSeparator(1),Val);
-
-  return false;
+  try
+  {
+    return openfluid::core::StringValue(Params.get<std::string>(ParamName)).toVectorValue(Val.getStreamSeparator(1),Val);
+  }
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -174,16 +177,18 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                    const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                    const openfluid::ware::WareParamKey_t ParamName,
                                     openfluid::core::MatrixValue& Val) const
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-    return it->second.toMatrixValue(Val.getStreamSeparator(1),Val.getStreamSeparator(2),Val);
-
-  return false;
+  try
+  {
+    return openfluid::core::StringValue(Params.get<std::string>(ParamName)).toMatrixValue(Val.getStreamSeparator(1),Val.getStreamSeparator(2),Val);
+  }
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -191,8 +196,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       double *Val) const
 {
   return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
@@ -203,16 +208,18 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       double& Val) const
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-    return it->second.toDouble(Val);
-
-  return false;
+  try
+  {
+    return openfluid::core::StringValue(Params.get<std::string>(ParamName)).toDouble(Val);
+  }
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -220,8 +227,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       long *Val) const
 {
   return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
@@ -232,16 +239,18 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       long& Val) const
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
-    return it->second.toInteger(Val);
-
-  return false;
+  try
+  {
+    return openfluid::core::StringValue(Params.get<std::string>(ParamName)).toInteger(Val);
+  }
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -249,8 +258,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       float *Val) const
 {
   return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
@@ -261,25 +270,23 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       float& Val) const
 {
-  bool IsOk = false;
-
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
+  try
   {
     double TmpDbl;
+    bool IsOK;
 
-    IsOk = it->second.toDouble(TmpDbl);
-
-    if(IsOk)
-      Val = static_cast<float>(TmpDbl);
+    IsOK = openfluid::core::StringValue(Params.get<std::string>(ParamName)).toDouble(TmpDbl);
+    if (IsOK) Val = static_cast<float>(TmpDbl);
+    return IsOK;
   }
-
-  return IsOk;
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -287,8 +294,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       int *Val) const
 {
   return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
@@ -300,25 +307,23 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       int& Val) const
 {
-  bool IsOk = false;
-
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
+  try
   {
-    long TmpLong;
+    long TmpInt;
+    bool IsOK;
 
-    IsOk = it->second.toInteger(TmpLong);
-
-    if(IsOk)
-      Val = static_cast<int>(TmpLong);
+    IsOK = openfluid::core::StringValue(Params.get<std::string>(ParamName)).toInteger(TmpInt);
+    if (IsOK) Val = static_cast<int>(TmpInt);
+    return IsOK;
   }
-
-  return IsOk;
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -326,8 +331,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       std::string *Val) const
 {
   return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
@@ -338,20 +343,19 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       std::string& Value) const
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
+  try
   {
-    Value = it->second.get();
-
+    Value = Params.get<std::string>(ParamName);
     return true;
   }
-
-  return false;
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -359,8 +363,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       std::vector<std::string> *Vals) const
 {
   return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
@@ -371,27 +375,26 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       std::vector<std::string>& Vals) const
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
+  try
   {
     std::vector<std::string> Tokens;
 
-    openfluid::tools::TokenizeString(it->second.get(),Tokens,";");
+    openfluid::tools::TokenizeString(Params.get<std::string>(ParamName),Tokens,";");
 
     Vals.clear();
-
     for (unsigned int i=0;i<Tokens.size();i++)
-      Vals.push_back(Tokens[i]);
+          Vals.push_back(Tokens[i]);
 
     return true;
   }
-
-  return false;
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -399,8 +402,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       std::vector<double> *Vals) const
 {
   return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
@@ -411,19 +414,17 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       std::vector<double>& Vals) const
 {
-  bool IsOK = false;
-
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
+  try
   {
-    openfluid::core::VectorValue Vect;
+    bool IsOK = false;
 
-    IsOK = it->second.toVectorValue(";",Vect);
+    openfluid::core::StringValue TmpStr = openfluid::core::StringValue(Params.get<std::string>(ParamName));
+    openfluid::core::VectorValue Vect;
+    IsOK = TmpStr.toVectorValue(";",Vect);
 
     if(IsOK)
     {
@@ -432,9 +433,13 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
       for (unsigned long i=0;i<Vect.size();i++)
         Vals.push_back(Vect[i]);
     }
-  }
 
-  return IsOK;
+    return IsOK;
+  }
+  catch (...)
+  {
+    return false;
+  }
 }
 
 
@@ -442,8 +447,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       std::vector<long> *Vals) const
 {
   return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
@@ -454,30 +459,32 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::Fu
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::core::FuncParamsMap_t Params,
-                                      const openfluid::core::FuncParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
+                                      const openfluid::ware::WareParamKey_t ParamName,
                                       std::vector<long>& Vals) const
 {
-  bool IsOK = false;
-
-  openfluid::core::FuncParamsMap_t::const_iterator it = Params.find(ParamName);
-
-  if (it != Params.end())
+  try
   {
-    openfluid::core::VectorValue Vect;
+    bool IsOK = false;
 
-    IsOK = it->second.toVectorValue(";",Vect);
+    openfluid::core::StringValue TmpStr = openfluid::core::StringValue(Params.get<std::string>(ParamName));
+    openfluid::core::VectorValue Vect;
+    IsOK = TmpStr.toVectorValue(";",Vect);
 
     if(IsOK)
     {
       Vals.clear();
 
       for (unsigned long i=0;i<Vect.size();i++)
-        Vals.push_back(static_cast<long>(Vect[i]));
+        Vals.push_back(static_cast<int>(Vect[i]));
     }
-  }
 
-  return IsOK;
+    return IsOK;
+  }
+  catch (...)
+  {
+    return false;
+  }
 }
 
 

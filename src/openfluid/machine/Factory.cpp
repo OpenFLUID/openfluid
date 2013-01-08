@@ -295,15 +295,15 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::ModelDescriptor&
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Interp)
       {
         IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Interp;
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("sources"));
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("distribution"));
       }
 
       if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Inject)
       {
         IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Inject;
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("sources"));
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("distribution"));
       }
 
       if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::NoGenMethod)

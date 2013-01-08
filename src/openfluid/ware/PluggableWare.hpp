@@ -64,7 +64,8 @@
 #include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
-
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/exceptions.hpp>
 
 namespace openfluid { namespace ware {
 
@@ -83,6 +84,14 @@ namespace openfluid { namespace ware {
   Hook function name of ware ABI version
 */
 #define WAREABIVERSION_PROC_NAME "GetWareABIVersion"
+
+// =====================================================================
+// =====================================================================
+
+typedef std::string WareParamKey_t;
+typedef std::string WareParamValue_t;
+
+typedef boost::property_tree::ptree WareParams_t;
 
 
 // =====================================================================

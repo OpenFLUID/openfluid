@@ -86,7 +86,7 @@ class LargeVectorUseFunction : public openfluid::base::PluggableFunction
     */
     ~LargeVectorUseFunction();
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    bool initParams(openfluid::ware::WareParams_t Params);
 
     bool prepareData();
 

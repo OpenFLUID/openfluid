@@ -88,7 +88,7 @@ InjectGenerator::~InjectGenerator()
 // =====================================================================
 
 
-void InjectGenerator::initParams(const openfluid::core::FuncParamsMap_t& Params)
+void InjectGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetFunctionParameter(Params,"sources",&m_SourcesFile))
     throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::initParams","missing sources value for generator");

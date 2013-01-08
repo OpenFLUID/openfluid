@@ -159,7 +159,7 @@ OFEFunc2DocFunction::~OFEFunc2DocFunction()
 // =====================================================================
 
 
-void OFEFunc2DocFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+void OFEFunc2DocFunction::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {
 
 }

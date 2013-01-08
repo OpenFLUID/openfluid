@@ -98,7 +98,7 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParams()
 {  ParamsMap[Param.DataName] = Param.DataUnit;
 }
 
-for(openfluid::core::FuncParamsMap_t::iterator it = mp_Item->Params.begin(); it != mp_Item->Params.end(); ++it)
+for(openfluid::ware::WareParams_t::iterator it = mp_Item->Params.begin(); it != mp_Item->Params.end(); ++it)
 {
   //add possible params which are not in signature
   if(ParamsMap.find(it->first) == ParamsMap.end())
@@ -116,9 +116,9 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
 {
   std::map<std::string, std::string> StrMap;
 
-  for(openfluid::core::FuncParamsMap_t::iterator it=mp_Item->Params.begin() ; it !=mp_Item->Params.end() ; ++it)
+  for(openfluid::ware::WareParams_t::iterator it=mp_Item->Params.begin() ; it !=mp_Item->Params.end() ; ++it)
   {
-    StrMap[it->first] = it->second;
+    StrMap[it->first] = it->second.data();
   }
 
   return StrMap;
@@ -132,9 +132,9 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getGlobalValues()
 {
   std::map<std::string, std::string> StrMap;
 
-  for(openfluid::core::FuncParamsMap_t::iterator it=mp_ModelInstance->getGlobalParameters().begin() ; it !=mp_ModelInstance->getGlobalParameters().end() ; ++it)
+  for(openfluid::ware::WareParams_t::iterator it=mp_ModelInstance->getGlobalParameters().begin() ; it !=mp_ModelInstance->getGlobalParameters().end() ; ++it)
   {
-    StrMap[it->first] = it->second;
+    StrMap[it->first] = it->second.data();
   }
 
   return StrMap;
@@ -165,7 +165,7 @@ std::vector<std::string> ModelFctParamsModelImpl::getUsedFiles()
 void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
     std::string ParamValue)
 {
-  mp_Item->Params[ParamName] = ParamValue;
+  mp_Item->Params.put(ParamName,ParamValue);
 
   updateInterpGeneratorRequiredExtraFiles();
 
@@ -187,24 +187,24 @@ void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
     if (Method == openfluid::base::GeneratorDescriptor::Interp || Method
         == openfluid::base::GeneratorDescriptor::Inject)
     {
-      openfluid::core::FuncParamsMap_t GlobalParams =
+      openfluid::ware::WareParams_t GlobalParams =
           mp_ModelInstance->getGlobalParameters();
 
       std::string Sources = "";
-      if (mp_Item->Params.find("sources") != mp_Item->Params.end()
-          && mp_Item->Params["sources"].get() != "")
-        Sources = mp_Item->Params["sources"];
-      else if (GlobalParams.find("sources") != GlobalParams.end()
-          && GlobalParams["sources"].get() != "")
-        Sources = GlobalParams["sources"];
+      if (mp_Item->Params.find("sources") != mp_Item->Params.not_found()
+          && mp_Item->Params.get<std::string>("sources") != "")
+        Sources = mp_Item->Params.get<std::string>("sources");
+      else if (GlobalParams.find("sources") != GlobalParams.not_found()
+          && GlobalParams.get<std::string>("sources") != "")
+        Sources = GlobalParams.get<std::string>("sources");
 
       std::string Distrib = "";
-      if (mp_Item->Params.find("distribution") != mp_Item->Params.end()
-          && mp_Item->Params["distribution"].get() != "")
-        Distrib = mp_Item->Params["distribution"];
-      else if (GlobalParams.find("distribution") != GlobalParams.end()
-          && GlobalParams["distribution"].get() != "")
-        Distrib = GlobalParams["distribution"];
+      if (mp_Item->Params.find("distribution") != mp_Item->Params.not_found()
+          && mp_Item->Params.get<std::string>("distribution") != "")
+        Distrib = mp_Item->Params.get<std::string>("distribution");
+      else if (GlobalParams.find("distribution") != GlobalParams.not_found()
+          && GlobalParams.get<std::string>("distribution") != "")
+        Distrib = GlobalParams.get<std::string>("distribution");
 
       mp_Item->Signature->HandledData.RequiredExtraFiles.clear();
 

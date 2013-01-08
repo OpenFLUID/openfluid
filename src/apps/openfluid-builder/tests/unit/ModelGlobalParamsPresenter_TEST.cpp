@@ -133,14 +133,14 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),4);
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"");
   BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters().size(),2);
-  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters()["strparam"].get(),"");
+  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters().get<std::string>("strparam"),"");
 
   // changing a global parameter value
 
   mp_View->getByParamNameParamRow()["strparam"]->setValue("abc");
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"abc");
-  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters()["strparam"].get(),"abc");
+  BOOST_CHECK_EQUAL(mp_EngProject->getModelInstance()->getGlobalParameters().get<std::string>("strparam"),"abc");
 
   // removing a global parameter (from Model)
 

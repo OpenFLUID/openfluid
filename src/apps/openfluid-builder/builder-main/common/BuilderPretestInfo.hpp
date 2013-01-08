@@ -56,7 +56,7 @@
 #define __BUILDERPRESTESTINFO_HPP__
 
 #include <openfluid/machine/Engine.hpp>
-#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
 
 namespace openfluid {
 namespace base {
@@ -137,7 +137,7 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 
   private:
 
-    openfluid::core::FuncParamsMap_t m_GlobalParams;
+    openfluid::ware::WareParams_t m_GlobalParams;
 
     bool m_RandomMinMaxChecked;
     bool m_InterpMinMaxChecked;

@@ -84,7 +84,7 @@ class PrimitivesTypedValuesUseFunction : public openfluid::ware::PluggableFuncti
     */
     ~PrimitivesTypedValuesUseFunction();
 
-    void initParams(const openfluid::core::FuncParamsMap_t& Params);
+    void initParams(const openfluid::ware::WareParams_t& Params);
 
     void prepareData();
 

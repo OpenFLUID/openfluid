@@ -125,7 +125,7 @@ FortranFunction::~FortranFunction()
 // =====================================================================
 
 
-void FortranFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+void FortranFunction::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {  }
 
 // =====================================================================

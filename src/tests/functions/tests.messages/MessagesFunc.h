@@ -88,7 +88,7 @@ class MessagesFunction : public openfluid::ware::PluggableFunction
     */
     ~MessagesFunction();
 
-    void initParams(const openfluid::core::FuncParamsMap_t& Params);
+    void initParams(const openfluid::ware::WareParams_t& Params);
 
     void prepareData();
 

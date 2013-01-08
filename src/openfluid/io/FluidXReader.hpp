@@ -103,10 +103,10 @@ class DLLEXPORT FluidXReader
 
     void extractOutputFromNode(xmlNodePtr NodePtr);
 
-    openfluid::core::FuncParamsMap_t extractParamsFromNode(xmlNodePtr NodePtr);
+    openfluid::ware::WareParams_t extractParamsFromNode(xmlNodePtr NodePtr);
 
-    openfluid::core::FuncParamsMap_t mergeParams(const openfluid::core::FuncParamsMap_t& Params,
-                                                 const openfluid::core::FuncParamsMap_t& OverloadParams);
+    openfluid::ware::WareParams_t mergeParams(const openfluid::ware::WareParams_t& Params,
+                                                 const openfluid::ware::WareParams_t& OverloadParams);
 
     void propagateGlobalParamsInModel();
 

@@ -128,7 +128,7 @@ PrimitivesTypedValuesUseFunction::~PrimitivesTypedValuesUseFunction()
 // =====================================================================
 
 
-void PrimitivesTypedValuesUseFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+void PrimitivesTypedValuesUseFunction::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {  }
 
 // =====================================================================

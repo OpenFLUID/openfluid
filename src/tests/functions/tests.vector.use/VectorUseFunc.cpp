@@ -113,7 +113,7 @@ VectorUseFunction::~VectorUseFunction()
 // =====================================================================
 
 
-void VectorUseFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+void VectorUseFunction::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {  }
 
 // =====================================================================

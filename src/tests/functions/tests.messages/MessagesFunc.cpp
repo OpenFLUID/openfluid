@@ -111,7 +111,7 @@ MessagesFunction::~MessagesFunction()
 // =====================================================================
 
 
-void MessagesFunction::initParams(const openfluid::core::FuncParamsMap_t& Params)
+void MessagesFunction::initParams(const openfluid::ware::WareParams_t& Params)
 {
 
   m_RepeatMessages = 1;

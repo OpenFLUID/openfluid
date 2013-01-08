@@ -127,7 +127,7 @@ PrimitivesUseFunction::~PrimitivesUseFunction()
 // =====================================================================
 
 
-void PrimitivesUseFunction::initParams(const openfluid::core::FuncParamsMap_t& Params)
+void PrimitivesUseFunction::initParams(const openfluid::ware::WareParams_t& Params)
 {
 
   long LongParam;

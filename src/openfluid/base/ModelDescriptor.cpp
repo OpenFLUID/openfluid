@@ -82,9 +82,9 @@ void ModelDescriptor::appendItem(ModelItemDescriptor *Item)
 // =====================================================================
 
 
-void ModelDescriptor::setGlobalParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value)
+void ModelDescriptor::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value)
 {
-  m_Params[Key] = Value;
+  m_Params.put(Key,Value);
 }
 
 
@@ -92,14 +92,9 @@ void ModelDescriptor::setGlobalParameter(const openfluid::core::FuncParamKey_t& 
 // =====================================================================
 
 
-void ModelDescriptor::setGlobalParameters(const openfluid::core::FuncParamsMap_t& Params)
+void ModelDescriptor::setGlobalParameters(const openfluid::ware::WareParams_t& Params)
 {
-  openfluid::core::FuncParamsMap_t::const_iterator it;
-
-  for (it=Params.begin();it!=Params.end();++it)
-  {
-    m_Params[(*it).first] = (*it).second;
-  }
+  m_Params.insert(m_Params.end(),Params.begin(),Params.end());
 }
 
 
@@ -107,7 +102,7 @@ void ModelDescriptor::setGlobalParameters(const openfluid::core::FuncParamsMap_t
 // =====================================================================
 
 
-openfluid::core::FuncParamsMap_t ModelDescriptor::getGlobalParameters()
+openfluid::ware::WareParams_t ModelDescriptor::getGlobalParameters()
 {
   return m_Params;
 }

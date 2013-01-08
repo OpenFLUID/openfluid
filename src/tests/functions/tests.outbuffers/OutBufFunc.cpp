@@ -119,7 +119,7 @@ class OutputsBuffersFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/)
   { }
 
   // =====================================================================

@@ -86,7 +86,7 @@ class PrimitivesValuesProdFunction : public openfluid::ware::PluggableFunction
     */
     ~PrimitivesValuesProdFunction();
 
-    void initParams(const openfluid::core::FuncParamsMap_t& Params);
+    void initParams(const openfluid::ware::WareParams_t& Params);
 
     void prepareData();
 

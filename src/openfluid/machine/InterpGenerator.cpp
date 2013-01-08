@@ -86,7 +86,7 @@ InterpGenerator::~InterpGenerator()
 // =====================================================================
 
 
-void InterpGenerator::initParams(const openfluid::core::FuncParamsMap_t& Params)
+void InterpGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetFunctionParameter(Params,"sources",&m_SourcesFile))
     throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::initParams","missing sources value for generator");

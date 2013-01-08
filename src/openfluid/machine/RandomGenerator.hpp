@@ -80,7 +80,7 @@ class DLLEXPORT RandomGenerator : public Generator
 
     ~RandomGenerator();
 
-    void initParams(const openfluid::core::FuncParamsMap_t& Params);
+    void initParams(const openfluid::ware::WareParams_t& Params);
 
     void checkConsistency();
 

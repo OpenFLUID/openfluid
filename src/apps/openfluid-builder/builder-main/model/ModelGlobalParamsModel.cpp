@@ -115,15 +115,16 @@ void ModelGlobalParamsModelImpl::update()
       != mp_ModelInstance->getItems().end(); ++it)
   {
     BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Param, (*it)->Signature->HandledData.FunctionParams)
-{    if(mp_ModelInstance->getGlobalParameters().find(Param.DataName)
-        == mp_ModelInstance->getGlobalParameters().end())
-    m_GloballyNotUsed.insert(Param.DataName);
+    {
+      if(mp_ModelInstance->getGlobalParameters().find(Param.DataName)
+        == mp_ModelInstance->getGlobalParameters().not_found())
+          m_GloballyNotUsed.insert(Param.DataName);
 
-    m_ByParamNameParamUnit[Param.DataName] = Param.DataUnit;
+      m_ByParamNameParamUnit[Param.DataName] = Param.DataUnit;
+    }
   }
-}
 
-m_signal_FromAppModelChanged.emit();
+  m_signal_FromAppModelChanged.emit();
 
 }
 
@@ -135,11 +136,11 @@ std::map<std::string, std::pair<std::string, std::string> > ModelGlobalParamsMod
 {
   std::map<std::string, std::pair<std::string, std::string> > GlobalParams;
 
-  for (openfluid::core::FuncParamsMap_t::iterator it =
+  for (openfluid::ware::WareParams_t::iterator it =
       mp_ModelInstance->getGlobalParameters().begin(); it
       != mp_ModelInstance->getGlobalParameters().end(); ++it)
     GlobalParams[it->first] = std::make_pair(m_ByParamNameParamUnit[it->first],
-        it->second);
+        it->second.data());
 
   return GlobalParams;
 }

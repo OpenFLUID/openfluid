@@ -258,11 +258,11 @@ void BuilderPretestInfo::checkRandomMinMax(
   double Min, Max;
 
   openfluid::tools::ConvertString<double>(
-      localParamIsSet(Item, "min") ? Item->Params["min"]
-          : m_GlobalParams["min"], &Min);
+      localParamIsSet(Item, "min") ? Item->Params.get<std::string>("min")
+          : m_GlobalParams.get<std::string>("min"), &Min);
   openfluid::tools::ConvertString<double>(
-      localParamIsSet(Item, "max") ? Item->Params["max"]
-          : m_GlobalParams["max"], &Max);
+      localParamIsSet(Item, "max") ? Item->Params.get<std::string>("max")
+          : m_GlobalParams.get<std::string>("max"), &Max);
 
   if (Min > Max)
   {
@@ -283,11 +283,11 @@ void BuilderPretestInfo::checkInterpMinMax(
   double Min, Max;
 
   openfluid::tools::ConvertString<double>(
-      localParamIsSet(Item, "thresholdmin") ? Item->Params["thresholdmin"]
-          : m_GlobalParams["thresholdmin"], &Min);
+      localParamIsSet(Item, "thresholdmin") ? Item->Params.get<std::string>("thresholdmin")
+          : m_GlobalParams.get<std::string>("thresholdmin"), &Min);
   openfluid::tools::ConvertString<double>(
-      localParamIsSet(Item, "thresholdmax") ? Item->Params["thresholdmax"]
-          : m_GlobalParams["thresholdmax"], &Max);
+      localParamIsSet(Item, "thresholdmax") ? Item->Params.get<std::string>("thresholdmax")
+          : m_GlobalParams.get<std::string>("thresholdmax"), &Max);
 
   if (Min > Max)
   {
@@ -305,8 +305,12 @@ void BuilderPretestInfo::checkInterpMinMax(
 bool BuilderPretestInfo::localParamIsSet(
     openfluid::machine::ModelItemInstance* Item, std::string ParamName)
 {
-  return (Item->Params.find(ParamName) != Item->Params.end()
-      && Item->Params[ParamName].get() != "");
+  try
+  {
+    return (Item->Params.get<std::string>(ParamName) != "");
+  }
+  catch (...) { }
+  return false;
 }
 
 // =====================================================================
@@ -315,8 +319,12 @@ bool BuilderPretestInfo::localParamIsSet(
 
 bool BuilderPretestInfo::globalParamIsSet(std::string ParamName)
 {
-  return (m_GlobalParams.find(ParamName) != m_GlobalParams.end()
-      && m_GlobalParams[ParamName].get() != "");
+  try
+  {
+    return (m_GlobalParams.get<std::string>(ParamName) != "");
+  }
+  catch (...) { }
+  return false;
 }
 
 // =====================================================================

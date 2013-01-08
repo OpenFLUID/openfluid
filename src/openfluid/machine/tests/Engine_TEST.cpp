@@ -76,7 +76,7 @@ class EmptyFunction : public openfluid::ware::PluggableFunction
 {
   public:
 
-  void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/) { };
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { };
 
   void prepareData() { };
 

@@ -102,7 +102,7 @@ class DLLEXPORT SignatureItemInstance
 class DLLEXPORT ModelItemInstance : public SignatureItemInstance
 {
   public:
-    openfluid::core::FuncParamsMap_t Params;
+    openfluid::ware::WareParams_t Params;
     openfluid::ware::PluggableFunction* Function;
 
     ModelItemInstance();

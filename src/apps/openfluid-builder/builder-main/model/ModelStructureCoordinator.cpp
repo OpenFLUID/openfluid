@@ -331,7 +331,7 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
 
   try
   {
-    std::vector<std::pair<std::string, openfluid::core::FuncParamsMap_t> >
+    std::vector<std::pair<std::string, openfluid::ware::WareParams_t> >
         TempItems;
 
     std::map<std::string, openfluid::machine::ModelItemInstance*>

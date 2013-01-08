@@ -182,7 +182,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "    // =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    void initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)" << std::endl;
+  CPPContent << "    void initParams(const openfluid::ware::WareParams_t& /*Params*/)" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << "" << std::endl;
   CPPContent << "    }" << std::endl;

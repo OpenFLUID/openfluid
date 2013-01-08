@@ -149,7 +149,7 @@ PrimitivesValuesUseFunction::~PrimitivesValuesUseFunction()
 // =====================================================================
 
 
-void PrimitivesValuesUseFunction::initParams(const openfluid::core::FuncParamsMap_t& Params)
+void PrimitivesValuesUseFunction::initParams(const openfluid::ware::WareParams_t& Params)
 {
   openfluid::core::StringValue ParamStrVal;
   openfluid::core::DoubleValue ParamDoubleVal;

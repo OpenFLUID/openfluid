@@ -256,10 +256,10 @@ void FluidXReader::extractOutputFromNode(xmlNodePtr NodePtr)
 // =====================================================================
 
 
-openfluid::core::FuncParamsMap_t FluidXReader::extractParamsFromNode(xmlNodePtr NodePtr)
+openfluid::ware::WareParams_t FluidXReader::extractParamsFromNode(xmlNodePtr NodePtr)
 {
 
-  openfluid::core::FuncParamsMap_t Params;
+  openfluid::ware::WareParams_t Params;
 
   if (NodePtr!=NULL)
   {
@@ -275,7 +275,7 @@ openfluid::core::FuncParamsMap_t FluidXReader::extractParamsFromNode(xmlNodePtr 
 
         if (xmlKey != NULL && xmlValue != NULL)
         {
-          Params[(const char*)xmlKey] = openfluid::core::StringValue((const char*)xmlValue);
+          Params.put((const char*)xmlKey,openfluid::ware::WareParamValue_t((const char*)xmlValue));
           xmlFree(xmlKey);
           xmlFree(xmlValue);
         }
@@ -293,16 +293,16 @@ openfluid::core::FuncParamsMap_t FluidXReader::extractParamsFromNode(xmlNodePtr 
 // =====================================================================
 
 
-openfluid::core::FuncParamsMap_t FluidXReader::mergeParams(const openfluid::core::FuncParamsMap_t& Params,
-                                                          const openfluid::core::FuncParamsMap_t& OverloadParams)
+openfluid::ware::WareParams_t FluidXReader::mergeParams(const openfluid::ware::WareParams_t& Params,
+                                                          const openfluid::ware::WareParams_t& OverloadParams)
 {
-  openfluid::core::FuncParamsMap_t FinalParams = Params;
+  openfluid::ware::WareParams_t FinalParams = Params;
 
-  openfluid::core::FuncParamsMap_t::const_iterator it;
+  openfluid::ware::WareParams_t::const_iterator it;
 
   for (it=OverloadParams.begin();it!=OverloadParams.end();++it)
   {
-    FinalParams[(*it).first] = (*it).second;
+    FinalParams.put((*it).first,(*it).second.data());
   }
 
   return FinalParams;
@@ -321,7 +321,7 @@ void FluidXReader::extractModelFromNode(xmlNodePtr NodePtr)
 
   openfluid::base::FunctionDescriptor* FD;
   openfluid::base::GeneratorDescriptor* GD;
-  openfluid::core::FuncParamsMap_t GParams;
+  openfluid::ware::WareParams_t GParams;
 
 
   xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;

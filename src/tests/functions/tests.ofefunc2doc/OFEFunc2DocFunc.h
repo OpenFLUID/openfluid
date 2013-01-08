@@ -88,7 +88,7 @@ class OFEFunc2DocFunction : public openfluid::ware::PluggableFunction
     */
     ~OFEFunc2DocFunction();
 
-    void initParams(const openfluid::core::FuncParamsMap_t& Params);
+    void initParams(const openfluid::ware::WareParams_t& Params);
 
     void prepareData();
 

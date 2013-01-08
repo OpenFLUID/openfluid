@@ -113,7 +113,7 @@ VectorProdFunction::~VectorProdFunction()
 // =====================================================================
 
 
-void VectorProdFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+void VectorProdFunction::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {  }
 
 // =====================================================================

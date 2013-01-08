@@ -113,7 +113,7 @@ LargeVectorUseFunction::~LargeVectorUseFunction()
 // =====================================================================
 
 
-bool LargeVectorUseFunction::initParams(openfluid::core::FuncParamsMap_t Params)
+bool LargeVectorUseFunction::initParams(openfluid::ware::WareParams_t Params)
 {  }
 
 // =====================================================================

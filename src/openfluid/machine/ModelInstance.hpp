@@ -59,7 +59,7 @@
 #include <list>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
 
 namespace openfluid {
 namespace base {
@@ -86,11 +86,11 @@ class DLLEXPORT ModelInstance
 
     openfluid::machine::SimulationBlob& m_SimulationBlob;
 
-    openfluid::core::FuncParamsMap_t m_GlobalParams;
+    openfluid::ware::WareParams_t m_GlobalParams;
 
     bool m_Initialized;
 
-    openfluid::core::FuncParamsMap_t mergeParamsWithGlobalParams(const openfluid::core::FuncParamsMap_t& Params) const;
+    openfluid::ware::WareParams_t mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const;
 
 
   public:
@@ -119,11 +119,11 @@ class DLLEXPORT ModelInstance
 
     unsigned int getItemsCount() const { return m_ModelItems.size(); };
 
-    openfluid::core::FuncParamsMap_t& getGlobalParameters() { return m_GlobalParams; };
+    openfluid::ware::WareParams_t& getGlobalParameters() { return m_GlobalParams; };
 
-    void setGlobalParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value);
+    void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value);
 
-    void setGlobalParameters(const openfluid::core::FuncParamsMap_t& Params) { m_GlobalParams = Params; };
+    void setGlobalParameters(const openfluid::ware::WareParams_t& Params) { m_GlobalParams = Params; };
 
     const std::list<ModelItemInstance*>& getItems() const { return m_ModelItems; };
 

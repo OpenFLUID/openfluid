@@ -86,7 +86,7 @@ class ToolsFunction : public openfluid::ware::PluggableFunction
     */
     ~ToolsFunction();
 
-    void initParams(const openfluid::core::FuncParamsMap_t& Params);
+    void initParams(const openfluid::ware::WareParams_t& Params);
 
     void prepareData();
 
@@ -158,7 +158,7 @@ ToolsFunction::~ToolsFunction()
 // =====================================================================
 
 
-void ToolsFunction::initParams(const openfluid::core::FuncParamsMap_t& /*Params*/)
+void ToolsFunction::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {
 
 }
