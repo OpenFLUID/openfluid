@@ -78,6 +78,8 @@ typedef boost::onullstream onullstream_type;
 #include <openfluid/io/IOListener.hpp>
 #include <openfluid/base/FunctionDescriptor.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/base/WareSetDescriptor.hpp>
+#include <boost/foreach.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -536,4 +538,178 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
               "/OPENFLUID.IN.FluidXReader/wrong-missingdataid").string()),
               openfluid::base::OFException);
 
+}
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_observers)
+{
+  openfluid::io::FluidXReader FXR = openfluid::io::FluidXReader(new openfluid::io::IOListener());
+
+  FXR.loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXReader/with_observers").string());
+
+  openfluid::base::ObserversListDescriptor::SetDescription_t Observers = FXR.getObsereversListDescriptor().getItems();
+
+  BOOST_CHECK_EQUAL(Observers.size(),4);
+
+  openfluid::base::ObserversListDescriptor::SetDescription_t::iterator it = Observers.begin();
+
+  // output.files.csv
+
+  BOOST_CHECK((*it)->isType(openfluid::base::WareDescriptor::PluggedObserver));
+
+  BOOST_CHECK_EQUAL((*it)->getID(),"output.files.csv");
+
+  openfluid::ware::WareParams_t Params = (*it)->getParameters();
+
+  BOOST_CHECK_EQUAL(Params.size(),2);
+
+  BOOST_CHECK_EQUAL(Params.get_child("format").size(),4);
+
+  std::vector<std::string> FormatNames;
+  BOOST_FOREACH(boost::property_tree::ptree::value_type &v,Params.get_child("format"))
+    FormatNames.push_back(v.first);
+
+  BOOST_CHECK_EQUAL(FormatNames[0],"ft1");
+  BOOST_CHECK_EQUAL(FormatNames[1],"ft2");
+  BOOST_CHECK_EQUAL(FormatNames[2],"ft4");
+  BOOST_CHECK_EQUAL(FormatNames[3],"ft5");
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft1.colsep")," ");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft1.dtformat"),"%Y %m %d %H %M %S");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft1.commentchar"),"%");
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft2.colsep"),";");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft2.dtformat"),"%Y%m%dT%H%M%S");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft2.commentchar"),"#");
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft4.dtformat"),"iso");
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("format.ft5.dtformat"),"6cols");
+
+  BOOST_CHECK_EQUAL(Params.get_child("set").size(),9);
+
+  std::vector<std::string> SetNames;
+  BOOST_FOREACH(boost::property_tree::ptree::value_type &v,Params.get_child("set"))
+    SetNames.push_back(v.first);
+
+  BOOST_CHECK_EQUAL(SetNames[0],"full");
+  BOOST_CHECK_EQUAL(SetNames[1],"2vars");
+  BOOST_CHECK_EQUAL(SetNames[2],"3units");
+  BOOST_CHECK_EQUAL(SetNames[3],"full2");
+  BOOST_CHECK_EQUAL(SetNames[4],"3vars");
+  BOOST_CHECK_EQUAL(SetNames[5],"2units");
+  BOOST_CHECK_EQUAL(SetNames[6],"full3");
+  BOOST_CHECK_EQUAL(SetNames[7],"full4");
+  BOOST_CHECK_EQUAL(SetNames[8],"full5");
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.format"),"ft1");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.unitsclass"),"XU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.unitsIDs"),"*");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.vars"),"*");
+  BOOST_CHECK(Params.get_optional<std::string>("set.full.precision") == NULL);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.2vars.format"),"ft1");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.2vars.unitsclass"),"YU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.2vars.unitsIDs"),"*");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.2vars.vars"),"var1;var2[]");
+  BOOST_CHECK_EQUAL(Params.get_optional<int>("set.2vars.precision"),3);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.3units.format"),"ft1");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.3units.unitsclass"),"ZU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.3units.unitsIDs"),"5;197;73");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.3units.vars"),"*");
+  BOOST_CHECK_EQUAL(Params.get_optional<int>("set.3units.precision"),5);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full2.format"),"ft2");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full2.unitsclass"),"KU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full2.unitsIDs"),"*");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full2.vars"),"*");
+  BOOST_CHECK_EQUAL(Params.get_optional<int>("set.full2.precision"),9);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.3vars.format"),"ft2");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.3vars.unitsclass"),"LU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.3vars.unitsIDs"),"*");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.3vars.vars"),"var1;var2[];var5");
+  BOOST_CHECK(Params.get_optional<int>("set.3vars.precision") == NULL);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.2units.format"),"ft2");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.2units.unitsclass"),"MU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.2units.unitsIDs"),"2;1");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.2units.vars"),"*");
+  BOOST_CHECK(Params.get_optional<int>("set.2units.precision") == NULL);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full3.format"),"ft3");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full3.unitsclass"),"UU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full3.unitsIDs"),"*");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full3.vars"),"*");
+  BOOST_CHECK(Params.get_optional<int>("set.full3.precision") == NULL);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full4.format"),"ft4");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full4.unitsclass"),"UU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full4.unitsIDs"),"*");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full4.vars"),"*");
+  BOOST_CHECK(Params.get_optional<int>("set.full4.precision") == NULL);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full5.format"),"ft5");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full5.unitsclass"),"UU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full5.unitsIDs"),"*");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("set.full5.vars"),"*");
+  BOOST_CHECK(Params.get_optional<int>("set.full5.precision") == NULL);
+
+  // output.files.kml
+
+  it++;
+
+  BOOST_CHECK_EQUAL((*it)->getID(),"output.files.kml");
+
+  Params = (*it)->getParameters();
+
+  BOOST_CHECK_EQUAL(Params.size(),0);
+
+  // output.files.kml-dynamic
+
+  it++;
+
+  BOOST_CHECK_EQUAL((*it)->getID(),"output.files.kml-dynamic");
+
+  Params = (*it)->getParameters();
+
+  BOOST_CHECK_EQUAL(Params.size(),1);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("configfile"),"kmloutput.conf");
+
+  // output.files.vtk
+
+  it++;
+
+  BOOST_CHECK_EQUAL((*it)->getID(),"output.files.vtk");
+
+  Params = (*it)->getParameters();
+
+  BOOST_CHECK_EQUAL(Params.size(),3);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("DEMfile"),"DEMs/virtualdem.tif");
+  BOOST_CHECK_EQUAL(Params.get<bool>("visitfile.create"),true);
+
+  BOOST_CHECK_EQUAL(Params.get_child("serie").size(),2);
+
+  std::vector<std::string> SerieNames;
+  BOOST_FOREACH(boost::property_tree::ptree::value_type &v,Params.get_child("serie"))
+    SerieNames.push_back(v.first);
+
+  BOOST_CHECK_EQUAL(SerieNames[0],"vtk1");
+  BOOST_CHECK_EQUAL(SerieNames[1],"vtk7");
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk1.unitclass"),"SU");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk1.var"),"tests.var1");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk1.shapefile"),"shapefiles/SU.shp");
+  BOOST_CHECK_EQUAL(Params.get<int>("serie.vtk1.step"),1);
+
+  BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk7.unitclass"),"RS");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk7.var"),"tests.var3");
+  BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk7.shapefile"),"shapefiles/RS.shp");
+  BOOST_CHECK_EQUAL(Params.get<int>("serie.vtk7.step"),10);
 }

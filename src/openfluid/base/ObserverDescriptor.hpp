@@ -63,10 +63,17 @@ namespace openfluid { namespace base {
 
 class ObserverDescriptor : public WareDescriptor
 {
+  private:
+
+    std::string m_ID;
+
   public:
 
-    ObserverDescriptor() : WareDescriptor()
-    { };
+    ObserverDescriptor(std::string ID) : WareDescriptor(), m_ID(ID)
+    { m_ModelItemType = PluggedObserver; }
+
+    std::string getID() const
+    { return m_ID; }
 
 };
 

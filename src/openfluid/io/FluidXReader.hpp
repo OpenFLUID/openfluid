@@ -65,6 +65,7 @@
 #include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/DatastoreDescriptor.hpp>
+#include <openfluid/base/ObserversListDescriptor.hpp>
 
 
 namespace openfluid { namespace io {
@@ -95,6 +96,8 @@ class DLLEXPORT FluidXReader
     openfluid::base::DomainDescriptor m_DomainDescriptor;
 
     openfluid::base::DatastoreDescriptor m_DatastoreDescriptor;
+
+    openfluid::base::ObserversListDescriptor m_ObserversListDescriptor;
 
 
     openfluid::base::OutputFilesDescriptor extractFilesDecriptorFromNode(xmlNodePtr NodePtr);
@@ -151,6 +154,8 @@ class DLLEXPORT FluidXReader
     openfluid::base::DomainDescriptor& getDomainDescriptor() {return m_DomainDescriptor; };
 
     openfluid::base::DatastoreDescriptor& getDatstoreDescriptor() {return m_DatastoreDescriptor; };
+
+    openfluid::base::ObserversListDescriptor& getObsereversListDescriptor() { return m_ObserversListDescriptor; };
 
 };
 

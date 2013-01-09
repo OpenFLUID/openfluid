@@ -63,6 +63,7 @@
 
 #include <openfluid/base/FunctionDescriptor.hpp>
 #include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/base/ObserverDescriptor.hpp>
 #include <openfluid/io/IOListener.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
@@ -241,11 +242,25 @@ void FluidXReader::extractOutputFromNode(xmlNodePtr NodePtr)
 {
   xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
 
+  openfluid::base::ObserverDescriptor* OD;
+
   while (CurrNode != NULL)
   {
     if (xmlStrcmp(CurrNode->name,(const xmlChar*)"files") == 0)
     {
       m_OutputDescriptor.getFileSets().push_back(extractFilesDecriptorFromNode(CurrNode));
+    }
+    else if (xmlStrcmp(CurrNode->name,(const xmlChar*)"observer") == 0)
+    {
+      xmlChar* xmlID = xmlGetProp(CurrNode,(const xmlChar*)"ID");
+
+      if (xmlID != NULL)
+      {
+
+        OD = new openfluid::base::ObserverDescriptor((const char*)xmlID);
+        OD->setParameters(extractParamsFromNode(CurrNode));
+        m_ObserversListDescriptor.appendItem(OD);
+      }
     }
     CurrNode = CurrNode->next;
   }
@@ -975,6 +990,7 @@ void FluidXReader::loadFromDirectory(std::string DirPath)
   m_OutputDescriptor = openfluid::base::OutputDescriptor();
   m_DomainDescriptor = openfluid::base::DomainDescriptor();
   m_DatastoreDescriptor = openfluid::base::DatastoreDescriptor();
+  m_ObserversListDescriptor = openfluid::base::ObserversListDescriptor();
 
   m_RunConfigDefined = false;
   m_ModelDefined = false;
