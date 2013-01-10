@@ -225,6 +225,14 @@ class LandRGraph: public geos::planargraph::PlanarGraph
      */
     void computeNeighbours();
 
+    /**
+     * @brief Create on disk a shapefile representing this Graph.
+     *
+     * @param FilePath The path where to create the out file.
+     * @param FileName A name for the out file to create, with a .shp extension.
+     */
+    void exportToShp(std::string FilePath, std::string FileName);
+
 };
 
 } // namespace landr

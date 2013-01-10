@@ -159,10 +159,10 @@ class PolygonGraph: public LandRGraph
     void setAttributeFromMeanRasterValues(std::string AttributeName);
 
     /**
-     * @brief Create on disk, in the project out directory, a shapefile representing this Graph.
+     * @brief Create on disk a shapefile representing the edges of this Graph.
      *
      * @param FilePath The path where to create the out file.
-     * @param FileName A Name for the out file to create, with a .shp extension.
+     * @param FileName A name for the out file to create, with a .shp extension.
      */
     void createVectorRepresentation(std::string FilePath, std::string FileName);
 

@@ -460,5 +460,71 @@ void LandRGraph::computeNeighbours()
 // =====================================================================
 // =====================================================================
 
+void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
+{
+  openfluid::core::GeoVectorValue* Out = new openfluid::core::GeoVectorValue(
+      FilePath, FileName);
+
+  switch (getType())
+  {
+    case POLYGON:
+      Out->createShp(wkbPolygon);
+      break;
+    case LINESTRING:
+      Out->createShp(wkbLineString);
+      break;
+    default:
+      Out->deleteShpOnDisk();
+      delete Out;
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework",
+          "LandRGraph::exportToShp",
+          "Unable to export graph as a shapefile : is not POLYGON nor LINESTRING typed");
+      break;
+  }
+
+  Out->addAField("SELF_ID", OFTInteger);
+
+  for (Entities_t::iterator it = m_Entities.begin(); it != m_Entities.end();
+      ++it)
+  {
+    OGRFeature *Feat = OGRFeature::CreateFeature(Out->getLayerDef());
+
+    Feat->SetField("SELF_ID", (int) (*it)->getSelfId());
+
+    OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS(
+        (GEOSGeom) (*it)->getGeometry());
+
+    if (!OGRGeom)
+    {
+      Out->deleteShpOnDisk();
+      delete Out;
+
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework", "LandRGraph::exportToShp",
+          "Failed to transform geometry from GEOS to OGR.");
+    }
+
+    Feat->SetGeometry(OGRGeom);
+
+    if (Out->getLayer0()->CreateFeature(Feat) != OGRERR_NONE)
+    {
+      Out->deleteShpOnDisk();
+      delete Out;
+
+      throw openfluid::base::OFException(
+          "OpenFLUID Framework", "LandRGraph::exportToShp",
+          "Failed to create feature in shapefile.");
+    }
+
+    OGRFeature::DestroyFeature(Feat);
+  }
+
+  delete Out;
+}
+
+// =====================================================================
+// =====================================================================
+
 }// namespace landr
 } /* namespace openfluid */
