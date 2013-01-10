@@ -82,6 +82,7 @@ class IOListener;
 namespace machine {
 class MachineListener;
 class ModelInstance;
+class ObserversListInstance;
 class SimulationBlob;
 }
 namespace guicommon {
@@ -106,6 +107,8 @@ class EngineProject
     openfluid::guicommon::RunDialogMachineListener* mp_Listener;
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
+
+    openfluid::machine::ObserversListInstance* mp_ObsListInstance;
 
     openfluid::machine::Engine* mp_Engine;
 

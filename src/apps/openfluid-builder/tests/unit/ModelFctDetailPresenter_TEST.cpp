@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(test_SetFctToDisplay)
 {
 //  BOOST_CHECK_EQUAL(mp_View->getNotebookVisiblePageNb(),2);
 
-  openfluid::machine::SignatureItemInstance* Plug = new openfluid::machine::SignatureItemInstance();
+  openfluid::machine::ModelItemSignatureInstance* Plug = new openfluid::machine::ModelItemSignatureInstance();
   openfluid::ware::FunctionSignature* PlugSignature = new openfluid::ware::FunctionSignature();
   PlugSignature->ID = "plug";
   PlugSignature->HandledData.FunctionParams.push_back(openfluid::ware::SignatureHandledDataItem("Param1","SU","My Description","m"));

@@ -106,7 +106,7 @@ FunctionSignatureRegistry::FctSignaturesByTypeByName_t ModelAvailFctModelImpl::g
 
 
 void ModelAvailFctModelImpl::setSelectedSignatureByUser(
-    openfluid::machine::SignatureItemInstance* Signature)
+    openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   mp_SelectedSignature = Signature;
   m_signal_SelectedSignatureChanged.emit();
@@ -116,7 +116,7 @@ void ModelAvailFctModelImpl::setSelectedSignatureByUser(
 // =====================================================================
 
 
-openfluid::machine::SignatureItemInstance* ModelAvailFctModelImpl::getSelectedSignature()
+openfluid::machine::ModelItemSignatureInstance* ModelAvailFctModelImpl::getSelectedSignature()
 {
   return mp_SelectedSignature;
 }

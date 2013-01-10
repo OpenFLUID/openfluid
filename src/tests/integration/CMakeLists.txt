@@ -26,8 +26,10 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                        
   ADD_TEST(integration-ShowPaths "${BIN_OUTPUT_PATH}/openfluid-engine" 
                        "--show-paths"
-                       "-p" "foobar")  
+                       "-p" "foobar"
+                       "-n" "barfoo")  
   SET_TESTS_PROPERTIES(integration-ShowPaths PROPERTIES PASS_REGULAR_EXPRESSION "#1 foobar")
+  SET_TESTS_PROPERTIES(integration-ShowPaths PROPERTIES PASS_REGULAR_EXPRESSION "#1 barfoo")
   
   
   ADD_TEST(integration-FunctionsList "${BIN_OUTPUT_PATH}/openfluid-engine" 
@@ -37,6 +39,18 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
   ADD_TEST(integration-FunctionsReport "${BIN_OUTPUT_PATH}/openfluid-engine"
                            "-r"
                            "-p${TEST_OUTPUT_PATH}")
+  
+  ADD_TEST(integration-ObserversList "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                         "-e"
+                         "-n${TEST_OUTPUT_PATH}")
+  SET_TESTS_PROPERTIES(integration-ObserversList PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")  
+                         
+ 
+  ADD_TEST(integration-ObserversReport "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                         "-l"
+                         "-n${TEST_OUTPUT_PATH}")  
+  SET_TESTS_PROPERTIES(integration-ObserversReport PROPERTIES PASS_REGULAR_EXPRESSION "empty observer for tests")
+  
   
   IF(CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR CUSTOM_CMAKE_VERSION VERSION_GREATER "2.8.0") 
     ADD_TEST(integration-FunctionsReportEnvVar "${BIN_OUTPUT_PATH}/openfluid-engine" "-r")

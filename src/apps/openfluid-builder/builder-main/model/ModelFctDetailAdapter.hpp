@@ -57,7 +57,7 @@
 
 namespace openfluid {
 namespace machine {
-class SignatureItemInstance;
+class ModelItemSignatureInstance;
 }
 }
 
@@ -80,7 +80,7 @@ class ModelFctDetailAdapter
 
     ModelFctDetailAdapter(ModelFctDetailAdapterModel& Model, ModelFctDetailView& View);
 
-    void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
+    void setFctToDisplay(openfluid::machine::ModelItemSignatureInstance* Signature);
 };
 
 #endif /* MODELFCTDETAILADAPTER_HPP_ */

@@ -550,7 +550,7 @@ BOOST_AUTO_TEST_CASE(check_observers)
 
   FXR.loadFromDirectory(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXReader/with_observers").string());
 
-  openfluid::base::ObserversListDescriptor::SetDescription_t Observers = FXR.getObsereversListDescriptor().getItems();
+  openfluid::base::ObserversListDescriptor::SetDescription_t Observers = FXR.getObserversListDescriptor().getItems();
 
   BOOST_CHECK_EQUAL(Observers.size(),4);
 

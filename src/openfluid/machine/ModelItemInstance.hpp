@@ -64,6 +64,8 @@
 #include <openfluid/base/GeneratorDescriptor.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/machine/WareSignatureInstance.hpp>
+
 
 namespace openfluid { namespace machine {
 
@@ -79,19 +81,19 @@ class DLLEXPORT GeneratorExtraInfo
     GeneratorExtraInfo();
 };
 
+// =====================================================================
+// =====================================================================
 
-class DLLEXPORT SignatureItemInstance
+class DLLEXPORT ModelItemSignatureInstance : public WareSignatureInstance
 {
   public:
-    std::string Filename;
-    bool SDKCompatible;
     openfluid::ware::FunctionSignature* Signature;
     openfluid::base::ModelItemDescriptor::ModelItemType ItemType;
     GeneratorExtraInfo* GeneratorInfo;
 
-    SignatureItemInstance();
+    ModelItemSignatureInstance();
 
-    ~SignatureItemInstance();
+    ~ModelItemSignatureInstance();
 };
 
 
@@ -99,11 +101,11 @@ class DLLEXPORT SignatureItemInstance
 // =====================================================================
 
 
-class DLLEXPORT ModelItemInstance : public SignatureItemInstance
+class DLLEXPORT ModelItemInstance : public ModelItemSignatureInstance
 {
   public:
     openfluid::ware::WareParams_t Params;
-    openfluid::ware::PluggableFunction* Function;
+    openfluid::ware::PluggableFunction* Body;
 
     ModelItemInstance();
 };

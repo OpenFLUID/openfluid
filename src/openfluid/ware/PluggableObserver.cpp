@@ -52,3 +52,33 @@
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
+
+
+#include <openfluid/ware/PluggableObserver.hpp>
+
+
+namespace openfluid { namespace ware {
+
+
+PluggableObserver::PluggableObserver() : SimulationInspectorWare()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+PluggableObserver::~PluggableObserver()
+{
+  finalizeWare();
+}
+
+
+
+}  // namespace ware
+
+
+
+}  // namespace openfluid

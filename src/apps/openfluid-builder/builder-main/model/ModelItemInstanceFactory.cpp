@@ -72,7 +72,7 @@
 
 
 openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createPluggableItemFromSignature(
-    openfluid::machine::SignatureItemInstance& Signature)
+    openfluid::machine::ModelItemSignatureInstance& Signature)
 {
   openfluid::machine::ModelItemInstance* Item = 0;
 
@@ -97,7 +97,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createPluggable
 
 
 openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGeneratorItemFromSignatureWithDialog(
-    openfluid::machine::SignatureItemInstance& Signature,
+    openfluid::machine::ModelItemSignatureInstance& Signature,
     openfluid::core::CoreRepository& CoreRepos,
     openfluid::machine::ModelInstance* ModelInstance)
 {
@@ -117,7 +117,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
 
 
 openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGeneratorItemFromSignature(
-    openfluid::machine::SignatureItemInstance& Signature, std::string VarName,
+    openfluid::machine::ModelItemSignatureInstance& Signature, std::string VarName,
     std::string ClassName, std::string VarSize)
 {
   openfluid::machine::ModelItemInstance* Item = 0;
@@ -148,7 +148,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
 
   Item = new openfluid::machine::ModelItemInstance();
   Item->Signature = GeneratorSign;
-  Item->Function = NULL;
+  Item->Body = NULL;
   Item->SDKCompatible = true;
   Item->ItemType = openfluid::base::ModelItemDescriptor::Generator;
 

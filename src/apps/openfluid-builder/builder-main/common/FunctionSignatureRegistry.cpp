@@ -67,29 +67,29 @@ FunctionSignatureRegistry* FunctionSignatureRegistry::mp_Instance = 0;
 
 FunctionSignatureRegistry::FunctionSignatureRegistry()
 {
-  openfluid::machine::SignatureItemInstance* FixedSignature =
-      new openfluid::machine::SignatureItemInstance();
+  openfluid::machine::ModelItemSignatureInstance* FixedSignature =
+      new openfluid::machine::ModelItemSignatureInstance();
   FixedSignature->SDKCompatible = true;
   FixedSignature->Signature = new GeneratorSignature(
       openfluid::base::GeneratorDescriptor::Fixed);
   addAGeneratorSignature(FixedSignature);
 
-  openfluid::machine::SignatureItemInstance* RandomSignature =
-      new openfluid::machine::SignatureItemInstance();
+  openfluid::machine::ModelItemSignatureInstance* RandomSignature =
+      new openfluid::machine::ModelItemSignatureInstance();
   RandomSignature->SDKCompatible = true;
   RandomSignature->Signature = new GeneratorSignature(
       openfluid::base::GeneratorDescriptor::Random);
   addAGeneratorSignature(RandomSignature);
 
-  openfluid::machine::SignatureItemInstance* InterpSignature =
-      new openfluid::machine::SignatureItemInstance();
+  openfluid::machine::ModelItemSignatureInstance* InterpSignature =
+      new openfluid::machine::ModelItemSignatureInstance();
   InterpSignature->SDKCompatible = true;
   InterpSignature->Signature = new GeneratorSignature(
       openfluid::base::GeneratorDescriptor::Interp);
   addAGeneratorSignature(InterpSignature);
 
-  openfluid::machine::SignatureItemInstance* InjectSignature =
-      new openfluid::machine::SignatureItemInstance();
+  openfluid::machine::ModelItemSignatureInstance* InjectSignature =
+      new openfluid::machine::ModelItemSignatureInstance();
   InjectSignature->SDKCompatible = true;
   InjectSignature->Signature = new GeneratorSignature(
       openfluid::base::GeneratorDescriptor::Inject);
@@ -114,7 +114,7 @@ FunctionSignatureRegistry* FunctionSignatureRegistry::getInstance()
 
 
 void FunctionSignatureRegistry::addAPluggableSignature(
-    openfluid::machine::SignatureItemInstance* Signature)
+    openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   if (Signature->Signature)
   {
@@ -134,7 +134,7 @@ void FunctionSignatureRegistry::addAPluggableSignature(
 
 
 void FunctionSignatureRegistry::addAGeneratorSignature(
-    openfluid::machine::SignatureItemInstance* Signature)
+    openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   if (Signature->Signature)
   {
@@ -159,7 +159,7 @@ void FunctionSignatureRegistry::updatePluggableSignatures()
 
   openfluid::machine::FunctionPluginsManager::getInstance()->unloadAllWares();
 
-  std::vector<openfluid::machine::SignatureItemInstance*> Signatures =
+  std::vector<openfluid::machine::ModelItemSignatureInstance*> Signatures =
       openfluid::machine::FunctionPluginsManager::getInstance()->getAvailableWaresSignatures();
 
   for (unsigned int i = 0; i < Signatures.size(); i++)
@@ -200,10 +200,10 @@ FunctionSignatureRegistry::FctSignaturesByName_t FunctionSignatureRegistry::getP
 // =====================================================================
 
 
-openfluid::machine::SignatureItemInstance * FunctionSignatureRegistry::getEmptyPluggableSignature()
+openfluid::machine::ModelItemSignatureInstance * FunctionSignatureRegistry::getEmptyPluggableSignature()
 {
-  openfluid::machine::SignatureItemInstance* Signature =
-      new openfluid::machine::SignatureItemInstance();
+  openfluid::machine::ModelItemSignatureInstance* Signature =
+      new openfluid::machine::ModelItemSignatureInstance();
   Signature->Signature = new openfluid::ware::FunctionSignature();
 
   return Signature;
@@ -222,13 +222,13 @@ bool FunctionSignatureRegistry::isPluggableFunctionAvailable(
 // =====================================================================
 // =====================================================================
 
-openfluid::machine::SignatureItemInstance* FunctionSignatureRegistry::getSignatureItemInstance(
+openfluid::machine::ModelItemSignatureInstance* FunctionSignatureRegistry::getSignatureItemInstance(
     std::string FunctionID)
 {
   if (isPluggableFunctionAvailable(FunctionID))
     return m_Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction][FunctionID];
 
-  return (openfluid::machine::SignatureItemInstance*) 0;
+  return (openfluid::machine::ModelItemSignatureInstance*) 0;
 }
 
 // =====================================================================
@@ -239,7 +239,7 @@ openfluid::machine::SignatureItemInstance* FunctionSignatureRegistry::getSignatu
 
 
 void FunctionSignatureRegistrySub::addAPluggableSignature(
-    openfluid::machine::SignatureItemInstance* Signature)
+    openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   FunctionSignatureRegistry::addAPluggableSignature(Signature);
 }
@@ -249,7 +249,7 @@ void FunctionSignatureRegistrySub::addAPluggableSignature(
 
 
 void FunctionSignatureRegistrySub::addAGeneratorSignature(
-    openfluid::machine::SignatureItemInstance* Signature)
+    openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   FunctionSignatureRegistry::addAGeneratorSignature(Signature);
 }

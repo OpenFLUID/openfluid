@@ -59,7 +59,7 @@
 
 namespace openfluid {
 namespace machine {
-class SignatureItemInstance;
+class ModelItemSignatureInstance;
 }
 }
 
@@ -71,7 +71,7 @@ class FunctionSignatureRegistry
 {
   public:
 
-    typedef std::map<std::string,openfluid::machine::SignatureItemInstance*>
+    typedef std::map<std::string,openfluid::machine::ModelItemSignatureInstance*>
         FctSignaturesByName_t;
 
     typedef std::map<openfluid::base::ModelItemDescriptor::ModelItemType,
@@ -88,10 +88,10 @@ class FunctionSignatureRegistry
     FunctionSignatureRegistry();
 
     void addAPluggableSignature(
-        openfluid::machine::SignatureItemInstance* Signature);
+        openfluid::machine::ModelItemSignatureInstance* Signature);
 
     void addAGeneratorSignature(
-        openfluid::machine::SignatureItemInstance* Signature);
+        openfluid::machine::ModelItemSignatureInstance* Signature);
 
   public:
 
@@ -105,12 +105,12 @@ class FunctionSignatureRegistry
 
     void updatePluggableSignatures();
 
-    static openfluid::machine::SignatureItemInstance
+    static openfluid::machine::ModelItemSignatureInstance
     * getEmptyPluggableSignature();
 
     bool isPluggableFunctionAvailable(std::string FunctionID);
 
-    openfluid::machine::SignatureItemInstance* getSignatureItemInstance(
+    openfluid::machine::ModelItemSignatureInstance* getSignatureItemInstance(
         std::string FunctionID);
 
 };
@@ -124,10 +124,10 @@ class FunctionSignatureRegistrySub: public FunctionSignatureRegistry
   public:
 
     void addAPluggableSignature(
-        openfluid::machine::SignatureItemInstance* Signature);
+        openfluid::machine::ModelItemSignatureInstance* Signature);
 
     void addAGeneratorSignature(
-        openfluid::machine::SignatureItemInstance* Signature);
+        openfluid::machine::ModelItemSignatureInstance* Signature);
 
     void clearPluggableSignatures();
 

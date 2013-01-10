@@ -73,6 +73,8 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/machine/ObserversListInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Generator.hpp>
 
@@ -122,7 +124,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   mp_ModelInstance = new openfluid::machine::ModelInstance(*mp_SimBlob,
       mp_Listener);
 
-  mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance,
+  mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance, *mp_ObsListInstance,
       mp_Listener, mp_IOListener);
 
   mp_ModelInstance->resetInitialized();
@@ -460,7 +462,7 @@ void EngineProject::run()
     mp_RunEnv->linkToProject();
 
   delete mp_Engine;
-  mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance,
+  mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance, *mp_ObsListInstance,
       mp_Listener, mp_IOListener);
 
   openfluid::base::SimulationProfiler::getInstance()->reset();

@@ -154,7 +154,7 @@ ModelFctDetailAdapterModelImpl::~ModelFctDetailAdapterModelImpl()
 // =====================================================================
 
 void ModelFctDetailAdapterModelImpl::setFctToDisplay(
-    openfluid::machine::SignatureItemInstance* Signature)
+    openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   mp_Signature = Signature;
 

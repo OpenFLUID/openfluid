@@ -193,17 +193,17 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // ====== Function environnement ======
 
-  mp_FuncEnv = new openfluid::base::EnvironmentProperties();
+  mp_WareEnv = new openfluid::base::EnvironmentProperties();
 
-  mp_FuncEnv->setValue("dir.input", m_InputDir);
-  mp_FuncEnv->setValue("dir.output", m_OutputDir);
-  mp_FuncEnv->setValue("dir.temp", m_TempDir);
+  mp_WareEnv->setValue("dir.input", m_InputDir);
+  mp_WareEnv->setValue("dir.output", m_OutputDir);
+  mp_WareEnv->setValue("dir.temp", m_TempDir);
 
-  mp_FuncEnv->setValue("mode.cleanoutput", m_ClearOutputDir);
-  mp_FuncEnv->setValue("mode.saveresults", m_WriteResults);
-  mp_FuncEnv->setValue("mode.writereport", m_WriteSimReport);
+  mp_WareEnv->setValue("mode.cleanoutput", m_ClearOutputDir);
+  mp_WareEnv->setValue("mode.saveresults", m_WriteResults);
+  mp_WareEnv->setValue("mode.writereport", m_WriteSimReport);
 
-  // ====== Plugins search order ======
+  // ====== Function plugins search order ======
   //  1) command line paths,
   //  2) environment var OPENFLUID_FUNCS_PATH
   //  3) user directory,
@@ -211,12 +211,12 @@ RuntimeEnvironment::RuntimeEnvironment() :
   //  5) install directory
 
   // env var
-  char *PATHEnvVar;
-  PATHEnvVar = std::getenv("OPENFLUID_FUNCS_PATH");
+  char *FUNCSPATHEnvVar;
+  FUNCSPATHEnvVar = std::getenv("OPENFLUID_FUNCS_PATH");
 
-  if (PATHEnvVar != NULL)
+  if (FUNCSPATHEnvVar != NULL)
   {
-    addExtraFunctionsPluginsPaths(std::string(PATHEnvVar));
+    addExtraFunctionsPluginsPaths(std::string(FUNCSPATHEnvVar));
   }
 
   // user dir
@@ -227,9 +227,41 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_DefaultFunctionsPlugsDirs.push_back(m_MarketBagBinVersionDir);
 
   // install directory
-  std::string PluginsInstallPath = boost::filesystem::path(m_InstallPrefix
+  std::string FunctionsPluginsInstallPath = boost::filesystem::path(m_InstallPrefix
       + "/" + openfluid::config::FUNCTIONS_PLUGINS_STDDIR).string();
-  m_DefaultFunctionsPlugsDirs.push_back(PluginsInstallPath);
+  m_DefaultFunctionsPlugsDirs.push_back(FunctionsPluginsInstallPath);
+
+
+
+  // ====== Observer plugins search order ======
+  //  1) command line paths,
+  //  2) environment var OPENFLUID_OBSS_PATH
+  //  3) user directory,
+  //  4) market-bag directory
+  //  5) install directory
+
+  // env var
+  char *OBSSPATHEnvVar;
+  OBSSPATHEnvVar = std::getenv("OPENFLUID_OBSS_PATH");
+
+  if (OBSSPATHEnvVar != NULL)
+  {
+    addExtraObserversPluginsPaths(std::string(OBSSPATHEnvVar));
+  }
+
+  // user dir
+  m_DefaultObserversPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
+      + openfluid::config::OBSERVERS_PLUGINS_SUBDIR).string());
+
+  // TODO market-bag dir (for current version)
+  // m_DefaultObserversPlugsDirs.push_back(m_MarketBagBinVersionDir);
+
+  // install directory
+  std::string ObserversPluginsInstallPath = boost::filesystem::path(m_InstallPrefix
+      + "/" + openfluid::config::OBSERVERS_PLUGINS_STDDIR).string();
+  m_DefaultObserversPlugsDirs.push_back(ObserversPluginsInstallPath);
+
+
 
   // set ignition date time
   resetIgnitionDateTime();
@@ -271,8 +303,10 @@ void RuntimeEnvironment::setDateTimeOutputDir()
       + boost::posix_time::to_iso_string(m_IgnitionDateTime) + ".OUT").string();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void RuntimeEnvironment::addExtraFunctionsPluginsPaths(
     std::string SemicolonSeparatedPaths)
@@ -292,11 +326,12 @@ void RuntimeEnvironment::addExtraFunctionsPluginsPaths(
         openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
+std::string RuntimeEnvironment::getFunctionPluginFullPath(std::string Filename)
 {
 
   std::vector<std::string> PluginsPaths = getFunctionsPluginsPaths();
@@ -318,6 +353,56 @@ std::string RuntimeEnvironment::getPluginFullPath(std::string Filename)
 
   return PlugFullPath;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+void RuntimeEnvironment::addExtraObserversPluginsPaths(
+    std::string SemicolonSeparatedPaths)
+{
+  std::vector<std::string> ExtraPaths;
+
+#if  defined __unix__ || defined __APPLE__
+  ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths, ":");
+#endif
+
+#if WIN32
+  ExtraPaths = openfluid::tools::SplitString(SemicolonSeparatedPaths,";");
+#endif
+
+  for (int i = ExtraPaths.size() - 1; i >= 0; i--)
+    m_ExtraObserversPlugsDirs.insert(m_ExtraObserversPlugsDirs.begin(), 1,
+        openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::string RuntimeEnvironment::getObserverPluginFullPath(std::string Filename)
+{
+
+  std::vector<std::string> PluginsPaths = getObserversPluginsPaths();
+  std::string PlugFullPath = "";
+  boost::filesystem::path TmpPath;
+
+  unsigned int i = 0;
+
+  while ((PlugFullPath.length() == 0) && (i < PluginsPaths.size()))
+  {
+
+    TmpPath = boost::filesystem::path(PluginsPaths[i] + "/" + Filename);
+
+    if (boost::filesystem::exists(TmpPath))
+      PlugFullPath = TmpPath.string();
+
+    i++;
+  }
+
+  return PlugFullPath;
+}
+
 
 // =====================================================================
 // =====================================================================

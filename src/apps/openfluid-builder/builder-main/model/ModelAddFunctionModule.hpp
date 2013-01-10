@@ -111,7 +111,7 @@ class ModelAddFunctionModule
     void
     setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
 
-    openfluid::machine::SignatureItemInstance* showDialog();
+    openfluid::machine::ModelItemSignatureInstance* showDialog();
 
     void setSignatures(FunctionSignatureRegistry& Signatures);
 

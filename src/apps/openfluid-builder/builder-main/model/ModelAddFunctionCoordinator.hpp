@@ -59,7 +59,7 @@
 
 namespace openfluid {
 namespace machine {
-class SignatureItemInstance;
+class ModelItemSignatureInstance;
 }
 }
 
@@ -91,9 +91,9 @@ class ModelAddFunctionCoordinator: public sigc::trackable
 
     void setSignatures(FunctionSignatureRegistry& Signatures);
 
-    void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
+    void setFctToDisplay(openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    openfluid::machine::SignatureItemInstance* getSelectedSignature();
+    openfluid::machine::ModelItemSignatureInstance* getSelectedSignature();
 
     sigc::signal<void> signal_AvailFctSelectionChanged();
 

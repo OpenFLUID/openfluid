@@ -79,7 +79,7 @@ sigc::signal<void> ModelFctDetailModelImpl::signal_FctToDisplayChanged()
 
 
 void ModelFctDetailModelImpl::setFctToDisplay(
-    openfluid::machine::SignatureItemInstance* Signature)
+    openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   if (!Signature)
   {
@@ -96,7 +96,7 @@ void ModelFctDetailModelImpl::setFctToDisplay(
 // =====================================================================
 
 
-openfluid::machine::SignatureItemInstance* ModelFctDetailModelImpl::getFctDisplayed()
+openfluid::machine::ModelItemSignatureInstance* ModelFctDetailModelImpl::getFctDisplayed()
 {
   return mp_FctToDisplay;
 }

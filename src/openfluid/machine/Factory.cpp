@@ -68,7 +68,10 @@
 #include <openfluid/core/DatastoreItem.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/machine/ObserversListInstance.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 
@@ -309,7 +312,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDesc
       if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::NoGenMethod)
         throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
-      IInstance->Function = NULL;
+      IInstance->Body = NULL;
       IInstance->Signature = Signature;
 
       MInstance.appendItem(IInstance);
@@ -319,6 +322,26 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDesc
 
   MInstance.setGlobalParameters(ModelDesc.getGlobalParameters());
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void Factory::buildObserversListFromDescriptor(openfluid::base::ObserversListDescriptor& ObsListDesc,
+                                               ObserversListInstance& ObsListInstance)
+{
+  openfluid::base::ObserversListDescriptor::SetDescription_t::const_iterator it;
+  ObserverInstance* OInstance;
+
+  for (it=ObsListDesc.getItems().begin();it!=ObsListDesc.getItems().end();++it)
+  {
+    // instanciation of a plugged observer using the plugin manager
+    OInstance = ObserverPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::base::ObserverDescriptor*)(*it))->getID());
+    OInstance->Params = (*it)->getParameters();
+
+    ObsListInstance.appendObserver(OInstance);
+  }
 }
 
 

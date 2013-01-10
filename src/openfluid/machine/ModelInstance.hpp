@@ -61,12 +61,12 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 
-namespace openfluid {
+/*namespace openfluid {
 namespace base {
 class SimulationInfo;
 class SimulationStatus;
 }
-}
+}*/
 
 
 namespace openfluid { namespace machine {

@@ -73,8 +73,8 @@ GeneratorExtraInfo::GeneratorExtraInfo():
 // =====================================================================
 
 
-SignatureItemInstance::SignatureItemInstance():
-  Filename(""), SDKCompatible(false), Signature(NULL),
+ModelItemSignatureInstance::ModelItemSignatureInstance():
+  WareSignatureInstance(), Signature(NULL),
   ItemType(openfluid::base::ModelItemDescriptor::NoModelItemType),
   GeneratorInfo(NULL)
 {
@@ -86,7 +86,7 @@ SignatureItemInstance::SignatureItemInstance():
 // =====================================================================
 
 
-SignatureItemInstance::~SignatureItemInstance()
+ModelItemSignatureInstance::~ModelItemSignatureInstance()
 {
   if (GeneratorInfo != NULL) delete GeneratorInfo;
 }
@@ -98,7 +98,7 @@ SignatureItemInstance::~SignatureItemInstance()
 
 
 ModelItemInstance::ModelItemInstance():
-  SignatureItemInstance(), Function(NULL)
+  ModelItemSignatureInstance(), Body(NULL)
 {
 
 }

@@ -58,7 +58,7 @@
 
 namespace openfluid {
 namespace machine {
-class SignatureItemInstance;
+class ModelItemSignatureInstance;
 }
 }
 
@@ -74,7 +74,7 @@ class ModelFctDetailAdapterModel
   public:
 
     virtual void setFctToDisplay(
-        openfluid::machine::SignatureItemInstance* Signature) = 0;
+        openfluid::machine::ModelItemSignatureInstance* Signature) = 0;
 
     virtual bool isAPluggableFct() = 0;
 
@@ -113,7 +113,7 @@ class ModelFctDetailAdapterModelImpl: public ModelFctDetailAdapterModel
 
     Glib::RefPtr<ModelFctDetailTreeStore> mref_XFilesModel;
 
-    openfluid::machine::SignatureItemInstance* mp_Signature;
+    openfluid::machine::ModelItemSignatureInstance* mp_Signature;
 
     Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
 
@@ -127,7 +127,7 @@ class ModelFctDetailAdapterModelImpl: public ModelFctDetailAdapterModel
 
     ~ModelFctDetailAdapterModelImpl();
 
-    void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
+    void setFctToDisplay(openfluid::machine::ModelItemSignatureInstance* Signature);
 
     bool isAPluggableFct();
 

@@ -141,9 +141,9 @@ sigc::signal<void> ModelAddFunctionModule::signal_ModelFunctionAdded()
 // =====================================================================
 
 
-openfluid::machine::SignatureItemInstance* ModelAddFunctionModule::showDialog()
+openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionModule::showDialog()
 {
-  openfluid::machine::SignatureItemInstance* SelectedSignature = 0;
+  openfluid::machine::ModelItemSignatureInstance* SelectedSignature = 0;
 
   whenAvailFctSelectionChanged();
 

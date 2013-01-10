@@ -60,7 +60,7 @@
 
 namespace openfluid {
 namespace machine {
-class SignatureItemInstance;
+class ModelItemSignatureInstance;
 }
 }
 
@@ -74,9 +74,9 @@ class ModelFctDetailModel
     virtual sigc::signal<void> signal_FctToDisplayChanged() = 0;
 
     virtual void setFctToDisplay(
-        openfluid::machine::SignatureItemInstance* Signature) = 0;
+        openfluid::machine::ModelItemSignatureInstance* Signature) = 0;
 
-    virtual openfluid::machine::SignatureItemInstance* getFctDisplayed() = 0;
+    virtual openfluid::machine::ModelItemSignatureInstance* getFctDisplayed() = 0;
 };
 
 // =====================================================================
@@ -88,7 +88,7 @@ class ModelFctDetailModelImpl: public ModelFctDetailModel
 
     sigc::signal<void> m_signal_FctToDisplayChanged;
 
-    openfluid::machine::SignatureItemInstance* mp_FctToDisplay;
+    openfluid::machine::ModelItemSignatureInstance* mp_FctToDisplay;
 
   public:
 
@@ -96,9 +96,9 @@ class ModelFctDetailModelImpl: public ModelFctDetailModel
 
     sigc::signal<void> signal_FctToDisplayChanged();
 
-    void setFctToDisplay(openfluid::machine::SignatureItemInstance* Signature);
+    void setFctToDisplay(openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    openfluid::machine::SignatureItemInstance* getFctDisplayed();
+    openfluid::machine::ModelItemSignatureInstance* getFctDisplayed();
 };
 
 #endif /* MODELFCTDETAILMODEL_HPP_ */

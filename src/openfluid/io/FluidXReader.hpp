@@ -155,7 +155,7 @@ class DLLEXPORT FluidXReader
 
     openfluid::base::DatastoreDescriptor& getDatstoreDescriptor() {return m_DatastoreDescriptor; };
 
-    openfluid::base::ObserversListDescriptor& getObsereversListDescriptor() { return m_ObserversListDescriptor; };
+    openfluid::base::ObserversListDescriptor& getObserversListDescriptor() { return m_ObserversListDescriptor; };
 
 };
 

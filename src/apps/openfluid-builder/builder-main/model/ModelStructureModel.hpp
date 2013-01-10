@@ -55,7 +55,7 @@ namespace openfluid {
 namespace machine {
 class ModelInstance;
 class ModelItemInstance;
-class SignatureItemInstance;
+class ModelItemSignatureInstance;
 }
 namespace core {
 class CoreRepository;
@@ -96,7 +96,7 @@ class ModelStructureModel
 
     virtual int getCurrentSelection() = 0;
 
-    virtual openfluid::machine::SignatureItemInstance
+    virtual openfluid::machine::ModelItemSignatureInstance
     * getCurrentSelectionSignature() = 0;
 
     virtual std::string getCurrentSelectionName() = 0;
@@ -178,7 +178,7 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     int getCurrentSelection();
 
-    openfluid::machine::SignatureItemInstance* getCurrentSelectionSignature();
+    openfluid::machine::ModelItemSignatureInstance* getCurrentSelectionSignature();
 
     std::string getCurrentSelectionName();
 

@@ -116,7 +116,7 @@ void ModelAvailFctAdapter::setSignatures(
 // =====================================================================
 
 
-openfluid::machine::SignatureItemInstance* ModelAvailFctAdapter::getSelectedSignature()
+openfluid::machine::ModelItemSignatureInstance* ModelAvailFctAdapter::getSelectedSignature()
 {
   return m_Model.getSelectedSignature();
 }

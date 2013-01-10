@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(test_add)
   FunctionSignatureRegistrySub Signatures;
   for (int i = 0; i < 3; i++)
   {
-    openfluid::machine::SignatureItemInstance* Sign = FunctionSignatureRegistry::getEmptyPluggableSignature();
+    openfluid::machine::ModelItemSignatureInstance* Sign = FunctionSignatureRegistry::getEmptyPluggableSignature();
     Sign->Signature->ID = i;
     Signatures.addAPluggableSignature(Sign);
   }

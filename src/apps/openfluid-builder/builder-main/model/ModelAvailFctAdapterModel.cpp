@@ -103,7 +103,7 @@ Glib::ustring ModelAvailFctAdapterModelImpl::replaceEmpty(
 
 
 void ModelAvailFctAdapterModelImpl::setAPluggableFunction(
-    openfluid::machine::SignatureItemInstance* Function)
+    openfluid::machine::ModelItemSignatureInstance* Function)
 {
   Gtk::TreeRow TitleRow = mref_TreeModel->appendToRowRef(
       *mp_PluggableTitleRowRef);
@@ -137,7 +137,7 @@ void ModelAvailFctAdapterModelImpl::setAPluggableFunction(
 
 
 void ModelAvailFctAdapterModelImpl::setAGeneratorFunction(
-    openfluid::machine::SignatureItemInstance* Function)
+    openfluid::machine::ModelItemSignatureInstance* Function)
 {
   Gtk::TreeRow TitleRow = mref_TreeModel->appendToRowRef(
       *mp_GeneratorTitleRowRef);
@@ -240,7 +240,7 @@ void ModelAvailFctAdapterModelImpl::setSelectedRow(Gtk::TreeRow Row)
 // =====================================================================
 
 
-openfluid::machine::SignatureItemInstance* ModelAvailFctAdapterModelImpl::getSelectedSignature()
+openfluid::machine::ModelItemSignatureInstance* ModelAvailFctAdapterModelImpl::getSelectedSignature()
 {
   return mp_SelectedSignature;
 }

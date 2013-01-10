@@ -98,7 +98,7 @@ void ModelAddFunctionCoordinator::setSignatures(
 // =====================================================================
 
 
-openfluid::machine::SignatureItemInstance* ModelAddFunctionCoordinator::getSelectedSignature()
+openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionCoordinator::getSelectedSignature()
 {
   return m_AvailFctModel.getSelectedSignature();
 }

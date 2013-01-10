@@ -72,9 +72,9 @@ class ModelAvailFctModel
     virtual FunctionSignatureRegistry::FctSignaturesByTypeByName_t getSignatures() = 0;
 
     virtual void setSelectedSignatureByUser(
-        openfluid::machine::SignatureItemInstance* Signature) = 0;
+        openfluid::machine::ModelItemSignatureInstance* Signature) = 0;
 
-    virtual openfluid::machine::SignatureItemInstance
+    virtual openfluid::machine::ModelItemSignatureInstance
     * getSelectedSignature() = 0;
 
     virtual bool isASignatureSelected() = 0;
@@ -91,7 +91,7 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
 
     FunctionSignatureRegistry::FctSignaturesByTypeByName_t m_Signatures;
 
-    openfluid::machine::SignatureItemInstance* mp_SelectedSignature;
+    openfluid::machine::ModelItemSignatureInstance* mp_SelectedSignature;
 
     bool m_ASignatureIsSelected;
 
@@ -108,9 +108,9 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
     FunctionSignatureRegistry::FctSignaturesByTypeByName_t getSignatures();
 
     void setSelectedSignatureByUser(
-        openfluid::machine::SignatureItemInstance* Signature);
+        openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    openfluid::machine::SignatureItemInstance* getSelectedSignature();
+    openfluid::machine::ModelItemSignatureInstance* getSelectedSignature();
 
     bool isASignatureSelected();
 

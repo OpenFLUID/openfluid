@@ -67,7 +67,7 @@ ModelFctDetailAdapter::ModelFctDetailAdapter(ModelFctDetailAdapterModel& Model,
 {
 }
 void ModelFctDetailAdapter::setFctToDisplay(
-    openfluid::machine::SignatureItemInstance* Signature)
+    openfluid::machine::ModelItemSignatureInstance* Signature)
 {
   m_Model.setFctToDisplay(Signature);
   m_View.setInfos(m_Model.getInfos());

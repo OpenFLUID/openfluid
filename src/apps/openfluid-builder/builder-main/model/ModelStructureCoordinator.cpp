@@ -109,7 +109,7 @@ void ModelStructureCoordinator::whenStructureFctSelectionChanged()
 
 void ModelStructureCoordinator::whenAddFctAsked()
 {
-  openfluid::machine::SignatureItemInstance* Signature =
+  openfluid::machine::ModelItemSignatureInstance* Signature =
       mp_AddFctModule->showDialog();
 
   if (!Signature)
@@ -154,7 +154,7 @@ void ModelStructureCoordinator::whenAddFctAsked()
 
 void ModelStructureCoordinator::whenRemoveFctAsked()
 {
-  openfluid::machine::SignatureItemInstance* CurrentSelectionSignature =
+  openfluid::machine::ModelItemSignatureInstance* CurrentSelectionSignature =
       m_StructureModel.getCurrentSelectionSignature();
 
   if (!CurrentSelectionSignature)
@@ -377,7 +377,7 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
       {
         try
         {
-          openfluid::machine::SignatureItemInstance * Signature =
+          openfluid::machine::ModelItemSignatureInstance * Signature =
               SignaturesReg->getSignatureItemInstance(TempItems[i].first);
 
           if (Signature)

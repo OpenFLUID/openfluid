@@ -139,7 +139,7 @@ class DLLEXPORT WarePluginsManager
               if (Plug->Signature == NULL)
                 throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Signature from plugin file " + PluginFilename + " cannot be instanciated");
 
-                Plug->Function = 0;
+                Plug->Body = 0;
             }
             else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Unable to find signature in plugin file " + PluginFilename);
 
@@ -286,9 +286,9 @@ class DLLEXPORT WarePluginsManager
 
           if (PlugProc != NULL)
           {
-            Item->Function = PlugProc();
+            Item->Body = PlugProc();
 
-            if (Item->Function == NULL)
+            if (Item->Body == NULL)
               throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::completeSignatureWithWareBody","Function from plugin file " + PluginFilename + " cannot be instanciated");
 
           }

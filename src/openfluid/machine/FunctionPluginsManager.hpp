@@ -64,14 +64,14 @@
 
 namespace openfluid { namespace machine {
 
-class SignatureItemInstance;
+class ModelItemSignatureInstance;
 class ModelItemInstance;
 
 
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT FunctionPluginsManager : public WarePluginsManager<SignatureItemInstance,ModelItemInstance,
+class DLLEXPORT FunctionPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
                                                          openfluid::ware::GetPluggableFunctionSignatureProc,
                                                          openfluid::ware::GetPluggableFunctionBodyProc>
 {
@@ -99,7 +99,7 @@ class DLLEXPORT FunctionPluginsManager : public WarePluginsManager<SignatureItem
 
     std::string getPluginFullPath(const std::string& Filename)
     {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getPluginFullPath(Filename);
+      return openfluid::base::RuntimeEnvironment::getInstance()->getFunctionPluginFullPath(Filename);
     }
 
 

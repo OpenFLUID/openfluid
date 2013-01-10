@@ -103,15 +103,21 @@ class OpenFLUIDApp
 
     void printEnvInfos();
 
-    void printPluginsList();
+    void printFunctionsList();
 
-    void printPluginsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix);
+    void printObserversList();
 
-    void printPluginsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix);
+    void printFunctionsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix);
 
-    void printPluginsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type);
+    void printFunctionsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix);
 
-    void printPluginsReport(const std::string Pattern);
+    void printFunctionsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type);
+
+    void printWareInfosReport(const openfluid::ware::WareSignature* Signature, const std::string& Filename);
+
+    void printFunctionsReport(const std::string Pattern);
+
+    void printObserversReport(const std::string Pattern);
 
     /**
       Runs simulation

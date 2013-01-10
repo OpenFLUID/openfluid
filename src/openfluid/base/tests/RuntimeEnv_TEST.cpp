@@ -140,7 +140,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   bool BoolValue;
   std::string StrValue;
 
-  FuncEnv = openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment();
+  FuncEnv = openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment();
   BOOST_REQUIRE(FuncEnv != NULL);
 
   BOOST_REQUIRE_EQUAL(FuncEnv->getValue("wrong.fake",&StrValue),false);

@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(test_init)
 
 BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
 {
-  openfluid::machine::SignatureItemInstance Plug;
+  openfluid::machine::ModelItemSignatureInstance Plug;
 
   // throw "Function Signature is not set. Creation is impossible."
   BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
   // create a generator signature
   GeneratorSignature FixedGenSignature(openfluid::base::GeneratorDescriptor::Fixed);
 
-  openfluid::machine::SignatureItemInstance Sign;
+  openfluid::machine::ModelItemSignatureInstance Sign;
   Sign.Signature = &FixedGenSignature;
 
   openfluid::machine::ModelItemInstance* Item =
@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
 
 BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation)
 {
-  openfluid::machine::SignatureItemInstance FctSignature =
+  openfluid::machine::ModelItemSignatureInstance FctSignature =
       *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
           "tests.primitives.use");
 

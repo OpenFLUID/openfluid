@@ -100,7 +100,7 @@ class DLLEXPORT ObserverSignature : public WareSignature
 };
 
 
-} }  // namespaces
+} }  // namespaces
 
 
 #endif /* __OBSERVERSIGNATURE_HPP__ */

@@ -330,7 +330,7 @@ int ModelStructureModelImpl::getCurrentSelection()
 // =====================================================================
 
 
-openfluid::machine::SignatureItemInstance* ModelStructureModelImpl::getCurrentSelectionSignature()
+openfluid::machine::ModelItemSignatureInstance* ModelStructureModelImpl::getCurrentSelectionSignature()
 {
   if (m_CurrentSelection > -1)
   {
@@ -341,7 +341,7 @@ openfluid::machine::SignatureItemInstance* ModelStructureModelImpl::getCurrentSe
 
     return *it;
   }
-  return (openfluid::machine::SignatureItemInstance*) 0;
+  return (openfluid::machine::ModelItemSignatureInstance*) 0;
 }
 
 // =====================================================================
@@ -350,7 +350,7 @@ openfluid::machine::SignatureItemInstance* ModelStructureModelImpl::getCurrentSe
 
 std::string ModelStructureModelImpl::getCurrentSelectionName()
 {
-  openfluid::machine::SignatureItemInstance* SelectedSignature =
+  openfluid::machine::ModelItemSignatureInstance* SelectedSignature =
       getCurrentSelectionSignature();
 
   if (SelectedSignature)

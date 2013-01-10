@@ -100,6 +100,10 @@ class DLLEXPORT RuntimeEnvironment
     std::vector<std::string> m_DefaultFunctionsPlugsDirs;
     std::vector<std::string> m_ExtraFunctionsPlugsDirs;
 
+    std::vector<std::string> m_DefaultObserversPlugsDirs;
+    std::vector<std::string> m_ExtraObserversPlugsDirs;
+
+
     std::string m_UserID;
     std::string m_HostName;
     std::string m_Arch;
@@ -120,7 +124,7 @@ class DLLEXPORT RuntimeEnvironment
 
     unsigned int m_FilesBufferSize;
 
-    openfluid::base::EnvironmentProperties* mp_FuncEnv;
+    openfluid::base::EnvironmentProperties* mp_WareEnv;
 
     openfluid::base::EnvironmentProperties m_ExtraProperties;
 
@@ -180,7 +184,7 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] InputDir The input directory
     */
     void setInputDir(const std::string InputDir)
-      { m_InputDir = InputDir; mp_FuncEnv->setValue("dir.input",m_InputDir); };
+      { m_InputDir = InputDir; mp_WareEnv->setValue("dir.input",m_InputDir); };
 
     /**
       Returns the input directory
@@ -193,7 +197,7 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] OutputDir The output directory
     */
     void setOutputDir(const std::string OutputDir)
-      { m_OutputDir = OutputDir; mp_FuncEnv->setValue("dir.output",m_OutputDir); };
+      { m_OutputDir = OutputDir; mp_WareEnv->setValue("dir.output",m_OutputDir); };
 
     /**
       Returns the output directory
@@ -271,11 +275,11 @@ class DLLEXPORT RuntimeEnvironment
       { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
 
     /**
-      Returns the path for a given plugin file, taking into account the plugins path search order
-      @param[in] Filename The given plugin file name
-      @return the first path found for a given plugin file
+      Returns the path for a given function plugin file, taking into account the function plugins path search order
+      @param[in] Filename The given function plugin file name
+      @return the first path found for a given function plugin file
     */
-    std::string getPluginFullPath(std::string Filename);
+    std::string getFunctionPluginFullPath(std::string Filename);
 
     /**
       Adds search paths for plugins, separated by semicolon characters (i.e. /path/to/plugs:another/path/to/plugs).
@@ -291,7 +295,7 @@ class DLLEXPORT RuntimeEnvironment
     inline std::vector<std::string> getExtraFunctionsPluginsPaths() const  { return m_ExtraFunctionsPlugsDirs;  };
 
     /**
-      Returns the ordered list of paths used to search for plugins
+      Returns the ordered list of paths used to search for function plugins
       @return the ordered list of paths
     */
     inline std::vector<std::string> getFunctionsPluginsPaths() const
@@ -300,6 +304,39 @@ class DLLEXPORT RuntimeEnvironment
       ComposedPaths.insert(ComposedPaths.end(), m_DefaultFunctionsPlugsDirs.begin(), m_DefaultFunctionsPlugsDirs.end());
       return ComposedPaths;
     };
+
+    /**
+      Returns the path for a given observer plugin file, taking into account the observer plugins path search order
+      @param[in] Filename The given observer plugin file name
+      @return the first path found for a given observer plugin file
+    */
+    std::string getObserverPluginFullPath(std::string Filename);
+
+    /**
+      Adds search paths for plugins, separated by semicolon characters (i.e. /path/to/plugs:another/path/to/plugs).
+      These paths are added at the top of the search paths list.
+      @param[in] SemicolonSeparatedPaths a collection of paths separated by semicolons, as a std::string
+    */
+    void addExtraObserversPluginsPaths(std::string SemicolonSeparatedPaths);
+
+    inline void resetExtraObserversPluginsPaths() { m_ExtraFunctionsPlugsDirs.clear(); };
+
+    inline std::vector<std::string> getDefaultObserversPluginsPaths() const  { return m_DefaultObserversPlugsDirs;  };
+
+    inline std::vector<std::string> getExtraObserversPluginsPaths() const  { return m_ExtraObserversPlugsDirs;  };
+
+    /**
+      Returns the ordered list of paths used to search for observer plugins
+      @return the ordered list of paths
+    */
+    inline std::vector<std::string> getObserversPluginsPaths() const
+    {
+      std::vector<std::string> ComposedPaths(m_ExtraObserversPlugsDirs);
+      ComposedPaths.insert(ComposedPaths.end(), m_DefaultObserversPlugsDirs.begin(), m_DefaultObserversPlugsDirs.end());
+      return ComposedPaths;
+    };
+
+
 
     /**
       Returns the install prefix path.
@@ -360,7 +397,7 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] ClearDir The value of the flag
     */
     inline void setClearOutputDir(bool ClearDir)
-      { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
+      { m_ClearOutputDir = ClearDir; mp_WareEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
 
     /**
       Returns the write results flag
@@ -374,7 +411,7 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] WriteIt The value of the flag
     */
     void setWriteResults(bool WriteIt)
-      { m_WriteResults = WriteIt; mp_FuncEnv->setValue("mode.saveresults",m_WriteResults); };
+      { m_WriteResults = WriteIt; mp_WareEnv->setValue("mode.saveresults",m_WriteResults); };
 
     /**
       Returns the write simulation report flag
@@ -387,10 +424,10 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] WriteIt The value of the flag
     */
     void setWriteSimReport(bool WriteIt)
-      { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
+      { m_WriteSimReport = WriteIt; mp_WareEnv->setValue("mode.writereport",m_WriteSimReport); };
 
-    openfluid::base::EnvironmentProperties* getFunctionEnvironment() const
-      { return mp_FuncEnv; };
+    openfluid::base::EnvironmentProperties* getWareEnvironment() const
+      { return mp_WareEnv; };
 
 
     boost::posix_time::ptime getIgnitionDateTime() const

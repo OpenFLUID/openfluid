@@ -61,6 +61,7 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ObserversListInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 
 
@@ -92,6 +93,7 @@ int main(int argc, char **argv)
     openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
     openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
     openfluid::machine::ModelInstance Model(SBlob,MachineListen);
+    openfluid::machine::ObserversListInstance ObsList(SBlob);
     openfluid::io::FluidXReader FXReader(IOListen);
 
 
@@ -113,8 +115,10 @@ int main(int argc, char **argv)
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
                                                                   Model);
 
+    openfluid::machine::Factory::buildObserversListFromDescriptor(FXReader.getObserversListDescriptor(),
+                                                                  ObsList);
 
-    Engine = new openfluid::machine::Engine(SBlob, Model, MachineListen, IOListen);
+    Engine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen, IOListen);
 
     Engine->initialize();
 

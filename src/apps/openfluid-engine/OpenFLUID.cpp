@@ -63,8 +63,11 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/machine/ObserversListInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/buddies.hpp>
 
@@ -156,10 +159,10 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 // =====================================================================
 
 
-void OpenFLUIDApp::printPluginsList()
+void OpenFLUIDApp::printFunctionsList()
 {
 
-  std::vector<openfluid::machine::SignatureItemInstance*> PlugContainers =
+  std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
     openfluid::machine::FunctionPluginsManager::getInstance()->getAvailableWaresSignatures();
 
   std::cout << "Available simulation functions:" << std::endl;
@@ -189,8 +192,61 @@ void OpenFLUIDApp::printPluginsList()
 // =====================================================================
 
 
+void OpenFLUIDApp::printObserversList()
+{
 
-void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type)
+  std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
+    openfluid::machine::ObserverPluginsManager::getInstance()->getAvailableWaresSignatures();
+
+  std::cout << "Available observers:" << std::endl;
+
+  bool OneAtLeast = false;
+
+  for (unsigned int i=0;i<PlugContainers.size();i++)
+  {
+    if (PlugContainers[i]->SDKCompatible && PlugContainers[i]->Signature!=NULL)
+    {
+      std::cout << "  - " << PlugContainers[i]->Signature->ID << std::endl;
+      OneAtLeast = true;
+    }
+  }
+
+  if (!OneAtLeast)
+  {
+    std::cout << "  (none)" << std::endl;
+  }
+  std::cout << std::endl;
+  std::cout.flush();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Signature, const std::string& Filename)
+{
+  std::string StatusStr = "experimental";
+  if (Signature->Status == openfluid::ware::BETA) StatusStr = "beta";
+  if (Signature->Status == openfluid::ware::STABLE) StatusStr = "stable";
+
+  std::cout << "   - Name: " << openfluid::tools::ReplaceEmptyString(Signature->Name,("(unknown)")) << std::endl;
+  std::cout << "   - File: " << Filename << std::endl;
+  std::cout << "   - Description: " << openfluid::tools::ReplaceEmptyString(Signature->Description,("(none)")) << std::endl;
+  std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(Signature->Version,("(unknown)")) << std::endl;
+  std::cout << "   - SDK version used at build time: " << Signature->ABIVersion <<  std::endl;
+  std::cout << "   - Development status: " << StatusStr <<  std::endl;
+  std::cout << "   - Author(s): " << openfluid::tools::ReplaceEmptyString(Signature->Author,("(unknown)")) << std::endl;
+  std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(Signature->AuthorEmail,("(unknown)")) << std::endl;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDApp::printFunctionsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type)
 {
   std::string TypeStr = ("");
 
@@ -229,7 +285,7 @@ void OpenFLUIDApp::printPluginsHandledDataItemReport(openfluid::ware::SignatureH
 // =====================================================================
 
 
-void OpenFLUIDApp::printPluginsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix)
+void OpenFLUIDApp::printFunctionsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix)
 {
   unsigned int i;
   if (!HandledUnitsGraph.UpdatedUnitsGraph.empty())
@@ -246,20 +302,20 @@ void OpenFLUIDApp::printPluginsHandledUnitsGraphReport(openfluid::ware::Signatur
 // =====================================================================
 
 
-void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix)
+void OpenFLUIDApp::printFunctionsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix)
 {
 
   unsigned int i;
 
-  for (i=0;i<HandledData.FunctionParams.size();i++) printPluginsHandledDataItemReport(HandledData.FunctionParams[i],Suffix,("fpar"));
-  for (i=0;i<HandledData.ProducedVars.size();i++) printPluginsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
-  for (i=0;i<HandledData.RequiredVars.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
-  for (i=0;i<HandledData.UpdatedVars.size();i++) printPluginsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
-  for (i=0;i<HandledData.UsedVars.size();i++) printPluginsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
-  for (i=0;i<HandledData.RequiredPrevVars.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredPrevVars[i],Suffix,("rprevvar"));
-  for (i=0;i<HandledData.UsedPrevVars.size();i++) printPluginsHandledDataItemReport(HandledData.UsedPrevVars[i],Suffix,("sprevvar"));
-  for (i=0;i<HandledData.RequiredInput.size();i++) printPluginsHandledDataItemReport(HandledData.RequiredInput[i],Suffix,("rinput"));
-  for (i=0;i<HandledData.UsedInput.size();i++) printPluginsHandledDataItemReport(HandledData.UsedInput[i],Suffix,("sinput"));
+  for (i=0;i<HandledData.FunctionParams.size();i++) printFunctionsHandledDataItemReport(HandledData.FunctionParams[i],Suffix,("fpar"));
+  for (i=0;i<HandledData.ProducedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
+  for (i=0;i<HandledData.RequiredVars.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
+  for (i=0;i<HandledData.UpdatedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
+  for (i=0;i<HandledData.UsedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
+  for (i=0;i<HandledData.RequiredPrevVars.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredPrevVars[i],Suffix,("rprevvar"));
+  for (i=0;i<HandledData.UsedPrevVars.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedPrevVars[i],Suffix,("sprevvar"));
+  for (i=0;i<HandledData.RequiredInput.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredInput[i],Suffix,("rinput"));
+  for (i=0;i<HandledData.UsedInput.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedInput[i],Suffix,("sinput"));
 
   if (HandledData.UsedEventsOnUnits.size() > 0)
   {
@@ -278,13 +334,15 @@ void OpenFLUIDApp::printPluginsHandledDataReport(openfluid::ware::SignatureHandl
 }
 
 
+
 // =====================================================================
 // =====================================================================
 
-void OpenFLUIDApp::printPluginsReport(const std::string Pattern)
+
+void OpenFLUIDApp::printFunctionsReport(const std::string Pattern)
 {
 
-  std::vector<openfluid::machine::SignatureItemInstance*> PlugContainers =
+  std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
       openfluid::machine::FunctionPluginsManager::getInstance()->getAvailableWaresSignatures(Pattern);
   std::string StatusStr;
 
@@ -307,16 +365,45 @@ void OpenFLUIDApp::printPluginsReport(const std::string Pattern)
       std::cout << "   - Process: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
       std::cout << "   - Method: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
       std::cout << "   - Description: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Description,("(none)")) << std::endl;
-      std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
+      std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)")) << std::endl;
       std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->ABIVersion <<  std::endl;
       std::cout << "   - Development status: " << StatusStr <<  std::endl;
       std::cout << "   - Author(s): " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)")) << std::endl;
       std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;
       std::cout << "   - Handled data" << std::endl;
-      printPluginsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "));
+      printFunctionsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "));
       std::cout << "   - Handled units graph" << std::endl;
-      printPluginsHandledUnitsGraphReport(PlugContainers[i]->Signature->HandledUnitsGraph,("     . "));
+      printFunctionsHandledUnitsGraphReport(PlugContainers[i]->Signature->HandledUnitsGraph,("     . "));
 
+
+      if (i != PlugContainers.size()-1)
+        std::cout << "================================================================================" << std::endl;
+    }
+  }
+
+  std::cout.flush();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDApp::printObserversReport(const std::string Pattern)
+{
+
+  std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
+      openfluid::machine::ObserverPluginsManager::getInstance()->getAvailableWaresSignatures(Pattern);
+  std::string StatusStr;
+
+
+  if (PlugContainers.size() > 0)
+  {
+    for (unsigned int i=0;i<PlugContainers.size();i++)
+    {
+      std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
+      printWareInfosReport((openfluid::ware::WareSignature*)(PlugContainers[i]->Signature),PlugContainers[i]->Filename);
 
       if (i != PlugContainers.size()-1)
         std::cout << "================================================================================" << std::endl;
@@ -329,6 +416,7 @@ void OpenFLUIDApp::printPluginsReport(const std::string Pattern)
 
 // =====================================================================
 // =====================================================================
+
 
 int OpenFLUIDApp::stopAppReturn(std::string Msg)
 {
@@ -365,12 +453,18 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
   std::vector<std::string> FunctionsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths();
+  std::vector<std::string> ObserversPaths = openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths();
   unsigned int i;
 
   std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
   if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
+
   std::cout << "Functions search path(s):" << std::endl;
   for (i=0;i<FunctionsPaths.size();i++) std::cout << " #" << (i+1) << " " << FunctionsPaths[i] << std::endl;
+
+  std::cout << "Observers search path(s):" << std::endl;
+  for (i=0;i<ObserversPaths.size();i++) std::cout << " #" << (i+1) << " " << ObserversPaths[i] << std::endl;
+
   if (ShowTemp) std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
 }
 
@@ -425,7 +519,7 @@ void OpenFLUIDApp::runSimulation()
   }
 
   openfluid::machine::ModelInstance Model(m_SimBlob,MListener);
-
+  openfluid::machine::ObserversListInstance ObsList(m_SimBlob);
 
   printOpenFLUIDInfos();
   printEnvInfos();
@@ -455,8 +549,13 @@ void OpenFLUIDApp::runSimulation()
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();
 
+  std::cout << "* Building observers list... "; std::cout.flush();
+  openfluid::machine::Factory::buildObserversListFromDescriptor(FXReader.getObserversListDescriptor(),
+                                                                ObsList);
+  printlnExecStatus();
+  m_SimBlob.getExecutionMessages().resetWarningFlag();
 
-  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, MListener,IOListener);
+  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, ObsList, MListener,IOListener);
 
   mp_Engine->initialize();
 
@@ -564,6 +663,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   std::string DefaultMaxThreadsStr;
   openfluid::tools::ConvertValue(openfluid::config::FUNCTIONS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
 
+  // TODO adapt colon or semicolon separated path to system win32 or unix
   boost::program_options::options_description OptionsDesc("openfluid-engine allowed options");
   OptionsDesc.add_options()
       ("auto-output-dir,a","generate automatic results output directory")
@@ -571,12 +671,15 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("buddyhelp",boost::program_options::value< std::string >(),"display help message for specified OpenFLUID buddy")
       ("buddyopts",boost::program_options::value< std::string >(),"set options for specified OpenFLUID buddy")
       ("clean-output-dir,c","clean results output directory by removing existing files")
+      ("observers-list,e","list available observers (do not run the simulation)")
       ("functions-list,f","list available functions (do not run the simulation)")
       ("help,h", "display help message")
       ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
       ("enable-simulation-profiling,k","enable time profiling for functions")
+      ("observers-report,l","print a report of available observers, with details (do not run the simulation)")
+      ("observers-paths,n",boost::program_options::value< std::string >(),"add extra observers search paths (colon separated)")
       ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
-      ("functions-paths,p",boost::program_options::value< std::string >(),"add extra functions research paths (colon separated)")
+      ("functions-paths,p",boost::program_options::value< std::string >(),"add extra functions search paths (colon separated)")
       ("quiet,q","quiet display during simulation run")
       ("functions-report,r","print a report of available functions, with details (do not run the simulation)")
       ("no-simreport,s","do not generate simulation report")
@@ -655,26 +758,46 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
   }
 
+  if (OptionsVars.count("observers-paths"))
+  {
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(OptionsVars["observers-paths"].as<std::string>());
+  }
+
+
+  if (OptionsVars.count("observers-list"))
+  {
+    m_RunType = InfoRequest;
+    printOpenFLUIDInfos();
+    printObserversList();
+    return;
+  }
 
   if (OptionsVars.count("functions-list"))
   {
     m_RunType = InfoRequest;
     printOpenFLUIDInfos();
-    printPluginsList();
+    printFunctionsList();
     return;
   }
 
   if (OptionsVars.count("functions-report"))
   {
     m_RunType = InfoRequest;
-    printPluginsReport("");
+    printFunctionsReport("");
+    return;
+  }
+
+  if (OptionsVars.count("observers-report"))
+  {
+    m_RunType = InfoRequest;
+    printObserversReport("");
     return;
   }
 
   if (OptionsVars.count("matching-functions-report"))
   {
     m_RunType = InfoRequest;
-    printPluginsReport(OptionsVars["matching-functions-report"].as<std::string>());
+    printFunctionsReport(OptionsVars["matching-functions-report"].as<std::string>());
     return;
   }
 

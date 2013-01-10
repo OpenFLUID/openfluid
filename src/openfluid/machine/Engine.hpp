@@ -80,6 +80,7 @@ class MessagesWriter;
 namespace openfluid { namespace machine {
 
 class ModelInstance;
+class ObserversListInstance;
 class MachineListener;
 class SimulationBlob;
 
@@ -125,6 +126,8 @@ class DLLEXPORT Engine
      openfluid::io::IOListener* mp_IOListener;
 
      ModelInstance& m_ModelInstance;
+
+     ObserversListInstance& m_ObserversListInstance;
 
      openfluid::io::OutputsWriter* mp_OutputsWriter;
 
@@ -172,7 +175,8 @@ class DLLEXPORT Engine
     /**
       Constructor
     */
-    Engine(SimulationBlob& SimBlob, ModelInstance& MInstance,
+    Engine(SimulationBlob& SimBlob,
+           ModelInstance& MInstance, ObserversListInstance& OLInstance,
            openfluid::machine::MachineListener* MachineListener,
            openfluid::io::IOListener* IOListener);
 

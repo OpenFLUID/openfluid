@@ -74,7 +74,7 @@ class ModelAvailFctAdapterModel
         FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures) = 0;
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
     virtual void setSelectedRow(Gtk::TreeRow Row) = 0;
-    virtual openfluid::machine::SignatureItemInstance
+    virtual openfluid::machine::ModelItemSignatureInstance
     * getSelectedSignature() = 0;
     virtual Gtk::TreeRow getFirstAvailableRow() = 0;
 };
@@ -89,17 +89,17 @@ class ModelAvailFctAdapterModelImpl: public ModelAvailFctAdapterModel
     Gtk::TreeRowReference* mp_PluggableTitleRowRef;
     Gtk::TreeRowReference* mp_GeneratorTitleRowRef;
     Gtk::TreeRowReference* mp_FirstAvailableRowRef;
-    std::map<std::string, openfluid::machine::SignatureItemInstance*>
+    std::map<std::string, openfluid::machine::ModelItemSignatureInstance*>
         m_SignaturesById;
-    openfluid::machine::SignatureItemInstance* mp_SelectedSignature;
+    openfluid::machine::ModelItemSignatureInstance* mp_SelectedSignature;
     sigc::signal<void> signal_SelectionChanged();
     sigc::signal<void> signal_FunctionsChanged();
     void createTitleRows();
     Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
     void setAPluggableFunction(
-        openfluid::machine::SignatureItemInstance* Function);
+        openfluid::machine::ModelItemSignatureInstance* Function);
     void setAGeneratorFunction(
-        openfluid::machine::SignatureItemInstance* Function);
+        openfluid::machine::ModelItemSignatureInstance* Function);
     void defineFirstAvailableRow();
   public:
     ModelAvailFctAdapterModelImpl(ModelAvailFctColumns& Columns);
@@ -108,7 +108,7 @@ class ModelAvailFctAdapterModelImpl: public ModelAvailFctAdapterModel
         FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures);
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
     void setSelectedRow(Gtk::TreeRow Row);
-    openfluid::machine::SignatureItemInstance* getSelectedSignature();
+    openfluid::machine::ModelItemSignatureInstance* getSelectedSignature();
     Gtk::TreeRow getFirstAvailableRow();
 };
 #endif /* __MODELAVAILFCTADAPTERMODEL_HPP__ */

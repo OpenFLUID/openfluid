@@ -113,10 +113,42 @@ class DLLEXPORT PluggableObserver : public SimulationInspectorWare
     PluggableObserver();
 
     virtual ~PluggableObserver();
+
+    /**
+       Initializes function parameters of the function, given as a hash map. Internally called by the framework.
+     */
+    virtual void initParams(const openfluid::ware::WareParams_t& Params)=0;
+
+    /**
+       Prepares data. Internally called by the framework.
+    */
+    virtual void onPrepared()=0;
+
+
+    /**
+       Internally called by the framework.
+    */
+    virtual void onInitializedRun()=0;
+
+    /**
+       Internally called by the framework.
+    */
+    virtual void onStepCompleted()=0;
+
+    /**
+       Internally called by the framework.
+    */
+    virtual void onFinalizedRun()=0;
+
 };
 
+typedef PluggableObserver* (*GetPluggableObserverBodyProc)();
+
+typedef ObserverSignature* (*GetPluggableObserverSignatureProc)();
 
 } } // openfluid::ware
+
+
 
 
 

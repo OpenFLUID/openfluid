@@ -87,7 +87,7 @@ namespace openfluid { namespace machine {
       { \
         mp_Listener->onFunction##listenermethod(_M_CurrentFunction->Signature->ID); \
         boost::posix_time::ptime _M_TimeProfileStart = boost::posix_time::microsec_clock::universal_time(); \
-        _M_CurrentFunction->Function->calledmethod; \
+        _M_CurrentFunction->Body->calledmethod; \
         openfluid::base::SimulationProfiler::getInstance()->addDuration(_M_CurrentFunction->Signature->ID,timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length()); \
         if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
         else  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentFunction->Signature->ID); \
@@ -222,7 +222,7 @@ void ModelInstance::clear()
 
   for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
   {
-    if ((*it)->Function != NULL) delete (*it)->Function;
+    if ((*it)->Body != NULL) delete (*it)->Body;
     if ((*it)->Signature != NULL) delete (*it)->Signature;
   }
 
@@ -253,28 +253,28 @@ void ModelInstance::initialize()
     if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::Generator && CurrentFunction->GeneratorInfo != NULL)
     {
       if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Fixed)
-        CurrentFunction->Function = new FixedGenerator();
+        CurrentFunction->Body = new FixedGenerator();
 
       if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Random)
-        CurrentFunction->Function = new RandomGenerator();
+        CurrentFunction->Body = new RandomGenerator();
 
       if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Inject)
-        CurrentFunction->Function = new InjectGenerator();
+        CurrentFunction->Body = new InjectGenerator();
 
       if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Interp)
-        CurrentFunction->Function = new InterpGenerator();
+        CurrentFunction->Body = new InterpGenerator();
 
-      ((openfluid::machine::Generator*)(CurrentFunction->Function))->setInfos(CurrentFunction->GeneratorInfo->VariableName,
+      ((openfluid::machine::Generator*)(CurrentFunction->Body))->setInfos(CurrentFunction->GeneratorInfo->VariableName,
                                                                               CurrentFunction->GeneratorInfo->UnitClass,
                                                                               CurrentFunction->GeneratorInfo->GeneratorMethod,
                                                                               CurrentFunction->GeneratorInfo->VariableSize);
     }
 
-    CurrentFunction->Function->linkToExecutionMessages(&(m_SimulationBlob.getExecutionMessages()));
-    CurrentFunction->Function->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
-    CurrentFunction->Function->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment());
-    CurrentFunction->Function->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
-    CurrentFunction->Function->initializeWare(CurrentFunction->Signature->ID,
+    CurrentFunction->Body->linkToExecutionMessages(&(m_SimulationBlob.getExecutionMessages()));
+    CurrentFunction->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
+    CurrentFunction->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
+    CurrentFunction->Body->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
+    CurrentFunction->Body->initializeWare(CurrentFunction->Signature->ID,
                                     openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads());
 
 
@@ -302,7 +302,7 @@ void ModelInstance::finalize()
   FuncIter = m_ModelItems.begin();
   while (FuncIter != m_ModelItems.end())
   {
-    (*FuncIter)->Function->finalizeWare();
+    (*FuncIter)->Body->finalizeWare();
     FuncIter++;
   }
 
@@ -311,7 +311,7 @@ void ModelInstance::finalize()
   FuncIter = m_ModelItems.begin();
   while (FuncIter != m_ModelItems.end())
   {
-    delete (*FuncIter)->Function;
+    delete (*FuncIter)->Body;
     FuncIter++;
   }
 

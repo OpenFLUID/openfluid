@@ -52,7 +52,7 @@
 
 namespace openfluid {
 namespace machine {
-class SignatureItemInstance;
+class ModelItemSignatureInstance;
 class ModelInstance;
 class ModelItemInstance;
 }
@@ -68,16 +68,16 @@ class ModelItemInstanceFactory
 
     static openfluid::machine::ModelItemInstance
     * createPluggableItemFromSignature(
-        openfluid::machine::SignatureItemInstance& Signature);
+        openfluid::machine::ModelItemSignatureInstance& Signature);
 
     static openfluid::machine::ModelItemInstance
     * createGeneratorItemFromSignature(
-        openfluid::machine::SignatureItemInstance& Signature,
+        openfluid::machine::ModelItemSignatureInstance& Signature,
         std::string VarName, std::string ClassName, std::string VarSize);
 
     static openfluid::machine::ModelItemInstance
     * createGeneratorItemFromSignatureWithDialog(
-        openfluid::machine::SignatureItemInstance& Signature,
+        openfluid::machine::ModelItemSignatureInstance& Signature,
         openfluid::core::CoreRepository& CoreRepos,
         openfluid::machine::ModelInstance* ModelInstance);
 
