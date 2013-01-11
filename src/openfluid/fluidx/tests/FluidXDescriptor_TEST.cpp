@@ -78,6 +78,11 @@ typedef boost::onullstream onullstream_type;
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <boost/foreach.hpp>
 
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/Factory.hpp>
+
 // =====================================================================
 // =====================================================================
 
@@ -602,7 +607,7 @@ void TestDataset(std::string DatasetPath)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_operations)
+BOOST_AUTO_TEST_CASE(check_read_operations)
 {
 
   std::vector<std::string> DatasetPaths;
@@ -632,7 +637,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_error_handling)
+BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
 {
   bool HasFailed;
   boost::onullstream ONullStream;
@@ -702,7 +707,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_observers)
+BOOST_AUTO_TEST_CASE(check_reading_observers)
 {
   openfluid::fluidx::FluidXDescriptor* FXDesc =
       openfluid::fluidx::FluidXDescriptor::getInstance();
@@ -878,4 +883,41 @@ BOOST_AUTO_TEST_CASE(check_observers)
   BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk7.shapefile"),
                     "shapefiles/RS.shp");
   BOOST_CHECK_EQUAL(Params.get<int>("serie.vtk7.step"), 10);
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_write_operations)
+{
+  std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXWriter";
+  std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterSingle";
+  std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterMany";
+  std::string PlugsDir = CONFIGTESTS_OUTPUT_BINARY_DIR;
+
+
+  openfluid::base::RuntimeEnvironment* RunEnv;
+  openfluid::fluidx::FluidXDescriptor* FXDesc = openfluid::fluidx::FluidXDescriptor::getInstance();
+  openfluid::machine::SimulationBlob SBlob;
+  openfluid::machine::ModelInstance MInstance(SBlob,NULL);
+
+  RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
+
+  RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
+
+  FXDesc->loadFromDirectory(InputDir);
+
+  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc->m_DomainDescriptor,
+                                                                  FXDesc->m_RunDescriptor,
+                                                                  FXDesc->m_OutputDescriptor,
+                                                                  FXDesc->m_DatastoreDescriptor,
+                                                                  SBlob);
+  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc->m_ModelDescriptor,MInstance);
+
+  FXDesc->setDomainToWrite(SBlob.getCoreRepository());
+  FXDesc->setModelToWrite(const_cast<openfluid::machine::ModelInstance&>(MInstance));
+  FXDesc->setDatastoreToWrite(SBlob.getDatastore());
+
+  FXDesc->WriteToManyFiles(OutputDirMany);
+  FXDesc->WriteToSingleFile(OutputDirSingle+"/all.fluidx");
 }

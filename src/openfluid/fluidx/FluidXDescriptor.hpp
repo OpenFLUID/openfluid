@@ -63,11 +63,20 @@
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/ObserversListDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/core/InstantiationInfo.hpp>
 #include <libxml/tree.h>
 #include <string>
 
 namespace openfluid {
 
+namespace core {
+class CoreRepository;
+class Datastore;
+}
+namespace machine {
+class ModelInstance;
+}
 namespace io {
 class IOListener;
 }
@@ -89,6 +98,16 @@ class FluidXDescriptor
     bool m_ModelDefined;
 
     openfluid::io::IOListener* mp_Listener;
+
+    std::string m_ModelStr;
+    std::string m_RunStr;
+    std::string m_DomainStr;
+    std::string m_OutputStr;
+    std::string m_DataStr;
+
+    openfluid::core::InstantiationInfo::Type m_InstType;
+
+    std::string m_IndentStr;
 
     FluidXDescriptor();
 
@@ -133,6 +152,21 @@ class FluidXDescriptor
      */
     void clearOldVectorNamedVar(std::string& VarName);
 
+    // =====================================================================
+    // =====================================================================
+
+    void prepareOutputDir(std::string DirPath);
+
+    std::string getGeneratorMethodAsStr(
+        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const;
+
+    std::string getParamsAsStr(
+        const openfluid::ware::WareParams_t& Params) const;
+
+    void setRunConfigurationToWrite();
+
+    void setOutputConfigurationToWrite();
+
   public:
 
     openfluid::fluidx::CoupledModelDescriptor m_ModelDescriptor;
@@ -154,6 +188,26 @@ class FluidXDescriptor
     void setIOListener(openfluid::io::IOListener* Listener);
 
     void loadFromDirectory(std::string DirPath);
+
+    // =====================================================================
+    // =====================================================================
+
+    void setModelToWrite(openfluid::machine::ModelInstance& MInstance);
+
+    void setDomainToWrite(const openfluid::core::CoreRepository& CoreData);
+
+    void setDatastoreToWrite(const openfluid::core::Datastore& Store);
+
+    void setInstantiationType(
+        const openfluid::core::InstantiationInfo::Type& InstType)
+    {
+      m_InstType = InstType;
+    }
+    ;
+
+    void WriteToManyFiles(std::string DirPath);
+
+    void WriteToSingleFile(std::string FilePath);
 };
 
 }

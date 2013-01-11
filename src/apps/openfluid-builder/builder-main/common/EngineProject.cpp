@@ -65,7 +65,6 @@
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/io/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/fluidx/FluidXWriter.hpp>
 #include <openfluid/guicommon/RunDialogMachineListener.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -512,13 +511,9 @@ void EngineProject::save()
 
   openfluid::base::ProjectManager::getInstance()->save();
 
-  openfluid::fluidx::FluidXWriter Writer(getIOListener());
-
-  Writer.setDomainToWrite(getCoreRepository());
-  Writer.setModelToWrite(*getModelInstance());
-  Writer.setRunConfigurationToWrite(getRunDescriptor());
-  Writer.setOutputConfigurationToWrite(getOutputDescriptor());
-  Writer.setDatastoreToWrite(getDatastore());
+  mp_FXDesc->setDomainToWrite(getCoreRepository());
+  mp_FXDesc->setModelToWrite(*getModelInstance());
+  mp_FXDesc->setDatastoreToWrite(getDatastore());
 
   boost::filesystem::path InputPath(InputDir);
 
@@ -529,7 +524,7 @@ void EngineProject::save()
       boost::filesystem::remove(it->path());
   }
 
-  Writer.WriteToManyFiles(InputDir);
+  mp_FXDesc->WriteToManyFiles(InputDir);
 
   m_signal_SaveHappened.emit();
 }
