@@ -21,7 +21,8 @@ TARGET_LINK_LIBRARIES(openfluid-minimal
                       openfluid-core
                       openfluid-machine
                       openfluid-io
-                      openfluid-tools)
+                      openfluid-tools
+                      openfluid-fluidx)
 
 
 

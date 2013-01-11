@@ -59,7 +59,7 @@
 #include <string>
 
 namespace openfluid {
-namespace base {
+namespace fluidx {
 class RunDescriptor;
 }
 }
@@ -75,7 +75,7 @@ class SimulRunModel
     virtual sigc::signal<void> signal_SimulRunChanged() = 0;
 
     virtual void
-    setEngineRequirements(openfluid::base::RunDescriptor& RunDesc) = 0;
+    setEngineRequirements(openfluid::fluidx::RunDescriptor& RunDesc) = 0;
 
     virtual int getDelta() = 0;
 
@@ -120,7 +120,7 @@ class SimulRunModelImpl: public SimulRunModel
 
     sigc::signal<void> m_signal_SimulRunChanged;
 
-    openfluid::base::RunDescriptor* mp_RunDesc;
+    openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
     bool m_isCurrentBeginValid;
     bool m_isCurrentEndValid;
@@ -144,7 +144,7 @@ class SimulRunModelImpl: public SimulRunModel
 
     sigc::signal<void> signal_SimulRunChanged();
 
-    void setEngineRequirements(openfluid::base::RunDescriptor& RunDesc);
+    void setEngineRequirements(openfluid::fluidx::RunDescriptor& RunDesc);
 
     int getDelta();
 

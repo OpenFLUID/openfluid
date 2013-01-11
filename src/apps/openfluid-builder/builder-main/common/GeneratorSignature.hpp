@@ -56,7 +56,7 @@
 #define __GENERATORSIGNATURE_HPP__
 
 #include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
 class GeneratorSignature: public openfluid::ware::FunctionSignature
 {
@@ -73,9 +73,9 @@ class GeneratorSignature: public openfluid::ware::FunctionSignature
   public:
 
     GeneratorSignature(
-        openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
 
-    openfluid::base::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
 
 };
 

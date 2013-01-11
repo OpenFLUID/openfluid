@@ -247,21 +247,21 @@ void ModelInstance::initialize()
   {
     CurrentFunction = (*FuncIter);
 
-    if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::PluggedFunction)
+    if(CurrentFunction->ItemType == openfluid::fluidx::ModelItemDescriptor::PluggedFunction)
       FPlugsMgr->completeSignatureWithWareBody(CurrentFunction);
 
-    if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::Generator && CurrentFunction->GeneratorInfo != NULL)
+    if(CurrentFunction->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator && CurrentFunction->GeneratorInfo != NULL)
     {
-      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Fixed)
+      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Fixed)
         CurrentFunction->Body = new FixedGenerator();
 
-      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Random)
+      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Random)
         CurrentFunction->Body = new RandomGenerator();
 
-      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Inject)
+      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Inject)
         CurrentFunction->Body = new InjectGenerator();
 
-      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Interp)
+      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Interp)
         CurrentFunction->Body = new InterpGenerator();
 
       ((openfluid::machine::Generator*)(CurrentFunction->Body))->setInfos(CurrentFunction->GeneratorInfo->VariableName,

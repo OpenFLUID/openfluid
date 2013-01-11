@@ -86,7 +86,7 @@ ResultsSetCoordinator::ResultsSetCoordinator(ResUnitChooserModel& ChooserModel,
 
 
 void ResultsSetCoordinator::setEngineRequirements(
-    openfluid::base::RunDescriptor& RunDesc,
+    openfluid::fluidx::RunDescriptor& RunDesc,
     openfluid::base::OutputDescriptor& OutDesc,
     openfluid::core::CoreRepository& CoreRepos,
     openfluid::machine::ModelInstance& ModelInstance)

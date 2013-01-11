@@ -54,7 +54,7 @@
 
 #include "SimulRunModel.hpp"
 
-#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/core/DateTime.hpp>
 
 
@@ -102,7 +102,7 @@ sigc::signal<void> SimulRunModelImpl::signal_SimulRunChanged()
 
 
 void SimulRunModelImpl::setEngineRequirements(
-    openfluid::base::RunDescriptor& RunDesc)
+    openfluid::fluidx::RunDescriptor& RunDesc)
 {
   mp_RunDesc = &RunDesc;
   m_signal_FromAppDescriptorChanged.emit();

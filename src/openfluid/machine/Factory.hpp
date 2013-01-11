@@ -60,20 +60,22 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/base/CoupledModelDescriptor.hpp>
-#include <openfluid/base/ObserversListDescriptor.hpp>
+#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
+#include <openfluid/fluidx/ObserversListDescriptor.hpp>
 
 namespace openfluid {
 namespace base {
-class DomainDescriptor;
 class ExecutionMessages;
-class RunDescriptor;
 class OutputDescriptor;
-class DatastoreDescriptor;
 }
 namespace core {
 class CoreRepository;
 class Datastore;
+}
+namespace fluidx {
+class DomainDescriptor;
+class RunDescriptor;
+class DatastoreDescriptor;
 }
 }
 
@@ -89,26 +91,26 @@ class DLLEXPORT Factory
 {
   public:
 
-    static void buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor,
+    static void buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Descriptor,
                                           openfluid::base::ExecutionMessages& ExecMsgs,
                                           openfluid::core::CoreRepository& CoreRepos);
 
-    static void buildDatastoreFromDescriptor(openfluid::base::DatastoreDescriptor& Descriptor,
+    static void buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescriptor& Descriptor,
                                              openfluid::core::Datastore& Store);
 
 
-    static void buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDescriptor& ModelDesc,
+    static void buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
                                                  ModelInstance& MInstance);
 
-    static void buildObserversListFromDescriptor(openfluid::base::ObserversListDescriptor& ObsListDesc,
+    static void buildObserversListFromDescriptor(openfluid::fluidx::ObserversListDescriptor& ObsListDesc,
                                                  ObserversListInstance& ObsListInstance);
 
-    static void fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& RunDescr);
+    static void fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor& RunDescr);
 
-    static void buildSimulationBlobFromDescriptors(openfluid::base::DomainDescriptor& DomainDesc,
-                                                   openfluid::base::RunDescriptor& RunDesc,
+    static void buildSimulationBlobFromDescriptors(openfluid::fluidx::DomainDescriptor& DomainDesc,
+                                                   openfluid::fluidx::RunDescriptor& RunDesc,
                                                    openfluid::base::OutputDescriptor& OutDesc,
-                                                   openfluid::base::DatastoreDescriptor& DataDesc,
+                                                   openfluid::fluidx::DatastoreDescriptor& DataDesc,
                                                    SimulationBlob& SimBlob);
 
     static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,

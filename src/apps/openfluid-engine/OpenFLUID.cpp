@@ -58,7 +58,7 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-#include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/fluidx/FluidXReader.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -528,7 +528,7 @@ void OpenFLUIDApp::runSimulation()
 
 
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
-  openfluid::io::FluidXReader FXReader(IOListener);
+  openfluid::fluidx::FluidXReader FXReader(IOListener);
   FXReader.loadFromDirectory(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
   m_SimBlob.getExecutionMessages().resetWarningFlag();
 

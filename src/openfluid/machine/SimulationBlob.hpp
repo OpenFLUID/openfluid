@@ -57,7 +57,7 @@
 #define __SIMULATIONBLOB_HPP__
 
 #include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
 #include <openfluid/core/Datastore.hpp>
@@ -71,7 +71,7 @@ class DLLEXPORT SimulationBlob
 
     openfluid::core::CoreRepository m_CoreRepos;
 
-    openfluid::base::RunDescriptor m_RunDescriptor;
+    openfluid::fluidx::RunDescriptor m_RunDescriptor;
 
     openfluid::base::OutputDescriptor m_OutputDescriptor;
 
@@ -89,7 +89,7 @@ class DLLEXPORT SimulationBlob
 
     inline openfluid::core::CoreRepository& getCoreRepository() { return m_CoreRepos; };
 
-    inline openfluid::base::RunDescriptor& getRunDescriptor() {return  m_RunDescriptor; };
+    inline openfluid::fluidx::RunDescriptor& getRunDescriptor() {return  m_RunDescriptor; };
 
     inline openfluid::base::OutputDescriptor& getOutputDescriptor() {return  m_OutputDescriptor; };
 
@@ -102,7 +102,7 @@ class DLLEXPORT SimulationBlob
 
     inline const openfluid::core::CoreRepository& getCoreRepository() const { return m_CoreRepos; };
 
-    inline const openfluid::base::RunDescriptor& getRunDescriptor() const {return  m_RunDescriptor; };
+    inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const {return  m_RunDescriptor; };
 
     inline const openfluid::base::OutputDescriptor& getOutputDescriptor() const {return  m_OutputDescriptor; };
 

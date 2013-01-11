@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
 BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
 {
   // create a generator signature
-  GeneratorSignature FixedGenSignature(openfluid::base::GeneratorDescriptor::Fixed);
+  GeneratorSignature FixedGenSignature(openfluid::fluidx::GeneratorDescriptor::Fixed);
 
   openfluid::machine::ModelItemSignatureInstance Sign;
   Sign.Signature = &FixedGenSignature;
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
       ModelItemInstanceFactory::createGeneratorItemFromSignature(
           Sign, "MyVar", "MyClass", "1");
 
-  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::base::ModelItemDescriptor::Generator);
+  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::fluidx::ModelItemDescriptor::Generator);
   BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
   BOOST_CHECK_EQUAL(Item->Signature->ID,openfluid::machine::Factory::buildGeneratorID("MyVar",false,"MyClass"));
 
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation)
   openfluid::machine::ModelItemInstance* Item =
       ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature);
 
-  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::base::ModelItemDescriptor::PluggedFunction);
+  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::fluidx::ModelItemDescriptor::PluggedFunction);
   BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
   BOOST_CHECK_EQUAL(Item->Signature->ID,FctSignature.Signature->ID);
 

@@ -61,7 +61,7 @@
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
 #include <openfluid/machine/InjectGenerator.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
 #include "GeneratorSignature.hpp"
@@ -86,7 +86,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createPluggable
         Signature.Signature->ID);
 
     if (Item)
-      Item->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+      Item->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedFunction;
   }
 
   return Item;
@@ -134,7 +134,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
   unsigned int VarSizeInt;
   openfluid::tools::ConvertString(VarSize, &VarSizeInt);
 
-  openfluid::base::GeneratorDescriptor::GeneratorMethod
+  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
       Method =
           (static_cast<GeneratorSignature*> (Signature.Signature))->m_GeneratorMethod;
 
@@ -150,7 +150,7 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
   Item->Signature = GeneratorSign;
   Item->Body = NULL;
   Item->SDKCompatible = true;
-  Item->ItemType = openfluid::base::ModelItemDescriptor::Generator;
+  Item->ItemType = openfluid::fluidx::ModelItemDescriptor::Generator;
 
   Item->GeneratorInfo = new openfluid::machine::GeneratorExtraInfo();
   Item->GeneratorInfo->VariableName = VarName;

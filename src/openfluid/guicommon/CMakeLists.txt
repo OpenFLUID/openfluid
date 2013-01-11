@@ -28,6 +28,7 @@ TARGET_LINK_LIBRARIES(openfluid-guicommon
                       openfluid-tools
                       openfluid-machine
                       openfluid-market
+                      openfluid-fluidx
                       ${GLIBMM_LIBRARIES}
                       ${GTKMM_LIBRARIES}  
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})

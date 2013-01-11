@@ -59,22 +59,22 @@
 
 
 GeneratorSignature::GeneratorSignature(
-    openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod)
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod)
 {
   m_GeneratorMethod = GeneratorMethod;
 
   switch (m_GeneratorMethod)
   {
-    case openfluid::base::GeneratorDescriptor::Fixed:
+    case openfluid::fluidx::GeneratorDescriptor::Fixed:
       setFixedInfo();
       break;
-    case openfluid::base::GeneratorDescriptor::Random:
+    case openfluid::fluidx::GeneratorDescriptor::Random:
       setRandomInfo();
       break;
-    case openfluid::base::GeneratorDescriptor::Interp:
+    case openfluid::fluidx::GeneratorDescriptor::Interp:
       setInterpInfo();
       break;
-    case openfluid::base::GeneratorDescriptor::Inject:
+    case openfluid::fluidx::GeneratorDescriptor::Inject:
       setInjectInfo();
       break;
     default:

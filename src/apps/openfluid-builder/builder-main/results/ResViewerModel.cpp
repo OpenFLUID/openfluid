@@ -56,7 +56,7 @@
 
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/core/Unit.hpp>
 
 
@@ -108,7 +108,7 @@ sigc::signal<void> ResViewerModelImpl::signal_FromAppClear()
 
 
 void ResViewerModelImpl::setEngineRequirements(
-    openfluid::base::RunDescriptor& RunDesc,
+    openfluid::fluidx::RunDescriptor& RunDesc,
     openfluid::base::OutputDescriptor& OutDesc)
 {
   mp_RunDesc = &RunDesc;

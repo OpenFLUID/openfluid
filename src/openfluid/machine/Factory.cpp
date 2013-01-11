@@ -55,14 +55,14 @@
 
 #include <openfluid/machine/Factory.hpp>
 
-#include <openfluid/base/DomainDescriptor.hpp>
+#include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/CoupledModelDescriptor.hpp>
+#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/DatastoreDescriptor.hpp>
-#include <openfluid/base/DatastoreItemDescriptor.hpp>
+#include <openfluid/fluidx/RunDescriptor.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
@@ -84,14 +84,14 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descriptor,
+void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Descriptor,
                                         openfluid::base::ExecutionMessages& ExecMsgs,
                                         openfluid::core::CoreRepository& CoreRepos)
 {
 
   // ============== Domain definition ==============
 
-  std::list<openfluid::base::UnitDescriptor>::iterator itUnits;
+  std::list<openfluid::fluidx::UnitDescriptor>::iterator itUnits;
   std::list<openfluid::core::UnitClassID_t>::iterator itLinkedUnits;
 
   openfluid::core::Unit *FromUnit, *ToUnit, *ParentUnit, *ChildUnit;
@@ -160,21 +160,21 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
   // ============== Input Data ==============
 
 
-  std::list<openfluid::base::InputDataDescriptor>::iterator itIData;
+  std::list<openfluid::fluidx::InputDataDescriptor>::iterator itIData;
 
   for (itIData = Descriptor.getInputData().begin();itIData != Descriptor.getInputData().end();++itIData)
   {
 
-    openfluid::base::InputDataDescriptor::UnitIDInputData_t Data = (*itIData).getData();
+    openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t Data = (*itIData).getData();
     openfluid::core::Unit* TheUnit;
 
-    for (openfluid::base::InputDataDescriptor::UnitIDInputData_t::const_iterator itUnit=Data.begin();itUnit!=Data.end();++itUnit)
+    for (openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t::const_iterator itUnit=Data.begin();itUnit!=Data.end();++itUnit)
     {
       TheUnit = CoreRepos.getUnit((*itIData).getUnitsClass(),itUnit->first);
 
       if (TheUnit != NULL)
       {
-        for (openfluid::base::InputDataDescriptor::InputDataNameValue_t::const_iterator itUnitData = itUnit->second.begin();itUnitData!=itUnit->second.end();++itUnitData)
+        for (openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t::const_iterator itUnitData = itUnit->second.begin();itUnitData!=itUnit->second.end();++itUnitData)
         {
           TheUnit->getInputData()->setValue(itUnitData->first,itUnitData->second);
         }
@@ -193,7 +193,7 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
   // ============== Events ==============
 
 
-  std::list<openfluid::base::EventDescriptor>::iterator itEvent;
+  std::list<openfluid::fluidx::EventDescriptor>::iterator itEvent;
   openfluid::core::Unit* EventUnit;
 
   for (itEvent = Descriptor.getEvents().begin();itEvent != Descriptor.getEvents().end();++itEvent)
@@ -217,12 +217,12 @@ void Factory::buildDomainFromDescriptor(openfluid::base::DomainDescriptor& Descr
 // =====================================================================
 
 
-void Factory::buildDatastoreFromDescriptor(openfluid::base::DatastoreDescriptor& Descriptor,
+void Factory::buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescriptor& Descriptor,
                                           openfluid::core::Datastore& Store)
 {
-  openfluid::base::DatastoreDescriptor::DatastoreDescription_t Items = Descriptor.getItems();
+  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t Items = Descriptor.getItems();
 
-  openfluid::base::DatastoreDescriptor::DatastoreDescription_t::iterator it;
+  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t::iterator it;
 
   for(it = Items.begin() ; it != Items.end() ; ++it)
   {
@@ -238,11 +238,11 @@ void Factory::buildDatastoreFromDescriptor(openfluid::base::DatastoreDescriptor&
 // =====================================================================
 
 
-void Factory::buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDescriptor& ModelDesc,
+void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
                                                ModelInstance& MInstance)
 {
 
-  openfluid::base::CoupledModelDescriptor::SetDescription_t::const_iterator it;
+  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::const_iterator it;
   ModelItemInstance* IInstance;
 
 
@@ -252,28 +252,28 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDesc
 
   for (it=ModelDesc.getItems().begin();it!=ModelDesc.getItems().end();++it)
   {
-    if ((*it)->isType(openfluid::base::ModelItemDescriptor::NoModelItemType))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoModelItemType))
       throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
 
-    if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
     {
       // instanciation of a plugged simulation function using the plugin manager
-      IInstance = FunctionPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::base::FunctionDescriptor*)(*it))->getFileID());
+      IInstance = FunctionPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::FunctionDescriptor*)(*it))->getFileID());
       IInstance->Params = (*it)->getParameters();
-      IInstance->ItemType = openfluid::base::ModelItemDescriptor::PluggedFunction;
+      IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedFunction;
 
       MInstance.appendItem(IInstance);
     }
 
-    if ((*it)->isType(openfluid::base::ModelItemDescriptor::Generator))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
     {
       // instanciation of a data generator
-      openfluid::base::GeneratorDescriptor* GenDesc = (openfluid::base::GeneratorDescriptor*)(*it);
+      openfluid::fluidx::GeneratorDescriptor* GenDesc = (openfluid::fluidx::GeneratorDescriptor*)(*it);
 
       IInstance = new ModelItemInstance();
       IInstance->SDKCompatible = true;
       IInstance->Params = (*it)->getParameters();
-      IInstance->ItemType = openfluid::base::ModelItemDescriptor::Generator;
+      IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::Generator;
 
       openfluid::ware::FunctionSignature* Signature = new openfluid::ware::FunctionSignature();
 
@@ -289,27 +289,27 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDesc
       IInstance->GeneratorInfo->UnitClass = GenDesc->getUnitClass();
       IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
 
-      if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Fixed)
-        IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Fixed;
+      if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Fixed)
+        IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Fixed;
 
-      if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Random)
-        IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Random;
+      if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Random)
+        IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Random;
 
-      if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Interp)
+      if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Interp)
       {
-        IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Interp;
+        IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Interp;
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("sources"));
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("distribution"));
       }
 
-      if (GenDesc->getGeneratorMethod() == openfluid::base::GeneratorDescriptor::Inject)
+      if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Inject)
       {
-        IInstance->GeneratorInfo->GeneratorMethod = openfluid::base::GeneratorDescriptor::Inject;
+        IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Inject;
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("sources"));
         Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("distribution"));
       }
 
-      if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::NoGenMethod)
+      if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
         throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
       IInstance->Body = NULL;
@@ -328,16 +328,16 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::base::CoupledModelDesc
 // =====================================================================
 // =====================================================================
 
-void Factory::buildObserversListFromDescriptor(openfluid::base::ObserversListDescriptor& ObsListDesc,
+void Factory::buildObserversListFromDescriptor(openfluid::fluidx::ObserversListDescriptor& ObsListDesc,
                                                ObserversListInstance& ObsListInstance)
 {
-  openfluid::base::ObserversListDescriptor::SetDescription_t::const_iterator it;
+  openfluid::fluidx::ObserversListDescriptor::SetDescription_t::const_iterator it;
   ObserverInstance* OInstance;
 
   for (it=ObsListDesc.getItems().begin();it!=ObsListDesc.getItems().end();++it)
   {
     // instanciation of a plugged observer using the plugin manager
-    OInstance = ObserverPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::base::ObserverDescriptor*)(*it))->getID());
+    OInstance = ObserverPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::ObserverDescriptor*)(*it))->getID());
     OInstance->Params = (*it)->getParameters();
 
     ObsListInstance.appendObserver(OInstance);
@@ -349,7 +349,7 @@ void Factory::buildObserversListFromDescriptor(openfluid::base::ObserversListDes
 // =====================================================================
 
 
-void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& RunDesc)
+void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor& RunDesc)
 {
   if (!RunDesc.isFilled())
     throw openfluid::base::OFException("OpenFLUID framework","Factory::fillRunEnvironmentFromDescriptor","Wrong or undefined run configuration");
@@ -381,10 +381,10 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::base::RunDescriptor& R
 // =====================================================================
 
 
-void Factory::buildSimulationBlobFromDescriptors(openfluid::base::DomainDescriptor& DomainDesc,
-    openfluid::base::RunDescriptor& RunDesc,
+void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::DomainDescriptor& DomainDesc,
+    openfluid::fluidx::RunDescriptor& RunDesc,
     openfluid::base::OutputDescriptor& OutDesc,
-    openfluid::base::DatastoreDescriptor& DataDesc,
+    openfluid::fluidx::DatastoreDescriptor& DataDesc,
     SimulationBlob& SimBlob)
 {
   buildDomainFromDescriptor(DomainDesc,SimBlob.getExecutionMessages(),SimBlob.getCoreRepository());

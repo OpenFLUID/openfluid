@@ -57,29 +57,20 @@
 #define __BASE_HPP___
 
 
-#include <openfluid/base/DomainDescriptor.hpp>
 #include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/EventDescriptor.hpp>
 #include <openfluid/base/ExecMsgs.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/IDataDescriptor.hpp>
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/Listener.hpp>
 #include <openfluid/base/Message.hpp>
-#include <openfluid/base/CoupledModelDescriptor.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/OutputFilesDescriptor.hpp>
 #include <openfluid/base/OutputSetDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/RunDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/SimulationProfiler.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
-#include <openfluid/base/UnitDescriptor.hpp>
 
 
 #endif /* __BASE_HPP___ */

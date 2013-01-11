@@ -63,7 +63,7 @@ namespace openfluid { namespace machine {
 
 GeneratorExtraInfo::GeneratorExtraInfo():
   VariableName(""),UnitClass(""),VariableSize(1),
-  GeneratorMethod(openfluid::base::GeneratorDescriptor::NoGenMethod)
+  GeneratorMethod(openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
 {
 
 }
@@ -75,7 +75,7 @@ GeneratorExtraInfo::GeneratorExtraInfo():
 
 ModelItemSignatureInstance::ModelItemSignatureInstance():
   WareSignatureInstance(), Signature(NULL),
-  ItemType(openfluid::base::ModelItemDescriptor::NoModelItemType),
+  ItemType(openfluid::fluidx::ModelItemDescriptor::NoModelItemType),
   GeneratorInfo(NULL)
 {
 

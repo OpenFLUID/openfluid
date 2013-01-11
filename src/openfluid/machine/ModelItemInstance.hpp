@@ -60,8 +60,8 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/base/ModelItemDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/ware/PluggableFunction.hpp>
 #include <openfluid/machine/WareSignatureInstance.hpp>
@@ -76,7 +76,7 @@ class DLLEXPORT GeneratorExtraInfo
     openfluid::core::VariableName_t VariableName;
     openfluid::core::UnitClass_t UnitClass;
     unsigned int VariableSize;
-    openfluid::base::GeneratorDescriptor::GeneratorMethod GeneratorMethod;
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod;
 
     GeneratorExtraInfo();
 };
@@ -88,7 +88,7 @@ class DLLEXPORT ModelItemSignatureInstance : public WareSignatureInstance
 {
   public:
     openfluid::ware::FunctionSignature* Signature;
-    openfluid::base::ModelItemDescriptor::ModelItemType ItemType;
+    openfluid::fluidx::ModelItemDescriptor::ModelItemType ItemType;
     GeneratorExtraInfo* GeneratorInfo;
 
     ModelItemSignatureInstance();

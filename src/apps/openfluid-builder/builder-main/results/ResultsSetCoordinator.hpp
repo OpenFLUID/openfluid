@@ -60,7 +60,6 @@
 
 namespace openfluid {
 namespace base {
-class RunDescriptor;
 class OutputDescriptor;
 }
 namespace core {
@@ -68,6 +67,9 @@ class CoreRepository;
 }
 namespace machine {
 class ModelInstance;
+}
+namespace fluidx {
+class RunDescriptor;
 }
 }
 
@@ -94,7 +96,7 @@ class ResultsSetCoordinator: public sigc::trackable
     ResultsSetCoordinator(ResUnitChooserModel& ChooserModel,
         ResViewerModel& ViewerModel);
 
-    void setEngineRequirements(openfluid::base::RunDescriptor& RunDesc,
+    void setEngineRequirements(openfluid::fluidx::RunDescriptor& RunDesc,
         openfluid::base::OutputDescriptor& OutDesc,
         openfluid::core::CoreRepository& CoreRepos,
         openfluid::machine::ModelInstance& ModelInstance);

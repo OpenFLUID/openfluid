@@ -57,8 +57,6 @@
 #define __IO_HPP___
 
 
-#include <openfluid/io/FluidXReader.hpp>
-#include <openfluid/io/FluidXWriter.hpp>
 #include <openfluid/io/IOListener.hpp>
 #include <openfluid/io/MessagesWriter.hpp>
 #include <openfluid/io/OutputsWriter.hpp>

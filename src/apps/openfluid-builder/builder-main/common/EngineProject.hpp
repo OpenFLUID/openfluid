@@ -62,12 +62,11 @@
 
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/machine/Engine.hpp>
-#include <openfluid/base/CoupledModelDescriptor.hpp>
+#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 
 namespace openfluid {
 namespace base {
 class RuntimeEnvironment;
-class RunDescriptor;
 class ExecutionMessages;
 class OutputDescriptor;
 }
@@ -76,7 +75,6 @@ class CoreRepository;
 class Datastore;
 }
 namespace io {
-class FluidXReader;
 class IOListener;
 }
 namespace machine {
@@ -88,6 +86,10 @@ class SimulationBlob;
 namespace guicommon {
 class RunDialogMachineListener;
 }
+namespace fluidx {
+class RunDescriptor;
+class FluidXReader;
+}
 }
 
 class EngineProject
@@ -96,7 +98,7 @@ class EngineProject
 
     bool m_WithProjectManager;
 
-    openfluid::io::FluidXReader* FXReader;
+    openfluid::fluidx::FluidXReader* FXReader;
 
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
@@ -122,12 +124,12 @@ class EngineProject
 
     void setDefaultOutDesc();
 
-    void checkAndSetDefaultRunValues(openfluid::base::RunDescriptor& RunDesc);
+    void checkAndSetDefaultRunValues(openfluid::fluidx::RunDescriptor& RunDesc);
 
     void checkAndSetDefaultOutputValues(
         openfluid::base::OutputDescriptor& OutDesc);
 
-    void checkModelDesc(openfluid::base::CoupledModelDescriptor& ModelDesc);
+    void checkModelDesc(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
 
     void checkInputData();
 
@@ -174,7 +176,7 @@ class EngineProject
 
     openfluid::base::ExecutionMessages& getExecutionMessages();
 
-    openfluid::base::RunDescriptor& getRunDescriptor();
+    openfluid::fluidx::RunDescriptor& getRunDescriptor();
 
     openfluid::base::OutputDescriptor& getOutputDescriptor();
 

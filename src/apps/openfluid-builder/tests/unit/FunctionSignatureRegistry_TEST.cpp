@@ -76,8 +76,8 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 {
   FunctionSignatureRegistrySub Signatures;
 
-  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::base::ModelItemDescriptor::PluggedFunction].size(),0);
-  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::base::ModelItemDescriptor::Generator].size(),4);
+  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),0);
+  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),4);
 }
 BOOST_AUTO_TEST_CASE(test_add)
 {
@@ -89,8 +89,8 @@ BOOST_AUTO_TEST_CASE(test_add)
     Signatures.addAPluggableSignature(Sign);
   }
 
-  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::base::ModelItemDescriptor::PluggedFunction].size(),3);
-  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::base::ModelItemDescriptor::Generator].size(),4);
+  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),3);
+  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),4);
 
   Signatures.clearPluggableSignatures();
 }

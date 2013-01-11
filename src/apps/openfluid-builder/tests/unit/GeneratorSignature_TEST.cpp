@@ -67,7 +67,7 @@
 
 BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
-  GeneratorSignature Sign(openfluid::base::GeneratorDescriptor::Fixed);
+  GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Fixed Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),1);
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
-  GeneratorSignature Sign(openfluid::base::GeneratorDescriptor::Random);
+  GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Random Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),2);
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
-  GeneratorSignature Sign(openfluid::base::GeneratorDescriptor::Interp);
+  GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Interp Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),4);

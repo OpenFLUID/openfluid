@@ -43,7 +43,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-io
                       openfluid-tools
                       openfluid-market
-                      openfluid-guicommon)
+                      openfluid-guicommon
+                      openfluid-fluidx)
 #                      openfluid-builder-ext)
 
 

@@ -55,7 +55,7 @@
 #ifndef __FUNCTIONSIGNATUREREGISTRY_HPP__
 #define __FUNCTIONSIGNATUREREGISTRY_HPP__
 
-#include <openfluid/base/ModelItemDescriptor.hpp>
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
 
 namespace openfluid {
 namespace machine {
@@ -74,7 +74,7 @@ class FunctionSignatureRegistry
     typedef std::map<std::string,openfluid::machine::ModelItemSignatureInstance*>
         FctSignaturesByName_t;
 
-    typedef std::map<openfluid::base::ModelItemDescriptor::ModelItemType,
+    typedef std::map<openfluid::fluidx::ModelItemDescriptor::ModelItemType,
         FctSignaturesByName_t> FctSignaturesByTypeByName_t;
 
   private:

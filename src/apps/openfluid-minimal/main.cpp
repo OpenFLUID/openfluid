@@ -54,7 +54,7 @@
 */
 
 #include <openfluid/io/IOListener.hpp>
-#include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/fluidx/FluidXReader.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/Init.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -94,7 +94,7 @@ int main(int argc, char **argv)
     openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
     openfluid::machine::ModelInstance Model(SBlob,MachineListen);
     openfluid::machine::ObserversListInstance ObsList(SBlob);
-    openfluid::io::FluidXReader FXReader(IOListen);
+    openfluid::fluidx::FluidXReader FXReader(IOListen);
 
 
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();

@@ -60,12 +60,12 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/FunctionDescriptor.hpp>
-#include <openfluid/base/GeneratorDescriptor.hpp>
-#include <openfluid/base/DatastoreDescriptor.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/io/IOListener.hpp>
-#include <openfluid/io/FluidXReader.hpp>
-#include <openfluid/io/FluidXWriter.hpp>
+#include <openfluid/fluidx/FluidXReader.hpp>
+#include <openfluid/fluidx/FluidXWriter.hpp>
 #include <openfluid/guicommon/RunDialogMachineListener.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -143,7 +143,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
     try
     {
-      FXReader = new openfluid::io::FluidXReader(mp_IOListener);
+      FXReader = new openfluid::fluidx::FluidXReader(mp_IOListener);
 
       FXReader->loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
@@ -162,13 +162,13 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       throw;
     }
 
-    openfluid::base::RunDescriptor RunDesc = FXReader->getRunDescriptor();
+    openfluid::fluidx::RunDescriptor RunDesc = FXReader->getRunDescriptor();
     checkAndSetDefaultRunValues(RunDesc);
 
     openfluid::base::OutputDescriptor OutDesc = FXReader->getOutputDescriptor();
     checkAndSetDefaultOutputValues(OutDesc);
 
-    openfluid::base::CoupledModelDescriptor ModelDesc = FXReader->getModelDescriptor();
+    openfluid::fluidx::CoupledModelDescriptor ModelDesc = FXReader->getModelDescriptor();
 
     checkModelDesc(ModelDesc);
 
@@ -267,7 +267,7 @@ void EngineProject::setDefaultRunDesc()
   else
     DefaultDeltaT = m_DefaultDeltaT;
 
-  openfluid::base::RunDescriptor RunDesc(DefaultDeltaT, DefaultBeginDT,
+  openfluid::fluidx::RunDescriptor RunDesc(DefaultDeltaT, DefaultBeginDT,
       DefaultEndDT);
 
   if (PrefMgr->getOutFilesBufferInKB() != -1)
@@ -297,7 +297,7 @@ void EngineProject::setDefaultOutDesc()
 
 
 void EngineProject::checkAndSetDefaultRunValues(
-    openfluid::base::RunDescriptor& RunDesc)
+    openfluid::fluidx::RunDescriptor& RunDesc)
 {
   openfluid::core::DateTime DT;
   openfluid::core::DateTime BeginDT;
@@ -343,11 +343,11 @@ void EngineProject::checkAndSetDefaultOutputValues(
 // =====================================================================
 
 
-void EngineProject::checkModelDesc(openfluid::base::CoupledModelDescriptor& ModelDesc)
+void EngineProject::checkModelDesc(openfluid::fluidx::CoupledModelDescriptor& ModelDesc)
 {
   std::string MissingFunctions = "";
 
-  openfluid::base::CoupledModelDescriptor::SetDescription_t::iterator it =
+  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::iterator it =
       ModelDesc.getItems().begin();
 
   FunctionSignatureRegistry* SignaturesReg =
@@ -355,12 +355,12 @@ void EngineProject::checkModelDesc(openfluid::base::CoupledModelDescriptor& Mode
 
   while (it != ModelDesc.getItems().end())
   {
-    if ((*it)->isType(openfluid::base::ModelItemDescriptor::PluggedFunction)
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction)
         && !SignaturesReg->isPluggableFunctionAvailable(
-            ((openfluid::base::FunctionDescriptor*) (*it))->getFileID()))
+            ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID()))
     {
       MissingFunctions.append("- "
-          + ((openfluid::base::FunctionDescriptor*) (*it))->getFileID() + "\n");
+          + ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID() + "\n");
 
       it = ModelDesc.getItems().erase(it);
     }
@@ -391,10 +391,10 @@ void EngineProject::checkModelDesc(openfluid::base::CoupledModelDescriptor& Mode
 
 void EngineProject::checkInputData()
 {
-  std::list<openfluid::base::InputDataDescriptor> IDataList =
+  std::list<openfluid::fluidx::InputDataDescriptor> IDataList =
       FXReader->getDomainDescriptor().getInputData();
 
-  for (std::list<openfluid::base::InputDataDescriptor>::iterator itIDataDesc =
+  for (std::list<openfluid::fluidx::InputDataDescriptor>::iterator itIDataDesc =
       IDataList.begin(); itIDataDesc != IDataList.end(); ++itIDataDesc)
   {
     std::string ClassName = itIDataDesc->getUnitsClass();
@@ -434,9 +434,9 @@ void EngineProject::addSignatureToGenerators()
   for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
-    if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+    if ((*it)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
     {
-      openfluid::base::GeneratorDescriptor::GeneratorMethod
+      openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
           GeneratorMethod = (*it)->GeneratorInfo->GeneratorMethod;
 
       GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
@@ -511,7 +511,7 @@ void EngineProject::save()
 
   openfluid::base::ProjectManager::getInstance()->save();
 
-  openfluid::io::FluidXWriter Writer(getIOListener());
+  openfluid::fluidx::FluidXWriter Writer(getIOListener());
 
   Writer.setDomainToWrite(getCoreRepository());
   Writer.setModelToWrite(*getModelInstance());
@@ -610,7 +610,7 @@ openfluid::base::ExecutionMessages& EngineProject::getExecutionMessages()
 // =====================================================================
 
 
-openfluid::base::RunDescriptor& EngineProject::getRunDescriptor()
+openfluid::fluidx::RunDescriptor& EngineProject::getRunDescriptor()
 {
   return mp_SimBlob->getRunDescriptor();
 }

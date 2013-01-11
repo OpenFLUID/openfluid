@@ -178,14 +178,14 @@ void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
 
 void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 {
-  if (mp_Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+  if (mp_Item->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
   {
-    openfluid::base::GeneratorDescriptor::GeneratorMethod
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
         Method =
             (static_cast<GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod;
 
-    if (Method == openfluid::base::GeneratorDescriptor::Interp || Method
-        == openfluid::base::GeneratorDescriptor::Inject)
+    if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
+        == openfluid::fluidx::GeneratorDescriptor::Inject)
     {
       openfluid::ware::WareParams_t GlobalParams =
           mp_ModelInstance->getGlobalParameters();

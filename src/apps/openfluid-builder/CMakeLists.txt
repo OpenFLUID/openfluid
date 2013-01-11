@@ -62,7 +62,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-io
                       openfluid-tools
                       openfluid-guicommon
-                      openfluid-builder-main)
+                      openfluid-builder-main
+                      openfluid-fluidx)
 
 
 ADD_SUBDIRECTORY(extensions)

@@ -175,7 +175,7 @@ void ModelFctDetailAdapterModelImpl::setFctToDisplay(
 bool ModelFctDetailAdapterModelImpl::isAPluggableFct()
 {
   return !(mp_Signature && mp_Signature->ItemType
-      == openfluid::base::ModelItemDescriptor::Generator);
+      == openfluid::fluidx::ModelItemDescriptor::Generator);
 }
 
 // =====================================================================

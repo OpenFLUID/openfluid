@@ -197,13 +197,13 @@ void ModelAvailFctAdapterModelImpl::setSignatures(
 
   FunctionSignatureRegistry::FctSignaturesByName_t::iterator it;
   for (it
-      = Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].begin(); it
-      != Signatures[openfluid::base::ModelItemDescriptor::PluggedFunction].end(); ++it)
+      = Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].begin(); it
+      != Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].end(); ++it)
   {
     setAPluggableFunction(it->second);
   }
-  for (it = Signatures[openfluid::base::ModelItemDescriptor::Generator].begin(); it
-      != Signatures[openfluid::base::ModelItemDescriptor::Generator].end(); ++it)
+  for (it = Signatures[openfluid::fluidx::ModelItemDescriptor::Generator].begin(); it
+      != Signatures[openfluid::fluidx::ModelItemDescriptor::Generator].end(); ++it)
   {
     setAGeneratorFunction(it->second);
   }

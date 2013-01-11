@@ -62,12 +62,14 @@
 namespace openfluid {
 namespace base {
 class SimulationStatus;
-class RunDescriptor;
 class OutputDescriptor;
 class OutputSetDescriptor;
 }
 namespace core {
 class Unit;
+}
+namespace fluidx {
+class RunDescriptor;
 }
 }
 
@@ -83,7 +85,7 @@ class ResViewerModel
     virtual sigc::signal<void> signal_FromAppClear() = 0;
 
     virtual void
-    setEngineRequirements(openfluid::base::RunDescriptor& RunDesc,
+    setEngineRequirements(openfluid::fluidx::RunDescriptor& RunDesc,
         openfluid::base::OutputDescriptor& OutDesc) = 0;
 
     virtual void initialize(openfluid::base::OutputSetDescriptor* SetDesc,
@@ -128,7 +130,7 @@ class ResViewerModelImpl: public ResViewerModel
 
   protected:
 
-    openfluid::base::RunDescriptor* mp_RunDesc;
+    openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
     openfluid::base::OutputSetDescriptor* mp_SetDesc;
 
@@ -160,7 +162,7 @@ class ResViewerModelImpl: public ResViewerModel
 
     sigc::signal<void> signal_FromAppClear();
 
-    void setEngineRequirements(openfluid::base::RunDescriptor& RunDesc,
+    void setEngineRequirements(openfluid::fluidx::RunDescriptor& RunDesc,
         openfluid::base::OutputDescriptor& OutDesc);
 
     void initialize(openfluid::base::OutputSetDescriptor* SetDesc,

@@ -83,7 +83,7 @@ BuilderPretestInfo::BuilderPretestInfo() :
 void BuilderPretestInfo::addBuilderInfo(
     openfluid::machine::ModelInstance* ModelInstance,
     openfluid::machine::SimulationBlob* SimBlob,
-    openfluid::base::RunDescriptor& RunDesc)
+    openfluid::fluidx::RunDescriptor& RunDesc)
 {
   mp_ModelInstance = ModelInstance;
   mp_SimBlob = SimBlob;
@@ -183,7 +183,7 @@ void BuilderPretestInfo::checkModelItemParams(
   BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Param, Item->Signature->HandledData.FunctionParams)
 {  checkParamFilled(Item, Param.DataName);
 
-  if(Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+  if(Item->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
   {
     checkGeneratorParamsConsistency(Item);
   }
@@ -199,7 +199,7 @@ void BuilderPretestInfo::checkParamFilled(
 {
   if (!localParamIsSet(Item, ParamName) & !globalParamIsSet(ParamName))
   {
-    if (Item->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+    if (Item->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
       GeneratorParams = false;
     else
       Params = false;
@@ -216,10 +216,10 @@ void BuilderPretestInfo::checkParamFilled(
 void BuilderPretestInfo::checkGeneratorParamsConsistency(
     openfluid::machine::ModelItemInstance* Item)
 {
-  openfluid::base::GeneratorDescriptor::GeneratorMethod Method =
+  openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
       (static_cast<GeneratorSignature*> (Item->Signature))->m_GeneratorMethod;
 
-  if (Method == openfluid::base::GeneratorDescriptor::Random
+  if (Method == openfluid::fluidx::GeneratorDescriptor::Random
       && !m_RandomMinMaxChecked && (localParamIsSet(Item, "min")
       || globalParamIsSet("min")) && (localParamIsSet(Item, "max")
       || globalParamIsSet("max")))
@@ -228,7 +228,7 @@ void BuilderPretestInfo::checkGeneratorParamsConsistency(
 
     m_RandomMinMaxChecked = true;
   }
-  else if (Method == openfluid::base::GeneratorDescriptor::Interp
+  else if (Method == openfluid::fluidx::GeneratorDescriptor::Interp
       && !m_InterpMinMaxChecked && (localParamIsSet(Item, "thresholdmin")
       || globalParamIsSet("thresholdmin")) && (localParamIsSet(Item,
       "thresholdmax") || globalParamIsSet("thresholdmax")))
@@ -237,7 +237,7 @@ void BuilderPretestInfo::checkGeneratorParamsConsistency(
 
     m_InterpMinMaxChecked = true;
   }
-  else if (Method == openfluid::base::GeneratorDescriptor::Inject
+  else if (Method == openfluid::fluidx::GeneratorDescriptor::Inject
       && !m_InjectMinMaxChecked && (localParamIsSet(Item, "thresholdmin")
       || globalParamIsSet("thresholdmin")) && (localParamIsSet(Item,
       "thresholdmax") || globalParamIsSet("thresholdmax")))

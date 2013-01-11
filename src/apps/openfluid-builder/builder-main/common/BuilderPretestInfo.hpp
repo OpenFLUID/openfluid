@@ -59,7 +59,7 @@
 #include <openfluid/ware/PluggableWare.hpp>
 
 namespace openfluid {
-namespace base {
+namespace fluidx {
 class RunDescriptor;
 }
 namespace machine {
@@ -99,7 +99,7 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 
     void addBuilderInfo(openfluid::machine::ModelInstance* ModelInstance,
         openfluid::machine::SimulationBlob* SimBlob,
-        openfluid::base::RunDescriptor& RunDesc);
+        openfluid::fluidx::RunDescriptor& RunDesc);
 
     bool getGlobalCheckState();
 
@@ -109,7 +109,7 @@ class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
 
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
-    openfluid::base::RunDescriptor* mp_RunDesc;
+    openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
     void checkModelFilled();
 

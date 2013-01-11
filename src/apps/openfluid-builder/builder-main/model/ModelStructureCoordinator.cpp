@@ -119,11 +119,11 @@ void ModelStructureCoordinator::whenAddFctAsked()
 
   switch (Signature->ItemType)
   {
-    case openfluid::base::ModelItemDescriptor::PluggedFunction:
+    case openfluid::fluidx::ModelItemDescriptor::PluggedFunction:
       Item = ModelItemInstanceFactory::createPluggableItemFromSignature(
           *Signature);
       break;
-    case openfluid::base::ModelItemDescriptor::Generator:
+    case openfluid::fluidx::ModelItemDescriptor::Generator:
       Item
           = ModelItemInstanceFactory::createGeneratorItemFromSignatureWithDialog(
               *Signature, mp_SimBlob->getCoreRepository(), mp_ModelInstance);
@@ -345,7 +345,7 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
         ModelItems.begin(); it != ModelItems.end(); ++it)
     {
       // it's a Generator, we store it as is in TempGenerators
-      if ((*it)->ItemType == openfluid::base::ModelItemDescriptor::Generator)
+      if ((*it)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
         TempGenerators[(*it)->Signature->ID] = *it;
 
       TempItems.push_back(std::make_pair((*it)->Signature->ID, (*it)->Params));

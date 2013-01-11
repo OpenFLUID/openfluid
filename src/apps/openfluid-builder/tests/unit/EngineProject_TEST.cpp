@@ -68,7 +68,7 @@
 #include "ModelItemInstanceFactory.hpp"
 #include "tests-config.hpp"
 
-#include <openfluid/base/RunDescriptor.hpp>
+#include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
