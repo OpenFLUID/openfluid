@@ -54,7 +54,7 @@
 */
 
 #include <openfluid/io/IOListener.hpp>
-#include <openfluid/fluidx/FluidXReader.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/Init.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -94,7 +94,8 @@ int main(int argc, char **argv)
     openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
     openfluid::machine::ModelInstance Model(SBlob,MachineListen);
     openfluid::machine::ObserversListInstance ObsList(SBlob);
-    openfluid::fluidx::FluidXReader FXReader(IOListen);
+    openfluid::fluidx::FluidXDescriptor* FXDesc = openfluid::fluidx::FluidXDescriptor::getInstance();
+    FXDesc->setIOListener(IOListen);
 
 
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
@@ -103,19 +104,19 @@ int main(int argc, char **argv)
     RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
 
 
-    FXReader.loadFromDirectory(InputDir);
+    FXDesc->loadFromDirectory(InputDir);
 
 
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
-                                                                    FXReader.getRunDescriptor(),
-                                                                    FXReader.getOutputDescriptor(),
-                                                                    FXReader.getDatstoreDescriptor(),
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc->m_DomainDescriptor,
+                                                                    FXDesc->m_RunDescriptor,
+                                                                    FXDesc->m_OutputDescriptor,
+                                                                    FXDesc->m_DatastoreDescriptor,
                                                                     SBlob);
 
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc->m_ModelDescriptor,
                                                                   Model);
 
-    openfluid::machine::Factory::buildObserversListFromDescriptor(FXReader.getObserversListDescriptor(),
+    openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc->m_ObserversListDescriptor,
                                                                   ObsList);
 
     Engine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen, IOListen);

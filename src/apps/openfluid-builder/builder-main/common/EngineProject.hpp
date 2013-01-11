@@ -88,7 +88,7 @@ class RunDialogMachineListener;
 }
 namespace fluidx {
 class RunDescriptor;
-class FluidXReader;
+class FluidXDescriptor;
 }
 }
 
@@ -98,7 +98,7 @@ class EngineProject
 
     bool m_WithProjectManager;
 
-    openfluid::fluidx::FluidXReader* FXReader;
+    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
     openfluid::machine::SimulationBlob* mp_SimBlob;
 

@@ -55,17 +55,105 @@
 #ifndef FLUIDXDESCRIPTOR_HPP_
 #define FLUIDXDESCRIPTOR_HPP_
 
+#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/fluidx/DomainDescriptor.hpp>
+#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
+#include <openfluid/fluidx/RunDescriptor.hpp>
+#include <openfluid/base/OutputDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreDescriptor.hpp>
+#include <openfluid/fluidx/ObserversListDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
+#include <libxml/tree.h>
+#include <string>
+
 namespace openfluid {
+
+namespace io {
+class IOListener;
+}
+
 namespace fluidx {
 
 class FluidXDescriptor
 {
+  private:
 
-  public:
+    static FluidXDescriptor* mp_Instance;
+
+    std::string m_CurrentFile;
+
+    std::string m_CurrentDir;
+
+    bool m_RunConfigDefined;
+
+    bool m_ModelDefined;
+
+    openfluid::io::IOListener* mp_Listener;
 
     FluidXDescriptor();
 
+    openfluid::base::OutputFilesDescriptor extractFilesDecriptorFromNode(
+        xmlNodePtr NodePtr);
+
+    openfluid::base::OutputSetDescriptor extractSetDecriptorFromNode(
+        xmlNodePtr NodePtr);
+
+    void extractOutputFromNode(xmlNodePtr NodePtr);
+
+    openfluid::ware::WareParams_t extractParamsFromNode(xmlNodePtr NodePtr);
+
+    openfluid::ware::WareParams_t mergeParams(
+        const openfluid::ware::WareParams_t& Params,
+        const openfluid::ware::WareParams_t& OverloadParams);
+
+    void propagateGlobalParamsInModel();
+
+    void extractModelFromNode(xmlNodePtr NodePtr);
+
+    void extractRunFromNode(xmlNodePtr NodePtr);
+
+    void extractDomainFomNode(xmlNodePtr NodePtr);
+
+    openfluid::core::UnitClassID_t extractUnitClassIDFromNode(
+        xmlNodePtr NodePtr);
+
+    void extractDomainDefinitionFromNode(xmlNodePtr NodePtr);
+
+    void extractDomainInputdataFromNode(xmlNodePtr NodePtr);
+
+    void extractDomainCalendarFromNode(xmlNodePtr NodePtr);
+
+    void extractDatastoreFromNode(xmlNodePtr NodePtr);
+
+    void parseFile(std::string Filename);
+
+    /**
+     * Used for compatibility only
+     * @deprecated
+     */
+    void clearOldVectorNamedVar(std::string& VarName);
+
+  public:
+
+    openfluid::fluidx::CoupledModelDescriptor m_ModelDescriptor;
+
+    openfluid::fluidx::DomainDescriptor m_DomainDescriptor;
+
+    openfluid::fluidx::RunDescriptor m_RunDescriptor;
+
+    openfluid::base::OutputDescriptor m_OutputDescriptor;
+
+    openfluid::fluidx::DatastoreDescriptor m_DatastoreDescriptor;
+
+    openfluid::fluidx::ObserversListDescriptor m_ObserversListDescriptor;
+
     ~FluidXDescriptor();
+
+    static FluidXDescriptor* getInstance();
+
+    void setIOListener(openfluid::io::IOListener* Listener);
+
+    void loadFromDirectory(std::string DirPath);
 };
 
 }

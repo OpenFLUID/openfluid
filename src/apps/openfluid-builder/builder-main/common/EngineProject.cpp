@@ -64,7 +64,7 @@
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/io/IOListener.hpp>
-#include <openfluid/fluidx/FluidXReader.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/FluidXWriter.hpp>
 #include <openfluid/guicommon/RunDialogMachineListener.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
@@ -100,7 +100,7 @@ void MyErrorHandler(void* /*userData*/, xmlErrorPtr error)
 
 
 EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
-  m_WithProjectManager(WithProjectManager), FXReader(0), mp_SimBlob(0),
+  m_WithProjectManager(WithProjectManager), mp_FXDesc(0), mp_SimBlob(0),
       mp_RunEnv(0), mp_IOListener(0), mp_Listener(0), mp_ModelInstance(0),
       mp_Engine(0)
 {
@@ -143,9 +143,10 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
     try
     {
-      FXReader = new openfluid::fluidx::FluidXReader(mp_IOListener);
+      mp_FXDesc = openfluid::fluidx::FluidXDescriptor::getInstance();
+      mp_FXDesc->setIOListener(mp_IOListener);
 
-      FXReader->loadFromDirectory(
+      mp_FXDesc->loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
               : FolderIn);
     }
@@ -162,21 +163,21 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       throw;
     }
 
-    openfluid::fluidx::RunDescriptor RunDesc = FXReader->getRunDescriptor();
+    openfluid::fluidx::RunDescriptor RunDesc = mp_FXDesc->m_RunDescriptor;
     checkAndSetDefaultRunValues(RunDesc);
 
-    openfluid::base::OutputDescriptor OutDesc = FXReader->getOutputDescriptor();
+    openfluid::base::OutputDescriptor OutDesc = mp_FXDesc->m_OutputDescriptor;
     checkAndSetDefaultOutputValues(OutDesc);
 
-    openfluid::fluidx::CoupledModelDescriptor ModelDesc = FXReader->getModelDescriptor();
+    openfluid::fluidx::CoupledModelDescriptor ModelDesc = mp_FXDesc->m_ModelDescriptor;
 
     checkModelDesc(ModelDesc);
 
     try
     {
       openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-          FXReader->getDomainDescriptor(), RunDesc, OutDesc,
-          FXReader->getDatstoreDescriptor(), *mp_SimBlob);
+          mp_FXDesc->m_DomainDescriptor, RunDesc, OutDesc,
+          mp_FXDesc->m_DatastoreDescriptor, *mp_SimBlob);
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);
@@ -392,7 +393,7 @@ void EngineProject::checkModelDesc(openfluid::fluidx::CoupledModelDescriptor& Mo
 void EngineProject::checkInputData()
 {
   std::list<openfluid::fluidx::InputDataDescriptor> IDataList =
-      FXReader->getDomainDescriptor().getInputData();
+      mp_FXDesc->m_DomainDescriptor.getInputData();
 
   for (std::list<openfluid::fluidx::InputDataDescriptor>::iterator itIDataDesc =
       IDataList.begin(); itIDataDesc != IDataList.end(); ++itIDataDesc)
@@ -658,11 +659,10 @@ void EngineProject::deleteEngineObjects()
   delete mp_Listener;
   delete mp_IOListener;
   delete mp_SimBlob;
-  //don't delete mp_RunEnv, which is a singleton
+  //don't delete mp_RunEnv nor mp_FXDesc, which are singletons
   if (m_WithProjectManager)
     getRunEnv()->detachFromProject();
   delete mp_Engine;
-  delete FXReader;
 }
 
 // =====================================================================

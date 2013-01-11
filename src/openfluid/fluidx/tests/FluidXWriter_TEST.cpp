@@ -57,7 +57,7 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
-#include <openfluid/fluidx/FluidXReader.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/FluidXWriter.hpp>
 
 #include <tests-config.hpp>
@@ -74,7 +74,7 @@ int main()
 
 
     openfluid::base::RuntimeEnvironment* RunEnv;
-    openfluid::fluidx::FluidXReader Reader(NULL);
+    openfluid::fluidx::FluidXDescriptor* FXDesc = openfluid::fluidx::FluidXDescriptor::getInstance();
     openfluid::fluidx::FluidXWriter Writer(NULL);
     openfluid::machine::SimulationBlob SBlob;
     openfluid::machine::ModelInstance MInstance(SBlob,NULL);
@@ -83,19 +83,19 @@ int main()
 
     RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
 
-    Reader.loadFromDirectory(InputDir);
+    FXDesc->loadFromDirectory(InputDir);
 
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(Reader.getDomainDescriptor(),
-        Reader.getRunDescriptor(),
-        Reader.getOutputDescriptor(),
-        Reader.getDatstoreDescriptor(),
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc->m_DomainDescriptor,
+        FXDesc->m_RunDescriptor,
+        FXDesc->m_OutputDescriptor,
+        FXDesc->m_DatastoreDescriptor,
         SBlob);
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(Reader.getModelDescriptor(),MInstance);
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc->m_ModelDescriptor,MInstance);
 
     Writer.setDomainToWrite(SBlob.getCoreRepository());
     Writer.setModelToWrite(const_cast<openfluid::machine::ModelInstance&>(MInstance));
-    Writer.setRunConfigurationToWrite(Reader.getRunDescriptor());
-    Writer.setOutputConfigurationToWrite(Reader.getOutputDescriptor());
+    Writer.setRunConfigurationToWrite(FXDesc->m_RunDescriptor);
+    Writer.setOutputConfigurationToWrite(FXDesc->m_OutputDescriptor);
     Writer.setDatastoreToWrite(SBlob.getDatastore());
 
     Writer.WriteToManyFiles(OutputDirMany);

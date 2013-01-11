@@ -58,7 +58,7 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 
-#include <openfluid/fluidx/FluidXReader.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/machine/Engine.hpp>
@@ -528,29 +528,30 @@ void OpenFLUIDApp::runSimulation()
 
 
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
-  openfluid::fluidx::FluidXReader FXReader(IOListener);
-  FXReader.loadFromDirectory(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
+  openfluid::fluidx::FluidXDescriptor* FXDesc = openfluid::fluidx::FluidXDescriptor::getInstance();
+  FXDesc->setIOListener(IOListener);
+  FXDesc->loadFromDirectory(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
   m_SimBlob.getExecutionMessages().resetWarningFlag();
 
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
-  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
-                                                                  FXReader.getRunDescriptor(),
-                                                                  FXReader.getOutputDescriptor(),
-                                                                  FXReader.getDatstoreDescriptor(),
+  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc->m_DomainDescriptor,
+                                                                  FXDesc->m_RunDescriptor,
+                                                                  FXDesc->m_OutputDescriptor,
+                                                                  FXDesc->m_DatastoreDescriptor,
                                                                   m_SimBlob);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();
 
 
   std::cout << "* Building model... "; std::cout.flush();
-  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
+  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc->m_ModelDescriptor,
                                                                 Model);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();
 
   std::cout << "* Building observers list... "; std::cout.flush();
-  openfluid::machine::Factory::buildObserversListFromDescriptor(FXReader.getObserversListDescriptor(),
+  openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc->m_ObserversListDescriptor,
                                                                 ObsList);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();
