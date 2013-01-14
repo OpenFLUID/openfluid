@@ -70,13 +70,12 @@ bool UnstructuredValue::getValueTypeFromString(
     ValueType = openfluid::core::UnstructuredValue::GeoVectorValue;
     return true;
   }
-  // Temporarily disabled GeoRasterValue
-/*  if (ValueTypeString == "georaster")
+  if (ValueTypeString == "georaster")
   {
     ValueType = openfluid::core::UnstructuredValue::GeoRasterValue;
     return true;
   }
-*/
+
   return false;
 }
 
@@ -91,8 +90,8 @@ std::string UnstructuredValue::getStringFromValueType(
   {
     case openfluid::core::UnstructuredValue::GeoVectorValue:
       return "geovector";
-/*    case openfluid::core::UnstructuredValue::GeoRasterValue:
-      return "georaster";*/
+    case openfluid::core::UnstructuredValue::GeoRasterValue:
+      return "georaster";
     default:
       return "";
   }

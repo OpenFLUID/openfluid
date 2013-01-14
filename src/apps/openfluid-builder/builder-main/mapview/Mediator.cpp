@@ -173,7 +173,7 @@ Layer* Mediator::tryToCreateALayerFromADatastoreItem(
       break;
     case openfluid::core::UnstructuredValue::GeoRasterValue:
       Type = LayerType::LAYER_BACKGROUND;
-      break;
+      //break;
     default:
       return ALayer;
       break;
@@ -235,10 +235,11 @@ bool Mediator::hasADisplayableVectorValue(openfluid::core::DatastoreItem& Item,
 // =====================================================================
 // =====================================================================
 
-bool Mediator::hasADisplayableRasterValue(openfluid::core::DatastoreItem& Item)
+bool Mediator::hasADisplayableRasterValue(openfluid::core::DatastoreItem& /*Item*/)
 {
-  return Item.getValue() && Item.getValue()->getType()
-      == openfluid::core::UnstructuredValue::GeoRasterValue;
+  return false;
+//  return Item.getValue() && Item.getValue()->getType()
+//      == openfluid::core::UnstructuredValue::GeoRasterValue;
 }
 
 // =====================================================================
