@@ -381,24 +381,22 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor&
 // =====================================================================
 
 
-void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::DomainDescriptor& DomainDesc,
-    openfluid::fluidx::RunDescriptor& RunDesc,
-    openfluid::base::OutputDescriptor& OutDesc,
-    openfluid::fluidx::DatastoreDescriptor& DataDesc,
+void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescriptor& FluidXDesc,
     SimulationBlob& SimBlob)
 {
-  buildDomainFromDescriptor(DomainDesc,SimBlob.getExecutionMessages(),SimBlob.getCoreRepository());
+  buildDomainFromDescriptor(FluidXDesc.getDomainDescriptor(),SimBlob.getExecutionMessages(),SimBlob.getCoreRepository());
 
-  buildDatastoreFromDescriptor(DataDesc,SimBlob.getDatastore());
+  buildDatastoreFromDescriptor(FluidXDesc.getDatastoreDescriptor(),SimBlob.getDatastore());
 
-  SimBlob.getSimulationStatus() = openfluid::base::SimulationStatus(RunDesc.getBeginDate(),RunDesc.getEndDate(),
-                                                   RunDesc.getDeltaT());
+  SimBlob.getSimulationStatus() = openfluid::base::SimulationStatus(FluidXDesc.getRunDescriptor().getBeginDate(),
+                                                                    FluidXDesc.getRunDescriptor().getEndDate(),
+                                                                    FluidXDesc.getRunDescriptor().getDeltaT());
 
-  SimBlob.getRunDescriptor() = RunDesc;
+  SimBlob.getRunDescriptor() = FluidXDesc.getRunDescriptor();
 
-  SimBlob.getOutputDescriptor() = OutDesc;
+  SimBlob.getOutputDescriptor() = FluidXDesc.getOutputDescriptor();
 
-  fillRunEnvironmentFromDescriptor(RunDesc);
+  fillRunEnvironmentFromDescriptor(FluidXDesc.getRunDescriptor());
 }
 
 

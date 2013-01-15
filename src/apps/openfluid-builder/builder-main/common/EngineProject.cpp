@@ -173,9 +173,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
     try
     {
-      openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-          mp_FXDesc->getDomainDescriptor(), RunDesc, OutDesc,
-          mp_FXDesc->getDatastoreDescriptor(), *mp_SimBlob);
+      openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc, *mp_SimBlob);
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);

@@ -106,11 +106,7 @@ int main(int argc, char **argv)
     FXDesc.loadFromDirectory(InputDir);
 
 
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc.getDomainDescriptor(),
-                                                                    FXDesc.getRunDescriptor(),
-                                                                    FXDesc.getOutputDescriptor(),
-                                                                    FXDesc.getDatastoreDescriptor(),
-                                                                    SBlob);
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,SBlob);
 
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),
                                                                   Model);

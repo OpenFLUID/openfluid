@@ -534,11 +534,7 @@ void OpenFLUIDApp::runSimulation()
 
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
-  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc.getDomainDescriptor(),
-                                                                  FXDesc.getRunDescriptor(),
-                                                                  FXDesc.getOutputDescriptor(),
-                                                                  FXDesc.getDatastoreDescriptor(),
-                                                                  m_SimBlob);
+  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,m_SimBlob);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();
 

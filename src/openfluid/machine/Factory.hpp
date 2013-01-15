@@ -62,6 +62,7 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/ObserversListDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 namespace openfluid {
 namespace base {
@@ -107,10 +108,7 @@ class DLLEXPORT Factory
 
     static void fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor& RunDescr);
 
-    static void buildSimulationBlobFromDescriptors(openfluid::fluidx::DomainDescriptor& DomainDesc,
-                                                   openfluid::fluidx::RunDescriptor& RunDesc,
-                                                   openfluid::base::OutputDescriptor& OutDesc,
-                                                   openfluid::fluidx::DatastoreDescriptor& DataDesc,
+    static void buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescriptor& FluidXDesc,
                                                    SimulationBlob& SimBlob);
 
     static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
