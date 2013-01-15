@@ -89,6 +89,18 @@ class FluidXDescriptor
 
     static FluidXDescriptor* mp_Instance;
 
+    openfluid::fluidx::CoupledModelDescriptor m_ModelDescriptor;
+
+    openfluid::fluidx::DomainDescriptor m_DomainDescriptor;
+
+    openfluid::fluidx::RunDescriptor m_RunDescriptor;
+
+    openfluid::base::OutputDescriptor m_OutputDescriptor;
+
+    openfluid::fluidx::DatastoreDescriptor m_DatastoreDescriptor;
+
+    openfluid::fluidx::ObserversListDescriptor m_ObserversListDescriptor;
+
     std::string m_CurrentFile;
 
     std::string m_CurrentDir;
@@ -169,18 +181,6 @@ class FluidXDescriptor
 
   public:
 
-    openfluid::fluidx::CoupledModelDescriptor m_ModelDescriptor;
-
-    openfluid::fluidx::DomainDescriptor m_DomainDescriptor;
-
-    openfluid::fluidx::RunDescriptor m_RunDescriptor;
-
-    openfluid::base::OutputDescriptor m_OutputDescriptor;
-
-    openfluid::fluidx::DatastoreDescriptor m_DatastoreDescriptor;
-
-    openfluid::fluidx::ObserversListDescriptor m_ObserversListDescriptor;
-
     ~FluidXDescriptor();
 
     static FluidXDescriptor* getInstance();
@@ -188,6 +188,42 @@ class FluidXDescriptor
     void setIOListener(openfluid::io::IOListener* Listener);
 
     void loadFromDirectory(std::string DirPath);
+
+    inline openfluid::fluidx::CoupledModelDescriptor& getModelDescriptor()
+    { return m_ModelDescriptor; }
+
+    inline openfluid::fluidx::DomainDescriptor& getDomainDescriptor()
+    { return m_DomainDescriptor; }
+
+    inline openfluid::fluidx::RunDescriptor& getRunDescriptor()
+    { return m_RunDescriptor; }
+
+    inline openfluid::base::OutputDescriptor& getOutputDescriptor()
+    { return m_OutputDescriptor; }
+
+    inline openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor()
+    { return m_DatastoreDescriptor; }
+
+    inline openfluid::fluidx::ObserversListDescriptor& getObserversListDescriptor()
+    { return m_ObserversListDescriptor; }
+
+    inline const openfluid::fluidx::CoupledModelDescriptor& getModelDescriptor() const
+    { return m_ModelDescriptor; }
+
+    inline const openfluid::fluidx::DomainDescriptor& getDomainDescriptor() const
+    { return m_DomainDescriptor; }
+
+    inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const
+    { return m_RunDescriptor; }
+
+    inline const openfluid::base::OutputDescriptor& getOutputDescriptor() const
+    { return m_OutputDescriptor; }
+
+    inline const openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor() const
+    { return m_DatastoreDescriptor; }
+
+    inline const openfluid::fluidx::ObserversListDescriptor& getObserversListDescriptor() const
+    { return m_ObserversListDescriptor; }
 
     // =====================================================================
     // =====================================================================

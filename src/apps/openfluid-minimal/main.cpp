@@ -107,16 +107,16 @@ int main(int argc, char **argv)
     FXDesc->loadFromDirectory(InputDir);
 
 
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc->m_DomainDescriptor,
-                                                                    FXDesc->m_RunDescriptor,
-                                                                    FXDesc->m_OutputDescriptor,
-                                                                    FXDesc->m_DatastoreDescriptor,
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc->getDomainDescriptor(),
+                                                                    FXDesc->getRunDescriptor(),
+                                                                    FXDesc->getOutputDescriptor(),
+                                                                    FXDesc->getDatastoreDescriptor(),
                                                                     SBlob);
 
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc->m_ModelDescriptor,
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc->getModelDescriptor(),
                                                                   Model);
 
-    openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc->m_ObserversListDescriptor,
+    openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc->getObserversListDescriptor(),
                                                                   ObsList);
 
     Engine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen, IOListen);

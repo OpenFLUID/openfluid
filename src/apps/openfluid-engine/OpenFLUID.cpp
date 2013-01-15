@@ -535,23 +535,23 @@ void OpenFLUIDApp::runSimulation()
 
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
-  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc->m_DomainDescriptor,
-                                                                  FXDesc->m_RunDescriptor,
-                                                                  FXDesc->m_OutputDescriptor,
-                                                                  FXDesc->m_DatastoreDescriptor,
+  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc->getDomainDescriptor(),
+                                                                  FXDesc->getRunDescriptor(),
+                                                                  FXDesc->getOutputDescriptor(),
+                                                                  FXDesc->getDatastoreDescriptor(),
                                                                   m_SimBlob);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();
 
 
   std::cout << "* Building model... "; std::cout.flush();
-  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc->m_ModelDescriptor,
+  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc->getModelDescriptor(),
                                                                 Model);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();
 
   std::cout << "* Building observers list... "; std::cout.flush();
-  openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc->m_ObserversListDescriptor,
+  openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc->getObserversListDescriptor(),
                                                                 ObsList);
   printlnExecStatus();
   m_SimBlob.getExecutionMessages().resetWarningFlag();

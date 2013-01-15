@@ -162,21 +162,21 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       throw;
     }
 
-    openfluid::fluidx::RunDescriptor RunDesc = mp_FXDesc->m_RunDescriptor;
+    openfluid::fluidx::RunDescriptor RunDesc = mp_FXDesc->getRunDescriptor();
     checkAndSetDefaultRunValues(RunDesc);
 
-    openfluid::base::OutputDescriptor OutDesc = mp_FXDesc->m_OutputDescriptor;
+    openfluid::base::OutputDescriptor OutDesc = mp_FXDesc->getOutputDescriptor();
     checkAndSetDefaultOutputValues(OutDesc);
 
-    openfluid::fluidx::CoupledModelDescriptor ModelDesc = mp_FXDesc->m_ModelDescriptor;
+    openfluid::fluidx::CoupledModelDescriptor ModelDesc = mp_FXDesc->getModelDescriptor();
 
     checkModelDesc(ModelDesc);
 
     try
     {
       openfluid::machine::Factory::buildSimulationBlobFromDescriptors(
-          mp_FXDesc->m_DomainDescriptor, RunDesc, OutDesc,
-          mp_FXDesc->m_DatastoreDescriptor, *mp_SimBlob);
+          mp_FXDesc->getDomainDescriptor(), RunDesc, OutDesc,
+          mp_FXDesc->getDatastoreDescriptor(), *mp_SimBlob);
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);
@@ -392,7 +392,7 @@ void EngineProject::checkModelDesc(openfluid::fluidx::CoupledModelDescriptor& Mo
 void EngineProject::checkInputData()
 {
   std::list<openfluid::fluidx::InputDataDescriptor> IDataList =
-      mp_FXDesc->m_DomainDescriptor.getInputData();
+      mp_FXDesc->getDomainDescriptor().getInputData();
 
   for (std::list<openfluid::fluidx::InputDataDescriptor>::iterator itIDataDesc =
       IDataList.begin(); itIDataDesc != IDataList.end(); ++itIDataDesc)
