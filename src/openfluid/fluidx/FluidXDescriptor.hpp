@@ -99,11 +99,11 @@ class FluidXDescriptor
 
     openfluid::io::IOListener* mp_Listener;
 
-    std::string m_ModelStr;
-    std::string m_RunStr;
-    std::string m_DomainStr;
-    std::string m_OutputStr;
-    std::string m_DataStr;
+    std::string m_ModelStrToWrite;
+    std::string m_RunStrToWrite;
+    std::string m_DomainStrToWrite;
+    std::string m_OutputStrToWrite;
+    std::string m_DataStrToWrite;
 
     openfluid::core::InstantiationInfo::Type m_InstType;
 
@@ -155,7 +155,7 @@ class FluidXDescriptor
     // =====================================================================
     // =====================================================================
 
-    void prepareOutputDir(std::string DirPath);
+    void prepareFluidXDir(std::string DirPath);
 
     std::string getGeneratorMethodAsStr(
         openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const;

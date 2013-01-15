@@ -1297,7 +1297,7 @@ void FluidXDescriptor::setModelToWrite(openfluid::machine::ModelInstance& MInsta
 
     Contents << m_IndentStr << "</model>\n";
 
-    m_ModelStr  = Contents.str();
+    m_ModelStrToWrite  = Contents.str();
   }
 }
 
@@ -1323,7 +1323,7 @@ void FluidXDescriptor::setRunConfigurationToWrite()
     Contents << m_IndentStr << m_IndentStr << "<filesbuffer kbytes=\"" << m_RunDescriptor.getFilesBufferSizeInKB() << "\" />\n";
     Contents << m_IndentStr << "</run>\n";
 
-    m_RunStr = Contents.str();
+    m_RunStrToWrite = Contents.str();
   }
 
 }
@@ -1505,7 +1505,7 @@ void FluidXDescriptor::setDomainToWrite(const openfluid::core::CoreRepository& C
 
     Contents << m_IndentStr << "</domain>\n";
 
-    m_DomainStr = Contents.str();
+    m_DomainStrToWrite = Contents.str();
   }
 }
 
@@ -1597,7 +1597,7 @@ void FluidXDescriptor::setOutputConfigurationToWrite()
     }
   }
 
-  m_OutputStr = Contents.str();
+  m_OutputStrToWrite = Contents.str();
 }
 
 
@@ -1633,7 +1633,7 @@ void FluidXDescriptor::setDatastoreToWrite(const openfluid::core::Datastore& Sto
 
     Contents << m_IndentStr << "</datastore>\n";
 
-    m_DataStr = Contents.str();
+    m_DataStrToWrite = Contents.str();
   }
 
 }
@@ -1643,7 +1643,7 @@ void FluidXDescriptor::setDatastoreToWrite(const openfluid::core::Datastore& Sto
 // =====================================================================
 
 
-void FluidXDescriptor::prepareOutputDir(std::string DirPath)
+void FluidXDescriptor::prepareFluidXDir(std::string DirPath)
 {
 
   boost::filesystem::path OutputDirPath(DirPath);
@@ -1671,7 +1671,7 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
   std::ofstream OutFile;
   std::string OutFilename;
 
-  prepareOutputDir(DirPath);
+  prepareFluidXDir(DirPath);
 
   // model
   OutFilename= boost::filesystem::path(DirPath+"/model.fluidx").string();
@@ -1680,7 +1680,7 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_ModelStr << "\n\n";
+  OutFile << m_ModelStrToWrite << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1694,7 +1694,7 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_DomainStr << "\n\n";
+  OutFile << m_DomainStrToWrite << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1708,7 +1708,7 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_RunStr << "\n\n";
+  OutFile << m_RunStrToWrite << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1722,7 +1722,7 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_OutputStr << "\n\n";
+  OutFile << m_OutputStrToWrite << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1736,7 +1736,7 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_DataStr << "\n\n";
+  OutFile << m_DataStrToWrite << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1761,7 +1761,7 @@ void FluidXDescriptor::WriteToSingleFile(std::string FilePath)
 
   std::ofstream OutFile;
 
-  prepareOutputDir(boost::filesystem::path(FilePath).branch_path().string());
+  prepareFluidXDir(boost::filesystem::path(FilePath).branch_path().string());
 
   std::string OutFilename = boost::filesystem::path(FilePath).string();
   mp_Listener->onFileWrite(OutFilename);
@@ -1770,11 +1770,11 @@ void FluidXDescriptor::WriteToSingleFile(std::string FilePath)
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
 
-  OutFile << m_ModelStr << "\n\n";
-  OutFile << m_DomainStr << "\n\n";
-  OutFile << m_RunStr << "\n\n";
-  OutFile << m_OutputStr << "\n\n";
-  OutFile << m_DataStr << "\n\n";
+  OutFile << m_ModelStrToWrite << "\n\n";
+  OutFile << m_DomainStrToWrite << "\n\n";
+  OutFile << m_RunStrToWrite << "\n\n";
+  OutFile << m_OutputStrToWrite << "\n\n";
+  OutFile << m_DataStrToWrite << "\n\n";
 
   OutFile << "</openfluid>\n";
   OutFile << "\n";
