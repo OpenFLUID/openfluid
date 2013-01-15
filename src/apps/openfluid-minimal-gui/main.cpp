@@ -55,7 +55,7 @@
 
 
 #include <openfluid/io/IOListener.hpp>
-#include <openfluid/fluidx/FluidXReader.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/Init.hpp>
@@ -64,6 +64,7 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/ObserversListInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 
 #include <openfluid/guicommon/SimulationRunDialog.hpp>
@@ -80,7 +81,8 @@ int main(int argc, char *argv[])
   openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
   openfluid::machine::Engine* SimEngine;
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
-  openfluid::fluidx::FluidXReader FXReader(IOListen);
+  openfluid::machine::ObserversListInstance ObsList(SBlob);
+  openfluid::fluidx::FluidXDescriptor FXDesc(IOListen);
 
 
   try
@@ -105,19 +107,15 @@ int main(int argc, char *argv[])
     RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
 
 
-    FXReader.loadFromDirectory(InputDir);
+    FXDesc.loadFromDirectory(InputDir);
 
 
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
-        FXReader.getRunDescriptor(),
-        FXReader.getOutputDescriptor(),
-        FXReader.getDatstoreDescriptor(),
-        SBlob);
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,SBlob);
 
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),
         Model);
 
-    SimEngine = new openfluid::machine::Engine(SBlob, Model, MachineListen, IOListen);
+    SimEngine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen, IOListen);
 
   }
   catch (openfluid::base::OFException& E)
