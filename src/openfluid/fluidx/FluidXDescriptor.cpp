@@ -84,15 +84,16 @@
 namespace openfluid {
 namespace fluidx {
 
-FluidXDescriptor* FluidXDescriptor::mp_Instance = 0;
 
 // =====================================================================
 // =====================================================================
 
-FluidXDescriptor::FluidXDescriptor() :
-    mp_Listener(0),  m_InstType(openfluid::core::InstantiationInfo::DESCRIPTOR),
+FluidXDescriptor::FluidXDescriptor(openfluid::io::IOListener* Listener) :
+    mp_Listener(Listener),  m_InstType(openfluid::core::InstantiationInfo::DESCRIPTOR),
     m_IndentStr(" ")
 {
+  if (!mp_Listener)
+    mp_Listener = new openfluid::io::IOListener();
 }
 
 // =====================================================================
@@ -100,25 +101,6 @@ FluidXDescriptor::FluidXDescriptor() :
 
 FluidXDescriptor::~FluidXDescriptor()
 {
-}
-
-// =====================================================================
-// =====================================================================
-
-FluidXDescriptor* FluidXDescriptor::getInstance()
-{
-  if (!mp_Instance)
-    mp_Instance = new FluidXDescriptor();
-
-  return mp_Instance;
-}
-
-// =====================================================================
-// =====================================================================
-
-void FluidXDescriptor::setIOListener(openfluid::io::IOListener* Listener)
-{
-  mp_Listener = Listener;
 }
 
 // =====================================================================

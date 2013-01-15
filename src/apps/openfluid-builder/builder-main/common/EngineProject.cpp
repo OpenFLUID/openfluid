@@ -142,8 +142,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
     try
     {
-      mp_FXDesc = openfluid::fluidx::FluidXDescriptor::getInstance();
-      mp_FXDesc->setIOListener(mp_IOListener);
+      mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(mp_IOListener);
 
       mp_FXDesc->loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()

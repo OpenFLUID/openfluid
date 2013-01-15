@@ -87,8 +87,6 @@ class FluidXDescriptor
 {
   private:
 
-    static FluidXDescriptor* mp_Instance;
-
     openfluid::fluidx::CoupledModelDescriptor m_ModelDescriptor;
 
     openfluid::fluidx::DomainDescriptor m_DomainDescriptor;
@@ -120,8 +118,6 @@ class FluidXDescriptor
     openfluid::core::InstantiationInfo::Type m_InstType;
 
     std::string m_IndentStr;
-
-    FluidXDescriptor();
 
     openfluid::base::OutputFilesDescriptor extractFilesDecriptorFromNode(
         xmlNodePtr NodePtr);
@@ -181,11 +177,10 @@ class FluidXDescriptor
 
   public:
 
+
+    FluidXDescriptor(openfluid::io::IOListener* Listener);
+
     ~FluidXDescriptor();
-
-    static FluidXDescriptor* getInstance();
-
-    void setIOListener(openfluid::io::IOListener* Listener);
 
     void loadFromDirectory(std::string DirPath);
 
