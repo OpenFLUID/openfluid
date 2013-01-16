@@ -75,14 +75,14 @@ BOOST_AUTO_TEST_CASE(check_construction)
                                     openfluid::core::DateTime(2001,1,1,0,0,0),
                                     60);
 
+  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStage(),openfluid::base::SimulationStatus::PRE);
+  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentTimeIndex(),0);
+  BOOST_REQUIRE_EQUAL(SimStatus.isFirstTimeIndex(),true);
 
   BOOST_REQUIRE(SimStatus.getBeginDate() == openfluid::core::DateTime(2000,1,1,0,0,0));
   BOOST_REQUIRE(SimStatus.getEndDate() == openfluid::core::DateTime(2001,1,1,0,0,0));
   BOOST_REQUIRE_EQUAL(SimStatus.getDefaultDeltaT(),60);
 
-
-  BOOST_REQUIRE_EQUAL(SimStatus.isFirstTimeIndex(),true);
-  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentTimeIndex(),0);
   BOOST_REQUIRE(SimStatus.getCurrentDate() == openfluid::core::DateTime(2000,1,1,0,0,0));
 
 }
@@ -93,34 +93,46 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
-                                      openfluid::core::DateTime(2001,1,1,0,0,0),
-                                      76);
+                                      openfluid::core::DateTime(2000,3,1,0,0,0),
+                                      147);
 
   openfluid::core::DateTime PrevTime;
   openfluid::core::TimeStep_t PrevStep = 0;
 
-  BOOST_REQUIRE(false == true);
 
-  /*
+  SimStatus.setCurrentStage(openfluid::base::SimulationStatus::INITIALIZERUN);
+  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStage(),openfluid::base::SimulationStatus::INITIALIZERUN);
+
+  SimStatus.setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
+
+  bool Continue = true;
+
   do
   {
-    if (!SimStatus.isFirstTimeIndex())
+    try
     {
-      BOOST_REQUIRE(SimStatus.getCurrentDateTime() == (PrevTime + SimStatus.getTimeStep()));
-      BOOST_REQUIRE(SimStatus.getCurrentStep() == (PrevStep + 1));
+      SimStatus.setCurrentTimeIndex(SimStatus.getCurrentTimeIndex()+SimStatus.getDefaultDeltaT());
+      std::cout << SimStatus.getCurrentTimeIndex() << std::endl;
+    }
+    catch (...)
+    {
+      Continue = false;
     }
 
-    PrevTime = SimStatus.getCurrentTime();
-    PrevStep = SimStatus.getCurrentStep();
+  } while (Continue);
 
-    if (SimStatus.isLastStep())
-    {
-      BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStep(),SimStatus.getStepsCount()-1);
-      BOOST_REQUIRE((SimStatus.getCurrentTime()+SimStatus.getTimeStep()) >= SimStatus.getEndTime());
-    }
+  SimStatus = openfluid::base::SimulationStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
+                        openfluid::core::DateTime(2001,1,1,0,0,0),
+                        76);
 
-  } while (SimStatus.switchToNextStep());
-*/
+  SimStatus.setCurrentStage(openfluid::base::SimulationStatus::PREPAREDATA);
+
+  BOOST_REQUIRE_THROW(SimStatus.setCurrentTimeIndex(SimStatus.getCurrentTimeIndex()+SimStatus.getDefaultDeltaT()),
+                      openfluid::base::OFException);
+
+  SimStatus.setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
+
+  BOOST_REQUIRE_NO_THROW(SimStatus.setCurrentTimeIndex(SimStatus.getCurrentTimeIndex()+SimStatus.getDefaultDeltaT()));
 }
 
 // =====================================================================
