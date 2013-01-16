@@ -98,7 +98,7 @@ ModelItemSignatureInstance::~ModelItemSignatureInstance()
 
 
 ModelItemInstance::ModelItemInstance():
-  ModelItemSignatureInstance(), Body(NULL)
+  ModelItemSignatureInstance(), Body(NULL), OriginalPosition(0)
 {
 
 }

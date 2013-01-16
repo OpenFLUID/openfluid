@@ -167,7 +167,7 @@ class LoggerFunction : public openfluid::ware::PluggableFunction
     }
 
 
-    return true;
+    return DefaultDeltaT();
   }
 
   // =====================================================================

@@ -314,6 +314,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
       IInstance->Body = NULL;
       IInstance->Signature = Signature;
+      IInstance->OriginalPosition = MInstance.getItemsCount()+1;
 
       MInstance.appendItem(IInstance);
     }

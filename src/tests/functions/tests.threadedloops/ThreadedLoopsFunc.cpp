@@ -310,7 +310,7 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
     std::cout << "Full Threaded 4 times: " << boost::posix_time::to_simple_string(Duration) << std::endl;
 
 
-    return true;
+    return DefaultDeltaT();
   }
 
   // =====================================================================

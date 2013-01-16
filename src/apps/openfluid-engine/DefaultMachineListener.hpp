@@ -176,7 +176,7 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     virtual void onBeforeRunSteps()
     {
       std::cout << std::endl;
-      std::cout << std::setw(10) << "Time step";
+      std::cout << std::setw(10) << "Progress";
       std::cout << std::setw(18) << "Real time";
       std::cout << std::setw(17) << "Status";
       std::cout << std::endl;
@@ -189,7 +189,8 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 
     virtual void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
     {
-      std::cout << std::setw(8) << (SimStatus->getCurrentTimeIndex() / SimStatus->getDefaultDeltaT());
+      double Percent = (double(SimStatus->getCurrentTimeIndex())/double(SimStatus->getSimulationDuration()))*100;
+      std::cout << std::fixed << std::setprecision(2) << std::setw(8) << Percent << "%";
       std::cout << std::setw(25) << SimStatus->getCurrentDate().getAsISOString();
       std::cout.flush();
     };
