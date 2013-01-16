@@ -130,6 +130,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
   mp_ModelInstance->resetInitialized();
 
+  mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(mp_IOListener);
+
   if (FolderIn == "")
   {
     setDefaultRunDesc();
@@ -144,8 +146,6 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
     try
     {
-      mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(mp_IOListener);
-
       mp_FXDesc->loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
               : FolderIn);
@@ -278,6 +278,7 @@ void EngineProject::setDefaultRunDesc()
   RunDesc.setFilled(true);
 
   getRunDescriptor() = RunDesc;
+  mp_FXDesc->getRunDescriptor() = RunDesc;
 }
 
 // =====================================================================
@@ -292,6 +293,7 @@ void EngineProject::setDefaultOutDesc()
   OutDesc.getFileSets().push_back(FileDesc);
 
   getOutputDescriptor() = OutDesc;
+  mp_FXDesc->getOutputDescriptor() = OutDesc;
 }
 
 // =====================================================================
