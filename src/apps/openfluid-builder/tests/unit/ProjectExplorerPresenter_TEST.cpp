@@ -65,6 +65,8 @@
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
+
 // =====================================================================
 // =====================================================================
 
@@ -102,7 +104,8 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob());
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
+                                  EngProject->getFluidXDescriptor());
 
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
@@ -123,7 +126,8 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
   + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob());
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
+                                  EngProject->getFluidXDescriptor());
 
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
@@ -144,7 +148,8 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
   + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob());
+  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
+                                  EngProject->getFluidXDescriptor());
 
   Gtk::TreeView* TreeView = mp_View->getTreeView();
 

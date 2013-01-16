@@ -84,9 +84,10 @@ sigc::signal<void> ProjectExplorerAdapter::signal_FromUserActivationChanged()
 
 void ProjectExplorerAdapter::initialize(
     openfluid::machine::ModelInstance* ModelInstance,
-    openfluid::machine::SimulationBlob* SimBlob)
+    openfluid::machine::SimulationBlob* SimBlob,
+    openfluid::fluidx::FluidXDescriptor& FXDesc)
 {
-  m_Model.initialize(ModelInstance, SimBlob);
+  m_Model.initialize(ModelInstance, SimBlob, FXDesc);
   m_View.setTreeModel(m_Model.getTreeModel());
 }
 

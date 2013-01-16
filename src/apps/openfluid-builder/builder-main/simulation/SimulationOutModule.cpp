@@ -179,7 +179,8 @@ sigc::signal<void> SimulationOutModule::signal_ModuleChanged()
 
 void SimulationOutModule::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
+    openfluid::machine::SimulationBlob& SimBlob,
+    openfluid::fluidx::FluidXDescriptor& /*FXDesc*/)
 {
   mp_ModelInstance = &ModelInstance;
   mp_SimBlob = &SimBlob;

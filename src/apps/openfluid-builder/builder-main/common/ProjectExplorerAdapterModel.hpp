@@ -63,6 +63,9 @@ namespace machine {
 class ModelInstance;
 class SimulationBlob;
 }
+namespace fluidx {
+class FluidXDescriptor;
+}
 }
 
 #include "BuilderTreeStore.hpp"
@@ -80,7 +83,8 @@ class ProjectExplorerAdapterModel
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 
     virtual void initialize(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob) = 0;
+        openfluid::machine::SimulationBlob* SimBlob,
+        openfluid::fluidx::FluidXDescriptor& FXDesc) = 0;
 
     virtual void updateAll() = 0;
 
@@ -124,6 +128,8 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
+    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
+
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
     Gtk::TreeRowReference* mp_ModelRowRef;
@@ -144,7 +150,8 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
     ~ProjectExplorerAdapterModelImpl();
 
     void initialize(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob);
+        openfluid::machine::SimulationBlob* SimBlob,
+        openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     void updateAll();
 
@@ -174,6 +181,8 @@ class ProjectExplorerAdapterModelSub: public ProjectExplorerAdapterModelImpl
     void setModelInstance(openfluid::machine::ModelInstance* ModelInstance);
 
     void setSimulationBlob(openfluid::machine::SimulationBlob* SimBlob);
+
+    void setFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     std::string generateRunInfoStr(std::string Begin, std::string End,
         unsigned int DeltaT);

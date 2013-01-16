@@ -83,7 +83,8 @@ class WorkspaceTab : public ModelessExtension, public openfluid::guicommon::Proj
     // unused here
     void setEngineRequirements(
         openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/){};
+        openfluid::machine::SimulationBlob& /*SimBlob*/,
+        openfluid::fluidx::FluidXDescriptor& /*FXDesc*/){};
 
     // unused here
     void show() {};

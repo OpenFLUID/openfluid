@@ -59,7 +59,7 @@
 
 
 ProjectExplorerModelImpl::ProjectExplorerModelImpl() :
-  mp_ModelInstance(0), mp_SimBlob(0), m_ActivatedElementsPair(std::make_pair(
+  mp_ModelInstance(0), mp_SimBlob(0), mp_FXDesc(0), m_ActivatedElementsPair(std::make_pair(
       ProjectExplorerCategories::EXPLORER_NONE, ""))
 {
 
@@ -125,10 +125,12 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateSimulationAsked()
 
 void ProjectExplorerModelImpl::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
+    openfluid::machine::SimulationBlob& SimBlob,
+    openfluid::fluidx::FluidXDescriptor& FXDesc)
 {
   mp_ModelInstance = &ModelInstance;
   mp_SimBlob = &SimBlob;
+  mp_FXDesc = &FXDesc;
 
   m_signal_Initialized.emit();
 }

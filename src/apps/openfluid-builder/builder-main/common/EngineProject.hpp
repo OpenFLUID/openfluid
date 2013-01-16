@@ -172,6 +172,9 @@ class EngineProject
 
     openfluid::machine::ModelInstance* getModelInstance();
 
+    openfluid::fluidx::FluidXDescriptor& getFluidXDescriptor()
+    { return *mp_FXDesc; }
+
     openfluid::core::CoreRepository& getCoreRepository();
 
     openfluid::base::ExecutionMessages& getExecutionMessages();

@@ -176,7 +176,8 @@ sigc::signal<void> ModelStructureModule::signal_ModuleChanged()
 
 void ModelStructureModule::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
+    openfluid::machine::SimulationBlob& SimBlob,
+    openfluid::fluidx::FluidXDescriptor& FXDesc)
 {
   mp_ModelInstance = &ModelInstance;
   mp_SimBlob = &SimBlob;

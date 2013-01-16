@@ -92,7 +92,7 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
   m_ExplorerModel.setEngineRequirements(*m_EngineProject.getModelInstance(),
-      *m_EngineProject.getSimBlob());
+      *m_EngineProject.getSimBlob(),m_EngineProject.getFluidXDescriptor());
 
   m_ExplorerModel.signal_ActivationChanged().connect(sigc::mem_fun(*this,
       &ProjectCoordinator::whenActivationChanged));

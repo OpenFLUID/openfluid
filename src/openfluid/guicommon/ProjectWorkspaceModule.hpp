@@ -63,6 +63,9 @@ namespace machine {
 class ModelInstance;
 class SimulationBlob;
 }
+namespace fluidx {
+class FluidXDescriptor;
+}
 }
 
 namespace openfluid {
@@ -79,7 +82,8 @@ class ProjectWorkspaceModule: public BuilderModule
 
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob) = 0;
+        openfluid::machine::SimulationBlob& SimBlob,
+        openfluid::fluidx::FluidXDescriptor& FXDesc) = 0;
 
     virtual void update() = 0;
 

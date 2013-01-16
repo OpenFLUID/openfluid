@@ -181,7 +181,8 @@ sigc::signal<void> DomainClassModule::signal_ModuleChanged()
 
 void DomainClassModule::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
+    openfluid::machine::SimulationBlob& SimBlob,
+    openfluid::fluidx::FluidXDescriptor& /*FXDesc*/)
 {
   mp_ModelInstance = &ModelInstance;
   mp_SimBlob = &SimBlob;

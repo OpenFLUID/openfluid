@@ -92,7 +92,8 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureM
 {
   ModelStructureModule* Module = new ModelStructureModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+      *mp_EngineProject.getSimBlob(),
+      mp_EngineProject.getFluidXDescriptor());
   return Module;
 }
 
@@ -104,7 +105,8 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainStructure
 {
   DomainStructureModule* Module = new DomainStructureModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+      *mp_EngineProject.getSimBlob(),
+      mp_EngineProject.getFluidXDescriptor());
   return Module;
 }
 
@@ -116,7 +118,8 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainClassModu
 {
   DomainClassModule* Module = new DomainClassModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+      *mp_EngineProject.getSimBlob(),
+      mp_EngineProject.getFluidXDescriptor());
   return Module;
 }
 
@@ -128,7 +131,8 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunMo
 {
   SimulationRunModule* Module = new SimulationRunModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+      *mp_EngineProject.getSimBlob(),
+      mp_EngineProject.getFluidXDescriptor());
   return Module;
 }
 
@@ -140,7 +144,8 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutMo
 {
   SimulationOutModule* Module = new SimulationOutModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+      *mp_EngineProject.getSimBlob(),
+      mp_EngineProject.getFluidXDescriptor());
   return Module;
 }
 
@@ -164,6 +169,7 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMapViewModule()
 {
   MapViewModule* Module = new MapViewModule();
   Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+      *mp_EngineProject.getSimBlob(),
+      mp_EngineProject.getFluidXDescriptor());
   return Module;
 }

@@ -75,10 +75,6 @@ class SimulationRunModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     sigc::signal<void> m_signal_SimulationRunChanged;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::machine::SimulationBlob* mp_SimBlob;
-
     void compose();
 
     Gtk::Widget* asWidget();
@@ -95,7 +91,8 @@ class SimulationRunModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
+        openfluid::machine::SimulationBlob& SimBlob,
+        openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     void update();
 

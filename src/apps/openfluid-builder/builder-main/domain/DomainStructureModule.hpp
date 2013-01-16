@@ -103,7 +103,8 @@ class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
+        openfluid::machine::SimulationBlob& SimBlob,
+        openfluid::fluidx::FluidXDescriptor& FXDesc);
 
     void update();
 

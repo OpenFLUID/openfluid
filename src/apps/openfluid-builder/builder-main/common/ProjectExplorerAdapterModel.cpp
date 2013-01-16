@@ -57,6 +57,7 @@
 #include <boost/foreach.hpp>
 #include <glibmm/i18n.h>
 
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -153,10 +154,12 @@ ProjectExplorerAdapterModelImpl::~ProjectExplorerAdapterModelImpl()
 
 void ProjectExplorerAdapterModelImpl::initialize(
     openfluid::machine::ModelInstance* ModelInstance,
-    openfluid::machine::SimulationBlob* SimBlob)
+    openfluid::machine::SimulationBlob* SimBlob,
+    openfluid::fluidx::FluidXDescriptor& FXDesc)
 {
   mp_ModelInstance = ModelInstance;
   mp_SimBlob = SimBlob;
+  mp_FXDesc = &FXDesc;
 
   updateAll();
 }
@@ -237,14 +240,14 @@ std::string ProjectExplorerAdapterModelImpl::generateClassInfoStr(
 
 void ProjectExplorerAdapterModelImpl::updateRunInfo()
 {
-  if (mp_SimBlob)
+  if (mp_FXDesc)
   {
     Gtk::TreeRow Row = mref_TreeModel->getRowFromRowRef(*mp_RunInfoRowRef);
 
     Row[m_Columns.m_Display] = generateRunInfoStr(
-        mp_SimBlob->getRunDescriptor().getBeginDate().getAsISOString(),
-        mp_SimBlob->getRunDescriptor().getEndDate().getAsISOString(),
-        mp_SimBlob->getRunDescriptor().getDeltaT());
+        mp_FXDesc->getRunDescriptor().getBeginDate().getAsISOString(),
+        mp_FXDesc->getRunDescriptor().getEndDate().getAsISOString(),
+        mp_FXDesc->getRunDescriptor().getDeltaT());
   }
 }
 
@@ -371,6 +374,14 @@ void ProjectExplorerAdapterModelSub::setSimulationBlob(
     openfluid::machine::SimulationBlob* SimBlob)
 {
   mp_SimBlob = SimBlob;
+}
+
+// =====================================================================
+// =====================================================================
+
+void ProjectExplorerAdapterModelSub::setFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FXDesc)
+{
+  mp_FXDesc = &FXDesc;
 }
 
 // =====================================================================

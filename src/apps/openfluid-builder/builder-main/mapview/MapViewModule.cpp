@@ -132,7 +132,8 @@ Gtk::Widget* MapViewModule::asWidget()
 
 void MapViewModule::setEngineRequirements(
     openfluid::machine::ModelInstance& /*ModelInstance*/,
-    openfluid::machine::SimulationBlob& SimBlob)
+    openfluid::machine::SimulationBlob& SimBlob,
+    openfluid::fluidx::FluidXDescriptor& /*FXDesc*/)
 {
   mp_Mediator->setEngineRequirements(SimBlob);
 }

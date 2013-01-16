@@ -52,7 +52,7 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 #include "SimulationRunModule.hpp"
 
@@ -125,12 +125,10 @@ sigc::signal<void> SimulationRunModule::signal_ModuleChanged()
 
 void SimulationRunModule::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
+    openfluid::machine::SimulationBlob& /*SimBlob*/,
+    openfluid::fluidx::FluidXDescriptor& FXDesc)
 {
-  mp_ModelInstance = &ModelInstance;
-  mp_SimBlob = &SimBlob;
-
-  mp_SimulRunMVP->getModel()->setEngineRequirements(SimBlob.getRunDescriptor());
+  mp_SimulRunMVP->getModel()->setEngineRequirements(FXDesc.getRunDescriptor());
 }
 
 // =====================================================================
