@@ -60,7 +60,7 @@
 #include "DomainClassModule.hpp"
 #include "SimulationRunModule.hpp"
 #include "SimulationOutModule.hpp"
-#include "ResultsSetModule.hpp"
+//#include "ResultsSetModule.hpp"
 #include "EngineProject.hpp"
 
 #include "MapViewModule.hpp"
@@ -148,13 +148,13 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutMo
 // =====================================================================
 
 
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createResultsSetModule()
-{
-  ResultsSetModule* Module = new ResultsSetModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
-  return Module;
-}
+//openfluid::guicommon::BuilderModule* BuilderModuleFactory::createResultsSetModule()
+//{
+//  ResultsSetModule* Module = new ResultsSetModule();
+//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
+//      *mp_EngineProject.getSimBlob());
+//  return Module;
+//}
 
 // =====================================================================
 // =====================================================================

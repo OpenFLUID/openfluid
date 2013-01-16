@@ -118,12 +118,12 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl()
   SubRow1[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
 
   // Results
-  Row = *(mref_TreeModel->append());
-  Row[m_Columns.m_Id] = "";
-  Row[m_Columns.m_Display] = _("Results");
-  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_NONE;
-  Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
-  mp_ResultsRowRef = mref_TreeModel->createRowRefFromIter(*Row);
+//  Row = *(mref_TreeModel->append());
+//  Row[m_Columns.m_Id] = "";
+//  Row[m_Columns.m_Display] = _("Results");
+//  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_NONE;
+//  Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
+//  mp_ResultsRowRef = mref_TreeModel->createRowRefFromIter(*Row);
 
 }
 
@@ -252,48 +252,48 @@ void ProjectExplorerAdapterModelImpl::updateRunInfo()
 // =====================================================================
 
 
-void ProjectExplorerAdapterModelImpl::updateResults(bool WithWarningState)
-{
-  if (WithWarningState)
-  {
-    Gtk::TreeModel::Children ChildrenRows = mref_TreeModel->getRowFromRowRef(
-        *mp_ResultsRowRef).children();
-
-    for (unsigned int i = 0; i < ChildrenRows.size(); i++)
-    {
-      ChildrenRows[i][m_Columns.m_Color] = "red";
-    }
-  } else
-  {
-    if (mp_SimBlob)
-    {
-      mref_TreeModel->clearChildrenOfRowRef(*mp_ResultsRowRef);
-
-      BOOST_FOREACH(openfluid::base::OutputFilesDescriptor FileDesc,mp_SimBlob->getOutputDescriptor().getFileSets())
-{      BOOST_FOREACH(openfluid::base::OutputSetDescriptor SetDesc,FileDesc.getSets())
-      {
-        std::string SetName = SetDesc.getName();
-        std::string ClassName = SetDesc.getUnitsClass();
-        int UnitsCount = 0;
-
-        if(mp_SimBlob->getCoreRepository().getUnits(ClassName))
-        {
-          Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ResultsRowRef));
-
-          if(SetDesc.isAllUnits())
-          UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
-          else
-          UnitsCount = SetDesc.getUnitsIDs().size();
-
-          Row[m_Columns.m_Id] = SetName;
-          Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);
-          Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_SET;
-        }
-      }
-    }
-  }
-}
-}
+//void ProjectExplorerAdapterModelImpl::updateResults(bool WithWarningState)
+//{
+//  if (WithWarningState)
+//  {
+//    Gtk::TreeModel::Children ChildrenRows = mref_TreeModel->getRowFromRowRef(
+//        *mp_ResultsRowRef).children();
+//
+//    for (unsigned int i = 0; i < ChildrenRows.size(); i++)
+//    {
+//      ChildrenRows[i][m_Columns.m_Color] = "red";
+//    }
+//  } else
+//  {
+//    if (mp_SimBlob)
+//    {
+//      mref_TreeModel->clearChildrenOfRowRef(*mp_ResultsRowRef);
+//
+//      BOOST_FOREACH(openfluid::base::OutputFilesDescriptor FileDesc,mp_SimBlob->getOutputDescriptor().getFileSets())
+//{      BOOST_FOREACH(openfluid::base::OutputSetDescriptor SetDesc,FileDesc.getSets())
+//      {
+//        std::string SetName = SetDesc.getName();
+//        std::string ClassName = SetDesc.getUnitsClass();
+//        int UnitsCount = 0;
+//
+//        if(mp_SimBlob->getCoreRepository().getUnits(ClassName))
+//        {
+//          Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ResultsRowRef));
+//
+//          if(SetDesc.isAllUnits())
+//          UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
+//          else
+//          UnitsCount = SetDesc.getUnitsIDs().size();
+//
+//          Row[m_Columns.m_Id] = SetName;
+//          Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);
+//          Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_SET;
+//        }
+//      }
+//    }
+//  }
+//}
+//}
 
 // =====================================================================
 // =====================================================================

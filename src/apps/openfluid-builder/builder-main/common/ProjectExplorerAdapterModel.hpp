@@ -90,7 +90,7 @@ class ProjectExplorerAdapterModel
 
     virtual void updateRunInfo() = 0;
 
-    virtual void updateResults(bool WithWarningState) = 0;
+//    virtual void updateResults(bool WithWarningState) = 0;
 
     virtual void setActivated(Gtk::TreePath Path) = 0;
 
@@ -154,7 +154,7 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     void updateRunInfo();
 
-    void updateResults(bool WithWarningState);
+//    void updateResults(bool WithWarningState);
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 

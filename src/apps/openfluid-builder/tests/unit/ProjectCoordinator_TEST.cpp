@@ -87,8 +87,8 @@ struct init_Coordinator
     std::string m_TestUnitsClassPageName;
     std::string m_ParentTestUnitsClassPageName;
 
-    std::string m_FullSetPageName;
-    std::string m_PartialSetPageName;
+//    std::string m_FullSetPageName;
+//    std::string m_PartialSetPageName;
 
     init_Coordinator()
     {
@@ -118,8 +118,8 @@ struct init_Coordinator
       m_ParentTestUnitsClassPageName = mp_Coordinator->constructClassPageName(
           "ParentTestUnits");
 
-      m_FullSetPageName = mp_Coordinator->constructSetPageName("full");
-      m_PartialSetPageName = mp_Coordinator->constructSetPageName("partial");
+//      m_FullSetPageName = mp_Coordinator->constructSetPageName("full");
+//      m_PartialSetPageName = mp_Coordinator->constructSetPageName("partial");
     }
 
     ~init_Coordinator()
@@ -181,17 +181,17 @@ BOOST_AUTO_TEST_CASE(test_whenActivationChanged)
   mp_Workspace->setCurrentPage(m_OutputsPageName);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
 
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),3);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_FullSetPageName);
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),3);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_FullSetPageName);
 
   mp_Workspace->removePage(m_RunPageName);
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_FullSetPageName);
-
-  mp_Workspace->removePage(m_FullSetPageName);
   BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
+
+//  mp_Workspace->removePage(m_FullSetPageName);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
 
   mp_Workspace->removePage(m_OutputsPageName);
   BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),0);
@@ -220,47 +220,47 @@ BOOST_AUTO_TEST_CASE(test_removeDeletedClassPages)
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),"");
 }
 
-BOOST_AUTO_TEST_CASE(test_removeDeletedSetPages)
-{
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"partial"));
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_FullSetPageName);
-
-  for (unsigned int i = 0; i < mp_EngProject->getOutputDescriptor().getFileSets().size(); i++)
-  {
-    for (unsigned int j = 0; j < mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
-    {
-      if (mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets()[j].getName()
-          == "partial")
-      {
-        mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().erase(
-            mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().begin() + j);
-      }
-    }
-  }
-
-  mp_Coordinator->removeDeletedSetPages();
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_FullSetPageName);
-}
+//BOOST_AUTO_TEST_CASE(test_removeDeletedSetPages)
+//{
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"partial"));
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_FullSetPageName);
+//
+//  for (unsigned int i = 0; i < mp_EngProject->getOutputDescriptor().getFileSets().size(); i++)
+//  {
+//    for (unsigned int j = 0; j < mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
+//    {
+//      if (mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets()[j].getName()
+//          == "partial")
+//      {
+//        mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().erase(
+//            mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().begin() + j);
+//      }
+//    }
+//  }
+//
+//  mp_Coordinator->removeDeletedSetPages();
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_FullSetPageName);
+//}
 
 BOOST_AUTO_TEST_CASE(test_whenModelChanged)
 {
   Gtk::TreeModel::Children ModelRows = mp_ExplorerComponent->getViewSub()->getTreeView()->get_model()->children()[0].children();
 
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"partial"));
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"partial"));
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
   mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS,"TestUnits"));
   mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS,"ParentTestUnits"));
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),4);
+  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(ModelRows.size(),2);
 
   mp_EngProject->getModelInstance()->deleteItem(1);
 
   mp_Coordinator->whenModelChanged();
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),4);
+  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(ModelRows.size(),1);
 
@@ -268,8 +268,8 @@ BOOST_AUTO_TEST_CASE(test_whenModelChanged)
 
   mp_Coordinator->whenModelChanged();
   BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
-  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_FullSetPageName),false);
-  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_PartialSetPageName),false);
+//  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_FullSetPageName),false);
+//  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_PartialSetPageName),false);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(ModelRows.size(),0);
 }
@@ -278,11 +278,11 @@ BOOST_AUTO_TEST_CASE(test_whenDomainChanged)
 {
   Gtk::TreeModel::Children DomainRows = mp_ExplorerComponent->getViewSub()->getTreeView()->get_model()->children()[1].children();
 
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"partial"));
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"partial"));
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
   mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS,"TestUnits"));
   mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS,"ParentTestUnits"));
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),4);
+  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(DomainRows.size(),2);
 
@@ -290,8 +290,8 @@ BOOST_AUTO_TEST_CASE(test_whenDomainChanged)
   mp_EngProject->getCoreRepository().deleteUnit(mp_EngProject->getCoreRepository().getUnit("TestUnits",5));
 
   mp_Coordinator->whenDomainChanged();
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),3);
-  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_PartialSetPageName),false);
+  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
+//  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_PartialSetPageName),false);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(DomainRows.size(),2);
 
@@ -299,47 +299,47 @@ BOOST_AUTO_TEST_CASE(test_whenDomainChanged)
   mp_EngProject->getCoreRepository().deleteUnit(mp_EngProject->getCoreRepository().getUnit("ParentTestUnits",2));
 
   mp_Coordinator->whenDomainChanged();
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
+  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
   BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_ParentTestUnitsClassPageName),false);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_TestUnitsClassPageName);
   BOOST_CHECK_EQUAL(DomainRows.size(),1);
 }
 
-BOOST_AUTO_TEST_CASE(test_whenOutChanged)
-{
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"partial"));
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS,"TestUnits"));
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS,"ParentTestUnits"));
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),4);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
-
-  for (unsigned int i = 0; i < mp_EngProject->getOutputDescriptor().getFileSets().size(); i++)
-  {
-    for (unsigned int j = 0; j < mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
-    {
-      if (mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets()[j].getName()
-          == "partial")
-      {
-        mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().erase(
-            mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().begin() + j);
-      }
-    }
-  }
-
-  mp_Coordinator->whenOutChanged();
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),3);
-  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_PartialSetPageName),false);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
-
-  mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets().erase(
-      mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets().begin());
-
-  mp_Coordinator->whenOutChanged();
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
-  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_FullSetPageName),false);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
-}
+//BOOST_AUTO_TEST_CASE(test_whenOutChanged)
+//{
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"partial"));
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS,"TestUnits"));
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS,"ParentTestUnits"));
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),4);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
+//
+//  for (unsigned int i = 0; i < mp_EngProject->getOutputDescriptor().getFileSets().size(); i++)
+//  {
+//    for (unsigned int j = 0; j < mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
+//    {
+//      if (mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets()[j].getName()
+//          == "partial")
+//      {
+//        mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().erase(
+//            mp_EngProject->getOutputDescriptor().getFileSets()[i].getSets().begin() + j);
+//      }
+//    }
+//  }
+//
+//  mp_Coordinator->whenOutChanged();
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),3);
+//  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_PartialSetPageName),false);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
+//
+//  mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets().erase(
+//      mp_EngProject->getOutputDescriptor().getFileSets()[0].getSets().begin());
+//
+//  mp_Coordinator->whenOutChanged();
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
+//  BOOST_CHECK_EQUAL(mp_Workspace->existsPageName(m_FullSetPageName),false);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_ParentTestUnitsClassPageName);
+//}
 
 // =====================================================================
 // =====================================================================

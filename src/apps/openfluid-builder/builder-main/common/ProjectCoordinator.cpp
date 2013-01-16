@@ -72,7 +72,7 @@
 
 #include "ModelStructureModule.hpp"
 #include "DomainClassModule.hpp"
-#include "ResultsSetModule.hpp"
+//#include "ResultsSetModule.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -260,22 +260,22 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
 
-    case ProjectExplorerCategories::EXPLORER_SET:
-      PageName = constructSetPageName(
-          m_ExplorerModel.getActivatedElement().second);
-      if (!m_Workspace.existsPageName(PageName))
-      {
-        Module
-            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createResultsSetModule());
-
-        (static_cast<ResultsSetModule*> (Module))->setSelectedSetFromApp(
-            m_ExplorerModel.getActivatedElement().second);
-
-        m_SetPageNames.insert(PageName);
-
-        addModuleToWorkspace(PageName, *Module);
-      }
-      break;
+//    case ProjectExplorerCategories::EXPLORER_SET:
+//      PageName = constructSetPageName(
+//          m_ExplorerModel.getActivatedElement().second);
+//      if (!m_Workspace.existsPageName(PageName))
+//      {
+//        Module
+//            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createResultsSetModule());
+//
+//        (static_cast<ResultsSetModule*> (Module))->setSelectedSetFromApp(
+//            m_ExplorerModel.getActivatedElement().second);
+//
+//        m_SetPageNames.insert(PageName);
+//
+//        addModuleToWorkspace(PageName, *Module);
+//      }
+//      break;
 
     case ProjectExplorerCategories::EXPLORER_NONE:
     default:
@@ -297,10 +297,10 @@ std::string ProjectCoordinator::constructClassPageName(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-std::string ProjectCoordinator::constructSetPageName(std::string SetName)
-{
-  return Glib::ustring::compose(_("%1 [%2]"), _("Results"), SetName);
-}
+//std::string ProjectCoordinator::constructSetPageName(std::string SetName)
+//{
+//  return Glib::ustring::compose(_("%1 [%2]"), _("Results"), SetName);
+//}
 
 // =====================================================================
 // =====================================================================
@@ -366,11 +366,11 @@ void ProjectCoordinator::checkProject()
 // =====================================================================
 
 
-void ProjectCoordinator::updateResults()
-{
-  if (m_HasRun)
-    m_ExplorerModel.updateResultsAsked(true);
-}
+//void ProjectCoordinator::updateResults()
+//{
+//  if (m_HasRun)
+//    m_ExplorerModel.updateResultsAsked(true);
+//}
 
 // =====================================================================
 // =====================================================================
@@ -435,7 +435,7 @@ void ProjectCoordinator::whenRunChanged()
 {
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
 
   m_ExplorerModel.updateSimulationAsked();
 
@@ -454,9 +454,9 @@ void ProjectCoordinator::whenOutChanged()
 {
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
 
-  removeDeletedSetPages();
+//  removeDeletedSetPages();
 
   updateWorkspaceModules();
 
@@ -472,11 +472,11 @@ void ProjectCoordinator::computeModelChanges()
 {
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
 
   m_ExplorerModel.updateModelAsked();
 
-  removeDeletedSetPages();
+//  removeDeletedSetPages();
 
   updateWorkspaceModules();
 
@@ -492,11 +492,11 @@ void ProjectCoordinator::computeDomainChanges()
 {
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
   m_ExplorerModel.updateDomainAsked();
 
   removeDeletedClassPages();
-  removeDeletedSetPages();
+//  removeDeletedSetPages();
 
   updateWorkspaceModules();
 
@@ -508,39 +508,39 @@ void ProjectCoordinator::computeDomainChanges()
 // =====================================================================
 // =====================================================================
 
-void ProjectCoordinator::removeDeletedSetPages()
-{
-  std::set<std::string> SetNames;
-
-  for (unsigned int i = 0; i
-      < m_EngineProject.getOutputDescriptor().getFileSets().size(); i++)
-  {
-    for (unsigned int j = 0; j
-        < m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
-    {
-      SetNames.insert(
-          constructSetPageName(
-              m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets()[j].getName()));
-    }
-  }
-
-  std::set<std::string> SetPageNames = m_SetPageNames;
-  for (std::set<std::string>::iterator it = SetPageNames.begin(); it
-      != SetPageNames.end(); ++it)
-  {
-    if (!SetNames.count(*it))
-      m_Workspace.removePage(*it);
-  }
-}
+//void ProjectCoordinator::removeDeletedSetPages()
+//{
+//  std::set<std::string> SetNames;
+//
+//  for (unsigned int i = 0; i
+//      < m_EngineProject.getOutputDescriptor().getFileSets().size(); i++)
+//  {
+//    for (unsigned int j = 0; j
+//        < m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
+//    {
+//      SetNames.insert(
+//          constructSetPageName(
+//              m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets()[j].getName()));
+//    }
+//  }
+//
+//  std::set<std::string> SetPageNames = m_SetPageNames;
+//  for (std::set<std::string>::iterator it = SetPageNames.begin(); it
+//      != SetPageNames.end(); ++it)
+//  {
+//    if (!SetNames.count(*it))
+//      m_Workspace.removePage(*it);
+//  }
+//}
 
 // =====================================================================
 // =====================================================================
 
 
-void ProjectCoordinator::whenResultsChanged()
-{
-
-}
+//void ProjectCoordinator::whenResultsChanged()
+//{
+//
+//}
 
 // =====================================================================
 // =====================================================================
@@ -576,8 +576,8 @@ void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
     m_ClassPageNames.erase(RemovedPageName);
 
   // update Set Pages
-  if (m_SetPageNames.count(RemovedPageName))
-    m_SetPageNames.erase(RemovedPageName);
+//  if (m_SetPageNames.count(RemovedPageName))
+//    m_SetPageNames.erase(RemovedPageName);
 }
 
 // =====================================================================
@@ -839,7 +839,7 @@ void ProjectCoordinator::whenExtensionChanged()
 
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
 
   m_ExplorerModel.updateDomainAsked();
 
@@ -849,7 +849,7 @@ void ProjectCoordinator::whenExtensionChanged()
 
   removeDeletedClassPages();
 
-  removeDeletedSetPages();
+//  removeDeletedSetPages();
 
   updateWorkspaceModules();
 
@@ -899,7 +899,7 @@ void ProjectCoordinator::whenRunStopped()
 
   whenDomainChanged(); // for functions that create units
 
-  m_ExplorerModel.updateResultsAsked(false);
+//  m_ExplorerModel.updateResultsAsked(false);
 
   for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
       it = m_ModelessWindowsExtensionsMap.begin(); it

@@ -88,7 +88,7 @@ class BuilderModuleFactory
 
     openfluid::guicommon::BuilderModule* createSimulationOutModule();
 
-    openfluid::guicommon::BuilderModule* createResultsSetModule();
+//    openfluid::guicommon::BuilderModule* createResultsSetModule();
 
     openfluid::guicommon::BuilderModule* createMapViewModule();
 

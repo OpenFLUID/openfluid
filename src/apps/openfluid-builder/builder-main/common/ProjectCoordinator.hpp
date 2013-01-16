@@ -101,7 +101,7 @@ class ProjectCoordinator
 
     std::set<std::string> m_ClassPageNames;
 
-    std::set<std::string> m_SetPageNames;
+//    std::set<std::string> m_SetPageNames;
 
     std::map<std::string,std::string> m_TabExtensionIdByNameMap;
 
@@ -139,7 +139,7 @@ class ProjectCoordinator
 
     void whenOutChanged();
 
-    void whenResultsChanged();
+//    void whenResultsChanged();
 
     void whenMapViewChanged();
 
@@ -149,7 +149,7 @@ class ProjectCoordinator
 
     void computeDomainChanges();
 
-    void updateResults();
+//    void updateResults();
 
     void updateWorkspaceModules();
 
@@ -159,14 +159,14 @@ class ProjectCoordinator
 
     std::string constructClassPageName(std::string ClassName);
 
-    std::string constructSetPageName(std::string SetName);
+//    std::string constructSetPageName(std::string SetName);
 
     void addModuleToWorkspace(std::string PageName,
         openfluid::guicommon::ProjectWorkspaceModule& Module);
 
     void removeDeletedClassPages();
 
-    void removeDeletedSetPages();
+//    void removeDeletedSetPages();
 
     void whenExtensionChanged();
 
@@ -217,10 +217,10 @@ class ProjectCoordinatorSub: public ProjectCoordinator
       return ProjectCoordinator::constructClassPageName(ClassName);
     }
 
-    std::string constructSetPageName(std::string SetName)
-    {
-      return ProjectCoordinator::constructSetPageName(SetName);
-    }
+//    std::string constructSetPageName(std::string SetName)
+//    {
+//      return ProjectCoordinator::constructSetPageName(SetName);
+//    }
 
     std::string getModelPageName()
     {
@@ -256,10 +256,10 @@ class ProjectCoordinatorSub: public ProjectCoordinator
       ProjectCoordinator::removeDeletedClassPages();
     }
 
-    void removeDeletedSetPages()
-    {
-      ProjectCoordinator::removeDeletedSetPages();
-    }
+//    void removeDeletedSetPages()
+//    {
+//      ProjectCoordinator::removeDeletedSetPages();
+//    }
 
 };
 
