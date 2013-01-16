@@ -123,6 +123,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   mp_ModelInstance = new openfluid::machine::ModelInstance(*mp_SimBlob,
       mp_Listener);
 
+  mp_ObsListInstance = new openfluid::machine::ObserversListInstance(*mp_SimBlob);
+
   mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance, *mp_ObsListInstance,
       mp_Listener, mp_IOListener);
 
@@ -177,6 +179,9 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
       openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
           *mp_ModelInstance);
+
+      openfluid::machine::Factory::buildObserversListFromDescriptor(mp_FXDesc->getObserversListDescriptor(),
+                                                                    *mp_ObsListInstance);
     }
     catch (openfluid::base::OFException e)
     {
