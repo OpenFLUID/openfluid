@@ -60,13 +60,14 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/machine/ExecutionTimePoint.hpp>
 
-/*namespace openfluid {
-namespace base {
-class SimulationInfo;
-class SimulationStatus;
-}
-}*/
+
+namespace openfluid { namespace ware {
+
+class PluggableFunction;
+
+}  }
 
 
 namespace openfluid { namespace machine {
@@ -86,9 +87,14 @@ class DLLEXPORT ModelInstance
 
     openfluid::machine::SimulationBlob& m_SimulationBlob;
 
+    std::list<ExecutionTimePoint> m_TimePointList;
+
     openfluid::ware::WareParams_t m_GlobalParams;
 
     bool m_Initialized;
+
+    void appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex, openfluid::machine::ModelItemInstance* Item);
+
 
     openfluid::ware::WareParams_t mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const;
 
@@ -137,7 +143,18 @@ class DLLEXPORT ModelInstance
 
     void call_checkConsistency() const;
 
-    void call_initializeRun() const;
+    void call_initializeRun();
+
+    inline bool hasTimePointToProcess() const
+    { return !m_TimePointList.empty(); };
+
+    void processNextTimePoint();
+
+    inline openfluid::core::Duration_t getNextTimePointIndex() const
+    {
+      if (m_TimePointList.empty()) return -2;
+      return m_TimePointList.front().getTimeIndex();
+    }
 
     void call_runStep() const;
 

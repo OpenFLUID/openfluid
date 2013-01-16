@@ -449,7 +449,7 @@ void Engine::prepareOutputs()
 
 void Engine::saveOutputs(const openfluid::core::DateTime& CurrentDT)
 {
-  if (mp_OutputsWriter != NULL) mp_OutputsWriter->saveToDirectory(CurrentDT);
+  //if (mp_OutputsWriter != NULL) mp_OutputsWriter->saveToDirectory(CurrentDT);
   if (mp_MessagesWriter != NULL) mp_MessagesWriter->saveToFile(m_SimulationBlob.getExecutionMessages(),true);
 }
 
@@ -803,6 +803,39 @@ void Engine::run()
 
   bool OKToGoOnSimulation = true;
 
+
+#define NEWENG
+
+#ifdef  NEWENG
+
+  while (m_ModelInstance.hasTimePointToProcess())
+  {
+    mp_MachineListener->onRunStep(mp_SimStatus);
+
+    m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+
+    try
+    {
+      m_ModelInstance.processNextTimePoint();
+      m_ObserversListInstance.call_onStepCompleted();
+
+      // TODO to remove? check simulation vars production at each time step
+      //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
+    }
+    catch (openfluid::base::OFException& E)
+    {
+      mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
+      throw;
+    }
+
+    if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
+    mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::OK);
+
+    if (mp_RunEnv->isWriteResults()) saveOutputs(mp_SimStatus->getCurrentDate());
+
+  }
+
+#else
   do // time loop
   {
 
@@ -839,7 +872,7 @@ void Engine::run()
     }
 
   } while (OKToGoOnSimulation);  // end time loop
-
+#endif
 
   mp_MachineListener->onAfterRunSteps();
 
@@ -907,7 +940,7 @@ void Engine::saveReports()
 
 void Engine::closeOutputs()
 {
-  if (mp_OutputsWriter != NULL) mp_OutputsWriter->closeFiles();
+  //if (mp_OutputsWriter != NULL) mp_OutputsWriter->closeFiles();
   if (mp_MessagesWriter != NULL) mp_MessagesWriter->closeFile(m_SimulationBlob.getExecutionMessages(),true);
 
 }

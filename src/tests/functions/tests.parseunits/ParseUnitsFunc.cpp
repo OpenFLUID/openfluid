@@ -252,7 +252,7 @@ class ParseUnitsFunction : public openfluid::ware::PluggableFunction
     }
 
 
-    return true;
+    return DefaultDeltaT();
   }
 
   // =====================================================================

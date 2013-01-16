@@ -106,6 +106,7 @@ class DLLEXPORT ModelItemInstance : public ModelItemSignatureInstance
   public:
     openfluid::ware::WareParams_t Params;
     openfluid::ware::PluggableFunction* Body;
+    unsigned int OriginalPosition;
 
     ModelItemInstance();
 };

@@ -47,30 +47,25 @@
 
 
 /**
-  \file SimulationStatus.cpp
+  \file TimePoint.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#include <openfluid/base/SimulationStatus.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/machine/ExecutionTimePoint.hpp>
+#include <openfluid/debug.hpp>
 
 
-namespace openfluid { namespace base {
+namespace openfluid { namespace machine {
 
 
-// =====================================================================
-// =====================================================================
 
-SimulationStatus::SimulationStatus(const openfluid::core::DateTime& Begin,
-                                   const openfluid::core::DateTime& End,
-                                   const Duration_t DeltaT)
-: m_BeginDate(Begin), m_EndDate(End), m_CurrentDate(Begin),
-  m_CurrentTimeIndex(0), m_DefaultDeltaT(DeltaT),m_CurrentStage(PRE)
+ExecutionTimePoint::ExecutionTimePoint(openfluid::core::TimeIndex_t TimeIndex) :
+  m_TimeIndex(TimeIndex)
 {
-  m_Duration = Duration_t(End.diffInSeconds(Begin));
+
 }
 
 
@@ -78,19 +73,9 @@ SimulationStatus::SimulationStatus(const openfluid::core::DateTime& Begin,
 // =====================================================================
 
 
-void SimulationStatus::setCurrentTimeIndex(const TimeIndex_t& Index)
+ExecutionTimePoint::~ExecutionTimePoint()
 {
-  if (m_CurrentStage != RUNSTEP)
-    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index is allowed during RUNSTEP stage only");
 
-  if (Index > m_Duration)
-    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index greater than simulation duration is not allowed");
-
-  if (Index < m_CurrentTimeIndex)
-    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index lesser than current time index is not allowed");
-
-  m_CurrentTimeIndex = Index;
-  m_CurrentDate = m_BeginDate+m_CurrentTimeIndex;
 }
 
 
@@ -98,14 +83,28 @@ void SimulationStatus::setCurrentTimeIndex(const TimeIndex_t& Index)
 // =====================================================================
 
 
-void SimulationStatus::setCurrentStage(const SimulationStage& Stage)
+void ExecutionTimePoint::appendItem(openfluid::machine::ModelItemInstance* Item)
 {
-  if (Stage < m_CurrentStage)
-    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentStage()","Setting a simulation stage previous to the current stage is not allowed");
+  m_ItemsPtrList.push_back(Item);
+}
 
-  m_CurrentStage = Stage;
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::Duration_t ExecutionTimePoint::processNextItem()
+{
+  openfluid::core::Duration_t Duration = m_ItemsPtrList.front()->Body->runStep();
+  m_ItemsPtrList.pop_front();
+  return Duration;
 }
 
 
 
-}  }  // namespaces
+} } //namespaces
+
+
+
+
+

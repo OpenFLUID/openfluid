@@ -127,6 +127,65 @@ ModelInstance::~ModelInstance()
 // =====================================================================
 
 
+void ModelInstance::appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex,
+                                          openfluid::machine::ModelItemInstance* Item)
+{
+
+  // no back in time nor iteration
+  if (TimeIndex <= m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex())
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationScheduler::appendItemToTimePoint","Cannot append simulation item before or on current time point");
+
+  // ignore time points after simulation end
+  if (TimeIndex > m_SimulationBlob.getSimulationStatus().getSimulationDuration())
+    return;
+
+  // add time point if no existing time point
+  if (m_TimePointList.empty())
+  {
+    m_TimePointList.push_back(ExecutionTimePoint(TimeIndex));
+    m_TimePointList.back().appendItem(Item);
+    return;
+  }
+
+  // add time point if after existint time points
+  if (TimeIndex > m_TimePointList.back().getTimeIndex())
+  {
+    m_TimePointList.push_back(ExecutionTimePoint(TimeIndex));
+    m_TimePointList.back().appendItem(Item);
+  }
+  else // search for the right time point insertion
+  {
+    bool TmpInserted = false;
+    std::list<ExecutionTimePoint>::iterator TPit = m_TimePointList.begin();
+
+    while (TPit != m_TimePointList.end() && !TmpInserted)
+    {
+      if ((*TPit).getTimeIndex() == TimeIndex)
+      {
+        (*TPit).appendItem(Item);
+        TmpInserted = true;
+      }
+      else if ((*TPit).getTimeIndex() > TimeIndex)
+      {
+        ExecutionTimePoint TmpPoint(TimeIndex);
+        TmpPoint.appendItem(Item);
+        m_TimePointList.insert(TPit,TmpPoint);
+        TmpInserted = true;
+      }
+      else
+      {
+        ++TPit;
+      }
+    }
+
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const
 {
   openfluid::ware::WareParams_t MergedParams = m_GlobalParams;
@@ -368,14 +427,110 @@ void ModelInstance::call_checkConsistency() const
 // =====================================================================
 
 
-void ModelInstance::call_initializeRun() const
+void ModelInstance::call_initializeRun()
 {
   if (!m_Initialized)
     throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_initializeRun()","Model not initialized");
 
-
+/*
   DECLARE_FUNCTION_PARSER;
   PARSE_FUNCTION_LIST(initializeRun(),InitializeRun,openfluid::base::SimulationProfiler::INITIALIZERUN);
+*/
+
+  std::list<ModelItemInstance*>::const_iterator FuncIter;
+  openfluid::core::Duration_t Duration;
+
+  FuncIter = m_ModelItems.begin();
+  while (FuncIter != m_ModelItems.end())
+  {
+    ModelItemInstance* CurrentFunction = *FuncIter;
+    if (CurrentFunction != NULL)
+    {
+      mp_Listener->onFunctionInitializeRun(CurrentFunction->Signature->ID);
+
+      boost::posix_time::ptime TimeProfileStart = boost::posix_time::microsec_clock::universal_time();
+      Duration = CurrentFunction->Body->initializeRun();
+      openfluid::base::SimulationProfiler::getInstance()->addDuration(CurrentFunction->Signature->ID,
+                                                                      openfluid::base::SimulationProfiler::INITIALIZERUN,
+                                                                      boost::posix_time::time_period(TimeProfileStart,
+                                                                                                     boost::posix_time::microsec_clock::universal_time()).
+                                                                      length());
+
+      if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunctionInitializeRunDone(openfluid::machine::MachineListener::WARNING,CurrentFunction->Signature->ID);
+      else  mp_Listener->onFunctionInitializeRunDone(openfluid::machine::MachineListener::OK,CurrentFunction->Signature->ID);
+
+      m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+
+      if (Duration == 0)  // Again(), iteration
+      {
+        throw openfluid::base::OFException("OpenFLUID framework","SimulationScheduler::processNextTimePoint","Cannot re-execute runStep() on same time point");
+      }
+      else if (Duration == -1) // AtTheEnd();
+      {
+        appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getSimulationDuration(),
+                              CurrentFunction);
+      }
+      else if (Duration != -2) // != Never()
+      {
+        appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex()+Duration,
+                              CurrentFunction);
+      }
+
+    }
+    FuncIter++;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelInstance::processNextTimePoint()
+{
+
+  if (hasTimePointToProcess())
+    m_SimulationBlob.getSimulationStatus().setCurrentTimeIndex(m_TimePointList.front().getTimeIndex());
+  else
+    return;
+
+  m_TimePointList.front().sortByOriginalPosition();
+
+  while (m_TimePointList.front().hasItemsToProcess())
+  {
+    openfluid::machine::ModelItemInstance* NextItem = m_TimePointList.front().getNextItem();
+
+    mp_Listener->onFunctionRunStep(NextItem->Signature->ID);
+    boost::posix_time::ptime TimeProfileStart = boost::posix_time::microsec_clock::universal_time();
+
+    openfluid::core::Duration_t Duration = m_TimePointList.front().processNextItem();
+
+    openfluid::base::SimulationProfiler::getInstance()->addDuration(NextItem->Signature->ID,
+                                                                    openfluid::base::SimulationProfiler::RUNSTEP,
+                                                                    boost::posix_time::time_period(TimeProfileStart,
+                                                                                                   boost::posix_time::microsec_clock::universal_time()).length());
+    if (m_SimulationBlob.getExecutionMessages().isWarningFlag())
+      mp_Listener->onFunctionRunStepDone(openfluid::machine::MachineListener::WARNING,NextItem->Signature->ID);
+    else  mp_Listener->onFunctionRunStepDone(openfluid::machine::MachineListener::OK,NextItem->Signature->ID);
+    m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+
+
+    if (Duration == 0)  // Again(), iteration
+    {
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationScheduler::processNextTimePoint","Cannot re-execute runStep() on same time point");
+    }
+    else if (Duration == -1) // AtTheEnd();
+    {
+      appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getSimulationDuration(),
+                                           NextItem);
+    }
+    else if (Duration != -2) // != Never()
+    {
+      appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex()+Duration,
+                                     NextItem);
+    }
+  }
+  m_TimePointList.pop_front();
 }
 
 

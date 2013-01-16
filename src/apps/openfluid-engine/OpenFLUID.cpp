@@ -589,13 +589,9 @@ void OpenFLUIDApp::runSimulation()
   }
   std::cout << std::endl;
 
-  unsigned int StepsCount = openfluid::tools::computeTimeStepsCount(mp_Engine->getSimulationStatus()->getBeginDate(),
-                                                                    mp_Engine->getSimulationStatus()->getEndDate(),
-                                                                    mp_Engine->getSimulationStatus()->getDefaultDeltaT());
-
   std::cout << "Simulation from " << mp_Engine->getSimulationStatus()->getBeginDate().getAsISOString()
             << " to " << mp_Engine->getSimulationStatus()->getEndDate().getAsISOString() << std::endl
-            << "         -> " <<  StepsCount << " time steps of " << mp_Engine->getSimulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
+            << "Default DeltaT is " << mp_Engine->getSimulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
 
   std::cout << std::endl;
 

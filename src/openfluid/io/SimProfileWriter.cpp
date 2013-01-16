@@ -83,11 +83,12 @@ double SimulationProfileWriter::getDurationInDecimalSeconds(const boost::posix_t
 void SimulationProfileWriter::saveToFiles(std::string Path)
 {
 
+  // TODO reactivate!
+  return;
+
   if (!openfluid::base::SimulationProfiler::getInstance()->isEnabled()) return;
 
-
   std::ofstream ProfileFile;
-
 
   // profile by function
   ProfileFile.open(boost::filesystem::path(Path+"/"+openfluid::config::PROFILEFILE).string().c_str(),std::ios::out);
@@ -119,8 +120,6 @@ void SimulationProfileWriter::saveToFiles(std::string Path)
 
   ProfileFile.close();
 
-
-
   // profile by run step
 
   ProfileFile.open(boost::filesystem::path(Path+"/"+openfluid::config::PROFILESTEPSFILE).string().c_str(),std::ios::out);
@@ -144,6 +143,7 @@ void SimulationProfileWriter::saveToFiles(std::string Path)
 
   while (!(*RunStepProfile.begin()).second.empty())
   {
+
     for (FuncIt = RunStepProfile.begin(); FuncIt != RunStepProfile.end(); ++FuncIt)
     {
       ProfileFile << CurrentStep << ";";
