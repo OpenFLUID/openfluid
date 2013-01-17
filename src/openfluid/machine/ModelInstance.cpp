@@ -479,6 +479,7 @@ void ModelInstance::call_initializeRun()
     }
     else
       throw openfluid::base::OFException("OpenFLUID framework","SimulationScheduler::call_initializeRun","NULL model item instance!");
+
     FuncIter++;
   }
 }
