@@ -46,56 +46,82 @@
  */
 
 /**
- \file UnstructuredValue.cpp
- \brief Implements ...
+ \file PolygonEdge.hpp
+ \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "UnstructuredValue.hpp"
+#ifndef POLYGONEDGE_HPP_
+#define POLYGONEDGE_HPP_
+
+#include <geos/planargraph/Edge.h>
+
+namespace geos {
+namespace geom {
+class LineString;
+class CoordinateSequence;
+}
+namespace planargraph {
+class Edge;
+}
+}
 
 namespace openfluid {
-namespace core {
+namespace landr {
 
-// =====================================================================
-// =====================================================================
+class PolygonEntity;
 
-
-bool UnstructuredValue::getValueTypeFromString(
-    const std::string ValueTypeString,
-    UnstructuredValue::UnstructuredType& ValueType)
+/**
+ * @brief A part of a PolygonEntity exterior ring, that may be share between to adjacent PolygoneEntities.
+ * @details A PolygonEdge  has one or two Faces. The Faces are the PolygonEntities that share this PolygonEdge.
+ */
+class PolygonEdge: public geos::planargraph::Edge
 {
-  if (ValueTypeString == "geovector")
-  {
-    ValueType = openfluid::core::UnstructuredValue::GeoVectorValue;
-    return true;
-  }
-  if (ValueTypeString == "georaster")
-  {
-    ValueType = openfluid::core::UnstructuredValue::GeoRasterValue;
-    return true;
-  }
+  private:
 
-  return false;
-}
+    geos::geom::LineString& m_Line;
 
-// =====================================================================
-// =====================================================================
+    /**
+     * @details At most two elements vector.
+     */
+    std::vector<PolygonEntity*> m_Faces;
 
+  public:
 
-std::string UnstructuredValue::getStringFromValueType(
-    const UnstructuredValue::UnstructuredType ValueType)
-{
-  switch (ValueType)
-  {
-    case openfluid::core::UnstructuredValue::GeoVectorValue:
-      return "geovector";
-    case openfluid::core::UnstructuredValue::GeoRasterValue:
-      return "georaster";
-    default:
-      return "";
-  }
-}
+    PolygonEdge(geos::geom::LineString& Line);
 
-}
-} // namespaces
+    ~PolygonEdge();
+
+    /**
+     * @brief Return the LineString representing this PolygonEdge.
+     */
+    geos::geom::LineString* getLine();
+
+    /**
+     * @brief Add a PolygonEntity as a Face to this PolygonEdge.
+     * @throw base::OFException if this PolygonEdge is not in the boundary of the input PolygonEntity,
+     * or if this PolygonEdge has already two Faces.
+     */
+    void addFace(PolygonEntity& NewFace);
+
+    /**
+     * @brief Check that this PolygonEdge is in the boundary of the input PolygonEntity.
+     */
+    bool isLineInFace(PolygonEntity& Face);
+
+    /**
+     * @brief Return the Faces of this PolygonEdge.
+     */
+    const std::vector<PolygonEntity*> getFaces();
+
+    /**
+     * @brief Remove a Face from the Faces of this PolygonEdge.
+     * @details Does nothing if the input Face is not a part of this PolygonEdge Faces.
+     */
+    void removeFace(PolygonEntity* Face);
+};
+
+} // namespace landr
+} /* namespace openfluid */
+#endif /* POLYGONEDGE_HPP_ */

@@ -46,56 +46,78 @@
  */
 
 /**
- \file UnstructuredValue.cpp
+ \file PolygonEdge_TEST.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "UnstructuredValue.hpp"
-
-namespace openfluid {
-namespace core {
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_polygonedge
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+#include <boost/filesystem/path.hpp>
+#include <tests-config.hpp>
+#include <openfluid/landr/PolygonEdge.hpp>
+#include <openfluid/landr/PolygonEntity.hpp>
+#include <geos/geom/LineString.h>
+#include <geos/geom/Polygon.h>
+#include <geos/geom/CoordinateArraySequenceFactory.h>
+#include <geos/geom/GeometryFactory.h>
 
 // =====================================================================
 // =====================================================================
 
-
-bool UnstructuredValue::getValueTypeFromString(
-    const std::string ValueTypeString,
-    UnstructuredValue::UnstructuredType& ValueType)
+BOOST_AUTO_TEST_CASE(check_isLineInFace)
 {
-  if (ValueTypeString == "geovector")
-  {
-    ValueType = openfluid::core::UnstructuredValue::GeoVectorValue;
-    return true;
-  }
-  if (ValueTypeString == "georaster")
-  {
-    ValueType = openfluid::core::UnstructuredValue::GeoRasterValue;
-    return true;
-  }
+  // *********
+  // *       *
+  // *       **
+  // *       **
+  // X*********
 
-  return false;
+  geos::geom::CoordinateArraySequenceFactory SeqFactory;
+  geos::geom::GeometryFactory Factory;
+
+  std::vector<geos::geom::Coordinate>* CoosLS = new std::vector<
+      geos::geom::Coordinate>();
+  CoosLS->push_back(geos::geom::Coordinate(2, 0));
+  CoosLS->push_back(geos::geom::Coordinate(2, 1));
+  geos::geom::LineString* LS = Factory.createLineString(
+      SeqFactory.create(CoosLS));
+  openfluid::landr::PolygonEdge Edge(*LS);
+
+  std::vector<geos::geom::Coordinate>* CoosPoly = new std::vector<
+      geos::geom::Coordinate>();
+  CoosPoly->push_back(geos::geom::Coordinate(0, 0));
+  CoosPoly->push_back(geos::geom::Coordinate(0, 2));
+  CoosPoly->push_back(geos::geom::Coordinate(2, 2));
+  CoosPoly->push_back(geos::geom::Coordinate(2, 0));
+  CoosPoly->push_back(geos::geom::Coordinate(0, 0));
+  geos::geom::LinearRing* LR = Factory.createLinearRing(
+      SeqFactory.create(CoosPoly));
+  geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
+  openfluid::landr::PolygonEntity Entity(P, 0);
+
+  BOOST_CHECK(Edge.isLineInFace(Entity));
+
+  std::vector<geos::geom::Coordinate>* CoosWrongPoly = new std::vector<
+      geos::geom::Coordinate>();
+  CoosWrongPoly->push_back(geos::geom::Coordinate(0, 0));
+  CoosWrongPoly->push_back(geos::geom::Coordinate(0, 2));
+  CoosWrongPoly->push_back(geos::geom::Coordinate(1, 2));
+  CoosWrongPoly->push_back(geos::geom::Coordinate(1, 0));
+  CoosWrongPoly->push_back(geos::geom::Coordinate(0, 0));
+  geos::geom::LinearRing* WrongLR = Factory.createLinearRing(
+      SeqFactory.create(CoosWrongPoly));
+  geos::geom::Polygon* WrongP = Factory.createPolygon(WrongLR, NULL);
+  openfluid::landr::PolygonEntity WrongEntity(WrongP, 0);
+
+  BOOST_CHECK(!Edge.isLineInFace(WrongEntity));
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string UnstructuredValue::getStringFromValueType(
-    const UnstructuredValue::UnstructuredType ValueType)
-{
-  switch (ValueType)
-  {
-    case openfluid::core::UnstructuredValue::GeoVectorValue:
-      return "geovector";
-    case openfluid::core::UnstructuredValue::GeoRasterValue:
-      return "georaster";
-    default:
-      return "";
-  }
-}
-
-}
-} // namespaces

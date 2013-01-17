@@ -46,108 +46,173 @@
  */
 
 /**
- \file DatastoreItem.cpp
+ \file LandREntity.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "DatastoreItem.hpp"
+#include "LandREntity.hpp"
 
-#include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/core/GeoRasterValue.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/core/Value.hpp>
+#include <geos/geom/Geometry.h>
+#include <geos/geom/Point.h>
+#include <algorithm>
 
 namespace openfluid {
-namespace core {
+namespace landr {
 
 // =====================================================================
 // =====================================================================
 
-
-DatastoreItem::DatastoreItem(std::string ID, std::string PrefixPath, std::string RelativePath,
-    UnstructuredValue::UnstructuredType Type, std::string UnitClass) :
-  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
+LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int SelfId) :
+    mp_Geom(Geom), m_SelfId(SelfId), mp_Neighbours(0)
 {
-  switch (Type)
+  mp_Centroide = mp_Geom->getCentroid();
+  m_Area = mp_Geom->getArea();
+  m_Lenght = mp_Geom->getLength();
+}
+
+// =====================================================================
+// =====================================================================
+
+LandREntity::~LandREntity()
+{
+  delete mp_Centroide;
+  delete mp_Geom;
+  delete mp_Neighbours;
+
+  for (std::map<std::string, core::Value*>::iterator it = m_Attributes.begin();
+      it != m_Attributes.end(); ++it)
+    delete it->second;
+}
+
+// =====================================================================
+// =====================================================================
+
+const geos::geom::Geometry* LandREntity::getGeometry()
+{
+  return mp_Geom;
+}
+
+// =====================================================================
+// =====================================================================
+
+unsigned int LandREntity::getSelfId() const
+{
+  return m_SelfId;
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::geom::Point* LandREntity::getCentroide() const
+{
+  return mp_Centroide;
+}
+
+// =====================================================================
+// =====================================================================
+
+double LandREntity::getArea() const
+{
+  return m_Area;
+}
+
+// =====================================================================
+// =====================================================================
+
+double LandREntity::getLength() const
+{
+  return m_Lenght;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::set<LandREntity*>* LandREntity::getNeighbours()
+{
+  if (!mp_Neighbours)
+    computeNeighbours();
+
+  return mp_Neighbours;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool LandREntity::getAttributeValue(std::string AttributeName,
+                                    core::Value& Value) const
+{
+  std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(
+      AttributeName);
+
+  if (it != m_Attributes.end() && it->second)
   {
-    case UnstructuredValue::GeoVectorValue:
-      m_Value = new openfluid::core::GeoVectorValue(m_PrefixPath,m_RelativePath);
-      break;
-    case UnstructuredValue::GeoRasterValue:
-      m_Value = new openfluid::core::GeoRasterValue(m_PrefixPath,m_RelativePath);
-      break;
-    default:
-      throw openfluid::base::OFException("OpenFLUID framework",
-          "DatastoreItem::DatastoreItem", "No value to instanciate for item type "
-              + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
-      break;
+    Value = *it->second;
+    return true;
   }
 
+  return false;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-DatastoreItem::~DatastoreItem()
+bool LandREntity::setAttributeValue(std::string AttributeName,
+                                    const core::Value* Value)
 {
-  delete m_Value;
+  std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(
+      AttributeName);
+
+  if (it != m_Attributes.end())
+  {
+    if (it->second)
+      delete it->second;
+    m_Attributes[AttributeName] = const_cast<core::Value*>(Value);
+    return true;
+  }
+
+  return false;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string DatastoreItem::getID() const
+double LandREntity::getDistCentroCentro(LandREntity& Other)
 {
-  return m_ID;
+  return mp_Centroide->distance(Other.getCentroide());
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string DatastoreItem::getPrefixPath() const
+LandREntity* LandREntity::getNeighbour_MinDistCentroCentro()
 {
-  return m_PrefixPath;
-}
+  std::set<LandREntity*> Neigh = *getNeighbours();
 
+  std::map<double, LandREntity*> NeighByDist;
 
-// =====================================================================
-// =====================================================================
+  for (std::set<LandREntity*>::iterator it = Neigh.begin(); it != Neigh.end();
+      ++it)
+  {
+    LandREntity* Neigh = *it;
 
+    double Dist = getDistCentroCentro(*Neigh);
 
-std::string DatastoreItem::getRelativePath() const
-{
-  return m_RelativePath;
-}
+    NeighByDist[Dist] = Neigh;
+  }
 
-// =====================================================================
-// =====================================================================
+  std::map<double, LandREntity*>::iterator itMin = std::min_element(
+      NeighByDist.begin(), NeighByDist.end());
 
-
-std::string DatastoreItem::getUnitClass() const
-{
-  return m_UnitClass;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-UnstructuredValue* DatastoreItem::getValue()
-{
-  return m_Value;
-}
-
-const UnstructuredValue* DatastoreItem::getValue() const
-{
-  return m_Value;
+  return
+      (itMin != NeighByDist.end() && itMin->first > 0) ? itMin->second :
+                                                         (LandREntity*) 0;
 }
 
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces
+}// namespace landr
+} /* namespace openfluid */

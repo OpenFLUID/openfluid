@@ -1,0 +1,29 @@
+
+FILE(GLOB OPENFLUID_LANDR_CPP *.cpp)
+FILE(GLOB OPENFLUID_LANDR_HPP *.hpp)
+
+
+ADD_LIBRARY(openfluid-landr SHARED ${OPENFLUID_LANDR_CPP} ${OPENFLUID_LANDR_HPP})
+
+SET_TARGET_PROPERTIES(openfluid-landr PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
+                                        SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+                                        LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
+
+TARGET_LINK_LIBRARIES(openfluid-landr
+                      openfluid-core openfluid-base
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+                      ${GDAL_LIBRARIES})
+
+INSTALL(TARGETS openfluid-landr
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
+   
+
+INSTALL(FILES ${OPENFLUID_LANDR_HPP} DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH}/landr)
+
+IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
+  ADD_SUBDIRECTORY(tests)
+ENDIF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))  

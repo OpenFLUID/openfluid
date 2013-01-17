@@ -46,13 +46,15 @@
  */
 
 /**
- \file UnstructuredValue.cpp
+ \file GeoValue.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "UnstructuredValue.hpp"
+#include "GeoValue.hpp"
+
+#include <boost/filesystem/path.hpp>
 
 namespace openfluid {
 namespace core {
@@ -60,42 +62,39 @@ namespace core {
 // =====================================================================
 // =====================================================================
 
-
-bool UnstructuredValue::getValueTypeFromString(
-    const std::string ValueTypeString,
-    UnstructuredValue::UnstructuredType& ValueType)
+GeoValue::GeoValue(std::string FilePath, std::string FileName) :
+    m_FilePath(FilePath), m_FileName(FileName)
 {
-  if (ValueTypeString == "geovector")
-  {
-    ValueType = openfluid::core::UnstructuredValue::GeoVectorValue;
-    return true;
-  }
-  if (ValueTypeString == "georaster")
-  {
-    ValueType = openfluid::core::UnstructuredValue::GeoRasterValue;
-    return true;
-  }
-
-  return false;
+  computeAbsolutePath();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string UnstructuredValue::getStringFromValueType(
-    const UnstructuredValue::UnstructuredType ValueType)
+GeoValue::~GeoValue()
 {
-  switch (ValueType)
-  {
-    case openfluid::core::UnstructuredValue::GeoVectorValue:
-      return "geovector";
-    case openfluid::core::UnstructuredValue::GeoRasterValue:
-      return "georaster";
-    default:
-      return "";
-  }
-}
 
 }
-} // namespaces
+
+// =====================================================================
+// =====================================================================
+
+void GeoValue::computeAbsolutePath()
+{
+  m_AbsolutePath =
+      boost::filesystem::path(m_FilePath + "/" + m_FileName).string();
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string GeoValue::getFilePath()
+{
+  return m_FilePath;
+}
+
+// =====================================================================
+// =====================================================================
+
+} /* namespace core */
+} /* namespace openfluid */

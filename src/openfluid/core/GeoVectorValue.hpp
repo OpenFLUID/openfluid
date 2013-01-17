@@ -55,10 +55,16 @@
 #ifndef __GEOVECTORVALUE_HPP__
 #define __GEOVECTORVALUE_HPP__
 
-#include <ogrsf_frmts.h>
+#include <openfluid/core/GeoValue.hpp>
 
-#include <openfluid/core/UnstructuredValue.hpp>
-#include <openfluid/dllexport.hpp>
+#include <ogrsf_frmts.h>
+#include <list>
+
+namespace geos {
+namespace geom {
+class Geometry;
+}
+}
 
 namespace openfluid {
 namespace core {
@@ -67,35 +73,65 @@ namespace core {
  * @brief Container class for geospatial vector data,
  * represented by an OGR datasource.
  */
-class DLLEXPORT GeoVectorValue: public openfluid::core::UnstructuredValue
+class GeoVectorValue: public openfluid::core::GeoValue
 {
-  private:
+  public:
 
-    std::string m_PrefixPath;
-
-    std::string m_RelativePath;
+    typedef std::list<std::pair<OGRFeature*, geos::geom::Geometry*> > FeaturesList_t;
 
   protected:
 
-    OGRDataSource* m_Data;
+    std::string mp_ShpDriverName;
 
-    void tryOpeningSource();
+    /**
+     * Don't use it directly, use tryToGetShpDriver() instead.
+     */
+    OGRSFDriver* mp_ShpDriver;
 
-    std::string getAbsolutePath();
+    OGRDataSource* mp_Data;
+
+    /**
+     * Don't use it directly, use getLayer() instead.
+     */
+    OGRLayer* mp_Layer;
+
+    /**
+     * Don't use it directly, use getLayerDef() instead.
+     */
+    OGRFeatureDefn* mp_LayerDef;
+
+    /**
+     * List of all features of the layer 0 of this GeoVectorValue
+     */
+    FeaturesList_t m_Features;
+
+    /**
+     * A Geometry representing a collection of all the geometries of the layer 0 of this GeoVectorValue
+     */
+    geos::geom::Geometry* mp_Geometries;
+
+    void tryToOpenSource(bool UpdateMode);
+
+    OGRSFDriver* tryToGetShpDriver();
+
+    void destroyDataSource();
+
+    void parse();
 
   public:
 
     /**
      * @brief Creates a new value.
      *
-     * The <tt>RelativePath</tt> may be path to a .shp, .shx or .dbf file,
+     * The <tt>FileName</tt> may be the name of a .shp, .shx or .dbf file,
      * or a path to a directory containing proper shape files.
      *
      * It doesn't open the associated OGR datasource.
      *
-     * @param RelativePath The path of the data, relative to the PrefixPath.
+     * @param FilePath The path of the file(s)
+     * @param FileName The name or the relative path of the file to open, or the name of the file to create
      */
-    GeoVectorValue(std::string PrefixPath, std::string RelativePath);
+    GeoVectorValue(std::string FilePath, std::string FileName);
 
     /**
      * @brief Closes the opened OGR datasource.
@@ -109,15 +145,123 @@ class DLLEXPORT GeoVectorValue: public openfluid::core::UnstructuredValue
      *
      * If the datasource is not already opened, tries to open it first.
      *
+     * @param UpdateMode False for read-only access (the default) or True for read-write access.
      * @return The opened OGR datasource.
      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+     * @throw openfluid::base::OFException if OGR doesn't succeed to open the first layer of datasource.
      */
-    OGRDataSource* get();
+    OGRDataSource* get(bool UpdateMode = false);
+
+    /**
+     * @brief Creates an empty new shapefile with a layer of type LayerType, with Read-Write permission.
+     *
+     * @param LayerType The type of the layer (default wkbUnknown).
+     * @param SpatialRef The coordinate system to use for the new layer, or NULL (default) if no coordinate system is available.
+     * @param ReplaceIfExists True if an existing file has to be deleted before the new one creation (default).
+     * @throw openfluid::base::OFException if ReplaceIfExists set to False and a shape file with the same name already exists.
+     * @throw openfluid::base::OFException if the creation of output file failed.
+     * @throw openfluid::base::OFException if the creation of first layer failed.
+     */
+    void createShp(OGRwkbGeometryType LayerType = wkbUnknown,
+                   OGRSpatialReference* SpatialRef = NULL,
+                   bool ReplaceIfExists = true);
+
+    /**
+     * @brief Creates a new shapefile with a layer which is a copy of the Sources layer, with Read-Write permission..
+     *
+     * @param Source The GeoVectorValue containing the layer to copy (may come from another dataset).
+     * @param ReplaceIfExists True if an existing file has to be deleted before the new one creation (default).
+     * @throw openfluid::base::OFException if ReplaceIfExists set to False and a shape file with the same name already exists.
+     * @throw openfluid::base::OFException if the creation of output file failed.
+     * @throw openfluid::base::OFException if the creation of first layer failed.
+     */
+    void copyShp(GeoVectorValue& Source, bool ReplaceIfExists = true);
+
+    /**
+     * @brief Returns if the file already exists.
+     *
+     * @return True if the file already exists, false otherwise.
+     */
+    bool isAlreadyExisting();
+
+    /**
+     * @brief Delete the shape file(s) on disk, if exists. Else does nothing.
+     */
+    void deleteShpOnDisk();
+
+    /**
+     * @brief Add a field to the first (default) layer.
+     *
+     * @param FieldName The name of the field to add.
+     * @param FieldType The type of the field to add (default OFTString).
+     * @throw openfluid::base::OFException if creating field failed.
+     */
+    void addAField(std::string FieldName, OGRFieldType FieldType = OFTString);
+
+    /**
+     * @brief Get the first layer of the shape.
+     *
+     * @return The layer index 0.
+     */
+    OGRLayer* getLayer0();
+
+    /**
+     * @brief Get the Feature definition of the first (default) layer.
+     *
+     * @return The OGR Feature definition of the first (default) layer.
+     */
+    OGRFeatureDefn* getLayerDef();
+
+    bool isLineType();
+
+    bool isPolygonType();
+
+    /**
+     * @brief Returns if a field exists in the first (default) layer.
+     *
+     * @param FieldName The name of the field to query
+     * @return True if the field FieldName exists, False otherwise
+     */
+    bool containsField(std::string FieldName);
+
+    /**
+     * @brief Get the index of a field.
+     *
+     * @param FieldName The name of the field to query
+     * @return -1 if field FieldName doesn't exist
+     */
+    int getFieldIndex(std::string FieldName);
+
+    /**
+     * @brief Returns if a field is of the type FieldType.
+     *
+     * @param FieldName The name of the field to query
+     * @param FieldType The type of the field to query
+     * @return True if the field FieldName is type FieldType.
+     * @throw openfluid::base::OFException if the field doesn't exist.
+     */
+    bool isFieldOfType(std::string FieldName, OGRFieldType FieldType);
+
+    /**
+     * @brief Returns if a field has the value Value.
+     *
+     * @param FieldName The name of the field to query
+     * @param Value The value to query
+     * @return True if the field has at least a feature containing the value Value, False otherwise.
+     */
+    bool isIntValueSet(std::string FieldName, int Value);
+
+    /**
+     * Get the list of all features of the layer 0 of this GeoVectorValue
+     */
+    GeoVectorValue::FeaturesList_t getFeatures();
+
+    /**
+     * Get a Geometry representing a collection of all the geometries of the layer 0 of this GeoVectorValue
+     */
+    geos::geom::Geometry* getGeometries();
 
 };
-
-// =====================================================================
-// =====================================================================
 
 }
 } // namespaces

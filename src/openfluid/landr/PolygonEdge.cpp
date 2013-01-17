@@ -46,108 +46,109 @@
  */
 
 /**
- \file DatastoreItem.cpp
+ \file PolygonEdge.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "DatastoreItem.hpp"
+#include "PolygonEdge.hpp"
 
-#include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/core/GeoRasterValue.hpp>
+#include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/base/OFException.hpp>
+#include <geos/geom/LineString.h>
+#include <geos/geom/Polygon.h>
+#include <geos/planargraph/DirectedEdge.h>
+#include <algorithm>
 
 namespace openfluid {
-namespace core {
+namespace landr {
 
-// =====================================================================
-// =====================================================================
-
-
-DatastoreItem::DatastoreItem(std::string ID, std::string PrefixPath, std::string RelativePath,
-    UnstructuredValue::UnstructuredType Type, std::string UnitClass) :
-  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_UnitClass(UnitClass), m_Value(0)
+PolygonEdge::PolygonEdge(geos::geom::LineString& Line) :
+    geos::planargraph::Edge(), m_Line(Line)
 {
-  switch (Type)
+}
+
+// =====================================================================
+// =====================================================================
+
+PolygonEdge::~PolygonEdge()
+{
+  for (unsigned int i = 0; i < dirEdge.size(); i++)
+    delete dirEdge[i];
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::geom::LineString* PolygonEdge::getLine()
+{
+  return &m_Line;
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonEdge::addFace(PolygonEntity& NewFace)
+{
+  if (!isLineInFace(NewFace))
   {
-    case UnstructuredValue::GeoVectorValue:
-      m_Value = new openfluid::core::GeoVectorValue(m_PrefixPath,m_RelativePath);
-      break;
-    case UnstructuredValue::GeoRasterValue:
-      m_Value = new openfluid::core::GeoRasterValue(m_PrefixPath,m_RelativePath);
-      break;
-    default:
-      throw openfluid::base::OFException("OpenFLUID framework",
-          "DatastoreItem::DatastoreItem", "No value to instanciate for item type "
-              + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
-      break;
+    std::ostringstream s;
+    s << "Can not add Polygon " << NewFace.getSelfId()
+      << " as neighbour of this edge, because it doesn't contain edge line.";
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "PolygonEdge::addNeighbour", s.str());
+
+    return;
   }
 
+  if (m_Faces.size() > 1)
+  {
+    std::ostringstream s;
+    s << "Can not add Polygon " << NewFace.getSelfId()
+      << " as neighbour of this edge, which has already two neighbours.";
+
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "PolygonEdge::addNeighbour", s.str());
+    return;
+  }
+
+  m_Faces.push_back(&NewFace);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-DatastoreItem::~DatastoreItem()
+bool PolygonEdge::isLineInFace(PolygonEntity& Face)
 {
-  delete m_Value;
+  return (m_Line.relate(Face.getPolygon(), "F1F"
+                        "F*F"
+                        "***"));
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string DatastoreItem::getID() const
+const std::vector<PolygonEntity*> PolygonEdge::getFaces()
 {
-  return m_ID;
+  return m_Faces;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string DatastoreItem::getPrefixPath() const
+void PolygonEdge::removeFace(PolygonEntity* Face)
 {
-  return m_PrefixPath;
-}
+  std::vector<PolygonEntity*>::iterator it = std::find(m_Faces.begin(),
+                                                       m_Faces.end(), Face);
 
-
-// =====================================================================
-// =====================================================================
-
-
-std::string DatastoreItem::getRelativePath() const
-{
-  return m_RelativePath;
+  if (it != m_Faces.end())
+    m_Faces.erase(it);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string DatastoreItem::getUnitClass() const
-{
-  return m_UnitClass;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-UnstructuredValue* DatastoreItem::getValue()
-{
-  return m_Value;
-}
-
-const UnstructuredValue* DatastoreItem::getValue() const
-{
-  return m_Value;
-}
-
-// =====================================================================
-// =====================================================================
-
-}
-} // namespaces
+}// namespace landr
+} /* namespace openfluid */

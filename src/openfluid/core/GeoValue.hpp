@@ -46,56 +46,50 @@
  */
 
 /**
- \file UnstructuredValue.cpp
- \brief Implements ...
+ \file GeoValue.hpp
+ \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "UnstructuredValue.hpp"
+#ifndef GEOVALUE_HPP_
+#define GEOVALUE_HPP_
+
+#include <openfluid/core/UnstructuredValue.hpp>
 
 namespace openfluid {
 namespace core {
 
-// =====================================================================
-// =====================================================================
-
-
-bool UnstructuredValue::getValueTypeFromString(
-    const std::string ValueTypeString,
-    UnstructuredValue::UnstructuredType& ValueType)
+/**
+ * @brief Abstract class for geospatial data.
+ */
+class GeoValue: public openfluid::core::UnstructuredValue
 {
-  if (ValueTypeString == "geovector")
-  {
-    ValueType = openfluid::core::UnstructuredValue::GeoVectorValue;
-    return true;
-  }
-  if (ValueTypeString == "georaster")
-  {
-    ValueType = openfluid::core::UnstructuredValue::GeoRasterValue;
-    return true;
-  }
+  protected:
 
-  return false;
-}
+    std::string m_FilePath;
 
-// =====================================================================
-// =====================================================================
+    std::string m_FileName;
 
+    std::string m_AbsolutePath;
 
-std::string UnstructuredValue::getStringFromValueType(
-    const UnstructuredValue::UnstructuredType ValueType)
-{
-  switch (ValueType)
-  {
-    case openfluid::core::UnstructuredValue::GeoVectorValue:
-      return "geovector";
-    case openfluid::core::UnstructuredValue::GeoRasterValue:
-      return "georaster";
-    default:
-      return "";
-  }
-}
+    /**
+     * @param UpdateMode False for read-only access (the default) or True for read-write access.
+     */
+    virtual void tryToOpenSource(bool UpdateMode) = 0;
 
-}
-} // namespaces
+    void computeAbsolutePath();
+
+  public:
+
+    GeoValue(std::string FilePath, std::string FileName);
+
+    virtual ~GeoValue() = 0;
+
+    std::string getFilePath();
+};
+
+} /* namespace core */
+} /* namespace openfluid */
+
+#endif /* GEOVALUE_HPP_ */
