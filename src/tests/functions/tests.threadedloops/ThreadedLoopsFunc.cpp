@@ -157,6 +157,14 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
 
   openfluid::core::Duration_t initializeRun()
   {
+    openfluid::core::Unit* TU;
+
+    OPENFLUID_UNITS_ORDERED_LOOP("TU",TU)
+    {
+      OPENFLUID_InitializeVariable(TU,"tests.data.sequence",0.0);
+      OPENFLUID_InitializeVariable(TU,"tests.data.threaded",0.0);
+    }
+
     return DefaultDeltaT();
   }
 

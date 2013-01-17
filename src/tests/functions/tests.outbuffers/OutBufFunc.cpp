@@ -144,6 +144,21 @@ class OutputsBuffersFunction : public openfluid::ware::PluggableFunction
 
   openfluid::core::Duration_t initializeRun()
   {
+    openfluid::core::Unit* TU;
+    long VectorSize = 40;
+    openfluid::core::VectorValue TheVector;
+
+
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
+
+      TheVector = openfluid::core::VectorValue(VectorSize,double(TU->getID()));
+      OPENFLUID_InitializeVariable(TU,"tests.vector",TheVector);
+      OPENFLUID_InitializeVariable(TU,"tests.scalar",double(TU->getID()));
+
+    }
+
+
     return DefaultDeltaT();
   }
 

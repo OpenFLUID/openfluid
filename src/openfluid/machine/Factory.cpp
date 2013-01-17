@@ -261,8 +261,6 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
       IInstance = FunctionPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::FunctionDescriptor*)(*it))->getFileID());
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedFunction;
-
-      MInstance.appendItem(IInstance);
     }
 
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
@@ -314,10 +312,10 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
       IInstance->Body = NULL;
       IInstance->Signature = Signature;
-      IInstance->OriginalPosition = MInstance.getItemsCount()+1;
-
-      MInstance.appendItem(IInstance);
     }
+
+    IInstance->OriginalPosition = MInstance.getItemsCount()+1;
+    MInstance.appendItem(IInstance);
 
   }
 

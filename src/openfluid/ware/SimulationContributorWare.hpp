@@ -110,6 +110,67 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
                                  const std::string& Val);
 
 
+     /**
+       Initializes a distributed variable value for a unit
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the variable
+       @param[in] Val the added value of the variable
+       @deprecated
+     */
+     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName,
+                                   const openfluid::core::Value& Val);
+
+     /**
+       Initializes a distributed variable value for a unit
+       @param[in] aUnit a Unit
+       @param[in] VarName the name of the variable
+       @param[in] Val the added value of the variable
+     */
+     void OPENFLUID_InitializeVariable(openfluid::core::Unit& aUnit,
+                                       const openfluid::core::VariableName_t VarName,
+                                       const openfluid::core::Value& Val);
+
+     /**
+       Initializes a distributed double variable value for a unit
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the variable
+       @param[in] Val the added value of the variable (double)
+     */
+     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName,
+                                   const double Val);
+
+     /**
+       Initializes a distributed long variable value for a unit
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the variable
+       @param[in] Val the added value of the variable (long)
+     */
+     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName,
+                                   const long Val);
+
+     /**
+       Initializes a distributed boolean variable value for a unit
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the variable
+       @param[in] Val the added value of the variable (bool)
+     */
+     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName,
+                                   const bool Val);
+
+     /**
+       Initializes a distributed string variable value for a unit
+       @param[in] UnitPtr a Unit
+       @param[in] VarName the name of the variable
+       @param[in] Val the added value of the variable (string)
+     */
+     void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
+                                   const openfluid::core::VariableName_t VarName,
+                                   const std::string& Val);
+
     /**
       Appends a distributed variable value for a unit at the end of the previously added values for this variable
       @param[in] UnitPtr a Unit

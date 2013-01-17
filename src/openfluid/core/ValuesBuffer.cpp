@@ -65,12 +65,11 @@ namespace core {
 // =====================================================================
 
 
-ValuesBuffer::ValuesBuffer():
-  m_NextStep(0)
+ValuesBuffer::ValuesBuffer()
 {
-
+#ifdef bcb
   m_Data.set_capacity(BufferSize);
-
+#endif
 }
 
 // =====================================================================
@@ -86,42 +85,106 @@ ValuesBuffer::~ValuesBuffer()
 // =====================================================================
 
 
-bool ValuesBuffer::TranslateStepNbrToIndex(const unsigned int& StepNbr,
-    unsigned int& Index) const
+void ValuesBuffer::runGarbageCollector()
 {
-  if (m_NextStep < BufferSize)
-  {
-    if (StepNbr < m_NextStep)
-    {
-      Index = StepNbr;
-      return true;
-    }
-  }
-  else
-  {
-    int StepsDelta = m_NextStep - StepNbr - 1;
+#ifndef bcb
+  while (m_Data.size() > BufferSize) m_Data.pop_front();
+#endif
+}
 
-    if (StepsDelta < (int) BufferSize && StepsDelta >= 0)
-    {
-      Index = BufferSize - StepsDelta - 1;
-      return true;
-    }
+
+// =====================================================================
+// =====================================================================
+
+ValuesBuffer::DataContainer_t::iterator ValuesBuffer::findAtIndex(const TimeIndex_t& anIndex)
+{
+  if (m_Data.empty()) return m_Data.end();
+
+  if (anIndex < m_Data.front().Index || anIndex > m_Data.back().Index)
+    return m_Data.end();
+
+  if (anIndex == m_Data.front().Index)
+    return m_Data.begin();
+
+  if (anIndex == m_Data.back().Index)
+  {
+    ValuesBuffer::DataContainer_t::iterator TmpIt = m_Data.end();
+    --TmpIt;
+    return TmpIt;
   }
 
-  return false;
+
+  DataContainer_t::iterator Itb = m_Data.begin();
+  DataContainer_t::iterator Ite = m_Data.end();
+  DataContainer_t::iterator It = Itb;
+
+  while (It!=Ite)
+  {
+    if ((*It).Index == anIndex)
+      return It;
+
+    if ((*It).Index > anIndex)
+      return m_Data.end();
+
+    ++It;
+  }
+
+  return m_Data.end();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ValuesBuffer::DataContainer_t::const_iterator ValuesBuffer::findAtIndex(const TimeIndex_t& anIndex) const
+{
+  if (m_Data.empty()) return m_Data.end();
+
+  if (anIndex < m_Data.front().Index || anIndex > m_Data.back().Index)
+    return m_Data.end();
+
+  if (anIndex == m_Data.front().Index)
+    return m_Data.begin();
+
+  if (anIndex == m_Data.back().Index)
+  {
+    ValuesBuffer::DataContainer_t::const_iterator TmpIt = m_Data.end();
+    --TmpIt;
+    return TmpIt;
+  }
+
+  DataContainer_t::const_iterator Itb = m_Data.begin();
+  DataContainer_t::const_iterator Ite = m_Data.end();
+  DataContainer_t::const_iterator It = Itb;
+
+  while (It!=Ite)
+  {
+    if ((*It).Index == anIndex)
+      return It;
+
+    if ((*It).Index > anIndex)
+      return m_Data.end();
+
+    It++;
+  }
+
+  return m_Data.end();
+
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool ValuesBuffer::getValue(const unsigned int StepNbr, Value* aValue) const
+bool ValuesBuffer::getValue(const TimeIndex_t& anIndex, Value* aValue) const
 {
-  unsigned int Index;
+  DataContainer_t::const_iterator It = findAtIndex(anIndex);
 
-  if (TranslateStepNbrToIndex(StepNbr, Index) && aValue->getType() == m_Data[Index].Data->getType())
+  if (It != m_Data.end() && aValue->getType() == (*It).Data.get()->getType())
   {
-    *aValue = *m_Data[Index].Data;
+    *aValue = *((*It).Data);
 
     return true;
   }
@@ -134,13 +197,13 @@ bool ValuesBuffer::getValue(const unsigned int StepNbr, Value* aValue) const
 // =====================================================================
 
 
-Value* ValuesBuffer::getValue(const unsigned int StepNbr) const
+Value* ValuesBuffer::getValue(const TimeIndex_t& anIndex) const
 {
-  unsigned int Index;
+  DataContainer_t::const_iterator It = findAtIndex(anIndex);
 
-  if (TranslateStepNbrToIndex(StepNbr, Index))
+  if (It != m_Data.end())
   {
-    return m_Data[Index].Data.get();
+    return (*It).Data.get();
   }
 
   return (Value*)0;
@@ -175,13 +238,13 @@ bool ValuesBuffer::getCurrentValue(Value* aValue) const
 // =====================================================================
 
 
-bool ValuesBuffer::modifyValue(const unsigned int StepNbr, const Value& aValue)
+bool ValuesBuffer::modifyValue(const TimeIndex_t& anIndex, const Value& aValue)
 {
-  unsigned int Index;
+  DataContainer_t::iterator It = findAtIndex(anIndex);
 
-  if (TranslateStepNbrToIndex(StepNbr, Index))
+  if (It != m_Data.end())
   {
-    m_Data[Index].Data.reset(aValue.clone());
+    (*It).Data.reset(aValue.clone());
     return true;
   }
   return false;
@@ -196,36 +259,49 @@ bool ValuesBuffer::appendValue(const TimeIndex_t& anIndex, const openfluid::core
   if (!m_Data.empty() && anIndex <= m_Data.back().Index) return false;
 
   m_Data.push_back(IndexedValue(anIndex,aValue));
-  m_NextStep++;
+  runGarbageCollector();
 
   return true;
 }
 
-// =====================================================================
-// =====================================================================
-
-
-unsigned int ValuesBuffer::getNextStep() const
-{
-  return m_NextStep;
-}
 
 // =====================================================================
 // =====================================================================
 
 
-void ValuesBuffer::displayStatus(std::ostream& OStream)
+void ValuesBuffer::displayStatus(std::ostream& OStream) const
 {
   OStream << "-- ValuesBuffer status --" << std::endl;
   OStream << "   BufferSize : " << BufferSize << std::endl;
   OStream << "   Size : " << m_Data.size() << std::endl;
   //  OStream << "   Element size : " << sizeof(T) << std::endl;
-  OStream << "   Current storage step : " << m_NextStep - 1 << std::endl;
+//  OStream << "   Current storage step : " << m_NextStep - 1 << std::endl;
   OStream << "------------------------------" << std::endl;
 }
 
 // =====================================================================
 // =====================================================================
+
+
+void ValuesBuffer::displayContent(std::ostream& OStream) const
+{
+  OStream << "-- ValuesBuffer content --" << std::endl;
+
+  DataContainer_t::const_iterator Itb = m_Data.begin();
+  DataContainer_t::const_iterator Ite = m_Data.end();
+  DataContainer_t::const_iterator It = Itb;
+
+  while (It!=Ite)
+  {
+    OStream << "[" << (*It).Index << "|" << (*It).Data.get()->toString() << "]" << std::endl;
+    It++;
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 }
 }

@@ -164,7 +164,7 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 {
   openfluid::core::Unit* TU;
   unsigned int TUID;
-  unsigned int CurStep;
+  unsigned int CurrIndex;
 
   double RefDouble;
   long RefLong;
@@ -196,29 +196,29 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 
 
     TUID = TU->getID();
-    CurStep = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT());
+    CurrIndex = OPENFLUID_GetCurrentTimeIndex();
 
     RefDouble = (double)TUID/10;
     RefLong = TUID;
     RefBool = (TUID%2 == 0);
     RefString = Glib::ustring::compose("ID %1",TUID);
 
-    NewDouble = TUID*CurStep*0.1;
-    NewLong = TUID*CurStep*10;
-    NewBool = ((TUID*CurStep)%2 == 0);
-    NewString = Glib::ustring::compose("%1 %2x%3","strvalue",TUID,CurStep);
+    NewDouble = TUID*CurrIndex*0.1;
+    NewLong = TUID*CurrIndex*10;
+    NewBool = ((TUID*CurrIndex)%2 == 0);
+    NewString = Glib::ustring::compose("%1 %2x%3","strvalue",TUID,CurrIndex);
 
 
 
     // double
 
-    OPENFLUID_GetVariable(TU,"tests.double",CurStep,VarDouble);
+    OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,VarDouble);
     if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect double value (tests.double) get by reference");
 
-    OPENFLUID_SetVariable(TU,"tests.double",CurStep,NewDouble);
+    OPENFLUID_SetVariable(TU,"tests.double",CurrIndex,NewDouble);
 
-    OPENFLUID_GetVariable(TU,"tests.double",CurStep,VarDouble);
+    OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,VarDouble);
     if (!openfluid::tools::IsCloseEnough(VarDouble,NewDouble,0.00001))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect double value after update (tests.double)");
 
@@ -228,13 +228,13 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 
     // long
 
-    OPENFLUID_GetVariable(TU,"tests.integer",CurStep,VarLong);
+    OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex,VarLong);
     if (VarLong != RefLong)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect long value (tests.integer) get by reference");
 
-    OPENFLUID_SetVariable(TU,"tests.integer",CurStep,NewLong);
+    OPENFLUID_SetVariable(TU,"tests.integer",CurrIndex,NewLong);
 
-    OPENFLUID_GetVariable(TU,"tests.integer",CurStep,VarLong);
+    OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex,VarLong);
     if (VarLong != NewLong)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect long value after update (tests.integer)");
 
@@ -244,13 +244,13 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 
     // bool
 
-    OPENFLUID_GetVariable(TU,"tests.bool",CurStep,VarBool);
+    OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex,VarBool);
     if (VarBool != RefBool)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect bool value (tests.bool) get by reference");
 
-    OPENFLUID_SetVariable(TU,"tests.bool",CurStep,NewBool);
+    OPENFLUID_SetVariable(TU,"tests.bool",CurrIndex,NewBool);
 
-    OPENFLUID_GetVariable(TU,"tests.bool",CurStep,VarBool);
+    OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex,VarBool);
     if (VarBool != NewBool)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect bool value after update (tests.bool)");
 
@@ -260,13 +260,13 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 
     // string
 
-    OPENFLUID_GetVariable(TU,"tests.string",CurStep,VarString);
+    OPENFLUID_GetVariable(TU,"tests.string",CurrIndex,VarString);
     if (VarString != RefString)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect string value (tests.string) get by reference");
 
-    OPENFLUID_SetVariable(TU,"tests.string",CurStep,NewString);
+    OPENFLUID_SetVariable(TU,"tests.string",CurrIndex,NewString);
 
-    OPENFLUID_GetVariable(TU,"tests.string",CurStep,VarString);
+    OPENFLUID_GetVariable(TU,"tests.string",CurrIndex,VarString);
     if (VarString != NewString)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect string value after update (tests.string)");
 
@@ -276,14 +276,14 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 
     // vector
 
-    OPENFLUID_GetVariable(TU,"tests.vector",CurStep,VarVectorVal);
+    OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex,VarVectorVal);
     if (VarVectorVal.getSize() != RefVectorSize)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect vector size get by reference");
 
     openfluid::core::VectorValue NewVect(NewVectorSize,NewDouble);
-    OPENFLUID_SetVariable(TU,"tests.vector",CurStep,NewVect);
+    OPENFLUID_SetVariable(TU,"tests.vector",CurrIndex,NewVect);
 
-    OPENFLUID_GetVariable(TU,"tests.vector",CurStep,VarVectorVal);
+    OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex,VarVectorVal);
     if (VarVectorVal.getSize() != NewVectorSize)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect vector size after update");
     if (!openfluid::tools::IsCloseEnough(VarVectorVal[0],NewDouble,0.00001))
@@ -298,13 +298,13 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
     // old style vector
 
     VarVectorVal.clear();
-    OPENFLUID_GetVariable(TU,"tests.oldvector",CurStep,VarVectorVal);
+    OPENFLUID_GetVariable(TU,"tests.oldvector",CurrIndex,VarVectorVal);
     if (VarVectorVal.getSize() != RefVectorSize)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect oldvector size get by reference");
 
-    OPENFLUID_SetVariable(TU,"tests.oldvector",CurStep,NewVect);
+    OPENFLUID_SetVariable(TU,"tests.oldvector",CurrIndex,NewVect);
 
-    OPENFLUID_GetVariable(TU,"tests.oldvector",CurStep,VarVectorVal);
+    OPENFLUID_GetVariable(TU,"tests.oldvector",CurrIndex,VarVectorVal);
     if (VarVectorVal.getSize() != NewVectorSize)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect oldvector size after update");
     if (!openfluid::tools::IsCloseEnough(VarVectorVal[0],NewDouble,0.00001))
@@ -318,16 +318,16 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 
     // matrix
 
-    OPENFLUID_GetVariable(TU,"tests.matrix",CurStep,VarMatrixVal);
+    OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex,VarMatrixVal);
     if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect matrix cols nb get by reference");
     if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect matrix rows nb get by reference");
 
     openfluid::core::MatrixValue NewMatrix(NewMatrixColsNb,NewMatrixRowsNb,NewDouble);
-    OPENFLUID_SetVariable(TU,"tests.matrix",CurStep,NewMatrix);
+    OPENFLUID_SetVariable(TU,"tests.matrix",CurrIndex,NewMatrix);
 
-    OPENFLUID_GetVariable(TU,"tests.matrix",CurStep,VarMatrixVal);
+    OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex,VarMatrixVal);
     if (VarMatrixVal.getColsNbr() != NewMatrixColsNb)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect matrix cols nb after update");
     if (VarMatrixVal.getRowsNbr() != NewMatrixRowsNb)
@@ -343,7 +343,7 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
 
     // map
 
-    OPENFLUID_GetVariable(TU,"tests.map",CurStep,VarMapVal);
+    OPENFLUID_GetVariable(TU,"tests.map",CurrIndex,VarMapVal);
     if (VarMapVal.getSize() != 2)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect map size get by reference");
 
@@ -351,9 +351,9 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
     NewMap.setString("key1",NewString);
     NewMap.setDouble("key2",NewDouble);
     NewMap.setBoolean("key3",NewBool);
-    OPENFLUID_SetVariable(TU,"tests.map",CurStep,NewMap);
+    OPENFLUID_SetVariable(TU,"tests.map",CurrIndex,NewMap);
 
-    OPENFLUID_GetVariable(TU,"tests.map",CurStep,VarMapVal);
+    OPENFLUID_GetVariable(TU,"tests.map",CurrIndex,VarMapVal);
     if (VarMapVal.getSize() != 3)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect map size after update");
     if (VarMapVal.getString("key1") != NewString)
@@ -373,87 +373,87 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsTypedVariableExist (tests.none, NONE)");
 
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurStep,openfluid::core::Value::DOUBLE))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurrIndex,openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsVariableExist (tests.none, DOUBLE)");
 
     VarDouble = 0.0;
-    OPENFLUID_GetVariable(TU,"tests.none",CurStep,VarDouble);
+    OPENFLUID_GetVariable(TU,"tests.none",CurrIndex,VarDouble);
     if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect double value (tests.none)");
 
 
-    OPENFLUID_SetVariable(TU,"tests.none",CurStep,NewLong);
+    OPENFLUID_SetVariable(TU,"tests.none",CurrIndex,NewLong);
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurStep,openfluid::core::Value::INTEGER))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurrIndex,openfluid::core::Value::INTEGER))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsVariableExist (tests.none, INTEGER)");
 
     VarLong = 0;
-    OPENFLUID_GetVariable(TU,"tests.none",CurStep,VarLong);
+    OPENFLUID_GetVariable(TU,"tests.none",CurrIndex,VarLong);
     if (VarLong != NewLong)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect long value (tests.none)");
 
 
-    OPENFLUID_SetVariable(TU,"tests.none",CurStep,openfluid::core::NullValue());
+    OPENFLUID_SetVariable(TU,"tests.none",CurrIndex,openfluid::core::NullValue());
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurStep,openfluid::core::Value::NULLL))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurrIndex,openfluid::core::Value::NULLL))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsVariableExist (tests.none, NULL)");
 
 
-    OPENFLUID_SetVariable(TU,"tests.none",CurStep,NewBool);
+    OPENFLUID_SetVariable(TU,"tests.none",CurrIndex,NewBool);
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurStep,openfluid::core::Value::BOOLEAN))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurrIndex,openfluid::core::Value::BOOLEAN))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsVariableExist (tests.none, BOOLEAN)");
 
     VarBool = false;
-    OPENFLUID_GetVariable(TU,"tests.none",CurStep,VarBool);
+    OPENFLUID_GetVariable(TU,"tests.none",CurrIndex,VarBool);
     if (VarBool != NewBool)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect boolean value (tests.none)");
 
 
-    OPENFLUID_SetVariable(TU,"tests.none",CurStep,NewString);
+    OPENFLUID_SetVariable(TU,"tests.none",CurrIndex,NewString);
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurStep,openfluid::core::Value::STRING))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurrIndex,openfluid::core::Value::STRING))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsVariableExist (tests.none, STRING)");
 
     VarString= "";
-    OPENFLUID_GetVariable(TU,"tests.none",CurStep,VarString);
+    OPENFLUID_GetVariable(TU,"tests.none",CurrIndex,VarString);
     if (VarString != NewString)
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect string value (tests.none)");
 
 
-    OPENFLUID_SetVariable(TU,"tests.none",CurStep,NewVect);
+    OPENFLUID_SetVariable(TU,"tests.none",CurrIndex,NewVect);
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurStep,openfluid::core::Value::VECTOR))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurrIndex,openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsVariableExist (tests.none, VECTOR)");
 
     VarVectorVal.clear();
-    OPENFLUID_GetVariable(TU,"tests.none",CurStep,VarVectorVal);
+    OPENFLUID_GetVariable(TU,"tests.none",CurrIndex,VarVectorVal);
     if (VarVectorVal.size() != NewVect.size())
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect vector size value (tests.none)");
     if (!openfluid::tools::IsCloseEnough(VarVectorVal[4],NewDouble,0.00001))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect vector value at index 4 (tests.none)");
 
 
-    OPENFLUID_SetVariable(TU,"tests.none",CurStep,NewMatrix);
+    OPENFLUID_SetVariable(TU,"tests.none",CurrIndex,NewMatrix);
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurStep,openfluid::core::Value::MATRIX))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurrIndex,openfluid::core::Value::MATRIX))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsVariableExist (tests.none, MATRIX)");
 
     VarMatrixVal.clear();
-    OPENFLUID_GetVariable(TU,"tests.none",CurStep,VarMatrixVal);
+    OPENFLUID_GetVariable(TU,"tests.none",CurrIndex,VarMatrixVal);
     if (VarMatrixVal.size() != NewMatrix.size())
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect matrix size value (tests.none)");
     if (!openfluid::tools::IsCloseEnough(VarMatrixVal.get(4,3),NewDouble,0.00001))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect matrix value at index 4,3 (tests.none)");
 
 
-    OPENFLUID_SetVariable(TU,"tests.none",CurStep,NewMap);
+    OPENFLUID_SetVariable(TU,"tests.none",CurrIndex,NewMap);
 
-    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurStep,openfluid::core::Value::MAP))
+    if (!OPENFLUID_IsVariableExist(TU,"tests.none",CurrIndex,openfluid::core::Value::MAP))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect OPENFLUID_IsVariableExist (tests.none, MAP)");
 
     VarMapVal.clear();
-    OPENFLUID_GetVariable(TU,"tests.none",CurStep,VarMapVal);
+    OPENFLUID_GetVariable(TU,"tests.none",CurrIndex,VarMapVal);
     if (VarMapVal.size() != NewMap.size())
       OPENFLUID_RaiseError("tests.primitivestypedvalues.use","incorrect map size value (tests.none)");
     if (VarMapVal.getBoolean("key3") != NewBool)

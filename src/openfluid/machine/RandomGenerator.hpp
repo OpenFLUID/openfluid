@@ -84,7 +84,7 @@ class DLLEXPORT RandomGenerator : public Generator
 
     void checkConsistency();
 
-    openfluid::core::Duration_t initializeRun() { return DefaultDeltaT(); };
+    openfluid::core::Duration_t initializeRun();
 
     openfluid::core::Duration_t runStep();
 

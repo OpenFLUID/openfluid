@@ -247,9 +247,9 @@ class EventsFunction : public openfluid::ware::PluggableFunction
 
       openfluid::core::DateTime BeginDate,EndDate;
 
-      BeginDate = OPENFLUID_GetBeginDate();
+      BeginDate = OPENFLUID_GetCurrentDate() - OPENFLUID_GetDefaultDeltaT();
 
-      EndDate = OPENFLUID_GetCurrentDate() + OPENFLUID_GetDefaultDeltaT() - 1;
+      EndDate = OPENFLUID_GetCurrentDate()- 1;
 
 
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",aUnit)

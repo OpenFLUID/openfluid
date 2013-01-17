@@ -132,6 +132,14 @@ openfluid::core::Duration_t InterpGenerator::initializeRun()
 
   m_CurrentStep = 0;
 
+
+  openfluid::core::Unit* LU;
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
+    OPENFLUID_InitializeVariable(LU,m_VarName,0.0);
+  }
+
+
   return DefaultDeltaT();
 }
 

@@ -252,6 +252,46 @@ openfluid::core::Duration_t InjectGenerator::initializeRun()
     LoadDistribution(DistriFilePath.string());
   }
 
+  // ============
+
+
+  openfluid::core::Unit* LU;
+  openfluid::core::DoubleValue CurrentValue;
+
+  for (std::map<int,DatedValueSerie_t>::iterator it=m_Series.begin(); it!=m_Series.end();++it)
+  {
+
+    // accessing the next correct value
+    while (!((*it).second.empty()) && !((*it).second.front().first == OPENFLUID_GetCurrentDate()))
+      (*it).second.pop();
+
+    // exit if the next correct value doesn't exist
+    if ((*it).second.empty())
+    {
+      std::string StrID;
+      openfluid::tools::ConvertValue((*it).first,&StrID);
+      throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::runStep","value to inject for variable " + m_VarName + " cannot be found for source ID " + StrID);
+    }
+  }
+
+
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
+    CurrentValue = m_Series[m_SerieIDByUnit[LU->getID()]].front().second;
+
+    if (m_IsMax && CurrentValue > m_Max) CurrentValue = m_Max;
+    if (m_IsMin && CurrentValue < m_Min) CurrentValue = m_Min;
+
+    if (isVectorVariable())
+    {
+      openfluid::core::VectorValue VV(m_VarSize,CurrentValue);
+      OPENFLUID_InitializeVariable(LU,m_VarName,VV);
+    }
+    else
+      OPENFLUID_InitializeVariable(LU,m_VarName,CurrentValue);
+  }
+
+
   return DefaultDeltaT();
 }
 

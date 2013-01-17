@@ -463,7 +463,7 @@ void ModelInstance::call_initializeRun()
 
       if (Duration == 0)  // Again(), iteration
       {
-        throw openfluid::base::OFException("OpenFLUID framework","SimulationScheduler::processNextTimePoint","Cannot re-execute runStep() on same time point");
+        throw openfluid::base::OFException("OpenFLUID framework","SimulationScheduler::call_initializeRun","Cannot re-execute runStep() on same time point");
       }
       else if (Duration == -1) // AtTheEnd();
       {
@@ -477,6 +477,8 @@ void ModelInstance::call_initializeRun()
       }
 
     }
+    else
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationScheduler::call_initializeRun","NULL model item instance!");
     FuncIter++;
   }
 }
@@ -495,6 +497,8 @@ void ModelInstance::processNextTimePoint()
     return;
 
   m_TimePointList.front().sortByOriginalPosition();
+
+  mp_Listener->onRunStep(&m_SimulationBlob.getSimulationStatus());
 
   while (m_TimePointList.front().hasItemsToProcess())
   {
@@ -530,6 +534,10 @@ void ModelInstance::processNextTimePoint()
                                      NextItem);
     }
   }
+
+  if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_Listener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
+      mp_Listener->onRunStepDone(openfluid::machine::MachineListener::OK);
+
   m_TimePointList.pop_front();
 }
 

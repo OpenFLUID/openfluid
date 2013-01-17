@@ -138,6 +138,39 @@ class OutputsFunction : public openfluid::ware::PluggableFunction
 
   openfluid::core::Duration_t initializeRun()
   {
+    openfluid::core::Unit *TUA, *TUB;
+    long VectorSize = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()) % 40;
+    openfluid::core::VectorValue TheVector;
+    std::string IDStr, TSStr;
+
+    TSStr = "0";
+
+    OPENFLUID_UNITS_ORDERED_LOOP("UnitsA",TUA)
+    {
+
+      TheVector = openfluid::core::VectorValue(VectorSize,double(TUA->getID()));
+      OPENFLUID_InitializeVariable(TUA,"tests.vector",TheVector);
+      OPENFLUID_InitializeVariable(TUA,"tests.scalar",double(TUA->getID()));
+
+      openfluid::tools::ConvertValue(TUA->getID(),&IDStr);
+      OPENFLUID_RaiseWarning("tests.messages","["+TUA->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
+
+    }
+
+    OPENFLUID_UNITS_ORDERED_LOOP("UnitsB",TUB)
+    {
+
+      TheVector = openfluid::core::VectorValue(VectorSize,double(TUB->getID()));
+      OPENFLUID_InitializeVariable(TUB,"tests.vector",TheVector);
+      OPENFLUID_InitializeVariable(TUB,"tests.scalar",double(TUB->getID()));
+
+      openfluid::tools::ConvertValue(TUB->getID(),&IDStr);
+      OPENFLUID_RaiseWarning("tests.messages","["+TUB->getClass()+"|"+IDStr+"|"+TSStr+"] Message from tests.outputs function");
+
+    }
+
+
+
     return DefaultDeltaT();
   }
 

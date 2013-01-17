@@ -63,6 +63,19 @@
 #include <openfluid/dllexport.hpp>
 
 
+#define REQUIRE_SIMULATION_STAGE(stage,sender,msg) \
+  if (OPENFLUID_GetCurrentStage() != (stage)) \
+    throw openfluid::base::OFException("OpenFLUID framework",sender,msg);
+
+#define REQUIRE_SIMULATION_STAGE_GE(stage,sender,msg) \
+  if (OPENFLUID_GetCurrentStage() < (stage)) \
+    throw openfluid::base::OFException("OpenFLUID framework",sender,msg);
+
+#define REQUIRE_SIMULATION_STAGE_LE(stage,sender,msg) \
+  if (OPENFLUID_GetCurrentStage() > (stage)) \
+    throw openfluid::base::OFException("OpenFLUID framework",sender,msg);
+
+
 namespace openfluid { namespace ware {
 
 

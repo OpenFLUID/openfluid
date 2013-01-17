@@ -20,24 +20,6 @@ IF(BUILD_FORTRAN_FUNCTIONS)
 ENDIF(BUILD_FORTRAN_FUNCTIONS)
 
 
-ADD_FUNCTION(tests.vector.prod tests.vector.prod ${TEST_OUTPUT_PATH})
-ADD_FUNCTION(tests.vector.use tests.vector.use ${TEST_OUTPUT_PATH})
-ADD_TEST(functions-Vector "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Vector"
-                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Vector" 
-                              "-p${TEST_OUTPUT_PATH}")                              
-
-IF(TESTS_RUNHIGHLOAD)
-  ADD_FUNCTION(tests.largevector.prod tests.largevector.prod ${TEST_OUTPUT_PATH})
-  ADD_FUNCTION(tests.largevector.use tests.largevector.use ${TEST_OUTPUT_PATH})
-  ADD_TEST(functions-LargeVector "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                                 "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.LargeVector"
-                                 "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LargeVector" 
-                                 "-p${TEST_OUTPUT_PATH}")
-ENDIF(TESTS_RUNHIGHLOAD)                                                               
-
-
-
 ADD_FUNCTION(tests.primitives.prod tests.primitives.prod ${TEST_OUTPUT_PATH})
 ADD_FUNCTION(tests.primitives.use tests.primitives.use ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Primitives "${BIN_OUTPUT_PATH}/openfluid-engine" 

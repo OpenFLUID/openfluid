@@ -109,6 +109,27 @@ void RandomGenerator::checkConsistency()
 // =====================================================================
 
 
+openfluid::core::Duration_t RandomGenerator::initializeRun()
+{
+  openfluid::core::Unit* LU;
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
+    if (isVectorVariable())
+    {
+      openfluid::core::VectorValue VV(m_VarSize,0.0);
+      OPENFLUID_InitializeVariable(LU,m_VarName,VV);
+    }
+    else
+      OPENFLUID_InitializeVariable(LU,m_VarName,0.0);
+  }
+  return DefaultDeltaT();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 openfluid::core::Duration_t RandomGenerator::runStep()
 {
 

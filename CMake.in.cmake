@@ -167,11 +167,6 @@ SET(BUILD_APP_MARKETCLIENT 0)
 #SET(BUILD_DOCFORDEV 1)
 
 
-################### tests to run ###################
-
-#SET(TESTS_RUNHIGHLOAD 1)
-
-
 ################### market ###################
 
 SET(OPENFLUID_MARKETBAGDIR "market-bag")

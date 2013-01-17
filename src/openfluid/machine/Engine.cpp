@@ -791,7 +791,7 @@ void Engine::run()
   m_SimulationBlob.getExecutionMessages().resetWarningFlag();
 
   // check simulation vars production after init
-  checkSimulationVarsProduction(0);
+  checkSimulationVarsProduction(1);
 
 
   // ============= runStep() =============
@@ -810,7 +810,6 @@ void Engine::run()
 
   while (m_ModelInstance.hasTimePointToProcess())
   {
-    mp_MachineListener->onRunStep(mp_SimStatus);
 
     m_SimulationBlob.getExecutionMessages().resetWarningFlag();
 
@@ -827,9 +826,6 @@ void Engine::run()
       mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
       throw;
     }
-
-    if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
-    mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::OK);
 
     if (mp_RunEnv->isWriteResults()) saveOutputs(mp_SimStatus->getCurrentDate());
 

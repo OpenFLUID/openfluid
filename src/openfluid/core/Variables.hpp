@@ -72,15 +72,15 @@ class DLLEXPORT Variables
 
     bool createVariable(const VariableName_t aName, const Value::Type aType);
 
-    bool modifyValue(const VariableName_t aName, const TimeStep_t aStep,
+    bool modifyValue(const VariableName_t aName, const TimeIndex_t& anIndex,
         const Value& aValue);
 
     bool appendValue(const VariableName_t aName, const TimeIndex_t& anIndex, const Value& aValue);
 
-    bool getValue(const VariableName_t aName, const TimeStep_t aStep,
+    bool getValue(const VariableName_t aName, const TimeIndex_t& anIndex,
         Value* aValue) const;
 
-    Value* getValue(const VariableName_t aName, const TimeStep_t aStep) const;
+    Value* getValue(const VariableName_t aName, const TimeIndex_t& anIndex) const;
 
     Value* getCurrentValue(const VariableName_t aName) const;
 
@@ -88,23 +88,25 @@ class DLLEXPORT Variables
 
     bool isVariableExist(const VariableName_t aName) const;
 
-    bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep) const;
+    bool isVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex) const;
 
-    bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep,
+    bool isVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex,
         Value::Type ValueType) const;
 
     bool isTypedVariableExist(const VariableName_t aName, const Value::Type VarType) const;
 
-    bool isTypedVariableExist(const VariableName_t aName, const TimeStep_t aStep,
+    bool isTypedVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex,
         Value::Type VarType) const;
 
     std::vector<VariableName_t> getVariablesNames() const;
 
-    unsigned int getVariableValuesCount(const VariableName_t aName) const;
+    int getVariableValuesCount(const VariableName_t aName) const;
 
     bool isAllVariablesCount(unsigned int Count) const;
 
     void clear();
+
+    void displayContent(const VariableName_t& aName, std::ostream& OStream) const;
 
 };
 

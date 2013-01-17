@@ -114,14 +114,20 @@ bool Variables::createVariable(const VariableName_t aName, const Value::Type aTy
  * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
  * either a NullValue or the same type than the existing Variable.
  */
-bool Variables::modifyValue(const VariableName_t aName, const TimeStep_t aStep,
+bool Variables::modifyValue(const VariableName_t aName, const TimeIndex_t& anIndex,
     const Value& aValue)
 {
-  if (isVariableExist(aName, aStep)
+
+/*  std::cout << (isVariableExist(aName, anIndex)) << std::endl;
+  std::cout << "  " << (m_Data[aName].second == openfluid::core::Value::NONE) << std::endl;
+  std::cout << "  " << (aValue.getType() == openfluid::core::Value::NULLL) << std::endl;
+  std::cout << "  " << (m_Data[aName].second == aValue.getType()) << std::endl;*/
+
+  if (isVariableExist(aName, anIndex)
       && (m_Data[aName].second == openfluid::core::Value::NONE
           || aValue.getType() == openfluid::core::Value::NULLL
           || m_Data[aName].second == aValue.getType()))
-    return m_Data[aName].first.modifyValue(aStep, aValue);
+    return m_Data[aName].first.modifyValue(anIndex, aValue);
 
   return false;
 }
@@ -144,27 +150,28 @@ bool Variables::appendValue(const VariableName_t aName, const TimeIndex_t& anInd
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool Variables::getValue(const VariableName_t aName, const TimeStep_t aStep,
+bool Variables::getValue(const VariableName_t aName, const TimeIndex_t& anIndex,
     Value* aValue) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  return (it != m_Data.end() && it->second.first.getValue(aStep, aValue));
+  return (it != m_Data.end() && it->second.first.getValue(anIndex, aValue));
 }
 
 // =====================================================================
 // =====================================================================
 
-Value* Variables::getValue(const VariableName_t aName, const TimeStep_t aStep) const
+Value* Variables::getValue(const VariableName_t aName, const TimeIndex_t& anIndex) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   if (it != m_Data.end())
-    return it->second.first.getValue(aStep);
+    return it->second.first.getValue(anIndex);
 
   return (Value*) 0;
 }
@@ -208,25 +215,24 @@ bool Variables::isVariableExist(const VariableName_t aName) const
 
 
 bool Variables::isVariableExist(const VariableName_t aName,
-    const TimeStep_t aStep) const
+                                const TimeIndex_t& anIndex) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  // the variable exist if the required step is strictly lesser than the variable storage next step
-  return (it != m_Data.end() && aStep < it->second.first.getNextStep());
+  return (it != m_Data.end() && it->second.first.isValueExist(anIndex));
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool Variables::isVariableExist(const VariableName_t aName, const TimeStep_t aStep,
+bool Variables::isVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex,
     Value::Type ValueType) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   // the variable exist if the required step is strictly lesser than the variable storage next step
-  return (it != m_Data.end() && aStep < it->second.first.getNextStep() && it->second.first.getValue(aStep)->getType() == ValueType);
+  return (it != m_Data.end() && it->second.first.isValueExist(anIndex) && it->second.first.getValue(anIndex)->getType() == ValueType);
 }
 
 // =====================================================================
@@ -245,12 +251,11 @@ bool Variables::isTypedVariableExist(const VariableName_t aName, const Value::Ty
 
 
 bool Variables::isTypedVariableExist(const VariableName_t aName,
-    const TimeStep_t aStep, Value::Type VarType) const
+                                     const TimeIndex_t& anIndex, Value::Type VarType) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  // the variable exist if the required step is strictly lesser than the variable storage next step
-  return (it != m_Data.end() && aStep < it->second.first.getNextStep() && it->second.second == VarType);
+  return (it != m_Data.end() && it->second.first.isValueExist(anIndex) && it->second.second == VarType);
 }
 
 // =====================================================================
@@ -271,7 +276,7 @@ std::vector<VariableName_t> Variables::getVariablesNames() const
 // =====================================================================
 
 
-unsigned int Variables::getVariableValuesCount(const VariableName_t aName) const
+int Variables::getVariableValuesCount(const VariableName_t aName) const
 {
 
   VariablesMap_t::const_iterator it = m_Data.find(aName);
@@ -279,8 +284,9 @@ unsigned int Variables::getVariableValuesCount(const VariableName_t aName) const
   if (it == m_Data.end())
     return -1;
 
-  return it->second.first.getNextStep();
+  return it->second.first.getValuesCount();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -290,7 +296,7 @@ bool Variables::isAllVariablesCount(unsigned int Count) const
 {
   for (VariablesMap_t::const_iterator it = m_Data.begin(); it != m_Data.end(); ++it)
   {
-    if (it->second.first.getNextStep() != Count)
+    if (it->second.first.getValuesCount() != Count)
       return false;
   }
 
@@ -306,5 +312,20 @@ void Variables::clear()
   m_Data.clear();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void Variables::displayContent(const VariableName_t& aName, std::ostream& OStream) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  if (it != m_Data.end())
+  {
+    OStream << "Variable " << aName << std::endl;
+    it->second.first.displayContent(OStream);
+  }
 }
-}
+
+} } //namespaces

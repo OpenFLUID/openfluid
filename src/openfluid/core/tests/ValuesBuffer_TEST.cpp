@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::core::ValuesBuffer VBuffer;
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getNextStep(),0);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValuesCount(),0);
 }
 
 // =====================================================================
@@ -91,14 +91,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::core::ValuesBuffer VBuffer;
   openfluid::core::DoubleValue Value;
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getNextStep(),0);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValuesCount(),0);
 
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(0,openfluid::core::DoubleValue(1.1)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(1,openfluid::core::DoubleValue(2.2)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(2,openfluid::core::DoubleValue(3.3)),true);
 
-  // tstep    0   1   2
-  // buffer |1.1|2.2|3.3|
 
   BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&Value),true);
   BOOST_REQUIRE_CLOSE(Value.get(),3.3,0.001);
@@ -108,10 +106,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(5,openfluid::core::DoubleValue(6.6)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(6,openfluid::core::DoubleValue(7.7)),true);
 
-  // tstep    2   3   4   5   6
-  // buffer |3.3|4.4|5.5|6.6|7.7|
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getNextStep(),7);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValuesCount(),5);
 
   BOOST_REQUIRE_EQUAL(VBuffer.getCurrentValue(&Value),true);
   BOOST_REQUIRE_CLOSE(Value.get(),7.7,0.001);
@@ -154,111 +150,121 @@ BOOST_AUTO_TEST_CASE(check_type_operations)
   openfluid::core::NullValue NullValue;
   openfluid::core::VectorValue VectValue;
 
+  BOOST_REQUIRE_EQUAL(VBuffer.isValueExist(0),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.isValueExist(5),false);
+
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(10,openfluid::core::DoubleValue(1000.1)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(11,openfluid::core::DoubleValue(1001.1)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(12,openfluid::core::DoubleValue(1002.1)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(13,openfluid::core::DoubleValue(1003.1)),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(0,&DblValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.isValueExist(0),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.isValueExist(5),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.isValueExist(10),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.isValueExist(11),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.isValueExist(13),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.isValueExist(15),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(10,&DblValue),true);
   BOOST_REQUIRE_CLOSE(DblValue.get(),1000.1,0.001);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&DblValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(12,&DblValue),true);
   BOOST_REQUIRE_CLOSE(DblValue.get(),1002.1,0.001);
   DblValue.set(0.0);
-  DblValue = *VBuffer.getValue(2);
+  DblValue = *VBuffer.getValue(12);
   BOOST_REQUIRE_CLOSE(DblValue.get(),1002.1,0.001);
-  BOOST_REQUIRE(!VBuffer.getValue(4));
+  BOOST_REQUIRE(!VBuffer.getValue(14));
 
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(14,openfluid::core::IntegerValue(1004)),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&IntValue),false);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(4,&IntValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(12,&IntValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(14,&IntValue),true);
   BOOST_REQUIRE_EQUAL(IntValue.get(),1004);
   BOOST_REQUIRE_EQUAL((long)IntValue,1004);
   BOOST_REQUIRE_EQUAL((int)IntValue,1004);
   IntValue.set(0);
-  IntValue = *VBuffer.getValue(4);
+  IntValue = *VBuffer.getValue(14);
   BOOST_REQUIRE_EQUAL(IntValue.get(),1004);
 
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(15,openfluid::core::StringValue("1005")),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&StrValue),false);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(5,&StrValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(12,&StrValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(15,&StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue.get(),"1005");
   BOOST_REQUIRE_EQUAL((std::string)StrValue,"1005");
   StrValue.set("");
-  StrValue = *VBuffer.getValue(5);
+  StrValue = *VBuffer.getValue(15);
   BOOST_REQUIRE_EQUAL(StrValue.get(),"1005");
 
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(16,openfluid::core::BooleanValue(true)),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&BoolValue),false);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(6,&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(12,&BoolValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(16,&BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue.get(),true);
   BOOST_REQUIRE_EQUAL((bool)BoolValue,true);
   BoolValue.set(false);
-  BoolValue = *VBuffer.getValue(6);
+  BoolValue = *VBuffer.getValue(16);
   BOOST_REQUIRE_EQUAL(BoolValue.get(),true);
 
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(17,openfluid::core::NullValue()),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&NullValue),false);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(7,&NullValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(12,&NullValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(17,&NullValue),true);
 
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(18,openfluid::core::VectorValue(3,1.1)),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&VectValue),false);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(8,&VectValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(12,&VectValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(18,&VectValue),true);
   BOOST_REQUIRE_EQUAL(VectValue.size(),3);
   BOOST_REQUIRE_EQUAL(VectValue[0],1.1);
   BOOST_REQUIRE_EQUAL(VectValue[2],1.1);
   VectValue.clear();
-  VectValue = *VBuffer.getValue(8);
+  VectValue = *VBuffer.getValue(18);
   BOOST_REQUIRE_EQUAL(VectValue.size(),3);
   BOOST_REQUIRE_EQUAL(VectValue[0],1.1);
   BOOST_REQUIRE_EQUAL(VectValue[2],1.1);
 
 
-  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(3,IntValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(4,StrValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(5,BoolValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(6,NullValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(7,VectValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(8,DblValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(13,IntValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(14,StrValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(15,BoolValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(16,NullValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(17,VectValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(18,DblValue),true);
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(3,&IntValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(4,&IntValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(13,&IntValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(14,&IntValue),false);
   IntValue.set(0);
-  IntValue = *VBuffer.getValue(3);
+  IntValue = *VBuffer.getValue(13);
   BOOST_REQUIRE_EQUAL(IntValue.get(),1004);
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(4,&StrValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&StrValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(14,&StrValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(12,&StrValue),false);
   StrValue.set("");
-  StrValue = *VBuffer.getValue(4);
+  StrValue = *VBuffer.getValue(14);
   BOOST_REQUIRE_EQUAL(StrValue.get(),"1005");
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(5,&BoolValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(6,&BoolValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(15,&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(16,&BoolValue),false);
   BOOST_REQUIRE_EQUAL(BoolValue.get(),true);
   BOOST_REQUIRE_EQUAL((bool)BoolValue,true);
   BoolValue.set(false);
-  BoolValue = *VBuffer.getValue(5);
+  BoolValue = *VBuffer.getValue(15);
   BOOST_REQUIRE_EQUAL(BoolValue.get(),true);
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(6,&NullValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(7,&NullValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(16,&NullValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(17,&NullValue),false);
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(7,&VectValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(8,&VectValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(17,&VectValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(18,&VectValue),false);
   VectValue.clear();
-  VectValue = *VBuffer.getValue(7);
+  VectValue = *VBuffer.getValue(17);
   BOOST_REQUIRE_EQUAL(VectValue.size(),3);
   BOOST_REQUIRE_EQUAL(VectValue[0],1.1);
   BOOST_REQUIRE_EQUAL(VectValue[2],1.1);
 
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(8,&DblValue),true);
-  BOOST_REQUIRE_EQUAL(VBuffer.getValue(3,&DblValue),false);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(18,&DblValue),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(13,&DblValue),false);
   DblValue.set(0.0);
-  DblValue = *VBuffer.getValue(8);
+  DblValue = *VBuffer.getValue(18);
   BOOST_REQUIRE_CLOSE(DblValue.get(),1002.1,0.001);
 
 
   //TODO check other Compound Values
 
+  std::cout << VBuffer.getValuesCount() << std::endl;
 
   // check insertion before simulation head
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(16,openfluid::core::BooleanValue(true)),false);

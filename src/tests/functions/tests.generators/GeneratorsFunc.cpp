@@ -161,21 +161,20 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
     openfluid::core::DoubleValue SValue;
     openfluid::core::VectorValue VValue;
 
-
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
 
-      OPENFLUID_GetVariable(TU,"tests.fixed",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.fixed",OPENFLUID_GetCurrentTimeIndex(),&SValue);
       if (!openfluid::tools::IsCloseEnough(SValue,12.7))
         OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixed variable");
 
 
-      OPENFLUID_GetVariable(TU,"tests.random",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.random",OPENFLUID_GetCurrentTimeIndex(),&SValue);
       if (!(SValue >= 20.53 && SValue<= 50.0))
         OPENFLUID_RaiseError("tests.generators","incorrect value for tests.random variable");
 
 
-      OPENFLUID_GetVariable(TU,"tests.interp",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.interp",OPENFLUID_GetCurrentTimeIndex(),&SValue);
 
       if (TU->getID() % 2 != 0)
       {
@@ -189,7 +188,7 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
       }
 
 
-      OPENFLUID_GetVariable(TU,"tests.interpmin",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.interpmin",OPENFLUID_GetCurrentTimeIndex(),&SValue);
 
       if (TU->getID() % 2 != 0)
       {
@@ -203,18 +202,18 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
       }
 
 
-      OPENFLUID_GetVariable(TU,"tests.interpminmax",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.interpminmax",OPENFLUID_GetCurrentTimeIndex(),&SValue);
 
       if (!(SValue >= 0.0 && SValue<= 20.0))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.interpminmax variable");
 
 
-      OPENFLUID_GetVariable(TU,"tests.inject",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()),&SValue);
+      OPENFLUID_GetVariable(TU,"tests.inject",OPENFLUID_GetCurrentTimeIndex(),&SValue);
 
       if (TU->getID() % 2 != 0)
       {
 
-        if (!openfluid::tools::IsCloseEnough(SValue,double((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()))))
+        if (!openfluid::tools::IsCloseEnough(SValue,double(OPENFLUID_GetCurrentTimeIndex())/double(DefaultDeltaT())))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.inject variable (source3.dat)");
       }
       else
@@ -224,9 +223,9 @@ class GeneratorsFunction : public openfluid::ware::PluggableFunction
       }
 
 
-      if ((OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())>0)
+      if (OPENFLUID_GetCurrentTimeIndex() > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
       {
-        OPENFLUID_GetVariable(TU,"tests.fixedprev",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT())-1,&VValue);
+        OPENFLUID_GetVariable(TU,"tests.fixedprev",OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT(),&VValue);
         if (!openfluid::tools::IsCloseEnough(VValue[0],5.3))
           OPENFLUID_RaiseError("tests.generators","incorrect value for tests.fixedprev variable");
       }

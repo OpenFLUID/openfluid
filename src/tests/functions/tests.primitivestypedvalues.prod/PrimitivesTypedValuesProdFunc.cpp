@@ -148,6 +148,60 @@ void PrimitivesTypedValuesProdFunction::checkConsistency()
 
 openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::initializeRun()
 {
+  openfluid::core::Unit* TU;
+  unsigned int TUID;
+
+  double TheDouble;
+  long TheLong;
+  bool TheBool;
+  std::string TheString;
+  long VectorSize = 40;
+  openfluid::core::VectorValue TheVector;
+  long MatrixColsNb = 4;
+  long MatrixRowsNb = 3;
+  openfluid::core::MatrixValue TheMatrix;
+  openfluid::core::MapValue TheMap;
+
+
+  OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+  {
+
+
+    TUID = TU->getID();
+
+    TheDouble = (double)TUID/10;
+    TheLong = TUID;
+    TheBool = (TUID%2 == 0);
+    TheString = Glib::ustring::compose("ID %1",TUID);
+
+
+    OPENFLUID_InitializeVariable(TU,"tests.none",TheDouble);
+
+    OPENFLUID_InitializeVariable(TU,"tests.double",TheDouble);
+
+    OPENFLUID_InitializeVariable(TU,"tests.integer",TheLong);
+
+    OPENFLUID_InitializeVariable(TU,"tests.bool",TheBool);
+
+    OPENFLUID_InitializeVariable(TU,"tests.string",TheString);
+
+    TheVector = openfluid::core::VectorValue(VectorSize,TheDouble);
+    OPENFLUID_InitializeVariable(TU,"tests.vector",TheVector);
+
+    TheVector = openfluid::core::VectorValue(VectorSize,TheDouble);
+    OPENFLUID_InitializeVariable(TU,"tests.oldvector",TheVector);
+
+    TheMatrix = openfluid::core::MatrixValue(MatrixColsNb,MatrixRowsNb,TheDouble);
+    OPENFLUID_InitializeVariable(TU,"tests.matrix",TheMatrix);
+
+    TheMap = openfluid::core::MapValue();
+    TheMap.setString("key1",TheString);
+    TheMap.setDouble("key2",TheDouble);
+    OPENFLUID_InitializeVariable(TU,"tests.map",TheMap);
+
+  }
+
+
   return DefaultDeltaT();
 }
 
@@ -191,12 +245,12 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.none", openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.none, DOUBLE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.none",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::NONE))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.none",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.none, timestep, NONE) before append");
 
     OPENFLUID_AppendVariable(TU,"tests.none",TheDouble);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.none",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::NONE))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.none",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.none, timestep, NONE) after append");
 
     // double
@@ -207,12 +261,12 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.double", openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.double, NONE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.double",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::DOUBLE))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.double, timestep, DOUBLE) before append");
 
     OPENFLUID_AppendVariable(TU,"tests.double",TheDouble);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.double",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::DOUBLE))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::DOUBLE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.double, timestep, DOUBLE) after append");
 
     // integer
@@ -223,12 +277,12 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.integer", openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.integer, NONE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.integer",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::INTEGER))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.integer",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::INTEGER))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.integer, timestep, INTEGER) before append");
 
     OPENFLUID_AppendVariable(TU,"tests.integer",TheLong);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.integer",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::INTEGER))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.integer",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::INTEGER))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.integer, timestep, INTEGER) after append");
 
     // boolean
@@ -239,12 +293,12 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.bool", openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.bool, NONE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.bool",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::BOOLEAN))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.bool",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::BOOLEAN))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.bool, timestep, BOOLEAN) before append");
 
     OPENFLUID_AppendVariable(TU,"tests.bool",TheBool);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.bool",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::BOOLEAN))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.bool",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::BOOLEAN))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.bool, timestep, BOOLEAN) after append");
 
     // string
@@ -255,12 +309,12 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.string", openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.string, NONE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.string",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::STRING))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.string",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::STRING))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.string, timestep, STRING) before append");
 
     OPENFLUID_AppendVariable(TU,"tests.string",TheString);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.string",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::STRING))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.string",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::STRING))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.string, timestep, STRING) after append");
 
     // vector
@@ -271,13 +325,13 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.vector", openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.vector, NONE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.vector",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.vector, timestep, VECTOR) before append");
 
     TheVector = openfluid::core::VectorValue(VectorSize,TheDouble);
     OPENFLUID_AppendVariable(TU,"tests.vector",TheVector);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.vector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.vector",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.vector, timestep, VECTOR) after append");
 
     // old style vector
@@ -288,13 +342,13 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.oldvector", openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.oldvector, NONE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.oldvector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.oldvector",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.oldvector, timestep, VECTOR) before append");
 
     TheVector = openfluid::core::VectorValue(VectorSize,TheDouble);
     OPENFLUID_AppendVariable(TU,"tests.oldvector",TheVector);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.oldvector",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::VECTOR))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.oldvector",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::VECTOR))
       OPENFLUID_RaiseError("tests.primitivestypedvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.oldvector, timestep, VECTOR) after append");
 
     // matrix value
@@ -305,13 +359,13 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.matrix", openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.matrix, NONE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.matrix",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::MATRIX))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.matrix",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::MATRIX))
       OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.matrix, timestep, MATRIX) before append");
 
     TheMatrix = openfluid::core::MatrixValue(MatrixColsNb,MatrixRowsNb,TheDouble);
     OPENFLUID_AppendVariable(TU,"tests.matrix",TheMatrix);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.matrix",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::MATRIX))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.matrix",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::MATRIX))
       OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.matrix, timestep, MATRIX) after append");
 
     // map value
@@ -322,7 +376,7 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     if (OPENFLUID_IsTypedVariableExist(TU,"tests.map", openfluid::core::Value::NONE))
       OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.map, NONE)");
 
-    if (OPENFLUID_IsTypedVariableExist(TU,"tests.map",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::MAP))
+    if (OPENFLUID_IsTypedVariableExist(TU,"tests.map",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::MAP))
       OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.map, timestep, MAP) before append");
 
     TheMap = openfluid::core::MapValue();
@@ -330,7 +384,7 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
     TheMap.setDouble("key2",TheDouble);
     OPENFLUID_AppendVariable(TU,"tests.map",TheMap);
 
-    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.map",(OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT()), openfluid::core::Value::MAP))
+    if (!OPENFLUID_IsTypedVariableExist(TU,"tests.map",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::MAP))
       OPENFLUID_RaiseError("tests.primitivesvalues.prod","incorrect OPENFLUID_IsTypedVariableExist (tests.map, timestep, MAP) after append");
 
 

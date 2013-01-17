@@ -59,11 +59,12 @@
 #include <openfluid/core/Value.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/DateTime.hpp>
-
 #include <boost/circular_buffer.hpp>
+
 #include <boost/shared_ptr.hpp>
 
 #include <iostream>
+#include <list>
 
 namespace openfluid {
 namespace core {
@@ -92,16 +93,27 @@ class IndexedValue
 
 class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 {
+  public:
+
+    // TODO Replace by std::list with garbage collector after each insertion?
+    // TODO choose correct container
+#define bcb
+
+#ifdef bcb
+    typedef  boost::circular_buffer<IndexedValue> DataContainer_t;
+#else
+    typedef  std::list<IndexedValue> DataContainer_t;
+#endif
 
   private:
 
-    // TODO Replace by std::list with garbage collector after each insertion?
-    boost::circular_buffer<IndexedValue> m_Data;
+    DataContainer_t m_Data;
 
-    unsigned int m_NextStep;
+    void runGarbageCollector();
 
-    bool TranslateStepNbrToIndex(const unsigned int& StepNbr,
-        unsigned int& Index) const;
+    DataContainer_t::iterator findAtIndex(const TimeIndex_t& anIndex);
+
+    DataContainer_t::const_iterator findAtIndex(const TimeIndex_t& anIndex) const;
 
   public:
 
@@ -109,21 +121,35 @@ class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 
     ~ValuesBuffer();
 
-    bool getValue(const unsigned int StepNbr, Value* aValue) const;
+    bool getValue(const TimeIndex_t& anIndex, Value* aValue) const;
 
-    Value* getValue(const unsigned int StepNbr) const;
+    Value* getValue(const TimeIndex_t& anIndex) const;
 
     Value* getCurrentValue() const;
 
+    TimeIndex_t getCurrentIndex() const;
+
+    bool isValueExist(const TimeIndex_t& anIndex) const
+    {
+      return (!m_Data.empty() && findAtIndex(anIndex) != m_Data.end());
+    }
+
+
     bool getCurrentValue(Value* aValue) const;
 
-    bool modifyValue(const unsigned int StepNbr, const Value& aValue);
+    bool modifyValue(const TimeIndex_t& anIndex, const Value& aValue);
 
     bool appendValue(const TimeIndex_t& anIndex, const Value& aValue);
 
-    unsigned int getNextStep() const;
+    unsigned int getValuesCount() const
+    {
+      return m_Data.size();
+    }
 
-    void displayStatus(std::ostream& OStream);
+    void displayStatus(std::ostream& OStream) const;
+
+    void displayContent(std::ostream& OStream) const;
+
 
 };
 
