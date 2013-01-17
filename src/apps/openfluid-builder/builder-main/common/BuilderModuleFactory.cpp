@@ -59,7 +59,7 @@
 #include "DomainStructureModule.hpp"
 #include "DomainClassModule.hpp"
 #include "SimulationRunModule.hpp"
-#include "SimulationOutModule.hpp"
+//#include "SimulationOutModule.hpp"
 //#include "ResultsSetModule.hpp"
 #include "EngineProject.hpp"
 
@@ -140,14 +140,14 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunMo
 // =====================================================================
 
 
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutModule()
-{
-  SimulationOutModule* Module = new SimulationOutModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob(),
-      mp_EngineProject.getFluidXDescriptor());
-  return Module;
-}
+//openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutModule()
+//{
+//  SimulationOutModule* Module = new SimulationOutModule();
+//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
+//      *mp_EngineProject.getSimBlob(),
+//      mp_EngineProject.getFluidXDescriptor());
+//  return Module;
+//}
 
 // =====================================================================
 // =====================================================================

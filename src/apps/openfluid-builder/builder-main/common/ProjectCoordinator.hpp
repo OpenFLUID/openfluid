@@ -116,7 +116,7 @@ class ProjectCoordinator
 
     std::string m_RunPageName;
 
-    std::string m_OutputsPageName;
+//    std::string m_OutputsPageName;
 
     // only to keep ref to FileMonitors (otherwise they're lost)
     std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
@@ -137,7 +137,7 @@ class ProjectCoordinator
 
     void whenRunChanged();
 
-    void whenOutChanged();
+//    void whenOutChanged();
 
 //    void whenResultsChanged();
 
@@ -237,19 +237,19 @@ class ProjectCoordinatorSub: public ProjectCoordinator
       return m_RunPageName;
     }
 
-    std::string getOutputsPageName()
-    {
-      return m_OutputsPageName;
-    }
+//    std::string getOutputsPageName()
+//    {
+//      return m_OutputsPageName;
+//    }
 
     void whenModelChanged();
 
     void whenDomainChanged();
 
-    void whenOutChanged()
-    {
-      ProjectCoordinator::whenOutChanged();
-    }
+//    void whenOutChanged()
+//    {
+//      ProjectCoordinator::whenOutChanged();
+//    }
 
     void removeDeletedClassPages()
     {

@@ -187,7 +187,7 @@ class EngineProject
 
     ~EngineProject();
 
-    Glib::ustring checkOutputsConsistency();
+//    Glib::ustring checkOutputsConsistency();
 
 };
 

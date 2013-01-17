@@ -85,8 +85,8 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
       TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(
       false), m_ModelPageName(_("Model")),
       m_DomainPageName(_("Spatial domain")), m_RunPageName(
-          _("Run configuration")), m_OutputsPageName(
-          _("Outputs configuration")), m_FileMonitorHasChanged(false),
+          _("Run configuration"))/*, m_OutputsPageName(
+          _("Outputs configuration"))*/, m_FileMonitorHasChanged(false),
       m_FileMonitorHasToDisplay(true)
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
@@ -246,19 +246,19 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
 
-    case ProjectExplorerCategories::EXPLORER_OUTPUTS:
-      PageName = m_OutputsPageName;
-      if (!m_Workspace.existsPageName(PageName))
-      {
-        Module
-            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createSimulationOutModule());
-
-        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
-            &ProjectCoordinator::whenOutChanged));
-
-        addModuleToWorkspace(PageName, *Module);
-      }
-      break;
+//    case ProjectExplorerCategories::EXPLORER_OUTPUTS:
+//      PageName = m_OutputsPageName;
+//      if (!m_Workspace.existsPageName(PageName))
+//      {
+//        Module
+//            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createSimulationOutModule());
+//
+//        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
+//            &ProjectCoordinator::whenOutChanged));
+//
+//        addModuleToWorkspace(PageName, *Module);
+//      }
+//      break;
 
 //    case ProjectExplorerCategories::EXPLORER_SET:
 //      PageName = constructSetPageName(
@@ -319,14 +319,14 @@ void ProjectCoordinator::addModuleToWorkspace(std::string PageName,
 
 void ProjectCoordinator::whenModelChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        Glib::ustring::compose(_(
-            "This change leads OpenFLUID to delete:\n%1"),
-            OutputConsistencyMessage));
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//        Glib::ustring::compose(_(
+//            "This change leads OpenFLUID to delete:\n%1"),
+//            OutputConsistencyMessage));
 
   computeModelChanges();
 }
@@ -378,14 +378,14 @@ void ProjectCoordinator::checkProject()
 //TODO allow the user to cancel deletion
 void ProjectCoordinator::whenDomainChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        Glib::ustring::compose(_(
-            "This change leads OpenFLUID to delete:\n%1"),
-            OutputConsistencyMessage));
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//        Glib::ustring::compose(_(
+//            "This change leads OpenFLUID to delete:\n%1"),
+//            OutputConsistencyMessage));
 
   computeDomainChanges();
 }
@@ -450,20 +450,20 @@ void ProjectCoordinator::whenRunChanged()
 // =====================================================================
 
 
-void ProjectCoordinator::whenOutChanged()
-{
-  updateModelessWindowsExtensions();
-
-//  updateResults();
-
-//  removeDeletedSetPages();
-
-  updateWorkspaceModules();
-
-  checkProject();
-
-  m_signal_ChangeHappened.emit();
-}
+//void ProjectCoordinator::whenOutChanged()
+//{
+//  updateModelessWindowsExtensions();
+//
+////  updateResults();
+//
+////  removeDeletedSetPages();
+//
+//  updateWorkspaceModules();
+//
+//  checkProject();
+//
+//  m_signal_ChangeHappened.emit();
+//}
 
 // =====================================================================
 // =====================================================================
@@ -828,14 +828,14 @@ void ProjectCoordinator::launchExtension(std::string ExtensionID)
 
 void ProjectCoordinator::whenExtensionChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        Glib::ustring::compose(_(
-            "This change leads OpenFLUID to delete:\n%1"),
-            OutputConsistencyMessage));
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//        Glib::ustring::compose(_(
+//            "This change leads OpenFLUID to delete:\n%1"),
+//            OutputConsistencyMessage));
 
   updateModelessWindowsExtensions();
 
@@ -927,11 +927,11 @@ ProjectCoordinatorSub::ProjectCoordinatorSub(
 
 void ProjectCoordinatorSub::whenModelChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    std::cout << OutputConsistencyMessage << std::endl;
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    std::cout << OutputConsistencyMessage << std::endl;
 
   computeModelChanges();
 }
@@ -941,11 +941,11 @@ void ProjectCoordinatorSub::whenModelChanged()
 
 void ProjectCoordinatorSub::whenDomainChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    std::cout << OutputConsistencyMessage << std::endl;
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    std::cout << OutputConsistencyMessage << std::endl;
 
   computeDomainChanges();
 }

@@ -121,8 +121,8 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
     std::string generateClassInfoStr(std::string ClassName,
         unsigned int UnitsCount);
 
-    std::string generateSetInfoStr(std::string SetName, std::string ClassName,
-        unsigned int UnitsCount);
+//    std::string generateSetInfoStr(std::string SetName, std::string ClassName,
+//        unsigned int UnitsCount);
 
   protected:
 

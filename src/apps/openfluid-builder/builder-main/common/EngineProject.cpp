@@ -204,13 +204,13 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
     addSignatureToGenerators();
 
-    Glib::ustring OutputConsistencyMessage = checkOutputsConsistency();
-
-    if (!OutputConsistencyMessage.empty())
-      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-          Glib::ustring::compose(_(
-              "Check outputs consistency leads OpenFLUID to delete:\n\n%1"),
-              OutputConsistencyMessage));
+//    Glib::ustring OutputConsistencyMessage = checkOutputsConsistency();
+//
+//    if (!OutputConsistencyMessage.empty())
+//      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//          Glib::ustring::compose(_(
+//              "Check outputs consistency leads OpenFLUID to delete:\n\n%1"),
+//              OutputConsistencyMessage));
   }
 
 }
@@ -668,105 +668,105 @@ void EngineProject::deleteEngineObjects()
 // =====================================================================
 
 
-Glib::ustring EngineProject::checkOutputsConsistency()
-{
-  Glib::ustring Message = "";
-
-  std::set<std::string> ClassNames = EngineHelper::getClassNames(
-      &getCoreRepository());
-
-  for (unsigned int i = 0; i < getOutputDescriptor().getFileSets().size(); i++)
-  {
-    std::vector<openfluid::base::OutputSetDescriptor>::iterator itSet =
-        getOutputDescriptor().getFileSets()[i].getSets().begin();
-
-    while (itSet != getOutputDescriptor().getFileSets()[i].getSets().end())
-    {
-      std::string ClassName = itSet->getUnitsClass();
-      std::string SetName = itSet->getName();
-
-      std::set<std::string> VarNames = EngineHelper::getProducedVarNames(
-          ClassName, mp_ModelInstance);
-
-      Glib::ustring MsgDetail = "";
-
-      if (ClassNames.find(ClassName) == ClassNames.end())
-      {
-        MsgDetail = Glib::ustring::compose(_("class %1 doesn't exist"),
-            ClassName);
-      }
-      else if (VarNames.empty())
-      {
-        MsgDetail = Glib::ustring::compose(
-            _("no variable produced for class %1"), ClassName);
-      }
-      else if (!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
-      {
-        MsgDetail = _("no unit selected");
-      }
-      else if (!itSet->isAllVariables() && itSet->getVariables().empty())
-      {
-        MsgDetail = _("no variable selected");
-      }
-
-      if (MsgDetail != "")
-      {
-        Message.append(Glib::ustring::compose("- Set %1 (%2)\n", SetName,
-            MsgDetail));
-        getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
-      }
-      else
-      {
-        // check Ids exist
-
-        std::vector<unsigned int>::iterator itId = itSet->getUnitsIDs().begin();
-
-        while (itId != itSet->getUnitsIDs().end())
-        {
-          if (getCoreRepository().getUnit(ClassName, *itId) == NULL)
-          {
-            Message.append(Glib::ustring::compose(_("- ID %1 of set %2\n"),
-                *itId, SetName));
-            itSet->getUnitsIDs().erase(itId);
-          }
-          else
-            itId++;
-        }
-
-        // check Var names exist
-
-        std::vector<std::string>::iterator itVar;
-
-        itVar = itSet->getVariables().begin();
-
-        while (itVar != itSet->getVariables().end())
-        {
-          if (VarNames.find(*itVar) == VarNames.end())
-          {
-            Message.append(Glib::ustring::compose(_("- Var %1 of set %2\n"),
-                *itVar, SetName));
-            itSet->getVariables().erase(itVar);
-          }
-          else
-            itVar++;
-        }
-
-        // check still at least one Id and one Var in Set
-
-        if ((!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
-            || (!itSet->isAllVariables() && itSet->getVariables().empty()))
-        {
-          Message.append(Glib::ustring::compose(_("=> Set %1\n"), SetName));
-          getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
-        }
-        else
-          ++itSet;
-      }
-    }
-  }
-
-  return Message;
-}
+//Glib::ustring EngineProject::checkOutputsConsistency()
+//{
+//  Glib::ustring Message = "";
+//
+//  std::set<std::string> ClassNames = EngineHelper::getClassNames(
+//      &getCoreRepository());
+//
+//  for (unsigned int i = 0; i < getOutputDescriptor().getFileSets().size(); i++)
+//  {
+//    std::vector<openfluid::base::OutputSetDescriptor>::iterator itSet =
+//        getOutputDescriptor().getFileSets()[i].getSets().begin();
+//
+//    while (itSet != getOutputDescriptor().getFileSets()[i].getSets().end())
+//    {
+//      std::string ClassName = itSet->getUnitsClass();
+//      std::string SetName = itSet->getName();
+//
+//      std::set<std::string> VarNames = EngineHelper::getProducedVarNames(
+//          ClassName, mp_ModelInstance);
+//
+//      Glib::ustring MsgDetail = "";
+//
+//      if (ClassNames.find(ClassName) == ClassNames.end())
+//      {
+//        MsgDetail = Glib::ustring::compose(_("class %1 doesn't exist"),
+//            ClassName);
+//      }
+//      else if (VarNames.empty())
+//      {
+//        MsgDetail = Glib::ustring::compose(
+//            _("no variable produced for class %1"), ClassName);
+//      }
+//      else if (!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
+//      {
+//        MsgDetail = _("no unit selected");
+//      }
+//      else if (!itSet->isAllVariables() && itSet->getVariables().empty())
+//      {
+//        MsgDetail = _("no variable selected");
+//      }
+//
+//      if (MsgDetail != "")
+//      {
+//        Message.append(Glib::ustring::compose("- Set %1 (%2)\n", SetName,
+//            MsgDetail));
+//        getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
+//      }
+//      else
+//      {
+//        // check Ids exist
+//
+//        std::vector<unsigned int>::iterator itId = itSet->getUnitsIDs().begin();
+//
+//        while (itId != itSet->getUnitsIDs().end())
+//        {
+//          if (getCoreRepository().getUnit(ClassName, *itId) == NULL)
+//          {
+//            Message.append(Glib::ustring::compose(_("- ID %1 of set %2\n"),
+//                *itId, SetName));
+//            itSet->getUnitsIDs().erase(itId);
+//          }
+//          else
+//            itId++;
+//        }
+//
+//        // check Var names exist
+//
+//        std::vector<std::string>::iterator itVar;
+//
+//        itVar = itSet->getVariables().begin();
+//
+//        while (itVar != itSet->getVariables().end())
+//        {
+//          if (VarNames.find(*itVar) == VarNames.end())
+//          {
+//            Message.append(Glib::ustring::compose(_("- Var %1 of set %2\n"),
+//                *itVar, SetName));
+//            itSet->getVariables().erase(itVar);
+//          }
+//          else
+//            itVar++;
+//        }
+//
+//        // check still at least one Id and one Var in Set
+//
+//        if ((!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
+//            || (!itSet->isAllVariables() && itSet->getVariables().empty()))
+//        {
+//          Message.append(Glib::ustring::compose(_("=> Set %1\n"), SetName));
+//          getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
+//        }
+//        else
+//          ++itSet;
+//      }
+//    }
+//  }
+//
+//  return Message;
+//}
 
 // =====================================================================
 // =====================================================================

@@ -58,7 +58,7 @@
 #define BOOST_TEST_MODULE builder_unittest_ProjectCoordinator
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/base/OutputDescriptor.hpp>
+//#include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include "EngineProject.hpp"
 #include "ProjectExplorerComponent.hpp"
@@ -82,7 +82,7 @@ struct init_Coordinator
     std::string m_ModelPageName;
     std::string m_DomainPageName;
     std::string m_RunPageName;
-    std::string m_OutputsPageName;
+//    std::string m_OutputsPageName;
 
     std::string m_TestUnitsClassPageName;
     std::string m_ParentTestUnitsClassPageName;
@@ -111,7 +111,7 @@ struct init_Coordinator
       m_ModelPageName = mp_Coordinator->getModelPageName();
       m_DomainPageName = mp_Coordinator->getDomainPageName();
       m_RunPageName = mp_Coordinator->getRunPageName();
-      m_OutputsPageName = mp_Coordinator->getOutputsPageName();
+//      m_OutputsPageName = mp_Coordinator->getOutputsPageName();
 
       m_TestUnitsClassPageName = mp_Coordinator->constructClassPageName(
           "TestUnits");
@@ -170,32 +170,32 @@ BOOST_AUTO_TEST_CASE(test_whenActivationChanged)
   BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),0);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),"");
 
-  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_OUTPUTS,""));
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
+//  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_OUTPUTS,""));
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
 
   mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_RUN,""));
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),2);
+  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
   BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_RunPageName);
 
-  mp_Workspace->setCurrentPage(m_OutputsPageName);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
+//  mp_Workspace->setCurrentPage(m_OutputsPageName);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
 
 //  mp_ExplorerModel->setActivatedElements(std::make_pair(ProjectExplorerCategories::EXPLORER_SET,"full"));
 //  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),3);
 //  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_FullSetPageName);
 
   mp_Workspace->removePage(m_RunPageName);
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
+  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),0);
+  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),"");
 
 //  mp_Workspace->removePage(m_FullSetPageName);
 //  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),1);
 //  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),m_OutputsPageName);
 
-  mp_Workspace->removePage(m_OutputsPageName);
-  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),0);
-  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),"");
+//  mp_Workspace->removePage(m_OutputsPageName);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(),0);
+//  BOOST_CHECK_EQUAL(mp_Workspace->getCurrentPageName(),"");
 }
 
 BOOST_AUTO_TEST_CASE(test_removeDeletedClassPages)

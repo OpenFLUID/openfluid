@@ -112,11 +112,11 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl()
   mp_RunInfoRowRef = mref_TreeModel->createRowRefFromIter(*SubRow2);
 
   // Simulation > Outputs
-  SubRow1 = *(mref_TreeModel->append(Row->children()));
-  SubRow1[m_Columns.m_Id] = "";
-  SubRow1[m_Columns.m_Display] = _("Outputs");
-  SubRow1[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_OUTPUTS;
-  SubRow1[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
+//  SubRow1 = *(mref_TreeModel->append(Row->children()));
+//  SubRow1[m_Columns.m_Id] = "";
+//  SubRow1[m_Columns.m_Display] = _("Outputs");
+//  SubRow1[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_OUTPUTS;
+//  SubRow1[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
 
   // Results
 //  Row = *(mref_TreeModel->append());
@@ -302,12 +302,12 @@ void ProjectExplorerAdapterModelImpl::updateRunInfo()
 // =====================================================================
 
 
-std::string ProjectExplorerAdapterModelImpl::generateSetInfoStr(
-    std::string SetName, std::string ClassName, unsigned int UnitsCount)
-{
-  return Glib::ustring::compose(_("%1 (%2 - %3 units)"), SetName, ClassName,
-      UnitsCount);
-}
+//std::string ProjectExplorerAdapterModelImpl::generateSetInfoStr(
+//    std::string SetName, std::string ClassName, unsigned int UnitsCount)
+//{
+//  return Glib::ustring::compose(_("%1 (%2 - %3 units)"), SetName, ClassName,
+//      UnitsCount);
+//}
 
 // =====================================================================
 // =====================================================================
