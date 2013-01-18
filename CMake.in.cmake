@@ -137,14 +137,25 @@ SET(DEBUG_PREFIX "[OpenFLUID debug]")
 
 ################### applications build ###################
 
+SET(OPENFLUID_ENABLE_GUI 0)
+
+
+################### applications build ###################
+
 # set this to 1 to build openfluid-engine
 SET(BUILD_APP_ENGINE 1)
+
+# set this to 1 to build openfluid-minimal
+SET(BUILD_APP_MINIMAL 1)
 
 # set this to 1 to build openfluid-builder
 SET(BUILD_APP_BUILDER 0)
 
 # set this to 1 to build openfluid-market-client
 SET(BUILD_APP_MARKETCLIENT 0)
+
+# set this to 1 to build openfluid-minimal-gui
+SET(BUILD_APP_MINIMALGUI 0)
 
 
 ################### functions build ###################

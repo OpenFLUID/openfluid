@@ -105,30 +105,44 @@ MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "****************************************")
 MESSAGE(STATUS "Build openfluid-minimal application : yes")
 
-IF(BUILD_APP_MINIMALGUI)
-  MESSAGE(STATUS "Build openfluid-minimal-gui application : yes")  
-ELSE(BUILD_APP_MINIMALGUI)
-  MESSAGE(STATUS "Build openfluid-minimal-gui application : no")  
-ENDIF(BUILD_APP_MINIMALGUI)
-
-
 IF(BUILD_APP_ENGINE)
   MESSAGE(STATUS "Build openfluid-engine application : yes")  
-ELSE(BUILD_APP_ENGINE)
+ELSE()
   MESSAGE(STATUS "Build openfluid-engine application : no")  
-ENDIF(BUILD_APP_ENGINE)
+ENDIF()
 
-IF(BUILD_APP_BUILDER)
+IF(BUILD_APP_MINIMAL)
+  MESSAGE(STATUS "Build openfluid-minimal application : yes")  
+ELSE()
+  MESSAGE(STATUS "Build openfluid-minimal application : no")  
+ENDIF()
+
+
+IF(OPENFLUID_ENABLE_GUI)
+  MESSAGE(STATUS "Build openfluid-guicommon library : yes")  
+ELSE()
+  MESSAGE(STATUS "Build openfluid-guicommon library : no")  
+ENDIF()
+
+IF(BUILD_APP_MINIMALGUI AND OPENFLUID_ENABLE_GUI)
+  MESSAGE(STATUS "Build openfluid-minimal-gui application : yes")  
+ELSE()
+  MESSAGE(STATUS "Build openfluid-minimal-gui application : no")  
+ENDIF()
+
+
+
+IF(BUILD_APP_BUILDER AND OPENFLUID_ENABLE_GUI)
   MESSAGE(STATUS "Build openfluid-builder application : yes")  
-ELSE(BUILD_APP_BUILDER)
+ELSE()
   MESSAGE(STATUS "Build openfluid-builder application : no")  
-ENDIF(BUILD_APP_BUILDER)
+ENDIF()
   
-IF(BUILD_APP_MARKETCLIENT)
+IF(BUILD_APP_MARKETCLIENT AND OPENFLUID_ENABLE_GUI)
   MESSAGE(STATUS "Build openfluid-market-client application : yes")  
-ELSE(BUILD_APP_MARKETCLIENT)
+ELSE()
   MESSAGE(STATUS "Build openfluid-market-client application : no")  
-ENDIF(BUILD_APP_MARKETCLIENT)  
+ENDIF()  
   
 MESSAGE(STATUS "****************************************")
 
