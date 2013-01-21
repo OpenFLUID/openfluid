@@ -54,6 +54,7 @@
 
 #include "LandRTools.hpp"
 
+#include <openfluid/landr/GeosCompat.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <geos/geom/Geometry.h>
@@ -66,6 +67,7 @@
 #include <geos/operation/overlay/OverlayOp.h>
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
 #include <geos/precision/CommonBitsRemover.h>
+#include <geos/util/TopologyException.h>
 
 namespace openfluid {
 namespace landr {
@@ -85,7 +87,8 @@ geos::geom::LineString* LandRTools::getMergedLineStringFromGeometry(
   {
     for (unsigned int i = 0; i < Lines->size(); i++)
       delete Lines->at(i);
-  } else
+  }
+  else
     LS = *Lines->begin();
 
   delete Lines;
@@ -175,29 +178,44 @@ std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
     geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2,
     double SnapTolerance)
 {
-  geos::geom::Geometry* UnionGeom = computeSnapOverlayUnion(*Geom1, *Geom2,
-                                                            SnapTolerance);
-
-  std::list<geos::geom::LineString*> ExistingLines;
-
-  geos::operation::linemerge::LineMerger lm;
-
-  for (unsigned int i = 0; i < UnionGeom->getNumGeometries(); i++)
+  try
   {
-    geos::geom::LineString* Line =
-        dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(UnionGeom->getGeometryN(
-            i)));
+    geos::geom::Geometry* UnionGeom = computeSnapOverlayUnion(*Geom1, *Geom2,
+                                                              SnapTolerance);
 
-    Line->normalize();
+    std::list<geos::geom::LineString*> ExistingLines;
 
-    if (!exists(Line, ExistingLines, SnapTolerance))
+    geos::operation::linemerge::LineMerger lm;
+
+    for (unsigned int i = 0; i < UnionGeom->getNumGeometries(); i++)
     {
-      ExistingLines.push_back(Line);
-      lm.add(Line);
+      geos::geom::LineString* Line =
+          dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(UnionGeom->getGeometryN(
+              i)));
+
+      Line->normalize();
+
+      if (!exists(Line, ExistingLines, SnapTolerance))
+      {
+        ExistingLines.push_back(Line);
+        lm.add(Line);
+      }
     }
+
+    return lm.getMergedLineStrings();
+
+  }
+  catch (geos::util::GEOSException& e)
+  {
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "LandRTools::getNodedLines",
+        "Error while noding lines, you can try again with a greater snap tolerance value.\n"
+        "(Details: "
+        + std::string(e.what()) + ")");
   }
 
-  return lm.getMergedLineStrings();
+  return (std::vector<geos::geom::LineString*>*) 0;
 }
 
 // =====================================================================
@@ -207,11 +225,8 @@ geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
     geos::geom::Geometry& Geom1, geos::geom::Geometry& Geom2,
     double SnapTolerance)
 {
-  std::pair<std::auto_ptr<geos::geom::Geometry>,
-      std::auto_ptr<geos::geom::Geometry> > PrepGeom;
-
-  std::pair<std::auto_ptr<geos::geom::Geometry>,
-      std::auto_ptr<geos::geom::Geometry> > RemGeom;
+  GEOM_PTR_PAIR PrepGeom;
+  GEOM_PTR_PAIR RemGeom;
 
   std::auto_ptr<geos::precision::CommonBitsRemover> cbr;
   cbr.reset(new geos::precision::CommonBitsRemover());
@@ -221,9 +236,9 @@ geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
   RemGeom.second.reset(cbr->removeCommonBits(Geom2.clone()));
 
   geos::operation::overlay::snap::GeometrySnapper::snap(*RemGeom.first,
-                                                        *RemGeom.second,
-                                                        SnapTolerance,
-                                                        PrepGeom);
+      *RemGeom.second,
+      SnapTolerance,
+      PrepGeom);
 
   std::auto_ptr<geos::geom::Geometry> Result(
       geos::operation::overlay::OverlayOp::overlayOp(
@@ -266,9 +281,7 @@ void LandRTools::polygonizeGeometry(
   P->add(&Lines);
 
   // ! ask for Dangles BEFORE asking for polys (cf. Polygonizer code...)
-  std::vector<const geos::geom::LineString*>* TheDangles = P->getDangles();
-  if (TheDangles)
-    Dangles = *TheDangles;
+  GET_DANGLES(P, Dangles);
 
   std::vector<geos::geom::Polygon*>* ThePolygons = P->getPolygons();
   if (ThePolygons)
