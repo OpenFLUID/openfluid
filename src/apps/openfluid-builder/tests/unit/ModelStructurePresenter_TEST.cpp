@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(test_SetModelInstance)
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
-  std::string idC = "tests.vector.prod";
+  std::string idC = "tests.primitivesvalues.prod";
 
   openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(test_SelectAFunctionByApp)
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
-  std::string idC = "tests.vector.prod";
+  std::string idC = "tests.primitivesvalues.prod";
 
   openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(test_RemoveFunctionAt)
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
-  std::string idC = "tests.vector.prod";
+  std::string idC = "tests.primitivesvalues.prod";
 
   openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
@@ -272,7 +272,7 @@ BOOST_AUTO_TEST_CASE(test_RemoveFirst)
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
-  std::string idC = "tests.vector.prod";
+  std::string idC = "tests.primitivesvalues.prod";
 
   openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
@@ -305,7 +305,7 @@ BOOST_AUTO_TEST_CASE(test_MoveFunction)
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
-  std::string idC = "tests.vector.prod";
+  std::string idC = "tests.primitivesvalues.prod";
 
   openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
@@ -375,7 +375,7 @@ BOOST_AUTO_TEST_CASE(test_SelectAFunction)
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
-  std::string idC = "tests.vector.prod";
+  std::string idC = "tests.primitivesvalues.prod";
 
   openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
@@ -412,7 +412,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
-  std::string idC = "tests.vector.prod";
+  std::string idC = "tests.primitivesvalues.prod";
 
   openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
@@ -465,7 +465,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
-  std::string idC = "tests.vector.prod";
+  std::string idC = "tests.primitivesvalues.prod";
 
   openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);

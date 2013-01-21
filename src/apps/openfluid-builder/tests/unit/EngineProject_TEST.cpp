@@ -169,11 +169,11 @@ BOOST_AUTO_TEST_CASE(test_addItems_FromFolder)
   + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.vector.prod"));
+  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.primitivesvalues.prod"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),3);
 
-  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.vector.use"));
+  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.primitivesvalues.use"));
 
   BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),4);
 
