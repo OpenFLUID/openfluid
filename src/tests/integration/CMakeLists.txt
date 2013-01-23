@@ -199,7 +199,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               "--buddy" "func2doc"
                               "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc"
                               )
-
+  
 
   ADD_TEST(integration-BuddyFunc2DocPDF "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "func2doc"
@@ -259,7 +259,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
     ADD_TEST(integration-BuddyConvert1314 "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=13_14,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V13,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
-                              )
+                              )                              
   ENDIF(${FULL_VERSION} VERSION_GREATER "1.3") 
 
   IF(${FULL_VERSION} EQUAL "1.4")  
@@ -268,6 +268,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted13to14"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1314Check APPEND PROPERTY DEPENDS integration-BuddyConvert1314)
   ENDIF(${FULL_VERSION} EQUAL "1.4")  
 
   IF(${FULL_VERSION} VERSION_GREATER "1.4") 
@@ -275,6 +276,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               "--buddy" "convert"
                               "--buddyopts" "convmode=14_15,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1415 APPEND PROPERTY DEPENDS integration-BuddyConvert1314)                              
   ENDIF(${FULL_VERSION} VERSION_GREATER "1.4") 
 
   IF(${FULL_VERSION} EQUAL "1.5")  
@@ -283,6 +285,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted14to15"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1415Check APPEND PROPERTY DEPENDS integration-BuddyConvert1415)                              
   ENDIF(${FULL_VERSION} EQUAL "1.5")  
 
   IF(${FULL_VERSION} VERSION_GREATER "1.5") 
@@ -290,6 +293,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               "--buddy" "convert"
                               "--buddyopts" "convmode=15_16,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1516 APPEND PROPERTY DEPENDS integration-BuddyConvert1415)                              
   ENDIF(${FULL_VERSION} VERSION_GREATER "1.5")
  
   IF(${FULL_VERSION} EQUAL "1.6")  
@@ -298,13 +302,14 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1516Check APPEND PROPERTY DEPENDS integration-BuddyConvert1516)                              
   ENDIF(${FULL_VERSION} EQUAL "1.6")  
 
   IF(${FULL_VERSION} VERSION_GREATER "1.5")
     ADD_TEST(integration-BuddyConvert1516wBuff "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=15_16,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
-                              )
+                              )                                  
   ENDIF(${FULL_VERSION} VERSION_GREATER "1.5")
   
   IF(${FULL_VERSION} EQUAL "1.6")  
@@ -312,8 +317,8 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16wBuff"
                                        "-p" "${TEST_OUTPUT_PATH}"
-  
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1516wBuffCheck APPEND PROPERTY DEPENDS integration-BuddyConvert1516wBuff)                              
   ENDIF(${FULL_VERSION} EQUAL "1.6")
 
 
@@ -331,6 +336,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.NewData"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+  SET_PROPERTY(TEST integration-BuddyNewDataCheck APPEND PROPERTY DEPENDS integration-BuddyNewData)
 
   ADD_TEST(integration-MinimalRun "${BIN_OUTPUT_PATH}/openfluid-minimal"
                                   "${TESTS_DATASETS_PATH}/OPENFLUID.IN.Primitives"
