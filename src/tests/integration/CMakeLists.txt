@@ -181,12 +181,14 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterSingle"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunSingle"
                                "-p" "${TEST_OUTPUT_PATH}")
+  SET_PROPERTY(TEST integration-FluidXWriterSingle APPEND PROPERTY DEPENDS api-FLuidXDescriptor_TEST)
 
   ADD_TEST(integration-FluidXWriterMany "${BIN_OUTPUT_PATH}/openfluid-engine"
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterMany"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunMany"
                                "-p" "${TEST_OUTPUT_PATH}")
-
+  SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS api-FLuidXDescriptor_TEST)
+  
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddyhelp" "func2doc"
@@ -226,25 +228,27 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
   ADD_TEST(integration-BuddyNewFuncConfigure "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc" "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}" "." 
                               )
+  SET_PROPERTY(TEST integration-BuddyNewFuncConfigure APPEND PROPERTY DEPENDS integration-BuddyNewFunc)
 
   ADD_TEST(integration-BuddyNewFuncBuild "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc" "${CMAKE_BUILD_TOOL}"
                               )
-
+  SET_PROPERTY(TEST integration-BuddyNewFuncBuild APPEND PROPERTY DEPENDS integration-BuddyNewFuncConfigure)
 
   ADD_TEST(integration-BuddyNewFuncCheck "${BIN_OUTPUT_PATH}/openfluid-engine" 
                          "-r"
                          "-p" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc")
   SET_TESTS_PROPERTIES(integration-BuddyNewFuncCheck PROPERTIES PASS_REGULAR_EXPRESSION "tests.buddy.newfunc"
                                                                 PASS_REGULAR_EXPRESSION "John Doe"
-                                                                PASS_REGULAR_EXPRESSION "doe@foo.bar.org")  
+                                                                PASS_REGULAR_EXPRESSION "doe@foo.bar.org") 
+  SET_PROPERTY(TEST integration-BuddyNewFuncCheck APPEND PROPERTY DEPENDS integration-BuddyNewFuncBuild)                                                                 
                        
   ADD_TEST(integration-BuddyNewFuncRun "${BIN_OUTPUT_PATH}/openfluid-engine" 
                                        "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.BuddyNewFunc"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BuddyNewFunc" 
                                        "-p" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc"
                                        "-v")
-
+  SET_PROPERTY(TEST integration-BuddyNewFuncRun APPEND PROPERTY DEPENDS integration-BuddyNewFuncBuild)
 
 
   ADD_TEST(integration-BuddyConvertHelp "${BIN_OUTPUT_PATH}/openfluid-engine"

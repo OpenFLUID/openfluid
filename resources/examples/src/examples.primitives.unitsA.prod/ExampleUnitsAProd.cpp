@@ -79,7 +79,7 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    void initParams(const openfluid::core::FuncParamsMap_t& Params)
+    void initParams(const openfluid::ware::WareParams_t& Params)
     {
 
     }
@@ -110,6 +110,17 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
   
     openfluid::core::Duration_t initializeRun()
     {
+      openfluid::core::Unit* A;
+
+
+      OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
+      {
+
+        OPENFLUID_InitializeVariable(A,"var1",0.0);
+        OPENFLUID_InitializeVariable(A,"var2",0.0);
+      }
+
+
       return DefaultDeltaT();
     }
   
@@ -122,7 +133,7 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
       openfluid::core::Unit* A;
       openfluid::core::DoubleValue Value1;
 
-      unsigned int CurrentStep = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT());
+      unsigned int CurrentStep = (OPENFLUID_GetCurrentTimeIndex());
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
       {
@@ -132,7 +143,7 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
         }
         else
         {
-          OPENFLUID_GetVariable(A,"var1",CurrentStep-1,Value1);
+          OPENFLUID_GetVariable(A,"var1",CurrentStep-DefaultDeltaT(),Value1);
           Value1 = Value1 + 2.0;
         }
 
