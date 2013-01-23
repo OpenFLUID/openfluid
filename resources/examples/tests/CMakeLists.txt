@@ -14,17 +14,22 @@
                               "${CMAKE_SOURCE_DIR}/resources/examples/src" 
                               )
 
+
   ADD_TEST(examples-Build "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/examples" "${CMAKE_BUILD_TOOL}" 
                               )
+  SET_PROPERTY(TEST examples-Build APPEND PROPERTY DEPENDS examples-Configure)
+
 
   ADD_TEST(examples-Install "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/examples" "${CMAKE_BUILD_TOOL}" "install"
                               )
+  SET_PROPERTY(TEST examples-Install APPEND PROPERTY DEPENDS examples-Build)
 
                               
   ADD_TEST(examples-RunPrimitives "${BIN_OUTPUT_PATH}/openfluid-engine" 
                               "-i" "${EXAMPLES_DATASETS_PATH}/OPENFLUID.IN.PrimitivesExample"
                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesExample" 
                               "-p" "${TEST_OUTPUT_PATH}"
-                              )                              
+                              )
+  SET_PROPERTY(TEST examples-RunPrimitives APPEND PROPERTY DEPENDS examples-Install)                                                            

@@ -79,7 +79,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    void initParams(const openfluid::core::FuncParamsMap_t& Params)
+    void initParams(const openfluid::ware::WareParams_t& Params)
     {
       m_Mult = 1.0;
       OPENFLUID_GetFunctionParameter(Params,"gmult",&m_Mult);
@@ -111,6 +111,14 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
   
     openfluid::core::Duration_t initializeRun()
     {
+      openfluid::core::Unit* A;
+
+      OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
+      {
+        OPENFLUID_InitializeVariable(A,"var3",0.0);
+      }
+
+
       return DefaultDeltaT();
     }
   
@@ -123,7 +131,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
       openfluid::core::Unit* A;
       openfluid::core::DoubleValue Value1, Value2;
 
-      unsigned int CurrentStep = (OPENFLUID_GetCurrentTimeIndex()/OPENFLUID_GetDefaultDeltaT());
+      unsigned int CurrentStep = (OPENFLUID_GetCurrentTimeIndex());
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
       {
@@ -139,7 +147,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
         }
         else
         {
-          OPENFLUID_RaiseWarning("examples.primitives.unitsA.up",CurrentStep,"var2 not present, init to value 1.0");
+          OPENFLUID_RaiseWarning("examples.primitives.unitsA.up","var2 not present, init to value 1.0");
           Value2 = 1.0;
           OPENFLUID_AppendVariable(A,"var2",Value2);
         }

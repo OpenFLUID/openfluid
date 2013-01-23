@@ -181,12 +181,14 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterSingle"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunSingle"
                                "-p" "${TEST_OUTPUT_PATH}")
+  SET_PROPERTY(TEST integration-FluidXWriterSingle APPEND PROPERTY DEPENDS api-FLuidXDescriptor_TEST)
 
   ADD_TEST(integration-FluidXWriterMany "${BIN_OUTPUT_PATH}/openfluid-engine"
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterMany"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunMany"
                                "-p" "${TEST_OUTPUT_PATH}")
-
+  SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS api-FLuidXDescriptor_TEST)
+  
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddyhelp" "func2doc"
@@ -197,7 +199,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               "--buddy" "func2doc"
                               "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc"
                               )
-
+  
 
   ADD_TEST(integration-BuddyFunc2DocPDF "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "func2doc"
@@ -226,25 +228,27 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
   ADD_TEST(integration-BuddyNewFuncConfigure "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc" "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}" "." 
                               )
+  SET_PROPERTY(TEST integration-BuddyNewFuncConfigure APPEND PROPERTY DEPENDS integration-BuddyNewFunc)
 
   ADD_TEST(integration-BuddyNewFuncBuild "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc" "${CMAKE_BUILD_TOOL}"
                               )
-
+  SET_PROPERTY(TEST integration-BuddyNewFuncBuild APPEND PROPERTY DEPENDS integration-BuddyNewFuncConfigure)
 
   ADD_TEST(integration-BuddyNewFuncCheck "${BIN_OUTPUT_PATH}/openfluid-engine" 
                          "-r"
                          "-p" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc")
   SET_TESTS_PROPERTIES(integration-BuddyNewFuncCheck PROPERTIES PASS_REGULAR_EXPRESSION "tests.buddy.newfunc"
                                                                 PASS_REGULAR_EXPRESSION "John Doe"
-                                                                PASS_REGULAR_EXPRESSION "doe@foo.bar.org")  
+                                                                PASS_REGULAR_EXPRESSION "doe@foo.bar.org") 
+  SET_PROPERTY(TEST integration-BuddyNewFuncCheck APPEND PROPERTY DEPENDS integration-BuddyNewFuncBuild)                                                                 
                        
   ADD_TEST(integration-BuddyNewFuncRun "${BIN_OUTPUT_PATH}/openfluid-engine" 
                                        "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.BuddyNewFunc"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.BuddyNewFunc" 
                                        "-p" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newfunc"
                                        "-v")
-
+  SET_PROPERTY(TEST integration-BuddyNewFuncRun APPEND PROPERTY DEPENDS integration-BuddyNewFuncBuild)
 
 
   ADD_TEST(integration-BuddyConvertHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
@@ -255,7 +259,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
     ADD_TEST(integration-BuddyConvert1314 "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=13_14,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V13,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
-                              )
+                              )                              
   ENDIF(${FULL_VERSION} VERSION_GREATER "1.3") 
 
   IF(${FULL_VERSION} EQUAL "1.4")  
@@ -264,6 +268,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted13to14"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1314Check APPEND PROPERTY DEPENDS integration-BuddyConvert1314)
   ENDIF(${FULL_VERSION} EQUAL "1.4")  
 
   IF(${FULL_VERSION} VERSION_GREATER "1.4") 
@@ -271,6 +276,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               "--buddy" "convert"
                               "--buddyopts" "convmode=14_15,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1415 APPEND PROPERTY DEPENDS integration-BuddyConvert1314)                              
   ENDIF(${FULL_VERSION} VERSION_GREATER "1.4") 
 
   IF(${FULL_VERSION} EQUAL "1.5")  
@@ -279,6 +285,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted14to15"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1415Check APPEND PROPERTY DEPENDS integration-BuddyConvert1415)                              
   ENDIF(${FULL_VERSION} EQUAL "1.5")  
 
   IF(${FULL_VERSION} VERSION_GREATER "1.5") 
@@ -286,6 +293,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               "--buddy" "convert"
                               "--buddyopts" "convmode=15_16,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1516 APPEND PROPERTY DEPENDS integration-BuddyConvert1415)                              
   ENDIF(${FULL_VERSION} VERSION_GREATER "1.5")
  
   IF(${FULL_VERSION} EQUAL "1.6")  
@@ -294,13 +302,14 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1516Check APPEND PROPERTY DEPENDS integration-BuddyConvert1516)                              
   ENDIF(${FULL_VERSION} EQUAL "1.6")  
 
   IF(${FULL_VERSION} VERSION_GREATER "1.5")
     ADD_TEST(integration-BuddyConvert1516wBuff "${BIN_OUTPUT_PATH}/openfluid-engine"
                               "--buddy" "convert"
                               "--buddyopts" "convmode=15_16,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
-                              )
+                              )                                  
   ENDIF(${FULL_VERSION} VERSION_GREATER "1.5")
   
   IF(${FULL_VERSION} EQUAL "1.6")  
@@ -308,8 +317,8 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16wBuff"
                                        "-p" "${TEST_OUTPUT_PATH}"
-  
                               )
+    SET_PROPERTY(TEST integration-BuddyConvert1516wBuffCheck APPEND PROPERTY DEPENDS integration-BuddyConvert1516wBuff)                              
   ENDIF(${FULL_VERSION} EQUAL "1.6")
 
 
@@ -327,6 +336,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.NewData"
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
+  SET_PROPERTY(TEST integration-BuddyNewDataCheck APPEND PROPERTY DEPENDS integration-BuddyNewData)
 
   ADD_TEST(integration-MinimalRun "${BIN_OUTPUT_PATH}/openfluid-minimal"
                                   "${TESTS_DATASETS_PATH}/OPENFLUID.IN.Primitives"
