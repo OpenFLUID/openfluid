@@ -201,6 +201,33 @@ bool Variables::getCurrentValue(const VariableName_t aName, Value* aValue) const
   return (it != m_Data.end() && it->second.first.getCurrentValue(aValue));
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+Value* Variables::getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  if (it != m_Data.end() && it->second.first.getCurrentIndex() == Index)
+    return it->second.first.getCurrentValue();
+
+  return (Value*) 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+bool Variables::getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index, Value* aValue) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  return (it != m_Data.end() && it->second.first.getCurrentIndex() == Index && it->second.first.getCurrentValue(aValue));
+}
+
+
 // =====================================================================
 // =====================================================================
 

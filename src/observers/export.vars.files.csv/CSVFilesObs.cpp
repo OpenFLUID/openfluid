@@ -478,10 +478,15 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
         for (FLIt=FLItB;FLIt!=FLItE;++FLIt)
         {
-          (*FLIt)->FileHandle << OPENFLUID_GetCurrentDate().getAsString((*SetIt).second.Format->DateFormat)
-                              << (*SetIt).second.Format->ColSeparator;
-          (*FLIt)->Unit->getVariables()->getCurrentValue((*FLIt)->VarName)->writeToStream((*FLIt)->FileHandle);
-          (*FLIt)->FileHandle << "\n";
+          openfluid::core::Value* Val = (*FLIt)->Unit->getVariables()->getCurrentValueIfIndex((*FLIt)->VarName,OPENFLUID_GetCurrentTimeIndex());
+
+          if (Val!=NULL)
+          {
+            (*FLIt)->FileHandle << OPENFLUID_GetCurrentDate().getAsString((*SetIt).second.Format->DateFormat)
+                                << (*SetIt).second.Format->ColSeparator;
+            Val->writeToStream((*FLIt)->FileHandle);
+            (*FLIt)->FileHandle << "\n";
+          }
 
         }
 

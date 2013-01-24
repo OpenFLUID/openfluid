@@ -3,6 +3,7 @@
 
     <model>
 
+      <function fileID="tests.deltaTtime.prod" />
    
       <function fileID="tests.variabletime.prod">
         <param name="usedefaultdeltat" value="0" />

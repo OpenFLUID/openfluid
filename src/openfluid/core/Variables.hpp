@@ -86,6 +86,10 @@ class DLLEXPORT Variables
 
     bool getCurrentValue(const VariableName_t aName, Value* aValue) const;
 
+    bool getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index, Value* aValue) const;
+
+    Value* getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const;
+
     bool isVariableExist(const VariableName_t aName) const;
 
     bool isVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex) const;

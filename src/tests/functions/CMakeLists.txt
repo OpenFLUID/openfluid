@@ -48,6 +48,7 @@ ADD_TEST(functions-PrimitivesTypedValues "${BIN_OUTPUT_PATH}/openfluid-engine"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTypedValues" 
                            "-p${TEST_OUTPUT_PATH}")
 
+ADD_FUNCTION(tests.deltaTtime.prod tests.deltaTtime.prod ${TEST_OUTPUT_PATH})
 ADD_FUNCTION(tests.variabletime.prod tests.variabletime.prod ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-VariableTimeProd "${BIN_OUTPUT_PATH}/openfluid-engine" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.VariableTimeProd"

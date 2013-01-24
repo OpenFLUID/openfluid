@@ -81,6 +81,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo"),false);
   BOOST_REQUIRE_EQUAL(Vars.getVariableValuesCount("foo"),-1);
   BOOST_REQUIRE_EQUAL(Vars.getValue("bar",0,&Value),false);
+  BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("bar",0,&Value),false);
+  BOOST_REQUIRE(Vars.getCurrentValueIfIndex("bar",0) == NULL);
+  BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("bar",15,&Value),false);
 }
 
 // =====================================================================
@@ -113,6 +116,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",10,openfluid::core::DoubleValue(0.0)),true);
   BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",11,openfluid::core::DoubleValue(1.0)),true);
   BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",12,openfluid::core::DoubleValue(2.0)),true);
+  BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("foo",12,&DblValue),true);
+  BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("foo",11,&DblValue),false);
   BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",13,openfluid::core::DoubleValue(3.0)),true);
   BOOST_REQUIRE_EQUAL(Vars.appendValue("foo",14,openfluid::core::DoubleValue(4.0)),true);
   BOOST_REQUIRE_EQUAL(Vars.isVariableExist("foo",10),true);
@@ -140,6 +145,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Vars.getValue("foo",13,&DblValue),true);
   BOOST_REQUIRE_CLOSE(DblValue.get(),34.5,0.001);
   BOOST_REQUIRE_CLOSE((double)DblValue,34.5,0.001);
+  BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("foo",13,&DblValue),false);
+  BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("foo",14,&DblValue),true);
+  BOOST_REQUIRE_CLOSE(DblValue.get(),4.0,0.001);
+  BOOST_REQUIRE_EQUAL(Vars.getCurrentValueIfIndex("foo",15,&DblValue),false);
+  BOOST_REQUIRE(Vars.getCurrentValueIfIndex("foo",15) == NULL);
+  BOOST_REQUIRE_CLOSE(DblValue.get(),4.0,0.001);
 
   BOOST_REQUIRE_EQUAL(Vars.createVariable("bar"),true);
   BOOST_REQUIRE_EQUAL(Vars.appendValue("bar",15,openfluid::core::DoubleValue(1000.1)),true);
