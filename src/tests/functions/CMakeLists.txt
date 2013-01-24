@@ -34,6 +34,27 @@ ADD_TEST(functions-LandPrimitives "${BIN_OUTPUT_PATH}/openfluid-engine"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LandPrimitives" 
                            "-p${TEST_OUTPUT_PATH}")
 
+ADD_FUNCTION(tests.primitivesvalues.prod tests.primitivesvalues.prod ${TEST_OUTPUT_PATH})
+ADD_FUNCTION(tests.primitivesvalues.use tests.primitivesvalues.use ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-PrimitivesValues "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesValues"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesValues" 
+                           "-p${TEST_OUTPUT_PATH}")
+
+ADD_FUNCTION(tests.primitivestypedvalues.prod tests.primitivestypedvalues.prod ${TEST_OUTPUT_PATH})
+ADD_FUNCTION(tests.primitivestypedvalues.use tests.primitivestypedvalues.use ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-PrimitivesTypedValues "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesTypedValues"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTypedValues" 
+                           "-p${TEST_OUTPUT_PATH}")
+
+ADD_FUNCTION(tests.variabletime.prod tests.variabletime.prod ${TEST_OUTPUT_PATH})
+ADD_TEST(functions-VariableTimeProd "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.VariableTimeProd"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VariableTimeProd" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           )
+
 
 ADD_FUNCTION(tests.loops tests.loops ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Loops "${BIN_OUTPUT_PATH}/openfluid-engine" 
@@ -135,16 +156,4 @@ ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   SET_TESTS_PROPERTIES(functions-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "TU#")
 ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug") 
 
-ADD_FUNCTION(tests.primitivesvalues.prod tests.primitivesvalues.prod ${TEST_OUTPUT_PATH})
-ADD_FUNCTION(tests.primitivesvalues.use tests.primitivesvalues.use ${TEST_OUTPUT_PATH})
-ADD_TEST(functions-PrimitivesValues "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesValues"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesValues" 
-                           "-p${TEST_OUTPUT_PATH}")
-
-ADD_FUNCTION(tests.primitivestypedvalues.prod tests.primitivestypedvalues.prod ${TEST_OUTPUT_PATH})
-ADD_FUNCTION(tests.primitivestypedvalues.use tests.primitivestypedvalues.use ${TEST_OUTPUT_PATH})
-ADD_TEST(functions-PrimitivesTypedValues "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesTypedValues"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTypedValues" 
-                           "-p${TEST_OUTPUT_PATH}")                            
+                            

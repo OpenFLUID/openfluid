@@ -1,0 +1,49 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <output>
+
+    <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->
+    <!-- colsep default is \t -->
+    <!--<files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">     
+      <set name="full" unitsclass="TestUnits" unitsIDs="*" vars="*" />      
+      <set name="partial" unitsclass="TestUnits" unitsIDs="1;5" vars="*" />
+    </files>-->  
+    
+    <observer ID="export.vars.files.csv">
+      <param name="format.f1.header" value="colnames-as-comment" />
+      <param name="format.f1.date" value="%Y-%m-%d %H:%M:%S" />
+      <param name="format.f1.precision" value="8" />
+            
+      <param name="format.f2.header" value="full" />  
+      
+      <param name="format.f3.header" value="colnames-as-data" />
+      <param name="format.f3.date" value="6cols" />
+      <param name="format.f3.precision" value="3" />
+      
+      <param name="format.f4.header" value="none" />
+      
+      <param name="set.fullfull.unitclass" value="TestUnits" />
+      <param name="set.fullfull.unitsIDs" value="*" />
+      <param name="set.fullfull.vars" value="*" />
+      <param name="set.fullfull.format" value="f2" />
+      
+      <param name="set.some.unitclass" value="TestUnits" />
+      <param name="set.some.unitsIDs" value="5;3;11" />
+      <param name="set.some.vars" value="tests.double;tests.string" />
+      <param name="set.some.format" value="f1" />
+      
+      <param name="set.somevars.unitclass" value="TestUnits" />
+      <param name="set.somevars.unitsIDs" value="*" />
+      <param name="set.somevars.vars" value="tests.vector;tests.string" />
+      <param name="set.somevars.format" value="f3" />
+      
+      <param name="set.someunits.unitclass" value="TestUnits" />
+      <param name="set.someunits.unitsIDs" value="4;6;9" />
+      <param name="set.someunits.vars" value="*" />
+      <param name="set.someunits.format" value="f4" />      
+      
+    </observer>
+    
+    
+  </output>
+</openfluid>
