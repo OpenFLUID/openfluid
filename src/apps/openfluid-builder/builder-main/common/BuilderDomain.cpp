@@ -83,10 +83,11 @@ void BuilderDomain::setDomainDescriptor(
   mp_DomainDesc = &DomainDesc;
 
   dispatchUnits();
-  dispatchIData();
-  dispatchEvents();
 
-  //TODO add check that all units of a class have the same IData
+  dispatchIData();
+  checkIDataConsistency();
+
+  dispatchEvents();
 }
 
 // =====================================================================
@@ -132,6 +133,8 @@ void BuilderDomain::dispatchIData()
       for (std::map<openfluid::core::InputDataName_t, std::string>::iterator it3 =
           Data->begin(); it3 != Data->end(); ++it3)
       {
+        m_IDataNames[it->getUnitsClass()].insert(it3->first);
+
         try
         {
           if (!m_Units.at(it->getUnitsClass()).at(it2->first).m_IData.insert(
@@ -149,6 +152,49 @@ void BuilderDomain::dispatchIData()
       }
     }
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderDomain::checkIDataConsistency()
+{
+  for (std::map<std::string, std::set<std::string> >::iterator it =
+      m_IDataNames.begin(); it != m_IDataNames.end(); ++it)
+  {
+    std::string ClassName = it->first;
+    std::set<std::string> Names = it->second;
+
+    if (!isClassNameExists(ClassName))
+      throw openfluid::base::OFException(
+          "OpenFLUID-Builder", "BuilderDomain::checkIDataConsistency",
+          "class " + ClassName + " doesn't exist");
+
+    std::map<int, BuilderUnit>* Units = &(m_Units.at(ClassName));
+
+    for (std::set<std::string>::iterator itName = Names.begin();
+        itName != Names.end(); ++itName)
+    {
+      std::string IDataName = *itName;
+
+      for (std::map<int, BuilderUnit>::iterator itU = Units->begin();
+          itU != Units->end(); ++itU)
+      {
+        int ID = itU->first;
+
+        if (!itU->second.m_IData.count(IDataName))
+        {
+          std::ostringstream ss;
+          ss << "Input data " << IDataName << " doesn't exist for Unit " << ID
+             << " of class " << ClassName;
+          throw openfluid::base::OFException(
+              "OpenFLUID-Builder", "BuilderDomain::checkIDataConsistency",
+              ss.str());
+        }
+      }
+    }
+  }
+
 }
 
 // =====================================================================
@@ -276,7 +322,7 @@ void BuilderDomain::deleteUnit(std::string ClassName, int ID)
     }
   }
 
-  // delete in IDataDesc list
+  // delete in IDataDesc list and in IDataNames
   std::list<openfluid::fluidx::InputDataDescriptor>* IData =
       &(mp_DomainDesc->getInputData());
   std::list<openfluid::fluidx::InputDataDescriptor>::iterator itData =
@@ -288,7 +334,10 @@ void BuilderDomain::deleteUnit(std::string ClassName, int ID)
       itData->getData().erase(ID);
 
       if (itData->getData().empty())
+      {
         itData = IData->erase(itData);
+        m_IDataNames.erase(ClassName);
+      }
       else
         itData++;
     }
@@ -332,6 +381,19 @@ std::string& BuilderDomain::getInputData(std::string ClassName, int ID,
 // =====================================================================
 // =====================================================================
 
+std::set<std::string> BuilderDomain::getInputDataNames(std::string ClassName)
+{
+  std::set<std::string> Names;
+
+  if (m_IDataNames.count(ClassName))
+    Names = m_IDataNames.at(ClassName);
+
+  return Names;
+}
+
+// =====================================================================
+// =====================================================================
+
 void BuilderDomain::addInputData(std::string ClassName, std::string IDataName,
                                  std::string DefaultValue)
 {
@@ -339,6 +401,11 @@ void BuilderDomain::addInputData(std::string ClassName, std::string IDataName,
     throw openfluid::base::OFException(
         "OpenFLUID-Builder", "BuilderDomain::addInputData",
         "trying to add an Input data to a Class that doesn't exist");
+
+  if (getInputDataNames(ClassName).count(IDataName))
+    throw openfluid::base::OFException(
+        "OpenFLUID-Builder", "BuilderDomain::addInputData",
+        "trying to add an Input data that already exists");
 
   // add in DomainDesc
   openfluid::fluidx::InputDataDescriptor IDataDesc;
@@ -365,6 +432,9 @@ void BuilderDomain::addInputData(std::string ClassName, std::string IDataName,
         IDataName));
   }
 
+  // add in IDataNames
+  m_IDataNames[ClassName].insert(IDataName);
+
 }
 
 // =====================================================================
@@ -375,10 +445,13 @@ void BuilderDomain::deleteInputData(std::string ClassName,
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::addInputData",
-        "trying to add an Input data to a Class that doesn't exist");
+        "OpenFLUID-Builder", "BuilderDomain::deleteInputData",
+        "trying to delete an Input data from a Class that doesn't exist");
 
-  //TODO Add check if IDataName exists
+  if (!getInputDataNames(ClassName).count(IDataName))
+    throw openfluid::base::OFException(
+        "OpenFLUID-Builder", "BuilderDomain::deleteInputData",
+        "trying to delete an Input data that doesn't exist");
 
   // delete in m_Units
   for (std::map<int, BuilderUnit>::iterator it = m_Units.at(ClassName).begin();
@@ -408,6 +481,8 @@ void BuilderDomain::deleteInputData(std::string ClassName,
     }
   }
 
+  // delete in IDataNames
+  m_IDataNames.at(ClassName).erase(IDataName);
 }
 
 // =====================================================================
@@ -417,12 +492,18 @@ void BuilderDomain::renameInputData(std::string ClassName,
                                     std::string OldIDataName,
                                     std::string NewIDataName)
 {
+  if (OldIDataName == NewIDataName)
+    return;
+
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::addInputData",
-        "trying to add an Input data to a Class that doesn't exist");
+        "OpenFLUID-Builder", "BuilderDomain::renameInputData",
+        "trying to rename an Input data of a Class that doesn't exist");
 
-  //TODO Add check if IDataName exists
+  if (!getInputDataNames(ClassName).count(OldIDataName))
+    throw openfluid::base::OFException(
+        "OpenFLUID-Builder", "BuilderDomain::renameInputData",
+        "trying to rename an Input data that doesn't exist");
 
   //rename in DomainDesc
   std::map<unsigned int, std::string*> DomainDescIData;
@@ -462,6 +543,9 @@ void BuilderDomain::renameInputData(std::string ClassName,
     it->second.m_IData[NewIDataName] = DomainDescIData[it->first];
   }
 
+  //rename in IDataNames
+  m_IDataNames.at(ClassName).erase(OldIDataName);
+  m_IDataNames.at(ClassName).insert(NewIDataName);
 }
 
 // =====================================================================

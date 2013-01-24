@@ -106,9 +106,13 @@ class BuilderDomain
      */
     std::map<std::string, std::map<int, BuilderUnit> > m_Units;
 
+    std::map<std::string, std::set<std::string> > m_IDataNames;
+
     void dispatchUnits();
 
     void dispatchIData();
+
+    void checkIDataConsistency();
 
     void dispatchEvents();
 
@@ -133,16 +137,57 @@ class BuilderDomain
 
     void addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc);
 
+    /**
+     * Does nothing if Unit doesn't exist
+     *
+     * @param ClassName
+     * @param ID
+     */
     void deleteUnit(std::string ClassName, int ID);
 
+    /**
+     * @throw openfluid::base::OFException if Unit or DataName doesn't exist
+     * @param ClassName
+     * @param ID
+     * @param IDataName
+     * @return
+     */
     std::string& getInputData(std::string ClassName, int ID,
                               std::string IDataName);
 
+    /**
+     *
+     * @param ClassName
+     * @return An empty set if ClassName doesn't exist or has no InputData
+     */
+    std::set<std::string> getInputDataNames(std::string ClassName);
+
+    /**
+     * @throw openfluid::base::OFException if ClassName doesn't exist
+     * or if IDataName already exists for class ClassName
+     * @param ClassName
+     * @param IDataName
+     * @param DefaultValue
+     */
     void addInputData(std::string ClassName, std::string IDataName,
                       std::string DefaultValue);
 
+    /**
+     * @throw openfluid::base::OFException if ClassName doesn't exist
+     * or if IDataName doesn't exist for class ClassName
+     * @param ClassName
+     * @param IDataName
+     */
     void deleteInputData(std::string ClassName, std::string IDataName);
 
+    /**
+     * Does nothing if NewDataName is the same as OldDataName
+     * @throw openfluid::base::OFException if ClassName doesn't exist
+     * or if OldDataName doesn't exist for the class ClassName
+     * @param ClassName
+     * @param OldIDataName
+     * @param NewIDataName
+     */
     void renameInputData(std::string ClassName, std::string OldIDataName,
                          std::string NewIDataName);
 
