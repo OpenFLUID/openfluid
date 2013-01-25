@@ -547,21 +547,6 @@ void ModelInstance::processNextTimePoint()
 // =====================================================================
 
 
-void ModelInstance::call_runStep() const
-{
-  if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_runStep()","Model not initialized");
-
-
-  DECLARE_FUNCTION_PARSER;
-  PARSE_FUNCTION_LIST(runStep(),RunStep,openfluid::base::SimulationProfiler::RUNSTEP);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void ModelInstance::call_finalizeRun() const
 {
   if (!m_Initialized)

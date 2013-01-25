@@ -71,7 +71,6 @@ class DateTime;
 }
 namespace io {
 class IOListener;
-class OutputsWriter;
 class MessagesWriter;
 }
 }
@@ -129,8 +128,6 @@ class DLLEXPORT Engine
 
      ObserversListInstance& m_ObserversListInstance;
 
-     openfluid::io::OutputsWriter* mp_OutputsWriter;
-
      openfluid::io::MessagesWriter* mp_MessagesWriter;
 
 
@@ -164,7 +161,7 @@ class DLLEXPORT Engine
 
      void prepareOutputs();
 
-     void saveOutputs(const openfluid::core::DateTime& CurrentDT);
+     void saveOutputs();
 
      void saveSimulationInfos();
 

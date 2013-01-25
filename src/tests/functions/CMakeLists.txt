@@ -111,14 +111,7 @@ ADD_TEST(functions-Events "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Events"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Events" 
                         "-p${TEST_OUTPUT_PATH}")                              
-                        
-
-ADD_FUNCTION(tests.outbuffers tests.outbuffers ${TEST_OUTPUT_PATH})
-ADD_TEST(functions-Buffers "${BIN_OUTPUT_PATH}/openfluid-engine" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.OutputsBuffers"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.OutputsBuffers" 
-                        "-p${TEST_OUTPUT_PATH}")                              
-                              
+                                     
 ADD_FUNCTION(tests.fakefunction tests.fakefunction ${TEST_OUTPUT_PATH})
 
 ADD_FUNCTION(tests.wrongprod tests.wrongprod ${TEST_OUTPUT_PATH})

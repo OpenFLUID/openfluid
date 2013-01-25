@@ -10,8 +10,14 @@ ADD_OBSERVER(tests.empty tests.empty ${TEST_OUTPUT_PATH})
 
 ADD_OBSERVER(tests.hopla tests.hopla ${TEST_OUTPUT_PATH})
 
-ADD_TEST(functions-HoplaObserver "${BIN_OUTPUT_PATH}/openfluid-engine" 
+ADD_TEST(observers-Hopla "${BIN_OUTPUT_PATH}/openfluid-engine" 
                                  "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesHopla"
                                  "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesHopla" 
                                  "-p${TEST_OUTPUT_PATH}"
-                                 "-n${TEST_OUTPUT_PATH}")                            
+                                 "-n${TEST_OUTPUT_PATH}")
+                                 
+ADD_TEST(observers-CSVFiles "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CSVObserver"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CSVObserver" 
+                        "-p${TEST_OUTPUT_PATH}"
+                        "-n${TEST_OUTPUT_PATH}")

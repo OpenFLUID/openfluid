@@ -70,7 +70,6 @@
 #include <openfluid/machine/ObserversListInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/io/IOListener.hpp>
-#include <openfluid/io/OutputsWriter.hpp>
 #include <openfluid/io/MessagesWriter.hpp>
 #include <openfluid/io/SimReportWriter.hpp>
 #include <openfluid/io/SimProfileWriter.hpp>
@@ -87,14 +86,10 @@ Engine::Engine(SimulationBlob& SimBlob,
                ModelInstance& MInstance, ObserversListInstance& OLInstance,
                openfluid::machine::MachineListener* MachineListener,
                openfluid::io::IOListener* IOListener)
-       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_ObserversListInstance(OLInstance)
+       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_ObserversListInstance(OLInstance), mp_MessagesWriter(NULL)
 {
 
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-
-  mp_OutputsWriter = NULL;
-  mp_MessagesWriter = NULL;
-
 
   mp_MachineListener = MachineListener;
   if (mp_MachineListener == NULL) mp_MachineListener = new openfluid::machine::MachineListener();
@@ -114,7 +109,6 @@ Engine::~Engine()
 {
   closeOutputs();
 
-  delete mp_OutputsWriter;
   delete mp_MessagesWriter;
 }
 
@@ -438,7 +432,6 @@ void Engine::prepareOutputDir()
 
 void Engine::prepareOutputs()
 {
-  if (mp_OutputsWriter != NULL) mp_OutputsWriter->prepareDirectory();
   if (mp_MessagesWriter != NULL) mp_MessagesWriter->initializeFile();
 }
 
@@ -447,9 +440,8 @@ void Engine::prepareOutputs()
 // =====================================================================
 
 
-void Engine::saveOutputs(const openfluid::core::DateTime& CurrentDT)
+void Engine::saveOutputs()
 {
-  //if (mp_OutputsWriter != NULL) mp_OutputsWriter->saveToDirectory(CurrentDT);
   if (mp_MessagesWriter != NULL) mp_MessagesWriter->saveToFile(m_SimulationBlob.getExecutionMessages(),true);
 }
 
@@ -741,10 +733,6 @@ void Engine::checkConsistency()
     throw;
   }
 
-
-
-  mp_OutputsWriter = new openfluid::io::OutputsWriter(mp_RunEnv->getOutputDir(),const_cast<openfluid::base::OutputDescriptor&>(m_SimulationBlob.getOutputDescriptor()),
-                                                      m_SimulationBlob.getCoreRepository());
   mp_MessagesWriter = new openfluid::io::MessagesWriter(mp_RunEnv->getOutputFullPath(openfluid::config::OUTMSGSFILE));
 
   if (mp_RunEnv->isWriteResults()) prepareOutputs();
@@ -801,12 +789,6 @@ void Engine::run()
   mp_MachineListener->onBeforeRunSteps();
   mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
 
-  bool OKToGoOnSimulation = true;
-
-
-#define NEWENG
-
-#ifdef  NEWENG
 
   while (m_ModelInstance.hasTimePointToProcess())
   {
@@ -827,48 +809,9 @@ void Engine::run()
       throw;
     }
 
-    if (mp_RunEnv->isWriteResults()) saveOutputs(mp_SimStatus->getCurrentDate());
+    if (mp_RunEnv->isWriteResults()) saveOutputs();
 
   }
-
-#else
-  do // time loop
-  {
-
-    mp_MachineListener->onRunStep(mp_SimStatus);
-
-    m_SimulationBlob.getExecutionMessages().resetWarningFlag();
-
-    try
-    {
-      m_ModelInstance.call_runStep();
-      m_ObserversListInstance.call_onStepCompleted();
-
-      // check simulation vars production at each time step
-      //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
-    }
-    catch (openfluid::base::OFException& E)
-    {
-      mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
-      throw;
-    }
-
-    if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
-    mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::OK);
-
-    if (mp_RunEnv->isWriteResults()) saveOutputs(mp_SimStatus->getCurrentDate());
-
-    try
-    {
-      mp_SimStatus->setCurrentTimeIndex(mp_SimStatus->getCurrentTimeIndex() + mp_SimStatus->getDefaultDeltaT());
-    }
-    catch (openfluid::base::OFException& E)
-    {
-      OKToGoOnSimulation = false;
-    }
-
-  } while (OKToGoOnSimulation);  // end time loop
-#endif
 
   mp_MachineListener->onAfterRunSteps();
 

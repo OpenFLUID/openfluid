@@ -156,8 +156,6 @@ class DLLEXPORT ModelInstance
       return m_TimePointList.front().getTimeIndex();
     }
 
-    void call_runStep() const;
-
     void call_finalizeRun() const;
 
     void resetInitialized() { m_Initialized = false; }
