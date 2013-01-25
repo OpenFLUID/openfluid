@@ -102,8 +102,8 @@ class DLLEXPORT SimulationRunDialog : public Gtk::Dialog
     RunDialogMachineListener* mp_MachineListen;
 
 
-    std::string m_LastStepStr;
-    int m_StepsCount;
+    std::string m_LastIndexStr;
+    int m_TotalIndex;
 
     sigc::signal<void> m_signal_SimulationStopped;
     sigc::signal<void> m_signal_SimulationStarted;

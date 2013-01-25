@@ -85,11 +85,9 @@ class DLLEXPORT RunStatusWidget : public Gtk::EventBox
 
     std::string m_PresimText;
     std::string m_InitText;
-    std::string m_RunstepText;
-    std::string m_CurrentStepText;
+    std::string m_RunStepText;
     std::string m_FinalText;
 
-    std::string m_LastStepNbrStr;
 
   public:
 
@@ -99,33 +97,29 @@ class DLLEXPORT RunStatusWidget : public Gtk::EventBox
 
     void setProgressFraction(double Fraction);
 
-    void setPresimDefault() { m_PresimLabel.set_markup("<span foreground='#777777'>"+m_PresimText+"</span>"); };
+    void setPresimDefault() { m_PresimLabel.set_markup("<span foreground='#AAAAAA'>"+m_PresimText+"</span>"); };
 
-    void setPresimRunning() { m_PresimLabel.set_markup("<b>"+m_PresimText+"</b>"); };
+    void setPresimRunning() { m_PresimLabel.set_markup("<b><u>"+m_PresimText+"</u></b>"); };
 
     void setPresimDone() { m_PresimLabel.set_markup(m_PresimText); };
 
-    void setInitDefault() { m_InitLabel.set_markup("<span foreground='#777777'>"+m_InitText+"</span>"); };
+    void setInitDefault() { m_InitLabel.set_markup("<span foreground='#AAAAAA'>"+m_InitText+"</span>"); };
 
-    void setInitRunning() { m_InitLabel.set_markup("<b>"+m_InitText+"</b>"); };
+    void setInitRunning() { m_InitLabel.set_markup("<b><u>"+m_InitText+"</u></b>"); };
 
     void setInitDone() { m_InitLabel.set_markup(m_InitText); };
 
-    void setRunstepDefault() { m_RunstepLabel.set_markup("<span foreground='#777777'>"+m_RunstepText+" "+m_CurrentStepText+"</span>"); };
+    void setRunstepDefault() { m_RunstepLabel.set_markup("<span foreground='#AAAAAA'>"+m_RunStepText+"</span>"); };
 
-    void setRunstepRunning() { m_RunstepLabel.set_markup("<b>"+m_RunstepText+" "+m_CurrentStepText+"</b>");  };
+    void setRunstepRunning() { m_RunstepLabel.set_markup("<b><u>"+m_RunStepText+"</u></b>");  };
 
-    void setRunstepDone() { m_RunstepLabel.set_markup(m_RunstepText+" "+m_CurrentStepText);};
+    void setRunstepDone() { m_RunstepLabel.set_markup(m_RunStepText);};
 
-    void setFinalDefault() { m_FinalLabel.set_markup("<span foreground='#777777'>"+m_FinalText+"</span>"); };
+    void setFinalDefault() { m_FinalLabel.set_markup("<span foreground='#AAAAAA'>"+m_FinalText+"</span>"); };
 
-    void setFinalRunning() { m_FinalLabel.set_markup("<b>"+m_FinalText+"</b>"); };
+    void setFinalRunning() { m_FinalLabel.set_markup("<b><u>"+m_FinalText+"</u></b>"); };
 
     void setFinalDone() { m_FinalLabel.set_markup(m_FinalText); };
-
-    void updateCurrentStep(std::string StepNbrStr) { m_CurrentStepText = StepNbrStr+"/"+m_LastStepNbrStr; };
-
-    void setLastStepStr(std::string StepNbrStr) { m_LastStepNbrStr = StepNbrStr; };
 
 };
 

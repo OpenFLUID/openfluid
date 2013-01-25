@@ -74,10 +74,8 @@ RunStatusWidget::RunStatusWidget()
 
   m_PresimText = _("Pre-simulation");
   m_InitText = _("Initialization");
-  m_RunstepText = _("Run step");
+  m_RunStepText = _("Simulation");
   m_FinalText = _("Finalization");
-  m_LastStepNbrStr = "0";
-  m_CurrentStepText = "0";
 
   m_RunProgressBar.set_fraction(0.0);
   m_RunProgressBar.set_size_request(-1,50);
@@ -124,6 +122,7 @@ RunStatusWidget::~RunStatusWidget()
 
 void RunStatusWidget::setProgressFraction(double Fraction)
 {
+  if (Fraction > 1.0) Fraction = 1.0;
   m_RunProgressBar.set_fraction(Fraction);
   m_RunProgressBar.set_text((boost::format("%1$.1f %%") % (Fraction*100)).str());
 }
