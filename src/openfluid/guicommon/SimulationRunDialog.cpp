@@ -79,11 +79,9 @@ SimulationRunDialog::SimulationRunDialog(openfluid::machine::Engine* Engine)
     mp_Model(Engine->getModelInstance()), mp_MachineListen((RunDialogMachineListener*)(Engine->getMachineListener()))
 {
 
-  m_StepsCount = openfluid::tools::computeTimeStepsCount(mp_SBlob->getRunDescriptor().getBeginDate(),
-                                                                        mp_SBlob->getRunDescriptor().getEndDate(),
-                                                                        mp_SBlob->getRunDescriptor().getDeltaT());
+  m_TotalIndex = mp_SBlob->getSimulationStatus().getSimulationDuration();
 
-  openfluid::tools::ConvertValue((m_StepsCount-1),&m_LastStepStr);
+  openfluid::tools::ConvertValue((m_TotalIndex),&m_LastIndexStr);
 
   set_modal(true);
   set_title(_("Simulation"));
@@ -206,18 +204,13 @@ void SimulationRunDialog::onControlButtonClicked()
 
 void SimulationRunDialog::resetWidgets()
 {
-  std::string TStepStr = "";
-
-  openfluid::tools::ConvertValue(mp_SBlob->getRunDescriptor().getDeltaT(),&TStepStr);
 
   m_TopLabel.set_markup(std::string("<b>")+_("Simulation from ") + mp_SBlob->getRunDescriptor().getBeginDate().getAsISOString() +
                                              _(" to ") +
                                              mp_SBlob->getRunDescriptor().getEndDate().getAsISOString() +
-                                             "\n" + _("Time step: ") + TStepStr + _(" second(s)") + std::string("</b>"));
+                        std::string("</b>"));
 
   m_RunStatusWidget.setProgressFraction(0.0);
-  m_RunStatusWidget.setLastStepStr(m_LastStepStr);
-  m_RunStatusWidget.updateCurrentStep("0");
   m_RunStatusWidget.setRunstepDefault();
 
   m_RefDetailsTextBuffer->set_text("");
@@ -236,7 +229,7 @@ void SimulationRunDialog::runSimulation()
                                  &m_DetailsTextView);
 
     mp_MachineListen->setInfos(mp_Model->getItemsCount(),
-                               m_StepsCount);
+                               m_TotalIndex);
 
     mp_Engine->initialize();
     mp_Engine->initParams();

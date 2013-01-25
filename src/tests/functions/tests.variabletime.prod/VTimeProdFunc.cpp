@@ -185,7 +185,7 @@ class VariableTimeProdFunction : public openfluid::ware::PluggableFunction
 
   openfluid::core::Duration_t computeDeltaT() const
   {
-    openfluid::core::Duration_t D = (OPENFLUID_GetSimulationDuration() % (OPENFLUID_GetCurrentTimeIndex()/10)) + 1;
+    openfluid::core::Duration_t D = (std::rand() % DefaultDeltaT()) + 1;
     return D;
   }
 
