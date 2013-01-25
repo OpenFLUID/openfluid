@@ -77,11 +77,11 @@ namespace openfluid { namespace guicommon {
 class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineListener
 {
   private:
-    unsigned int m_CurrentStep;
-    std::string m_CurrentStepStr;
+    unsigned int m_CurrentIndex;
+    std::string m_CurrentIndexStr;
     unsigned int m_CurrentFunction;
 
-    unsigned int m_TotalSteps;
+    unsigned int m_TotalTime;
     unsigned int m_TotalFunctions;
 
     RunStatusWidget* mp_RunStatusWidget;
@@ -125,7 +125,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     inline double computeCurrentFraction()
     {
-      return (double(m_CurrentPreSim + m_CurrentInit + (m_CurrentStep+1) + m_CurrentFinal)/double(m_TotalTotal));
+      return (double(m_CurrentPreSim + m_CurrentInit + (m_CurrentIndex+1) + m_CurrentFinal)/double(m_TotalTotal));
     }
 
 
@@ -153,16 +153,16 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
     };
 
 
-    void setInfos(const unsigned int& TotalFunctions, const unsigned int& TotalSteps)
+    void setInfos(const unsigned int& TotalFunctions, const unsigned int& TotalTime)
     {
       m_TotalFunctions = TotalFunctions;
 
-      m_TotalSteps = TotalSteps;
+      m_TotalTime = TotalTime;
 
-      m_TotalTotal = 3 + m_TotalFunctions + m_TotalSteps + m_TotalFunctions;
+      m_TotalTotal = 3 + m_TotalFunctions + m_TotalTime + m_TotalFunctions;
       m_CurrentPreSim = 0;
       m_CurrentInit = 0;
-      m_CurrentStep = 0;
+      m_CurrentIndex = 0;
       m_CurrentFinal = 0;
     }
 
@@ -174,7 +174,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     virtual void onFunctionInitParams(const std::string& FunctionID)
     {
-      appendToTextBuffer("<initParams> " + FunctionID);
+      appendToTextBuffer("(initParams) " + FunctionID);
     };
 
     void onFunctionInitParamsDone(const openfluid::base::Listener::Status& Status,
@@ -194,7 +194,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     void onFunctionPrepareData(const std::string& FunctionID)
     {
-      appendToTextBuffer("<prepareData> " + FunctionID);
+      appendToTextBuffer("(prepareData) " + FunctionID);
 
     };
 
@@ -215,7 +215,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     virtual void onFunctionCheckConsistency(const std::string& FunctionID)
     {
-      appendToTextBuffer("<checkConsistency> " + FunctionID);
+      appendToTextBuffer("(checkConsistency) " + FunctionID);
     };
 
     void onFunctionCheckConsistencyDone(const openfluid::base::Listener::Status& Status,
@@ -242,7 +242,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     void onFunctionInitializeRun(const std::string& FunctionID)
     {
-      appendToTextBuffer("<initializeRun> " + FunctionID);
+      appendToTextBuffer("(initializeRun) " + FunctionID);
     }
 
     void onFunctionInitializeRunDone(const openfluid::base::Listener::Status& Status,
@@ -263,23 +263,22 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     void onBeforeRunSteps()
     {
-      m_CurrentStep = 0;
-      openfluid::tools::ConvertValue(m_CurrentStep,&m_CurrentStepStr);
+      m_CurrentIndex = 0;
+      openfluid::tools::ConvertValue(m_CurrentIndex,&m_CurrentIndexStr);
       mp_RunStatusWidget->setRunstepRunning();
       updateProgressBar();
     };
 
     void onRunStep(const openfluid::base::SimulationStatus* SimStatus)
     {
-      // TODO to adapt later
-      m_CurrentStep = SimStatus->getCurrentTimeIndex() / SimStatus->getDefaultDeltaT();
-      openfluid::tools::ConvertValue(m_CurrentStep,&m_CurrentStepStr);
+      m_CurrentIndex = SimStatus->getCurrentTimeIndex();
+      openfluid::tools::ConvertValue(m_CurrentIndex,&m_CurrentIndexStr);
       updateProgressBar();
     };
 
     void onFunctionRunStep(const std::string& FunctionID)
     {
-      appendToTextBuffer("<runStep("+m_CurrentStepStr+")> " + FunctionID);
+      appendToTextBuffer("(runStep "+m_CurrentIndexStr+") " + FunctionID);
     };
 
 
@@ -292,8 +291,6 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/)
     {
-      mp_RunStatusWidget->updateCurrentStep(m_CurrentStepStr);
-      mp_RunStatusWidget->setRunstepRunning();
       updateProgressBar();
     };
 
@@ -313,7 +310,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     void onFunctionFinalizeRun(const std::string& FunctionID)
     {
-      appendToTextBuffer("<finalizeRun> " + FunctionID);
+      appendToTextBuffer("(finalizeRun) " + FunctionID);
     }
 
 
