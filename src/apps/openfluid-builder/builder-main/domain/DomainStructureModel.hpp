@@ -56,12 +56,17 @@
 #define __DOMAINSTRUCTUREMODEL_HPP__
 
 #include <sigc++/sigc++.h>
+#include <map>
+#include <string>
 
-#include <openfluid/core/Unit.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
 namespace openfluid {
-namespace core {
-class CoreRepository;
+namespace fluidx {
+class UnitDescriptor;
+}
+namespace guicommon {
+class BuilderUnit;
 }
 }
 
@@ -79,27 +84,24 @@ class DomainStructureModel
 
     virtual sigc::signal<void> signal_Activated() = 0;
 
-    virtual sigc::signal<void, openfluid::core::Unit&>
+    virtual sigc::signal<void, openfluid::fluidx::UnitDescriptor&>
     signal_FromAppUnitAdded() = 0;
 
     virtual sigc::signal<void>
     signal_FromUserSelectionChanged() = 0;
 
-    virtual void setEngineRequirements(
-        openfluid::core::CoreRepository& CoreRepos) = 0;
-
-    virtual openfluid::core::UnitsListByClassMap_t getUnitListByClass() = 0;
+    virtual const std::map<std::string, std::map<int, openfluid::guicommon::BuilderUnit> >& getUnitListByClass() = 0;
 
     virtual bool isEmpty() = 0;
 
-    virtual void addUnit(openfluid::core::Unit* Unit) = 0;
+    virtual void addUnit(openfluid::fluidx::UnitDescriptor* Unit) = 0;
 
     virtual void deleteSelectedUnit() = 0;
 
     virtual void setCurrentSelectionByUser(
         std::pair<std::string, int> UnitInfos) = 0;
 
-    virtual openfluid::core::Unit* getSelectedUnit() = 0;
+    virtual const openfluid::fluidx::UnitDescriptor* getSelectedUnit() = 0;
 
     virtual std::string getSelectedClass() = 0;
 
@@ -115,61 +117,53 @@ class DomainStructureModelImpl: public DomainStructureModel
 {
   private:
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
-
     sigc::signal<void> m_signal_FromAppDomainChanged;
 
     sigc::signal<void> m_signal_FromAppUnitDeleted;
 
     sigc::signal<void> m_signal_Activated;
 
-    sigc::signal<void, openfluid::core::Unit&> m_signal_FromAppUnitAdded;
+    sigc::signal<void, openfluid::fluidx::UnitDescriptor&> m_signal_FromAppUnitAdded;
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
 
-    openfluid::core::Unit* mp_SelectedUnit;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
+
+    const openfluid::fluidx::UnitDescriptor* mp_SelectedUnit;
 
     std::string m_SelectedClass;
-
-    openfluid::core::UnitsListByClassMap_t m_UnitsMapWithNoEmpty;
-
-    bool isCoreRepos();
 
     void updateUnitListByClass();
 
   protected:
 
-    openfluid::core::CoreRepository* getCoreRepos();
-
-    void deleteUnit(openfluid::core::Unit* Unit);
+    void deleteUnit(const openfluid::fluidx::UnitDescriptor* Unit);
 
   public:
 
-    DomainStructureModelImpl();
+    DomainStructureModelImpl(openfluid::guicommon::BuilderDomain& Domain);
 
     sigc::signal<void> signal_FromAppDomainChanged();
 
     sigc::signal<void> signal_FromAppUnitDeleted();
 
-    sigc::signal<void, openfluid::core::Unit&> signal_FromAppUnitAdded();
+    sigc::signal<void, openfluid::fluidx::UnitDescriptor&> signal_FromAppUnitAdded();
 
     sigc::signal<void> signal_FromUserSelectionChanged();
 
     sigc::signal<void> signal_Activated();
 
-    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
-
-    openfluid::core::UnitsListByClassMap_t getUnitListByClass();
+    const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& getUnitListByClass();
 
     bool isEmpty();
 
-    void addUnit(openfluid::core::Unit* Unit);
+    void addUnit(openfluid::fluidx::UnitDescriptor* Unit);
 
     void deleteSelectedUnit();
 
     void setCurrentSelectionByUser(std::pair<std::string, int> UnitInfos);
 
-    openfluid::core::Unit* getSelectedUnit();
+    const openfluid::fluidx::UnitDescriptor* getSelectedUnit();
 
     std::string getSelectedClass();
 
@@ -184,9 +178,9 @@ class DomainStructureModelSub: public DomainStructureModelImpl
 {
   public:
 
-    openfluid::core::CoreRepository* getCoreRepos();
+    DomainStructureModelSub(openfluid::guicommon::BuilderDomain& Domain);
 
-    void deleteUnit(openfluid::core::Unit* Unit);
+    void deleteUnit(const openfluid::fluidx::UnitDescriptor* Unit);
 };
 
 #endif /* __DOMAINSTRUCTUREMODEL_HPP__ */

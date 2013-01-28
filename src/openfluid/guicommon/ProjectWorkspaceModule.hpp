@@ -57,14 +57,12 @@
 
 
 #include "BuilderModule.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 namespace openfluid {
 namespace machine {
 class ModelInstance;
 class SimulationBlob;
-}
-namespace fluidx {
-class FluidXDescriptor;
 }
 }
 
@@ -76,14 +74,26 @@ namespace guicommon {
 
 class ProjectWorkspaceModule: public BuilderModule
 {
+  protected:
+
+    BuilderDescriptor& m_BuilderDesc;
+
   public:
+
+    ProjectWorkspaceModule(BuilderDescriptor& BuilderDesc) :
+      m_BuilderDesc(BuilderDesc)
+    { }
+
+    ProjectWorkspaceModule() :
+      m_BuilderDesc(*new BuilderDescriptor())
+    {}
 
     virtual sigc::signal<void> signal_ModuleChanged() = 0;
 
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
         openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc) = 0;
+        BuilderDescriptor& BuilderDesc) = 0;
 
     virtual void update() = 0;
 

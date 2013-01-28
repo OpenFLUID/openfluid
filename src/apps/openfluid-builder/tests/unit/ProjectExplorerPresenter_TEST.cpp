@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
   EngineProject* EngProject = new EngineProject();
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
-                                  EngProject->getFluidXDescriptor());
+                                  EngProject->getBuilderDesc());
 
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
-                                  EngProject->getFluidXDescriptor());
+                                  EngProject->getBuilderDesc());
 
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
-                                  EngProject->getFluidXDescriptor());
+                                  EngProject->getBuilderDesc());
 
   Gtk::TreeView* TreeView = mp_View->getTreeView();
 

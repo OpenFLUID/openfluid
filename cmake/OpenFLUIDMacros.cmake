@@ -69,6 +69,9 @@ MACRO(ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
   
   ADD_LIBRARY(${EXT_NAME} MODULE ${EXT_CPP})
   
+  INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS})
+  LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
+  
   SET_TARGET_PROPERTIES(${EXT_NAME} PROPERTIES 
                         PREFIX "" 
                         SUFFIX "${BUILDEREXTENSION_BINARY_EXTENSION}"
@@ -85,6 +88,7 @@ MACRO(ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
                         openfluid-base 
                         openfluid-tools
                         openfluid-guicommon
+                        ${LibXML2_LIBRARIES}  
                         ${GTKMM_LIBRARIES})
     
 ENDMACRO(ADD_BUILDER_EXTENSION)

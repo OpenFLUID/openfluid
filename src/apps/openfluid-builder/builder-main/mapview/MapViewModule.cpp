@@ -60,8 +60,8 @@
 #include "MapViewModule.hpp"
 #include "BuilderFrame.hpp"
 
-MapViewModule::MapViewModule() :
-  m_ScrollbarSpacing(3)
+MapViewModule::MapViewModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
+ProjectWorkspaceModule(BuilderDesc), m_ScrollbarSpacing(3)
 {
   mp_DrawingArea = Gtk::manage(new DrawingArea());
   mp_ToolBar = new ToolBar();
@@ -133,7 +133,7 @@ Gtk::Widget* MapViewModule::asWidget()
 void MapViewModule::setEngineRequirements(
     openfluid::machine::ModelInstance& /*ModelInstance*/,
     openfluid::machine::SimulationBlob& SimBlob,
-    openfluid::fluidx::FluidXDescriptor& /*FXDesc*/)
+    openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/)
 {
   mp_Mediator->setEngineRequirements(SimBlob);
 }

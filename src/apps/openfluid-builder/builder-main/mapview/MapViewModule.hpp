@@ -95,7 +95,7 @@ class MapViewModule: public openfluid::guicommon::ProjectWorkspaceModule
 
   public:
 
-    MapViewModule();
+    MapViewModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     void compose();
 
@@ -104,7 +104,7 @@ class MapViewModule: public openfluid::guicommon::ProjectWorkspaceModule
     void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
         openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc);
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     void update()
     {

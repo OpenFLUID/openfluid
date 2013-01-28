@@ -52,12 +52,16 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "BuilderDomain.hpp"
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/UnitDescriptor.hpp>
 #include <openfluid/fluidx/IDataDescriptor.hpp>
 #include <stdexcept>
+
+
+namespace openfluid {
+namespace guicommon {
 
 // =====================================================================
 // =====================================================================
@@ -281,6 +285,20 @@ std::set<int> BuilderDomain::getIDsOfClass(std::string ClassName)
 bool BuilderDomain::isClassNameExists(std::string ClassName)
 {
   return m_Units.count(ClassName);
+}
+
+// =====================================================================
+// =====================================================================
+
+std::set<std::string> BuilderDomain::getClassNames()
+{
+  std::set<std::string> Classes;
+
+  for (std::map<std::string, std::map<int, BuilderUnit> >::iterator it =
+      m_Units.begin(); it != m_Units.end(); ++it)
+    Classes.insert(it->first);
+
+  return Classes;
 }
 
 // =====================================================================
@@ -551,3 +569,4 @@ void BuilderDomain::renameInputData(std::string ClassName,
 // =====================================================================
 // =====================================================================
 
+}} // namespaces

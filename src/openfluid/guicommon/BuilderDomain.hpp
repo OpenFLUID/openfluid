@@ -70,6 +70,10 @@ class Event;
 }
 }
 
+
+namespace openfluid {
+namespace guicommon {
+
 // =====================================================================
 // =====================================================================
 
@@ -97,6 +101,10 @@ class BuilderUnit
 
 class BuilderDomain
 {
+  public:
+
+    typedef std::map<std::string, std::map<int, BuilderUnit> > UnitsByIdByClass_t;
+
   private:
 
     openfluid::fluidx::DomainDescriptor* mp_DomainDesc;
@@ -131,9 +139,16 @@ class BuilderDomain
     const openfluid::fluidx::UnitDescriptor& getUnitDescriptor(
         std::string ClassName, int ID);
 
+    /**
+     *
+     * @param ClassName
+     * @return An empty set if ClassName doesn't exist
+     */
     std::set<int> getIDsOfClass(std::string ClassName);
 
     bool isClassNameExists(std::string ClassName);
+
+    std::set<std::string> getClassNames();
 
     void addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc);
 
@@ -195,5 +210,7 @@ class BuilderDomain
 
 // =====================================================================
 // =====================================================================
+
+}} // namespaces
 
 #endif /* BUILDERDOMAIN_HPP_ */

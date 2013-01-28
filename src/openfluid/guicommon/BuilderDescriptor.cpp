@@ -46,48 +46,61 @@
  */
 
 /**
- \file DomainStructureComponent.cpp
+ \file BuilderDescriptor.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "DomainStructureComponent.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
-#include "DomainStructureModel.hpp"
-#include "DomainStructureView.hpp"
-#include "DomainStructureAdapterModel.hpp"
-#include "DomainStructurePresenter.hpp"
-#include "DomainStructureAdapter.hpp"
+namespace openfluid {
+namespace guicommon {
 
-DomainStructureComponent::DomainStructureComponent(openfluid::guicommon::BuilderDomain& Domain)
-{
-  DomainStructureColumns* TreeColumns = new DomainStructureColumns();
-  mp_Model = new DomainStructureModelImpl(Domain);
-  mp_View = new DomainStructureViewImpl(*TreeColumns);
-  mp_AdapterModel = new DomainStructureAdapterModelImpl(*TreeColumns);
-  mp_Adapter = new DomainStructureAdapter(*mp_AdapterModel, *mp_View);
-  mp_Presenter = new DomainStructurePresenter(*mp_Model, *mp_Adapter);
+// =====================================================================
+// =====================================================================
 
-  mp_Model->update();
-}
-DomainStructureComponent::~DomainStructureComponent()
+BuilderDescriptor::BuilderDescriptor()
 {
-  delete mp_Adapter;
-  delete mp_Presenter;
-  delete mp_AdapterModel;
-  delete mp_Model;
-  delete mp_View;
+
 }
-Gtk::Widget* DomainStructureComponent::asWidget()
+
+// =====================================================================
+// =====================================================================
+
+BuilderDescriptor::~BuilderDescriptor()
 {
-  return mp_View->asWidget();
+
 }
-DomainStructureModel* DomainStructureComponent::getModel()
+
+// =====================================================================
+// =====================================================================
+
+void BuilderDescriptor::setFluidXDescriptor(
+    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
 {
-  return mp_Model;
+  m_Domain.setDomainDescriptor(FluidXDesc.getDomainDescriptor());
+  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
 }
-DomainStructureView* DomainStructureComponent::getView()
+
+// =====================================================================
+// =====================================================================
+
+BuilderDomain& BuilderDescriptor::getDomain()
 {
-  return mp_View;
+  return m_Domain;
 }
+
+// =====================================================================
+// =====================================================================
+
+openfluid::fluidx::RunDescriptor& BuilderDescriptor::getRunDescriptor()
+{
+  return *mp_RunDesc;
+}
+
+// =====================================================================
+// =====================================================================
+
+}} // namespaces
+

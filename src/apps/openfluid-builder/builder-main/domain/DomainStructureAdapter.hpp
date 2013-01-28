@@ -59,8 +59,15 @@
 
 #include <gtkmm/treeiter.h>
 
-#include <openfluid/core/Unit.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
+namespace openfluid {
+namespace fluidx {
+class UnitDescriptor;
+}
+}
+
+class BuilderUnit;
 class DomainStructureAdapterModel;
 class DomainStructureView;
 
@@ -100,7 +107,7 @@ class DomainStructureAdapter: public sigc::trackable
     sigc::signal<void> signal_Activated();
 
     void setDomainStructure(
-        openfluid::core::UnitsListByClassMap_t UnitListByClass);
+        const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass);
 
     std::pair<Gtk::TreeIter, Gtk::TreeIter> getSelectedUnitIters();
 
@@ -108,7 +115,7 @@ class DomainStructureAdapter: public sigc::trackable
 
     void deleteCurrentUnit();
 
-    void addUnit(openfluid::core::Unit& Unit);
+    void addUnit(openfluid::fluidx::UnitDescriptor& Unit);
 
 };
 

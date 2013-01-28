@@ -63,6 +63,7 @@
 #include "DomainStructureColumns.hpp"
 #include "EngineProject.hpp"
 #include "BuilderClassListColumns.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -92,25 +93,30 @@ BOOST_FIXTURE_TEST_SUITE(DomainStructureAdapterModelTest, init_AdapterModel)
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().empty(),true);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getClassStore()->isEmpty(),true);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getRequestedSelectedClass(),"");
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().empty(), true);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getClassStore()->isEmpty(), true);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getRequestedSelectedClass(), "");
   BOOST_CHECK(mp_AdapterModel->getRequestedClassSelection() == 0);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_setEmptyDomainStructure)
 {
   EngineProject* EngProject = new EngineProject();
 
-  openfluid::core::UnitsListByClassMap_t UnitListByClass = *(EngProject->getCoreRepository().getUnitsByClass());
+  mp_AdapterModel->setDomainStructure(
+      EngProject->getBuilderDesc().getDomain().getUnitsByIdByClass());
 
-  mp_AdapterModel->setDomainStructure(UnitListByClass);
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().empty(),true);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getClassStore()->isEmpty(),true);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getRequestedSelectedClass(),"");
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().empty(), true);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getClassStore()->isEmpty(), true);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getRequestedSelectedClass(), "");
   BOOST_CHECK(mp_AdapterModel->getRequestedClassSelection() == 0);
 }
+
+// =====================================================================
+// =====================================================================
 
 //BOOST_AUTO_TEST_CASE(test_setRequestedClassSelectionOnEmptyDomain)
 //{
@@ -153,29 +159,29 @@ BOOST_AUTO_TEST_CASE(test_setEmptyDomainStructure)
 //  BOOST_CHECK_EQUAL(mp_AdapterModel->getRequestedSelectedClass(),"class B");
 //}
 
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(test_setDomainStructure)
 {
-    EngineProject* EngProject = new EngineProject();
+  EngineProject* EngProject = new EngineProject();
 
-    openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::SIMULATION);
-    EngProject->getCoreRepository().addUnit(U);
-    openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::SIMULATION);
-    EngProject->getCoreRepository().addUnit(U2);
-    openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::SIMULATION);
-    EngProject->getCoreRepository().addUnit(U3);
+  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
 
-    openfluid::core::UnitsListByClassMap_t UnitListByClass = *(EngProject->getCoreRepository().getUnitsByClass());
+  Domain->addUnit(createAUnitDesc("class A", 100, 2));
+  Domain->addUnit(createAUnitDesc("class B", 200, 3));
+  Domain->addUnit(createAUnitDesc("class B", 300, 4));
 
-    mp_AdapterModel->setDomainStructure(UnitListByClass);
+  mp_AdapterModel->setDomainStructure(Domain->getUnitsByIdByClass());
 
-    BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().size(),2);
-    BOOST_CHECK_EQUAL(mp_AdapterModel->getClassStore()->isEmpty(),false);
-    BOOST_CHECK_EQUAL(mp_AdapterModel->getRequestedSelectedClass(),"class A");
-    BOOST_CHECK_EQUAL(mp_AdapterModel->getRequestedClassSelection()->get_value(m_ClassColumns.m_Class),"class A");
-    BOOST_CHECK(mp_AdapterModel->getRequestedClassSelection());
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().size(), 2);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getClassStore()->isEmpty(), false);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getRequestedSelectedClass(), "class A");
+  BOOST_CHECK_EQUAL(
+      mp_AdapterModel->getRequestedClassSelection()->get_value(m_ClassColumns.m_Class),
+      "class A");
+  BOOST_CHECK(mp_AdapterModel->getRequestedClassSelection());
 }
-
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END();

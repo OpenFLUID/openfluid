@@ -73,7 +73,8 @@
 // =====================================================================
 
 
-DomainClassModule::DomainClassModule()
+DomainClassModule::DomainClassModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
+ProjectWorkspaceModule(BuilderDesc)
 {
   mp_MainPanel = 0;
 
@@ -182,7 +183,7 @@ sigc::signal<void> DomainClassModule::signal_ModuleChanged()
 void DomainClassModule::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
     openfluid::machine::SimulationBlob& SimBlob,
-    openfluid::fluidx::FluidXDescriptor& /*FXDesc*/)
+    openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/)
 {
   mp_ModelInstance = &ModelInstance;
   mp_SimBlob = &SimBlob;

@@ -61,11 +61,14 @@
 
 #include "BuilderFrame.hpp"
 
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
+
 // =====================================================================
 // =====================================================================
 
 
-SimulationRunModule::SimulationRunModule()
+SimulationRunModule::SimulationRunModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
+ProjectWorkspaceModule(BuilderDesc)
 {
   mp_MainPanel = 0;
 
@@ -126,9 +129,9 @@ sigc::signal<void> SimulationRunModule::signal_ModuleChanged()
 void SimulationRunModule::setEngineRequirements(
     openfluid::machine::ModelInstance& ModelInstance,
     openfluid::machine::SimulationBlob& /*SimBlob*/,
-    openfluid::fluidx::FluidXDescriptor& FXDesc)
+    openfluid::guicommon::BuilderDescriptor& BuilderDesc)
 {
-  mp_SimulRunMVP->getModel()->setEngineRequirements(FXDesc.getRunDescriptor());
+  mp_SimulRunMVP->getModel()->setEngineRequirements(BuilderDesc.getRunDescriptor());
 }
 
 // =====================================================================

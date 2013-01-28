@@ -56,6 +56,7 @@
 
 #include "ProjectExplorerAdapterModel.hpp"
 #include "ProjectExplorerView.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -85,9 +86,9 @@ sigc::signal<void> ProjectExplorerAdapter::signal_FromUserActivationChanged()
 void ProjectExplorerAdapter::initialize(
     openfluid::machine::ModelInstance* ModelInstance,
     openfluid::machine::SimulationBlob* SimBlob,
-    openfluid::fluidx::FluidXDescriptor& FXDesc)
+    openfluid::guicommon::BuilderDescriptor& BuilderDesc)
 {
-  m_Model.initialize(ModelInstance, SimBlob, FXDesc);
+  m_Model.initialize(ModelInstance, SimBlob, BuilderDesc);
   m_View.setTreeModel(m_Model.getTreeModel());
 }
 

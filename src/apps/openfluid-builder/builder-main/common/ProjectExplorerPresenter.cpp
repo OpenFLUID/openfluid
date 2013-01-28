@@ -87,7 +87,7 @@ ProjectExplorerPresenter::ProjectExplorerPresenter(ProjectExplorerModel& Model,
 void ProjectExplorerPresenter::whenFromAppInitialized()
 {
   m_Adapter.initialize(m_Model.getModelInstance(), m_Model.getSimulationBlob(),
-                       m_Model.getFluidXDescriptor());
+                       m_Model.getBuilderDescriptor());
 }
 
 // =====================================================================

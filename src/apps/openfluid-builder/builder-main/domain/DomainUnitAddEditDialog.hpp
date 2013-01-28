@@ -62,11 +62,18 @@
 #include <gtkmm/table.h>
 #include <gtkmm/comboboxentrytext.h>
 
-#include <openfluid/core/CoreRepository.hpp>
-
 #include <set>
 
 #include "DomainUnitRelationWidget.hpp"
+
+namespace openfluid {
+namespace fluidx {
+class UnitDescriptor;
+}
+namespace guicommon {
+class BuilderDomain;
+}
+}
 
 class DomainUnitRelationAddDialog;
 
@@ -92,26 +99,26 @@ class DomainUnitAddEditDialog
 
     Gtk::SpinButton* mp_PcsOrderSpin;
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
     std::set<int> m_IDs;
 
-    DomainUnitRelationAddDialog& m_AddDialog;
+//    DomainUnitRelationAddDialog& m_AddDialog;
 
     std::set<std::string> m_Classes;
 
   protected:
 
-    openfluid::core::Unit* mp_Unit;
+    openfluid::fluidx::UnitDescriptor* mp_Unit;
 
     Gtk::ComboBoxEntryText* mp_ClassComboEntryText;
 
     Gtk::SpinButton* mp_IdSpin;
 
-    DomainUnitRelationWidget* mp_FromWidget;
-    DomainUnitRelationWidget* mp_ToWidget;
-    DomainUnitRelationWidget* mp_ParentWidget;
-    DomainUnitRelationWidget* mp_ChildWidget;
+//    DomainUnitRelationWidget* mp_FromWidget;
+//    DomainUnitRelationWidget* mp_ToWidget;
+//    DomainUnitRelationWidget* mp_ParentWidget;
+//    DomainUnitRelationWidget* mp_ChildWidget;
 
     void initEditionMode();
 
@@ -119,9 +126,9 @@ class DomainUnitAddEditDialog
 
     void createUnit();
 
-    void clearAllRelations();
+//    void clearAllRelations();
 
-    void createAllRelationsFromRelationWidgets();
+//    void createAllRelationsFromRelationWidgets();
 
     void onClassChanged();
 
@@ -129,14 +136,13 @@ class DomainUnitAddEditDialog
 
   public:
 
-    DomainUnitAddEditDialog(DomainUnitRelationAddDialog& UnitRelationAddDialog);
-
-    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
+    DomainUnitAddEditDialog(DomainUnitRelationAddDialog& UnitRelationAddDialog,
+                            openfluid::guicommon::BuilderDomain& Domain);
 
     void update();
 
-    openfluid::core::Unit* show(std::string SelectedClass = "",
-        openfluid::core::Unit* Unit = 0);
+    openfluid::fluidx::UnitDescriptor* show(std::string SelectedClass = "",
+        openfluid::fluidx::UnitDescriptor* Unit = 0);
 
 };
 
@@ -149,14 +155,10 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
   public:
 
     DomainUnitAddEditDialogSub(
-        DomainUnitRelationAddDialog& UnitRelationAddDialog) :
-      DomainUnitAddEditDialog(UnitRelationAddDialog)
+        DomainUnitRelationAddDialog& UnitRelationAddDialog,
+        openfluid::guicommon::BuilderDomain& Domain) :
+      DomainUnitAddEditDialog(UnitRelationAddDialog, Domain)
     {
-    }
-
-    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos)
-    {
-      DomainUnitAddEditDialog::setEngineRequirements(CoreRepos);
     }
 
     void initEditionMode()
@@ -174,22 +176,22 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
       DomainUnitAddEditDialog::createUnit();
     }
 
-    void clearAllRelations()
-    {
-      DomainUnitAddEditDialog::clearAllRelations();
-    }
+//    void clearAllRelations()
+//    {
+//      DomainUnitAddEditDialog::clearAllRelations();
+//    }
+//
+//    void createAllRelations()
+//    {
+//      DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets();
+//    }
 
-    void createAllRelations()
-    {
-      DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets();
-    }
-
-    void setUnit(openfluid::core::Unit* Unit)
+    void setUnit(openfluid::fluidx::UnitDescriptor* Unit)
     {
       mp_Unit = Unit;
     }
 
-    openfluid::core::Unit* getUnit()
+    openfluid::fluidx::UnitDescriptor* getUnit()
     {
       return mp_Unit;
     }
@@ -204,25 +206,25 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
       return mp_IdSpin;
     }
 
-    DomainUnitRelationWidgetSub* getFromWidget()
-    {
-      return (DomainUnitRelationWidgetSub*) mp_FromWidget;
-    }
-
-    DomainUnitRelationWidgetSub* getToWidget()
-    {
-      return (DomainUnitRelationWidgetSub*) mp_ToWidget;
-    }
-
-    DomainUnitRelationWidgetSub* getParentWidget()
-    {
-      return (DomainUnitRelationWidgetSub*) mp_ParentWidget;
-    }
-
-    DomainUnitRelationWidgetSub* getChildWidget()
-    {
-      return (DomainUnitRelationWidgetSub*) mp_ChildWidget;
-    }
+//    DomainUnitRelationWidgetSub* getFromWidget()
+//    {
+//      return (DomainUnitRelationWidgetSub*) mp_FromWidget;
+//    }
+//
+//    DomainUnitRelationWidgetSub* getToWidget()
+//    {
+//      return (DomainUnitRelationWidgetSub*) mp_ToWidget;
+//    }
+//
+//    DomainUnitRelationWidgetSub* getParentWidget()
+//    {
+//      return (DomainUnitRelationWidgetSub*) mp_ParentWidget;
+//    }
+//
+//    DomainUnitRelationWidgetSub* getChildWidget()
+//    {
+//      return (DomainUnitRelationWidgetSub*) mp_ChildWidget;
+//    }
 
 };
 

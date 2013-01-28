@@ -85,6 +85,7 @@ class SimulationBlob;
 }
 namespace guicommon {
 class RunDialogMachineListener;
+class BuilderDescriptor;
 }
 namespace fluidx {
 class RunDescriptor;
@@ -100,6 +101,8 @@ class EngineProject
 
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
+    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
+
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
     openfluid::base::RuntimeEnvironment* mp_RunEnv;
@@ -110,9 +113,7 @@ class EngineProject
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
-    openfluid::machine::ObserversListInstance* mp_ObsListInstance;
-
-    openfluid::machine::Engine* mp_Engine;
+//    openfluid::machine::ObserversListInstance* mp_ObsListInstance;
 
     sigc::signal<void> m_signal_RunStarted;
 
@@ -124,14 +125,11 @@ class EngineProject
 
     void setDefaultOutDesc();
 
-    void checkAndSetDefaultRunValues(openfluid::fluidx::RunDescriptor& RunDesc);
+    void checkAndSetDefaultRunValues();
 
-    void checkAndSetDefaultOutputValues(
-        openfluid::base::OutputDescriptor& OutDesc);
+    void checkAndSetDefaultOutputValues();
 
-    void checkModelDesc(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
-
-    void checkInputData();
+    void checkModelDesc();
 
     void addSignatureToGenerators();
 
@@ -172,18 +170,15 @@ class EngineProject
 
     openfluid::machine::ModelInstance* getModelInstance();
 
-    openfluid::fluidx::FluidXDescriptor& getFluidXDescriptor()
-    { return *mp_FXDesc; }
+    openfluid::guicommon::BuilderDescriptor& getBuilderDesc();
 
     openfluid::core::CoreRepository& getCoreRepository();
-
-    openfluid::base::ExecutionMessages& getExecutionMessages();
 
     openfluid::fluidx::RunDescriptor& getRunDescriptor();
 
     openfluid::base::OutputDescriptor& getOutputDescriptor();
 
-    openfluid::core::Datastore& getDatastore();
+//    openfluid::core::Datastore& getDatastore();
 
     ~EngineProject();
 

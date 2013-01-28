@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(test_updateModel)
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_AdapterModel->setModelInstance(EngProject->getModelInstance());
-  mp_AdapterModel->setFluidXDescriptor(EngProject->getFluidXDescriptor());
+  mp_AdapterModel->setFluidXDescriptor(EngProject->getBuilderDesc());
 
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),3);
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[0].children().size(),0);
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(test_updateDomain)
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
-  mp_AdapterModel->setFluidXDescriptor(EngProject->getFluidXDescriptor());
+  mp_AdapterModel->setFluidXDescriptor(EngProject->getBuilderDesc());
 
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),3);
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[1].children().size(),0);
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(test_updateRunInfo)
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
-  mp_AdapterModel->setFluidXDescriptor(EngProject->getFluidXDescriptor());
+  mp_AdapterModel->setFluidXDescriptor(EngProject->getBuilderDesc());
 
   Glib::RefPtr<BuilderTreeStore> BuilderStore =
   Glib::RefPtr<BuilderTreeStore>::cast_static(mp_AdapterModel->getTreeModel());

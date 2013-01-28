@@ -66,6 +66,9 @@ class SimulationBlob;
 namespace fluidx {
 class FluidXDescriptor;
 }
+namespace guicommon {
+class BuilderDescriptor;
+}
 }
 
 #include "ProjectExplorerCategories.hpp"
@@ -94,7 +97,7 @@ class ProjectExplorerAdapter: public sigc::trackable
 
     void initialize(openfluid::machine::ModelInstance* ModelInstance,
         openfluid::machine::SimulationBlob* SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc);
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
         getActivatedElements();

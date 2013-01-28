@@ -59,6 +59,12 @@
 
 #include <gtkmm/box.h>
 
+namespace openfluid {
+namespace guicommon {
+class BuilderDescriptor;
+}
+}
+
 class DomainStructureComponent;
 
 class DomainUnitRelationAddDialog;
@@ -83,10 +89,6 @@ class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     sigc::signal<void> m_signal_DomainStructureChanged;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::machine::SimulationBlob* mp_SimBlob;
-
     void compose();
 
     Gtk::Widget* asWidget();
@@ -95,16 +97,17 @@ class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
 
   public:
 
-    DomainStructureModule();
+    DomainStructureModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     ~DomainStructureModule();
 
     sigc::signal<void> signal_ModuleChanged();
 
     void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc);
+        openfluid::machine::ModelInstance& /*ModelInstance*/,
+        openfluid::machine::SimulationBlob& /*SimBlob*/,
+        openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/)
+    {};
 
     void update();
 

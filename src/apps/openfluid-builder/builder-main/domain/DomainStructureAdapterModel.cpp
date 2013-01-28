@@ -56,22 +56,23 @@
 
 #include <boost/foreach.hpp>
 
-// =====================================================================
-// =====================================================================
+#include <openfluid/fluidx/UnitDescriptor.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
+// =====================================================================
+// =====================================================================
 
 void DomainStructureAdapterModelImpl::appendUnitRowToUnitListStore(
-    Glib::RefPtr<BuilderListStore> ClassListStore, openfluid::core::Unit* Unit)
+    Glib::RefPtr<BuilderListStore> ClassListStore, openfluid::fluidx::UnitDescriptor& Unit)
 {
   Gtk::TreeRow Row = *(ClassListStore->append());
 
-  Row[m_Columns.m_Id] = Unit->getID();
-  Row[m_Columns.m_PcsOrder] = Unit->getProcessOrder();
+  Row[m_Columns.m_Id] = Unit.getUnitID();
+  Row[m_Columns.m_PcsOrder] = Unit.getProcessOrder();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainStructureAdapterModelImpl::createUnitStoreForClass(
     std::string ClassName)
@@ -83,7 +84,6 @@ void DomainStructureAdapterModelImpl::createUnitStoreForClass(
 // =====================================================================
 // =====================================================================
 
-
 bool DomainStructureAdapterModelImpl::isClassNameValid(std::string ClassName)
 {
   return m_ByClassUnitsStores.find(ClassName) != m_ByClassUnitsStores.end();
@@ -91,7 +91,6 @@ bool DomainStructureAdapterModelImpl::isClassNameValid(std::string ClassName)
 
 // =====================================================================
 // =====================================================================
-
 
 bool DomainStructureAdapterModelImpl::isClassNameEmpty(std::string ClassName)
 {
@@ -101,7 +100,6 @@ bool DomainStructureAdapterModelImpl::isClassNameEmpty(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-
 void DomainStructureAdapterModelImpl::setFirstClassSelected()
 {
   if (!mref_ClassStore->children().empty())
@@ -110,7 +108,6 @@ void DomainStructureAdapterModelImpl::setFirstClassSelected()
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainStructureAdapterModelImpl::setLastClassSelected()
 {
@@ -125,19 +122,17 @@ void DomainStructureAdapterModelImpl::setLastClassSelected()
 // =====================================================================
 // =====================================================================
 
-
 void DomainStructureAdapterModelImpl::setFirstUnitSelected(
     std::string ClassName)
 {
   if (isClassNameValid(ClassName) && !isClassNameEmpty(ClassName))
-    m_ByClassSelectedUnits[ClassName]
-        = m_ByClassUnitsStores[ClassName]->children().begin()->get_value(
+    m_ByClassSelectedUnits[ClassName] =
+        m_ByClassUnitsStores[ClassName]->children().begin()->get_value(
             m_Columns.m_Id);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainStructureAdapterModelImpl::setLastUnitSelected(std::string ClassName)
 {
@@ -152,20 +147,18 @@ void DomainStructureAdapterModelImpl::setLastUnitSelected(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-
 DomainStructureAdapterModelImpl::DomainStructureAdapterModelImpl(
     DomainStructureColumns& Columns) :
-  m_Columns(Columns), mref_ClassStore(BuilderClassListStore::create()),
-      m_RequestedSelectedClass("")
+    m_Columns(Columns), mref_ClassStore(BuilderClassListStore::create()), m_RequestedSelectedClass(
+        "")
 {
 }
 
 // =====================================================================
 // =====================================================================
 
-
 void DomainStructureAdapterModelImpl::setDomainStructure(
-    openfluid::core::UnitsListByClassMap_t UnitListByClass)
+    const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass)
 {
   // store existing sorts
   std::map<std::string, std::pair<int, Gtk::SortType> > ByClassSorts;
@@ -187,7 +180,7 @@ void DomainStructureAdapterModelImpl::setDomainStructure(
 
   std::vector<std::string> ClassNames;
 
-  for (openfluid::core::UnitsListByClassMap_t::iterator it =
+  for (openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t::const_iterator it =
       UnitListByClass.begin(); it != UnitListByClass.end(); ++it)
   {
     std::string ClassName = it->first;
@@ -196,31 +189,36 @@ void DomainStructureAdapterModelImpl::setDomainStructure(
 
     createUnitStoreForClass(ClassName);
 
-    BOOST_FOREACH(openfluid::core::Unit Unit,*(it->second.getList()))
-{    appendUnitRowToUnitListStore(m_ByClassUnitsStores[Unit.getClass()],
-        &Unit);
+    const std::map<int, openfluid::guicommon::BuilderUnit>* Units = &(it->second);
+
+    for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator itU = Units->begin();
+        itU != Units->end(); ++itU)
+    {
+      appendUnitRowToUnitListStore(m_ByClassUnitsStores[ClassName],
+                                   *itU->second.mp_UnitDesc);
+    }
+
+    if (ByClassSorts.find(ClassName) != ByClassSorts.end())
+      m_ByClassUnitsStores[ClassName]->set_sort_column(
+          ByClassSorts[ClassName].first, ByClassSorts[ClassName].second);
+    else
+      m_ByClassUnitsStores[ClassName]->set_sort_column(m_Columns.m_Id,
+                                                       Gtk::SORT_ASCENDING);
+
+    if (m_ByClassSelectedUnits.find(ClassName) == m_ByClassSelectedUnits.end())
+      setFirstUnitSelected(ClassName);
   }
 
-  if(ByClassSorts.find(ClassName) != ByClassSorts.end())
-  m_ByClassUnitsStores[ClassName]->set_sort_column(ByClassSorts[ClassName].first,ByClassSorts[ClassName].second);
-  else
-  m_ByClassUnitsStores[ClassName]->set_sort_column(m_Columns.m_Id,Gtk::SORT_ASCENDING);
-
-  if (m_ByClassSelectedUnits.find(ClassName) == m_ByClassSelectedUnits.end())
-  setFirstUnitSelected(ClassName);
-}
-
-mref_ClassStore->setClasses(ClassNames);
+  mref_ClassStore->setClasses(ClassNames);
 
 // if no class already selected, select the first one
-if(!isClassNameValid(m_RequestedSelectedClass))
-setFirstClassSelected();
+  if (!isClassNameValid(m_RequestedSelectedClass))
+    setFirstClassSelected();
 
 }
 
 // =====================================================================
 // =====================================================================
-
 
 Glib::RefPtr<Gtk::TreeModel> DomainStructureAdapterModelImpl::getClassesTreeModel()
 {
@@ -229,7 +227,6 @@ Glib::RefPtr<Gtk::TreeModel> DomainStructureAdapterModelImpl::getClassesTreeMode
 
 // =====================================================================
 // =====================================================================
-
 
 Glib::RefPtr<Gtk::TreeModel> DomainStructureAdapterModelImpl::getUnitsTreeModel()
 {
@@ -241,7 +238,6 @@ Glib::RefPtr<Gtk::TreeModel> DomainStructureAdapterModelImpl::getUnitsTreeModel(
 // =====================================================================
 // =====================================================================
 
-
 Gtk::TreeIter DomainStructureAdapterModelImpl::getRequestedClassSelection()
 {
   return mref_ClassStore->getIterFromClassName(m_RequestedSelectedClass);
@@ -249,7 +245,6 @@ Gtk::TreeIter DomainStructureAdapterModelImpl::getRequestedClassSelection()
 
 // =====================================================================
 // =====================================================================
-
 
 Gtk::TreeIter DomainStructureAdapterModelImpl::getRequestedUnitSelection()
 {
@@ -273,7 +268,6 @@ Gtk::TreeIter DomainStructureAdapterModelImpl::getRequestedUnitSelection()
 // =====================================================================
 // =====================================================================
 
-
 std::string DomainStructureAdapterModelImpl::getClassNameFromIter(
     Gtk::TreeIter Iter)
 {
@@ -282,7 +276,6 @@ std::string DomainStructureAdapterModelImpl::getClassNameFromIter(
 
 // =====================================================================
 // =====================================================================
-
 
 int DomainStructureAdapterModelImpl::getUnitIdFromIter(Gtk::TreeIter Iter)
 {
@@ -295,9 +288,8 @@ int DomainStructureAdapterModelImpl::getUnitIdFromIter(Gtk::TreeIter Iter)
 // =====================================================================
 // =====================================================================
 
-
-void DomainStructureAdapterModelImpl::deleteUnit(std::pair<Gtk::TreeIter,
-    Gtk::TreeIter> UnitIters)
+void DomainStructureAdapterModelImpl::deleteUnit(
+    std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters)
 {
   if (UnitIters.first && UnitIters.second)
   {
@@ -324,7 +316,6 @@ void DomainStructureAdapterModelImpl::deleteUnit(std::pair<Gtk::TreeIter,
 // =====================================================================
 // =====================================================================
 
-
 void DomainStructureAdapterModelImpl::deleteClass(std::string ClassName)
 {
   Gtk::TreeIter NextClassIter = mref_ClassStore->erase(
@@ -342,10 +333,9 @@ void DomainStructureAdapterModelImpl::deleteClass(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-
-void DomainStructureAdapterModelImpl::addUnit(openfluid::core::Unit& Unit)
+void DomainStructureAdapterModelImpl::addUnit(openfluid::fluidx::UnitDescriptor& Unit)
 {
-  std::string ClassName = Unit.getClass();
+  std::string ClassName = Unit.getUnitClass();
 
   if (!isClassNameValid(ClassName))
   {
@@ -354,16 +344,15 @@ void DomainStructureAdapterModelImpl::addUnit(openfluid::core::Unit& Unit)
     createUnitStoreForClass(ClassName);
   }
 
-  appendUnitRowToUnitListStore(m_ByClassUnitsStores[ClassName], &Unit);
+  appendUnitRowToUnitListStore(m_ByClassUnitsStores[ClassName], Unit);
 
-  m_ByClassSelectedUnits[ClassName] = Unit.getID();
+  m_ByClassSelectedUnits[ClassName] = Unit.getUnitID();
 
   m_RequestedSelectedClass = ClassName;
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainStructureAdapterModelImpl::setSelectedClass(Gtk::TreeIter Iter)
 {
@@ -372,7 +361,6 @@ void DomainStructureAdapterModelImpl::setSelectedClass(Gtk::TreeIter Iter)
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainStructureAdapterModelImpl::setSelectedUnit(Gtk::TreeIter UnitIter)
 {
@@ -384,9 +372,8 @@ void DomainStructureAdapterModelImpl::setSelectedUnit(Gtk::TreeIter UnitIter)
 // =====================================================================
 // =====================================================================
 
-
-void DomainStructureAdapterModelImpl::setNewPcsOrder(std::pair<Gtk::TreeIter,
-    Gtk::TreeIter> UnitIters, int NewProcessOrder)
+void DomainStructureAdapterModelImpl::setNewPcsOrder(
+    std::pair<Gtk::TreeIter, Gtk::TreeIter> UnitIters, int NewProcessOrder)
 {
   if (UnitIters.second)
     UnitIters.second->set_value(m_Columns.m_PcsOrder, NewProcessOrder);
@@ -398,16 +385,14 @@ void DomainStructureAdapterModelImpl::setNewPcsOrder(std::pair<Gtk::TreeIter,
 // =====================================================================
 // =====================================================================
 
-
 DomainStructureAdapterModelSub::DomainStructureAdapterModelSub(
     DomainStructureColumns& Columns) :
-  DomainStructureAdapterModelImpl(Columns)
+    DomainStructureAdapterModelImpl(Columns)
 {
 }
 
 // =====================================================================
 // =====================================================================
-
 
 std::map<std::string, Glib::RefPtr<BuilderListStore> > DomainStructureAdapterModelSub::getByClassUnitsStores()
 {
@@ -417,7 +402,6 @@ std::map<std::string, Glib::RefPtr<BuilderListStore> > DomainStructureAdapterMod
 // =====================================================================
 // =====================================================================
 
-
 std::string DomainStructureAdapterModelSub::getRequestedSelectedClass()
 {
   return m_RequestedSelectedClass;
@@ -425,7 +409,6 @@ std::string DomainStructureAdapterModelSub::getRequestedSelectedClass()
 
 // =====================================================================
 // =====================================================================
-
 
 Glib::RefPtr<BuilderClassListStore> DomainStructureAdapterModelSub::getClassStore()
 {

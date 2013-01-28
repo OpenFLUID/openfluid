@@ -62,6 +62,7 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -155,11 +156,11 @@ ProjectExplorerAdapterModelImpl::~ProjectExplorerAdapterModelImpl()
 void ProjectExplorerAdapterModelImpl::initialize(
     openfluid::machine::ModelInstance* ModelInstance,
     openfluid::machine::SimulationBlob* SimBlob,
-    openfluid::fluidx::FluidXDescriptor& FXDesc)
+    openfluid::guicommon::BuilderDescriptor& BuilderDesc)
 {
   mp_ModelInstance = ModelInstance;
   mp_SimBlob = SimBlob;
-  mp_FXDesc = &FXDesc;
+  mp_BuilderDesc = &BuilderDesc;
 
   updateAll();
 }
@@ -240,15 +241,15 @@ std::string ProjectExplorerAdapterModelImpl::generateClassInfoStr(
 
 void ProjectExplorerAdapterModelImpl::updateRunInfo()
 {
-  if (mp_FXDesc)
-  {
+//  if (mp_FXDesc)
+//  {
     Gtk::TreeRow Row = mref_TreeModel->getRowFromRowRef(*mp_RunInfoRowRef);
 
     Row[m_Columns.m_Display] = generateRunInfoStr(
-        mp_FXDesc->getRunDescriptor().getBeginDate().getAsISOString(),
-        mp_FXDesc->getRunDescriptor().getEndDate().getAsISOString(),
-        mp_FXDesc->getRunDescriptor().getDeltaT());
-  }
+        mp_BuilderDesc->getRunDescriptor().getBeginDate().getAsISOString(),
+        mp_BuilderDesc->getRunDescriptor().getEndDate().getAsISOString(),
+        mp_BuilderDesc->getRunDescriptor().getDeltaT());
+//  }
 }
 
 // =====================================================================
@@ -379,9 +380,9 @@ void ProjectExplorerAdapterModelSub::setSimulationBlob(
 // =====================================================================
 // =====================================================================
 
-void ProjectExplorerAdapterModelSub::setFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FXDesc)
+void ProjectExplorerAdapterModelSub::setFluidXDescriptor(openfluid::guicommon::BuilderDescriptor& BuilderDesc)
 {
-  mp_FXDesc = &FXDesc;
+  mp_BuilderDesc = &BuilderDesc;
 }
 
 // =====================================================================

@@ -63,8 +63,8 @@ namespace machine {
 class ModelInstance;
 class SimulationBlob;
 }
-namespace fluidx {
-class FluidXDescriptor;
+namespace guicommon {
+class BuilderDescriptor;
 }
 }
 
@@ -84,7 +84,7 @@ class ProjectExplorerAdapterModel
 
     virtual void initialize(openfluid::machine::ModelInstance* ModelInstance,
         openfluid::machine::SimulationBlob* SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc) = 0;
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc) = 0;
 
     virtual void updateAll() = 0;
 
@@ -128,7 +128,7 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
-    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
+    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
@@ -151,7 +151,7 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     void initialize(openfluid::machine::ModelInstance* ModelInstance,
         openfluid::machine::SimulationBlob* SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc);
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     void updateAll();
 
@@ -182,7 +182,7 @@ class ProjectExplorerAdapterModelSub: public ProjectExplorerAdapterModelImpl
 
     void setSimulationBlob(openfluid::machine::SimulationBlob* SimBlob);
 
-    void setFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FXDesc);
+    void setFluidXDescriptor(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     std::string generateRunInfoStr(std::string Begin, std::string End,
         unsigned int DeltaT);

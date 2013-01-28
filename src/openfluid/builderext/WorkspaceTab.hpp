@@ -78,13 +78,20 @@ class WorkspaceTab : public ModelessExtension, public openfluid::guicommon::Proj
 
   public:
 
+    WorkspaceTab(openfluid::guicommon::BuilderDescriptor& BuilderDesc) :
+    ProjectWorkspaceModule(BuilderDesc)
+    {}
+
+    WorkspaceTab()
+    {}
+
     ExtensionType getType() const { return PluggableBuilderExtension::WorkspaceTab; };
 
     // unused here
     void setEngineRequirements(
         openfluid::machine::ModelInstance& /*ModelInstance*/,
         openfluid::machine::SimulationBlob& /*SimBlob*/,
-        openfluid::fluidx::FluidXDescriptor& /*FXDesc*/){};
+        openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/){};
 
     // unused here
     void show() {};

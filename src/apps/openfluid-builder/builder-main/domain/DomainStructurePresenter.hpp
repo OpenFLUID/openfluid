@@ -57,10 +57,15 @@
 
 #include <sigc++/sigc++.h>
 
-#include <openfluid/core/Unit.hpp>
+namespace openfluid {
+namespace fluidx {
+class UnitDescriptor;
+}
+}
 
 class DomainStructureModel;
 class DomainStructureAdapter;
+
 
 class DomainStructurePresenter: public sigc::trackable
 {
@@ -74,7 +79,7 @@ class DomainStructurePresenter: public sigc::trackable
 
     void whenUnitDeleted();
 
-    void whenUnitAdded(openfluid::core::Unit& Unit);
+    void whenUnitAdded(openfluid::fluidx::UnitDescriptor& Unit);
 
     void whenSelectionChanged();
 

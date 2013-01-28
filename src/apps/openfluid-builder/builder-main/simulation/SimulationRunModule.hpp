@@ -83,7 +83,7 @@ class SimulationRunModule: public openfluid::guicommon::ProjectWorkspaceModule
 
   public:
 
-    SimulationRunModule();
+    SimulationRunModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     ~SimulationRunModule();
 
@@ -92,7 +92,7 @@ class SimulationRunModule: public openfluid::guicommon::ProjectWorkspaceModule
     void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
         openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc);
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     void update();
 

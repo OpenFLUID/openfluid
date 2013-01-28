@@ -46,48 +46,42 @@
  */
 
 /**
- \file DomainStructureComponent.cpp
- \brief Implements ...
+ \file BuilderDescriptor.hpp
+ \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "DomainStructureComponent.hpp"
+#ifndef BUILDERDESCRIPTOR_HPP_
+#define BUILDERDESCRIPTOR_HPP_
 
-#include "DomainStructureModel.hpp"
-#include "DomainStructureView.hpp"
-#include "DomainStructureAdapterModel.hpp"
-#include "DomainStructurePresenter.hpp"
-#include "DomainStructureAdapter.hpp"
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
-DomainStructureComponent::DomainStructureComponent(openfluid::guicommon::BuilderDomain& Domain)
-{
-  DomainStructureColumns* TreeColumns = new DomainStructureColumns();
-  mp_Model = new DomainStructureModelImpl(Domain);
-  mp_View = new DomainStructureViewImpl(*TreeColumns);
-  mp_AdapterModel = new DomainStructureAdapterModelImpl(*TreeColumns);
-  mp_Adapter = new DomainStructureAdapter(*mp_AdapterModel, *mp_View);
-  mp_Presenter = new DomainStructurePresenter(*mp_Model, *mp_Adapter);
+namespace openfluid {
+namespace guicommon {
 
-  mp_Model->update();
-}
-DomainStructureComponent::~DomainStructureComponent()
+class BuilderDescriptor
 {
-  delete mp_Adapter;
-  delete mp_Presenter;
-  delete mp_AdapterModel;
-  delete mp_Model;
-  delete mp_View;
-}
-Gtk::Widget* DomainStructureComponent::asWidget()
-{
-  return mp_View->asWidget();
-}
-DomainStructureModel* DomainStructureComponent::getModel()
-{
-  return mp_Model;
-}
-DomainStructureView* DomainStructureComponent::getView()
-{
-  return mp_View;
-}
+  private:
+
+    BuilderDomain m_Domain;
+
+    openfluid::fluidx::RunDescriptor* mp_RunDesc;
+
+  public:
+
+    BuilderDescriptor();
+
+    ~BuilderDescriptor();
+
+    void setFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
+
+    BuilderDomain& getDomain();
+
+    openfluid::fluidx::RunDescriptor& getRunDescriptor();
+};
+
+}} // namespaces
+
+#endif /* BUILDERDESCRIPTOR_HPP_ */

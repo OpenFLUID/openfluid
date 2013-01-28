@@ -65,8 +65,8 @@ namespace machine {
 class ModelInstance;
 class SimulationBlob;
 }
-namespace fluidx {
-class FluidXDescriptor;
+namespace guicommon {
+class BuilderDescriptor;
 }
 }
 
@@ -94,7 +94,7 @@ class ProjectExplorerModel
     virtual void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
         openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc) = 0;
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc) = 0;
 
     virtual void updateModelAsked() = 0;
 
@@ -106,7 +106,7 @@ class ProjectExplorerModel
 
     virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
 
-    virtual openfluid::fluidx::FluidXDescriptor& getFluidXDescriptor() = 0;
+    virtual openfluid::guicommon::BuilderDescriptor& getBuilderDescriptor() = 0;
 
     virtual openfluid::machine::SimulationBlob* getSimulationBlob() = 0;
 
@@ -143,7 +143,7 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     openfluid::machine::SimulationBlob* mp_SimBlob;
 
-    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
+    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
         m_ActivatedElementsPair;
@@ -167,7 +167,7 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
     void setEngineRequirements(
         openfluid::machine::ModelInstance& ModelInstance,
         openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::fluidx::FluidXDescriptor& FXDesc);
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     void updateModelAsked();
 
@@ -179,8 +179,8 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     openfluid::machine::ModelInstance* getModelInstance();
 
-    openfluid::fluidx::FluidXDescriptor& getFluidXDescriptor()
-    { return *mp_FXDesc; }
+    openfluid::guicommon::BuilderDescriptor& getBuilderDescriptor()
+    { return *mp_BuilderDesc; }
 
     openfluid::machine::SimulationBlob* getSimulationBlob();
 
