@@ -26,7 +26,9 @@ ADD_SUBDIRECTORY(landr)
 INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp market.hpp 
               dllexport.hpp debug.hpp deprecation.hpp ware.hpp
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
-       
+
+
+CONFIGURE_FILE(FindOpenFLUID.cmake.in "${CMAKE_MODULES_OUTPUT_PATH}/FindOpenFLUID.cmake" @ONLY)
 CONFIGURE_FILE(openfluid.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" @ONLY)
 CONFIGURE_FILE(openfluid-gui.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid-gui.pc" @ONLY)
 CONFIGURE_FILE(openfluid-other.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid-other.pc" @ONLY)
