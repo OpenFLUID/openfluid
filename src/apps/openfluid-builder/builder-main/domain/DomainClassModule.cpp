@@ -78,7 +78,7 @@ ProjectWorkspaceModule(BuilderDesc)
 {
   mp_MainPanel = 0;
 
-  mp_DomainIDataMVP = new DomainIDataComponent();
+  mp_DomainIDataMVP = new DomainIDataComponent(BuilderDesc.getDomain());
   mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
   mp_IDataAddDialog = new DomainIDataAddDialog();
   mp_IDataRemoveDialog = new DomainIDataRemoveDialog();

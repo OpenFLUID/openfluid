@@ -132,24 +132,48 @@ class BuilderDomain
 
     void setDomainDescriptor(openfluid::fluidx::DomainDescriptor& DomainDesc);
 
+    /**
+     *
+     * @return May return an empty map. Never throws.
+     */
     const std::map<std::string, std::map<int, BuilderUnit> >& getUnitsByIdByClass();
 
+    /**
+     * @throw openfluid::base::OFException if Unit doesn't exist
+     * @param ClassName
+     * @param ID
+     * @return
+     */
     const BuilderUnit& getUnit(std::string ClassName, int ID);
 
+    /**
+     * @throw openfluid::base::OFException if Unit doesn't exist
+     * @param ClassName
+     * @param ID
+     * @return
+     */
     const openfluid::fluidx::UnitDescriptor& getUnitDescriptor(
         std::string ClassName, int ID);
 
     /**
      *
      * @param ClassName
-     * @return An empty set if ClassName doesn't exist
+     * @return An empty set if ClassName doesn't exist. Never throws.
      */
     std::set<int> getIDsOfClass(std::string ClassName);
 
     bool isClassNameExists(std::string ClassName);
 
+    /**
+     *
+     * @return May return an empty set. Never throws.
+     */
     std::set<std::string> getClassNames();
 
+    /**
+     * @throw openfluid::base::OFException if Unit already exists
+     * @param UnitDesc
+     */
     void addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc);
 
     /**
@@ -173,7 +197,7 @@ class BuilderDomain
     /**
      *
      * @param ClassName
-     * @return An empty set if ClassName doesn't exist or has no InputData
+     * @return An empty set if ClassName doesn't exist or has no InputData. Never throws.
      */
     std::set<std::string> getInputDataNames(std::string ClassName);
 

@@ -191,8 +191,6 @@ void DomainClassCoordinator::setEngineRequirements(
     openfluid::machine::ModelInstance& /*ModelInstance*/,
     openfluid::machine::SimulationBlob& SimBlob)
 {
-  m_IDataModel.setEngineRequirements(SimBlob.getCoreRepository());
-
   m_IDataAddDialog.setEngineRequirements(SimBlob.getCoreRepository());
   m_IDataRemoveDialog.setEngineRequirements(SimBlob.getCoreRepository());
   m_IDataEditDialog.setEngineRequirements(SimBlob.getCoreRepository());

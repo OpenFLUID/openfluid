@@ -58,12 +58,6 @@
 #include <sigc++/sigc++.h>
 #include <glibmm/ustring.h>
 
-namespace openfluid {
-namespace core {
-class CoreRepository;
-class UnitsCollection;
-}
-}
 
 class DomainIDataAdapterModel;
 class DomainIDataView;
@@ -90,7 +84,7 @@ class DomainIDataAdapter: public sigc::trackable
 
     sigc::signal<void> signal_FromUserDataEdited();
 
-    void dataInit(openfluid::core::UnitsCollection* UnitsColl);
+    void dataInit(std::string ClassName);
 
 };
 

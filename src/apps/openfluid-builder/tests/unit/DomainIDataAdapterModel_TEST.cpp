@@ -64,6 +64,7 @@
 #include "tests-config.hpp"
 #include "DomainIDataColumns.hpp"
 #include "BuilderListStore.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -72,16 +73,19 @@ struct init_Model
 {
     DomainIDataAdapterModelImpl* mp_AdapterModel;
     EngineProject* mp_EngProject;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
     init_Model()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_AdapterModel = new DomainIDataAdapterModelImpl();
-
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
+
+      mp_Domain = &mp_EngProject->getBuilderDesc().getDomain();
+
+      mp_AdapterModel = new DomainIDataAdapterModelImpl(*mp_Domain);
     }
 
     ~init_Model()
@@ -98,57 +102,61 @@ BOOST_FIXTURE_TEST_SUITE(DomainIDataAdapterModelTest, init_Model)
 
 BOOST_AUTO_TEST_CASE(test_dataInit)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),0);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),0);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),
+                    0);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 0);
 
-  mp_AdapterModel->dataInit(mp_EngProject->getCoreRepository().getUnits("TestUnits"));
+  mp_AdapterModel->dataInit("TestUnits");
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),3);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),mp_EngProject->getCoreRepository().getUnits("TestUnits")->getList()->size());
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),
+                    3);
+  BOOST_CHECK_EQUAL( mp_AdapterModel->getTreeModel()->children().size(),
+                    mp_Domain->getIDsOfClass("TestUnits").size());
 
-  mp_AdapterModel->dataInit(mp_EngProject->getCoreRepository().getUnits("ParentTestUnits"));
+  mp_AdapterModel->dataInit("ParentTestUnits");
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),0);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),mp_EngProject->getCoreRepository().getUnits("ParentTestUnits")->getList()->size());
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getColumns()->getByTitleColumns().size(),
+                    0);
+  BOOST_CHECK_EQUAL( mp_AdapterModel->getTreeModel()->children().size(),
+                    mp_Domain->getIDsOfClass("ParentTestUnits").size());
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_updateData)
 {
-  mp_AdapterModel->dataInit(mp_EngProject->getCoreRepository().getUnits("TestUnits"));
+  mp_AdapterModel->dataInit("TestUnits");
 
   Gtk::TreeIter IterUnitIndex0 = mp_AdapterModel->getTreeModel()->children()[0];
 
   mp_AdapterModel->setSelectedUnit(IterUnitIndex0);
 
-  mp_AdapterModel->updateData("NewData","indataA");
+  mp_AdapterModel->updateData("NewData", "indataA");
 
-  openfluid::core::Unit* Unit0 = mp_EngProject->getCoreRepository().getUnit("TestUnits",IterUnitIndex0->get_value(*mp_AdapterModel->getColumns()->getIdColumn()));
+  int Id0 = IterUnitIndex0->get_value(
+      *mp_AdapterModel->getColumns()->getIdColumn());
 
-  std::string Val;
-  Unit0->getInputData()->getValue("indataA",Val);
+  BOOST_CHECK_EQUAL(mp_Domain->getInputData("TestUnits",Id0,"indataA"),
+                    "NewData");
 
-  BOOST_CHECK_EQUAL(Val,"NewData");
+  mp_AdapterModel->updateData("NewDataAgain", "indataA");
 
-  mp_AdapterModel->updateData("NewDataAgain","indataA");
-
-  Unit0->getInputData()->getValue("indataA",Val);
-
-  BOOST_CHECK_EQUAL(Val,"NewDataAgain");
+  BOOST_CHECK_EQUAL(mp_Domain->getInputData("TestUnits",Id0,"indataA"),
+                    "NewDataAgain");
 
   Gtk::TreeIter IterUnitIndex5 = mp_AdapterModel->getTreeModel()->children()[5];
 
   mp_AdapterModel->setSelectedUnit(IterUnitIndex5);
 
-  mp_AdapterModel->updateData("NewData","indataC");
+  mp_AdapterModel->updateData("NewData", "indataC");
 
-  openfluid::core::Unit* Unit5 = mp_EngProject->getCoreRepository().getUnit("TestUnits",IterUnitIndex5->get_value(*mp_AdapterModel->getColumns()->getIdColumn()));
+  int Id5 = IterUnitIndex5->get_value(
+      *mp_AdapterModel->getColumns()->getIdColumn());
 
-  Unit5->getInputData()->getValue("indataC",Val);
-
-  BOOST_CHECK_EQUAL(Val,"NewData");
+  BOOST_CHECK_EQUAL(mp_Domain->getInputData("TestUnits",Id5,"indataC"),
+                    "NewData");
 }
-
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END();

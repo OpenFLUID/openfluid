@@ -54,21 +54,19 @@
 
 #include "DomainIDataModel.hpp"
 
-#include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
 // =====================================================================
 // =====================================================================
 
-
-DomainIDataModelImpl::DomainIDataModelImpl() :
-  mp_CoreRepos(0), m_ClassName(""), m_UnitsColl(0)
+DomainIDataModelImpl::DomainIDataModelImpl(
+    openfluid::guicommon::BuilderDomain& Domain) :
+    mp_Domain(&Domain), m_ClassName("")
 {
 }
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> DomainIDataModelImpl::signal_FromAppDataInit()
 {
@@ -78,16 +76,13 @@ sigc::signal<void> DomainIDataModelImpl::signal_FromAppDataInit()
 // =====================================================================
 // =====================================================================
 
-
 bool DomainIDataModelImpl::isEmptyDataList()
 {
-  return (m_UnitsColl
-      && m_UnitsColl->getList()->begin()->getInputData()->getInputDataNames().empty());
+  return mp_Domain->getInputDataNames(m_ClassName).empty();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> DomainIDataModelImpl::signal_IDataChanged()
 {
@@ -97,54 +92,28 @@ sigc::signal<void> DomainIDataModelImpl::signal_IDataChanged()
 // =====================================================================
 // =====================================================================
 
-
-void DomainIDataModelImpl::setEngineRequirements(
-    openfluid::core::CoreRepository& CoreRepos)
+std::string DomainIDataModelImpl::getClass()
 {
-  mp_CoreRepos = &CoreRepos;
+  return m_ClassName;
 }
 
 // =====================================================================
 // =====================================================================
-
-
-openfluid::core::UnitsCollection* DomainIDataModelImpl::getUnitsCollection()
-{
-  return m_UnitsColl;
-}
-
-// =====================================================================
-// =====================================================================
-
 
 void DomainIDataModelImpl::update()
 {
-  if (mp_CoreRepos && mp_CoreRepos->getUnits(m_ClassName))
-  {
-    m_UnitsColl = mp_CoreRepos->getUnits(m_ClassName);
-
-    m_signal_FromAppDataInit.emit();
-  }
+  m_signal_FromAppDataInit.emit();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainIDataModelImpl::removeData(std::string DataName)
 {
   if (DataName == "")
     return;
 
-  openfluid::core::UnitsList_t::iterator it;
-  for (it = m_UnitsColl->getList()->begin(); it
-      != m_UnitsColl->getList()->end(); ++it)
-  {
-    openfluid::core::Unit* TheUnit =
-        const_cast<openfluid::core::Unit*> (&(*it));
-
-    TheUnit->getInputData()->removeData(DataName);
-  }
+  mp_Domain->deleteInputData(m_ClassName, DataName);
 
   m_signal_FromAppDataInit.emit();
 
@@ -154,60 +123,38 @@ void DomainIDataModelImpl::removeData(std::string DataName)
 // =====================================================================
 // =====================================================================
 
-
 void DomainIDataModelImpl::addData(std::string DataName,
-    std::string DefaultValue)
+                                   std::string DefaultValue)
 {
 
   if (DataName == "" || DefaultValue == "")
     return;
 
-  openfluid::core::UnitsList_t::iterator it;
-  for (it = m_UnitsColl->getList()->begin(); it
-      != m_UnitsColl->getList()->end(); ++it)
-  {
-    openfluid::core::Unit* TheUnit =
-        const_cast<openfluid::core::Unit*> (&(*it));
-
-    TheUnit->getInputData()->setValue(DataName, DefaultValue);
-  }
+  mp_Domain->addInputData(m_ClassName, DataName, DefaultValue);
 
   m_signal_FromAppDataInit.emit();
 
   m_signal_IDataChanged.emit();
-
 }
 
 // =====================================================================
 // =====================================================================
 
-
 void DomainIDataModelImpl::changeDataName(std::string OldDataName,
-    std::string NewDataName)
+                                          std::string NewDataName)
 {
   if (OldDataName == "" || NewDataName == "")
     return;
 
-  openfluid::core::UnitsList_t::iterator it;
-  for (it = m_UnitsColl->getList()->begin(); it
-      != m_UnitsColl->getList()->end(); ++it)
-  {
-    openfluid::core::Unit* TheUnit =
-        const_cast<openfluid::core::Unit*> (&(*it));
+  mp_Domain->renameInputData(m_ClassName, OldDataName, NewDataName);
 
-    std::string Value;
+  m_signal_FromAppDataInit.emit();
 
-    TheUnit->getInputData()->getValue(OldDataName, Value);
-
-    TheUnit->getInputData()->setValue(NewDataName, Value);
-  }
-
-  removeData(OldDataName);
+  m_signal_IDataChanged.emit();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainIDataModelImpl::setClass(std::string ClassName)
 {
