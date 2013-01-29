@@ -348,7 +348,7 @@ void DomainUnitAddEditDialog::createUnit()
   int ID = mp_IdSpin->get_value_as_int();
   int PcsOrder = mp_PcsOrderSpin->get_value_as_int();
 
-  openfluid::fluidx::UnitDescriptor* mp_Unit = new openfluid::fluidx::UnitDescriptor;
+  mp_Unit = new openfluid::fluidx::UnitDescriptor;
   mp_Unit->getUnitClass() = ClassName;
   mp_Unit->getUnitID() = ID;
   mp_Unit->getProcessOrder() = PcsOrder;

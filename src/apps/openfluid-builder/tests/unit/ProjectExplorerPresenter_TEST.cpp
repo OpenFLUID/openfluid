@@ -72,25 +72,11 @@
 
 struct init_Presenter
 {
-    ProjectExplorerComponent* mp_Component;
-
-    ProjectExplorerModelImpl* mp_Model;
-    ProjectExplorerViewSub* mp_View;
-
     ProjectExplorerColumns m_Columns;
 
     init_Presenter()
     {
       BuilderTestHelper::getInstance()->initGtk();
-
-      mp_Component = new ProjectExplorerComponent();
-      mp_Model = (ProjectExplorerModelImpl*) (mp_Component->getModel());
-      mp_View = (ProjectExplorerViewSub*) (mp_Component->getView());
-    }
-
-    ~init_Presenter()
-    {
-      delete mp_Component;
     }
 };
 
@@ -99,80 +85,113 @@ BOOST_FIXTURE_TEST_SUITE(ProjectExplorerPresenterTest, init_Presenter)
 // =====================================================================
 // =====================================================================
 
-
 BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
-                                  EngProject->getBuilderDesc());
+  ProjectExplorerComponent* Component = new ProjectExplorerComponent(
+      EngProject->getBuilderDesc());
+  ProjectExplorerModelImpl* Model =
+      (ProjectExplorerModelImpl*) (Component->getModel());
+  ProjectExplorerViewSub* View =
+      (ProjectExplorerViewSub*) (Component->getView());
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
+  Model->setEngineRequirements(*EngProject->getModelInstance());
 
-  Gtk::TreeView* TreeView = mp_View->getTreeView();
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_NONE);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
-  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),3);
+  Gtk::TreeView* TreeView = View->getTreeView();
+
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 3);
 
   // Result sets are not displayed
 //  BOOST_CHECK_EQUAL(TreeView->get_model()->children()[3]->children().size(),0);
 
   delete EngProject;
+  delete Component;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
-                                  EngProject->getBuilderDesc());
+  ProjectExplorerComponent* Component = new ProjectExplorerComponent(
+      EngProject->getBuilderDesc());
+  ProjectExplorerModelImpl* Model =
+      (ProjectExplorerModelImpl*) (Component->getModel());
+  ProjectExplorerViewSub* View =
+      (ProjectExplorerViewSub*) (Component->getView());
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
+  Model->setEngineRequirements(*EngProject->getModelInstance());
 
-  Gtk::TreeView* TreeView = mp_View->getTreeView();
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_NONE);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
-  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(),3);
+  Gtk::TreeView* TreeView = View->getTreeView();
+
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 3);
 
   // Result sets are not displayed
 //  BOOST_CHECK_EQUAL(TreeView->get_model()->children()[3]->children().size(),0);
 
   delete EngProject;
+  delete Component;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_activateRows)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(),*EngProject->getSimBlob(),
-                                  EngProject->getBuilderDesc());
+  ProjectExplorerComponent* Component = new ProjectExplorerComponent(
+      EngProject->getBuilderDesc());
+  ProjectExplorerModelImpl* Model =
+      (ProjectExplorerModelImpl*) (Component->getModel());
+  ProjectExplorerViewSub* View =
+      (ProjectExplorerViewSub*) (Component->getView());
 
-  Gtk::TreeView* TreeView = mp_View->getTreeView();
+  Model->setEngineRequirements(*EngProject->getModelInstance());
+
+  Gtk::TreeView* TreeView = View->getTreeView();
 
   // Model activated
-  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[0]),
+  TreeView->row_activated(
+      TreeView->get_model()->get_path(TreeView->get_model()->children()[0]),
       *TreeView->get_column(0));
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_MODEL);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_MODEL);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   // Domain activated
-  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[1]),
+  TreeView->row_activated(
+      TreeView->get_model()->get_path(TreeView->get_model()->children()[1]),
       *TreeView->get_column(0));
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_DOMAIN);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_DOMAIN);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   // Simulation activated
-  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[2]),
+  TreeView->row_activated(
+      TreeView->get_model()->get_path(TreeView->get_model()->children()[2]),
       *TreeView->get_column(0));
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_NONE);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   // Results activated
 //  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[3]),
@@ -181,33 +200,46 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
 //  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
 //  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
 
-  // First Function activated
-  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[0]->children()[0]),
+// First Function activated
+  TreeView->row_activated(
+      TreeView->get_model()->get_path(
+          TreeView->get_model()->children()[0]->children()[0]),
       *TreeView->get_column(0));
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_MODEL);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"tests.primitives.prod");
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_MODEL);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second,
+                    "tests.primitives.prod");
 
   // First Class activated
-  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[1]->children()[0]),
+  TreeView->row_activated(
+      TreeView->get_model()->get_path(
+          TreeView->get_model()->children()[1]->children()[0]),
       *TreeView->get_column(0));
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_CLASS);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"ParentTestUnits");
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_CLASS);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "ParentTestUnits");
 
   // Run activated
-  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[2]->children()[0]),
+  TreeView->row_activated(
+      TreeView->get_model()->get_path(
+          TreeView->get_model()->children()[2]->children()[0]),
       *TreeView->get_column(0));
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_RUN);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_RUN);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   // Run Info activated
-  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[2]->children()[0]->children()[0]),
+  TreeView->row_activated(
+      TreeView->get_model()->get_path(
+          TreeView->get_model()->children()[2]->children()[0]->children()[0]),
       *TreeView->get_column(0));
 
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_RUN);
-  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_RUN);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   // Outputs activated
 //  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[2]->children()[1]),
@@ -217,11 +249,9 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
 //  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
 
   delete EngProject;
+  delete Component;
 }
-
 // =====================================================================
 // =====================================================================
-
-
 BOOST_AUTO_TEST_SUITE_END()
 

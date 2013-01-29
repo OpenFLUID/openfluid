@@ -64,13 +64,15 @@
 // =====================================================================
 
 
-ProjectExplorerComponent::ProjectExplorerComponent()
+ProjectExplorerComponent::ProjectExplorerComponent(openfluid::guicommon::BuilderDescriptor& Desc)
 {
   mp_Model = new ProjectExplorerModelImpl();
   mp_View = new ProjectExplorerViewImpl();
-  mp_AdapterModel = new ProjectExplorerAdapterModelImpl();
+  mp_AdapterModel = new ProjectExplorerAdapterModelImpl(Desc);
   mp_Adapter = new ProjectExplorerAdapter(*mp_AdapterModel, *mp_View);
   mp_Presenter = new ProjectExplorerPresenter(*mp_Model, *mp_Adapter);
+
+  mp_Model->signal_Initialized().emit();
 }
 
 // =====================================================================

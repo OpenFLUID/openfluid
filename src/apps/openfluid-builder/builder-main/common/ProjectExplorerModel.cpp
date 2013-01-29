@@ -59,7 +59,7 @@
 
 
 ProjectExplorerModelImpl::ProjectExplorerModelImpl() :
-  mp_ModelInstance(0), mp_SimBlob(0), mp_BuilderDesc(0), m_ActivatedElementsPair(std::make_pair(
+  mp_ModelInstance(0), m_ActivatedElementsPair(std::make_pair(
       ProjectExplorerCategories::EXPLORER_NONE, ""))
 {
 
@@ -124,13 +124,9 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateSimulationAsked()
 
 
 void ProjectExplorerModelImpl::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob,
-    openfluid::guicommon::BuilderDescriptor& BuilderDesc)
+    openfluid::machine::ModelInstance& ModelInstance)
 {
   mp_ModelInstance = &ModelInstance;
-  mp_SimBlob = &SimBlob;
-  mp_BuilderDesc = &BuilderDesc;
 
   m_signal_Initialized.emit();
 }
@@ -178,15 +174,6 @@ void ProjectExplorerModelImpl::updateSimulationAsked()
 openfluid::machine::ModelInstance* ProjectExplorerModelImpl::getModelInstance()
 {
   return mp_ModelInstance;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::machine::SimulationBlob* ProjectExplorerModelImpl::getSimulationBlob()
-{
-  return mp_SimBlob;
 }
 
 // =====================================================================

@@ -95,9 +95,7 @@ class ProjectExplorerAdapter: public sigc::trackable
 
     sigc::signal<void> signal_FromUserActivationChanged();
 
-    void initialize(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob,
-        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+    void initialize(openfluid::machine::ModelInstance* ModelInstance);
 
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
         getActivatedElements();

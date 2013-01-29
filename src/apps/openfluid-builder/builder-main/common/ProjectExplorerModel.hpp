@@ -92,9 +92,7 @@ class ProjectExplorerModel
 //    virtual sigc::signal<void,bool> signal_UpdateResultsAsked() = 0;
 
     virtual void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::guicommon::BuilderDescriptor& BuilderDesc) = 0;
+        openfluid::machine::ModelInstance& ModelInstance) = 0;
 
     virtual void updateModelAsked() = 0;
 
@@ -105,10 +103,6 @@ class ProjectExplorerModel
 //    virtual void updateResultsAsked(bool WithWarningState) = 0;
 
     virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
-
-    virtual openfluid::guicommon::BuilderDescriptor& getBuilderDescriptor() = 0;
-
-    virtual openfluid::machine::SimulationBlob* getSimulationBlob() = 0;
 
     virtual void setActivatedElements(
         std::pair<ProjectExplorerCategories::ProjectExplorerCategory,
@@ -141,10 +135,6 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 
-    openfluid::machine::SimulationBlob* mp_SimBlob;
-
-    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
-
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
         m_ActivatedElementsPair;
 
@@ -165,9 +155,7 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 //    sigc::signal<void,bool> signal_UpdateResultsAsked();
 
     void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+        openfluid::machine::ModelInstance& ModelInstance);
 
     void updateModelAsked();
 
@@ -178,11 +166,6 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 //    void updateResultsAsked(bool WithWarningState);
 
     openfluid::machine::ModelInstance* getModelInstance();
-
-    openfluid::guicommon::BuilderDescriptor& getBuilderDescriptor()
-    { return *mp_BuilderDesc; }
-
-    openfluid::machine::SimulationBlob* getSimulationBlob();
 
     void setActivatedElements(
         std::pair<ProjectExplorerCategories::ProjectExplorerCategory,

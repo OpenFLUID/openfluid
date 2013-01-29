@@ -57,6 +57,12 @@
 
 #include "BuilderMVPComponent.hpp"
 
+namespace openfluid {
+namespace guicommon {
+class BuilderDescriptor;
+}
+}
+
 class ProjectExplorerModel;
 class ProjectExplorerView;
 class ProjectExplorerViewSub;
@@ -80,7 +86,7 @@ class ProjectExplorerComponent: public BuilderMVPComponent
 
   public:
 
-    ProjectExplorerComponent();
+    ProjectExplorerComponent(openfluid::guicommon::BuilderDescriptor& Desc);
 
     ~ProjectExplorerComponent();
 
@@ -92,9 +98,14 @@ class ProjectExplorerComponent: public BuilderMVPComponent
 
 };
 
-class ProjectExplorerComponentSub : public ProjectExplorerComponent
+class ProjectExplorerComponentSub: public ProjectExplorerComponent
 {
   public:
+
+    ProjectExplorerComponentSub(openfluid::guicommon::BuilderDescriptor& Desc) :
+        ProjectExplorerComponent(Desc)
+    {
+    }
 
     ProjectExplorerViewSub* getViewSub();
 };

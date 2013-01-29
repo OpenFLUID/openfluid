@@ -75,16 +75,14 @@ class BuilderDescriptor;
 // =====================================================================
 // =====================================================================
 
-
 class ProjectExplorerAdapterModel
 {
   public:
 
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 
-    virtual void initialize(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob,
-        openfluid::guicommon::BuilderDescriptor& BuilderDesc) = 0;
+    virtual void initialize(
+        openfluid::machine::ModelInstance* ModelInstance) = 0;
 
     virtual void updateAll() = 0;
 
@@ -106,7 +104,6 @@ class ProjectExplorerAdapterModel
 // =====================================================================
 // =====================================================================
 
-
 class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 {
   private:
@@ -115,11 +112,10 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     ProjectExplorerColumns m_Columns;
 
-    std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
-        m_ActivatedElements;
+    std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> m_ActivatedElements;
 
     std::string generateClassInfoStr(std::string ClassName,
-        unsigned int UnitsCount);
+                                     unsigned int UnitsCount);
 
 //    std::string generateSetInfoStr(std::string SetName, std::string ClassName,
 //        unsigned int UnitsCount);
@@ -130,8 +126,6 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
-    openfluid::machine::SimulationBlob* mp_SimBlob;
-
     Gtk::TreeRowReference* mp_ModelRowRef;
 
     Gtk::TreeRowReference* mp_DomainRowRef;
@@ -141,17 +135,16 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
     Gtk::TreeRowReference* mp_ResultsRowRef;
 
     std::string generateRunInfoStr(std::string Begin, std::string End,
-        unsigned int DeltaT);
+                                   unsigned int DeltaT);
 
   public:
 
-    ProjectExplorerAdapterModelImpl();
+    ProjectExplorerAdapterModelImpl(
+        openfluid::guicommon::BuilderDescriptor& Desc);
 
     ~ProjectExplorerAdapterModelImpl();
 
-    void initialize(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob,
-        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+    void initialize(openfluid::machine::ModelInstance* ModelInstance);
 
     void updateAll();
 
@@ -168,7 +161,7 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
     void setActivated(Gtk::TreePath Path);
 
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
-        getActivatedElements();
+    getActivatedElements();
 
 };
 
@@ -176,16 +169,18 @@ class ProjectExplorerAdapterModelSub: public ProjectExplorerAdapterModelImpl
 {
   public:
 
+    ProjectExplorerAdapterModelSub(
+        openfluid::guicommon::BuilderDescriptor& Desc) :
+        ProjectExplorerAdapterModelImpl(Desc)
+    {
+    }
+
     Gtk::TreeRowReference* getRunInfoRowRef();
 
     void setModelInstance(openfluid::machine::ModelInstance* ModelInstance);
 
-    void setSimulationBlob(openfluid::machine::SimulationBlob* SimBlob);
-
-    void setFluidXDescriptor(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
-
     std::string generateRunInfoStr(std::string Begin, std::string End,
-        unsigned int DeltaT);
+                                   unsigned int DeltaT);
 
 };
 #endif /* __PROJECTEXPLORERADAPTERMODEL_HPP__ */
