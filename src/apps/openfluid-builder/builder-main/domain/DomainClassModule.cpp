@@ -80,9 +80,9 @@ ProjectWorkspaceModule(BuilderDesc)
 
   mp_DomainIDataMVP = new DomainIDataComponent(BuilderDesc.getDomain());
   mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
-  mp_IDataAddDialog = new DomainIDataAddDialog();
-  mp_IDataRemoveDialog = new DomainIDataRemoveDialog();
-  mp_IDataEditDialog = new DomainIDataEditDialog();
+  mp_IDataAddDialog = new DomainIDataAddDialog(BuilderDesc.getDomain());
+  mp_IDataRemoveDialog = new DomainIDataRemoveDialog(BuilderDesc.getDomain());
+  mp_IDataEditDialog = new DomainIDataEditDialog(BuilderDesc.getDomain());
 
   mp_DomainEventsMVP = new DomainEventsComponent();
   mp_EventsListToolBox = BuilderListToolBoxFactory::createDomainEventsToolBox();

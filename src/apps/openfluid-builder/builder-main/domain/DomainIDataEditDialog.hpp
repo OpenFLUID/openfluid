@@ -62,7 +62,11 @@
 
 #include <set>
 
-#include <openfluid/core/CoreRepository.hpp>
+namespace openfluid {
+namespace guicommon {
+class BuilderDomain;
+}
+}
 
 class DomainIDataEditDialog
 {
@@ -77,7 +81,7 @@ class DomainIDataEditDialog
     Gtk::InfoBar* mp_InfoBar;
     Gtk::Label* mp_InfoBarLabel;
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
     std::string m_ClassName;
 
@@ -87,13 +91,9 @@ class DomainIDataEditDialog
 
     void onChanged();
 
-    bool isEmptyString(std::string Str);
-
   public:
 
-    DomainIDataEditDialog();
-
-    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
+    DomainIDataEditDialog(openfluid::guicommon::BuilderDomain& Domain);
 
     void setClass(std::string ClassName);
 
