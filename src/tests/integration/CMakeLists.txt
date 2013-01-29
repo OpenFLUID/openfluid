@@ -173,7 +173,7 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
   FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.cmake")
   
-  ADD_TEST(integration-CMakeModulesConfigure
+  ADD_TEST(integration-CMakeModuleConfigureFunction
                               "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
@@ -181,6 +181,12 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                               "-DCMAKE_MODULE_PATH=${CMAKE_MODULES_OUTPUT_PATH}"
                               "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH};${CMAKE_BINARY_DIR}/src"
                               "-DOpenFLUID_EXTRA_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")                              
+                              
+  ADD_TEST(integration-CMakeModuleBuildFunction
+                              "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.cmake" 
+                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.cmake")
+  SET_PROPERTY(TEST integration-CMakeModuleBuildFunction APPEND PROPERTY DEPENDS integration-CMakeModuleConfigureFunction)                                                            
 
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"
