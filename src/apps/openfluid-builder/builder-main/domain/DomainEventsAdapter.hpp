@@ -55,7 +55,13 @@
 #ifndef __DOMAINEVENTSADAPTER_HPP__
 #define __DOMAINEVENTSADAPTER_HPP__
 
-#include <openfluid/core/UnitsColl.hpp>
+#include <map>
+
+namespace openfluid {
+namespace guicommon {
+class BuilderUnit;
+}
+}
 
 class DomainEventsAdapterModel;
 class DomainEventsView;
@@ -73,7 +79,7 @@ class DomainEventsAdapter
 
     DomainEventsAdapter(DomainEventsAdapterModel& AdapterModel, DomainEventsView& View);
 
-    void setUnitsColl(openfluid::core::UnitsCollection* UnitsColl);
+    void setUnits(const std::map<int, openfluid::guicommon::BuilderUnit>* Units);
 };
 
 #endif /* __DOMAINEVENTSADAPTER_HPP__ */

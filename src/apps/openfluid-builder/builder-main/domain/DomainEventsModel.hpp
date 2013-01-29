@@ -57,11 +57,12 @@
 
 #include <string>
 #include <sigc++/sigc++.h>
+#include <map>
 
 namespace openfluid {
-namespace core {
-class CoreRepository;
-class UnitsCollection;
+namespace guicommon {
+class BuilderDomain;
+class BuilderUnit;
 }
 }
 
@@ -71,12 +72,9 @@ class DomainEventsModel
 
     virtual sigc::signal<void> signal_FromAppEventsInit() = 0;
 
-    virtual void setEngineRequirements(
-        openfluid::core::CoreRepository& CoreRepos) = 0;
-
     virtual void setClass(std::string ClassName) = 0;
 
-    virtual openfluid::core::UnitsCollection* getUnitsColl() = 0;
+    virtual const std::map<int, openfluid::guicommon::BuilderUnit>* getUnits() = 0;
 
 };
 
@@ -86,25 +84,22 @@ class DomainEventsModelImpl: public DomainEventsModel
 
     sigc::signal<void> m_signal_FromAppEventsInit;
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
-    openfluid::core::UnitsCollection* mp_UnitsColl;
+    const std::map<int, openfluid::guicommon::BuilderUnit>* mp_Units;
 
 
   public:
 
-    DomainEventsModelImpl();
+    DomainEventsModelImpl(openfluid::guicommon::BuilderDomain& Domain);
 
     ~DomainEventsModelImpl();
 
     sigc::signal<void> signal_FromAppEventsInit();
 
-    void setEngineRequirements(
-            openfluid::core::CoreRepository& CoreRepos);
-
     void setClass(std::string ClassName);
 
-    openfluid::core::UnitsCollection* getUnitsColl();
+    const std::map<int, openfluid::guicommon::BuilderUnit>* getUnits();
 
 };
 

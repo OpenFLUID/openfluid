@@ -107,9 +107,10 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
     sigc::signal<void> signal_ModuleChanged();
 
     void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+        openfluid::machine::ModelInstance& /*ModelInstance*/,
+        openfluid::machine::SimulationBlob& /*SimBlob*/,
+        openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/)
+    {}
 
     void setSelectedClassFromApp(std::string ClassName);
 

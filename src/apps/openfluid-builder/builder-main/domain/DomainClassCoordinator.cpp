@@ -57,7 +57,6 @@
 #include <glibmm/i18n.h>
 
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
 
 #include "DomainIDataModel.hpp"
 #include "DomainIDataAddDialog.hpp"
@@ -181,17 +180,6 @@ DomainClassCoordinator::DomainClassCoordinator(DomainIDataModel& IDataModel,
 sigc::signal<void> DomainClassCoordinator::signal_DomainClassChanged()
 {
   return m_signal_DomainClassChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainClassCoordinator::setEngineRequirements(
-    openfluid::machine::ModelInstance& /*ModelInstance*/,
-    openfluid::machine::SimulationBlob& SimBlob)
-{
-  m_EventsModel.setEngineRequirements(SimBlob.getCoreRepository());
 }
 
 // =====================================================================

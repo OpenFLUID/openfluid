@@ -58,13 +58,6 @@
 #include <sigc++/sigc++.h>
 #include <string>
 
-namespace openfluid {
-namespace machine {
-class ModelInstance;
-class SimulationBlob;
-}
-}
-
 class DomainIDataModel;
 class DomainIDataAddDialog;
 class DomainIDataRemoveDialog;
@@ -111,10 +104,6 @@ class DomainClassCoordinator: public sigc::trackable
         DomainEventsModel& EventsModel, BuilderListToolBox& EventsListToolBox);
 
     sigc::signal<void> signal_DomainClassChanged();
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
 
     void setSelectedClassFromApp(std::string ClassName);
 

@@ -74,6 +74,6 @@ DomainEventsPresenter::DomainEventsPresenter(DomainEventsModel& Model,
 
 void DomainEventsPresenter::whenEventsInit()
 {
-  m_Adapter.setUnitsColl(m_Model.getUnitsColl());
+  m_Adapter.setUnits(m_Model.getUnits());
 }
 
