@@ -1,0 +1,250 @@
+##
+# This file is part of OpenFLUID software
+# Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+#
+#
+# == GNU General Public License Usage ==
+#
+# OpenFLUID is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# OpenFLUID is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+#
+# In addition, as a special exception, INRA gives You the additional right
+# to dynamically link the code of OpenFLUID with code not covered
+# under the GNU General Public License ("Non-GPL Code") and to distribute
+# linked combinations including the two, subject to the limitations in this
+# paragraph. Non-GPL Code permitted under this exception must only link to
+# the code of OpenFLUID dynamically through the OpenFLUID libraries
+# interfaces, and only for building OpenFLUID plugins. The files of
+# Non-GPL Code may be link to the OpenFLUID libraries without causing the
+# resulting work to be covered by the GNU General Public License. You must
+# obey the GNU General Public License in all respects for all of the
+# OpenFLUID code and other code used in conjunction with OpenFLUID
+# except the Non-GPL Code covered by this exception. If you modify
+# this OpenFLUID, you may extend this exception to your version of the file,
+# but you are not obligated to do so. If you do not wish to provide this
+# exception without modification, you must delete this exception statement
+# from your version and license this OpenFLUID solely under the GPL without
+# exception.
+#
+#
+# == Other Usage ==
+#
+# Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+# license, and requires a written agreement between You and INRA.
+# Licensees for Other Usage of OpenFLUID may use this file in accordance
+# with the terms contained in the written agreement between You and INRA.
+##
+#
+#
+# OpenFLUID module for CMake build system, helping to find OpenFLUID
+# framework and subsequent information
+#
+# This module provides the following variables
+# OpenFLUID_FOUND 
+# OpenFLUID_VERSION
+# OpenFLUID_INCLUDE_DIR
+# OpenFLUID_INCLUDE_DIRS
+# OpenFLUID_LIBRARY_DIR
+# OpenFLUID_LIBRARY_DIRS
+# OpenFLUID_LIBRARIES
+# OpenFLUID_<COMPONENT>_LIBRARY
+# OpenFLUID_FUNCTION_FILENAME_SUFFIX
+# OpenFLUID_OBSERVER_FILENAME_SUFFIX
+# OpenFLUID_BUILDEREX_FILENAME_SUFFIX
+#
+# This module uses hints about search locations from variables
+# OpenFLUID_ROOT_DIR
+# $ENV{OPENFLUID_INSTALL_PREFIX}
+#
+#
+# Examples of use:
+#
+# Find OpenFLUID package, including all libraries
+# FIND_PACKAGE(OpenFLUID)
+#
+# Find OpenFLUID package, including specified libraries only
+# FIND_PACKAGE(OpenFLUID COMPONENTS core base tools ware)
+#
+##
+
+
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
+
+IF(OpenFLUID_FOUND AND OpenFLUID_DIR)
+  INCLUDE("${OpenFLUID_DIR}/OpenFLUIDWareMacros.cmake")
+  RETURN()
+ENDIF()
+
+
+SET(_OpenFLUID_SEARCH_DIRS
+  ${OpenFLUID_ROOT_DIR}
+  $ENV{OPENFLUID_INSTALL_PATH}
+  /usr
+  /usr/local
+  /sw # Fink
+  /opt/local # DarwinPorts
+)
+
+
+SET(_OpenFLUID_FOUND 1)
+
+
+MACRO(_OpenFLUID_RETURN MSG)
+  IF (OpenFLUID_FIND_REQUIRED)
+    MESSAGE(FATAL_ERROR "${MSG}")
+  ELSE()
+    MESSAGE(SEND_ERROR "${MSG}")
+  ENDIF()  
+  SET(OpenFLUID_FOUND 0)
+  RETURN()
+ENDMACRO()
+
+
+# ==========================================================================
+
+
+FIND_PATH(_OpenFLUID_INCLUDE_DIR
+  NAMES
+    openfluid/config.hpp
+  HINTS
+    ${_OpenFLUID_SEARCH_DIRS}
+  PATH_SUFFIXES
+    include
+)
+
+
+IF(NOT _OpenFLUID_INCLUDE_DIR)
+  _OpenFLUID_RETURN("Unable to find OpenFLUID (header files not found)")
+ENDIF()
+
+
+# ==========================================================================
+
+
+FIND_PROGRAM(_OpenFLUID_ENGINE_PROGRAM 
+  NAME openfluid-engine
+  HINTS
+    ${_OpenFLUID_SEARCH_DIRS}
+  PATH_SUFFIXES
+    bin
+)
+
+
+IF(_OpenFLUID_ENGINE_PROGRAM-NOTFOUND)
+  _OpenFLUID_RETURN("Unable to find the OpenFLUID (engine program not found)")
+ENDIF()
+
+
+# ==========================================================================
+
+FILE(STRINGS "${_OpenFLUID_INCLUDE_DIR}/openfluid/config.hpp" _OpenFLUID_VERSION_CONFIG_LINE REGEX "FULL_VERSION = \"[0-9.a-z~]+\"")
+STRING(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+(~[a-z]+[0-9]*)?" _OpenFLUID_VERSION "${_OpenFLUID_VERSION_CONFIG_LINE}")
+
+IF(NOT _OpenFLUID_VERSION)
+  _OpenFLUID_RETURN("Unable to determine the OpenFLUID version")
+ENDIF()
+
+
+# ==========================================================================
+
+
+EXECUTE_PROCESS(COMMAND ${_OpenFLUID_ENGINE_PROGRAM} "--version"
+  OUTPUT_VARIABLE _OpenFLUID_ENGINE_OUTPUT
+)
+
+STRING(FIND ${_OpenFLUID_ENGINE_OUTPUT} ${_OpenFLUID_VERSION} _OpenFLUID_ENGINE_TEST_VERSION)
+
+IF(${_OpenFLUID_ENGINE_TEST_VERSION} LESS 0)
+  _OpenFLUID_RETURN("Unable to find the OpenFLUID engine program")
+ENDIF()
+
+
+# ==========================================================================
+
+
+MESSAGE(STATUS "Found OpenFLUID version ${_OpenFLUID_VERSION}")
+
+SET(_OpenFLUID_FIND_COMPONENTS
+  core
+  base
+  tools
+  fluidx
+  market
+  machine
+  buddies
+  guicommon
+  builderext
+  landr
+)
+
+
+IF(OpenFLUID_FIND_COMPONENTS)
+  SET(_OpenFLUID_FIND_COMPONENTS ${OpenFLUID_FIND_COMPONENTS})
+ENDIF()
+
+
+SET(_OpenFLUID_LIBRARIES)
+FOREACH(COMPONENT ${_OpenFLUID_FIND_COMPONENTS})
+  STRING(TOUPPER ${COMPONENT} UPPERCOMPONENT)
+
+  FIND_LIBRARY(_OpenFLUID_${UPPERCOMPONENT}_LIBRARY
+    NAMES
+      openfluid-${COMPONENT}
+    HINTS
+      ${_OpenFLUID_SEARCH_DIRS}
+    PATH_SUFFIXES
+      lib lib64
+    )
+    
+  IF("${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" STREQUAL "_OpenFLUID_${UPPERCOMPONENT}_LIBRARY-NOTFOUND")
+    _OpenFLUID_RETURN("library ${COMPONENT} not found!")
+  ELSE()      
+    LIST(APPEND _OpenFLUID_LIBRARIES "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}")
+    MESSAGE(STATUS "    ${COMPONENT}")
+    
+    IF(NOT _OpenFLUID_LIBRARY_DIR)
+      GET_FILENAME_COMPONENT(_DIR "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" PATH)
+      SET(_OpenFLUID_LIBRARY_DIR "${_DIR}")      
+    ENDIF()
+  ENDIF()  
+ENDFOREACH()
+
+
+# ==========================================================================
+
+
+IF(_OpenFLUID_FOUND)
+  SET(OpenFLUID_VERSION ${_OpenFLUID_VERSION} CACHE STRING "OpenFLUID version")
+
+  SET(OpenFLUID_INCLUDE_DIR ${_OpenFLUID_INCLUDE_DIR} CACHE PATH "OpenFLUID include directory")
+  SET(OpenFLUID_INCLUDE_DIRS ${_OpenFLUID_INCLUDE_DIR} CACHE PATH "OpenFLUID include directories")
+  
+  FOREACH(COMPONENT ${_OpenFLUID_FIND_COMPONENTS})
+    STRING(TOUPPER ${COMPONENT} UPPERCOMPONENT)
+    SET(OpenFLUID_${UPPERCOMPONENT}_LIBRARY "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" CACHE FILEPATH "OpenFLUID ${COMPONENT} library")
+  ENDFOREACH()
+  SET(OpenFLUID_LIBRARIES ${_OpenFLUID_LIBRARIES} CACHE STRING "OpenFLUID libraries")
+  
+  SET(OpenFLUID_LIBRARY_DIR ${_OpenFLUID_LIBRARY_DIR} CACHE PATH "OpenFLUID library directory")
+  SET(OpenFLUID_LIBRARY_DIRS ${_OpenFLUID_LIBRARY_DIR} CACHE PATH "OpenFLUID library directories")
+  
+  SET(OpenFLUID_ENGINE_PROGRAM ${_OpenFLUID_ENGINE_PROGRAM} CACHE FILEPATH "OpenFLUID engine program")
+  
+  SET(OpenFLUID_FUNCTION_FILENAME_SUFFIX "@OPENFLUID_FUNCTIONS_SUFFIX@" CACHE STRING "OpenFLUID function file name suffix")
+  SET(OpenFLUID_OBSERVER_FILENAME_SUFFIX "@OPENFLUID_OBSERVERS_SUFFIX@" CACHE STRING "OpenFLUID observer file name suffix")
+  
+  SET(OpenFLUID_FOUND 1 CACHE STRING "OpenFLUID found!")
+  
+  INCLUDE("${OpenFLUID_DIR}/OpenFLUIDWareMacros.cmake")
+ENDIF()
+
