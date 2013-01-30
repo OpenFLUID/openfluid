@@ -171,22 +171,51 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
   SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS api-FLuidXDescriptor_TEST)
   
 
-  FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.cmake")
+  FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.func.cmake")
   
-  ADD_TEST(integration-CMakeModuleConfigureFunction
+  ADD_TEST(integration-CMakeModuleFunctionConfigure
                               "${CMAKE_COMMAND}"
-                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.cmake" 
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.func.cmake" 
                               "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
-                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.cmake"
-                              "-DCMAKE_MODULE_PATH=${CMAKE_MODULES_OUTPUT_PATH}"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.func.cmake"
+                              "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
                               "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH};${CMAKE_BINARY_DIR}/src"
-                              "-DOpenFLUID_EXTRA_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")                              
+                              "-DFUNC_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")                              
                               
-  ADD_TEST(integration-CMakeModuleBuildFunction
+  ADD_TEST(integration-CMakeModuleFunctionBuild
                               "${CMAKE_COMMAND}"
-                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.cmake" 
-                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.cmake")
-  SET_PROPERTY(TEST integration-CMakeModuleBuildFunction APPEND PROPERTY DEPENDS integration-CMakeModuleConfigureFunction)                                                            
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.func.cmake" 
+                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.func.cmake")
+  SET_PROPERTY(TEST integration-CMakeModuleFunctionBuild APPEND PROPERTY DEPENDS integration-CMakeModuleFunctionConfigure)                                                            
+
+
+  FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake")
+
+  ADD_TEST(integration-CMakeModuleObserverConfigure
+                              "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake" 
+                              "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.obs.cmake"
+                              "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                              "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH};${CMAKE_BINARY_DIR}/src"                              
+                              "-DOBS_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src")                              
+                              
+  ADD_TEST(integration-CMakeModuleObserverBuild
+                              "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake" 
+                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake")
+  SET_PROPERTY(TEST integration-CMakeModuleObserverBuild APPEND PROPERTY DEPENDS integration-CMakeModuleObserverConfigure)                                                            
+
+  ADD_TEST(integration-CMakeModuleRun "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                                      "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.CMakeModule"
+                                      "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule" 
+                                      "-p" "${TESTS_OUTPUTDATA_PATH}/tests.func.cmake"
+                                      "-n" "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake")
+  SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleFunctionBuild)
+  SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
+  SET_TESTS_PROPERTIES(integration-CMakeModuleRun PROPERTIES PASS_REGULAR_EXPRESSION "CMake module built function"
+                                                             PASS_REGULAR_EXPRESSION "CMake module built observer")
+                                                             
 
 
   ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/openfluid-engine"

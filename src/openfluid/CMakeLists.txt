@@ -30,6 +30,7 @@ INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp market.
 
 CONFIGURE_FILE(OpenFLUIDConfig.cmake.in "${CMAKE_MODULES_OUTPUT_PATH}/OpenFLUIDConfig.cmake" @ONLY)
 CONFIGURE_FILE(OpenFLUIDConfigVersion.cmake.in "${CMAKE_MODULES_OUTPUT_PATH}/OpenFLUIDConfigVersion.cmake" @ONLY)
+CONFIGURE_FILE(OpenFLUIDWareMacros.cmake "${CMAKE_MODULES_OUTPUT_PATH}/OpenFLUIDWareMacros.cmake" @ONLY)
 
 
 CONFIGURE_FILE(openfluid.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" @ONLY)
@@ -42,6 +43,9 @@ INSTALL(FILES "${CMAKE_MODULES_OUTPUT_PATH}/OpenFLUIDConfig.cmake"
         DESTINATION ${CMAKE_MODULES_INSTALL_PATH})
         
 INSTALL(FILES "${CMAKE_MODULES_OUTPUT_PATH}/OpenFLUIDConfigVersion.cmake" 
+        DESTINATION ${CMAKE_MODULES_INSTALL_PATH})        
+        
+INSTALL(FILES "${CMAKE_MODULES_OUTPUT_PATH}/OpenFLUIDWareMacros.cmake" 
         DESTINATION ${CMAKE_MODULES_INSTALL_PATH})        
 
 INSTALL(FILES "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" 

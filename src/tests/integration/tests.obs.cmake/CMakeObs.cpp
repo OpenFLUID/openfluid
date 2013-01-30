@@ -47,124 +47,120 @@
 
 
 /**
-  \file CmakeFunc.cpp
+  \file CMakeObs.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableObserver.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_OBSERVER_PLUGIN
+
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE
-  DECLARE_SIGNATURE_ID(("tests.cmake"));
-  DECLARE_SIGNATURE_NAME(("test function built using the OpenFLUID cmake module"));
+BEGIN_OBSERVER_SIGNATURE
+  DECLARE_SIGNATURE_ID("tests.obs.cmake");
+  DECLARE_SIGNATURE_NAME(("test observer built using the OpenFLUID cmake module"));
   DECLARE_SIGNATURE_DESCRIPTION((""));
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN((""));
-  DECLARE_SIGNATURE_PROCESS((""));
-  DECLARE_SIGNATURE_METHOD((""));
-  DECLARE_SIGNATURE_AUTHORNAME((""));
-  DECLARE_SIGNATURE_AUTHOREMAIL((""));
+
 END_FUNCTION_SIGNATURE
 
-/**
 
-*/
-class CMakeFunction : public openfluid::ware::PluggableFunction
+// =====================================================================
+// =====================================================================
+
+
+class CMakeObserver : public openfluid::ware::PluggableObserver
 {
-  private:
+
 
   public:
 
+    CMakeObserver() : PluggableObserver()
+    {
 
-  CMakeFunction() : PluggableFunction()
-  {
+    }
 
-
-  }
-
-
-  // =====================================================================
-  // =====================================================================
+    // =====================================================================
+    // =====================================================================
 
 
-  ~CMakeFunction()
-  {
+    ~CMakeObserver()
+    {
+
+    }
 
 
-  }
+    // =====================================================================
+    // =====================================================================
 
 
-  // =====================================================================
-  // =====================================================================
+    void initParams(const openfluid::ware::WareParams_t& /*Params*/)
+    {
+
+    }
 
 
-  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
-
-  // =====================================================================
-  // =====================================================================
+    // =====================================================================
+    // =====================================================================
 
 
-  void prepareData() { }
+    void onPrepared()
+    {
+
+    }
 
 
-  // =====================================================================
-  // =====================================================================
+    // =====================================================================
+    // =====================================================================
 
 
-  void checkConsistency() { }
+    void onInitializedRun()
+    {
+      std::cout << "\nCMake module built observer" << std::endl;
+    }
 
 
-  // =====================================================================
-  // =====================================================================
+    // =====================================================================
+    // =====================================================================
 
 
-  openfluid::core::Duration_t initializeRun()
-  {
+    void onStepCompleted()
+    {
 
-    return DefaultDeltaT();
-  }
-
-
-  // =====================================================================
-  // =====================================================================
+    }
 
 
-  openfluid::core::Duration_t runStep()
-  {
-
-    return DefaultDeltaT();
-  }
-
-  // =====================================================================
-  // =====================================================================
+    // =====================================================================
+    // =====================================================================
 
 
-  void finalizeRun()
-  {
+    void onFinalizedRun()
+    {
 
-  }
+    }
+
 
 };
 
+
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(CMakeFunction)
 
+DEFINE_OBSERVER_CLASS(CMakeObserver)
