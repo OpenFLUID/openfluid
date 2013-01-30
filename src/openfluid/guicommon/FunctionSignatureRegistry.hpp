@@ -46,51 +46,98 @@
  */
 
 /**
- \file FunctionSignatureRegistry_TEST.cpp
- \brief Implements ...
+ \file FunctionSignatureRegistry.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_FunctionSignatureRegistry
-#include <boost/test/unit_test.hpp>
+#ifndef __FUNCTIONSIGNATUREREGISTRY_HPP__
+#define __FUNCTIONSIGNATUREREGISTRY_HPP__
 
-#include "ModelAvailFctModel.hpp"
-#include "ModelAvailFctView.hpp"
-#include "ModelAvailFctPresenter.hpp"
-#include "ModelAvailFctAdapter.hpp"
-#include "ModelAvailFctAdapterModel.hpp"
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
 
-#include "FunctionSignatureRegistry.hpp"
 
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+namespace openfluid {
+namespace machine {
+class ModelItemSignatureInstance;
+}
+
+namespace guicommon {
+
+class GeneratorSignature;
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_constructor)
+class FunctionSignatureRegistry
 {
-  FunctionSignatureRegistrySub Signatures;
+  public:
 
-  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),0);
-  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),4);
-}
-BOOST_AUTO_TEST_CASE(test_add)
+    typedef std::map<std::string,openfluid::machine::ModelItemSignatureInstance*>
+        FctSignaturesByName_t;
+
+    typedef std::map<openfluid::fluidx::ModelItemDescriptor::ModelItemType,
+        FctSignaturesByName_t> FctSignaturesByTypeByName_t;
+
+  private:
+
+    static FunctionSignatureRegistry* mp_Instance;
+
+  protected:
+
+    FctSignaturesByTypeByName_t m_Signatures;
+
+    FunctionSignatureRegistry();
+
+    void addAPluggableSignature(
+        openfluid::machine::ModelItemSignatureInstance* Signature);
+
+    void addAGeneratorSignature(
+        openfluid::machine::ModelItemSignatureInstance* Signature);
+
+  public:
+
+    static FunctionSignatureRegistry* getInstance();
+
+    FctSignaturesByTypeByName_t getFctSignatures();
+
+    FctSignaturesByName_t getGeneratorSignatures();
+
+    FctSignaturesByName_t getPluggableSignatures();
+
+    void updatePluggableSignatures();
+
+    static openfluid::machine::ModelItemSignatureInstance
+    * getEmptyPluggableSignature();
+
+    bool isPluggableFunctionAvailable(std::string FunctionID);
+
+//    openfluid::machine::ModelItemSignatureInstance* getSignatureItemInstance(
+//        std::string FunctionID);
+
+};
+
+// =====================================================================
+// =====================================================================
+
+class FunctionSignatureRegistrySub: public FunctionSignatureRegistry
 {
-  FunctionSignatureRegistrySub Signatures;
-  for (int i = 0; i < 3; i++)
-  {
-    openfluid::machine::ModelItemSignatureInstance* Sign = FunctionSignatureRegistry::getEmptyPluggableSignature();
-    Sign->Signature->ID = i;
-    Signatures.addAPluggableSignature(Sign);
-  }
+  public:
 
-  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),3);
-  BOOST_CHECK_EQUAL(Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),4);
+    void addAPluggableSignature(
+        openfluid::machine::ModelItemSignatureInstance* Signature);
 
-  Signatures.clearPluggableSignatures();
-}
+    void addAGeneratorSignature(
+        openfluid::machine::ModelItemSignatureInstance* Signature);
+
+    void clearPluggableSignatures();
+
+};
+
+// =====================================================================
+// =====================================================================
+
+}} //namespaces
+
+#endif /* __FUNCTIONSIGNATUREREGISTRY_HPP__ */

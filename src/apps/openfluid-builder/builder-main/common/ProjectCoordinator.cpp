@@ -67,7 +67,7 @@
 #include "BuilderModuleFactory.hpp"
 #include "ProjectDashboard.hpp"
 #include "BuilderPretestInfo.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
 
 #include "ModelStructureModule.hpp"
@@ -597,7 +597,7 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   if (ResponseId != Gtk::RESPONSE_OK)
     return;
 
-  FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
 
   // remove (delete) all functions and add (using function constructor) those which are available
   if (m_Workspace.existsPageName(m_ModelPageName))

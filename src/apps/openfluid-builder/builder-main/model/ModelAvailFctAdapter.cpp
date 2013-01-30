@@ -106,7 +106,7 @@ sigc::signal<void> ModelAvailFctAdapter::signal_FctSelectionChanged()
 
 
 void ModelAvailFctAdapter::setSignatures(
-    FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures)
+    openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures)
 {
   m_Model.setSignatures(Signatures);
   m_View.select(m_Model.getFirstAvailableRow());

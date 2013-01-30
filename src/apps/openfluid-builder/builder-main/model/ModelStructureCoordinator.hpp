@@ -65,6 +65,9 @@ class SimulationBlob;
 class ModelInstance;
 class ModelItemInstance;
 }
+namespace guicommon {
+class FunctionSignatureRegistry;
+}
 }
 
 class ModelFctDetailModel;
@@ -74,7 +77,6 @@ class ModelFctParamsComponent;
 class ModelParamsPanel;
 
 class BuilderListToolBox;
-class FunctionSignatureRegistry;
 
 class ModelAddFunctionModule;
 
@@ -84,7 +86,7 @@ class ModelStructureCoordinator: public sigc::trackable
 
     sigc::signal<void> m_signal_ModelChanged;
 
-    FunctionSignatureRegistry* mp_SignatureRegistry;
+    openfluid::guicommon::FunctionSignatureRegistry* mp_SignatureRegistry;
 
     openfluid::machine::ModelInstance* mp_ModelInstance;
 

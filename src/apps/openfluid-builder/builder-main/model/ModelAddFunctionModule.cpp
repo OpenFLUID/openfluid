@@ -189,7 +189,7 @@ void ModelAddFunctionModule::whenAvailFctSelectionChanged()
 
 
 void ModelAddFunctionModule::setSignatures(
-    FunctionSignatureRegistry& Signatures)
+    openfluid::guicommon::FunctionSignatureRegistry& Signatures)
 {
   mp_Coordinator->setSignatures(Signatures);
 }

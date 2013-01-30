@@ -61,6 +61,9 @@
 #include "ModelAvailFctColumns.hpp"
 #include "BuilderGraphicsHelper.hpp"
 
+// =====================================================================
+// =====================================================================
+
 sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_SelectionChanged()
 {
   return m_signal_SelectionChanged;
@@ -69,7 +72,6 @@ sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_SelectionChanged()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_FunctionsChanged()
 {
   return m_signal_FunctionsChanged;
@@ -77,7 +79,6 @@ sigc::signal<void> ModelAvailFctAdapterModelImpl::signal_FunctionsChanged()
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelAvailFctAdapterModelImpl::createTitleRows()
 {
@@ -88,7 +89,6 @@ void ModelAvailFctAdapterModelImpl::createTitleRows()
 
 // =====================================================================
 // =====================================================================
-
 
 Glib::ustring ModelAvailFctAdapterModelImpl::replaceEmpty(
     Glib::ustring TextToCheck)
@@ -115,17 +115,17 @@ void ModelAvailFctAdapterModelImpl::setAPluggableFunction(
   switch (Function->Signature->Status)
   {
     case openfluid::ware::EXPERIMENTAL:
-      TitleRow[m_Columns.m_Status]
-          = BuilderGraphicsHelper::createPixbufFromFile(
+      TitleRow[m_Columns.m_Status] =
+          BuilderGraphicsHelper::createPixbufFromFile(
               "fct_status_experimental.png");
       break;
     case openfluid::ware::BETA:
-      TitleRow[m_Columns.m_Status]
-          = BuilderGraphicsHelper::createPixbufFromFile("fct_status_beta.png");
+      TitleRow[m_Columns.m_Status] =
+          BuilderGraphicsHelper::createPixbufFromFile("fct_status_beta.png");
       break;
     case openfluid::ware::STABLE:
-      TitleRow[m_Columns.m_Status]
-          = BuilderGraphicsHelper::createPixbufFromFile("fct_status_stable.png");
+      TitleRow[m_Columns.m_Status] =
+          BuilderGraphicsHelper::createPixbufFromFile("fct_status_stable.png");
       break;
   }
 
@@ -148,7 +148,6 @@ void ModelAvailFctAdapterModelImpl::setAGeneratorFunction(
 // =====================================================================
 // =====================================================================
 
-
 void ModelAvailFctAdapterModelImpl::defineFirstAvailableRow()
 {
   if (!mref_TreeModel->children()[0]->children().empty())
@@ -162,10 +161,9 @@ void ModelAvailFctAdapterModelImpl::defineFirstAvailableRow()
 // =====================================================================
 // =====================================================================
 
-
 ModelAvailFctAdapterModelImpl::ModelAvailFctAdapterModelImpl(
     ModelAvailFctColumns& Columns) :
-  m_Columns(Columns)
+    m_Columns(Columns)
 {
   mref_TreeModel = BuilderTreeStore::create(m_Columns);
   mref_TreeModel->setTitleColumn(m_Columns.m_Id);
@@ -175,7 +173,6 @@ ModelAvailFctAdapterModelImpl::ModelAvailFctAdapterModelImpl(
 
 // =====================================================================
 // =====================================================================
-
 
 ModelAvailFctAdapterModelImpl::~ModelAvailFctAdapterModelImpl()
 {
@@ -187,23 +184,25 @@ ModelAvailFctAdapterModelImpl::~ModelAvailFctAdapterModelImpl()
 // =====================================================================
 // =====================================================================
 
-
 void ModelAvailFctAdapterModelImpl::setSignatures(
-    FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures)
+    openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures)
 {
   mref_TreeModel->clear();
   m_SignaturesById.clear();
   createTitleRows();
 
-  FunctionSignatureRegistry::FctSignaturesByName_t::iterator it;
-  for (it
-      = Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].begin(); it
-      != Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].end(); ++it)
+  openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByName_t::iterator it;
+  for (it =
+      Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].begin();
+      it != Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].end();
+      ++it)
   {
     setAPluggableFunction(it->second);
   }
-  for (it = Signatures[openfluid::fluidx::ModelItemDescriptor::Generator].begin(); it
-      != Signatures[openfluid::fluidx::ModelItemDescriptor::Generator].end(); ++it)
+  for (it =
+      Signatures[openfluid::fluidx::ModelItemDescriptor::Generator].begin();
+      it != Signatures[openfluid::fluidx::ModelItemDescriptor::Generator].end();
+      ++it)
   {
     setAGeneratorFunction(it->second);
   }
@@ -214,7 +213,6 @@ void ModelAvailFctAdapterModelImpl::setSignatures(
 // =====================================================================
 // =====================================================================
 
-
 Glib::RefPtr<Gtk::TreeModel> ModelAvailFctAdapterModelImpl::getTreeModel()
 {
   return mref_TreeModel;
@@ -222,7 +220,6 @@ Glib::RefPtr<Gtk::TreeModel> ModelAvailFctAdapterModelImpl::getTreeModel()
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelAvailFctAdapterModelImpl::setSelectedRow(Gtk::TreeRow Row)
 {
@@ -248,8 +245,11 @@ openfluid::machine::ModelItemSignatureInstance* ModelAvailFctAdapterModelImpl::g
 // =====================================================================
 // =====================================================================
 
-
 Gtk::TreeRow ModelAvailFctAdapterModelImpl::getFirstAvailableRow()
 {
   return mref_TreeModel->getRowFromRowRef(*mp_FirstAvailableRowRef);
 }
+
+// =====================================================================
+// =====================================================================
+

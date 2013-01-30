@@ -77,9 +77,9 @@
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Generator.hpp>
 
-#include "GeneratorSignature.hpp"
+#include <openfluid/guicommon/GeneratorSignature.hpp>
 #include "EngineHelper.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
@@ -345,46 +345,46 @@ void EngineProject::checkAndSetDefaultOutputValues()
 
 void EngineProject::checkModelDesc()
 {
-  openfluid::fluidx::CoupledModelDescriptor& ModelDesc = mp_FXDesc->getModelDescriptor();
-
-  std::string MissingFunctions = "";
-
-  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::iterator it =
-      ModelDesc.getItems().begin();
-
-  FunctionSignatureRegistry* SignaturesReg =
-      FunctionSignatureRegistry::getInstance();
-
-  while (it != ModelDesc.getItems().end())
-  {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction)
-        && !SignaturesReg->isPluggableFunctionAvailable(
-            ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID()))
-    {
-      MissingFunctions.append("- "
-          + ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID() + "\n");
-
-      it = ModelDesc.getItems().erase(it);
-    }
-    else
-      ++it;
-  }
-
-  if (MissingFunctions != "")
-  {
-    Glib::ustring Msg = Glib::ustring::compose(
-        _("Unable to find plugin file(s):\n%1\n\n"
-            "Corresponding simulation functions will be removed from the model.\n"
-            "Do you want to continue?"), MissingFunctions);
-
-    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-        Msg))
-    {
-      //because we're in a constructor catch, so destructor isn't called
-      deleteEngineObjects();
-      throw openfluid::base::OFException("");
-    }
-  }
+//  openfluid::fluidx::CoupledModelDescriptor& ModelDesc = mp_FXDesc->getModelDescriptor();
+//
+//  std::string MissingFunctions = "";
+//
+//  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::iterator it =
+//      ModelDesc.getItems().begin();
+//
+//  FunctionSignatureRegistry* SignaturesReg =
+//      FunctionSignatureRegistry::getInstance();
+//
+//  while (it != ModelDesc.getItems().end())
+//  {
+//    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction)
+//        && !SignaturesReg->isPluggableFunctionAvailable(
+//            ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID()))
+//    {
+//      MissingFunctions.append("- "
+//          + ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID() + "\n");
+//
+//      it = ModelDesc.getItems().erase(it);
+//    }
+//    else
+//      ++it;
+//  }
+//
+//  if (MissingFunctions != "")
+//  {
+//    Glib::ustring Msg = Glib::ustring::compose(
+//        _("Unable to find plugin file(s):\n%1\n\n"
+//            "Corresponding simulation functions will be removed from the model.\n"
+//            "Do you want to continue?"), MissingFunctions);
+//
+//    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+//        Msg))
+//    {
+//      //because we're in a constructor catch, so destructor isn't called
+//      deleteEngineObjects();
+//      throw openfluid::base::OFException("");
+//    }
+//  }
 
 }
 
@@ -394,26 +394,26 @@ void EngineProject::checkModelDesc()
 
 void EngineProject::addSignatureToGenerators()
 {
-  std::list<openfluid::machine::ModelItemInstance*> Items =
-      mp_ModelInstance->getItems();
-
-  for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
-      Items.begin(); it != Items.end(); ++it)
-  {
-    if ((*it)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
-    {
-      openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
-          GeneratorMethod = (*it)->GeneratorInfo->GeneratorMethod;
-
-      GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
-
-      GenSign->ID = (*it)->Signature->ID;
-      GenSign->HandledData.ProducedVars = (*it)->Signature->HandledData.ProducedVars;
-      GenSign->HandledData.RequiredExtraFiles = (*it)->Signature->HandledData.RequiredExtraFiles;
-
-      (*it)->Signature = GenSign;
-    }
-  }
+//  std::list<openfluid::machine::ModelItemInstance*> Items =
+//      mp_ModelInstance->getItems();
+//
+//  for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
+//      Items.begin(); it != Items.end(); ++it)
+//  {
+//    if ((*it)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
+//    {
+//      openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
+//          GeneratorMethod = (*it)->GeneratorInfo->GeneratorMethod;
+//
+//      GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
+//
+//      GenSign->ID = (*it)->Signature->ID;
+//      GenSign->HandledData.ProducedVars = (*it)->Signature->HandledData.ProducedVars;
+//      GenSign->HandledData.RequiredExtraFiles = (*it)->Signature->HandledData.RequiredExtraFiles;
+//
+//      (*it)->Signature = GenSign;
+//    }
+//  }
 }
 
 // =====================================================================

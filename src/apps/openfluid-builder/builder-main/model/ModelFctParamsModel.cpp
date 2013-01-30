@@ -60,7 +60,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 
-#include "GeneratorSignature.hpp"
+#include <openfluid/guicommon/GeneratorSignature.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -182,7 +182,7 @@ void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
   {
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
         Method =
-            (static_cast<GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod;
+            (static_cast<openfluid::guicommon::GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod;
 
     if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
         == openfluid::fluidx::GeneratorDescriptor::Inject)

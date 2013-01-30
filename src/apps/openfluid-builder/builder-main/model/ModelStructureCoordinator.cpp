@@ -98,7 +98,7 @@ void ModelStructureCoordinator::whenStructureFctSelectionChanged()
         m_StructureModel.getCurrentSelectionSignature());
   else
     m_FctDetailModel.setFctToDisplay(
-        FunctionSignatureRegistry::getEmptyPluggableSignature());
+        openfluid::guicommon::FunctionSignatureRegistry::getEmptyPluggableSignature());
 
   updateStructureListToolBox();
 }
@@ -316,117 +316,117 @@ void ModelStructureCoordinator::createParamsComponents()
 
 void ModelStructureCoordinator::updateWithFctParamsComponents()
 {
-  FunctionSignatureRegistry* SignaturesReg =
-      FunctionSignatureRegistry::getInstance();
-
-  SignaturesReg->updatePluggableSignatures();
-
-  std::string SelectedPageName = m_ParamsPanel.getCurrentPageName();
-  std::string SelectedStructureFunctionName =
-      m_StructureModel.getCurrentSelectionName();
-
-  update();
-
-  mp_AddFctModule->setSignatures(*FunctionSignatureRegistry::getInstance());
-
-  try
-  {
-    std::vector<std::pair<std::string, openfluid::ware::WareParams_t> >
-        TempItems;
-
-    std::map<std::string, openfluid::machine::ModelItemInstance*>
-        TempGenerators;
-
-    std::list<openfluid::machine::ModelItemInstance*> ModelItems =
-        mp_ModelInstance->getItems();
-
-    // create temp structures to keep order and info about model items
-    for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
-        ModelItems.begin(); it != ModelItems.end(); ++it)
-    {
-      // it's a Generator, we store it as is in TempGenerators
-      if ((*it)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
-        TempGenerators[(*it)->Signature->ID] = *it;
-
-      TempItems.push_back(std::make_pair((*it)->Signature->ID, (*it)->Params));
-    }
-
-    // clear the model
-    int n = TempItems.size();
-    for (int i = 0; i < n; i++)
-    {
-      eraseModelFctParamsComponent(TempItems[i].first);
-      m_StructureModel.removeFunctionAt(0);
-    }
-
-    // re-populate the model according to temp structures info
-    for (int i = 0; i < n; i++)
-    {
-      // it's a Generator, we just append the stored ModelItemInstance to the model
-      if (TempGenerators.find(TempItems[i].first) != TempGenerators.end())
-      {
-        openfluid::machine::ModelItemInstance* Item =
-            TempGenerators[TempItems[i].first];
-
-        mp_ModelInstance->appendItem(Item);
-
-        createModelFctParamsComponent(Item);
-      }
-      // it's a Pluggable function, we re-create it according to temp info
-      else
-      {
-        try
-        {
-          openfluid::machine::ModelItemSignatureInstance * Signature =
-              SignaturesReg->getSignatureItemInstance(TempItems[i].first);
-
-          if (Signature)
-          {
-            openfluid::machine::ModelItemInstance* Item =
-                ModelItemInstanceFactory::createPluggableItemFromSignature(
-                    *Signature);
-
-            if (Item)
-            {
-              Item->Params = TempItems[i].second;
-
-              m_StructureModel.appendFunction(Item);
-
-              createModelFctParamsComponent(Item);
-            }
-            else
-            {
-              openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-                  Glib::ustring::compose(
-                      "Unable to create function %1,\nit will be ignored.",
-                      TempItems[i].first));
-            }
-          }
-          else
-            openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-                Glib::ustring::compose(
-                    "Unable to load plugin %1,\nit will be ignored.",
-                    TempItems[i].first));
-        }
-        catch (openfluid::base::OFException e)
-        {
-          openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-              Glib::ustring::compose(
-                  "Unable to load plugin %1,\nit will be ignored.",
-                  TempItems[i].first));
-        }
-      }
-    }
-
-  }
-  catch (openfluid::base::OFException e)
-  {
-    std::cerr << "ModelStructureCoordinator::updateWithFctParamsComponents : "
-        << e.what() << std::endl;
-  }
-
-  m_ParamsPanel.setCurrentPage(SelectedPageName);
-  m_StructureModel.requestSelectionByApp(SelectedStructureFunctionName);
+//  openfluid::guicommon::FunctionSignatureRegistry* SignaturesReg =
+//      openfluid::guicommon::FunctionSignatureRegistry::getInstance();
+//
+//  SignaturesReg->updatePluggableSignatures();
+//
+//  std::string SelectedPageName = m_ParamsPanel.getCurrentPageName();
+//  std::string SelectedStructureFunctionName =
+//      m_StructureModel.getCurrentSelectionName();
+//
+//  update();
+//
+//  mp_AddFctModule->setSignatures(*openfluid::guicommon::FunctionSignatureRegistry::getInstance());
+//
+//  try
+//  {
+//    std::vector<std::pair<std::string, openfluid::ware::WareParams_t> >
+//        TempItems;
+//
+//    std::map<std::string, openfluid::machine::ModelItemInstance*>
+//        TempGenerators;
+//
+//    std::list<openfluid::machine::ModelItemInstance*> ModelItems =
+//        mp_ModelInstance->getItems();
+//
+//    // create temp structures to keep order and info about model items
+//    for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
+//        ModelItems.begin(); it != ModelItems.end(); ++it)
+//    {
+//      // it's a Generator, we store it as is in TempGenerators
+//      if ((*it)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
+//        TempGenerators[(*it)->Signature->ID] = *it;
+//
+//      TempItems.push_back(std::make_pair((*it)->Signature->ID, (*it)->Params));
+//    }
+//
+//    // clear the model
+//    int n = TempItems.size();
+//    for (int i = 0; i < n; i++)
+//    {
+//      eraseModelFctParamsComponent(TempItems[i].first);
+//      m_StructureModel.removeFunctionAt(0);
+//    }
+//
+//    // re-populate the model according to temp structures info
+//    for (int i = 0; i < n; i++)
+//    {
+//      // it's a Generator, we just append the stored ModelItemInstance to the model
+//      if (TempGenerators.find(TempItems[i].first) != TempGenerators.end())
+//      {
+//        openfluid::machine::ModelItemInstance* Item =
+//            TempGenerators[TempItems[i].first];
+//
+//        mp_ModelInstance->appendItem(Item);
+//
+//        createModelFctParamsComponent(Item);
+//      }
+//      // it's a Pluggable function, we re-create it according to temp info
+//      else
+//      {
+//        try
+//        {
+//          openfluid::machine::ModelItemSignatureInstance * Signature =
+//              SignaturesReg->getSignatureItemInstance(TempItems[i].first);
+//
+//          if (Signature)
+//          {
+//            openfluid::machine::ModelItemInstance* Item =
+//                ModelItemInstanceFactory::createPluggableItemFromSignature(
+//                    *Signature);
+//
+//            if (Item)
+//            {
+//              Item->Params = TempItems[i].second;
+//
+//              m_StructureModel.appendFunction(Item);
+//
+//              createModelFctParamsComponent(Item);
+//            }
+//            else
+//            {
+//              openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+//                  Glib::ustring::compose(
+//                      "Unable to create function %1,\nit will be ignored.",
+//                      TempItems[i].first));
+//            }
+//          }
+//          else
+//            openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+//                Glib::ustring::compose(
+//                    "Unable to load plugin %1,\nit will be ignored.",
+//                    TempItems[i].first));
+//        }
+//        catch (openfluid::base::OFException e)
+//        {
+//          openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+//              Glib::ustring::compose(
+//                  "Unable to load plugin %1,\nit will be ignored.",
+//                  TempItems[i].first));
+//        }
+//      }
+//    }
+//
+//  }
+//  catch (openfluid::base::OFException e)
+//  {
+//    std::cerr << "ModelStructureCoordinator::updateWithFctParamsComponents : "
+//        << e.what() << std::endl;
+//  }
+//
+//  m_ParamsPanel.setCurrentPage(SelectedPageName);
+//  m_StructureModel.requestSelectionByApp(SelectedStructureFunctionName);
 }
 
 // =====================================================================

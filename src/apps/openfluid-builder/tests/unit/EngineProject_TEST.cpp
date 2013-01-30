@@ -63,8 +63,8 @@
 
 #include "BuilderTestHelper.hpp"
 #include "EngineProject.hpp"
-#include "GeneratorSignature.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include "ModelItemInstanceFactory.hpp"
 #include "tests-config.hpp"
 

@@ -67,7 +67,7 @@ class ModelInstance;
 }
 }
 
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 
 class ModelAvailFctComponent;
 class ModelFctDetailComponent;
@@ -113,7 +113,7 @@ class ModelAddFunctionModule
 
     openfluid::machine::ModelItemSignatureInstance* showDialog();
 
-    void setSignatures(FunctionSignatureRegistry& Signatures);
+    void setSignatures(openfluid::guicommon::FunctionSignatureRegistry& Signatures);
 
 };
 

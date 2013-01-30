@@ -60,7 +60,7 @@
 #include "ModelParamsPanel.hpp"
 
 #include "ModelStructureCoordinator.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderListToolBox.hpp"
 

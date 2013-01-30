@@ -46,91 +46,42 @@
  */
 
 /**
- \file FunctionSignatureRegistry.hpp
+ \file GeneratorSignature.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __FUNCTIONSIGNATUREREGISTRY_HPP__
-#define __FUNCTIONSIGNATUREREGISTRY_HPP__
+#ifndef __GENERATORSIGNATURE_HPP__
+#define __GENERATORSIGNATURE_HPP__
 
-#include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
 namespace openfluid {
-namespace machine {
-class ModelItemSignatureInstance;
-}
-}
+namespace guicommon {
 
-// =====================================================================
-// =====================================================================
-
-
-class FunctionSignatureRegistry
+class GeneratorSignature: public openfluid::ware::FunctionSignature
 {
-  public:
-
-    typedef std::map<std::string,openfluid::machine::ModelItemSignatureInstance*>
-        FctSignaturesByName_t;
-
-    typedef std::map<openfluid::fluidx::ModelItemDescriptor::ModelItemType,
-        FctSignaturesByName_t> FctSignaturesByTypeByName_t;
-
   private:
 
-    static FunctionSignatureRegistry* mp_Instance;
+    void setFixedInfo();
 
-  protected:
+    void setRandomInfo();
 
-    FctSignaturesByTypeByName_t m_Signatures;
+    void setInterpInfo();
 
-    FunctionSignatureRegistry();
-
-    void addAPluggableSignature(
-        openfluid::machine::ModelItemSignatureInstance* Signature);
-
-    void addAGeneratorSignature(
-        openfluid::machine::ModelItemSignatureInstance* Signature);
+    void setInjectInfo();
 
   public:
 
-    static FunctionSignatureRegistry* getInstance();
+    GeneratorSignature(
+        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
 
-    FctSignaturesByTypeByName_t getFctSignatures();
-
-    FctSignaturesByName_t getGeneratorSignatures();
-
-    FctSignaturesByName_t getPluggableSignatures();
-
-    void updatePluggableSignatures();
-
-    static openfluid::machine::ModelItemSignatureInstance
-    * getEmptyPluggableSignature();
-
-    bool isPluggableFunctionAvailable(std::string FunctionID);
-
-    openfluid::machine::ModelItemSignatureInstance* getSignatureItemInstance(
-        std::string FunctionID);
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
 
 };
 
-// =====================================================================
-// =====================================================================
+}} //namespaces
 
-
-class FunctionSignatureRegistrySub: public FunctionSignatureRegistry
-{
-  public:
-
-    void addAPluggableSignature(
-        openfluid::machine::ModelItemSignatureInstance* Signature);
-
-    void addAGeneratorSignature(
-        openfluid::machine::ModelItemSignatureInstance* Signature);
-
-    void clearPluggableSignatures();
-
-};
-
-#endif /* __FUNCTIONSIGNATUREREGISTRY_HPP__ */
+#endif /* __GENERATORSIGNATURE_HPP__ */

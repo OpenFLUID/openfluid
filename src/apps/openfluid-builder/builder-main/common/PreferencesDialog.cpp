@@ -63,7 +63,7 @@
 
 #include "PreferencesPanelImpl.hpp"
 #include "BuilderExtensionsManager.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -209,7 +209,7 @@ void PreferencesDialog::show()
       for (int i = PrefPlugPaths.size() - 1; i >= 0; i--)
         RunEnv->addExtraFunctionsPluginsPaths(PrefPlugPaths[i]);
 
-      FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+      openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
     }
 
     mp_Dialog->hide();

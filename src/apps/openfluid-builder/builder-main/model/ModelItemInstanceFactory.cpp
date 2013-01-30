@@ -64,7 +64,7 @@
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
-#include "GeneratorSignature.hpp"
+#include <openfluid/guicommon/GeneratorSignature.hpp>
 #include "ModelGeneratorCreationDialog.hpp"
 
 // =====================================================================
@@ -136,9 +136,9 @@ openfluid::machine::ModelItemInstance* ModelItemInstanceFactory::createGenerator
 
   openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
       Method =
-          (static_cast<GeneratorSignature*> (Signature.Signature))->m_GeneratorMethod;
+          (static_cast<openfluid::guicommon::GeneratorSignature*> (Signature.Signature))->m_GeneratorMethod;
 
-  GeneratorSignature* GeneratorSign = new GeneratorSignature(Method);
+  openfluid::guicommon::GeneratorSignature* GeneratorSign = new openfluid::guicommon::GeneratorSignature(Method);
 
   GeneratorSign->ID = openfluid::machine::Factory::buildGeneratorID(
       VarName, (VarSizeInt > 1), ClassName);

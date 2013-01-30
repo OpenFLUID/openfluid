@@ -46,37 +46,59 @@
  */
 
 /**
- \file GeneratorSignature.hpp
- \brief Header of ...
+ \file FunctionSignatureRegistry_TEST.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __GENERATORSIGNATURE_HPP__
-#define __GENERATORSIGNATURE_HPP__
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE builder_unittest_FunctionSignatureRegistry
+#include <boost/test/unit_test.hpp>
 
-#include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
-class GeneratorSignature: public openfluid::ware::FunctionSignature
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  private:
+  openfluid::guicommon::FunctionSignatureRegistrySub Signatures;
 
-    void setFixedInfo();
+  BOOST_CHECK_EQUAL(
+      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
+      0);
+  BOOST_CHECK_EQUAL(
+      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
+      4);
+}
 
-    void setRandomInfo();
+// =====================================================================
+// =====================================================================
 
-    void setInterpInfo();
+BOOST_AUTO_TEST_CASE(test_add)
+{
+  openfluid::guicommon::FunctionSignatureRegistrySub Signatures;
+  for (int i = 0; i < 3; i++)
+  {
+    openfluid::machine::ModelItemSignatureInstance* Sign = openfluid::guicommon::FunctionSignatureRegistry::getEmptyPluggableSignature();
+    Sign->Signature->ID = i;
+    Signatures.addAPluggableSignature(Sign);
+  }
 
-    void setInjectInfo();
+  BOOST_CHECK_EQUAL(
+      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
+      3);
+  BOOST_CHECK_EQUAL(
+      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
+      4);
 
-  public:
+  Signatures.clearPluggableSignatures();
+}
 
-    GeneratorSignature(
-        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+// =====================================================================
+// =====================================================================
 
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
-
-};
-
-#endif /* __GENERATORSIGNATURE_HPP__ */

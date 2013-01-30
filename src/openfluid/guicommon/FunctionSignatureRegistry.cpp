@@ -59,6 +59,9 @@
 
 #include "GeneratorSignature.hpp"
 
+namespace openfluid {
+namespace guicommon {
+
 FunctionSignatureRegistry* FunctionSignatureRegistry::mp_Instance = 0;
 
 // =====================================================================
@@ -222,14 +225,14 @@ bool FunctionSignatureRegistry::isPluggableFunctionAvailable(
 // =====================================================================
 // =====================================================================
 
-openfluid::machine::ModelItemSignatureInstance* FunctionSignatureRegistry::getSignatureItemInstance(
-    std::string FunctionID)
-{
-  if (isPluggableFunctionAvailable(FunctionID))
-    return m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction][FunctionID];
-
-  return (openfluid::machine::ModelItemSignatureInstance*) 0;
-}
+//openfluid::machine::ModelItemSignatureInstance* FunctionSignatureRegistry::getSignatureItemInstance(
+//    std::string FunctionID)
+//{
+//  if (isPluggableFunctionAvailable(FunctionID))
+//    return m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction][FunctionID];
+//
+//  return (openfluid::machine::ModelItemSignatureInstance*) 0;
+//}
 
 // =====================================================================
 // =====================================================================
@@ -267,3 +270,8 @@ void FunctionSignatureRegistrySub::clearPluggableSignatures()
 
   m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].clear();
 }
+
+// =====================================================================
+// =====================================================================
+
+}} //namespaces

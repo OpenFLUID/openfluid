@@ -54,6 +54,9 @@
 
 #include "GeneratorSignature.hpp"
 
+namespace openfluid {
+namespace guicommon {
+
 // =====================================================================
 // =====================================================================
 
@@ -165,3 +168,8 @@ void GeneratorSignature::setInjectInfo()
       openfluid::ware::SignatureHandledDataItem("distribution", "",
           "Distribution filename for the value to produce", "-"));
 }
+
+// =====================================================================
+// =====================================================================
+
+}} //namespaces
