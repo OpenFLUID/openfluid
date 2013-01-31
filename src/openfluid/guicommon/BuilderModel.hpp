@@ -77,19 +77,35 @@ class BuilderModel
 
     const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems();
 
+    /**
+     * @throw openfluid::base::OFException if Index is out of range
+     * @param Index
+     * @return
+     */
+    openfluid::fluidx::ModelItemDescriptor* getItemAt(unsigned int Index);
+
+    /**
+     * Return the position of the firts Item with ItemID found in the list, or -1 if not found
+     * @param ItemID
+     * @return
+     */
+    int getFirstItemIndex(std::string ItemID);
+
     void appendItem(openfluid::fluidx::ModelItemDescriptor* Item);
 
     /**
-     Insert an Item before the given postion (positions starts at index 0)
+     Insert an Item before the given position (positions starts at index 0)
      @param[in] Item the ModelItemDescriptor to insert
-     @param[in] Position the position
+     @param[in] Position the position, should be between zero and list size - 1.
+     To insert an Item at the end of the list, use appendItem instead.
      @throw openfluid::base::OFException if Position is out of range
      */
     void insertItem(openfluid::fluidx::ModelItemDescriptor* Item,
                     unsigned int Position);
 
     /**
-     Remove from the Model the Item located at the given Position (positions starts at index 0)
+     Remove from the list the Item located at the given Position (positions starts at index 0).
+     This doesn't delete the ModelItemDescriptor pointer.
      @param[in] Position the position
      @throw openfluid::base::OFException if Position is out of range
      */

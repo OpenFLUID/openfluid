@@ -105,6 +105,20 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL(
       (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
       "tests.functionB");
+
+  BOOST_CHECK_EQUAL(
+      dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Model.getItemAt(0))->getGeneratedID(),
+      "GENERATOR__SCALAR__tests.generator.interp__TU");
+  BOOST_CHECK_EQUAL(
+      dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(Model.getItemAt(4))->getFileID(),
+      "tests.functionB");
+  BOOST_CHECK_THROW(Model.getItemAt(5), openfluid::base::OFException);
+
+  BOOST_CHECK_EQUAL(
+      Model.getFirstItemIndex("GENERATOR__SCALAR__tests.generator.interp__TU"),
+      0);
+  BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.functionB"), 4);
+  BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.wrongfunction"), -1);
 }
 
 // =====================================================================
@@ -143,7 +157,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   //insertItem
   openfluid::fluidx::FunctionDescriptor InsItem("inserted.item");
 
-  BOOST_CHECK_THROW(Model.insertItem(&InsItem, 9),
+  BOOST_CHECK_THROW(Model.insertItem(&InsItem, 6),
                     openfluid::base::OFException);
 
   Model.insertItem(&InsItem, 3);
@@ -182,8 +196,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // moveItem
 
-  BOOST_CHECK_THROW(Model.moveItem(2, 9), openfluid::base::OFException);
-  BOOST_CHECK_THROW(Model.moveItem(9, 2), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Model.moveItem(2, 7), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Model.moveItem(7, 2), openfluid::base::OFException);
 
   Model.moveItem(5, 2);
 
@@ -249,7 +263,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
       "appended.item");
 
-  Model.moveItem(6, 5);
+  Model.moveItem(5, 6);
 
   it = Items->begin();
 
@@ -283,7 +297,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   //removeItem
 
-  BOOST_CHECK_THROW(Model.removeItem(9), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Model.removeItem(7), openfluid::base::OFException);
 
   Model.removeItem(4);
 

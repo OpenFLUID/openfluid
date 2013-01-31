@@ -55,6 +55,8 @@
 
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
+#include <openfluid/machine/Factory.hpp>
+
 namespace openfluid { namespace fluidx {
 
 // =====================================================================
@@ -62,7 +64,7 @@ namespace openfluid { namespace fluidx {
 
 GeneratorDescriptor::GeneratorDescriptor() : ModelItemDescriptor(),
   m_VarName(""), m_UnitClass(""),
-  m_GenMethod(NoGenMethod), m_VarSize(1)
+  m_GenMethod(NoGenMethod), m_VarSize(1), m_GeneratedID("")
 {
   m_ModelItemType = Generator;
 }
@@ -84,6 +86,8 @@ GeneratorDescriptor::GeneratorDescriptor(openfluid::core::VariableName_t VarName
   m_VarSize = VarSize;
 
   if (m_VarSize < 1) m_VarSize = 1;
+
+  m_GeneratedID = openfluid::machine::Factory::buildGeneratorID(VarName,(m_VarSize>1),UnitClass);
 }
 
 

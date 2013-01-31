@@ -57,6 +57,7 @@
 #include <glibmm/i18n.h>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
@@ -159,6 +160,50 @@ const std::list<openfluid::fluidx::ModelItemDescriptor*>& BuilderModel::getItems
 // =====================================================================
 // =====================================================================
 
+openfluid::fluidx::ModelItemDescriptor* BuilderModel::getItemAt(
+    unsigned int Index)
+{
+  std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      mp_ModelDesc->getItems();
+
+  if (Index < Items.size())
+  {
+    std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+        Items.begin();
+    std::advance(it, Index);
+
+    return *it;
+  }
+  else
+    throw openfluid::base::OFException("OpenFLUID framework",
+                                       "BuilderModel::getItemAt()",
+                                       "Bad index of item to get");
+}
+
+// =====================================================================
+// =====================================================================
+
+int BuilderModel::getFirstItemIndex(std::string ItemID)
+{
+  std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      mp_ModelDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if (((*it)->isType(openfluid::fluidx::WareDescriptor::PluggedFunction)
+        && (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID() == ItemID)
+        || ((*it)->isType(openfluid::fluidx::WareDescriptor::Generator) && (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratedID()
+            == ItemID))
+      return std::distance(Items.begin(), it);
+  }
+
+  return -1;
+}
+
+// =====================================================================
+// =====================================================================
+
 void BuilderModel::appendItem(openfluid::fluidx::ModelItemDescriptor* Item)
 {
   if (Item)
@@ -180,7 +225,6 @@ void BuilderModel::insertItem(openfluid::fluidx::ModelItemDescriptor* Item,
   {
     std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
         Items.begin();
-
     std::advance(it, Position);
 
     Items.insert(it, Item);
@@ -224,9 +268,9 @@ void BuilderModel::moveItem(unsigned int From, unsigned int To)
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_ModelDesc->getItems();
 
-  unsigned int Size = Items.size();
+  unsigned int Last = Items.size() - 1;
 
-  if (From > Size || To > Size)
+  if (From > Last || To > Last)
     throw openfluid::base::OFException("OpenFLUID Builder",
                                        "BuilderModel::moveItem",
                                        "Bad indexes of items to move");
@@ -239,7 +283,7 @@ void BuilderModel::moveItem(unsigned int From, unsigned int To)
 
   removeItem(From);
 
-  if (To == Size)
+  if (To == Last)
     appendItem(Item);
   else
     insertItem(Item, To);
