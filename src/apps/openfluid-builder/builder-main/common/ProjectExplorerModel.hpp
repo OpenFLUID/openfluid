@@ -61,10 +61,6 @@
 #include "ProjectExplorerCategories.hpp"
 
 namespace openfluid {
-namespace machine {
-class ModelInstance;
-class SimulationBlob;
-}
 namespace guicommon {
 class BuilderDescriptor;
 }
@@ -91,9 +87,6 @@ class ProjectExplorerModel
 
 //    virtual sigc::signal<void,bool> signal_UpdateResultsAsked() = 0;
 
-    virtual void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance) = 0;
-
     virtual void updateModelAsked() = 0;
 
     virtual void updateDomainAsked() = 0;
@@ -101,8 +94,6 @@ class ProjectExplorerModel
     virtual void updateSimulationAsked() = 0;
 
 //    virtual void updateResultsAsked(bool WithWarningState) = 0;
-
-    virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
 
     virtual void setActivatedElements(
         std::pair<ProjectExplorerCategories::ProjectExplorerCategory,
@@ -133,8 +124,6 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
 //    sigc::signal<void,bool> m_signal_UpdateResultsAsked;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
         m_ActivatedElementsPair;
 
@@ -154,9 +143,6 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
 //    sigc::signal<void,bool> signal_UpdateResultsAsked();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance);
-
     void updateModelAsked();
 
     void updateDomainAsked();
@@ -165,15 +151,12 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
 //    void updateResultsAsked(bool WithWarningState);
 
-    openfluid::machine::ModelInstance* getModelInstance();
-
     void setActivatedElements(
         std::pair<ProjectExplorerCategories::ProjectExplorerCategory,
             std::string> ElementsPair);
 
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
     getActivatedElement();
-
 };
 
 #endif /* __PROJECTEXPLORERMODEL_HPP__ */

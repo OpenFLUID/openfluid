@@ -92,8 +92,6 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
-  m_ExplorerModel.setEngineRequirements(*m_EngineProject.getModelInstance());
-
   m_ExplorerModel.signal_ActivationChanged().connect(
       sigc::mem_fun(*this, &ProjectCoordinator::whenActivationChanged));
   m_Workspace.signal_PageRemoved().connect(
@@ -344,17 +342,17 @@ void ProjectCoordinator::updateWorkspaceModules()
 
 void ProjectCoordinator::checkProject()
 {
-  BuilderPretestInfo CheckInfo;
-
-  m_EngineProject.check(CheckInfo);
-
-  CheckInfo.addBuilderInfo(m_EngineProject.getModelInstance(),
-                           m_EngineProject.getSimBlob(),
-                           m_EngineProject.getRunDescriptor());
-
-  m_ProjectDashboard.setCheckInfo(CheckInfo);
-
-  m_signal_CheckHappened.emit(CheckInfo.getGlobalCheckState());
+//  BuilderPretestInfo CheckInfo;
+//
+//  m_EngineProject.check(CheckInfo);
+//
+//  CheckInfo.addBuilderInfo(m_EngineProject.getModelInstance(),
+//                           m_EngineProject.getSimBlob(),
+//                           m_EngineProject.getRunDescriptor());
+//
+//  m_ProjectDashboard.setCheckInfo(CheckInfo);
+//
+//  m_signal_CheckHappened.emit(CheckInfo.getGlobalCheckState());
 }
 
 // =====================================================================
@@ -626,23 +624,23 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
 
 void ProjectCoordinator::whenMapViewAsked()
 {
-  std::string PageName = "MapView";
-  openfluid::guicommon::ProjectWorkspaceModule* Module;
-
-  if (m_Workspace.existsPageName(PageName))
-    Module = m_ModulesByPageNameMap[PageName];
-  else
-  {
-    Module =
-        static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMapViewModule());
-
-    Module->signal_ModuleChanged().connect(
-        sigc::mem_fun(*this, &ProjectCoordinator::whenMapViewChanged));
-
-    addModuleToWorkspace(PageName, *Module);
-  }
-
-  m_Workspace.setCurrentPage(PageName);
+//  std::string PageName = "MapView";
+//  openfluid::guicommon::ProjectWorkspaceModule* Module;
+//
+//  if (m_Workspace.existsPageName(PageName))
+//    Module = m_ModulesByPageNameMap[PageName];
+//  else
+//  {
+//    Module =
+//        static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMapViewModule());
+//
+//    Module->signal_ModuleChanged().connect(
+//        sigc::mem_fun(*this, &ProjectCoordinator::whenMapViewChanged));
+//
+//    addModuleToWorkspace(PageName, *Module);
+//  }
+//
+//  m_Workspace.setCurrentPage(PageName);
 }
 
 // =====================================================================
@@ -696,104 +694,104 @@ void ProjectCoordinator::updatePluginPathsMonitors()
 
 void ProjectCoordinator::launchExtension(std::string ExtensionID)
 {
-  ExtensionContainer* ExtCont =
-      BuilderExtensionsManager::getInstance()->getExtensionContainer(
-          ExtensionID);
-
-  if (!ExtCont)
-    return;
-
-  std::string ExtID = ExtCont->Infos.ID;
-  openfluid::builderext::PluggableBuilderExtension::ExtensionType ExtType =
-      ExtCont->Infos.Type;
-
-  // Extension is already instantiated
-  if (ExtCont->Extension)
-  {
-    if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
-      m_Workspace.setCurrentPage(ExtCont->Infos.ShortName);
-    else if (ExtType
-        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
-             || ExtType == openfluid::builderext::PluggableBuilderExtension::SimulationListener)
-    {
-      Gtk::Window * ExtWindow =
-          dynamic_cast<Gtk::Window*>(ExtCont->Extension->getExtensionAsWidget());
-      if (ExtWindow)
-        ExtWindow->present();
-    }
-    return;
-  }
-
-  try
-  {
-    if (!ExtCont->instantiateExt())
-      return;
-  }
-  catch (openfluid::base::OFException e)
-  {
-    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
-    return;
-  }
-
-  openfluid::builderext::PluggableBuilderExtension* Ext = ExtCont->Extension;
-
-  Ext->setSimulationBlobAndModel(m_EngineProject.getSimBlob(),
-                                 m_EngineProject.getModelInstance());
-
-  Ext->signal_ChangedOccurs().connect(
-      sigc::mem_fun(*this, &ProjectCoordinator::whenExtensionChanged));
-
-  // checking if extension is ready to be executed
-  if (!Ext->isReadyForShowtime())
-  {
-    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-        "Extension is not ready!");
-    return;
-  }
-
-  if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
-  {
-    std::string PageName = ExtCont->Infos.ShortName;
-
-    openfluid::builderext::WorkspaceTab* Tab =
-        static_cast<openfluid::builderext::WorkspaceTab*>(Ext);
-
-    Tab->update();
-
-    addModuleToWorkspace(PageName, *Tab);
-
-    m_TabExtensionIdByNameMap[PageName] = ExtID;
-
-    m_Workspace.setCurrentPage(PageName);
-  }
-  else
-  {
-    if ((ExtCont->Infos.Type
-        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
-         || ExtCont->Infos.Type == openfluid::builderext::PluggableBuilderExtension::SimulationListener))
-    {
-      openfluid::builderext::ModelessWindow* ModelessWin =
-          static_cast<openfluid::builderext::ModelessWindow*>(Ext);
-
-      ModelessWin->signal_Hidden().connect(
-          sigc::bind<std::string>(
-              sigc::mem_fun(
-                  *this,
-                  &ProjectCoordinator::whenModelessWindowExtensionHidden),
-              ExtID));
-
-      m_ModelessWindowsExtensionsMap[ExtID] = ModelessWin;
-
-      Ext->show();
-
-    }
-    else
-    {
-      Ext->show();
-      ExtCont->deleteExt();
-    }
-
-  }
+//  ExtensionContainer* ExtCont =
+//      BuilderExtensionsManager::getInstance()->getExtensionContainer(
+//          ExtensionID);
+//
+//  if (!ExtCont)
+//    return;
+//
+//  std::string ExtID = ExtCont->Infos.ID;
+//  openfluid::builderext::PluggableBuilderExtension::ExtensionType ExtType =
+//      ExtCont->Infos.Type;
+//
+//  // Extension is already instantiated
+//  if (ExtCont->Extension)
+//  {
+//    if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
+//      m_Workspace.setCurrentPage(ExtCont->Infos.ShortName);
+//    else if (ExtType
+//        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
+//             || ExtType == openfluid::builderext::PluggableBuilderExtension::SimulationListener)
+//    {
+//      Gtk::Window * ExtWindow =
+//          dynamic_cast<Gtk::Window*>(ExtCont->Extension->getExtensionAsWidget());
+//      if (ExtWindow)
+//        ExtWindow->present();
+//    }
+//    return;
+//  }
+//
+//  try
+//  {
+//    if (!ExtCont->instantiateExt())
+//      return;
+//  }
+//  catch (openfluid::base::OFException e)
+//  {
+//    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
+//    return;
+//  }
+//
+//  openfluid::builderext::PluggableBuilderExtension* Ext = ExtCont->Extension;
+//
+//  Ext->setSimulationBlobAndModel(m_EngineProject.getSimBlob(),
+//                                 m_EngineProject.getModelInstance());
+//
+//  Ext->signal_ChangedOccurs().connect(
+//      sigc::mem_fun(*this, &ProjectCoordinator::whenExtensionChanged));
+//
+//  // checking if extension is ready to be executed
+//  if (!Ext->isReadyForShowtime())
+//  {
+//    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+//        "Extension is not ready!");
+//    return;
+//  }
+//
+//  if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
+//  {
+//    std::string PageName = ExtCont->Infos.ShortName;
+//
+//    openfluid::builderext::WorkspaceTab* Tab =
+//        static_cast<openfluid::builderext::WorkspaceTab*>(Ext);
+//
+//    Tab->update();
+//
+//    addModuleToWorkspace(PageName, *Tab);
+//
+//    m_TabExtensionIdByNameMap[PageName] = ExtID;
+//
+//    m_Workspace.setCurrentPage(PageName);
+//  }
+//  else
+//  {
+//    if ((ExtCont->Infos.Type
+//        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
+//         || ExtCont->Infos.Type == openfluid::builderext::PluggableBuilderExtension::SimulationListener))
+//    {
+//      openfluid::builderext::ModelessWindow* ModelessWin =
+//          static_cast<openfluid::builderext::ModelessWindow*>(Ext);
+//
+//      ModelessWin->signal_Hidden().connect(
+//          sigc::bind<std::string>(
+//              sigc::mem_fun(
+//                  *this,
+//                  &ProjectCoordinator::whenModelessWindowExtensionHidden),
+//              ExtID));
+//
+//      m_ModelessWindowsExtensionsMap[ExtID] = ModelessWin;
+//
+//      Ext->show();
+//
+//    }
+//    else
+//    {
+//      Ext->show();
+//      ExtCont->deleteExt();
+//    }
+//
+//  }
 
 }
 

@@ -72,7 +72,7 @@ ProjectWorkspaceModule(BuilderDesc)
 {
   mp_MainPanel = 0;
 
-  mp_SimulRunMVP = new SimulRunComponent();
+  mp_SimulRunMVP = new SimulRunComponent(BuilderDesc.getRunDescriptor());
 
   mp_SimulRunMVP->getModel()->signal_SimulRunChanged().connect(sigc::mem_fun(
       *this, &SimulationRunModule::whenRunChanged));
@@ -120,18 +120,6 @@ Gtk::Widget* SimulationRunModule::asWidget()
 sigc::signal<void> SimulationRunModule::signal_ModuleChanged()
 {
   return m_signal_SimulationRunChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationRunModule::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& /*SimBlob*/,
-    openfluid::guicommon::BuilderDescriptor& BuilderDesc)
-{
-  mp_SimulRunMVP->getModel()->setEngineRequirements(BuilderDesc.getRunDescriptor());
 }
 
 // =====================================================================

@@ -59,10 +59,6 @@
 #include <gtkmm/treemodel.h>
 
 namespace openfluid {
-namespace machine {
-class ModelInstance;
-class SimulationBlob;
-}
 namespace guicommon {
 class BuilderDescriptor;
 }
@@ -81,8 +77,7 @@ class ProjectExplorerAdapterModel
 
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 
-    virtual void initialize(
-        openfluid::machine::ModelInstance* ModelInstance) = 0;
+    virtual void initialize() = 0;
 
     virtual void updateAll() = 0;
 
@@ -122,8 +117,6 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
   protected:
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
     openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     Gtk::TreeRowReference* mp_ModelRowRef;
@@ -144,7 +137,7 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     ~ProjectExplorerAdapterModelImpl();
 
-    void initialize(openfluid::machine::ModelInstance* ModelInstance);
+    void initialize();
 
     void updateAll();
 
@@ -176,8 +169,6 @@ class ProjectExplorerAdapterModelSub: public ProjectExplorerAdapterModelImpl
     }
 
     Gtk::TreeRowReference* getRunInfoRowRef();
-
-    void setModelInstance(openfluid::machine::ModelInstance* ModelInstance);
 
     std::string generateRunInfoStr(std::string Begin, std::string End,
                                    unsigned int DeltaT);

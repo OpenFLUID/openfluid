@@ -62,11 +62,12 @@
 // =====================================================================
 
 
-SimulRunModelImpl::SimulRunModelImpl() :
-  m_isCurrentBeginValid(true), m_isCurrentEndValid(true), m_isDateTimeCoherent(
+SimulRunModelImpl::SimulRunModelImpl(openfluid::fluidx::RunDescriptor& RunDesc) :
+  mp_RunDesc(&RunDesc),m_isCurrentBeginValid(true), m_isCurrentEndValid(true), m_isDateTimeCoherent(
       true), m_isDateTimeValid(true), m_BeginColorString("white"),
       m_EndColorString("white")
 {
+  checkDateTimeCoherence();
 }
 
 // =====================================================================
@@ -95,18 +96,6 @@ sigc::signal<void> SimulRunModelImpl::signal_FromAppValidityChanged()
 sigc::signal<void> SimulRunModelImpl::signal_SimulRunChanged()
 {
   return m_signal_SimulRunChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulRunModelImpl::setEngineRequirements(
-    openfluid::fluidx::RunDescriptor& RunDesc)
-{
-  mp_RunDesc = &RunDesc;
-  m_signal_FromAppDescriptorChanged.emit();
-  checkDateTimeCoherence();
 }
 
 // =====================================================================

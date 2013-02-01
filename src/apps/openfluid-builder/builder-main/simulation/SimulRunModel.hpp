@@ -74,9 +74,6 @@ class SimulRunModel
 
     virtual sigc::signal<void> signal_SimulRunChanged() = 0;
 
-    virtual void
-    setEngineRequirements(openfluid::fluidx::RunDescriptor& RunDesc) = 0;
-
     virtual int getDelta() = 0;
 
     virtual std::string getBeginColor() = 0;
@@ -136,15 +133,13 @@ class SimulRunModelImpl: public SimulRunModel
 
   public:
 
-    SimulRunModelImpl();
+    SimulRunModelImpl(openfluid::fluidx::RunDescriptor& RunDesc);
 
     sigc::signal<void> signal_FromAppDescriptorChanged();
 
     sigc::signal<void> signal_FromAppValidityChanged();
 
     sigc::signal<void> signal_SimulRunChanged();
-
-    void setEngineRequirements(openfluid::fluidx::RunDescriptor& RunDesc);
 
     int getDelta();
 
@@ -172,11 +167,6 @@ class SimulRunModelImpl: public SimulRunModel
     void setValuesBuff(int Value);
 
     void setFilesBuff(int Value);
-};
-
-class SimulRunModelSub: public SimulRunModelImpl
-{
-  public:
 };
 
 #endif /* __SIMULRUNMODEL_HPP__ */

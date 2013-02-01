@@ -65,6 +65,7 @@
 #include "tests-config.hpp"
 
 #include <openfluid/fluidx/RunDescriptor.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -109,8 +110,6 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
 BOOST_AUTO_TEST_CASE(test_updateModel)
 {
-  mp_AdapterModel->setModelInstance(mp_EngProject->getModelInstance());
-
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[0].children().size(), 0);
@@ -157,9 +156,9 @@ BOOST_AUTO_TEST_CASE(test_updateRunInfo)
   mp_AdapterModel->updateRunInfo();
 
   std::string RunInfoStr = mp_AdapterModel->generateRunInfoStr(
-      mp_EngProject->getRunDescriptor().getBeginDate().getAsISOString(),
-      mp_EngProject->getRunDescriptor().getEndDate().getAsISOString(),
-      mp_EngProject->getRunDescriptor().getDeltaT());
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getBeginDate().getAsISOString(),
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getEndDate().getAsISOString(),
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getDeltaT());
 
   std::string NewRunInfoName = RunInfoRow[m_Columns.m_Display];
 

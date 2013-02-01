@@ -96,8 +96,6 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
   ProjectExplorerViewSub* View =
       (ProjectExplorerViewSub*) (Component->getView());
 
-  Model->setEngineRequirements(*EngProject->getModelInstance());
-
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
                     ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
@@ -129,8 +127,6 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
   ProjectExplorerViewSub* View =
       (ProjectExplorerViewSub*) (Component->getView());
 
-  Model->setEngineRequirements(*EngProject->getModelInstance());
-
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
                     ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
@@ -161,8 +157,6 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
       (ProjectExplorerModelImpl*) (Component->getModel());
   ProjectExplorerViewSub* View =
       (ProjectExplorerViewSub*) (Component->getView());
-
-  Model->setEngineRequirements(*EngProject->getModelInstance());
 
   Gtk::TreeView* TreeView = View->getTreeView();
 

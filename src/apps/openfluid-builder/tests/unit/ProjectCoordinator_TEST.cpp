@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE(test_whenModelChanged)
                     m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(ModelRows.size(), 2);
 
-  mp_EngProject->getModelInstance()->deleteItem(1);
+  mp_EngProject->getBuilderDesc().getModel().removeItem(1);
 
   mp_Coordinator->whenModelChanged();
   BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(), 2);
@@ -296,7 +296,7 @@ BOOST_AUTO_TEST_CASE(test_whenModelChanged)
                     m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(ModelRows.size(), 1);
 
-  mp_EngProject->getModelInstance()->deleteItem(0);
+  mp_EngProject->getBuilderDesc().getModel().removeItem(0);
 
   mp_Coordinator->whenModelChanged();
   BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(), 2);

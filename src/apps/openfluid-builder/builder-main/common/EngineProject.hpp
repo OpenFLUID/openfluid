@@ -55,7 +55,6 @@
 #ifndef __ENGINEPROJECT_HPP__
 #define __ENGINEPROJECT_HPP__
 
-
 #include <sigc++/sigc++.h>
 
 #include <glibmm/ustring.h>
@@ -71,7 +70,6 @@ class ExecutionMessages;
 class OutputDescriptor;
 }
 namespace core {
-class CoreRepository;
 class Datastore;
 }
 namespace io {
@@ -79,12 +77,9 @@ class IOListener;
 }
 namespace machine {
 class MachineListener;
-class ModelInstance;
 class ObserversListInstance;
-class SimulationBlob;
 }
 namespace guicommon {
-class RunDialogMachineListener;
 class BuilderDescriptor;
 }
 namespace fluidx {
@@ -99,21 +94,9 @@ class EngineProject
 
     bool m_WithProjectManager;
 
-    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
-
     openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
-    openfluid::machine::SimulationBlob* mp_SimBlob;
-
-    openfluid::base::RuntimeEnvironment* mp_RunEnv;
-
     openfluid::io::IOListener* mp_IOListener;
-
-    openfluid::guicommon::RunDialogMachineListener* mp_Listener;
-
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-//    openfluid::machine::ObserversListInstance* mp_ObsListInstance;
 
     sigc::signal<void> m_signal_RunStarted;
 
@@ -141,6 +124,8 @@ class EngineProject
 
   protected:
 
+    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
+
     openfluid::core::DateTime m_DefaultBeginDT;
 
     int m_DefaultDeltaT;
@@ -160,23 +145,7 @@ class EngineProject
 
     void check(openfluid::machine::Engine::PretestInfos_t& PretestInfos);
 
-    openfluid::machine::SimulationBlob* getSimBlob();
-
-    openfluid::base::RuntimeEnvironment* getRunEnv();
-
-    openfluid::io::IOListener* getIOListener();
-
-    openfluid::machine::MachineListener* getMachineListener();
-
-    openfluid::machine::ModelInstance* getModelInstance();
-
     openfluid::guicommon::BuilderDescriptor& getBuilderDesc();
-
-    openfluid::core::CoreRepository& getCoreRepository();
-
-    openfluid::fluidx::RunDescriptor& getRunDescriptor();
-
-    openfluid::base::OutputDescriptor& getOutputDescriptor();
 
 //    openfluid::core::Datastore& getDatastore();
 
@@ -190,7 +159,7 @@ class EngineProjectSub: public EngineProject
 {
   public:
     EngineProjectSub(std::string FolderIn = "", bool WithProjectManager = false) :
-      EngineProject(FolderIn, WithProjectManager)
+        EngineProject(FolderIn, WithProjectManager)
     {
     }
 
@@ -202,6 +171,11 @@ class EngineProjectSub: public EngineProject
     int getDefaultDeltaT()
     {
       return m_DefaultDeltaT;
+    }
+
+    openfluid::fluidx::FluidXDescriptor* getFXDescriptor()
+    {
+      return mp_FXDesc;
     }
 };
 

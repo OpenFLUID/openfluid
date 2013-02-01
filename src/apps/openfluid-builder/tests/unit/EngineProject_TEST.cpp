@@ -63,16 +63,11 @@
 
 #include "BuilderTestHelper.hpp"
 #include "EngineProject.hpp"
-#include <openfluid/guicommon/GeneratorSignature.hpp>
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
-#include "ModelItemInstanceFactory.hpp"
 #include "tests-config.hpp"
-
 #include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/machine/FunctionPluginsManager.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
+//#include <openfluid/base/OutputDescriptor.hpp>
+
 
 // =====================================================================
 // =====================================================================
@@ -95,38 +90,16 @@ BOOST_AUTO_TEST_CASE(test_constructor_Empty)
 {
   EngineProjectSub* EngProject = new EngineProjectSub();
 
-  BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),0);
-  BOOST_CHECK_EQUAL(EngProject->getCoreRepository().getUnitsGlobally()->size(),0);
+  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getBeginDate().getAsISOString(), EngProject->getDefaultBeginDT().getAsISOString());
+  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getEndDate().getAsISOString(), (EngProject->getDefaultBeginDT() + openfluid::core::DateTime::Day()).getAsISOString());
+  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getDeltaT(), EngProject->getDefaultDeltaT());
 
-  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getBeginDate().getAsISOString(), EngProject->getDefaultBeginDT().getAsISOString());
-  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getEndDate().getAsISOString(), (EngProject->getDefaultBeginDT() + openfluid::core::DateTime::Day()).getAsISOString());
-  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getDeltaT(), EngProject->getDefaultDeltaT());
-
-  openfluid::base::OutputFilesDescriptor DefaultFileDesc;
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets().size(),1);
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getColSeparator(),DefaultFileDesc.getColSeparator());
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getCommentChar(),DefaultFileDesc.getCommentChar());
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getDateFormat(),DefaultFileDesc.getDateFormat());
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getSets().size(),0);
-
-  delete EngProject;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_addItems_Empty)
-{
-  EngineProject* EngProject = new EngineProject();
-
-  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.primitives.prod"));
-
-  BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),1);
-
-  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.primitives.use"));
-
-  BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),2);
+//  openfluid::base::OutputFilesDescriptor DefaultFileDesc;
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets().size(),1);
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getColSeparator(),DefaultFileDesc.getColSeparator());
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getCommentChar(),DefaultFileDesc.getCommentChar());
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getDateFormat(),DefaultFileDesc.getDateFormat());
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getSets().size(),0);
 
   delete EngProject;
 }
@@ -139,43 +112,18 @@ BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
   + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = new EngineProject(Path);
-
-  BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),2);
-  BOOST_CHECK_EQUAL(EngProject->getCoreRepository().getUnitsGlobally()->size(),14);
+  EngineProjectSub* EngProject = new EngineProjectSub(Path);
 
   openfluid::core::DateTime DT;
-  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getBeginDate().getAsISOString(),"2000-01-01 00:00:00");
-  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getEndDate().getAsISOString(),"2000-01-01 06:00:00");
-  BOOST_CHECK_EQUAL(EngProject->getRunDescriptor().getDeltaT(), 3600);
+  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getBeginDate().getAsISOString(),"2000-01-01 00:00:00");
+  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getEndDate().getAsISOString(),"2000-01-01 06:00:00");
+  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getDeltaT(), 3600);
 
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets().size(),1);
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getColSeparator()," ");
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getCommentChar(),"%");
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getDateFormat(),"%Y %m %d %H %M %S");
-  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getSets().size(),2);
-
-  delete EngProject;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_addItems_FromFolder)
-{
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = new EngineProject(Path);
-
-  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.primitivesvalues.prod"));
-
-  BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),3);
-
-  EngProject->getModelInstance()->appendItem(openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly("tests.primitivesvalues.use"));
-
-  BOOST_CHECK_EQUAL(EngProject->getModelInstance()->getItemsCount(),4);
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets().size(),1);
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getColSeparator()," ");
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getCommentChar(),"%");
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getDateFormat(),"%Y %m %d %H %M %S");
+//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getSets().size(),2);
 
   delete EngProject;
 }

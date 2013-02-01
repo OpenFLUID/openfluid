@@ -151,11 +151,8 @@ ProjectExplorerAdapterModelImpl::~ProjectExplorerAdapterModelImpl()
 // =====================================================================
 // =====================================================================
 
-void ProjectExplorerAdapterModelImpl::initialize(
-    openfluid::machine::ModelInstance* ModelInstance)
+void ProjectExplorerAdapterModelImpl::initialize()
 {
-  mp_ModelInstance = ModelInstance;
-
   updateAll();
 }
 
@@ -176,17 +173,20 @@ void ProjectExplorerAdapterModelImpl::updateAll()
 
 void ProjectExplorerAdapterModelImpl::updateModel()
 {
-  if (mp_ModelInstance)
+  mref_TreeModel->clearChildrenOfRowRef(*mp_ModelRowRef);
+
+  std::vector<std::string> IDs = mp_BuilderDesc->getModel().getOrderedIDs();
+
+  for (unsigned int i = 0; i < IDs.size(); i++)
   {
-    mref_TreeModel->clearChildrenOfRowRef(*mp_ModelRowRef);
+    Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ModelRowRef));
 
-    BOOST_FOREACH(openfluid::machine::ModelItemInstance* Fct,mp_ModelInstance->getItems()){ Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ModelRowRef));
+    std::string ID = IDs[i];
 
-    Row[m_Columns.m_Id] = Fct->Signature->ID;
-    Row[m_Columns.m_Display] = Fct->Signature->ID;
+    Row[m_Columns.m_Id] = ID;
+    Row[m_Columns.m_Display] = ID;
     Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_MODEL;
   }
-}
 }
 
 // =====================================================================
@@ -335,15 +335,6 @@ std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> Proje
 Gtk::TreeRowReference* ProjectExplorerAdapterModelSub::getRunInfoRowRef()
 {
   return mp_RunInfoRowRef;
-}
-
-// =====================================================================
-// =====================================================================
-
-void ProjectExplorerAdapterModelSub::setModelInstance(
-    openfluid::machine::ModelInstance* ModelInstance)
-{
-  mp_ModelInstance = ModelInstance;
 }
 
 // =====================================================================

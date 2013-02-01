@@ -59,7 +59,7 @@
 
 
 ProjectExplorerModelImpl::ProjectExplorerModelImpl() :
-  mp_ModelInstance(0), m_ActivatedElementsPair(std::make_pair(
+  m_ActivatedElementsPair(std::make_pair(
       ProjectExplorerCategories::EXPLORER_NONE, ""))
 {
 
@@ -123,18 +123,6 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateSimulationAsked()
 // =====================================================================
 
 
-void ProjectExplorerModelImpl::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance)
-{
-  mp_ModelInstance = &ModelInstance;
-
-  m_signal_Initialized.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void ProjectExplorerModelImpl::updateModelAsked()
 {
   m_signal_UpdateModelAsked.emit();
@@ -166,15 +154,6 @@ void ProjectExplorerModelImpl::updateSimulationAsked()
 //{
 //  m_signal_UpdateResultsAsked.emit(WithWarningState);
 //}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::machine::ModelInstance* ProjectExplorerModelImpl::getModelInstance()
-{
-  return mp_ModelInstance;
-}
 
 // =====================================================================
 // =====================================================================
