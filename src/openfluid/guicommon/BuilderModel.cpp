@@ -204,6 +204,48 @@ int BuilderModel::getFirstItemIndex(std::string ItemID)
 // =====================================================================
 // =====================================================================
 
+int BuilderModel::getFirstItemIndex(
+    openfluid::fluidx::ModelItemDescriptor* Item)
+{
+  std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      mp_ModelDesc->getItems();
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it = std::find(
+      Items.begin(), Items.end(), Item);
+
+  if (it != Items.end())
+    return std::distance(Items.begin(), it);
+
+  return -1;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<std::string> BuilderModel::getOrderedIDs()
+{
+  std::vector<std::string> IDs;
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      mp_ModelDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if ((*it)->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
+      IDs.push_back(
+          (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID());
+    else if ((*it)->isType(openfluid::fluidx::WareDescriptor::Generator))
+      IDs.push_back(
+          (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratedID());
+  }
+
+  return IDs;
+}
+
+// =====================================================================
+// =====================================================================
+
 void BuilderModel::appendItem(openfluid::fluidx::ModelItemDescriptor* Item)
 {
   if (Item)
@@ -322,6 +364,15 @@ void BuilderModel::setGlobalParameters(
 openfluid::ware::WareParams_t BuilderModel::getGlobalParameters()
 {
   return mp_ModelDesc->getGlobalParameters();
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderModel::eraseGlobalParameter(
+    const openfluid::ware::WareParamKey_t& Key)
+{
+  mp_ModelDesc->eraseGlobalParameter(Key);
 }
 
 // =====================================================================

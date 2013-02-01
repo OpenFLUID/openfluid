@@ -62,7 +62,7 @@
 #include "ModelGlobalParamsModel.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
-#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -76,10 +76,13 @@ struct init_Model
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Model = new ModelGlobalParamsModelImpl();
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
+
+      mp_Model = new ModelGlobalParamsModelImpl(mp_EngProject->getBuilderDesc().getModel());
+
+      mp_Model->update();
     }
 
     ~init_Model()
@@ -98,14 +101,12 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
 {
   // initial state
 
-  mp_Model->setEngineRequirements(*mp_EngProject->getModelInstance());
-
   BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
 
   // adding a global parameter (from ModelInstance)
 
-  mp_EngProject->getModelInstance()->setGlobalParameter("longparam","123");
+  mp_EngProject->getBuilderDesc().getModel().setGlobalParameter("longparam","123");
   mp_Model->update();
 
   BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
@@ -140,7 +141,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
 
   // removing a global parameter (from ModelInstance)
 
-  mp_EngProject->getModelInstance()->getGlobalParameters().erase("longparam");
+  mp_EngProject->getBuilderDesc().getModel().eraseGlobalParameter("longparam");
   mp_Model->update();
 
   BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);

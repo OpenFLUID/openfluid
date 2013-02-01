@@ -65,6 +65,7 @@ GeneratorSignature::GeneratorSignature(
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod)
 {
   m_GeneratorMethod = GeneratorMethod;
+  ID = openfluid::fluidx::GeneratorDescriptor::getGeneratorName(m_GeneratorMethod);
 
   switch (m_GeneratorMethod)
   {
@@ -94,7 +95,6 @@ GeneratorSignature::GeneratorSignature(
 
 void GeneratorSignature::setFixedInfo()
 {
-  ID = "Fixed Generator";
   Name = "Fixed Generator";
   Description = "Generates a constant value";
 
@@ -109,7 +109,6 @@ void GeneratorSignature::setFixedInfo()
 
 void GeneratorSignature::setRandomInfo()
 {
-  ID = "Random Generator";
   Name = "Random Generator";
   Description = "Generates a random value in a range";
 
@@ -127,7 +126,6 @@ void GeneratorSignature::setRandomInfo()
 
 void GeneratorSignature::setInterpInfo()
 {
-  ID = "Interp Generator";
   Name = "Interpolation Generator";
   Description = "Generates a time-interpolated value from given data series";
 
@@ -151,7 +149,6 @@ void GeneratorSignature::setInterpInfo()
 
 void GeneratorSignature::setInjectInfo()
 {
-  ID = "Inject Generator";
   Name = "Injection Generator";
   Description = "Generates an injected value -no time interpolation- from given data series";
 

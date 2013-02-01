@@ -51,12 +51,6 @@
 
 #include <gtkmm/liststore.h>
 
-namespace openfluid {
-namespace machine {
-class ModelInstance;
-}
-}
-
 class ModelStructureColumns;
 
 
@@ -68,8 +62,7 @@ class ModelStructureAdapterModel
 {
   public:
 
-    virtual void setModelStructure(
-        openfluid::machine::ModelInstance* ModelInstance) = 0;
+    virtual void setModelStructure(std::vector<std::string> ModelIDs) = 0;
 
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 };
@@ -91,7 +84,7 @@ class ModelStructureAdapterModelImpl: public ModelStructureAdapterModel
 
     ModelStructureAdapterModelImpl(ModelStructureColumns& Columns);
 
-    void setModelStructure(openfluid::machine::ModelInstance* ModelInstance);
+    void setModelStructure(std::vector<std::string> ModelIDs);
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 };

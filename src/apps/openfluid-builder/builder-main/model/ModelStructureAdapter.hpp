@@ -49,8 +49,8 @@
 #define MODELSTRUCTUREADAPTER_HPP_
 
 #include <sigc++/sigc++.h>
-
-#include <openfluid/machine/ModelInstance.hpp>
+#include <vector>
+#include <string>
 
 class ModelStructureAdapterModel;
 class ModelStructureView;
@@ -58,16 +58,26 @@ class ModelStructureView;
 class ModelStructureAdapter: public sigc::trackable
 {
   private:
+
     sigc::signal<void> m_signal_FromUserSelectionChanged;
+
     ModelStructureAdapterModel& m_Model;
+
     ModelStructureView& m_View;
+
     void whenFctSelectionChanged();
+
   public:
+
     ModelStructureAdapter(ModelStructureAdapterModel& Model,
-        ModelStructureView& View);
+                          ModelStructureView& View);
+
     sigc::signal<void> signal_FromUserSelectionChanged();
-    void setModelStructure(openfluid::machine::ModelInstance* ModelInstance);
+
+    void setModelStructure(std::vector<std::string> ModelIDs);
+
     int getSelectedFunctionPosition();
+
     void requestSelectionAt(int Position);
 };
 

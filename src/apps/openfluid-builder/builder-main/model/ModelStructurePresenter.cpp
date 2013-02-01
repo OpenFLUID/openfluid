@@ -57,28 +57,46 @@
 #include "ModelStructureModel.hpp"
 #include "ModelStructureAdapter.hpp"
 
+// =====================================================================
+// =====================================================================
+
 void ModelStructurePresenter::whenModelChanged()
 {
-  m_Adapter.setModelStructure(m_Model.getModelInstance());
+  m_Adapter.setModelStructure(m_Model.getModelIDs());
 }
+
+// =====================================================================
+// =====================================================================
+
 void ModelStructurePresenter::whenSelectionChanged()
 {
   m_Model.setCurrentSelectionByUserAt(m_Adapter.getSelectedFunctionPosition());
 }
+
+// =====================================================================
+// =====================================================================
+
 void ModelStructurePresenter::whenFromAppSelectionRequested()
 {
   m_Adapter.requestSelectionAt(m_Model.getAppRequestedSelection());
 }
 
-ModelStructurePresenter::ModelStructurePresenter(ModelStructureModel& Model,
-    ModelStructureAdapter& Adapter) :
-  m_Model(Model), m_Adapter(Adapter)
-{
-  m_Model.signal_FromAppModelChanged().connect(sigc::mem_fun(*this,
-      &ModelStructurePresenter::whenModelChanged));
-  m_Model.signal_FromAppSelectionRequested().connect(sigc::mem_fun(*this,
-      &ModelStructurePresenter::whenFromAppSelectionRequested));
+// =====================================================================
+// =====================================================================
 
-  m_Adapter.signal_FromUserSelectionChanged().connect(sigc::mem_fun(*this,
-      &ModelStructurePresenter::whenSelectionChanged));
+ModelStructurePresenter::ModelStructurePresenter(ModelStructureModel& Model,
+                                                 ModelStructureAdapter& Adapter) :
+    m_Model(Model), m_Adapter(Adapter)
+{
+  m_Model.signal_FromAppModelChanged().connect(
+      sigc::mem_fun(*this, &ModelStructurePresenter::whenModelChanged));
+  m_Model.signal_FromAppSelectionRequested().connect(
+      sigc::mem_fun(*this,
+                    &ModelStructurePresenter::whenFromAppSelectionRequested));
+
+  m_Adapter.signal_FromUserSelectionChanged().connect(
+      sigc::mem_fun(*this, &ModelStructurePresenter::whenSelectionChanged));
 }
+
+// =====================================================================
+// =====================================================================

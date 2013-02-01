@@ -54,22 +54,14 @@
 
 #include "ModelStructureAdapterModel.hpp"
 
-#include <boost/foreach.hpp>
-
-#include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-
 #include "ModelStructureColumns.hpp"
 
-
 // =====================================================================
 // =====================================================================
-
 
 ModelStructureAdapterModelImpl::ModelStructureAdapterModelImpl(
     ModelStructureColumns& Columns) :
-  m_Columns(Columns)
+    m_Columns(Columns)
 {
   mref_ListStore = Gtk::ListStore::create(m_Columns);
 }
@@ -77,24 +69,26 @@ ModelStructureAdapterModelImpl::ModelStructureAdapterModelImpl(
 // =====================================================================
 // =====================================================================
 
-
 void ModelStructureAdapterModelImpl::setModelStructure(
-    openfluid::machine::ModelInstance* ModelInstance)
+    std::vector<std::string> ModelIDs)
 {
   mref_ListStore->clear();
-  int i = 1;
-  BOOST_FOREACH(openfluid::machine::ModelItemInstance* Instance,ModelInstance->getItems())
-{  Gtk::TreeRow Row = *(mref_ListStore->append());
-  Row[m_Columns.m_Id] = Glib::ustring::compose("%1. %2",i,Instance->Signature->ID);
-  i++;
-}
+
+  for (unsigned int i=0; i<ModelIDs.size(); i++)
+  {
+    Gtk::TreeRow Row = *(mref_ListStore->append());
+    Row[m_Columns.m_Id] = Glib::ustring::compose("%1. %2", i+1, ModelIDs[i]);
+  }
+
 }
 
 // =====================================================================
 // =====================================================================
-
 
 Glib::RefPtr<Gtk::TreeModel> ModelStructureAdapterModelImpl::getTreeModel()
 {
   return mref_ListStore;
 }
+
+// =====================================================================
+// =====================================================================

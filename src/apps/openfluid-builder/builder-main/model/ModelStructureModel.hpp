@@ -50,15 +50,14 @@
 
 #include <sigc++/sigc++.h>
 #include <string>
+#include <vector>
 
 namespace openfluid {
-namespace machine {
-class ModelInstance;
-class ModelItemInstance;
-class ModelItemSignatureInstance;
+namespace guicommon {
+class BuilderModel;
 }
-namespace core {
-class CoreRepository;
+namespace fluidx {
+class ModelItemDescriptor;
 }
 }
 
@@ -72,13 +71,10 @@ class ModelStructureModel
 
     virtual sigc::signal<void> signal_FromAppSelectionRequested() = 0;
 
-    virtual void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::core::CoreRepository* CoreRepos = 0) = 0;
+    virtual std::vector<std::string> getModelIDs() = 0;
 
-    virtual openfluid::machine::ModelInstance* getModelInstance() = 0;
-
-    virtual void appendFunction(openfluid::machine::ModelItemInstance* Item) = 0;
+    virtual void appendFunction(
+        openfluid::fluidx::ModelItemDescriptor* ItemDesc) = 0;
 
     /* Move the element at From position before the action to be at To position after the action,
      * positions starting from 0. */
@@ -88,18 +84,11 @@ class ModelStructureModel
 
     virtual void moveTowardTheEnd() = 0;
 
-    /* Remove the element at Position, position starting from 0;
-     * Returns the Id of the removed function*/
-    virtual std::string removeFunctionAt(int Position) = 0;
+    virtual void removeFunctionAt(int Position) = 0;
 
     virtual void setCurrentSelectionByUserAt(int Position) = 0;
 
     virtual int getCurrentSelection() = 0;
-
-    virtual openfluid::machine::ModelItemSignatureInstance
-    * getCurrentSelectionSignature() = 0;
-
-    virtual std::string getCurrentSelectionName() = 0;
 
     virtual unsigned int getFctCount() = 0;
 
@@ -116,8 +105,6 @@ class ModelStructureModel
     }
     ;
 
-    virtual int getPositionOfFunction(std::string FunctionId) = 0;
-
 };
 
 class ModelStructureModelImpl: public ModelStructureModel
@@ -130,17 +117,11 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     sigc::signal<void> m_signal_FromAppSelectionRequested;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::guicommon::BuilderModel* mp_Model;
 
     int m_CurrentSelection;
 
     int m_AppRequestedSelection;
-
-    bool isModelInstance();
-
-    bool areMoveIndexesValid(unsigned int From, unsigned int To);
 
     bool isModelEmpty();
 
@@ -148,7 +129,7 @@ class ModelStructureModelImpl: public ModelStructureModel
 
   public:
 
-    ModelStructureModelImpl();
+    ModelStructureModelImpl(openfluid::guicommon::BuilderModel& Model);
 
     ~ModelStructureModelImpl();
 
@@ -158,13 +139,9 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     sigc::signal<void> signal_FromAppSelectionRequested();
 
-    void
-    setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::core::CoreRepository* CoreRepos = 0);
+    std::vector<std::string> getModelIDs();
 
-    openfluid::machine::ModelInstance* getModelInstance();
-
-    void appendFunction(openfluid::machine::ModelItemInstance* Item);
+    void appendFunction(openfluid::fluidx::ModelItemDescriptor* ItemDesc);
 
     void moveFunction(unsigned int From, unsigned int To);
 
@@ -172,15 +149,11 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     void moveTowardTheEnd();
 
-    std::string removeFunctionAt(int Position);
+    void removeFunctionAt(int Position);
 
     void setCurrentSelectionByUserAt(int Position);
 
     int getCurrentSelection();
-
-    openfluid::machine::ModelItemSignatureInstance* getCurrentSelectionSignature();
-
-    std::string getCurrentSelectionName();
 
     unsigned int getFctCount();
 
@@ -191,8 +164,6 @@ class ModelStructureModelImpl: public ModelStructureModel
     int getAppRequestedSelection();
 
     void update();
-
-    int getPositionOfFunction(std::string FunctionId);
 
 };
 

@@ -57,31 +57,35 @@
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/guicommon/BuilderModel.hpp>
 
 #include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
-
 
 ModelFctParamsModelImpl::ModelFctParamsModelImpl(
-    openfluid::machine::ModelInstance* ModelInstance) :
-  mp_Item(0), mp_ModelInstance(ModelInstance)
+    openfluid::guicommon::BuilderModel& Model) :
+    mp_Item(0), mp_ItemSignature(0), mp_Model(&Model)
 {
 }
 
 // =====================================================================
 // =====================================================================
 
-void ModelFctParamsModelImpl::setModelItemInstance(
-    openfluid::machine::ModelItemInstance* Item)
+void ModelFctParamsModelImpl::setModelItemDescriptor(
+    openfluid::fluidx::ModelItemDescriptor* Item)
 {
   mp_Item = Item;
 
   if (mp_Item)
   {
+    mp_ItemSignature =
+        openfluid::guicommon::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
+            mp_Item);
     m_signal_ItemInit.emit();
   }
 }
@@ -89,34 +93,38 @@ void ModelFctParamsModelImpl::setModelItemInstance(
 // =====================================================================
 // =====================================================================
 
-
 std::map<std::string, std::string> ModelFctParamsModelImpl::getParams()
 {
   std::map<std::string, std::string> ParamsMap;
 
-  BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Param, mp_Item->Signature->HandledData.FunctionParams)
-{  ParamsMap[Param.DataName] = Param.DataUnit;
+  BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Param, mp_ItemSignature->Signature->HandledData.FunctionParams){
+  ParamsMap[Param.DataName] = Param.DataUnit;
 }
 
-for(openfluid::ware::WareParams_t::iterator it = mp_Item->Params.begin(); it != mp_Item->Params.end(); ++it)
-{
-  //add possible params which are not in signature
-  if(ParamsMap.find(it->first) == ParamsMap.end())
-  ParamsMap[it->first];
-}
+  openfluid::ware::WareParams_t Params = mp_Item->getParameters();
 
-return ParamsMap;
+  for (openfluid::ware::WareParams_t::iterator it = Params.begin();
+      it != Params.end(); ++it)
+  {
+    //add possible params which are not in signature
+    if (ParamsMap.find(it->first) == ParamsMap.end())
+      ParamsMap[it->first];
+  }
+
+  return ParamsMap;
 }
 
 // =====================================================================
 // =====================================================================
-
 
 std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
 {
   std::map<std::string, std::string> StrMap;
 
-  for(openfluid::ware::WareParams_t::iterator it=mp_Item->Params.begin() ; it !=mp_Item->Params.end() ; ++it)
+  openfluid::ware::WareParams_t Params = mp_Item->getParameters();
+
+  for (openfluid::ware::WareParams_t::iterator it = Params.begin();
+      it != Params.end(); ++it)
   {
     StrMap[it->first] = it->second.data();
   }
@@ -126,13 +134,15 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
 
 // =====================================================================
 // =====================================================================
-
 
 std::map<std::string, std::string> ModelFctParamsModelImpl::getGlobalValues()
 {
   std::map<std::string, std::string> StrMap;
 
-  for(openfluid::ware::WareParams_t::iterator it=mp_ModelInstance->getGlobalParameters().begin() ; it !=mp_ModelInstance->getGlobalParameters().end() ; ++it)
+  openfluid::ware::WareParams_t GlobalParams = mp_Model->getGlobalParameters();
+
+  for (openfluid::ware::WareParams_t::iterator it = GlobalParams.begin();
+      it != GlobalParams.end(); ++it)
   {
     StrMap[it->first] = it->second.data();
   }
@@ -143,29 +153,26 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getGlobalValues()
 // =====================================================================
 // =====================================================================
 
-
 std::vector<std::string> ModelFctParamsModelImpl::getRequiredFiles()
 {
-  return mp_Item->Signature->HandledData.RequiredExtraFiles;
+  return mp_ItemSignature->Signature->HandledData.RequiredExtraFiles;
 }
 
 // =====================================================================
 // =====================================================================
-
 
 std::vector<std::string> ModelFctParamsModelImpl::getUsedFiles()
 {
-  return mp_Item->Signature->HandledData.UsedExtraFiles;
+  return mp_ItemSignature->Signature->HandledData.UsedExtraFiles;
 }
 
 // =====================================================================
 // =====================================================================
 
-
 void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
-    std::string ParamValue)
+                                            std::string ParamValue)
 {
-  mp_Item->Params.put(ParamName,ParamValue);
+  mp_Item->setParameter(ParamName, ParamValue);
 
   updateInterpGeneratorRequiredExtraFiles();
 
@@ -175,50 +182,49 @@ void ModelFctParamsModelImpl::setParamValue(std::string ParamName,
 // =====================================================================
 // =====================================================================
 
-
 void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 {
-  if (mp_Item->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
-  {
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
-        Method =
-            (static_cast<openfluid::guicommon::GeneratorSignature*> (mp_Item->Signature))->m_GeneratorMethod;
-
-    if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
-        == openfluid::fluidx::GeneratorDescriptor::Inject)
-    {
-      openfluid::ware::WareParams_t GlobalParams =
-          mp_ModelInstance->getGlobalParameters();
-
-      std::string Sources = "";
-      if (mp_Item->Params.find("sources") != mp_Item->Params.not_found()
-          && mp_Item->Params.get<std::string>("sources") != "")
-        Sources = mp_Item->Params.get<std::string>("sources");
-      else if (GlobalParams.find("sources") != GlobalParams.not_found()
-          && GlobalParams.get<std::string>("sources") != "")
-        Sources = GlobalParams.get<std::string>("sources");
-
-      std::string Distrib = "";
-      if (mp_Item->Params.find("distribution") != mp_Item->Params.not_found()
-          && mp_Item->Params.get<std::string>("distribution") != "")
-        Distrib = mp_Item->Params.get<std::string>("distribution");
-      else if (GlobalParams.find("distribution") != GlobalParams.not_found()
-          && GlobalParams.get<std::string>("distribution") != "")
-        Distrib = GlobalParams.get<std::string>("distribution");
-
-      mp_Item->Signature->HandledData.RequiredExtraFiles.clear();
-
-      mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(Sources);
-      mp_Item->Signature->HandledData.RequiredExtraFiles.push_back(Distrib);
-
-      m_signal_RequiredFilesChangedFromApp.emit();
-    }
-  }
+//  if (mp_Item->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
+//  {
+//    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
+//        (static_cast<openfluid::guicommon::GeneratorSignature*>(mp_ItemSignature->Signature))->m_GeneratorMethod;
+//
+//    if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
+//        == openfluid::fluidx::GeneratorDescriptor::Inject)
+//    {
+//      openfluid::ware::WareParams_t GlobalParams =
+//          mp_Model->getGlobalParameters();
+//
+//      std::string Sources = "";
+//      if (mp_Item->getParameters().find("sources") != mp_Item->getParameters().not_found() && mp_Item->getParameters().get<
+//          std::string>("sources")
+//                                                                                              != "")
+//        Sources = mp_Item->getParameters().get<std::string>("sources");
+//      else if (GlobalParams.find("sources") != GlobalParams.not_found()
+//          && GlobalParams.get<std::string>("sources") != "")
+//        Sources = GlobalParams.get<std::string>("sources");
+//
+//      std::string Distrib = "";
+//      if (mp_Item->getParameters().find("distribution") != mp_Item->getParameters().not_found() && mp_Item->getParameters().get<
+//          std::string>("distribution")
+//                                                                                                   != "")
+//        Distrib = mp_Item->getParameters().get < std::string > ("distribution");
+//      else if (GlobalParams.find("distribution") != GlobalParams.not_found()
+//          && GlobalParams.get<std::string>("distribution") != "")
+//        Distrib = GlobalParams.get<std::string>("distribution");
+//
+//      mp_ItemSignature->Signature->HandledData.RequiredExtraFiles.clear();
+//
+//      mp_ItemSignature->Signature->HandledData.RequiredExtraFiles.push_back(Sources);
+//      mp_ItemSignature->Signature->HandledData.RequiredExtraFiles.push_back(Distrib);
+//
+//      m_signal_RequiredFilesChangedFromApp.emit();
+//    }
+//  }
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelFctParamsModelImpl::updateGlobalValues()
 {
@@ -227,10 +233,8 @@ void ModelFctParamsModelImpl::updateGlobalValues()
   m_signal_GlobalValueChanged.emit();
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 void ModelFctParamsModelImpl::updateParamsValues()
 {
@@ -240,7 +244,6 @@ void ModelFctParamsModelImpl::updateParamsValues()
 // =====================================================================
 // =====================================================================
 
-
 void ModelFctParamsModelImpl::whenRequiredFileChanged()
 {
   m_signal_RequiredFileChanged.emit();
@@ -248,7 +251,6 @@ void ModelFctParamsModelImpl::whenRequiredFileChanged()
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> ModelFctParamsModelImpl::signal_ItemInit()
 {
@@ -258,7 +260,6 @@ sigc::signal<void> ModelFctParamsModelImpl::signal_ItemInit()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ModelFctParamsModelImpl::signal_GlobalValueChanged()
 {
   return m_signal_GlobalValueChanged;
@@ -266,7 +267,6 @@ sigc::signal<void> ModelFctParamsModelImpl::signal_GlobalValueChanged()
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> ModelFctParamsModelImpl::signal_RequiredFileChanged()
 {
@@ -276,16 +276,13 @@ sigc::signal<void> ModelFctParamsModelImpl::signal_RequiredFileChanged()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ModelFctParamsModelImpl::signal_ParamsChanged()
 {
   return m_signal_ParamsChanged;
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> ModelFctParamsModelImpl::signal_ParamsChangedFromApp()
 {
@@ -294,7 +291,6 @@ sigc::signal<void> ModelFctParamsModelImpl::signal_ParamsChangedFromApp()
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> ModelFctParamsModelImpl::signal_RequiredFilesChangedFromApp()
 {

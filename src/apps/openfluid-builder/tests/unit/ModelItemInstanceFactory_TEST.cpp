@@ -63,59 +63,59 @@
 
 BOOST_AUTO_TEST_CASE(test_init)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
+//  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(TESTSBUILDERCONFIG_OUTPUT_BINARY_DIR);
 }
 
-BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
-{
-  openfluid::machine::ModelItemSignatureInstance Plug;
-
-  // throw "Function Signature is not set. Creation is impossible."
-  BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
-
-  // create an unavailable function
-  openfluid::ware::FunctionSignature* PlugSignature =
-      new openfluid::ware::FunctionSignature();
-  PlugSignature->ID = "inexistant function id";
-  Plug.Signature = PlugSignature;
-
-  // throw OFException from openfluid::machine::FunctionPluginsManager
-  BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
-
-  delete PlugSignature;
-}
-
-BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
-{
-  // create a generator signature
-  openfluid::guicommon::GeneratorSignature FixedGenSignature(openfluid::fluidx::GeneratorDescriptor::Fixed);
-
-  openfluid::machine::ModelItemSignatureInstance Sign;
-  Sign.Signature = &FixedGenSignature;
-
-  openfluid::machine::ModelItemInstance* Item =
-      ModelItemInstanceFactory::createGeneratorItemFromSignature(
-          Sign, "MyVar", "MyClass", "1");
-
-  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::fluidx::ModelItemDescriptor::Generator);
-  BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
-  BOOST_CHECK_EQUAL(Item->Signature->ID,openfluid::machine::Factory::buildGeneratorID("MyVar",false,"MyClass"));
-
-  delete Item;
-}
-
-BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation)
-{
-  openfluid::machine::ModelItemSignatureInstance FctSignature =
-      *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
-          "tests.primitives.use");
-
-  openfluid::machine::ModelItemInstance* Item =
-      ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature);
-
-  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::fluidx::ModelItemDescriptor::PluggedFunction);
-  BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
-  BOOST_CHECK_EQUAL(Item->Signature->ID,FctSignature.Signature->ID);
-
-  delete Item;
-}
+//BOOST_AUTO_TEST_CASE(test_CheckSignatureElements)
+//{
+//  openfluid::machine::ModelItemSignatureInstance Plug;
+//
+//  // throw "Function Signature is not set. Creation is impossible."
+//  BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
+//
+//  // create an unavailable function
+//  openfluid::ware::FunctionSignature* PlugSignature =
+//      new openfluid::ware::FunctionSignature();
+//  PlugSignature->ID = "inexistant function id";
+//  Plug.Signature = PlugSignature;
+//
+//  // throw OFException from openfluid::machine::FunctionPluginsManager
+//  BOOST_CHECK_THROW(ModelItemInstanceFactory::createPluggableItemFromSignature(Plug),openfluid::base::OFException);
+//
+//  delete PlugSignature;
+//}
+//
+//BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
+//{
+//  // create a generator signature
+//  openfluid::guicommon::GeneratorSignature FixedGenSignature(openfluid::fluidx::GeneratorDescriptor::Fixed);
+//
+//  openfluid::machine::ModelItemSignatureInstance Sign;
+//  Sign.Signature = &FixedGenSignature;
+//
+//  openfluid::machine::ModelItemInstance* Item =
+//      ModelItemInstanceFactory::createGeneratorItemFromSignature(
+//          Sign, "MyVar", "MyClass", "1");
+//
+//  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::fluidx::ModelItemDescriptor::Generator);
+//  BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
+//  BOOST_CHECK_EQUAL(Item->Signature->ID,openfluid::machine::Factory::buildGeneratorID("MyVar",false,"MyClass"));
+//
+//  delete Item;
+//}
+//
+//BOOST_AUTO_TEST_CASE(test_RegularFunctionCreation)
+//{
+//  openfluid::machine::ModelItemSignatureInstance FctSignature =
+//      *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+//          "tests.primitives.use");
+//
+//  openfluid::machine::ModelItemInstance* Item =
+//      ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature);
+//
+//  BOOST_CHECK_EQUAL(Item->ItemType,openfluid::fluidx::ModelItemDescriptor::PluggedFunction);
+//  BOOST_CHECK_EQUAL(Item->SDKCompatible,true);
+//  BOOST_CHECK_EQUAL(Item->Signature->ID,FctSignature.Signature->ID);
+//
+//  delete Item;
+//}

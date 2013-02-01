@@ -119,6 +119,12 @@ BOOST_AUTO_TEST_CASE(check_construction)
       0);
   BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.functionB"), 4);
   BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.wrongfunction"), -1);
+
+  std::vector<std::string> IDs = Model.getOrderedIDs();
+
+  BOOST_CHECK_EQUAL(IDs.size(), 5);
+  BOOST_CHECK_EQUAL(IDs.at(0), "GENERATOR__SCALAR__tests.generator.interp__TU");
+  BOOST_CHECK_EQUAL(IDs.at(4), "tests.functionB");
 }
 
 // =====================================================================

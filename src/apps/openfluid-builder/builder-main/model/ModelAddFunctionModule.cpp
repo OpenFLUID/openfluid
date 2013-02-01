@@ -55,22 +55,24 @@
 #include "ModelAddFunctionModule.hpp"
 
 #include <gtkmm/stock.h>
+#include <algorithm>
 
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/guicommon/BuilderModel.hpp>
 
 #include "ModelAvailFctComponent.hpp"
 #include "ModelFctDetailComponent.hpp"
 
 #include "ModelAddFunctionCoordinator.hpp"
 
-
 // =====================================================================
 // =====================================================================
 
-
-ModelAddFunctionModule::ModelAddFunctionModule()
+ModelAddFunctionModule::ModelAddFunctionModule(
+    openfluid::guicommon::BuilderModel& Model) :
+    mp_Model(&Model)
 {
   mp_ModelAvailFctMVP = new ModelAvailFctComponent();
   mp_ModelFctDetailMVP = new ModelFctDetailComponent();
@@ -78,16 +80,15 @@ ModelAddFunctionModule::ModelAddFunctionModule()
   mp_Coordinator = new ModelAddFunctionCoordinator(
       *mp_ModelAvailFctMVP->getModel(), *mp_ModelFctDetailMVP->getModel());
 
-  mp_Coordinator->signal_AvailFctSelectionChanged().connect(sigc::mem_fun(
-      *this, &ModelAddFunctionModule::whenAvailFctSelectionChanged));
+  mp_Coordinator->signal_AvailFctSelectionChanged().connect(
+      sigc::mem_fun(*this,
+                    &ModelAddFunctionModule::whenAvailFctSelectionChanged));
 
   compose();
-
 }
 
 // =====================================================================
 // =====================================================================
-
 
 ModelAddFunctionModule::~ModelAddFunctionModule()
 {
@@ -98,16 +99,6 @@ ModelAddFunctionModule::~ModelAddFunctionModule()
 
 // =====================================================================
 // =====================================================================
-
-void ModelAddFunctionModule::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance)
-{
-  mp_ModelInstance = &ModelInstance;
-}
-
-// =====================================================================
-// =====================================================================
-
 
 void ModelAddFunctionModule::compose()
 {
@@ -131,7 +122,6 @@ void ModelAddFunctionModule::compose()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ModelAddFunctionModule::signal_ModelFunctionAdded()
 {
   return m_signal_ModelFunctionAdded;
@@ -139,7 +129,6 @@ sigc::signal<void> ModelAddFunctionModule::signal_ModelFunctionAdded()
 
 // =====================================================================
 // =====================================================================
-
 
 openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionModule::showDialog()
 {
@@ -158,7 +147,6 @@ openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionModule::showDial
 // =====================================================================
 // =====================================================================
 
-
 void ModelAddFunctionModule::whenAvailFctSelectionChanged()
 {
   bool SelectedFctAlreadyInModel = false;
@@ -168,25 +156,18 @@ void ModelAddFunctionModule::whenAvailFctSelectionChanged()
     std::string SelectedFctId =
         mp_Coordinator->getSelectedSignature()->Signature->ID;
 
-    std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
-    for (it = mp_ModelInstance->getItems().begin(); it
-        != mp_ModelInstance->getItems().end(); ++it)
-    {
-      if ((*it)->Signature->ID == SelectedFctId)
-      {
-        SelectedFctAlreadyInModel = true;
-        break;
-      }
-    }
+    std::vector<std::string> IDs = mp_Model->getOrderedIDs();
+
+    SelectedFctAlreadyInModel = std::count(IDs.begin(), IDs.end(),
+                                           SelectedFctId);
   }
 
   mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK,
-      !SelectedFctAlreadyInModel);
+                                    !SelectedFctAlreadyInModel);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelAddFunctionModule::setSignatures(
     openfluid::guicommon::FunctionSignatureRegistry& Signatures)

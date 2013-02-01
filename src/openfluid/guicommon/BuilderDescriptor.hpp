@@ -57,6 +57,7 @@
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/guicommon/BuilderModel.hpp>
 
 namespace openfluid {
 namespace guicommon {
@@ -66,6 +67,8 @@ class BuilderDescriptor
   private:
 
     BuilderDomain m_Domain;
+
+    BuilderModel m_Model;
 
     openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
@@ -78,6 +81,8 @@ class BuilderDescriptor
     void setFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
 
     BuilderDomain& getDomain();
+
+    BuilderModel& getModel();
 
     openfluid::fluidx::RunDescriptor& getRunDescriptor();
 };

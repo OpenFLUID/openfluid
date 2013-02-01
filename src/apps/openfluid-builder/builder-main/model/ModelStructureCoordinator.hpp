@@ -61,12 +61,14 @@
 
 namespace openfluid {
 namespace machine {
-class SimulationBlob;
-class ModelInstance;
 class ModelItemInstance;
 }
 namespace guicommon {
 class FunctionSignatureRegistry;
+class BuilderDescriptor;
+}
+namespace fluidx {
+class ModelItemDescriptor;
 }
 }
 
@@ -88,9 +90,7 @@ class ModelStructureCoordinator: public sigc::trackable
 
     openfluid::guicommon::FunctionSignatureRegistry* mp_SignatureRegistry;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::machine::SimulationBlob* mp_SimBlob;
+    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     ModelFctDetailModel& m_FctDetailModel;
 
@@ -130,17 +130,14 @@ class ModelStructureCoordinator: public sigc::trackable
 
   public:
 
-        ModelStructureCoordinator(ModelFctDetailModel& FctDetailModel,
-            ModelStructureModel& StructureModel,
-            ModelGlobalParamsModel& GlobalParamsModel,
-            ModelParamsPanel& ParamsPanel,
-            BuilderListToolBox& StructureListToolBox);
+    ModelStructureCoordinator(
+        ModelFctDetailModel& FctDetailModel,
+        ModelStructureModel& StructureModel,
+        ModelGlobalParamsModel& GlobalParamsModel,
+        ModelParamsPanel& ParamsPanel, BuilderListToolBox& StructureListToolBox,
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     sigc::signal<void> signal_ModelChanged();
-
-    void
-    setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
 
     void setCurrentFunction(std::string FunctionName);
 
@@ -151,7 +148,7 @@ class ModelStructureCoordinator: public sigc::trackable
     void updateWithFctParamsComponents();
 
     void createModelFctParamsComponent(
-        openfluid::machine::ModelItemInstance* Item);
+        openfluid::fluidx::ModelItemDescriptor* Item);
 
     void eraseModelFctParamsComponent(std::string FunctionId);
 

@@ -80,6 +80,7 @@ void BuilderDescriptor::setFluidXDescriptor(
     openfluid::fluidx::FluidXDescriptor& FluidXDesc)
 {
   m_Domain.setDomainDescriptor(FluidXDesc.getDomainDescriptor());
+  m_Model.setModelDescriptor(FluidXDesc.getModelDescriptor());
   mp_RunDesc = &(FluidXDesc.getRunDescriptor());
 }
 
@@ -89,6 +90,14 @@ void BuilderDescriptor::setFluidXDescriptor(
 BuilderDomain& BuilderDescriptor::getDomain()
 {
   return m_Domain;
+}
+
+// =====================================================================
+// =====================================================================
+
+BuilderModel& BuilderDescriptor::getModel()
+{
+  return m_Model;
 }
 
 // =====================================================================

@@ -64,10 +64,10 @@
 // =====================================================================
 
 
-ModelStructureComponent::ModelStructureComponent()
+ModelStructureComponent::ModelStructureComponent(openfluid::guicommon::BuilderModel& Model)
 {
   ModelStructureColumns* TreeColumns = new ModelStructureColumns();
-  mp_Model = new ModelStructureModelImpl();
+  mp_Model = new ModelStructureModelImpl(Model);
   mp_View = new ModelStructureViewImpl(*TreeColumns);
   mp_AdapterModel = new ModelStructureAdapterModelImpl(*TreeColumns);
   mp_Adapter = new ModelStructureAdapter(*mp_AdapterModel, *mp_View);

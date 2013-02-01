@@ -58,9 +58,11 @@
 #include "BuilderMVPComponent.hpp"
 
 namespace openfluid {
-namespace machine {
-class ModelInstance;
-class ModelItemInstance;
+namespace guicommon {
+class BuilderModel;
+}
+namespace fluidx {
+class ModelItemDescriptor;
 }
 }
 
@@ -88,8 +90,8 @@ class ModelFctParamsComponent: public BuilderMVPComponent
 
   public:
 
-    ModelFctParamsComponent(openfluid::machine::ModelItemInstance* Item,
-        openfluid::machine::ModelInstance* ModelInstance);
+    ModelFctParamsComponent(openfluid::fluidx::ModelItemDescriptor* Item,
+                            openfluid::guicommon::BuilderModel& Model);
 
     ~ModelFctParamsComponent();
 

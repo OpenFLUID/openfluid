@@ -64,23 +64,19 @@
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/infobar.h>
 
-namespace openfluid {
-namespace core {
-class CoreRepository;
-}
-namespace machine {
-class ModelInstance;
-}
-}
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
+namespace openfluid {
+namespace guicommon {
+class BuilderDescriptor;
+}
+}
 
 class ModelGeneratorCreationDialog
 {
   private:
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
-
-    openfluid::machine::ModelInstance* mp_ModelInstance;
+    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     Gtk::Dialog* mp_Dialog;
 
@@ -105,12 +101,13 @@ class ModelGeneratorCreationDialog
 
   public:
 
-    ModelGeneratorCreationDialog(openfluid::core::CoreRepository& CoreRepos,
-        openfluid::machine::ModelInstance* ModelInstance);
+    ModelGeneratorCreationDialog(
+        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     ~ModelGeneratorCreationDialog();
 
-    std::map<std::string, std::string> show();
+    openfluid::fluidx::GeneratorDescriptor* show(
+        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method);
 };
 
 #endif /* __MODELGENERATORCREATIONDIALOG_HPP__ */

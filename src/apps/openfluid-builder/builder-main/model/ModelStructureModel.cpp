@@ -57,56 +57,11 @@
 #include <glibmm/i18n.h>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/base/OFException.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-
-#include "ModelItemInstanceFactory.hpp"
-
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/guicommon/BuilderModel.hpp>
 
 // =====================================================================
 // =====================================================================
-
-
-bool ModelStructureModelImpl::isModelInstance()
-{
-  if (!mp_ModelInstance)
-  {
-    throw openfluid::base::OFException("OpenFLUID Builder",
-        "ModelStructureModel::isModelInstance",
-        "no Model Instance. Operation is impossible.");
-    return false;
-  }
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool ModelStructureModelImpl::areMoveIndexesValid(unsigned int From,
-    unsigned int To)
-{
-  unsigned int ModelListSize = getFctCount();
-
-  if (!(From < ModelListSize && To < ModelListSize))
-  {
-    throw openfluid::base::OFException("OpenFLUID Builder",
-        "ModelStructureModel::areMoveIndexesValid",
-        "Bad indexes of items to move");
-    return false;
-  }
-
-  if (From == To)
-    return false;
-
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
 
 bool ModelStructureModelImpl::isModelEmpty()
 {
@@ -116,7 +71,6 @@ bool ModelStructureModelImpl::isModelEmpty()
 // =====================================================================
 // =====================================================================
 
-
 int ModelStructureModelImpl::getLastPosition()
 {
   return isModelEmpty() ? -1 : getFctCount() - 1;
@@ -125,17 +79,15 @@ int ModelStructureModelImpl::getLastPosition()
 // =====================================================================
 // =====================================================================
 
-
-ModelStructureModelImpl::ModelStructureModelImpl() :
-  mp_ModelInstance(0), mp_CoreRepos(0), m_CurrentSelection(-1),
-      m_AppRequestedSelection(-1)
+ModelStructureModelImpl::ModelStructureModelImpl(
+    openfluid::guicommon::BuilderModel& Model) :
+    mp_Model(&Model), m_CurrentSelection(-1), m_AppRequestedSelection(-1)
 {
-
+  requestSelectionByAppAt(0);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 ModelStructureModelImpl::~ModelStructureModelImpl()
 {
@@ -145,7 +97,6 @@ ModelStructureModelImpl::~ModelStructureModelImpl()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ModelStructureModelImpl::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
@@ -153,7 +104,6 @@ sigc::signal<void> ModelStructureModelImpl::signal_FromUserSelectionChanged()
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> ModelStructureModelImpl::signal_FromAppModelChanged()
 {
@@ -163,7 +113,6 @@ sigc::signal<void> ModelStructureModelImpl::signal_FromAppModelChanged()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ModelStructureModelImpl::signal_FromAppSelectionRequested()
 {
   return m_signal_FromAppSelectionRequested;
@@ -171,22 +120,6 @@ sigc::signal<void> ModelStructureModelImpl::signal_FromAppSelectionRequested()
 
 // =====================================================================
 // =====================================================================
-
-
-void ModelStructureModelImpl::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::core::CoreRepository* CoreRepos)
-{
-  mp_ModelInstance = &ModelInstance;
-  mp_CoreRepos = CoreRepos;
-
-  update();
-  requestSelectionByAppAt(0);
-}
-
-// =====================================================================
-// =====================================================================
-
 
 void ModelStructureModelImpl::update()
 {
@@ -197,66 +130,43 @@ void ModelStructureModelImpl::update()
 // =====================================================================
 // =====================================================================
 
-
-openfluid::machine::ModelInstance* ModelStructureModelImpl::getModelInstance()
+std::vector<std::string> ModelStructureModelImpl::getModelIDs()
 {
-  if (isModelInstance())
-    return mp_ModelInstance;
-
-  return 0;
+  return mp_Model->getOrderedIDs();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelStructureModelImpl::appendFunction(
-    openfluid::machine::ModelItemInstance* Item)
+    openfluid::fluidx::ModelItemDescriptor* ItemDesc)
 {
-  if (isModelInstance() && Item)
-  {
-    mp_ModelInstance->appendItem(Item);
+  mp_Model->appendItem(ItemDesc);
 
-    signal_FromAppModelChanged().emit();
+  signal_FromAppModelChanged().emit();
 
-    requestSelectionByAppAt(getLastPosition());
-  }
+  requestSelectionByAppAt(getLastPosition());
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelStructureModelImpl::moveFunction(unsigned int From, unsigned int To)
 {
-  if (isModelInstance() && areMoveIndexesValid(From, To))
-  {
-    std::list<openfluid::machine::ModelItemInstance*>::const_iterator itFrom;
-    itFrom = mp_ModelInstance->getItems().begin();
-    std::advance(itFrom, From);
-    openfluid::machine::ModelItemInstance* Item = *itFrom;
+  mp_Model->moveItem(From, To);
 
-    mp_ModelInstance->deleteItem(From);
-
-    if (To == getFctCount())
-      mp_ModelInstance->appendItem(Item);
-    else
-      mp_ModelInstance->insertItem(Item, To);
-
-    signal_FromAppModelChanged().emit();
-    requestSelectionByAppAt(To);
-  }
+  signal_FromAppModelChanged().emit();
+  requestSelectionByAppAt(To);
 }
 
 // =====================================================================
 // =====================================================================
 
-
 void ModelStructureModelImpl::moveTowardTheBegin()
 {
-  if (getCurrentSelection() > -1)
+  if (m_CurrentSelection > -1)
   {
-    int From = getCurrentSelection();
+    int From = m_CurrentSelection;
     int To = From == 0 ? getLastPosition() : From - 1;
     moveFunction(From, To);
   }
@@ -265,12 +175,11 @@ void ModelStructureModelImpl::moveTowardTheBegin()
 // =====================================================================
 // =====================================================================
 
-
 void ModelStructureModelImpl::moveTowardTheEnd()
 {
-  if (getCurrentSelection() > -1)
+  if (m_CurrentSelection > -1)
   {
-    int From = getCurrentSelection();
+    int From = m_CurrentSelection;
     int To = From == getLastPosition() ? 0 : From + 1;
     moveFunction(From, To);
   }
@@ -279,37 +188,25 @@ void ModelStructureModelImpl::moveTowardTheEnd()
 // =====================================================================
 // =====================================================================
 
-
-std::string ModelStructureModelImpl::removeFunctionAt(int Position)
+void ModelStructureModelImpl::removeFunctionAt(int Position)
 {
-  std::string FunctionId = "";
+  if (Position < 0)
+    return;
 
-  if (isModelInstance() && Position > -1)
-  {
-    std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
-        mp_ModelInstance->getItems().begin();
-    std::advance(it, Position);
+  mp_Model->removeItem(Position);
 
-    FunctionId = (*it)->Signature->ID;
+  signal_FromAppModelChanged().emit();
 
-    mp_ModelInstance->deleteItem(Position);
-
-    signal_FromAppModelChanged().emit();
-
-    if (isModelEmpty())
-      requestSelectionByAppAt(-1);
-    else if (Position == (int) getFctCount())
-      requestSelectionByAppAt(Position - 1);
-    else
-      requestSelectionByAppAt(Position);
-  }
-
-  return FunctionId;
+  if (isModelEmpty())
+    requestSelectionByAppAt(-1);
+  else if (Position == (int) getFctCount())
+    requestSelectionByAppAt(Position - 1);
+  else
+    requestSelectionByAppAt(Position);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelStructureModelImpl::setCurrentSelectionByUserAt(int Position)
 {
@@ -320,7 +217,6 @@ void ModelStructureModelImpl::setCurrentSelectionByUserAt(int Position)
 // =====================================================================
 // =====================================================================
 
-
 int ModelStructureModelImpl::getCurrentSelection()
 {
   return m_CurrentSelection;
@@ -329,83 +225,32 @@ int ModelStructureModelImpl::getCurrentSelection()
 // =====================================================================
 // =====================================================================
 
-
-openfluid::machine::ModelItemSignatureInstance* ModelStructureModelImpl::getCurrentSelectionSignature()
-{
-  if (m_CurrentSelection > -1)
-  {
-    std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
-        mp_ModelInstance->getItems().begin();
-
-    std::advance(it, m_CurrentSelection);
-
-    return *it;
-  }
-  return (openfluid::machine::ModelItemSignatureInstance*) 0;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string ModelStructureModelImpl::getCurrentSelectionName()
-{
-  openfluid::machine::ModelItemSignatureInstance* SelectedSignature =
-      getCurrentSelectionSignature();
-
-  if (SelectedSignature)
-    return SelectedSignature->Signature->ID;
-
-  return "";
-}
-
-// =====================================================================
-// =====================================================================
-
-
 unsigned int ModelStructureModelImpl::getFctCount()
 {
-  if (mp_ModelInstance)
-    return mp_ModelInstance->getItemsCount();
-
-  return 0;
+  return mp_Model->getItemsCount();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelStructureModelImpl::requestSelectionByAppAt(int Position)
 {
   m_AppRequestedSelection = Position;
 
 //  if (Position != m_CurrentSelection)
-    m_signal_FromAppSelectionRequested.emit();
+  m_signal_FromAppSelectionRequested.emit();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelStructureModelImpl::requestSelectionByApp(std::string FunctionName)
 {
-  for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
-      mp_ModelInstance->getItems().begin(); it
-      != mp_ModelInstance->getItems().end(); ++it)
-  {
-    if ((*it)->Signature->ID == FunctionName)
-    {
-      int Index = std::distance(mp_ModelInstance->getItems().begin(), it);
-      requestSelectionByAppAt(Index);
-      return;
-    }
-  }
-  requestSelectionByAppAt(-1);
+  requestSelectionByAppAt(mp_Model->getFirstItemIndex(FunctionName));
 }
 
 // =====================================================================
 // =====================================================================
-
 
 int ModelStructureModelImpl::getAppRequestedSelection()
 {
@@ -414,22 +259,3 @@ int ModelStructureModelImpl::getAppRequestedSelection()
 
 // =====================================================================
 // =====================================================================
-
-
-int ModelStructureModelImpl::getPositionOfFunction(std::string FunctionId)
-{
-  for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
-      mp_ModelInstance->getItems().begin(); it
-      != mp_ModelInstance->getItems().end(); ++it)
-  {
-    if ((*it)->Signature->ID == FunctionId)
-    {
-      unsigned int pos = (unsigned int) std::distance(
-          mp_ModelInstance->getItems().begin(), it);
-
-      return pos;
-    }
-  }
-
-  return -1;
-}

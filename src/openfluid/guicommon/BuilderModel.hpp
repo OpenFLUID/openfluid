@@ -91,6 +91,10 @@ class BuilderModel
      */
     int getFirstItemIndex(std::string ItemID);
 
+    int getFirstItemIndex(openfluid::fluidx::ModelItemDescriptor* Item);
+
+    std::vector<std::string> getOrderedIDs();
+
     void appendItem(openfluid::fluidx::ModelItemDescriptor* Item);
 
     /**
@@ -121,11 +125,14 @@ class BuilderModel
 
     unsigned int getItemsCount() const;
 
-    void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value);
+    void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key,
+                            const openfluid::ware::WareParamKey_t& Value);
 
     void setGlobalParameters(const openfluid::ware::WareParams_t& Params);
 
     openfluid::ware::WareParams_t getGlobalParameters();
+
+    void eraseGlobalParameter(const openfluid::ware::WareParamKey_t& Key);
 };
 
 }

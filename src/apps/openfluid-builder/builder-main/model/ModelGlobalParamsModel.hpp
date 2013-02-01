@@ -61,14 +61,13 @@
 #include <string>
 
 namespace openfluid {
-namespace machine {
-class ModelInstance;
+namespace guicommon {
+class BuilderModel;
 }
 }
 
 // =====================================================================
 // =====================================================================
-
 
 class ModelGlobalParamsModel
 {
@@ -77,9 +76,6 @@ class ModelGlobalParamsModel
     virtual sigc::signal<void> signal_FromAppModelChanged() = 0;
 
     virtual sigc::signal<void> signal_GlobalValueChanged() = 0;
-
-    virtual void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance) = 0;
 
     virtual void update() = 0;
 
@@ -101,7 +97,6 @@ class ModelGlobalParamsModel
 // =====================================================================
 // =====================================================================
 
-
 class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 {
   private:
@@ -110,7 +105,7 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
     sigc::signal<void> m_signal_GlobalValueChanged;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
+    openfluid::guicommon::BuilderModel* mp_Model;
 
     std::map<std::string, std::string> m_ByParamNameParamUnit;
 
@@ -121,14 +116,11 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
   public:
 
-    ModelGlobalParamsModelImpl();
+    ModelGlobalParamsModelImpl(openfluid::guicommon::BuilderModel& Model);
 
     sigc::signal<void> signal_FromAppModelChanged();
 
     sigc::signal<void> signal_GlobalValueChanged();
-
-    void
-    setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
 
     void update();
 
