@@ -156,7 +156,7 @@ class EngineProjectNewDialog
 
     void onImportProjectButtonClicked();
 
-    void appendDirectoryContent(boost::filesystem::path DirectoryPath,
+    void appendDirectoryContent(const boost::filesystem::path& DirectoryPath,
         Gtk::TreeIter DirectoryIter);
 
     bool onTestExpandRow(const Gtk::TreeModel::iterator& Iter,

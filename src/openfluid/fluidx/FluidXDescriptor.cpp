@@ -1158,12 +1158,9 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
     CurrentFile = CurrentFilePath.string();
     try
     {
-      //OStream << "    file: " << CurrentFilePath.leaf() << " ";
-      mp_Listener->onFileLoad(CurrentFilePath.leaf());
+      mp_Listener->onFileLoad(CurrentFilePath.filename().string());
       parseFile(CurrentFile);
       mp_Listener->onFileLoaded(openfluid::base::Listener::OK);
-      //OStream << "[OK]" << std::endl;
-
     }
     catch (...)
     {

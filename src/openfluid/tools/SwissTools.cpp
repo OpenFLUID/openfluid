@@ -172,8 +172,8 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
 
       if (boost::filesystem::is_regular(it->status()) && boost::ends_with(it->path().string(),FileExt))
       {
-        if (WithPath) FileList.push_back(it->string());
-        else FileList.push_back(it->path().leaf());
+        if (WithPath) FileList.push_back(it->path().string());
+        else FileList.push_back(it->path().filename().string());
       }
     }
   }
@@ -218,8 +218,8 @@ std::vector<std::string> GetFilesBySuffixAndExt(const std::string& DirToExplore,
 
       if (boost::filesystem::is_regular(it->status()) && boost::ends_with(it->path().string(),FileEnd))
       {
-        if (WithPath) FileList.push_back(it->string());
-        else FileList.push_back(it->path().leaf());
+        if (WithPath) FileList.push_back(it->path().string());
+        else FileList.push_back(it->path().filename().string());
       }
     }
   }
@@ -304,7 +304,7 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
 
   boost::filesystem::path SourceDirPath(SourceDir);
   boost::filesystem::path IntoDirPath(IntoDir);
-  boost::filesystem::path DestDirPath(IntoDir+"/"+SourceDirPath.leaf());
+  boost::filesystem::path DestDirPath(IntoDir+"/"+SourceDirPath.filename().string());
 
 
   if (boost::filesystem::is_directory(DestDirPath)) boost::filesystem::remove_all(DestDirPath);
@@ -318,12 +318,12 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
 
     if (boost::filesystem::is_regular(it->status()))
     {
-      boost::filesystem::copy_file(it->path(),boost::filesystem::path(DestDirPath.string()+"/"+it->path().leaf()));
+      boost::filesystem::copy_file(it->path(),boost::filesystem::path(DestDirPath.string()+"/"+it->path().filename().string()));
     }
 
     if (boost::filesystem::is_directory(it->status()))
     {
-      if (!DontCopyDotDirs || (DontCopyDotDirs && !boost::starts_with(it->path().leaf(),".")))
+      if (!DontCopyDotDirs || (DontCopyDotDirs && !boost::starts_with(it->path().filename().string(),".")))
       {
         CopyDirectoryRecursively(it->path().string(),DestDirPath.string(), DontCopyDotDirs);
       }
