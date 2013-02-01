@@ -59,9 +59,11 @@
 #include <string>
 
 namespace openfluid {
-namespace machine {
-class ModelInstance;
-class SimulationBlob;
+namespace fluidx {
+class FluidXDescriptor;
+}
+namespace guicommon {
+class BuilderDescriptor;
 }
 }
 
@@ -89,8 +91,7 @@ class ProjectExplorerAdapter: public sigc::trackable
 
     sigc::signal<void> signal_FromUserActivationChanged();
 
-    void initialize(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob);
+    void initialize();
 
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
         getActivatedElements();
@@ -101,7 +102,7 @@ class ProjectExplorerAdapter: public sigc::trackable
 
     void updateSimulation();
 
-    void updateResults(bool WithWarningState);
+//    void updateResults(bool WithWarningState);
 
 };
 

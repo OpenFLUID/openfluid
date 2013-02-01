@@ -60,7 +60,9 @@
 namespace openfluid {
 namespace machine {
 class ModelInstance;
-class SimulationBlob;
+}
+namespace guicommon {
+class BuilderDomain;
 }
 }
 
@@ -97,10 +99,6 @@ class DomainStructureCoordinator: public sigc::trackable
         BuilderListToolBox& StructureListToolBox);
 
     sigc::signal<void> signal_DomainChanged();
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
 
     void update();
 

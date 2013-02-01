@@ -59,11 +59,11 @@
 #include <string>
 
 namespace openfluid {
-namespace core {
-class UnitsCollection;
-class CoreRepository;
+namespace guicommon {
+class BuilderDomain;
 }
 }
+
 
 class DomainIDataModel
 {
@@ -75,12 +75,9 @@ class DomainIDataModel
 
     virtual bool isEmptyDataList() = 0;
 
-    virtual void setEngineRequirements(
-        openfluid::core::CoreRepository& CoreRepos) = 0;
-
     virtual void update() = 0;
 
-    virtual openfluid::core::UnitsCollection* getUnitsCollection() = 0;
+    virtual std::string getClass() = 0;
 
     virtual void removeData(std::string DataName) = 0;
 
@@ -100,7 +97,7 @@ class DomainIDataModelImpl: public DomainIDataModel
 {
   private:
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
     sigc::signal<void> m_signal_FromAppDataInit;
 
@@ -108,11 +105,9 @@ class DomainIDataModelImpl: public DomainIDataModel
 
     std::string m_ClassName;
 
-    openfluid::core::UnitsCollection* m_UnitsColl;
-
   public:
 
-    DomainIDataModelImpl();
+    DomainIDataModelImpl(openfluid::guicommon::BuilderDomain& Domain);
 
     sigc::signal<void> signal_FromAppDataInit();
 
@@ -120,11 +115,9 @@ class DomainIDataModelImpl: public DomainIDataModel
 
     bool isEmptyDataList();
 
-    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
-
     void update();
 
-    openfluid::core::UnitsCollection* getUnitsCollection();
+    std::string getClass();
 
     void removeData(std::string DataName);
 

@@ -57,15 +57,19 @@
 
 #include <gtkmm/treestore.h>
 
-#include <openfluid/core/CoreRepository.hpp>
-
 #include "DomainEventsColumns.hpp"
+
+namespace openfluid {
+namespace guicommon {
+class BuilderUnit;
+}
+}
 
 class DomainEventsAdapterModel
 {
   public:
 
-    virtual void setUnitsColl(openfluid::core::UnitsCollection* UnitsColl) = 0;
+    virtual void setUnits(const std::map<int, openfluid::guicommon::BuilderUnit>* Units) = 0;
 
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 };
@@ -83,7 +87,7 @@ class DomainEventsAdapterModelImpl: public DomainEventsAdapterModel
 
     DomainEventsAdapterModelImpl();
 
-    void setUnitsColl(openfluid::core::UnitsCollection* UnitsColl);
+    void setUnits(const std::map<int, openfluid::guicommon::BuilderUnit>* Units);
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 };

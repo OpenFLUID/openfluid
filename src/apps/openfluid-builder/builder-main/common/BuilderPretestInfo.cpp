@@ -63,7 +63,7 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
 
-#include "GeneratorSignature.hpp"
+#include <openfluid/guicommon/GeneratorSignature.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -217,7 +217,7 @@ void BuilderPretestInfo::checkGeneratorParamsConsistency(
     openfluid::machine::ModelItemInstance* Item)
 {
   openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
-      (static_cast<GeneratorSignature*> (Item->Signature))->m_GeneratorMethod;
+      (static_cast<openfluid::guicommon::GeneratorSignature*> (Item->Signature))->m_GeneratorMethod;
 
   if (Method == openfluid::fluidx::GeneratorDescriptor::Random
       && !m_RandomMinMaxChecked && (localParamIsSet(Item, "min")

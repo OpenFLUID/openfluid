@@ -63,7 +63,7 @@
 
 void DomainIDataPresenter::whenDataInit()
 {
-  m_Adapter.dataInit(m_Model.getUnitsCollection());
+  m_Adapter.dataInit(m_Model.getClass());
 }
 
 // =====================================================================

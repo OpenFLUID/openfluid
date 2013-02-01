@@ -61,13 +61,12 @@
 #include <gtkmm/dialog.h>
 
 namespace openfluid {
-namespace machine {
-class SimulationBlob;
-class ModelInstance;
+namespace guicommon {
+class BuilderModel;
 }
 }
 
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 
 class ModelAvailFctComponent;
 class ModelFctDetailComponent;
@@ -92,9 +91,7 @@ class ModelAddFunctionModule
 
     sigc::signal<void> m_signal_ModelFunctionAdded;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::machine::SimulationBlob* mp_SimBlob;
+    openfluid::guicommon::BuilderModel* mp_Model;
 
     void compose();
 
@@ -102,18 +99,15 @@ class ModelAddFunctionModule
 
   public:
 
-    ModelAddFunctionModule();
+    ModelAddFunctionModule(openfluid::guicommon::BuilderModel& Model);
 
     ~ModelAddFunctionModule();
 
     sigc::signal<void> signal_ModelFunctionAdded();
 
-    void
-    setEngineRequirements(openfluid::machine::ModelInstance& ModelInstance);
-
     openfluid::machine::ModelItemSignatureInstance* showDialog();
 
-    void setSignatures(FunctionSignatureRegistry& Signatures);
+    void setSignatures(openfluid::guicommon::FunctionSignatureRegistry& Signatures);
 
 };
 

@@ -60,7 +60,7 @@
 #include <gtkmm/treemodel.h>
 #include <glibmm/i18n.h>
 
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include "BuilderTreeStore.hpp"
 
 class ModelAvailFctColumns;
@@ -68,11 +68,16 @@ class ModelAvailFctColumns;
 class ModelAvailFctAdapterModel
 {
   public:
+
     virtual sigc::signal<void> signal_SelectionChanged() = 0;
+
     virtual sigc::signal<void> signal_FunctionsChanged() = 0;
+
     virtual void setSignatures(
-        FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures) = 0;
+        openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures) = 0;
+
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
+
     virtual void setSelectedRow(Gtk::TreeRow Row) = 0;
     virtual openfluid::machine::ModelItemSignatureInstance
     * getSelectedSignature() = 0;
@@ -82,10 +87,15 @@ class ModelAvailFctAdapterModel
 class ModelAvailFctAdapterModelImpl: public ModelAvailFctAdapterModel
 {
   private:
+
     sigc::signal<void> m_signal_SelectionChanged;
+
     sigc::signal<void> m_signal_FunctionsChanged;
+
     Glib::RefPtr<BuilderTreeStore> mref_TreeModel;
+
     ModelAvailFctColumns& m_Columns;
+
     Gtk::TreeRowReference* mp_PluggableTitleRowRef;
     Gtk::TreeRowReference* mp_GeneratorTitleRowRef;
     Gtk::TreeRowReference* mp_FirstAvailableRowRef;
@@ -93,20 +103,29 @@ class ModelAvailFctAdapterModelImpl: public ModelAvailFctAdapterModel
         m_SignaturesById;
     openfluid::machine::ModelItemSignatureInstance* mp_SelectedSignature;
     sigc::signal<void> signal_SelectionChanged();
+
     sigc::signal<void> signal_FunctionsChanged();
+
     void createTitleRows();
+
     Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
     void setAPluggableFunction(
         openfluid::machine::ModelItemSignatureInstance* Function);
     void setAGeneratorFunction(
         openfluid::machine::ModelItemSignatureInstance* Function);
     void defineFirstAvailableRow();
+
   public:
+
     ModelAvailFctAdapterModelImpl(ModelAvailFctColumns& Columns);
+
     ~ModelAvailFctAdapterModelImpl();
+
     void setSignatures(
-        FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures);
+        openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures);
+
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
+
     void setSelectedRow(Gtk::TreeRow Row);
     openfluid::machine::ModelItemSignatureInstance* getSelectedSignature();
     Gtk::TreeRow getFirstAvailableRow();

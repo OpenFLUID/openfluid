@@ -59,7 +59,7 @@
 
 
 ProjectExplorerModelImpl::ProjectExplorerModelImpl() :
-  mp_ModelInstance(0), mp_SimBlob(0), m_ActivatedElementsPair(std::make_pair(
+  m_ActivatedElementsPair(std::make_pair(
       ProjectExplorerCategories::EXPLORER_NONE, ""))
 {
 
@@ -114,24 +114,10 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateSimulationAsked()
 // =====================================================================
 
 
-sigc::signal<void, bool> ProjectExplorerModelImpl::signal_UpdateResultsAsked()
-{
-  return m_signal_UpdateResultsAsked;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ProjectExplorerModelImpl::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
-{
-  mp_ModelInstance = &ModelInstance;
-  mp_SimBlob = &SimBlob;
-
-  m_signal_Initialized.emit();
-}
+//sigc::signal<void, bool> ProjectExplorerModelImpl::signal_UpdateResultsAsked()
+//{
+//  return m_signal_UpdateResultsAsked;
+//}
 
 // =====================================================================
 // =====================================================================
@@ -164,28 +150,10 @@ void ProjectExplorerModelImpl::updateSimulationAsked()
 // =====================================================================
 
 
-void ProjectExplorerModelImpl::updateResultsAsked(bool WithWarningState)
-{
-  m_signal_UpdateResultsAsked.emit(WithWarningState);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::machine::ModelInstance* ProjectExplorerModelImpl::getModelInstance()
-{
-  return mp_ModelInstance;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::machine::SimulationBlob* ProjectExplorerModelImpl::getSimulationBlob()
-{
-  return mp_SimBlob;
-}
+//void ProjectExplorerModelImpl::updateResultsAsked(bool WithWarningState)
+//{
+//  m_signal_UpdateResultsAsked.emit(WithWarningState);
+//}
 
 // =====================================================================
 // =====================================================================

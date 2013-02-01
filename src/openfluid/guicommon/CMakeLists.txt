@@ -6,8 +6,8 @@ PKG_CHECK_MODULES(GTKMM REQUIRED gtkmm-2.4)
 
 ADD_DEFINITIONS(${LibXML2_CFLAGS})
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS})
-LINK_DIRECTORIES(${GLIBMM_LIBRARY_DIRS} ${GTKMM_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS})
+LINK_DIRECTORIES(${GLIBMM_LIBRARY_DIRS} ${GTKMM_LIBRARY_DIRS} ${LibXML2_LIBRARY_DIRS})
 
 
 FILE(GLOB OPENFLUID_GUICOMMON_CPP *.cpp)
@@ -29,6 +29,7 @@ TARGET_LINK_LIBRARIES(openfluid-guicommon
                       openfluid-machine
                       openfluid-market
                       openfluid-fluidx
+                      ${LibXML2_LIBRARIES}  
                       ${GLIBMM_LIBRARIES}
                       ${GTKMM_LIBRARIES}  
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})

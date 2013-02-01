@@ -56,14 +56,21 @@ class ModelStructureAdapter;
 class ModelStructurePresenter: public sigc::trackable
 {
   private:
+
     ModelStructureModel& m_Model;
+
     ModelStructureAdapter& m_Adapter;
+
     void whenModelChanged();
+
     void whenSelectionChanged();
+
     void whenFromAppSelectionRequested();
+
   public:
+
     ModelStructurePresenter(ModelStructureModel& Model,
-        ModelStructureAdapter& Adapter);
+                            ModelStructureAdapter& Adapter);
 };
 
 #endif /* MODELSTRUCTUREPRESENTER_HPP_ */

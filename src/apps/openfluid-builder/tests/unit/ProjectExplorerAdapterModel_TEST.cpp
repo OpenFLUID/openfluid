@@ -65,6 +65,7 @@
 #include "tests-config.hpp"
 
 #include <openfluid/fluidx/RunDescriptor.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -73,15 +74,23 @@ struct init_AdapterModel
 {
     ProjectExplorerAdapterModelSub* mp_AdapterModel;
     ProjectExplorerColumns m_Columns;
+    EngineProject* mp_EngProject;
 
     init_AdapterModel()
     {
       BuilderTestHelper::getInstance()->initGtk();
-      mp_AdapterModel = new ProjectExplorerAdapterModelSub();
+
+      std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+          + "/OPENFLUID.IN.Primitives";
+      mp_EngProject = new EngineProject(Path);
+
+      mp_AdapterModel = new ProjectExplorerAdapterModelSub(
+          mp_EngProject->getBuilderDesc());
     }
 
     ~init_AdapterModel()
     {
+      delete mp_EngProject;
       delete mp_AdapterModel;
     }
 };
@@ -91,100 +100,88 @@ BOOST_FIXTURE_TEST_SUITE(ProjectExplorerAdapterModelTest, init_AdapterModel)
 // =====================================================================
 // =====================================================================
 
-
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_updateModel)
 {
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = new EngineProject(Path);
-
-  mp_AdapterModel->setModelInstance(EngProject->getModelInstance());
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[0].children().size(),0);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(
+      mp_AdapterModel->getTreeModel()->children()[0].children().size(), 0);
 
   mp_AdapterModel->updateModel();
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[0].children().size(),2);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(
+      mp_AdapterModel->getTreeModel()->children()[0].children().size(), 2);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_updateDomain)
 {
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = new EngineProject(Path);
-
-  mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[1].children().size(),0);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(
+      mp_AdapterModel->getTreeModel()->children()[1].children().size(), 0);
 
   mp_AdapterModel->updateDomain();
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[1].children().size(),2);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(
+      mp_AdapterModel->getTreeModel()->children()[1].children().size(), 2);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_updateRunInfo)
 {
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = new EngineProject(Path);
-
-  mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
-
   Glib::RefPtr<BuilderTreeStore> BuilderStore =
-  Glib::RefPtr<BuilderTreeStore>::cast_static(mp_AdapterModel->getTreeModel());
+      Glib::RefPtr<BuilderTreeStore>::cast_static(
+          mp_AdapterModel->getTreeModel());
 
-  Gtk::TreeRow RunInfoRow = BuilderStore->getRowFromRowRef(*mp_AdapterModel->getRunInfoRowRef());
+  Gtk::TreeRow RunInfoRow = BuilderStore->getRowFromRowRef(
+      *mp_AdapterModel->getRunInfoRowRef());
 
   std::string RunInfoName = RunInfoRow[m_Columns.m_Display];
 
-  BOOST_CHECK_EQUAL(RunInfoName,mp_AdapterModel->generateRunInfoStr("","",1));
+  BOOST_CHECK_EQUAL(RunInfoName, mp_AdapterModel->generateRunInfoStr("","",1));
 
   mp_AdapterModel->updateRunInfo();
 
-  std::string RunInfoStr = mp_AdapterModel->generateRunInfoStr(EngProject->getRunDescriptor().getBeginDate().getAsISOString(),
-      EngProject->getRunDescriptor().getEndDate().getAsISOString(),
-      EngProject->getRunDescriptor().getDeltaT());
+  std::string RunInfoStr = mp_AdapterModel->generateRunInfoStr(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getBeginDate().getAsISOString(),
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getEndDate().getAsISOString(),
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getDeltaT());
 
   std::string NewRunInfoName = RunInfoRow[m_Columns.m_Display];
 
-  BOOST_CHECK_EQUAL(NewRunInfoName,RunInfoStr);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(NewRunInfoName, RunInfoStr);
 }
-
-BOOST_AUTO_TEST_CASE(test_updateResults)
-{
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* EngProject = new EngineProject(Path);
-
-  mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[3].children().size(),0);
-
-  mp_AdapterModel->updateResults(false);
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[3].children().size(),2);
-
-  delete EngProject;
-}
-
+//BOOST_AUTO_TEST_CASE(test_updateResults)
+//{
+//  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+//  + "/OPENFLUID.IN.Primitives";
+//  EngineProject* EngProject = new EngineProject(Path);
+//
+//  mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
+//
+//  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
+//  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[3].children().size(),0);
+//
+//  mp_AdapterModel->updateResults(false);
+//
+//  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
+//  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[3].children().size(),2);
+//
+//  delete EngProject;
+//}
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END();

@@ -62,6 +62,7 @@
 #include "DomainStructureModel.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -73,8 +74,6 @@ struct init_Model
     init_Model()
     {
       BuilderTestHelper::getInstance()->initGtk();
-
-      mp_Model = new DomainStructureModelSub();
     }
 
     ~init_Model()
@@ -88,28 +87,15 @@ BOOST_FIXTURE_TEST_SUITE(DomainStructureModelTest, init_Model)
 // =====================================================================
 // =====================================================================
 
-
-BOOST_AUTO_TEST_CASE(test_constructor)
-{
-  BOOST_CHECK_THROW(mp_Model->getCoreRepos(),openfluid::base::OFException);
-  BOOST_CHECK_EQUAL(mp_Model->isEmpty(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().empty(),true);
-  BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-BOOST_AUTO_TEST_CASE(test_setCoreReposEmpty)
+BOOST_AUTO_TEST_CASE(test_setDomainEmpty)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
 
-  BOOST_CHECK(mp_Model->getCoreRepos() == &(EngProject->getCoreRepository()));
-  BOOST_CHECK_EQUAL(mp_Model->isEmpty(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().empty(),true);
+  BOOST_CHECK_EQUAL(mp_Model->isEmpty(), true);
+  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().empty(), true);
+  BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
 
   delete EngProject;
 }
@@ -117,67 +103,59 @@ BOOST_AUTO_TEST_CASE(test_setCoreReposEmpty)
 // =====================================================================
 // =====================================================================
 
-
-BOOST_AUTO_TEST_CASE(test_setCoreReposNonEmpty)
+BOOST_AUTO_TEST_CASE(test_setDomainNonEmpty)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
 
-  unsigned int ClassCount = EngProject->getCoreRepository().getUnitsByClass()->size();
-  unsigned int FirstClassUnitsCount = EngProject->getCoreRepository().getUnitsByClass()->begin()->second.getList()->size();
-
-  BOOST_CHECK(mp_Model->getCoreRepos() == &(EngProject->getCoreRepository()));
-  BOOST_CHECK_EQUAL(mp_Model->isEmpty(),false);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), ClassCount);
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().begin()->second.getList()->size(), FirstClassUnitsCount);
+  BOOST_CHECK_EQUAL(mp_Model->isEmpty(), false);
+  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), 2);
+  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().begin()->second.size(), 2);
 
   delete EngProject;
 }
 
 // =====================================================================
 // =====================================================================
-
 
 BOOST_AUTO_TEST_CASE(test_setSelectedUnit)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
 
-  std::string FirstClassName = EngProject->getCoreRepository().getUnitsByClass()->begin()->first;
-  int FirstClassFirstId = EngProject->getCoreRepository().getUnitsByClass()->begin()->second.getList()->begin()->getID();
+  mp_Model->setCurrentSelectionByUser(std::make_pair("TestUnits", 1));
 
-  mp_Model->setCurrentSelectionByUser(std::make_pair(FirstClassName,FirstClassFirstId));
-
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedUnit()->getClass(),FirstClassName);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedUnit()->getID(),FirstClassFirstId);
+  BOOST_CHECK_EQUAL(
+      const_cast<openfluid::fluidx::UnitDescriptor*>(mp_Model->getSelectedUnit())->getUnitClass(),
+      "TestUnits");
+  BOOST_CHECK_EQUAL(
+      const_cast<openfluid::fluidx::UnitDescriptor*>(mp_Model->getSelectedUnit())->getUnitID(),
+      1);
 
   delete EngProject;
 }
 
 // =====================================================================
 // =====================================================================
-
 
 BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
 
-  std::string FirstClassName = EngProject->getCoreRepository().getUnitsByClass()->begin()->first;
-
-  mp_Model->setCurrentSelectionByUser(std::make_pair("wrong class",100));
+  mp_Model->setCurrentSelectionByUser(std::make_pair("wrong class", 100));
   BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
 
-  mp_Model->setCurrentSelectionByUser(std::make_pair(FirstClassName,-1));
+  mp_Model->setCurrentSelectionByUser(std::make_pair("TestUnits", -1));
   BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
 
   delete EngProject;
@@ -185,26 +163,24 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
 
 // =====================================================================
 // =====================================================================
-
 
 BOOST_AUTO_TEST_CASE(test_deleteUnit)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
 
-  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("ParentTestUnits",1));
+  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
 
-  openfluid::core::UnitsList_t ListA = *(mp_Model->getUnitListByClass()["ParentTestUnits"].getList());
-  openfluid::core::UnitsList_t::iterator itA = ListA.begin();
+  mp_Model->deleteUnit(&Domain->getUnitDescriptor("ParentTestUnits", 1));
 
-  BOOST_CHECK_EQUAL(mp_Model->isEmpty(),false);
+  BOOST_CHECK_EQUAL(mp_Model->isEmpty(), false);
   BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), 2);
 
-  BOOST_CHECK_EQUAL(ListA.size(),1);
-  BOOST_CHECK_EQUAL(itA->getID(),2);
+  BOOST_CHECK_EQUAL(Domain->getIDsOfClass("ParentTestUnits").size(), 1);
+  BOOST_CHECK_EQUAL(*Domain->getIDsOfClass("ParentTestUnits").begin(), 2);
 
   delete EngProject;
 }
@@ -212,19 +188,20 @@ BOOST_AUTO_TEST_CASE(test_deleteUnit)
 // =====================================================================
 // =====================================================================
 
-
 BOOST_AUTO_TEST_CASE(test_deleteLastUnitOfClass)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
 
-  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("ParentTestUnits",1));
-  mp_Model->deleteUnit(EngProject->getCoreRepository().getUnit("ParentTestUnits",2));
+  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
 
-  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(),1);
+  mp_Model->deleteUnit(&Domain->getUnitDescriptor("ParentTestUnits", 1));
+  mp_Model->deleteUnit(&Domain->getUnitDescriptor("ParentTestUnits", 2));
+
+  BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), 1);
 
   delete EngProject;
 }

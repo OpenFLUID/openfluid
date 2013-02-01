@@ -57,6 +57,12 @@
 
 #include "BuilderMVPComponent.hpp"
 
+namespace openfluid {
+namespace guicommon {
+class BuilderModel;
+}
+}
+
 class ModelGlobalParamsModel;
 class ModelGlobalParamsView;
 class ModelGlobalParamsPresenter;
@@ -73,7 +79,7 @@ class ModelGlobalParamsComponent: public BuilderMVPComponent
 
   public:
 
-    ModelGlobalParamsComponent();
+    ModelGlobalParamsComponent(openfluid::guicommon::BuilderModel& Model);
 
     ~ModelGlobalParamsComponent();
 

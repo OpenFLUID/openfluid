@@ -60,8 +60,8 @@
 #include <gtkmm/treemodel.h>
 
 namespace openfluid {
-namespace core {
-class UnitsCollection;
+namespace guicommon {
+class BuilderDomain;
 }
 }
 
@@ -73,7 +73,7 @@ class DomainIDataAdapterModel
   public:
 
     virtual void
-    dataInit(openfluid::core::UnitsCollection* UnitsColl) = 0;
+    dataInit(std::string ClassName) = 0;
 
     virtual void setSelectedUnit(Gtk::TreeIter Iter) = 0;
 
@@ -95,7 +95,7 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 {
   protected:
 
-    openfluid::core::UnitsCollection* mp_UnitsColl;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
     DomainIDataColumns* mp_Columns;
 
@@ -103,13 +103,15 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 
     int m_SelectedUnit;
 
+    std::string m_ClassName;
+
     void setFirstUnitSelected();
 
   public:
 
-    DomainIDataAdapterModelImpl();
+    DomainIDataAdapterModelImpl(openfluid::guicommon::BuilderDomain& Domain);
 
-    void dataInit(openfluid::core::UnitsCollection* UnitsColl);
+    void dataInit(std::string ClassName);
 
     void setSelectedUnit(Gtk::TreeIter Iter);
 

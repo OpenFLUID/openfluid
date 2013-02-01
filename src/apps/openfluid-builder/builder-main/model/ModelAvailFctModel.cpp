@@ -57,7 +57,6 @@
 // =====================================================================
 // =====================================================================
 
-
 ModelAvailFctModelImpl::ModelAvailFctModelImpl()
 {
   m_ASignatureIsSelected = false;
@@ -65,7 +64,6 @@ ModelAvailFctModelImpl::ModelAvailFctModelImpl()
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> ModelAvailFctModelImpl::signal_SignaturesChanged()
 {
@@ -75,7 +73,6 @@ sigc::signal<void> ModelAvailFctModelImpl::signal_SignaturesChanged()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ModelAvailFctModelImpl::signal_SelectedSignatureChanged()
 {
   return m_signal_SelectedSignatureChanged;
@@ -84,9 +81,8 @@ sigc::signal<void> ModelAvailFctModelImpl::signal_SelectedSignatureChanged()
 // =====================================================================
 // =====================================================================
 
-
 void ModelAvailFctModelImpl::setSignatures(
-    FunctionSignatureRegistry& Signatures)
+    openfluid::guicommon::FunctionSignatureRegistry& Signatures)
 {
   m_Signatures = Signatures.getFctSignatures();
   m_signal_SignaturesChanged.emit();
@@ -95,15 +91,13 @@ void ModelAvailFctModelImpl::setSignatures(
 // =====================================================================
 // =====================================================================
 
-
-FunctionSignatureRegistry::FctSignaturesByTypeByName_t ModelAvailFctModelImpl::getSignatures()
+openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t ModelAvailFctModelImpl::getSignatures()
 {
   return m_Signatures;
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelAvailFctModelImpl::setSelectedSignatureByUser(
     openfluid::machine::ModelItemSignatureInstance* Signature)
@@ -123,7 +117,6 @@ openfluid::machine::ModelItemSignatureInstance* ModelAvailFctModelImpl::getSelec
 
 // =====================================================================
 // =====================================================================
-
 
 bool ModelAvailFctModelImpl::isASignatureSelected()
 {

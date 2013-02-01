@@ -64,6 +64,7 @@
 #include "DomainStructureView.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -78,10 +79,6 @@ struct init_Presenter
     init_Presenter()
     {
       BuilderTestHelper::getInstance()->initGtk();
-
-      mp_Component = new DomainStructureComponent();
-      mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
-      mp_View = (DomainStructureViewSub*) (mp_Component->getView());
     }
 
     ~init_Presenter()
@@ -95,178 +92,183 @@ BOOST_FIXTURE_TEST_SUITE(DomainStructurePresenterTest, init_Presenter)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_constructors)
-{
-  BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),0);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),0);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),-1);
-}
-
 BOOST_AUTO_TEST_CASE(test_SetEmptyCoreRepos)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  mp_Component = new DomainStructureComponent(EngProject->getBuilderDesc().getDomain());
+  mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
+  mp_View = (DomainStructureViewSub*) (mp_Component->getView());
 
   BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),0);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),0);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),-1);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "");
+  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "");
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), -1);
 }
 
-BOOST_AUTO_TEST_CASE(test_SetCoreRepos)
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(test_SetDomain)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
 
-  BOOST_CHECK(mp_Model->getSelectedUnit() == EngProject->getCoreRepository().getUnit("ParentTestUnits",1));
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"ParentTestUnits");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"ParentTestUnits");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),1);
+  mp_Component = new DomainStructureComponent(*Domain);
+  mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
+  mp_View = (DomainStructureViewSub*) (mp_Component->getView());
+
+  BOOST_CHECK(
+      mp_Model->getSelectedUnit() == &Domain->getUnitDescriptor("ParentTestUnits",1));
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "ParentTestUnits");
+  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "ParentTestUnits");
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), 1);
 
   delete EngProject;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_addUnit)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::DESCRIPTOR);
-  EngProject->getCoreRepository().addUnit(U);
+  mp_Component = new DomainStructureComponent(*Domain);
+  mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
+  mp_View = (DomainStructureViewSub*) (mp_Component->getView());
 
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class A",100));
+  mp_Model->addUnit(createAUnitDesc("class A", 100, 2));
 
-  BOOST_CHECK(mp_Model->getSelectedUnit() == EngProject->getCoreRepository().getUnit("class A",100));
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class A");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),1);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"class A");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),1);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),100);
+  BOOST_CHECK(
+      mp_Model->getSelectedUnit() == &Domain->getUnitDescriptor("class A",100));
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "class A");
+  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "class A");
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), 100);
 
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::DESCRIPTOR);
-  EngProject->getCoreRepository().addUnit(U2);
+  mp_Model->addUnit(createAUnitDesc("class B", 200, 3));
 
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class B",200));
+  BOOST_CHECK(
+      mp_Model->getSelectedUnit() == &Domain->getUnitDescriptor("class B",200));
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), 200);
 
-  BOOST_CHECK(mp_Model->getSelectedUnit() == EngProject->getCoreRepository().getUnit("class B",200));
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),1);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),200);
+  mp_Model->addUnit(createAUnitDesc("class B", 300, 4));
 
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::DESCRIPTOR);
-  EngProject->getCoreRepository().addUnit(U3);
-
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class B",300));
-
-  BOOST_CHECK(mp_Model->getSelectedUnit() == EngProject->getCoreRepository().getUnit("class B",300));
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),300);
+  BOOST_CHECK(
+      mp_Model->getSelectedUnit() == &Domain->getUnitDescriptor("class B",300));
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), 300);
 
   delete EngProject;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_selectClass)
 {
   EngineProject* EngProject = new EngineProject();
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::DESCRIPTOR);
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::DESCRIPTOR);
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::DESCRIPTOR);
+  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
 
-  EngProject->getCoreRepository().addUnit(U);
-  EngProject->getCoreRepository().addUnit(U2);
-  EngProject->getCoreRepository().addUnit(U3);
+  Domain->addUnit(createAUnitDesc("class A", 100, 2));
+  Domain->addUnit(createAUnitDesc("class B", 200, 3));
+  Domain->addUnit(createAUnitDesc("class B", 300, 4));
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  mp_Component = new DomainStructureComponent(*Domain);
+  mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
+  mp_View = (DomainStructureViewSub*) (mp_Component->getView());
 
   // select class B
   mp_View->selectClassWithIndex(1);
 
-  BOOST_CHECK(mp_Model->getSelectedUnit() == EngProject->getCoreRepository().getUnit("class B",200));
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),200);
+  BOOST_CHECK(
+      mp_Model->getSelectedUnit() == &Domain->getUnitDescriptor("class B",200));
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), 200);
 
   delete EngProject;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_selectUnit)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::DESCRIPTOR);
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::DESCRIPTOR);
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::DESCRIPTOR);
+  mp_Component = new DomainStructureComponent(*Domain);
+  mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
+  mp_View = (DomainStructureViewSub*) (mp_Component->getView());
 
-  EngProject->getCoreRepository().addUnit(U);
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class A",100));
-
-  EngProject->getCoreRepository().addUnit(U2);
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class B",200));
-
-  EngProject->getCoreRepository().addUnit(U3);
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class B",300));
+  mp_Model->addUnit(createAUnitDesc("class A", 100, 2));
+  mp_Model->addUnit(createAUnitDesc("class B", 200, 3));
+  mp_Model->addUnit(createAUnitDesc("class B", 300, 4));
 
   // select U3
   mp_View->selectUnitWithIndex(1);
 
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedUnit()->getID(),300);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),300);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 2);
+  BOOST_CHECK_EQUAL(
+      const_cast<openfluid::fluidx::UnitDescriptor*>(mp_Model->getSelectedUnit())->getUnitID(),
+      300);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), 300);
 
   // select U
   mp_View->selectClassWithIndex(0);
   mp_View->selectUnitWithIndex(0);
 
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"class A");
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),1);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedUnit()->getID(),100);
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class A");
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),100);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "class A");
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 1);
+  BOOST_CHECK_EQUAL(
+      const_cast<openfluid::fluidx::UnitDescriptor*>(mp_Model->getSelectedUnit())->getUnitID(),
+      100);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "class A");
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), 100);
 
   delete EngProject;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_deleteSelectedUnit)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Model->setEngineRequirements(EngProject->getCoreRepository());
+  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
 
-  openfluid::core::Unit U("class A",100,2, openfluid::core::Unit::DESCRIPTOR);
-  openfluid::core::Unit U2("class B",200,3, openfluid::core::Unit::DESCRIPTOR);
-  openfluid::core::Unit U3("class B",300,4, openfluid::core::Unit::DESCRIPTOR);
+  mp_Component = new DomainStructureComponent(*Domain);
+  mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
+  mp_View = (DomainStructureViewSub*) (mp_Component->getView());
 
-  EngProject->getCoreRepository().addUnit(U);
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class A",100));
-
-  EngProject->getCoreRepository().addUnit(U2);
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class B",200));
-
-  EngProject->getCoreRepository().addUnit(U3);
-  mp_Model->addUnit(EngProject->getCoreRepository().getUnit("class B",300));
+  mp_Model->addUnit(createAUnitDesc("class A", 100, 2));
+  mp_Model->addUnit(createAUnitDesc("class B", 200, 3));
+  mp_Model->addUnit(createAUnitDesc("class B", 300, 4));
 
   // select U2
   mp_View->selectClassWithIndex(1);
@@ -274,40 +276,38 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedUnit)
 
   mp_Model->deleteSelectedUnit();
 
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),2);
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 1);
 //  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),300); // ? don't understand why == -1. (300 is well selected when try to reproduced it for real)
 
-  // select U
+// select U
   mp_View->selectClassWithIndex(0);
   mp_View->selectUnitWithIndex(0);
 
   mp_Model->deleteSelectedUnit();
 
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"class B");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),1);
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),1);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),300);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "class B");
+  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), 300);
 
   // select U3
   mp_View->selectUnitWithIndex(0);
 
   mp_Model->deleteSelectedUnit();
 
-  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(),"");
-  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(),"");
-  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(),0);
-  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(),0);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(),-1);
+  BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "");
+  BOOST_CHECK_EQUAL(mp_View->getSelectedClassName(), "");
+  BOOST_CHECK_EQUAL(mp_View->getClassesViewRowCount(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getUnitsViewRowCount(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedUnitId(), -1);
 
   delete EngProject;
 }
-
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END()
 

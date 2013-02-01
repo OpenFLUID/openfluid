@@ -77,9 +77,10 @@
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Generator.hpp>
 
-#include "GeneratorSignature.hpp"
+#include <openfluid/guicommon/GeneratorSignature.hpp>
 #include "EngineHelper.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -90,18 +91,16 @@ void MyErrorHandler(void* /*userData*/, xmlErrorPtr error)
 {
   Msg = Glib::ustring::compose(
       _("Xml error:\n%1\n\nduring parse of file:\n%2\n\n"
-          "Project can't be opened."), error->message, error->file);
+          "Project can't be opened."),
+      error->message, error->file);
 }
 ;
 
 // =====================================================================
 // =====================================================================
 
-
 EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
-  m_WithProjectManager(WithProjectManager), mp_FXDesc(0), mp_SimBlob(0),
-      mp_RunEnv(0), mp_IOListener(0), mp_Listener(0), mp_ModelInstance(0),
-      mp_Engine(0)
+    m_WithProjectManager(WithProjectManager), mp_IOListener(0), mp_FXDesc(0)
 {
   std::string Now = boost::posix_time::to_iso_extended_string(
       boost::posix_time::microsec_clock::local_time());
@@ -110,25 +109,10 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
   m_DefaultDeltaT = openfluid::core::DateTime::Minutes(5);
 
-  mp_SimBlob = new openfluid::machine::SimulationBlob();
-
-  mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
   if (m_WithProjectManager)
-    mp_RunEnv->linkToProject();
+    openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
 
   mp_IOListener = new openfluid::io::IOListener();
-
-  mp_Listener = new openfluid::guicommon::RunDialogMachineListener();
-
-  mp_ModelInstance = new openfluid::machine::ModelInstance(*mp_SimBlob,
-      mp_Listener);
-
-  mp_ObsListInstance = new openfluid::machine::ObserversListInstance(*mp_SimBlob);
-
-  mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance, *mp_ObsListInstance,
-      mp_Listener, mp_IOListener);
-
-  mp_ModelInstance->resetInitialized();
 
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(mp_IOListener);
 
@@ -147,8 +131,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     try
     {
       mp_FXDesc->loadFromDirectory(
-          WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir()
-              : FolderIn);
+          WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir() :
+                               FolderIn);
     }
     catch (openfluid::base::OFException e)
     {
@@ -163,55 +147,55 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       throw;
     }
 
-    openfluid::fluidx::RunDescriptor RunDesc = mp_FXDesc->getRunDescriptor();
-    checkAndSetDefaultRunValues(RunDesc);
+    checkAndSetDefaultRunValues();
 
-    openfluid::base::OutputDescriptor OutDesc = mp_FXDesc->getOutputDescriptor();
-    checkAndSetDefaultOutputValues(OutDesc);
+    checkAndSetDefaultOutputValues();
 
-    openfluid::fluidx::CoupledModelDescriptor ModelDesc = mp_FXDesc->getModelDescriptor();
+    checkModelDesc();
 
-    checkModelDesc(ModelDesc);
+//    try
+//    {
+//      openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc, *mp_SimBlob);
+//
+//      openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
+//          *mp_ModelInstance);
+//
+//      openfluid::machine::Factory::buildObserversListFromDescriptor(mp_FXDesc->getObserversListDescriptor(),
+//                                                                    *mp_ObsListInstance);
+//    }
+//    catch (openfluid::base::OFException e)
+//    {
+//      Glib::ustring
+//          Msg =
+//              Glib::ustring::compose(
+//                  _("Warning:\n%1.\n\nSome files may be overwritten.\nDo you want to continue?"),
+//                  EngineHelper::minimiseInfoString(e.what()));
+//
+//      if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+//          Msg))
+//      {
+//        //because we're in a constructor catch, so destructor isn't called
+//        deleteEngineObjects();
+//        throw;
+//      }
+//    }
 
-    try
-    {
-      openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc, *mp_SimBlob);
-
-      openfluid::machine::Factory::buildModelInstanceFromDescriptor(ModelDesc,
-          *mp_ModelInstance);
-
-      openfluid::machine::Factory::buildObserversListFromDescriptor(mp_FXDesc->getObserversListDescriptor(),
-                                                                    *mp_ObsListInstance);
-    }
-    catch (openfluid::base::OFException e)
-    {
-      Glib::ustring
-          Msg =
-              Glib::ustring::compose(
-                  _("Warning:\n%1.\n\nSome files may be overwritten.\nDo you want to continue?"),
-                  EngineHelper::minimiseInfoString(e.what()));
-
-      if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-          Msg))
-      {
-        //because we're in a constructor catch, so destructor isn't called
-        deleteEngineObjects();
-        throw;
-      }
-    }
-
-    checkInputData();
+// no more used (now check made by BuilderDomain)
+//    checkInputData();
 
     addSignatureToGenerators();
 
-    Glib::ustring OutputConsistencyMessage = checkOutputsConsistency();
-
-    if (!OutputConsistencyMessage.empty())
-      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-          Glib::ustring::compose(_(
-              "Check outputs consistency leads OpenFLUID to delete:\n\n%1"),
-              OutputConsistencyMessage));
+//    Glib::ustring OutputConsistencyMessage = checkOutputsConsistency();
+//
+//    if (!OutputConsistencyMessage.empty())
+//      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//          Glib::ustring::compose(_(
+//              "Check outputs consistency leads OpenFLUID to delete:\n\n%1"),
+//              OutputConsistencyMessage));
   }
+
+  mp_BuilderDesc = new openfluid::guicommon::BuilderDescriptor();
+  mp_BuilderDesc->setFluidXDescriptor(*mp_FXDesc);
 
 }
 
@@ -226,7 +210,6 @@ sigc::signal<void> EngineProject::signal_RunStarted()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> EngineProject::signal_RunStopped()
 {
   return m_signal_RunStopped;
@@ -235,7 +218,6 @@ sigc::signal<void> EngineProject::signal_RunStopped()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> EngineProject::signal_SaveHappened()
 {
   return m_signal_SaveHappened;
@@ -243,7 +225,6 @@ sigc::signal<void> EngineProject::signal_SaveHappened()
 
 // =====================================================================
 // =====================================================================
-
 
 void EngineProject::setDefaultRunDesc()
 {
@@ -270,20 +251,18 @@ void EngineProject::setDefaultRunDesc()
     DefaultDeltaT = m_DefaultDeltaT;
 
   openfluid::fluidx::RunDescriptor RunDesc(DefaultDeltaT, DefaultBeginDT,
-      DefaultEndDT);
+                                           DefaultEndDT);
 
   if (PrefMgr->getOutFilesBufferInKB() != -1)
     RunDesc.setFilesBufferSizeInKB(PrefMgr->getOutFilesBufferInKB());
 
   RunDesc.setFilled(true);
 
-  getRunDescriptor() = RunDesc;
   mp_FXDesc->getRunDescriptor() = RunDesc;
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void EngineProject::setDefaultOutDesc()
 {
@@ -292,17 +271,16 @@ void EngineProject::setDefaultOutDesc()
 
   OutDesc.getFileSets().push_back(FileDesc);
 
-  getOutputDescriptor() = OutDesc;
   mp_FXDesc->getOutputDescriptor() = OutDesc;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void EngineProject::checkAndSetDefaultRunValues(
-    openfluid::fluidx::RunDescriptor& RunDesc)
+void EngineProject::checkAndSetDefaultRunValues()
 {
+  openfluid::fluidx::RunDescriptor& RunDesc = mp_FXDesc->getRunDescriptor();
+
   openfluid::core::DateTime DT;
   openfluid::core::DateTime BeginDT;
 
@@ -332,10 +310,10 @@ void EngineProject::checkAndSetDefaultRunValues(
 // =====================================================================
 // =====================================================================
 
-
-void EngineProject::checkAndSetDefaultOutputValues(
-    openfluid::base::OutputDescriptor& OutDesc)
+void EngineProject::checkAndSetDefaultOutputValues()
 {
+  openfluid::base::OutputDescriptor& OutDesc = mp_FXDesc->getOutputDescriptor();
+
   if (OutDesc.getFileSets().empty())
   {
     openfluid::base::OutputFilesDescriptor FileDesc;
@@ -346,148 +324,129 @@ void EngineProject::checkAndSetDefaultOutputValues(
 // =====================================================================
 // =====================================================================
 
-
-void EngineProject::checkModelDesc(openfluid::fluidx::CoupledModelDescriptor& ModelDesc)
+void EngineProject::checkModelDesc()
 {
-  std::string MissingFunctions = "";
-
-  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::iterator it =
-      ModelDesc.getItems().begin();
-
-  FunctionSignatureRegistry* SignaturesReg =
-      FunctionSignatureRegistry::getInstance();
-
-  while (it != ModelDesc.getItems().end())
-  {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction)
-        && !SignaturesReg->isPluggableFunctionAvailable(
-            ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID()))
-    {
-      MissingFunctions.append("- "
-          + ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID() + "\n");
-
-      it = ModelDesc.getItems().erase(it);
-    }
-    else
-      ++it;
-  }
-
-  if (MissingFunctions != "")
-  {
-    Glib::ustring Msg = Glib::ustring::compose(
-        _("Unable to find plugin file(s):\n%1\n\n"
-            "Corresponding simulation functions will be removed from the model.\n"
-            "Do you want to continue?"), MissingFunctions);
-
-    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-        Msg))
-    {
-      //because we're in a constructor catch, so destructor isn't called
-      deleteEngineObjects();
-      throw openfluid::base::OFException("");
-    }
-  }
+//  openfluid::fluidx::CoupledModelDescriptor& ModelDesc = mp_FXDesc->getModelDescriptor();
+//
+//  std::string MissingFunctions = "";
+//
+//  openfluid::fluidx::CoupledModelDescriptor::SetDescription_t::iterator it =
+//      ModelDesc.getItems().begin();
+//
+//  FunctionSignatureRegistry* SignaturesReg =
+//      FunctionSignatureRegistry::getInstance();
+//
+//  while (it != ModelDesc.getItems().end())
+//  {
+//    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction)
+//        && !SignaturesReg->isPluggableFunctionAvailable(
+//            ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID()))
+//    {
+//      MissingFunctions.append("- "
+//          + ((openfluid::fluidx::FunctionDescriptor*) (*it))->getFileID() + "\n");
+//
+//      it = ModelDesc.getItems().erase(it);
+//    }
+//    else
+//      ++it;
+//  }
+//
+//  if (MissingFunctions != "")
+//  {
+//    Glib::ustring Msg = Glib::ustring::compose(
+//        _("Unable to find plugin file(s):\n%1\n\n"
+//            "Corresponding simulation functions will be removed from the model.\n"
+//            "Do you want to continue?"), MissingFunctions);
+//
+//    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+//        Msg))
+//    {
+//      //because we're in a constructor catch, so destructor isn't called
+//      deleteEngineObjects();
+//      throw openfluid::base::OFException("");
+//    }
+//  }
 
 }
 
 // =====================================================================
 // =====================================================================
-
-void EngineProject::checkInputData()
-{
-  std::list<openfluid::fluidx::InputDataDescriptor> IDataList =
-      mp_FXDesc->getDomainDescriptor().getInputData();
-
-  for (std::list<openfluid::fluidx::InputDataDescriptor>::iterator itIDataDesc =
-      IDataList.begin(); itIDataDesc != IDataList.end(); ++itIDataDesc)
-  {
-    std::string ClassName = itIDataDesc->getUnitsClass();
-
-    std::vector<std::string> IDataNames = itIDataDesc->getColumnsOrder();
-
-    if (mp_SimBlob->getCoreRepository().isUnitsClassExist(ClassName))
-    {
-      openfluid::core::UnitsList_t* UnitsList =
-          mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList();
-
-      for (openfluid::core::UnitsList_t::iterator itUnit = UnitsList->begin(); itUnit
-          != UnitsList->end(); ++itUnit)
-      {
-        // this unit isn't present in the input data list of its class
-        if (!itIDataDesc->getData().count(itUnit->getID()))
-        {
-          // so we set it default input data values
-          for (unsigned int i = 0; i < IDataNames.size(); i++)
-            itUnit->getInputData()->setValue(IDataNames[i], "-");
-        }
-      }
-    }
-  }
-
-}
-
-// =====================================================================
-// =====================================================================
-
 
 void EngineProject::addSignatureToGenerators()
 {
-  std::list<openfluid::machine::ModelItemInstance*> Items =
-      mp_ModelInstance->getItems();
-
-  for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
-      Items.begin(); it != Items.end(); ++it)
-  {
-    if ((*it)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
-    {
-      openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
-          GeneratorMethod = (*it)->GeneratorInfo->GeneratorMethod;
-
-      GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
-
-      GenSign->ID = (*it)->Signature->ID;
-      GenSign->HandledData.ProducedVars = (*it)->Signature->HandledData.ProducedVars;
-      GenSign->HandledData.RequiredExtraFiles = (*it)->Signature->HandledData.RequiredExtraFiles;
-
-      (*it)->Signature = GenSign;
-    }
-  }
+//  std::list<openfluid::machine::ModelItemInstance*> Items =
+//      mp_ModelInstance->getItems();
+//
+//  for (std::list<openfluid::machine::ModelItemInstance*>::iterator it =
+//      Items.begin(); it != Items.end(); ++it)
+//  {
+//    if ((*it)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator)
+//    {
+//      openfluid::fluidx::GeneratorDescriptor::GeneratorMethod
+//          GeneratorMethod = (*it)->GeneratorInfo->GeneratorMethod;
+//
+//      GeneratorSignature* GenSign = new GeneratorSignature(GeneratorMethod);
+//
+//      GenSign->ID = (*it)->Signature->ID;
+//      GenSign->HandledData.ProducedVars = (*it)->Signature->HandledData.ProducedVars;
+//      GenSign->HandledData.RequiredExtraFiles = (*it)->Signature->HandledData.RequiredExtraFiles;
+//
+//      (*it)->Signature = GenSign;
+//    }
+//  }
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void EngineProject::run()
 {
   openfluid::base::ProjectManager::getInstance()->updateOutputDir();
 
   if (m_WithProjectManager)
-    mp_RunEnv->linkToProject();
+    openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
 
-  delete mp_Engine;
-  mp_Engine = new openfluid::machine::Engine(*mp_SimBlob, *mp_ModelInstance, *mp_ObsListInstance,
-      mp_Listener, mp_IOListener);
+  openfluid::machine::SimulationBlob* SimBlob =
+      new openfluid::machine::SimulationBlob();
+
+  openfluid::guicommon::RunDialogMachineListener* Listener =
+      new openfluid::guicommon::RunDialogMachineListener();
+
+  openfluid::machine::ModelInstance* ModelInstance =
+      new openfluid::machine::ModelInstance(*SimBlob, Listener);
+
+  openfluid::machine::ObserversListInstance ObsListInstance(*SimBlob);
+
+  openfluid::machine::Engine Engine(*SimBlob, *ModelInstance, ObsListInstance,
+                                    Listener, mp_IOListener);
 
   openfluid::base::SimulationProfiler::getInstance()->reset();
 
-  mp_SimBlob->clearSimulationGarbage();
+  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc,
+                                                                  *SimBlob);
+
+  openfluid::machine::Factory::buildModelInstanceFromDescriptor(
+      mp_FXDesc->getModelDescriptor(), *ModelInstance);
+
+  openfluid::machine::Factory::buildObserversListFromDescriptor(
+      mp_FXDesc->getObserversListDescriptor(), ObsListInstance);
+
+  // no more used
+//  mp_SimBlob->clearSimulationGarbage();
 
   openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
-      getRunDescriptor());
+      mp_FXDesc->getRunDescriptor());
 
-  getCoreRepository().sortUnitsByProcessOrder();
+  SimBlob->getCoreRepository().sortUnitsByProcessOrder();
 
-  openfluid::guicommon::SimulationRunDialog RunDialog(mp_Engine);
+  openfluid::guicommon::SimulationRunDialog RunDialog(&Engine);
 
-  RunDialog.signal_SimulationStarted().connect(sigc::mem_fun(*this,
-      &EngineProject::whenSimulationStarted));
-  RunDialog.signal_SimulationStopped().connect(sigc::mem_fun(*this,
-        &EngineProject::whenSimulationStopped));
+  RunDialog.signal_SimulationStarted().connect(
+      sigc::mem_fun(*this, &EngineProject::whenSimulationStarted));
+  RunDialog.signal_SimulationStopped().connect(
+      sigc::mem_fun(*this, &EngineProject::whenSimulationStopped));
 
   Gtk::Main::run(RunDialog);
-
-  mp_ModelInstance->resetInitialized();
 }
 
 // =====================================================================
@@ -511,131 +470,57 @@ void EngineProject::whenSimulationStopped()
 
 void EngineProject::save()
 {
-  std::string InputDir = getRunEnv()->getInputDir();
-
-  openfluid::base::ProjectManager::getInstance()->save();
-
-  mp_FXDesc->setDomainToWrite(getCoreRepository());
-  mp_FXDesc->setModelToWrite(*getModelInstance());
-  mp_FXDesc->setDatastoreToWrite(getDatastore());
-
-  boost::filesystem::path InputPath(InputDir);
-
-  boost::filesystem::directory_iterator end_it;
-  for (boost::filesystem::directory_iterator it(InputPath); it != end_it; ++it)
-  {
-    if ((boost::filesystem::extension(it->path()) == ".fluidx"))
-      boost::filesystem::remove(it->path());
-  }
-
-  mp_FXDesc->WriteToManyFiles(InputDir);
-
-  m_signal_SaveHappened.emit();
+//  std::string InputDir = getRunEnv()->getInputDir();
+//
+//  openfluid::base::ProjectManager::getInstance()->save();
+//
+//  mp_FXDesc->setDomainToWrite(getCoreRepository());
+//  mp_FXDesc->setModelToWrite(*getModelInstance());
+//  mp_FXDesc->setDatastoreToWrite(getDatastore());
+//
+//  boost::filesystem::path InputPath(InputDir);
+//
+//  boost::filesystem::directory_iterator end_it;
+//  for (boost::filesystem::directory_iterator it(InputPath); it != end_it; ++it)
+//  {
+//    if ((boost::filesystem::extension(it->path()) == ".fluidx"))
+//      boost::filesystem::remove(it->path());
+//  }
+//
+//  mp_FXDesc->WriteToManyFiles(InputDir);
+//
+//  m_signal_SaveHappened.emit();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void EngineProject::check(
     openfluid::machine::Engine::PretestInfos_t& PretestInfos)
 {
-  mp_Engine->pretestConsistency(PretestInfos);
+  // TODO: check descriptors instead
+//  mp_Engine->pretestConsistency(PretestInfos);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::machine::SimulationBlob* EngineProject::getSimBlob()
+openfluid::guicommon::BuilderDescriptor& EngineProject::getBuilderDesc()
 {
-  return mp_SimBlob;
+  return *mp_BuilderDesc;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::base::RuntimeEnvironment* EngineProject::getRunEnv()
-{
-  return mp_RunEnv;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::io::IOListener* EngineProject::getIOListener()
-{
-  return mp_IOListener;
-}
+//TODO: delete and replace by direct call to FXDesc
+//openfluid::core::Datastore& EngineProject::getDatastore()
+//{
+//  return mp_SimBlob->getDatastore();
+//}
 
 // =====================================================================
 // =====================================================================
-
-
-openfluid::machine::MachineListener* EngineProject::getMachineListener()
-{
-  return mp_Listener;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::machine::ModelInstance* EngineProject::getModelInstance()
-{
-  return mp_ModelInstance;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::core::CoreRepository& EngineProject::getCoreRepository()
-{
-  return mp_SimBlob->getCoreRepository();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::base::ExecutionMessages& EngineProject::getExecutionMessages()
-{
-  return mp_SimBlob->getExecutionMessages();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::fluidx::RunDescriptor& EngineProject::getRunDescriptor()
-{
-  return mp_SimBlob->getRunDescriptor();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::base::OutputDescriptor& EngineProject::getOutputDescriptor()
-{
-  return mp_SimBlob->getOutputDescriptor();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::core::Datastore& EngineProject::getDatastore()
-{
-  return mp_SimBlob->getDatastore();
-}
-
-// =====================================================================
-// =====================================================================
-
 
 EngineProject::~EngineProject()
 {
@@ -645,130 +530,117 @@ EngineProject::~EngineProject()
 // =====================================================================
 // =====================================================================
 
-
 void EngineProject::deleteEngineObjects()
 {
-  //mp_ModelInstance->clear() crashes
-  if (mp_ModelInstance)
-  {
-    for (unsigned int i = 0; i < mp_ModelInstance->getItemsCount(); i++)
-      mp_ModelInstance->deleteItem(0);
-  }
-  delete mp_ModelInstance;
-  delete mp_Listener;
   delete mp_IOListener;
-  delete mp_SimBlob;
   //don't delete mp_RunEnv nor mp_FXDesc, which are singletons
   if (m_WithProjectManager)
-    getRunEnv()->detachFromProject();
-  delete mp_Engine;
+    openfluid::base::RuntimeEnvironment::getInstance()->detachFromProject();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-Glib::ustring EngineProject::checkOutputsConsistency()
-{
-  Glib::ustring Message = "";
-
-  std::set<std::string> ClassNames = EngineHelper::getClassNames(
-      &getCoreRepository());
-
-  for (unsigned int i = 0; i < getOutputDescriptor().getFileSets().size(); i++)
-  {
-    std::vector<openfluid::base::OutputSetDescriptor>::iterator itSet =
-        getOutputDescriptor().getFileSets()[i].getSets().begin();
-
-    while (itSet != getOutputDescriptor().getFileSets()[i].getSets().end())
-    {
-      std::string ClassName = itSet->getUnitsClass();
-      std::string SetName = itSet->getName();
-
-      std::set<std::string> VarNames = EngineHelper::getProducedVarNames(
-          ClassName, mp_ModelInstance);
-
-      Glib::ustring MsgDetail = "";
-
-      if (ClassNames.find(ClassName) == ClassNames.end())
-      {
-        MsgDetail = Glib::ustring::compose(_("class %1 doesn't exist"),
-            ClassName);
-      }
-      else if (VarNames.empty())
-      {
-        MsgDetail = Glib::ustring::compose(
-            _("no variable produced for class %1"), ClassName);
-      }
-      else if (!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
-      {
-        MsgDetail = _("no unit selected");
-      }
-      else if (!itSet->isAllVariables() && itSet->getVariables().empty())
-      {
-        MsgDetail = _("no variable selected");
-      }
-
-      if (MsgDetail != "")
-      {
-        Message.append(Glib::ustring::compose("- Set %1 (%2)\n", SetName,
-            MsgDetail));
-        getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
-      }
-      else
-      {
-        // check Ids exist
-
-        std::vector<unsigned int>::iterator itId = itSet->getUnitsIDs().begin();
-
-        while (itId != itSet->getUnitsIDs().end())
-        {
-          if (getCoreRepository().getUnit(ClassName, *itId) == NULL)
-          {
-            Message.append(Glib::ustring::compose(_("- ID %1 of set %2\n"),
-                *itId, SetName));
-            itSet->getUnitsIDs().erase(itId);
-          }
-          else
-            itId++;
-        }
-
-        // check Var names exist
-
-        std::vector<std::string>::iterator itVar;
-
-        itVar = itSet->getVariables().begin();
-
-        while (itVar != itSet->getVariables().end())
-        {
-          if (VarNames.find(*itVar) == VarNames.end())
-          {
-            Message.append(Glib::ustring::compose(_("- Var %1 of set %2\n"),
-                *itVar, SetName));
-            itSet->getVariables().erase(itVar);
-          }
-          else
-            itVar++;
-        }
-
-        // check still at least one Id and one Var in Set
-
-        if ((!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
-            || (!itSet->isAllVariables() && itSet->getVariables().empty()))
-        {
-          Message.append(Glib::ustring::compose(_("=> Set %1\n"), SetName));
-          getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
-        }
-        else
-          ++itSet;
-      }
-    }
-  }
-
-  return Message;
-}
+//Glib::ustring EngineProject::checkOutputsConsistency()
+//{
+//  Glib::ustring Message = "";
+//
+//  std::set<std::string> ClassNames = EngineHelper::getClassNames(
+//      &getCoreRepository());
+//
+//  for (unsigned int i = 0; i < getOutputDescriptor().getFileSets().size(); i++)
+//  {
+//    std::vector<openfluid::base::OutputSetDescriptor>::iterator itSet =
+//        getOutputDescriptor().getFileSets()[i].getSets().begin();
+//
+//    while (itSet != getOutputDescriptor().getFileSets()[i].getSets().end())
+//    {
+//      std::string ClassName = itSet->getUnitsClass();
+//      std::string SetName = itSet->getName();
+//
+//      std::set<std::string> VarNames = EngineHelper::getProducedVarNames(
+//          ClassName, mp_ModelInstance);
+//
+//      Glib::ustring MsgDetail = "";
+//
+//      if (ClassNames.find(ClassName) == ClassNames.end())
+//      {
+//        MsgDetail = Glib::ustring::compose(_("class %1 doesn't exist"),
+//            ClassName);
+//      }
+//      else if (VarNames.empty())
+//      {
+//        MsgDetail = Glib::ustring::compose(
+//            _("no variable produced for class %1"), ClassName);
+//      }
+//      else if (!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
+//      {
+//        MsgDetail = _("no unit selected");
+//      }
+//      else if (!itSet->isAllVariables() && itSet->getVariables().empty())
+//      {
+//        MsgDetail = _("no variable selected");
+//      }
+//
+//      if (MsgDetail != "")
+//      {
+//        Message.append(Glib::ustring::compose("- Set %1 (%2)\n", SetName,
+//            MsgDetail));
+//        getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
+//      }
+//      else
+//      {
+//        // check Ids exist
+//
+//        std::vector<unsigned int>::iterator itId = itSet->getUnitsIDs().begin();
+//
+//        while (itId != itSet->getUnitsIDs().end())
+//        {
+//          if (getCoreRepository().getUnit(ClassName, *itId) == NULL)
+//          {
+//            Message.append(Glib::ustring::compose(_("- ID %1 of set %2\n"),
+//                *itId, SetName));
+//            itSet->getUnitsIDs().erase(itId);
+//          }
+//          else
+//            itId++;
+//        }
+//
+//        // check Var names exist
+//
+//        std::vector<std::string>::iterator itVar;
+//
+//        itVar = itSet->getVariables().begin();
+//
+//        while (itVar != itSet->getVariables().end())
+//        {
+//          if (VarNames.find(*itVar) == VarNames.end())
+//          {
+//            Message.append(Glib::ustring::compose(_("- Var %1 of set %2\n"),
+//                *itVar, SetName));
+//            itSet->getVariables().erase(itVar);
+//          }
+//          else
+//            itVar++;
+//        }
+//
+//        // check still at least one Id and one Var in Set
+//
+//        if ((!itSet->isAllUnits() && itSet->getUnitsIDs().empty())
+//            || (!itSet->isAllVariables() && itSet->getVariables().empty()))
+//        {
+//          Message.append(Glib::ustring::compose(_("=> Set %1\n"), SetName));
+//          getOutputDescriptor().getFileSets()[i].getSets().erase(itSet);
+//        }
+//        else
+//          ++itSet;
+//      }
+//    }
+//  }
+//
+//  return Message;
+//}
 
 // =====================================================================
 // =====================================================================
-
 

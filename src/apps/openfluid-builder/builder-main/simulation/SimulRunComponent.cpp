@@ -58,9 +58,9 @@
 #include "SimulRunView.hpp"
 #include "SimulRunPresenter.hpp"
 
-SimulRunComponent::SimulRunComponent()
+SimulRunComponent::SimulRunComponent(openfluid::fluidx::RunDescriptor& RunDesc)
 {
-  mp_Model = new SimulRunModelImpl();
+  mp_Model = new SimulRunModelImpl(RunDesc);
   mp_View = new SimulRunViewImpl();
   mp_Presenter = new SimulRunPresenter(*mp_Model, *mp_View);
 }

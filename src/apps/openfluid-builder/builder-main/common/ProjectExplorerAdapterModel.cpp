@@ -57,16 +57,19 @@
 #include <boost/foreach.hpp>
 #include <glibmm/i18n.h>
 
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
-
-ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl()
+ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
+    openfluid::guicommon::BuilderDescriptor& Desc) :
+    mp_BuilderDesc(&Desc)
 {
   mref_TreeModel = BuilderTreeStore::create(m_Columns);
 
@@ -111,36 +114,34 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl()
   mp_RunInfoRowRef = mref_TreeModel->createRowRefFromIter(*SubRow2);
 
   // Simulation > Outputs
-  SubRow1 = *(mref_TreeModel->append(Row->children()));
-  SubRow1[m_Columns.m_Id] = "";
-  SubRow1[m_Columns.m_Display] = _("Outputs");
-  SubRow1[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_OUTPUTS;
-  SubRow1[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
+//  SubRow1 = *(mref_TreeModel->append(Row->children()));
+//  SubRow1[m_Columns.m_Id] = "";
+//  SubRow1[m_Columns.m_Display] = _("Outputs");
+//  SubRow1[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_OUTPUTS;
+//  SubRow1[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
 
-  // Results
-  Row = *(mref_TreeModel->append());
-  Row[m_Columns.m_Id] = "";
-  Row[m_Columns.m_Display] = _("Results");
-  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_NONE;
-  Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
-  mp_ResultsRowRef = mref_TreeModel->createRowRefFromIter(*Row);
+// Results
+//  Row = *(mref_TreeModel->append());
+//  Row[m_Columns.m_Id] = "";
+//  Row[m_Columns.m_Display] = _("Results");
+//  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_NONE;
+//  Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
+//  mp_ResultsRowRef = mref_TreeModel->createRowRefFromIter(*Row);
 
 }
 
 // =====================================================================
 // =====================================================================
-
 
 std::string ProjectExplorerAdapterModelImpl::generateRunInfoStr(
     std::string Begin, std::string End, unsigned int DeltaT)
 {
   return Glib::ustring::compose(_("From: %1\nTo: %2\nDelta T: %3 s"), Begin,
-      End, DeltaT);
+                                End, DeltaT);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 ProjectExplorerAdapterModelImpl::~ProjectExplorerAdapterModelImpl()
 {
@@ -150,20 +151,13 @@ ProjectExplorerAdapterModelImpl::~ProjectExplorerAdapterModelImpl()
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerAdapterModelImpl::initialize(
-    openfluid::machine::ModelInstance* ModelInstance,
-    openfluid::machine::SimulationBlob* SimBlob)
+void ProjectExplorerAdapterModelImpl::initialize()
 {
-  mp_ModelInstance = ModelInstance;
-  mp_SimBlob = SimBlob;
-
   updateAll();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ProjectExplorerAdapterModelImpl::updateAll()
 {
@@ -177,53 +171,50 @@ void ProjectExplorerAdapterModelImpl::updateAll()
 // =====================================================================
 // =====================================================================
 
-
 void ProjectExplorerAdapterModelImpl::updateModel()
 {
-  if (mp_ModelInstance)
+  mref_TreeModel->clearChildrenOfRowRef(*mp_ModelRowRef);
+
+  std::vector<std::string> IDs = mp_BuilderDesc->getModel().getOrderedIDs();
+
+  for (unsigned int i = 0; i < IDs.size(); i++)
   {
-    mref_TreeModel->clearChildrenOfRowRef(*mp_ModelRowRef);
+    Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ModelRowRef));
 
-    BOOST_FOREACH(openfluid::machine::ModelItemInstance* Fct,mp_ModelInstance->getItems())
-{    Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ModelRowRef));
+    std::string ID = IDs[i];
 
-    Row[m_Columns.m_Id] = Fct->Signature->ID;
-    Row[m_Columns.m_Display] = Fct->Signature->ID;
+    Row[m_Columns.m_Id] = ID;
+    Row[m_Columns.m_Display] = ID;
     Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_MODEL;
   }
 }
-}
 
 // =====================================================================
 // =====================================================================
-
 
 void ProjectExplorerAdapterModelImpl::updateDomain()
 {
-  if (mp_SimBlob)
+  mref_TreeModel->clearChildrenOfRowRef(*mp_DomainRowRef);
+
+  std::set<std::string> ClassNames =
+      mp_BuilderDesc->getDomain().getClassNames();
+
+  for (std::set<std::string>::iterator it = ClassNames.begin();
+      it != ClassNames.end(); ++it)
   {
-    mref_TreeModel->clearChildrenOfRowRef(*mp_DomainRowRef);
+    std::string ClassName = *it;
 
-    for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
-        mp_SimBlob->getCoreRepository().getUnitsByClass()->begin(); it
-        != mp_SimBlob->getCoreRepository().getUnitsByClass()->end(); ++it)
-    {
-      if (!it->second.getList()->empty())
-      {
-        Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_DomainRowRef));
+    Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_DomainRowRef));
 
-        Row[m_Columns.m_Id] = it->first;
-        Row[m_Columns.m_Display] = generateClassInfoStr(it->first,
-            it->second.getList()->size());
-        Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_CLASS;
-      }
-    }
+    Row[m_Columns.m_Id] = ClassName;
+    Row[m_Columns.m_Display] = generateClassInfoStr(
+        ClassName, mp_BuilderDesc->getDomain().getIDsOfClass(ClassName).size());
+    Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_CLASS;
   }
 }
 
 // =====================================================================
 // =====================================================================
-
 
 std::string ProjectExplorerAdapterModelImpl::generateClassInfoStr(
     std::string ClassName, unsigned int UnitsCount)
@@ -234,81 +225,77 @@ std::string ProjectExplorerAdapterModelImpl::generateClassInfoStr(
 // =====================================================================
 // =====================================================================
 
-
 void ProjectExplorerAdapterModelImpl::updateRunInfo()
 {
-  if (mp_SimBlob)
-  {
-    Gtk::TreeRow Row = mref_TreeModel->getRowFromRowRef(*mp_RunInfoRowRef);
+//  if (mp_FXDesc)
+//  {
+  Gtk::TreeRow Row = mref_TreeModel->getRowFromRowRef(*mp_RunInfoRowRef);
 
-    Row[m_Columns.m_Display] = generateRunInfoStr(
-        mp_SimBlob->getRunDescriptor().getBeginDate().getAsISOString(),
-        mp_SimBlob->getRunDescriptor().getEndDate().getAsISOString(),
-        mp_SimBlob->getRunDescriptor().getDeltaT());
-  }
+  Row[m_Columns.m_Display] = generateRunInfoStr(
+      mp_BuilderDesc->getRunDescriptor().getBeginDate().getAsISOString(),
+      mp_BuilderDesc->getRunDescriptor().getEndDate().getAsISOString(),
+      mp_BuilderDesc->getRunDescriptor().getDeltaT());
+//  }
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerAdapterModelImpl::updateResults(bool WithWarningState)
-{
-  if (WithWarningState)
-  {
-    Gtk::TreeModel::Children ChildrenRows = mref_TreeModel->getRowFromRowRef(
-        *mp_ResultsRowRef).children();
-
-    for (unsigned int i = 0; i < ChildrenRows.size(); i++)
-    {
-      ChildrenRows[i][m_Columns.m_Color] = "red";
-    }
-  } else
-  {
-    if (mp_SimBlob)
-    {
-      mref_TreeModel->clearChildrenOfRowRef(*mp_ResultsRowRef);
-
-      BOOST_FOREACH(openfluid::base::OutputFilesDescriptor FileDesc,mp_SimBlob->getOutputDescriptor().getFileSets())
-{      BOOST_FOREACH(openfluid::base::OutputSetDescriptor SetDesc,FileDesc.getSets())
-      {
-        std::string SetName = SetDesc.getName();
-        std::string ClassName = SetDesc.getUnitsClass();
-        int UnitsCount = 0;
-
-        if(mp_SimBlob->getCoreRepository().getUnits(ClassName))
-        {
-          Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ResultsRowRef));
-
-          if(SetDesc.isAllUnits())
-          UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
-          else
-          UnitsCount = SetDesc.getUnitsIDs().size();
-
-          Row[m_Columns.m_Id] = SetName;
-          Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);
-          Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_SET;
-        }
-      }
-    }
-  }
-}
-}
-
-// =====================================================================
-// =====================================================================
-
-
-std::string ProjectExplorerAdapterModelImpl::generateSetInfoStr(
-    std::string SetName, std::string ClassName, unsigned int UnitsCount)
-{
-  return Glib::ustring::compose(_("%1 (%2 - %3 units)"), SetName, ClassName,
-      UnitsCount);
-}
+//void ProjectExplorerAdapterModelImpl::updateResults(bool WithWarningState)
+//{
+//  if (WithWarningState)
+//  {
+//    Gtk::TreeModel::Children ChildrenRows = mref_TreeModel->getRowFromRowRef(
+//        *mp_ResultsRowRef).children();
+//
+//    for (unsigned int i = 0; i < ChildrenRows.size(); i++)
+//    {
+//      ChildrenRows[i][m_Columns.m_Color] = "red";
+//    }
+//  } else
+//  {
+//    if (mp_SimBlob)
+//    {
+//      mref_TreeModel->clearChildrenOfRowRef(*mp_ResultsRowRef);
+//
+//      BOOST_FOREACH(openfluid::base::OutputFilesDescriptor FileDesc,mp_SimBlob->getOutputDescriptor().getFileSets())
+//{      BOOST_FOREACH(openfluid::base::OutputSetDescriptor SetDesc,FileDesc.getSets())
+//      {
+//        std::string SetName = SetDesc.getName();
+//        std::string ClassName = SetDesc.getUnitsClass();
+//        int UnitsCount = 0;
+//
+//        if(mp_SimBlob->getCoreRepository().getUnits(ClassName))
+//        {
+//          Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ResultsRowRef));
+//
+//          if(SetDesc.isAllUnits())
+//          UnitsCount = mp_SimBlob->getCoreRepository().getUnits(ClassName)->getList()->size();
+//          else
+//          UnitsCount = SetDesc.getUnitsIDs().size();
+//
+//          Row[m_Columns.m_Id] = SetName;
+//          Row[m_Columns.m_Display] = generateSetInfoStr(SetName,ClassName,UnitsCount);
+//          Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_SET;
+//        }
+//      }
+//    }
+//  }
+//}
+//}
 
 // =====================================================================
 // =====================================================================
 
+//std::string ProjectExplorerAdapterModelImpl::generateSetInfoStr(
+//    std::string SetName, std::string ClassName, unsigned int UnitsCount)
+//{
+//  return Glib::ustring::compose(_("%1 (%2 - %3 units)"), SetName, ClassName,
+//      UnitsCount);
+//}
+
+// =====================================================================
+// =====================================================================
 
 Glib::RefPtr<Gtk::TreeModel> ProjectExplorerAdapterModelImpl::getTreeModel()
 {
@@ -317,7 +304,6 @@ Glib::RefPtr<Gtk::TreeModel> ProjectExplorerAdapterModelImpl::getTreeModel()
 
 // =====================================================================
 // =====================================================================
-
 
 void ProjectExplorerAdapterModelImpl::setActivated(Gtk::TreePath Path)
 {
@@ -328,13 +314,12 @@ void ProjectExplorerAdapterModelImpl::setActivated(Gtk::TreePath Path)
     Gtk::TreeRow Row = *it;
 
     m_ActivatedElements = std::make_pair(Row[m_Columns.m_Category],
-        Row[m_Columns.m_Id]);
+                                         Row[m_Columns.m_Id]);
   }
 }
 
 // =====================================================================
 // =====================================================================
-
 
 std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> ProjectExplorerAdapterModelImpl::getActivatedElements()
 {
@@ -347,7 +332,6 @@ std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> Proje
 // =====================================================================
 // =====================================================================
 
-
 Gtk::TreeRowReference* ProjectExplorerAdapterModelSub::getRunInfoRowRef()
 {
   return mp_RunInfoRowRef;
@@ -355,27 +339,6 @@ Gtk::TreeRowReference* ProjectExplorerAdapterModelSub::getRunInfoRowRef()
 
 // =====================================================================
 // =====================================================================
-
-
-void ProjectExplorerAdapterModelSub::setModelInstance(
-    openfluid::machine::ModelInstance* ModelInstance)
-{
-  mp_ModelInstance = ModelInstance;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ProjectExplorerAdapterModelSub::setSimulationBlob(
-    openfluid::machine::SimulationBlob* SimBlob)
-{
-  mp_SimBlob = SimBlob;
-}
-
-// =====================================================================
-// =====================================================================
-
 
 std::string ProjectExplorerAdapterModelSub::generateRunInfoStr(
     std::string Begin, std::string End, unsigned int DeltaT)

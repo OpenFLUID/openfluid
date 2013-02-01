@@ -73,17 +73,18 @@
 // =====================================================================
 
 
-DomainClassModule::DomainClassModule()
+DomainClassModule::DomainClassModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
+ProjectWorkspaceModule(BuilderDesc)
 {
   mp_MainPanel = 0;
 
-  mp_DomainIDataMVP = new DomainIDataComponent();
+  mp_DomainIDataMVP = new DomainIDataComponent(BuilderDesc.getDomain());
   mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
-  mp_IDataAddDialog = new DomainIDataAddDialog();
-  mp_IDataRemoveDialog = new DomainIDataRemoveDialog();
-  mp_IDataEditDialog = new DomainIDataEditDialog();
+  mp_IDataAddDialog = new DomainIDataAddDialog(BuilderDesc.getDomain());
+  mp_IDataRemoveDialog = new DomainIDataRemoveDialog(BuilderDesc.getDomain());
+  mp_IDataEditDialog = new DomainIDataEditDialog(BuilderDesc.getDomain());
 
-  mp_DomainEventsMVP = new DomainEventsComponent();
+  mp_DomainEventsMVP = new DomainEventsComponent(BuilderDesc.getDomain());
   mp_EventsListToolBox = BuilderListToolBoxFactory::createDomainEventsToolBox();
 
   mp_Coordinator = new DomainClassCoordinator(*mp_DomainIDataMVP->getModel(),
@@ -173,20 +174,6 @@ Gtk::Widget* DomainClassModule::asWidget()
 sigc::signal<void> DomainClassModule::signal_ModuleChanged()
 {
   return m_signal_DomainClassChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainClassModule::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
-{
-  mp_ModelInstance = &ModelInstance;
-  mp_SimBlob = &SimBlob;
-
-  mp_Coordinator->setEngineRequirements(ModelInstance, SimBlob);
 }
 
 // =====================================================================

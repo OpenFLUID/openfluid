@@ -52,7 +52,7 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 #include "SimulationRunModule.hpp"
 
@@ -61,15 +61,18 @@
 
 #include "BuilderFrame.hpp"
 
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
+
 // =====================================================================
 // =====================================================================
 
 
-SimulationRunModule::SimulationRunModule()
+SimulationRunModule::SimulationRunModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
+ProjectWorkspaceModule(BuilderDesc)
 {
   mp_MainPanel = 0;
 
-  mp_SimulRunMVP = new SimulRunComponent();
+  mp_SimulRunMVP = new SimulRunComponent(BuilderDesc.getRunDescriptor());
 
   mp_SimulRunMVP->getModel()->signal_SimulRunChanged().connect(sigc::mem_fun(
       *this, &SimulationRunModule::whenRunChanged));
@@ -117,20 +120,6 @@ Gtk::Widget* SimulationRunModule::asWidget()
 sigc::signal<void> SimulationRunModule::signal_ModuleChanged()
 {
   return m_signal_SimulationRunChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationRunModule::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
-{
-  mp_ModelInstance = &ModelInstance;
-  mp_SimBlob = &SimBlob;
-
-  mp_SimulRunMVP->getModel()->setEngineRequirements(SimBlob.getRunDescriptor());
 }
 
 // =====================================================================

@@ -59,9 +59,8 @@
 #include <gtkmm/treemodel.h>
 
 namespace openfluid {
-namespace machine {
-class ModelInstance;
-class SimulationBlob;
+namespace guicommon {
+class BuilderDescriptor;
 }
 }
 
@@ -72,15 +71,13 @@ class SimulationBlob;
 // =====================================================================
 // =====================================================================
 
-
 class ProjectExplorerAdapterModel
 {
   public:
 
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 
-    virtual void initialize(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob) = 0;
+    virtual void initialize() = 0;
 
     virtual void updateAll() = 0;
 
@@ -90,7 +87,7 @@ class ProjectExplorerAdapterModel
 
     virtual void updateRunInfo() = 0;
 
-    virtual void updateResults(bool WithWarningState) = 0;
+//    virtual void updateResults(bool WithWarningState) = 0;
 
     virtual void setActivated(Gtk::TreePath Path) = 0;
 
@@ -102,7 +99,6 @@ class ProjectExplorerAdapterModel
 // =====================================================================
 // =====================================================================
 
-
 class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 {
   private:
@@ -111,20 +107,17 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     ProjectExplorerColumns m_Columns;
 
-    std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
-        m_ActivatedElements;
+    std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> m_ActivatedElements;
 
     std::string generateClassInfoStr(std::string ClassName,
-        unsigned int UnitsCount);
+                                     unsigned int UnitsCount);
 
-    std::string generateSetInfoStr(std::string SetName, std::string ClassName,
-        unsigned int UnitsCount);
+//    std::string generateSetInfoStr(std::string SetName, std::string ClassName,
+//        unsigned int UnitsCount);
 
   protected:
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::machine::SimulationBlob* mp_SimBlob;
+    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     Gtk::TreeRowReference* mp_ModelRowRef;
 
@@ -135,16 +128,16 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
     Gtk::TreeRowReference* mp_ResultsRowRef;
 
     std::string generateRunInfoStr(std::string Begin, std::string End,
-        unsigned int DeltaT);
+                                   unsigned int DeltaT);
 
   public:
 
-    ProjectExplorerAdapterModelImpl();
+    ProjectExplorerAdapterModelImpl(
+        openfluid::guicommon::BuilderDescriptor& Desc);
 
     ~ProjectExplorerAdapterModelImpl();
 
-    void initialize(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob);
+    void initialize();
 
     void updateAll();
 
@@ -154,14 +147,14 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     void updateRunInfo();
 
-    void updateResults(bool WithWarningState);
+//    void updateResults(bool WithWarningState);
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 
     void setActivated(Gtk::TreePath Path);
 
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
-        getActivatedElements();
+    getActivatedElements();
 
 };
 
@@ -169,14 +162,16 @@ class ProjectExplorerAdapterModelSub: public ProjectExplorerAdapterModelImpl
 {
   public:
 
+    ProjectExplorerAdapterModelSub(
+        openfluid::guicommon::BuilderDescriptor& Desc) :
+        ProjectExplorerAdapterModelImpl(Desc)
+    {
+    }
+
     Gtk::TreeRowReference* getRunInfoRowRef();
 
-    void setModelInstance(openfluid::machine::ModelInstance* ModelInstance);
-
-    void setSimulationBlob(openfluid::machine::SimulationBlob* SimBlob);
-
     std::string generateRunInfoStr(std::string Begin, std::string End,
-        unsigned int DeltaT);
+                                   unsigned int DeltaT);
 
 };
 #endif /* __PROJECTEXPLORERADAPTERMODEL_HPP__ */

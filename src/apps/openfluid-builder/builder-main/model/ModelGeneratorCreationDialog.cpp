@@ -62,24 +62,24 @@
 #include <glibmm/i18n.h>
 
 #include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
 // =====================================================================
 // =====================================================================
-
 
 ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
-    openfluid::core::CoreRepository& CoreRepos,
-    openfluid::machine::ModelInstance* ModelInstance) :
-  mp_CoreRepos(&CoreRepos), mp_ModelInstance(ModelInstance)
+    openfluid::guicommon::BuilderDescriptor& BuilderDesc) :
+    mp_BuilderDesc(&BuilderDesc)
 {
   mp_VarNameEntry = Gtk::manage(new Gtk::Entry());
   mp_VarNameEntry->set_activates_default(true);
-  mp_VarNameEntry->signal_changed().connect(sigc::mem_fun(*this,
-      &ModelGeneratorCreationDialog::onVarNameEntryChanged));
+  mp_VarNameEntry->signal_changed().connect(
+      sigc::mem_fun(*this,
+                    &ModelGeneratorCreationDialog::onVarNameEntryChanged));
 
   mp_ClassCombo = Gtk::manage(new Gtk::ComboBoxText());
 
@@ -87,8 +87,8 @@ ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
 
   mp_ScalarRadio = Gtk::manage(
       new Gtk::RadioButton(RadioGrp, _("Double Value")));
-  mp_VectorRadio = Gtk::manage(new Gtk::RadioButton(RadioGrp,
-      _("Vector Value:") + std::string(" ")));
+  mp_VectorRadio = Gtk::manage(
+      new Gtk::RadioButton(RadioGrp, _("Vector Value:") + std::string(" ")));
 
   mp_VarSizeSpin = Gtk::manage(new Gtk::SpinButton());
   mp_VarSizeSpin->set_numeric(true);
@@ -99,18 +99,17 @@ ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
   Gtk::Table* GenInfoTable = Gtk::manage(new Gtk::Table());
   GenInfoTable->set_row_spacings(10);
   GenInfoTable->set_col_spacings(3);
-  GenInfoTable->attach(
-      *Gtk::manage(new Gtk::Label(_("Variable name"), 1, 0.5)), 0, 1, 0, 1,
-      Gtk::FILL, Gtk::SHRINK);
+  GenInfoTable->attach(*Gtk::manage(new Gtk::Label(_("Variable name"), 1, 0.5)),
+                       0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK);
   GenInfoTable->attach(*mp_VarNameEntry, 1, 2, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  GenInfoTable->attach(*Gtk::manage(new Gtk::Label(_("Unit class"), 1, 0.5)),
-      0, 1, 1, 2, Gtk::FILL, Gtk::SHRINK);
+  GenInfoTable->attach(*Gtk::manage(new Gtk::Label(_("Unit class"), 1, 0.5)), 0,
+                       1, 1, 2, Gtk::FILL, Gtk::SHRINK);
   GenInfoTable->attach(*mp_ClassCombo, 1, 2, 1, 2, Gtk::FILL, Gtk::SHRINK);
 
   Gtk::HBox* VectorBox = Gtk::manage(new Gtk::HBox());
   VectorBox->pack_start(*mp_VectorRadio, Gtk::PACK_SHRINK);
   VectorBox->pack_start(*Gtk::manage(new Gtk::Label(_("Size"))),
-      Gtk::PACK_SHRINK);
+                        Gtk::PACK_SHRINK);
   VectorBox->pack_start(*mp_VarSizeSpin, Gtk::PACK_SHRINK);
 
   mp_Dialog = new Gtk::Dialog(_("Generator creation"));
@@ -132,12 +131,10 @@ ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
   mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
 
   mp_Dialog->show_all_children();
-
 }
 
 // =====================================================================
 // =====================================================================
-
 
 ModelGeneratorCreationDialog::~ModelGeneratorCreationDialog()
 {
@@ -147,50 +144,51 @@ ModelGeneratorCreationDialog::~ModelGeneratorCreationDialog()
 // =====================================================================
 // =====================================================================
 
-
-std::map<std::string, std::string> ModelGeneratorCreationDialog::show()
+openfluid::fluidx::GeneratorDescriptor* ModelGeneratorCreationDialog::show(
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method)
 {
-  std::map<std::string, std::string> GenInfo;
+  openfluid::fluidx::GeneratorDescriptor* GenDesc = 0;
 
-  if (mp_CoreRepos->getUnitsGlobally()->empty())
+  if (mp_BuilderDesc->getDomain().getUnitsByIdByClass().empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
         _("You can't create a generator now:\n Domain is empty"));
-    return GenInfo;
+
+    return GenDesc;
   }
 
   init();
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    GenInfo["varname"] = mp_VarNameEntry->get_text();
-    GenInfo["classname"] = mp_ClassCombo->get_active_text();
-    if (mp_ScalarRadio->get_active())
-      GenInfo["varsize"] = Glib::ustring::compose("%1", 1);
-    else
-      GenInfo["varsize"] = Glib::ustring::compose("%1",
-          mp_VarSizeSpin->get_value_as_int());
+    std::string VarName = mp_VarNameEntry->get_text();
+    std::string UnitClass = mp_ClassCombo->get_active_text();
+    int VarSize =
+        mp_ScalarRadio->get_active() ? 1 : mp_VarSizeSpin->get_value_as_int();
+
+    GenDesc = new openfluid::fluidx::GeneratorDescriptor(VarName, UnitClass,
+                                                         Method, VarSize);
   }
 
   mp_Dialog->hide();
 
-  return GenInfo;
+  return GenDesc;
 }
 
 // =====================================================================
 // =====================================================================
 
-
 void ModelGeneratorCreationDialog::init()
 {
   mp_ClassCombo->clear();
 
-  for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
-      mp_CoreRepos->getUnitsByClass()->begin(); it
-      != mp_CoreRepos->getUnitsByClass()->end(); ++it)
+  std::set<std::string> ClassNames =
+      mp_BuilderDesc->getDomain().getClassNames();
+
+  for (std::set<std::string>::iterator it = ClassNames.begin();
+      it != ClassNames.end(); ++it)
   {
-    if (it->second.getList()->size() != 0)
-      mp_ClassCombo->append_text(it->first);
+    mp_ClassCombo->append_text(*it);
   }
 
   mp_ClassCombo->set_active(0);
@@ -201,12 +199,17 @@ void ModelGeneratorCreationDialog::init()
 
   m_ExistingVars.clear();
 
-  for (std::list<openfluid::machine::ModelItemInstance*>::const_iterator it =
-      mp_ModelInstance->getItems().begin(); it
-      != mp_ModelInstance->getItems().end(); ++it)
+  const std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
+      mp_BuilderDesc->getModel().getItems();
+
+  openfluid::guicommon::FunctionSignatureRegistry* Reg =
+      openfluid::guicommon::FunctionSignatureRegistry::getInstance();
+
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
+      Items.begin(); it != Items.end(); ++it)
   {
     std::vector<openfluid::ware::SignatureHandledTypedDataItem> Vars =
-        (*it)->Signature->HandledData.ProducedVars;
+        Reg->getSignatureItemInstance(*it)->Signature->HandledData.ProducedVars;
 
     for (unsigned int i = 0; i < Vars.size(); i++)
       m_ExistingVars.insert(Vars[i].DataName);
@@ -217,7 +220,6 @@ void ModelGeneratorCreationDialog::init()
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelGeneratorCreationDialog::onVarNameEntryChanged()
 {
@@ -231,8 +233,9 @@ void ModelGeneratorCreationDialog::onVarNameEntryChanged()
 
   if (m_ExistingVars.find(mp_VarNameEntry->get_text()) != m_ExistingVars.end())
   {
-    mp_InfoBarLabel->set_text(Glib::ustring::compose(
-        _("Variable %1 already exists"), mp_VarNameEntry->get_text()));
+    mp_InfoBarLabel->set_text(
+        Glib::ustring::compose(_("Variable %1 already exists"),
+                               mp_VarNameEntry->get_text()));
     mp_InfoBar->set_visible(true);
     mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, false);
     return;
@@ -243,3 +246,6 @@ void ModelGeneratorCreationDialog::onVarNameEntryChanged()
   mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, true);
 
 }
+
+// =====================================================================
+// =====================================================================

@@ -77,6 +77,8 @@ class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
 
     unsigned int m_VarSize;
 
+    std::string m_GeneratedID;
+
   public:
 
     GeneratorDescriptor();
@@ -96,7 +98,9 @@ class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
 
     inline unsigned int getVariableSize() const { return m_VarSize; };
 
+    inline std::string getGeneratedID() const { return m_GeneratedID; };
 
+    static std::string getGeneratorName(GeneratorDescriptor::GeneratorMethod GenMethod);
 };
 
 

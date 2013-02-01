@@ -59,6 +59,9 @@
 
 #include <iostream>
 
+#include <openfluid/fluidx/UnitDescriptor.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
+
 // =====================================================================
 // =====================================================================
 
@@ -142,7 +145,7 @@ sigc::signal<void> DomainStructureAdapter::signal_Activated()
 
 
 void DomainStructureAdapter::setDomainStructure(
-    openfluid::core::UnitsListByClassMap_t UnitListByClass)
+    const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass)
 {
   m_hasClassSelectionToBeStored = false;
   m_Model.setDomainStructure(UnitListByClass);
@@ -191,7 +194,7 @@ void DomainStructureAdapter::deleteCurrentUnit()
 // =====================================================================
 
 
-void DomainStructureAdapter::addUnit(openfluid::core::Unit& Unit)
+void DomainStructureAdapter::addUnit(openfluid::fluidx::UnitDescriptor& Unit)
 {
   m_Model.addUnit(Unit);
   m_View.requestClassSelection(m_Model.getRequestedClassSelection());

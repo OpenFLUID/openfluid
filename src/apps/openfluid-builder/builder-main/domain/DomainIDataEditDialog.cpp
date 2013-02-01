@@ -59,14 +59,15 @@
 
 #include <glibmm/i18n.h>
 
-#include <boost/foreach.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
+#include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-DomainIDataEditDialog::DomainIDataEditDialog() :
-  mp_CoreRepos(0), m_ClassName(""), m_IsValid(false)
+DomainIDataEditDialog::DomainIDataEditDialog(
+    openfluid::guicommon::BuilderDomain& Domain) :
+    mp_Domain(&Domain), m_ClassName(""), m_IsValid(false)
 {
   mp_Dialog = new Gtk::Dialog(_("Changing Inputdata name"));
   mp_Dialog->set_default_size(10, 10);
@@ -77,16 +78,17 @@ DomainIDataEditDialog::DomainIDataEditDialog() :
   mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
   ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
 
-  Gtk::Label* OldNameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name:"),
-      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
-  Gtk::Label* NewNameLabel = Gtk::manage(new Gtk::Label(
-      _("New Inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* OldNameLabel = Gtk::manage(
+      new Gtk::Label(_("Inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* NewNameLabel = Gtk::manage(
+      new Gtk::Label(_("New Inputdata name:"), Gtk::ALIGN_LEFT,
+                     Gtk::ALIGN_CENTER));
 
   mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
 
   mp_NewNameEntry = Gtk::manage(new Gtk::Entry());
-  mp_NewNameEntry->signal_changed().connect(sigc::mem_fun(*this,
-      &DomainIDataEditDialog::onChanged));
+  mp_NewNameEntry->signal_changed().connect(
+      sigc::mem_fun(*this, &DomainIDataEditDialog::onChanged));
   mp_NewNameEntry->set_activates_default(true);
 
   Gtk::Table* Table = Gtk::manage(new Gtk::Table());
@@ -107,12 +109,10 @@ DomainIDataEditDialog::DomainIDataEditDialog() :
   mp_Dialog->show_all_children();
 
   onChanged();
-
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainIDataEditDialog::onChanged()
 {
@@ -120,7 +120,7 @@ void DomainIDataEditDialog::onChanged()
 
   m_IsValid = false;
 
-  if (NewName == "" || isEmptyString(NewName))
+  if (NewName == "" || EngineHelper::isEmptyString(NewName))
   {
     mp_InfoBarLabel->set_text(_("Inputdata name can not be empty"));
   }
@@ -141,36 +141,6 @@ void DomainIDataEditDialog::onChanged()
 // =====================================================================
 // =====================================================================
 
-bool DomainIDataEditDialog::isEmptyString(std::string Str)
-{
-  bool isEmpty = true;
-
-  for (unsigned int i = 0; i < Str.size() && isEmpty; i++)
-  {
-    if (!std::isspace(Str[i]))
-    {
-      isEmpty = false;
-      break;
-    }
-  }
-
-  return isEmpty;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataEditDialog::setEngineRequirements(
-    openfluid::core::CoreRepository& CoreRepos)
-{
-  mp_CoreRepos = &CoreRepos;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void DomainIDataEditDialog::setClass(std::string ClassName)
 {
   m_ClassName = ClassName;
@@ -181,26 +151,21 @@ void DomainIDataEditDialog::setClass(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-
 void DomainIDataEditDialog::update()
 {
-  m_IDataNames.clear();
   mp_Combo->clear_items();
 
-  if (mp_CoreRepos->getUnits(m_ClassName))
-  {
-    // get the first IData only, supposed to be the same on all the class
-    BOOST_FOREACH(std::string DataName,mp_CoreRepos->getUnits(m_ClassName)->getList()->begin()->getInputData()->getInputDataNames())
-{    m_IDataNames.insert(DataName);
-    mp_Combo->append_text(DataName);
-  }
+  std::set<std::string> IDataNames = mp_Domain->getInputDataNames(m_ClassName);
+
+  for (std::set<std::string>::iterator it = IDataNames.begin();
+      it != IDataNames.end(); ++it)
+    mp_Combo->append_text(*it);
+
   mp_Combo->set_active(0);
 }
-}
 
 // =====================================================================
 // =====================================================================
-
 
 std::pair<std::string, std::string> DomainIDataEditDialog::show()
 {
@@ -211,7 +176,7 @@ std::pair<std::string, std::string> DomainIDataEditDialog::show()
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
     Data = std::make_pair(mp_Combo->get_active_text(),
-        mp_NewNameEntry->get_text());
+                          mp_NewNameEntry->get_text());
   }
 
   mp_Dialog->hide();

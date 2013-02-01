@@ -59,6 +59,12 @@
 
 #include "BuilderMVPComponent.hpp"
 
+namespace openfluid {
+namespace fluidx {
+class RunDescriptor;
+}
+}
+
 class SimulRunModel;
 class SimulRunView;
 class SimulRunPresenter;
@@ -72,7 +78,7 @@ class SimulRunComponent : public BuilderMVPComponent
     SimulRunPresenter* mp_Presenter;
 
   public:
-    SimulRunComponent();
+    SimulRunComponent(openfluid::fluidx::RunDescriptor& RunDesc);
     ~SimulRunComponent();
     Gtk::Widget* asWidget();
     SimulRunModel* getModel();

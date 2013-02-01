@@ -60,31 +60,40 @@
 #include <boost/test/unit_test.hpp>
 
 
-#include "GeneratorSignature.hpp"
+#include <openfluid/guicommon/GeneratorSignature.hpp>
 
 // =====================================================================
 // =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
-  GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
+  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Fixed Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),1);
 }
 
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
-  GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
+  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Random Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),2);
 }
 
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
-  GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
+  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Interp Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),4);
 }
+
+// =====================================================================
+// =====================================================================

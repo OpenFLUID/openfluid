@@ -60,14 +60,16 @@
 #include "DomainStructurePresenter.hpp"
 #include "DomainStructureAdapter.hpp"
 
-DomainStructureComponent::DomainStructureComponent()
+DomainStructureComponent::DomainStructureComponent(openfluid::guicommon::BuilderDomain& Domain)
 {
   DomainStructureColumns* TreeColumns = new DomainStructureColumns();
-  mp_Model = new DomainStructureModelImpl();
+  mp_Model = new DomainStructureModelImpl(Domain);
   mp_View = new DomainStructureViewImpl(*TreeColumns);
   mp_AdapterModel = new DomainStructureAdapterModelImpl(*TreeColumns);
   mp_Adapter = new DomainStructureAdapter(*mp_AdapterModel, *mp_View);
   mp_Presenter = new DomainStructurePresenter(*mp_Model, *mp_Adapter);
+
+  mp_Model->update();
 }
 DomainStructureComponent::~DomainStructureComponent()
 {

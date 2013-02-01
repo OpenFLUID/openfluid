@@ -60,7 +60,7 @@
 #include "ModelParamsPanel.hpp"
 
 #include "ModelStructureCoordinator.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderListToolBox.hpp"
 
@@ -70,14 +70,15 @@
 // =====================================================================
 
 
-ModelStructureModule::ModelStructureModule()
+ModelStructureModule::ModelStructureModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
+ProjectWorkspaceModule(BuilderDesc)
 {
   mp_MainPanel = 0;
 
   mp_ModelFctDetailMVP = new ModelFctDetailComponent();
-  mp_ModelStructureMVP = new ModelStructureComponent();
+  mp_ModelStructureMVP = new ModelStructureComponent(BuilderDesc.getModel());
 
-  mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent();
+  mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent(BuilderDesc.getModel());
   mp_ModelParamsPanel = new ModelParamsPanel();
   mp_ModelParamsPanel->addAStaticPage(mp_ModelGlobalParamsMVP->asWidget(),
       _("Global parameters"), 0);
@@ -88,7 +89,7 @@ ModelStructureModule::ModelStructureModule()
   mp_Coordinator = new ModelStructureCoordinator(
       *mp_ModelFctDetailMVP->getModel(), *mp_ModelStructureMVP->getModel(),
       *mp_ModelGlobalParamsMVP->getModel(), *mp_ModelParamsPanel,
-      *mp_StructureListToolBox);
+      *mp_StructureListToolBox,BuilderDesc);
 
   mp_Coordinator->signal_ModelChanged().connect(sigc::mem_fun(*this,
       &ModelStructureModule::whenModelChanged));
@@ -168,20 +169,6 @@ Gtk::Widget* ModelStructureModule::asWidget()
 sigc::signal<void> ModelStructureModule::signal_ModuleChanged()
 {
   return m_signal_ModelStructureChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelStructureModule::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
-{
-  mp_ModelInstance = &ModelInstance;
-  mp_SimBlob = &SimBlob;
-
-  mp_Coordinator->setEngineRequirements(ModelInstance, SimBlob);
 }
 
 // =====================================================================

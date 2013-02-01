@@ -61,19 +61,20 @@ namespace openfluid {
 namespace machine {
 class ModelItemSignatureInstance;
 }
+namespace guicommon {
+class FunctionSignatureRegistry;
+}
 }
 
 class ModelAvailFctModel;
 class ModelFctDetailModel;
-
-class FunctionSignatureRegistry;
 
 
 class ModelAddFunctionCoordinator: public sigc::trackable
 {
   private:
 
-    FunctionSignatureRegistry* mp_SignatureRegistry;
+    openfluid::guicommon::FunctionSignatureRegistry* mp_SignatureRegistry;
 
     ModelAvailFctModel& m_AvailFctModel;
 
@@ -89,7 +90,7 @@ class ModelAddFunctionCoordinator: public sigc::trackable
     ModelAddFunctionCoordinator(ModelAvailFctModel& AvailFctModel,
         ModelFctDetailModel& FctDetailModel);
 
-    void setSignatures(FunctionSignatureRegistry& Signatures);
+    void setSignatures(openfluid::guicommon::FunctionSignatureRegistry& Signatures);
 
     void setFctToDisplay(openfluid::machine::ModelItemSignatureInstance* Signature);
 

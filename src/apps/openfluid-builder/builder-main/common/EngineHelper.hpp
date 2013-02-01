@@ -92,9 +92,7 @@ class EngineHelper
 
     static std::string minimiseInfoString(std::string InfoString);
 
-    static void sortUnitsCollectionById(openfluid::core::UnitsCollection& Coll);
-
-    static void sortEventsListByDateTime(openfluid::core::EventsList_t& Events);
+    static void sortEventsListByDateTime(std::list<openfluid::core::Event*>& Events);
 
     static bool isEmptyString(std::string Str);
 

@@ -63,18 +63,20 @@
 #include "BuilderListToolBox.hpp"
 
 #include "BuilderFrame.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-DomainStructureModule::DomainStructureModule()
+DomainStructureModule::DomainStructureModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
+ProjectWorkspaceModule(BuilderDesc)
 {
   mp_MainPanel = 0;
 
-  mp_DomainStructureMVP = new DomainStructureComponent();
-  mp_DomainUnitRelationAddDialog = new DomainUnitRelationAddDialog();
-  mp_DomainUnitAddEditDialog = new DomainUnitAddEditDialog(*mp_DomainUnitRelationAddDialog);
+  mp_DomainStructureMVP = new DomainStructureComponent(BuilderDesc.getDomain());
+//  mp_DomainUnitRelationAddDialog = new DomainUnitRelationAddDialog();
+  mp_DomainUnitAddEditDialog = new DomainUnitAddEditDialog(*mp_DomainUnitRelationAddDialog, BuilderDesc.getDomain());
 
 
   mp_StructureListToolBox = BuilderListToolBoxFactory::createDomainStructureToolBox();
@@ -143,20 +145,6 @@ Gtk::Widget* DomainStructureModule::asWidget()
 sigc::signal<void> DomainStructureModule::signal_ModuleChanged()
 {
   return m_signal_DomainStructureChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainStructureModule::setEngineRequirements(
-    openfluid::machine::ModelInstance& ModelInstance,
-    openfluid::machine::SimulationBlob& SimBlob)
-{
-  mp_ModelInstance = &ModelInstance;
-  mp_SimBlob = &SimBlob;
-
-  mp_Coordinator->setEngineRequirements(ModelInstance, SimBlob);
 }
 
 // =====================================================================

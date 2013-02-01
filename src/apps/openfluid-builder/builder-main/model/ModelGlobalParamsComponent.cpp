@@ -61,17 +61,16 @@
 // =====================================================================
 // =====================================================================
 
-
-ModelGlobalParamsComponent::ModelGlobalParamsComponent()
+ModelGlobalParamsComponent::ModelGlobalParamsComponent(
+    openfluid::guicommon::BuilderModel& Model)
 {
-  mp_Model = new ModelGlobalParamsModelImpl();
+  mp_Model = new ModelGlobalParamsModelImpl(Model);
   mp_View = new ModelGlobalParamsViewImpl();
   mp_Presenter = new ModelGlobalParamsPresenter(*mp_Model, *mp_View);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 ModelGlobalParamsComponent::~ModelGlobalParamsComponent()
 {
@@ -83,7 +82,6 @@ ModelGlobalParamsComponent::~ModelGlobalParamsComponent()
 // =====================================================================
 // =====================================================================
 
-
 Gtk::Widget* ModelGlobalParamsComponent::asWidget()
 {
   return mp_View->asWidget();
@@ -92,7 +90,6 @@ Gtk::Widget* ModelGlobalParamsComponent::asWidget()
 // =====================================================================
 // =====================================================================
 
-
 ModelGlobalParamsModel* ModelGlobalParamsComponent::getModel()
 {
   return mp_Model;
@@ -100,7 +97,6 @@ ModelGlobalParamsModel* ModelGlobalParamsComponent::getModel()
 
 // =====================================================================
 // =====================================================================
-
 
 ModelGlobalParamsView* ModelGlobalParamsComponent::getView()
 {

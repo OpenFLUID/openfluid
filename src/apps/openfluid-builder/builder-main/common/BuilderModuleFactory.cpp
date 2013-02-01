@@ -59,8 +59,8 @@
 #include "DomainStructureModule.hpp"
 #include "DomainClassModule.hpp"
 #include "SimulationRunModule.hpp"
-#include "SimulationOutModule.hpp"
-#include "ResultsSetModule.hpp"
+//#include "SimulationOutModule.hpp"
+//#include "ResultsSetModule.hpp"
 #include "EngineProject.hpp"
 
 #include "MapViewModule.hpp"
@@ -90,9 +90,7 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createHomeModule(
 
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureModule()
 {
-  ModelStructureModule* Module = new ModelStructureModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+  ModelStructureModule* Module = new ModelStructureModule(mp_EngineProject.getBuilderDesc());
   return Module;
 }
 
@@ -102,9 +100,7 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureM
 
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainStructureModule()
 {
-  DomainStructureModule* Module = new DomainStructureModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+  DomainStructureModule* Module = new DomainStructureModule(mp_EngineProject.getBuilderDesc());
   return Module;
 }
 
@@ -114,9 +110,7 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainStructure
 
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainClassModule()
 {
-  DomainClassModule* Module = new DomainClassModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+  DomainClassModule* Module = new DomainClassModule(mp_EngineProject.getBuilderDesc());
   return Module;
 }
 
@@ -126,9 +120,7 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainClassModu
 
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunModule()
 {
-  SimulationRunModule* Module = new SimulationRunModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+  SimulationRunModule* Module = new SimulationRunModule(mp_EngineProject.getBuilderDesc());
   return Module;
 }
 
@@ -136,25 +128,26 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunMo
 // =====================================================================
 
 
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutModule()
-{
-  SimulationOutModule* Module = new SimulationOutModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
-  return Module;
-}
+//openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutModule()
+//{
+//  SimulationOutModule* Module = new SimulationOutModule();
+//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
+//      *mp_EngineProject.getSimBlob(),
+//      mp_EngineProject.getFluidXDescriptor());
+//  return Module;
+//}
 
 // =====================================================================
 // =====================================================================
 
 
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createResultsSetModule()
-{
-  ResultsSetModule* Module = new ResultsSetModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
-  return Module;
-}
+//openfluid::guicommon::BuilderModule* BuilderModuleFactory::createResultsSetModule()
+//{
+//  ResultsSetModule* Module = new ResultsSetModule();
+//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
+//      *mp_EngineProject.getSimBlob());
+//  return Module;
+//}
 
 // =====================================================================
 // =====================================================================
@@ -162,8 +155,9 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createResultsSetModul
 
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMapViewModule()
 {
-  MapViewModule* Module = new MapViewModule();
-  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-      *mp_EngineProject.getSimBlob());
+  MapViewModule* Module = new MapViewModule(mp_EngineProject.getBuilderDesc());
+//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
+//      *mp_EngineProject.getSimBlob(),
+//      mp_EngineProject.getBuilderDesc());
   return Module;
 }

@@ -59,8 +59,9 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 
+#include <openfluid/fluidx/UnitDescriptor.hpp>
 #include "tests-config.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 
 class BuilderTestHelper
 {
@@ -72,8 +73,9 @@ class BuilderTestHelper
 
     BuilderTestHelper()
     {
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(CONFIGTESTS_OUTPUT_BINARY_DIR);
-      FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+          CONFIGTESTS_OUTPUT_BINARY_DIR);
+      openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
     }
 
   public:
@@ -99,5 +101,17 @@ class BuilderTestHelper
 };
 
 BuilderTestHelper* BuilderTestHelper::mp_Instance = 0;
+
+openfluid::fluidx::UnitDescriptor* createAUnitDesc(std::string ClassName,
+                                                   int ID, int PcsOrder)
+{
+  openfluid::fluidx::UnitDescriptor* U =
+      new openfluid::fluidx::UnitDescriptor();
+  U->getUnitClass() = ClassName;
+  U->getUnitID() = ID;
+  U->getProcessOrder() = PcsOrder;
+
+  return U;
+}
 
 #endif /* __BUILDERTESTHELPER_HPP__ */

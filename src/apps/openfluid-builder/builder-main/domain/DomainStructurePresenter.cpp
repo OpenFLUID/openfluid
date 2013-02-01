@@ -54,6 +54,8 @@
 
 #include "DomainStructurePresenter.hpp"
 
+#include <openfluid/fluidx/UnitDescriptor.hpp>
+
 #include "DomainStructureModel.hpp"
 #include "DomainStructureAdapter.hpp"
 
@@ -79,7 +81,7 @@ void DomainStructurePresenter::whenUnitDeleted()
 // =====================================================================
 
 
-void DomainStructurePresenter::whenUnitAdded(openfluid::core::Unit& Unit)
+void DomainStructurePresenter::whenUnitAdded(openfluid::fluidx::UnitDescriptor& Unit)
 {
   m_Adapter.addUnit(Unit);
 }

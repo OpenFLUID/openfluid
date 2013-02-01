@@ -58,22 +58,22 @@
 
 #include <glibmm/i18n.h>
 
-#include <boost/foreach.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
 // =====================================================================
 // =====================================================================
 
-
-DomainIDataRemoveDialog::DomainIDataRemoveDialog() :
-  mp_CoreRepos(0), m_ClassName("")
+DomainIDataRemoveDialog::DomainIDataRemoveDialog(
+    openfluid::guicommon::BuilderDomain& Domain) :
+    mp_Domain(&Domain), m_ClassName("")
 {
   mp_Dialog = new Gtk::Dialog(_("Removing Inputdata"));
 
   //  Gtk::Label* MessageLabel = Gtk::manage(new Gtk::Label(
   //      _("All values of this data will be destroyed")));
 
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name:"),
-      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* NameLabel = Gtk::manage(
+      new Gtk::Label(_("Inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
   mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
 
@@ -94,17 +94,6 @@ DomainIDataRemoveDialog::DomainIDataRemoveDialog() :
 // =====================================================================
 // =====================================================================
 
-
-void DomainIDataRemoveDialog::setEngineRequirements(
-    openfluid::core::CoreRepository& CoreRepos)
-{
-  mp_CoreRepos = &CoreRepos;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void DomainIDataRemoveDialog::setClass(std::string ClassName)
 {
   m_ClassName = ClassName;
@@ -115,25 +104,21 @@ void DomainIDataRemoveDialog::setClass(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-
 void DomainIDataRemoveDialog::update()
 {
   mp_Combo->clear_items();
 
-  if (mp_CoreRepos->getUnits(m_ClassName))
-  {
-    // get the first IData only, supposed to be the same on all the class
-    BOOST_FOREACH(std::string DataName,mp_CoreRepos->getUnits(m_ClassName)->getList()->begin()->getInputData()->getInputDataNames())
-{    mp_Combo->append_text(DataName);
-  }
+  std::set<std::string> IDataNames = mp_Domain->getInputDataNames(m_ClassName);
+
+  for (std::set<std::string>::iterator it = IDataNames.begin();
+      it != IDataNames.end(); ++it)
+    mp_Combo->append_text(*it);
+
   mp_Combo->set_active(0);
 }
 
-}
-
 // =====================================================================
 // =====================================================================
-
 
 std::string DomainIDataRemoveDialog::show()
 {

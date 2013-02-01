@@ -66,6 +66,7 @@
 #include "tests-config.hpp"
 
 #include <openfluid/fluidx/RunDescriptor.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -74,7 +75,7 @@ struct init_Presenter
 {
     SimulRunComponent* mp_Component;
 
-    SimulRunModelSub* mp_Model;
+    SimulRunModel* mp_Model;
     SimulRunViewSub* mp_View;
 
     EngineProject* mp_EngProject;
@@ -83,10 +84,6 @@ struct init_Presenter
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Component = new SimulRunComponent();
-      mp_Model = (SimulRunModelSub*) mp_Component->getModel();
-      mp_View = (SimulRunViewSub*) (mp_Component->getView());
-
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
 
@@ -94,7 +91,12 @@ struct init_Presenter
           CONFIGTESTS_OUTPUT_DATA_DIR + "/SimulRunPresenter_TEST.OUT");
       mp_EngProject = new EngineProject(Path);
 
-      mp_Model->setEngineRequirements(mp_EngProject->getRunDescriptor());
+      mp_Component = new SimulRunComponent(
+          mp_EngProject->getBuilderDesc().getRunDescriptor());
+      mp_Model = mp_Component->getModel();
+      mp_View = (SimulRunViewSub*) (mp_Component->getView());
+
+      mp_Model->signal_FromAppDescriptorChanged().emit();
     }
 
     ~init_Presenter()
@@ -119,11 +121,18 @@ BOOST_AUTO_TEST_CASE(test_SetRunDescriptor)
   BOOST_CHECK_EQUAL(mp_View->getValuesBuff(), 1);
   BOOST_CHECK_EQUAL(mp_View->getFilesBuff(), 2);
 
-  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(),false);
-  BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(),0);
-  BOOST_CHECK_EQUAL(mp_EngProject->getRunDescriptor().isUserValuesBufferSize(),false);
-  BOOST_CHECK_EQUAL(mp_EngProject->getRunDescriptor().getValuesBufferSize(),0);
+  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
+  BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 0);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      false);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getValuesBufferSize(),
+      0);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_ToggleValuesBuffIsSet)
 {
@@ -132,17 +141,24 @@ BOOST_AUTO_TEST_CASE(test_ToggleValuesBuffIsSet)
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSet(), true);
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSpinSensitive(), true);
 
-  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(),true);
-  BOOST_CHECK_EQUAL(mp_EngProject->getRunDescriptor().isUserValuesBufferSize(),true);
+  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), true);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      true);
 
   mp_View->setValuesBuffIsSet(false);
 
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSpinSensitive(), false);
 
-  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(),false);
-  BOOST_CHECK_EQUAL(mp_EngProject->getRunDescriptor().isUserValuesBufferSize(),false);
+  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      false);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_changeValuesBuff)
 {
@@ -153,45 +169,56 @@ BOOST_AUTO_TEST_CASE(test_changeValuesBuff)
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSpinSensitive(), true);
   BOOST_CHECK_EQUAL(mp_View->getValuesBuff(), 10);
 
-  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(),true);
-  BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(),10);
-  BOOST_CHECK_EQUAL(mp_EngProject->getRunDescriptor().isUserValuesBufferSize(),true);
-  BOOST_CHECK_EQUAL(mp_EngProject->getRunDescriptor().getValuesBufferSize(), 10);
+  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), true);
+  BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 10);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      true);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getValuesBufferSize(),
+      10);
 
   mp_View->setValuesBuffIsSet(false);
 
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSpinSensitive(), false);
 
-  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(),false);
-  BOOST_CHECK_EQUAL(mp_EngProject->getRunDescriptor().isUserValuesBufferSize(),false);
+  BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      false);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_setInvalidDateTimeValue)
 {
   mp_View->setBegin("99/99/99");
 
-  BOOST_CHECK_EQUAL(mp_View->getBeginBGColor(),Gdk::Color("red").to_string());
+  BOOST_CHECK_EQUAL(mp_View->getBeginBGColor(), Gdk::Color("red").to_string());
 
   mp_View->setEnd("99/99/99");
 
-  BOOST_CHECK_EQUAL(mp_View->getEndBGColor(),Gdk::Color("red").to_string());
+  BOOST_CHECK_EQUAL(mp_View->getEndBGColor(), Gdk::Color("red").to_string());
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_setUncoherentDateTimeValue)
 {
   mp_View->setBegin("99/99/99");
   mp_View->setBegin("2012-11-10 01:23:45");
 
-  BOOST_CHECK_EQUAL(mp_View->getBeginBGColor(),Gdk::Color("orange").to_string());
+  BOOST_CHECK_EQUAL(mp_View->getBeginBGColor(),
+                    Gdk::Color("orange").to_string());
 
   mp_View->setEnd("99/99/99");
   mp_View->setEnd("2010-11-12 02:34:56");
 
-  BOOST_CHECK_EQUAL(mp_View->getEndBGColor(),Gdk::Color("orange").to_string());
+  BOOST_CHECK_EQUAL(mp_View->getEndBGColor(), Gdk::Color("orange").to_string());
 }
-
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END()

@@ -64,7 +64,7 @@
 #include "DomainIDataView.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
-#include <set>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -77,20 +77,21 @@ struct init_Presenter
     DomainIDataViewSub* mp_View;
 
     EngineProject* mp_EngProject;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
     init_Presenter()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Component = new DomainIDataComponent();
-      mp_Model = (DomainIDataModelImpl*) (mp_Component->getModel());
-      mp_View = (DomainIDataViewSub*) (mp_Component->getView());
-
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
 
-      mp_Model->setEngineRequirements(mp_EngProject->getCoreRepository());
+      mp_Domain = &mp_EngProject->getBuilderDesc().getDomain();
+
+      mp_Component = new DomainIDataComponent(*mp_Domain);
+      mp_Model = (DomainIDataModelImpl*) (mp_Component->getModel());
+      mp_View = (DomainIDataViewSub*) (mp_Component->getView());
     }
 
     ~init_Presenter()
@@ -109,89 +110,101 @@ BOOST_AUTO_TEST_CASE(test_constructors)
 {
   mp_Model->setClass("TestUnits");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_model()->children().size(),mp_EngProject->getCoreRepository().getUnits("TestUnits")->getList()->size());
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 4);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_model()->children().size(),
+                    mp_Domain->getIDsOfClass("TestUnits").size());
 
   int Id;
   std::string DataValFromView;
-  std::string DataValFromCoreRepos;
 
-  mp_View->getTreeView()->get_model()->children()[0]->get_value(0,Id);
-  mp_View->getTreeView()->get_model()->children()[0]->get_value(1,DataValFromView);
-  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataA",DataValFromCoreRepos);
+  mp_View->getTreeView()->get_model()->children()[0]->get_value(0, Id);
+  mp_View->getTreeView()->get_model()->children()[0]->get_value(
+      1, DataValFromView);
 
-  BOOST_CHECK_EQUAL(DataValFromView,DataValFromCoreRepos);
+  BOOST_CHECK_EQUAL(mp_Domain->getInputData("TestUnits",Id,"indataA"),
+                    DataValFromView);
 
-  mp_View->getTreeView()->get_model()->children()[5]->get_value(0,Id);
-  mp_View->getTreeView()->get_model()->children()[5]->get_value(3,DataValFromView);
-  mp_EngProject->getCoreRepository().getUnit("TestUnits",Id)->getInputData()->getValue("indataC",DataValFromCoreRepos);
+  mp_View->getTreeView()->get_model()->children()[5]->get_value(0, Id);
+  mp_View->getTreeView()->get_model()->children()[5]->get_value(
+      3, DataValFromView);
 
-  BOOST_CHECK_EQUAL(DataValFromView,DataValFromCoreRepos);
+  BOOST_CHECK_EQUAL(mp_Domain->getInputData("TestUnits",Id,"indataC"),
+                    DataValFromView);
 
   mp_Model->setClass("ParentTestUnits");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),0);
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_model()->children().size(),2);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_model()->children().size(), 2);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_removeData)
 {
   mp_Model->setClass("TestUnits");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 4);
 
   mp_Model->removeData("indataB");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),3);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 3);
 
   mp_Model->removeData("indataA");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),2);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 2);
 
-  mp_Model->removeData("wrongIndata");
+  BOOST_CHECK_THROW(mp_Model->removeData("wrongIndata"),
+                    openfluid::base::OFException);
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),2);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 2);
 
   mp_Model->removeData("indataC");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),0);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 0);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_addData)
 {
   mp_Model->setClass("TestUnits");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 4);
 
-  mp_Model->addData("NewIndata","DefaultVal");
+  mp_Model->addData("NewIndata", "DefaultVal");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),5);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 5);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_changeDataName)
 {
   mp_Model->setClass("TestUnits");
 
-  mp_Model->changeDataName("indataB","newDataB");
+  mp_Model->changeDataName("indataB", "newDataB");
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 4);
 
-  std::vector<Gtk::TreeViewColumn*> Columns = mp_View->getTreeView()->get_columns();
+  std::vector<Gtk::TreeViewColumn*> Columns =
+      mp_View->getTreeView()->get_columns();
 
   std::set<std::string> Titles;
 
-  for(unsigned int i=0; i<Columns.size(); i++)
+  for (unsigned int i = 0; i < Columns.size(); i++)
   {
-    if(Columns[i]->get_widget())
-    Titles.insert((static_cast<Gtk::Label*>(Columns[i]->get_widget()))->get_text());
+    if (Columns[i]->get_widget())
+      Titles.insert(
+          (static_cast<Gtk::Label*>(Columns[i]->get_widget()))->get_text());
   }
 
-  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(),4);
-  BOOST_CHECK_EQUAL(Titles.find("indataB") != Titles.end(),false);
-  BOOST_CHECK_EQUAL(Titles.find("newDataB") != Titles.end(),true);
+  BOOST_CHECK_EQUAL(mp_View->getTreeView()->get_columns().size(), 4);
+  BOOST_CHECK_EQUAL(Titles.find("indataB") != Titles.end(), false);
+  BOOST_CHECK_EQUAL(Titles.find("newDataB") != Titles.end(), true);
 }
-
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END()

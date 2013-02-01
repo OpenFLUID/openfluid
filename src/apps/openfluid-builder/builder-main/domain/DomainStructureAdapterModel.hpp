@@ -56,10 +56,16 @@
 #define __DOMAINSTRUCTUREADAPTERMODEL_HPP__
 
 
-#include <openfluid/core/Unit.hpp>
-
 #include "BuilderClassListStore.hpp"
 #include "DomainStructureColumns.hpp"
+
+#include <openfluid/guicommon/BuilderDomain.hpp>
+
+namespace openfluid {
+namespace fluidx {
+class UnitDescriptor;
+}
+}
 
 // =====================================================================
 // =====================================================================
@@ -71,7 +77,7 @@ class DomainStructureAdapterModel
 
     virtual void
         setDomainStructure(
-            openfluid::core::UnitsListByClassMap_t UnitListByClass) = 0;
+            const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass) = 0;
 
     virtual Glib::RefPtr<Gtk::TreeModel> getClassesTreeModel() = 0;
 
@@ -90,7 +96,7 @@ class DomainStructureAdapterModel
 
     virtual void deleteClass(std::string ClassName) = 0;
 
-    virtual void addUnit(openfluid::core::Unit& Unit) = 0;
+    virtual void addUnit(openfluid::fluidx::UnitDescriptor& Unit) = 0;
 
     virtual void setSelectedClass(Gtk::TreeIter Iter) = 0;
 
@@ -121,7 +127,7 @@ class DomainStructureAdapterModelImpl: public DomainStructureAdapterModel
 
     void appendUnitRowToUnitListStore(
         Glib::RefPtr<BuilderListStore> ClassListStore,
-        openfluid::core::Unit* Unit);
+        openfluid::fluidx::UnitDescriptor& Unit);
 
     void createUnitStoreForClass(std::string ClassName);
 
@@ -142,7 +148,7 @@ class DomainStructureAdapterModelImpl: public DomainStructureAdapterModel
     DomainStructureAdapterModelImpl(DomainStructureColumns& Columns);
 
     void setDomainStructure(
-        openfluid::core::UnitsListByClassMap_t UnitListByClass);
+        const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass);
 
     Glib::RefPtr<Gtk::TreeModel> getClassesTreeModel();
 
@@ -160,7 +166,7 @@ class DomainStructureAdapterModelImpl: public DomainStructureAdapterModel
 
     void deleteClass(std::string ClassName);
 
-    void addUnit(openfluid::core::Unit& Unit);
+    void addUnit(openfluid::fluidx::UnitDescriptor& Unit);
 
     void setSelectedClass(Gtk::TreeIter Iter);
 

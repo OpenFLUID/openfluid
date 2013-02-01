@@ -60,13 +60,15 @@
 #include "DomainIDataPresenter.hpp"
 #include "DomainIDataAdapter.hpp"
 
-DomainIDataComponent::DomainIDataComponent()
+DomainIDataComponent::DomainIDataComponent(openfluid::guicommon::BuilderDomain& Domain)
 {
-  mp_Model = new DomainIDataModelImpl();
+  mp_Model = new DomainIDataModelImpl(Domain);
   mp_View = new DomainIDataViewImpl();
-  mp_AdapterModel = new DomainIDataAdapterModelImpl();
+  mp_AdapterModel = new DomainIDataAdapterModelImpl(Domain);
   mp_Adapter = new DomainIDataAdapter(*mp_AdapterModel, *mp_View);
   mp_Presenter = new DomainIDataPresenter(*mp_Model, *mp_Adapter);
+
+  mp_Model->update();
 }
 DomainIDataComponent::~DomainIDataComponent()
 {

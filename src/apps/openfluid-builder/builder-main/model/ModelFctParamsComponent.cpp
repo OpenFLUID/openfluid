@@ -61,27 +61,25 @@
 // =====================================================================
 // =====================================================================
 
-
 ModelFctParamsComponent::ModelFctParamsComponent(
-    openfluid::machine::ModelItemInstance* Item,
-    openfluid::machine::ModelInstance* ModelInstance)
+    openfluid::fluidx::ModelItemDescriptor* Item,
+    openfluid::guicommon::BuilderModel& Model)
 {
-  mp_Model = new ModelFctParamsModelImpl(ModelInstance);
+  mp_Model = new ModelFctParamsModelImpl(Model);
   mp_View = new ModelFctParamsViewImpl();
   mp_Presenter = new ModelFctParamsPresenter(*mp_Model, *mp_View);
 
-  mp_Model->signal_ParamsChanged().connect(sigc::mem_fun(*this,
-      &ModelFctParamsComponent::whenParamsChanged));
+  mp_Model->signal_ParamsChanged().connect(
+      sigc::mem_fun(*this, &ModelFctParamsComponent::whenParamsChanged));
 
-  mp_Model->signal_RequiredFileChanged().connect(sigc::mem_fun(*this,
-      &ModelFctParamsComponent::whenRequiredFileChanged));
+  mp_Model->signal_RequiredFileChanged().connect(
+      sigc::mem_fun(*this, &ModelFctParamsComponent::whenRequiredFileChanged));
 
-  mp_Model->setModelItemInstance(Item);
+  mp_Model->setModelItemDescriptor(Item);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 ModelFctParamsComponent::~ModelFctParamsComponent()
 {
@@ -93,7 +91,6 @@ ModelFctParamsComponent::~ModelFctParamsComponent()
 // =====================================================================
 // =====================================================================
 
-
 Gtk::Widget* ModelFctParamsComponent::asWidget()
 {
   return mp_View->asWidget();
@@ -101,7 +98,6 @@ Gtk::Widget* ModelFctParamsComponent::asWidget()
 
 // =====================================================================
 // =====================================================================
-
 
 ModelFctParamsModel* ModelFctParamsComponent::getModel()
 {
@@ -111,7 +107,6 @@ ModelFctParamsModel* ModelFctParamsComponent::getModel()
 // =====================================================================
 // =====================================================================
 
-
 void ModelFctParamsComponent::updateGlobalValues()
 {
   mp_Model->updateGlobalValues();
@@ -119,7 +114,6 @@ void ModelFctParamsComponent::updateGlobalValues()
 
 // =====================================================================
 // =====================================================================
-
 
 void ModelFctParamsComponent::whenParamsChanged()
 {
@@ -129,7 +123,6 @@ void ModelFctParamsComponent::whenParamsChanged()
 // =====================================================================
 // =====================================================================
 
-
 void ModelFctParamsComponent::whenRequiredFileChanged()
 {
   m_signal_RequiredFileChanged.emit();
@@ -138,7 +131,6 @@ void ModelFctParamsComponent::whenRequiredFileChanged()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ModelFctParamsComponent::signal_ParamsChanged()
 {
   return m_signal_ParamsChanged;
@@ -146,7 +138,6 @@ sigc::signal<void> ModelFctParamsComponent::signal_ParamsChanged()
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> ModelFctParamsComponent::signal_RequiredFileChanged()
 {

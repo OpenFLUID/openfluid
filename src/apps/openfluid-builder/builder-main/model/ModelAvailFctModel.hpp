@@ -57,7 +57,7 @@
 
 #include <sigc++/sigc++.h>
 
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 
 class ModelAvailFctModel
 {
@@ -67,9 +67,10 @@ class ModelAvailFctModel
 
     virtual sigc::signal<void> signal_SelectedSignatureChanged() = 0;
 
-    virtual void setSignatures(FunctionSignatureRegistry& Signatures) = 0;
+    virtual void setSignatures(
+        openfluid::guicommon::FunctionSignatureRegistry& Signatures) = 0;
 
-    virtual FunctionSignatureRegistry::FctSignaturesByTypeByName_t getSignatures() = 0;
+    virtual openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t getSignatures() = 0;
 
     virtual void setSelectedSignatureByUser(
         openfluid::machine::ModelItemSignatureInstance* Signature) = 0;
@@ -89,7 +90,7 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
 
     sigc::signal<void> m_signal_SelectedSignatureChanged;
 
-    FunctionSignatureRegistry::FctSignaturesByTypeByName_t m_Signatures;
+    openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t m_Signatures;
 
     openfluid::machine::ModelItemSignatureInstance* mp_SelectedSignature;
 
@@ -103,9 +104,10 @@ class ModelAvailFctModelImpl: public ModelAvailFctModel
 
     sigc::signal<void> signal_SelectedSignatureChanged();
 
-    void setSignatures(FunctionSignatureRegistry& Signatures);
+    void setSignatures(
+        openfluid::guicommon::FunctionSignatureRegistry& Signatures);
 
-    FunctionSignatureRegistry::FctSignaturesByTypeByName_t getSignatures();
+    openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t getSignatures();
 
     void setSelectedSignatureByUser(
         openfluid::machine::ModelItemSignatureInstance* Signature);

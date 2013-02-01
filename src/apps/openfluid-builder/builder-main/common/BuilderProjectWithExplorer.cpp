@@ -72,7 +72,7 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
 {
   mp_EngineProject = new EngineProject(ProjectFolder, true);
 
-  mp_ProjectExplorerMVP = new ProjectExplorerComponent();
+  mp_ProjectExplorerMVP = new ProjectExplorerComponent(mp_EngineProject->getBuilderDesc());
 
   mp_Workspace = new ProjectWorkspace();
 

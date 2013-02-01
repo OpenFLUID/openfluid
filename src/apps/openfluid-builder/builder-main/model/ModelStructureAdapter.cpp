@@ -57,35 +57,59 @@
 #include "ModelStructureAdapterModel.hpp"
 #include "ModelStructureView.hpp"
 
+// =====================================================================
+// =====================================================================
+
 void ModelStructureAdapter::whenFctSelectionChanged()
 {
   m_signal_FromUserSelectionChanged.emit();
 }
 
+// =====================================================================
+// =====================================================================
+
 ModelStructureAdapter::ModelStructureAdapter(ModelStructureAdapterModel& Model,
-    ModelStructureView& View) :
-  m_Model(Model), m_View(View)
+                                             ModelStructureView& View) :
+    m_Model(Model), m_View(View)
 {
   m_View.setModel(m_Model.getTreeModel());
 
-  m_View.signal_StructureFctSelectionChanged().connect(sigc::mem_fun(*this,
-      &ModelStructureAdapter::whenFctSelectionChanged));
+  m_View.signal_StructureFctSelectionChanged().connect(
+      sigc::mem_fun(*this, &ModelStructureAdapter::whenFctSelectionChanged));
 }
+
+// =====================================================================
+// =====================================================================
+
 sigc::signal<void> ModelStructureAdapter::signal_FromUserSelectionChanged()
 {
   return m_signal_FromUserSelectionChanged;
 }
-void ModelStructureAdapter::setModelStructure(
-    openfluid::machine::ModelInstance* ModelInstance)
+
+// =====================================================================
+// =====================================================================
+
+void ModelStructureAdapter::setModelStructure(std::vector<std::string> ModelIDs)
 {
-  m_Model.setModelStructure(ModelInstance);
+  m_Model.setModelStructure(ModelIDs);
   m_View.setModel(m_Model.getTreeModel());
 }
+
+// =====================================================================
+// =====================================================================
+
 int ModelStructureAdapter::getSelectedFunctionPosition()
 {
   return m_View.getSelectedRowPosition();
 }
+
+// =====================================================================
+// =====================================================================
+
 void ModelStructureAdapter::requestSelectionAt(int Position)
 {
   m_View.requestSelectionAt(Position);
 }
+
+// =====================================================================
+// =====================================================================

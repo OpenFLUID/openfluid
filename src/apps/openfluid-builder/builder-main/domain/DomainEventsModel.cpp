@@ -56,22 +56,20 @@
 
 #include <glibmm/ustring.h>
 
-#include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
 // =====================================================================
 // =====================================================================
 
-
-DomainEventsModelImpl::DomainEventsModelImpl() :
-  mp_CoreRepos(0), mp_UnitsColl(0)
+DomainEventsModelImpl::DomainEventsModelImpl(
+    openfluid::guicommon::BuilderDomain& Domain) :
+    mp_Domain(&Domain), mp_Units(0)
 {
 
 }
 
 // =====================================================================
 // =====================================================================
-
 
 DomainEventsModelImpl::~DomainEventsModelImpl()
 {
@@ -79,7 +77,6 @@ DomainEventsModelImpl::~DomainEventsModelImpl()
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void> DomainEventsModelImpl::signal_FromAppEventsInit()
 {
@@ -89,29 +86,21 @@ sigc::signal<void> DomainEventsModelImpl::signal_FromAppEventsInit()
 // =====================================================================
 // =====================================================================
 
-
-void DomainEventsModelImpl::setEngineRequirements(
-    openfluid::core::CoreRepository& CoreRepos)
-{
-  mp_CoreRepos = &CoreRepos;
-}
-
-// =====================================================================
-// =====================================================================
-
 void DomainEventsModelImpl::setClass(std::string ClassName)
 {
-  mp_UnitsColl = mp_CoreRepos->getUnits(ClassName);
-
-  if (mp_UnitsColl)
+  if (mp_Domain->isClassNameExists(ClassName))
+  {
+    mp_Units = &(mp_Domain->getUnitsByIdByClass().at(ClassName));
     m_signal_FromAppEventsInit.emit();
-
+  }
+  else
+    mp_Units = new std::map<int, openfluid::guicommon::BuilderUnit>();
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::core::UnitsCollection* DomainEventsModelImpl::getUnitsColl()
+const std::map<int, openfluid::guicommon::BuilderUnit>* DomainEventsModelImpl::getUnits()
 {
-  return mp_UnitsColl;
+  return mp_Units;
 }

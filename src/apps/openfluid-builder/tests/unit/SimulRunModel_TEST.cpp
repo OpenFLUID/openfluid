@@ -64,13 +64,16 @@
 #include "tests-config.hpp"
 
 #include <openfluid/fluidx/RunDescriptor.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 struct init_Model
 {
-    SimulRunModelSub* mp_Model;
+    SimulRunModel* mp_Model;
+
+    EngineProject* mp_EngProject;
 
     init_Model()
     {
@@ -79,12 +82,18 @@ struct init_Model
       openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(
           CONFIGTESTS_OUTPUT_DATA_DIR + "/SimulRunModel_TEST.OUT");
 
-      mp_Model = new SimulRunModelSub();
+      std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
+          + "/OPENFLUID.IN.Primitives";
+      mp_EngProject = new EngineProject(Path);
+
+      mp_Model = new SimulRunModelImpl(
+          mp_EngProject->getBuilderDesc().getRunDescriptor());
     }
 
     ~init_Model()
     {
       delete mp_Model;
+      delete mp_EngProject;
     }
 };
 
@@ -95,13 +104,9 @@ BOOST_FIXTURE_TEST_SUITE(ModelStructureModelTest, init_Model)
 
 BOOST_AUTO_TEST_CASE(test_setRunDescriptor)
 {
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = new EngineProject(Path);
-
-  mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
-
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().isUserValuesBufferSize(),false);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      false);
 
   BOOST_CHECK_EQUAL(mp_Model->getDelta(), 3600);
   BOOST_CHECK_EQUAL(mp_Model->getBeginColor(), "white");
@@ -111,18 +116,13 @@ BOOST_AUTO_TEST_CASE(test_setRunDescriptor)
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 0);
   BOOST_CHECK_EQUAL(mp_Model->getFilesBuff(), 2);
-
-  delete p_EngProject;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_setInvalidDateTime)
 {
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = new EngineProject(Path);
-
-  mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
-
   mp_Model->setBegin("99/99/99");
 
   BOOST_CHECK_EQUAL(mp_Model->getBeginColor(), "red");
@@ -132,82 +132,86 @@ BOOST_AUTO_TEST_CASE(test_setInvalidDateTime)
 
   BOOST_CHECK_EQUAL(mp_Model->getEndColor(), "red");
   BOOST_CHECK_EQUAL(mp_Model->getEnd(), "2000-01-01 06:00:00");
-
-  delete p_EngProject;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_setUncoherentDateTime)
 {
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = new EngineProject(Path);
-
-  mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
-
   mp_Model->setBegin("2012-11-10 01:23:45");
 
   BOOST_CHECK_EQUAL(mp_Model->getBeginColor(), "orange");
   BOOST_CHECK_EQUAL(mp_Model->getBegin(), "2012-11-10 01:23:45");
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().getBeginDate().getAsISOString(), "2012-11-10 01:23:45");
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getBeginDate().getAsISOString(),
+      "2012-11-10 01:23:45");
 
   mp_Model->setEnd("2010-11-12 02:34:56");
 
   BOOST_CHECK_EQUAL(mp_Model->getEndColor(), "orange");
   BOOST_CHECK_EQUAL(mp_Model->getEnd(), "2010-11-12 02:34:56");
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().getEndDate().getAsISOString(), "2010-11-12 02:34:56");
-
-  delete p_EngProject;
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getEndDate().getAsISOString(),
+      "2010-11-12 02:34:56");
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_setValuesBuff)
 {
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = new EngineProject(Path);
-
-  mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
-
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().isUserValuesBufferSize(),false);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      false);
 
   mp_Model->setValuesBuff(5);
 
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), true);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 5);
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().isUserValuesBufferSize(),true);
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().getValuesBufferSize(),5);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      true);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getValuesBufferSize(),
+      5);
 
   mp_Model->setValuesBuffIsSet(false);
 
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().isUserValuesBufferSize(),false);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      false);
 
   mp_Model->setValuesBuffIsSet(true);
 
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), true);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 5);
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().isUserValuesBufferSize(),true);
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().getValuesBufferSize(),5);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      true);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getValuesBufferSize(),
+      5);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_setOtherValues)
 {
-  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
-  EngineProject* p_EngProject = new EngineProject(Path);
-
-  mp_Model->setEngineRequirements(p_EngProject->getRunDescriptor());
-
   mp_Model->setDelta(360);
   mp_Model->setFilesBuff(4);
 
   BOOST_CHECK_EQUAL(mp_Model->getDelta(), 360);
   BOOST_CHECK_EQUAL(mp_Model->getFilesBuff(), 4);
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().getDeltaT(),360);
-  BOOST_CHECK_EQUAL(p_EngProject->getRunDescriptor().getFilesBufferSizeInKB(),4);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getDeltaT(), 360);
+  BOOST_CHECK_EQUAL(
+      mp_EngProject->getBuilderDesc().getRunDescriptor().getFilesBufferSizeInKB(),
+      4);
 }
-
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END();

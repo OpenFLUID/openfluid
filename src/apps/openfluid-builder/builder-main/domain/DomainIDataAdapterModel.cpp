@@ -56,8 +56,7 @@
 
 #include <boost/foreach.hpp>
 
-#include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/Unit.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
 #include "DomainIDataColumns.hpp"
 #include "BuilderListStore.hpp"
@@ -65,20 +64,21 @@
 // =====================================================================
 // =====================================================================
 
-
-DomainIDataAdapterModelImpl::DomainIDataAdapterModelImpl() :
-  mp_UnitsColl(0), mp_Columns(new DomainIDataColumns()), mref_ListStore(
-      BuilderListStore::create(*mp_Columns)), m_SelectedUnit(-1)
+DomainIDataAdapterModelImpl::DomainIDataAdapterModelImpl(
+    openfluid::guicommon::BuilderDomain& Domain) :
+    mp_Domain(&Domain), mp_Columns(new DomainIDataColumns()), mref_ListStore(
+        BuilderListStore::create(*mp_Columns)), m_SelectedUnit(-1), m_ClassName(
+        "")
 {
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void DomainIDataAdapterModelImpl::dataInit(
-    openfluid::core::UnitsCollection* UnitsColl)
+void DomainIDataAdapterModelImpl::dataInit(std::string ClassName)
 {
+  m_ClassName = ClassName;
+
   // store existing sort
   int SortColumnId;
   Gtk::SortType SortType;
@@ -88,64 +88,68 @@ void DomainIDataAdapterModelImpl::dataInit(
   std::string SortColumnTitle = mp_Columns->getColumnTitleWithIndex(
       SortColumnId);
 
-  mp_UnitsColl = UnitsColl;
-
   delete mp_Columns;
   mp_Columns = new DomainIDataColumns();
 
   // create columns and then liststore with those columns
-  BOOST_FOREACH(std::string DataName, mp_UnitsColl->getList()->begin()->getInputData()->getInputDataNames())
-{  Gtk::TreeModelColumn<std::string> * DataColumn =
-  new Gtk::TreeModelColumn<std::string>();
-
-  mp_Columns->addWithTitle(DataName, *DataColumn);
-}
-
-mref_ListStore = BuilderListStore::create(*mp_Columns);
-
-// populate liststore
-BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_UnitsColl->getList()))
-{
-  Gtk::TreeRow Row = *(mref_ListStore->append());
-
-  // Id column
-  Row.set_value(*mp_Columns->getIdColumn(),
-      (int) Unit.getID());
-
-  // Data columns
-  BOOST_FOREACH(std::string DataName, Unit.getInputData()->getInputDataNames())
+  std::set<std::string> IDataNames = mp_Domain->getInputDataNames(m_ClassName);
+  for (std::set<std::string>::iterator it = IDataNames.begin();
+      it != IDataNames.end(); ++it)
   {
-    std::string Val;
-    Unit.getInputData()->getValue(DataName, Val);
+    Gtk::TreeModelColumn<std::string> * DataColumn = new Gtk::TreeModelColumn<
+        std::string>();
 
-    Row.set_value( *mp_Columns->getColumnWithTitle(DataName), Val);
+    mp_Columns->addWithTitle(*it, *DataColumn);
   }
-}
 
-// apply stored sort
-int NewSortColumnId = mp_Columns->getColumnIndexWithTitle(SortColumnTitle);
+  mref_ListStore = BuilderListStore::create(*mp_Columns);
 
-if(SortColumnId == 0) /* Id column was sorted, we sort it */
-{
-  mref_ListStore->set_sort_column(0,SortType);
-}
-else if(SortColumnId > 0 && NewSortColumnId!= -1) /* an IData column was sorted and still exists, we sort it*/
-{
-  mref_ListStore->set_sort_column(NewSortColumnId,SortType);
-}
-else /* no sort existed or sorted IData column doesn't exist no more, we apply the default (Id) sort */
-{
-  mref_ListStore->set_sort_column(0,Gtk::SORT_ASCENDING);
-}
+  // populate liststore
+  std::set<int> IDs = mp_Domain->getIDsOfClass(m_ClassName);
+  for (std::set<int>::iterator it = IDs.begin(); it != IDs.end(); ++it)
+  {
+    Gtk::TreeRow Row = *(mref_ListStore->append());
 
-if(! getRequestedUnitSelection())
-setFirstUnitSelected();
+    int ID = *it;
+
+    // Id column
+    Row.set_value(*mp_Columns->getIdColumn(), ID);
+
+    // Data columns
+    for (std::set<std::string>::iterator itData = IDataNames.begin();
+        itData != IDataNames.end(); ++itData)
+    {
+      std::string IDataName = *itData;
+      std::string IDataValue = mp_Domain->getInputData(m_ClassName, ID,
+                                                       IDataName);
+
+      Row.set_value(*mp_Columns->getColumnWithTitle(IDataName), IDataValue);
+    }
+  }
+
+  // apply stored sort
+  int NewSortColumnId = mp_Columns->getColumnIndexWithTitle(SortColumnTitle);
+
+  if (SortColumnId == 0) /* Id column was sorted, we sort it */
+  {
+    mref_ListStore->set_sort_column(0, SortType);
+  }
+  else if (SortColumnId > 0 && NewSortColumnId != -1) /* an IData column was sorted and still exists, we sort it*/
+  {
+    mref_ListStore->set_sort_column(NewSortColumnId, SortType);
+  }
+  else /* no sort existed or sorted IData column doesn't exist no more, we apply the default (Id) sort */
+  {
+    mref_ListStore->set_sort_column(0, Gtk::SORT_ASCENDING);
+  }
+
+  if (!getRequestedUnitSelection())
+    setFirstUnitSelected();
 
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainIDataAdapterModelImpl::setFirstUnitSelected()
 {
@@ -155,7 +159,6 @@ void DomainIDataAdapterModelImpl::setFirstUnitSelected()
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainIDataAdapterModelImpl::setSelectedUnit(Gtk::TreeIter Iter)
 {
@@ -168,7 +171,6 @@ void DomainIDataAdapterModelImpl::setSelectedUnit(Gtk::TreeIter Iter)
 // =====================================================================
 // =====================================================================
 
-
 Glib::RefPtr<Gtk::TreeModel> DomainIDataAdapterModelImpl::getTreeModel()
 {
   return mref_ListStore;
@@ -177,7 +179,6 @@ Glib::RefPtr<Gtk::TreeModel> DomainIDataAdapterModelImpl::getTreeModel()
 // =====================================================================
 // =====================================================================
 
-
 DomainIDataColumns* DomainIDataAdapterModelImpl::getColumns()
 {
   return mp_Columns;
@@ -185,7 +186,6 @@ DomainIDataColumns* DomainIDataAdapterModelImpl::getColumns()
 
 // =====================================================================
 // =====================================================================
-
 
 Gtk::TreeIter DomainIDataAdapterModelImpl::getRequestedUnitSelection()
 {
@@ -206,19 +206,22 @@ Gtk::TreeIter DomainIDataAdapterModelImpl::getRequestedUnitSelection()
 // =====================================================================
 // =====================================================================
 
-
 void DomainIDataAdapterModelImpl::updateData(const std::string NewText,
-    std::string DataName)
+                                             std::string DataName)
 {
-  openfluid::core::Unit* Unit = mp_UnitsColl->getUnit(m_SelectedUnit);
   Gtk::TreeIter Iter = getRequestedUnitSelection();
 
-  if (Unit != NULL && Iter)
+  if (!Iter)
+    return;
+
+  try
   {
+    mp_Domain->getUnit(m_ClassName, m_SelectedUnit);
+
     if (NewText.empty())
     {
-      std::string OldValue;
-      Unit->getInputData()->getValue(DataName, OldValue);
+      std::string OldValue = mp_Domain->getInputData(m_ClassName,
+                                                     m_SelectedUnit, DataName);
 
       Iter->set_value(*mp_Columns->getColumnWithTitle(DataName), OldValue);
     }
@@ -227,8 +230,12 @@ void DomainIDataAdapterModelImpl::updateData(const std::string NewText,
       if (NewText == "-")
         Iter->set_value(*mp_Columns->getColumnWithTitle(DataName), NewText);
 
-      Unit->getInputData()->replaceValue(DataName, NewText);
+      mp_Domain->getInputData(m_ClassName, m_SelectedUnit, DataName) = NewText;
     }
+  }
+  catch (openfluid::base::OFException& e)
+  {
+    // Unit doesn't exist
   }
 }
 

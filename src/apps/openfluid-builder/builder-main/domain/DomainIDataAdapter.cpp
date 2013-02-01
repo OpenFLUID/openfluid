@@ -107,11 +107,11 @@ sigc::signal<void> DomainIDataAdapter::signal_FromUserDataEdited()
 // =====================================================================
 
 
-void DomainIDataAdapter::dataInit(openfluid::core::UnitsCollection* UnitsColl)
+void DomainIDataAdapter::dataInit(std::string ClassName)
 {
   m_hasIdSelectionToBeStored = false;
 
-  m_Model.dataInit(UnitsColl);
+  m_Model.dataInit(ClassName);
   m_View.setTreeModel(m_Model.getTreeModel(), m_Model.getColumns());
 
   m_hasIdSelectionToBeStored = true;

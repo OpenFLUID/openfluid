@@ -54,6 +54,8 @@
 
 #include "DomainEventsComponent.hpp"
 
+#include <openfluid/guicommon/BuilderDomain.hpp>
+
 #include "DomainEventsModel.hpp"
 #include "DomainEventsView.hpp"
 #include "DomainEventsPresenter.hpp"
@@ -64,9 +66,9 @@
 // =====================================================================
 
 
-DomainEventsComponent::DomainEventsComponent()
+DomainEventsComponent::DomainEventsComponent(openfluid::guicommon::BuilderDomain& Domain)
 {
-  mp_Model = new DomainEventsModelImpl();
+  mp_Model = new DomainEventsModelImpl(Domain);
   mp_AdapterModel = new DomainEventsAdapterModelImpl();
   mp_View = new DomainEventsViewImpl();
   mp_Adapter = new DomainEventsAdapter(*mp_AdapterModel,*mp_View);

@@ -67,47 +67,46 @@
 #include "BuilderModuleFactory.hpp"
 #include "ProjectDashboard.hpp"
 #include "BuilderPretestInfo.hpp"
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
 
 #include "ModelStructureModule.hpp"
 #include "DomainClassModule.hpp"
-#include "ResultsSetModule.hpp"
+//#include "ResultsSetModule.hpp"
+
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
-
 
 ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
-    ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
-    ProjectDashboard& TheProjectDashboard) :
-  m_ExplorerModel(ExplorerModel), m_Workspace(Workspace), m_EngineProject(
-      TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(
-      false), m_ModelPageName(_("Model")),
-      m_DomainPageName(_("Spatial domain")), m_RunPageName(
-          _("Run configuration")), m_OutputsPageName(
-          _("Outputs configuration")), m_FileMonitorHasChanged(false),
-      m_FileMonitorHasToDisplay(true)
+                                       ProjectWorkspace& Workspace,
+                                       EngineProject& TheEngineProject,
+                                       ProjectDashboard& TheProjectDashboard) :
+    m_ExplorerModel(ExplorerModel), m_Workspace(Workspace), m_EngineProject(
+        TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(
+        false), m_ModelPageName(_("Model")), m_DomainPageName(
+        _("Spatial domain")), m_RunPageName(_("Run configuration"))/*, m_OutputsPageName(
+     _("Outputs configuration"))*/, m_FileMonitorHasChanged(false), m_FileMonitorHasToDisplay(
+        true)
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
-  m_ExplorerModel.setEngineRequirements(*m_EngineProject.getModelInstance(),
-      *m_EngineProject.getSimBlob());
+  m_ExplorerModel.signal_ActivationChanged().connect(
+      sigc::mem_fun(*this, &ProjectCoordinator::whenActivationChanged));
+  m_Workspace.signal_PageRemoved().connect(
+      sigc::mem_fun(*this, &ProjectCoordinator::whenPageRemoved));
 
-  m_ExplorerModel.signal_ActivationChanged().connect(sigc::mem_fun(*this,
-      &ProjectCoordinator::whenActivationChanged));
-  m_Workspace.signal_PageRemoved().connect(sigc::mem_fun(*this,
-      &ProjectCoordinator::whenPageRemoved));
-
-  m_EngineProject.signal_RunStarted().connect(sigc::mem_fun(*this,
-      &ProjectCoordinator::whenRunStarted));
-  m_EngineProject.signal_RunStopped().connect(sigc::mem_fun(*this,
-      &ProjectCoordinator::whenRunStopped));
+  m_EngineProject.signal_RunStarted().connect(
+      sigc::mem_fun(*this, &ProjectCoordinator::whenRunStarted));
+  m_EngineProject.signal_RunStopped().connect(
+      sigc::mem_fun(*this, &ProjectCoordinator::whenRunStopped));
 
   mp_FileMonitorDialog = new Gtk::MessageDialog("", false,
-      Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL, false);
-  mp_FileMonitorDialog->signal_response().connect(sigc::mem_fun(*this,
-      &ProjectCoordinator::whenUpdatePluginsAsked));
+                                                Gtk::MESSAGE_QUESTION,
+                                                Gtk::BUTTONS_OK_CANCEL, false);
+  mp_FileMonitorDialog->signal_response().connect(
+      sigc::mem_fun(*this, &ProjectCoordinator::whenUpdatePluginsAsked));
 
   updatePluginPathsMonitors();
 
@@ -115,7 +114,6 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
 
 // =====================================================================
 // =====================================================================
-
 
 sigc::signal<void, bool> ProjectCoordinator::signal_CheckHappened()
 {
@@ -125,7 +123,6 @@ sigc::signal<void, bool> ProjectCoordinator::signal_CheckHappened()
 // =====================================================================
 // =====================================================================
 
-
 sigc::signal<void> ProjectCoordinator::signal_ChangeHappened()
 {
   return m_signal_ChangeHappened;
@@ -134,13 +131,12 @@ sigc::signal<void> ProjectCoordinator::signal_ChangeHappened()
 // =====================================================================
 // =====================================================================
 
-
 ProjectCoordinator::~ProjectCoordinator()
 {
   // clearing tabs
 
-  for (std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator
-      it = m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
+  for (std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator it =
+      m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
   {
     if (m_TabExtensionIdByNameMap.count(it->first))
     {
@@ -157,12 +153,13 @@ ProjectCoordinator::~ProjectCoordinator()
 
   // clearing modeless extensions
 
-  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
-      it = m_ModelessWindowsExtensionsMap.begin(); it
-      != m_ModelessWindowsExtensionsMap.end(); ++it)
+  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator it =
+      m_ModelessWindowsExtensionsMap.begin();
+      it != m_ModelessWindowsExtensionsMap.end(); ++it)
   {
     it->second->onProjectClosed();
-    BuilderExtensionsManager::getInstance()->deletePluggableExtension(it->first);
+    BuilderExtensionsManager::getInstance()->deletePluggableExtension(
+        it->first);
   }
 
   delete mp_FileMonitorDialog;
@@ -170,7 +167,6 @@ ProjectCoordinator::~ProjectCoordinator()
 
 // =====================================================================
 // =====================================================================
-
 
 void ProjectCoordinator::whenActivationChanged()
 {
@@ -185,16 +181,16 @@ void ProjectCoordinator::whenActivationChanged()
         Module = m_ModulesByPageNameMap[PageName];
       else
       {
-        Module
-            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createModelStructureModule());
+        Module =
+            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createModelStructureModule());
 
-        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
-            &ProjectCoordinator::whenModelChanged));
+        Module->signal_ModuleChanged().connect(
+            sigc::mem_fun(*this, &ProjectCoordinator::whenModelChanged));
 
         addModuleToWorkspace(PageName, *Module);
       }
       if (m_ExplorerModel.getActivatedElement().second != "")
-        (static_cast<ModelStructureModule*> (Module))->setCurrentFunction(
+        (static_cast<ModelStructureModule*>(Module))->setCurrentFunction(
             m_ExplorerModel.getActivatedElement().second);
       break;
 
@@ -202,11 +198,11 @@ void ProjectCoordinator::whenActivationChanged()
       PageName = m_DomainPageName;
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module
-            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createDomainStructureModule());
+        Module =
+            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createDomainStructureModule());
 
-        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
-            &ProjectCoordinator::whenDomainChanged));
+        Module->signal_ModuleChanged().connect(
+            sigc::mem_fun(*this, &ProjectCoordinator::whenDomainChanged));
 
         addModuleToWorkspace(PageName, *Module);
       }
@@ -217,13 +213,13 @@ void ProjectCoordinator::whenActivationChanged()
           m_ExplorerModel.getActivatedElement().second);
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module
-            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createDomainClassModule());
+        Module =
+            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createDomainClassModule());
 
-        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
-            &ProjectCoordinator::whenClassChanged));
+        Module->signal_ModuleChanged().connect(
+            sigc::mem_fun(*this, &ProjectCoordinator::whenClassChanged));
 
-        (static_cast<DomainClassModule*> (Module))->setSelectedClassFromApp(
+        (static_cast<DomainClassModule*>(Module))->setSelectedClassFromApp(
             m_ExplorerModel.getActivatedElement().second);
 
         m_ClassPageNames.insert(PageName);
@@ -236,46 +232,46 @@ void ProjectCoordinator::whenActivationChanged()
       PageName = m_RunPageName;
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module
-            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createSimulationRunModule());
+        Module =
+            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createSimulationRunModule());
 
-        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
-            &ProjectCoordinator::whenRunChanged));
-
-        addModuleToWorkspace(PageName, *Module);
-      }
-      break;
-
-    case ProjectExplorerCategories::EXPLORER_OUTPUTS:
-      PageName = m_OutputsPageName;
-      if (!m_Workspace.existsPageName(PageName))
-      {
-        Module
-            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createSimulationOutModule());
-
-        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
-            &ProjectCoordinator::whenOutChanged));
+        Module->signal_ModuleChanged().connect(
+            sigc::mem_fun(*this, &ProjectCoordinator::whenRunChanged));
 
         addModuleToWorkspace(PageName, *Module);
       }
       break;
 
-    case ProjectExplorerCategories::EXPLORER_SET:
-      PageName = constructSetPageName(
-          m_ExplorerModel.getActivatedElement().second);
-      if (!m_Workspace.existsPageName(PageName))
-      {
-        Module
-            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createResultsSetModule());
+//    case ProjectExplorerCategories::EXPLORER_OUTPUTS:
+//      PageName = m_OutputsPageName;
+//      if (!m_Workspace.existsPageName(PageName))
+//      {
+//        Module
+//            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createSimulationOutModule());
+//
+//        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
+//            &ProjectCoordinator::whenOutChanged));
+//
+//        addModuleToWorkspace(PageName, *Module);
+//      }
+//      break;
 
-        (static_cast<ResultsSetModule*> (Module))->setSelectedSetFromApp(
-            m_ExplorerModel.getActivatedElement().second);
-
-        m_SetPageNames.insert(PageName);
-
-        addModuleToWorkspace(PageName, *Module);
-      }
-      break;
+//    case ProjectExplorerCategories::EXPLORER_SET:
+//      PageName = constructSetPageName(
+//          m_ExplorerModel.getActivatedElement().second);
+//      if (!m_Workspace.existsPageName(PageName))
+//      {
+//        Module
+//            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createResultsSetModule());
+//
+//        (static_cast<ResultsSetModule*> (Module))->setSelectedSetFromApp(
+//            m_ExplorerModel.getActivatedElement().second);
+//
+//        m_SetPageNames.insert(PageName);
+//
+//        addModuleToWorkspace(PageName, *Module);
+//      }
+//      break;
 
     case ProjectExplorerCategories::EXPLORER_NONE:
     default:
@@ -297,17 +293,16 @@ std::string ProjectCoordinator::constructClassPageName(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-std::string ProjectCoordinator::constructSetPageName(std::string SetName)
-{
-  return Glib::ustring::compose(_("%1 [%2]"), _("Results"), SetName);
-}
+//std::string ProjectCoordinator::constructSetPageName(std::string SetName)
+//{
+//  return Glib::ustring::compose(_("%1 [%2]"), _("Results"), SetName);
+//}
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectCoordinator::addModuleToWorkspace(std::string PageName,
-    openfluid::guicommon::ProjectWorkspaceModule& Module)
+void ProjectCoordinator::addModuleToWorkspace(
+    std::string PageName, openfluid::guicommon::ProjectWorkspaceModule& Module)
 {
   m_ModulesByPageNameMap[PageName] = &Module;
   m_Workspace.appendPage(PageName, Module.composeAndGetAsWidget());
@@ -316,17 +311,16 @@ void ProjectCoordinator::addModuleToWorkspace(std::string PageName,
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::whenModelChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        Glib::ustring::compose(_(
-            "This change leads OpenFLUID to delete:\n%1"),
-            OutputConsistencyMessage));
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//        Glib::ustring::compose(_(
+//            "This change leads OpenFLUID to delete:\n%1"),
+//            OutputConsistencyMessage));
 
   computeModelChanges();
 }
@@ -334,11 +328,10 @@ void ProjectCoordinator::whenModelChanged()
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::updateWorkspaceModules()
 {
-  for (std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator
-      it = m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
+  for (std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator it =
+      m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
   {
     it->second->update();
   }
@@ -347,30 +340,29 @@ void ProjectCoordinator::updateWorkspaceModules()
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::checkProject()
 {
-  BuilderPretestInfo CheckInfo;
-
-  m_EngineProject.check(CheckInfo);
-
-  CheckInfo.addBuilderInfo(m_EngineProject.getModelInstance(),
-      m_EngineProject.getSimBlob(), m_EngineProject.getRunDescriptor());
-
-  m_ProjectDashboard.setCheckInfo(CheckInfo);
-
-  m_signal_CheckHappened.emit(CheckInfo.getGlobalCheckState());
+//  BuilderPretestInfo CheckInfo;
+//
+//  m_EngineProject.check(CheckInfo);
+//
+//  CheckInfo.addBuilderInfo(m_EngineProject.getModelInstance(),
+//                           m_EngineProject.getSimBlob(),
+//                           m_EngineProject.getRunDescriptor());
+//
+//  m_ProjectDashboard.setCheckInfo(CheckInfo);
+//
+//  m_signal_CheckHappened.emit(CheckInfo.getGlobalCheckState());
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectCoordinator::updateResults()
-{
-  if (m_HasRun)
-    m_ExplorerModel.updateResultsAsked(true);
-}
+//void ProjectCoordinator::updateResults()
+//{
+//  if (m_HasRun)
+//    m_ExplorerModel.updateResultsAsked(true);
+//}
 
 // =====================================================================
 // =====================================================================
@@ -378,14 +370,14 @@ void ProjectCoordinator::updateResults()
 //TODO allow the user to cancel deletion
 void ProjectCoordinator::whenDomainChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        Glib::ustring::compose(_(
-            "This change leads OpenFLUID to delete:\n%1"),
-            OutputConsistencyMessage));
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//        Glib::ustring::compose(_(
+//            "This change leads OpenFLUID to delete:\n%1"),
+//            OutputConsistencyMessage));
 
   computeDomainChanges();
 }
@@ -393,22 +385,20 @@ void ProjectCoordinator::whenDomainChanged()
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::removeDeletedClassPages()
 {
   std::set<std::string> ClassNames;
 
-  for (openfluid::core::UnitsListByClassMap_t::const_iterator it =
-      m_EngineProject.getCoreRepository().getUnitsByClass()->begin(); it
-      != m_EngineProject.getCoreRepository().getUnitsByClass()->end(); ++it)
-  {
-    if (!it->second.getList()->empty())
-      ClassNames.insert(constructClassPageName(it->first));
-  }
+  std::set<std::string> DomainClassNames =
+      m_EngineProject.getBuilderDesc().getDomain().getClassNames();
+
+  std::set<std::string>::iterator it;
+
+  for (it = DomainClassNames.begin(); it != DomainClassNames.end(); ++it)
+    ClassNames.insert(constructClassPageName(*it));
 
   std::set<std::string> ClassPageNames = m_ClassPageNames;
-  for (std::set<std::string>::iterator it = ClassPageNames.begin(); it
-      != ClassPageNames.end(); ++it)
+  for (it = ClassPageNames.begin(); it != ClassPageNames.end(); ++it)
   {
     if (!ClassNames.count(*it))
       m_Workspace.removePage(*it);
@@ -430,12 +420,11 @@ void ProjectCoordinator::whenClassChanged()
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::whenRunChanged()
 {
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
 
   m_ExplorerModel.updateSimulationAsked();
 
@@ -449,21 +438,20 @@ void ProjectCoordinator::whenRunChanged()
 // =====================================================================
 // =====================================================================
 
-
-void ProjectCoordinator::whenOutChanged()
-{
-  updateModelessWindowsExtensions();
-
-  updateResults();
-
-  removeDeletedSetPages();
-
-  updateWorkspaceModules();
-
-  checkProject();
-
-  m_signal_ChangeHappened.emit();
-}
+//void ProjectCoordinator::whenOutChanged()
+//{
+//  updateModelessWindowsExtensions();
+//
+////  updateResults();
+//
+////  removeDeletedSetPages();
+//
+//  updateWorkspaceModules();
+//
+//  checkProject();
+//
+//  m_signal_ChangeHappened.emit();
+//}
 
 // =====================================================================
 // =====================================================================
@@ -472,11 +460,11 @@ void ProjectCoordinator::computeModelChanges()
 {
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
 
   m_ExplorerModel.updateModelAsked();
 
-  removeDeletedSetPages();
+//  removeDeletedSetPages();
 
   updateWorkspaceModules();
 
@@ -492,11 +480,11 @@ void ProjectCoordinator::computeDomainChanges()
 {
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
   m_ExplorerModel.updateDomainAsked();
 
   removeDeletedClassPages();
-  removeDeletedSetPages();
+//  removeDeletedSetPages();
 
   updateWorkspaceModules();
 
@@ -508,43 +496,41 @@ void ProjectCoordinator::computeDomainChanges()
 // =====================================================================
 // =====================================================================
 
-void ProjectCoordinator::removeDeletedSetPages()
-{
-  std::set<std::string> SetNames;
-
-  for (unsigned int i = 0; i
-      < m_EngineProject.getOutputDescriptor().getFileSets().size(); i++)
-  {
-    for (unsigned int j = 0; j
-        < m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
-    {
-      SetNames.insert(
-          constructSetPageName(
-              m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets()[j].getName()));
-    }
-  }
-
-  std::set<std::string> SetPageNames = m_SetPageNames;
-  for (std::set<std::string>::iterator it = SetPageNames.begin(); it
-      != SetPageNames.end(); ++it)
-  {
-    if (!SetNames.count(*it))
-      m_Workspace.removePage(*it);
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void ProjectCoordinator::whenResultsChanged()
-{
-
-}
+//void ProjectCoordinator::removeDeletedSetPages()
+//{
+//  std::set<std::string> SetNames;
+//
+//  for (unsigned int i = 0; i
+//      < m_EngineProject.getOutputDescriptor().getFileSets().size(); i++)
+//  {
+//    for (unsigned int j = 0; j
+//        < m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets().size(); j++)
+//    {
+//      SetNames.insert(
+//          constructSetPageName(
+//              m_EngineProject.getOutputDescriptor().getFileSets()[i].getSets()[j].getName()));
+//    }
+//  }
+//
+//  std::set<std::string> SetPageNames = m_SetPageNames;
+//  for (std::set<std::string>::iterator it = SetPageNames.begin(); it
+//      != SetPageNames.end(); ++it)
+//  {
+//    if (!SetNames.count(*it))
+//      m_Workspace.removePage(*it);
+//  }
+//}
 
 // =====================================================================
 // =====================================================================
 
+//void ProjectCoordinator::whenResultsChanged()
+//{
+//
+//}
+
+// =====================================================================
+// =====================================================================
 
 void ProjectCoordinator::whenMapViewChanged()
 {
@@ -556,7 +542,6 @@ void ProjectCoordinator::whenMapViewChanged()
 
 // =====================================================================
 // =====================================================================
-
 
 void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
 {
@@ -576,27 +561,25 @@ void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
     m_ClassPageNames.erase(RemovedPageName);
 
   // update Set Pages
-  if (m_SetPageNames.count(RemovedPageName))
-    m_SetPageNames.erase(RemovedPageName);
+//  if (m_SetPageNames.count(RemovedPageName))
+//    m_SetPageNames.erase(RemovedPageName);
 }
 
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::onDirMonitorChanged(
     const Glib::RefPtr<Gio::File>& /*File*/,
-    const Glib::RefPtr<Gio::File>& /*OtherFile*/, Gio::FileMonitorEvent /*EventType*/)
+    const Glib::RefPtr<Gio::File>& /*OtherFile*/,
+    Gio::FileMonitorEvent /*EventType*/)
 {
   if (!m_FileMonitorHasToDisplay)
     m_FileMonitorHasChanged = true;
   else if (!mp_FileMonitorDialog->is_popup())
   {
-    std::string
-        Msg =
-            _( "Changes occur in the functions list.")
-                + std::string(
-                    _("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulation functions list)"));
+    std::string Msg =
+        _( "Changes occur in the functions list.") + std::string(
+            _("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulation functions list)"));
     mp_FileMonitorDialog->set_message(Msg);
     mp_FileMonitorDialog->show_all();
   }
@@ -605,7 +588,6 @@ void ProjectCoordinator::onDirMonitorChanged(
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
 {
   mp_FileMonitorDialog->hide();
@@ -613,18 +595,17 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   if (ResponseId != Gtk::RESPONSE_OK)
     return;
 
-  FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
 
   // remove (delete) all functions and add (using function constructor) those which are available
   if (m_Workspace.existsPageName(m_ModelPageName))
   {
-    (static_cast<ModelStructureModule*> (m_ModulesByPageNameMap[m_ModelPageName]))->updateWithFctParamsComponents();
+    (static_cast<ModelStructureModule*>(m_ModulesByPageNameMap[m_ModelPageName]))->updateWithFctParamsComponents();
   }
   else
   {
-    ModelStructureModule
-        * TempModelModule =
-            static_cast<ModelStructureModule*> (mp_ModuleFactory->createModelStructureModule());
+    ModelStructureModule * TempModelModule =
+        static_cast<ModelStructureModule*>(mp_ModuleFactory->createModelStructureModule());
     TempModelModule->updateWithFctParamsComponents();
     delete TempModelModule;
   }
@@ -641,31 +622,29 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::whenMapViewAsked()
 {
-  std::string PageName = "MapView";
-  openfluid::guicommon::ProjectWorkspaceModule* Module;
-
-  if (m_Workspace.existsPageName(PageName))
-    Module = m_ModulesByPageNameMap[PageName];
-  else
-  {
-    Module
-        = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createMapViewModule());
-
-    Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
-        &ProjectCoordinator::whenMapViewChanged));
-
-    addModuleToWorkspace(PageName, *Module);
-  }
-
-  m_Workspace.setCurrentPage(PageName);
+//  std::string PageName = "MapView";
+//  openfluid::guicommon::ProjectWorkspaceModule* Module;
+//
+//  if (m_Workspace.existsPageName(PageName))
+//    Module = m_ModulesByPageNameMap[PageName];
+//  else
+//  {
+//    Module =
+//        static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMapViewModule());
+//
+//    Module->signal_ModuleChanged().connect(
+//        sigc::mem_fun(*this, &ProjectCoordinator::whenMapViewChanged));
+//
+//    addModuleToWorkspace(PageName, *Module);
+//  }
+//
+//  m_Workspace.setCurrentPage(PageName);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
 {
@@ -675,11 +654,9 @@ void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
   {
     if (m_FileMonitorHasChanged && !mp_FileMonitorDialog->is_popup())
     {
-      std::string
-          Msg =
-              _( "Changes occur in the functions list while simulation was running.")
-                  + std::string(
-                      _("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulation functions)"));
+      std::string Msg =
+          _( "Changes occur in the functions list while simulation was running.") + std::string(
+              _("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulation functions)"));
       mp_FileMonitorDialog->set_message(Msg);
       mp_FileMonitorDialog->show_all();
     }
@@ -690,7 +667,6 @@ void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
 
 // =====================================================================
 // =====================================================================
-
 
 void ProjectCoordinator::updatePluginPathsMonitors()
 {
@@ -706,8 +682,8 @@ void ProjectCoordinator::updatePluginPathsMonitors()
 
     Glib::RefPtr<Gio::FileMonitor> DirMonitor = ItemFile->monitor_directory();
 
-    DirMonitor->signal_changed().connect(sigc::mem_fun(*this,
-        &ProjectCoordinator::onDirMonitorChanged));
+    DirMonitor->signal_changed().connect(
+        sigc::mem_fun(*this, &ProjectCoordinator::onDirMonitorChanged));
 
     m_DirMonitors.push_back(DirMonitor);
   }
@@ -716,130 +692,126 @@ void ProjectCoordinator::updatePluginPathsMonitors()
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::launchExtension(std::string ExtensionID)
 {
-  ExtensionContainer* ExtCont =
-      BuilderExtensionsManager::getInstance()->getExtensionContainer(
-          ExtensionID);
-
-  if (!ExtCont)
-    return;
-
-  std::string ExtID = ExtCont->Infos.ID;
-  openfluid::builderext::PluggableBuilderExtension::ExtensionType ExtType =
-      ExtCont->Infos.Type;
-
-  // Extension is already instantiated
-  if (ExtCont->Extension)
-  {
-    if (ExtType
-        == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
-      m_Workspace.setCurrentPage(ExtCont->Infos.ShortName);
-    else if (ExtType
-        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
-        || ExtType
-            == openfluid::builderext::PluggableBuilderExtension::SimulationListener)
-    {
-      Gtk::Window
-          * ExtWindow =
-              dynamic_cast<Gtk::Window*> (ExtCont->Extension->getExtensionAsWidget());
-      if (ExtWindow)
-        ExtWindow->present();
-    }
-    return;
-  }
-
-  try
-  {
-    if (!ExtCont->instantiateExt())
-      return;
-  }
-  catch (openfluid::base::OFException e)
-  {
-    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
-    return;
-  }
-
-  openfluid::builderext::PluggableBuilderExtension* Ext = ExtCont->Extension;
-
-  Ext->setSimulationBlobAndModel(m_EngineProject.getSimBlob(),
-      m_EngineProject.getModelInstance());
-
-  Ext->signal_ChangedOccurs().connect(sigc::mem_fun(*this,
-      &ProjectCoordinator::whenExtensionChanged));
-
-
-  // checking if extension is ready to be executed
-  if (!Ext->isReadyForShowtime())
-  {
-    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage("Extension is not ready!");
-    return;
-  }
-
-
-  if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
-  {
-    std::string PageName = ExtCont->Infos.ShortName;
-
-    openfluid::builderext::WorkspaceTab* Tab =
-        static_cast<openfluid::builderext::WorkspaceTab*> (Ext);
-
-    Tab->update();
-
-    addModuleToWorkspace(PageName, *Tab);
-
-    m_TabExtensionIdByNameMap[PageName] = ExtID;
-
-    m_Workspace.setCurrentPage(PageName);
-  }
-  else
-  {
-    if ((ExtCont->Infos.Type
-        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
-        || ExtCont->Infos.Type
-            == openfluid::builderext::PluggableBuilderExtension::SimulationListener))
-    {
-      openfluid::builderext::ModelessWindow* ModelessWin =
-          static_cast<openfluid::builderext::ModelessWindow*> (Ext);
-
-      ModelessWin->signal_Hidden().connect(sigc::bind<std::string>(
-          sigc::mem_fun(*this,
-              &ProjectCoordinator::whenModelessWindowExtensionHidden), ExtID));
-
-      m_ModelessWindowsExtensionsMap[ExtID] = ModelessWin;
-
-      Ext->show();
-
-    }
-    else
-    {
-      Ext->show();
-      ExtCont->deleteExt();
-    }
-
-  }
+//  ExtensionContainer* ExtCont =
+//      BuilderExtensionsManager::getInstance()->getExtensionContainer(
+//          ExtensionID);
+//
+//  if (!ExtCont)
+//    return;
+//
+//  std::string ExtID = ExtCont->Infos.ID;
+//  openfluid::builderext::PluggableBuilderExtension::ExtensionType ExtType =
+//      ExtCont->Infos.Type;
+//
+//  // Extension is already instantiated
+//  if (ExtCont->Extension)
+//  {
+//    if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
+//      m_Workspace.setCurrentPage(ExtCont->Infos.ShortName);
+//    else if (ExtType
+//        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
+//             || ExtType == openfluid::builderext::PluggableBuilderExtension::SimulationListener)
+//    {
+//      Gtk::Window * ExtWindow =
+//          dynamic_cast<Gtk::Window*>(ExtCont->Extension->getExtensionAsWidget());
+//      if (ExtWindow)
+//        ExtWindow->present();
+//    }
+//    return;
+//  }
+//
+//  try
+//  {
+//    if (!ExtCont->instantiateExt())
+//      return;
+//  }
+//  catch (openfluid::base::OFException e)
+//  {
+//    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
+//    return;
+//  }
+//
+//  openfluid::builderext::PluggableBuilderExtension* Ext = ExtCont->Extension;
+//
+//  Ext->setSimulationBlobAndModel(m_EngineProject.getSimBlob(),
+//                                 m_EngineProject.getModelInstance());
+//
+//  Ext->signal_ChangedOccurs().connect(
+//      sigc::mem_fun(*this, &ProjectCoordinator::whenExtensionChanged));
+//
+//  // checking if extension is ready to be executed
+//  if (!Ext->isReadyForShowtime())
+//  {
+//    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+//        "Extension is not ready!");
+//    return;
+//  }
+//
+//  if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
+//  {
+//    std::string PageName = ExtCont->Infos.ShortName;
+//
+//    openfluid::builderext::WorkspaceTab* Tab =
+//        static_cast<openfluid::builderext::WorkspaceTab*>(Ext);
+//
+//    Tab->update();
+//
+//    addModuleToWorkspace(PageName, *Tab);
+//
+//    m_TabExtensionIdByNameMap[PageName] = ExtID;
+//
+//    m_Workspace.setCurrentPage(PageName);
+//  }
+//  else
+//  {
+//    if ((ExtCont->Infos.Type
+//        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow
+//         || ExtCont->Infos.Type == openfluid::builderext::PluggableBuilderExtension::SimulationListener))
+//    {
+//      openfluid::builderext::ModelessWindow* ModelessWin =
+//          static_cast<openfluid::builderext::ModelessWindow*>(Ext);
+//
+//      ModelessWin->signal_Hidden().connect(
+//          sigc::bind<std::string>(
+//              sigc::mem_fun(
+//                  *this,
+//                  &ProjectCoordinator::whenModelessWindowExtensionHidden),
+//              ExtID));
+//
+//      m_ModelessWindowsExtensionsMap[ExtID] = ModelessWin;
+//
+//      Ext->show();
+//
+//    }
+//    else
+//    {
+//      Ext->show();
+//      ExtCont->deleteExt();
+//    }
+//
+//  }
 
 }
 
 // =====================================================================
 // =====================================================================
 
-
 void ProjectCoordinator::whenExtensionChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
-        Glib::ustring::compose(_(
-            "This change leads OpenFLUID to delete:\n%1"),
-            OutputConsistencyMessage));
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+//        Glib::ustring::compose(_(
+//            "This change leads OpenFLUID to delete:\n%1"),
+//            OutputConsistencyMessage));
 
   updateModelessWindowsExtensions();
 
-  updateResults();
+//  updateResults();
 
   m_ExplorerModel.updateDomainAsked();
 
@@ -849,7 +821,7 @@ void ProjectCoordinator::whenExtensionChanged()
 
   removeDeletedClassPages();
 
-  removeDeletedSetPages();
+//  removeDeletedSetPages();
 
   updateWorkspaceModules();
 
@@ -860,7 +832,6 @@ void ProjectCoordinator::whenExtensionChanged()
 
 // =====================================================================
 // =====================================================================
-
 
 void ProjectCoordinator::whenModelessWindowExtensionHidden(std::string ExtID)
 {
@@ -873,9 +844,9 @@ void ProjectCoordinator::whenModelessWindowExtensionHidden(std::string ExtID)
 
 void ProjectCoordinator::updateModelessWindowsExtensions()
 {
-  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
-      it = m_ModelessWindowsExtensionsMap.begin(); it
-      != m_ModelessWindowsExtensionsMap.end(); ++it)
+  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator it =
+      m_ModelessWindowsExtensionsMap.begin();
+      it != m_ModelessWindowsExtensionsMap.end(); ++it)
     it->second->onRefresh();
 }
 
@@ -884,9 +855,9 @@ void ProjectCoordinator::updateModelessWindowsExtensions()
 
 void ProjectCoordinator::whenRunStarted()
 {
-  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
-      it = m_ModelessWindowsExtensionsMap.begin(); it
-      != m_ModelessWindowsExtensionsMap.end(); ++it)
+  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator it =
+      m_ModelessWindowsExtensionsMap.begin();
+      it != m_ModelessWindowsExtensionsMap.end(); ++it)
     it->second->onRunStarted();
 }
 
@@ -899,11 +870,11 @@ void ProjectCoordinator::whenRunStopped()
 
   whenDomainChanged(); // for functions that create units
 
-  m_ExplorerModel.updateResultsAsked(false);
+//  m_ExplorerModel.updateResultsAsked(false);
 
-  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator
-      it = m_ModelessWindowsExtensionsMap.begin(); it
-      != m_ModelessWindowsExtensionsMap.end(); ++it)
+  for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator it =
+      m_ModelessWindowsExtensionsMap.begin();
+      it != m_ModelessWindowsExtensionsMap.end(); ++it)
     it->second->onRunStopped();
 }
 
@@ -913,12 +884,11 @@ void ProjectCoordinator::whenRunStopped()
 // =====================================================================
 // =====================================================================
 
-
 ProjectCoordinatorSub::ProjectCoordinatorSub(
     ProjectExplorerModel& ExplorerModel, ProjectWorkspace& Workspace,
     EngineProject& TheEngineProject, ProjectDashboard& TheProjectDashboard) :
-  ProjectCoordinator(ExplorerModel, Workspace, TheEngineProject,
-      TheProjectDashboard)
+    ProjectCoordinator(ExplorerModel, Workspace, TheEngineProject,
+                       TheProjectDashboard)
 {
 }
 
@@ -927,11 +897,11 @@ ProjectCoordinatorSub::ProjectCoordinatorSub(
 
 void ProjectCoordinatorSub::whenModelChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    std::cout << OutputConsistencyMessage << std::endl;
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    std::cout << OutputConsistencyMessage << std::endl;
 
   computeModelChanges();
 }
@@ -941,16 +911,15 @@ void ProjectCoordinatorSub::whenModelChanged()
 
 void ProjectCoordinatorSub::whenDomainChanged()
 {
-  Glib::ustring OutputConsistencyMessage =
-      m_EngineProject.checkOutputsConsistency();
-
-  if (!OutputConsistencyMessage.empty())
-    std::cout << OutputConsistencyMessage << std::endl;
+//  Glib::ustring OutputConsistencyMessage =
+//      m_EngineProject.checkOutputsConsistency();
+//
+//  if (!OutputConsistencyMessage.empty())
+//    std::cout << OutputConsistencyMessage << std::endl;
 
   computeDomainChanges();
 }
 
 // =====================================================================
 // =====================================================================
-
 

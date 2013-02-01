@@ -55,7 +55,6 @@
 #ifndef __ENGINEPROJECT_HPP__
 #define __ENGINEPROJECT_HPP__
 
-
 #include <sigc++/sigc++.h>
 
 #include <glibmm/ustring.h>
@@ -71,7 +70,6 @@ class ExecutionMessages;
 class OutputDescriptor;
 }
 namespace core {
-class CoreRepository;
 class Datastore;
 }
 namespace io {
@@ -79,12 +77,10 @@ class IOListener;
 }
 namespace machine {
 class MachineListener;
-class ModelInstance;
 class ObserversListInstance;
-class SimulationBlob;
 }
 namespace guicommon {
-class RunDialogMachineListener;
+class BuilderDescriptor;
 }
 namespace fluidx {
 class RunDescriptor;
@@ -98,21 +94,9 @@ class EngineProject
 
     bool m_WithProjectManager;
 
-    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
-
-    openfluid::machine::SimulationBlob* mp_SimBlob;
-
-    openfluid::base::RuntimeEnvironment* mp_RunEnv;
+    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     openfluid::io::IOListener* mp_IOListener;
-
-    openfluid::guicommon::RunDialogMachineListener* mp_Listener;
-
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::machine::ObserversListInstance* mp_ObsListInstance;
-
-    openfluid::machine::Engine* mp_Engine;
 
     sigc::signal<void> m_signal_RunStarted;
 
@@ -124,14 +108,11 @@ class EngineProject
 
     void setDefaultOutDesc();
 
-    void checkAndSetDefaultRunValues(openfluid::fluidx::RunDescriptor& RunDesc);
+    void checkAndSetDefaultRunValues();
 
-    void checkAndSetDefaultOutputValues(
-        openfluid::base::OutputDescriptor& OutDesc);
+    void checkAndSetDefaultOutputValues();
 
-    void checkModelDesc(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
-
-    void checkInputData();
+    void checkModelDesc();
 
     void addSignatureToGenerators();
 
@@ -142,6 +123,8 @@ class EngineProject
     void whenSimulationStopped();
 
   protected:
+
+    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
     openfluid::core::DateTime m_DefaultBeginDT;
 
@@ -162,29 +145,13 @@ class EngineProject
 
     void check(openfluid::machine::Engine::PretestInfos_t& PretestInfos);
 
-    openfluid::machine::SimulationBlob* getSimBlob();
+    openfluid::guicommon::BuilderDescriptor& getBuilderDesc();
 
-    openfluid::base::RuntimeEnvironment* getRunEnv();
-
-    openfluid::io::IOListener* getIOListener();
-
-    openfluid::machine::MachineListener* getMachineListener();
-
-    openfluid::machine::ModelInstance* getModelInstance();
-
-    openfluid::core::CoreRepository& getCoreRepository();
-
-    openfluid::base::ExecutionMessages& getExecutionMessages();
-
-    openfluid::fluidx::RunDescriptor& getRunDescriptor();
-
-    openfluid::base::OutputDescriptor& getOutputDescriptor();
-
-    openfluid::core::Datastore& getDatastore();
+//    openfluid::core::Datastore& getDatastore();
 
     ~EngineProject();
 
-    Glib::ustring checkOutputsConsistency();
+//    Glib::ustring checkOutputsConsistency();
 
 };
 
@@ -192,7 +159,7 @@ class EngineProjectSub: public EngineProject
 {
   public:
     EngineProjectSub(std::string FolderIn = "", bool WithProjectManager = false) :
-      EngineProject(FolderIn, WithProjectManager)
+        EngineProject(FolderIn, WithProjectManager)
     {
     }
 
@@ -204,6 +171,11 @@ class EngineProjectSub: public EngineProject
     int getDefaultDeltaT()
     {
       return m_DefaultDeltaT;
+    }
+
+    openfluid::fluidx::FluidXDescriptor* getFXDescriptor()
+    {
+      return mp_FXDesc;
     }
 };
 

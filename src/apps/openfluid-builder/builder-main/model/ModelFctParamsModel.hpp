@@ -61,9 +61,14 @@
 #include <string>
 
 namespace openfluid {
+namespace guicommon {
+class BuilderModel;
+}
+namespace fluidx {
+class ModelItemDescriptor;
+}
 namespace machine {
-class ModelInstance;
-class ModelItemInstance;
+class ModelItemSignatureInstance;
 }
 }
 
@@ -83,8 +88,8 @@ class ModelFctParamsModel
 
     virtual sigc::signal<void> signal_RequiredFilesChangedFromApp() = 0;
 
-    virtual void setModelItemInstance(
-        openfluid::machine::ModelItemInstance* Item) = 0;
+    virtual void setModelItemDescriptor(
+        openfluid::fluidx::ModelItemDescriptor* Item) = 0;
 
     virtual std::map<std::string, std::string> getParams() = 0;
 
@@ -97,7 +102,7 @@ class ModelFctParamsModel
     virtual std::map<std::string, std::string> getGlobalValues() = 0;
 
     virtual void
-        setParamValue(std::string ParamName, std::string ParamValue) = 0;
+    setParamValue(std::string ParamName, std::string ParamValue) = 0;
 
     virtual void updateGlobalValues() = 0;
 
@@ -123,9 +128,11 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     sigc::signal<void> m_signal_RequiredFilesChangedFromApp;
 
-    openfluid::machine::ModelItemInstance* mp_Item;
+    openfluid::fluidx::ModelItemDescriptor* mp_Item;
 
-    openfluid::machine::ModelInstance* mp_ModelInstance;
+    openfluid::machine::ModelItemSignatureInstance* mp_ItemSignature;
+
+    openfluid::guicommon::BuilderModel* mp_Model;
 
     void updateInterpGeneratorRequiredExtraFiles();
 
@@ -133,9 +140,9 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
   public:
 
-    ModelFctParamsModelImpl(openfluid::machine::ModelInstance* ModelInstance);
+    ModelFctParamsModelImpl(openfluid::guicommon::BuilderModel& Model);
 
-    void setModelItemInstance(openfluid::machine::ModelItemInstance* Item);
+    void setModelItemDescriptor(openfluid::fluidx::ModelItemDescriptor* Item);
 
     sigc::signal<void> signal_ItemInit();
 

@@ -54,11 +54,11 @@
 
 #include "DomainEventsAdapterModel.hpp"
 
+#include <openfluid/guicommon/BuilderDomain.hpp>
 #include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
-
 
 DomainEventsAdapterModelImpl::DomainEventsAdapterModelImpl()
 {
@@ -68,56 +68,51 @@ DomainEventsAdapterModelImpl::DomainEventsAdapterModelImpl()
 // =====================================================================
 // =====================================================================
 
-
-void DomainEventsAdapterModelImpl::setUnitsColl(
-    openfluid::core::UnitsCollection* UnitsColl)
+void DomainEventsAdapterModelImpl::setUnits(
+    const std::map<int, openfluid::guicommon::BuilderUnit>* Units)
 {
   mref_TreeModel->clear();
 
-  if (!UnitsColl)
+  if (!Units)
     return;
 
-  EngineHelper::sortUnitsCollectionById(*UnitsColl);
-
-  openfluid::core::UnitsList_t::iterator it;
-  for (it = UnitsColl->getList()->begin(); it != UnitsColl->getList()->end(); ++it)
+  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it =
+      Units->begin(); it != Units->end(); ++it)
   {
-    openfluid::core::Unit* TheUnit =
-        const_cast<openfluid::core::Unit*> (&(*it));
+    std::list<openfluid::core::Event*>* Events = const_cast<std::list<openfluid::core::Event*>*>(&it->second.m_Events);
 
-    if (TheUnit->getEvents()->getCount())
+    if (Events->empty())
+      return;
+
+    Gtk::TreeRow UnitRow = *mref_TreeModel->append();
+    UnitRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose("%1", it->first);
+
+    EngineHelper::sortEventsListByDateTime(*Events);
+
+    for (std::list<openfluid::core::Event*>::iterator itEvents = Events->begin();
+        itEvents != Events->end(); ++itEvents)
     {
-      Gtk::TreeRow UnitRow = *mref_TreeModel->append();
-      UnitRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose("%1", TheUnit->getID());
+      Gtk::TreeRow EventRow = *mref_TreeModel->append(UnitRow->children());
+      EventRow[m_Columns.m_Id_Date_Info] =
+          (*itEvents)->getDateTime().getAsISOString();
 
-      openfluid::core::EventsList_t* Events =
-          TheUnit->getEvents()->getEventsList();
+      openfluid::core::Event::EventInfosMap_t Infos = (*itEvents)->getInfos();
+      openfluid::core::Event::EventInfosMap_t::iterator itInfos;
 
-      EngineHelper::sortEventsListByDateTime(*Events);
-
-      openfluid::core::EventsList_t::iterator itEvents;
-      for (itEvents = Events->begin(); itEvents != Events->end(); ++itEvents)
+      for (itInfos = Infos.begin(); itInfos != Infos.end(); ++itInfos)
       {
-        Gtk::TreeRow EventRow = *mref_TreeModel->append(UnitRow->children());
-        EventRow[m_Columns.m_Id_Date_Info] = (*itEvents).getDateTime().getAsISOString();
-
-        openfluid::core::Event::EventInfosMap_t Infos = (*itEvents).getInfos();
-        openfluid::core::Event::EventInfosMap_t::iterator itInfos;
-
-        for (itInfos = Infos.begin(); itInfos != Infos.end(); ++itInfos)
-        {
-          Gtk::TreeRow InfoRow = *mref_TreeModel->append(EventRow->children());
-          InfoRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose("%1 : %2",
-              itInfos->first, itInfos->second.get());
-        }
+        Gtk::TreeRow InfoRow = *mref_TreeModel->append(EventRow->children());
+        InfoRow[m_Columns.m_Id_Date_Info] = Glib::ustring::compose(
+            "%1 : %2", itInfos->first, itInfos->second.get());
       }
     }
+
   }
+
 }
 
 // =====================================================================
 // =====================================================================
-
 
 Glib::RefPtr<Gtk::TreeModel> DomainEventsAdapterModelImpl::getTreeModel()
 {

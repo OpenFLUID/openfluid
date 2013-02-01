@@ -99,15 +99,17 @@ class ModelStructureModule : public openfluid::guicommon::ProjectWorkspaceModule
 
   public:
 
-    ModelStructureModule();
+    ModelStructureModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
     ~ModelStructureModule();
 
     sigc::signal<void> signal_ModuleChanged();
 
     void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob);
+        openfluid::machine::ModelInstance& /*ModelInstance*/,
+        openfluid::machine::SimulationBlob& /*SimBlob*/,
+        openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/)
+    {};
 
     void setCurrentFunction(std::string FunctionName);
 

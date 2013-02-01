@@ -58,10 +58,11 @@
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 #include "ModelItemInstanceFactory.hpp"
-
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -72,12 +73,16 @@ struct init_Presenter
 
     ModelStructureModel* mp_Model;
     ModelStructureViewSub* mp_View;
+    EngineProject* mp_EngProject;
 
     init_Presenter()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Component = new ModelStructureComponent();
+      mp_EngProject = new EngineProject();
+
+      mp_Component = new ModelStructureComponent(
+          mp_EngProject->getBuilderDesc().getModel());
       mp_Model = mp_Component->getModel();
       mp_View = (ModelStructureViewSub*) (mp_Component->getView());
     }
@@ -85,6 +90,7 @@ struct init_Presenter
     ~init_Presenter()
     {
       delete mp_Component;
+      delete mp_EngProject;
     }
 };
 
@@ -95,136 +101,153 @@ BOOST_FIXTURE_TEST_SUITE(ModelStructurePresenterTest, init_Presenter)
 
 BOOST_AUTO_TEST_CASE(test_SetModelInstance)
 {
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),-1);
-  BOOST_CHECK_EQUAL(mp_View->getRowNb(),0);
-
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
   std::string idC = "tests.primitivesvalues.prod";
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item1 =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idB);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
-  openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idC);
+  openfluid::fluidx::ModelItemDescriptor* Item3 =
+      new openfluid::fluidx::FunctionDescriptor(idC);
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
   mp_Model->appendFunction(Item3);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),2);
-  BOOST_CHECK_EQUAL(mp_View->getRowNb(),3);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(1),"2. " + idB);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(2),"3. " + idC);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getRowNb(), 3);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(1), "2. " + idB);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(2), "3. " + idC);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_SelectAFunctionByApp)
 {
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
   std::string idC = "tests.primitivesvalues.prod";
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item1 =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idB);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
-  openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idC);
+  openfluid::fluidx::ModelItemDescriptor* Item3 =
+      new openfluid::fluidx::FunctionDescriptor(idC);
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
   mp_Model->appendFunction(Item3);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 2);
 
   mp_Model->requestSelectionByAppAt(0);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),0);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 0);
 
   mp_Model->requestSelectionByAppAt(1);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_AppendAFunction)
 {
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   // append a function
   std::string idA = "tests.primitives.prod";
-  openfluid::machine::ModelItemSignatureInstance FctSignature =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
   mp_Model->appendFunction(Item);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),0);
-  BOOST_CHECK_EQUAL(mp_View->getRowNb(),1);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedRowPosition(),0);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getRowNb(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedRowPosition(), 0);
 
   // append another function
   std::string idB = "tests.primitives.use";
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
   mp_Model->appendFunction(Item2);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-  BOOST_CHECK_EQUAL(mp_View->getRowNb(),2);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(1),"2. " + idB);
-  BOOST_CHECK_EQUAL(mp_View->getSelectedRowPosition(),1);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getRowNb(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(1), "2. " + idB);
+  BOOST_CHECK_EQUAL(mp_View->getSelectedRowPosition(), 1);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_RemoveFunctionAt)
 {
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
   std::string idC = "tests.primitivesvalues.prod";
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item1 =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idB);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
-  openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idC);
+  openfluid::fluidx::ModelItemDescriptor* Item3 =
+      new openfluid::fluidx::FunctionDescriptor(idC);
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
@@ -233,23 +256,23 @@ BOOST_AUTO_TEST_CASE(test_RemoveFunctionAt)
   //remove in the middle
   mp_Model->removeFunctionAt(1);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-  BOOST_CHECK_EQUAL(mp_View->getRowNb(),2);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(1),"2. " + idC);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getRowNb(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(1), "2. " + idC);
 
   //remove first
   mp_Model->removeFunctionAt(0);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),0);
-  BOOST_CHECK_EQUAL(mp_View->getRowNb(),1);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idC);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getRowNb(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idC);
 
   //remove the last one
   mp_Model->removeFunctionAt(0);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),-1);
-  BOOST_CHECK_EQUAL(mp_View->getRowNb(),0);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), -1);
+  BOOST_CHECK_EQUAL(mp_View->getRowNb(), 0);
 
   // add three new functions
   mp_Model->appendFunction(Item1);
@@ -259,32 +282,38 @@ BOOST_AUTO_TEST_CASE(test_RemoveFunctionAt)
   // remove last
   mp_Model->removeFunctionAt(2);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_RemoveFirst)
 {
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
   std::string idC = "tests.primitivesvalues.prod";
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item1 =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idB);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
-  openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idC);
+  openfluid::fluidx::ModelItemDescriptor* Item3 =
+      new openfluid::fluidx::FunctionDescriptor(idC);
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
@@ -292,226 +321,252 @@ BOOST_AUTO_TEST_CASE(test_RemoveFirst)
 
   //remove first
   mp_Model->removeFunctionAt(0);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),0);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 0);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_MoveFunction)
 {
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
   std::string idC = "tests.primitivesvalues.prod";
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item1 =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idB);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
-  openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idC);
+  openfluid::fluidx::ModelItemDescriptor* Item3 =
+      new openfluid::fluidx::FunctionDescriptor(idC);
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
   mp_Model->appendFunction(Item3);
 
   // move to lower
-  mp_Model->moveFunction(2,1);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(1),"2. " + idC);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(2),"3. " + idB);
+  mp_Model->moveFunction(2, 1);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(1), "2. " + idC);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(2), "3. " + idB);
 
   // move to upper
-  mp_Model->moveFunction(0,1);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idC);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(1),"2. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(2),"3. " + idB);
+  mp_Model->moveFunction(0, 1);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idC);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(1), "2. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(2), "3. " + idB);
 
   // bad To index, throw "Bad indexes of items to move"
-  BOOST_CHECK_THROW(mp_Model->moveFunction(0,3),openfluid::base::OFException);
+  BOOST_CHECK_THROW(mp_Model->moveFunction(0,3), openfluid::base::OFException);
 
   // bad From index, throw "Bad indexes of items to move"
-  BOOST_CHECK_THROW(mp_Model->moveFunction(-1,1),openfluid::base::OFException);
+  BOOST_CHECK_THROW(mp_Model->moveFunction(-1,1), openfluid::base::OFException);
 
   // does nothing
-  mp_Model->moveFunction(1,1);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idC);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(1),"2. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(2),"3. " + idB);
+  mp_Model->moveFunction(1, 1);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idC);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(1), "2. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(2), "3. " + idB);
 
   // move to top
-  mp_Model->moveFunction(0,2);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),2);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(1),"2. " + idB);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(2),"3. " + idC);
+  mp_Model->moveFunction(0, 2);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 2);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(1), "2. " + idB);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(2), "3. " + idC);
 
   // move to the bottom
-  mp_Model->moveFunction(2,0);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),0);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(0),"1. " + idC);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(1),"2. " + idA);
-  BOOST_CHECK_EQUAL(mp_View->getRowId(2),"3. " + idB);
-
-  delete EngProject;
+  mp_Model->moveFunction(2, 0);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(0), "1. " + idC);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(1), "2. " + idA);
+  BOOST_CHECK_EQUAL(mp_View->getRowId(2), "3. " + idB);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_SelectAFunction)
 {
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
   std::string idC = "tests.primitivesvalues.prod";
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item1 =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idB);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
-  openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idC);
+  openfluid::fluidx::ModelItemDescriptor* Item3 =
+      new openfluid::fluidx::FunctionDescriptor(idC);
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
   mp_Model->appendFunction(Item3);
 
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),2);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 2);
 
   mp_View->requestSelectionAt(1);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
 
   mp_View->requestSelectionAt(0);
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),0);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 0);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 {
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
   std::string idC = "tests.primitivesvalues.prod";
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item1 =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idB);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
-  openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idC);
+  openfluid::fluidx::ModelItemDescriptor* Item3 =
+      new openfluid::fluidx::FunctionDescriptor(idC);
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
   mp_Model->appendFunction(Item3);
 
-  std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
+  std::vector<std::string> ClassNames;
+  std::vector<std::string>::iterator it;
 
   //select and move
   mp_Model->requestSelectionByAppAt(2);
   mp_Model->moveTowardTheBegin();
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-  it = mp_Model->getModelInstance()->getItems().begin();
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
+  ClassNames = mp_EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  it = ClassNames.begin();
+  BOOST_CHECK_EQUAL(*it, idA);
   it++;
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idC);
+  BOOST_CHECK_EQUAL(*it, idC);
   it++;
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idB);
+  BOOST_CHECK_EQUAL(*it, idB);
 
   //select and move (circular)
   mp_Model->requestSelectionByAppAt(0);
   mp_Model->moveTowardTheBegin();
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),2);
-  it = mp_Model->getModelInstance()->getItems().begin();
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idC);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 2);
+  ClassNames = mp_EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  it = ClassNames.begin();
+  BOOST_CHECK_EQUAL(*it, idC);
   it++;
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idB);
+  BOOST_CHECK_EQUAL(*it, idB);
   it++;
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(*it, idA);
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
 {
-  EngineProject* EngProject = new EngineProject();
-
-  mp_Model->setEngineRequirements(*EngProject->getModelInstance(), &EngProject->getCoreRepository());
-
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
   std::string idC = "tests.primitivesvalues.prod";
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idA);
-  openfluid::machine::ModelItemInstance* Item1 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature1);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idA);
+  openfluid::fluidx::ModelItemDescriptor* Item1 =
+      new openfluid::fluidx::FunctionDescriptor(idA);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idB);
-  openfluid::machine::ModelItemInstance* Item2 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature2);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idB);
+  openfluid::fluidx::ModelItemDescriptor* Item2 =
+      new openfluid::fluidx::FunctionDescriptor(idB);
 
-  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
-  *openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(idC);
-  openfluid::machine::ModelItemInstance* Item3 = ModelItemInstanceFactory::createPluggableItemFromSignature(FctSignature3);
+  //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
+  //  *
+  openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
+      idC);
+  openfluid::fluidx::ModelItemDescriptor* Item3 =
+      new openfluid::fluidx::FunctionDescriptor(idC);
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
   mp_Model->appendFunction(Item3);
 
-  std::list<openfluid::machine::ModelItemInstance*>::const_iterator it;
+  std::vector<std::string> ClassNames;
+  std::vector<std::string>::iterator it;
 
   //select and move
   mp_Model->requestSelectionByAppAt(0);
   mp_Model->moveTowardTheEnd();
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),1);
-  it = mp_Model->getModelInstance()->getItems().begin();
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idB);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
+  ClassNames = mp_EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  it = ClassNames.begin();
+  BOOST_CHECK_EQUAL(*it, idB);
   it++;
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
+  BOOST_CHECK_EQUAL(*it, idA);
   it++;
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idC);
+  BOOST_CHECK_EQUAL(*it, idC);
 
   //select and move (circular)
   mp_Model->requestSelectionByAppAt(2);
   mp_Model->moveTowardTheEnd();
-  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(),0);
-  it = mp_Model->getModelInstance()->getItems().begin();
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idC);
+  BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 0);
+  ClassNames = mp_EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  it = ClassNames.begin();
+  BOOST_CHECK_EQUAL(*it, idC);
   it++;
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idB);
+  BOOST_CHECK_EQUAL(*it, idB);
   it++;
-  BOOST_CHECK_EQUAL((*it)->Signature->ID, idA);
-
-  delete EngProject;
+  BOOST_CHECK_EQUAL(*it, idA);
 }
-
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END()
 

@@ -58,7 +58,11 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/comboboxtext.h>
 
-#include <openfluid/core/CoreRepository.hpp>
+namespace openfluid {
+namespace guicommon {
+class BuilderDomain;
+}
+}
 
 
 class DomainIDataRemoveDialog
@@ -71,16 +75,14 @@ class DomainIDataRemoveDialog
 
     Gtk::ComboBoxText* mp_Combo;
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
     std::string m_ClassName;
 
 
   public:
 
-    DomainIDataRemoveDialog();
-
-    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
+    DomainIDataRemoveDialog(openfluid::guicommon::BuilderDomain& Domain);
 
     void setClass(std::string ClassName);
 

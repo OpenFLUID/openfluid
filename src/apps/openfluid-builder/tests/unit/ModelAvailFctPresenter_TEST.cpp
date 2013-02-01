@@ -64,6 +64,7 @@
 #include "ModelAvailFctView.hpp"
 
 #include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -102,7 +103,7 @@ BOOST_AUTO_TEST_CASE(test_SetSignatures)
   BOOST_CHECK_EQUAL(mp_View->getGeneratorBranchRowsNumber(),0);
 
   // set Generator signatures
-  FunctionSignatureRegistrySub Signatures;
+  openfluid::guicommon::FunctionSignatureRegistrySub Signatures;
   int GeneratorCount = Signatures.getGeneratorSignatures().size();
   mp_Model->setSignatures(Signatures);
 

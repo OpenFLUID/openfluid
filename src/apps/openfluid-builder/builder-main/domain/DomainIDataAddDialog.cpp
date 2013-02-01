@@ -59,14 +59,15 @@
 
 #include <glibmm/i18n.h>
 
-#include <boost/foreach.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
+#include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-DomainIDataAddDialog::DomainIDataAddDialog() :
-  mp_CoreRepos(0), m_ClassName(""), m_IsValid(false)
+DomainIDataAddDialog::DomainIDataAddDialog(
+    openfluid::guicommon::BuilderDomain& Domain) :
+    mp_Domain(&Domain), m_ClassName(""), m_IsValid(false)
 {
   mp_Dialog = new Gtk::Dialog(_("Adding Inputdata field"));
   mp_Dialog->set_default_size(10, 10);
@@ -77,19 +78,19 @@ DomainIDataAddDialog::DomainIDataAddDialog() :
   mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
   ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
 
-  Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(_("Inputdata name:"),
-      Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
-  Gtk::Label* DefaultValueLabel = Gtk::manage(new Gtk::Label(
-      _("Default value:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* NameLabel = Gtk::manage(
+      new Gtk::Label(_("Inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* DefaultValueLabel = Gtk::manage(
+      new Gtk::Label(_("Default value:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
   mp_NameEntry = Gtk::manage(new Gtk::Entry());
-  mp_NameEntry->signal_changed().connect(sigc::mem_fun(*this,
-      &DomainIDataAddDialog::onChanged));
+  mp_NameEntry->signal_changed().connect(
+      sigc::mem_fun(*this, &DomainIDataAddDialog::onChanged));
   mp_NameEntry->set_activates_default(true);
 
   mp_DefaultValueEntry = Gtk::manage(new Gtk::Entry());
-  mp_DefaultValueEntry->signal_changed().connect(sigc::mem_fun(*this,
-      &DomainIDataAddDialog::onChanged));
+  mp_DefaultValueEntry->signal_changed().connect(
+      sigc::mem_fun(*this, &DomainIDataAddDialog::onChanged));
   mp_DefaultValueEntry->set_activates_default(true);
 
   Gtk::Table* Table = Gtk::manage(new Gtk::Table());
@@ -115,7 +116,6 @@ DomainIDataAddDialog::DomainIDataAddDialog() :
 // =====================================================================
 // =====================================================================
 
-
 void DomainIDataAddDialog::onChanged()
 {
   std::string Name = mp_NameEntry->get_text();
@@ -123,16 +123,15 @@ void DomainIDataAddDialog::onChanged()
 
   m_IsValid = false;
 
-  if (Name == "" || isEmptyString(Name))
+  if (Name == "" || EngineHelper::isEmptyString(Name))
   {
     mp_InfoBarLabel->set_text(_("Inputdata name can not be empty"));
   }
-  else if (std::find(m_IDataNames.begin(), m_IDataNames.end(), Name)
-      != m_IDataNames.end())
+  else if (m_IDataNames.count(Name))
   {
     mp_InfoBarLabel->set_text(_("Inputdata name already exists"));
   }
-  else if (Val == "" || isEmptyString(Val))
+  else if (Val == "" || EngineHelper::isEmptyString(Val))
   {
     mp_InfoBarLabel->set_text(_("Default value cannot be empty"));
   }
@@ -149,36 +148,6 @@ void DomainIDataAddDialog::onChanged()
 // =====================================================================
 // =====================================================================
 
-bool DomainIDataAddDialog::isEmptyString(std::string Str)
-{
-  bool isEmpty = true;
-
-  for (unsigned int i = 0; i < Str.size() && isEmpty; i++)
-  {
-    if (!std::isspace(Str[i]))
-    {
-      isEmpty = false;
-      break;
-    }
-  }
-
-  return isEmpty;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainIDataAddDialog::setEngineRequirements(
-    openfluid::core::CoreRepository& CoreRepos)
-{
-  mp_CoreRepos = &CoreRepos;
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void DomainIDataAddDialog::setClass(std::string ClassName)
 {
   m_ClassName = ClassName;
@@ -189,25 +158,13 @@ void DomainIDataAddDialog::setClass(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-
 void DomainIDataAddDialog::update()
 {
-  m_IDataNames.clear();
-
-  if (mp_CoreRepos->getUnits(m_ClassName))
-  {
-    BOOST_FOREACH(openfluid::core::Unit Unit,*(mp_CoreRepos->getUnits(m_ClassName)->getList()))
-{    BOOST_FOREACH(std::string DataName, Unit.getInputData()->getInputDataNames())
-    {
-      m_IDataNames.push_back(DataName);
-    }
-  }
-}
+  m_IDataNames = mp_Domain->getInputDataNames(m_ClassName);
 }
 
 // =====================================================================
 // =====================================================================
-
 
 std::pair<std::string, std::string> DomainIDataAddDialog::show()
 {
@@ -219,7 +176,7 @@ std::pair<std::string, std::string> DomainIDataAddDialog::show()
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
     Data = std::make_pair(mp_NameEntry->get_text(),
-        mp_DefaultValueEntry->get_text());
+                          mp_DefaultValueEntry->get_text());
   }
 
   mp_Dialog->hide();
