@@ -413,7 +413,7 @@ void EngineProjectNewDialog::checkProject()
   if (m_ProjectName.empty())
   {
     mp_InfoBarLabel->set_text(_("Project name cannot be empty"));
-  } else if (boost::filesystem::exists(boost::filesystem::path(ProjectFolder)))
+  } else if (boost::filesystem::exists(boost::filesystem::path(std::string(ProjectFolder))))
   {
     mp_InfoBarLabel->set_text(_("This project directory already exists"));
   } else
@@ -450,7 +450,8 @@ void EngineProjectNewDialog::onImportSystemFolderSelectionChanged()
   m_ImportSystemFolder = Glib::filename_to_utf8(
       mp_ImportSystemFileChooserButton->get_filename());
 
-  boost::filesystem::path ImportPath(m_ImportSystemFolder);
+  boost::filesystem::path ImportPath;
+  ImportPath = std::string(m_ImportSystemFolder);
 
   mref_TreeModel->clear();
 
@@ -466,7 +467,7 @@ void EngineProjectNewDialog::onImportSystemFolderSelectionChanged()
 
 
 void EngineProjectNewDialog::appendDirectoryContent(
-    boost::filesystem::path DirectoryPath, Gtk::TreeIter DirectoryIter)
+    const boost::filesystem::path& DirectoryPath, Gtk::TreeIter DirectoryIter)
 {
 
   Gtk::TreeRow DirectoryRow;
@@ -493,11 +494,11 @@ void EngineProjectNewDialog::appendDirectoryContent(
     {
       if ((boost::filesystem::is_regular_file(it->status())
           || boost::filesystem::is_directory(it->status())) && !isHidden(
-          it->path().filename()))
+          it->path().filename().string()))
       {
         Gtk::TreeRow Row = DirectoryIter ? *mref_TreeModel->append(
             DirectoryRow->children()) : *mref_TreeModel->append();
-        Row[m_Columns.m_FileName] = it->path().filename();
+        Row[m_Columns.m_FileName] = it->path().filename().string();
         Row[m_Columns.m_FilePath] = it->path().string();
         Row[m_Columns.m_IsSelected] = DirectoryIter ? DirectoryRow.get_value(
             m_Columns.m_IsSelected) : true;
@@ -506,7 +507,7 @@ void EngineProjectNewDialog::appendDirectoryContent(
         {
           if (boost::filesystem::is_empty(it->path()))
           {
-            Row[m_Columns.m_FileName] = it->path().filename() + std::string(" ") + _("(Empty)");
+            Row[m_Columns.m_FileName] = it->path().filename().string() + std::string(" ") + _("(Empty)");
           } else
           {
             // add a dummy row to display expander
@@ -515,7 +516,7 @@ void EngineProjectNewDialog::appendDirectoryContent(
         }
       }
     }
-  } catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path> e)
+  } catch (boost::filesystem::filesystem_error e)
   {
     std::cerr << "EngineProjectNewDialog::appendDirectoryContent " << e.what()
         << std::endl;
@@ -618,8 +619,7 @@ Glib::ustring EngineProjectNewDialog::show()
     {
       boost::filesystem::create_directory(Glib::filename_from_utf8(
           ProjectFolder));
-    } catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path>
-        e)
+    } catch (boost::filesystem::filesystem_error  e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
           Glib::ustring::compose(
@@ -663,7 +663,7 @@ Glib::ustring EngineProjectNewDialog::show()
           for (boost::filesystem::recursive_directory_iterator it(
               Glib::filename_from_utf8(m_ImportFolder)); it != end_it; ++it)
           {
-            if (!isHidden(it->path().filename()))
+            if (!isHidden(it->path().filename().string()))
               copyOnDisk(it->path().string());
           }
 
@@ -675,8 +675,7 @@ Glib::ustring EngineProjectNewDialog::show()
             copyFilePathAndChildren(*mref_TreeModel->children()[i]);
         }
       }
-    } catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path>
-        e)
+    } catch (boost::filesystem::filesystem_error e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
           Glib::ustring::compose(_(
@@ -711,7 +710,7 @@ void EngineProjectNewDialog::copyFilePathAndChildren(Gtk::TreeRow Row)
       for (boost::filesystem::recursive_directory_iterator it(SrcPath); it
           != end_it; ++it)
       {
-        if (!isHidden(it->path().filename()))
+        if (!isHidden(it->path().filename().string()))
           copyOnDisk(it->path().string());
       }
     }
@@ -752,7 +751,7 @@ void EngineProjectNewDialog::copyOnDisk(std::string SrcPath)
       } else
         boost::filesystem::copy_file(SrcPath, DestPath);
     }
-  } catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path> e)
+  } catch (boost::filesystem::filesystem_error e)
   {
     std::cerr
         << "EngineProjectNewDialog::copy boost::filesystem::basic_filesystem_error: "

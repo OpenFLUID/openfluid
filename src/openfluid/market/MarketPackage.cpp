@@ -84,7 +84,7 @@ bool MarketPackage::m_Initialized = false;
 MarketPackage::MarketPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
               : m_ID(ID), m_PackageURL(PackageURL), m_Downloaded(false)
 {
-  m_PackageFilename = boost::filesystem::path(PackageURL).leaf();
+  m_PackageFilename = boost::filesystem::path(PackageURL).filename().string();
 }
 
 

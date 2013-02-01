@@ -110,7 +110,7 @@ bool BuilderWorkdirCreationDialog::show()
       openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir();
   if (PrefWorkdir.empty())
     mp_Entry->set_text(boost::filesystem::path(boost::filesystem::path(
-        Glib::get_home_dir()) /= ("OpenFLUID-Projects")).file_string());
+        Glib::get_home_dir()) /= ("OpenFLUID-Projects")).string());
   else
     mp_Entry->set_text(PrefWorkdir);
 
@@ -124,8 +124,7 @@ bool BuilderWorkdirCreationDialog::show()
       {
         boost::filesystem::create_directory(Workdir);
 
-      } catch (boost::filesystem::basic_filesystem_error<
-          boost::filesystem::path> e)
+      } catch (boost::filesystem::filesystem_error e)
       {
         openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
 

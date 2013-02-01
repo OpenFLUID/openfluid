@@ -239,7 +239,7 @@ void Func2DocBuddy::cpreprocessCPP()
 
   mp_Listener->onSubstageCompleted("** Preprocessing C++ file (using gcc)...");
 
-  m_CProcessedFilePath = boost::filesystem::path(m_OutputDirPath.string() + "/" + m_InputFilePath.leaf() + ".func2doc");
+  m_CProcessedFilePath = boost::filesystem::path(m_OutputDirPath.string() + "/" + m_InputFilePath.filename().string() + ".func2doc");
 
   boost::filesystem::remove(m_CProcessedFilePath);
 

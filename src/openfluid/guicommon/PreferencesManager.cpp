@@ -324,7 +324,7 @@ std::vector<std::pair<std::string, std::string> > PreferencesManager::getRecentP
 void PreferencesManager::setWorkdir(Glib::ustring Workdir)
 {
   mp_KFile->set_string("openfluid.builder.paths", "workdir",
-      boost::filesystem::path(Workdir).string());
+      boost::filesystem::path(std::string(Workdir)).string());
 }
 
 // =====================================================================

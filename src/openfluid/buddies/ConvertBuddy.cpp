@@ -240,7 +240,7 @@ void ConvertBuddy::convert_13_14_data()
 
 	for (unsigned int i=0;i<DataFiles.size();i++)
 	{
-		std::string CurrInFile = boost::filesystem::path(DataFiles[i]).leaf();
+		std::string CurrInFile = boost::filesystem::path(DataFiles[i]).filename().string();
 		boost::filesystem::path CurrInPath(m_Options["inputdir"]+"/"+CurrInFile);
 		boost::filesystem::path CurrOutPath(m_Options["outputdir"]+"/"+CurrInFile);
 
@@ -340,7 +340,7 @@ void ConvertBuddy::convert_13_14_model_run_events()
 
   for (unsigned int i=0;i<EventsFiles.size();i++)
   {
-    std::string CurrFile = boost::filesystem::path(EventsFiles[i]).leaf();
+    std::string CurrFile = boost::filesystem::path(EventsFiles[i]).filename().string();
 
     boost::filesystem::remove(boost::filesystem::path(m_Options["outputdir"]+"/"+CurrFile));
     boost::filesystem::copy_file(boost::filesystem::path(EventsFiles[i]),
@@ -360,8 +360,8 @@ void ConvertBuddy::convert_14_15_events()
 
   for (unsigned int i=0;i<EventsFiles.size();i++)
   {
-    std::string CurrInFile = boost::filesystem::path(EventsFiles[i]).leaf();
-    std::string CurrOutFile = boost::filesystem::change_extension(boost::filesystem::path(EventsFiles[i]),".fluidx").leaf();
+    std::string CurrInFile = boost::filesystem::path(EventsFiles[i]).filename().string();
+    std::string CurrOutFile = boost::filesystem::change_extension(boost::filesystem::path(EventsFiles[i]),".fluidx").filename().string();
 
     std::ifstream InputFile(boost::filesystem::path(m_Options["inputdir"]+"/"+CurrInFile).string().c_str());
     std::string FileContent = "";
@@ -402,7 +402,7 @@ void ConvertBuddy::convert_14_15_data()
 
     Doc = xmlParseFile(DataFiles[i].c_str());
 
-    std::string CurrInFile = boost::filesystem::path(DataFiles[i]).leaf();
+    std::string CurrInFile = boost::filesystem::path(DataFiles[i]).filename().string();
     std::string CurrOutFile = boost::filesystem::change_extension(boost::filesystem::path(CurrInFile),".fluidx").string();
 
     if (Doc != NULL)
@@ -486,8 +486,8 @@ void ConvertBuddy::copy_14_15_model_run_output_defs()
 
   for (unsigned int i=0;i<DefsFiles.size();i++)
   {
-    std::string CurrInFile = boost::filesystem::path(DefsFiles[i]).leaf();
-    std::string CurrOutFile = boost::filesystem::change_extension(boost::filesystem::path(CurrInFile),".fluidx").leaf();
+    std::string CurrInFile = boost::filesystem::path(DefsFiles[i]).filename().string();
+    std::string CurrOutFile = boost::filesystem::change_extension(boost::filesystem::path(CurrInFile),".fluidx").filename().string();
 
     boost::filesystem::remove(boost::filesystem::path(m_Options["outputdir"]+"/"+CurrOutFile));
     boost::filesystem::copy_file(boost::filesystem::path(DefsFiles[i]),

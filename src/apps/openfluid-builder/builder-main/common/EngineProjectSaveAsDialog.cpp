@@ -180,7 +180,7 @@ void EngineProjectSaveAsDialog::checkProject()
   {
     mp_InfoBarLabel->set_text(_("Project name cannot be empty"));
   }
-  else if (boost::filesystem::exists(boost::filesystem::path(ProjectPath)))
+  else if (boost::filesystem::exists(boost::filesystem::path(std::string(ProjectPath))))
   {
     mp_InfoBarLabel->set_text(_("This project directory already exists"));
   }
@@ -218,14 +218,14 @@ Glib::ustring EngineProjectSaveAsDialog::show()
       openfluid::base::ProjectManager::getInstance();
 
   boost::filesystem::path CurrentProjectPath = boost::filesystem::path(
-      p_Manager->getPath());
+      std::string(p_Manager->getPath()));
 
   mp_WorkdirFileChooserButton->set_current_folder(
       CurrentProjectPath.parent_path().string());
 
   mp_NameEntry->set_text(p_Manager->getName());
 
-  mp_ProjectFolderName->set_text(CurrentProjectPath.filename());
+  mp_ProjectFolderName->set_text(CurrentProjectPath.filename().string());
 
   mp_Dialog->set_focus(*mp_NameEntry);
 
@@ -244,7 +244,7 @@ Glib::ustring EngineProjectSaveAsDialog::show()
       boost::filesystem::create_directory(Glib::filename_from_utf8(
           NewProjectPathStr));
     }
-    catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path> e)
+    catch (boost::filesystem::filesystem_error e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
           Glib::ustring::compose(
@@ -290,8 +290,7 @@ Glib::ustring EngineProjectSaveAsDialog::show()
             boost::filesystem::copy_file(SrcPath, DestPath);
         }
       }
-      catch (boost::filesystem::basic_filesystem_error<boost::filesystem::path>
-          e)
+      catch (boost::filesystem::filesystem_error e)
       {
         std::cerr
             << "EngineProjectSaveAsDialog::copy boost::filesystem::basic_filesystem_error: "
