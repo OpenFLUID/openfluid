@@ -82,8 +82,8 @@ class WorkspaceTab : public ModelessExtension, public openfluid::guicommon::Proj
     ProjectWorkspaceModule(BuilderDesc)
     {}
 
-    WorkspaceTab()
-    {}
+//    WorkspaceTab()
+//    {}
 
     ExtensionType getType() const { return PluggableBuilderExtension::WorkspaceTab; };
 

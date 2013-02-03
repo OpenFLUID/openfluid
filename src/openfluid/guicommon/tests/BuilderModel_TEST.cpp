@@ -74,9 +74,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderModel Model;
-
-  Model.setModelDescriptor(FXDesc.getModelDescriptor());
+  openfluid::guicommon::BuilderModel Model(FXDesc.getModelDescriptor());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 
@@ -136,9 +134,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderModel Model;
-
-  Model.setModelDescriptor(FXDesc.getModelDescriptor());
+  openfluid::guicommon::BuilderModel Model(FXDesc.getModelDescriptor());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 

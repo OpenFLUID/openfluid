@@ -84,9 +84,9 @@ class ProjectWorkspaceModule: public BuilderModule
       m_BuilderDesc(BuilderDesc)
     { }
 
-    ProjectWorkspaceModule() :
-      m_BuilderDesc(*new BuilderDescriptor())
-    {}
+//    ProjectWorkspaceModule() :
+//      m_BuilderDesc(*new BuilderDescriptor())
+//    {}
 
     virtual sigc::signal<void> signal_ModuleChanged() = 0;
 

@@ -71,11 +71,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain;
-
-  BOOST_CHECK(Domain.getUnitsByIdByClass().empty());
-
-  Domain.setDomainDescriptor(FXDesc.getDomainDescriptor());
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
 
   const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t* Units =
       &(Domain.getUnitsByIdByClass());
@@ -144,9 +140,7 @@ BOOST_AUTO_TEST_CASE(check_wrong_construction)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/wrongIData");
 
-  openfluid::guicommon::BuilderDomain Domain;
-
-  BOOST_CHECK_THROW(Domain.setDomainDescriptor(FXDesc.getDomainDescriptor()),
+  BOOST_CHECK_THROW(openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
                     openfluid::base::OFException);
 }
 
@@ -159,8 +153,7 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain;
-  Domain.setDomainDescriptor(FXDesc.getDomainDescriptor());
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
 
   openfluid::fluidx::UnitDescriptor U;
   U.getUnitClass() = "unitsA";
@@ -190,8 +183,7 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain;
-  Domain.setDomainDescriptor(FXDesc.getDomainDescriptor());
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
 
   Domain.deleteUnit("unitsZ", 1);
 
@@ -251,8 +243,7 @@ BOOST_AUTO_TEST_CASE(check_add_replace_getIData)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain;
-  Domain.setDomainDescriptor(FXDesc.getDomainDescriptor());
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
 
   BOOST_CHECK_THROW(Domain.addInputData("unitsZ", "IData", "123"),
                     openfluid::base::OFException);
@@ -318,8 +309,7 @@ BOOST_AUTO_TEST_CASE(check_deleteIData)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain;
-  Domain.setDomainDescriptor(FXDesc.getDomainDescriptor());
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
 
   BOOST_CHECK_EQUAL(Domain.getUnit("unitsA",7).m_IData.size(), 1);
   BOOST_CHECK_EQUAL(Domain.getUnit("unitsB",7).m_IData.size(), 3);
@@ -344,8 +334,7 @@ BOOST_AUTO_TEST_CASE(check_renameIData)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain;
-  Domain.setDomainDescriptor(FXDesc.getDomainDescriptor());
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
 
   BOOST_CHECK_EQUAL(Domain.getInputData("unitsA",7, "indataA"), "1.1");
   BOOST_CHECK_THROW(Domain.getInputData("unitsA",7, "NewData"),

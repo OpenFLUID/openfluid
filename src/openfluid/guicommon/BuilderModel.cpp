@@ -67,10 +67,10 @@ namespace guicommon {
 // =====================================================================
 // =====================================================================
 
-BuilderModel::BuilderModel() :
-    mp_ModelDesc(0)
+BuilderModel::BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
+    mp_ModelDesc(&ModelDesc)
 {
-
+//  checkModel();
 }
 
 // =====================================================================
@@ -78,17 +78,6 @@ BuilderModel::BuilderModel() :
 
 BuilderModel::~BuilderModel()
 {
-}
-
-// =====================================================================
-// =====================================================================
-
-void BuilderModel::setModelDescriptor(
-    openfluid::fluidx::CoupledModelDescriptor& ModelDesc)
-{
-  mp_ModelDesc = &ModelDesc;
-
-//  checkModel();
 }
 
 // =====================================================================

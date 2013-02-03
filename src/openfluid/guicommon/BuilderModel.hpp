@@ -68,12 +68,9 @@ class BuilderModel
 
   public:
 
-    BuilderModel();
+    BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
 
     ~BuilderModel();
-
-    void setModelDescriptor(
-        openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
 
     const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems();
 

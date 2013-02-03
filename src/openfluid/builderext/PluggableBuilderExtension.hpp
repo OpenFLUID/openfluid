@@ -73,6 +73,8 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/guicommon/PreferencesPanel.hpp>
 
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
+
 
 // =====================================================================
 // =====================================================================

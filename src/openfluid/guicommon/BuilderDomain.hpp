@@ -126,11 +126,9 @@ class BuilderDomain
 
   public:
 
-    BuilderDomain();
+    BuilderDomain(openfluid::fluidx::DomainDescriptor& DomainDesc);
 
     ~BuilderDomain();
-
-    void setDomainDescriptor(openfluid::fluidx::DomainDescriptor& DomainDesc);
 
     /**
      *

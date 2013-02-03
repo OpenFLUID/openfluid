@@ -66,9 +66,15 @@ namespace guicommon {
 // =====================================================================
 // =====================================================================
 
-BuilderDomain::BuilderDomain() :
-    mp_DomainDesc(0)
+BuilderDomain::BuilderDomain(openfluid::fluidx::DomainDescriptor& DomainDesc) :
+    mp_DomainDesc(&DomainDesc)
 {
+  dispatchUnits();
+
+  dispatchIData();
+  checkIDataConsistency();
+
+  dispatchEvents();
 }
 
 // =====================================================================
@@ -76,22 +82,6 @@ BuilderDomain::BuilderDomain() :
 
 BuilderDomain::~BuilderDomain()
 {
-}
-
-// =====================================================================
-// =====================================================================
-
-void BuilderDomain::setDomainDescriptor(
-    openfluid::fluidx::DomainDescriptor& DomainDesc)
-{
-  mp_DomainDesc = &DomainDesc;
-
-  dispatchUnits();
-
-  dispatchIData();
-  checkIDataConsistency();
-
-  dispatchEvents();
 }
 
 // =====================================================================
