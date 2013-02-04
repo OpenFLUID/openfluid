@@ -64,6 +64,19 @@
 #include <openfluid/fluidx/WareDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
+
+// =====================================================================
+// =====================================================================
+
+class BuilderModelSub : public openfluid::guicommon::BuilderModel
+{
+  public:
+
+  BuilderModelSub(openfluid::fluidx::CoupledModelDescriptor& ModelDesc):
+    openfluid::guicommon::BuilderModel::BuilderModel()
+  {mp_ModelDesc = &ModelDesc;};
+};
 
 // =====================================================================
 // =====================================================================
@@ -74,7 +87,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderModel Model(FXDesc.getModelDescriptor());
+  BuilderModelSub Model(FXDesc.getModelDescriptor());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 
@@ -134,7 +147,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderModel Model(FXDesc.getModelDescriptor());
+  BuilderModelSub Model(FXDesc.getModelDescriptor());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 

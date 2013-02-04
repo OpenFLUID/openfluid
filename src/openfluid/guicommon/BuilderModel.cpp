@@ -70,7 +70,7 @@ namespace guicommon {
 BuilderModel::BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
     mp_ModelDesc(&ModelDesc)
 {
-//  checkModel();
+  checkModel();
 }
 
 // =====================================================================
