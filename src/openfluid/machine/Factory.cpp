@@ -399,25 +399,6 @@ void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescri
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-std::string Factory::buildGeneratorID(const openfluid::core::VariableName_t& VarName,
-                                      bool IsVector,
-                                      const openfluid::core::UnitClass_t ClassName)
-{
-  std::string GenID("GENERATOR__");
-  if (IsVector) GenID += "VECTOR__";
-  else GenID += "SCALAR__";
-  GenID += VarName;
-  GenID += "__";
-  GenID += ClassName;
-
-  return GenID;
-
-}
-
 } } //namespaces
 
 
