@@ -13,11 +13,17 @@
 #
 ###############################################################################
 
+
+IF(GEOS_FOUND)
+  RETURN()
+ENDIF()
+  
+  
 IF(WIN32)
 
   IF (MINGW)
-    FIND_PATH(GEOS_INCLUDE_DIR geos_c.h /usr/local/include /usr/include c:/msys/local/include)
-    FIND_LIBRARY(GEOS_LIBRARY NAMES geos_c PATHS /usr/local/lib /usr/lib c:/msys/local/lib)
+    FIND_PATH(GEOS_INCLUDE_DIR geos.h /usr/local/include /usr/include c:/msys/local/include)
+    FIND_LIBRARY(GEOS_LIBRARY NAMES geos PATHS /usr/local/lib /usr/lib c:/msys/local/lib)
   ENDIF (MINGW)
 
   IF (MSVC)
@@ -26,7 +32,7 @@ IF(WIN32)
        "$ENV{LIB_DIR}/include"
        CACHE STRING INTERNAL
        )
-    FIND_LIBRARY(GEOS_LIBRARY NAMES geos geos_c_i PATHS 
+    FIND_LIBRARY(GEOS_LIBRARY NAMES geos geos PATHS 
       "$ENV{LIB_DIR}/lib"
       #mingw
       c:/msys/local/lib
@@ -129,19 +135,18 @@ ENDIF(WIN32)
 
 
 IF (GEOS_INCLUDE_DIR AND GEOS_LIBRARY)
-   SET(GEOS_FOUND TRUE)
+   SET(GEOS_FOUND TRUE CACHE STRING INTERNAL)
+   SET(GEOS_VERSION ${GEOS_VERSION} CACHE STRING INTERNAL)
+   SET(GEOS_INCLUDE_DIR ${GEOS_INCLUDE_DIR} CACHE STRING INTERNAL)
+   SET(GEOS_LIBRARY ${GEOS_LIBRARY} CACHE STRING INTERNAL)
 ENDIF (GEOS_INCLUDE_DIR AND GEOS_LIBRARY)
 
 IF (GEOS_FOUND)
-
    IF (NOT GEOS_FIND_QUIETLY)
       MESSAGE(STATUS "Found GEOS: ${GEOS_LIBRARY}")
    ENDIF (NOT GEOS_FIND_QUIETLY)
-
 ELSE (GEOS_FOUND)
-
    MESSAGE(GEOS_INCLUDE_DIR=${GEOS_INCLUDE_DIR})
    MESSAGE(GEOS_LIBRARY=${GEOS_LIBRARY})
    MESSAGE(FATAL_ERROR "Could not find GEOS")
-
 ENDIF (GEOS_FOUND)
