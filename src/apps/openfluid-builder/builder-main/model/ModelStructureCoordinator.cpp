@@ -100,7 +100,7 @@ void ModelStructureCoordinator::whenStructureFctSelectionChanged()
         openfluid::guicommon::FunctionSignatureRegistry::getEmptyPluggableSignature());
   else
     m_FctDetailModel.setFctToDisplay(
-        mp_SignatureRegistry->getSignatureItemInstance(
+        openfluid::guicommon::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
             mp_BuilderDesc->getModel().getItemAt(CurrentSelection)));
 
   updateStructureListToolBox();
