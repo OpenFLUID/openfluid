@@ -172,6 +172,16 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   BOOST_CHECK_EQUAL(Domain.getIDsOfClass("unitsZ").size(), 1);
 
   BOOST_CHECK_EQUAL(&Domain.getUnitDescriptor("unitsZ",1), &U);
+
+  openfluid::fluidx::UnitDescriptor U2;
+  U2.getUnitClass() = "unitsB";
+  U2.getUnitID() = 99;
+  Domain.addUnit(&U2);
+
+  BOOST_CHECK_EQUAL(Domain.getUnit("unitsB",99).m_IData.size(),3);
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
 }
 
 // =====================================================================

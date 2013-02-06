@@ -94,11 +94,9 @@ void BuilderModel::checkModel()
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Items->begin();
-  std::cout << __LINE__ << std::endl;
+
   while (it != Items->end())
   {
-    std::cout << __LINE__ << std::endl;
-
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
     {
       std::string ID =
@@ -106,7 +104,6 @@ void BuilderModel::checkModel()
 
       if (!Reg->isPluggableFunctionAvailable(ID))
       {
-        std::cout << __LINE__ << std::endl;
         MissingFunctions.append("- " + ID + "\n");
 
         it = Items->erase(it);
@@ -120,7 +117,6 @@ void BuilderModel::checkModel()
 
   if (MissingFunctions != "")
   {
-    std::cout << __LINE__ << std::endl;
     Glib::ustring Msg =
         Glib::ustring::compose(
             _("Unable to find plugin file(s):\n%1\n\n"
@@ -130,12 +126,8 @@ void BuilderModel::checkModel()
 
     if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
         Msg))
-    {
-      std::cout << __LINE__ << std::endl;
       throw openfluid::base::OFException("");
-    }
   }
-  std::cout << __LINE__ << std::endl;
 }
 
 // =====================================================================
