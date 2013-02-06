@@ -166,14 +166,14 @@ openfluid::base::SimulationStatus::SimulationStage SimulationDrivenWare::OPENFLU
 
 void SimulationDrivenWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Msg)
 {
-  if (mp_SimStatus == NULL || mp_ExecMsgs == NULL)
+  if (mp_SimStatus == NULL || mp_SimLogger == NULL)
     throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_RaiseWarning()","Simulation status or execution messages not set");
 
   if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
       mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
-    mp_ExecMsgs->addWarning(Sender,mp_SimStatus->getCurrentTimeIndex(),Msg);
+    mp_SimLogger->addWarning(Sender,mp_SimStatus->getCurrentTimeIndex(),Msg);
   else
-    mp_ExecMsgs->addWarning(Sender,Msg);
+    mp_SimLogger->addWarning(Sender,Msg);
 }
 
 
@@ -183,14 +183,14 @@ void SimulationDrivenWare::OPENFLUID_RaiseWarning(std::string Sender, std::strin
 
 void SimulationDrivenWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg)
 {
-  if (mp_SimStatus == NULL || mp_ExecMsgs == NULL)
+  if (mp_SimStatus == NULL || mp_SimLogger == NULL)
     throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_RaiseWarning()","Simulation status or execution messages not set");
 
   if (mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::INITIALIZERUN ||
       mp_SimStatus->getCurrentStage() == openfluid::base::SimulationStatus::RUNSTEP)
-    mp_ExecMsgs->addWarning(Sender,Source,mp_SimStatus->getCurrentTimeIndex(),Msg);
+    mp_SimLogger->addWarning(Sender,Source,mp_SimStatus->getCurrentTimeIndex(),Msg);
   else
-    mp_ExecMsgs->addWarning(Sender,Source,Msg);
+    mp_SimLogger->addWarning(Sender,Source,Msg);
 }
 
 // =====================================================================

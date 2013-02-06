@@ -64,6 +64,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <tests-config.hpp>
 
 
 // =====================================================================
@@ -190,7 +191,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MII->OriginalPosition = 3;
   MI.appendItem(MII);
 
-  MI.initialize();
+  openfluid::base::SimulationLogger* SimLog = new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
+
+  MI.initialize(SimLog);
 
   SB.getSimulationStatus().setCurrentStage(openfluid::base::SimulationStatus::INITPARAMS);
   MI.call_initParams();
@@ -221,6 +224,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MI.call_finalizeRun();
 
   MI.finalize();
+
+  delete SimLog;
 
 }
 

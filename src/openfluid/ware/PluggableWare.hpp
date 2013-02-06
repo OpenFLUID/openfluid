@@ -60,7 +60,7 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
 #include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
@@ -115,12 +115,12 @@ class DLLEXPORT PluggableWare
 
   protected:
 
-    bool isLinked() { return (mp_WareEnv != NULL && mp_ExecMsgs != NULL); };
+    bool isLinked() { return (mp_WareEnv != NULL && mp_SimLogger != NULL); };
 
     /**
       Pointer to the execution messages repository
      */
-    openfluid::base::ExecutionMessages* mp_ExecMsgs;
+    openfluid::base::SimulationLogger* mp_SimLogger;
 
 
     /**
@@ -175,14 +175,14 @@ class DLLEXPORT PluggableWare
   public:
 
     PluggableWare()
-    : mp_WareEnv(NULL),m_WareID(""),mp_ExecMsgs(NULL)
+    : mp_WareEnv(NULL),m_WareID(""),mp_SimLogger(NULL)
     {};
 
     virtual ~PluggableWare() {};
 
-    void linkToExecutionMessages(openfluid::base::ExecutionMessages* ExecMsgs)
+    void linkToSimulationLogger(openfluid::base::SimulationLogger* SimLogger)
     {
-      mp_ExecMsgs = ExecMsgs;
+      mp_SimLogger = SimLogger;
     };
 
     void linkToRunEnvironment(const openfluid::base::EnvironmentProperties* Env)

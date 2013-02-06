@@ -56,7 +56,6 @@
 #include <openfluid/machine/Factory.hpp>
 
 #include <openfluid/fluidx/DomainDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
@@ -85,7 +84,6 @@ namespace openfluid { namespace machine {
 
 
 void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Descriptor,
-                                        openfluid::base::ExecutionMessages& ExecMsgs,
                                         openfluid::core::CoreRepository& CoreRepos)
 {
 
@@ -179,13 +177,6 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
           TheUnit->getInputData()->setValue(itUnitData->first,itUnitData->second);
         }
       }
-      else
-      {
-        std::string TmpStr;
-        openfluid::tools::ConvertValue(itUnit->first,&TmpStr);
-        ExecMsgs.addWarning("DomainFactory::buildDomainFromDescriptor",(*itIData).getUnitsClass() + " " + TmpStr + " does not exist in input data");
-      }
-
     }
   }
 
@@ -383,7 +374,7 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor&
 void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescriptor& FluidXDesc,
     SimulationBlob& SimBlob)
 {
-  buildDomainFromDescriptor(FluidXDesc.getDomainDescriptor(),SimBlob.getExecutionMessages(),SimBlob.getCoreRepository());
+  buildDomainFromDescriptor(FluidXDesc.getDomainDescriptor(),SimBlob.getCoreRepository());
 
   buildDatastoreFromDescriptor(FluidXDesc.getDatastoreDescriptor(),SimBlob.getDatastore());
 

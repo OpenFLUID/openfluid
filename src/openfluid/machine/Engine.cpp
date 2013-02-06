@@ -70,8 +70,6 @@
 #include <openfluid/machine/ObserversListInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/io/IOListener.hpp>
-#include <openfluid/io/MessagesWriter.hpp>
-#include <openfluid/io/SimReportWriter.hpp>
 #include <openfluid/io/SimProfileWriter.hpp>
 
 
@@ -86,7 +84,7 @@ Engine::Engine(SimulationBlob& SimBlob,
                ModelInstance& MInstance, ObserversListInstance& OLInstance,
                openfluid::machine::MachineListener* MachineListener,
                openfluid::io::IOListener* IOListener)
-       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_ObserversListInstance(OLInstance), mp_MessagesWriter(NULL)
+       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_ObserversListInstance(OLInstance), mp_SimLogger(NULL)
 {
 
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
@@ -100,6 +98,16 @@ Engine::Engine(SimulationBlob& SimBlob,
   mp_SimStatus = &(m_SimulationBlob.getSimulationStatus());
 
   prepareOutputDir();
+
+  mp_SimLogger = new openfluid::base::SimulationLogger(mp_RunEnv->getOutputFullPath(openfluid::config::LOGMSGSFILE));
+
+  mp_SimLogger->addInfo("*** Execution information ********************************************");
+  mp_SimLogger->addInfo("Date: " + boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time()));
+  mp_SimLogger->addInfo("Computer: " + mp_RunEnv->getHostName());
+  mp_SimLogger->addInfo("User: " + mp_RunEnv->getUserID());
+  mp_SimLogger->addInfo("Input directory: " + mp_RunEnv->getInputDir());
+  mp_SimLogger->addInfo("Output directory: " + mp_RunEnv->getOutputDir());
+  mp_SimLogger->addInfo("*** End of execution information *************************************");
 }
 
 // =====================================================================
@@ -107,9 +115,7 @@ Engine::Engine(SimulationBlob& SimBlob,
 
 Engine::~Engine()
 {
-  closeOutputs();
-
-  delete mp_MessagesWriter;
+  if (mp_SimLogger != NULL) delete mp_SimLogger;
 }
 
 
@@ -411,50 +417,6 @@ void Engine::prepareOutputDir()
       openfluid::tools::EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().c_str());
     }
   }
-
-
-  // create empty message file
-
-  std::ofstream OutMsgFile;
-
-  boost::filesystem::path OutMsgFilePath = boost::filesystem::path(mp_RunEnv->getOutputFullPath(openfluid::config::OUTMSGSFILE));
-  OutMsgFile.open(OutMsgFilePath.string().c_str(),std::ios::out);
-  OutMsgFile.close();
-
-}
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-
-void Engine::prepareOutputs()
-{
-  if (mp_MessagesWriter != NULL) mp_MessagesWriter->initializeFile();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Engine::saveOutputs()
-{
-  if (mp_MessagesWriter != NULL) mp_MessagesWriter->saveToFile(m_SimulationBlob.getExecutionMessages(),true);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Engine::saveSimulationInfos()
-{
-  openfluid::io::SimulationReportWriter::saveToFile(mp_RunEnv->getOutputFullPath(openfluid::config::SIMINFOFILE),
-                                                    mp_SimStatus,
-                                                    m_SimulationBlob.getCoreRepository());
 }
 
 
@@ -632,8 +594,8 @@ void Engine::initialize()
 {
   openfluid::base::RuntimeEnvironment::getInstance()->resetSimulationID();
   openfluid::base::RuntimeEnvironment::getInstance()->resetIgnitionDateTime();
-  m_ModelInstance.initialize();
-  m_ObserversListInstance.initialize();
+  m_ModelInstance.initialize(mp_SimLogger);
+  m_ObserversListInstance.initialize(mp_SimLogger);
 }
 
 
@@ -656,9 +618,9 @@ void Engine::initParams()
     mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::ERROR);
     throw;
   }
-  if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::WARNING);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::WARNING);
   else mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::OK);
-  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+  mp_SimLogger->resetWarningFlag();
 
 }
 
@@ -679,7 +641,9 @@ void Engine::prepareData()
     throw;
   }
 
-  mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::OK);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::WARNING);
+  else  mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::OK);
+  mp_SimLogger->resetWarningFlag();
 
 }
 
@@ -733,13 +697,10 @@ void Engine::checkConsistency()
     throw;
   }
 
-  mp_MessagesWriter = new openfluid::io::MessagesWriter(mp_RunEnv->getOutputFullPath(openfluid::config::OUTMSGSFILE));
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::WARNING);
+  else  mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
+  mp_SimLogger->resetWarningFlag();
 
-  if (mp_RunEnv->isWriteResults()) prepareOutputs();
-
-
-
-  mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
 }
 
 
@@ -772,11 +733,9 @@ void Engine::run()
     throw;
   }
 
-  if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::WARNING);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::WARNING);
   else mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::OK);
-
-
-  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+  mp_SimLogger->resetWarningFlag();
 
   // check simulation vars production after init
   checkSimulationVarsProduction(1);
@@ -793,7 +752,7 @@ void Engine::run()
   while (m_ModelInstance.hasTimePointToProcess())
   {
 
-    m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+    mp_SimLogger->resetWarningFlag();
 
     try
     {
@@ -808,14 +767,11 @@ void Engine::run()
       mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
       throw;
     }
-
-    if (mp_RunEnv->isWriteResults()) saveOutputs();
-
   }
 
   mp_MachineListener->onAfterRunSteps();
 
-  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+  mp_SimLogger->resetWarningFlag();
 
 
   // ============= finalizeRun() =============
@@ -835,17 +791,12 @@ void Engine::run()
   }
 
 
-  if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::WARNING);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::WARNING);
   else mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::OK);
-
-
-  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+  mp_SimLogger->resetWarningFlag();
 
   // check simulation vars production after finalize
   //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
-
-  // final save
-  closeOutputs();
 
   mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::POST);
 }
@@ -867,21 +818,7 @@ void Engine::finalize()
 
 void Engine::saveReports()
 {
-  m_SimulationBlob.getExecutionMessages().resetWarningFlag();
-  saveSimulationInfos();
   saveSimulationProfile();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Engine::closeOutputs()
-{
-  //if (mp_OutputsWriter != NULL) mp_OutputsWriter->closeFiles();
-  if (mp_MessagesWriter != NULL) mp_MessagesWriter->closeFile(m_SimulationBlob.getExecutionMessages(),true);
-
 }
 
 

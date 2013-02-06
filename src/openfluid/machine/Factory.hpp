@@ -93,7 +93,6 @@ class DLLEXPORT Factory
   public:
 
     static void buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Descriptor,
-                                          openfluid::base::ExecutionMessages& ExecMsgs,
                                           openfluid::core::CoreRepository& CoreRepos);
 
     static void buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescriptor& Descriptor,

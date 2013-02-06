@@ -58,9 +58,7 @@
 
 
 #include <openfluid/io/IOListener.hpp>
-#include <openfluid/io/MessagesWriter.hpp>
 #include <openfluid/io/SimProfileWriter.hpp>
-#include <openfluid/io/SimReportWriter.hpp>
 
 
 #endif /* __IO_HPP___ */

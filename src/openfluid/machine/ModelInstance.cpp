@@ -89,9 +89,9 @@ namespace openfluid { namespace machine {
         boost::posix_time::ptime _M_TimeProfileStart = boost::posix_time::microsec_clock::universal_time(); \
         _M_CurrentFunction->Body->calledmethod; \
         openfluid::base::SimulationProfiler::getInstance()->addDuration(_M_CurrentFunction->Signature->ID,timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length()); \
-        if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
+        if (mp_SimLogger->isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
         else  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentFunction->Signature->ID); \
-        m_SimulationBlob.getExecutionMessages().resetWarningFlag(); \
+        mp_SimLogger->resetWarningFlag(); \
       } \
       _M_FuncIter++; \
     } \
@@ -294,8 +294,11 @@ void ModelInstance::clear()
 // =====================================================================
 
 
-void ModelInstance::initialize()
+void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 {
+  mp_SimLogger = SimLogger;
+
+
   openfluid::machine::FunctionPluginsManager* FPlugsMgr = openfluid::machine::FunctionPluginsManager::getInstance();
 
   std::list<ModelItemInstance*>::const_iterator FuncIter;
@@ -329,7 +332,7 @@ void ModelInstance::initialize()
                                                                               CurrentFunction->GeneratorInfo->VariableSize);
     }
 
-    CurrentFunction->Body->linkToExecutionMessages(&(m_SimulationBlob.getExecutionMessages()));
+    CurrentFunction->Body->linkToSimulationLogger(mp_SimLogger);
     CurrentFunction->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
     CurrentFunction->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
     CurrentFunction->Body->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
@@ -456,10 +459,10 @@ void ModelInstance::call_initializeRun()
                                                                                                      boost::posix_time::microsec_clock::universal_time()).
                                                                       length());
 
-      if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunctionInitializeRunDone(openfluid::machine::MachineListener::WARNING,CurrentFunction->Signature->ID);
+      if (mp_SimLogger->isWarningFlag())  mp_Listener->onFunctionInitializeRunDone(openfluid::machine::MachineListener::WARNING,CurrentFunction->Signature->ID);
       else  mp_Listener->onFunctionInitializeRunDone(openfluid::machine::MachineListener::OK,CurrentFunction->Signature->ID);
 
-      m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+      mp_SimLogger->resetWarningFlag();
 
       if (Duration == 0)  // Again(), iteration
       {
@@ -514,10 +517,10 @@ void ModelInstance::processNextTimePoint()
                                                                     openfluid::base::SimulationProfiler::RUNSTEP,
                                                                     boost::posix_time::time_period(TimeProfileStart,
                                                                                                    boost::posix_time::microsec_clock::universal_time()).length());
-    if (m_SimulationBlob.getExecutionMessages().isWarningFlag())
+    if (mp_SimLogger->isWarningFlag())
       mp_Listener->onFunctionRunStepDone(openfluid::machine::MachineListener::WARNING,NextItem->Signature->ID);
     else  mp_Listener->onFunctionRunStepDone(openfluid::machine::MachineListener::OK,NextItem->Signature->ID);
-    m_SimulationBlob.getExecutionMessages().resetWarningFlag();
+    mp_SimLogger->resetWarningFlag();
 
 
     if (Duration == 0)  // Again(), iteration
@@ -536,7 +539,7 @@ void ModelInstance::processNextTimePoint()
     }
   }
 
-  if (m_SimulationBlob.getExecutionMessages().isWarningFlag()) mp_Listener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
+  if (mp_SimLogger->isWarningFlag()) mp_Listener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
       mp_Listener->onRunStepDone(openfluid::machine::MachineListener::OK);
 
   m_TimePointList.pop_front();

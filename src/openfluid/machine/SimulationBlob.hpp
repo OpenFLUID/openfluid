@@ -59,7 +59,6 @@
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 
@@ -74,8 +73,6 @@ class DLLEXPORT SimulationBlob
     openfluid::fluidx::RunDescriptor m_RunDescriptor;
 
     openfluid::base::OutputDescriptor m_OutputDescriptor;
-
-    openfluid::base::ExecutionMessages m_ExecMessages;
 
     openfluid::core::Datastore m_Datastore;
 
@@ -93,8 +90,6 @@ class DLLEXPORT SimulationBlob
 
     inline openfluid::base::OutputDescriptor& getOutputDescriptor() {return  m_OutputDescriptor; };
 
-    inline openfluid::base::ExecutionMessages& getExecutionMessages() {return  m_ExecMessages; };
-
     inline openfluid::base::SimulationStatus& getSimulationStatus() {return  m_Status; };
 
     // TODO check why not inline
@@ -105,8 +100,6 @@ class DLLEXPORT SimulationBlob
     inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const {return  m_RunDescriptor; };
 
     inline const openfluid::base::OutputDescriptor& getOutputDescriptor() const {return  m_OutputDescriptor; };
-
-    inline const openfluid::base::ExecutionMessages& getExecutionMessages() const {return  m_ExecMessages; };
 
     inline const openfluid::base::SimulationStatus& getSimulationStatus() const {return  m_Status; };
     // TODO check why not inline

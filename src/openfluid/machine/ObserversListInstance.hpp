@@ -58,6 +58,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
 
 #include <list>
 
@@ -87,7 +88,7 @@ class DLLEXPORT ObserversListInstance
 
     const std::list<ObserverInstance*>& getObservers() const { return m_Observers; };
 
-    void initialize();
+    void initialize(openfluid::base::SimulationLogger* mp_SimLogger);
 
     void finalize();
 

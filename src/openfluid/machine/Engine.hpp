@@ -59,6 +59,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
 
 namespace openfluid {
 namespace base {
@@ -71,7 +72,6 @@ class DateTime;
 }
 namespace io {
 class IOListener;
-class MessagesWriter;
 }
 }
 
@@ -128,7 +128,7 @@ class DLLEXPORT Engine
 
      ObserversListInstance& m_ObserversListInstance;
 
-     openfluid::io::MessagesWriter* mp_MessagesWriter;
+     openfluid::base::SimulationLogger* mp_SimLogger;
 
 
 
@@ -156,14 +156,6 @@ class DLLEXPORT Engine
                                  std::string FunctionName);
 
      void prepareOutputDir();
-
-     void initOutputs();
-
-     void prepareOutputs();
-
-     void saveOutputs();
-
-     void saveSimulationInfos();
 
      void saveSimulationProfile();
 
@@ -199,8 +191,6 @@ class DLLEXPORT Engine
 
     void saveReports();
 
-    void closeOutputs();
-
     const openfluid::base::SimulationStatus* getSimulationStatus() { return mp_SimStatus; };
 
     SimulationBlob*  getSimulationBlob() { return &m_SimulationBlob; };
@@ -211,7 +201,7 @@ class DLLEXPORT Engine
 
     ModelInstance* getModelInstance() { return &m_ModelInstance; };
 
-
+    unsigned int getWarningsCount() const { return mp_SimLogger->getWarningsCount(); };
 };
 
 

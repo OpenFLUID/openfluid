@@ -47,51 +47,69 @@
 
 
 /**
-  @file
+  \file SimulationLogger_TEST.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
-#ifndef __MESSAGE_HPP__
-#define __MESSAGE_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core/TypeDefs.hpp>
-
-
-
-namespace openfluid { namespace base {
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_simlogger
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
+#include <tests-config.hpp>
 
 
-class DLLEXPORT Message
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_construction)
 {
-  private:
+  openfluid::base::SimulationLogger SimLog(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog1.log");
 
-    std::string m_Sender;
+  BOOST_REQUIRE_EQUAL(SimLog.getWarningsCount(),0);
+  BOOST_REQUIRE_EQUAL(SimLog.isWarningFlag(),false);
 
-    std::string m_Source;
+  SimLog.addInfo("Hello World!");
 
-    std::string m_Content;
+}
 
-    bool m_IsTimeStep;
+// =====================================================================
+// =====================================================================
 
-    openfluid::core::TimeStep_t m_TimeStep;
+BOOST_AUTO_TEST_CASE(check_operations)
+{
+  openfluid::base::SimulationLogger* SimLog = new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
 
+  SimLog->addWarning("Sender",1,"Warning message #1");
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
+  SimLog->resetWarningFlag();
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);
 
+  SimLog->addWarning("Sender","Warning message #2");
+  SimLog->addWarning("Sender",std::string("Source"),1,"Warning message #3");
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
+  SimLog->resetWarningFlag();
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
 
+  SimLog->addWarning("Sender","Source","Warning message #4");
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),4);
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
 
-  public:
+  SimLog->addMessage("Sender","Message #1");
 
-    Message(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Content);
+  SimLog->addInfo("Info #1");
 
-    Message(std::string Sender, std::string Source, std::string Content);
+  delete SimLog;
 
-    std::string getAsFormattedString();
-
-};
-
-} }
-
-
-#endif /* __MESSAGE_HPP__ */
+}

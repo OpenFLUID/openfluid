@@ -67,7 +67,7 @@ namespace openfluid { namespace ware {
 
 void PluggableWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Msg)
 {
-  mp_ExecMsgs->addWarning(Sender,Msg);
+  mp_SimLogger->addWarning(Sender,Msg);
 }
 
 
@@ -77,7 +77,7 @@ void PluggableWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Msg)
 
 void PluggableWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg)
 {
-  mp_ExecMsgs->addWarning(Sender,Source, Msg);
+  mp_SimLogger->addWarning(Sender,Source, Msg);
 }
 
 

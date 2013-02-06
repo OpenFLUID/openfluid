@@ -66,7 +66,6 @@
 namespace openfluid {
 namespace base {
 class RuntimeEnvironment;
-class ExecutionMessages;
 class OutputDescriptor;
 }
 namespace core {

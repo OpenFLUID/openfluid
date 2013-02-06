@@ -92,16 +92,13 @@ const std::string OBSERVERS_PLUGINS_SUBDIR = "@OPENFLUID_OBSPLUGSDIR@";
 const std::string OBSERVERS_PLUGINS_STDDIR = "lib/@OPENFLUID_MAIN_NAME@/@OPENFLUID_OBSPLUGSDIR@";
 
 
-const std::string SIMINFOFILE = "siminfo.out";
-const std::string OUTMSGSFILE = "messages.out";
+// log files
+const std::string SIMINFOFILE = "openfluid-siminfo.log";
+const std::string LOGMSGSFILE = "openfluid-messages.log";
 const unsigned int DEFAULT_OUTFILES_BUFFER_KB = 2;
 
-const std::string PROFILEFILE = "profile.dat";
-const std::string PROFILESTEPSFILE = "profile_steps.dat";
-
-
-// Default file extensions
-const std::string OUTFILES_EXT = "out";
+const std::string PROFILEFILE = "openfluid-profile.log";
+const std::string PROFILESTEPSFILE = "openfluid-profile-steps.log";
 
 
 // Market

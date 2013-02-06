@@ -48,30 +48,25 @@
 
 /**
   @file
-  @brief Implements ...
+  @brief implements of ...
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#include <openfluid/io/MessagesWriter.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
 
-#include <openfluid/base/ExecMsgs.hpp>
-
-
-namespace openfluid { namespace io {
-
+namespace openfluid { namespace base {
 
 
 // =====================================================================
 // =====================================================================
 
 
-MessagesWriter::MessagesWriter(std::string FilePath):
-  m_OutFilename(FilePath)
+SimulationLogger::SimulationLogger(const std::string& LogFilePath):
+  m_WarningFlag(false), m_RealWarningsCount(0)
 {
-  mp_Buffer = new char[m_BufferSize];
-  m_OutFile.rdbuf()->pubsetbuf(mp_Buffer,m_BufferSize);
+  m_LogFile.open(LogFilePath.c_str(),std::ios::out);
 }
 
 
@@ -79,9 +74,9 @@ MessagesWriter::MessagesWriter(std::string FilePath):
 // =====================================================================
 
 
-MessagesWriter::~MessagesWriter()
+SimulationLogger::~SimulationLogger()
 {
-  delete [] mp_Buffer;
+  m_LogFile.close();
 }
 
 
@@ -89,37 +84,11 @@ MessagesWriter::~MessagesWriter()
 // =====================================================================
 
 
-void MessagesWriter::initializeFile()
+void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
+                                  const std::string& Source, const openfluid::core::TimeIndex_t& TimeIndex,
+                                  const std::string& Msg)
 {
-  m_OutFile.open(m_OutFilename.c_str(),std::ios::out);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void MessagesWriter::saveToFile(openfluid::base::ExecutionMessages& ExecMsgs, bool WithFlush)
-{
-  unsigned int WarningCount = ExecMsgs.getWarningMsgs().size();
-
-  if (WarningCount > 0)
-  {
-    std::vector<openfluid::base::Message> WMessages = ExecMsgs.getWarningMsgs();
-
-    for (unsigned int i=0; i<WarningCount;i++)
-    {
-      // TODO try to remove the following hack
-      // hack for mingw32
-#ifdef __MINGW32__
-      m_OutFile << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << "\n";
-#else
-      m_OutFile << ("WARNING: ") << WMessages.at(i).getAsFormattedString() << "\n";
-#endif
-
-    }
-  }
-
-  if (WithFlush) ExecMsgs.doMemRelease();
+  m_LogFile << Prefix << ' ' << Msg << " (sent by " << Sender << ", from " << Source << ", at time index " << TimeIndex << ")\n";
 }
 
 
@@ -127,13 +96,48 @@ void MessagesWriter::saveToFile(openfluid::base::ExecutionMessages& ExecMsgs, bo
 // =====================================================================
 
 
-void MessagesWriter::closeFile(openfluid::base::ExecutionMessages& ExecMsgs, bool WithFlush)
+void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
+                                  const openfluid::core::TimeIndex_t& TimeIndex, const std::string& Msg)
 {
-  saveToFile(ExecMsgs, WithFlush);
-  m_OutFile.close();
-
+  m_LogFile << Prefix << ' ' << Msg << " (sent by " << Sender << ", at time index " << TimeIndex << ")\n";
 }
 
-} } //namespaces
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
+                                  const std::string& Source, const std::string& Msg)
+{
+  m_LogFile << Prefix << ' ' << Msg << " (sent by " << Sender << ", from " << Source << ")\n";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationLogger::addLog(const std::string& Prefix, const std::string& Sender,
+                                  const std::string& Msg)
+{
+  m_LogFile << Prefix << ' ' << Msg << " (sent by " << Sender << ")\n";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationLogger::addLog(const std::string& Prefix,
+                               const std::string& Msg)
+{
+  m_LogFile << Prefix << ' ' << Msg << "\n";
+}
+
+
+
+} } // namespace openfluid::base
+
 
 
