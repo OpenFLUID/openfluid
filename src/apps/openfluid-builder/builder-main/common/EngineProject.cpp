@@ -63,7 +63,7 @@
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/guicommon/RunDialogMachineListener.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
@@ -112,7 +112,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   if (m_WithProjectManager)
     openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
 
-  mp_IOListener = new openfluid::io::IOListener();
+  mp_IOListener = new openfluid::base::IOListener();
 
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(mp_IOListener);
 

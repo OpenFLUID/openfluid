@@ -71,7 +71,7 @@ class OutputDescriptor;
 namespace core {
 class Datastore;
 }
-namespace io {
+namespace base {
 class IOListener;
 }
 namespace machine {
@@ -95,7 +95,7 @@ class EngineProject
 
     openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
-    openfluid::io::IOListener* mp_IOListener;
+    openfluid::base::IOListener* mp_IOListener;
 
     sigc::signal<void> m_signal_RunStarted;
 

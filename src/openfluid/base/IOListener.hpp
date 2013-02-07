@@ -50,15 +50,54 @@
   @file
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __IO_HPP___
-#define __IO_HPP___
+#ifndef __IOLISTENER_HPP__
+#define __IOLISTENER_HPP__
+
+#include <string>
+#include <iostream>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/base/Listener.hpp>
+
+namespace openfluid { namespace base {
+
+// =====================================================================
+// =====================================================================
 
 
-#include <openfluid/io/IOListener.hpp>
-#include <openfluid/io/SimProfileWriter.hpp>
+class DLLEXPORT IOListener : public openfluid::base::Listener
+{
+  private:
+
+  public:
+
+    IOListener() {};
+
+    virtual ~IOListener() {};
+
+    virtual void onLoad() {};
+
+    virtual void onLoaded(openfluid::base::Listener::Status /*Status*/) {};
+
+    virtual void onFileLoad(std::string /*Filename*/) {};
+
+    virtual void onFileLoaded(openfluid::base::Listener::Status /*Status*/) {};
+
+    virtual void onWrite() {};
+
+    virtual void onWritten(openfluid::base::Listener::Status /*Status*/) {};
+
+    virtual void onFileWrite(std::string /*Filename*/) {};
+
+    virtual void onFileWritten(openfluid::base::Listener::Status /*Status*/) {};
 
 
-#endif /* __IO_HPP___ */
+};
+
+
+} } //namespaces
+
+#endif /* __IOLISTENER_HPP__ */

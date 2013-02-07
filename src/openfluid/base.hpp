@@ -61,6 +61,7 @@
 #include <openfluid/base/SimulationLogger.hpp>
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/Listener.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/OutputFilesDescriptor.hpp>

@@ -77,7 +77,7 @@ class Datastore;
 namespace machine {
 class ModelInstance;
 }
-namespace io {
+namespace base {
 class IOListener;
 }
 
@@ -107,7 +107,7 @@ class FluidXDescriptor
 
     bool m_ModelDefined;
 
-    openfluid::io::IOListener* mp_Listener;
+    openfluid::base::IOListener* mp_Listener;
 
     std::string m_ModelStrToWrite;
     std::string m_RunStrToWrite;
@@ -178,7 +178,7 @@ class FluidXDescriptor
   public:
 
 
-    FluidXDescriptor(openfluid::io::IOListener* Listener);
+    FluidXDescriptor(openfluid::base::IOListener* Listener);
 
     ~FluidXDescriptor();
 

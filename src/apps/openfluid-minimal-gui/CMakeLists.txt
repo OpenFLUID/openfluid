@@ -30,13 +30,12 @@ TARGET_LINK_LIBRARIES(openfluid-minimal-gui
                       openfluid-buddies
                       openfluid-core
                       openfluid-machine
-                      openfluid-io
                       openfluid-tools
                       openfluid-guicommon)
 
 
 
-#INSTALL(TARGETS openfluid-minimal
+#INSTALL(TARGETS openfluid-minimal-gui
 #        RUNTIME DESTINATION ${BIN_INSTALL_PATH})
 
        

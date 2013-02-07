@@ -53,7 +53,7 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/Init.hpp>
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
     openfluid::machine::Engine* Engine;
     openfluid::machine::SimulationBlob SBlob;
     openfluid::base::RuntimeEnvironment* RunEnv;
-    openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
+    openfluid::base::IOListener* IOListen = new openfluid::base::IOListener();
     openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
     openfluid::machine::ModelInstance Model(SBlob,MachineListen);
     openfluid::machine::ObserversListInstance ObsList(SBlob);

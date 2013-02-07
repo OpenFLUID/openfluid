@@ -36,7 +36,7 @@ MACRO(ADD_BUILDER_UNITTEST TEST_NAME EXE_NAME)
                        ${GTKMM_LIBRARIES}                 
                        openfluid-base openfluid-buddies
                        openfluid-core openfluid-machine
-                       openfluid-io openfluid-tools openfluid-market
+                       openfluid-tools openfluid-market
                        openfluid-builder-main)
                        
   SET_TARGET_PROPERTIES(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
@@ -47,7 +47,7 @@ ENDMACRO(ADD_BUILDER_UNITTEST)
 SET(UNITTEST_LINK_LIBRARIES ${GTKMM_LIBRARIES}                 
                        openfluid-base
                        openfluid-core openfluid-machine
-                       openfluid-io openfluid-tools
+                       openfluid-tools
                        openfluid-builder-main)
 
 DISCOVER_OPENFLUID_UNITTESTS(builder)

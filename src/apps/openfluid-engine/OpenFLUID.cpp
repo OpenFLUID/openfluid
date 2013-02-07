@@ -479,7 +479,7 @@ void OpenFLUIDApp::runSimulation()
   m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
   openfluid::machine::MachineListener* MListener;
-  openfluid::io::IOListener* IOListener = new DefaultIOListener();
+  openfluid::base::IOListener* IOListener = new DefaultIOListener();
 
 
   if (IsQuiet)

@@ -72,7 +72,7 @@ typedef boost::onullstream onullstream_type;
 
 #include <tests-config.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
@@ -88,7 +88,7 @@ typedef boost::onullstream onullstream_type;
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::io::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
 }
 
 // =====================================================================
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 void TestDataset(std::string DatasetPath)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::io::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
 
   boost::onullstream ONullStream;
   FXDesc.loadFromDirectory(DatasetPath);
@@ -643,7 +643,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   HasFailed = false;
   try
   {
-    openfluid::fluidx::FluidXDescriptor(new openfluid::io::IOListener()).loadFromDirectory(
+    openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory(
         boost::filesystem::path(
             CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXReader/pathdoesnotexist").string());
   }
@@ -656,7 +656,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   HasFailed = false;
   try
   {
-    openfluid::fluidx::FluidXDescriptor(new openfluid::io::IOListener()).loadFromDirectory(
+    openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory(
         boost::filesystem::path(
             CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXReader/wrong-nofile").string());
   }
@@ -669,7 +669,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   HasFailed = false;
   try
   {
-    openfluid::fluidx::FluidXDescriptor(new openfluid::io::IOListener()).loadFromDirectory(
+    openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory(
         boost::filesystem::path(
             CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXReader/wrong-twomodels").string());
   }
@@ -682,7 +682,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   HasFailed = false;
   try
   {
-    openfluid::fluidx::FluidXDescriptor(new openfluid::io::IOListener()).loadFromDirectory(
+    openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory(
         boost::filesystem::path(
             CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXReader/wrong-runs").string());
   }
@@ -693,11 +693,11 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
   BOOST_REQUIRE_EQUAL(HasFailed, true);
 
   BOOST_REQUIRE_THROW(
-      openfluid::fluidx::FluidXDescriptor(new openfluid::io::IOListener()).loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+ "/OPENFLUID.IN.FluidXReader/wrong-unknowndatatype").string()),
+      openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+ "/OPENFLUID.IN.FluidXReader/wrong-unknowndatatype").string()),
       openfluid::base::OFException);
 
   BOOST_REQUIRE_THROW(
-      openfluid::fluidx::FluidXDescriptor(new openfluid::io::IOListener()).loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+ "/OPENFLUID.IN.FluidXReader/wrong-missingdataid").string()),
+      openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+ "/OPENFLUID.IN.FluidXReader/wrong-missingdataid").string()),
       openfluid::base::OFException);
 
 }
@@ -707,7 +707,7 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
 
 BOOST_AUTO_TEST_CASE(check_reading_observers)
 {
-  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::io::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
 
   FXDesc.loadFromDirectory(
       boost::filesystem::path(
@@ -894,7 +894,7 @@ BOOST_AUTO_TEST_CASE(check_write_operations)
 
 
   openfluid::base::RuntimeEnvironment* RunEnv;
-  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::io::IOListener());
+  openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::ModelInstance MInstance(SBlob,NULL);
 
