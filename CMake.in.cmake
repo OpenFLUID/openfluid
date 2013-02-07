@@ -188,7 +188,7 @@ SET(BUILD_APP_MINIMALGUI 0)
 
 ################### logfiles ###################
 
-SET(OPENFLUID_MESSAGES_LOG_FILE = "openfluid-messages.log")
+SET(OPENFLUID_MESSAGES_LOG_FILE "openfluid-messages.log")
 
 SET(OPENFLUID_CUMULATIVE_PROFILE_FILE "openfluid-profile-cumulative.log")
 SET(OPENFLUID_SCHEDULE_PROFILE_FILE "openfluid-profile-schedule.log")
