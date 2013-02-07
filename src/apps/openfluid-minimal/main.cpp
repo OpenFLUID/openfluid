@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc.getObserversListDescriptor(),
                                                                   ObsList);
 
-    Engine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen, IOListen);
+    Engine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen);
 
     Engine->initialize();
 
@@ -122,7 +122,6 @@ int main(int argc, char **argv)
     Engine->prepareData();
     Engine->checkConsistency();
     Engine->run();
-    Engine->saveReports();
 
     Engine->finalize();
 

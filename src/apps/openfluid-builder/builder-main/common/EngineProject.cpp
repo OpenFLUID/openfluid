@@ -418,9 +418,7 @@ void EngineProject::run()
   openfluid::machine::ObserversListInstance ObsListInstance(*SimBlob);
 
   openfluid::machine::Engine Engine(*SimBlob, *ModelInstance, ObsListInstance,
-                                    Listener, mp_IOListener);
-
-  openfluid::base::SimulationProfiler::getInstance()->reset();
+                                    Listener);
 
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc,
                                                                   *SimBlob);
@@ -431,7 +429,7 @@ void EngineProject::run()
   openfluid::machine::Factory::buildObserversListFromDescriptor(
       mp_FXDesc->getObserversListDescriptor(), ObsListInstance);
 
-  // no more used
+  // no more used, TODO to clean
 //  mp_SimBlob->clearSimulationGarbage();
 
   openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(

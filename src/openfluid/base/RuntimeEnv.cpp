@@ -58,11 +58,8 @@
 #include <boost/filesystem/operations.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
-//#include <openfluid/config.hpp>
-//
-//#include <iostream>
-//#include <boost/filesystem/path.hpp>
-//
+#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/config.hpp>
 
 #if defined __unix__ || defined __APPLE__
 #include <unistd.h>
@@ -74,7 +71,7 @@ namespace base {
 RuntimeEnvironment* RuntimeEnvironment::mp_Singleton = NULL;
 
 RuntimeEnvironment::RuntimeEnvironment() :
-  m_IsLinkedToProject(false)
+    m_Profiling(false), m_IsLinkedToProject(false)
 {
   std::string UserID = "";
 

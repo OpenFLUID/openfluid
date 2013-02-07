@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+
+       <function fileID="tests.coupling.A" />       
+       <function fileID="tests.coupling.B" />       
+       <function fileID="tests.coupling.C" />       
+    
+  </model>
+</openfluid>

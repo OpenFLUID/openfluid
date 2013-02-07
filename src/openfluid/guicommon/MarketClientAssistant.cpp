@@ -73,6 +73,7 @@
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/guicommon/MarketPackWidget.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace guicommon {

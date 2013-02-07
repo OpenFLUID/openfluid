@@ -69,8 +69,6 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserversListInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/io/IOListener.hpp>
-#include <openfluid/io/SimProfileWriter.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -82,8 +80,7 @@ namespace openfluid { namespace machine {
 
 Engine::Engine(SimulationBlob& SimBlob,
                ModelInstance& MInstance, ObserversListInstance& OLInstance,
-               openfluid::machine::MachineListener* MachineListener,
-               openfluid::io::IOListener* IOListener)
+               openfluid::machine::MachineListener* MachineListener)
        : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_ObserversListInstance(OLInstance), mp_SimLogger(NULL)
 {
 
@@ -92,14 +89,11 @@ Engine::Engine(SimulationBlob& SimBlob,
   mp_MachineListener = MachineListener;
   if (mp_MachineListener == NULL) mp_MachineListener = new openfluid::machine::MachineListener();
 
-  mp_IOListener = IOListener;
-  if (mp_IOListener == NULL) mp_IOListener = new openfluid::io::IOListener();
-
   mp_SimStatus = &(m_SimulationBlob.getSimulationStatus());
 
   prepareOutputDir();
 
-  mp_SimLogger = new openfluid::base::SimulationLogger(mp_RunEnv->getOutputFullPath(openfluid::config::LOGMSGSFILE));
+  mp_SimLogger = new openfluid::base::SimulationLogger(mp_RunEnv->getOutputFullPath(openfluid::config::MESSAGES_LOG_FILE));
 
   mp_SimLogger->addInfo("*** Execution information ********************************************");
   mp_SimLogger->addInfo("Date: " + boost::posix_time::to_simple_string(boost::posix_time::microsec_clock::local_time()));
@@ -417,16 +411,6 @@ void Engine::prepareOutputDir()
       openfluid::tools::EmptyDirectoryRecursively(mp_RunEnv->getOutputDir().c_str());
     }
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Engine::saveSimulationProfile()
-{
-  openfluid::io::SimulationProfileWriter::saveToFiles(mp_RunEnv->getOutputDir());
 }
 
 
@@ -809,16 +793,6 @@ void Engine::run()
 void Engine::finalize()
 {
   m_ModelInstance.finalize();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Engine::saveReports()
-{
-  saveSimulationProfile();
 }
 
 

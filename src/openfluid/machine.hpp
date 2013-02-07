@@ -71,6 +71,8 @@
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
+#include <openfluid/machine/SimulationProfiler.hpp>
+
 
 
 

@@ -524,7 +524,7 @@ void OpenFLUIDApp::runSimulation()
                                                                 ObsList);
   std::cout << "[OK]" << std::endl; std::cout.flush();
 
-  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, ObsList, MListener,IOListener);
+  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, ObsList, MListener);
 
   mp_Engine->initialize();
 

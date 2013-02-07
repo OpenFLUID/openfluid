@@ -58,17 +58,15 @@
 
 
 #include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/ExecMsgs.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/Listener.hpp>
-#include <openfluid/base/Message.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/base/OutputFilesDescriptor.hpp>
 #include <openfluid/base/OutputSetDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/SimulationProfiler.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
 

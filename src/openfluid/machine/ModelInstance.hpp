@@ -62,6 +62,8 @@
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/machine/ExecutionTimePoint.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
+#include <openfluid/machine/SimulationProfiler.hpp>
+
 
 
 namespace openfluid { namespace ware {
@@ -87,6 +89,8 @@ class DLLEXPORT ModelInstance
     openfluid::machine::MachineListener* mp_Listener;
 
     openfluid::base::SimulationLogger* mp_SimLogger;
+
+    openfluid::machine::SimulationProfiler* mp_SimProfiler;
 
     openfluid::machine::SimulationBlob& m_SimulationBlob;
 

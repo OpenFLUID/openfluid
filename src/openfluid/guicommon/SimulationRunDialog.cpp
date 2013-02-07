@@ -242,8 +242,6 @@ void SimulationRunDialog::runSimulation()
 
     signal_SimulationStopped().emit();
 
-    mp_Engine->saveReports();
-
     m_SimulationCompleted = true;
 
   }

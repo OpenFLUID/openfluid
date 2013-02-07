@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),
         Model);
 
-    SimEngine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen, IOListen);
+    SimEngine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen);
 
   }
   catch (openfluid::base::OFException& E)

@@ -186,6 +186,15 @@ SET(BUILD_APP_MINIMALGUI 0)
 #SET(BUILD_DOCFORDEV 1)
 
 
+################### logfiles ###################
+
+SET(OPENFLUID_MESSAGES_LOG_FILE = "openfluid-messages.log")
+
+SET(OPENFLUID_CUMULATIVE_PROFILE_FILE "openfluid-profile-cumulative.log")
+SET(OPENFLUID_SCHEDULE_PROFILE_FILE "openfluid-profile-schedule.log")
+SET(OPENFLUID_TIMEINDEX_PROFILE_FILE "openfluid-profile-timeindex.log")
+
+
 ################### market ###################
 
 SET(OPENFLUID_MARKETBAGDIR "market-bag")

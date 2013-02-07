@@ -70,7 +70,6 @@
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
-#include <openfluid/io/IOListener.hpp>
 
 
 class EmptyFunction : public openfluid::ware::PluggableFunction
@@ -126,20 +125,17 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
-  openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
   openfluid::machine::ObserversListInstance ObsList(SBlob);
 
 
-  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen,IOListen);
+  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen);
 
   BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1[toto]","UA","",""),openfluid::base::OFException);
   BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1(double)","UA","",""),openfluid::base::OFException);
   BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1[double","UA","",""),openfluid::base::OFException);
 
   delete MachineListen;
-  delete IOListen;
-
 }
 
 // =====================================================================
@@ -151,7 +147,6 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
-  openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
   openfluid::machine::ObserversListInstance ObsList(SBlob);
 
@@ -159,7 +154,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1,openfluid::core::Unit::UNKNOWN));
   SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1,openfluid::core::Unit::UNKNOWN));
 
-  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen,IOListen);
+  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen);
 
   openfluid::machine::Engine::PretestInfos_t PInfos;
 
@@ -306,8 +301,6 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
 
   delete MachineListen;
-  delete IOListen;
-
 }
 
 // =====================================================================
@@ -319,7 +312,6 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
-  openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
   openfluid::machine::ObserversListInstance ObsList(SBlob);
 
@@ -327,7 +319,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1,openfluid::core::Unit::UNKNOWN));
   SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1,openfluid::core::Unit::UNKNOWN));
 
-  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen,IOListen);
+  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen);
 
   openfluid::machine::Engine::PretestInfos_t PInfos;
 
@@ -474,8 +466,6 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
 
   delete MachineListen;
-  delete IOListen;
-
 }
 
 // =====================================================================

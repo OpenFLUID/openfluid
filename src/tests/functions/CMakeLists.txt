@@ -8,7 +8,9 @@ INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 
 LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
-
+ADD_FUNCTION(tests.coupling.A tests.coupling.A ${TEST_OUTPUT_PATH})
+ADD_FUNCTION(tests.coupling.B tests.coupling.B ${TEST_OUTPUT_PATH})
+ADD_FUNCTION(tests.coupling.C tests.coupling.C ${TEST_OUTPUT_PATH})
 
 IF(BUILD_FORTRAN_FUNCTIONS)
   ENABLE_LANGUAGE(Fortran)

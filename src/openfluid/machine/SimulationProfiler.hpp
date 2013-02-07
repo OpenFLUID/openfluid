@@ -47,69 +47,85 @@
 
 
 /**
-  \file SimulationProfiler.cpp
-  \brief Implements ...
+  \file SimulationProfiler.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/base/SimulationProfiler.hpp>
+#ifndef __SIMULATIONPROFILER_HPP___
+#define __SIMULATIONPROFILER_HPP___
+
+#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
+#include <openfluid/dllexport.hpp>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+#include <map>
+#include <list>
 
 
-namespace openfluid { namespace base {
-
-
-SimulationProfiler* SimulationProfiler::mp_Singleton = NULL;
+namespace openfluid { namespace machine {
 
 
 // =====================================================================
 // =====================================================================
 
 
-SimulationProfiler::SimulationProfiler()
-: m_IsProfilingEnabled(false)
+
+class DLLEXPORT SimulationProfiler
 {
+  public:
 
-}
+    typedef std::list<openfluid::ware::WareID_t> WareIDSequence_t;
 
-// =====================================================================
-// =====================================================================
+  private:
+
+    typedef std::map<openfluid::base::SimulationStatus::SimulationStage,boost::posix_time::time_duration> CumulativeFunctionProfile_t;
+
+    typedef std::map<openfluid::ware::WareID_t,CumulativeFunctionProfile_t> CumulativeModelProfile_t;
+
+    typedef std::map<openfluid::ware::WareID_t,boost::posix_time::time_duration> CurrentTimeIndexModelProfile_t;
+
+    typedef WareIDSequence_t CurrentTimeIndexModelSequence_t;
+
+    CumulativeModelProfile_t m_CumulativeModelProfile;
+
+    CurrentTimeIndexModelProfile_t m_CurrentTimeIndexModelProfile;
+    CurrentTimeIndexModelSequence_t m_CurrentTimeIndexModelSequence;
 
 
-SimulationProfiler* SimulationProfiler::getInstance()
-{
-  if (mp_Singleton == NULL)
-    mp_Singleton = new SimulationProfiler();
-  return mp_Singleton;
-}
+    const openfluid::base::SimulationStatus* mp_SimStatus;
 
+    const WareIDSequence_t m_OriginalModelSequence;
 
-// =====================================================================
-// =====================================================================
+    openfluid::core::TimeIndex_t m_CurrentTimeIndex;
 
+    std::ofstream m_CurrentSequenceFile;
 
-void SimulationProfiler::addDuration(const openfluid::ware::WareID_t& FuncID,
-                                     TimeProfilePart ProfilePart,
-                                     const boost::posix_time::time_duration& Duration)
-{
-  if (!m_IsProfilingEnabled) return;
+    std::ofstream m_CurrentProfileFile;
 
-  if (m_ModelTimeProfile.find(FuncID) == m_ModelTimeProfile.end())
-  {
-    m_ModelTimeProfile[FuncID][INITPARAMS] = boost::posix_time::time_duration(0,0,0,0);
-    m_ModelTimeProfile[FuncID][PREPAREDATA] = boost::posix_time::time_duration(0,0,0,0);
-    m_ModelTimeProfile[FuncID][CHECKCONSISTENCY] = boost::posix_time::time_duration(0,0,0,0);
-    m_ModelTimeProfile[FuncID][INITIALIZERUN] = boost::posix_time::time_duration(0,0,0,0);
-    m_ModelTimeProfile[FuncID][RUNSTEP] = boost::posix_time::time_duration(0,0,0,0);
-    m_ModelTimeProfile[FuncID][FINALIZERUN] = boost::posix_time::time_duration(0,0,0,0);
-  }
+    static double getDurationInDecimalSeconds(const boost::posix_time::time_duration& Duration);
 
-  m_ModelTimeProfile[FuncID][ProfilePart] = m_ModelTimeProfile[FuncID][ProfilePart] + Duration;
+    void flushCurrentProfileToFiles();
 
-  if (ProfilePart == RUNSTEP) m_RunStepTimeProfile[FuncID].push_back(Duration);
+  public:
 
-}
+    SimulationProfiler(const openfluid::base::SimulationStatus* SimStatus, const WareIDSequence_t& OrigModelSequence);
+
+    ~SimulationProfiler();
+
+    void addDuration(const openfluid::ware::WareID_t& FuncID,
+                     openfluid::base::SimulationStatus::SimulationStage ProfilePart,
+                     const boost::posix_time::time_duration& Duration);
+
+};
+
 
 
 } } //namespaces
+
+
+#endif /* __SIMULATIONPROFILER_HPP___ */
