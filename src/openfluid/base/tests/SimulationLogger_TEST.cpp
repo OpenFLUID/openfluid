@@ -47,53 +47,69 @@
 
 
 /**
-  @file
-  @brief implements of ...
+  \file SimulationLogger_TEST.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
-
-#include <openfluid/base/ExecMsgs.hpp>
-
-namespace openfluid { namespace base {
-
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_simlogger
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
+#include <tests-config.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-ExecutionMessages::ExecutionMessages():
-  m_WarningFlag(false), m_ErrorFlag(false), m_ErrorMsg(""),m_RealWarningsCount(0)
+BOOST_AUTO_TEST_CASE(check_construction)
 {
-  m_WarningMsgs.clear();
+  openfluid::base::SimulationLogger SimLog(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog1.log");
+
+  BOOST_REQUIRE_EQUAL(SimLog.getWarningsCount(),0);
+  BOOST_REQUIRE_EQUAL(SimLog.isWarningFlag(),false);
+
+  SimLog.addInfo("Hello World!");
+
 }
 
 // =====================================================================
 // =====================================================================
 
-ExecutionMessages::~ExecutionMessages()
+BOOST_AUTO_TEST_CASE(check_operations)
 {
+  openfluid::base::SimulationLogger* SimLog = new openfluid::base::SimulationLogger(CONFIGTESTS_OUTPUT_DATA_DIR+"/checksimlog2.log");
+
+  SimLog->addWarning("Sender",1,"Warning message #1");
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
+  SimLog->resetWarningFlag();
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),1);
+
+  SimLog->addWarning("Sender","Warning message #2");
+  SimLog->addWarning("Sender",std::string("Source"),1,"Warning message #3");
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
+  SimLog->resetWarningFlag();
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),3);
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),false);
+
+  SimLog->addWarning("Sender","Source","Warning message #4");
+  BOOST_REQUIRE_EQUAL(SimLog->getWarningsCount(),4);
+  BOOST_REQUIRE_EQUAL(SimLog->isWarningFlag(),true);
+
+  SimLog->addMessage("Sender","Message #1");
+
+  SimLog->addInfo("Info #1");
+
+  delete SimLog;
 
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ExecutionMessages::addWarning(Message Msg)
-{
-  m_WarningFlag = true;
-
-  m_WarningMsgs.push_back(Msg);
-
-  m_RealWarningsCount++;
-}
-
-
-} } // namespace openfluid::base
-
-
-

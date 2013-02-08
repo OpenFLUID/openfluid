@@ -71,8 +71,6 @@ void Init()
 
   if(!Glib::thread_supported()) Glib::thread_init();
 
-  SimulationProfiler::getInstance();
-
   RuntimeEnvironment::getInstance();
 
 

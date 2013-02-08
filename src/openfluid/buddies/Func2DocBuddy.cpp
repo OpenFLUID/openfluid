@@ -57,6 +57,7 @@
 #include <openfluid/buddies/Func2DocBuddy.hpp>
 
 #include <iosfwd>
+#include <fstream>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
@@ -68,6 +69,7 @@
 #include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace buddies {

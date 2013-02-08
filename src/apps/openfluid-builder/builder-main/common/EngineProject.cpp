@@ -63,7 +63,7 @@
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/guicommon/RunDialogMachineListener.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
@@ -112,7 +112,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   if (m_WithProjectManager)
     openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
 
-  mp_IOListener = new openfluid::io::IOListener();
+  mp_IOListener = new openfluid::base::IOListener();
 
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(mp_IOListener);
 
@@ -418,9 +418,7 @@ void EngineProject::run()
   openfluid::machine::ObserversListInstance ObsListInstance(*SimBlob);
 
   openfluid::machine::Engine Engine(*SimBlob, *ModelInstance, ObsListInstance,
-                                    Listener, mp_IOListener);
-
-  openfluid::base::SimulationProfiler::getInstance()->reset();
+                                    Listener);
 
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc,
                                                                   *SimBlob);
@@ -431,7 +429,7 @@ void EngineProject::run()
   openfluid::machine::Factory::buildObserversListFromDescriptor(
       mp_FXDesc->getObserversListDescriptor(), ObsListInstance);
 
-  // no more used
+  // no more used, TODO to clean
 //  mp_SimBlob->clearSimulationGarbage();
 
   openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(

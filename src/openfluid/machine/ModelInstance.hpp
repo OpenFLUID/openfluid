@@ -61,6 +61,9 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/machine/ExecutionTimePoint.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
+#include <openfluid/machine/SimulationProfiler.hpp>
+
 
 
 namespace openfluid { namespace ware {
@@ -84,6 +87,10 @@ class DLLEXPORT ModelInstance
     std::list<ModelItemInstance*> m_ModelItems;
 
     openfluid::machine::MachineListener* mp_Listener;
+
+    openfluid::base::SimulationLogger* mp_SimLogger;
+
+    openfluid::machine::SimulationProfiler* mp_SimProfiler;
 
     openfluid::machine::SimulationBlob& m_SimulationBlob;
 
@@ -133,7 +140,7 @@ class DLLEXPORT ModelInstance
 
     const std::list<ModelItemInstance*>& getItems() const { return m_ModelItems; };
 
-    void initialize();
+    void initialize(openfluid::base::SimulationLogger* SimLogger);
 
     void finalize();
 

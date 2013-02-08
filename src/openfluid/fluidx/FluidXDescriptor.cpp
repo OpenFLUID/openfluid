@@ -63,7 +63,7 @@
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
@@ -88,12 +88,12 @@ namespace fluidx {
 // =====================================================================
 // =====================================================================
 
-FluidXDescriptor::FluidXDescriptor(openfluid::io::IOListener* Listener) :
+FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
     mp_Listener(Listener),  m_InstType(openfluid::core::InstantiationInfo::DESCRIPTOR),
     m_IndentStr(" ")
 {
   if (!mp_Listener)
-    mp_Listener = new openfluid::io::IOListener();
+    mp_Listener = new openfluid::base::IOListener();
 }
 
 // =====================================================================
@@ -1115,7 +1115,7 @@ void FluidXDescriptor::parseFile(std::string Filename)
 void FluidXDescriptor::loadFromDirectory(std::string DirPath)
 {
   if (!mp_Listener)
-    mp_Listener = new openfluid::io::IOListener();
+    mp_Listener = new openfluid::base::IOListener();
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(DirPath)))
     throw openfluid::base::OFException(
@@ -1124,9 +1124,7 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
 
   std::vector<std::string> FluidXFilesToLoad = openfluid::tools::GetFilesByExt(
       DirPath, "fluidx", true);
-//  std::vector<std::string> XMLFilesToLoad = openfluid::tools::GetFilesByExt(DirPath,"xml",true);
-//
-//  FluidXFilesToLoad.insert(FluidXFilesToLoad.end(),XMLFilesToLoad.begin(),XMLFilesToLoad.end());
+
 
   if (FluidXFilesToLoad.size() == 0)
     throw openfluid::base::OFException(

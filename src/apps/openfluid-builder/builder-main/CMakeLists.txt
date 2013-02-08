@@ -40,12 +40,10 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-buddies
                       openfluid-core
                       openfluid-machine
-                      openfluid-io
                       openfluid-tools
                       openfluid-market
                       openfluid-guicommon
                       openfluid-fluidx)
-#                      openfluid-builder-ext)
 
 
 SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 

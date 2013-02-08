@@ -104,7 +104,6 @@ MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")
 MESSAGE(STATUS "Compiler flags for build:  ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
 MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "****************************************")
-MESSAGE(STATUS "Build openfluid-minimal application : yes")
 
 IF(BUILD_APP_ENGINE)
   MESSAGE(STATUS "Build openfluid-engine application : yes")  
@@ -130,8 +129,6 @@ IF(BUILD_APP_MINIMALGUI AND OPENFLUID_ENABLE_GUI)
 ELSE()
   MESSAGE(STATUS "Build openfluid-minimal-gui application : no")  
 ENDIF()
-
-
 
 IF(BUILD_APP_BUILDER AND OPENFLUID_ENABLE_GUI)
   MESSAGE(STATUS "Build openfluid-builder application : yes")  

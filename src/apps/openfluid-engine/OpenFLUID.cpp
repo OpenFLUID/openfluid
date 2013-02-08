@@ -104,21 +104,9 @@ OpenFLUIDApp::~OpenFLUIDApp()
 // =====================================================================
 
 
-void OpenFLUIDApp::printlnExecStatus()
-{
-  if (m_SimBlob.getExecutionMessages().isWarningFlag()) std::cout << " [Warning]" << std::endl;
-  else std::cout << " [OK]" << std::endl;
-
-  std::cout.flush();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void OpenFLUIDApp::printlnExecMessagesStats()
 {
-  std::cout << m_SimBlob.getExecutionMessages().getWarningsCount() << " warning(s)" << std::endl;
+  if (mp_Engine != NULL) std::cout << mp_Engine->getWarningsCount() << " warning(s)" << std::endl;
 }
 
 // =====================================================================
@@ -424,23 +412,12 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
   printlnExecMessagesStats();
 
-  if (mp_Engine != NULL) mp_Engine->closeOutputs();
-
-  if (mp_Engine != NULL && openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
-  {
-    std::cout << "* Closing outputs... "; std::cout.flush();
-    mp_Engine->closeOutputs();
-    std::cout << "[Done]" << std::endl; std::cout.flush();
-    std::cout << "* Saving simulation report... "; std::cout.flush();
-    mp_Engine->saveReports();
-    std::cout << "[Done]" << std::endl; std::cout.flush();
-    m_SimBlob.getExecutionMessages().resetWarningFlag();
-  }
-
   std::cout << std::endl << Msg << std::endl;
 
   std::cout << std::endl;
   std::cout.flush();
+
+  if (mp_Engine != NULL) delete mp_Engine;
 
   return 127;
 
@@ -502,7 +479,7 @@ void OpenFLUIDApp::runSimulation()
   m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 
   openfluid::machine::MachineListener* MListener;
-  openfluid::io::IOListener* IOListener = new DefaultIOListener();
+  openfluid::base::IOListener* IOListener = new DefaultIOListener();
 
 
   if (IsQuiet)
@@ -530,45 +507,36 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
   openfluid::fluidx::FluidXDescriptor FXDesc(IOListener);
   FXDesc.loadFromDirectory(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
-
+  std::cout << "[OK]" << std::endl; std::cout.flush();
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,m_SimBlob);
-  printlnExecStatus();
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
+  std::cout << "[OK]" << std::endl; std::cout.flush();
 
 
   std::cout << "* Building model... "; std::cout.flush();
   openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),
                                                                 Model);
-  printlnExecStatus();
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
+  std::cout << "[OK]" << std::endl; std::cout.flush();
 
   std::cout << "* Building observers list... "; std::cout.flush();
   openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc.getObserversListDescriptor(),
                                                                 ObsList);
-  printlnExecStatus();
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
+  std::cout << "[OK]" << std::endl; std::cout.flush();
 
-  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, ObsList, MListener,IOListener);
+  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, ObsList, MListener);
 
   mp_Engine->initialize();
 
   std::cout << "* Initializing parameters... "; std::cout.flush();
   mp_Engine->initParams();
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
-
 
   std::cout << "* Preparing data... "; std::cout.flush();
   mp_Engine->prepareData();
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
 
 
   std::cout << "* Checking consistency... "; std::cout.flush();
   mp_Engine->checkConsistency();
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
-
 
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
@@ -611,18 +579,7 @@ void OpenFLUIDApp::runSimulation()
   m_EffectiveEndTime = boost::posix_time::microsec_clock::local_time();
   std::cout << "**** Simulation completed ****" << std::endl << std::endl;std::cout << std::endl;
   std::cout.flush();
-  m_SimBlob.getExecutionMessages().resetWarningFlag();
   openfluid::base::RuntimeEnvironment::getInstance()->setEffectiveSimulationDuration(m_EffectiveEndTime-m_EffectiveStartTime);
-
-
-  if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport())
-  {
-    std::cout << "* Saving simulation reports... "; std::cout.flush();
-    mp_Engine->saveReports();
-    std::cout << "[Done]" << std::endl; std::cout.flush();
-    m_SimBlob.getExecutionMessages().resetWarningFlag();
-  }
-
 
   m_FullEndTime = boost::posix_time::microsec_clock::local_time();
 

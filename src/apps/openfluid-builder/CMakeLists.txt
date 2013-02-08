@@ -59,7 +59,6 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-buddies
                       openfluid-core
                       openfluid-machine
-                      openfluid-io
                       openfluid-tools
                       openfluid-guicommon
                       openfluid-builder-main

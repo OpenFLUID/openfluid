@@ -59,6 +59,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
 
 namespace openfluid {
 namespace base {
@@ -68,10 +69,6 @@ class SimulationStatus;
 namespace core {
 class Value;
 class DateTime;
-}
-namespace io {
-class IOListener;
-class MessagesWriter;
 }
 }
 
@@ -122,13 +119,11 @@ class DLLEXPORT Engine
 
      MachineListener* mp_MachineListener;
 
-     openfluid::io::IOListener* mp_IOListener;
-
      ModelInstance& m_ModelInstance;
 
      ObserversListInstance& m_ObserversListInstance;
 
-     openfluid::io::MessagesWriter* mp_MessagesWriter;
+     openfluid::base::SimulationLogger* mp_SimLogger;
 
 
 
@@ -157,16 +152,6 @@ class DLLEXPORT Engine
 
      void prepareOutputDir();
 
-     void initOutputs();
-
-     void prepareOutputs();
-
-     void saveOutputs();
-
-     void saveSimulationInfos();
-
-     void saveSimulationProfile();
-
 
   public:
     /**
@@ -174,8 +159,7 @@ class DLLEXPORT Engine
     */
     Engine(SimulationBlob& SimBlob,
            ModelInstance& MInstance, ObserversListInstance& OLInstance,
-           openfluid::machine::MachineListener* MachineListener,
-           openfluid::io::IOListener* IOListener);
+           openfluid::machine::MachineListener* MachineListener);
 
     /**
       Destructor
@@ -197,21 +181,15 @@ class DLLEXPORT Engine
 
     void finalize();
 
-    void saveReports();
-
-    void closeOutputs();
-
     const openfluid::base::SimulationStatus* getSimulationStatus() { return mp_SimStatus; };
 
     SimulationBlob*  getSimulationBlob() { return &m_SimulationBlob; };
 
     MachineListener* getMachineListener() { return mp_MachineListener; };
 
-    openfluid::io::IOListener* getIOListener() { return mp_IOListener; };
-
     ModelInstance* getModelInstance() { return &m_ModelInstance; };
 
-
+    unsigned int getWarningsCount() const { return mp_SimLogger->getWarningsCount(); };
 };
 
 

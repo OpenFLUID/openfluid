@@ -18,7 +18,6 @@ SET_TARGET_PROPERTIES(openfluid-machine PROPERTIES VERSION "${VERSION_MAJOR}.${V
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
 
 TARGET_LINK_LIBRARIES(openfluid-machine
-                      openfluid-io 
                       openfluid-tools
                       openfluid-core
                       openfluid-base

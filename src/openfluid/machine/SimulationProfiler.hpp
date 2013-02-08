@@ -47,51 +47,85 @@
 
 
 /**
-  @file
+  \file SimulationProfiler.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MESSAGE_HPP__
-#define __MESSAGE_HPP__
+#ifndef __SIMULATIONPROFILER_HPP___
+#define __SIMULATIONPROFILER_HPP___
 
+#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core/TypeDefs.hpp>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
+
+#include <map>
+#include <list>
+
+
+namespace openfluid { namespace machine {
+
+
+// =====================================================================
+// =====================================================================
 
 
 
-namespace openfluid { namespace base {
-
-
-class DLLEXPORT Message
+class DLLEXPORT SimulationProfiler
 {
+  public:
+
+    typedef std::list<openfluid::ware::WareID_t> WareIDSequence_t;
+
   private:
 
-    std::string m_Sender;
+    typedef std::map<openfluid::base::SimulationStatus::SimulationStage,boost::posix_time::time_duration> CumulativeFunctionProfile_t;
 
-    std::string m_Source;
+    typedef std::map<openfluid::ware::WareID_t,CumulativeFunctionProfile_t> CumulativeModelProfile_t;
 
-    std::string m_Content;
+    typedef std::map<openfluid::ware::WareID_t,boost::posix_time::time_duration> CurrentTimeIndexModelProfile_t;
 
-    bool m_IsTimeStep;
+    typedef WareIDSequence_t CurrentTimeIndexModelSequence_t;
 
-    openfluid::core::TimeStep_t m_TimeStep;
+    CumulativeModelProfile_t m_CumulativeModelProfile;
+
+    CurrentTimeIndexModelProfile_t m_CurrentTimeIndexModelProfile;
+    CurrentTimeIndexModelSequence_t m_CurrentTimeIndexModelSequence;
 
 
+    const openfluid::base::SimulationStatus* mp_SimStatus;
 
+    const WareIDSequence_t m_OriginalModelSequence;
+
+    openfluid::core::TimeIndex_t m_CurrentTimeIndex;
+
+    std::ofstream m_CurrentSequenceFile;
+
+    std::ofstream m_CurrentProfileFile;
+
+    static double getDurationInDecimalSeconds(const boost::posix_time::time_duration& Duration);
+
+    void flushCurrentProfileToFiles();
 
   public:
 
-    Message(std::string Sender, std::string Source, openfluid::core::TimeStep_t TimeStep, std::string Content);
+    SimulationProfiler(const openfluid::base::SimulationStatus* SimStatus, const WareIDSequence_t& OrigModelSequence);
 
-    Message(std::string Sender, std::string Source, std::string Content);
+    ~SimulationProfiler();
 
-    std::string getAsFormattedString();
+    void addDuration(const openfluid::ware::WareID_t& FuncID,
+                     openfluid::base::SimulationStatus::SimulationStage ProfilePart,
+                     const boost::posix_time::time_duration& Duration);
 
 };
 
-} }
 
 
-#endif /* __MESSAGE_HPP__ */
+} } //namespaces
+
+
+#endif /* __SIMULATIONPROFILER_HPP___ */

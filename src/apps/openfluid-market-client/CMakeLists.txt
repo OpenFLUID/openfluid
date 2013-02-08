@@ -14,8 +14,6 @@ SET_TARGET_PROPERTIES(openfluid-market-client PROPERTIES RUNTIME_OUTPUT_DIRECTOR
 
 TARGET_LINK_LIBRARIES(openfluid-market-client
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
-#                      ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
-#                      ${Boost_REGEX_LIBRARY}
                       ${GTKMM_LIBRARIES}
                       openfluid-base
                       openfluid-core
@@ -25,7 +23,7 @@ TARGET_LINK_LIBRARIES(openfluid-market-client
 
 
 
-#INSTALL(TARGETS openfluid-minimal
+#INSTALL(TARGETS openfluid-market-client
 #        RUNTIME DESTINATION ${BIN_INSTALL_PATH})
 
        

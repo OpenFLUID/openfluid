@@ -55,6 +55,7 @@
 
 #include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/market/MarketPackage.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 #include <glibmm/i18n.h>
 

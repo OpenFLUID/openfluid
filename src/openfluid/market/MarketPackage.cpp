@@ -55,10 +55,12 @@
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
+#include <fstream>
 
 #include <openfluid/config.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace market {

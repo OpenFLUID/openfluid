@@ -50,50 +50,54 @@
   @file
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
 
 
-#ifndef __MESSAGESWRITER_HPP__
-#define __MESSAGESWRITER_HPP__
-
+#ifndef __IOLISTENER_HPP__
+#define __IOLISTENER_HPP__
 
 #include <string>
-#include <fstream>
+#include <iostream>
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/base/Listener.hpp>
 
 namespace openfluid { namespace base {
-class ExecutionMessages;
-}
-}
+
+// =====================================================================
+// =====================================================================
 
 
-namespace openfluid { namespace io {
-
-
-class DLLEXPORT MessagesWriter
+class DLLEXPORT IOListener : public openfluid::base::Listener
 {
   private:
-    char* mp_Buffer;
-    static const unsigned int m_BufferSize = 512000;
-
-    std::ofstream m_OutFile;
-    std::string m_OutFilename;
 
   public:
-    MessagesWriter(std::string FilePath);
 
-    ~MessagesWriter();
+    IOListener() {};
 
-    void initializeFile();
+    virtual ~IOListener() {};
 
-    void saveToFile(openfluid::base::ExecutionMessages& ExecMsgs, bool WithFlush = false);
+    virtual void onLoad() {};
 
-    void closeFile(openfluid::base::ExecutionMessages& ExecMsgs, bool WithFlush = false);
+    virtual void onLoaded(openfluid::base::Listener::Status /*Status*/) {};
+
+    virtual void onFileLoad(std::string /*Filename*/) {};
+
+    virtual void onFileLoaded(openfluid::base::Listener::Status /*Status*/) {};
+
+    virtual void onWrite() {};
+
+    virtual void onWritten(openfluid::base::Listener::Status /*Status*/) {};
+
+    virtual void onFileWrite(std::string /*Filename*/) {};
+
+    virtual void onFileWritten(openfluid::base::Listener::Status /*Status*/) {};
+
+
 };
 
 
 } } //namespaces
 
-
-#endif /* __MESSAGESWRITER_H___ */
+#endif /* __IOLISTENER_HPP__ */

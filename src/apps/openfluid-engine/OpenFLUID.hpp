@@ -93,8 +93,6 @@ class OpenFLUIDApp
     boost::posix_time::ptime m_EffectiveEndTime;
 
 
-    void printlnExecStatus();
-
     void printlnExecMessagesStats();
 
     void printOpenFLUIDInfos();

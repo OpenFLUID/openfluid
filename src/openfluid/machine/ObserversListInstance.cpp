@@ -100,7 +100,7 @@ void ObserversListInstance::appendObserver(ObserverInstance* ObsInstance)
 // =====================================================================
 
 
-void ObserversListInstance::initialize()
+void ObserversListInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 {
   openfluid::machine::ObserverPluginsManager* OPlugsMgr = openfluid::machine::ObserverPluginsManager::getInstance();
 
@@ -113,7 +113,7 @@ void ObserversListInstance::initialize()
     CurrentObserver = (*ObsIter);
     OPlugsMgr->completeSignatureWithWareBody(CurrentObserver);
 
-    CurrentObserver->Body->linkToExecutionMessages(&(m_SimulationBlob.getExecutionMessages()));
+    CurrentObserver->Body->linkToSimulationLogger(SimLogger);
     CurrentObserver->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
     CurrentObserver->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
     CurrentObserver->Body->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));

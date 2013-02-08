@@ -61,7 +61,6 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/SimulationProfiler.hpp>
 #include <openfluid/core/DateTime.hpp>
 
 
@@ -117,6 +116,8 @@ class DLLEXPORT RuntimeEnvironment
     bool m_WriteResults;
 
     bool m_WriteSimReport;
+
+    bool m_Profiling;
 
     unsigned int m_ValuesBufferSize;
 
@@ -515,9 +516,9 @@ class DLLEXPORT RuntimeEnvironment
     bool isLinkedToProject()
       { return m_IsLinkedToProject; };
 
-    bool isSimulationProfilingEnabled() const { return SimulationProfiler::getInstance()->isEnabled(); };
+    bool isSimulationProfilingEnabled() const { return m_Profiling; };
 
-    void setSimulationProfilingEnabled(bool Profiling) { SimulationProfiler::getInstance()->setEnabled(Profiling); };
+    void setSimulationProfilingEnabled(bool Profiling) { m_Profiling = Profiling; };
 
 };
 

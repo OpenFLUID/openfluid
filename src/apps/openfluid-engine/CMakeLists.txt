@@ -25,7 +25,6 @@ TARGET_LINK_LIBRARIES(openfluid-engine
                       openfluid-buddies
                       openfluid-core
                       openfluid-machine
-                      openfluid-io
                       openfluid-tools
                       openfluid-fluidx)
 

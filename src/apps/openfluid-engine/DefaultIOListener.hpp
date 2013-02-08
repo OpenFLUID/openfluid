@@ -57,14 +57,14 @@
 #define __DEFAULTIOLISTENER_HPP__
 
 
-#include <openfluid/io/IOListener.hpp>
+#include <openfluid/base/IOListener.hpp>
 #include <iostream>
 
 // =====================================================================
 // =====================================================================
 
 
-class DefaultIOListener : public openfluid::io::IOListener
+class DefaultIOListener : public openfluid::base::IOListener
 {
   private:
 
