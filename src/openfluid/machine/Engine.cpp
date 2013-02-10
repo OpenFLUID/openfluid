@@ -67,7 +67,7 @@
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/ObserversListInstance.hpp>
+#include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 
 
@@ -79,9 +79,9 @@ namespace openfluid { namespace machine {
 
 
 Engine::Engine(SimulationBlob& SimBlob,
-               ModelInstance& MInstance, ObserversListInstance& OLInstance,
+               ModelInstance& MInstance, MonitoringInstance& OLInstance,
                openfluid::machine::MachineListener* MachineListener)
-       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_ObserversListInstance(OLInstance), mp_SimLogger(NULL)
+       : m_SimulationBlob(SimBlob), m_ModelInstance(MInstance), m_MonitoringInstance(OLInstance), mp_SimLogger(NULL)
 {
 
   mp_RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
@@ -579,7 +579,7 @@ void Engine::initialize()
   openfluid::base::RuntimeEnvironment::getInstance()->resetSimulationID();
   openfluid::base::RuntimeEnvironment::getInstance()->resetIgnitionDateTime();
   m_ModelInstance.initialize(mp_SimLogger);
-  m_ObserversListInstance.initialize(mp_SimLogger);
+  m_MonitoringInstance.initialize(mp_SimLogger);
 }
 
 
@@ -595,7 +595,7 @@ void Engine::initParams()
   {
     mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::INITPARAMS);
     m_ModelInstance.call_initParams();
-    m_ObserversListInstance.call_initParams();
+    m_MonitoringInstance.call_initParams();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -673,7 +673,7 @@ void Engine::checkConsistency()
   {
     mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::CHECKCONSISTENCY);
     m_ModelInstance.call_checkConsistency();
-    m_ObserversListInstance.call_onPrepared();
+    m_MonitoringInstance.call_onPrepared();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -709,7 +709,7 @@ void Engine::run()
   {
     mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::INITIALIZERUN);
     m_ModelInstance.call_initializeRun();
-    m_ObserversListInstance.call_onInitializedRun();
+    m_MonitoringInstance.call_onInitializedRun();
   }
   catch (openfluid::base::OFException& E)
   {
@@ -741,7 +741,7 @@ void Engine::run()
     try
     {
       m_ModelInstance.processNextTimePoint();
-      m_ObserversListInstance.call_onStepCompleted();
+      m_MonitoringInstance.call_onStepCompleted();
 
       // TODO to remove? check simulation vars production at each time step
       //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
@@ -766,7 +766,7 @@ void Engine::run()
   {
     mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::FINALIZERUN);
     m_ModelInstance.call_finalizeRun();
-    m_ObserversListInstance.call_onFinalizedRun();
+    m_MonitoringInstance.call_onFinalizedRun();
   }
   catch (openfluid::base::OFException& E)
   {

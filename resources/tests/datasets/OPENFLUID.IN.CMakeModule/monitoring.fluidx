@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <monitoring>
+    
+    <observer ID="tests.obs.cmake" />
+    
+  </monitoring>
+</openfluid>

@@ -68,9 +68,8 @@
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
-#include <openfluid/fluidx/ObserversListDescriptor.hpp>
+#include <openfluid/fluidx/MonitoringDescriptor.hpp>
 
 #include <openfluid/core/UnstructuredValue.hpp>
 
@@ -103,166 +102,12 @@ FluidXDescriptor::~FluidXDescriptor()
 {
 }
 
-// =====================================================================
-// =====================================================================
-
-openfluid::base::OutputFilesDescriptor FluidXDescriptor::extractFilesDecriptorFromNode(
-    xmlNodePtr NodePtr)
-{
-  openfluid::base::OutputFilesDescriptor OFD;
-
-  xmlChar* xmlColSep = xmlGetProp(NodePtr, (const xmlChar*) "colsep");
-  if (xmlColSep != NULL)
-  {
-    std::string ColSep = std::string((const char*) xmlColSep);
-    boost::algorithm::replace_all(ColSep, "\\t", "\t");
-    OFD.setColSeparator(ColSep);
-  }
-
-  xmlChar* xmlDTFormat = xmlGetProp(NodePtr, (const xmlChar*) "dtformat");
-  if (xmlDTFormat != NULL)
-    OFD.setDateFormat(std::string((const char*) xmlDTFormat));
-
-  xmlChar* xmlCommentChar = xmlGetProp(NodePtr, (const xmlChar*) "commentchar");
-  if (xmlCommentChar != NULL)
-  {
-    std::string CommentChar = std::string((const char*) xmlCommentChar);
-    boost::algorithm::replace_all(CommentChar, "\\t", "\t");
-    OFD.setCommentChar(CommentChar);
-  }
-
-  if (OFD.getDateFormat() == "6cols")
-    OFD.setDateFormat("%Y\t%m\t%d\t%H\t%M\t%S");
-  if (OFD.getDateFormat() == "iso")
-    OFD.setDateFormat("%Y%m%dT%H%M%S");
-
-  xmlChar* xmlHeaderType = xmlGetProp(NodePtr, (const xmlChar*) "header");
-  if (xmlHeaderType != NULL)
-  {
-    std::string HeaderType = std::string((const char*) xmlHeaderType);
-
-    if (HeaderType == "none")
-      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::None);
-    else if (HeaderType == "colnames-as-data")
-      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::ColnamesAsData);
-    else if (HeaderType == "full")
-      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::Full);
-    else
-      OFD.setHeaderType(openfluid::base::OutputFilesDescriptor::Info);
-  }
-
-  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
-
-  while (CurrNode != NULL)
-  {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "set") == 0)
-    {
-      OFD.getSets().push_back(extractSetDecriptorFromNode(CurrNode));
-    }
-    CurrNode = CurrNode->next;
-  }
-
-  return OFD;
-}
 
 // =====================================================================
 // =====================================================================
 
-openfluid::base::OutputSetDescriptor FluidXDescriptor::extractSetDecriptorFromNode(
-    xmlNodePtr NodePtr)
-{
-  openfluid::base::OutputSetDescriptor OSD;
 
-  xmlChar* xmlName = xmlGetProp(NodePtr, (const xmlChar*) "name");
-  xmlChar* xmlUnitsClass = xmlGetProp(NodePtr, (const xmlChar*) "unitsclass");
-  xmlChar* xmlUnitsIDs = xmlGetProp(NodePtr, (const xmlChar*) "unitsIDs");
-  xmlChar* xmlVars = xmlGetProp(NodePtr, (const xmlChar*) "vars");
-  xmlChar* xmlPrec = xmlGetProp(NodePtr, (const xmlChar*) "precision");
-
-  if (xmlName != NULL && xmlUnitsClass != NULL && xmlUnitsIDs != NULL
-      && xmlVars != NULL)
-  {
-    OSD.setName(std::string((const char*) xmlName));
-    OSD.setUnitsClass(std::string((const char*) xmlUnitsClass));
-
-    std::string UnitsIDsStr = std::string((const char*) xmlUnitsIDs);
-    std::string VarsStr = std::string((const char*) xmlVars);
-
-    if (UnitsIDsStr == "*")
-      OSD.setAllUnits(true);
-    else
-    {
-      OSD.setAllUnits(false);
-      openfluid::core::UnitID_t UID;
-
-      std::vector<std::string> StrArray = openfluid::tools::SplitString(
-          UnitsIDsStr, ";");
-      for (unsigned int i = 0; i < StrArray.size(); i++)
-      {
-        if (openfluid::tools::ConvertString(StrArray[i], &UID))
-          OSD.getUnitsIDs().push_back(UID);
-        else
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
-              "FluidXDescriptor::extractSetDecriptorFromNode",
-              "Wrong format of units IDs in output set config (" + m_CurrentFile
-              + ")");
-      }
-    }
-
-    if (VarsStr == "*")
-    {
-      OSD.setAllVariables(true);
-    }
-    else
-    {
-      OSD.setAllVariables(false);
-
-      std::vector<std::string> StrArray = openfluid::tools::SplitString(VarsStr,
-                                                                        ";");
-
-      for (unsigned int i = 0; i < StrArray.size(); i++)
-      {
-        clearOldVectorNamedVar(StrArray[i]);
-
-        OSD.getVariables().push_back(StrArray[i]);
-      }
-
-    }
-
-  }
-  else
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
-        "FluidXDescriptor::extractSetDecriptorFromNode",
-        "wrong output set definition (" + m_CurrentFile
-        + "). missing attribute?");
-
-  if (xmlPrec != NULL)
-  {
-    std::string PrecStr = std::string((const char*) xmlPrec);
-    int Prec = 5;
-
-    if (openfluid::tools::ConvertString(PrecStr, &Prec) && Prec >= 0)
-    {
-      OSD.setPrecision(Prec);
-    }
-    else
-      throw openfluid::base::OFException(
-          "OpenFLUID framework",
-          "FluidXDescriptor::extractSetDecriptorFromNode",
-          "Wrong value format of precision in output set config (" + m_CurrentFile
-          + ")");
-  }
-
-  return OSD;
-
-}
-
-// =====================================================================
-// =====================================================================
-
-void FluidXDescriptor::extractOutputFromNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractMonitoringFromNode(xmlNodePtr NodePtr)
 {
   xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
 
@@ -270,12 +115,7 @@ void FluidXDescriptor::extractOutputFromNode(xmlNodePtr NodePtr)
 
   while (CurrNode != NULL)
   {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "files") == 0)
-    {
-      m_OutputDescriptor.getFileSets().push_back(
-          extractFilesDecriptorFromNode(CurrNode));
-    }
-    else if (xmlStrcmp(CurrNode->name, (const xmlChar*) "observer") == 0)
+    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "observer") == 0)
     {
       xmlChar* xmlID = xmlGetProp(CurrNode, (const xmlChar*) "ID");
 
@@ -284,7 +124,7 @@ void FluidXDescriptor::extractOutputFromNode(xmlNodePtr NodePtr)
 
         OD = new openfluid::fluidx::ObserverDescriptor((const char*) xmlID);
         OD->setParameters(extractParamsFromNode(CurrNode));
-        m_ObserversListDescriptor.appendItem(OD);
+        m_MonitoringDescriptor.appendItem(OD);
       }
     }
     CurrNode = CurrNode->next;
@@ -1074,9 +914,9 @@ void FluidXDescriptor::parseFile(std::string Filename)
             extractModelFromNode(CurrNode);
           }
 
-          if (xmlStrcmp(CurrNode->name, (const xmlChar*) "output") == 0)
+          if (xmlStrcmp(CurrNode->name, (const xmlChar*) "monitoring") == 0)
           {
-            extractOutputFromNode(CurrNode);
+            extractMonitoringFromNode(CurrNode);
           }
 
           if (xmlStrcmp(CurrNode->name, (const xmlChar*) "domain") == 0)
@@ -1135,10 +975,9 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
 
   m_ModelDescriptor = openfluid::fluidx::CoupledModelDescriptor();
   m_RunDescriptor = openfluid::fluidx::RunDescriptor();
-  m_OutputDescriptor = openfluid::base::OutputDescriptor();
   m_DomainDescriptor = openfluid::fluidx::DomainDescriptor();
   m_DatastoreDescriptor = openfluid::fluidx::DatastoreDescriptor();
-  m_ObserversListDescriptor = openfluid::fluidx::ObserversListDescriptor();
+  m_MonitoringDescriptor = openfluid::fluidx::MonitoringDescriptor();
 
   m_RunConfigDefined = false;
   m_ModelDefined = false;
@@ -1493,6 +1332,7 @@ void FluidXDescriptor::setDomainToWrite(const openfluid::core::CoreRepository& C
 
 void FluidXDescriptor::setOutputConfigurationToWrite()
 {
+#if 0
   std::ostringstream Contents;
 
   if (!m_OutputDescriptor.getFileSets().empty())
@@ -1575,6 +1415,7 @@ void FluidXDescriptor::setOutputConfigurationToWrite()
   }
 
   m_OutputStrToWrite = Contents.str();
+#endif
 }
 
 

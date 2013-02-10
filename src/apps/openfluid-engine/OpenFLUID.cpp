@@ -67,7 +67,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/machine/ObserversListInstance.hpp>
+#include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/buddies.hpp>
 
@@ -180,7 +180,7 @@ void OpenFLUIDApp::printFunctionsList()
 // =====================================================================
 
 
-void OpenFLUIDApp::printObserversList()
+void OpenFLUIDApp::printMonitoring()
 {
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> PlugContainers =
@@ -496,7 +496,7 @@ void OpenFLUIDApp::runSimulation()
   }
 
   openfluid::machine::ModelInstance Model(m_SimBlob,MListener);
-  openfluid::machine::ObserversListInstance ObsList(m_SimBlob);
+  openfluid::machine::MonitoringInstance Monitoring(m_SimBlob);
 
   printOpenFLUIDInfos();
   printEnvInfos();
@@ -520,11 +520,11 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "[OK]" << std::endl; std::cout.flush();
 
   std::cout << "* Building observers list... "; std::cout.flush();
-  openfluid::machine::Factory::buildObserversListFromDescriptor(FXDesc.getObserversListDescriptor(),
-                                                                ObsList);
+  openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.getMonitoringDescriptor(),
+                                                                Monitoring);
   std::cout << "[OK]" << std::endl; std::cout.flush();
 
-  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, ObsList, MListener);
+  mp_Engine = new openfluid::machine::Engine(m_SimBlob, Model, Monitoring, MListener);
 
   mp_Engine->initialize();
 
@@ -717,7 +717,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   {
     m_RunType = InfoRequest;
     printOpenFLUIDInfos();
-    printObserversList();
+    printMonitoring();
     return;
   }
 

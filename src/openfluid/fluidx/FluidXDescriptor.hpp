@@ -59,9 +59,8 @@
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
-#include <openfluid/fluidx/ObserversListDescriptor.hpp>
+#include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/core/InstantiationInfo.hpp>
@@ -93,11 +92,9 @@ class FluidXDescriptor
 
     openfluid::fluidx::RunDescriptor m_RunDescriptor;
 
-    openfluid::base::OutputDescriptor m_OutputDescriptor;
-
     openfluid::fluidx::DatastoreDescriptor m_DatastoreDescriptor;
 
-    openfluid::fluidx::ObserversListDescriptor m_ObserversListDescriptor;
+    openfluid::fluidx::MonitoringDescriptor m_MonitoringDescriptor;
 
     std::string m_CurrentFile;
 
@@ -119,13 +116,7 @@ class FluidXDescriptor
 
     std::string m_IndentStr;
 
-    openfluid::base::OutputFilesDescriptor extractFilesDecriptorFromNode(
-        xmlNodePtr NodePtr);
-
-    openfluid::base::OutputSetDescriptor extractSetDecriptorFromNode(
-        xmlNodePtr NodePtr);
-
-    void extractOutputFromNode(xmlNodePtr NodePtr);
+    void extractMonitoringFromNode(xmlNodePtr NodePtr);
 
     openfluid::ware::WareParams_t extractParamsFromNode(xmlNodePtr NodePtr);
 
@@ -193,14 +184,11 @@ class FluidXDescriptor
     inline openfluid::fluidx::RunDescriptor& getRunDescriptor()
     { return m_RunDescriptor; }
 
-    inline openfluid::base::OutputDescriptor& getOutputDescriptor()
-    { return m_OutputDescriptor; }
-
     inline openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor()
     { return m_DatastoreDescriptor; }
 
-    inline openfluid::fluidx::ObserversListDescriptor& getObserversListDescriptor()
-    { return m_ObserversListDescriptor; }
+    inline openfluid::fluidx::MonitoringDescriptor& getMonitoringDescriptor()
+    { return m_MonitoringDescriptor; }
 
     inline const openfluid::fluidx::CoupledModelDescriptor& getModelDescriptor() const
     { return m_ModelDescriptor; }
@@ -211,14 +199,11 @@ class FluidXDescriptor
     inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const
     { return m_RunDescriptor; }
 
-    inline const openfluid::base::OutputDescriptor& getOutputDescriptor() const
-    { return m_OutputDescriptor; }
-
     inline const openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor() const
     { return m_DatastoreDescriptor; }
 
-    inline const openfluid::fluidx::ObserversListDescriptor& getObserversListDescriptor() const
-    { return m_ObserversListDescriptor; }
+    inline const openfluid::fluidx::MonitoringDescriptor& getMonitoringDescriptor() const
+    { return m_MonitoringDescriptor; }
 
     // =====================================================================
     // =====================================================================

@@ -61,7 +61,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
-#include <openfluid/fluidx/ObserversListDescriptor.hpp>
+#include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 namespace openfluid {
@@ -85,7 +85,7 @@ namespace openfluid { namespace machine {
 
 class SimulationBlob;
 class ModelInstance;
-class ObserversListInstance;
+class MonitoringInstance;
 
 
 class DLLEXPORT Factory
@@ -102,8 +102,8 @@ class DLLEXPORT Factory
     static void buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc,
                                                  ModelInstance& MInstance);
 
-    static void buildObserversListFromDescriptor(openfluid::fluidx::ObserversListDescriptor& ObsListDesc,
-                                                 ObserversListInstance& ObsListInstance);
+    static void buildMonitoringInstanceFromDescriptor(openfluid::fluidx::MonitoringDescriptor& MonDesc,
+                                                      MonitoringInstance& MonInstance);
 
     static void fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor& RunDescr);
 

@@ -47,15 +47,10 @@
 
 
 
-  <output>
+  <monitoring>
 
-    <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->
-    <!-- colsep default is \t -->
-    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">
-      <set name="full" unitsclass="TestUnits" unitsIDs="*" vars="*" />
-    </files>
 
-  </output>
+  </monitoring>
 
 
   <run>
