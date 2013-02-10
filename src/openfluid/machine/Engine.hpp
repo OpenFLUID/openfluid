@@ -76,7 +76,7 @@ class DateTime;
 namespace openfluid { namespace machine {
 
 class ModelInstance;
-class ObserversListInstance;
+class MonitoringInstance;
 class MachineListener;
 class SimulationBlob;
 
@@ -121,7 +121,7 @@ class DLLEXPORT Engine
 
      ModelInstance& m_ModelInstance;
 
-     ObserversListInstance& m_ObserversListInstance;
+     MonitoringInstance& m_MonitoringInstance;
 
      openfluid::base::SimulationLogger* mp_SimLogger;
 
@@ -158,7 +158,7 @@ class DLLEXPORT Engine
       Constructor
     */
     Engine(SimulationBlob& SimBlob,
-           ModelInstance& MInstance, ObserversListInstance& OLInstance,
+           ModelInstance& MInstance, MonitoringInstance& OLInstance,
            openfluid::machine::MachineListener* MachineListener);
 
     /**

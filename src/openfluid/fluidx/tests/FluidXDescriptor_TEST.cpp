@@ -220,200 +220,6 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("longparam"),
       "11");
 
-  // Output
-  // ====================================================================
-
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets().size(), 5);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getColSeparator(), " ");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[0].getDateFormat(),
-                      "%Y %m %d %H %M %S");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[0].getCommentChar(),
-                      "%");
-
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[0].getSets().size(),
-                      3);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[0].getName(), "full");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[0].getUnitsClass(),
-      "XU");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[0].getUnitsIDs().size(),
-      0);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllUnits(), true);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[0].getVariables().size(),
-      0);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[0].isAllVariables(),
-      true);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[0].getPrecision(), 5);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].getName(), "2vars");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].getUnitsClass(),
-      "YU");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].getUnitsIDs().size(),
-      0);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllUnits(), true);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables().size(),
-      2);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].isAllVariables(),
-      false);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables()[0],
-      "var1");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].getVariables()[1],
-      "var2");
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[1].getPrecision(), 3);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].getName(),
-      "3units");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsClass(),
-      "ZU");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsIDs().size(),
-      3);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsIDs()[0],
-      5);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsIDs()[1],
-      197);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].getUnitsIDs()[2],
-      73);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllUnits(),
-      false);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].getVariables().size(),
-      0);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].isAllVariables(),
-      true);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[0].getSets()[2].getPrecision(), 5);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getColSeparator(), ";");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[1].getDateFormat(),
-                      "%Y%m%dT%H%M%S");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[1].getCommentChar(),
-                      "#");
-
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[1].getSets().size(),
-                      3);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[0].getName(), "full");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[0].getUnitsClass(),
-      "KU");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[0].getUnitsIDs().size(),
-      0);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllUnits(), true);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[0].getVariables().size(),
-      0);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[0].isAllVariables(),
-      true);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[0].getPrecision(), 9);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].getName(), "3vars");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].getUnitsClass(),
-      "LU");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].getUnitsIDs().size(),
-      0);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllUnits(), true);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables().size(),
-      3);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].isAllVariables(),
-      false);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[0],
-      "var1");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[1],
-      "var2");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].getVariables()[2],
-      "var5");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[1].getPrecision(), 5);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].getName(),
-      "2units");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].getUnitsClass(),
-      "MU");
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].getUnitsIDs().size(),
-      2);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].getUnitsIDs()[0],
-      2);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].getUnitsIDs()[1],
-      1);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllUnits(),
-      false);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].getVariables().size(),
-      0);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].isAllVariables(),
-      true);
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[1].getSets()[2].getPrecision(), 5);
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[2].getColSeparator(), "\t");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[2].getDateFormat(),
-                      "%Y%m%dT%H%M%S");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[2].getCommentChar(),
-                      "%");
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[3].getColSeparator(), "\t");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[3].getDateFormat(),
-                      "%Y%m%dT%H%M%S");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[3].getCommentChar(),
-                      "%");
-
-  BOOST_REQUIRE_EQUAL(
-      FXDesc.getOutputDescriptor().getFileSets()[4].getColSeparator(), "\t");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[4].getDateFormat(),
-                      "%Y\t%m\t%d\t%H\t%M\t%S");
-  BOOST_REQUIRE_EQUAL(FXDesc.getOutputDescriptor().getFileSets()[4].getCommentChar(),
-                      "%");
 
   // Run
   // ====================================================================
@@ -428,6 +234,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().isUserValuesBufferSize(), true);
   BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getValuesBufferSize(), 100);
   BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getFilesBufferSizeInKB(), 2);
+
 
   // Domain definition
   // ====================================================================
@@ -489,6 +296,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsTos().size(), 0);
   BOOST_REQUIRE_EQUAL((*UnitsIt).getUnitsParents().size(), 0);
 
+
   // Domain input data
   // ====================================================================
 
@@ -522,6 +330,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(7).at("indataB2"), "codeE");
   BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(2).at("indataB2"), "codeC");
   BOOST_REQUIRE_EQUAL((*IDataIt).getData().at(1).at("indataB2"), "codeD");
+
 
   // Domain calendar
   // ====================================================================
@@ -565,6 +374,7 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("where","9"));
   BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("numeric","1.15"));
   BOOST_REQUIRE((*EventIt).getEvent().isInfoEqual("string","EADGBE"));
+
 
   // Datastore
   // ====================================================================
@@ -713,12 +523,12 @@ BOOST_AUTO_TEST_CASE(check_reading_observers)
       boost::filesystem::path(
           CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.FluidXReader/with_observers").string());
 
-  openfluid::fluidx::ObserversListDescriptor::SetDescription_t Observers =
-      FXDesc.getObserversListDescriptor().getItems();
+  openfluid::fluidx::MonitoringDescriptor::SetDescription_t Observers =
+      FXDesc.getMonitoringDescriptor().getItems();
 
   BOOST_CHECK_EQUAL(Observers.size(), 4);
 
-  openfluid::fluidx::ObserversListDescriptor::SetDescription_t::iterator it =
+  openfluid::fluidx::MonitoringDescriptor::SetDescription_t::iterator it =
       Observers.begin();
 
   // output.files.csv

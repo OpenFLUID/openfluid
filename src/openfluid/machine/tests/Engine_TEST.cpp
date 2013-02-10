@@ -66,7 +66,7 @@
 #include <openfluid/ware/PluggableFunction.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/ObserversListInstance.hpp>
+#include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
@@ -126,10 +126,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
-  openfluid::machine::ObserversListInstance ObsList(SBlob);
+  openfluid::machine::MonitoringInstance Monitoring(SBlob);
 
 
-  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen);
+  openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
   BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1[toto]","UA","",""),openfluid::base::OFException);
   BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1(double)","UA","",""),openfluid::base::OFException);
@@ -148,13 +148,13 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
-  openfluid::machine::ObserversListInstance ObsList(SBlob);
+  openfluid::machine::MonitoringInstance Monitoring(SBlob);
 
 
   SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1,openfluid::core::Unit::UNKNOWN));
   SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1,openfluid::core::Unit::UNKNOWN));
 
-  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen);
+  openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
   openfluid::machine::Engine::PretestInfos_t PInfos;
 
@@ -313,13 +313,13 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
-  openfluid::machine::ObserversListInstance ObsList(SBlob);
+  openfluid::machine::MonitoringInstance Monitoring(SBlob);
 
 
   SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1,openfluid::core::Unit::UNKNOWN));
   SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1,openfluid::core::Unit::UNKNOWN));
 
-  openfluid::machine::Engine Eng(SBlob,Model,ObsList,MachineListen);
+  openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
   openfluid::machine::Engine::PretestInfos_t PInfos;
 

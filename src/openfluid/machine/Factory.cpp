@@ -68,7 +68,7 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/machine/ObserversListInstance.hpp>
+#include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/Generator.hpp>
@@ -318,19 +318,19 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 // =====================================================================
 // =====================================================================
 
-void Factory::buildObserversListFromDescriptor(openfluid::fluidx::ObserversListDescriptor& ObsListDesc,
-                                               ObserversListInstance& ObsListInstance)
+void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::MonitoringDescriptor& MonDesc,
+                                                    MonitoringInstance& MonInstance)
 {
-  openfluid::fluidx::ObserversListDescriptor::SetDescription_t::const_iterator it;
+  openfluid::fluidx::MonitoringDescriptor::SetDescription_t::const_iterator it;
   ObserverInstance* OInstance;
 
-  for (it=ObsListDesc.getItems().begin();it!=ObsListDesc.getItems().end();++it)
+  for (it=MonDesc.getItems().begin();it!=MonDesc.getItems().end();++it)
   {
     // instanciation of a plugged observer using the plugin manager
     OInstance = ObserverPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::ObserverDescriptor*)(*it))->getID());
     OInstance->Params = (*it)->getParameters();
 
-    ObsListInstance.appendObserver(OInstance);
+    MonInstance.appendObserver(OInstance);
   }
 }
 
@@ -383,8 +383,6 @@ void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescri
                                                                     FluidXDesc.getRunDescriptor().getDeltaT());
 
   SimBlob.getRunDescriptor() = FluidXDesc.getRunDescriptor();
-
-  SimBlob.getOutputDescriptor() = FluidXDesc.getOutputDescriptor();
 
   fillRunEnvironmentFromDescriptor(FluidXDesc.getRunDescriptor());
 }

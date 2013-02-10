@@ -241,6 +241,8 @@ std::string EngineHelper::fromSubstituteToRealChar(std::string Substitute)
 // =====================================================================
 
 
+// TODO to be removed or replaced by monitoring
+/*
 Glib::ustring EngineHelper::fromHeaderTypeToHeaderString(
     openfluid::base::OutputFilesDescriptor::HeaderType Header)
 {
@@ -269,4 +271,4 @@ openfluid::base::OutputFilesDescriptor::HeaderType EngineHelper::fromHeaderStrin
     return openfluid::base::OutputFilesDescriptor::ColnamesAsData;
   else
     return openfluid::base::OutputFilesDescriptor::Info;
-}
+}*/

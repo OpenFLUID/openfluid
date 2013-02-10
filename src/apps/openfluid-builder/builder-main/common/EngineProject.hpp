@@ -66,7 +66,6 @@
 namespace openfluid {
 namespace base {
 class RuntimeEnvironment;
-class OutputDescriptor;
 }
 namespace core {
 class Datastore;
@@ -76,7 +75,7 @@ class IOListener;
 }
 namespace machine {
 class MachineListener;
-class ObserversListInstance;
+class MonitoringInstance;
 }
 namespace guicommon {
 class BuilderDescriptor;
@@ -105,11 +104,13 @@ class EngineProject
 
     void setDefaultRunDesc();
 
-    void setDefaultOutDesc();
+    // TODO to be removed or replaced by monitoring
+    //void setDefaultOutDesc();
 
     void checkAndSetDefaultRunValues();
 
-    void checkAndSetDefaultOutputValues();
+    // TODO to be removed or replaced by monitoring
+    //void checkAndSetDefaultOutputValues();
 
     void checkModelDesc();
 

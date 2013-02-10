@@ -138,7 +138,9 @@ void BuilderPretestInfo::checkDomainFilled()
 
 void BuilderPretestInfo::checkOutputsFilled()
 {
-  if (mp_SimBlob->getOutputDescriptor().getFileSets().empty())
+
+  // Disabled by JC, TODO to be completely removed and replaced by monitoring
+  /*if (mp_SimBlob->getOutputDescriptor().getFileSets().empty())
   {
     Outputs = false;
     OutputsMsg = _("No file format defined");
@@ -150,7 +152,7 @@ void BuilderPretestInfo::checkOutputsFilled()
   {
     if (!mp_SimBlob->getOutputDescriptor().getFileSets()[i].getSets().empty())
       return;
-  }
+  }*/
 
   Outputs = false;
   OutputsMsg = _("No set defined");

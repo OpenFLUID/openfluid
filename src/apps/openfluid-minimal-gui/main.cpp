@@ -64,7 +64,7 @@
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ObserversListInstance.hpp>
+#include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 
 #include <openfluid/guicommon/SimulationRunDialog.hpp>
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
   openfluid::base::IOListener* IOListen = new openfluid::base::IOListener();
   openfluid::machine::Engine* SimEngine;
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
-  openfluid::machine::ObserversListInstance ObsList(SBlob);
+  openfluid::machine::MonitoringInstance Monitoring(SBlob);
   openfluid::fluidx::FluidXDescriptor FXDesc(IOListen);
 
 
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
     openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),
         Model);
 
-    SimEngine = new openfluid::machine::Engine(SBlob, Model, ObsList, MachineListen);
+    SimEngine = new openfluid::machine::Engine(SBlob, Model, Monitoring, MachineListen);
 
   }
   catch (openfluid::base::OFException& E)

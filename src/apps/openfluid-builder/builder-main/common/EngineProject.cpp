@@ -73,7 +73,7 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/machine/ObserversListInstance.hpp>
+#include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Generator.hpp>
 
@@ -119,7 +119,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   if (FolderIn == "")
   {
     setDefaultRunDesc();
-    setDefaultOutDesc();
+    // TODO to be removed or replaced by monitoring
+    //setDefaultOutDesc();
   }
   else
   {
@@ -149,7 +150,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
     checkAndSetDefaultRunValues();
 
-    checkAndSetDefaultOutputValues();
+    // TODO to be removed or replaced by monitoring
+    //checkAndSetDefaultOutputValues();
 
     checkModelDesc();
 
@@ -264,6 +266,8 @@ void EngineProject::setDefaultRunDesc()
 // =====================================================================
 // =====================================================================
 
+// TODO to be removed or replaced by monitoring
+/*
 void EngineProject::setDefaultOutDesc()
 {
   openfluid::base::OutputDescriptor OutDesc;
@@ -273,6 +277,7 @@ void EngineProject::setDefaultOutDesc()
 
   mp_FXDesc->getOutputDescriptor() = OutDesc;
 }
+*/
 
 // =====================================================================
 // =====================================================================
@@ -309,7 +314,8 @@ void EngineProject::checkAndSetDefaultRunValues()
 
 // =====================================================================
 // =====================================================================
-
+// TODO to be removed or replaced by monitoring
+/*
 void EngineProject::checkAndSetDefaultOutputValues()
 {
   openfluid::base::OutputDescriptor& OutDesc = mp_FXDesc->getOutputDescriptor();
@@ -320,6 +326,8 @@ void EngineProject::checkAndSetDefaultOutputValues()
     OutDesc.getFileSets().push_back(FileDesc);
   }
 }
+*/
+
 
 // =====================================================================
 // =====================================================================
@@ -415,9 +423,9 @@ void EngineProject::run()
   openfluid::machine::ModelInstance* ModelInstance =
       new openfluid::machine::ModelInstance(*SimBlob, Listener);
 
-  openfluid::machine::ObserversListInstance ObsListInstance(*SimBlob);
+  openfluid::machine::MonitoringInstance MonitInstance(*SimBlob);
 
-  openfluid::machine::Engine Engine(*SimBlob, *ModelInstance, ObsListInstance,
+  openfluid::machine::Engine Engine(*SimBlob, *ModelInstance, MonitInstance,
                                     Listener);
 
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc,
@@ -426,8 +434,8 @@ void EngineProject::run()
   openfluid::machine::Factory::buildModelInstanceFromDescriptor(
       mp_FXDesc->getModelDescriptor(), *ModelInstance);
 
-  openfluid::machine::Factory::buildObserversListFromDescriptor(
-      mp_FXDesc->getObserversListDescriptor(), ObsListInstance);
+  openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(
+      mp_FXDesc->getMonitoringDescriptor(), MonitInstance);
 
   // no more used, TODO to clean
 //  mp_SimBlob->clearSimulationGarbage();

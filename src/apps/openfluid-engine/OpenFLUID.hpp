@@ -103,7 +103,7 @@ class OpenFLUIDApp
 
     void printFunctionsList();
 
-    void printObserversList();
+    void printMonitoring();
 
     void printFunctionsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix);
 
