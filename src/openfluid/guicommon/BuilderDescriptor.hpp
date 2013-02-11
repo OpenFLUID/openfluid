@@ -66,19 +66,17 @@ class BuilderDescriptor
 {
   private:
 
-    BuilderDomain m_Domain;
+    BuilderDomain* mp_Domain;
 
-    BuilderModel m_Model;
+    BuilderModel* mp_Model;
 
     openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
   public:
 
-    BuilderDescriptor();
+    BuilderDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
 
     ~BuilderDescriptor();
-
-    void setFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
 
     BuilderDomain& getDomain();
 

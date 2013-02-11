@@ -196,9 +196,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 //              OutputConsistencyMessage));
   }
 
-  mp_BuilderDesc = new openfluid::guicommon::BuilderDescriptor();
-  mp_BuilderDesc->setFluidXDescriptor(*mp_FXDesc);
-
+  mp_BuilderDesc = new openfluid::guicommon::BuilderDescriptor(*mp_FXDesc);
 }
 
 // =====================================================================

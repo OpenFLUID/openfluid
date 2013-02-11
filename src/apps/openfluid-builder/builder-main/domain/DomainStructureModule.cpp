@@ -87,6 +87,8 @@ ProjectWorkspaceModule(BuilderDesc)
 
   mp_Coordinator->signal_DomainChanged().connect(sigc::mem_fun(*this,
       &DomainStructureModule::whenDomainChanged));
+
+  mp_Coordinator->update();
 }
 
 // =====================================================================

@@ -83,7 +83,8 @@ ModelStructureModelImpl::ModelStructureModelImpl(
     openfluid::guicommon::BuilderModel& Model) :
     mp_Model(&Model), m_CurrentSelection(-1), m_AppRequestedSelection(-1)
 {
-  requestSelectionByAppAt(0);
+  if(Model.getItemsCount()>0)
+    m_AppRequestedSelection = 0;
 }
 
 // =====================================================================

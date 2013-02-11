@@ -59,16 +59,21 @@
 #include <openfluid/fluidx/IDataDescriptor.hpp>
 #include <stdexcept>
 
-
 namespace openfluid {
 namespace guicommon {
 
 // =====================================================================
 // =====================================================================
 
-BuilderDomain::BuilderDomain() :
-    mp_DomainDesc(0)
+BuilderDomain::BuilderDomain(openfluid::fluidx::DomainDescriptor& DomainDesc) :
+    mp_DomainDesc(&DomainDesc)
 {
+  dispatchUnits();
+
+  dispatchIData();
+  checkIDataConsistency();
+
+  dispatchEvents();
 }
 
 // =====================================================================
@@ -76,22 +81,6 @@ BuilderDomain::BuilderDomain() :
 
 BuilderDomain::~BuilderDomain()
 {
-}
-
-// =====================================================================
-// =====================================================================
-
-void BuilderDomain::setDomainDescriptor(
-    openfluid::fluidx::DomainDescriptor& DomainDesc)
-{
-  mp_DomainDesc = &DomainDesc;
-
-  dispatchUnits();
-
-  dispatchIData();
-  checkIDataConsistency();
-
-  dispatchEvents();
 }
 
 // =====================================================================
@@ -306,15 +295,38 @@ std::set<std::string> BuilderDomain::getClassNames()
 
 void BuilderDomain::addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc)
 {
+  std::string ClassName = UnitDesc->getUnitClass();
+  int ID = UnitDesc->getUnitID();
+
   // add in m_Units
-  if (!m_Units[UnitDesc->getUnitClass()].insert(
-      std::make_pair(UnitDesc->getUnitID(), BuilderUnit(*UnitDesc))).second)
+  if (!m_Units[ClassName].insert(std::make_pair(ID, BuilderUnit(*UnitDesc))).second)
     throw openfluid::base::OFException(
         "OpenFLUID-Builder", "BuilderDomain::addUnit",
         "trying to add a Unit that already exists");
 
   // add in DomainDesc
   mp_DomainDesc->getUnits().push_back(*UnitDesc);
+
+  // add Input Data
+  std::set<std::string> IDataNames = getInputDataNames(ClassName);
+
+  if (IDataNames.empty())
+    return;
+
+  openfluid::fluidx::InputDataDescriptor IDataDesc;
+
+  IDataDesc.getUnitsClass() = ClassName;
+  BuilderUnit& BUnit = m_Units.at(ClassName).at(ID);
+
+  for (std::set<std::string>::iterator it = IDataNames.begin();
+      it != IDataNames.end(); ++it)
+  {
+    IDataDesc.getColumnsOrder().push_back(*it);
+    IDataDesc.getData()[ID][*it] = "-";
+    BUnit.m_IData[*it] = new std::string("-");
+  }
+
+  mp_DomainDesc->getInputData().push_back(IDataDesc);
 }
 
 // =====================================================================
@@ -569,4 +581,5 @@ void BuilderDomain::renameInputData(std::string ClassName,
 // =====================================================================
 // =====================================================================
 
-}} // namespaces
+}
+} // namespaces

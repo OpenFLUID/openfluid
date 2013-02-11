@@ -76,6 +76,8 @@ ProjectWorkspaceModule(BuilderDesc)
 
   mp_SimulRunMVP->getModel()->signal_SimulRunChanged().connect(sigc::mem_fun(
       *this, &SimulationRunModule::whenRunChanged));
+
+  mp_SimulRunMVP->getModel()->signal_FromAppDescriptorChanged().emit();
 }
 
 // =====================================================================

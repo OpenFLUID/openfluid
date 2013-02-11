@@ -62,18 +62,19 @@ namespace guicommon {
 
 class BuilderModel
 {
+  protected:
+
     openfluid::fluidx::CoupledModelDescriptor* mp_ModelDesc;
 
     void checkModel();
 
+    BuilderModel(){};
+
   public:
 
-    BuilderModel();
+    BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
 
     ~BuilderModel();
-
-    void setModelDescriptor(
-        openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
 
     const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems();
 

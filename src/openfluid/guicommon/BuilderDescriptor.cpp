@@ -60,9 +60,11 @@ namespace guicommon {
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::BuilderDescriptor()
+BuilderDescriptor::BuilderDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc)
 {
-
+  mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
+  mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
+  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
 }
 
 // =====================================================================
@@ -76,20 +78,9 @@ BuilderDescriptor::~BuilderDescriptor()
 // =====================================================================
 // =====================================================================
 
-void BuilderDescriptor::setFluidXDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
-{
-  m_Domain.setDomainDescriptor(FluidXDesc.getDomainDescriptor());
-  m_Model.setModelDescriptor(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-}
-
-// =====================================================================
-// =====================================================================
-
 BuilderDomain& BuilderDescriptor::getDomain()
 {
-  return m_Domain;
+  return *mp_Domain;
 }
 
 // =====================================================================
@@ -97,7 +88,7 @@ BuilderDomain& BuilderDescriptor::getDomain()
 
 BuilderModel& BuilderDescriptor::getModel()
 {
-  return m_Model;
+  return *mp_Model;
 }
 
 // =====================================================================

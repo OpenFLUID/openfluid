@@ -99,6 +99,7 @@ BOOST_AUTO_TEST_CASE(test_SetEmptyCoreRepos)
   mp_Component = new DomainStructureComponent(EngProject->getBuilderDesc().getDomain());
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
   mp_View = (DomainStructureViewSub*) (mp_Component->getView());
+  mp_Model->update();
 
   BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
   BOOST_CHECK_EQUAL(mp_Model->getSelectedClass(), "");
@@ -122,6 +123,7 @@ BOOST_AUTO_TEST_CASE(test_SetDomain)
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
   mp_View = (DomainStructureViewSub*) (mp_Component->getView());
+  mp_Model->update();
 
   BOOST_CHECK(
       mp_Model->getSelectedUnit() == &Domain->getUnitDescriptor("ParentTestUnits",1));
@@ -146,6 +148,7 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
   mp_View = (DomainStructureViewSub*) (mp_Component->getView());
+  mp_Model->update();
 
   mp_Model->addUnit(createAUnitDesc("class A", 100, 2));
 
@@ -196,6 +199,7 @@ BOOST_AUTO_TEST_CASE(test_selectClass)
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
   mp_View = (DomainStructureViewSub*) (mp_Component->getView());
+  mp_Model->update();
 
   // select class B
   mp_View->selectClassWithIndex(1);
@@ -222,6 +226,7 @@ BOOST_AUTO_TEST_CASE(test_selectUnit)
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
   mp_View = (DomainStructureViewSub*) (mp_Component->getView());
+  mp_Model->update();
 
   mp_Model->addUnit(createAUnitDesc("class A", 100, 2));
   mp_Model->addUnit(createAUnitDesc("class B", 200, 3));
@@ -265,6 +270,7 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedUnit)
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
   mp_View = (DomainStructureViewSub*) (mp_Component->getView());
+  mp_Model->update();
 
   mp_Model->addUnit(createAUnitDesc("class A", 100, 2));
   mp_Model->addUnit(createAUnitDesc("class B", 200, 3));

@@ -68,8 +68,6 @@ DomainStructureComponent::DomainStructureComponent(openfluid::guicommon::Builder
   mp_AdapterModel = new DomainStructureAdapterModelImpl(*TreeColumns);
   mp_Adapter = new DomainStructureAdapter(*mp_AdapterModel, *mp_View);
   mp_Presenter = new DomainStructurePresenter(*mp_Model, *mp_Adapter);
-
-  mp_Model->update();
 }
 DomainStructureComponent::~DomainStructureComponent()
 {

@@ -85,8 +85,9 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
 
   public:
 
+    //TODO change workspaceTab extensions constructors
     DummyWorkspaceTab() :
-      mp_TestUnitsColl(0)
+      WorkspaceTab(*(openfluid::guicommon::BuilderDescriptor*)0), mp_TestUnitsColl(0)
     {
       Gtk::Label* Label = Gtk::manage(new Gtk::Label("I am DummyWorkspaceTab"));
 
