@@ -1063,48 +1063,51 @@ std::string FluidXDescriptor::getParamsAsStr(const openfluid::ware::WareParams_t
 // =====================================================================
 // =====================================================================
 
-
-void FluidXDescriptor::setModelToWrite(openfluid::machine::ModelInstance& MInstance)
+std::string FluidXDescriptor::getModelToWrite()
 {
-  if (MInstance.getItemsCount() > 0)
-  {
+  if(m_ModelDescriptor.getItems().empty())
+    return "";
+
     std::ostringstream Contents;
 
     Contents << m_IndentStr << "<model>\n";
 
-    if (MInstance.getGlobalParameters().size() > 0)
+    if(m_ModelDescriptor.getGlobalParameters().size() > 0)
     {
       Contents << m_IndentStr << m_IndentStr << "<gparams>\n";
-      Contents << getParamsAsStr(MInstance.getGlobalParameters());
+      Contents << getParamsAsStr(m_ModelDescriptor.getGlobalParameters());
       Contents << m_IndentStr << m_IndentStr << "</gparams>\n";
     }
 
-
-    const std::list<openfluid::machine::ModelItemInstance*> Items = MInstance.getItems();
-    std::list<openfluid::machine::ModelItemInstance*>::const_iterator itFuncs;
+    const std::list<openfluid::fluidx::ModelItemDescriptor*> Items = m_ModelDescriptor.getItems();
+    std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itFuncs;
 
     for (itFuncs=Items.begin();itFuncs!=Items.end();++itFuncs)
     {
 
-      if ((*itFuncs)->ItemType == openfluid::fluidx::ModelItemDescriptor::PluggedFunction)
+      if ((*itFuncs)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
       {
-        Contents << m_IndentStr << m_IndentStr << "<function fileID=\"" << (*itFuncs)->Signature->ID << "\">\n";
-        Contents << getParamsAsStr((*itFuncs)->Params);
+        openfluid::fluidx::FunctionDescriptor* FuncDesc = dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*itFuncs);
+
+        Contents << m_IndentStr << m_IndentStr << "<function fileID=\"" << FuncDesc->getFileID() << "\">\n";
+        Contents << getParamsAsStr(FuncDesc->getParameters());
         Contents << m_IndentStr << m_IndentStr << "</function>\n";
       }
 
-      if ((*itFuncs)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator && (*itFuncs)->GeneratorInfo != NULL)
+      if ((*itFuncs)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
       {
-        Contents << m_IndentStr << m_IndentStr << "<generator varname=\"" << (*itFuncs)->GeneratorInfo->VariableName << "\" "
-                                               << "unitclass=\"" <<  (*itFuncs)->GeneratorInfo->UnitClass  << "\" "
-                                               << "method=\"" <<  getGeneratorMethodAsStr((*itFuncs)->GeneratorInfo->GeneratorMethod) << "\"";
+        openfluid::fluidx::GeneratorDescriptor* GenDesc = dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*itFuncs);
+
+        Contents << m_IndentStr << m_IndentStr << "<generator varname=\"" << GenDesc->getVariableName() << "\" "
+                                               << "unitclass=\"" << GenDesc->getUnitClass() << "\" "
+                                               << "method=\"" <<  getGeneratorMethodAsStr(GenDesc->getGeneratorMethod()) << "\"";
 
 
-        if ((*itFuncs)->GeneratorInfo->VariableSize != 1)
-          Contents << " varsize=\"" <<  (*itFuncs)->GeneratorInfo->VariableSize << "\"";
+        if (GenDesc->getVariableSize() != 1)
+          Contents << " varsize=\"" <<  GenDesc->getVariableSize() << "\"";
 
         Contents << ">\n";
-        Contents << getParamsAsStr((*itFuncs)->Params);
+        Contents << getParamsAsStr(GenDesc->getParameters());
         Contents << m_IndentStr << m_IndentStr << "</generator>\n";
       }
 
@@ -1113,10 +1116,8 @@ void FluidXDescriptor::setModelToWrite(openfluid::machine::ModelInstance& MInsta
 
     Contents << m_IndentStr << "</model>\n";
 
-    m_ModelStrToWrite  = Contents.str();
-  }
+    return Contents.str();
 }
-
 
 // =====================================================================
 // =====================================================================
@@ -1498,7 +1499,7 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_ModelStrToWrite << "\n\n";
+  OutFile << getModelToWrite() << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1588,7 +1589,7 @@ void FluidXDescriptor::WriteToSingleFile(std::string FilePath)
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
 
-  OutFile << m_ModelStrToWrite << "\n\n";
+  OutFile << getModelToWrite() << "\n\n";
   OutFile << m_DomainStrToWrite << "\n\n";
   OutFile << m_RunStrToWrite << "\n\n";
   OutFile << m_OutputStrToWrite << "\n\n";

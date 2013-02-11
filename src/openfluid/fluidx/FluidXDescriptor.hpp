@@ -106,7 +106,6 @@ class FluidXDescriptor
 
     openfluid::base::IOListener* mp_Listener;
 
-    std::string m_ModelStrToWrite;
     std::string m_RunStrToWrite;
     std::string m_DomainStrToWrite;
     std::string m_OutputStrToWrite;
@@ -162,6 +161,8 @@ class FluidXDescriptor
     std::string getParamsAsStr(
         const openfluid::ware::WareParams_t& Params) const;
 
+    std::string getModelToWrite();
+
     void setRunConfigurationToWrite();
 
     void setOutputConfigurationToWrite();
@@ -207,8 +208,6 @@ class FluidXDescriptor
 
     // =====================================================================
     // =====================================================================
-
-    void setModelToWrite(openfluid::machine::ModelInstance& MInstance);
 
     void setDomainToWrite(const openfluid::core::CoreRepository& CoreData);
 
