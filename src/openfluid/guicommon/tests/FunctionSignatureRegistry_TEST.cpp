@@ -58,8 +58,11 @@
 #define BOOST_TEST_MODULE builder_unittest_FunctionSignatureRegistry
 #include <boost/test/unit_test.hpp>
 
+#include "tests-config.hpp"
 #include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -102,3 +105,24 @@ BOOST_AUTO_TEST_CASE(test_add)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
+{
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+            CONFIGTESTS_OUTPUT_BINARY_DIR);
+
+  openfluid::guicommon::FunctionSignatureRegistry* Reg = openfluid::guicommon::FunctionSignatureRegistry::getInstance();
+  Reg->updatePluggableSignatures();
+
+  openfluid::machine::ModelItemSignatureInstance* Sign = Reg->getSignatureItemInstance("tests.primitives.use");
+
+  BOOST_CHECK_EQUAL(Sign->Signature->ID,"tests.primitives.use");
+
+  openfluid::fluidx::FunctionDescriptor ItemDesc("tests.primitives.use");
+
+  openfluid::machine::ModelItemSignatureInstance* Sign2 = Reg->getSignatureItemInstance(&ItemDesc);
+
+  BOOST_CHECK_EQUAL(Sign2->Signature->ID,"tests.primitives.use");
+}
+
+// =====================================================================
+// =====================================================================

@@ -88,8 +88,6 @@ class ModelStructureCoordinator: public sigc::trackable
 
     sigc::signal<void> m_signal_ModelChanged;
 
-    openfluid::guicommon::FunctionSignatureRegistry* mp_SignatureRegistry;
-
     openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     ModelFctDetailModel& m_FctDetailModel;

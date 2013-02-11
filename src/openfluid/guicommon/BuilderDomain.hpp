@@ -126,11 +126,9 @@ class BuilderDomain
 
   public:
 
-    BuilderDomain();
+    BuilderDomain(openfluid::fluidx::DomainDescriptor& DomainDesc);
 
     ~BuilderDomain();
-
-    void setDomainDescriptor(openfluid::fluidx::DomainDescriptor& DomainDesc);
 
     /**
      *
@@ -171,6 +169,8 @@ class BuilderDomain
     std::set<std::string> getClassNames();
 
     /**
+     * @details Add this UnitDesc ID to the IData descriptor for all input data of this UnitDesc class,
+     * with a default value of "-"
      * @throw openfluid::base::OFException if Unit already exists
      * @param UnitDesc
      */

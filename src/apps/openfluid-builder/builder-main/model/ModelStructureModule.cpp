@@ -93,6 +93,8 @@ ProjectWorkspaceModule(BuilderDesc)
 
   mp_Coordinator->signal_ModelChanged().connect(sigc::mem_fun(*this,
       &ModelStructureModule::whenModelChanged));
+
+  mp_Coordinator->update();
 }
 
 // =====================================================================
