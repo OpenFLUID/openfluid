@@ -107,11 +107,8 @@ class FluidXDescriptor
     openfluid::base::IOListener* mp_Listener;
 
     std::string m_RunStrToWrite;
-    std::string m_DomainStrToWrite;
     std::string m_OutputStrToWrite;
     std::string m_DataStrToWrite;
-
-    openfluid::core::InstantiationInfo::Type m_InstType;
 
     std::string m_IndentStr;
 
@@ -163,6 +160,14 @@ class FluidXDescriptor
 
     std::string getModelToWrite();
 
+    std::string getDomainToWrite();
+
+    void writeDomainDefinition(std::ostringstream& Contents);
+
+    void writeDomainInputdata(std::ostringstream& Contents);
+
+    void writeDomainCalendar(std::ostringstream& Contents);
+
     void setRunConfigurationToWrite();
 
     void setOutputConfigurationToWrite();
@@ -209,16 +214,7 @@ class FluidXDescriptor
     // =====================================================================
     // =====================================================================
 
-    void setDomainToWrite(const openfluid::core::CoreRepository& CoreData);
-
     void setDatastoreToWrite(const openfluid::core::Datastore& Store);
-
-    void setInstantiationType(
-        const openfluid::core::InstantiationInfo::Type& InstType)
-    {
-      m_InstType = InstType;
-    }
-    ;
 
     void WriteToManyFiles(std::string DirPath);
 

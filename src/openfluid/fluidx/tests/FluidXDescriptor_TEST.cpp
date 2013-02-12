@@ -717,7 +717,6 @@ BOOST_AUTO_TEST_CASE(check_write_operations)
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,SBlob);
   openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),MInstance);
 
-  FXDesc.setDomainToWrite(SBlob.getCoreRepository());
   FXDesc.setDatastoreToWrite(SBlob.getDatastore());
 
   FXDesc.WriteToManyFiles(OutputDirMany);

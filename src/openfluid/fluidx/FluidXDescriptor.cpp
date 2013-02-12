@@ -88,7 +88,7 @@ namespace fluidx {
 // =====================================================================
 
 FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
-    mp_Listener(Listener),  m_InstType(openfluid::core::InstantiationInfo::DESCRIPTOR),
+    mp_Listener(Listener),
     m_IndentStr(" ")
 {
   if (!mp_Listener)
@@ -1145,187 +1145,144 @@ void FluidXDescriptor::setRunConfigurationToWrite()
 
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-void FluidXDescriptor::setDomainToWrite(const openfluid::core::CoreRepository& CoreData)
+std::string FluidXDescriptor::getDomainToWrite()
 {
-  if (!CoreData.getUnitsGlobally()->empty())
-  {
+  if (m_DomainDescriptor.getUnits().empty())
+    return "";
+
     std::ostringstream Contents;
 
     Contents << m_IndentStr << "<domain>\n";
 
-    Contents << m_IndentStr << m_IndentStr << "<definition>\n";
+    writeDomainDefinition(Contents);
 
-    const openfluid::core::UnitsListByClassMap_t* UnitsByClass = CoreData.getUnitsByClass();
-    const openfluid::core::UnitsList_t* UnitsList = NULL;
-    const openfluid::core::UnitsPtrList_t* AllUnitsPtrList = NULL;
-    openfluid::core::UnitsPtrList_t::const_iterator itAllUnits;
-    std::vector<openfluid::core::UnitClass_t> ClassVector;
-    openfluid::core::Unit* TheUnit;
+    writeDomainInputdata(Contents);
 
-    openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
-    openfluid::core::UnitsList_t::const_iterator itUnitsList;
-
-
-    for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
-    {
-      ClassVector.push_back((*itUnitsClass).first);
-    }
-
-    for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
-    {
-
-      UnitsList=((*itUnitsClass).second).getList();
-
-      for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
-      {
-        TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
-
-        if (TheUnit->getInstantiationType() == m_InstType)
-        {
-          Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<unit class=\"" << TheUnit->getClass() << "\" ID=\"" << TheUnit->getID() << "\" pcsorder=\"" << TheUnit->getProcessOrder() << "\">\n";
-
-          for (unsigned int i=0;i<ClassVector.size();i++)
-          {
-
-
-            const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getToUnits(ClassVector[i]));
-
-
-            if (ToUnits != NULL)
-            {
-
-              std::string DestClassStr = ClassVector[i];
-              openfluid::core::UnitsPtrList_t::const_iterator itToUnits;
-
-              for (itToUnits=ToUnits->begin();itToUnits!=ToUnits->end();++itToUnits)
-              {
-                Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr << "<to class=\"" << (*itToUnits)->getClass() << "\" ID=\"" << (*itToUnits)->getID() << "\" />\n";
-              }
-            }
-
-            const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getParentUnits(ClassVector[i]));
-
-            if (ParentUnits != NULL)
-            {
-              std::string DestClassStr = ClassVector[i];
-              openfluid::core::UnitsPtrList_t::const_iterator itParentUnits;
-
-              for (itParentUnits=ParentUnits->begin();itParentUnits!=ParentUnits->end();++itParentUnits)
-              {
-                Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr << "<childof class=\"" << (*itParentUnits)->getClass() << "\" ID=\"" << (*itParentUnits)->getID() << "\" />\n";
-
-              }
-            }
-          }
-          Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</unit>\n";
-        }
-      }
-    }
-
-    Contents << m_IndentStr << m_IndentStr << "</definition>\n";
-
-
-    std::vector<openfluid::core::InputDataName_t> IDataNames;
-
-    for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
-    {
-
-      UnitsList = ((*itUnitsClass).second).getList();
-
-      if (!UnitsList->empty())
-      {
-
-        TheUnit = const_cast<openfluid::core::Unit*>(&(UnitsList->front()));
-
-        IDataNames.clear();
-        IDataNames = TheUnit->getInputData()->getInputDataNames();
-
-        if (!IDataNames.empty())
-        {
-          Contents << m_IndentStr << m_IndentStr << "<inputdata unitclass=\"" <<  ((*itUnitsClass).first) << "\" colorder=\"";
-
-          for (unsigned int j=0;j<IDataNames.size();j++)
-          {
-            Contents << IDataNames[j];
-            if (j!=(IDataNames.size()-1)) Contents << ";";
-          }
-
-          Contents << "\">\n";
-
-          for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
-          {
-            TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
-            if (TheUnit->getInstantiationType() == m_InstType)
-            {
-              Contents << TheUnit->getID() << "\t";
-
-              for (unsigned int j=0;j<IDataNames.size();j++)
-              {
-                std::string ValueStr;
-                TheUnit->getInputData()->getValue(IDataNames[j],ValueStr);
-                Contents << ValueStr;
-                if (j!=(IDataNames.size()-1)) Contents << "\t";
-              }
-              Contents << "\n";
-            }
-          }
-          Contents << m_IndentStr << m_IndentStr << "</inputdata>\n";
-        }
-      }
-    }
-
-
-
-    Contents << m_IndentStr << m_IndentStr << "<calendar>\n";
-
-    AllUnitsPtrList = CoreData.getUnitsGlobally();
-    for (itAllUnits = AllUnitsPtrList->begin();itAllUnits != AllUnitsPtrList->end();++itAllUnits)
-    {
-      if ((*itAllUnits)->getInstantiationType() == m_InstType && (*itAllUnits)->getEvents()->getCount() > 0)
-      {
-        openfluid::core::EventsList_t *Events = (*itAllUnits)->getEvents()->getEventsList();
-        openfluid::core::EventsList_t::iterator itEvents;
-
-        for (itEvents = Events->begin();itEvents != Events->end();++itEvents)
-        {
-          if((*itEvents).getInstantiationType() == m_InstType)
-          {
-            openfluid::core::Event::EventInfosMap_t Infos = (*itEvents).getInfos();
-            openfluid::core::Event::EventInfosMap_t::iterator itInfos;
-
-
-            Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<event unitclass=\"" << (*itAllUnits)->getClass() << "\" " <<
-                "unitID=\"" << (*itAllUnits)->getID() << "\" " <<
-                "date=\"" << (*itEvents).getDateTime().getAsISOString() << "\">\n";
-
-            for (itInfos = Infos.begin();itInfos != Infos.end();++itInfos)
-            {
-              Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr;
-              Contents << "<info key=\"" << itInfos->first << "\" value=\"" << itInfos->second << "\" />\n";
-            }
-
-            Contents << m_IndentStr << m_IndentStr << m_IndentStr <<"</event>\n";
-          }
-
-        }
-
-      }
-    }
-
-    Contents << m_IndentStr << m_IndentStr << "</calendar>\n";
-
+    writeDomainCalendar(Contents);
 
     Contents << m_IndentStr << "</domain>\n";
 
-    m_DomainStrToWrite = Contents.str();
-  }
+    return Contents.str();
 }
 
+// =====================================================================
+// =====================================================================
+
+void FluidXDescriptor::writeDomainDefinition(std::ostringstream& Contents)
+{
+  Contents << m_IndentStr << m_IndentStr << "<definition>\n";
+
+  std::list<openfluid::fluidx::UnitDescriptor>& Units = m_DomainDescriptor.getUnits();
+
+  std::list<openfluid::core::UnitClassID_t>::iterator itRelation;
+
+  for(std::list<openfluid::fluidx::UnitDescriptor>::iterator itUnits = Units.begin(); itUnits!=Units.end(); ++itUnits)
+  {
+    Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<unit class=\"" << itUnits->getUnitClass()
+                          << "\" ID=\"" << itUnits->getUnitID() << "\" pcsorder=\"" << itUnits->getProcessOrder() << "\">\n";
+
+    std::list<openfluid::core::UnitClassID_t>& Tos = itUnits->getUnitsTos();
+    for(itRelation = Tos.begin(); itRelation != Tos.end(); ++itRelation)
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+      << "<to class=\"" << itRelation->first << "\" ID=\"" << itRelation->second << "\" />\n";
+
+    std::list<openfluid::core::UnitClassID_t>& Parents = itUnits->getUnitsParents();
+    for(itRelation = Parents.begin(); itRelation != Parents.end(); ++itRelation)
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+      << "<childof class=\"" << itRelation->first << "\" ID=\"" << itRelation->second << "\" />\n";
+
+    Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</unit>\n";
+  }
+
+  Contents << m_IndentStr << m_IndentStr << "</definition>\n";
+}
+
+// =====================================================================
+// =====================================================================
+
+void FluidXDescriptor::writeDomainInputdata(std::ostringstream& Contents)
+{
+
+  std::list<InputDataDescriptor>& IData = m_DomainDescriptor.getInputData();
+
+  openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t::iterator itMap;
+  openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t::iterator itVal;
+
+ for(std::list<InputDataDescriptor>::iterator itData = IData.begin(); itData != IData.end() ; ++itData)
+ {
+   Contents << m_IndentStr << m_IndentStr << "<inputdata unitclass=\"" <<  itData->getUnitsClass() << "\" colorder=\"";
+
+   std::vector<std::string> Cols = itData->getColumnsOrder();
+   if(!Cols.empty())
+   {
+     int Max = Cols.size() -1;
+     for(int i=0; i<Max; i++)
+       Contents << Cols[i] << ";";
+     Contents << Cols[Max];
+   }
+
+   Contents << "\">\n";
+
+
+   openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t& DataMap = itData->getData();
+
+   for(itMap=DataMap.begin(); itMap !=DataMap.end(); ++itMap)
+   {
+     Contents << itMap->first << "\t";
+
+     openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t& DataVals = itMap->second;
+     if(!DataVals.empty())
+     {
+       itVal = DataVals.begin();
+       for(; itVal != DataVals.end().operator --(); ++itVal)
+         Contents << itVal->second << "\t";
+       Contents << itVal->second;
+     }
+
+     Contents << "\n";
+   }
+
+   Contents << m_IndentStr << m_IndentStr << "</inputdata>\n";
+ }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void FluidXDescriptor::writeDomainCalendar(std::ostringstream& Contents)
+{
+  std::list<EventDescriptor>& Events = m_DomainDescriptor.getEvents();
+
+  if(Events.empty())
+    return;
+
+  Contents << m_IndentStr << m_IndentStr << "<calendar>\n";
+
+  openfluid::core::Event::EventInfosMap_t::iterator itInfos;
+
+  for(std::list<EventDescriptor>::iterator it = Events.begin(); it != Events.end(); ++it)
+  {
+    Contents << m_IndentStr << m_IndentStr << m_IndentStr
+        << "<event unitclass=\"" << it->getUnitClass() << "\" "
+        << "unitID=\"" <<it->getUnitID() << "\" "
+        << "date=\"" << it->getEvent().getDateTime().getAsISOString() << "\">\n";
+
+    openfluid::core::Event::EventInfosMap_t Infos = it->getEvent().getInfos();
+    for(itInfos = Infos.begin(); itInfos != Infos.end(); ++itInfos)
+    {
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+          << "<info key=\"" << itInfos->first << "\" value=\"" << itInfos->second << "\" />\n";
+    }
+
+    Contents << m_IndentStr << m_IndentStr << m_IndentStr <<"</event>\n";
+  }
+
+  Contents << m_IndentStr << m_IndentStr << "</calendar>\n";
+}
 
 // =====================================================================
 // =====================================================================
@@ -1513,7 +1470,7 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_DomainStrToWrite << "\n\n";
+  OutFile << getDomainToWrite() << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1590,7 +1547,7 @@ void FluidXDescriptor::WriteToSingleFile(std::string FilePath)
   OutFile << "<openfluid>\n";
 
   OutFile << getModelToWrite() << "\n\n";
-  OutFile << m_DomainStrToWrite << "\n\n";
+  OutFile << getDomainToWrite() << "\n\n";
   OutFile << m_RunStrToWrite << "\n\n";
   OutFile << m_OutputStrToWrite << "\n\n";
   OutFile << m_DataStrToWrite << "\n\n";
