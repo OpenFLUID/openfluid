@@ -55,27 +55,17 @@
 #ifndef FLUIDXDESCRIPTOR_HPP_
 #define FLUIDXDESCRIPTOR_HPP_
 
-#include <openfluid/ware/PluggableWare.hpp>
+#include <libxml/tree.h>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
-#include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/core/InstantiationInfo.hpp>
-#include <libxml/tree.h>
-#include <string>
 
 namespace openfluid {
 
-namespace core {
-class CoreRepository;
-class Datastore;
-}
-namespace machine {
-class ModelInstance;
-}
 namespace base {
 class IOListener;
 }
@@ -106,10 +96,6 @@ class FluidXDescriptor
 
     openfluid::base::IOListener* mp_Listener;
 
-    std::string m_RunStrToWrite;
-    std::string m_OutputStrToWrite;
-    std::string m_DataStrToWrite;
-
     std::string m_IndentStr;
 
     void extractMonitoringFromNode(xmlNodePtr NodePtr);
@@ -119,8 +105,6 @@ class FluidXDescriptor
     openfluid::ware::WareParams_t mergeParams(
         const openfluid::ware::WareParams_t& Params,
         const openfluid::ware::WareParams_t& OverloadParams);
-
-    void propagateGlobalParamsInModel();
 
     void extractModelFromNode(xmlNodePtr NodePtr);
 
@@ -168,9 +152,11 @@ class FluidXDescriptor
 
     void appendDomainCalendar(std::ostringstream& Contents);
 
-    void setRunConfigurationToWrite();
+    std::string getRunConfigurationToWrite();
 
-    void setOutputConfigurationToWrite();
+//    void setOutputConfigurationToWrite();
+
+    std::string getDatastoreToWrite();
 
   public:
 
@@ -214,11 +200,9 @@ class FluidXDescriptor
     // =====================================================================
     // =====================================================================
 
-    void setDatastoreToWrite(const openfluid::core::Datastore& Store);
+    void writeToManyFiles(std::string DirPath);
 
-    void WriteToManyFiles(std::string DirPath);
-
-    void WriteToSingleFile(std::string FilePath);
+    void writeToSingleFile(std::string FilePath);
 };
 
 }

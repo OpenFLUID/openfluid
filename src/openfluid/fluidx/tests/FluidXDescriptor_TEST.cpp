@@ -700,25 +700,11 @@ BOOST_AUTO_TEST_CASE(check_write_operations)
   std::string InputDir = CONFIGTESTS_INPUT_DATASETS_DIR+"/OPENFLUID.IN.FluidXWriter";
   std::string OutputDirSingle = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterSingle";
   std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterMany";
-  std::string PlugsDir = CONFIGTESTS_OUTPUT_BINARY_DIR;
 
-
-  openfluid::base::RuntimeEnvironment* RunEnv;
   openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
-  openfluid::machine::SimulationBlob SBlob;
-  openfluid::machine::ModelInstance MInstance(SBlob,NULL);
-
-  RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
-
-  RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
 
   FXDesc.loadFromDirectory(InputDir);
 
-  openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,SBlob);
-  openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),MInstance);
-
-  FXDesc.setDatastoreToWrite(SBlob.getDatastore());
-
-  FXDesc.WriteToManyFiles(OutputDirMany);
-  FXDesc.WriteToSingleFile(OutputDirSingle+"/all.fluidx");
+  FXDesc.writeToManyFiles(OutputDirMany);
+  FXDesc.writeToSingleFile(OutputDirSingle+"/all.fluidx");
 }
