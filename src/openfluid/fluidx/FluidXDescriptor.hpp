@@ -162,11 +162,11 @@ class FluidXDescriptor
 
     std::string getDomainToWrite();
 
-    void writeDomainDefinition(std::ostringstream& Contents);
+    void appendDomainDefinition(std::ostringstream& Contents);
 
-    void writeDomainInputdata(std::ostringstream& Contents);
+    void appendDomainInputdata(std::ostringstream& Contents);
 
-    void writeDomainCalendar(std::ostringstream& Contents);
+    void appendDomainCalendar(std::ostringstream& Contents);
 
     void setRunConfigurationToWrite();
 
