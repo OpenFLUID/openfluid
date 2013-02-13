@@ -158,6 +158,11 @@ class FluidXDescriptor
 
     std::string getDatastoreToWrite();
 
+    std::string getMonitoringToWrite();
+
+    void appendPTreeParams(const boost::property_tree::ptree& Parent,
+                            const std::string& Name, std::ostringstream& Contents);
+
   public:
 
 

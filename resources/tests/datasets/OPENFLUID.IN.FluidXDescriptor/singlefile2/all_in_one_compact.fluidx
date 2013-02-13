@@ -16,7 +16,7 @@
 
     <function fileID="tests.functionA" />
 
-    <generator varname="tests.generator.fixed" varsize="11" unitclass="TU" method="fixed">
+    <generator varname="tests.generator.fixed" unitclass="TU" method="fixed" varsize="11">
       <param name="fixedvalue" value="20" />
     </generator>
 
@@ -40,6 +40,80 @@
 
   <monitoring>
 
+   <observer ID="output.files.csv">
+
+      <param name="format.ft1.colsep" value=" " />
+      <param name="format.ft1.dtformat" value="%Y %m %d %H %M %S" />
+      <param name="format.ft1.commentchar" value="%" />
+      <param name="set.full.format" value="ft1" />
+      <param name="set.full.unitsclass" value="XU" />
+      <param name="set.full.unitsIDs" value="*" />
+      <param name="set.full.vars" value="*" />
+      <param name="set.2vars.format" value="ft1" />
+      <param name="set.2vars.unitsclass" value="YU" />
+      <param name="set.2vars.unitsIDs" value="*" />
+      <param name="set.2vars.vars" value="var1;var2[]" />
+      <param name="set.2vars.precision" value="3" />
+      <param name="set.3units.format" value="ft1" />
+      <param name="set.3units.unitsclass" value="ZU" />
+      <param name="set.3units.unitsIDs" value="5;197;73" />
+      <param name="set.3units.vars" value="*" />
+      <param name="set.3units.precision" value="5" />      
+    
+      <param name="format.ft2.colsep" value=";" />
+      <param name="format.ft2.dtformat" value="%Y%m%dT%H%M%S" />
+      <param name="format.ft2.commentchar" value="#" />
+      <param name="set.full2.format" value="ft2" />
+      <param name="set.full2.unitsclass" value="KU" />
+      <param name="set.full2.unitsIDs" value="*" />
+      <param name="set.full2.vars" value="*" />
+      <param name="set.full2.precision" value="9" />
+      <param name="set.3vars.format" value="ft2" />  
+      <param name="set.3vars.unitsclass" value="LU" />
+      <param name="set.3vars.unitsIDs" value="*" />
+      <param name="set.3vars.vars" value="var1;var2[];var5" />
+      <param name="set.2units.format" value="ft2" />  
+      <param name="set.2units.unitsclass" value="MU" />
+      <param name="set.2units.unitsIDs" value="2;1" />
+      <param name="set.2units.vars" value="*" />
+      
+	  <param name="set.full3.format" value="ft3" />  
+      <param name="set.full3.unitsclass" value="UU" />
+      <param name="set.full3.unitsIDs" value="*" />
+      <param name="set.full3.vars" value="*" />
+      
+      <param name="format.ft4.dtformat" value="iso" />
+	  <param name="set.full4.format" value="ft4" />  
+      <param name="set.full4.unitsclass" value="UU" />
+      <param name="set.full4.unitsIDs" value="*" />
+      <param name="set.full4.vars" value="*" />
+      
+      <param name="format.ft5.dtformat" value="6cols" />
+	  <param name="set.full5.format" value="ft5" />  
+      <param name="set.full5.unitsclass" value="UU" />
+      <param name="set.full5.unitsIDs" value="*" />
+      <param name="set.full5.vars" value="*" />
+
+    </observer>
+    
+    <observer ID='output.files.kml' />
+
+    <observer ID='output.files.kml-dynamic'>
+      <param name="configfile" value='kmloutput.conf' />
+    </observer>
+
+    <observer ID='output.files.vtk'>
+      <param name="DEMfile" value='DEMs/virtualdem.tif' />
+      <param name="serie.vtk1.unitclass" value='SU' />
+      <param name="serie.vtk1.var" value='tests.var1' />
+      <param name="serie.vtk1.shapefile" value='shapefiles/SU.shp' />
+      <param name="serie.vtk1.step" value='1' />
+      <param name="serie.vtk7.unitclass" value='RS' />
+      <param name="serie.vtk7.var" value='tests.var3' />
+      <param name="serie.vtk7.shapefile" value='shapefiles/RS.shp' />
+      <param name="serie.vtk7.step" value='10' />
+      <param name="visitfile.create" value='1' />	
+    </observer>
 
   </monitoring>
 
@@ -52,24 +126,6 @@
 
 
   <domain>
-
-    <inputdata unitclass="unitsA">
-      <columns order="indataA" />
-      <data>
-
-        3 1.1
-        1 1.1
-        5 1.1
-        7 1.1
-        9 1.1
-        6 1.1
-        8 1.1
-        2 1.1
-
-      </data>
-    </inputdata>
-
-
     <definition>
 
       <unit class="unitsP" ID="1" pcsorder="1" />
@@ -95,11 +151,6 @@
         <to class="unitsA" ID="8" />
       </unit>
 
-    </definition>
-
-
-    <definition>
-
       <!-- units of class A -->
       <unit class="unitsA" ID="8" pcsorder="3">
         <to class="unitsB" ID="7" />
@@ -114,7 +165,54 @@
         <childof class="unitsP" ID="1" />        
       </unit>
 
+      <!-- units of class B -->
+      <unit class="unitsB" ID="1" pcsorder="1">
+        <to class="unitsB" ID="3" />
+      </unit>
+      <unit class="unitsB" ID="2" pcsorder="3">
+        <to class="unitsB" ID="7" />
+      </unit>
+      <unit class="unitsB" ID="7" pcsorder="4" />
+      <unit class="unitsB" ID="3" pcsorder="2">
+        <to class="unitsB" ID="2" />
+      </unit>
+
     </definition>
+
+    <inputdata unitclass="unitsA">
+      <columns order="indataA" />
+      <data>
+
+        3 1.1
+        1 1.1
+        5 1.1
+        7 1.1
+        9 1.1
+        6 1.1
+        8 1.1
+        2 1.1
+
+      </data>
+    </inputdata>
+
+    <inputdata unitclass="unitsB" colorder="indataB1;indataB3">
+
+      11 11.1 11.3
+      1 1.1 1.3
+      2 2.1 2.3
+      7 7.1 7.3
+
+    </inputdata>
+
+    <inputdata unitclass="unitsB" colorder="indataB2">
+
+      11 codeA
+      1 codeD
+      2
+      codeC
+      7 codeE
+
+    </inputdata>
 
     <calendar>
 
@@ -184,47 +282,15 @@
 
     </calendar>
 
-    <definition>
 
-      <!-- units of class B -->
-      <unit class="unitsB" ID="1" pcsorder="1">
-        <to class="unitsB" ID="3" />
-      </unit>
-      <unit class="unitsB" ID="2" pcsorder="3">
-        <to class="unitsB" ID="7" />
-      </unit>
-      <unit class="unitsB" ID="7" pcsorder="4" />
-      <unit class="unitsB" ID="3" pcsorder="2">
-        <to class="unitsB" ID="2" />
-      </unit>
-
-    </definition>
-
-    <inputdata unitclass="unitsB" colorder="indataB1;indataB3">
-
-      11 11.1 11.3
-      1 1.1 1.3
-      2 2.1 2.3
-      7 7.1 7.3
-
-    </inputdata>
-
-    <inputdata unitclass="unitsB" colorder="indataB2">
-
-      11 codeA
-      1 codeD
-      2 codeC
-      7 codeE
-
-    </inputdata>
 
   </domain>
-  
+
   <datastore>
    	<dataitem id="mymap" type="geovector" source="datastore/testvect" unitclass="unitsA" />
   	<dataitem id="mymap2" type="geovector" source="datastore/testvect.shp" />
     <!--  Temporarily disabled GeoRasterValue
   	<dataitem id="myrast" type="georaster" source="datastore/testrast.tif" /> -->
   </datastore>
-
+  
 </openfluid>

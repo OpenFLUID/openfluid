@@ -1215,6 +1215,10 @@ std::string FluidXDescriptor::getRunConfigurationToWrite()
              << m_RunDescriptor.getBeginDate().getAsISOString() << "\" end=\""
              << m_RunDescriptor.getEndDate().getAsISOString() << "\" />\n";
 
+    if (m_RunDescriptor.isSimulationID())
+      Contents << m_IndentStr << m_IndentStr << "<simid>"
+               << m_RunDescriptor.getSimulationID() << "</simid>\n";
+
     if (m_RunDescriptor.isUserValuesBufferSize())
       Contents << m_IndentStr << m_IndentStr << "<valuesbuffer steps=\""
                << m_RunDescriptor.getValuesBufferSize() << "\" />\n";
@@ -1354,6 +1358,51 @@ std::string FluidXDescriptor::getDatastoreToWrite()
 // =====================================================================
 // =====================================================================
 
+std::string FluidXDescriptor::getMonitoringToWrite()
+{
+  std::ostringstream Contents;
+
+  Contents << m_IndentStr << "<monitoring>\n";
+
+  std::list<ObserverDescriptor*> Items = m_MonitoringDescriptor.getItems();
+
+  for (std::list<ObserverDescriptor*>::iterator it = Items.begin();
+      it != Items.end(); ++it)
+  {
+    Contents << m_IndentStr << m_IndentStr << "<observer ID=\""
+             << (*it)->getID() << "\">\n";
+
+    appendPTreeParams((*it)->getParameters(), "", Contents);
+
+    Contents << m_IndentStr << m_IndentStr << "</observer>\n";
+  }
+
+  Contents << m_IndentStr << "</monitoring>\n";
+
+  return Contents.str();
+}
+
+// =====================================================================
+// =====================================================================
+
+void FluidXDescriptor::appendPTreeParams(
+    const boost::property_tree::ptree& Parent, const std::string& Name,
+    std::ostringstream& Contents)
+{
+  for (boost::property_tree::ptree::const_iterator it = Parent.begin();
+      it != Parent.end(); ++it)
+  {
+    if (!it->second.empty())
+      appendPTreeParams(it->second, Name + it->first + ".", Contents);
+    else
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<param name=\""
+      << Name << it->first << "\" value=\"" << it->second.data() << "\"/>\n";
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
 void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 {
   mp_Listener->onWrite();
@@ -1433,6 +1482,21 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
   OutFile.close();
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
+  // monitoring
+  OutFilename =
+      boost::filesystem::path(DirPath + "/monitoring.fluidx").string();
+  mp_Listener->onFileWrite(OutFilename);
+  OutFile.open(OutFilename.c_str(), std::ios::out);
+
+  OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
+  OutFile << "<openfluid>\n";
+  OutFile << getMonitoringToWrite() << "\n\n";
+  OutFile << "</openfluid>\n";
+  OutFile << "\n";
+
+  OutFile.close();
+  mp_Listener->onFileWritten(openfluid::base::Listener::OK);
+
   mp_Listener->onWritten(openfluid::base::Listener::OK);
 }
 
@@ -1459,6 +1523,7 @@ void FluidXDescriptor::writeToSingleFile(std::string FilePath)
   OutFile << getRunConfigurationToWrite() << "\n\n";
 //  OutFile << m_OutputStrToWrite << "\n\n";
   OutFile << getDatastoreToWrite() << "\n\n";
+  OutFile << getMonitoringToWrite() << "\n\n";
 
   OutFile << "</openfluid>\n";
   OutFile << "\n";

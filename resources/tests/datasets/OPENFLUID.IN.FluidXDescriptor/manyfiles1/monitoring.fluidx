@@ -2,10 +2,7 @@
 <openfluid>
   <monitoring>
 
-    <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->
-    <!-- colsep default is \t -->
-    
-    <observer ID="output.files.csv">
+     <observer ID="output.files.csv">
 
       <param name="format.ft1.colsep" value=" " />
       <param name="format.ft1.dtformat" value="%Y %m %d %H %M %S" />
@@ -79,6 +76,6 @@
       <param name="serie.vtk7.step" value='10' />
       <param name="visitfile.create" value='1' />	
     </observer>
-
+    
   </monitoring>
 </openfluid>
