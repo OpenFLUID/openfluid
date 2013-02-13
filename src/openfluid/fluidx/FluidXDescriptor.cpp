@@ -56,40 +56,17 @@
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
-#include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/erase.hpp>
-
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/fluidx/ObserverDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
-#include <openfluid/tools/SwissTools.hpp>
-#include <openfluid/fluidx/DomainDescriptor.hpp>
-#include <openfluid/fluidx/CoupledModelDescriptor.hpp>
-#include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/fluidx/DatastoreDescriptor.hpp>
-#include <openfluid/fluidx/MonitoringDescriptor.hpp>
-
-#include <openfluid/core/UnstructuredValue.hpp>
-
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/Datastore.hpp>
-#include <openfluid/core/DatastoreItem.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/Generator.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
 
 namespace openfluid {
 namespace fluidx {
-
 
 // =====================================================================
 // =====================================================================
 
 FluidXDescriptor::FluidXDescriptor(openfluid::base::IOListener* Listener) :
-    mp_Listener(Listener),  m_InstType(openfluid::core::InstantiationInfo::DESCRIPTOR),
-    m_IndentStr(" ")
+    mp_Listener(Listener), m_IndentStr(" ")
 {
   if (!mp_Listener)
     mp_Listener = new openfluid::base::IOListener();
@@ -102,10 +79,8 @@ FluidXDescriptor::~FluidXDescriptor()
 {
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 void FluidXDescriptor::extractMonitoringFromNode(xmlNodePtr NodePtr)
 {
@@ -121,7 +96,6 @@ void FluidXDescriptor::extractMonitoringFromNode(xmlNodePtr NodePtr)
 
       if (xmlID != NULL)
       {
-
         OD = new openfluid::fluidx::ObserverDescriptor((const char*) xmlID);
         OD->setParameters(extractParamsFromNode(CurrNode));
         m_MonitoringDescriptor.appendItem(OD);
@@ -137,7 +111,6 @@ void FluidXDescriptor::extractMonitoringFromNode(xmlNodePtr NodePtr)
 openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(
     xmlNodePtr NodePtr)
 {
-
   openfluid::ware::WareParams_t Params;
 
   if (NodePtr != NULL)
@@ -186,7 +159,7 @@ openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
 
   for (it = OverloadParams.begin(); it != OverloadParams.end(); ++it)
   {
-    FinalParams.put((*it).first, (*it).second.data());
+    FinalParams.put(it->first, it->second.data());
   }
 
   return FinalParams;
@@ -197,7 +170,6 @@ openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
 
 void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
 {
-
   if (m_ModelDefined)
     throw openfluid::base::OFException(
         "OpenFLUID framework", "FluidXDescriptor::extractModelFromNode",
@@ -210,7 +182,6 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
   xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
   while (CurrNode != NULL)
   {
-
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "gparams") == 0)
     {
       GParams = mergeParams(GParams, extractParamsFromNode(CurrNode));
@@ -227,12 +198,10 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
         FD->setParameters(extractParamsFromNode(CurrNode));
         m_ModelDescriptor.appendItem(FD);
       }
-
     }
 
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "generator") == 0)
     {
-
       xmlChar* xmlVarName = xmlGetProp(CurrNode, (const xmlChar*) "varname");
       xmlChar* xmlUnitClass = xmlGetProp(CurrNode,
                                          (const xmlChar*) "unitclass");
@@ -288,7 +257,6 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
 
   m_ModelDescriptor.setGlobalParameters(GParams);
   m_ModelDefined = true;
-
 }
 
 // =====================================================================
@@ -296,7 +264,6 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
 
 void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 {
-
   if (m_RunConfigDefined)
     throw openfluid::base::OFException(
         "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
@@ -309,7 +276,6 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 
   while (CurrNode != NULL)
   {
-
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "period") == 0)
     {
       xmlChar* xmlBegin = xmlGetProp(CurrNode, (const xmlChar*) "begin");
@@ -345,7 +311,6 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
               "FluidXDescriptor::extractRunFromNode",
               "end date must be strictly greater than begin date for period (" + m_CurrentFile
               + ")");
-
       }
       else
         throw openfluid::base::OFException(
@@ -353,12 +318,10 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
             "FluidXDescriptor::extractRunFromNode",
             "missing begin and/or end attributes for period tag (" + m_CurrentFile
             + ")");
-
     }
 
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "deltat") == 0)
     {
-
       xmlChar *xmlDeltaT = xmlNodeGetContent(CurrNode);
 
       if (xmlDeltaT != NULL)
@@ -373,7 +336,6 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 
         m_RunDescriptor.setDeltaT(DeltaT);
         FoundDeltaT = true;
-
       }
       else
         throw openfluid::base::OFException(
@@ -460,7 +422,6 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
   m_RunConfigDefined = true;
 
   m_RunDescriptor.setFilled(true);
-
 }
 
 // =====================================================================
@@ -490,7 +451,6 @@ openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
         "FluidXDescriptor::extractUnitsLinkFromNode",
         "missing or wrong attribute(s) in units link definition (" + m_CurrentFile
         + ")");
-
 }
 
 // =====================================================================
@@ -502,7 +462,6 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
 
   while (CurrNode != NULL)
   {
-
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "unit") == 0)
     {
       xmlChar* xmlUnitID = xmlGetProp(CurrNode, (const xmlChar*) "ID");
@@ -540,7 +499,6 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
 
         while (CurrLinkNode != NULL)
         {
-
           if (xmlStrcmp(CurrLinkNode->name, (const xmlChar*) "to") == 0)
           {
             UnitDesc->getUnitsTos().push_back(
@@ -557,7 +515,6 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
         }
 
         m_DomainDescriptor.getUnits().push_back(*UnitDesc);
-
       }
       else
         throw openfluid::base::OFException(
@@ -575,20 +532,17 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
 
 void FluidXDescriptor::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
 {
-
   xmlChar* xmlUnitClass = xmlGetProp(NodePtr, (const xmlChar*) "unitclass");
   xmlChar* xmlColOrder = xmlGetProp(NodePtr, (const xmlChar*) "colorder");
 
   if (xmlUnitClass != NULL)
   {
-
     openfluid::fluidx::InputDataDescriptor IDataDesc;
 
     IDataDesc.getUnitsClass().assign((char*) xmlUnitClass);
 
     if (xmlColOrder != NULL)
     {
-
       // case 1
       // <inputdata unitclass="someclass" colorder="colA;colB" >
       //    here is the data
@@ -618,11 +572,9 @@ void FluidXDescriptor::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
             "FluidXDescriptor::extractDomainInputdataFromNode",
             "wrong or empty data content in domain input data (" + m_CurrentFile
             + ")");
-
     }
     else
     {
-
       // case 2 : old deprecated format
       // <inputdata unitclass="someclass">
       //   <columns order="colA;colB" />
@@ -638,7 +590,6 @@ void FluidXDescriptor::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
 
       while (CurrNode != NULL)
       {
-
         if (xmlStrcmp(CurrNode->name, (const xmlChar*) "columns") == 0 && !FoundColOrder)
         {
           FoundColOrder = true;
@@ -665,7 +616,6 @@ void FluidXDescriptor::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
                 + ")");
 
           IDataDesc.getColumnsOrder() = Order;
-
         }
 
         if (xmlStrcmp(CurrNode->name, (const xmlChar*) "data") == 0 && !FoundData)
@@ -687,11 +637,9 @@ void FluidXDescriptor::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
             "FluidXDescriptor::extractDomainInputdataFromNode",
             "missing or wrong domain input data format (" + m_CurrentFile
             + ")");
-
     }
 
     m_DomainDescriptor.getInputData().push_back(IDataDesc);
-
   }
   else
     throw openfluid::base::OFException(
@@ -699,7 +647,6 @@ void FluidXDescriptor::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
         "FluidXDescriptor::extractDomainInputdataFromNode",
         "missing or wrong unitclass attribute(s) in domain input data (" + m_CurrentFile
         + ")");
-
 }
 
 // =====================================================================
@@ -711,7 +658,6 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
 
   while (CurrNode != NULL)
   {
-
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "event") == 0)
     {
       xmlChar* xmlUnitID = xmlGetProp(CurrNode, (const xmlChar*) "unitID");
@@ -721,7 +667,6 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
 
       if (xmlUnitID != NULL && xmlUnitClass != NULL && xmlDate != NULL)
       {
-
         openfluid::fluidx::EventDescriptor EvDesc;
 
         openfluid::core::UnitID_t UnitID;
@@ -772,7 +717,6 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
         }
 
         m_DomainDescriptor.getEvents().push_back(EvDesc);
-
       }
       else
         throw openfluid::base::OFException(
@@ -780,7 +724,6 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
             "FluidXDescriptor::extractDomainCalendarFromNode",
             "wrong or missing attribute(s) in domain calendar event (" + m_CurrentFile
             + ")");
-
     }
 
     CurrNode = CurrNode->next;
@@ -795,7 +738,6 @@ void FluidXDescriptor::extractDomainFomNode(xmlNodePtr NodePtr)
   xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
   while (CurrNode != NULL)
   {
-
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "definition") == 0)
     {
       extractDomainDefinitionFromNode(CurrNode);
@@ -812,7 +754,6 @@ void FluidXDescriptor::extractDomainFomNode(xmlNodePtr NodePtr)
     }
 
     CurrNode = CurrNode->next;
-
   }
 }
 
@@ -875,7 +816,6 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
     }
 
     CurrNode = CurrNode->next;
-
   }
 }
 
@@ -965,7 +905,6 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
   std::vector<std::string> FluidXFilesToLoad = openfluid::tools::GetFilesByExt(
       DirPath, "fluidx", true);
 
-
   if (FluidXFilesToLoad.size() == 0)
     throw openfluid::base::OFException(
         "OpenFLUID framework", "FluidXDescriptor::loadFromDirectory",
@@ -1006,8 +945,6 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
     }
   }
 
-  //propagateGlobalParamsInModel();
-
 }
 
 // =====================================================================
@@ -1025,465 +962,449 @@ void FluidXDescriptor::clearOldVectorNamedVar(std::string& VarName)
 // =====================================================================
 // =====================================================================
 
-std::string FluidXDescriptor::getGeneratorMethodAsStr(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const
+std::string FluidXDescriptor::getModelToWrite()
 {
-  if (Method == openfluid::fluidx::GeneratorDescriptor::Fixed)
-    return "fixed";
+  std::ostringstream Contents;
 
-  if (Method == openfluid::fluidx::GeneratorDescriptor::Random)
-    return "random";
+  Contents << m_IndentStr << "<model>\n";
 
-  if (Method == openfluid::fluidx::GeneratorDescriptor::Interp)
-    return "interp";
+  if (m_ModelDescriptor.getGlobalParameters().size() > 0)
+  {
+    Contents << m_IndentStr << m_IndentStr << "<gparams>\n";
+    Contents << getParamsAsStr(m_ModelDescriptor.getGlobalParameters());
+    Contents << m_IndentStr << m_IndentStr << "</gparams>\n";
+  }
 
-  if (Method == openfluid::fluidx::GeneratorDescriptor::Inject)
-    return "inject";
+  const std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
+      m_ModelDescriptor.getItems();
 
-  return "";
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
+    {
+      openfluid::fluidx::FunctionDescriptor* FuncDesc =
+          dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it);
+
+      Contents << m_IndentStr << m_IndentStr << "<function fileID=\""
+               << FuncDesc->getFileID() << "\">\n";
+      Contents << getParamsAsStr(FuncDesc->getParameters());
+      Contents << m_IndentStr << m_IndentStr << "</function>\n";
+    }
+    else if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
+    {
+      openfluid::fluidx::GeneratorDescriptor* GenDesc =
+          dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
+
+      Contents << m_IndentStr << m_IndentStr << "<generator varname=\""
+               << GenDesc->getVariableName() << "\" " << "unitclass=\""
+               << GenDesc->getUnitClass() << "\" " << "method=\""
+               << getGeneratorMethodAsStr(GenDesc->getGeneratorMethod())
+               << "\"";
+
+      if (GenDesc->getVariableSize() != 1)
+        Contents << " varsize=\"" << GenDesc->getVariableSize() << "\"";
+
+      Contents << ">\n";
+      Contents << getParamsAsStr(GenDesc->getParameters());
+      Contents << m_IndentStr << m_IndentStr << "</generator>\n";
+    }
+  }
+
+  Contents << m_IndentStr << "</model>\n";
+
+  return Contents.str();
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-std::string FluidXDescriptor::getParamsAsStr(const openfluid::ware::WareParams_t& Params) const
+std::string FluidXDescriptor::getParamsAsStr(
+    const openfluid::ware::WareParams_t& Params) const
 {
   std::string ParamsStr = "";
 
-  openfluid::ware::WareParams_t::const_iterator itParams;
-
-  for (itParams = Params.begin();itParams != Params.end() ; ++itParams)
-    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\"" + (*itParams).first +"\" value=\"" + (*itParams).second.data() +"\"/>\n";
+  for (openfluid::ware::WareParams_t::const_iterator it = Params.begin();
+      it != Params.end(); ++it)
+    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
+                 + it->first + "\" value=\"" + it->second.data() + "\"/>\n";
 
   return ParamsStr;
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-void FluidXDescriptor::setModelToWrite(openfluid::machine::ModelInstance& MInstance)
+std::string FluidXDescriptor::getGeneratorMethodAsStr(
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const
 {
-  if (MInstance.getItemsCount() > 0)
+  switch (Method)
   {
-    std::ostringstream Contents;
-
-    Contents << m_IndentStr << "<model>\n";
-
-    if (MInstance.getGlobalParameters().size() > 0)
-    {
-      Contents << m_IndentStr << m_IndentStr << "<gparams>\n";
-      Contents << getParamsAsStr(MInstance.getGlobalParameters());
-      Contents << m_IndentStr << m_IndentStr << "</gparams>\n";
-    }
-
-
-    const std::list<openfluid::machine::ModelItemInstance*> Items = MInstance.getItems();
-    std::list<openfluid::machine::ModelItemInstance*>::const_iterator itFuncs;
-
-    for (itFuncs=Items.begin();itFuncs!=Items.end();++itFuncs)
-    {
-
-      if ((*itFuncs)->ItemType == openfluid::fluidx::ModelItemDescriptor::PluggedFunction)
-      {
-        Contents << m_IndentStr << m_IndentStr << "<function fileID=\"" << (*itFuncs)->Signature->ID << "\">\n";
-        Contents << getParamsAsStr((*itFuncs)->Params);
-        Contents << m_IndentStr << m_IndentStr << "</function>\n";
-      }
-
-      if ((*itFuncs)->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator && (*itFuncs)->GeneratorInfo != NULL)
-      {
-        Contents << m_IndentStr << m_IndentStr << "<generator varname=\"" << (*itFuncs)->GeneratorInfo->VariableName << "\" "
-                                               << "unitclass=\"" <<  (*itFuncs)->GeneratorInfo->UnitClass  << "\" "
-                                               << "method=\"" <<  getGeneratorMethodAsStr((*itFuncs)->GeneratorInfo->GeneratorMethod) << "\"";
-
-
-        if ((*itFuncs)->GeneratorInfo->VariableSize != 1)
-          Contents << " varsize=\"" <<  (*itFuncs)->GeneratorInfo->VariableSize << "\"";
-
-        Contents << ">\n";
-        Contents << getParamsAsStr((*itFuncs)->Params);
-        Contents << m_IndentStr << m_IndentStr << "</generator>\n";
-      }
-
-    }
-
-
-    Contents << m_IndentStr << "</model>\n";
-
-    m_ModelStrToWrite  = Contents.str();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void FluidXDescriptor::setRunConfigurationToWrite()
-{
-  if (m_RunDescriptor.isFilled())
-  {
-    std::ostringstream Contents;
-
-    Contents << m_IndentStr << "<run>\n";
-    Contents << m_IndentStr << m_IndentStr << "<deltat>" << m_RunDescriptor.getDeltaT() << "</deltat>\n";
-    Contents << m_IndentStr << m_IndentStr << "<period begin=\"" << m_RunDescriptor.getBeginDate().getAsISOString() <<
-                                                   "\" end=\"" << m_RunDescriptor.getEndDate().getAsISOString() << "\" />\n";
-
-    if (m_RunDescriptor.isUserValuesBufferSize())
-      Contents << m_IndentStr << m_IndentStr << "<valuesbuffer steps=\"" << m_RunDescriptor.getValuesBufferSize() << "\" />\n";
-
-    Contents << m_IndentStr << m_IndentStr << "<filesbuffer kbytes=\"" << m_RunDescriptor.getFilesBufferSizeInKB() << "\" />\n";
-    Contents << m_IndentStr << "</run>\n";
-
-    m_RunStrToWrite = Contents.str();
+    case openfluid::fluidx::GeneratorDescriptor::Fixed:
+      return "fixed";
+    case openfluid::fluidx::GeneratorDescriptor::Random:
+      return "random";
+    case openfluid::fluidx::GeneratorDescriptor::Interp:
+      return "interp";
+    case openfluid::fluidx::GeneratorDescriptor::Inject:
+      return "inject";
+      break;
+    default:
+      break;
   }
 
+  return "";
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-void FluidXDescriptor::setDomainToWrite(const openfluid::core::CoreRepository& CoreData)
+std::string FluidXDescriptor::getDomainToWrite()
 {
-  if (!CoreData.getUnitsGlobally()->empty())
-  {
-    std::ostringstream Contents;
-
-    Contents << m_IndentStr << "<domain>\n";
-
-    Contents << m_IndentStr << m_IndentStr << "<definition>\n";
-
-    const openfluid::core::UnitsListByClassMap_t* UnitsByClass = CoreData.getUnitsByClass();
-    const openfluid::core::UnitsList_t* UnitsList = NULL;
-    const openfluid::core::UnitsPtrList_t* AllUnitsPtrList = NULL;
-    openfluid::core::UnitsPtrList_t::const_iterator itAllUnits;
-    std::vector<openfluid::core::UnitClass_t> ClassVector;
-    openfluid::core::Unit* TheUnit;
-
-    openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
-    openfluid::core::UnitsList_t::const_iterator itUnitsList;
-
-
-    for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
-    {
-      ClassVector.push_back((*itUnitsClass).first);
-    }
-
-    for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
-    {
-
-      UnitsList=((*itUnitsClass).second).getList();
-
-      for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
-      {
-        TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
-
-        if (TheUnit->getInstantiationType() == m_InstType)
-        {
-          Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<unit class=\"" << TheUnit->getClass() << "\" ID=\"" << TheUnit->getID() << "\" pcsorder=\"" << TheUnit->getProcessOrder() << "\">\n";
-
-          for (unsigned int i=0;i<ClassVector.size();i++)
-          {
-
-
-            const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getToUnits(ClassVector[i]));
-
-
-            if (ToUnits != NULL)
-            {
-
-              std::string DestClassStr = ClassVector[i];
-              openfluid::core::UnitsPtrList_t::const_iterator itToUnits;
-
-              for (itToUnits=ToUnits->begin();itToUnits!=ToUnits->end();++itToUnits)
-              {
-                Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr << "<to class=\"" << (*itToUnits)->getClass() << "\" ID=\"" << (*itToUnits)->getID() << "\" />\n";
-              }
-            }
-
-            const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getParentUnits(ClassVector[i]));
-
-            if (ParentUnits != NULL)
-            {
-              std::string DestClassStr = ClassVector[i];
-              openfluid::core::UnitsPtrList_t::const_iterator itParentUnits;
-
-              for (itParentUnits=ParentUnits->begin();itParentUnits!=ParentUnits->end();++itParentUnits)
-              {
-                Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr << "<childof class=\"" << (*itParentUnits)->getClass() << "\" ID=\"" << (*itParentUnits)->getID() << "\" />\n";
-
-              }
-            }
-          }
-          Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</unit>\n";
-        }
-      }
-    }
-
-    Contents << m_IndentStr << m_IndentStr << "</definition>\n";
-
-
-    std::vector<openfluid::core::InputDataName_t> IDataNames;
-
-    for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
-    {
-
-      UnitsList = ((*itUnitsClass).second).getList();
-
-      if (!UnitsList->empty())
-      {
-
-        TheUnit = const_cast<openfluid::core::Unit*>(&(UnitsList->front()));
-
-        IDataNames.clear();
-        IDataNames = TheUnit->getInputData()->getInputDataNames();
-
-        if (!IDataNames.empty())
-        {
-          Contents << m_IndentStr << m_IndentStr << "<inputdata unitclass=\"" <<  ((*itUnitsClass).first) << "\" colorder=\"";
-
-          for (unsigned int j=0;j<IDataNames.size();j++)
-          {
-            Contents << IDataNames[j];
-            if (j!=(IDataNames.size()-1)) Contents << ";";
-          }
-
-          Contents << "\">\n";
-
-          for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
-          {
-            TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
-            if (TheUnit->getInstantiationType() == m_InstType)
-            {
-              Contents << TheUnit->getID() << "\t";
-
-              for (unsigned int j=0;j<IDataNames.size();j++)
-              {
-                std::string ValueStr;
-                TheUnit->getInputData()->getValue(IDataNames[j],ValueStr);
-                Contents << ValueStr;
-                if (j!=(IDataNames.size()-1)) Contents << "\t";
-              }
-              Contents << "\n";
-            }
-          }
-          Contents << m_IndentStr << m_IndentStr << "</inputdata>\n";
-        }
-      }
-    }
-
-
-
-    Contents << m_IndentStr << m_IndentStr << "<calendar>\n";
-
-    AllUnitsPtrList = CoreData.getUnitsGlobally();
-    for (itAllUnits = AllUnitsPtrList->begin();itAllUnits != AllUnitsPtrList->end();++itAllUnits)
-    {
-      if ((*itAllUnits)->getInstantiationType() == m_InstType && (*itAllUnits)->getEvents()->getCount() > 0)
-      {
-        openfluid::core::EventsList_t *Events = (*itAllUnits)->getEvents()->getEventsList();
-        openfluid::core::EventsList_t::iterator itEvents;
-
-        for (itEvents = Events->begin();itEvents != Events->end();++itEvents)
-        {
-          if((*itEvents).getInstantiationType() == m_InstType)
-          {
-            openfluid::core::Event::EventInfosMap_t Infos = (*itEvents).getInfos();
-            openfluid::core::Event::EventInfosMap_t::iterator itInfos;
-
-
-            Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<event unitclass=\"" << (*itAllUnits)->getClass() << "\" " <<
-                "unitID=\"" << (*itAllUnits)->getID() << "\" " <<
-                "date=\"" << (*itEvents).getDateTime().getAsISOString() << "\">\n";
-
-            for (itInfos = Infos.begin();itInfos != Infos.end();++itInfos)
-            {
-              Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr;
-              Contents << "<info key=\"" << itInfos->first << "\" value=\"" << itInfos->second << "\" />\n";
-            }
-
-            Contents << m_IndentStr << m_IndentStr << m_IndentStr <<"</event>\n";
-          }
-
-        }
-
-      }
-    }
-
-    Contents << m_IndentStr << m_IndentStr << "</calendar>\n";
-
-
-    Contents << m_IndentStr << "</domain>\n";
-
-    m_DomainStrToWrite = Contents.str();
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void FluidXDescriptor::setOutputConfigurationToWrite()
-{
-#if 0
   std::ostringstream Contents;
 
-  if (!m_OutputDescriptor.getFileSets().empty())
+  Contents << m_IndentStr << "<domain>\n";
+
+  appendDomainDefinition(Contents);
+
+  appendDomainInputdata(Contents);
+
+  appendDomainCalendar(Contents);
+
+  Contents << m_IndentStr << "</domain>\n";
+
+  return Contents.str();
+}
+
+// =====================================================================
+// =====================================================================
+
+void FluidXDescriptor::appendDomainDefinition(std::ostringstream& Contents)
+{
+  Contents << m_IndentStr << m_IndentStr << "<definition>\n";
+
+  std::list<openfluid::fluidx::UnitDescriptor>& Units =
+      m_DomainDescriptor.getUnits();
+
+  std::list<openfluid::core::UnitClassID_t>::iterator itRel;
+
+  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+      Units.begin(); it != Units.end(); ++it)
   {
+    Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<unit class=\""
+             << it->getUnitClass() << "\" ID=\"" << it->getUnitID()
+             << "\" pcsorder=\"" << it->getProcessOrder() << "\">\n";
 
-    std::vector<openfluid::base::OutputFilesDescriptor> FileSetDesc = m_OutputDescriptor.getFileSets();
+    std::list<openfluid::core::UnitClassID_t>& Tos = it->getUnitsTos();
+    for (itRel = Tos.begin(); itRel != Tos.end(); ++itRel)
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+               << "<to class=\"" << itRel->first << "\" ID=\"" << itRel->second
+               << "\" />\n";
 
-    if (!FileSetDesc.empty())
+    std::list<openfluid::core::UnitClassID_t>& Parents = it->getUnitsParents();
+    for (itRel = Parents.begin(); itRel != Parents.end(); ++itRel)
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+               << "<childof class=\"" << itRel->first << "\" ID=\""
+               << itRel->second << "\" />\n";
+
+    Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</unit>\n";
+  }
+
+  Contents << m_IndentStr << m_IndentStr << "</definition>\n";
+}
+
+// =====================================================================
+// =====================================================================
+
+void FluidXDescriptor::appendDomainInputdata(std::ostringstream& Contents)
+{
+  std::list<InputDataDescriptor>& IData = m_DomainDescriptor.getInputData();
+
+  openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t::iterator itData;
+  openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t::iterator itVal;
+
+  for (std::list<InputDataDescriptor>::iterator it = IData.begin();
+      it != IData.end(); ++it)
+  {
+    Contents << m_IndentStr << m_IndentStr << "<inputdata unitclass=\""
+             << it->getUnitsClass() << "\" colorder=\"";
+
+    std::vector<std::string> Cols = it->getColumnsOrder();
+    if (!Cols.empty())
     {
-      Contents << m_IndentStr << "<output>\n";
+      int Max = Cols.size() - 1;
+      for (int i = 0; i < Max; i++)
+        Contents << Cols[i] << ";";
+      Contents << Cols[Max];
+    }
 
+    Contents << "\">\n";
 
-      for (unsigned int i = 0; i< FileSetDesc.size();i++)
+    openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t& DataMap =
+        it->getData();
+    for (itData = DataMap.begin(); itData != DataMap.end(); ++itData)
+    {
+      Contents << itData->first << "\t";
+
+      openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t& DataVals =
+          itData->second;
+      if (!DataVals.empty())
       {
-        std::string ColSep = FileSetDesc[i].getColSeparator();
-        boost::algorithm::replace_all(ColSep,"\t","\\t");
-
-        std::string CommentChar = FileSetDesc[i].getCommentChar();
-        boost::algorithm::replace_all(CommentChar,"\t","\\t");
-
-        std::string HeaderType;
-        openfluid::base::OutputFilesDescriptor::HeaderType Header = FileSetDesc[i].getHeaderType();
-        if(Header == openfluid::base::OutputFilesDescriptor::None)
-          HeaderType = "none";
-        else if(Header == openfluid::base::OutputFilesDescriptor::Full)
-          HeaderType = "full";
-        else if(Header == openfluid::base::OutputFilesDescriptor::ColnamesAsData)
-          HeaderType = "colnames-as-data";
-        else
-          HeaderType = "info";
-
-        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << ColSep << "\" " <<
-            "dtformat=\"" << FileSetDesc[i].getDateFormat() << "\" " <<
-            "commentchar=\"" << CommentChar << "\" " << "header=\"" << HeaderType << "\">\n";
-
-        std::vector<openfluid::base::OutputSetDescriptor> SetsDesc = FileSetDesc[i].getSets();
-
-        for (unsigned int j = 0; j< SetsDesc.size();j++)
-        {
-          std::string VarsStr = "";
-          std::string IDsStr = "";
-
-          if (SetsDesc[j].isAllUnits()) IDsStr = "*";
-          else
-          {
-            std::ostringstream IDsStrStr;
-            IDsStrStr.clear();
-            for (unsigned int k = 0; k< SetsDesc[j].getUnitsIDs().size();k++)
-            {
-              IDsStrStr << SetsDesc[j].getUnitsIDs()[k];
-              if ((k != SetsDesc[j].getUnitsIDs().size()-1))
-                IDsStrStr << ";";
-            }
-            IDsStr = IDsStrStr.str();
-          }
-
-          if (SetsDesc[j].isAllVariables()) VarsStr = "*";
-          else
-          {
-            for (unsigned int k = 0; k< SetsDesc[j].getVariables().size();k++)
-            {
-              VarsStr += SetsDesc[j].getVariables()[k];
-              if ((k != (SetsDesc[j].getVariables().size()-1)) /*|| (!SetsDesc[j].getVariables().empty())*/)
-                VarsStr += ";";
-            }
-          }
-
-
-          Contents << m_IndentStr << m_IndentStr << m_IndentStr;
-          Contents << "<set name=\"" << SetsDesc[j].getName() << "\" " <<
-              "unitsclass=\"" << SetsDesc[j].getUnitsClass() << "\" " <<
-              "unitsIDs=\"" << IDsStr << "\" " <<
-              "vars=\"" << VarsStr << "\" " <<
-              "precision=\"" << SetsDesc[j].getPrecision() << "\" />\n";
-        }
-        Contents << m_IndentStr << m_IndentStr << "</files>\n";
+        itVal = DataVals.begin();
+        for (; itVal != DataVals.end().operator --(); ++itVal)
+          Contents << itVal->second << "\t";
+        Contents << itVal->second;
       }
-      Contents << m_IndentStr << "</output>\n";
-    }
-  }
 
-  m_OutputStrToWrite = Contents.str();
-#endif
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void FluidXDescriptor::setDatastoreToWrite(const openfluid::core::Datastore& Store)
-{
-  if (!Store.getItems().empty())
-  {
-    std::ostringstream Contents;
-
-    Contents << m_IndentStr << "<datastore>\n";
-
-    openfluid::core::Datastore::DataItemsById_t Items = Store.getItems();
-    openfluid::core::DatastoreItem* Item;
-
-    for(openfluid::core::Datastore::DataItemsById_t::const_iterator it =
-        Items.begin() ; it != Items.end() ; ++it)
-    {
-      Item = it->second;
-
-      Contents << m_IndentStr << m_IndentStr ;
-      Contents << "<dataitem id=\"" << Item->getID() << "\" " <<
-                  "type=\"" << openfluid::core::UnstructuredValue::getStringFromValueType(Item->getValue()->getType()) << "\" " <<
-                  "source=\"" << Item->getRelativePath() << "\" ";
-      if(!Item->getUnitClass().empty())
-        Contents << "unitclass=\"" << Item->getUnitClass() << "\" ";
-
-      Contents << "/>\n";
+      Contents << "\n";
     }
 
-    Contents << m_IndentStr << "</datastore>\n";
-
-    m_DataStrToWrite = Contents.str();
+    Contents << m_IndentStr << m_IndentStr << "</inputdata>\n";
   }
 
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-void FluidXDescriptor::prepareFluidXDir(std::string DirPath)
+void FluidXDescriptor::appendDomainCalendar(std::ostringstream& Contents)
 {
+  std::list<EventDescriptor>& Events = m_DomainDescriptor.getEvents();
 
-  boost::filesystem::path OutputDirPath(DirPath);
+  if (Events.empty())
+    return;
 
-  if (!boost::filesystem::exists(OutputDirPath))
+  Contents << m_IndentStr << m_IndentStr << "<calendar>\n";
+
+  openfluid::core::Event::EventInfosMap_t::iterator itInfos;
+
+  for (std::list<EventDescriptor>::iterator it = Events.begin();
+      it != Events.end(); ++it)
   {
-    boost::filesystem::create_directory(OutputDirPath);
-    if (!boost::filesystem::exists(OutputDirPath))
-      throw openfluid::base::OFException("OpenFLUID framework","FluidXDescriptor::prepareOutputDir","Error creating output directory");
+    Contents << m_IndentStr << m_IndentStr << m_IndentStr
+             << "<event unitclass=\"" << it->getUnitClass() << "\" "
+             << "unitID=\"" << it->getUnitID() << "\" " << "date=\""
+             << it->getEvent().getDateTime().getAsISOString() << "\">\n";
+
+    openfluid::core::Event::EventInfosMap_t Infos = it->getEvent().getInfos();
+    for (itInfos = Infos.begin(); itInfos != Infos.end(); ++itInfos)
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << m_IndentStr
+               << "<info key=\"" << itInfos->first << "\" value=\""
+               << itInfos->second << "\" />\n";
+
+    Contents << m_IndentStr << m_IndentStr << m_IndentStr << "</event>\n";
+  }
+
+  Contents << m_IndentStr << m_IndentStr << "</calendar>\n";
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string FluidXDescriptor::getRunConfigurationToWrite()
+{
+  std::ostringstream Contents;
+
+  Contents << m_IndentStr << "<run>\n";
+
+  if (m_RunDescriptor.isFilled())
+  {
+    Contents << m_IndentStr << m_IndentStr << "<deltat>"
+             << m_RunDescriptor.getDeltaT() << "</deltat>\n";
+    Contents << m_IndentStr << m_IndentStr << "<period begin=\""
+             << m_RunDescriptor.getBeginDate().getAsISOString() << "\" end=\""
+             << m_RunDescriptor.getEndDate().getAsISOString() << "\" />\n";
+
+    if (m_RunDescriptor.isSimulationID())
+      Contents << m_IndentStr << m_IndentStr << "<simid>"
+               << m_RunDescriptor.getSimulationID() << "</simid>\n";
+
+    if (m_RunDescriptor.isUserValuesBufferSize())
+      Contents << m_IndentStr << m_IndentStr << "<valuesbuffer steps=\""
+               << m_RunDescriptor.getValuesBufferSize() << "\" />\n";
+
+    Contents << m_IndentStr << m_IndentStr << "<filesbuffer kbytes=\""
+             << m_RunDescriptor.getFilesBufferSizeInKB() << "\" />\n";
+  }
+
+  Contents << m_IndentStr << "</run>\n";
+
+  return Contents.str();
+}
+
+// =====================================================================
+// =====================================================================
+
+//void FluidXDescriptor::setOutputConfigurationToWrite()
+//{
+//  std::ostringstream Contents;
+//
+//  if (!m_OutputDescriptor.getFileSets().empty())
+//  {
+//
+//    std::vector<openfluid::base::OutputFilesDescriptor> FileSetDesc = m_OutputDescriptor.getFileSets();
+//
+//    if (!FileSetDesc.empty())
+//    {
+//      Contents << m_IndentStr << "<output>\n";
+//
+//      for (unsigned int i = 0; i< FileSetDesc.size();i++)
+//      {
+//        std::string ColSep = FileSetDesc[i].getColSeparator();
+//        boost::algorithm::replace_all(ColSep,"\t","\\t");
+//
+//        std::string CommentChar = FileSetDesc[i].getCommentChar();
+//        boost::algorithm::replace_all(CommentChar,"\t","\\t");
+//
+//        std::string HeaderType;
+//        openfluid::base::OutputFilesDescriptor::HeaderType Header = FileSetDesc[i].getHeaderType();
+//        if(Header == openfluid::base::OutputFilesDescriptor::None)
+//        HeaderType = "none";
+//        else if(Header == openfluid::base::OutputFilesDescriptor::Full)
+//        HeaderType = "full";
+//        else if(Header == openfluid::base::OutputFilesDescriptor::ColnamesAsData)
+//        HeaderType = "colnames-as-data";
+//        else
+//        HeaderType = "info";
+//
+//        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << ColSep << "\" " <<
+//        "dtformat=\"" << FileSetDesc[i].getDateFormat() << "\" " <<
+//        "commentchar=\"" << CommentChar << "\" " << "header=\"" << HeaderType << "\">\n";
+//
+//        std::vector<openfluid::base::OutputSetDescriptor> SetsDesc = FileSetDesc[i].getSets();
+//
+//        for (unsigned int j = 0; j< SetsDesc.size();j++)
+//        {
+//          std::string VarsStr = "";
+//          std::string IDsStr = "";
+//
+//          if (SetsDesc[j].isAllUnits()) IDsStr = "*";
+//          else
+//          {
+//            std::ostringstream IDsStrStr;
+//            IDsStrStr.clear();
+//            for (unsigned int k = 0; k< SetsDesc[j].getUnitsIDs().size();k++)
+//            {
+//              IDsStrStr << SetsDesc[j].getUnitsIDs()[k];
+//              if ((k != SetsDesc[j].getUnitsIDs().size()-1))
+//              IDsStrStr << ";";
+//            }
+//            IDsStr = IDsStrStr.str();
+//          }
+//
+//          if (SetsDesc[j].isAllVariables()) VarsStr = "*";
+//          else
+//          {
+//            for (unsigned int k = 0; k< SetsDesc[j].getVariables().size();k++)
+//            {
+//              VarsStr += SetsDesc[j].getVariables()[k];
+//              if ((k != (SetsDesc[j].getVariables().size()-1)) /*|| (!SetsDesc[j].getVariables().empty())*/)
+//              VarsStr += ";";
+//            }
+//          }
+//
+//          Contents << m_IndentStr << m_IndentStr << m_IndentStr;
+//          Contents << "<set name=\"" << SetsDesc[j].getName() << "\" " <<
+//          "unitsclass=\"" << SetsDesc[j].getUnitsClass() << "\" " <<
+//          "unitsIDs=\"" << IDsStr << "\" " <<
+//          "vars=\"" << VarsStr << "\" " <<
+//          "precision=\"" << SetsDesc[j].getPrecision() << "\" />\n";
+//        }
+//        Contents << m_IndentStr << m_IndentStr << "</files>\n";
+//      }
+//      Contents << m_IndentStr << "</output>\n";
+//    }
+//  }
+//
+//  m_OutputStrToWrite = Contents.str();
+//}
+
+// =====================================================================
+// =====================================================================
+
+std::string FluidXDescriptor::getDatastoreToWrite()
+{
+  openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t& Items =
+      m_DatastoreDescriptor.getItems();
+
+  std::ostringstream Contents;
+
+  Contents << m_IndentStr << "<datastore>\n";
+
+  for (openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    Contents << m_IndentStr << m_IndentStr;
+    Contents
+        << "<dataitem id=\""
+        << (*it)->getID()
+        << "\" "
+        << "type=\""
+        << openfluid::core::UnstructuredValue::getStringFromValueType(
+            (*it)->getType())
+        << "\" " << "source=\"" << (*it)->getRelativePath() << "\" ";
+
+    if (!(*it)->getUnitClass().empty())
+      Contents << "unitclass=\"" << (*it)->getUnitClass() << "\" ";
+
+    Contents << "/>\n";
+  }
+
+  Contents << m_IndentStr << "</datastore>\n";
+
+  return Contents.str();
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string FluidXDescriptor::getMonitoringToWrite()
+{
+  std::ostringstream Contents;
+
+  Contents << m_IndentStr << "<monitoring>\n";
+
+  std::list<ObserverDescriptor*> Items = m_MonitoringDescriptor.getItems();
+
+  for (std::list<ObserverDescriptor*>::iterator it = Items.begin();
+      it != Items.end(); ++it)
+  {
+    Contents << m_IndentStr << m_IndentStr << "<observer ID=\""
+             << (*it)->getID() << "\">\n";
+
+    appendPTreeParams((*it)->getParameters(), "", Contents);
+
+    Contents << m_IndentStr << m_IndentStr << "</observer>\n";
+  }
+
+  Contents << m_IndentStr << "</monitoring>\n";
+
+  return Contents.str();
+}
+
+// =====================================================================
+// =====================================================================
+
+void FluidXDescriptor::appendPTreeParams(
+    const boost::property_tree::ptree& Parent, const std::string& Name,
+    std::ostringstream& Contents)
+{
+  for (boost::property_tree::ptree::const_iterator it = Parent.begin();
+      it != Parent.end(); ++it)
+  {
+    if (!it->second.empty())
+      appendPTreeParams(it->second, Name + it->first + ".", Contents);
+    else
+      Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<param name=\""
+      << Name << it->first << "\" value=\"" << it->second.data() << "\"/>\n";
   }
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
+void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 {
-  setRunConfigurationToWrite();
-  setOutputConfigurationToWrite();
-
   mp_Listener->onWrite();
 
   std::ofstream OutFile;
@@ -1492,13 +1413,13 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
   prepareFluidXDir(DirPath);
 
   // model
-  OutFilename= boost::filesystem::path(DirPath+"/model.fluidx").string();
+  OutFilename = boost::filesystem::path(DirPath + "/model.fluidx").string();
   mp_Listener->onFileWrite(OutFilename);
-  OutFile.open(OutFilename.c_str(),std::ios::out);
+  OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_ModelStrToWrite << "\n\n";
+  OutFile << getModelToWrite() << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1506,13 +1427,13 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
   // domain
-  OutFilename= boost::filesystem::path(DirPath+"/domain.fluidx").string();
+  OutFilename = boost::filesystem::path(DirPath + "/domain.fluidx").string();
   mp_Listener->onFileWrite(OutFilename);
-  OutFile.open(OutFilename.c_str(),std::ios::out);
+  OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_DomainStrToWrite << "\n\n";
+  OutFile << getDomainToWrite() << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1520,13 +1441,13 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
   // run
-  OutFilename= boost::filesystem::path(DirPath+"/run.fluidx").string();
+  OutFilename = boost::filesystem::path(DirPath + "/run.fluidx").string();
   mp_Listener->onFileWrite(OutFilename);
-  OutFile.open(OutFilename.c_str(),std::ios::out);
+  OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_RunStrToWrite << "\n\n";
+  OutFile << getRunConfigurationToWrite() << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1534,27 +1455,42 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
   // output
-  OutFilename= boost::filesystem::path(DirPath+"/output.fluidx").string();
+//  OutFilename = boost::filesystem::path(DirPath + "/output.fluidx").string();
+//  mp_Listener->onFileWrite(OutFilename);
+//  OutFile.open(OutFilename.c_str(), std::ios::out);
+//
+//  OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
+//  OutFile << "<openfluid>\n";
+//  OutFile << m_OutputStrToWrite << "\n\n";
+//  OutFile << "</openfluid>\n";
+//  OutFile << "\n";
+//
+//  OutFile.close();
+//  mp_Listener->onFileWritten(openfluid::base::Listener::OK);
+
+  // datastore
+  OutFilename = boost::filesystem::path(DirPath + "/datastore.fluidx").string();
   mp_Listener->onFileWrite(OutFilename);
-  OutFile.open(OutFilename.c_str(),std::ios::out);
+  OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_OutputStrToWrite << "\n\n";
+  OutFile << getDatastoreToWrite() << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
   OutFile.close();
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
-  // datastore
-  OutFilename= boost::filesystem::path(DirPath+"/datastore.fluidx").string();
+  // monitoring
+  OutFilename =
+      boost::filesystem::path(DirPath + "/monitoring.fluidx").string();
   mp_Listener->onFileWrite(OutFilename);
-  OutFile.open(OutFilename.c_str(),std::ios::out);
+  OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << m_DataStrToWrite << "\n\n";
+  OutFile << getMonitoringToWrite() << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1562,19 +1498,13 @@ void FluidXDescriptor::WriteToManyFiles(std::string DirPath)
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
   mp_Listener->onWritten(openfluid::base::Listener::OK);
-
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-void FluidXDescriptor::WriteToSingleFile(std::string FilePath)
+void FluidXDescriptor::writeToSingleFile(std::string FilePath)
 {
-  setRunConfigurationToWrite();
-  setOutputConfigurationToWrite();
-
   mp_Listener->onWrite();
 
   std::ofstream OutFile;
@@ -1583,16 +1513,17 @@ void FluidXDescriptor::WriteToSingleFile(std::string FilePath)
 
   std::string OutFilename = boost::filesystem::path(FilePath).string();
   mp_Listener->onFileWrite(OutFilename);
-  OutFile.open(OutFilename.c_str(),std::ios::out);
+  OutFile.open(OutFilename.c_str(), std::ios::out);
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
-  OutFile << "<openfluid>\n";
+  OutFile << "<openfluid>\n\n\n";
 
-  OutFile << m_ModelStrToWrite << "\n\n";
-  OutFile << m_DomainStrToWrite << "\n\n";
-  OutFile << m_RunStrToWrite << "\n\n";
-  OutFile << m_OutputStrToWrite << "\n\n";
-  OutFile << m_DataStrToWrite << "\n\n";
+  OutFile << getModelToWrite() << "\n\n";
+  OutFile << getDomainToWrite() << "\n\n";
+  OutFile << getRunConfigurationToWrite() << "\n\n";
+//  OutFile << m_OutputStrToWrite << "\n\n";
+  OutFile << getDatastoreToWrite() << "\n\n";
+  OutFile << getMonitoringToWrite() << "\n\n";
 
   OutFile << "</openfluid>\n";
   OutFile << "\n";
@@ -1601,7 +1532,23 @@ void FluidXDescriptor::WriteToSingleFile(std::string FilePath)
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
   mp_Listener->onWritten(openfluid::base::Listener::OK);
+}
 
+// =====================================================================
+// =====================================================================
+
+void FluidXDescriptor::prepareFluidXDir(std::string DirPath)
+{
+  boost::filesystem::path OutputDirPath(DirPath);
+
+  if (!boost::filesystem::exists(OutputDirPath))
+  {
+    boost::filesystem::create_directory(OutputDirPath);
+    if (!boost::filesystem::exists(OutputDirPath))
+      throw openfluid::base::OFException("OpenFLUID framework",
+                                         "FluidXDescriptor::prepareOutputDir",
+                                         "Error creating output directory");
+  }
 }
 
 // =====================================================================

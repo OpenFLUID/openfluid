@@ -55,27 +55,17 @@
 #ifndef FLUIDXDESCRIPTOR_HPP_
 #define FLUIDXDESCRIPTOR_HPP_
 
-#include <openfluid/ware/PluggableWare.hpp>
+#include <libxml/tree.h>
+#include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
-#include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/core/InstantiationInfo.hpp>
-#include <libxml/tree.h>
-#include <string>
 
 namespace openfluid {
 
-namespace core {
-class CoreRepository;
-class Datastore;
-}
-namespace machine {
-class ModelInstance;
-}
 namespace base {
 class IOListener;
 }
@@ -106,14 +96,6 @@ class FluidXDescriptor
 
     openfluid::base::IOListener* mp_Listener;
 
-    std::string m_ModelStrToWrite;
-    std::string m_RunStrToWrite;
-    std::string m_DomainStrToWrite;
-    std::string m_OutputStrToWrite;
-    std::string m_DataStrToWrite;
-
-    openfluid::core::InstantiationInfo::Type m_InstType;
-
     std::string m_IndentStr;
 
     void extractMonitoringFromNode(xmlNodePtr NodePtr);
@@ -123,8 +105,6 @@ class FluidXDescriptor
     openfluid::ware::WareParams_t mergeParams(
         const openfluid::ware::WareParams_t& Params,
         const openfluid::ware::WareParams_t& OverloadParams);
-
-    void propagateGlobalParamsInModel();
 
     void extractModelFromNode(xmlNodePtr NodePtr);
 
@@ -162,9 +142,26 @@ class FluidXDescriptor
     std::string getParamsAsStr(
         const openfluid::ware::WareParams_t& Params) const;
 
-    void setRunConfigurationToWrite();
+    std::string getModelToWrite();
 
-    void setOutputConfigurationToWrite();
+    std::string getDomainToWrite();
+
+    void appendDomainDefinition(std::ostringstream& Contents);
+
+    void appendDomainInputdata(std::ostringstream& Contents);
+
+    void appendDomainCalendar(std::ostringstream& Contents);
+
+    std::string getRunConfigurationToWrite();
+
+//    void setOutputConfigurationToWrite();
+
+    std::string getDatastoreToWrite();
+
+    std::string getMonitoringToWrite();
+
+    void appendPTreeParams(const boost::property_tree::ptree& Parent,
+                            const std::string& Name, std::ostringstream& Contents);
 
   public:
 
@@ -208,22 +205,9 @@ class FluidXDescriptor
     // =====================================================================
     // =====================================================================
 
-    void setModelToWrite(openfluid::machine::ModelInstance& MInstance);
+    void writeToManyFiles(std::string DirPath);
 
-    void setDomainToWrite(const openfluid::core::CoreRepository& CoreData);
-
-    void setDatastoreToWrite(const openfluid::core::Datastore& Store);
-
-    void setInstantiationType(
-        const openfluid::core::InstantiationInfo::Type& InstType)
-    {
-      m_InstType = InstType;
-    }
-    ;
-
-    void WriteToManyFiles(std::string DirPath);
-
-    void WriteToSingleFile(std::string FilePath);
+    void writeToSingleFile(std::string FilePath);
 };
 
 }

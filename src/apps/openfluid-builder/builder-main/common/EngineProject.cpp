@@ -474,26 +474,22 @@ void EngineProject::whenSimulationStopped()
 
 void EngineProject::save()
 {
-//  std::string InputDir = getRunEnv()->getInputDir();
-//
-//  openfluid::base::ProjectManager::getInstance()->save();
-//
-//  mp_FXDesc->setDomainToWrite(getCoreRepository());
-//  mp_FXDesc->setModelToWrite(*getModelInstance());
-//  mp_FXDesc->setDatastoreToWrite(getDatastore());
-//
-//  boost::filesystem::path InputPath(InputDir);
-//
-//  boost::filesystem::directory_iterator end_it;
-//  for (boost::filesystem::directory_iterator it(InputPath); it != end_it; ++it)
-//  {
-//    if ((boost::filesystem::extension(it->path()) == ".fluidx"))
-//      boost::filesystem::remove(it->path());
-//  }
-//
-//  mp_FXDesc->WriteToManyFiles(InputDir);
-//
-//  m_signal_SaveHappened.emit();
+  std::string InputDir = openfluid::base::RuntimeEnvironment::getInstance()->getInputDir();
+
+  openfluid::base::ProjectManager::getInstance()->save();
+
+  boost::filesystem::path InputPath(InputDir);
+
+  boost::filesystem::directory_iterator end_it;
+  for (boost::filesystem::directory_iterator it(InputPath); it != end_it; ++it)
+  {
+    if ((boost::filesystem::extension(it->path()) == ".fluidx"))
+      boost::filesystem::remove(it->path());
+  }
+
+  mp_FXDesc->writeToManyFiles(InputDir);
+
+  m_signal_SaveHappened.emit();
 }
 
 // =====================================================================

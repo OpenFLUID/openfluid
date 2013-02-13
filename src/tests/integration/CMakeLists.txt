@@ -162,13 +162,13 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterSingle"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunSingle"
                                "-p" "${TEST_OUTPUT_PATH}")
-  SET_PROPERTY(TEST integration-FluidXWriterSingle APPEND PROPERTY DEPENDS api-FLuidXDescriptor_TEST)
+  SET_PROPERTY(TEST integration-FluidXWriterSingle APPEND PROPERTY DEPENDS api-FluidXDescriptor_TEST)
 
   ADD_TEST(integration-FluidXWriterMany "${BIN_OUTPUT_PATH}/openfluid-engine"
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterMany"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunMany"
                                "-p" "${TEST_OUTPUT_PATH}")
-  SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS api-FLuidXDescriptor_TEST)
+  SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS api-FluidXDescriptor_TEST)
   
 
   FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.func.cmake")
