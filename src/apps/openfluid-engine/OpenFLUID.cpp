@@ -507,7 +507,7 @@ void OpenFLUIDApp::runSimulation()
   std::cout << "* Loading data... " << std::endl; std::cout.flush();
   openfluid::fluidx::FluidXDescriptor FXDesc(IOListener);
   FXDesc.loadFromDirectory(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
-  std::cout << "[OK]" << std::endl; std::cout.flush();
+
 
   std::cout << "* Building spatial domain... "; std::cout.flush();
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,m_SimBlob);
@@ -519,7 +519,7 @@ void OpenFLUIDApp::runSimulation()
                                                                 Model);
   std::cout << "[OK]" << std::endl; std::cout.flush();
 
-  std::cout << "* Building observers list... "; std::cout.flush();
+  std::cout << "* Building monitoring... "; std::cout.flush();
   openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.getMonitoringDescriptor(),
                                                                 Monitoring);
   std::cout << "[OK]" << std::endl; std::cout.flush();

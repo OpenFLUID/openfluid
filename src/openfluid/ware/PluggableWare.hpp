@@ -100,6 +100,11 @@ typedef boost::property_tree::ptree WareParams_t;
 
 class DLLEXPORT PluggableWare
 {
+  public:
+
+    enum WareType { UNDEFINED, OBSERVER, FUNCTION };
+
+
   private:
 
     /**
@@ -115,7 +120,9 @@ class DLLEXPORT PluggableWare
 
   protected:
 
-    bool isLinked() { return (mp_WareEnv != NULL && mp_SimLogger != NULL); };
+    virtual bool isLinked() const { return (mp_WareEnv != NULL && mp_SimLogger != NULL); };
+
+    bool m_Initialized;
 
     /**
       Pointer to the execution messages repository
@@ -167,16 +174,18 @@ class DLLEXPORT PluggableWare
     */
     bool OPENFLUID_GetRunEnvironment(std::string Key, bool *Val);
 
-    WareID_t OPENFLUID_GetWareID() { return m_WareID; };
+    WareID_t OPENFLUID_GetWareID() const { return m_WareID; };
 
     openfluid::base::StdoutAndFileOutputStream OPENFLUID_Logger;
 
+    WareType m_WareType;
+
+
+    PluggableWare(WareType WType)
+    : mp_WareEnv(NULL),m_WareID(""),m_Initialized(false),mp_SimLogger(NULL), m_WareType(WType)
+    { };
 
   public:
-
-    PluggableWare()
-    : mp_WareEnv(NULL),m_WareID(""),mp_SimLogger(NULL)
-    {};
 
     virtual ~PluggableWare() {};
 
@@ -190,7 +199,7 @@ class DLLEXPORT PluggableWare
       mp_WareEnv = Env;
     };
 
-    void initializeWare(const WareID_t& ID);
+    virtual void initializeWare(const WareID_t& ID);
 
     void finalizeWare();
 

@@ -109,11 +109,21 @@ namespace openfluid { namespace ware {
 
 class DLLEXPORT PluggableObserver : public SimulationInspectorWare
 {
+  private:
+
+    bool m_Initialized;
+
+
   public:
 
     PluggableObserver();
 
     virtual ~PluggableObserver();
+
+    /**
+       Internally called by the framework.
+     */
+    void initializeWare(const WareID_t& FuncID);
 
     /**
        Initializes function parameters of the function, given as a hash map. Internally called by the framework.

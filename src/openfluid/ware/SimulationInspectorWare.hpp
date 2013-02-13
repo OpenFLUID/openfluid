@@ -61,6 +61,7 @@
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
+#include <openfluid/core/Datastore.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -73,6 +74,10 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
     static bool IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
                                   const openfluid::core::UnitID_t& ID);
 
+
+    openfluid::core::Datastore* mp_Datastore;
+
+
   protected:
 
     // TODO check if const
@@ -80,6 +85,9 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
          Pointer to the core repository (const). It should be used with care. Prefer to use the OPENFLUID_Xxxx methods.
      */
     openfluid::core::CoreRepository* mp_CoreData;
+
+
+    virtual bool isLinked() const { return (SimulationDrivenWare::isLinked() && mp_CoreData != NULL && mp_Datastore != NULL); };
 
 
     /**
@@ -511,16 +519,22 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
                                     const openfluid::core::UnitID_t& IDChild) const;
 
 
-  public:
+      SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType), mp_CoreData(NULL), mp_Datastore(NULL)
+      {};
 
-    SimulationInspectorWare() : SimulationDrivenWare(), mp_CoreData(NULL)
-    {};
+
+  public:
 
     virtual ~SimulationInspectorWare() {};
 
     void linkToCoreRepository(openfluid::core::CoreRepository* CoreRepos)
     {
       mp_CoreData = CoreRepos;
+    };
+
+    void linkToDatastore(openfluid::core::Datastore* DStore)
+    {
+      mp_Datastore = DStore;
     };
 
 };

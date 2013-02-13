@@ -128,18 +128,24 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, bool *Value)
 void PluggableWare::initializeWare(const WareID_t& ID)
 {
   if(!isLinked())
-    throw openfluid::base::OFException("initialized ware that is not fully linked");
+    throw openfluid::base::OFException("initialized ware that is not fully linked ("+ID+")");
 
   m_WareID = ID;
 
   // initialize loggers
   std::string LogFile;
   std::string LogDir;
+  std::string LogFileSuffix = "_undefined";
+
+  if (m_WareType == FUNCTION) LogFileSuffix = openfluid::config::FUNCTIONS_PLUGINS_SUFFIX;
+  if (m_WareType == OBSERVER) LogFileSuffix = openfluid::config::OBSERVERS_PLUGINS_SUFFIX;
 
   OPENFLUID_GetRunEnvironment("dir.output",&LogDir);
-  LogFile = boost::filesystem::path(LogDir + "/" + m_WareID + ".log").string();
+  LogFile = boost::filesystem::path(LogDir + "/" + m_WareID + LogFileSuffix + ".log").string();
 
   OPENFLUID_Logger.open(LogFile.c_str());
+
+  m_Initialized = true;
 };
 
 
