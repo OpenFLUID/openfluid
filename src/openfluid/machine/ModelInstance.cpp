@@ -338,6 +338,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
     CurrentFunction->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
     CurrentFunction->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
     CurrentFunction->Body->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
+    CurrentFunction->Body->linkToDatastore(&(m_SimulationBlob.getDatastore()));
     CurrentFunction->Body->initializeWare(CurrentFunction->Signature->ID,
                                     openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads());
     FuncSequence.push_back(CurrentFunction->Signature->ID);

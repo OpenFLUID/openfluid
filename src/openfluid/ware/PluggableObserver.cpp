@@ -60,7 +60,7 @@
 namespace openfluid { namespace ware {
 
 
-PluggableObserver::PluggableObserver() : SimulationInspectorWare()
+PluggableObserver::PluggableObserver() : SimulationInspectorWare(OBSERVER)
 {
 
 }
@@ -75,6 +75,17 @@ PluggableObserver::~PluggableObserver()
   finalizeWare();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void PluggableObserver::initializeWare(const WareID_t& ID)
+{
+  if (m_Initialized) return;
+
+  SimulationInspectorWare::initializeWare(ID);
+}
 
 
 }  // namespace ware

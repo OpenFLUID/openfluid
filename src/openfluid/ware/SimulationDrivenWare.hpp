@@ -88,7 +88,7 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
   protected:
 
-    bool isLinked() { return (PluggableWare::isLinked() && mp_SimStatus != NULL); };
+    virtual bool isLinked() const { return (PluggableWare::isLinked() && mp_SimStatus != NULL); };
 
     openfluid::core::DateTime OPENFLUID_GetBeginDate() const;
 
@@ -150,11 +150,11 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
     virtual void OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg);
 
 
+    SimulationDrivenWare(WareType WType) : PluggableWare(WType),
+        mp_SimStatus(NULL) { };
+
 
   public:
-
-    SimulationDrivenWare() : PluggableWare(),
-      mp_SimStatus(NULL) { };
 
     virtual ~SimulationDrivenWare() { };
 

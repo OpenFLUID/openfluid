@@ -143,8 +143,6 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
 
     unsigned int m_MaxThreads;
 
-    bool m_Initialized;
-
     static std::string generateDotEdge(std::string SrcClass, std::string SrcID,
                                        std::string DestClass, std::string DestID,
                                        std::string Options);

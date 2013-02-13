@@ -422,10 +422,12 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
                                     const unsigned int& ColsNbr,
                                     const unsigned int& RowsNbr);
 
+    SimulationContributorWare(WareType WType) : SimulationInspectorWare(WType)
+    {};
+
+
   public:
 
-    SimulationContributorWare() : SimulationInspectorWare()
-    {};
 
     virtual ~SimulationContributorWare() {};
 
