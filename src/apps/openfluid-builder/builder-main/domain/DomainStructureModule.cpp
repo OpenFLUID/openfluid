@@ -99,7 +99,7 @@ DomainStructureModule::~DomainStructureModule()
 {
   delete mp_Coordinator;
   delete mp_DomainUnitAddEditDialog;
-  delete mp_DomainUnitRelationAddDialog;
+//  delete mp_DomainUnitRelationAddDialog;
   delete mp_StructureListToolBox;
   delete mp_DomainStructureMVP;
 }
