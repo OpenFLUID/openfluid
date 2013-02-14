@@ -211,7 +211,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "    // =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    openfluid::core::Duration_t initializeRun()" << std::endl;
+  CPPContent << "    openfluid::base::SchedulingRequest initializeRun()" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << std::endl;
   CPPContent << "      return Never();" << std::endl;
@@ -221,7 +221,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "    // =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    openfluid::core::Duration_t runStep()" << std::endl;
+  CPPContent << "    openfluid::base::SchedulingRequest runStep()" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << std::endl;
   CPPContent << "      return Never();" << std::endl;

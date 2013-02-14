@@ -136,7 +136,7 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t initializeRun()
+  openfluid::base::SchedulingRequest initializeRun()
   {
     std::cout << "\nCMake module built function" << std::endl;
 
@@ -148,7 +148,7 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t runStep()
+  openfluid::base::SchedulingRequest runStep()
   {
 
     return DefaultDeltaT();

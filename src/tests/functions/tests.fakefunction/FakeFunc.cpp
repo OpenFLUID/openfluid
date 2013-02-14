@@ -139,7 +139,7 @@ class FakeFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    openfluid::core::Duration_t initializeRun()
+    openfluid::base::SchedulingRequest initializeRun()
     {
       return DefaultDeltaT();
     }
@@ -148,7 +148,7 @@ class FakeFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    openfluid::core::Duration_t runStep()
+    openfluid::base::SchedulingRequest runStep()
     {
       return DefaultDeltaT();
     }

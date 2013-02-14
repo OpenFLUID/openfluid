@@ -189,7 +189,7 @@ void OFEFunc2DocFunction::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t OFEFunc2DocFunction::initializeRun()
+openfluid::base::SchedulingRequest OFEFunc2DocFunction::initializeRun()
 {
   return DefaultDeltaT();
 }
@@ -199,7 +199,7 @@ openfluid::core::Duration_t OFEFunc2DocFunction::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t OFEFunc2DocFunction::runStep()
+openfluid::base::SchedulingRequest OFEFunc2DocFunction::runStep()
 {
 
   return Never();

@@ -152,7 +152,7 @@ class VariableTimeProdFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t initializeRun()
+  openfluid::base::SchedulingRequest initializeRun()
   {
     openfluid::core::Unit* TU;
 
@@ -183,10 +183,9 @@ class VariableTimeProdFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t computeDeltaT() const
+  openfluid::base::SchedulingRequest computeDeltaT() const
   {
-    openfluid::core::Duration_t D = (std::rand() % DefaultDeltaT()) + 1;
-    return D;
+    return openfluid::base::SchedulingRequest((std::rand() % OPENFLUID_GetDefaultDeltaT()) + 1);
   }
 
 
@@ -194,7 +193,7 @@ class VariableTimeProdFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t runStep()
+  openfluid::base::SchedulingRequest runStep()
   {
     openfluid::core::Unit* TU;
 

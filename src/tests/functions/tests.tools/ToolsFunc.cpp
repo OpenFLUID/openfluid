@@ -92,9 +92,9 @@ class ToolsFunction : public openfluid::ware::PluggableFunction
 
     void checkConsistency();
 
-    openfluid::core::Duration_t initializeRun();
+    openfluid::base::SchedulingRequest initializeRun();
 
-    openfluid::core::Duration_t runStep();
+    openfluid::base::SchedulingRequest runStep();
 
     void finalizeRun();
 
@@ -183,7 +183,7 @@ void ToolsFunction::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t ToolsFunction::initializeRun()
+openfluid::base::SchedulingRequest ToolsFunction::initializeRun()
 {
 
   openfluid::tools::ColumnTextParser CTParser("#");
@@ -226,7 +226,7 @@ openfluid::core::Duration_t ToolsFunction::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t ToolsFunction::runStep()
+openfluid::base::SchedulingRequest ToolsFunction::runStep()
 {
 
   return Never();

@@ -100,7 +100,7 @@ class DLLEXPORT ExecutionTimePoint
     inline bool hasItemsToProcess() const
     { return !m_ItemsPtrList.empty(); };
 
-    openfluid::core::Duration_t processNextItem();
+    openfluid::base::SchedulingRequest processNextItem();
 
     inline openfluid::machine::ModelItemInstance* getNextItem() const
     { return m_ItemsPtrList.front(); };

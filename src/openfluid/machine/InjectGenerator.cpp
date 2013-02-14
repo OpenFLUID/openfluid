@@ -215,7 +215,7 @@ void InjectGenerator::LoadDataAsSerie(const std::string& FilePath, const int& ID
 // =====================================================================
 
 
-openfluid::core::Duration_t InjectGenerator::initializeRun()
+openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
 {
   openfluid::tools::DataSourcesFile DSFile;
   std::string InputDir;
@@ -299,7 +299,7 @@ openfluid::core::Duration_t InjectGenerator::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t InjectGenerator::runStep()
+openfluid::base::SchedulingRequest InjectGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;

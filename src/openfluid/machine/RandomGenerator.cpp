@@ -109,7 +109,7 @@ void RandomGenerator::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t RandomGenerator::initializeRun()
+openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
 {
   openfluid::core::Unit* LU;
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
@@ -130,7 +130,7 @@ openfluid::core::Duration_t RandomGenerator::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t RandomGenerator::runStep()
+openfluid::base::SchedulingRequest RandomGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;

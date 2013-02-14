@@ -91,20 +91,20 @@ class CouplingBFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
-    std::list<openfluid::core::Duration_t> m_DeltaTList;
+    std::list<openfluid::base::SchedulingRequest> m_DeltaTList;
 
   public:
 
 
   CouplingBFunction() : PluggableFunction()
   {
-    m_DeltaTList.push_back(120);
-    m_DeltaTList.push_back(40);
-    m_DeltaTList.push_back(30);
-    m_DeltaTList.push_back(50);
-    m_DeltaTList.push_back(34);
-    m_DeltaTList.push_back(25);
-    m_DeltaTList.push_back(22);
+    m_DeltaTList.push_back(Duration(120));
+    m_DeltaTList.push_back(Duration(40));
+    m_DeltaTList.push_back(Duration(30));
+    m_DeltaTList.push_back(Duration(50));
+    m_DeltaTList.push_back(Duration(34));
+    m_DeltaTList.push_back(Duration(25));
+    m_DeltaTList.push_back(Duration(22));
     m_DeltaTList.push_back(AtTheEnd());
   }
 
@@ -144,10 +144,10 @@ class CouplingBFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t initializeRun()
+  openfluid::base::SchedulingRequest initializeRun()
   {
 
-    openfluid::core::Duration_t DT = m_DeltaTList.front();
+    openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
     m_DeltaTList.pop_front();
 
     Glib::usleep(5000);
@@ -160,15 +160,15 @@ class CouplingBFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t runStep()
+  openfluid::base::SchedulingRequest runStep()
   {
     if (m_DeltaTList.empty())
       return Never();
 
-    openfluid::core::Duration_t DT = m_DeltaTList.front();
-       m_DeltaTList.pop_front();
+    openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
+    m_DeltaTList.pop_front();
 
-    if (DT > 0) Glib::usleep(10000/DT);
+    if (DT.RequestType == openfluid::base::SchedulingRequest::DURATION) Glib::usleep(10000/DT.Duration);
 
     return DT;
   }

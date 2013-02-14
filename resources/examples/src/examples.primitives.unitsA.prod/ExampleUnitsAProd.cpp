@@ -108,7 +108,7 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    openfluid::core::Duration_t initializeRun()
+    openfluid::base::SchedulingRequest initializeRun()
     {
       openfluid::core::Unit* A;
 
@@ -128,7 +128,7 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    openfluid::core::Duration_t runStep()
+    openfluid::base::SchedulingRequest runStep()
     {
       openfluid::core::Unit* A;
       openfluid::core::DoubleValue Value1;
@@ -143,7 +143,7 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableFunction
         }
         else
         {
-          OPENFLUID_GetVariable(A,"var1",CurrentStep-DefaultDeltaT(),Value1);
+          OPENFLUID_GetVariable(A,"var1",CurrentStep-OPENFLUID_GetDefaultDeltaT(),Value1);
           Value1 = Value1 + 2.0;
         }
 

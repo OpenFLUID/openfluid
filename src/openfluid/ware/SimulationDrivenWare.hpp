@@ -104,20 +104,6 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
     openfluid::base::SimulationStatus::SimulationStage OPENFLUID_GetCurrentStage() const;
 
-    inline openfluid::core::Duration_t AtTheEnd() const { return openfluid::core::Duration_t(-1); };
-
-    inline openfluid::core::Duration_t Never() const { return -2; };
-
-    inline openfluid::core::Duration_t Again() const { return 0; };
-
-    inline openfluid::core::Duration_t DefaultDeltaT() const
-    {
-      if (mp_SimStatus == NULL)
-        throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::DefaultDeltaT","Simulation status is not set");
-
-      return mp_SimStatus->getDefaultDeltaT();
-    };
-
 
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation

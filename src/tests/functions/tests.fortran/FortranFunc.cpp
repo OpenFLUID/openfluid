@@ -148,7 +148,7 @@ void FortranFunction::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t FortranFunction::initializeRun()
+openfluid::base::SchedulingRequest FortranFunction::initializeRun()
 {
 
   m_Precision = 0.000001;
@@ -160,7 +160,7 @@ openfluid::core::Duration_t FortranFunction::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t FortranFunction::runStep()
+openfluid::base::SchedulingRequest FortranFunction::runStep()
 {
   int i,j;
 

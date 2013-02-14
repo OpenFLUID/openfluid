@@ -82,9 +82,9 @@ class EmptyFunction : public openfluid::ware::PluggableFunction
 
   void checkConsistency() { };
 
-  openfluid::core::Duration_t initializeRun()  { return DefaultDeltaT(); };
+  openfluid::base::SchedulingRequest initializeRun()  { return DefaultDeltaT(); };
 
-  openfluid::core::Duration_t runStep() {  return 1; };
+  openfluid::base::SchedulingRequest runStep() {  return 1; };
 
   void finalizeRun() { };
 };

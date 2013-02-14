@@ -116,7 +116,7 @@ void InterpGenerator::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t InterpGenerator::initializeRun()
+openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
 {
 
   std::string InputDir;
@@ -147,7 +147,7 @@ openfluid::core::Duration_t InterpGenerator::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t InterpGenerator::runStep()
+openfluid::base::SchedulingRequest InterpGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;

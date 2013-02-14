@@ -143,7 +143,7 @@ void MessagesFunction::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t MessagesFunction::initializeRun()
+openfluid::base::SchedulingRequest MessagesFunction::initializeRun()
 {
   OPENFLUID_RaiseWarning("tests.messages","initializeRun()","Message from tests.messages function");
 
@@ -154,7 +154,7 @@ openfluid::core::Duration_t MessagesFunction::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t MessagesFunction::runStep()
+openfluid::base::SchedulingRequest MessagesFunction::runStep()
 {
   openfluid::core::Unit* TU;
 

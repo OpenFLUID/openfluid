@@ -151,7 +151,7 @@ void PrimitivesTypedValuesUseFunction::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::initializeRun()
+openfluid::base::SchedulingRequest PrimitivesTypedValuesUseFunction::initializeRun()
 {
   return DefaultDeltaT();
 }
@@ -160,7 +160,7 @@ openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t PrimitivesTypedValuesUseFunction::runStep()
+openfluid::base::SchedulingRequest PrimitivesTypedValuesUseFunction::runStep()
 {
   openfluid::core::Unit* TU;
   unsigned int TUID;

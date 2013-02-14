@@ -45,60 +45,45 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file PrimitivesUseFunc.h
+  \file SchedulingRequest.hpp
   \brief Header of ...
-*/
 
-#ifndef __PRIMITIVESUSEFUNC_H__
-#define __PRIMITIVESUSEFUNC_H__
-
-#include <openfluid/ware/PluggableFunction.hpp>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-// =====================================================================
-// =====================================================================
+#ifndef __SCHEDULINGREQUEST_HPP__
+#define __SCHEDULINGREQUEST_HPP__
+
+#include <openfluid/core/DateTime.hpp>
 
 
-DECLARE_FUNCTION_PLUGIN
-
-
-// =====================================================================
-// =====================================================================
-
+namespace openfluid { namespace base {
 
 /**
-
+  Description of a scheduling request, mainly used during simulations
+  for simulation functions scheduling after every execution
 */
-class PrimitivesUseFunction : public openfluid::ware::PluggableFunction
+class SchedulingRequest
 {
-  private:
-
   public:
-    /**
-      Constructor
-    */
-    PrimitivesUseFunction();
 
-    /**
-      Destructor
-    */
-    ~PrimitivesUseFunction();
+    enum RequestType_t {UNDEFINED, DURATION, ATTHEEND, NEVER};
 
-    void initParams(const openfluid::ware::WareParams_t& Params);
+    RequestType_t RequestType;
 
-    void prepareData();
+    openfluid::core::Duration_t Duration;
 
-    void checkConsistency();
 
-    openfluid::base::SchedulingRequest initializeRun();
+    SchedulingRequest() : RequestType(UNDEFINED) { };
 
-    openfluid::base::SchedulingRequest runStep();
+    SchedulingRequest(const openfluid::core::Duration_t& D) : RequestType(DURATION), Duration(D) { };
 
-    void finalizeRun();
-
+    SchedulingRequest(const RequestType_t& RT) : RequestType(RT) { };
 };
 
 
-#endif  // __PRIMITIVESUSEFUNC_H__
+} }  // namespaces
+
+#endif /* __SCHEDULINGREQUEST_HPP__ */

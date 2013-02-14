@@ -155,7 +155,7 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t initializeRun()
+  openfluid::base::SchedulingRequest initializeRun()
   {
     openfluid::core::Unit* TU;
 
@@ -223,7 +223,7 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
 
 
 
-  openfluid::core::Duration_t runStep()
+  openfluid::base::SchedulingRequest runStep()
   {
     openfluid::core::Unit* TU;
 

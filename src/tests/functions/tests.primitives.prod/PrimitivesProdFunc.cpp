@@ -142,7 +142,7 @@ void PrimitivesProdFunction::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t PrimitivesProdFunction::initializeRun()
+openfluid::base::SchedulingRequest PrimitivesProdFunction::initializeRun()
 {
   long VectorSize = 40;
   openfluid::core::Unit* TU;
@@ -160,7 +160,7 @@ openfluid::core::Duration_t PrimitivesProdFunction::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t PrimitivesProdFunction::runStep()
+openfluid::base::SchedulingRequest PrimitivesProdFunction::runStep()
 {
   openfluid::core::Unit* TU;
   long VectorSize = 40;
