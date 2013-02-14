@@ -71,9 +71,16 @@ namespace openfluid { namespace core {
 */
 typedef unsigned long long RawTime_t;
 
-typedef long long TimeIndex_t;
+/**
+  Type for time indexes (in seconds)
+*/
+typedef unsigned long long TimeIndex_t;
 
-typedef long long Duration_t;
+
+/**
+  Type for durations (in seconds)
+*/
+typedef unsigned long long Duration_t;
 
 
 /**

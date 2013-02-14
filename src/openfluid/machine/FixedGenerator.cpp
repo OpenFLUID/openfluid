@@ -91,7 +91,7 @@ void FixedGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 // =====================================================================
 
 
-openfluid::core::Duration_t FixedGenerator::initializeRun()
+openfluid::base::SchedulingRequest FixedGenerator::initializeRun()
 {
   openfluid::core::Unit* LU;
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
@@ -112,7 +112,7 @@ openfluid::core::Duration_t FixedGenerator::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t FixedGenerator::runStep()
+openfluid::base::SchedulingRequest FixedGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;

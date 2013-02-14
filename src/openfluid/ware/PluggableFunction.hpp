@@ -63,6 +63,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/base/SchedulingRequest.hpp>
 #include <openfluid/base/LoopMacros.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/core/Unit.hpp>
@@ -378,6 +379,21 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     void OPENFLUID_SetFunctionMaxThreads(const unsigned int& MaxNumThreads);
 
 
+    inline openfluid::base::SchedulingRequest AtTheEnd() const
+    { return openfluid::base::SchedulingRequest(openfluid::base::SchedulingRequest::ATTHEEND); };
+
+    inline openfluid::base::SchedulingRequest Never() const
+    { return openfluid::base::SchedulingRequest(openfluid::base::SchedulingRequest::NEVER); };
+
+    inline openfluid::base::SchedulingRequest DefaultDeltaT() const
+    { return openfluid::base::SchedulingRequest(OPENFLUID_GetDefaultDeltaT()); };
+
+    inline openfluid::base::SchedulingRequest MultipliedDefaultDeltaT(const double& Mult) const
+        { return openfluid::base::SchedulingRequest(Mult * OPENFLUID_GetDefaultDeltaT()); };
+
+    inline openfluid::base::SchedulingRequest Duration(const openfluid::core::Duration_t& D) const
+        { return openfluid::base::SchedulingRequest(D); };
+
 
   public:
     /**
@@ -413,12 +429,12 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     /**
       Internally called by the framework.
     */
-    virtual openfluid::core::Duration_t initializeRun()=0;
+    virtual openfluid::base::SchedulingRequest initializeRun()=0;
 
     /**
       Internally called by the framework.
     */
-    virtual openfluid::core::Duration_t runStep()=0;
+    virtual openfluid::base::SchedulingRequest runStep()=0;
 
     /**
       Internally called by the framework.

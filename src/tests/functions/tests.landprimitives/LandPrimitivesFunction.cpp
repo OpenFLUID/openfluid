@@ -287,7 +287,7 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    openfluid::core::Duration_t initializeRun()
+    openfluid::base::SchedulingRequest initializeRun()
     {
       openfluid::core::Unit* TU;
       double DblValue;
@@ -312,7 +312,7 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
     // =====================================================================
 
 
-    openfluid::core::Duration_t runStep()
+    openfluid::base::SchedulingRequest runStep()
     {
 
       return Never();

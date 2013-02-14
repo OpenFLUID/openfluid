@@ -93,11 +93,11 @@ void ExecutionTimePoint::appendItem(openfluid::machine::ModelItemInstance* Item)
 // =====================================================================
 
 
-openfluid::core::Duration_t ExecutionTimePoint::processNextItem()
+openfluid::base::SchedulingRequest ExecutionTimePoint::processNextItem()
 {
-  openfluid::core::Duration_t Duration = m_ItemsPtrList.front()->Body->runStep();
+  openfluid::base::SchedulingRequest SchedReq = m_ItemsPtrList.front()->Body->runStep();
   m_ItemsPtrList.pop_front();
-  return Duration;
+  return SchedReq;
 }
 
 

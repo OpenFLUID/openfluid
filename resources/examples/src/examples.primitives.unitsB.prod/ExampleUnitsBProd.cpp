@@ -108,7 +108,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    openfluid::core::Duration_t initializeRun()
+    openfluid::base::SchedulingRequest initializeRun()
     {
       openfluid::core::Unit *B;
 
@@ -124,7 +124,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    openfluid::core::Duration_t runStep()
+    openfluid::base::SchedulingRequest runStep()
     {
 
       openfluid::core::Unit *FromA, *FromB, *B;
@@ -172,7 +172,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
           {
             OPENFLUID_UNITSLIST_LOOP(FromBList,FromB)
             {
-              OPENFLUID_GetVariable(FromB,"var5",CurrentStep-DefaultDeltaT(),AuxValue);
+              OPENFLUID_GetVariable(FromB,"var5",CurrentStep-OPENFLUID_GetDefaultDeltaT(),AuxValue);
               Value5 = Value5 + AuxValue;
 
             }

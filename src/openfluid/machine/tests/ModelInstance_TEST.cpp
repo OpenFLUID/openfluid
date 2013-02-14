@@ -85,9 +85,9 @@ class FuncA : openfluid::ware::PluggableFunction
 
     void checkConsistency() { }
 
-    openfluid::core::Duration_t initializeRun() { return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::core::Duration_t runStep() { std::cout << "func.a " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "func.a " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return DefaultDeltaT(); }
 
     void finalizeRun() { }
 
@@ -108,9 +108,9 @@ class FuncB : openfluid::ware::PluggableFunction
 
     void checkConsistency() { }
 
-    openfluid::core::Duration_t initializeRun() { return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::core::Duration_t runStep() { std::cout << "func.b " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return (DefaultDeltaT() * 2); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "func.b " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(2); }
 
     void finalizeRun() { }
 
@@ -131,9 +131,9 @@ class FuncC : openfluid::ware::PluggableFunction
 
     void checkConsistency() { }
 
-    openfluid::core::Duration_t initializeRun() { return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::core::Duration_t runStep() { std::cout << "func.c " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return openfluid::core::Duration_t(DefaultDeltaT() * 0.5); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "func.c " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(0.5); }
 
     void finalizeRun() { }
 

@@ -510,7 +510,7 @@ void PrimitivesValuesUseFunction::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t PrimitivesValuesUseFunction::initializeRun()
+openfluid::base::SchedulingRequest PrimitivesValuesUseFunction::initializeRun()
 {
   return DefaultDeltaT();
 }
@@ -519,7 +519,7 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
+openfluid::base::SchedulingRequest PrimitivesValuesUseFunction::runStep()
 {
   openfluid::core::Unit* TU;
   unsigned int TUID;
@@ -574,10 +574,10 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
     RefBool = (TUID%2 == 0);
     RefString = Glib::ustring::compose("ID %1",TUID);
 
-    PreDouble = TUID*(CurrIndex-DefaultDeltaT())*m_ParamDouble;
-    PreLong = TUID*(CurrIndex-DefaultDeltaT())*m_ParamLong;
-    PreBool = ((TUID*(CurrIndex-DefaultDeltaT()))%2 == 0);
-    PreString = Glib::ustring::compose("%1 %2x%3",m_ParamString,TUID,(CurrIndex-DefaultDeltaT()));
+    PreDouble = TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT())*m_ParamDouble;
+    PreLong = TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT())*m_ParamLong;
+    PreBool = ((TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT()))%2 == 0);
+    PreString = Glib::ustring::compose("%1 %2x%3",m_ParamString,TUID,(CurrIndex-OPENFLUID_GetDefaultDeltaT()));
 
     NewDouble = TUID*CurrIndex*m_ParamDouble;
     NewLong = TUID*CurrIndex*m_ParamLong;
@@ -601,9 +601,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
 
     OPENFLUID_SetVariable(TU,"tests.double",CurrIndex,NewDouble);
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.double",CurrIndex-DefaultDeltaT(),&VarDouble);
+      OPENFLUID_GetVariable(TU,"tests.double",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarDouble);
       if (!openfluid::tools::IsCloseEnough(VarDouble,PreDouble,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect double value at t-1 (tests.double)");
     }
@@ -631,9 +631,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
 
     OPENFLUID_SetVariable(TU,"tests.doubleval",CurrIndex,NewDouble);
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex-DefaultDeltaT(),&VarDoubleVal);
+      OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarDoubleVal);
       if (!openfluid::tools::IsCloseEnough(VarDoubleVal.get(),PreDouble,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect double value at t-1 (tests.doubleval)");
     }
@@ -665,9 +665,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
 
     OPENFLUID_SetVariable(TU,"tests.integer",CurrIndex,NewLong);
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex-DefaultDeltaT(),&VarLong);
+      OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarLong);
       if (VarLong != PreLong)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect long value at t-1 (tests.integer)");
     }
@@ -694,9 +694,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
       OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect long value (tests.integerval) get by reference");
     OPENFLUID_SetVariable(TU,"tests.integerval",CurrIndex,NewLong);
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex-DefaultDeltaT(),&VarLongVal);
+      OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarLongVal);
       if (VarLongVal.get() != PreLong)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect long value at t-1 (tests.integerval)");
     }
@@ -724,9 +724,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
 
     OPENFLUID_SetVariable(TU,"tests.bool",CurrIndex,NewBool);
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex-DefaultDeltaT(),&VarBool);
+      OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarBool);
       if (VarBool != PreBool)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect bool value at t-1 (tests.bool)");
     }
@@ -754,9 +754,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
 
     OPENFLUID_SetVariable(TU,"tests.boolval",CurrIndex,NewBool);
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex-DefaultDeltaT(),&VarBoolVal);
+      OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarBoolVal);
       if (VarBoolVal.get() != PreBool)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect bool value at t-1 (tests.boolval)");
     }
@@ -784,9 +784,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
 
     OPENFLUID_SetVariable(TU,"tests.string",CurrIndex,NewString);
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.string",CurrIndex-DefaultDeltaT(),&VarString);
+      OPENFLUID_GetVariable(TU,"tests.string",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarString);
       if (VarString != PreString)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect string value at t-1 (tests.string)");
     }
@@ -837,9 +837,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
       OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect vector value at index 4 after update");
 
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex-DefaultDeltaT(),&VarVectorVal);
+      OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarVectorVal);
 
       if (VarVectorVal.getSize() != NewVectorSize)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect vector size at t-1");
@@ -887,9 +887,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
       OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix value at index 4,3 after update");
 
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex-DefaultDeltaT(),&VarMatrixVal);
+      OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarMatrixVal);
 
       if (VarMatrixVal.getSize() != NewMatrixRowsNb*NewMatrixColsNb)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect matrix size at t-1");
@@ -937,9 +937,9 @@ openfluid::core::Duration_t PrimitivesValuesUseFunction::runStep()
       OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map value at key key3 after update");
 
 
-    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-DefaultDeltaT()) != 0)
+    if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
     {
-      OPENFLUID_GetVariable(TU,"tests.map",CurrIndex-DefaultDeltaT(),&VarMapVal);
+      OPENFLUID_GetVariable(TU,"tests.map",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarMapVal);
 
       if (VarMapVal.getSize() != 3)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect map size at t-1");

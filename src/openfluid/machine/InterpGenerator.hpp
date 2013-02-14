@@ -89,9 +89,9 @@ class DLLEXPORT InterpGenerator : public Generator
 
     void checkConsistency();
 
-    openfluid::core::Duration_t initializeRun();
+    openfluid::base::SchedulingRequest initializeRun();
 
-    openfluid::core::Duration_t runStep();
+    openfluid::base::SchedulingRequest runStep();
 
     void finalizeRun() {};
 

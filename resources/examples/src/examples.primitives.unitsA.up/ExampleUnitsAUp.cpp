@@ -109,7 +109,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    openfluid::core::Duration_t initializeRun()
+    openfluid::base::SchedulingRequest initializeRun()
     {
       openfluid::core::Unit* A;
 
@@ -126,7 +126,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    openfluid::core::Duration_t runStep()
+    openfluid::base::SchedulingRequest runStep()
     {
       openfluid::core::Unit* A;
       openfluid::core::DoubleValue Value1, Value2;

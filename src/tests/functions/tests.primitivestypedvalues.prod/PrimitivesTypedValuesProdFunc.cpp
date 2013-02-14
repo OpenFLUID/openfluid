@@ -146,7 +146,7 @@ void PrimitivesTypedValuesProdFunction::checkConsistency()
 // =====================================================================
 
 
-openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::initializeRun()
+openfluid::base::SchedulingRequest PrimitivesTypedValuesProdFunction::initializeRun()
 {
   openfluid::core::Unit* TU;
   unsigned int TUID;
@@ -209,7 +209,7 @@ openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::initializeRun()
 // =====================================================================
 
 
-openfluid::core::Duration_t PrimitivesTypedValuesProdFunction::runStep()
+openfluid::base::SchedulingRequest PrimitivesTypedValuesProdFunction::runStep()
 {
   openfluid::core::Unit* TU;
   unsigned int TUID;

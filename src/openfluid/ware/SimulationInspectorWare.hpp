@@ -519,7 +519,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
                                     const openfluid::core::UnitID_t& IDChild) const;
 
 
-      SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType), mp_CoreData(NULL), mp_Datastore(NULL)
+      SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType), mp_Datastore(NULL), mp_CoreData(NULL)
       {};
 
 

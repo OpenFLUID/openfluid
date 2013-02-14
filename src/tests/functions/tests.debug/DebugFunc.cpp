@@ -136,7 +136,7 @@ class DebugFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t initializeRun()
+  openfluid::base::SchedulingRequest initializeRun()
   {
 
     OFDBG_LOCATE;
@@ -149,7 +149,7 @@ class DebugFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  openfluid::core::Duration_t runStep()
+  openfluid::base::SchedulingRequest runStep()
   {
     openfluid::core::Unit* TU;
     openfluid::core::DateTime BeginDate,EndDate;
