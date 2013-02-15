@@ -134,6 +134,7 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     /**
       Pointer to the core repository, for internal use only
     */
+    // TODO check here
    // openfluid::core::CoreRepository* mp_InternalCoreData;
 
 
@@ -143,10 +144,6 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     //openfluid::ware::WareParams_t m_ParamsMap;
 
     unsigned int m_MaxThreads;
-
-    static std::string generateDotEdge(std::string SrcClass, std::string SrcID,
-                                       std::string DestClass, std::string DestID,
-                                       std::string Options);
 
 
   protected:
@@ -358,13 +355,6 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
                                         const openfluid::ware::WareParamKey_t ParamName,
                                         std::vector<long>& Vals) const;
-
-    /**
-      Exports the graph of the landscape representation as a graphviz dot file.
-      The file is saved in the output directory of the simulation.
-      @param[in] Filename the name of the export file
-    */
-    void OPENFLUID_ExportUnitsGraphAsDotFile(const std::string& Filename);
 
     /**
       Returns the maximum number of threads that can be concurrently run in threaded spatial loops
