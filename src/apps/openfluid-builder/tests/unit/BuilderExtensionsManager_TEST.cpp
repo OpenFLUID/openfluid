@@ -71,10 +71,8 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/builderext/ModelessWindow.hpp>
 
-
 // =====================================================================
 // =====================================================================
-
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
@@ -84,13 +82,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(BEM->getExtensionsSearchPaths().size(),2);
 
   BOOST_REQUIRE_EQUAL(BEM->isRegistrationDone(),false);
-
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 void DisplayRegisteredExtensions(CollectionOfExtensions_t* ExtColl)
 {
@@ -125,13 +120,9 @@ void DisplayRegisteredExtensions(CollectionOfExtensions_t* ExtColl)
 // =====================================================================
 // =====================================================================
 
-
 BOOST_AUTO_TEST_CASE(check_operations)
 {
   BuilderTestHelper::getInstance()->initGtk();
-
-  openfluid::machine::SimulationBlob TheBlob;
-
 
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
@@ -160,15 +151,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BEM->registerExtensions();
 
   BOOST_REQUIRE_GT(BEM->getRegisteredExtensions()->size(),0);
-  BOOST_REQUIRE_GE(BEM->getRegisteredExtensionsCount(),10);
+  BOOST_REQUIRE_GE(BEM->getRegisteredExtensionsCount(),9);
 
   BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)->size(),1);
-  BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::SimulationListener)->size(),1);
   BOOST_REQUIRE_GE(BEM->getRegisteredExtensions(openfluid::builderext::PluggableBuilderExtension::ModelessWindow)->size(),1);
 
-
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
-
 
   BOOST_CHECK(!BEM->getExtensionContainer("wrong.extension"));
   BOOST_CHECK(!BEM->instantiatePluggableExtension("wrong.extension"));
@@ -205,25 +193,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   DisplayRegisteredExtensions(BEM->getRegisteredExtensions());
 
-
-  ExtensionContainer* SimListenerContainer = BEM->getExtensionContainer("tests.builder.simulationlistener");
-  SimListenerContainer->instantiateExt();
-  openfluid::builderext::ExtensionConfig_t Config = SimListenerContainer->Extension->getConfiguration();
-  BOOST_CHECK_EQUAL(Config.size(),3);
-  BOOST_CHECK_EQUAL(Config["unit_class"],"TestUnits");
-  BOOST_CHECK_EQUAL(Config["unit_id"],"5");
-  BOOST_CHECK_EQUAL(Config["variable"],"tests.scalar");
-
-  openfluid::builderext::ModelessWindow* ModelessWindowExt = static_cast<openfluid::builderext::ModelessWindow*>(SimListenerContainer->Extension);
-  ModelessWindowExt->setSimulationBlobAndModel(&TheBlob, NULL);
-  ModelessWindowExt->onRunStarted();
-  ModelessWindowExt->onRunStopped();
-  BEM->unlinkRegisteredExtensionsWithSimulationBlobAndModel();
-
   BEM->deletePluggableExtension("tests.builder.assistant");
-  BEM->deletePluggableExtension("tests.builder.simulationlistener");
-
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(check_prefsOperations)
 {
@@ -247,3 +221,6 @@ BOOST_AUTO_TEST_CASE(check_prefsOperations)
   BOOST_CHECK_EQUAL(BEM->isPreferencesInstantiationDone(), false);
   BOOST_CHECK_GE(BEM->getRegisteredExtensionPreferences()->size(),0);
 }
+
+// =====================================================================
+// =====================================================================

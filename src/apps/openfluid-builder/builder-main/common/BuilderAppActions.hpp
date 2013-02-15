@@ -132,10 +132,6 @@ class BuilderAppActions
         Glib::RefPtr<Gtk::Action> ParentMenuAction, std::string ActionName,
         std::string ActionLabel, std::string ActionTooltip = "");
 
-    Glib::RefPtr<Gtk::Action> addProjectSimulationAction(
-        std::string ActionName, std::string ActionLabel,
-        std::string ActionTooltip = "");
-
     Glib::RefPtr<Gtk::Action> getDataDomainMenuAction();
     Glib::RefPtr<Gtk::Action> getDataInputdataMenuAction();
     Glib::RefPtr<Gtk::Action> getDataEventsMenuAction();

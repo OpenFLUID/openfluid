@@ -139,8 +139,6 @@ void BuilderAppActions::createProjectUiXml()
     "      <menuitem action='Refresh'/>"
     "      <separator/>"
     "      <menuitem action='SimulationRun'/>"
-    "      <separator/>"
-    "      <menu action='ListenersMenu'/>"
     "    </menu>"
     "  </placeholder>"
     "  <placeholder name='ProjectExtensionsPlaceholder'>"
@@ -247,8 +245,6 @@ void BuilderAppActions::createProjectActionGroup()
       _("Reload simulation functions")));
   mref_ProjectActionGroup->add(Gtk::Action::create("SimulationRun",
       Gtk::Stock::MEDIA_PLAY, _("Run...")));
-  mref_ProjectActionGroup->add(Gtk::Action::create("ListenersMenu",
-      _("Listeners")));
 
   mref_ProjectActionGroup->add(
       Gtk::Action::create("MapView",
@@ -523,31 +519,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::addProjectDataAction(Glib::RefPtr<
 
   std::string MenuPath = "/MenuBar/ProjectDataPlaceholder/DataMenu/"
       + ParentMenuAction->get_name() + "/";
-  std::string MenuItemName = ActionName + "MenuItem";
-
-  mref_UIManager->add_ui(gtk_ui_manager_new_merge_id(mref_UIManager->gobj()),
-      MenuPath, MenuItemName, ActionName, Gtk::UI_MANAGER_MENUITEM, false);
-
-  mref_UIManager->get_widget(MenuPath + MenuItemName)->set_tooltip_markup(
-      ActionTooltip);
-
-  return NewAction;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-Glib::RefPtr<Gtk::Action> BuilderAppActions::addProjectSimulationAction(
-    std::string ActionName, std::string ActionLabel, std::string ActionTooltip)
-{
-  Glib::RefPtr<Gtk::Action> NewAction = Gtk::Action::create(ActionName,
-      ActionLabel, ActionTooltip);
-
-  mref_ProjectActionGroup->add(NewAction);
-
-  std::string MenuPath =
-      "/MenuBar/ProjectSimulationPlaceholder/SimulationMenu/ListenersMenu/";
   std::string MenuItemName = ActionName + "MenuItem";
 
   mref_UIManager->add_ui(gtk_ui_manager_new_merge_id(mref_UIManager->gobj()),

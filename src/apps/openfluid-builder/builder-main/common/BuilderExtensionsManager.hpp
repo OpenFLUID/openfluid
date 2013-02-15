@@ -172,8 +172,6 @@ class BuilderExtensionsManager
 
     static std::string getExtensionTypeAsString(openfluid::builderext::PluggableBuilderExtension::ExtensionType Type);
 
-    void unlinkRegisteredExtensionsWithSimulationBlobAndModel();
-
     bool instantiatePluggableExtension(std::string ExtID);
 
     void deletePluggableExtension(std::string ExtID);
