@@ -69,10 +69,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/config.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/guicommon/PreferencesPanel.hpp>
-
 #include <openfluid/guicommon/BuilderDescriptor.hpp>
 
 
@@ -202,26 +199,23 @@ class PluggableBuilderExtension
 
     sigc::signal<void> m_signal_ChangedOccurs;
 
-    openfluid::machine::SimulationBlob* mp_SimulationBlob;
-
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
+    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
   public:
 
     enum ExtensionType { WorkspaceTab, ModelessWindow, ModalWindow,
                          SpatialgraphImporter, InputdataImporter, EventsImporter, ExtraImporter, MixedImporter,
-                         SimulationListener, HomeLauncher };
+                         HomeLauncher };
 
 
-    PluggableBuilderExtension() : mp_SimulationBlob(NULL) { };
+    PluggableBuilderExtension() : mp_BuilderDesc(NULL) { };
 
 
     virtual ~PluggableBuilderExtension() { };
 
 
-    void setSimulationBlobAndModel(openfluid::machine::SimulationBlob* Blob, openfluid::machine::ModelInstance* Model)
-      { mp_SimulationBlob = Blob; mp_ModelInstance = Model; };
+    void setBuilderDescriptor(openfluid::guicommon::BuilderDescriptor& BuilderDesc)
+      { mp_BuilderDesc = &BuilderDesc; };
 
 
     sigc::signal<void> signal_ChangedOccurs()

@@ -369,27 +369,6 @@ ExtensionContainer* BuilderExtensionsManager::getExtensionContainer(const std::s
   return (ExtensionContainer*)0;
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void BuilderExtensionsManager::unlinkRegisteredExtensionsWithSimulationBlobAndModel()
-{
-  CollectionOfExtensions_t::iterator COEit;
-  ExtensionContainerMap_t::iterator ECMit;
-
-  for (COEit = m_RegisteredExtensions.begin(); COEit!= m_RegisteredExtensions.end(); ++COEit)
-  {
-    for (ECMit = (*COEit).second.begin(); ECMit!= (*COEit).second.end(); ++ECMit)
-    {
-      if((*ECMit).second.Extension)
-        (*ECMit).second.Extension->setSimulationBlobAndModel(NULL, NULL);
-    }
-  }
-
-}
-
-
 
 // =====================================================================
 // =====================================================================
@@ -407,7 +386,6 @@ std::string BuilderExtensionsManager::getExtensionTypeAsString(openfluid::builde
     case openfluid::builderext::PluggableBuilderExtension::EventsImporter : return "EventsImporter"; break;
     case openfluid::builderext::PluggableBuilderExtension::ExtraImporter : return "ExtraImporter"; break;
     case openfluid::builderext::PluggableBuilderExtension::MixedImporter : return "MixedImporter"; break;
-    case openfluid::builderext::PluggableBuilderExtension::SimulationListener : return "SimulationListener"; break;
     case openfluid::builderext::PluggableBuilderExtension::HomeLauncher : return "HomeLauncher"; break;
 
     default : return "";
