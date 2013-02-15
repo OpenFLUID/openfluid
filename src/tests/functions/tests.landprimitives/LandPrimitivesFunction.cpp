@@ -324,7 +324,7 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
 
     void finalizeRun()
     {
-      OPENFLUID_ExportUnitsGraphAsDotFile("landgraph.dot");
+
     }
 
 };
