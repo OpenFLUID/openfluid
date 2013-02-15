@@ -21,3 +21,9 @@ ADD_TEST(observers-CSVFiles "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CSVObserver" 
                         "-p${TEST_OUTPUT_PATH}"
                         "-n${TEST_OUTPUT_PATH}")
+                        
+ADD_TEST(observers-DotFiles "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.DotObserver"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DotObserver" 
+                        "-p${TEST_OUTPUT_PATH}"
+                        "-n${TEST_OUTPUT_PATH}")

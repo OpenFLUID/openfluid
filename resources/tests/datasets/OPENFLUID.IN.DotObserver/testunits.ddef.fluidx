@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <domain>
+    <definition>
+
+<!-- 
+  OU5  -> OU25
+  TU1  -> TU22 
+  TU2  -> TU22
+  TU4  -> TU22
+  TU22 -> TU18
+  TU35 -> TU18
+  TU18 -> OU5
+  TU52 -> OU5
+
+
+ -->
+
+      <unit class="PU" ID="1" pcsorder="1" />
+      <unit class="PU" ID="2" pcsorder="1" />
+
+      <unit class="TU" ID="100" pcsorder="2" />
+      <unit class="TU" ID="101" pcsorder="2" />
+      <unit class="TU" ID="102" pcsorder="2" />
+      <unit class="TU" ID="103" pcsorder="2" />
+      <unit class="TU" ID="104" pcsorder="2" />
+
+
+      <unit class="OU" ID="5" pcsorder="4">
+        <to class="OU" ID="25" />
+        <childof class="PU" ID="1" />                  
+      </unit>
+
+
+      <unit class="TU" ID="2" pcsorder="1">
+        <to class="TU" ID="22" />
+        <childof class="PU" ID="2" />      
+      </unit>
+      <unit class="OU" ID="13" pcsorder="1">
+        <to class="OU" ID="5" />
+        <childof class="PU" ID="1" />            
+      </unit>
+      
+      
+      <unit class="TU" ID="22" pcsorder="2">
+        <to class="TU" ID="18" />      
+      </unit>
+
+      <unit class="TU" ID="35" pcsorder="2">
+        <to class="TU" ID="18" />
+        <childof class="PU" ID="2" />      
+      </unit>
+
+
+      <unit class="TU" ID="1" pcsorder="1">
+        <to class="TU" ID="22" />
+      </unit>      
+      
+      <unit class="TU" ID="18" pcsorder="3">
+        <to class="OU" ID="5" />            
+      </unit>
+
+
+      <unit class="OU" ID="25" pcsorder="5">
+        <childof class="PU" ID="1" />
+      </unit>
+
+      <unit class="TU" ID="52" pcsorder="1">
+        <to class="OU" ID="5" />      
+      </unit>
+
+      <unit class="TU" ID="4" pcsorder="1">
+        <to class="TU" ID="22" />
+      </unit>      
+
+
+    </definition>
+  </domain>
+</openfluid>
+
+
