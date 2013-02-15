@@ -105,18 +105,6 @@ void PluggableFunction::initializeWare(const WareID_t& ID,const unsigned int& Ma
 // =====================================================================
 
 
-std::string PluggableFunction::generateDotEdge(std::string SrcClass, std::string SrcID,
-                                               std::string DestClass, std::string DestID,
-                                               std::string Options)
-{
-  return "\""+SrcClass+" #"+SrcID+"\" -> \""+DestClass+" #"+DestID+"\"" + Options;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
                                       const openfluid::ware::WareParamKey_t ParamName,
                                       openfluid::core::StringValue& Val) const
@@ -484,114 +472,6 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
   {
     return false;
   }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableFunction::OPENFLUID_ExportUnitsGraphAsDotFile(const std::string& Filename)
-{
-
-  std::ofstream DotFile;
-  std::string OutputDir;
-  const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_CoreData->getUnitsByClass();
-  const openfluid::core::UnitsList_t* UnitsList = NULL;
-  std::vector<openfluid::core::UnitClass_t> ClassVector;
-  openfluid::core::Unit* TheUnit;
-
-  openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
-  openfluid::core::UnitsList_t::const_iterator itUnitsList;
-
-  OPENFLUID_GetRunEnvironment("dir.output",&OutputDir);
-
-  DotFile.open(std::string(OutputDir+"/"+Filename).c_str());
-
-  DotFile << "digraph landscape {" << "\n";
-  DotFile << std::endl;
-  DotFile << "label = \"Graph representation of the landscape\";" << "\n";
-  DotFile << "fontsize = 24;" << "\n";
-  DotFile << "\n";
-
-
-  for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
-  {
-    ClassVector.push_back((*itUnitsClass).first);
-
-    UnitsList=((*itUnitsClass).second).getList();
-
-    for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
-    {
-      TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
-      std::string SrcClassStr = TheUnit->getClass();
-      std::string SrcIDStr = "";
-      openfluid::tools::ConvertValue(TheUnit->getID(),&SrcIDStr);
-      DotFile << "\""+SrcClassStr+" #"+SrcIDStr+"\";" << "\n";
-    }
-
-  }
-
-  DotFile << "\n";
-
-  for (itUnitsClass=UnitsByClass->begin();itUnitsClass!=UnitsByClass->end();++itUnitsClass)
-  {
-
-    UnitsList=((*itUnitsClass).second).getList();
-
-    for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
-    {
-      TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
-      std::string SrcClassStr = TheUnit->getClass();
-      std::string SrcIDStr = "";
-      openfluid::tools::ConvertValue(TheUnit->getID(),&SrcIDStr);
-
-      for (unsigned int i=0;i<ClassVector.size();i++)
-      {
-        const openfluid::core::UnitsPtrList_t* ToUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getToUnits(ClassVector[i]));
-
-        if (ToUnits != NULL)
-        {
-          std::string DestClassStr = ClassVector[i];
-          openfluid::core::UnitsPtrList_t::const_iterator itToUnits;
-
-          for (itToUnits=ToUnits->begin();itToUnits!=ToUnits->end();++itToUnits)
-          {
-            std::string DestIDStr = "";
-            openfluid::tools::ConvertValue((*itToUnits)->getID(),&DestIDStr);
-
-            DotFile << generateDotEdge(SrcClassStr,SrcIDStr,DestClassStr,DestIDStr,"") << "\n";
-
-          }
-        }
-
-        const openfluid::core::UnitsPtrList_t* ParentUnits = const_cast<openfluid::core::UnitsPtrList_t*>(TheUnit->getParentUnits(ClassVector[i]));
-
-        if (ParentUnits != NULL)
-        {
-          std::string DestClassStr = ClassVector[i];
-          openfluid::core::UnitsPtrList_t::const_iterator itParentUnits;
-
-          for (itParentUnits=ParentUnits->begin();itParentUnits!=ParentUnits->end();++itParentUnits)
-          {
-            std::string DestIDStr = "";
-            openfluid::tools::ConvertValue((*itParentUnits)->getID(),&DestIDStr);
-
-            DotFile << generateDotEdge(SrcClassStr,SrcIDStr,DestClassStr,DestIDStr,"[arrowhead=odiamond,color=grey,style=dashed]") << "\n";
-
-          }
-        }
-
-      }
-
-    }
-
-  }
-
-  DotFile << "\n";
-  DotFile << "}" << "\n";
-
-  DotFile.close();
 }
 
 
