@@ -73,7 +73,6 @@ DEFINE_EXTENSION_DEFAULT_CONFIG()
 // =====================================================================
 // =====================================================================
 
-
 class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
 {
   private:
@@ -81,24 +80,23 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
     Gtk::VBox* mp_MainBox;
     Gtk::Label* mp_LabelTestRefresh;
 
-    openfluid::core::UnitsCollection* mp_TestUnitsColl;
-
   public:
 
     //TODO change workspaceTab extensions constructors
     DummyWorkspaceTab() :
-      WorkspaceTab(*(openfluid::guicommon::BuilderDescriptor*)0), mp_TestUnitsColl(0)
+        WorkspaceTab(*(openfluid::guicommon::BuilderDescriptor*) 0)
     {
       Gtk::Label* Label = Gtk::manage(new Gtk::Label("I am DummyWorkspaceTab"));
 
       mp_LabelTestRefresh = Gtk::manage(new Gtk::Label());
 
       Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());
-      Gtk::Label* AddLabel = Gtk::manage(new Gtk::Label(
-          "Clicking the button will add a Unit of class \"TestUnits\""));
+      Gtk::Label* AddLabel = Gtk::manage(
+          new Gtk::Label(
+              "Clicking the button will add a Unit of class \"TestUnits\""));
       Gtk::Button* AddButton = Gtk::manage(new Gtk::Button("Add"));
-      AddButton->signal_clicked().connect(sigc::mem_fun(*this,
-          &DummyWorkspaceTab::whenAddButtonClicked));
+      AddButton->signal_clicked().connect(
+          sigc::mem_fun(*this, &DummyWorkspaceTab::whenAddButtonClicked));
 
       Box->pack_start(*AddLabel);
       Box->pack_start(*AddButton, Gtk::PACK_SHRINK, 20);
@@ -115,7 +113,6 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
     // =====================================================================
     // =====================================================================
 
-
     ~DummyWorkspaceTab()
     {
 
@@ -124,30 +121,24 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
     // =====================================================================
     // =====================================================================
 
-
     void update()
     {
       unsigned int Size = 0;
 
-      if (mp_SimulationBlob)
+      if (mp_BuilderDesc)
       {
-        mp_TestUnitsColl = mp_SimulationBlob->getCoreRepository().getUnits(
-            "TestUnits");
+        Size = mp_BuilderDesc->getDomain().getIDsOfClass("TestUnits").size();
 
-        if (mp_TestUnitsColl)
-          Size = mp_TestUnitsColl->getList()->size();
-
-        mp_LabelTestRefresh->set_text(Glib::ustring::compose(
-            "Nb of units in TestUnits class: %1", Size));
+        mp_LabelTestRefresh->set_text(
+            Glib::ustring::compose("Nb of units in TestUnits class: %1", Size));
       }
       else
         mp_LabelTestRefresh->set_text(
-            "Nb of units in TestUnits class: no Core Repository available");
+            "Nb of units in TestUnits class: no Domain available");
     }
 
     // =====================================================================
     // =====================================================================
-
 
     Gtk::Widget* getExtensionAsWidget()
     {
@@ -157,36 +148,33 @@ class DummyWorkspaceTab: public openfluid::builderext::WorkspaceTab
     // =====================================================================
     // =====================================================================
 
-
     void whenAddButtonClicked()
     {
       unsigned int NextId = 1;
 
-      if (mp_TestUnitsColl)
-      {
-        openfluid::core::UnitsList_t* TestUnits = mp_TestUnitsColl->getList();
+      std::set<int> m_IDs = mp_BuilderDesc->getDomain().getIDsOfClass(
+          "TestUnits");
 
-        if (!TestUnits->empty())
-        {
-          NextId = TestUnits->end().operator --()->getID() + 1;
+      if (!m_IDs.empty())
+        NextId = (*std::max_element(m_IDs.begin(), m_IDs.end())) + 1;
 
-          while (mp_TestUnitsColl->getUnit(NextId))
-            NextId++;
-        }
-      }
+      openfluid::fluidx::UnitDescriptor* Unit =
+          new openfluid::fluidx::UnitDescriptor;
+      Unit->getUnitClass() = "TestUnits";
+      Unit->getUnitID() = NextId;
+      Unit->getProcessOrder() = 1;
 
-      openfluid::core::Unit U("TestUnits", NextId, 1,
-          openfluid::core::InstantiationInfo::DESCRIPTOR);
-
-      mp_SimulationBlob->getCoreRepository().addUnit(U);
+      mp_BuilderDesc->getDomain().addUnit(Unit);
 
       signal_ChangedOccurs().emit();
     }
 
-    bool isReadyForShowtime() const { return (mp_SimulationBlob != NULL); };
+    bool isReadyForShowtime() const
+    {
+      return (mp_BuilderDesc != NULL);
+    }
 
 };
-
 
 // =====================================================================
 // =====================================================================
@@ -197,11 +185,13 @@ class DummyWorkspaceTabPrefs: public openfluid::builderext::BuilderExtensionPref
 
   public:
 
-  DummyWorkspaceTabPrefs() : BuilderExtensionPrefs("Dummy Workspace Tab Preferences")
+    DummyWorkspaceTabPrefs() :
+        BuilderExtensionPrefs("Dummy Workspace Tab Preferences")
     {
       Gtk::Box* TheBox = Gtk::manage(new Gtk::HBox());
 
-      Gtk::Label* Lab = Gtk::manage(new Gtk::Label("I'm the DummyWorkspaceTab Preferences"));
+      Gtk::Label* Lab = Gtk::manage(
+          new Gtk::Label("I'm the DummyWorkspaceTab Preferences"));
 
       TheBox->pack_start(*Lab);
 
@@ -210,7 +200,10 @@ class DummyWorkspaceTabPrefs: public openfluid::builderext::BuilderExtensionPref
       mp_ContentWindow->show_all_children();
     }
 
-    void init() {};
+    void init()
+    {
+    }
+    ;
 
 };
 

@@ -682,14 +682,14 @@ void BuilderAppCoordinator::configExtensionsMenus()
                   ECMit->second.Infos.ID));
         break;
 
-      case openfluid::builderext::PluggableBuilderExtension::SimulationListener:
-        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
-          m_Actions.addProjectSimulationAction(ECMit->second.Infos.ID,
-              ECMit->second.Infos.ShortName, ECMit->second.Infos.Description)->signal_activate().connect(
-              sigc::bind<std::string>(sigc::mem_fun(*this,
-                  &BuilderAppCoordinator::whenExtensionAsked),
-                  ECMit->second.Infos.ID));
-        break;
+//      case openfluid::builderext::PluggableBuilderExtension::SimulationListener:
+//        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+//          m_Actions.addProjectSimulationAction(ECMit->second.Infos.ID,
+//              ECMit->second.Infos.ShortName, ECMit->second.Infos.Description)->signal_activate().connect(
+//              sigc::bind<std::string>(sigc::mem_fun(*this,
+//                  &BuilderAppCoordinator::whenExtensionAsked),
+//                  ECMit->second.Infos.ID));
+//        break;
 
       case openfluid::builderext::PluggableBuilderExtension::HomeLauncher:
         break;

@@ -71,30 +71,25 @@ DEFINE_EXTENSION_DEFAULT_CONFIG()
 // =====================================================================
 // =====================================================================
 
-
 class DummyModelessWindow: public openfluid::builderext::ModelessWindow
 {
   private:
 
     Gtk::MessageDialog* mp_Dialog;
 
-    openfluid::core::UnitsCollection* mp_TestUnitsColl;
-
   public:
 
-    DummyModelessWindow() :
-      mp_TestUnitsColl(0)
+    DummyModelessWindow()
     {
       mp_Dialog = new Gtk::MessageDialog("", false, Gtk::MESSAGE_QUESTION,
-          Gtk::BUTTONS_OK_CANCEL, false);
+                                         Gtk::BUTTONS_OK_CANCEL, false);
 
-      mp_Dialog->signal_response().connect(sigc::mem_fun(*this,
-          &DummyModelessWindow::response));
+      mp_Dialog->signal_response().connect(
+          sigc::mem_fun(*this, &DummyModelessWindow::response));
     }
 
     // =====================================================================
     // =====================================================================
-
 
     ~DummyModelessWindow()
     {
@@ -104,33 +99,29 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
     // =====================================================================
     // =====================================================================
 
-
     void onRefresh()
     {
       unsigned int Size = 0;
 
-      if (!mp_SimulationBlob)
+      if (!mp_BuilderDesc)
         mp_Dialog->set_message("I am DummyModelessWindow\n"
-          "Nb of units in TestUnits class: no CoreRepository\n"
-          "Nothing to do");
+                               "Nb of units in TestUnits class: no Domain\n"
+                               "Nothing to do");
       else
       {
-        mp_TestUnitsColl = mp_SimulationBlob->getCoreRepository().getUnits(
-            "TestUnits");
+        Size = mp_BuilderDesc->getDomain().getIDsOfClass("TestUnits").size();
 
-        if (mp_TestUnitsColl)
-          Size = mp_TestUnitsColl->getList()->size();
-
-        mp_Dialog->set_message(Glib::ustring::compose(
-            "I am DummyModelessWindow\n"
-              "Nb of units in TestUnits class: %1\n"
-              "Clicking ok will add a Unit of class \"TestUnits\"", Size));
+        mp_Dialog->set_message(
+            Glib::ustring::compose(
+                "I am DummyModelessWindow\n"
+                "Nb of units in TestUnits class: %1\n"
+                "Clicking ok will add a Unit of class \"TestUnits\"",
+                Size));
       }
     }
 
     // =====================================================================
     // =====================================================================
-
 
     Gtk::Widget* getExtensionAsWidget()
     {
@@ -139,7 +130,6 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
 
     // =====================================================================
     // =====================================================================
-
 
     void show()
     {
@@ -179,23 +169,19 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
       {
         unsigned int NextId = 1;
 
-        if (mp_TestUnitsColl)
-        {
-          openfluid::core::UnitsList_t* TestUnits = mp_TestUnitsColl->getList();
+        std::set<int> m_IDs = mp_BuilderDesc->getDomain().getIDsOfClass(
+            "TestUnits");
 
-          if (!TestUnits->empty())
-          {
-            NextId = TestUnits->end().operator --()->getID() + 1;
+        if (!m_IDs.empty())
+          NextId = (*std::max_element(m_IDs.begin(), m_IDs.end())) + 1;
 
-            while (mp_TestUnitsColl->getUnit(NextId))
-              NextId++;
-          }
-        }
+        openfluid::fluidx::UnitDescriptor* Unit =
+            new openfluid::fluidx::UnitDescriptor;
+        Unit->getUnitClass() = "TestUnits";
+        Unit->getUnitID() = NextId;
+        Unit->getProcessOrder() = 1;
 
-        openfluid::core::Unit U("TestUnits", NextId, 1,
-            openfluid::core::InstantiationInfo::DESCRIPTOR);
-
-        mp_SimulationBlob->getCoreRepository().addUnit(U);
+        mp_BuilderDesc->getDomain().addUnit(Unit);
 
         signal_ChangedOccurs().emit();
       }
@@ -206,14 +192,15 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
       }
     }
 
-    bool isReadyForShowtime() const { return (mp_SimulationBlob != NULL); };
+    bool isReadyForShowtime() const
+    {
+      return (mp_BuilderDesc != NULL);
+    }
 
 };
 
-
 // =====================================================================
 // =====================================================================
-
 
 DEFINE_EXTENSION_HOOKS((DummyModelessWindow))
 

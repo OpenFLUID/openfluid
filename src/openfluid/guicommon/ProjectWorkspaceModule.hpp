@@ -90,11 +90,6 @@ class ProjectWorkspaceModule: public BuilderModule
 
     virtual sigc::signal<void> signal_ModuleChanged() = 0;
 
-    virtual void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob,
-        BuilderDescriptor& BuilderDesc) = 0;
-
     virtual void update() = 0;
 
     virtual ~ProjectWorkspaceModule(){};
