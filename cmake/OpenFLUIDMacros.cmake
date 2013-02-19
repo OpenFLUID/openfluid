@@ -39,7 +39,7 @@ ENDMACRO(ADD_FUNCTION)
 # Macro for compiling a simulation observer
 MACRO(ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
 
-  FILE(GLOB OBS_CPP ${OBS_SRCDIR}/*.cpp)  
+  FILE(GLOB OBS_CPP ${OBS_SRCDIR}/*.cpp ${OBS_SRCDIR}/*.c)  
     
   ADD_LIBRARY("${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}" MODULE ${OBS_CPP})
   
@@ -50,7 +50,7 @@ MACRO(ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
 
   # Fix for win32 compatibility
   IF(WIN32)
-    SET_TARGET_PROPERTIES($"${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}" PROPERTIES LINK_FLAGS "-shared")                                                
+    SET_TARGET_PROPERTIES("${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}" PROPERTIES LINK_FLAGS "-shared")                                                
   ENDIF(WIN32)
                                                 
   TARGET_LINK_LIBRARIES("${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}"
@@ -60,6 +60,17 @@ MACRO(ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
                         openfluid-tools)
       
 ENDMACRO(ADD_OBSERVER)
+
+
+# Macro for compiling a simulation observer and add installation directives
+MACRO(ADD_OBSERVER_WITH_INSTALL OBS_NAME OBS_SRCDIR OBS_BINDIR)
+
+  ADD_OBSERVER(${OBS_NAME} ${OBS_SRCDIR} ${OBS_BINDIR})
+
+  INSTALL(TARGETS "${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}"
+          DESTINATION "${OBSERVERS_INSTALL_PATH}")
+        
+ENDMACRO()
 
 
 # Macro for compiling a builder extension

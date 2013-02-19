@@ -139,7 +139,8 @@ ADD_FUNCTION(tests.logger tests.logger ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Logger "${BIN_OUTPUT_PATH}/openfluid-engine" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Logger"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Logger" 
-                        "-p${TEST_OUTPUT_PATH}")                              
+                        "-p${TEST_OUTPUT_PATH}"
+                        "-n${TEST_OUTPUT_PATH}")                              
 
 ADD_FUNCTION(tests.debug tests.debug ${TEST_OUTPUT_PATH})
 ADD_TEST(functions-Debug "${BIN_OUTPUT_PATH}/openfluid-engine" 
