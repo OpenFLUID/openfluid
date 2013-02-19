@@ -2,6 +2,7 @@
 <openfluid>
   <monitoring>
   
+    <observer ID="tests.empty" />
     
   </monitoring>
 </openfluid>
