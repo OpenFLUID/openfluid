@@ -75,7 +75,7 @@ ProjectWorkspaceModule(BuilderDesc)
   mp_MainPanel = 0;
 
   mp_DomainStructureMVP = new DomainStructureComponent(BuilderDesc.getDomain());
-//  mp_DomainUnitRelationAddDialog = new DomainUnitRelationAddDialog();
+  mp_DomainUnitRelationAddDialog = new DomainUnitRelationAddDialog(BuilderDesc.getDomain());
   mp_DomainUnitAddEditDialog = new DomainUnitAddEditDialog(*mp_DomainUnitRelationAddDialog, BuilderDesc.getDomain());
 
 
@@ -99,7 +99,7 @@ DomainStructureModule::~DomainStructureModule()
 {
   delete mp_Coordinator;
   delete mp_DomainUnitAddEditDialog;
-//  delete mp_DomainUnitRelationAddDialog;
+  delete mp_DomainUnitRelationAddDialog;
   delete mp_StructureListToolBox;
   delete mp_DomainStructureMVP;
 }
