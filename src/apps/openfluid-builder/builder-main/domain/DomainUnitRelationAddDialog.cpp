@@ -57,16 +57,16 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 
-#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/guicommon/BuilderDomain.hpp>
 
 #include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-DomainUnitRelationAddDialog::DomainUnitRelationAddDialog() :
-  mp_CoreRepos(0)
+DomainUnitRelationAddDialog::DomainUnitRelationAddDialog(
+    openfluid::guicommon::BuilderDomain& Domain) :
+    mp_Domain(&Domain)
 {
   mp_Dialog = new Gtk::Dialog(_("Choose Units to link to"));
 
@@ -101,51 +101,37 @@ DomainUnitRelationAddDialog::DomainUnitRelationAddDialog() :
 // =====================================================================
 // =====================================================================
 
-
-void DomainUnitRelationAddDialog::setEngineRequirements(
-    openfluid::core::CoreRepository& CoreRepos)
-{
-  mp_CoreRepos = &CoreRepos;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void DomainUnitRelationAddDialog::update(std::set<std::string> ClassNames)
+std::list<openfluid::core::UnitClassID_t> DomainUnitRelationAddDialog::show()
 {
   mref_TreeModel->clear();
 
-  for (std::set<std::string>::iterator itClass = ClassNames.begin(); itClass
-      != ClassNames.end(); ++itClass)
+  const std::map<std::string, std::map<int, openfluid::guicommon::BuilderUnit> >& Units =
+      mp_Domain->getUnitsByIdByClass();
+
+  for (std::map<std::string, std::map<int, openfluid::guicommon::BuilderUnit> >::const_iterator it =
+      Units.begin(); it != Units.end(); ++it)
   {
     Gtk::TreeRow ClassRow = *mref_TreeModel->append();
-    ClassRow[m_Columns.m_Class] = *itClass;
-    ClassRow[m_Columns.m_Text] = *itClass;
+    ClassRow[m_Columns.m_Class] = it->first;
+    ClassRow[m_Columns.m_Text] = it->first;
 
-    std::set<int> Ids = EngineHelper::getIDs(mp_CoreRepos, *itClass);
+    const std::map<int, openfluid::guicommon::BuilderUnit> UnitsOfClass = it->second;
 
-    for (std::set<int>::iterator itId = Ids.begin(); itId != Ids.end(); ++itId)
+    for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator itt = UnitsOfClass.begin();
+        itt != UnitsOfClass.end(); ++itt)
     {
       Gtk::TreeRow Row = *mref_TreeModel->append(ClassRow->children());
-      Row[m_Columns.m_Class] = *itClass;
-      Row[m_Columns.m_Id] = *itId;
-      Row[m_Columns.m_Text] = Glib::ustring::compose("%1", *itId);
+      Row[m_Columns.m_Class] = it->first;
+      Row[m_Columns.m_Id] = itt->first;
+      Row[m_Columns.m_Text] = Glib::ustring::compose("%1", itt->first);
     }
   }
 
   mp_TreeView->expand_all();
-}
 
-// =====================================================================
-// =====================================================================
-
-
-std::list<openfluid::core::Unit*> DomainUnitRelationAddDialog::show()
-{
   mp_TreeView->get_selection()->unselect_all();
 
-  std::list<openfluid::core::Unit*> SelectedUnits;
+  std::list<openfluid::core::UnitClassID_t> SelectedUnits;
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
@@ -160,7 +146,10 @@ std::list<openfluid::core::Unit*> DomainUnitRelationAddDialog::show()
       int Id = mref_TreeModel->get_iter(*it)->get_value(m_Columns.m_Id);
 
       if (Id)
-        SelectedUnits.push_back(mp_CoreRepos->getUnit(Class, Id));
+      {
+        openfluid::core::UnitClassID_t Unit = std::make_pair(Class,Id);
+        SelectedUnits.push_back(Unit);
+      }
     }
   }
 

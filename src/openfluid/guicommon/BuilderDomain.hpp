@@ -230,6 +230,11 @@ class BuilderDomain
     void renameInputData(std::string ClassName, std::string OldIDataName,
                          std::string NewIDataName);
 
+    std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(const openfluid::core::UnitClassID_t Unit);
+    std::list<openfluid::core::UnitClassID_t>& getUnitsParentsOf(const openfluid::core::UnitClassID_t Unit);
+    std::list<openfluid::core::UnitClassID_t> getUnitsFromOf(const openfluid::core::UnitClassID_t Unit);
+    std::list<openfluid::core::UnitClassID_t> getUnitsChildrenOf(const openfluid::core::UnitClassID_t Unit);
+
 };
 
 // =====================================================================

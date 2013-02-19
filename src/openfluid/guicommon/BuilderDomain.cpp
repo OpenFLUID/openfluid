@@ -58,6 +58,7 @@
 #include <openfluid/fluidx/UnitDescriptor.hpp>
 #include <openfluid/fluidx/IDataDescriptor.hpp>
 #include <stdexcept>
+#include <algorithm>
 
 namespace openfluid {
 namespace guicommon {
@@ -339,16 +340,32 @@ void BuilderDomain::deleteUnit(std::string ClassName, int ID)
   if (m_Units.at(ClassName).empty())
     m_Units.erase(ClassName);
 
-  // delete in UnitDesc list
-  std::list<openfluid::fluidx::UnitDescriptor>* Units =
-      &(mp_DomainDesc->getUnits());
-  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
-      Units->begin(); it != Units->end(); ++it)
+  // delete in UnitDesc list and in other units relations
+  std::list<openfluid::fluidx::UnitDescriptor>& Units =
+      mp_DomainDesc->getUnits();
+  openfluid::core::UnitClassID_t Unit = std::make_pair(ClassName, ID);
+  std::list<openfluid::fluidx::UnitDescriptor>::iterator it = Units.begin();
+  while (it != Units.end())
   {
     if (it->getUnitClass() == ClassName && (int) it->getUnitID() == ID)
     {
-      Units->erase(it);
-      break;
+      it = Units.erase(it);
+    }
+    else
+    {
+      std::list<openfluid::core::UnitClassID_t>& Tos = it->getUnitsTos();
+      std::list<openfluid::core::UnitClassID_t>::iterator Found = std::find(
+          Tos.begin(), Tos.end(), Unit);
+      if (Found != Tos.end())
+        Tos.remove(Unit);
+
+      std::list<openfluid::core::UnitClassID_t>& Parents =
+          it->getUnitsParents();
+      Found = std::find(Parents.begin(), Parents.end(), Unit);
+      if (Found != Parents.end())
+        Parents.remove(Unit);
+
+      ++it;
     }
   }
 
@@ -576,6 +593,98 @@ void BuilderDomain::renameInputData(std::string ClassName,
   //rename in IDataNames
   m_IDataNames.at(ClassName).erase(OldIDataName);
   m_IDataNames.at(ClassName).insert(NewIDataName);
+}
+
+// =====================================================================
+// =====================================================================
+
+std::list<openfluid::core::UnitClassID_t>& BuilderDomain::getUnitsToOf(
+    const openfluid::core::UnitClassID_t Unit)
+{
+  try
+  {
+    return m_Units.at(Unit.first).at(Unit.second).mp_UnitDesc->getUnitsTos();
+  }
+  catch (std::out_of_range& e)
+  {
+    throw openfluid::base::OFException(
+        "OpenFLUID-Builder", "BuilderDomain::getUnitsToOf",
+        "trying to get relations of a Unit that doesn't exist");
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+std::list<openfluid::core::UnitClassID_t>& BuilderDomain::getUnitsParentsOf(
+    const openfluid::core::UnitClassID_t Unit)
+{
+  try
+  {
+    return m_Units.at(Unit.first).at(Unit.second).mp_UnitDesc->getUnitsParents();
+  }
+  catch (std::out_of_range& e)
+  {
+    throw openfluid::base::OFException(
+        "OpenFLUID-Builder", "BuilderDomain::getUnitsParentsOf",
+        "trying to get relations of a Unit that doesn't exist");
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+std::list<openfluid::core::UnitClassID_t> BuilderDomain::getUnitsFromOf(
+    const openfluid::core::UnitClassID_t Unit)
+{
+  std::list<openfluid::core::UnitClassID_t> Froms;
+
+  std::list<openfluid::fluidx::UnitDescriptor>* Units =
+      &(mp_DomainDesc->getUnits());
+  std::list<openfluid::core::UnitClassID_t>* Tos;
+
+  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+      Units->begin(); it != Units->end(); ++it)
+  {
+    Tos = &(it->getUnitsTos());
+
+    if (std::find(Tos->begin(), Tos->end(), Unit) != Tos->end())
+    {
+      openfluid::core::UnitClassID_t From = std::make_pair(it->getUnitClass(),
+                                                           it->getUnitID());
+      Froms.push_back(From);
+    }
+  }
+
+  return Froms;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::list<openfluid::core::UnitClassID_t> BuilderDomain::getUnitsChildrenOf(
+    const openfluid::core::UnitClassID_t Unit)
+{
+  std::list<openfluid::core::UnitClassID_t> Children;
+
+  std::list<openfluid::fluidx::UnitDescriptor>* Units =
+      &(mp_DomainDesc->getUnits());
+  std::list<openfluid::core::UnitClassID_t>* Parents;
+
+  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+      Units->begin(); it != Units->end(); ++it)
+  {
+    Parents = &(it->getUnitsParents());
+
+    if (std::find(Parents->begin(), Parents->end(), Unit) != Parents->end())
+    {
+      openfluid::core::UnitClassID_t Child = std::make_pair(it->getUnitClass(),
+                                                            it->getUnitID());
+      Children.push_back(Child);
+    }
+  }
+
+  return Children;
 }
 
 // =====================================================================

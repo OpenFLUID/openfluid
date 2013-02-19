@@ -61,6 +61,7 @@
 #include <openfluid/guicommon/BuilderDomain.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <algorithm>
 
 // =====================================================================
 // =====================================================================
@@ -83,8 +84,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
       Units->begin();
   BOOST_CHECK_EQUAL(it->first, "unitsA");
   BOOST_CHECK_EQUAL(it->second.size(), 8);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 = it->second.begin();
-      it2 != it->second.end(); ++it2)
+  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+      it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
     BOOST_CHECK_EQUAL(it2->second.mp_UnitDesc->getUnitClass(), "unitsA");
@@ -100,8 +101,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   it++;
   BOOST_CHECK_EQUAL(it->first, "unitsB");
   BOOST_CHECK_EQUAL(it->second.size(), 5);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 = it->second.begin();
-      it2 != it->second.end(); ++it2)
+  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+      it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
     BOOST_CHECK_EQUAL(it2->second.mp_UnitDesc->getUnitClass(), "unitsB");
@@ -114,8 +115,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   it++;
   BOOST_CHECK_EQUAL(it->first, "unitsP");
   BOOST_CHECK_EQUAL(it->second.size(), 1);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 = it->second.begin();
-      it2 != it->second.end(); ++it2)
+  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+      it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
     BOOST_CHECK_EQUAL(it2->second.mp_UnitDesc->getUnitClass(), "unitsP");
@@ -128,6 +129,50 @@ BOOST_AUTO_TEST_CASE(check_construction)
                     &*(FXDesc.getDomainDescriptor().getUnits().begin()));
   BOOST_CHECK_EQUAL(&Domain.getUnitDescriptor("unitsP",1),
                     &*(FXDesc.getDomainDescriptor().getUnits().begin()));
+
+  // relations
+  openfluid::core::UnitClassID_t A3 = std::make_pair("unitsA", 3);
+  openfluid::core::UnitClassID_t B11 = std::make_pair("unitsB", 11);
+  openfluid::core::UnitClassID_t B3 = std::make_pair("unitsB", 3);
+  openfluid::core::UnitClassID_t P1 = std::make_pair("unitsP", 1);
+
+  std::list<openfluid::core::UnitClassID_t> A3_Tos = Domain.getUnitsToOf(A3);
+  std::list<openfluid::core::UnitClassID_t> A3_Froms = Domain.getUnitsFromOf(
+      A3);
+  std::list<openfluid::core::UnitClassID_t> A3_Parents =
+      Domain.getUnitsParentsOf(A3);
+  std::list<openfluid::core::UnitClassID_t> A3_Children =
+      Domain.getUnitsChildrenOf(A3);
+
+  BOOST_CHECK_EQUAL(A3_Tos.size(), 1);
+  BOOST_CHECK_EQUAL(std::count(A3_Tos.begin(), A3_Tos.end(),B11), 1);
+  BOOST_CHECK(A3_Froms.empty());
+  BOOST_CHECK_EQUAL(A3_Parents.size(), 1);
+  BOOST_CHECK_EQUAL(std::count(A3_Parents.begin(), A3_Parents.end(),P1), 1);
+  BOOST_CHECK(A3_Children.empty());
+
+  std::list<openfluid::core::UnitClassID_t> B11_Tos = Domain.getUnitsToOf(B11);
+  std::list<openfluid::core::UnitClassID_t> B11_Froms = Domain.getUnitsFromOf(
+      B11);
+  std::list<openfluid::core::UnitClassID_t> B11_Parents =
+      Domain.getUnitsParentsOf(B11);
+  std::list<openfluid::core::UnitClassID_t> B11_Children =
+      Domain.getUnitsChildrenOf(B11);
+
+  BOOST_CHECK_EQUAL(B11_Tos.size(), 1);
+  BOOST_CHECK_EQUAL(std::count(B11_Tos.begin(), B11_Tos.end(),B3), 1);
+  BOOST_CHECK_EQUAL(B11_Froms.size(), 1);
+  BOOST_CHECK_EQUAL(std::count(B11_Froms.begin(), B11_Froms.end(),A3), 1);
+  BOOST_CHECK_EQUAL(B11_Parents.size(), 1);
+  BOOST_CHECK_EQUAL(std::count(B11_Parents.begin(), B11_Parents.end(),P1), 1);
+  BOOST_CHECK(B11_Children.empty());
+
+  std::list<openfluid::core::UnitClassID_t> P1_Children =
+      Domain.getUnitsChildrenOf(P1);
+
+  BOOST_CHECK_EQUAL(P1_Children.size(), 2);
+  BOOST_CHECK_EQUAL(std::count(P1_Children.begin(), P1_Children.end(),A3), 1);
+  BOOST_CHECK_EQUAL(std::count(P1_Children.begin(), P1_Children.end(),B11), 1);
 }
 
 // =====================================================================
@@ -140,8 +185,9 @@ BOOST_AUTO_TEST_CASE(check_wrong_construction)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/wrongIData");
 
-  BOOST_CHECK_THROW(openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
-                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(
+      openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
+      openfluid::base::OFException);
 }
 
 // =====================================================================
@@ -178,10 +224,10 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   U2.getUnitID() = 99;
   Domain.addUnit(&U2);
 
-  BOOST_CHECK_EQUAL(Domain.getUnit("unitsB",99).m_IData.size(),3);
-  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
-  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
-  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
+  BOOST_CHECK_EQUAL(Domain.getUnit("unitsB",99).m_IData.size(), 3);
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
 }
 
 // =====================================================================
@@ -232,6 +278,24 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
     BOOST_CHECK(!(it->getUnitClass() == "unitsP"));
   }
 
+  // relations
+  openfluid::core::UnitClassID_t A3 = std::make_pair("unitsA", 3);
+  openfluid::core::UnitClassID_t A7 = std::make_pair("unitsA", 7);
+  openfluid::core::UnitClassID_t B1 = std::make_pair("unitsB", 1);
+  openfluid::core::UnitClassID_t B3 = std::make_pair("unitsB", 3);
+  openfluid::core::UnitClassID_t B11 = std::make_pair("unitsB", 11);
+
+  std::list<openfluid::core::UnitClassID_t> B3_Froms = Domain.getUnitsFromOf(
+      B3);
+  BOOST_CHECK_EQUAL(B3_Froms.size(), 2);
+  BOOST_CHECK(std::count(B3_Froms.begin(), B3_Froms.end(),B1));
+  BOOST_CHECK(std::count(B3_Froms.begin(), B3_Froms.end(),B11));
+  BOOST_CHECK(!std::count(B3_Froms.begin(), B3_Froms.end(),A7));
+
+  BOOST_CHECK_EQUAL(Domain.getUnitsParentsOf(A3).size(), 0);
+  BOOST_CHECK_EQUAL(Domain.getUnitsParentsOf(B11).size(), 0);
+
+  // delete all class unitsB
   BOOST_CHECK_EQUAL(Domain.getInputDataNames("unitsB").size(), 3);
   std::set<int> IDs = Domain.getIDsOfClass("unitsB");
   for (std::set<int>::iterator it = IDs.begin(); it != IDs.end(); ++it)
@@ -360,4 +424,69 @@ BOOST_AUTO_TEST_CASE(check_renameIData)
   BOOST_CHECK(!Domain.getInputDataNames("unitsA").count("indataA"));
   BOOST_CHECK(Domain.getInputDataNames("unitsA").count("NewData"));
 
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_operations_on_relations)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+
+  openfluid::core::UnitClassID_t A3 = std::make_pair("unitsA", 3);
+  openfluid::core::UnitClassID_t B11 = std::make_pair("unitsB", 11);
+  openfluid::core::UnitClassID_t A5 = std::make_pair("unitsA", 5);
+  openfluid::core::UnitClassID_t B3 = std::make_pair("unitsB", 3);
+  openfluid::core::UnitClassID_t P1 = std::make_pair("unitsP", 1);
+
+  Domain.getUnitsToOf(B11).push_back(A5);
+
+  std::list<openfluid::core::UnitClassID_t> B11_Tos = Domain.getUnitsToOf(B11);
+  std::list<openfluid::core::UnitClassID_t> A5_Froms = Domain.getUnitsFromOf(
+      A5);
+
+  BOOST_CHECK_EQUAL(B11_Tos.size(), 2);
+  BOOST_CHECK_EQUAL(std::count(B11_Tos.begin(), B11_Tos.end(),B3), 1);
+  BOOST_CHECK_EQUAL(std::count(B11_Tos.begin(), B11_Tos.end(),A5), 1);
+  BOOST_CHECK_EQUAL(A5_Froms.size(), 1);
+  BOOST_CHECK_EQUAL(std::count(A5_Froms.begin(), A5_Froms.end(),B11), 1);
+
+  Domain.getUnitsParentsOf(B11).push_back(A3);
+
+  std::list<openfluid::core::UnitClassID_t> B11_Parents =
+      Domain.getUnitsParentsOf(B11);
+  std::list<openfluid::core::UnitClassID_t> A3_Children =
+      Domain.getUnitsChildrenOf(A3);
+
+  BOOST_CHECK_EQUAL(B11_Parents.size(), 2);
+  BOOST_CHECK_EQUAL(std::count(B11_Parents.begin(), B11_Parents.end(),P1), 1);
+  BOOST_CHECK_EQUAL(std::count(B11_Parents.begin(), B11_Parents.end(),A3), 1);
+  BOOST_CHECK_EQUAL(A3_Children.size(), 1);
+  BOOST_CHECK_EQUAL(std::count(A3_Children.begin(), A3_Children.end(),B11), 1);
+
+  Domain.getUnitsToOf(A3).remove(B11);
+
+  std::list<openfluid::core::UnitClassID_t> B11_Froms = Domain.getUnitsFromOf(
+      B11);
+  std::list<openfluid::core::UnitClassID_t> A3_Tos = Domain.getUnitsToOf(A3);
+
+  BOOST_CHECK(B11_Froms.empty());
+  BOOST_CHECK(A3_Tos.empty());
+
+  Domain.getUnitsParentsOf(A3).remove(P1);
+
+  std::list<openfluid::core::UnitClassID_t> A3_Parents =
+      Domain.getUnitsParentsOf(A3);
+
+  BOOST_CHECK(A3_Parents.empty());
+
+  std::list<openfluid::core::UnitClassID_t> P1_Children =
+      Domain.getUnitsChildrenOf(P1);
+
+  BOOST_CHECK_EQUAL(P1_Children.size(), 1);
+  BOOST_CHECK_EQUAL(std::count(P1_Children.begin(), P1_Children.end(),B11), 1);
 }
