@@ -340,16 +340,32 @@ void BuilderDomain::deleteUnit(std::string ClassName, int ID)
   if (m_Units.at(ClassName).empty())
     m_Units.erase(ClassName);
 
-  // delete in UnitDesc list
-  std::list<openfluid::fluidx::UnitDescriptor>* Units =
-      &(mp_DomainDesc->getUnits());
-  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
-      Units->begin(); it != Units->end(); ++it)
+  // delete in UnitDesc list and in other units relations
+  std::list<openfluid::fluidx::UnitDescriptor>& Units =
+      mp_DomainDesc->getUnits();
+  openfluid::core::UnitClassID_t Unit = std::make_pair(ClassName, ID);
+  std::list<openfluid::fluidx::UnitDescriptor>::iterator it = Units.begin();
+  while (it != Units.end())
   {
     if (it->getUnitClass() == ClassName && (int) it->getUnitID() == ID)
     {
-      Units->erase(it);
-      break;
+      it = Units.erase(it);
+    }
+    else
+    {
+      std::list<openfluid::core::UnitClassID_t>& Tos = it->getUnitsTos();
+      std::list<openfluid::core::UnitClassID_t>::iterator Found = std::find(
+          Tos.begin(), Tos.end(), Unit);
+      if (Found != Tos.end())
+        Tos.remove(Unit);
+
+      std::list<openfluid::core::UnitClassID_t>& Parents =
+          it->getUnitsParents();
+      Found = std::find(Parents.begin(), Parents.end(), Unit);
+      if (Found != Parents.end())
+        Parents.remove(Unit);
+
+      ++it;
     }
   }
 

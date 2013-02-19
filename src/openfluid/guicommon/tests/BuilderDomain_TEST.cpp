@@ -278,6 +278,24 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
     BOOST_CHECK(!(it->getUnitClass() == "unitsP"));
   }
 
+  // relations
+  openfluid::core::UnitClassID_t A3 = std::make_pair("unitsA", 3);
+  openfluid::core::UnitClassID_t A7 = std::make_pair("unitsA", 7);
+  openfluid::core::UnitClassID_t B1 = std::make_pair("unitsB", 1);
+  openfluid::core::UnitClassID_t B3 = std::make_pair("unitsB", 3);
+  openfluid::core::UnitClassID_t B11 = std::make_pair("unitsB", 11);
+
+  std::list<openfluid::core::UnitClassID_t> B3_Froms = Domain.getUnitsFromOf(
+      B3);
+  BOOST_CHECK_EQUAL(B3_Froms.size(), 2);
+  BOOST_CHECK(std::count(B3_Froms.begin(), B3_Froms.end(),B1));
+  BOOST_CHECK(std::count(B3_Froms.begin(), B3_Froms.end(),B11));
+  BOOST_CHECK(!std::count(B3_Froms.begin(), B3_Froms.end(),A7));
+
+  BOOST_CHECK_EQUAL(Domain.getUnitsParentsOf(A3).size(), 0);
+  BOOST_CHECK_EQUAL(Domain.getUnitsParentsOf(B11).size(), 0);
+
+  // delete all class unitsB
   BOOST_CHECK_EQUAL(Domain.getInputDataNames("unitsB").size(), 3);
   std::set<int> IDs = Domain.getIDsOfClass("unitsB");
   for (std::set<int>::iterator it = IDs.begin(); it != IDs.end(); ++it)
