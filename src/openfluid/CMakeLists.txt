@@ -22,7 +22,7 @@ ENDIF()
 ADD_SUBDIRECTORY(landr)
 
 
-INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp io.hpp tools.hpp market.hpp 
+INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp market.hpp 
               dllexport.hpp debug.hpp deprecation.hpp ware.hpp
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
 
