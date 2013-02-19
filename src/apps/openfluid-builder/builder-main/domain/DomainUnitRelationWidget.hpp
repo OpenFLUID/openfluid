@@ -60,8 +60,7 @@
 #include <gtkmm/treeviewcolumn.h>
 #include <gtkmm/expander.h>
 #include <gtkmm/scrolledwindow.h>
-
-#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/TypeDefs.hpp>
 
 class BuilderListToolBox;
 class DomainUnitRelationAddDialog;
@@ -79,11 +78,9 @@ class DomainUnitRelationWidget
       public:
         DomainUnitRelationColumns()
         {
-          add(m_Unit);
           add(m_Class);
           add(m_Id);
         }
-        Gtk::TreeModelColumn<openfluid::core::Unit*> m_Unit;
         Gtk::TreeModelColumn<std::string> m_Class;
         Gtk::TreeModelColumn<int> m_Id;
     };
@@ -98,7 +95,7 @@ class DomainUnitRelationWidget
 
     DomainUnitRelationAddDialog* mp_AddDialog;
 
-    bool alreadyExistsUnit(openfluid::core::Unit* Unit);
+    bool alreadyExistsUnit(openfluid::core::UnitClassID_t Unit);
 
     void updateToolBox();
 
@@ -114,7 +111,7 @@ class DomainUnitRelationWidget
 
     void onRemoveClicked();
 
-    void addUnits(std::list<openfluid::core::Unit*> UnitsToAdd);
+    void addUnits(std::list<openfluid::core::UnitClassID_t> UnitsToAdd);
 
   public:
 
@@ -125,9 +122,9 @@ class DomainUnitRelationWidget
 
     void clearUnits();
 
-    void appendUnits(std::list<openfluid::core::Unit*> Units);
+    void appendUnits(std::list<openfluid::core::UnitClassID_t> Units);
 
-    std::list<openfluid::core::Unit*> getUnits();
+    std::list<openfluid::core::UnitClassID_t> getUnits();
 };
 
 // =====================================================================
@@ -145,12 +142,12 @@ class DomainUnitRelationWidgetSub: DomainUnitRelationWidget
       DomainUnitRelationWidget::onRemoveClicked();
     }
 
-    void addUnits(std::list<openfluid::core::Unit*> Units)
+    void addUnits(std::list<openfluid::core::UnitClassID_t> Units)
     {
       DomainUnitRelationWidget::addUnits(Units);
     }
 
-    std::list<openfluid::core::Unit*> getUnits()
+    std::list<openfluid::core::UnitClassID_t> getUnits()
     {
       return DomainUnitRelationWidget::getUnits();
     }

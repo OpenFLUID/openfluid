@@ -127,7 +127,7 @@ void DomainUnitRelationWidget::onRemoveClicked()
 
 void DomainUnitRelationWidget::onAddClicked()
 {
-  std::list<openfluid::core::Unit*> UnitsToAdd = mp_AddDialog->show();
+  std::list<openfluid::core::UnitClassID_t> UnitsToAdd = mp_AddDialog->show();
 
   addUnits(UnitsToAdd);
 
@@ -138,17 +138,16 @@ void DomainUnitRelationWidget::onAddClicked()
 // =====================================================================
 
 
-void DomainUnitRelationWidget::addUnits(std::list<openfluid::core::Unit*> UnitsToAdd)
+void DomainUnitRelationWidget::addUnits(std::list<openfluid::core::UnitClassID_t> UnitsToAdd)
 {
-  for (std::list<openfluid::core::Unit*>::iterator it = UnitsToAdd.begin(); it
+  for (std::list<openfluid::core::UnitClassID_t>::iterator it = UnitsToAdd.begin(); it
         != UnitsToAdd.end(); ++it)
     {
       if (!alreadyExistsUnit(*it))
       {
         Gtk::TreeRow Row = *mref_TreeModel->append();
-        Row[m_Columns.m_Class] = (*it)->getClass();
-        Row[m_Columns.m_Id] = (*it)->getID();
-        Row[m_Columns.m_Unit] = *it;
+        Row[m_Columns.m_Class] = it->first;
+        Row[m_Columns.m_Id] = it->second;
       }
     }
 }
@@ -178,16 +177,15 @@ void DomainUnitRelationWidget::clearUnits()
 
 
 void DomainUnitRelationWidget::appendUnits(
-    std::list<openfluid::core::Unit*> Units)
+    std::list<openfluid::core::UnitClassID_t> Units)
 {
-  for (std::list<openfluid::core::Unit*>::iterator it = Units.begin(); it
+  for (std::list<openfluid::core::UnitClassID_t>::iterator it = Units.begin(); it
       != Units.end(); ++it)
   {
     Gtk::TreeRow Row = *mref_TreeModel->append();
 
-    Row[m_Columns.m_Class] = (*it)->getClass();
-    Row[m_Columns.m_Id] = (*it)->getID();
-    Row[m_Columns.m_Unit] = *it;
+    Row[m_Columns.m_Class] = it->first;
+    Row[m_Columns.m_Id] = it->second;
   }
 
   updateToolBox();
@@ -200,15 +198,15 @@ void DomainUnitRelationWidget::appendUnits(
 // =====================================================================
 
 
-bool DomainUnitRelationWidget::alreadyExistsUnit(openfluid::core::Unit* Unit)
+bool DomainUnitRelationWidget::alreadyExistsUnit(openfluid::core::UnitClassID_t Unit)
 {
   Gtk::TreeModel::Children Children = mref_TreeModel->children();
 
   for (Gtk::TreeModel::Children::iterator it = Children.begin(); it
       != Children.end(); ++it)
   {
-    if (it->get_value(m_Columns.m_Class) == Unit->getClass() && it->get_value(
-        m_Columns.m_Id) == (int) Unit->getID())
+    if (it->get_value(m_Columns.m_Class) == Unit.first && it->get_value(
+        m_Columns.m_Id) == (int) Unit.second)
       return true;
   }
 
@@ -240,16 +238,17 @@ void DomainUnitRelationWidget::updateExpander()
 // =====================================================================
 
 
-std::list<openfluid::core::Unit*> DomainUnitRelationWidget::getUnits()
+std::list<openfluid::core::UnitClassID_t> DomainUnitRelationWidget::getUnits()
 {
-  std::list<openfluid::core::Unit*> Units;
+  std::list<openfluid::core::UnitClassID_t> Units;
 
   Gtk::TreeModel::Children Children = mref_TreeModel->children();
 
   for (Gtk::TreeModel::Children::iterator it = Children.begin(); it
       != Children.end(); ++it)
   {
-    Units.push_back(it->get_value(m_Columns.m_Unit));
+    openfluid::core::UnitClassID_t Unit = std::make_pair(it->get_value(m_Columns.m_Class),it->get_value(m_Columns.m_Id));
+    Units.push_back(Unit);
   }
 
   return Units;

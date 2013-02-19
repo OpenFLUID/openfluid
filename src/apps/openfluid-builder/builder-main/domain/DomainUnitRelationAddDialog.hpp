@@ -47,7 +47,7 @@
 
 /**
  \file DomainUnitRelationAddDialog.hpp
- \brief Header of ...
+ \brief Generic class allowing to select a bunch of units within the whole Domain and return it as a list of pairs <class,ID>
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
@@ -61,11 +61,11 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/treeview.h>
+#include <openfluid/core/TypeDefs.hpp>
 
 namespace openfluid {
-namespace core {
-class CoreRepository;
-class Unit;
+namespace guicommon {
+class BuilderDomain;
 }
 }
 
@@ -98,17 +98,13 @@ class DomainUnitRelationAddDialog
 
     DomainUnitRelationIdsColumns m_Columns;
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::guicommon::BuilderDomain* mp_Domain;
 
   public:
 
-    DomainUnitRelationAddDialog();
+    DomainUnitRelationAddDialog(openfluid::guicommon::BuilderDomain& Domain);
 
-    void setEngineRequirements(openfluid::core::CoreRepository& CoreRepos);
-
-    void update(std::set<std::string> ClassNames);
-
-    std::list<openfluid::core::Unit*> show();
+    std::list<openfluid::core::UnitClassID_t> show();
 };
 
 #endif /* __DOMAINUNITRELATIONADDDIALOG_HPP__ */

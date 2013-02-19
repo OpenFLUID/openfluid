@@ -67,11 +67,10 @@
 // =====================================================================
 // =====================================================================
 
-
 DomainUnitAddEditDialog::DomainUnitAddEditDialog(
-    DomainUnitRelationAddDialog& /*UnitRelationAddDialog*/,
+    DomainUnitRelationAddDialog& UnitRelationAddDialog,
     openfluid::guicommon::BuilderDomain& Domain) :
-  mp_Domain(&Domain), /*m_AddDialog(UnitRelationAddDialog),*/ mp_Unit(0)
+    mp_Domain(&Domain), m_AddDialog(UnitRelationAddDialog), mp_Unit(0)
 {
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
   mp_InfoBarLabel->set_visible(true);
@@ -85,16 +84,16 @@ DomainUnitAddEditDialog::DomainUnitAddEditDialog(
   mp_IdLabel = Gtk::manage(new Gtk::Label("", 0, 0.5));
 
   mp_ClassComboEntryText = Gtk::manage(new Gtk::ComboBoxEntryText());
-  mp_ClassComboEntryText->get_entry()->signal_changed().connect(sigc::mem_fun(
-      *this, &DomainUnitAddEditDialog::onClassChanged));
+  mp_ClassComboEntryText->get_entry()->signal_changed().connect(
+      sigc::mem_fun(*this, &DomainUnitAddEditDialog::onClassChanged));
   mp_ClassComboEntryText->get_entry()->set_activates_default(true);
 
   mp_IdSpin = Gtk::manage(new Gtk::SpinButton());
   mp_IdSpin->set_range(1.0, 9999.0);
   mp_IdSpin->set_increments(1, 10);
   mp_IdSpin->set_numeric(true);
-  mp_IdSpin->signal_changed().connect(sigc::mem_fun(*this,
-      &DomainUnitAddEditDialog::onIdChanged));
+  mp_IdSpin->signal_changed().connect(
+      sigc::mem_fun(*this, &DomainUnitAddEditDialog::onIdChanged));
   mp_IdSpin->set_activates_default(true);
 
   mp_PcsOrderSpin = Gtk::manage(new Gtk::SpinButton());
@@ -103,29 +102,29 @@ DomainUnitAddEditDialog::DomainUnitAddEditDialog(
   mp_PcsOrderSpin->set_numeric(true);
   mp_PcsOrderSpin->set_activates_default(true);
 
-//  mp_FromWidget = new DomainUnitRelationWidget("From", m_AddDialog);
-//  mp_ToWidget = new DomainUnitRelationWidget("To", m_AddDialog);
-//  mp_ParentWidget = new DomainUnitRelationWidget("Parent", m_AddDialog);
-//  mp_ChildWidget = new DomainUnitRelationWidget("Children", m_AddDialog);
+  mp_FromWidget = new DomainUnitRelationWidget("From", m_AddDialog);
+  mp_ToWidget = new DomainUnitRelationWidget("To", m_AddDialog);
+  mp_ParentWidget = new DomainUnitRelationWidget("Parent", m_AddDialog);
+  mp_ChildWidget = new DomainUnitRelationWidget("Children", m_AddDialog);
 
   mp_InfoTable = Gtk::manage(new Gtk::Table());
   mp_InfoTable->attach(*Gtk::manage(new Gtk::Label(_("Unit class:"), 1, 0.5)),
-      0, 1, 0, 1, Gtk::FILL | Gtk::SHRINK, Gtk::SHRINK);
+                       0, 1, 0, 1, Gtk::FILL | Gtk::SHRINK, Gtk::SHRINK);
   mp_InfoTable->attach(*Gtk::manage(new Gtk::Label(_("ID:"), 1, 0.5)), 0, 1, 1,
-      2, Gtk::FILL | Gtk::SHRINK, Gtk::SHRINK);
+                       2, Gtk::FILL | Gtk::SHRINK, Gtk::SHRINK);
   mp_InfoTable->attach(
       *Gtk::manage(new Gtk::Label(_("Process order:"), 1, 0.5)), 0, 1, 2, 3,
       Gtk::FILL | Gtk::SHRINK, Gtk::SHRINK);
-  mp_InfoTable->attach(*mp_ClassComboEntryText, 1, 2, 0, 1, Gtk::FILL
-      | Gtk::SHRINK, Gtk::SHRINK);
+  mp_InfoTable->attach(*mp_ClassComboEntryText, 1, 2, 0, 1,
+                       Gtk::FILL | Gtk::SHRINK, Gtk::SHRINK);
   mp_InfoTable->attach(*mp_ClassLabel, 1, 2, 0, 1, Gtk::FILL | Gtk::SHRINK,
-      Gtk::SHRINK);
+                       Gtk::SHRINK);
   mp_InfoTable->attach(*mp_IdSpin, 1, 2, 1, 2, Gtk::FILL | Gtk::SHRINK,
-      Gtk::SHRINK);
+                       Gtk::SHRINK);
   mp_InfoTable->attach(*mp_IdLabel, 1, 2, 1, 2, Gtk::FILL | Gtk::SHRINK,
-      Gtk::SHRINK);
+                       Gtk::SHRINK);
   mp_InfoTable->attach(*mp_PcsOrderSpin, 1, 2, 2, 3, Gtk::FILL | Gtk::SHRINK,
-      Gtk::SHRINK);
+                       Gtk::SHRINK);
   mp_InfoTable->set_col_spacings(3);
   mp_InfoTable->set_row_spacings(5);
   mp_InfoTable->set_border_width(5);
@@ -136,13 +135,13 @@ DomainUnitAddEditDialog::DomainUnitAddEditDialog(
 
   mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*mp_InfoTable, Gtk::PACK_SHRINK);
-//  mp_Dialog->get_vbox()->pack_start(*mp_FromWidget->asWidget(),
-//      Gtk::PACK_SHRINK);
-//  mp_Dialog->get_vbox()->pack_start(*mp_ToWidget->asWidget(), Gtk::PACK_SHRINK);
-//  mp_Dialog->get_vbox()->pack_start(*mp_ParentWidget->asWidget(),
-//      Gtk::PACK_SHRINK);
-//  mp_Dialog->get_vbox()->pack_start(*mp_ChildWidget->asWidget(),
-//      Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*mp_FromWidget->asWidget(),
+                                    Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*mp_ToWidget->asWidget(), Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*mp_ParentWidget->asWidget(),
+                                    Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*mp_ChildWidget->asWidget(),
+                                    Gtk::PACK_SHRINK);
 
   mp_Dialog->set_default_size(300, 300);
 
@@ -156,7 +155,6 @@ DomainUnitAddEditDialog::DomainUnitAddEditDialog(
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainUnitAddEditDialog::onClassChanged()
 {
@@ -187,7 +185,6 @@ void DomainUnitAddEditDialog::onClassChanged()
 // =====================================================================
 // =====================================================================
 
-
 void DomainUnitAddEditDialog::onIdChanged()
 {
   mp_IdSpin->update();
@@ -207,17 +204,14 @@ void DomainUnitAddEditDialog::onIdChanged()
 // =====================================================================
 // =====================================================================
 
-
 void DomainUnitAddEditDialog::update()
 {
   m_Classes = mp_Domain->getClassNames();
 
-//  m_AddDialog.update(m_Classes);
-
   mp_ClassComboEntryText->clear_items();
 
-  for (std::set<std::string>::iterator it = m_Classes.begin(); it
-      != m_Classes.end(); ++it)
+  for (std::set<std::string>::iterator it = m_Classes.begin();
+      it != m_Classes.end(); ++it)
   {
     mp_ClassComboEntryText->append_text(*it);
   }
@@ -227,9 +221,8 @@ void DomainUnitAddEditDialog::update()
 // =====================================================================
 // =====================================================================
 
-
-openfluid::fluidx::UnitDescriptor* DomainUnitAddEditDialog::show(std::string SelectedClass,
-    openfluid::fluidx::UnitDescriptor* Unit)
+openfluid::fluidx::UnitDescriptor* DomainUnitAddEditDialog::show(
+    std::string SelectedClass, openfluid::fluidx::UnitDescriptor* Unit)
 {
   mp_Unit = Unit;
 
@@ -251,9 +244,9 @@ openfluid::fluidx::UnitDescriptor* DomainUnitAddEditDialog::show(std::string Sel
       createUnit();
     }
 
-//    clearAllRelations();
-//
-//    createAllRelationsFromRelationWidgets();
+    clearAllRelations();
+
+    createAllRelationsFromRelationWidgets();
 
     mp_Dialog->hide();
 
@@ -267,7 +260,6 @@ openfluid::fluidx::UnitDescriptor* DomainUnitAddEditDialog::show(std::string Sel
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainUnitAddEditDialog::initEditionMode()
 {
@@ -290,32 +282,22 @@ void DomainUnitAddEditDialog::initEditionMode()
   mp_InfoBar->set_visible(false);
   mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, true);
 
-//  mp_FromWidget->clearUnits();
-//  mp_ToWidget->clearUnits();
-//  mp_ParentWidget->clearUnits();
-//  mp_ChildWidget->clearUnits();
-//
-//  for (std::set<std::string>::iterator it = m_Classes.begin(); it
-//      != m_Classes.end(); ++it)
-//  {
-//    if (mp_Unit->getFromUnits(*it) != NULL)
-//      mp_FromWidget->appendUnits(*mp_Unit->getFromUnits(*it));
-//
-//    if (mp_Unit->getToUnits(*it) != NULL)
-//      mp_ToWidget->appendUnits(*mp_Unit->getToUnits(*it));
-//
-//    if (mp_Unit->getParentUnits(*it) != NULL)
-//      mp_ParentWidget->appendUnits(*mp_Unit->getParentUnits(*it));
-//
-//    if (mp_Unit->getChildrenUnits(*it) != NULL)
-//      mp_ChildWidget->appendUnits(*mp_Unit->getChildrenUnits(*it));
-//  }
+  mp_FromWidget->clearUnits();
+  mp_ToWidget->clearUnits();
+  mp_ParentWidget->clearUnits();
+  mp_ChildWidget->clearUnits();
 
+  openfluid::core::UnitClassID_t Unit = std::make_pair(mp_Unit->getUnitClass(),
+                                                       mp_Unit->getUnitID());
+
+  mp_FromWidget->appendUnits(mp_Domain->getUnitsFromOf(Unit));
+  mp_ToWidget->appendUnits(mp_Domain->getUnitsToOf(Unit));
+  mp_ParentWidget->appendUnits(mp_Domain->getUnitsParentsOf(Unit));
+  mp_ChildWidget->appendUnits(mp_Domain->getUnitsChildrenOf(Unit));
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainUnitAddEditDialog::initCreationMode(std::string SelectedClass)
 {
@@ -330,17 +312,16 @@ void DomainUnitAddEditDialog::initCreationMode(std::string SelectedClass)
 
   mp_PcsOrderSpin->set_value(1);
 
-//  mp_FromWidget->clearUnits();
-//  mp_ToWidget->clearUnits();
-//  mp_ParentWidget->clearUnits();
-//  mp_ChildWidget->clearUnits();
+  mp_FromWidget->clearUnits();
+  mp_ToWidget->clearUnits();
+  mp_ParentWidget->clearUnits();
+  mp_ChildWidget->clearUnits();
 
   onClassChanged();
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void DomainUnitAddEditDialog::createUnit()
 {
@@ -352,119 +333,84 @@ void DomainUnitAddEditDialog::createUnit()
   mp_Unit->getUnitClass() = ClassName;
   mp_Unit->getUnitID() = ID;
   mp_Unit->getProcessOrder() = PcsOrder;
-
-  // add Input data (depending on Idata of the first Unit of the class)
-//  openfluid::core::UnitsCollection* UnitsColl = mp_CoreRepos->getUnits(
-//      ClassName);
-//  if (UnitsColl)
-//  {
-//    const openfluid::core::UnitsList_t* Units = UnitsColl->getList();
-//    if (!Units->empty())
-//    {
-//      std::vector<std::string> IDataNames =
-//          Units->begin()->getInputData()->getInputDataNames();
-//      for (unsigned int i = 0; i < IDataNames.size(); i++)
-//        NewUnit.getInputData()->setValue(IDataNames[i], "-");
-//    }
-//  }
 }
 
 // =====================================================================
 // =====================================================================
 
+void DomainUnitAddEditDialog::clearAllRelations()
+{
+  if (!mp_Unit)
+    return;
 
-//void DomainUnitAddEditDialog::clearAllRelations()
-//{
-//  if (!mp_Unit)
-//    return;
-//
-//  std::set<std::string> Classes = EngineHelper::getClassNames(mp_CoreRepos);
-//
-//  std::list<openfluid::core::Unit*> Relations;
-//
-//  for (std::set<std::string>::iterator it = Classes.begin(); it
-//      != Classes.end(); ++it)
-//  {
-//    if (mp_Unit->getFromUnits(*it) != NULL)
-//    {
-//      Relations = *mp_Unit->getFromUnits(*it);
-//      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it
-//          != Relations.end(); ++it)
-//      {
-//        mp_CoreRepos->removeFromToConnection(*it, mp_Unit);
-//      }
-//    }
-//
-//    if (mp_Unit->getToUnits(*it) != NULL)
-//    {
-//      Relations = *mp_Unit->getToUnits(*it);
-//      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it
-//          != Relations.end(); ++it)
-//      {
-//        mp_CoreRepos->removeFromToConnection(mp_Unit, *it);
-//      }
-//    }
-//
-//    if (mp_Unit->getParentUnits(*it) != NULL)
-//    {
-//      Relations = *mp_Unit->getParentUnits(*it);
-//      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it
-//          != Relations.end(); ++it)
-//      {
-//        mp_CoreRepos->removeChildParentConnection(mp_Unit, *it);
-//      }
-//    }
-//
-//    if (mp_Unit->getChildrenUnits(*it) != NULL)
-//    {
-//      Relations = *mp_Unit->getChildrenUnits(*it);
-//      for (std::list<openfluid::core::Unit*>::iterator it = Relations.begin(); it
-//          != Relations.end(); ++it)
-//      {
-//        mp_CoreRepos->removeChildParentConnection(*it, mp_Unit);
-//      }
-//    }
-//  }
-//
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//
-//void DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets()
-//{
-//  std::list<openfluid::core::Unit*> Units;
-//  std::list<openfluid::core::Unit*>::iterator itUnit;
-//
-//  Units = mp_FromWidget->getUnits();
-//  for (itUnit = Units.begin(); itUnit != Units.end(); ++itUnit)
-//  {
-//    mp_Unit->addFromUnit(*itUnit);
-//    (*itUnit)->addToUnit(mp_Unit);
-//  }
-//
-//  Units = mp_ToWidget->getUnits();
-//  for (itUnit = Units.begin(); itUnit != Units.end(); ++itUnit)
-//  {
-//    mp_Unit->addToUnit(*itUnit);
-//    (*itUnit)->addFromUnit(mp_Unit);
-//  }
-//
-//  Units = mp_ParentWidget->getUnits();
-//  for (itUnit = Units.begin(); itUnit != Units.end(); ++itUnit)
-//  {
-//    mp_Unit->addParentUnit(*itUnit);
-//    (*itUnit)->addChildUnit(mp_Unit);
-//  }
-//
-//  Units = mp_ChildWidget->getUnits();
-//  for (itUnit = Units.begin(); itUnit != Units.end(); ++itUnit)
-//  {
-//    mp_Unit->addChildUnit(*itUnit);
-//    (*itUnit)->addParentUnit(mp_Unit);
-//  }
-//}
+  openfluid::core::UnitClassID_t Unit = std::make_pair(mp_Unit->getUnitClass(),
+                                                       mp_Unit->getUnitID());
+
+  std::list<openfluid::core::UnitClassID_t> Froms = mp_Domain->getUnitsFromOf(
+      Unit);
+  for (std::list<openfluid::core::UnitClassID_t>::iterator it = Froms.begin();
+      it != Froms.end(); ++it)
+  {
+    const_cast<openfluid::fluidx::UnitDescriptor&>(mp_Domain->getUnitDescriptor(
+        it->first, it->second)).getUnitsTos().remove(Unit);
+  }
+  std::list<openfluid::core::UnitClassID_t> Children =
+      mp_Domain->getUnitsChildrenOf(Unit);
+  for (std::list<openfluid::core::UnitClassID_t>::iterator it =
+      Children.begin(); it != Children.end(); ++it)
+  {
+    const_cast<openfluid::fluidx::UnitDescriptor&>(mp_Domain->getUnitDescriptor(
+        it->first, it->second)).getUnitsParents().remove(Unit);
+  }
+
+  mp_Unit->getUnitsTos().clear();
+  mp_Unit->getUnitsParents().clear();
+}
+
+// =====================================================================
+// =====================================================================
+
+void DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets()
+{
+  openfluid::core::UnitClassID_t Unit = std::make_pair(mp_Unit->getUnitClass(),
+                                                       mp_Unit->getUnitID());
+
+  std::list<openfluid::core::UnitClassID_t> Tos = mp_ToWidget->getUnits();
+  for (std::list<openfluid::core::UnitClassID_t>::iterator it = Tos.begin();
+        it != Tos.end(); ++it)
+  {
+    if(!std::count(mp_Unit->getUnitsTos().begin(),mp_Unit->getUnitsTos().end(),*it))
+      mp_Unit->getUnitsTos().push_back(*it);
+  }
+
+  std::list<openfluid::core::UnitClassID_t> Parents =
+      mp_ParentWidget->getUnits();
+  for (std::list<openfluid::core::UnitClassID_t>::iterator it = Parents.begin();
+          it != Parents.end(); ++it)
+    {
+      if(!std::count(mp_Unit->getUnitsParents().begin(),mp_Unit->getUnitsParents().end(),*it))
+        mp_Unit->getUnitsParents().push_back(*it);
+    }
+
+  std::list<openfluid::core::UnitClassID_t> Froms = mp_FromWidget->getUnits();
+  for (std::list<openfluid::core::UnitClassID_t>::iterator it = Froms.begin();
+      it != Froms.end(); ++it)
+  {
+    std::list<openfluid::core::UnitClassID_t>& it_Tos = mp_Domain->getUnitsToOf(*it);
+    if(!std::count(it_Tos.begin(),it_Tos.end(),Unit))
+      it_Tos.push_back(Unit);
+  }
+
+  std::list<openfluid::core::UnitClassID_t> Children =
+      mp_ChildWidget->getUnits();
+  for (std::list<openfluid::core::UnitClassID_t>::iterator it =
+      Children.begin(); it != Children.end(); ++it)
+  {
+    std::list<openfluid::core::UnitClassID_t>& it_Parents = mp_Domain->getUnitsParentsOf(*it);
+    if(!std::count(it_Parents.begin(),it_Parents.end(),Unit))
+      it_Parents.push_back(Unit);
+  }
+}
 
 // =====================================================================
 // =====================================================================

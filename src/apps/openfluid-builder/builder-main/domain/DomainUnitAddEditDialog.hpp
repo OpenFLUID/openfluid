@@ -103,7 +103,7 @@ class DomainUnitAddEditDialog
 
     std::set<int> m_IDs;
 
-//    DomainUnitRelationAddDialog& m_AddDialog;
+    DomainUnitRelationAddDialog& m_AddDialog;
 
     std::set<std::string> m_Classes;
 
@@ -115,10 +115,10 @@ class DomainUnitAddEditDialog
 
     Gtk::SpinButton* mp_IdSpin;
 
-//    DomainUnitRelationWidget* mp_FromWidget;
-//    DomainUnitRelationWidget* mp_ToWidget;
-//    DomainUnitRelationWidget* mp_ParentWidget;
-//    DomainUnitRelationWidget* mp_ChildWidget;
+    DomainUnitRelationWidget* mp_FromWidget;
+    DomainUnitRelationWidget* mp_ToWidget;
+    DomainUnitRelationWidget* mp_ParentWidget;
+    DomainUnitRelationWidget* mp_ChildWidget;
 
     void initEditionMode();
 
@@ -126,9 +126,9 @@ class DomainUnitAddEditDialog
 
     void createUnit();
 
-//    void clearAllRelations();
+    void clearAllRelations();
 
-//    void createAllRelationsFromRelationWidgets();
+    void createAllRelationsFromRelationWidgets();
 
     void onClassChanged();
 
@@ -176,15 +176,15 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
       DomainUnitAddEditDialog::createUnit();
     }
 
-//    void clearAllRelations()
-//    {
-//      DomainUnitAddEditDialog::clearAllRelations();
-//    }
-//
-//    void createAllRelations()
-//    {
-//      DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets();
-//    }
+    void clearAllRelations()
+    {
+      DomainUnitAddEditDialog::clearAllRelations();
+    }
+
+    void createAllRelations()
+    {
+      DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets();
+    }
 
     void setUnit(openfluid::fluidx::UnitDescriptor* Unit)
     {
@@ -206,25 +206,25 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
       return mp_IdSpin;
     }
 
-//    DomainUnitRelationWidgetSub* getFromWidget()
-//    {
-//      return (DomainUnitRelationWidgetSub*) mp_FromWidget;
-//    }
-//
-//    DomainUnitRelationWidgetSub* getToWidget()
-//    {
-//      return (DomainUnitRelationWidgetSub*) mp_ToWidget;
-//    }
-//
-//    DomainUnitRelationWidgetSub* getParentWidget()
-//    {
-//      return (DomainUnitRelationWidgetSub*) mp_ParentWidget;
-//    }
-//
-//    DomainUnitRelationWidgetSub* getChildWidget()
-//    {
-//      return (DomainUnitRelationWidgetSub*) mp_ChildWidget;
-//    }
+    DomainUnitRelationWidgetSub* getFromWidget()
+    {
+      return (DomainUnitRelationWidgetSub*) mp_FromWidget;
+    }
+
+    DomainUnitRelationWidgetSub* getToWidget()
+    {
+      return (DomainUnitRelationWidgetSub*) mp_ToWidget;
+    }
+
+    DomainUnitRelationWidgetSub* getParentWidget()
+    {
+      return (DomainUnitRelationWidgetSub*) mp_ParentWidget;
+    }
+
+    DomainUnitRelationWidgetSub* getChildWidget()
+    {
+      return (DomainUnitRelationWidgetSub*) mp_ChildWidget;
+    }
 
 };
 
