@@ -114,6 +114,18 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths("/bar/foo/foo/bar/bar/bar");
 
 
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths().size(),0);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths("/bar/foo/foo/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths("/bar/foo/foo/bar/bar/bar");
+  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths().size(),2);
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths().size(),2);
+
+  openfluid::base::RuntimeEnvironment::getInstance()->resetExtraObserversPluginsPaths();
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths().size(),0);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths("/bar/foo/foo/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths("/bar/foo/foo/bar/bar/bar");
+
+
 
   openfluid::base::RuntimeEnvironment::getInstance()->setClearOutputDir(true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir(),true);

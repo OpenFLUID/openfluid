@@ -320,7 +320,7 @@ class DLLEXPORT RuntimeEnvironment
     */
     void addExtraObserversPluginsPaths(std::string SemicolonSeparatedPaths);
 
-    inline void resetExtraObserversPluginsPaths() { m_ExtraFunctionsPlugsDirs.clear(); };
+    inline void resetExtraObserversPluginsPaths() { m_ExtraObserversPlugsDirs.clear(); };
 
     inline std::vector<std::string> getDefaultObserversPluginsPaths() const  { return m_DefaultObserversPlugsDirs;  };
 
