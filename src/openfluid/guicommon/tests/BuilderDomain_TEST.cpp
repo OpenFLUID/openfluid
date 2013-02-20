@@ -490,3 +490,25 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK_EQUAL(P1_Children.size(), 1);
   BOOST_CHECK_EQUAL(std::count(P1_Children.begin(), P1_Children.end(),B11), 1);
 }
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_clearDomain)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+
+  Domain.clearDomain();
+
+  BOOST_CHECK(Domain.getUnitsByIdByClass().empty());
+  BOOST_CHECK(Domain.getClassNames().empty());
+  BOOST_CHECK(Domain.getIDsOfClass("unitsA").empty());
+  BOOST_CHECK(Domain.getInputDataNames("unitsA").empty());
+  BOOST_CHECK_THROW(Domain.getUnit("unitsA",1), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.getUnitDescriptor("unitsA",1), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.getInputData("unitsA",1,"indataA"), openfluid::base::OFException);
+}
