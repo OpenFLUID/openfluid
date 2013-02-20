@@ -235,6 +235,7 @@ class BuilderDomain
     std::list<openfluid::core::UnitClassID_t> getUnitsFromOf(const openfluid::core::UnitClassID_t Unit);
     std::list<openfluid::core::UnitClassID_t> getUnitsChildrenOf(const openfluid::core::UnitClassID_t Unit);
 
+    void clearDomain();
 };
 
 // =====================================================================
