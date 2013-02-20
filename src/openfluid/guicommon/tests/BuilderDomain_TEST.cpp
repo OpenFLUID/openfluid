@@ -83,8 +83,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
       Units->begin();
   BOOST_CHECK_EQUAL(it->first, "unitsA");
   BOOST_CHECK_EQUAL(it->second.size(), 8);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 = it->second.begin();
-      it2 != it->second.end(); ++it2)
+  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+      it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
     BOOST_CHECK_EQUAL(it2->second.mp_UnitDesc->getUnitClass(), "unitsA");
@@ -100,8 +100,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   it++;
   BOOST_CHECK_EQUAL(it->first, "unitsB");
   BOOST_CHECK_EQUAL(it->second.size(), 5);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 = it->second.begin();
-      it2 != it->second.end(); ++it2)
+  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+      it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
     BOOST_CHECK_EQUAL(it2->second.mp_UnitDesc->getUnitClass(), "unitsB");
@@ -114,8 +114,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   it++;
   BOOST_CHECK_EQUAL(it->first, "unitsP");
   BOOST_CHECK_EQUAL(it->second.size(), 1);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 = it->second.begin();
-      it2 != it->second.end(); ++it2)
+  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+      it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
     BOOST_CHECK_EQUAL(it2->second.mp_UnitDesc->getUnitClass(), "unitsP");
@@ -140,8 +140,9 @@ BOOST_AUTO_TEST_CASE(check_wrong_construction)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/wrongIData");
 
-  BOOST_CHECK_THROW(openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
-                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(
+      openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
+      openfluid::base::OFException);
 }
 
 // =====================================================================
@@ -178,10 +179,10 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   U2.getUnitID() = 99;
   Domain.addUnit(&U2);
 
-  BOOST_CHECK_EQUAL(Domain.getUnit("unitsB",99).m_IData.size(),3);
-  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
-  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
-  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"),"-");
+  BOOST_CHECK_EQUAL(Domain.getUnit("unitsB",99).m_IData.size(), 3);
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
+  BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
 }
 
 // =====================================================================
@@ -360,4 +361,26 @@ BOOST_AUTO_TEST_CASE(check_renameIData)
   BOOST_CHECK(!Domain.getInputDataNames("unitsA").count("indataA"));
   BOOST_CHECK(Domain.getInputDataNames("unitsA").count("NewData"));
 
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_clearDomain)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+
+  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+
+  Domain.clearDomain();
+
+  BOOST_CHECK(Domain.getUnitsByIdByClass().empty());
+  BOOST_CHECK(Domain.getClassNames().empty());
+  BOOST_CHECK(Domain.getIDsOfClass("unitsA").empty());
+  BOOST_CHECK(Domain.getInputDataNames("unitsA").empty());
+  BOOST_CHECK_THROW(Domain.getUnit("unitsA",1), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.getUnitDescriptor("unitsA",1), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.getInputData("unitsA",1,"indataA"), openfluid::base::OFException);
 }

@@ -230,6 +230,8 @@ class BuilderDomain
     void renameInputData(std::string ClassName, std::string OldIDataName,
                          std::string NewIDataName);
 
+    void clearDomain();
+
 };
 
 // =====================================================================

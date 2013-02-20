@@ -581,5 +581,17 @@ void BuilderDomain::renameInputData(std::string ClassName,
 // =====================================================================
 // =====================================================================
 
+void BuilderDomain::clearDomain()
+{
+  mp_DomainDesc->getUnits().clear();
+  mp_DomainDesc->getInputData().clear();
+  mp_DomainDesc->getEvents().clear();
+  m_Units.clear();
+  m_IDataNames.clear();
+}
+
+// =====================================================================
+// =====================================================================
+
 }
 } // namespaces
