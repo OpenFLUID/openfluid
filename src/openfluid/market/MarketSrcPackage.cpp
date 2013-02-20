@@ -192,14 +192,14 @@ void MarketSrcPackage::process()
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Glib error building package using CMake");
   }
 
-  if (!boost::filesystem::exists(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::PLUGINS_EXT)))
+  if (!boost::filesystem::exists(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error finding built package");
 
-  if (boost::filesystem::exists(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::PLUGINS_EXT)))
-    boost::filesystem::remove(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
+  if (boost::filesystem::exists(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX +openfluid::config::PLUGINS_EXT)))
+    boost::filesystem::remove(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
-  boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::PLUGINS_EXT),
-                               boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::PLUGINS_EXT));
+  boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT),
+                               boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
   if (!m_KeepSources) boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
 
