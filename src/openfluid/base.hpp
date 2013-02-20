@@ -63,9 +63,6 @@
 #include <openfluid/base/Listener.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/base/OFException.hpp>
-#include <openfluid/base/OutputDescriptor.hpp>
-#include <openfluid/base/OutputFilesDescriptor.hpp>
-#include <openfluid/base/OutputSetDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
