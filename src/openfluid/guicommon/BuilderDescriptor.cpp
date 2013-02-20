@@ -65,6 +65,7 @@ BuilderDescriptor::BuilderDescriptor(openfluid::fluidx::FluidXDescriptor& FluidX
   mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
   mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
   mp_RunDesc = &(FluidXDesc.getRunDescriptor());
+  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
 }
 
 // =====================================================================
@@ -97,6 +98,14 @@ BuilderModel& BuilderDescriptor::getModel()
 openfluid::fluidx::RunDescriptor& BuilderDescriptor::getRunDescriptor()
 {
   return *mp_RunDesc;
+}
+
+// =====================================================================
+// =====================================================================
+
+openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescriptor()
+{
+  return *mp_DatastoreDesc;
 }
 
 // =====================================================================

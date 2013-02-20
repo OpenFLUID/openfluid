@@ -72,6 +72,8 @@ class BuilderDescriptor
 
     openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
+    openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
+
   public:
 
     BuilderDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
@@ -83,6 +85,8 @@ class BuilderDescriptor
     BuilderModel& getModel();
 
     openfluid::fluidx::RunDescriptor& getRunDescriptor();
+
+    openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
 };
 
 }} // namespaces
