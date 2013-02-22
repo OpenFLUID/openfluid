@@ -4,7 +4,7 @@
     <model>
 
    
-      <function fileID="tests.buddy.newfunc" />       
+      <function ID="tests.buddy.newfunc" />       
       
   </model>
 </openfluid>

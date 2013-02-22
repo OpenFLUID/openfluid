@@ -3,7 +3,7 @@
 
     <model>
    
-      <function fileID="tests.landprimitives" />                  
+      <function ID="tests.landprimitives" />                  
     
   </model>
   

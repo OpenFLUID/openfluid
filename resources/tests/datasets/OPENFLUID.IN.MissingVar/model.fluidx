@@ -4,7 +4,7 @@
     <model>
 
       
-      <function fileID="tests.primitives.use"> 
+      <function ID="tests.primitives.use"> 
         <param name="strparam" value="strvalue" />
         <param name="doubleparam" value="1.1" />
         <param name="longparam" value="11" />

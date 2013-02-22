@@ -4,7 +4,7 @@
     <model>
 
    
-      <function fileID="tests.parseunits" />       
+      <function ID="tests.parseunits" />       
            
     
   </model>
