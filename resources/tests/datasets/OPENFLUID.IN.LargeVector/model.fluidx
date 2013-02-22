@@ -4,9 +4,9 @@
     <model>
 
    
-      <function fileID="tests.largevector.prod" />
+      <function ID="tests.largevector.prod" />
       
-      <function fileID="tests.largevector.use" />      
+      <function ID="tests.largevector.use" />      
     
   </model>
 </openfluid>

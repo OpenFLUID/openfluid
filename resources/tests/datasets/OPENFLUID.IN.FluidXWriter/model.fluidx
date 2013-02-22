@@ -10,14 +10,14 @@
      </gparams>
    
    
-      <function fileID="tests.primitives.prod" />       
+      <function ID="tests.primitives.prod" />       
       
       <generator varname="tests.fixed" unitclass="TestUnits" method="fixed">
          <param name="fixedvalue" value="12.7" />
       </generator>
 
       
-      <function fileID="tests.primitives.use"> 
+      <function ID="tests.primitives.use"> 
         <param name="strparam" value="strvalue" />
         <param name="doubleparam" value="1.1" />
         <param name="longparam" value="11" />

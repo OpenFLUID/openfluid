@@ -3,7 +3,7 @@
 
     <model>
 
-      <function fileID="tests.func.cmake" />
+      <function ID="tests.func.cmake" />
     
   </model>
 </openfluid>

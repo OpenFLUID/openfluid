@@ -189,12 +189,12 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
 
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "function") == 0)
     {
-      xmlChar* xmlFileID = xmlGetProp(CurrNode, (const xmlChar*) "fileID");
+      xmlChar* xmlID = xmlGetProp(CurrNode, (const xmlChar*) "ID");
 
-      if (xmlFileID != NULL)
+      if (xmlID != NULL)
       {
 
-        FD = new openfluid::fluidx::FunctionDescriptor((const char*) xmlFileID);
+        FD = new openfluid::fluidx::FunctionDescriptor((const char*) xmlID);
         FD->setParameters(extractParamsFromNode(CurrNode));
         m_ModelDescriptor.appendItem(FD);
       }
@@ -986,7 +986,7 @@ std::string FluidXDescriptor::getModelToWrite()
       openfluid::fluidx::FunctionDescriptor* FuncDesc =
           dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it);
 
-      Contents << m_IndentStr << m_IndentStr << "<function fileID=\""
+      Contents << m_IndentStr << m_IndentStr << "<function ID=\""
                << FuncDesc->getFileID() << "\">\n";
       Contents << getParamsAsStr(FuncDesc->getParameters());
       Contents << m_IndentStr << m_IndentStr << "</function>\n";

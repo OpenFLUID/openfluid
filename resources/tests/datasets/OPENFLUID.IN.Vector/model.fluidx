@@ -4,9 +4,9 @@
     <model>
 
    
-      <function fileID="tests.vector.prod" />
+      <function ID="tests.vector.prod" />
       
-      <function fileID="tests.vector.use" />  
+      <function ID="tests.vector.use" />  
              
            
     

@@ -4,7 +4,7 @@
     <model>
 
    
-      <function fileID="tests.events.deprecated" />       
+      <function ID="tests.events.deprecated" />       
                 
     
   </model>
