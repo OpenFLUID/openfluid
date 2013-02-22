@@ -97,7 +97,7 @@ void MarketSrcPackage::process()
   std::string BuildConfigOptions = composeFullBuildOptions(m_BuildConfigOptions);
 
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
-  std::string SrcInstallDir = m_MarketBagSrcDir + "/" + m_ID;
+  std::string SrcInstallDir = getInstallPath() + "/" + m_ID;
 
   if (boost::filesystem::is_directory(boost::filesystem::path(SrcInstallDir)))
     boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
@@ -195,11 +195,12 @@ void MarketSrcPackage::process()
   if (!boost::filesystem::exists(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error finding built package");
 
-  if (boost::filesystem::exists(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX +openfluid::config::PLUGINS_EXT)))
-    boost::filesystem::remove(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
+  std::string BinInstallDir = getInstallPath() + "/../" + getMarketBagBinSubDir();
+  if (boost::filesystem::exists(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX +openfluid::config::PLUGINS_EXT)))
+    boost::filesystem::remove(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
   boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT),
-                               boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
+                               boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
   if (!m_KeepSources) boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
 

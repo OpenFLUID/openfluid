@@ -45,83 +45,36 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file MarketBinPackage.cpp
-  \brief Implements ...
-
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ * MarketSrcObserverPackage.hpp
+ *
+ *  Created on: 18 févr. 2013
+ *      Author: Manuel CHATAIGNER
 */
 
-#include <openfluid/market/MarketBinPackage.hpp>
+#ifndef __MARKETSRCOBSERVERPACKAGE_HPP__
+#define __MARKETSRCOBSERVERPACKAGE_HPP__
 
-#include <cstdlib>
 
-#include <glibmm/error.h>
-#include <glibmm/spawn.h>
+#include <openfluid/dllexport.hpp>
+#include <openfluid/market/MarketSrcPackage.hpp>
+
 
 namespace openfluid { namespace market {
 
 
-MarketBinPackage::MarketBinPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
-                : MarketPackage(ID,PackageURL)
+class DLLEXPORT MarketSrcObserverPackage : public MarketSrcPackage
 {
+  public:
 
-}
+    MarketSrcObserverPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
 
+    virtual std::string getInstallPath();
 
-// =====================================================================
-// =====================================================================
-
-
-void MarketBinPackage::process()
-{
-  if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::download()","package "+m_PackageFilename+" not initialized");
-
-
-  if (!m_Downloaded)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
-
-
-  if (m_CMakeCommand.empty())
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","CMake command not defined");
-
-
-  std::string StrOut;
-  std::string StrErr;
-  int RetValue;
-
-  std::string ProcessCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + getInstallPath()+ "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
-
-  try
-  {
-    appendToLogFile(m_PackageFilename,"processing binaries",ProcessCommand);
-
-    StrOut.clear();
-    StrErr.clear();
-    RetValue = 0;
-    Glib::spawn_command_line_sync(ProcessCommand,&StrOut,&StrErr,&RetValue);
-
-    appendToLogFile(StrOut);
-
-    if (RetValue != 0)
-    {
-      appendToLogFile(StrErr);
-      throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");
-
-    }
-
-  }
-  catch (Glib::Error& E)
-  {
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Glib error uncompressing package using CMake");
-  }
-
-}
+};
 
 
 } } // namespaces
 
 
-
+#endif /* __MARKETSRCOBSERVERPACKAGE_HPP__ */

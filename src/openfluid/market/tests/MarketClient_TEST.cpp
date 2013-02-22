@@ -88,16 +88,18 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::market::MarketInfo MI;
 
   std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/temp").string();
-  std::string MarketBagBinDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-bin").string();;
-  std::string MarketBagSrcDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-src").string();;
+  std::string MarketBagObserverDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-observers").string();
+  std::string MarketBagBinSubDir = boost::filesystem::path("bin").string();;
+  std::string MarketBagSrcSubDir = boost::filesystem::path("src").string();;
 
 //  openfluid::market::MarketPackage::initialize(false);
 
-  openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagBinDir,MarketBagSrcDir);
+  openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagObserverDir,MarketBagBinSubDir,MarketBagSrcSubDir);
 
   boost::filesystem::remove_all(boost::filesystem::path(TmpDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBinDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSrcDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagObserverDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBinSubDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSrcSubDir));
 
   MC.enableLog(true);
 

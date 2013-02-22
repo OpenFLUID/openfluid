@@ -47,8 +47,8 @@
 
 
 #include <openfluid/market/MarketClient.hpp>
-#include <openfluid/market/MarketBinPackage.hpp>
-#include <openfluid/market/MarketSrcPackage.hpp>
+#include <openfluid/market/MarketBinObserverPackage.hpp>
+#include <openfluid/market/MarketSrcObserverPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/config.hpp>
 
@@ -76,8 +76,9 @@ MarketClient::MarketClient() :
 
   std::string m_TempDir = openfluid::base::RuntimeEnvironment::getInstance()->getTempDir()+"/market";
   MarketPackage::setWorksDirs(boost::filesystem::path(m_TempDir).string(),
-                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinVersionDir(),
-                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSrcVersionDir());
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagObsVersionDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinSubDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSrcSubDir());
 
   m_URL.clear();
   m_MarketInfo.clear();
@@ -100,16 +101,24 @@ MarketClient::~MarketClient()
 
 void MarketClient::initMarketBag()
 {
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()));
 
-  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBinDir()));
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observer directory");
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBinDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag binary directory");
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir()));
 
-  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSrcDir()));
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observer binary subdirectory");
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSrcDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag source directory");
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observer source subdirectory");
 
 }
 
@@ -473,11 +482,11 @@ void MarketClient::preparePackagesInstallation()
   {
     if (PCit->second.Selected == MetaPackageInfo::BIN)
     {
-      m_PacksToInstall.push_back(new MarketBinPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+      m_PacksToInstall.push_back(new MarketBinObserverPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
     }
     if (PCit->second.Selected == MetaPackageInfo::SRC)
     {
-      m_PacksToInstall.push_back(new MarketSrcPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+      m_PacksToInstall.push_back(new MarketSrcObserverPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
 
       std::string BuildOptsStr = PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions;
 
