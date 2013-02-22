@@ -98,10 +98,11 @@ INSTALL(DIRECTORY "share"
 
 MESSAGE(STATUS "****************************************")
 MESSAGE(STATUS "OpenFLUID version: ${FULL_VERSION}")
+MESSAGE(STATUS "Build architecture: ${OF_SYSTEM_ARCH}")
 MESSAGE(STATUS "Build name: ${BUILDNAME}")
-MESSAGE(STATUS "Build type : ${CMAKE_BUILD_TYPE}")
-MESSAGE(STATUS "Compiler : ${CMAKE_CXX_COMPILER}")  
-MESSAGE(STATUS "Compiler flags for build:  ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
+MESSAGE(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+MESSAGE(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")  
+MESSAGE(STATUS "Compiler flags for build: ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
 MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "****************************************")
 
