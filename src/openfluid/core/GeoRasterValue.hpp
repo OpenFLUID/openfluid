@@ -128,6 +128,8 @@ class GeoRasterValue: public openfluid::core::GeoValue
      */
     GDALDataset* get(bool UpdateMode = false);
 
+    std::string getAbsolutePath();
+
     /**
      * Get the first RasterBand (indexed with 1) of the dataset.
      * Is owned by its dataset, should never be destroyed with the C++ delete operator.

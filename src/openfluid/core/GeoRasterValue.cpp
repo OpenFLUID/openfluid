@@ -69,7 +69,7 @@ namespace core {
 
 GeoRasterValue::GeoRasterValue(std::string FilePath, std::string FileName) :
     GeoValue(FilePath, FileName), mp_Data(0), mp_RasterBand1(0), mp_GeoTransform(
-        0)//, mp_Polygonized(0)
+        0) //, mp_Polygonized(0)
 {
   GDALAllRegister();
 }
@@ -109,7 +109,8 @@ GDALDataset* GeoRasterValue::get(bool UpdateMode)
 
 void GeoRasterValue::tryToOpenSource(bool /*UpdateMode*/)
 {
-  mp_Data = static_cast<GDALDataset*>(GDALOpen(m_AbsolutePath.c_str(),
+  // GDALOpenShared to allow copy then close of this raster in virtual format (see http://www.gdal.org/gdal_vrttut.html)
+  mp_Data = static_cast<GDALDataset*>(GDALOpenShared(m_AbsolutePath.c_str(),
                                                GA_ReadOnly));
 
   if (!mp_Data)
@@ -121,6 +122,14 @@ void GeoRasterValue::tryToOpenSource(bool /*UpdateMode*/)
         + CPLGetLastErrorMsg() + ")");
   }
 
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string GeoRasterValue::getAbsolutePath()
+{
+  return m_AbsolutePath;
 }
 
 // =====================================================================
