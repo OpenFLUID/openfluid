@@ -93,6 +93,7 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_MarketBagDir;
     std::string m_MarketBagVersionDir;
 
+    std::string m_MarketBagFuncVersionDir;
     std::string m_MarketBagObsVersionDir;
     std::string m_MarketBagBinSubDir;
     std::string m_MarketBagSrcSubDir;
@@ -225,6 +226,11 @@ class DLLEXPORT RuntimeEnvironment
       @return the market bag directory for the current OpenFLUID version
      */
     inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
+
+    /**
+      @return the market bag directory for the functions of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0~alpha1/Functions)
+     */
+    inline std::string getMarketBagFuncVersionDir() const { return m_MarketBagFuncVersionDir; };
 
     /**
       @return the market bag directory for the observers of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0~alpha1/Observers)

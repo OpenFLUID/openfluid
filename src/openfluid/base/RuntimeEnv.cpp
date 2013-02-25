@@ -171,6 +171,8 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   m_MarketBagVersionDir = boost::filesystem::path(m_MarketBagDir + "/"
       + m_Version).string();
+  m_MarketBagFuncVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/"
+      + "functions").string();
   m_MarketBagObsVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/"
       + "observers").string();
   m_MarketBagBinSubDir = boost::filesystem::path(m_Arch).string();
@@ -224,7 +226,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
       + openfluid::config::FUNCTIONS_PLUGINS_SUBDIR).string());
 
   // market-bag dir (for current version)
-  // m_DefaultFunctionsPlugsDirs.push_back(m_MarketBagFuncVersionDir + m_MarketBagBinSubDir);
+  m_DefaultFunctionsPlugsDirs.push_back(m_MarketBagFuncVersionDir + m_MarketBagBinSubDir);
 
   // install directory
   std::string FunctionsPluginsInstallPath = boost::filesystem::path(m_InstallPrefix

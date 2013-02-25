@@ -82,6 +82,8 @@ class DLLEXPORT MarketPackage
 
     static std::string m_TempDownloadsDir;
 
+    static std::string m_MarketBagFunctionDir;
+
     static std::string m_MarketBagObserverDir;
 
     static std::string m_MarketBagBinSubDir;
@@ -127,8 +129,10 @@ class DLLEXPORT MarketPackage
 
     static void initialize(bool EnableLog);
 
-    static void setWorksDirs(std::string TempDir, std::string MarketBagObserverDir,
+    static void setWorksDirs(std::string TempDir, std::string MarketBagFunctionDir, std::string MarketBagObserverDir,
         std::string MarketBagBinSubDir, std::string MarketBagSrcSubDir);
+
+    static std::string getMarketBagFunctionDir() { return m_MarketBagFunctionDir; };
 
     static std::string getMarketBagObserverDir() { return m_MarketBagObserverDir; };
 

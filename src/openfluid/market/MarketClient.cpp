@@ -47,6 +47,8 @@
 
 
 #include <openfluid/market/MarketClient.hpp>
+#include <openfluid/market/MarketBinFunctionPackage.hpp>
+#include <openfluid/market/MarketSrcFunctionPackage.hpp>
 #include <openfluid/market/MarketBinObserverPackage.hpp>
 #include <openfluid/market/MarketSrcObserverPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
@@ -76,6 +78,7 @@ MarketClient::MarketClient() :
 
   std::string m_TempDir = openfluid::base::RuntimeEnvironment::getInstance()->getTempDir()+"/market";
   MarketPackage::setWorksDirs(boost::filesystem::path(m_TempDir).string(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagFuncVersionDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagObsVersionDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinSubDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSrcSubDir());
@@ -101,6 +104,27 @@ MarketClient::~MarketClient()
 
 void MarketClient::initMarketBag()
 {
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag function directory");
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag function binary subdirectory");
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag function source subdirectory");
+
+
+
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir())))
