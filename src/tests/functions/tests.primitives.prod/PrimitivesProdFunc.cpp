@@ -66,20 +66,20 @@ DEFINE_FUNCTION_CLASS(PrimitivesProdFunction)
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE
-  DECLARE_SIGNATURE_ID(("tests.primitives.prod"));
-  DECLARE_SIGNATURE_NAME(("test function for primitives (production)"));
-  DECLARE_SIGNATURE_DESCRIPTION((""));
+BEGIN_FUNCTION_SIGNATURE("tests.primitives.prod")
 
-  DECLARE_SIGNATURE_VERSION(("1.0"));
+  DECLARE_SIGNATURE_NAME("test function for primitives (production)");
+  DECLARE_SIGNATURE_DESCRIPTION("");
+
+  DECLARE_SIGNATURE_VERSION("1.0");
   DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN((""));
-  DECLARE_SIGNATURE_PROCESS((""));
-  DECLARE_SIGNATURE_METHOD((""));
-  DECLARE_SIGNATURE_AUTHORNAME((""));
-  DECLARE_SIGNATURE_AUTHOREMAIL((""));
+  DECLARE_SIGNATURE_DOMAIN("");
+  DECLARE_SIGNATURE_PROCESS("");
+  DECLARE_SIGNATURE_METHOD("");
+  DECLARE_SIGNATURE_AUTHORNAME("");
+  DECLARE_SIGNATURE_AUTHOREMAIL("");
 
   DECLARE_PRODUCED_VAR("tests.vector[]","TestUnits","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.scalar","TestUnits","scalar for tests","");

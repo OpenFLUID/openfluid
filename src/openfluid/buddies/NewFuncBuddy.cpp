@@ -130,9 +130,8 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "DECLARE_FUNCTION_PLUGIN" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "BEGIN_FUNCTION_SIGNATURE" << std::endl;
-  CPPContent << "" << std::endl;
-  CPPContent << "  DECLARE_SIGNATURE_ID(\"" << m_Options["funcid"] << "\");" << std::endl;
+  CPPContent << "BEGIN_FUNCTION_SIGNATURE(\"" << m_Options["funcid"] << "\")" << std::endl;
+  CPPContent << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_NAME(\"\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_DESCRIPTION(\"\");" << std::endl;
   CPPContent << "" << std::endl;

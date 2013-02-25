@@ -74,8 +74,7 @@ DECLARE_OBSERVER_PLUGIN
 // =====================================================================
 
 
-BEGIN_OBSERVER_SIGNATURE
-  DECLARE_SIGNATURE_ID("export.spatial-graph.files.dot");
+BEGIN_OBSERVER_SIGNATURE("export.spatial-graph.files.dot")
   DECLARE_SIGNATURE_NAME("Exports spatial graph to Dot files");
   DECLARE_SIGNATURE_DESCRIPTION("This observer exports spatial domain graph to Dot files and can be post-processed with GraphViz\n"
       "Parameters can be\n"

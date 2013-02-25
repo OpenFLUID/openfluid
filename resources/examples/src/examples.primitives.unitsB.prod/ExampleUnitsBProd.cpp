@@ -18,20 +18,20 @@ DECLARE_FUNCTION_PLUGIN;
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE
-  DECLARE_SIGNATURE_ID(("examples.primitives.unitsB.prod"));
-  DECLARE_SIGNATURE_NAME(("Example of data production on units of class B"));
-  DECLARE_SIGNATURE_DESCRIPTION((""));
+BEGIN_FUNCTION_SIGNATURE("examples.primitives.unitsB.prod")
 
-  DECLARE_SIGNATURE_VERSION(("1.0"));
+  DECLARE_SIGNATURE_NAME("Example of data production on units of class B");
+  DECLARE_SIGNATURE_DESCRIPTION("");
+
+  DECLARE_SIGNATURE_VERSION("1.0");
   DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN(("examples"));
-  DECLARE_SIGNATURE_PROCESS((""));
-  DECLARE_SIGNATURE_METHOD((""));
-  DECLARE_SIGNATURE_AUTHORNAME(("Jean-Christophe Fabre"));
-  DECLARE_SIGNATURE_AUTHOREMAIL(("fabrejc@supagro.inra.fr"));
+  DECLARE_SIGNATURE_DOMAIN("examples");
+  DECLARE_SIGNATURE_PROCESS("");
+  DECLARE_SIGNATURE_METHOD("");
+  DECLARE_SIGNATURE_AUTHORNAME("Jean-Christophe Fabre");
+  DECLARE_SIGNATURE_AUTHOREMAIL("fabrejc@supagro.inra.fr");
 
   DECLARE_USED_VAR("var2","unitsA","the variable 2","");
   DECLARE_USED_VAR("var3","unitsA","the variable 3","");

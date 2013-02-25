@@ -84,7 +84,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   Signature = new openfluid::ware::FunctionSignature();
 
-  DECLARE_SIGNATURE_ID("test.id");
   DECLARE_SIGNATURE_NAME("name of the test");
   DECLARE_SIGNATURE_AUTHORNAME("John Doe");
   DECLARE_SIGNATURE_AUTHOREMAIL("john.doe@foo.bar.org");
@@ -127,7 +126,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // ----------------------------------------------------------
 
-  BOOST_REQUIRE_EQUAL(Signature->ID,"test.id");
   BOOST_REQUIRE_EQUAL(Signature->Name,"name of the test");
   BOOST_REQUIRE_EQUAL(Signature->AuthorEmail,"john.doe@foo.bar.org");
   BOOST_REQUIRE_EQUAL(Signature->Author,"John Doe");

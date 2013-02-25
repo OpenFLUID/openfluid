@@ -47,54 +47,53 @@
 
 
 /**
-  \file MarketUseFunc.cpp
+  \file CmakeFunc.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/base/PlugFunction.hpp>
+#include <openfluid/ware/PluggableFunction.hpp>
 
 
 // =====================================================================
 // =====================================================================
 
 
-DECLARE_PLUGIN_HOOKS
+DECLARE_FUNCTION_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_SIGNATURE_HOOK
-  DECLARE_SIGNATURE_ID(("tests.market.src.use"));
-  DECLARE_SIGNATURE_NAME(("test function for market as source package"));
-  DECLARE_SIGNATURE_DESCRIPTION((""));
+BEGIN_FUNCTION_SIGNATURE("tests.market.src.use")
+
+  DECLARE_SIGNATURE_NAME("test function for market as source package");
+  DECLARE_SIGNATURE_DESCRIPTION("");
 
   DECLARE_SIGNATURE_VERSION(("1.0"));
   DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::base::EXPERIMENTAL);
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
   DECLARE_SIGNATURE_DOMAIN((""));
   DECLARE_SIGNATURE_PROCESS((""));
   DECLARE_SIGNATURE_METHOD((""));
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
-
-END_SIGNATURE_HOOK
+END_FUNCTION_SIGNATURE
 
 /**
 
 */
-class MarketUseFunction : public openfluid::base::PluggableFunction
+class MarketUseFunc : public openfluid::ware::PluggableFunction
 {
   private:
 
   public:
 
 
-  MarketUseFunction() : PluggableFunction()
+  MarketUseFunc() : PluggableFunction()
   {
 
 
@@ -105,7 +104,7 @@ class MarketUseFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  ~MarketUseFunction()
+  ~MarketUseFunc()
   {
 
 
@@ -116,34 +115,31 @@ class MarketUseFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  bool initParams(openfluid::core::FuncParamsMap_t /*Params*/)
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void prepareData() { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency() { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  openfluid::base::SchedulingRequest initializeRun()
   {
 
-
-    return true;
-  }
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool prepareData()
-  {
-
-
-    return true;
-  }
-
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool checkConsistency()
-  {
-
-
-    return true;
+    return DefaultDeltaT();
   }
 
 
@@ -151,33 +147,19 @@ class MarketUseFunction : public openfluid::base::PluggableFunction
   // =====================================================================
 
 
-  bool initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+  openfluid::base::SchedulingRequest runStep()
   {
 
-
-    return true;
+    return DefaultDeltaT();
   }
 
   // =====================================================================
   // =====================================================================
 
 
-  bool runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+  void finalizeRun()
   {
 
-
-    return true;
-  }
-
-  // =====================================================================
-  // =====================================================================
-
-
-  bool finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-  {
-
-
-    return true;
   }
 
 };
@@ -185,5 +167,6 @@ class MarketUseFunction : public openfluid::base::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_HOOK(MarketUseFunction)
+DEFINE_FUNCTION_CLASS(MarketUseFunc)
+
 
