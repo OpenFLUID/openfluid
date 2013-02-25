@@ -60,11 +60,6 @@
 
 
 /**
-  Macro for declaration of the ware ID
-*/
-#define DECLARE_SIGNATURE_ID(id) Signature->ID = id;
-
-/**
   Macro for declaration of the ware name
 */
 #define DECLARE_SIGNATURE_NAME(name) Signature->Name = name;

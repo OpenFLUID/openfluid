@@ -68,8 +68,8 @@ DECLARE_OBSERVER_PLUGIN
 // =====================================================================
 
 
-BEGIN_OBSERVER_SIGNATURE
-  DECLARE_SIGNATURE_ID("tests.hopla");
+BEGIN_OBSERVER_SIGNATURE("tests.hopla")
+
   DECLARE_SIGNATURE_NAME("hopla observer for tests");
   DECLARE_SIGNATURE_DESCRIPTION("This observer says hopla.");
 

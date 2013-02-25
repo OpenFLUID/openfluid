@@ -68,8 +68,8 @@ DECLARE_OBSERVER_PLUGIN
 // =====================================================================
 
 
-BEGIN_OBSERVER_SIGNATURE
-  DECLARE_SIGNATURE_ID("tests.empty");
+BEGIN_OBSERVER_SIGNATURE("tests.empty")
+
   DECLARE_SIGNATURE_NAME("empty observer for tests");
   DECLARE_SIGNATURE_DESCRIPTION("This observer is empty and do nothing at all.");
 

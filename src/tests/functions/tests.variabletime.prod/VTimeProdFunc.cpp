@@ -68,20 +68,20 @@ DECLARE_FUNCTION_PLUGIN
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE
-  DECLARE_SIGNATURE_ID(("tests.variabletime.prod"));
-  DECLARE_SIGNATURE_NAME(("test function for variable time production"));
-  DECLARE_SIGNATURE_DESCRIPTION((""));
+BEGIN_FUNCTION_SIGNATURE("tests.variabletime.prod")
 
-  DECLARE_SIGNATURE_VERSION(("1.0"));
+  DECLARE_SIGNATURE_NAME("test function for variable time production");
+  DECLARE_SIGNATURE_DESCRIPTION("");
+
+  DECLARE_SIGNATURE_VERSION("1.0");
   DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN((""));
-  DECLARE_SIGNATURE_PROCESS((""));
-  DECLARE_SIGNATURE_METHOD((""));
-  DECLARE_SIGNATURE_AUTHORNAME((""));
-  DECLARE_SIGNATURE_AUTHOREMAIL((""));
+  DECLARE_SIGNATURE_DOMAIN("");
+  DECLARE_SIGNATURE_PROCESS("");
+  DECLARE_SIGNATURE_METHOD("");
+  DECLARE_SIGNATURE_AUTHORNAME("");
+  DECLARE_SIGNATURE_AUTHOREMAIL("");
 
   DECLARE_PRODUCED_VAR("tests.double","TestUnits","double for tests","");
   DECLARE_PRODUCED_VAR("tests.string","TestUnits","string for tests","");

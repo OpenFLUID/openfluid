@@ -69,11 +69,12 @@
 /**
   Macro for the beginning of definition of signature hook
 */
-#define BEGIN_FUNCTION_SIGNATURE \
+#define BEGIN_FUNCTION_SIGNATURE(id) \
   openfluid::ware::FunctionSignature* GetWareSignature() \
   { \
     openfluid::ware::FunctionSignature* Signature = new openfluid::ware::FunctionSignature(); \
-    Signature->setABIVersion(openfluid::config::FULL_VERSION);
+    Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+    Signature->ID = (id);
 
 
 /**

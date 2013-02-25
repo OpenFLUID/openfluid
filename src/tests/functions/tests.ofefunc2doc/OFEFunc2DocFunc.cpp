@@ -90,20 +90,20 @@ DEFINE_FUNCTION_CLASS(OFEFunc2DocFunction)
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE
-  DECLARE_SIGNATURE_ID(("tests.ofefunc2doc"));
-  DECLARE_SIGNATURE_NAME(("test function for ofefunc2doc"));
-  DECLARE_SIGNATURE_DESCRIPTION(("This function is a test for the ofefunc2doc doc extraction tool. Do not use it in a model."));
+BEGIN_FUNCTION_SIGNATURE("tests.ofefunc2doc")
 
-  DECLARE_SIGNATURE_VERSION(("1.0"));
+  DECLARE_SIGNATURE_NAME("test function for ofefunc2doc");
+  DECLARE_SIGNATURE_DESCRIPTION("This function is a test for the ofefunc2doc doc extraction tool. Do not use it in a model.");
+
+  DECLARE_SIGNATURE_VERSION("1.0");
   DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::ware::BETA);
 
-  DECLARE_SIGNATURE_DOMAIN(("Test"));
-  DECLARE_SIGNATURE_PROCESS(("No process"));
-  DECLARE_SIGNATURE_METHOD(("No method"));
-  DECLARE_SIGNATURE_AUTHORNAME(("JC Fabre"));
-  DECLARE_SIGNATURE_AUTHOREMAIL(("fabrejc@supagro.inra.fr"));
+  DECLARE_SIGNATURE_DOMAIN("Test");
+  DECLARE_SIGNATURE_PROCESS("No process");
+  DECLARE_SIGNATURE_METHOD("No method");
+  DECLARE_SIGNATURE_AUTHORNAME("JC Fabre");
+  DECLARE_SIGNATURE_AUTHOREMAIL("fabrejc@supagro.inra.fr");
 
   DECLARE_FUNCTION_PARAM("testparam","a param just for test","kg/m3")
   DECLARE_FUNCTION_PARAM("dummy_param","a dummy param just for test","snail/m2")

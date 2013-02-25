@@ -68,12 +68,12 @@ DECLARE_OBSERVER_PLUGIN
 // =====================================================================
 
 
-BEGIN_OBSERVER_SIGNATURE
-  DECLARE_SIGNATURE_ID("tests.obs.cmake");
-  DECLARE_SIGNATURE_NAME(("test observer built using the OpenFLUID cmake module"));
-  DECLARE_SIGNATURE_DESCRIPTION((""));
+BEGIN_OBSERVER_SIGNATURE("tests.obs.cmake")
 
-  DECLARE_SIGNATURE_VERSION(("1.0"));
+  DECLARE_SIGNATURE_NAME("test observer built using the OpenFLUID cmake module");
+  DECLARE_SIGNATURE_DESCRIPTION("");
+
+  DECLARE_SIGNATURE_VERSION("1.0");
   DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
