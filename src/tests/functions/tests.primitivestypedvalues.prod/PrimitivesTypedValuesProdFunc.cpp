@@ -68,20 +68,20 @@ DEFINE_FUNCTION_CLASS(PrimitivesTypedValuesProdFunction)
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE
-  DECLARE_SIGNATURE_ID(("tests.primitivestypedvalues.prod"));
-  DECLARE_SIGNATURE_NAME(("test function for primitives typed values (production)"));
-  DECLARE_SIGNATURE_DESCRIPTION((""));
+BEGIN_FUNCTION_SIGNATURE("tests.primitivestypedvalues.prod")
 
-  DECLARE_SIGNATURE_VERSION(("1.0"));
+  DECLARE_SIGNATURE_NAME("test function for primitives typed values (production)");
+  DECLARE_SIGNATURE_DESCRIPTION("");
+
+  DECLARE_SIGNATURE_VERSION("1.0");
   DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN((""));
-  DECLARE_SIGNATURE_PROCESS((""));
-  DECLARE_SIGNATURE_METHOD((""));
-  DECLARE_SIGNATURE_AUTHORNAME((""));
-  DECLARE_SIGNATURE_AUTHOREMAIL((""));
+  DECLARE_SIGNATURE_DOMAIN("");
+  DECLARE_SIGNATURE_PROCESS("");
+  DECLARE_SIGNATURE_METHOD("");
+  DECLARE_SIGNATURE_AUTHORNAME("");
+  DECLARE_SIGNATURE_AUTHOREMAIL("");
 
   DECLARE_PRODUCED_VAR("tests.none","TestUnits","untyped for tests","");
   DECLARE_PRODUCED_VAR("tests.double[double]","TestUnits","double for tests","");

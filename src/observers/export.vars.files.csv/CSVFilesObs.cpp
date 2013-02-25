@@ -163,8 +163,7 @@ DECLARE_OBSERVER_PLUGIN
 // =====================================================================
 
 
-BEGIN_OBSERVER_SIGNATURE
-  DECLARE_SIGNATURE_ID("export.vars.files.csv");
+BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
   DECLARE_SIGNATURE_NAME("Exports simulation variables to CSV files");
   DECLARE_SIGNATURE_DESCRIPTION("This observer exports variables to CSV files\n"
       "Parameters can be\n"
