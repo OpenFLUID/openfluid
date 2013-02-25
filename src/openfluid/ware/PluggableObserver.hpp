@@ -109,10 +109,6 @@ namespace openfluid { namespace ware {
 
 class DLLEXPORT PluggableObserver : public SimulationInspectorWare
 {
-  private:
-
-    bool m_Initialized;
-
 
   public:
 

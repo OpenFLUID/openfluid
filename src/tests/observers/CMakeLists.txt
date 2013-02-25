@@ -27,3 +27,16 @@ ADD_TEST(observers-DotFiles "${BIN_OUTPUT_PATH}/openfluid-engine"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DotObserver" 
                         "-p${TEST_OUTPUT_PATH}"
                         "-n${TEST_OUTPUT_PATH}")
+                        
+ADD_TEST(observers-KmlFiles "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.KmlObservers"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers" 
+                        "-p${TEST_OUTPUT_PATH}"
+                        "-n${TEST_OUTPUT_PATH}")
+                        
+ADD_TEST(observers-VtkFiles "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.VtkObserver"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver" 
+                        "-p${TEST_OUTPUT_PATH}"
+                        "-n${TEST_OUTPUT_PATH}")                        
+                                                

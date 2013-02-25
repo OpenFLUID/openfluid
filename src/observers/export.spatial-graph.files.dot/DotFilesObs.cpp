@@ -327,7 +327,12 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
     void onInitializedRun()
     {
-
+      if (m_EveryTime)
+      {
+        std::ostringstream oss;
+        oss << OPENFLUID_GetCurrentTimeIndex();
+        ExportUnitsGraphAsDotFile(m_BaseFileName + "_t" + oss.str() + ".dot","at t="+oss.str());
+      }
     }
 
 
