@@ -46,55 +46,74 @@
  */
 
 /**
- \file GeoValue.cpp
- \brief Implements ...
+ \file VectorDataset.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "GeoValue.hpp"
+#ifndef VECTORDATASET_HPP_
+#define VECTORDATASET_HPP_
 
-#include <boost/filesystem/path.hpp>
+#include <string>
+#include <ogrsf_frmts.h>
 
 namespace openfluid {
+
 namespace core {
-
-// =====================================================================
-// =====================================================================
-
-GeoValue::GeoValue(std::string FilePath, std::string FileName) :
-    m_FilePath(FilePath), m_FileName(FileName)
-{
-  m_AbsolutePath = computeAbsolutePath(m_FilePath, m_FileName);
+class GeoVectorValue;
 }
 
-// =====================================================================
-// =====================================================================
+namespace landr {
 
-GeoValue::~GeoValue()
+class VectorDataset
 {
+  private:
+
+    OGRDataSource* mp_DataSource;
+
+    std::string getInitializedTmpPath();
+
+    bool isAlreadyExisting(std::string Path);
+
+  public:
+
+    /**
+     * Create a new empty OGRDatasource in the openfluid temp directory
+     * @param FileName The name of the file to create
+     * @param DriverName The name of the OGR driver to use, default is "ESRI Shapefile"
+     */
+    VectorDataset(std::string FileName, std::string DriverName =
+        "ESRI Shapefile");
+
+    /**
+     * Create in the openfluid temp directory a copy of Value OGRDatasource,
+     * using Value filename as default filename, unless NewFileName is provided
+     * @param Value The GeoVectorValue to copy
+     * @param NewFileName The alternate name to use to create the file, optionnal
+     */
+    VectorDataset(openfluid::core::GeoVectorValue& Value,
+                  std::string NewFileName = "");
+
+    /**
+     * Delete the OGRDatasource and relative files in openfluid temp directory
+     */
+    ~VectorDataset();
+
+    OGRDataSource* getDataSource();
+
+    /**
+     * Write to disk a copy of the OGRDataSource
+     * @param FilePath The path to the directory where writing, will be created if needed
+     * @param FileName The name of the file to write
+     * @param ReplaceIfExists If true and the file FilePath/FileName already exists, overwrite it
+     */
+    void copyToDisk(std::string FilePath, std::string FileName,
+                    bool ReplaceIfExists);
+
+};
 
 }
+} // namespaces
 
-// =====================================================================
-// =====================================================================
-
-std::string GeoValue::computeAbsolutePath(std::string FilePath,
-                                          std::string FileName)
-{
-  return boost::filesystem::path(FilePath + "/" + FileName).string();
-}
-
-// =====================================================================
-// =====================================================================
-
-std::string GeoValue::getFilePath()
-{
-  return m_FilePath;
-}
-
-// =====================================================================
-// =====================================================================
-
-} /* namespace core */
-} /* namespace openfluid */
+#endif /* VECTORDATASET_HPP_ */

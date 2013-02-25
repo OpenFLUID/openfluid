@@ -74,6 +74,7 @@ class GeoVectorValueSub: public openfluid::core::GeoVectorValue
     GeoVectorValueSub(std::string PrefixPath, std::string RelativePath) :
         openfluid::core::GeoVectorValue(PrefixPath, RelativePath)
     {
+
     }
 
     OGRDataSource* getData()
@@ -83,8 +84,7 @@ class GeoVectorValueSub: public openfluid::core::GeoVectorValue
 
     std::string getAbsolutePath()
     {
-      computeAbsolutePath();
-      return m_AbsolutePath;
+      return computeAbsolutePath(m_FilePath,m_FileName);
     }
 
     void tryToOpenSource()

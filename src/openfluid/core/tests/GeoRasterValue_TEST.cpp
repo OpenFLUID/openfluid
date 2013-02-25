@@ -85,8 +85,7 @@ class GeoRasterValueSub: public openfluid::core::GeoRasterValue
 
     std::string getAbsolutePath()
     {
-      computeAbsolutePath();
-      return m_AbsolutePath;
+      return computeAbsolutePath(m_FilePath,m_FileName);
     }
 
     void tryToOpenSource()
