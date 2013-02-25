@@ -119,10 +119,10 @@ class PolygonGraph: public LandRGraph
 
     virtual ~PolygonGraph();
 
-    /**
-     * @attention Do not copy associated raster.
-     */
-    PolygonGraph* clone();
+//    /**
+//     * @attention Do not copy associated raster.
+//     */
+//    PolygonGraph* clone();
 
     LandRGraph::GraphType getType();
 

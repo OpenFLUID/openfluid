@@ -118,6 +118,7 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/landr/LandRTools.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
@@ -252,24 +253,29 @@ BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
 
 BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                      "RS.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
 
   BOOST_CHECK_THROW(
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Val),
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect),
       openfluid::base::OFException);
 
-  delete Val;
+  delete Vect;
 
-  Val = new openfluid::core::GeoVectorValue(
+  Val = openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
+  Vect = new openfluid::landr::VectorDataset(Val);
+
   std::vector<geos::geom::LineString*> Geoms =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Val);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect);
 
   BOOST_CHECK_EQUAL(Geoms.size(), 24);
 
-  delete Val;
+  delete Vect;
 }
 
 // =====================================================================
@@ -277,23 +283,28 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
 
 BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                      "SU.shp");
 
-  BOOST_CHECK_THROW( openfluid::landr::LandRTools::getVectorOfLines(*Val),
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+
+  BOOST_CHECK_THROW(openfluid::landr::LandRTools::getVectorOfLines(*Vect),
                     openfluid::base::OFException);
 
-  delete Val;
+  delete Vect;
 
-  Val = new openfluid::core::GeoVectorValue(
+  Val = openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
+  Vect = new openfluid::landr::VectorDataset(Val);
+
   std::vector<geos::geom::LineString*> Geoms =
-      openfluid::landr::LandRTools::getVectorOfLines(*Val);
+      openfluid::landr::LandRTools::getVectorOfLines(*Vect);
 
   BOOST_CHECK_EQUAL(Geoms.size(), 8);
 
-  delete Val;
+  delete Vect;
 }
 
 // =====================================================================
@@ -301,17 +312,23 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
 
 BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
 {
-  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValSU(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
 
-  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValRS(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST.shp");
 
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValSU);
+
+  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(
+      ValRS);
+
   std::vector<geos::geom::LineString*> SU_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*ValSU);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU);
 
   std::vector<geos::geom::LineString*> RS_lines =
-      openfluid::landr::LandRTools::getVectorOfLines(*ValRS);
+      openfluid::landr::LandRTools::getVectorOfLines(*VectRS);
 
   std::vector<geos::geom::Geometry*> SU_vect;
   std::vector<geos::geom::Geometry*> RS_vect;
@@ -331,8 +348,8 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
 //  for (unsigned int i = 0; i < Noded->size(); i++)
 //    std::cout << Noded->at(i)->toString() << std::endl;
 
-  delete ValSU;
-  delete ValRS;
+  delete VectSU;
+  delete VectRS;
 }
 
 // =====================================================================
@@ -340,17 +357,23 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
 
 BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
 {
-  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValSU(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
 
-  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValRS(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST.shp");
 
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValSU);
+
+  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(
+      ValRS);
+
   std::vector<geos::geom::LineString*> SU_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*ValSU);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU);
 
   std::vector<geos::geom::LineString*> RS_lines =
-      openfluid::landr::LandRTools::getVectorOfLines(*ValRS);
+      openfluid::landr::LandRTools::getVectorOfLines(*VectRS);
 
   std::vector<geos::geom::Geometry*> SU_vect;
   std::vector<geos::geom::Geometry*> RS_vect;
@@ -383,8 +406,8 @@ BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
   for (unsigned int i = 0; i < NewPolys.size(); i++)
     delete NewPolys.at(i);
   // do not delete Dangles
-  delete ValSU;
-  delete ValRS;
+  delete VectSU;
+  delete VectRS;
 }
 
 // =====================================================================
@@ -392,23 +415,35 @@ BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
 
 BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
 {
-  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValSU(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
-  openfluid::core::GeoVectorValue* ValSU2 = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValSU2(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST2.shp");
-  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValRS(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST.shp");
-  openfluid::core::GeoVectorValue* ValRS2 = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValRS2(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST2.shp");
 
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValSU);
+
+  openfluid::landr::VectorDataset* VectSU2 =
+      new openfluid::landr::VectorDataset(ValSU2);
+
+  openfluid::landr::VectorDataset* VectRS = new openfluid::landr::VectorDataset(
+      ValRS);
+
+  openfluid::landr::VectorDataset* VectRS2 =
+      new openfluid::landr::VectorDataset(ValRS2);
+
   std::vector<geos::geom::LineString*> SU_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*ValSU);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU);
   std::vector<geos::geom::LineString*> SU2_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*ValSU2);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU2);
   std::vector<geos::geom::LineString*> RS_lines =
-      openfluid::landr::LandRTools::getVectorOfLines(*ValRS);
+      openfluid::landr::LandRTools::getVectorOfLines(*VectRS);
   std::vector<geos::geom::LineString*> RS2_lines =
-      openfluid::landr::LandRTools::getVectorOfLines(*ValRS2);
+      openfluid::landr::LandRTools::getVectorOfLines(*VectRS2);
 
   const geos::geom::GeometryFactory* Factory =
       geos::geom::GeometryFactory::getDefaultInstance();
@@ -450,10 +485,10 @@ BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
   for (unsigned int i = 0; i < NewPolys.size(); i++)
     delete NewPolys.at(i);
   // do not delete Dangles
-  delete ValSU;
-  delete ValSU2;
-  delete ValRS;
-  delete ValRS2;
+  delete VectSU;
+  delete VectSU2;
+  delete VectRS;
+  delete VectRS2;
 }
 
 // =====================================================================
@@ -461,15 +496,21 @@ BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
 
 BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
 {
-  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValSU(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "field.shp");
-  openfluid::core::GeoVectorValue* ValSU2 = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue ValSU2(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
 
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValSU);
+
+  openfluid::landr::VectorDataset* VectSU2 =
+      new openfluid::landr::VectorDataset(ValSU2);
+
   std::vector<geos::geom::LineString*> SU_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*ValSU);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU);
   std::vector<geos::geom::LineString*> SU2_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*ValSU2);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*VectSU2);
 
   const geos::geom::GeometryFactory* Factory =
       geos::geom::GeometryFactory::getDefaultInstance();
@@ -509,8 +550,8 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
 
   for (unsigned int i = 0; i < ThePolygons.size(); i++)
     delete ThePolygons.at(i);
-  delete ValSU;
-  delete ValSU2;
+  delete VectSU;
+  delete VectSU2;
 }
 
 // =====================================================================
@@ -518,17 +559,24 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
 
 BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "field.shp");
-  openfluid::core::GeoVectorValue* Val2 = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                      "field.shp");
+  openfluid::core::GeoVectorValue Val2(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
-  openfluid::core::GeoVectorValue* Val3 = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue Val3(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "reach.shp");
 
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+  openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(
+      Val2);
+  openfluid::landr::VectorDataset* Vect3 = new openfluid::landr::VectorDataset(
+      Val3);
+
   std::vector<geos::geom::LineString*> Field_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Val);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect);
   std::vector<geos::geom::LineString*> Soil_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Val2);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect2);
 
   std::vector<geos::geom::Geometry*> Fields;
   std::vector<geos::geom::Geometry*> Soils;
@@ -553,21 +601,20 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
   // TODO Check why and if this is the correct geos version change
 #if !GEOS_VERSION_GREATER_OR_EQUAL_3_3_2
   BOOST_CHECK_THROW(
-      openfluid::landr::LandRTools::getNodedLines(Poly_coll, Val3->getGeometries()),
+      openfluid::landr::LandRTools::getNodedLines(Poly_coll, Vect3->getGeometries()),
       openfluid::base::OFException);
 #endif
 
   std::vector<geos::geom::LineString*>* All_lines =
       openfluid::landr::LandRTools::getNodedLines(Poly_coll,
-                                                  Val3->getGeometries(),
+                                                  Vect3->getGeometries(),
                                                   0.000001);
 
   BOOST_CHECK_EQUAL(All_lines->size(), 65);
 
   All_lines->clear();
-  All_lines = openfluid::landr::LandRTools::getNodedLines(Poly_coll,
-                                                          Val3->getGeometries(),
-                                                          0.00001);
+  All_lines = openfluid::landr::LandRTools::getNodedLines(
+      Poly_coll, Vect3->getGeometries(), 0.00001);
 
   BOOST_CHECK_EQUAL(All_lines->size(), 63);
 
@@ -592,9 +639,9 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
   for (unsigned int i = 0; i < ThePolygons.size(); i++)
     delete ThePolygons.at(i);
 
-  delete Val;
-  delete Val2;
-  delete Val3;
+  delete Vect;
+  delete Vect2;
+  delete Vect3;
 }
 
 // =====================================================================
@@ -602,20 +649,27 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
 
 BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue Val(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "field2.shp");
-  openfluid::core::GeoVectorValue* Val2 = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue Val2(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "soil.shp");
-  openfluid::core::GeoVectorValue* Val3 = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue Val3(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "reach5.shp");
 
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+  openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(
+      Val2);
+  openfluid::landr::VectorDataset* Vect3 = new openfluid::landr::VectorDataset(
+      Val3);
+
   std::vector<geos::geom::LineString*> Field_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Val);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect);
 
   std::vector<geos::geom::LineString*> Soil_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Val2);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect2);
 
-  geos::geom::Geometry* Reach_coll = Val3->getGeometries();
+  geos::geom::Geometry* Reach_coll = Vect3->getGeometries();
 
   std::vector<geos::geom::Geometry*> Fields;
   std::vector<geos::geom::Geometry*> Soils;
@@ -669,9 +723,9 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
 
   for (unsigned int i = 0; i < ThePolygons.size(); i++)
     delete ThePolygons.at(i);
-  delete Val;
-  delete Val2;
-  delete Val3;
+  delete Vect;
+  delete Vect2;
+  delete Vect3;
 }
 
 // =====================================================================
@@ -679,16 +733,21 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
 
 BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue Val(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "field2.shp");
-  openfluid::core::GeoVectorValue* Val2 = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue Val2(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/virtual", "soil.shp");
 
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+  openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(
+      Val2);
+
   std::vector<geos::geom::LineString*> Field_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Val);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect);
 
   std::vector<geos::geom::LineString*> Soil_lines =
-      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Val2);
+      openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect2);
 
   std::vector<geos::geom::Geometry*> Fields;
   std::vector<geos::geom::Geometry*> Soils;
@@ -742,8 +801,8 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
 
   for (unsigned int i = 0; i < ThePolygons.size(); i++)
     delete ThePolygons.at(i);
-  delete Val;
-  delete Val2;
+  delete Vect;
+  delete Vect2;
 }
 
 // =====================================================================

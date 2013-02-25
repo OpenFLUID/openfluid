@@ -65,6 +65,7 @@
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <geos/geom/Geometry.h>
 
 // =====================================================================
 // =====================================================================
@@ -107,7 +108,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
   BOOST_CHECK_EQUAL(DS->GetName(), Path);
   BOOST_CHECK(DS->GetDriver());
   BOOST_CHECK_EQUAL(DS->GetDriver()->GetName(), "ESRI Shapefile");
-  BOOST_CHECK(boost::filesystem::exists(Path));
+  BOOST_CHECK(!boost::filesystem::exists(Path));
 
   delete Vect;
 }
@@ -197,3 +198,106 @@ BOOST_AUTO_TEST_CASE(check_copyToDisk)
   delete Vect;
 }
 
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_Properties)
+{
+  openfluid::core::GeoVectorValue Value(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Value);
+
+  BOOST_CHECK(!Vect->isLineType());
+  BOOST_CHECK(Vect->isPolygonType());
+
+  BOOST_CHECK(Vect->containsField("SELF_ID"));
+  BOOST_CHECK(!Vect->containsField("wrongField"));
+
+  BOOST_CHECK_EQUAL(Vect->getFieldIndex("SELF_ID"), 1);
+
+  delete Vect;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_addField)
+{
+  openfluid::core::GeoVectorValue Value(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Value);
+
+  Vect->addAField("NewField", OFTInteger);
+
+  BOOST_CHECK(Vect->containsField("NewField"));
+  BOOST_CHECK(Vect->isFieldOfType("NewField",OFTInteger));
+  BOOST_CHECK(!Vect->isFieldOfType("NewField",OFTString));
+  BOOST_CHECK_EQUAL(Vect->getFieldIndex("NewField"), 10);
+  BOOST_CHECK(!Vect->isIntValueSet("NewField",123));
+
+  delete Vect;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_parse)
+{
+  openfluid::core::GeoVectorValue Value(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Value);
+
+  openfluid::landr::VectorDataset::FeaturesList_t Features =
+      Vect->getFeatures();
+
+  BOOST_CHECK_EQUAL(Features.size(), 24);
+
+  for (openfluid::landr::VectorDataset::FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) it->first->GetGeometryRef()->exportToGEOS();
+
+    BOOST_CHECK_EQUAL(GeosGeom->toString(), it->second->toString());
+  }
+
+  geos::geom::Geometry* Geom = Vect->getGeometries();
+
+  BOOST_CHECK_EQUAL(Geom->getNumGeometries(), 24);
+  BOOST_CHECK_EQUAL(Geom->getDimension(), 2 /* means Polygons */);
+
+  delete Vect;
+  delete Geom;
+
+  Value = openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  Vect = new openfluid::landr::VectorDataset(Value);
+
+  Features = Vect->getFeatures();
+
+  BOOST_CHECK_EQUAL(Features.size(), 8);
+
+  for (openfluid::landr::VectorDataset::FeaturesList_t::iterator it =
+      Features.begin(); it != Features.end(); ++it)
+  {
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) it->first->GetGeometryRef()->exportToGEOS();
+
+    BOOST_CHECK_EQUAL(GeosGeom->toString(), it->second->toString());
+  }
+
+  Geom = Vect->getGeometries();
+
+  BOOST_CHECK_EQUAL(Geom->getNumGeometries(), 8);
+  BOOST_CHECK_EQUAL(Geom->getDimension(), 1 /* means LineStrings */);
+
+  delete Vect;
+  delete Geom;
+}

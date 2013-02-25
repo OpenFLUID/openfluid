@@ -54,7 +54,13 @@
 
 #include "VectorDataset.hpp"
 
+#include <utility>
 #include <boost/filesystem/operations.hpp>
+#include <geos/geom/Geometry.h>
+#include <geos/geom/GeometryFactory.h>
+#include <geos/geom/LineString.h>
+#include <geos/geom/GeometryCollection.h>
+#include <geos/operation/valid/IsValidOp.h>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -95,21 +101,6 @@ VectorDataset::VectorDataset(std::string FileName, std::string DriverName)
         + "Creation of OGRDataSource failed.");
 
   mp_DataSource->SetDriver(Driver);
-
-  //TODO maybe do not create a layer (needed to open the datasource) nor write on disk now ?
-  mp_DataSource->CreateLayer("", NULL, wkbUnknown, NULL);
-
-  // necessary to ensure headers are written out in an orderly way and all resources are recovered
-  OGRDataSource::DestroyDataSource(mp_DataSource);
-
-  mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
-
-  if (!mp_DataSource)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
-        "VectorDataset::VectorDataset",
-        "Error while opening " + Path + " : "
-        + "Creation of OGRDataSource failed.");
 }
 
 // =====================================================================
@@ -204,8 +195,11 @@ VectorDataset::~VectorDataset()
   OGRSFDriver* Driver = mp_DataSource->GetDriver();
   std::string Path = mp_DataSource->GetName();
 
-  OGRDataSource::DestroyDataSource(mp_DataSource);
-  Driver->DeleteDataSource(Path.c_str());
+  if (isAlreadyExisting(Path))
+  {
+    OGRDataSource::DestroyDataSource(mp_DataSource);
+    Driver->DeleteDataSource(Path.c_str());
+  }
 }
 
 // =====================================================================
@@ -263,6 +257,232 @@ void VectorDataset::copyToDisk(std::string FilePath, std::string FileName,
 
   // necessary to ensure headers are written out in an orderly way and all resources are recovered
   OGRDataSource::DestroyDataSource(NewDS);
+}
+
+// =====================================================================
+// =====================================================================
+
+void VectorDataset::addALayer(std::string LayerName,
+                              OGRwkbGeometryType LayerType,
+                              OGRSpatialReference* SpatialRef)
+{
+  if (mp_DataSource->GetLayerByName(LayerName.c_str()) != NULL)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "VectorDataset::createLayer",
+        "Error while adding a layer to " + std::string(mp_DataSource->GetName())
+        + ": a layer named " + LayerName + " already exists.");
+
+  OGRLayer* Layer = mp_DataSource->CreateLayer(LayerName.c_str(), SpatialRef,
+                                               LayerType, NULL);
+
+  if (!Layer)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "VectorDataset::createLayer",
+        "Error while adding a layer to " + std::string(mp_DataSource->GetName())
+        + ": creation of layer " + LayerName + " failed.");
+}
+
+// =====================================================================
+// =====================================================================
+
+OGRLayer* VectorDataset::getLayer(unsigned int LayerIndex)
+{
+  return mp_DataSource->GetLayer(LayerIndex);
+}
+
+// =====================================================================
+// =====================================================================
+
+OGRFeatureDefn* VectorDataset::getLayerDef(unsigned int LayerIndex)
+{
+  return getLayer(LayerIndex)->GetLayerDefn();
+}
+
+// =====================================================================
+// =====================================================================
+
+void VectorDataset::addAField(std::string FieldName, OGRFieldType FieldType,
+                              unsigned int LayerIndex)
+{
+  OGRFieldDefn Field(FieldName.c_str(), FieldType);
+
+  if (getLayer(LayerIndex)->CreateField(&Field) != OGRERR_NONE)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "VectorDataset::addAField",
+        "Creating field \"" + FieldName + "\" failed.");
+}
+
+// =====================================================================
+// =====================================================================
+
+bool VectorDataset::isLineType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbLineString;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool VectorDataset::isPolygonType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbPolygon;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool VectorDataset::containsField(std::string FieldName,
+                                  unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
+}
+
+// =====================================================================
+// =====================================================================
+
+int VectorDataset::getFieldIndex(std::string FieldName, unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
+}
+
+// =====================================================================
+// =====================================================================
+
+bool VectorDataset::isFieldOfType(std::string FieldName, OGRFieldType FieldType,
+                                  unsigned int LayerIndex)
+{
+  if (!containsField(FieldName))
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "VectorDataset::isFieldOfType",
+        "Field \"" + FieldName + "\" is not set.");
+
+  return getLayerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
+      == FieldType;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool VectorDataset::isIntValueSet(std::string FieldName, int Value,
+                                  unsigned int LayerIndex)
+{
+  if (!isFieldOfType(FieldName, OFTInteger, LayerIndex))
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "VectorDataset::isIntValueSet",
+        "Field \"" + FieldName + "\" is not set or is not of type Int.");
+
+  int CatIndex = getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
+
+  OGRLayer* Layer = getLayer(LayerIndex);
+
+  Layer->ResetReading();
+
+  OGRFeature* Feat;
+  while ((Feat = Layer->GetNextFeature()) != NULL)
+  {
+    if (Feat->GetFieldAsInteger(CatIndex) == Value)
+    {
+      OGRFeature::DestroyFeature(Feat);
+      return true;
+    }
+    OGRFeature::DestroyFeature(Feat);
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+VectorDataset::FeaturesList_t VectorDataset::getFeatures(
+    unsigned int LayerIndex)
+{
+  if (!m_Features.count(LayerIndex))
+    parse(LayerIndex);
+
+  return m_Features.at(LayerIndex);
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::geom::Geometry* VectorDataset::getGeometries(unsigned int LayerIndex)
+{
+  if (!m_Geometries.count(LayerIndex))
+    parse(LayerIndex);
+
+  return m_Geometries.at(LayerIndex);
+}
+
+// =====================================================================
+// =====================================================================
+
+// TODO add an option to allow choice of check validity or not (because it's time consuming)
+void VectorDataset::parse(unsigned int LayerIndex)
+{
+  std::vector<geos::geom::Geometry*> Geoms;
+
+  // TODO move to... ?
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer = getLayer(LayerIndex);
+
+  Layer->ResetReading();
+
+  OGRFeature* Feat;
+
+  FeaturesList_t List;
+  m_Features.insert(std::make_pair(LayerIndex, List));
+
+  // GetNextFeature returns a copy of the feature
+  while ((Feat = Layer->GetNextFeature()) != NULL)
+  {
+    OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+    // c++ cast doesn't work (have to use the C API instead)
+    geos::geom::Geometry* GeosGeom =
+        (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+    geos::operation::valid::IsValidOp ValidOp(GeosGeom);
+
+    if (!ValidOp.isValid())
+      throw openfluid::base::OFException(
+          "OpenFLUID framework",
+          "VectorDataset::parse",
+          ValidOp.getValidationError()->toString() + " \nwhile parsing "
+          + GeosGeom->toString());
+
+    geos::geom::Geometry* GeomClone = GeosGeom->clone();
+    OGRFeature* FeatClone = Feat->Clone();
+
+    Geoms.push_back(GeomClone);
+    m_Features.at(LayerIndex).push_back(
+        std::make_pair<OGRFeature*, geos::geom::Geometry*>(FeatClone,
+                                                           GeomClone));
+
+    // destroying the feature destroys also the associated OGRGeom
+    OGRFeature::DestroyFeature(Feat);
+    delete GeosGeom;
+  }
+
+  // ! do not use buildGeometry, because it may build a MultiPolygon if all geometries are Polygons, what may produce an invalid MultiPolygon!
+  // (because the boundaries of any two Polygons of a valid MultiPolygon may touch, *but only at a finite number of points*)
+  m_Geometries.insert(
+      std::make_pair(
+          LayerIndex,
+          geos::geom::GeometryFactory::getDefaultInstance()->createGeometryCollection(
+              Geoms)));
+
+  geos::operation::valid::IsValidOp ValidOpColl(m_Geometries.at(LayerIndex));
+
+  if (!ValidOpColl.isValid())
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "VectorDataset::parse",
+        ValidOpColl.getValidationError()->toString() + " \nwhile creating "
+        + m_Geometries.at(LayerIndex)->toString());
 }
 
 // =====================================================================

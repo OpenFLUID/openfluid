@@ -55,7 +55,7 @@
 #include "LandRGraph.hpp"
 
 #include <openfluid/landr/LandREntity.hpp>
-#include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/base/OFException.hpp>
@@ -84,10 +84,12 @@ LandRGraph::LandRGraph() :
 // =====================================================================
 
 LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
-    geos::planargraph::PlanarGraph(), mp_Vector(&Val), mp_Factory(
+    geos::planargraph::PlanarGraph(), mp_Factory(
         geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
         0), mp_RasterPolygonizedPolys(0)
 {
+  mp_Vector = new VectorDataset(Val);
+
   if (!mp_Vector)
     throw openfluid::base::OFException("OpenFLUID Framework",
                                        "LandRGraph::LandRGraph",
@@ -112,11 +114,7 @@ LandRGraph::~LandRGraph()
       it != m_Entities.end(); ++it)
     delete (*it);
 
-  if (mp_RasterPolygonized)
-  {
-    mp_RasterPolygonized->deleteShpOnDisk();
-    delete mp_RasterPolygonized;
-  }
+  delete mp_RasterPolygonized;
 
   if (mp_RasterPolygonizedPolys)
   {
@@ -126,6 +124,7 @@ LandRGraph::~LandRGraph()
     delete mp_RasterPolygonizedPolys;
   }
 
+  delete mp_Vector;
 }
 
 // =====================================================================
@@ -141,8 +140,7 @@ void LandRGraph::addEntitiesFromGeoVector()
   // TODO move to... ?
   setlocale(LC_NUMERIC, "C");
 
-  OGRLayer* Layer0 =
-      (const_cast<openfluid::core::GeoVectorValue*>(mp_Vector))->getLayer0();
+  OGRLayer* Layer0 = mp_Vector->getLayer(0);
 
   Layer0->ResetReading();
 
@@ -327,7 +325,7 @@ bool LandRGraph::hasAnAssociatedRaster()
 // =====================================================================
 // =====================================================================
 
-openfluid::core::GeoVectorValue* LandRGraph::getRasterPolygonized()
+openfluid::landr::VectorDataset* LandRGraph::getRasterPolygonized()
 {
   if (!mp_RasterPolygonized)
   {
@@ -339,8 +337,8 @@ openfluid::core::GeoVectorValue* LandRGraph::getRasterPolygonized()
     std::ostringstream FileName;
     FileName << "Polygonized_" << FileNum++ << ".shp";
 
-    mp_RasterPolygonized = mp_Raster->polygonize(mp_Raster->getFilePath(),
-                                                 FileName.str());
+//    mp_RasterPolygonized = mp_Raster->polygonize(mp_Raster->getFilePath(),
+//                                                 FileName.str());
 
     mp_RasterPolygonizedPolys = 0;
   }
@@ -355,7 +353,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
 {
   if (!mp_RasterPolygonizedPolys)
   {
-    openfluid::core::GeoVectorValue* Polygonized = getRasterPolygonized();
+    openfluid::landr::VectorDataset* Polygonized = getRasterPolygonized();
 
     if (!Polygonized)
       throw openfluid::base::OFException(
@@ -367,7 +365,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
     // TODO move?
     setlocale(LC_NUMERIC, "C");
 
-    OGRLayer* Layer0 = Polygonized->getLayer0();
+    OGRLayer* Layer0 = Polygonized->getLayer(0);
 
     int PixelValFieldIndex = Polygonized->getFieldIndex(
         openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName());
@@ -462,19 +460,18 @@ void LandRGraph::computeNeighbours()
 
 void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
 {
-  openfluid::core::GeoVectorValue* Out = new openfluid::core::GeoVectorValue(
-      FilePath, FileName);
+  openfluid::landr::VectorDataset* Out = new openfluid::landr::VectorDataset(
+      FileName);
 
   switch (getType())
   {
     case POLYGON:
-      Out->createShp(wkbPolygon);
+      Out->addALayer("", wkbPolygon);
       break;
     case LINESTRING:
-      Out->createShp(wkbLineString);
+      Out->addALayer("", wkbLineString);
       break;
     default:
-      Out->deleteShpOnDisk();
       delete Out;
       throw openfluid::base::OFException(
           "OpenFLUID Framework",
@@ -497,7 +494,6 @@ void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
 
     if (!OGRGeom)
     {
-      Out->deleteShpOnDisk();
       delete Out;
 
       throw openfluid::base::OFException(
@@ -507,9 +503,8 @@ void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
 
     Feat->SetGeometry(OGRGeom);
 
-    if (Out->getLayer0()->CreateFeature(Feat) != OGRERR_NONE)
+    if (Out->getLayer(0)->CreateFeature(Feat) != OGRERR_NONE)
     {
-      Out->deleteShpOnDisk();
       delete Out;
 
       throw openfluid::base::OFException(
@@ -519,6 +514,8 @@ void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
 
     OGRFeature::DestroyFeature(Feat);
   }
+
+  Out->copyToDisk(FilePath,FileName,true);
 
   delete Out;
 }

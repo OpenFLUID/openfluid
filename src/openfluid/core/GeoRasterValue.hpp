@@ -59,7 +59,6 @@
 
 #include "gdal_priv.h"
 #include "cpl_conv.h" // for CPLMalloc()
-
 namespace geos {
 namespace geom {
 class Coordinate;
@@ -67,9 +66,12 @@ class Coordinate;
 }
 
 namespace openfluid {
-namespace core {
 
-class GeoVectorValue;
+//namespace landr {
+//class VectorDataset;
+//}
+
+namespace core {
 
 /**
  * @brief Container class for geospatial raster data,
@@ -89,7 +91,7 @@ class GeoRasterValue: public openfluid::core::GeoValue
 
     double* mp_GeoTransform;
 
-    openfluid::core::GeoVectorValue* mp_Polygonized;
+//    openfluid::landr::VectorDataset* mp_Polygonized;
 
     void tryToOpenSource(bool UpdateMode);
 
@@ -149,17 +151,17 @@ class GeoRasterValue: public openfluid::core::GeoValue
     float getValueOfCoordinate(geos::geom::Coordinate Coo);
 
     /**
-     * Create a new GeoVectorValue with polygons for all connected regions of pixels in the raster sharing a common pixel value.
+     * @brief Create a new VectorDataset with polygons for all connected regions of pixels in the raster sharing a common pixel value.
+     * Use openfluid::landr::VectorDataset::copyToDisk() to keep this vectorDataset on disk
      *
-     * @param FilePath The path on disk where to create the new GeoVectorValue.
-     * @param FileName The name of the new GeoVectorValue.
+     * @param FileName The name of the new VectorDataset.
      * @param FieldName The name of the field to be created for storing the pixel value, limited to 10 characters (or will be truncated).
      * Default is set to "PixelVal". Type of field is OFTInteger (float pixel values are rounded).
      *
-     * @return The newly created GeoVectorValue.
+     * @return The newly created VectorDataset.
      */
-    openfluid::core::GeoVectorValue* polygonize(std::string FilePath, std::string FileName,
-                                                std::string FieldName="");
+//    openfluid::landr::VectorDataset* polygonize(std::string FileName,
+//                                                std::string FieldName = "");
 
     static std::string getDefaultPolygonizedFieldName();
 

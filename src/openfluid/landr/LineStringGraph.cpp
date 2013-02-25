@@ -119,13 +119,13 @@ LineStringGraph* LineStringGraph::create(const LandRGraph::Entities_t& Entities)
 // =====================================================================
 // =====================================================================
 
-LineStringGraph* LineStringGraph::clone()
-{
-  if (mp_Vector)
-    return LineStringGraph::create(*mp_Vector);
-  else
-    return LineStringGraph::create(getEntities());
-}
+//LineStringGraph* LineStringGraph::clone()
+//{
+//  if (mp_Vector)
+//    return LineStringGraph::create(*mp_Vector);
+//  else
+//    return LineStringGraph::create(getEntities());
+//}
 
 // =====================================================================
 // =====================================================================

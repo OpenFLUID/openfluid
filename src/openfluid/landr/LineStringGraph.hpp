@@ -151,10 +151,10 @@ class LineStringGraph: public LandRGraph
 
     virtual ~LineStringGraph();
 
-    /**
-     * @attention Do not copy associated raster.
-     */
-    LineStringGraph* clone();
+//    /**
+//     * @attention Do not copy associated raster.
+//     */
+//    LineStringGraph* clone();
 
     LandRGraph::GraphType getType();
 

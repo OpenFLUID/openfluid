@@ -57,7 +57,7 @@
 #include <boost/filesystem/path.hpp>
 
 #include <openfluid/base/OFException.hpp>
-#include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <geos/geom/Coordinate.h>
 #include <gdal_alg.h>
 
@@ -69,7 +69,7 @@ namespace core {
 
 GeoRasterValue::GeoRasterValue(std::string FilePath, std::string FileName) :
     GeoValue(FilePath, FileName), mp_Data(0), mp_RasterBand1(0), mp_GeoTransform(
-        0), mp_Polygonized(0)
+        0)//, mp_Polygonized(0)
 {
   GDALAllRegister();
 }
@@ -273,45 +273,34 @@ float GeoRasterValue::getValueOfCoordinate(geos::geom::Coordinate Coo)
 // =====================================================================
 // =====================================================================
 
-openfluid::core::GeoVectorValue* GeoRasterValue::polygonize(
-    std::string FilePath, std::string FileName, std::string FieldName)
-{
-  if (!mp_Polygonized)
-  {
-    FieldName =
-        (FieldName == "" ? getDefaultPolygonizedFieldName() : FieldName);
-
-    mp_Polygonized = new openfluid::core::GeoVectorValue(FilePath, FileName);
-
-    mp_Polygonized->createShp(wkbPolygon);
-    mp_Polygonized->addAField(FieldName, OFTInteger);
-    int FieldIndex = mp_Polygonized->getFieldIndex(FieldName);
-
-    OGRLayer* Layer = mp_Polygonized->getLayer0();
-
-    if (GDALPolygonize(getRasterBand1(), NULL, Layer, FieldIndex, NULL, NULL,
-                       NULL)
-        != CE_None)
-    {
-      throw openfluid::base::OFException("OpenFLUID framework",
-                                         "GeoRasterValue::polygonize",
-                                         "Error while polygonizing raster.");
-      mp_Polygonized->deleteShpOnDisk();
-      delete mp_Polygonized;
-    }
-
-    if (Layer->SyncToDisk() != CE_None)
-    {
-      throw openfluid::base::OFException("OpenFLUID framework",
-                                         "GeoRasterValue::polygonize",
-                                         "Error while polygonizing raster.");
-      mp_Polygonized->deleteShpOnDisk();
-      delete mp_Polygonized;
-    }
-  }
-
-  return mp_Polygonized;
-}
+//openfluid::landr::VectorDataset* GeoRasterValue::polygonize(
+//    std::string FileName, std::string FieldName)
+//{
+//  if (!mp_Polygonized)
+//  {
+//    FieldName =
+//        (FieldName == "" ? getDefaultPolygonizedFieldName() : FieldName);
+//
+//    mp_Polygonized = new openfluid::landr::VectorDataset(FileName);
+//    mp_Polygonized->addALayer("", wkbPolygon);
+//    mp_Polygonized->addAField(FieldName, OFTInteger);
+//    int FieldIndex = mp_Polygonized->getFieldIndex(FieldName);
+//
+//    OGRLayer* Layer = mp_Polygonized->getLayer(0);
+//
+//    if (GDALPolygonize(getRasterBand1(), NULL, Layer, FieldIndex, NULL, NULL,
+//                       NULL)
+//        != CE_None)
+//    {
+//      throw openfluid::base::OFException("OpenFLUID framework",
+//                                         "GeoRasterValue::polygonize",
+//                                         "Error while polygonizing raster.");
+//      delete mp_Polygonized;
+//    }
+//  }
+//
+//  return mp_Polygonized;
+//}
 
 // =====================================================================
 // =====================================================================

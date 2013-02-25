@@ -57,6 +57,7 @@
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/LandRTools.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
@@ -122,10 +123,10 @@ PolygonGraph::~PolygonGraph()
 // =====================================================================
 // =====================================================================
 
-PolygonGraph* PolygonGraph::clone()
-{
-  return PolygonGraph::create(*mp_Vector);
-}
+//PolygonGraph* PolygonGraph::clone()
+//{
+//  return PolygonGraph::create(*mp_Vector);
+//}
 
 // =====================================================================
 // =====================================================================
@@ -195,7 +196,8 @@ void PolygonGraph::addEntity(LandREntity* Entity)
     m_EntitiesBySelfId[NewEntity->getSelfId()] = NewEntity;
     m_Entities.push_back(NewEntity);
 
-  } catch (openfluid::base::OFException& e)
+  }
+  catch (openfluid::base::OFException& e)
   {
     std::cerr << e.what() << std::endl;
     throw;
@@ -425,16 +427,15 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
 void PolygonGraph::createVectorRepresentation(std::string FilePath,
                                               std::string FileName)
 {
-  openfluid::core::GeoVectorValue* OutVector =
-      new openfluid::core::GeoVectorValue(FilePath, FileName);
+  openfluid::landr::VectorDataset* OutVector =
+      new openfluid::landr::VectorDataset("tmp_" + FileName);
 
-  OutVector->createShp(wkbLineString);
+  OutVector->addALayer("", wkbLineString);
 
   std::vector<geos::planargraph::Edge*>* Edges = getEdges();
 
   if (!Edges)
   {
-    OutVector->deleteShpOnDisk();
     delete OutVector;
 
     throw openfluid::base::OFException(
@@ -454,7 +455,6 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
 
     if (!OGRGeom)
     {
-      OutVector->deleteShpOnDisk();
       delete OutVector;
 
       throw openfluid::base::OFException(
@@ -464,9 +464,8 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
 
     Feat->SetGeometry(OGRGeom);
 
-    if (OutVector->getLayer0()->CreateFeature(Feat) != OGRERR_NONE)
+    if (OutVector->getLayer(0)->CreateFeature(Feat) != OGRERR_NONE)
     {
-      OutVector->deleteShpOnDisk();
       delete OutVector;
 
       throw openfluid::base::OFException(
@@ -476,6 +475,8 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
 
     OGRFeature::DestroyFeature(Feat);
   }
+
+  OutVector->copyToDisk(FilePath, FileName, true);
 
   delete OutVector;
 }

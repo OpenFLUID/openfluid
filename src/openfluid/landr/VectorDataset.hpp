@@ -56,7 +56,15 @@
 #define VECTORDATASET_HPP_
 
 #include <string>
+#include <map>
+#include <list>
 #include <ogrsf_frmts.h>
+
+namespace geos {
+namespace geom {
+class Geometry;
+}
+}
 
 namespace openfluid {
 
@@ -68,13 +76,29 @@ namespace landr {
 
 class VectorDataset
 {
+  public:
+
+    typedef std::list<std::pair<OGRFeature*, geos::geom::Geometry*> > FeaturesList_t;
+
   private:
 
     OGRDataSource* mp_DataSource;
 
+    /**
+     * List of all features of layers of this GeoVectorValue, indexed by layer index
+     */
+    std::map<unsigned int, FeaturesList_t> m_Features;
+
+    /**
+     * Geometries representing a collection of all the geometries of the layers of this GeoVectorValue, indexed by layer index
+     */
+    std::map<unsigned int, geos::geom::Geometry*> m_Geometries;
+
     std::string getInitializedTmpPath();
 
     bool isAlreadyExisting(std::string Path);
+
+    void parse(unsigned int LayerIndex);
 
   public:
 
@@ -110,6 +134,112 @@ class VectorDataset
      */
     void copyToDisk(std::string FilePath, std::string FileName,
                     bool ReplaceIfExists);
+
+    /**
+     * @brief Add to DataSource an empty new layer
+     *
+     * @param LayerName The name of the layer to create
+     * @param LayerType The type of the layer to create, default wkbUnknown
+     * @param SpatialRef The coordinate system to use for the new layer, or NULL (default) if no coordinate system is available
+     * @throw openfluid::base::OFException if the creation of layer failed
+     */
+    void addALayer(std::string LayerName = "", OGRwkbGeometryType LayerType =
+        wkbUnknown,
+                   OGRSpatialReference* SpatialRef = NULL);
+
+    /**
+     * @brief Get a layer of the shape.
+     *
+     * @param LayerIndex The index of the asked layer, default 0
+     * @return The layer indexed LayerIndex
+     */
+    OGRLayer* getLayer(unsigned int LayerIndex = 0);
+
+    /**
+     * @brief Get the Feature definition of a layer.
+     *
+     * @param LayerIndex The index of the asked layer definition, default 0
+     * @return The OGR Feature definition of the LayerIndex layer
+     */
+    OGRFeatureDefn* getLayerDef(unsigned int LayerIndex = 0);
+
+    /**
+     * @brief Add a field to a layer.
+     *
+     * @param FieldName The name of the field to add.
+     * @param FieldType The type of the field to add (default OFTString).
+     * @param LayerIndex The index of the layer to add the field, default 0
+     * @throw openfluid::base::OFException if creating field failed
+     */
+    void addAField(std::string FieldName, OGRFieldType FieldType = OFTString,
+                   unsigned int LayerIndex = 0);
+
+    /**
+     * @param LayerIndex The index of the layer to compare the type, default 0
+     * @return True if the type of the layer LayerIndex is wkbLineString, false otherwise
+     */
+    bool isLineType(unsigned int LayerIndex = 0);
+
+    /**
+     * @param LayerIndex The index of the layer to compare the type, default 0
+     * @return True if the type of the layer LayerIndex is wkbPolygon, false otherwise
+     */
+    bool isPolygonType(unsigned int LayerIndex = 0);
+
+    /**
+     * @brief Returns if a field exists in the LayerIndex layer.
+     *
+     * @param FieldName The name of the field to query
+     * @param LayerIndex The index of the layer to query, default 0
+     * @return True if the field FieldName exists, False otherwise
+     */
+    bool containsField(std::string FieldName, unsigned int LayerIndex = 0);
+
+    /**
+     * @brief Get the index of a field in the LayerIndex layer
+     *
+     * @param LayerIndex The index of the layer to query, default 0
+     * @param FieldName The name of the field to query
+     * @return The index of FieldName or -1 if field FieldName doesn't exist
+     */
+    int getFieldIndex(std::string FieldName, unsigned int LayerIndex = 0);
+
+    /**
+     * @brief Returns if a field is of the type FieldType in the LayerIndex layer
+     *
+     * @param FieldName The name of the field to query
+     * @param FieldType The type of the field to query
+     * @param LayerIndex The index of the layer to query, default 0
+     * @return True if the field FieldName is type FieldType
+     * @throw openfluid::base::OFException if the field doesn't exist.
+     */
+    bool isFieldOfType(std::string FieldName, OGRFieldType FieldType,
+                       unsigned int LayerIndex = 0);
+
+    /**
+     * @brief Returns if a field has the value Value in the LayerIndex layer
+     *
+     * @param FieldName The name of the field to query
+     * @param Value The value to query
+     * @param LayerIndex The index of the layer to query, default 0
+     * @return True if the field has at least a feature containing the value Value, False otherwise.
+     */
+    bool isIntValueSet(std::string FieldName, int Value,
+                       unsigned int LayerIndex = 0);
+
+    /**
+     * @brief Get the list of all features of a layer of this GeoVectorValue
+     *
+     * @param LayerIndex The index of the layer to query, default 0
+     */
+    FeaturesList_t getFeatures(unsigned int LayerIndex = 0);
+
+    /**
+     * Get a Geometry representing a collection of all the geometries of the layer LayerIndex of this GeoVectorValue
+     *
+     * @param LayerIndex The index of the layer to query, default 0
+     */
+    geos::geom::Geometry* getGeometries(unsigned int LayerIndex = 0);
 
 };
 
