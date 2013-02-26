@@ -55,9 +55,12 @@
 #include "RasterDataset.hpp"
 
 #include <string.h>
+#include <gdal_alg.h>
 #include <boost/filesystem/path.hpp>
+#include <geos/geom/Coordinate.h>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/base/OFException.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 
 namespace openfluid {
 namespace landr {
@@ -65,7 +68,8 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value)
+RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
+    mp_GeoTransform(0)
 {
   GDALAllRegister();
 
@@ -79,8 +83,10 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value)
   if (!mp_Dataset)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID framework", "RasterDataset::RasterDataset",
-        "Error while creating a virtual copy of " + Value.getAbsolutePath() + " (" + CPLGetLastErrorMsg() + ")");
+        "OpenFLUID framework",
+        "RasterDataset::RasterDataset",
+        "Error while creating a virtual copy of " + Value.getAbsolutePath()
+        + " (" + CPLGetLastErrorMsg() + ")");
   }
 }
 
@@ -90,6 +96,7 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value)
 RasterDataset::~RasterDataset()
 {
   GDALClose(mp_Dataset);
+  delete mp_GeoTransform;
 }
 
 // =====================================================================
@@ -98,6 +105,206 @@ RasterDataset::~RasterDataset()
 GDALDataset* RasterDataset::getDataset()
 {
   return mp_Dataset;
+}
+
+// =====================================================================
+// =====================================================================
+
+GDALRasterBand* RasterDataset::getRasterBand(unsigned int RasterBandIndex)
+{
+  return mp_Dataset->GetRasterBand(RasterBandIndex);
+}
+
+// =====================================================================
+// =====================================================================
+
+std::pair<int, int> RasterDataset::getPixelFromCoordinate(
+    geos::geom::Coordinate Coo)
+{
+  int offsetX = int((Coo.x - getOrigin()->x) / getPixelWidth());
+  int offsetY = int((Coo.y - getOrigin()->y) / getPixelHeight());
+
+  return std::make_pair(offsetX, offsetY);
+}
+
+// =====================================================================
+// =====================================================================
+
+geos::geom::Coordinate* RasterDataset::getOrigin()
+{
+  if (!mp_GeoTransform)
+    computeGeoTransform();
+
+  return new geos::geom::Coordinate(mp_GeoTransform[0], mp_GeoTransform[3]);
+}
+
+// =====================================================================
+// =====================================================================
+
+void RasterDataset::computeGeoTransform()
+{
+  mp_GeoTransform = new double[6];
+
+  if (GDALGetGeoTransform(mp_Dataset, mp_GeoTransform) != CE_None)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "RasterDataset::computeGeoTransform",
+        "Error while getting GeoTransform information");
+}
+
+// =====================================================================
+// =====================================================================
+
+double RasterDataset::getPixelWidth()
+{
+  if (!mp_GeoTransform)
+    computeGeoTransform();
+
+  return mp_GeoTransform[1];
+}
+
+// =====================================================================
+// =====================================================================
+
+double RasterDataset::getPixelHeight()
+{
+  if (!mp_GeoTransform)
+    computeGeoTransform();
+
+  return mp_GeoTransform[5];
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<float> RasterDataset::getValuesOfLine(int LineIndex,
+                                                  unsigned int RasterBandIndex)
+{
+  std::vector<float> Val;
+
+  int ColumnCount = getRasterBand(RasterBandIndex)->GetXSize();
+
+  float* ScanLine = (float *) CPLMalloc(sizeof(float) * ColumnCount);
+
+  getRasterBand(RasterBandIndex)->RasterIO(GF_Read, 0, LineIndex, ColumnCount,
+                                           1, ScanLine, ColumnCount, 1,
+                                           GDT_Float32, 0, 0);
+
+  for (int i = 0; i < ColumnCount; i++)
+    Val.push_back(ScanLine[i]);
+
+  CPLFree(ScanLine);
+
+  return Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<float> RasterDataset::getValuesOfColumn(
+    int ColIndex, unsigned int RasterBandIndex)
+{
+  std::vector<float> Val;
+
+  int LineCount = getRasterBand(RasterBandIndex)->GetYSize();
+
+  float* ScanLine = (float *) CPLMalloc(sizeof(float) * LineCount);
+
+  getRasterBand(RasterBandIndex)->RasterIO(GF_Read, ColIndex, 0, 1, LineCount,
+                                           ScanLine, 1, LineCount, GDT_Float32,
+                                           0, 0);
+
+  for (int i = 0; i < LineCount; i++)
+    Val.push_back(ScanLine[i]);
+
+  CPLFree(ScanLine);
+
+  return Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+float RasterDataset::getValueOfPixel(int ColIndex, int LineIndex,
+                                     unsigned int RasterBandIndex)
+{
+  float Val;
+
+  float* ScanLine = (float *) CPLMalloc(sizeof(float));
+
+  //  The pixel values will automatically be translated from the GDALRasterBand data type as needed.
+  if (getRasterBand(RasterBandIndex)->RasterIO(GF_Read, ColIndex, LineIndex, 1,
+                                               1, ScanLine, 1, 1, GDT_Float32,
+                                               0, 0)
+      != CE_None)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "RasterDataset::getValueOfPixel",
+        "Error while getting value from raster.");
+
+  Val = ScanLine[0];
+
+  CPLFree(ScanLine);
+
+  return Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+float RasterDataset::getValueOfCoordinate(geos::geom::Coordinate Coo,
+                                          unsigned int RasterBandIndex)
+{
+  std::pair<int, int> Pixel = getPixelFromCoordinate(Coo);
+
+  return getValueOfPixel(Pixel.first, Pixel.second, RasterBandIndex);
+}
+
+// =====================================================================
+// =====================================================================
+
+openfluid::landr::VectorDataset* RasterDataset::polygonize(
+    std::string FileName, std::string FieldName, unsigned int RasterBandIndex)
+{
+  if (!mp_PolygonizedByRasterBandIndex.count(RasterBandIndex))
+  {
+    FieldName =
+        (FieldName == "" ? getDefaultPolygonizedFieldName() : FieldName);
+
+    mp_PolygonizedByRasterBandIndex.insert(
+        std::make_pair(RasterBandIndex,
+                       new openfluid::landr::VectorDataset(FileName)));
+
+    mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->addALayer("",
+                                                                   wkbPolygon);
+    mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->addAField(FieldName,
+                                                                   OFTInteger);
+    int FieldIndex =
+        mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->getFieldIndex(
+            FieldName);
+
+    OGRLayer* Layer =
+        mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->getLayer(0);
+
+    if (GDALPolygonize(getRasterBand(RasterBandIndex), NULL, Layer, FieldIndex,
+                       NULL, NULL, NULL)
+        != CE_None)
+    {
+      throw openfluid::base::OFException("OpenFLUID framework",
+                                         "RasterDataset::polygonize",
+                                         "Error while polygonizing raster.");
+      delete mp_PolygonizedByRasterBandIndex.at(RasterBandIndex);
+      mp_PolygonizedByRasterBandIndex.erase(RasterBandIndex);
+    }
+  }
+
+  return mp_PolygonizedByRasterBandIndex.at(RasterBandIndex);
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string RasterDataset::getDefaultPolygonizedFieldName()
+{
+  return "PixelVal";
 }
 
 // =====================================================================

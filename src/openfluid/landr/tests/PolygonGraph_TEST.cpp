@@ -685,271 +685,271 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
 // =====================================================================
 // =====================================================================
 
-//BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  openfluid::landr::PolygonEntity* U1 = Graph->getEntity(1);
-//
-//  BOOST_CHECK_THROW(Graph->getRasterPolyOverlapping(*U1),
-//                    openfluid::base::OFException);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  openfluid::landr::PolygonGraph::RastValByRastPoly_t OverlapsU1 =
-//      Graph->getRasterPolyOverlapping(*U1);
-//
-//  BOOST_CHECK_EQUAL(OverlapsU1.size(), 12);
-//
-//  double Area;
-//
-//  for (openfluid::landr::PolygonGraph::RastValByRastPoly_t::iterator it =
-//      OverlapsU1.begin(); it != OverlapsU1.end(); ++it)
-//  {
-//    Area += it->second;
-//
-//    BOOST_CHECK((int*)it->first->getUserData());
-//  }
-//
-//  BOOST_CHECK(openfluid::tools::IsVeryClose(Area,U1->getArea()));
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  openfluid::landr::PolygonEntity* U2 = Graph->getEntity(2);
-//
-//  openfluid::landr::PolygonGraph::RastValByRastPoly_t OverlapsU2 =
-//      Graph->getRasterPolyOverlapping(*U2);
-//
-//  BOOST_CHECK_EQUAL(OverlapsU2.size(), 20);
-//
-//  double Area = 0;
-//
-//  for (openfluid::landr::PolygonGraph::RastValByRastPoly_t::iterator it =
-//      OverlapsU2.begin(); it != OverlapsU2.end(); ++it)
-//  {
-//    Area += it->second;
-//
-//    BOOST_CHECK((int*)it->first->getUserData());
-//  }
-//
-//  BOOST_CHECK(openfluid::tools::IsVeryClose(Area,U2->getArea()));
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  Graph->setAttributeFromRasterValueAtCentroid("test_val");
-//
-//  openfluid::core::DoubleValue Val;
-//
-//  Graph->getEntity(1)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK_EQUAL(Val.get(), 29);
-//
-//  Graph->getEntity(2)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK_EQUAL(Val.get(), 47);
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelType)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  Graph->setAttributeFromRasterValueAtCentroid("test_val");
-//
-//  openfluid::core::DoubleValue Val;
-//
-//  Graph->getEntity(1)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 32.9131));
-//
-//  Graph->getEntity(2)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0607));
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelType)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  Graph->setAttributeFromRasterValueAtCentroid("test_val");
-//
-//  openfluid::core::DoubleValue Val;
-//
-//  Graph->getEntity(1)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 32.9131));
-//
-//  Graph->getEntity(2)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0607));
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  Graph->setAttributeFromMeanRasterValues("test_val");
-//
-//  openfluid::core::DoubleValue Val;
-//
-//  Graph->getEntity(1)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 34.0569));
-//
-//  Graph->getEntity(2)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.6497));
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  Graph->setAttributeFromMeanRasterValues("test_val");
-//
-//  openfluid::core::DoubleValue Val;
-//
-//  Graph->getEntity(1)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 33.5981));
-//
-//  Graph->getEntity(2)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.7352));
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  Graph->setAttributeFromMeanRasterValues("test_val");
-//
-//  openfluid::core::DoubleValue Val;
-//
-//  Graph->getEntity(1)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 33.5981));
-//
-//  Graph->getEntity(2)->getAttributeValue("test_val", Val);
-//  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.7352));
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
+BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  openfluid::landr::PolygonEntity* U1 = Graph->getEntity(1);
+
+  BOOST_CHECK_THROW(Graph->getRasterPolyOverlapping(*U1),
+                    openfluid::base::OFException);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  openfluid::landr::PolygonGraph::RastValByRastPoly_t OverlapsU1 =
+      Graph->getRasterPolyOverlapping(*U1);
+
+  BOOST_CHECK_EQUAL(OverlapsU1.size(), 12);
+
+  double Area;
+
+  for (openfluid::landr::PolygonGraph::RastValByRastPoly_t::iterator it =
+      OverlapsU1.begin(); it != OverlapsU1.end(); ++it)
+  {
+    Area += it->second;
+
+    BOOST_CHECK((int*)it->first->getUserData());
+  }
+
+  BOOST_CHECK(openfluid::tools::IsVeryClose(Area,U1->getArea()));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  openfluid::landr::PolygonEntity* U2 = Graph->getEntity(2);
+
+  openfluid::landr::PolygonGraph::RastValByRastPoly_t OverlapsU2 =
+      Graph->getRasterPolyOverlapping(*U2);
+
+  BOOST_CHECK_EQUAL(OverlapsU2.size(), 20);
+
+  double Area = 0;
+
+  for (openfluid::landr::PolygonGraph::RastValByRastPoly_t::iterator it =
+      OverlapsU2.begin(); it != OverlapsU2.end(); ++it)
+  {
+    Area += it->second;
+
+    BOOST_CHECK((int*)it->first->getUserData());
+  }
+
+  BOOST_CHECK(openfluid::tools::IsVeryClose(Area,U2->getArea()));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromRasterValueAtCentroid("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK_EQUAL(Val.get(), 29);
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK_EQUAL(Val.get(), 47);
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromRasterValueAtCentroid("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 32.9131));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0607));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromRasterValueAtCentroid("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 32.9131));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 51.0607));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromMeanRasterValues("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 34.0569));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.6497));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromMeanRasterValues("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 33.5981));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.7352));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromMeanRasterValues("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 33.5981));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 46.7352));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
 
 // =====================================================================
 // =====================================================================

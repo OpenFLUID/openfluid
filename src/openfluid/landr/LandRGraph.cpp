@@ -56,7 +56,7 @@
 
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
-#include <openfluid/core/GeoRasterValue.hpp>
+#include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <geos/planargraph/Node.h>
@@ -125,6 +125,7 @@ LandRGraph::~LandRGraph()
   }
 
   delete mp_Vector;
+  delete mp_Raster;
 }
 
 // =====================================================================
@@ -309,7 +310,7 @@ std::vector<std::string> LandRGraph::getAttributeNames()
 
 void LandRGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
 {
-  mp_Raster = &Raster;
+  mp_Raster = new RasterDataset(Raster);
   mp_RasterPolygonized = 0;
   mp_RasterPolygonizedPolys = 0;
 }
@@ -337,8 +338,7 @@ openfluid::landr::VectorDataset* LandRGraph::getRasterPolygonized()
     std::ostringstream FileName;
     FileName << "Polygonized_" << FileNum++ << ".shp";
 
-//    mp_RasterPolygonized = mp_Raster->polygonize(mp_Raster->getFilePath(),
-//                                                 FileName.str());
+    mp_RasterPolygonized = mp_Raster->polygonize(FileName.str());
 
     mp_RasterPolygonizedPolys = 0;
   }
@@ -368,7 +368,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
     OGRLayer* Layer0 = Polygonized->getLayer(0);
 
     int PixelValFieldIndex = Polygonized->getFieldIndex(
-        openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName());
+        openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName());
 
     Layer0->ResetReading();
 

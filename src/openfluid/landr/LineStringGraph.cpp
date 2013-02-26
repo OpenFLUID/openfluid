@@ -55,6 +55,7 @@
 #include "LineStringGraph.hpp"
 
 #include <openfluid/landr/LineStringEntity.hpp>
+#include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>

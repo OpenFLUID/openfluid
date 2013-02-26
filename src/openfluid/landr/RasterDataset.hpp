@@ -55,9 +55,15 @@
 #ifndef RASTERDATASET_HPP_
 #define RASTERDATASET_HPP_
 
+#include <map>
 #include "gdal_priv.h"
 #include "cpl_conv.h" // for CPLMalloc()
 
+namespace geos {
+namespace geom {
+class Coordinate;
+}
+}
 namespace openfluid {
 
 namespace core {
@@ -66,26 +72,78 @@ class GeoRasterValue;
 
 namespace landr {
 
+class VectorDataset;
+
 class RasterDataset
 {
   private:
 
     GDALDataset* mp_Dataset;
 
+    double* mp_GeoTransform;
+
+    std::map<unsigned int, openfluid::landr::VectorDataset*> mp_PolygonizedByRasterBandIndex;
+
+    void computeGeoTransform();
+
   public:
 
     /**
-     * Create a virtual (in memory) copy of Value GDALDataset,
+     * @brief Create a virtual (in memory) copy of Value GDALDataset
      * @param Value The GeoRasterValue to copy
      */
     RasterDataset(openfluid::core::GeoRasterValue& Value);
 
     /**
-     * Delete the virtual GDALDataset
+     * @brief Delete the virtual GDALDataset
      */
     ~RasterDataset();
 
     GDALDataset* getDataset();
+
+    /**
+     * @brief Get the RasterBand indexed with RasterBandIndex of the dataset
+     * Is owned by its dataset, should never be destroyed with the C++ delete operator
+     *
+     * @param RasterBandIndex The rasterBand to get, default 1
+     */
+    GDALRasterBand* getRasterBand(unsigned int RasterBandIndex = 1);
+
+    std::pair<int, int> getPixelFromCoordinate(geos::geom::Coordinate Coo);
+
+    geos::geom::Coordinate* getOrigin();
+
+    double getPixelWidth();
+
+    double getPixelHeight();
+
+    std::vector<float> getValuesOfLine(int LineIndex,
+                                       unsigned int RasterBandIndex = 1);
+
+    std::vector<float> getValuesOfColumn(int ColIndex,
+                                         unsigned int RasterBandIndex = 1);
+
+    float getValueOfPixel(int ColIndex, int LineIndex,
+                          unsigned int RasterBandIndex = 1);
+
+    float getValueOfCoordinate(geos::geom::Coordinate Coo,
+                               unsigned int RasterBandIndex = 1);
+
+    /**
+     * @brief Create a new VectorDataset with polygons for all connected regions of pixels in the raster sharing a common pixel value.
+     * Use openfluid::landr::VectorDataset::copyToDisk() to keep this vectorDataset on disk
+     *
+     * @param FileName The name of the new VectorDataset.
+     * @param FieldName The name of the field to be created for storing the pixel value, limited to 10 characters (or will be truncated).
+     * Default is set to "PixelVal". Type of field is OFTInteger (float pixel values are rounded).
+     *
+     * @return The newly created VectorDataset.
+     */
+    openfluid::landr::VectorDataset* polygonize(
+        std::string FileName, std::string FieldName = "",
+        unsigned int RasterBandIndex = 1);
+
+    static std::string getDefaultPolygonizedFieldName();
 };
 
 }

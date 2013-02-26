@@ -88,6 +88,7 @@ namespace landr {
 
 class LandREntity;
 class VectorDataset;
+class RasterDataset;
 
 /**
  * @brief Interface for a graph composed of LandREntities.
@@ -113,7 +114,7 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     Entities_t m_Entities;
 
-    openfluid::core::GeoRasterValue* mp_Raster;
+    openfluid::landr::RasterDataset* mp_Raster;
 
     openfluid::landr::VectorDataset* mp_RasterPolygonized;
 

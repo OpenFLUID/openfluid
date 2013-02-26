@@ -68,6 +68,7 @@
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
+#include <openfluid/landr/RasterDataset.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -195,62 +196,62 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromLineStringGraph)
 // =====================================================================
 // =====================================================================
 
-//BOOST_AUTO_TEST_CASE(check_getRasterPolygonized)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  BOOST_CHECK_THROW(Graph->getRasterPolygonized(),
-//                    openfluid::base::OFException);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  openfluid::landr::VectorDataset* Polygonized = Graph->getRasterPolygonized();
-//
-//  BOOST_CHECK(Polygonized);
-//  BOOST_CHECK_EQUAL(Polygonized->getLayer(0)->GetFeatureCount(), 234);
-//
-//  BOOST_CHECK_EQUAL(
-//      Polygonized->getLayer(0)->GetFeature(0)->GetFieldAsInteger(openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName().c_str()),
-//      96);
-//  BOOST_CHECK_EQUAL(
-//      Polygonized->getLayer(0)->GetFeature(76)->GetFieldAsInteger(openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName().c_str()),
-//      83);
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
-//
-//// =====================================================================
-//// =====================================================================
-//
-//BOOST_AUTO_TEST_CASE(check_getRasterPolygonizedMultiPoly)
-//{
-//  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Vector);
-//
-//  BOOST_CHECK_THROW(Graph->getRasterPolygonizedPolys(),
-//                    openfluid::base::OFException);
-//
-//  Graph->addAGeoRasterValue(*Raster);
-//
-//  BOOST_CHECK_EQUAL(Graph->getRasterPolygonizedPolys()->size(), 234);
-//
-//  delete Graph;
-//  delete Vector;
-//  delete Raster;
-//}
+BOOST_AUTO_TEST_CASE(check_getRasterPolygonized)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  BOOST_CHECK_THROW(Graph->getRasterPolygonized(),
+                    openfluid::base::OFException);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  openfluid::landr::VectorDataset* Polygonized = Graph->getRasterPolygonized();
+
+  BOOST_CHECK(Polygonized);
+  BOOST_CHECK_EQUAL(Polygonized->getLayer(0)->GetFeatureCount(), 234);
+
+  BOOST_CHECK_EQUAL(
+      Polygonized->getLayer(0)->GetFeature(0)->GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
+      96);
+  BOOST_CHECK_EQUAL(
+      Polygonized->getLayer(0)->GetFeature(76)->GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
+      83);
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getRasterPolygonizedMultiPoly)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  BOOST_CHECK_THROW(Graph->getRasterPolygonizedPolys(),
+                    openfluid::base::OFException);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  BOOST_CHECK_EQUAL(Graph->getRasterPolygonizedPolys()->size(), 234);
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
 
