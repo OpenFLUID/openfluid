@@ -65,7 +65,7 @@ namespace core {
 GeoValue::GeoValue(std::string FilePath, std::string FileName) :
     m_FilePath(FilePath), m_FileName(FileName)
 {
-  computeAbsolutePath();
+  m_AbsolutePath = computeAbsolutePath(m_FilePath, m_FileName);
 }
 
 // =====================================================================
@@ -79,10 +79,10 @@ GeoValue::~GeoValue()
 // =====================================================================
 // =====================================================================
 
-void GeoValue::computeAbsolutePath()
+std::string GeoValue::computeAbsolutePath(std::string FilePath,
+                                          std::string FileName)
 {
-  m_AbsolutePath =
-      boost::filesystem::path(m_FilePath + "/" + m_FileName).string();
+  return boost::filesystem::path(FilePath + "/" + FileName).string();
 }
 
 // =====================================================================

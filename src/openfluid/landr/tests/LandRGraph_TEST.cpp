@@ -67,6 +67,8 @@
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
+#include <openfluid/landr/RasterDataset.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -85,8 +87,10 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
   openfluid::core::IntegerValue IntValue(0);
   openfluid::core::StringValue StrValue("");
 
-  BOOST_CHECK(!U1->setAttributeValue("att",new openfluid::core::IntegerValue(123)));
-  BOOST_CHECK(!U2->setAttributeValue("att",new openfluid::core::StringValue("val")));
+  BOOST_CHECK(
+      !U1->setAttributeValue("att",new openfluid::core::IntegerValue(123)));
+  BOOST_CHECK(
+      !U2->setAttributeValue("att",new openfluid::core::StringValue("val")));
   BOOST_CHECK(!U1->getAttributeValue("att",IntValue));
   BOOST_CHECK(!U2->getAttributeValue("att",StrValue));
   BOOST_CHECK_EQUAL(IntValue.get(), 0);
@@ -94,8 +98,10 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 
   Graph->addAttribute("att");
 
-  BOOST_CHECK(U1->setAttributeValue("att",new openfluid::core::IntegerValue(123)));
-  BOOST_CHECK(U2->setAttributeValue("att",new openfluid::core::StringValue("val")));
+  BOOST_CHECK(
+      U1->setAttributeValue("att",new openfluid::core::IntegerValue(123)));
+  BOOST_CHECK(
+      U2->setAttributeValue("att",new openfluid::core::StringValue("val")));
   BOOST_CHECK(U1->getAttributeValue("att",IntValue));
   BOOST_CHECK(U2->getAttributeValue("att",StrValue));
   BOOST_CHECK_EQUAL(IntValue.get(), 123);
@@ -114,8 +120,10 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 
   IntValue.set(0);
   StrValue.set("");
-  BOOST_CHECK(!U1->setAttributeValue("att",new openfluid::core::IntegerValue(123)));
-  BOOST_CHECK(!U2->setAttributeValue("att",new openfluid::core::StringValue("val")));
+  BOOST_CHECK(
+      !U1->setAttributeValue("att",new openfluid::core::IntegerValue(123)));
+  BOOST_CHECK(
+      !U2->setAttributeValue("att",new openfluid::core::StringValue("val")));
   BOOST_CHECK(!U1->getAttributeValue("att",IntValue));
   BOOST_CHECK(!U2->getAttributeValue("att",StrValue));
   BOOST_CHECK_EQUAL(IntValue.get(), 0);
@@ -204,16 +212,16 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolygonized)
 
   Graph->addAGeoRasterValue(*Raster);
 
-  openfluid::core::GeoVectorValue* Polygonized = Graph->getRasterPolygonized();
+  openfluid::landr::VectorDataset* Polygonized = Graph->getRasterPolygonized();
 
   BOOST_CHECK(Polygonized);
-  BOOST_CHECK_EQUAL(Polygonized->getLayer0()->GetFeatureCount(), 234);
+  BOOST_CHECK_EQUAL(Polygonized->getLayer(0)->GetFeatureCount(), 234);
 
   BOOST_CHECK_EQUAL(
-      Polygonized->getLayer0()->GetFeature(0)->GetFieldAsInteger(openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName().c_str()),
+      Polygonized->getLayer(0)->GetFeature(0)->GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
       96);
   BOOST_CHECK_EQUAL(
-      Polygonized->getLayer0()->GetFeature(76)->GetFieldAsInteger(openfluid::core::GeoRasterValue::getDefaultPolygonizedFieldName().c_str()),
+      Polygonized->getLayer(0)->GetFeature(76)->GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
       83);
 
   delete Graph;

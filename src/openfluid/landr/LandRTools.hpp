@@ -67,12 +67,9 @@ class Polygon;
 }
 
 namespace openfluid {
-
-namespace core {
-class GeoVectorValue;
-}
-
 namespace landr {
+
+class VectorDataset;
 
 /**
  * @brief Set of tools to manage LandR elements.
@@ -114,7 +111,7 @@ class LandRTools
      * @throw base::OFException if the GeoVectorValue is not polygon-typed.
      */
     static std::vector<geos::geom::LineString*> getVectorOfExteriorRings(
-        openfluid::core::GeoVectorValue& Val);
+        openfluid::landr::VectorDataset& Val);
 
     /**
      * @brief Return all lines composing of the linestring-typed GeoVectorValue.
@@ -124,7 +121,7 @@ class LandRTools
      * @throw base::OFException if the GeoVectorValue is not linestring-typed.
      */
     static std::vector<geos::geom::LineString*> getVectorOfLines(
-        openfluid::core::GeoVectorValue& Val);
+        openfluid::landr::VectorDataset& Val);
 
     /**
      * @brief Get all full noded lines from intersection between geom1 and geom2, with snap tolerance.

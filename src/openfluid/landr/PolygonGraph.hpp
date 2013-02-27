@@ -63,6 +63,8 @@
 namespace openfluid {
 namespace landr {
 
+class VectorDataset;
+
 /**
  * @brief A LandRGraph composed of PolygonEntities.
  */
@@ -81,6 +83,8 @@ class PolygonGraph: public LandRGraph
     PolygonGraph();
 
     PolygonGraph(openfluid::core::GeoVectorValue& Val);
+
+    PolygonGraph(openfluid::landr::VectorDataset& Vect);
 
     virtual void addEntity(LandREntity* Entity);
 
@@ -112,6 +116,12 @@ class PolygonGraph: public LandRGraph
     static PolygonGraph* create(openfluid::core::GeoVectorValue& Val);
 
     /**
+     * @brief Create a new graph initialized with Vect elements.
+     * @details Vect must be composed of one or many Polygons, and each of them must contain a "SELF_ID" attribute.
+     */
+    static PolygonGraph* create(openfluid::landr::VectorDataset& Vect);
+
+    /**
      * @brief Create a new graph initialized with Entities.
      * @details Entities must be PolygonEntities.
      */
@@ -119,10 +129,10 @@ class PolygonGraph: public LandRGraph
 
     virtual ~PolygonGraph();
 
-    /**
-     * @attention Do not copy associated raster.
-     */
-    PolygonGraph* clone();
+//    /**
+//     * @attention Do not copy associated raster.
+//     */
+//    PolygonGraph* clone();
 
     LandRGraph::GraphType getType();
 

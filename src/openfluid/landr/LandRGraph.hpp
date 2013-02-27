@@ -87,6 +87,8 @@ class GeoRasterValue;
 namespace landr {
 
 class LandREntity;
+class VectorDataset;
+class RasterDataset;
 
 /**
  * @brief Interface for a graph composed of LandREntities.
@@ -104,7 +106,7 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
   protected:
 
-    openfluid::core::GeoVectorValue* mp_Vector;
+    openfluid::landr::VectorDataset* mp_Vector;
 
     const geos::geom::GeometryFactory* mp_Factory;
 
@@ -112,9 +114,9 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     Entities_t m_Entities;
 
-    openfluid::core::GeoRasterValue* mp_Raster;
+    openfluid::landr::RasterDataset* mp_Raster;
 
-    openfluid::core::GeoVectorValue* mp_RasterPolygonized;
+    openfluid::landr::VectorDataset* mp_RasterPolygonized;
 
     std::vector<geos::geom::Polygon*>* mp_RasterPolygonizedPolys;
 
@@ -122,9 +124,11 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     LandRGraph();
 
-    LandRGraph(openfluid::core::GeoVectorValue&);
+    LandRGraph(openfluid::core::GeoVectorValue& Val);
 
-    virtual LandRGraph* clone() = 0;
+    LandRGraph(const openfluid::landr::VectorDataset& Vect);
+
+//    virtual LandRGraph* clone() = 0;
 
     void addEntitiesFromGeoVector();
 
@@ -188,6 +192,11 @@ class LandRGraph: public geos::planargraph::PlanarGraph
      */
     void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
 
+    /**
+     * @details Replace associated raster if exists.
+     */
+    void addAGeoRasterValue(const openfluid::landr::RasterDataset& Raster);
+
     bool hasAnAssociatedRaster();
 
     /**
@@ -195,7 +204,7 @@ class LandRGraph: public geos::planargraph::PlanarGraph
      *
      * @return A geometry collection of the created polygons.
      */
-    openfluid::core::GeoVectorValue* getRasterPolygonized();
+    openfluid::landr::VectorDataset* getRasterPolygonized();
 
     /**
      * @brief Transform the associated raster value into polygons.

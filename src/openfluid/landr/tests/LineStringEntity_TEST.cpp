@@ -64,6 +64,7 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
@@ -74,10 +75,13 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                      "RS.shp");
 
-  OGRFeature* FirstFeature = Val->getLayer0()->GetFeature(0);
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+
+  OGRFeature* FirstFeature = Vect->getLayer(0)->GetFeature(0);
 
   OGRGeometry* OGRGeom = FirstFeature->GetGeometryRef();
 
@@ -89,7 +93,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
           dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
           FirstFeature->GetFieldAsInteger("SELF_ID"));
 
-  BOOST_CHECK_EQUAL(Val->getType(),
+  BOOST_CHECK_EQUAL(Val.getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
 
   BOOST_CHECK(Entity->getLine()->equals(GeosGeom));
@@ -100,7 +104,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   OGRFeature::DestroyFeature(FirstFeature);
   delete Entity;
-  delete Val;
+  delete Vect;
 }
 
 // =====================================================================
@@ -108,10 +112,13 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_clone)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                      "RS.shp");
 
-  OGRFeature* FirstFeature = Val->getLayer0()->GetFeature(0);
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+
+  OGRFeature* FirstFeature = Vect->getLayer(0)->GetFeature(0);
   OGRGeometry* OGRGeom = FirstFeature->GetGeometryRef();
 
   geos::geom::Geometry* GeosGeom =
@@ -123,7 +130,7 @@ BOOST_AUTO_TEST_CASE(check_clone)
 
   OGRFeature::DestroyFeature(FirstFeature);
   delete GeosGeom;
-  delete Val;
+  delete Vect;
 
   openfluid::landr::LineStringEntity* CopyEntity = Entity->clone();
 

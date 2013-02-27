@@ -60,16 +60,8 @@
 #include "gdal_priv.h"
 #include "cpl_conv.h" // for CPLMalloc()
 
-namespace geos {
-namespace geom {
-class Coordinate;
-}
-}
-
 namespace openfluid {
 namespace core {
-
-class GeoVectorValue;
 
 /**
  * @brief Container class for geospatial raster data,
@@ -82,18 +74,7 @@ class GeoRasterValue: public openfluid::core::GeoValue
 
     GDALDataset* mp_Data;
 
-    /**
-     * Owned by its dataset, should never be destroyed with the C++ delete operator.
-     */
-    GDALRasterBand* mp_RasterBand1;
-
-    double* mp_GeoTransform;
-
-    openfluid::core::GeoVectorValue* mp_Polygonized;
-
     void tryToOpenSource(bool UpdateMode);
-
-    void computeGeoTransform();
 
   public:
 
@@ -126,43 +107,7 @@ class GeoRasterValue: public openfluid::core::GeoValue
      */
     GDALDataset* get(bool UpdateMode = false);
 
-    /**
-     * Get the first RasterBand (indexed with 1) of the dataset.
-     * Is owned by its dataset, should never be destroyed with the C++ delete operator.
-     */
-    GDALRasterBand* getRasterBand1();
-
-    std::pair<int, int> getPixelFromCoordinate(geos::geom::Coordinate Coo);
-
-    geos::geom::Coordinate* getOrigin();
-
-    double getPixelWidth();
-
-    double getPixelHeight();
-
-    std::vector<float> getValuesOfLine(int LineIndex);
-
-    std::vector<float> getValuesOfColumn(int ColIndex);
-
-    float getValueOfPixel(int ColIndex, int LineIndex);
-
-    float getValueOfCoordinate(geos::geom::Coordinate Coo);
-
-    /**
-     * Create a new GeoVectorValue with polygons for all connected regions of pixels in the raster sharing a common pixel value.
-     *
-     * @param FilePath The path on disk where to create the new GeoVectorValue.
-     * @param FileName The name of the new GeoVectorValue.
-     * @param FieldName The name of the field to be created for storing the pixel value, limited to 10 characters (or will be truncated).
-     * Default is set to "PixelVal". Type of field is OFTInteger (float pixel values are rounded).
-     *
-     * @return The newly created GeoVectorValue.
-     */
-    openfluid::core::GeoVectorValue* polygonize(std::string FilePath, std::string FileName,
-                                                std::string FieldName="");
-
-    static std::string getDefaultPolygonizedFieldName();
-
+    std::string getAbsolutePath();
 };
 
 }

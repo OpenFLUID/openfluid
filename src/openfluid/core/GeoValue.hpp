@@ -78,8 +78,6 @@ class GeoValue: public openfluid::core::UnstructuredValue
      */
     virtual void tryToOpenSource(bool UpdateMode) = 0;
 
-    void computeAbsolutePath();
-
   public:
 
     GeoValue(std::string FilePath, std::string FileName);
@@ -87,6 +85,8 @@ class GeoValue: public openfluid::core::UnstructuredValue
     virtual ~GeoValue() = 0;
 
     std::string getFilePath();
+
+    static std::string computeAbsolutePath(std::string FilePath, std::string FileName);
 };
 
 } /* namespace core */

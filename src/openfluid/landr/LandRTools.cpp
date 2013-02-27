@@ -55,7 +55,7 @@
 #include "LandRTools.hpp"
 
 #include <openfluid/landr/GeosCompat.hpp>
-#include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
@@ -129,7 +129,7 @@ std::vector<geos::geom::LineString*>* LandRTools::getMergedLineStringsFromGeomet
 // =====================================================================
 
 std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(
-    openfluid::core::GeoVectorValue& Val)
+    openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isPolygonType())
     throw openfluid::base::OFException(
@@ -152,7 +152,7 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(
 // =====================================================================
 
 std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(
-    openfluid::core::GeoVectorValue& Val)
+    openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isLineType())
     throw openfluid::base::OFException(

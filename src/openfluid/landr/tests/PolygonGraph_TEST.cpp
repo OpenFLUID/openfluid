@@ -69,6 +69,7 @@
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/tools.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
@@ -83,12 +84,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 {
-  openfluid::core::GeoVectorValue* Val = 0;
-
-  BOOST_CHECK_THROW(openfluid::landr::PolygonGraph::create(*Val),
-                    openfluid::base::OFException);
-
-  Val = new openfluid::core::GeoVectorValue(
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
   openfluid::landr::PolygonGraph* Graph =
@@ -119,12 +115,15 @@ BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 
 BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 {
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                      "SU.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
 
   openfluid::landr::LandRGraph::Entities_t Entities;
 
-  OGRLayer* Layer0 = Val->getLayer0();
+  OGRLayer* Layer0 = Vect->getLayer(0);
 
   Layer0->ResetReading();
 
@@ -156,7 +155,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
   BOOST_CHECK(Graph->isComplete());
 
   delete Graph;
-  delete Val;
+  delete Vect;
 }
 
 // =====================================================================
@@ -554,26 +553,26 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_pointContact)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_clone)
-{
-  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-
-  openfluid::landr::PolygonGraph* Graph =
-      openfluid::landr::PolygonGraph::create(*Val);
-
-  openfluid::landr::PolygonGraph* Copy = Graph->clone();
-
-  BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
-  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
-  BOOST_CHECK_EQUAL(Graph->getEntities().size(), Copy->getEntities().size());
-
-  BOOST_CHECK(Graph->isComplete());
-
-  delete Graph;
-  delete Copy;
-  delete Val;
-}
+//BOOST_AUTO_TEST_CASE(check_clone)
+//{
+//  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+//
+//  openfluid::landr::PolygonGraph* Graph =
+//      openfluid::landr::PolygonGraph::create(*Val);
+//
+//  openfluid::landr::PolygonGraph* Copy = Graph->clone();
+//
+//  BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
+//  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
+//  BOOST_CHECK_EQUAL(Graph->getEntities().size(), Copy->getEntities().size());
+//
+//  BOOST_CHECK(Graph->isComplete());
+//
+//  delete Graph;
+//  delete Copy;
+//  delete Val;
+//}
 
 // =====================================================================
 // =====================================================================
@@ -963,18 +962,19 @@ BOOST_AUTO_TEST_CASE(check_createVectorRepresentation)
   openfluid::landr::PolygonGraph* Graph =
       openfluid::landr::PolygonGraph::create(*Val);
 
-  Graph->createVectorRepresentation(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+  Graph->createVectorRepresentation(CONFIGTESTS_OUTPUT_DATA_DIR + "/landr",
                                     "SUGraph.shp");
 
-  openfluid::core::GeoVectorValue* GraphVal =
-      new openfluid::core::GeoVectorValue(
-          CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SUGraph.shp");
+  openfluid::core::GeoVectorValue GraphVal(
+      CONFIGTESTS_OUTPUT_DATA_DIR + "/landr", "SUGraph.shp");
+
+  openfluid::landr::VectorDataset* GraphVect =
+      new openfluid::landr::VectorDataset(GraphVal);
 
   BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 58);
-  BOOST_CHECK_EQUAL(GraphVal->getLayer0()->GetFeatureCount(), 58);
+  BOOST_CHECK_EQUAL(GraphVect->getLayer(0)->GetFeatureCount(), 58);
 
-  GraphVal->deleteShpOnDisk();
-  delete GraphVal;
+  delete GraphVect;
   delete Graph;
   delete Val;
 }
