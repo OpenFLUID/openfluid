@@ -60,7 +60,7 @@ MACRO(_OPENFLUID_ADD_WARE_MESSAGES _WAREID _WARETYPE _WAREFILES _WARETARGET)
 ENDMACRO()
 
 
-# ==========================================================================
+###########################################################################
 
 
 MACRO(OPENFLUID_SHOW_CMAKE_VARIABLES)
@@ -82,7 +82,7 @@ MACRO(OPENFLUID_SHOW_CMAKE_VARIABLES)
 ENDMACRO()
 
 
-# ==========================================================================
+###########################################################################
 
 
 MACRO(OPENFLUID_ADD_FUNCTION _FUNCNAME)
@@ -108,7 +108,7 @@ MACRO(OPENFLUID_ADD_FUNCTION _FUNCNAME)
 ENDMACRO()
 
 
-# ==========================================================================
+###########################################################################
 
 
 MACRO(OPENFLUID_ADD_DEFAULT_FUNCTION)
@@ -116,7 +116,7 @@ MACRO(OPENFLUID_ADD_DEFAULT_FUNCTION)
 ENDMACRO()
 
 
-# ==========================================================================
+###########################################################################
 
 
 MACRO(OPENFLUID_ADD_OBSERVER _OBSNAME)
@@ -142,7 +142,7 @@ MACRO(OPENFLUID_ADD_OBSERVER _OBSNAME)
 ENDMACRO()
 
 
-# ==========================================================================
+###########################################################################
 
 
 MACRO(OPENFLUID_ADD_DEFAULT_OBSERVER)
@@ -150,4 +150,31 @@ MACRO(OPENFLUID_ADD_DEFAULT_OBSERVER)
 ENDMACRO()
 
 
+###########################################################################
+
+
+# OPENFLUID_ADD_TEST(NAME dummy-test
+#                    COMMAND "exec" "arg1" "arg2" "arg3"
+#                    PRE_TEST REMOVE_DIRECTORY "/foo"
+#                             CHECK_FILE_NOT_EXIST "bar.txt"
+#                    POST_TEST CHECK_FILE_EXIST "bar.txt" 
+#                              COMPARE_DIRECTORIES "/foo" "/bar"
+#                              COMPARE_DIRECTORIES "/bar" "/xxx"
+#                    )
+MACRO(OPENFLUID_ADD_TEST)
+
+  SET(_ONEARGS_CMDS NAME)
+  SET(_MANYARGS_CMDS COMMAND PRE_TEST POST_TEST)
+  
+  SET(_ADD_TEST)
+  
+  CMAKE_PARSE_ARGUMENTS(_ADD_TEST "" "${_ONEARGS_CMDS}" "${_MANYARGS_CMDS}" ${ARGN})
+  
+  ADD_TEST(NAME ${_ADD_TEST_NAME} COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_CURRENT_BINARY_DIR}"
+                                             "${CMAKE_COMMAND}" 
+                                               "-DCMD=${_ADD_TEST_COMMAND}"
+                                               "-DPRECMDS=${_ADD_TEST_PRE_TEST}"
+                                               "-DPOSTCMDS=${_ADD_TEST_POST_TEST}"
+                                               "-P" "${OpenFLUID_DIR}/OpenFLUIDTestScript.cmake")
+ENDMACRO()
 

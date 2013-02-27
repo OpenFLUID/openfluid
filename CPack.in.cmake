@@ -1,6 +1,6 @@
 SET(OPENFLUID_PACKAGE_TITLE "OpenFLUID")
 SET(OPENFLUID_PACKAGE_SUMMARY "OpenFLUID software environment for modelling landscapes functionning")
-SET(OPENFLUID_PACKAGE_DESCRIPTION "This package contains the OpenFLUID software environment for modelling landscapes functionning, mainly oriented on spatial fluxes modelling. It also includes API and tools for development.")
+SET(OPENFLUID_PACKAGE_DESCRIPTION "This package contains the OpenFLUID software environment for modelling landscapes functionning, mainly for spatial fluxes modelling. It also includes API and tools for development.")
 SET(OPENFLUID_PACKAGE_LICENSE "GPLv3 (with special exception)")
 
 SET(CPACK_CMAKE_GENERATOR "${CMAKE_GENERATOR}")
@@ -23,7 +23,7 @@ SET(CPACK_PACKAGE_VERSION_MINOR "${VERSION_MINOR}")
 SET(CPACK_PACKAGE_VERSION_PATCH "${VERSION_PATCH}")
 SET(CPACK_PACKAGE_CONTACT "Jean-Christophe Fabre <fabrejc@supagro.inra.fr>")
 SET(CPACK_PACKAGE_VENDOR "LISAH (INRA-IRD-SupAgro)")
-SET(CPACK_PACKAGE_DESCRIPTION "${OPENFLUID_PACKAGE_TITLE}.\n ${OPENFLUID_PACKAGE_DECRIPTION}")
+SET(CPACK_PACKAGE_DESCRIPTION "${OPENFLUID_PACKAGE_TITLE}.\n ${OPENFLUID_PACKAGE_DESCRIPTION}")
 SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "${OPENFLUID_PACKAGE_SUMMARY}")
 
 

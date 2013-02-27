@@ -527,7 +527,6 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
 
                ossPoints << Point->getX() << " " << Point->getY() << " " << ZValue << "\n";
-               std::cout << Point->getX() << " " << Point->getY() << " " << ZValue << std::endl;
                delete Point;
 
                ossCellsCnty << PointsIndex << " ";
