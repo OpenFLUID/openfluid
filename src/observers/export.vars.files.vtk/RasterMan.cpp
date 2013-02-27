@@ -38,8 +38,6 @@ bool SimpleRasterManager::open(const std::string& Filepath)
 {
   m_Data = (GDALDataset*)GDALOpen(Filepath.c_str(),GA_ReadOnly);
 
-  std::cout << Filepath << ": " << (m_Data!=NULL) << std::endl;
-
   if (m_Data != NULL)
   {
     double GeoTransform[6];
@@ -98,8 +96,6 @@ bool SimpleRasterManager::getRasterValue(const double& XCoord, const double& YCo
 
   if (XRaster<0 || XRaster>=m_XSize || YRaster<0 || YRaster>=m_YSize)
   {
-    //std::cout << XRaster << "  " << YRaster << std::endl;
-    std::cout << XRaster << " " << YRaster << " out of bounds "  << Value << std::endl;
     return false;
   }
 
@@ -119,8 +115,6 @@ bool SimpleRasterManager::getRasterValue(const double& XCoord, const double& YCo
 
   if (Value > m_MaxValue) Value = m_MaxValue;
   if (Value < m_MinValue) Value = m_MinValue;
-
-  std::cout << XCoord << "," << YCoord << " -> " << Value << std::endl;
 
   return true;
 }

@@ -1,16 +1,56 @@
+##
+# This file is part of OpenFLUID software
+# Copyright (c) 2007-2010 INRA-Montpellier SupAgro
 #
-# Macros and functions file for CMakeLists.txt files
 #
-# Author : Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+# == GNU General Public License Usage ==
 #
-# This file is included by the main CMakeLists.txt file, and defines macros
-# and functions that are used in CMakeLists.txt files 
+# OpenFLUID is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
 #
+# OpenFLUID is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
+#
+# In addition, as a special exception, INRA gives You the additional right
+# to dynamically link the code of OpenFLUID with code not covered
+# under the GNU General Public License ("Non-GPL Code") and to distribute
+# linked combinations including the two, subject to the limitations in this
+# paragraph. Non-GPL Code permitted under this exception must only link to
+# the code of OpenFLUID dynamically through the OpenFLUID libraries
+# interfaces, and only for building OpenFLUID plugins. The files of
+# Non-GPL Code may be link to the OpenFLUID libraries without causing the
+# resulting work to be covered by the GNU General Public License. You must
+# obey the GNU General Public License in all respects for all of the
+# OpenFLUID code and other code used in conjunction with OpenFLUID
+# except the Non-GPL Code covered by this exception. If you modify
+# this OpenFLUID, you may extend this exception to your version of the file,
+# but you are not obligated to do so. If you do not wish to provide this
+# exception without modification, you must delete this exception statement
+# from your version and license this OpenFLUID solely under the GPL without
+# exception.
+#
+#
+# == Other Usage ==
+#
+# Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+# license, and requires a written agreement between You and INRA.
+# Licensees for Other Usage of OpenFLUID may use this file in accordance
+# with the terms contained in the written agreement between You and INRA.
+##
 
+
+INCLUDE(CMakeParseArguments)
 
 
 # Macro for compiling a simulation function
-MACRO(ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
+MACRO(OPNFLD_ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
 
   FILE(GLOB FUNC_CPP ${FUNC_SRCDIR}/*.cpp)  
     
@@ -33,11 +73,14 @@ MACRO(ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
                         openfluid-ware
                         openfluid-tools)
       
-ENDMACRO(ADD_FUNCTION)
+ENDMACRO()
+
+
+###########################################################################
 
 
 # Macro for compiling a simulation observer
-MACRO(ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
+MACRO(OPNFLD_ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
 
   FILE(GLOB OBS_CPP ${OBS_SRCDIR}/*.cpp ${OBS_SRCDIR}/*.c)  
     
@@ -59,13 +102,16 @@ MACRO(ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
                         openfluid-ware
                         openfluid-tools)
       
-ENDMACRO(ADD_OBSERVER)
+ENDMACRO()
+
+
+###########################################################################
 
 
 # Macro for compiling a simulation observer and add installation directives
-MACRO(ADD_OBSERVER_WITH_INSTALL OBS_NAME OBS_SRCDIR OBS_BINDIR)
+MACRO(OPNFLD_ADD_OBSERVER_WITH_INSTALL OBS_NAME OBS_SRCDIR OBS_BINDIR)
 
-  ADD_OBSERVER(${OBS_NAME} ${OBS_SRCDIR} ${OBS_BINDIR})
+  OPNFLD_ADD_OBSERVER(${OBS_NAME} ${OBS_SRCDIR} ${OBS_BINDIR})
 
   INSTALL(TARGETS "${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}"
           DESTINATION "${OBSERVERS_INSTALL_PATH}")
@@ -73,8 +119,11 @@ MACRO(ADD_OBSERVER_WITH_INSTALL OBS_NAME OBS_SRCDIR OBS_BINDIR)
 ENDMACRO()
 
 
+###########################################################################
+
+
 # Macro for compiling a builder extension
-MACRO(ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
+MACRO(OPNFLD_ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
 
   FILE(GLOB EXT_CPP ${EXT_SRCDIR}/*.cpp)
   
@@ -102,12 +151,13 @@ MACRO(ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
                         ${LibXML2_LIBRARIES}  
                         ${GTKMM_LIBRARIES})
     
-ENDMACRO(ADD_BUILDER_EXTENSION)
+ENDMACRO()
 
 
+###########################################################################
 
 
-MACRO(COMPILE_PDFLATEX_DOC DOC_NAME DOC_BUILDDIR DOC_OUTDIR DOC_INSTALL_PATH)
+MACRO(OPNFLD_COMPILE_PDFLATEX_DOC DOC_NAME DOC_BUILDDIR DOC_OUTDIR DOC_INSTALL_PATH)
   
   ADD_CUSTOM_COMMAND(
     OUTPUT  "${DOC_BUILDDIR}/${DOC_NAME}.pdf"
@@ -135,13 +185,13 @@ MACRO(COMPILE_PDFLATEX_DOC DOC_NAME DOC_BUILDDIR DOC_OUTDIR DOC_INSTALL_PATH)
   INSTALL(FILES ${DOC_OUTDIR}/${DOC_NAME}.pdf 
           DESTINATION ${DOC_INSTALL_PATH})
  
-ENDMACRO(COMPILE_PDFLATEX_DOC DOC_NAME DOC_BUILDDIR DOC_OUTDIR DOC_INSTALL_PATH)
+ENDMACRO()
 
 
+###########################################################################
 
 
-
-MACRO(COMPILE_LATEX2HTML_DOC DOC_NAME DOC_BUILDDIR DOC_OUTDIR DOC_INSTALL_PATH)
+MACRO(OPNFLD_COMPILE_LATEX2HTML_DOC DOC_NAME DOC_BUILDDIR DOC_OUTDIR DOC_INSTALL_PATH)
 
   ADD_CUSTOM_COMMAND(
     OUTPUT  "${DOC_BUILDDIR}/html"        
@@ -170,32 +220,13 @@ MACRO(COMPILE_LATEX2HTML_DOC DOC_NAME DOC_BUILDDIR DOC_OUTDIR DOC_INSTALL_PATH)
     DEPENDS "${DOC_OUTDIR}/${DOC_NAME}/"
    )
 
-ENDMACRO(COMPILE_LATEX2HTML_DOC DOC_NAME DOC_BUILDDIR DOC_OUTDIR DOC_INSTALL_PATH)
+ENDMACRO()
 
 
-###
-# unit-api-
-# unit-builder-
-# function-
-# integration-engine-
+###########################################################################
 
 
-MACRO(ADD_UNITTEST TEST_NAME EXE_NAME)
-  ADD_EXECUTABLE(${EXE_NAME} ${ARGN})
-  TARGET_LINK_LIBRARIES(${EXE_NAME} 
-                       ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
-                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
-                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
-                       ${Boost_REGEX_LIBRARY}                      
-                       openfluid-base openfluid-buddies
-                       openfluid-core openfluid-machine openfluid-ware
-                       openfluid-io openfluid-market openfluid-tools openfluid-guicommon)
-  SET_TARGET_PROPERTIES(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
-  ADD_TEST(${TEST_NAME} "${TEST_OUTPUT_PATH}/${EXE_NAME}")
-ENDMACRO(ADD_UNITTEST)
-
-
-MACRO(ADD_OPENFLUID_UNITTEST TEST_CAT TEST_NAME)
+MACRO(OPNFLD_ADD_UNITTEST TEST_CAT TEST_NAME)
   ADD_EXECUTABLE("${TEST_CAT}-${TEST_NAME}" ${ARGN})
   TARGET_LINK_LIBRARIES("${TEST_CAT}-${TEST_NAME}" 
                        ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY}
@@ -204,19 +235,24 @@ MACRO(ADD_OPENFLUID_UNITTEST TEST_CAT TEST_NAME)
                        ${UNITTEST_LINK_LIBRARIES})
   SET_TARGET_PROPERTIES("${TEST_CAT}-${TEST_NAME}" PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
   ADD_TEST("unit-${TEST_CAT}-${TEST_NAME}" "${TEST_OUTPUT_PATH}/${TEST_CAT}-${TEST_NAME}")
-ENDMACRO(ADD_OPENFLUID_UNITTEST)
+ENDMACRO()
 
 
-MACRO(DISCOVER_OPENFLUID_UNITTESTS TEST_CAT)
+###########################################################################
+
+MACRO(OPNFLD_DISCOVER_UNITTESTS TEST_CAT)
   FILE(GLOB UNIT_TESTS_CPP *_TEST.cpp)
   FOREACH(CPPFILE ${UNIT_TESTS_CPP})
     GET_FILENAME_COMPONENT(CPPFILE_WE ${CPPFILE} NAME_WE)
-    ADD_OPENFLUID_UNITTEST(${TEST_CAT} ${CPPFILE_WE} ${CPPFILE})
+    OPNFLD_ADD_UNITTEST(${TEST_CAT} ${CPPFILE_WE} ${CPPFILE})
   ENDFOREACH(CPPFILE ${UNIT_TESTS_CPP})
-ENDMACRO(DISCOVER_OPENFLUID_UNITTESTS TEST_CAT)
+ENDMACRO()
 
 
-MACRO(ADD_OPENFLUID_GEOS_DEFINITIONS)
+###########################################################################
+
+
+MACRO(OPNFLD_ADD_GEOS_DEFINITIONS)
   STRING(COMPARE LESS ${GEOS_VERSION} "3.3.0" GEOS_VERSION_LESS_THAN_3_3_0)
   IF(GEOS_VERSION_LESS_THAN_3_3_0)
     SET(GEOS_VERSION_GREATER_OR_EQUAL_3_3_0  0)

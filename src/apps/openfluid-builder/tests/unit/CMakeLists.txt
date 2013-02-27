@@ -50,5 +50,5 @@ SET(UNITTEST_LINK_LIBRARIES ${GTKMM_LIBRARIES}
                        openfluid-tools
                        openfluid-builder-main)
 
-DISCOVER_OPENFLUID_UNITTESTS(builder)
+OPNFLD_DISCOVER_UNITTESTS(builder)
                                           
