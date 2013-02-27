@@ -56,6 +56,7 @@
 
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -90,6 +91,15 @@ LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 // =====================================================================
 
+LineStringGraph::LineStringGraph(openfluid::landr::VectorDataset& Vect) :
+    LandRGraph(Vect)
+{
+
+}
+
+// =====================================================================
+// =====================================================================
+
 LineStringGraph::~LineStringGraph()
 {
 
@@ -101,6 +111,17 @@ LineStringGraph::~LineStringGraph()
 LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
 {
   LineStringGraph* Graph = new LineStringGraph(Val);
+  Graph->addEntitiesFromGeoVector();
+
+  return Graph;
+}
+
+// =====================================================================
+// =====================================================================
+
+LineStringGraph* LineStringGraph::create(openfluid::landr::VectorDataset& Vect)
+{
+  LineStringGraph* Graph = new LineStringGraph(Vect);
   Graph->addEntitiesFromGeoVector();
 
   return Graph;

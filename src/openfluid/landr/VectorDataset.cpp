@@ -56,6 +56,8 @@
 
 #include <utility>
 #include <boost/filesystem/operations.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/posix_time/time_formatters.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/GeometryFactory.h>
 #include <geos/geom/LineString.h>
@@ -80,16 +82,7 @@ VectorDataset::VectorDataset(std::string FileName, std::string DriverName)
         "OpenFLUID framework", "VectorDataset::VectorDataset",
         "\"" + DriverName + "\" driver not available.");
 
-  std::string Path = openfluid::core::GeoValue::computeAbsolutePath(
-      getInitializedTmpPath(), FileName);
-
-  if (isAlreadyExisting(Path))
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
-        "VectorDataset::VectorDataset",
-        "Error while creating " + Path
-        + " : "
-        + "A VectorDataset with this name already exists, try with another name.");
+  std::string Path = getTimestampedPath(FileName);
 
   mp_DataSource = Driver->CreateDataSource(Path.c_str(), NULL);
 
@@ -106,32 +99,15 @@ VectorDataset::VectorDataset(std::string FileName, std::string DriverName)
 // =====================================================================
 // =====================================================================
 
-VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value,
-                             std::string NewFileName)
+VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 {
   OGRRegisterAll();
 
   OGRDataSource* DS = Value.get(false);
   OGRSFDriver* Driver = DS->GetDriver();
 
-  std::string FileName = NewFileName;
-
-  if (FileName.empty())
-  {
-    std::string OriginalPath = DS->GetName();
-    FileName = boost::filesystem::path(OriginalPath).filename().string();
-  }
-
-  std::string Path = openfluid::core::GeoValue::computeAbsolutePath(
-      getInitializedTmpPath(), FileName);
-
-  if (isAlreadyExisting(Path))
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
-        "VectorDataset::VectorDataset",
-        "Error while creating " + Path
-        + " : "
-        + "A VectorDataset with this name already exists, try with another name.");
+  std::string Path = getTimestampedPath(
+      boost::filesystem::path(DS->GetName()).filename().string());
 
   mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), NULL);
 
@@ -155,6 +131,61 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value,
         "VectorDataset::VectorDataset",
         "Error while opening " + Path + " : "
         + "Creation of OGRDataSource failed.");
+}
+
+// =====================================================================
+// =====================================================================
+
+VectorDataset::VectorDataset(const VectorDataset& Other)
+{
+  OGRRegisterAll();
+
+  OGRDataSource* DS = Other.getDataSource();
+  OGRSFDriver* Driver = DS->GetDriver();
+
+  std::string Path = getTimestampedPath(
+      boost::filesystem::path(DS->GetName()).filename().string());
+
+  mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), NULL);
+
+  if (!mp_DataSource)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "VectorDataset::VectorDataset",
+        "Error while creating " + Path + " : "
+        + "Creation of OGRDataSource failed.");
+
+  mp_DataSource->SetDriver(Driver);
+
+  // necessary to ensure headers are written out in an orderly way and all resources are recovered
+  OGRDataSource::DestroyDataSource(mp_DataSource);
+
+  mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
+
+  if (!mp_DataSource)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "VectorDataset::VectorDataset",
+        "Error while opening " + Path + " : "
+        + "Creation of OGRDataSource failed.");
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string VectorDataset::getTimestampedPath(std::string OriginalFileName)
+{
+  boost::filesystem::path OriginalFile = boost::filesystem::path(
+      OriginalFileName);
+  std::string FileWOExt = OriginalFile.stem().string();
+  std::string Ext = OriginalFile.extension().string();
+
+  return openfluid::core::GeoValue::computeAbsolutePath(
+      getInitializedTmpPath(),
+      FileWOExt + "_"
+      + boost::posix_time::to_iso_string(
+          boost::posix_time::microsec_clock::local_time())
+      + Ext);
 }
 
 // =====================================================================
@@ -195,6 +226,7 @@ VectorDataset::~VectorDataset()
   OGRSFDriver* Driver = mp_DataSource->GetDriver();
   std::string Path = mp_DataSource->GetName();
 
+  // if the Datasource was not flushed to disk
   if (isAlreadyExisting(Path))
   {
     OGRDataSource::DestroyDataSource(mp_DataSource);
@@ -206,6 +238,14 @@ VectorDataset::~VectorDataset()
 // =====================================================================
 
 OGRDataSource* VectorDataset::getDataSource()
+{
+  return mp_DataSource;
+}
+
+// =====================================================================
+// =====================================================================
+
+OGRDataSource* VectorDataset::getDataSource() const
 {
   return mp_DataSource;
 }
@@ -282,6 +322,20 @@ void VectorDataset::addALayer(std::string LayerName,
         "VectorDataset::createLayer",
         "Error while adding a layer to " + std::string(mp_DataSource->GetName())
         + ": creation of layer " + LayerName + " failed.");
+
+  std::string Path = mp_DataSource->GetName();
+
+  // necessary to ensure headers are written out in an orderly way and all resources are recovered
+  OGRDataSource::DestroyDataSource(mp_DataSource);
+
+  mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
+
+  if (!mp_DataSource)
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "VectorDataset::createLayer",
+        "Error while opening " + Path + " : "
+        + "Opening of OGRDataSource failed.");
 }
 
 // =====================================================================

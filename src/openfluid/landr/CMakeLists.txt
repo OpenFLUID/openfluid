@@ -20,7 +20,7 @@ SET_TARGET_PROPERTIES(openfluid-landr PROPERTIES VERSION "${VERSION_MAJOR}.${VER
 
 TARGET_LINK_LIBRARIES(openfluid-landr
                       openfluid-core openfluid-base
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_DATE_TIME_LIBRARY} 
                       ${GDAL_LIBRARIES} ${GEOS_LIBRARY})
 
 INSTALL(TARGETS openfluid-landr

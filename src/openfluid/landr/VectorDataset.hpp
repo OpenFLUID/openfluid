@@ -94,6 +94,8 @@ class VectorDataset
      */
     std::map<unsigned int, geos::geom::Geometry*> m_Geometries;
 
+    std::string getTimestampedPath(std::string OriginalFileName);
+
     std::string getInitializedTmpPath();
 
     bool isAlreadyExisting(std::string Path);
@@ -103,7 +105,7 @@ class VectorDataset
   public:
 
     /**
-     * Create a new empty OGRDatasource in the openfluid temp directory
+     * Create a new empty OGRDatasource in the openfluid temp directory, with filename suffixes with timestamp
      * @param FileName The name of the file to create
      * @param DriverName The name of the OGR driver to use, default is "ESRI Shapefile"
      */
@@ -112,12 +114,12 @@ class VectorDataset
 
     /**
      * Create in the openfluid temp directory a copy of Value OGRDatasource,
-     * using Value filename as default filename, unless NewFileName is provided
+     * using Value filename suffixed with timestamp as filename
      * @param Value The GeoVectorValue to copy
-     * @param NewFileName The alternate name to use to create the file, optionnal
      */
-    VectorDataset(openfluid::core::GeoVectorValue& Value,
-                  std::string NewFileName = "");
+    VectorDataset(openfluid::core::GeoVectorValue& Value);
+
+    VectorDataset(const VectorDataset& Other);
 
     /**
      * Delete the OGRDatasource and relative files in openfluid temp directory
@@ -125,6 +127,8 @@ class VectorDataset
     ~VectorDataset();
 
     OGRDataSource* getDataSource();
+
+    OGRDataSource* getDataSource() const;
 
     /**
      * Write to disk a copy of the OGRDataSource

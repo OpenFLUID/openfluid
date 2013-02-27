@@ -252,11 +252,6 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
 
 BOOST_AUTO_TEST_CASE(check_Polygonize)
 {
-  if (!boost::filesystem::exists(
-      openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() + "/GeoVectorValue"))
-    boost::filesystem::create_directory(
-        openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() + "/GeoVectorValue");
-
   // integer values
   openfluid::core::GeoRasterValue RasterVal(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
@@ -264,8 +259,8 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
   openfluid::landr::RasterDataset* Rast = new openfluid::landr::RasterDataset(
       RasterVal);
 
-  openfluid::landr::VectorDataset* VectorVal = Rast->polygonize(
-      "GeoVectorValue/TestOut.shp", "RasterVal");
+  openfluid::landr::VectorDataset* VectorVal = Rast->polygonize("TestOut.shp",
+                                                                "RasterVal");
 
   OGRLayer* VectorLayer = VectorVal->getLayer(0);
 
@@ -284,7 +279,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 
   Rast = new openfluid::landr::RasterDataset(RasterVal);
 
-  VectorVal = Rast->polygonize("GeoVectorValue/TestOut.shp");
+  VectorVal = Rast->polygonize("TestOut.shp");
 
   VectorLayer = VectorVal->getLayer(0);
 

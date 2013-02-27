@@ -89,12 +89,6 @@ void deleteIfExists(std::string Path)
 // TODO Test with other than shapefiles
 BOOST_AUTO_TEST_CASE(check_constructor_empty)
 {
-  std::string Path = openfluid::core::GeoValue::computeAbsolutePath(
-      openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),
-      "test.shp");
-
-  deleteIfExists(Path);
-
   BOOST_CHECK_THROW(
       new openfluid::landr::VectorDataset("test.shp","wrong_driver_name"),
       openfluid::base::OFException);
@@ -105,10 +99,15 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
   OGRDataSource* DS = Vect->getDataSource();
 
   BOOST_CHECK(DS);
-  BOOST_CHECK_EQUAL(DS->GetName(), Path);
   BOOST_CHECK(DS->GetDriver());
   BOOST_CHECK_EQUAL(DS->GetDriver()->GetName(), "ESRI Shapefile");
-  BOOST_CHECK(!boost::filesystem::exists(Path));
+
+  delete Vect;
+
+  Vect = new openfluid::landr::VectorDataset(
+      "test.shp");
+
+  Vect->addALayer();
 
   delete Vect;
 }
@@ -118,16 +117,6 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
 
 BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 {
-  std::string Path = openfluid::core::GeoValue::computeAbsolutePath(
-      openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),
-      "SU.shp");
-  std::string AlternativePath = openfluid::core::GeoValue::computeAbsolutePath(
-      openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),
-      "AlternativeName.shp");
-
-  deleteIfExists(Path);
-  deleteIfExists(AlternativePath);
-
   openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR,
                                         "landr/SU.shp");
 
@@ -137,18 +126,11 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
   OGRDataSource* DS = Vect->getDataSource();
 
   BOOST_CHECK(DS);
-  BOOST_CHECK_EQUAL(DS->GetName(), Path);
   BOOST_CHECK(DS->GetDriver());
   BOOST_CHECK_EQUAL(DS->GetDriver()->GetName(), "ESRI Shapefile");
-  BOOST_CHECK(boost::filesystem::exists(Path));
-
-  BOOST_CHECK_THROW(new openfluid::landr::VectorDataset(Value),
-                    openfluid::base::OFException);
 
   openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(
-      Value, "AlternativeName.shp");
-
-  BOOST_CHECK(boost::filesystem::exists(AlternativePath));
+      Value);
 
   delete Vect;
   delete Vect2;
@@ -160,13 +142,9 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 // TODO Test with other than shapefiles
 BOOST_AUTO_TEST_CASE(check_copyToDisk)
 {
-  std::string Path = openfluid::core::GeoValue::computeAbsolutePath(
-      openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),
-      "SU.shp");
   std::string NewPath = openfluid::core::GeoValue::computeAbsolutePath(
       CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp");
 
-  deleteIfExists(Path);
   deleteIfExists(NewPath);
 
   if (!boost::filesystem::exists(

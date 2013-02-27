@@ -115,6 +115,8 @@
 namespace openfluid {
 namespace landr {
 
+class VectorDataset;
+
 /**
  * @brief A LandRGraph composed of LineStringEntities.
  */
@@ -130,6 +132,8 @@ class LineStringGraph: public LandRGraph
 
     LineStringGraph(openfluid::core::GeoVectorValue& Val);
 
+    LineStringGraph(openfluid::landr::VectorDataset& Vect);
+
     virtual void addEntity(LandREntity* Entity);
 
     virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
@@ -142,6 +146,12 @@ class LineStringGraph: public LandRGraph
      * @details Val must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
      */
     static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
+
+    /**
+     * @brief Create a new graph initialized with Vect elements.
+     * @details Vect must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
+     */
+    static LineStringGraph* create(openfluid::landr::VectorDataset& Vect);
 
     /**
      * @brief Create a new graph initialized with Entities.

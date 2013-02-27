@@ -94,12 +94,16 @@ class RasterDataset
      */
     RasterDataset(openfluid::core::GeoRasterValue& Value);
 
+    RasterDataset(const RasterDataset& Other);
+
     /**
      * @brief Delete the virtual GDALDataset
      */
     ~RasterDataset();
 
     GDALDataset* getDataset();
+
+    GDALDataset* getDataset() const;
 
     /**
      * @brief Get the RasterBand indexed with RasterBandIndex of the dataset

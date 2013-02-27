@@ -124,7 +124,9 @@ class LandRGraph: public geos::planargraph::PlanarGraph
 
     LandRGraph();
 
-    LandRGraph(openfluid::core::GeoVectorValue&);
+    LandRGraph(openfluid::core::GeoVectorValue& Val);
+
+    LandRGraph(const openfluid::landr::VectorDataset& Vect);
 
 //    virtual LandRGraph* clone() = 0;
 
@@ -189,6 +191,11 @@ class LandRGraph: public geos::planargraph::PlanarGraph
      * @details Replace associated raster if exists.
      */
     void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
+
+    /**
+     * @details Replace associated raster if exists.
+     */
+    void addAGeoRasterValue(const openfluid::landr::RasterDataset& Raster);
 
     bool hasAnAssociatedRaster();
 

@@ -93,6 +93,32 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
 // =====================================================================
 // =====================================================================
 
+RasterDataset::RasterDataset(const RasterDataset& Other) :
+    mp_GeoTransform(0)
+{
+  GDALAllRegister();
+
+  GDALDataset* DS = Other.getDataset();
+
+  // GDAL supports many raster formats for reading, but significantly less formats for writing
+  // (see http://www.gdal.org/gdal_vrttut.html)
+  GDALDriver* Driver = static_cast<GDALDriver*>(GDALGetDriverByName("VRT"));
+  mp_Dataset = Driver->CreateCopy("", DS, true, NULL, NULL, NULL);
+
+  if (!mp_Dataset)
+  {
+    throw openfluid::base::OFException(
+        "OpenFLUID framework",
+        "RasterDataset::RasterDataset",
+        "Error while creating a virtual copy (" + std::string(
+            CPLGetLastErrorMsg())
+        + ")");
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
 RasterDataset::~RasterDataset()
 {
   GDALClose(mp_Dataset);
@@ -103,6 +129,14 @@ RasterDataset::~RasterDataset()
 // =====================================================================
 
 GDALDataset* RasterDataset::getDataset()
+{
+  return mp_Dataset;
+}
+
+// =====================================================================
+// =====================================================================
+
+GDALDataset* RasterDataset::getDataset() const
 {
   return mp_Dataset;
 }

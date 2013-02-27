@@ -104,6 +104,27 @@ LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 // =====================================================================
 
+LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
+    geos::planargraph::PlanarGraph(), mp_Factory(
+        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+        0), mp_RasterPolygonizedPolys(0)
+{
+  mp_Vector = new openfluid::landr::VectorDataset(Vect);
+
+  if (!mp_Vector)
+    throw openfluid::base::OFException("OpenFLUID Framework",
+                                       "LandRGraph::LandRGraph",
+                                       "No GeoVectorValue.");
+
+  if (!mp_Vector->containsField("SELF_ID"))
+    throw openfluid::base::OFException(
+        "OpenFLUID Framework", "LandRGraph::LandRGraph",
+        "GeoVector file must contain a \"SELF_ID\" field.");
+}
+
+// =====================================================================
+// =====================================================================
+
 LandRGraph::~LandRGraph()
 {
   for (geos::planargraph::NodeMap::container::iterator it = nodeBegin();
@@ -310,6 +331,20 @@ std::vector<std::string> LandRGraph::getAttributeNames()
 
 void LandRGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
 {
+  if (mp_Raster)
+    delete mp_Raster;
+  mp_Raster = new RasterDataset(Raster);
+  mp_RasterPolygonized = 0;
+  mp_RasterPolygonizedPolys = 0;
+}
+
+// =====================================================================
+// =====================================================================
+
+void LandRGraph::addAGeoRasterValue(const openfluid::landr::RasterDataset& Raster)
+{
+  if (mp_Raster)
+    delete mp_Raster;
   mp_Raster = new RasterDataset(Raster);
   mp_RasterPolygonized = 0;
   mp_RasterPolygonizedPolys = 0;
@@ -515,7 +550,7 @@ void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
     OGRFeature::DestroyFeature(Feat);
   }
 
-  Out->copyToDisk(FilePath,FileName,true);
+  Out->copyToDisk(FilePath, FileName, true);
 
   delete Out;
 }

@@ -92,9 +92,29 @@ PolygonGraph::PolygonGraph(openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 // =====================================================================
 
+PolygonGraph::PolygonGraph(openfluid::landr::VectorDataset& Vect) :
+    LandRGraph(Vect)
+{
+
+}
+
+// =====================================================================
+// =====================================================================
+
 PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
 {
   PolygonGraph* Graph = new PolygonGraph(Val);
+  Graph->addEntitiesFromGeoVector();
+
+  return Graph;
+}
+
+// =====================================================================
+// =====================================================================
+
+PolygonGraph* PolygonGraph::create(openfluid::landr::VectorDataset& Vect)
+{
+  PolygonGraph* Graph = new PolygonGraph(Vect);
   Graph->addEntitiesFromGeoVector();
 
   return Graph;
