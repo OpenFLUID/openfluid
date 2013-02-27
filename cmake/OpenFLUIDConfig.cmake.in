@@ -65,6 +65,7 @@
 # This module uses hints about search locations from variables
 # OpenFLUID_ROOT_DIR
 # $ENV{OPENFLUID_INSTALL_PREFIX}
+# OpenFLUID_EXTRA_SEARCH_DIRS
 #
 #
 # Examples of use:
@@ -81,18 +82,19 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
 
 IF(OpenFLUID_FOUND AND OpenFLUID_DIR)
-  INCLUDE("${OpenFLUID_DIR}/OpenFLUIDWareMacros.cmake")
+  INCLUDE("${OpenFLUID_DIR}/OpenFLUIDHelpers.cmake")
   RETURN()
 ENDIF()
 
 
 SET(_OpenFLUID_SEARCH_DIRS
   ${OpenFLUID_ROOT_DIR}
-  $ENV{OPENFLUID_INSTALL_PATH}
+  $ENV{OPENFLUID_INSTALL_PATH}  
   /usr
   /usr/local
   /sw # Fink
   /opt/local # DarwinPorts
+  ${OpenFLUID_EXTRA_SEARCH_PATHS}
 )
 
 
@@ -110,7 +112,7 @@ MACRO(_OpenFLUID_RETURN MSG)
 ENDMACRO()
 
 
-# ==========================================================================
+###########################################################################
 
 
 FIND_PATH(_OpenFLUID_INCLUDE_DIR
@@ -128,7 +130,7 @@ IF(NOT _OpenFLUID_INCLUDE_DIR)
 ENDIF()
 
 
-# ==========================================================================
+###########################################################################
 
 
 FIND_PROGRAM(_OpenFLUID_ENGINE_PROGRAM 
@@ -145,7 +147,8 @@ IF(_OpenFLUID_ENGINE_PROGRAM-NOTFOUND)
 ENDIF()
 
 
-# ==========================================================================
+###########################################################################
+
 
 FILE(STRINGS "${_OpenFLUID_INCLUDE_DIR}/openfluid/config.hpp" _OpenFLUID_VERSION_CONFIG_LINE REGEX "FULL_VERSION = \"[0-9.a-z~]+\"")
 STRING(REGEX MATCH "[0-9]+.[0-9]+.[0-9]+(~[a-z]+[0-9]*)?" _OpenFLUID_VERSION "${_OpenFLUID_VERSION_CONFIG_LINE}")
@@ -155,7 +158,7 @@ IF(NOT _OpenFLUID_VERSION)
 ENDIF()
 
 
-# ==========================================================================
+###########################################################################
 
 
 EXECUTE_PROCESS(COMMAND ${_OpenFLUID_ENGINE_PROGRAM} "--version"
@@ -169,7 +172,7 @@ IF(${_OpenFLUID_ENGINE_TEST_VERSION} LESS 0)
 ENDIF()
 
 
-# ==========================================================================
+###########################################################################
 
 
 MESSAGE(STATUS "Found OpenFLUID version ${_OpenFLUID_VERSION}")
@@ -220,7 +223,7 @@ FOREACH(COMPONENT ${_OpenFLUID_FIND_COMPONENTS})
 ENDFOREACH()
 
 
-# ==========================================================================
+###########################################################################
 
 
 IF(_OpenFLUID_FOUND)
@@ -245,6 +248,6 @@ IF(_OpenFLUID_FOUND)
   
   SET(OpenFLUID_FOUND 1 CACHE STRING "OpenFLUID found!")
   
-  INCLUDE("${OpenFLUID_DIR}/OpenFLUIDWareMacros.cmake")
+  INCLUDE("${OpenFLUID_DIR}/OpenFLUIDHelpers.cmake")
 ENDIF()
 
