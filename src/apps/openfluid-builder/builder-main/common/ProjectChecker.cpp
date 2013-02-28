@@ -46,60 +46,50 @@
  */
 
 /**
- \file ProjectDashboard.hpp
- \brief Header of ...
+ \file ProjectChecker.cpp
+ \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __PROJECTDASHBOARD_HPP__
-#define __PROJECTDASHBOARD_HPP__
+#include "ProjectChecker.hpp"
 
-#include <glibmm/i18n.h>
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
 
-#include <gtkmm/liststore.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/scrolledwindow.h>
+// =====================================================================
+// =====================================================================
 
-class ProjectChecker;
-
-class ProjectDashboard
+ProjectChecker::ProjectChecker(openfluid::guicommon::BuilderDescriptor& Desc) :
+    mp_Desc(&Desc), IsProjectOk(false), IsModelOk(false), IsParamsOk(false), IsGeneratorParamsOk(
+        false), IsDomainOk(false), IsInputdataOk(false), IsExtraFilesOk(false), IsRunConfigOk(
+        false), ProjectMsg(""), ModelMsg(""), ParamsMsg(""), DomainMsg(""), InputdataMsg(
+        ""), ExtraFilesMsg(""), RunConfigMsg("")
 {
-  private:
+}
 
-    class ProjectDashboardColumns: public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-        ProjectDashboardColumns()
-        {
-          add(m_Title);
-          add(m_StateIcon);
-          add(m_StateInfo);
-        }
+// =====================================================================
+// =====================================================================
 
-        Gtk::TreeModelColumn<std::string> m_Title;
-        Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_StateIcon;
-        Gtk::TreeModelColumn<std::string> m_StateInfo;
-    };
-    ProjectDashboardColumns m_Columns;
+ProjectChecker::~ProjectChecker()
+{
+}
 
-    Glib::RefPtr<Gtk::ListStore> mref_TreeModel;
+// =====================================================================
+// =====================================================================
 
-    Gtk::TreeView* mp_TreeView;
+bool ProjectChecker::check()
+{
+  return getGlobalCheckState();
+}
 
-    Glib::RefPtr<Gdk::Pixbuf> m_RedIcon;
-    Glib::RefPtr<Gdk::Pixbuf> m_OrangeIcon;
-    Glib::RefPtr<Gdk::Pixbuf> m_GreenIcon;
+// =====================================================================
+// =====================================================================
 
-    Gtk::ScrolledWindow* mp_MainWin;
+bool ProjectChecker::getGlobalCheckState()
+{
+  return (IsExtraFilesOk && IsInputdataOk && IsModelOk /*&& IsGeneratorParamsOk */
+          && IsProjectOk && IsRunConfigOk);
+}
 
-  public:
-
-    ProjectDashboard();
-
-    void setCheckInfo(const ProjectChecker& Checker);
-
-    Gtk::Widget* asWidget();
-};
-
-#endif /* __PROJECTDASHBOARD_HPP__ */
+// =====================================================================
+// =====================================================================

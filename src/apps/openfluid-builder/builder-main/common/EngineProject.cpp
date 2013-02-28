@@ -82,6 +82,8 @@
 #include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include <openfluid/guicommon/BuilderDescriptor.hpp>
 
+#include "ProjectChecker.hpp"
+
 // =====================================================================
 // =====================================================================
 
@@ -135,7 +137,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir() :
                                FolderIn);
     }
-    catch (openfluid::base::OFException e)
+    catch (openfluid::base::OFException& e)
     {
       if (Msg.empty())
         Msg = EngineHelper::minimiseInfoString(e.what());
@@ -197,6 +199,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   }
 
   mp_BuilderDesc = new openfluid::guicommon::BuilderDescriptor(*mp_FXDesc);
+
+  mp_Checker = new ProjectChecker(*mp_BuilderDesc);
 }
 
 // =====================================================================
@@ -266,20 +270,19 @@ void EngineProject::setDefaultRunDesc()
 
 // TODO to be removed or replaced by monitoring
 /*
-void EngineProject::setDefaultOutDesc()
-{
-  openfluid::base::OutputDescriptor OutDesc;
-  openfluid::base::OutputFilesDescriptor FileDesc;
+ void EngineProject::setDefaultOutDesc()
+ {
+ openfluid::base::OutputDescriptor OutDesc;
+ openfluid::base::OutputFilesDescriptor FileDesc;
 
-  OutDesc.getFileSets().push_back(FileDesc);
+ OutDesc.getFileSets().push_back(FileDesc);
 
-  mp_FXDesc->getOutputDescriptor() = OutDesc;
-}
-*/
+ mp_FXDesc->getOutputDescriptor() = OutDesc;
+ }
+ */
 
 // =====================================================================
 // =====================================================================
-
 void EngineProject::checkAndSetDefaultRunValues()
 {
   openfluid::fluidx::RunDescriptor& RunDesc = mp_FXDesc->getRunDescriptor();
@@ -314,22 +317,20 @@ void EngineProject::checkAndSetDefaultRunValues()
 // =====================================================================
 // TODO to be removed or replaced by monitoring
 /*
-void EngineProject::checkAndSetDefaultOutputValues()
-{
-  openfluid::base::OutputDescriptor& OutDesc = mp_FXDesc->getOutputDescriptor();
+ void EngineProject::checkAndSetDefaultOutputValues()
+ {
+ openfluid::base::OutputDescriptor& OutDesc = mp_FXDesc->getOutputDescriptor();
 
-  if (OutDesc.getFileSets().empty())
-  {
-    openfluid::base::OutputFilesDescriptor FileDesc;
-    OutDesc.getFileSets().push_back(FileDesc);
-  }
-}
-*/
-
+ if (OutDesc.getFileSets().empty())
+ {
+ openfluid::base::OutputFilesDescriptor FileDesc;
+ OutDesc.getFileSets().push_back(FileDesc);
+ }
+ }
+ */
 
 // =====================================================================
 // =====================================================================
-
 void EngineProject::checkModelDesc()
 {
 //  openfluid::fluidx::CoupledModelDescriptor& ModelDesc = mp_FXDesc->getModelDescriptor();
@@ -474,7 +475,8 @@ void EngineProject::whenSimulationStopped()
 
 void EngineProject::save()
 {
-  std::string InputDir = openfluid::base::RuntimeEnvironment::getInstance()->getInputDir();
+  std::string InputDir =
+      openfluid::base::RuntimeEnvironment::getInstance()->getInputDir();
 
   openfluid::base::ProjectManager::getInstance()->save();
 
@@ -495,11 +497,11 @@ void EngineProject::save()
 // =====================================================================
 // =====================================================================
 
-void EngineProject::check(
-    openfluid::machine::Engine::PretestInfos_t& PretestInfos)
+const ProjectChecker& EngineProject::check(bool& GlobalState)
 {
-  // TODO: check descriptors instead
-//  mp_Engine->pretestConsistency(PretestInfos);
+  GlobalState = mp_Checker->check();
+
+  return *mp_Checker;
 }
 
 // =====================================================================

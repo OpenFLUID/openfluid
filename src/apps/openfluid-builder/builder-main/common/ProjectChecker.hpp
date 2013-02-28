@@ -46,60 +46,56 @@
  */
 
 /**
- \file ProjectDashboard.hpp
+ \file ProjectChecker.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __PROJECTDASHBOARD_HPP__
-#define __PROJECTDASHBOARD_HPP__
+#include <string>
 
-#include <glibmm/i18n.h>
+namespace openfluid {
+namespace guicommon {
+class BuilderDescriptor;
+}
+}
 
-#include <gtkmm/liststore.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/scrolledwindow.h>
+#ifndef PROJECTCHECKER_HPP_
+#define PROJECTCHECKER_HPP_
 
-class ProjectChecker;
-
-class ProjectDashboard
+class ProjectChecker
 {
   private:
 
-    class ProjectDashboardColumns: public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-        ProjectDashboardColumns()
-        {
-          add(m_Title);
-          add(m_StateIcon);
-          add(m_StateInfo);
-        }
+    openfluid::guicommon::BuilderDescriptor* mp_Desc;
 
-        Gtk::TreeModelColumn<std::string> m_Title;
-        Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_StateIcon;
-        Gtk::TreeModelColumn<std::string> m_StateInfo;
-    };
-    ProjectDashboardColumns m_Columns;
-
-    Glib::RefPtr<Gtk::ListStore> mref_TreeModel;
-
-    Gtk::TreeView* mp_TreeView;
-
-    Glib::RefPtr<Gdk::Pixbuf> m_RedIcon;
-    Glib::RefPtr<Gdk::Pixbuf> m_OrangeIcon;
-    Glib::RefPtr<Gdk::Pixbuf> m_GreenIcon;
-
-    Gtk::ScrolledWindow* mp_MainWin;
+    bool getGlobalCheckState();
 
   public:
 
-    ProjectDashboard();
+    bool IsProjectOk;
+    bool IsModelOk;
+    bool IsParamsOk;
+    bool IsDomainOk;
+    bool IsInputdataOk;
+    bool IsGeneratorParamsOk;
+    bool IsExtraFilesOk;
+    bool IsRunConfigOk;
 
-    void setCheckInfo(const ProjectChecker& Checker);
+    std::string ProjectMsg;
+    std::string ModelMsg;
+    std::string ParamsMsg;
+    std::string DomainMsg;
+    std::string InputdataMsg;
+    std::string ExtraFilesMsg;
+    std::string RunConfigMsg;
 
-    Gtk::Widget* asWidget();
+    ProjectChecker(openfluid::guicommon::BuilderDescriptor& Desc);
+
+    ~ProjectChecker();
+
+    bool check();
+
 };
 
-#endif /* __PROJECTDASHBOARD_HPP__ */
+#endif /* PROJECTCHECKER_HPP_ */

@@ -86,6 +86,8 @@ class FluidXDescriptor;
 }
 }
 
+class ProjectChecker;
+
 class EngineProject
 {
   private:
@@ -95,6 +97,8 @@ class EngineProject
     openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
 
     openfluid::base::IOListener* mp_IOListener;
+
+    ProjectChecker* mp_Checker;
 
     sigc::signal<void> m_signal_RunStarted;
 
@@ -143,7 +147,7 @@ class EngineProject
 
     void save();
 
-    void check(openfluid::machine::Engine::PretestInfos_t& PretestInfos);
+    const ProjectChecker& check(bool& GlobalState);
 
     openfluid::guicommon::BuilderDescriptor& getBuilderDesc();
 

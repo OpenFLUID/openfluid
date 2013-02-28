@@ -342,17 +342,11 @@ void ProjectCoordinator::updateWorkspaceModules()
 
 void ProjectCoordinator::checkProject()
 {
-//  BuilderPretestInfo CheckInfo;
-//
-//  m_EngineProject.check(CheckInfo);
-//
-//  CheckInfo.addBuilderInfo(m_EngineProject.getModelInstance(),
-//                           m_EngineProject.getSimBlob(),
-//                           m_EngineProject.getRunDescriptor());
-//
-//  m_ProjectDashboard.setCheckInfo(CheckInfo);
-//
-//  m_signal_CheckHappened.emit(CheckInfo.getGlobalCheckState());
+  bool GlobalState;
+
+  m_ProjectDashboard.setCheckInfo(m_EngineProject.check(GlobalState));
+
+  m_signal_CheckHappened.emit(GlobalState);
 }
 
 // =====================================================================
