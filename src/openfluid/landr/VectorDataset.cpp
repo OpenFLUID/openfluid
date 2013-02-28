@@ -103,7 +103,7 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 {
   OGRRegisterAll();
 
-  OGRDataSource* DS = Value.get(false);
+  OGRDataSource* DS = Value.get();
   OGRSFDriver* Driver = DS->GetDriver();
 
   std::string Path = getTimestampedPath(

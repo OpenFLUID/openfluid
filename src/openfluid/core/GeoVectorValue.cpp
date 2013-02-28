@@ -99,10 +99,10 @@ openfluid::core::UnstructuredValue::UnstructuredType GeoVectorValue::getType() c
 // =====================================================================
 // =====================================================================
 
-OGRDataSource* GeoVectorValue::get(bool UpdateMode)
+OGRDataSource* GeoVectorValue::get()
 {
   if (!mp_Data)
-    tryToOpenSource(UpdateMode);
+    tryToOpenSource();
 
   return mp_Data;
 }
@@ -110,14 +110,78 @@ OGRDataSource* GeoVectorValue::get(bool UpdateMode)
 // =====================================================================
 // =====================================================================
 
-void GeoVectorValue::tryToOpenSource(bool UpdateMode)
+void GeoVectorValue::tryToOpenSource()
 {
-  mp_Data = OGRSFDriverRegistrar::Open(m_AbsolutePath.c_str(), UpdateMode);
+  mp_Data = OGRSFDriverRegistrar::Open(m_AbsolutePath.c_str(), false);
 
   if (!mp_Data)
     throw openfluid::base::OFException(
         "OpenFLUID framework", "GeoVectorValue::tryToOpenSource",
         "Error while trying to open file " + m_AbsolutePath);
+}
+
+// =====================================================================
+// =====================================================================
+
+OGRLayer* GeoVectorValue::getLayer(unsigned int LayerIndex)
+{
+  return get()->GetLayer(LayerIndex);
+}
+
+// =====================================================================
+// =====================================================================
+
+OGRFeatureDefn* GeoVectorValue::getLayerDef(unsigned int LayerIndex)
+{
+  return getLayer(LayerIndex)->GetLayerDefn();
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isLineType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbLineString;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isPolygonType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbPolygon;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::containsField(std::string FieldName,
+                                  unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
+}
+
+// =====================================================================
+// =====================================================================
+
+int GeoVectorValue::getFieldIndex(std::string FieldName, unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isFieldOfType(std::string FieldName, OGRFieldType FieldType,
+                                  unsigned int LayerIndex)
+{
+  if (!containsField(FieldName))
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "VectorDataset::isFieldOfType",
+        "Field \"" + FieldName + "\" is not set.");
+
+  return getLayerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
+      == FieldType;
 }
 
 // =====================================================================

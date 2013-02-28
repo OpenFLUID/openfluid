@@ -83,12 +83,12 @@ class GeoVectorValueSub: public openfluid::core::GeoVectorValue
 
     std::string getAbsolutePath()
     {
-      return computeAbsolutePath(m_FilePath,m_FileName);
+      return computeAbsolutePath(m_FilePath, m_FileName);
     }
 
     void tryToOpenSource()
     {
-      openfluid::core::GeoVectorValue::tryToOpenSource(true);
+      openfluid::core::GeoVectorValue::tryToOpenSource();
     }
 };
 
@@ -256,6 +256,25 @@ BOOST_AUTO_TEST_CASE(check_get_WrongDir)
   BOOST_CHECK_THROW(Val->get(), openfluid::base::OFException);
 
   BOOST_CHECK(!Val->getData());
+
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_Properties)
+{
+  GeoVectorValueSub* Val = new GeoVectorValueSub(
+      CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/SU.shp");
+
+  BOOST_CHECK(!Val->isLineType());
+  BOOST_CHECK(Val->isPolygonType());
+
+  BOOST_CHECK(Val->containsField("SELF_ID"));
+  BOOST_CHECK(!Val->containsField("wrongField"));
+
+  BOOST_CHECK_EQUAL(Val->getFieldIndex("SELF_ID"), 1);
 
   delete Val;
 }

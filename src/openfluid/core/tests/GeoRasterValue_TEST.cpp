@@ -88,7 +88,7 @@ class GeoRasterValueSub: public openfluid::core::GeoRasterValue
 
     void tryToOpenSource()
     {
-      openfluid::core::GeoRasterValue::tryToOpenSource(true);
+      openfluid::core::GeoRasterValue::tryToOpenSource();
     }
 };
 
