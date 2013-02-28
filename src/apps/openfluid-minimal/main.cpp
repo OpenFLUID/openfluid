@@ -81,7 +81,7 @@ int main(int argc, char **argv)
       PlugsDir = std::string(argv[3]);
     }
     else
-      throw openfluid::base::OFException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdir>");
+      throw openfluid::base::OFException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdirs>");
 
 
     openfluid::base::Init();
@@ -101,6 +101,7 @@ int main(int argc, char **argv)
     RunEnv->setInputDir(InputDir);
     RunEnv->setOutputDir(OutputDir);
     RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
+    RunEnv->addExtraObserversPluginsPaths(PlugsDir);
 
 
     FXDesc.loadFromDirectory(InputDir);
