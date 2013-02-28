@@ -626,7 +626,7 @@ SET_PROPERTY(TEST integration-BuddyNewDataCheck APPEND PROPERTY DEPENDS integrat
 
 OPENFLUID_ADD_TEST(NAME integration-MinimalRun
                    COMMAND "${BIN_OUTPUT_PATH}/openfluid-minimal"
-                                  "${TESTS_DATASETS_PATH}/OPENFLUID.IN.Primitives"
+                                  "${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesHopla"
                                   "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MinimalRun"
                                   "${TEST_OUTPUT_PATH}"
                               )
