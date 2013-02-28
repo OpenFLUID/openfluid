@@ -74,7 +74,7 @@ class GeoRasterValue: public openfluid::core::GeoValue
 
     GDALDataset* mp_Data;
 
-    void tryToOpenSource(bool UpdateMode);
+    void tryToOpenSource();
 
   public:
 
@@ -97,15 +97,14 @@ class GeoRasterValue: public openfluid::core::GeoValue
     openfluid::core::UnstructuredValue::UnstructuredType getType() const;
 
     /**
-     * @brief Gets the associated opened GDAL dataset.
+     * @brief Gets the associated opened GDAL dataset in read-only access.
      *
      * If the dataset is not already opened, tries to open it first.
      *
-     * @param UpdateMode False for read-only access (the default) or True for read-write access.
      * @return The opened GDAL dataset.
      * @throw openfluid::base::OFException if GDAL doesn't succeed to open the dataset.
      */
-    GDALDataset* get(bool UpdateMode = false);
+    GDALDataset* get();
 
     std::string getAbsolutePath();
 };

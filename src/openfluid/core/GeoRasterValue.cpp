@@ -90,10 +90,10 @@ openfluid::core::UnstructuredValue::UnstructuredType GeoRasterValue::getType() c
 // =====================================================================
 // =====================================================================
 
-GDALDataset* GeoRasterValue::get(bool UpdateMode)
+GDALDataset* GeoRasterValue::get()
 {
   if (!mp_Data)
-    tryToOpenSource(UpdateMode);
+    tryToOpenSource();
 
   return mp_Data;
 }
@@ -101,7 +101,7 @@ GDALDataset* GeoRasterValue::get(bool UpdateMode)
 // =====================================================================
 // =====================================================================
 
-void GeoRasterValue::tryToOpenSource(bool /*UpdateMode*/)
+void GeoRasterValue::tryToOpenSource()
 {
   // GDALOpenShared to allow copy then close of this raster in virtual format (see http://www.gdal.org/gdal_vrttut.html)
   mp_Data = static_cast<GDALDataset*>(GDALOpenShared(m_AbsolutePath.c_str(),

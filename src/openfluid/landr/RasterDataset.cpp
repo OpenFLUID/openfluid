@@ -73,7 +73,7 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
 {
   GDALAllRegister();
 
-  GDALDataset* DS = Value.get(false);
+  GDALDataset* DS = Value.get();
 
   // GDAL supports many raster formats for reading, but significantly less formats for writing
   // (see http://www.gdal.org/gdal_vrttut.html)

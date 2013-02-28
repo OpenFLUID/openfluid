@@ -105,20 +105,26 @@ class VectorDataset
   public:
 
     /**
-     * Create a new empty OGRDatasource in the openfluid temp directory, with filename suffixes with timestamp
+     * @brief Create a new empty OGRDatasource in the openfluid temp directory, with filename suffixes with timestamp
      * @param FileName The name of the file to create
      * @param DriverName The name of the OGR driver to use, default is "ESRI Shapefile"
+     * @throw openfluid::base::OFException if fails
      */
     VectorDataset(std::string FileName, std::string DriverName =
         "ESRI Shapefile");
 
     /**
-     * Create in the openfluid temp directory a copy of Value OGRDatasource,
+     * @brief Create in the openfluid temp directory a copy of Value OGRDatasource,
      * using Value filename suffixed with timestamp as filename
      * @param Value The GeoVectorValue to copy
+     * @throw openfluid::base::OFException if fails
      */
     VectorDataset(openfluid::core::GeoVectorValue& Value);
 
+    /**
+     * @brief Copy constructor
+     * @throw openfluid::base::OFException if fails
+     */
     VectorDataset(const VectorDataset& Other);
 
     /**

@@ -73,10 +73,7 @@ class GeoValue: public openfluid::core::UnstructuredValue
 
     std::string m_AbsolutePath;
 
-    /**
-     * @param UpdateMode False for read-only access (the default) or True for read-write access.
-     */
-    virtual void tryToOpenSource(bool UpdateMode) = 0;
+    virtual void tryToOpenSource() = 0;
 
   public:
 
