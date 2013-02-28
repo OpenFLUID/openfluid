@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string MarketBagBinSubDir = boost::filesystem::path("bin").string();;
   std::string MarketBagSrcSubDir = boost::filesystem::path("src").string();;
 
-//  openfluid::market::MarketPackage::initialize(false);
+// openfluid::market::MarketPackage::initialize(false);
 
   openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagFunctionDir,MarketBagObserverDir,MarketBagBinSubDir,MarketBagSrcSubDir);
 
@@ -113,39 +113,45 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MC.getMarketInfo(MI);
   BOOST_REQUIRE_EQUAL(MI.Name,"OpenFLUID-Market for tests");
 
-  openfluid::market::MetaPackagesCatalog_t PC = MC.getMetaPackagesCatalog();
+  openfluid::market::TypesMetaPackagesCatalogs_t TPC = MC.getTypesMetaPackagesCatalogs();
 
-  std::cout << "Meta-packages count: " << PC.size() << std::endl;
-
+  openfluid::market::TypesMetaPackagesCatalogs_t::iterator TPCit;
   openfluid::market::MetaPackagesCatalog_t::iterator PCit;
 
+  MC.displayPackages();
 
-  for (PCit = PC.begin(); PCit!=PC.end(); ++PCit)
+
+  for (TPCit = TPC.begin(); TPCit != TPC.end(); ++TPCit)
   {
-    std::cout << "############ " << PCit->first << " ############" << std::endl;
-    std::cout << "ID: " << PCit->second.ID << std::endl;
+    //std::cout << "Meta-packages count: " << TPCit->second.size() << std::endl;
 
-    if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != PCit->second.AvailablePackages.end())
+    for (PCit = TPCit->second.begin(); PCit != TPCit->second.end(); ++PCit)
     {
-      std::cout << "BIN | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].URL << std::endl;
-/*      std::cout << "BIN | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Name << std::endl;
-      std::cout << "BIN | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Description << std::endl;
-      std::cout << "BIN | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Authors << std::endl;*/
-      std::cout << "BIN | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].License << std::endl;
+      //std::cout << "############ " << PCit->first << " ############" << std::endl;
+      //std::cout << "ID: " << PCit->second.ID << std::endl;
+
+      if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != PCit->second.AvailablePackages.end())
+      {
+  /*      std::cout << "BIN | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].URL << std::endl;
+        std::cout << "BIN | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Name << std::endl;
+        std::cout << "BIN | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Description << std::endl;
+        std::cout << "BIN | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Authors << std::endl;
+        std::cout << "BIN | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].License << std::endl;
+*/
+      }
+
+      if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != PCit->second.AvailablePackages.end())
+      {
+  /*      std::cout << "SRC | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].URL << std::endl;
+        std::cout << "SRC | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Name << std::endl;
+        std::cout << "SRC | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Description << std::endl;
+        std::cout << "SRC | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;
+        std::cout << "SRC | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].License << std::endl;
+*/      }
+
+      BOOST_REQUIRE_EQUAL(PCit->second.Selected,openfluid::market::MetaPackageInfo::NONE);
 
     }
-
-    if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != PCit->second.AvailablePackages.end())
-    {
-      std::cout << "SRC | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].URL << std::endl;
-/*      std::cout << "SRC | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Name << std::endl;
-      std::cout << "SRC | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Description << std::endl;
-      std::cout << "SRC | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;*/
-      std::cout << "SRC | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].License << std::endl;
-    }
-
-    BOOST_REQUIRE_EQUAL(PCit->second.Selected,openfluid::market::MetaPackageInfo::NONE);
-
   }
 
   BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::BIN));

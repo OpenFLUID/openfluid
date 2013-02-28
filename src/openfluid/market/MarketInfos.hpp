@@ -136,6 +136,8 @@ class DLLEXPORT MetaPackageInfo
 
     enum SelectionType { NONE, BIN, SRC};
 
+    enum TypePackage { FUNC, OBS, BUILD, DATA};
+
     openfluid::ware::WareID_t ID;
 
     std::map<SelectionType,PackageInfo> AvailablePackages;
