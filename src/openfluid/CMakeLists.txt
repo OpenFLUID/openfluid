@@ -19,7 +19,9 @@ IF(OPENFLUID_ENABLE_GUI)
 ENDIF()
 
 
-ADD_SUBDIRECTORY(landr)
+IF(OPENFLUID_ENABLE_LANDR)
+  ADD_SUBDIRECTORY(landr)
+ENDIF()  
 
 
 INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp market.hpp 
