@@ -226,14 +226,6 @@ bool Event::getInfoAsDouble(const std::string Key, double& Info) const
 // =====================================================================
 // =====================================================================
 
-bool Event::getInfoAsScalarValue(const std::string Key, double* Info) const
-{
-  return getInfoAsDouble(Key,*Info);
-}
-
-// =====================================================================
-// =====================================================================
-
 
 bool Event::getInfoAsDoubleValue(const std::string Key, DoubleValue& Info) const
 {
