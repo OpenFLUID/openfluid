@@ -282,6 +282,23 @@ SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS api-Fluid
 ###########################################################################
 
 
+FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/FindOpenFLUID")
+  
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleCheck
+                   COMMAND "${CMAKE_COMMAND}"
+                             "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/FindOpenFLUID" 
+                             "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
+                             "${CMAKE_CURRENT_SOURCE_DIR}/FindOpenFLUID"
+                             "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                             "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
+                             "-DTEST_SEARCH_PATHS1=${CMAKE_BINARY_DIR}/src"
+                             "-DTEST_SEARCH_PATHS2=${CMAKE_SOURCE_DIR}/src"
+                   PRE_TEST EMPTY_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/FindOpenFLUID")                                                                                          
+
+
+###########################################################################
+
+
 FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.func.cmake")
   
 OPENFLUID_ADD_TEST(NAME integration-CMakeModuleFunctionConfigure

@@ -12,14 +12,16 @@ ADD_SUBDIRECTORY(market)
 ADD_SUBDIRECTORY(buddies)
 
 IF(OPENFLUID_ENABLE_GUI)
-  ADD_SUBDIRECTORY(builderext)
+  ADD_SUBDIRECTORY(guicommon)
   IF (BUILD_APP_BUILDER)
-    ADD_SUBDIRECTORY(guicommon)
+    ADD_SUBDIRECTORY(builderext)
   ENDIF()
 ENDIF()
 
 
-ADD_SUBDIRECTORY(landr)
+IF(OPENFLUID_ENABLE_LANDR)
+  ADD_SUBDIRECTORY(landr)
+ENDIF()  
 
 
 INSTALL(FILES base.hpp buddies.hpp core.hpp machine.hpp fluidx.hpp tools.hpp market.hpp 
