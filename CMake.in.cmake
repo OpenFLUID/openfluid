@@ -143,12 +143,14 @@ SET(OPENFLUID_OBSERVERS_SUFFIX "_ofware-obs")
 SET(DEBUG_PREFIX "[OpenFLUID debug]")
 
 
+################### library build ###################
+
+SET(OPENFLUID_ENABLE_LANDR 1)
+
+
 ################### applications build ###################
 
 SET(OPENFLUID_ENABLE_GUI 0)
-
-
-################### applications build ###################
 
 # set this to 1 to build openfluid-engine
 SET(BUILD_APP_ENGINE 1)

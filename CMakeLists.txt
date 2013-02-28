@@ -111,6 +111,12 @@ MESSAGE(STATUS "Compiler flags for build: ${CMAKE_CXX_FLAGS_${BUILD_TYPE_STR}}")
 MESSAGE(STATUS "Install prefix: ${CMAKE_INSTALL_PREFIX}")
 MESSAGE(STATUS "****************************************")
 
+IF(OPENFLUID_ENABLE_LANDR)
+  MESSAGE(STATUS "Build openfluid-landr library : yes")  
+ELSE()
+  MESSAGE(STATUS "Build openfluid-landr library : no")  
+ENDIF()
+
 IF(BUILD_APP_ENGINE)
   MESSAGE(STATUS "Build openfluid-engine application : yes")  
 ELSE()
@@ -122,7 +128,6 @@ IF(BUILD_APP_MINIMAL)
 ELSE()
   MESSAGE(STATUS "Build openfluid-minimal application : no")  
 ENDIF()
-
 
 IF(OPENFLUID_ENABLE_GUI)
   MESSAGE(STATUS "Build openfluid-guicommon library : yes")  

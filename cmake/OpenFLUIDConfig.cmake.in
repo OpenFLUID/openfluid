@@ -178,16 +178,7 @@ ENDIF()
 MESSAGE(STATUS "Found OpenFLUID version ${_OpenFLUID_VERSION}")
 
 SET(_OpenFLUID_FIND_COMPONENTS
-  core
-  base
-  tools
-  fluidx
-  market
-  machine
-  buddies
-  guicommon
-  builderext
-  landr
+  @OPNFLD_COMPONENTS_DEFAULT_LIST@
 )
 
 
@@ -200,25 +191,46 @@ SET(_OpenFLUID_LIBRARIES)
 FOREACH(COMPONENT ${_OpenFLUID_FIND_COMPONENTS})
   STRING(TOUPPER ${COMPONENT} UPPERCOMPONENT)
 
-  FIND_LIBRARY(_OpenFLUID_${UPPERCOMPONENT}_LIBRARY
-    NAMES
-      openfluid-${COMPONENT}
-    HINTS
-      ${_OpenFLUID_SEARCH_DIRS}
-    PATH_SUFFIXES
-      lib lib64
+
+  IF(${COMPONENT} STREQUAL "builderext")
+  # specific case of the builderext component which is header only 
+  
+    FIND_FILE(_OpenFLUID_${UPPERCOMPONENT}_HEADER
+      NAMES
+        openfluid/builderext/PluggableBuilderExtension.hpp
+      HINTS
+        ${_OpenFLUID_SEARCH_DIRS}
+      PATH_SUFFIXES
+        include        
     )
     
-  IF("${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" STREQUAL "_OpenFLUID_${UPPERCOMPONENT}_LIBRARY-NOTFOUND")
-    _OpenFLUID_RETURN("library ${COMPONENT} not found!")
-  ELSE()      
-    LIST(APPEND _OpenFLUID_LIBRARIES "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}")
-    MESSAGE(STATUS "    ${COMPONENT}")
+    IF("${_OpenFLUID_${UPPERCOMPONENT}_HEADER}" STREQUAL "_OpenFLUID_${UPPERCOMPONENT}_HEADER-NOTFOUND")
+      _OpenFLUID_RETURN("header for component ${COMPONENT} not found!")
+    ELSE()
+      MESSAGE(STATUS "    ${COMPONENT}")  
+    ENDIF()    
+  ELSE()
+
+    FIND_LIBRARY(_OpenFLUID_${UPPERCOMPONENT}_LIBRARY
+      NAMES
+        openfluid-${COMPONENT}
+      HINTS
+        ${_OpenFLUID_SEARCH_DIRS}
+      PATH_SUFFIXES
+        lib lib64
+      )
     
-    IF(NOT _OpenFLUID_LIBRARY_DIR)
-      GET_FILENAME_COMPONENT(_DIR "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" PATH)
-      SET(_OpenFLUID_LIBRARY_DIR "${_DIR}")      
+    IF("${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" STREQUAL "_OpenFLUID_${UPPERCOMPONENT}_LIBRARY-NOTFOUND")
+      _OpenFLUID_RETURN("library for component ${COMPONENT} not found!")
+    ELSE()      
+      LIST(APPEND _OpenFLUID_LIBRARIES "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}")
+      MESSAGE(STATUS "    ${COMPONENT}")   
+      IF(NOT _OpenFLUID_LIBRARY_DIR)
+        GET_FILENAME_COMPONENT(_DIR "${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" PATH)
+        SET(_OpenFLUID_LIBRARY_DIR "${_DIR}")      
+      ENDIF()
     ENDIF()
+      
   ENDIF()  
 ENDFOREACH()
 
