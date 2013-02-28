@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string MarketBagBinSubDir = boost::filesystem::path("bin").string();;
   std::string MarketBagSrcSubDir = boost::filesystem::path("src").string();;
 
-// openfluid::market::MarketPackage::initialize(false);
+//  openfluid::market::MarketPackage::initialize(false);
 
   openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagFunctionDir,MarketBagObserverDir,MarketBagBinSubDir,MarketBagSrcSubDir);
 
@@ -154,17 +154,30 @@ BOOST_AUTO_TEST_CASE(check_operations)
     }
   }
 
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.dummy"),openfluid::market::MetaPackageInfo::BIN);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::SRC));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.dummy"),openfluid::market::MetaPackageInfo::SRC);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.dummy"),openfluid::market::MetaPackageInfo::NONE);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.func.dummy",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.func.dummy"),openfluid::market::MetaPackageInfo::BIN);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.func.dummy",openfluid::market::MetaPackageInfo::SRC));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.func.dummy"),openfluid::market::MetaPackageInfo::SRC);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.func.dummy",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.func.dummy"),openfluid::market::MetaPackageInfo::NONE);
 
 
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.binonly.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.func.dummy",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.func.binonly.dummy",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.func.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
+
+
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.dummy",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs.dummy"),openfluid::market::MetaPackageInfo::BIN);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.dummy",openfluid::market::MetaPackageInfo::SRC));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs.dummy"),openfluid::market::MetaPackageInfo::SRC);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.dummy",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs.dummy"),openfluid::market::MetaPackageInfo::NONE);
+
+
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.dummy",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.binonly.dummy",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
 
 
   //MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);

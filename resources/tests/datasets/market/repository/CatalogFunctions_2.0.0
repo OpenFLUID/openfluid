@@ -1,42 +1,42 @@
 
 
-[tests.market.dummy]
+[tests.market.func.dummy]
 
 name = package for tests
 description = This func is a test ...
 authors = 
 
 arch.linux-x86-64.license = INRA-wosrc
-arch.linux-x86-64.file = tests.market.dummy_2.0.0_linux-x86-64.ofpk
+arch.linux-x86-64.file = tests.market.func.dummy_2.0.0_linux-x86-64.ofpk
 
-arch.linux-i386.file = tests.market.dummy_2.0.0_linux-i386.ofpk
+arch.linux-i386.file = tests.market.func.dummy_2.0.0_linux-i386.ofpk
 arch.linux-i386.license = INRA-wosrc
 
-arch.src.file = tests.market.dummy_2.0.0_src.ofpk
+arch.src.file = tests.market.func.dummy_2.0.0_src.ofpk
 arch.src.license = GPLv3-OF
 
 
 
-[tests.market.binonly.dummy]
+[tests.market.func.binonly.dummy]
 name = package for tests
 description = This func is a test ...
 authors = 
 
 arch.linux-x86-64.license = INRA-wosrc
-arch.linux-x86-64.file = tests.market.binonly.dummy_2.0.0_linux-x86-64.ofpk
+arch.linux-x86-64.file = tests.market.func.binonly.dummy_2.0.0_linux-x86-64.ofpk
 
 arch.linux-i386.license = INRA-wosrc
-arch.linux-i386.file = tests.market.binonly.dummy_2.0.0_linux-i386.ofpk
+arch.linux-i386.file = tests.market.func.binonly.dummy_2.0.0_linux-i386.ofpk
 
 
 
 
-[tests.market.srconly.dummy]
+[tests.market.func.srconly.dummy]
 name = package for tests
 description = This func is a test ...
 authors = 
 
-arch.src.file = tests.market.srconly.dummy_2.0.0_src.ofpk
+arch.src.file = tests.market.func.srconly.dummy_2.0.0_src.ofpk
 arch.src.license = INRA-src
 
 
