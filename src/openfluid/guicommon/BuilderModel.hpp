@@ -96,6 +96,8 @@ class BuilderModel
 
     std::vector<std::string> getOrderedIDs();
 
+    std::string getID(openfluid::fluidx::ModelItemDescriptor* Item);
+
     void appendItem(openfluid::fluidx::ModelItemDescriptor* Item);
 
     /**

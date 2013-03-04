@@ -58,6 +58,9 @@ namespace openfluid {
 namespace guicommon {
 class BuilderDescriptor;
 }
+namespace fluidx {
+class ModelItemDescriptor;
+}
 }
 
 #ifndef PROJECTCHECKER_HPP_
@@ -69,7 +72,32 @@ class ProjectChecker
 
     openfluid::guicommon::BuilderDescriptor* mp_Desc;
 
+    bool m_RandomMinMaxChecked;
+    bool m_InterpMinMaxChecked;
+    bool m_InjectMinMaxChecked;
+
+    void clearAll();
+
     bool getGlobalCheckState();
+
+    void checkModelRequirements();
+
+    void checkModelVars();
+
+    void checkGeneratorParam(std::string MinParamName, std::string MaxParamName,
+                             openfluid::fluidx::ModelItemDescriptor* Item,
+                             std::string ItemId);
+
+  protected:
+
+    bool isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
+                    std::string ParamName);
+
+    bool isParamSetAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                            std::string ParamName);
+
+    double getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                            std::string ParamName);
 
   public:
 

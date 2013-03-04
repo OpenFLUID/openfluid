@@ -60,11 +60,42 @@
 #include <boost/test/auto_unit_test.hpp>
 
 #include "tests-config.hpp"
-//#include "BuilderTestHelper.hpp"
 #include "ProjectChecker.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/base/OFException.hpp>
 
+// =====================================================================
+// =====================================================================
+
+class ProjectCheckerSub: public ProjectChecker
+{
+  public:
+    ProjectCheckerSub(openfluid::guicommon::BuilderDescriptor& Desc) :
+        ProjectChecker(Desc)
+    {
+    }
+
+    bool isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
+                    std::string ParamName)
+    {
+      return ProjectChecker::isParamSet(Item, ParamName);
+    }
+
+    bool isParamSetAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                            std::string ParamName)
+    {
+      return ProjectChecker::isParamSetAsDouble(Item, ParamName);
+    }
+
+    double getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                            std::string ParamName)
+    {
+      return ProjectChecker::getParamAsDouble(Item, ParamName);
+    }
+};
 // =====================================================================
 // =====================================================================
 
@@ -80,8 +111,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   BOOST_CHECK(!PC.IsProjectOk);
   BOOST_CHECK(!PC.IsModelOk);
-  BOOST_CHECK(!PC.IsParamsOk);
-  BOOST_CHECK(!PC.IsGeneratorParamsOk);
+  BOOST_CHECK(PC.IsParamsOk);
+  BOOST_CHECK(PC.IsGeneratorParamsOk);
   BOOST_CHECK(!PC.IsDomainOk);
   BOOST_CHECK(!PC.IsInputdataOk);
   BOOST_CHECK(!PC.IsExtraFilesOk);
@@ -99,25 +130,69 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_check)
+BOOST_AUTO_TEST_CASE(check_isParamSet)
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+      CONFIGTESTS_OUTPUT_BINARY_DIR);
+  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
+
+  openfluid::guicommon::BuilderDescriptor Desc(FXDesc);
+
+  ProjectCheckerSub PC(Desc);
+
+  openfluid::fluidx::ModelItemDescriptor* InterpGen = Desc.getModel().getItemAt(
+      3);
+
+  BOOST_CHECK(PC.isParamSet(InterpGen,"sources"));
+  BOOST_CHECK(!PC.isParamSetAsDouble(InterpGen,"sources"));
+  BOOST_CHECK_THROW(PC.getParamAsDouble(InterpGen,"sources"),
+                    openfluid::base::OFException);
+
+  BOOST_CHECK(PC.isParamSet(InterpGen,"thresholdmax"));
+  BOOST_CHECK(PC.isParamSetAsDouble(InterpGen,"thresholdmax"));
+  BOOST_CHECK_CLOSE(PC.getParamAsDouble(InterpGen,"thresholdmax"), 12.8,
+                    0.0001);
+
+  BOOST_CHECK(PC.isParamSet(InterpGen,"thresholdmin"));
+  BOOST_CHECK(PC.isParamSetAsDouble(InterpGen,"thresholdmin"));
+  BOOST_CHECK_CLOSE(PC.getParamAsDouble(InterpGen,"thresholdmin"), 12.7,
+                    0.0001);
+
+  openfluid::fluidx::ModelItemDescriptor* InjectGen = Desc.getModel().getItemAt(
+      4);
+  BOOST_CHECK(PC.isParamSet(InjectGen,"thresholdmin"));
+  BOOST_CHECK(PC.isParamSetAsDouble(InjectGen,"thresholdmin"));
+  BOOST_CHECK_CLOSE(PC.getParamAsDouble(InjectGen,"thresholdmin"), 1.7, 0.0001);
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_check)
+{
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+      CONFIGTESTS_OUTPUT_BINARY_DIR);
+  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
 
   openfluid::guicommon::BuilderDescriptor Desc(FXDesc);
 
   ProjectChecker PC(Desc);
   bool GlobalState = PC.check();
 
-  BOOST_CHECK(!PC.IsProjectOk);
-  BOOST_CHECK(!PC.IsModelOk);
-  BOOST_CHECK(!PC.IsParamsOk);
-  BOOST_CHECK(!PC.IsGeneratorParamsOk);
-  BOOST_CHECK(!PC.IsDomainOk);
-  BOOST_CHECK(!PC.IsInputdataOk);
-  BOOST_CHECK(!PC.IsExtraFilesOk);
-  BOOST_CHECK(!PC.IsRunConfigOk);
+  BOOST_CHECK(PC.IsProjectOk);
+  BOOST_CHECK(PC.IsModelOk);
+  BOOST_CHECK(PC.IsParamsOk);
+  BOOST_CHECK(PC.IsGeneratorParamsOk);
+  BOOST_CHECK(PC.IsDomainOk);
+  BOOST_CHECK(PC.IsInputdataOk);
+  BOOST_CHECK(PC.IsExtraFilesOk);
+  BOOST_CHECK(PC.IsRunConfigOk);
 
   BOOST_CHECK(PC.ProjectMsg.empty());
   BOOST_CHECK(PC.ModelMsg.empty());
@@ -127,7 +202,51 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(PC.RunConfigMsg.empty());
 
-  BOOST_CHECK(!GlobalState);
+  BOOST_CHECK(GlobalState);
+
+  openfluid::fluidx::ModelItemDescriptor* RandomGen = Desc.getModel().getItemAt(
+      2);
+
+  RandomGen->setParameter("min", "12.8");
+  PC.check();
+  BOOST_CHECK(!PC.IsGeneratorParamsOk);
+  BOOST_CHECK_EQUAL(
+      PC.ParamsMsg,
+      "- min >= max in " + static_cast<openfluid::fluidx::GeneratorDescriptor*>(RandomGen)->getGeneratedID() + "\n");
+
+  RandomGen->setParameter("min", "12.7");
+  PC.check();
+  BOOST_CHECK(PC.IsGeneratorParamsOk);
+  BOOST_CHECK(PC.ParamsMsg.empty());
+
+  Desc.getModel().setGlobalParameter("min", "12.8");
+  PC.check();
+  BOOST_CHECK(PC.IsGeneratorParamsOk);
+  BOOST_CHECK(PC.ParamsMsg.empty());
+
+  RandomGen->setParameter("min", "");
+  PC.check();
+  BOOST_CHECK(!PC.IsGeneratorParamsOk);
+  BOOST_CHECK_EQUAL(
+      PC.ParamsMsg,
+      "- min >= max in " + static_cast<openfluid::fluidx::GeneratorDescriptor*>(RandomGen)->getGeneratedID() + "\n");
+
+  openfluid::fluidx::GeneratorDescriptor Gen(
+      "aVar", "aUnit", openfluid::fluidx::GeneratorDescriptor::Fixed);
+  Desc.getModel().appendItem(&Gen);
+  GlobalState = PC.check();
+  BOOST_CHECK(!PC.IsProjectOk);
+  BOOST_CHECK_EQUAL(
+      PC.ProjectMsg,
+      "- Unit class aUnit doesn't exist for variable generated by " + Gen.getGeneratedID() + "\n");
+
+  openfluid::fluidx::UnitDescriptor U;
+  U.getUnitClass() = "aUnit";
+  U.getUnitID() = 1;
+  Desc.getDomain().addUnit(&U);
+  GlobalState = PC.check();
+  BOOST_CHECK(PC.IsProjectOk);
+  BOOST_CHECK(PC.ProjectMsg.empty());
 }
 
 // =====================================================================

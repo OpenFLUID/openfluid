@@ -66,7 +66,6 @@
 #include "EngineProject.hpp"
 #include "BuilderModuleFactory.hpp"
 #include "ProjectDashboard.hpp"
-#include "BuilderPretestInfo.hpp"
 #include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
 
