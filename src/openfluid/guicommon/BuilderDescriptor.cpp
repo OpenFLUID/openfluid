@@ -60,12 +60,14 @@ namespace guicommon {
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::BuilderDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+BuilderDescriptor::BuilderDescriptor(
+    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
 {
   mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
   mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
   mp_RunDesc = &(FluidXDesc.getRunDescriptor());
   mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
+  mp_MonitoringDescriptor = &(FluidXDesc.getMonitoringDescriptor());
 }
 
 // =====================================================================
@@ -111,5 +113,14 @@ openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescripto
 // =====================================================================
 // =====================================================================
 
-}} // namespaces
+openfluid::fluidx::MonitoringDescriptor& BuilderDescriptor::getMonitoringDescriptor()
+{
+  return *mp_MonitoringDescriptor;
+}
+
+// =====================================================================
+// =====================================================================
+
+}
+} // namespaces
 

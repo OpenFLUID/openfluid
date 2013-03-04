@@ -117,6 +117,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK(!PC.IsInputdataOk);
   BOOST_CHECK(!PC.IsExtraFilesOk);
   BOOST_CHECK(!PC.IsRunConfigOk);
+  BOOST_CHECK(!PC.IsMonitoringOk);
 
   BOOST_CHECK(PC.ProjectMsg.empty());
   BOOST_CHECK(PC.ModelMsg.empty());
@@ -125,6 +126,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK(PC.InputdataMsg.empty());
   BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(PC.RunConfigMsg.empty());
+  BOOST_CHECK(PC.MonitoringMsg.empty());
 }
 
 // =====================================================================
@@ -193,6 +195,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(PC.IsInputdataOk);
   BOOST_CHECK(PC.IsExtraFilesOk);
   BOOST_CHECK(PC.IsRunConfigOk);
+  BOOST_CHECK(PC.IsMonitoringOk);
 
   BOOST_CHECK(PC.ProjectMsg.empty());
   BOOST_CHECK(PC.ModelMsg.empty());
@@ -201,6 +204,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(PC.InputdataMsg.empty());
   BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(PC.RunConfigMsg.empty());
+  BOOST_CHECK(PC.MonitoringMsg.empty());
 
   BOOST_CHECK(GlobalState);
 
@@ -234,7 +238,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   openfluid::fluidx::GeneratorDescriptor Gen(
       "aVar", "aUnit", openfluid::fluidx::GeneratorDescriptor::Fixed);
   Desc.getModel().appendItem(&Gen);
-  GlobalState = PC.check();
+  PC.check();
   BOOST_CHECK(!PC.IsProjectOk);
   BOOST_CHECK_EQUAL(
       PC.ProjectMsg,
@@ -244,9 +248,14 @@ BOOST_AUTO_TEST_CASE(check_check)
   U.getUnitClass() = "aUnit";
   U.getUnitID() = 1;
   Desc.getDomain().addUnit(&U);
-  GlobalState = PC.check();
+  PC.check();
   BOOST_CHECK(PC.IsProjectOk);
   BOOST_CHECK(PC.ProjectMsg.empty());
+
+  Desc.getMonitoringDescriptor().getItems().clear();
+  PC.check();
+  BOOST_CHECK(!PC.IsMonitoringOk);
+  BOOST_CHECK_EQUAL(PC.MonitoringMsg,"No observer defined");
 }
 
 // =====================================================================

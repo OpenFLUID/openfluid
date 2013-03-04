@@ -109,6 +109,7 @@ class ProjectChecker
     bool IsGeneratorParamsOk;
     bool IsExtraFilesOk;
     bool IsRunConfigOk;
+    bool IsMonitoringOk;
 
     std::string ProjectMsg;
     std::string ModelMsg;
@@ -117,6 +118,7 @@ class ProjectChecker
     std::string InputdataMsg;
     std::string ExtraFilesMsg;
     std::string RunConfigMsg;
+    std::string MonitoringMsg;
 
     ProjectChecker(openfluid::guicommon::BuilderDescriptor& Desc);
 

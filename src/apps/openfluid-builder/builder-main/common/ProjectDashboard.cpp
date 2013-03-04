@@ -55,7 +55,6 @@
 #include "ProjectDashboard.hpp"
 
 #include "BuilderGraphicsHelper.hpp"
-#include "EngineHelper.hpp"
 #include "ProjectChecker.hpp"
 
 ProjectDashboard::ProjectDashboard()
@@ -101,9 +100,7 @@ void ProjectDashboard::setCheckInfo(const ProjectChecker& Checker)
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Model definition");
   Row[m_Columns.m_StateIcon] = Checker.IsModelOk ? m_GreenIcon : m_RedIcon;
-  Row[m_Columns.m_StateInfo] =
-      Checker.IsModelOk ? "ok" :
-                          EngineHelper::minimiseInfoString(Checker.ModelMsg);
+  Row[m_Columns.m_StateInfo] = Checker.IsModelOk ? "ok" : Checker.ModelMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Model parameters");
@@ -126,9 +123,7 @@ void ProjectDashboard::setCheckInfo(const ProjectChecker& Checker)
   Row[m_Columns.m_Title] = _("Required files");
   Row[m_Columns.m_StateIcon] = Checker.IsExtraFilesOk ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] =
-      Checker.IsExtraFilesOk ? "ok" :
-                               EngineHelper::minimiseInfoString(
-                                   Checker.ExtraFilesMsg);
+      Checker.IsExtraFilesOk ? "ok" : Checker.ExtraFilesMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Spatial representation");
@@ -139,9 +134,7 @@ void ProjectDashboard::setCheckInfo(const ProjectChecker& Checker)
   Row[m_Columns.m_Title] = _("Inputdata");
   Row[m_Columns.m_StateIcon] = Checker.IsInputdataOk ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] =
-      Checker.IsInputdataOk ? "ok" :
-                              EngineHelper::minimiseInfoString(
-                                  Checker.InputdataMsg);
+      Checker.IsInputdataOk ? "ok" : Checker.InputdataMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Project consistency");
@@ -153,6 +146,12 @@ void ProjectDashboard::setCheckInfo(const ProjectChecker& Checker)
   Row[m_Columns.m_StateIcon] = Checker.IsRunConfigOk ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] =
       Checker.IsRunConfigOk ? "ok" : Checker.RunConfigMsg;
+
+  Row = *mref_TreeModel->append();
+  Row[m_Columns.m_Title] = _("Monitoring");
+  Row[m_Columns.m_StateIcon] = Checker.IsMonitoringOk ? m_GreenIcon : m_OrangeIcon;
+  Row[m_Columns.m_StateInfo] =
+      Checker.IsMonitoringOk ? "ok" : Checker.MonitoringMsg;
 }
 
 // =====================================================================

@@ -84,6 +84,7 @@ void ProjectChecker::clearAll()
   IsGeneratorParamsOk = true;
   IsExtraFilesOk = false;
   IsRunConfigOk = false;
+  IsMonitoringOk = false;
 
   ProjectMsg = "";
   ModelMsg = "";
@@ -92,6 +93,7 @@ void ProjectChecker::clearAll()
   InputdataMsg = "";
   ExtraFilesMsg = "";
   RunConfigMsg = "";
+  MonitoringMsg = "";
 }
 
 // =====================================================================
@@ -122,12 +124,16 @@ bool ProjectChecker::check()
   if (mp_Desc->getRunDescriptor().getBeginDate() >= mp_Desc->getRunDescriptor().getEndDate())
     RunConfigMsg = "End date must be after begin date in run period";
 
+  if(mp_Desc->getMonitoringDescriptor().getItems().empty())
+    MonitoringMsg = "No observer defined";
+
   IsExtraFilesOk = ExtraFilesMsg.empty();
   IsInputdataOk = InputdataMsg.empty();
   IsModelOk = ModelMsg.empty();
   IsDomainOk = DomainMsg.empty();
   IsRunConfigOk = RunConfigMsg.empty();
   IsProjectOk = ProjectMsg.empty();
+  IsMonitoringOk = MonitoringMsg.empty();
 
   return getGlobalCheckState();
 }
@@ -373,6 +379,7 @@ void ProjectChecker::checkModelVars()
       if (!Domain.isClassNameExists(itt->UnitClass))
         ProjectMsg += "- Unit class " + itt->UnitClass + " doesn't exist for "
                       + itt->DataName + " variable produced by " + ID + "\n";
+
       if (!VarsUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
       {
         VarsUnits.insert(std::make_pair(itt->UnitClass, itt->DataName));
