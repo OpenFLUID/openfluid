@@ -84,6 +84,8 @@ class WareDescriptor
     openfluid::ware::WareParams_t getParameters();
 
     bool isType(ModelItemType MIType) const;
+
+    void eraseParameter(const openfluid::ware::WareParamKey_t& Key);
 };
 
 

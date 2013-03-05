@@ -117,5 +117,12 @@ bool WareDescriptor::isType(ModelItemType MIType) const
   return (m_ModelItemType == MIType);
 }
 
+// =====================================================================
+// =====================================================================
+
+void WareDescriptor::eraseParameter(const openfluid::ware::WareParamKey_t& Key)
+{
+  m_Params.erase(Key);
+}
 
 } } // namespaces
