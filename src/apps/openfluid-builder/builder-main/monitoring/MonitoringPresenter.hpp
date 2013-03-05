@@ -46,81 +46,31 @@
  */
 
 /**
- \file BuilderDescriptor.cpp
- \brief Implements ...
+ \file MonitoringPresenter.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#ifndef MONITORINGPRESENTER_HPP_
+#define MONITORINGPRESENTER_HPP_
 
-namespace openfluid {
-namespace guicommon {
+class MonitoringModel;
+class MonitoringView;
 
-// =====================================================================
-// =====================================================================
-
-BuilderDescriptor::BuilderDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+class MonitoringPresenter
 {
-  mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
-  mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_MonitoringDescriptor = &(FluidXDesc.getMonitoringDescriptor());
-}
+  private:
 
-// =====================================================================
-// =====================================================================
+    MonitoringModel& m_Model;
 
-BuilderDescriptor::~BuilderDescriptor()
-{
+    MonitoringView& m_View;
 
-}
+  public:
 
-// =====================================================================
-// =====================================================================
+    MonitoringPresenter(MonitoringModel& Model, MonitoringView& View);
 
-BuilderDomain& BuilderDescriptor::getDomain()
-{
-  return *mp_Domain;
-}
+    ~MonitoringPresenter();
+};
 
-// =====================================================================
-// =====================================================================
-
-BuilderModel& BuilderDescriptor::getModel()
-{
-  return *mp_Model;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::RunDescriptor& BuilderDescriptor::getRunDescriptor()
-{
-  return *mp_RunDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescriptor()
-{
-  return *mp_DatastoreDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::MonitoringDescriptor& BuilderDescriptor::getMonitoringDescriptor()
-{
-  return *mp_MonitoringDescriptor;
-}
-
-// =====================================================================
-// =====================================================================
-
-}} // namespaces
-
-
+#endif /* MONITORINGPRESENTER_HPP_ */

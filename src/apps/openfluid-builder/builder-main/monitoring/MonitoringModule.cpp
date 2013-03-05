@@ -46,81 +46,70 @@
  */
 
 /**
- \file BuilderDescriptor.cpp
+ \file MonitoringModule.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
+#include "MonitoringModule.hpp"
+
 #include <openfluid/guicommon/BuilderDescriptor.hpp>
-
-namespace openfluid {
-namespace guicommon {
+#include "MonitoringComponent.hpp"
 
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::BuilderDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+MonitoringModule::MonitoringModule(
+    openfluid::guicommon::BuilderDescriptor& BuilderDesc) :
+    ProjectWorkspaceModule(BuilderDesc)
 {
-  mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
-  mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_MonitoringDescriptor = &(FluidXDesc.getMonitoringDescriptor());
+  mp_MainPanel = 0;
+
+  mp_MonitoringMVP = new MonitoringComponent(
+      BuilderDesc.getMonitoringDescriptor());
 }
 
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::~BuilderDescriptor()
+MonitoringModule::~MonitoringModule()
 {
-
+  delete mp_MonitoringMVP;
 }
 
 // =====================================================================
 // =====================================================================
 
-BuilderDomain& BuilderDescriptor::getDomain()
+void MonitoringModule::compose()
 {
-  return *mp_Domain;
+  mp_MainPanel = Gtk::manage(new Gtk::VBox());
+
+  mp_MainPanel->set_border_width(5);
+  mp_MainPanel->pack_start(*mp_MonitoringMVP->asWidget());
+
+  mp_MainPanel->set_visible(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-BuilderModel& BuilderDescriptor::getModel()
+Gtk::Widget* MonitoringModule::asWidget()
 {
-  return *mp_Model;
+  if (mp_MainPanel)
+    return mp_MainPanel;
+  throw std::logic_error(
+      "MonitoringModule : you try to get a widget from a non yet composed module.");
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::fluidx::RunDescriptor& BuilderDescriptor::getRunDescriptor()
+sigc::signal<void> MonitoringModule::signal_ModuleChanged()
 {
-  return *mp_RunDesc;
+  return m_signal_MonitoringChanged;
 }
 
 // =====================================================================
 // =====================================================================
-
-openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescriptor()
-{
-  return *mp_DatastoreDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::MonitoringDescriptor& BuilderDescriptor::getMonitoringDescriptor()
-{
-  return *mp_MonitoringDescriptor;
-}
-
-// =====================================================================
-// =====================================================================
-
-}} // namespaces
-
 

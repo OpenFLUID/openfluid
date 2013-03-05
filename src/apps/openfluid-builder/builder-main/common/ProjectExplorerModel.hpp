@@ -85,15 +85,11 @@ class ProjectExplorerModel
 
     virtual sigc::signal<void> signal_UpdateSimulationAsked() = 0;
 
-//    virtual sigc::signal<void,bool> signal_UpdateResultsAsked() = 0;
-
     virtual void updateModelAsked() = 0;
 
     virtual void updateDomainAsked() = 0;
 
     virtual void updateSimulationAsked() = 0;
-
-//    virtual void updateResultsAsked(bool WithWarningState) = 0;
 
     virtual void setActivatedElements(
         std::pair<ProjectExplorerCategories::ProjectExplorerCategory,
@@ -122,8 +118,6 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     sigc::signal<void> m_signal_UpdateSimulationAsked;
 
-//    sigc::signal<void,bool> m_signal_UpdateResultsAsked;
-
     std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string>
         m_ActivatedElementsPair;
 
@@ -141,15 +135,11 @@ class ProjectExplorerModelImpl: public ProjectExplorerModel
 
     sigc::signal<void> signal_UpdateSimulationAsked();
 
-//    sigc::signal<void,bool> signal_UpdateResultsAsked();
-
     void updateModelAsked();
 
     void updateDomainAsked();
 
     void updateSimulationAsked();
-
-//    void updateResultsAsked(bool WithWarningState);
 
     void setActivatedElements(
         std::pair<ProjectExplorerCategories::ProjectExplorerCategory,

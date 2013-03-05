@@ -102,8 +102,6 @@ class ProjectExplorerAdapter: public sigc::trackable
 
     void updateSimulation();
 
-//    void updateResults(bool WithWarningState);
-
 };
 
 #endif /* __PROJECTEXPLORERADAPTER_HPP__ */

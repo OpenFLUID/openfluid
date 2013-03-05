@@ -102,10 +102,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
 
   Gtk::TreeView* TreeView = View->getTreeView();
 
-  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 3);
-
-  // Result sets are not displayed
-//  BOOST_CHECK_EQUAL(TreeView->get_model()->children()[3]->children().size(),0);
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 4);
 
   delete EngProject;
   delete Component;
@@ -133,10 +130,7 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
 
   Gtk::TreeView* TreeView = View->getTreeView();
 
-  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 3);
-
-  // Result sets are not displayed
-//  BOOST_CHECK_EQUAL(TreeView->get_model()->children()[3]->children().size(),0);
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 4);
 
   delete EngProject;
   delete Component;
@@ -187,12 +181,14 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
                     ProjectExplorerCategories::EXPLORER_NONE);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
-  // Results activated
-//  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[3]),
-//      *TreeView->get_column(0));
-//
-//  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_NONE);
-//  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
+  // Monitoring activated
+  TreeView->row_activated(
+       TreeView->get_model()->get_path(TreeView->get_model()->children()[3]),
+       *TreeView->get_column(0));
+
+   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                     ProjectExplorerCategories::EXPLORER_MONITORING);
+   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
 // First Function activated
   TreeView->row_activated(
@@ -234,13 +230,6 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
                     ProjectExplorerCategories::EXPLORER_RUN);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
-
-  // Outputs activated
-//  TreeView->row_activated(TreeView->get_model()->get_path(TreeView->get_model()->children()[2]->children()[1]),
-//      *TreeView->get_column(0));
-//
-//  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().first,ProjectExplorerCategories::EXPLORER_OUTPUTS);
-//  BOOST_CHECK_EQUAL(mp_Model->getActivatedElement().second,"");
 
   delete EngProject;
   delete Component;

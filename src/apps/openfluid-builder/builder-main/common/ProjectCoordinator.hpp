@@ -116,6 +116,8 @@ class ProjectCoordinator
 
     std::string m_RunPageName;
 
+    std::string m_MonitoringPageName;
+
 //    std::string m_OutputsPageName;
 
     // only to keep ref to FileMonitors (otherwise they're lost)

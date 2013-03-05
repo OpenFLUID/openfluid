@@ -46,34 +46,30 @@
  */
 
 /**
- \file BuilderDescriptor.cpp
+ \file MonitoringView.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include "MonitoringView.hpp"
 
-namespace openfluid {
-namespace guicommon {
+#include <glibmm/i18n.h>
 
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::BuilderDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+MonitoringView::MonitoringView()
 {
-  mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
-  mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_MonitoringDescriptor = &(FluidXDesc.getMonitoringDescriptor());
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->set_visible(true);
+  mp_MainBox->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::~BuilderDescriptor()
+MonitoringView::~MonitoringView()
 {
 
 }
@@ -81,46 +77,11 @@ BuilderDescriptor::~BuilderDescriptor()
 // =====================================================================
 // =====================================================================
 
-BuilderDomain& BuilderDescriptor::getDomain()
+Gtk::Widget* MonitoringView::asWidget()
 {
-  return *mp_Domain;
+  return mp_MainBox;
 }
 
 // =====================================================================
 // =====================================================================
-
-BuilderModel& BuilderDescriptor::getModel()
-{
-  return *mp_Model;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::RunDescriptor& BuilderDescriptor::getRunDescriptor()
-{
-  return *mp_RunDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescriptor()
-{
-  return *mp_DatastoreDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::MonitoringDescriptor& BuilderDescriptor::getMonitoringDescriptor()
-{
-  return *mp_MonitoringDescriptor;
-}
-
-// =====================================================================
-// =====================================================================
-
-}} // namespaces
-
 

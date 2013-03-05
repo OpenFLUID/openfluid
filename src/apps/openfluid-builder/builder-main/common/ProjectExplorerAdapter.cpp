@@ -133,16 +133,6 @@ void ProjectExplorerAdapter::updateSimulation()
 // =====================================================================
 
 
-//void ProjectExplorerAdapter::updateResults(bool WithWarningState)
-//{
-//  m_Model.updateResults(WithWarningState);
-//  m_View.setTreeModel(m_Model.getTreeModel());
-//}
-
-// =====================================================================
-// =====================================================================
-
-
 std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> ProjectExplorerAdapter::getActivatedElements()
 {
   return m_Model.getActivatedElements();

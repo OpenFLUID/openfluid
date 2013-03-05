@@ -73,8 +73,6 @@ ProjectExplorerPresenter::ProjectExplorerPresenter(ProjectExplorerModel& Model,
         &ProjectExplorerPresenter::whenFromAppUpdateDomainAsked));
   m_Model.signal_UpdateSimulationAsked().connect(sigc::mem_fun(*this,
         &ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked));
-//  m_Model.signal_UpdateResultsAsked().connect(sigc::mem_fun(*this,
-//        &ProjectExplorerPresenter::whenFromAppUpdateResultsAsked));
 
   m_Adapter.signal_FromUserActivationChanged().connect(sigc::mem_fun(*this,
       &ProjectExplorerPresenter::whenFromUserActivationChanged));
@@ -115,15 +113,6 @@ void ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked()
 {
   m_Adapter.updateSimulation();
 }
-
-// =====================================================================
-// =====================================================================
-
-
-//void ProjectExplorerPresenter::whenFromAppUpdateResultsAsked(bool WithWarningState)
-//{
-//  m_Adapter.updateResults(WithWarningState);
-//}
 
 // =====================================================================
 // =====================================================================

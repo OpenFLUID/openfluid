@@ -65,8 +65,7 @@ class ProjectExplorerCategories
       EXPLORER_DOMAIN,
       EXPLORER_CLASS,
       EXPLORER_RUN,
-      EXPLORER_OUTPUTS,
-      EXPLORER_SET,
+      EXPLORER_MONITORING,
       EXPLORER_NONE
     };
 

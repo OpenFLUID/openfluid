@@ -46,81 +46,50 @@
  */
 
 /**
- \file BuilderDescriptor.cpp
- \brief Implements ...
+ \file MonitoringModule.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#ifndef MONITORINGMODULE_HPP_
+#define MONITORINGMODULE_HPP_
 
-namespace openfluid {
-namespace guicommon {
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
-// =====================================================================
-// =====================================================================
+#include <gtkmm/box.h>
 
-BuilderDescriptor::BuilderDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+class MonitoringComponent;
+
+class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
-  mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
-  mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_MonitoringDescriptor = &(FluidXDesc.getMonitoringDescriptor());
-}
+  private:
 
-// =====================================================================
-// =====================================================================
+    Gtk::Box* mp_MainPanel;
 
-BuilderDescriptor::~BuilderDescriptor()
-{
+  protected:
 
-}
+    MonitoringComponent* mp_MonitoringMVP;
 
-// =====================================================================
-// =====================================================================
+    sigc::signal<void> m_signal_MonitoringChanged;
 
-BuilderDomain& BuilderDescriptor::getDomain()
-{
-  return *mp_Domain;
-}
+  public:
 
-// =====================================================================
-// =====================================================================
+    MonitoringModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
 
-BuilderModel& BuilderDescriptor::getModel()
-{
-  return *mp_Model;
-}
+    ~MonitoringModule();
 
-// =====================================================================
-// =====================================================================
+    sigc::signal<void> signal_ModuleChanged();
 
-openfluid::fluidx::RunDescriptor& BuilderDescriptor::getRunDescriptor()
-{
-  return *mp_RunDesc;
-}
+    void compose();
 
-// =====================================================================
-// =====================================================================
+    Gtk::Widget* asWidget();
 
-openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescriptor()
-{
-  return *mp_DatastoreDesc;
-}
+    void update()
+    {
+    }
+    ;
 
-// =====================================================================
-// =====================================================================
+};
 
-openfluid::fluidx::MonitoringDescriptor& BuilderDescriptor::getMonitoringDescriptor()
-{
-  return *mp_MonitoringDescriptor;
-}
-
-// =====================================================================
-// =====================================================================
-
-}} // namespaces
-
-
+#endif /* MONITORINGMODULE_HPP_ */
