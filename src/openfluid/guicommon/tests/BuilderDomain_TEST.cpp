@@ -185,6 +185,15 @@ BOOST_AUTO_TEST_CASE(check_wrong_construction)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/wrongIData");
 
+  // "Input data indataB1 doesn't exist for Unit 3 of class unitsB"
+  BOOST_CHECK_THROW(
+      openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
+      openfluid::base::OFException);
+
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/wrongRelation");
+
+  // "Unit 99 of class unitsB in "To" relation of unit 1 of class unitsA doesn't exist"
   BOOST_CHECK_THROW(
       openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
       openfluid::base::OFException);
@@ -509,6 +518,8 @@ BOOST_AUTO_TEST_CASE(check_clearDomain)
   BOOST_CHECK(Domain.getIDsOfClass("unitsA").empty());
   BOOST_CHECK(Domain.getInputDataNames("unitsA").empty());
   BOOST_CHECK_THROW(Domain.getUnit("unitsA",1), openfluid::base::OFException);
-  BOOST_CHECK_THROW(Domain.getUnitDescriptor("unitsA",1), openfluid::base::OFException);
-  BOOST_CHECK_THROW(Domain.getInputData("unitsA",1,"indataA"), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.getUnitDescriptor("unitsA",1),
+                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.getInputData("unitsA",1,"indataA"),
+                    openfluid::base::OFException);
 }

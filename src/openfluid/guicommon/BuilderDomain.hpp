@@ -120,6 +120,8 @@ class BuilderDomain
 
     void dispatchIData();
 
+    void checkUnitRelations();
+
     void checkIDataConsistency();
 
     void dispatchEvents();
