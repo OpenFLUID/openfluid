@@ -55,7 +55,7 @@
 #include "ProjectDashboard.hpp"
 
 #include "BuilderGraphicsHelper.hpp"
-#include "EngineHelper.hpp"
+#include "ProjectChecker.hpp"
 
 ProjectDashboard::ProjectDashboard()
 {
@@ -63,8 +63,8 @@ ProjectDashboard::ProjectDashboard()
 
   mp_TreeView = Gtk::manage(new Gtk::TreeView(mref_TreeModel));
 
-  Gtk::TreeView::Column* pColumn = Gtk::manage(new Gtk::TreeView::Column(
-      "Project Dashboard"));
+  Gtk::TreeView::Column* pColumn = Gtk::manage(
+      new Gtk::TreeView::Column("Project Dashboard"));
   pColumn->pack_start(m_Columns.m_StateIcon, false);
   pColumn->pack_start(m_Columns.m_Title, false);
   mp_TreeView->append_column(*pColumn);
@@ -91,8 +91,7 @@ ProjectDashboard::ProjectDashboard()
 // =====================================================================
 // =====================================================================
 
-
-void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
+void ProjectDashboard::setCheckInfo(const ProjectChecker& Checker)
 {
   mref_TreeModel->clear();
 
@@ -100,65 +99,63 @@ void ProjectDashboard::setCheckInfo(BuilderPretestInfo CheckInfo)
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Model definition");
-  Row[m_Columns.m_StateIcon] = CheckInfo.Model ? m_GreenIcon : m_RedIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.Model ? "ok"
-      : EngineHelper::minimiseInfoString(CheckInfo.ModelMsg);
+  Row[m_Columns.m_StateIcon] = Checker.IsModelOk ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateInfo] = Checker.IsModelOk ? "ok" : Checker.ModelMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Model parameters");
-  if (CheckInfo.Params && CheckInfo.GeneratorParams)
+  if (Checker.IsParamsOk && Checker.IsGeneratorParamsOk)
   {
     Row[m_Columns.m_StateIcon] = m_GreenIcon;
     Row[m_Columns.m_StateInfo] = "ok";
   }
   else
   {
-//    if (!CheckInfo.GeneratorParams)
-//      Row[m_Columns.m_StateIcon] = m_RedIcon;
-//    else
+    if (!Checker.IsGeneratorParamsOk)
+      Row[m_Columns.m_StateIcon] = m_RedIcon;
+    else
       Row[m_Columns.m_StateIcon] = m_OrangeIcon;
 
-    Row[m_Columns.m_StateInfo] = CheckInfo.ParamsMsg;
+    Row[m_Columns.m_StateInfo] = Checker.ParamsMsg;
   }
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Required files");
-  Row[m_Columns.m_StateIcon] = CheckInfo.ExtraFiles ? m_GreenIcon : m_RedIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.ExtraFiles ? "ok"
-      : EngineHelper::minimiseInfoString(CheckInfo.ExtraFilesMsg);
+  Row[m_Columns.m_StateIcon] = Checker.IsExtraFilesOk ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateInfo] =
+      Checker.IsExtraFilesOk ? "ok" : Checker.ExtraFilesMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Spatial representation");
-  Row[m_Columns.m_StateIcon] = CheckInfo.Domain ? m_GreenIcon : m_OrangeIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.Domain ? "ok" : CheckInfo.DomainMsg;
+  Row[m_Columns.m_StateIcon] = Checker.IsDomainOk ? m_GreenIcon : m_OrangeIcon;
+  Row[m_Columns.m_StateInfo] = Checker.IsDomainOk ? "ok" : Checker.DomainMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Inputdata");
-  Row[m_Columns.m_StateIcon] = CheckInfo.Inputdata ? m_GreenIcon : m_RedIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.Inputdata ? "ok"
-      : EngineHelper::minimiseInfoString(CheckInfo.InputdataMsg);
+  Row[m_Columns.m_StateIcon] = Checker.IsInputdataOk ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateInfo] =
+      Checker.IsInputdataOk ? "ok" : Checker.InputdataMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Project consistency");
-  Row[m_Columns.m_StateIcon] = CheckInfo.Project ? m_GreenIcon : m_RedIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.Project ? "ok" : CheckInfo.ProjectMsg;
+  Row[m_Columns.m_StateIcon] = Checker.IsProjectOk ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateInfo] = Checker.IsProjectOk ? "ok" : Checker.ProjectMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Run configuration");
-  Row[m_Columns.m_StateIcon] = CheckInfo.RunConfig ? m_GreenIcon : m_RedIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.RunConfig ? "ok"
-      : CheckInfo.RunConfigMsg;
+  Row[m_Columns.m_StateIcon] = Checker.IsRunConfigOk ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_StateInfo] =
+      Checker.IsRunConfigOk ? "ok" : Checker.RunConfigMsg;
 
   Row = *mref_TreeModel->append();
-  Row[m_Columns.m_Title] = _("Outputs");
-  Row[m_Columns.m_StateIcon] = CheckInfo.Outputs ? m_GreenIcon : m_OrangeIcon;
-  Row[m_Columns.m_StateInfo] = CheckInfo.Outputs ? "ok" : CheckInfo.OutputsMsg;
-
+  Row[m_Columns.m_Title] = _("Monitoring");
+  Row[m_Columns.m_StateIcon] = Checker.IsMonitoringOk ? m_GreenIcon : m_OrangeIcon;
+  Row[m_Columns.m_StateInfo] =
+      Checker.IsMonitoringOk ? "ok" : Checker.MonitoringMsg;
 }
 
 // =====================================================================
 // =====================================================================
-
 
 Gtk::Widget* ProjectDashboard::asWidget()
 {

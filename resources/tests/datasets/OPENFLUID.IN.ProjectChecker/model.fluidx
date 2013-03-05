@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+
+     <gparams>
+        <param name="strparam" value="dummystrvalue" />
+        <param name="doubleparam" value="0.0" />
+        <param name="longparam" value="11" />     
+        <param name="thresholdmin" value="12.7" />
+     </gparams>
+   
+   
+      <function ID="tests.primitives.prod" />       
+      
+      <generator varname="tests.fixed" unitclass="TestUnits" method="fixed">
+         <param name="fixedvalue" value="12.7" />
+      </generator>
+      
+      <generator varname="tests.random" unitclass="TestUnits" method="random">
+         <param name="min" value="12.7" />
+         <param name="max" value="12.8" />
+      </generator>
+      
+      <generator varname="tests.interp" unitclass="TestUnits" method="interp">
+         <param name="thresholdmax" value="12.8" />
+         <param name="sources" value="src.txt" />
+         <param name="distribution" value="distrib.txt" />
+      </generator>
+
+	  <generator varname="tests.inject" unitclass="TestUnits" method="inject">
+         <param name="thresholdmin" value="1.7" />
+         <param name="thresholdmax" value="1.8" />
+         <param name="sources" value="src.txt" />
+         <param name="distribution" value="distrib.txt" />
+      </generator>
+      
+      <function ID="tests.primitives.use"> 
+        <param name="strparam" value="strvalue" />
+        <param name="doubleparam" value="1.1" />
+        <param name="longparam" value="11" />
+        
+        <param name="strarrayparam" value="strvalue1;strvalue2;strvalue3" />
+        <param name="doublearrayparam" value="1.1;1.3;1.3;1.4" />
+        <param name="longarrayparam" value="11;12;13;14;15" />
+             
+     </function>      
+           
+    
+  </model>
+</openfluid>

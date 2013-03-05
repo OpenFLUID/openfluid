@@ -61,7 +61,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/scrolledwindow.h>
 
-#include "BuilderPretestInfo.hpp"
+class ProjectChecker;
 
 class ProjectDashboard
 {
@@ -97,7 +97,7 @@ class ProjectDashboard
 
     ProjectDashboard();
 
-    void setCheckInfo(BuilderPretestInfo CheckInfo);
+    void setCheckInfo(const ProjectChecker& Checker);
 
     Gtk::Widget* asWidget();
 };

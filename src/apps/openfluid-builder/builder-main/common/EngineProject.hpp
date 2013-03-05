@@ -86,6 +86,8 @@ class FluidXDescriptor;
 }
 }
 
+class ProjectChecker;
+
 class EngineProject
 {
   private:
@@ -96,6 +98,8 @@ class EngineProject
 
     openfluid::base::IOListener* mp_IOListener;
 
+    ProjectChecker* mp_Checker;
+
     sigc::signal<void> m_signal_RunStarted;
 
     sigc::signal<void> m_signal_RunStopped;
@@ -104,17 +108,7 @@ class EngineProject
 
     void setDefaultRunDesc();
 
-    // TODO to be removed or replaced by monitoring
-    //void setDefaultOutDesc();
-
     void checkAndSetDefaultRunValues();
-
-    // TODO to be removed or replaced by monitoring
-    //void checkAndSetDefaultOutputValues();
-
-    void checkModelDesc();
-
-    void addSignatureToGenerators();
 
     void deleteEngineObjects();
 
@@ -143,16 +137,11 @@ class EngineProject
 
     void save();
 
-    void check(openfluid::machine::Engine::PretestInfos_t& PretestInfos);
+    const ProjectChecker& check(bool& GlobalState);
 
     openfluid::guicommon::BuilderDescriptor& getBuilderDesc();
 
-//    openfluid::core::Datastore& getDatastore();
-
     ~EngineProject();
-
-//    Glib::ustring checkOutputsConsistency();
-
 };
 
 class EngineProjectSub: public EngineProject

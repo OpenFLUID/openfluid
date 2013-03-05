@@ -70,7 +70,7 @@ namespace guicommon {
 BuilderModel::BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
     mp_ModelDesc(&ModelDesc)
 {
-  checkModel();
+
 }
 
 // =====================================================================
@@ -83,7 +83,7 @@ BuilderModel::~BuilderModel()
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::checkModel()
+std::string BuilderModel::checkAndAdaptModel()
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>* Items =
       &(mp_ModelDesc->getItems());
@@ -115,19 +115,7 @@ void BuilderModel::checkModel()
       ++it;
   }
 
-  if (MissingFunctions != "")
-  {
-    Glib::ustring Msg =
-        Glib::ustring::compose(
-            _("Unable to find plugin file(s):\n%1\n\n"
-                "Corresponding simulation functions will be removed from the model.\n"
-                "Do you want to continue?"),
-            MissingFunctions);
-
-    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-        Msg))
-      throw openfluid::base::OFException("");
-  }
+  return MissingFunctions;
 }
 
 // =====================================================================
@@ -172,10 +160,7 @@ int BuilderModel::getFirstItemIndex(std::string ItemID)
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
-    if (((*it)->isType(openfluid::fluidx::WareDescriptor::PluggedFunction)
-        && (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID() == ItemID)
-        || ((*it)->isType(openfluid::fluidx::WareDescriptor::Generator) && (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratedID()
-            == ItemID))
+    if (getID(*it) == ItemID)
       return std::distance(Items.begin(), it);
   }
 
@@ -212,16 +197,21 @@ std::vector<std::string> BuilderModel::getOrderedIDs()
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
-  {
-    if ((*it)->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
-      IDs.push_back(
-          (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID());
-    else if ((*it)->isType(openfluid::fluidx::WareDescriptor::Generator))
-      IDs.push_back(
-          (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratedID());
-  }
+    IDs.push_back(getID(*it));
 
   return IDs;
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string BuilderModel::getID(openfluid::fluidx::ModelItemDescriptor* Item)
+{
+  if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
+    return (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(Item))->getFileID();
+
+  if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
+    return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();
 }
 
 // =====================================================================

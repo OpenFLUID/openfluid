@@ -70,6 +70,7 @@ BuilderDomain::BuilderDomain(openfluid::fluidx::DomainDescriptor& DomainDesc) :
     mp_DomainDesc(&DomainDesc)
 {
   dispatchUnits();
+  checkUnitRelations();
 
   dispatchIData();
   checkIDataConsistency();
@@ -106,6 +107,60 @@ void BuilderDomain::dispatchUnits()
 // =====================================================================
 // =====================================================================
 
+void BuilderDomain::checkUnitRelations()
+{
+  std::list<openfluid::fluidx::UnitDescriptor>* Units =
+      &(mp_DomainDesc->getUnits());
+
+  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+      Units->begin(); it != Units->end(); ++it)
+  {
+    std::list<openfluid::core::UnitClassID_t>& Tos = it->getUnitsTos();
+    for (std::list<openfluid::core::UnitClassID_t>::iterator itt = Tos.begin();
+        itt != Tos.end(); ++itt)
+    {
+      try
+      {
+        getUnit(itt->first, itt->second);
+      }
+      catch (openfluid::base::OFException& e)
+      {
+        std::ostringstream ss;
+        ss << "Unit " << itt->second << " of class " << itt->first
+           << " in \"To\" relation of unit " << it->getUnitID() << " of class "
+           << it->getUnitClass() << " doesn't exist";
+        throw openfluid::base::OFException("OpenFLUID-Builder",
+                                           "BuilderDomain::checkUnitRelations",
+                                           ss.str());
+      }
+    }
+
+    std::list<openfluid::core::UnitClassID_t>& Parents = it->getUnitsParents();
+    for (std::list<openfluid::core::UnitClassID_t>::iterator itt =
+        Parents.begin(); itt != Parents.end(); ++itt)
+    {
+      try
+      {
+        getUnit(itt->first, itt->second);
+      }
+      catch (openfluid::base::OFException& e)
+      {
+        std::ostringstream ss;
+        ss << "Unit " << itt->second << " of class " << itt->first
+           << " in \"Parent\" relation of unit " << it->getUnitID()
+           << " of class " << it->getUnitClass() << " doesn't exist";
+        throw openfluid::base::OFException("OpenFLUID-Builder",
+                                           "BuilderDomain::checkUnitRelations",
+                                           ss.str());
+      }
+    }
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
 void BuilderDomain::dispatchIData()
 {
   std::list<openfluid::fluidx::InputDataDescriptor>* IData =
@@ -134,14 +189,20 @@ void BuilderDomain::dispatchIData()
           if (!m_Units.at(it->getUnitsClass()).at(it2->first).m_IData.insert(
               std::make_pair(it3->first, &it3->second)).second)
             throw openfluid::base::OFException(
-                "OpenFLUID-Builder", "BuilderDomain::dispatchIData",
-                "trying to add an input data that already exists");
+                "OpenFLUID-Builder",
+                "BuilderDomain::dispatchIData",
+                "trying to add an input data (" + it3->first
+                + ") that already exists");
         }
         catch (std::out_of_range& e)
         {
-          throw openfluid::base::OFException(
-              "OpenFLUID-Builder", "BuilderDomain::dispatchIData",
-              "trying to add an input data to a Unit that doesn't exist");
+          std::ostringstream ss;
+          ss << "trying to add an input data (" << it3->first
+             << ") to a Unit that doesn't exist (class " << it->getUnitsClass()
+             << " - ID " << it2->first << ")";
+          throw openfluid::base::OFException("OpenFLUID-Builder",
+                                             "BuilderDomain::dispatchIData",
+                                             ss.str());
         }
       }
     }

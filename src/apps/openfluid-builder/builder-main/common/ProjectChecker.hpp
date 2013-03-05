@@ -46,107 +46,86 @@
  */
 
 /**
- \file BuilderPrestestInfo.hpp
+ \file ProjectChecker.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERPRESTESTINFO_HPP__
-#define __BUILDERPRESTESTINFO_HPP__
-
-#include <openfluid/machine/Engine.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
+#include <string>
 
 namespace openfluid {
+namespace guicommon {
+class BuilderDescriptor;
+}
 namespace fluidx {
-class RunDescriptor;
-}
-namespace machine {
-class ModelItemInstance;
-}
-namespace ware {
-class SignatureHandledDataItem;
+class ModelItemDescriptor;
 }
 }
 
-class BuilderPretestInfo: public openfluid::machine::Engine::PretestInfos_t
+#ifndef PROJECTCHECKER_HPP_
+#define PROJECTCHECKER_HPP_
+
+class ProjectChecker
 {
-  public:
-
-    bool Domain;
-
-    std::string DomainMsg;
-
-    bool Params;
-    bool GeneratorParams;
-
-    std::string ParamsMsg;
-
-    bool Project;
-
-    std::string ProjectMsg;
-
-    bool Outputs;
-
-    std::string OutputsMsg;
-
-    bool RunConfig;
-
-    std::string RunConfigMsg;
-
-    BuilderPretestInfo();
-
-    void addBuilderInfo(openfluid::machine::ModelInstance* ModelInstance,
-        openfluid::machine::SimulationBlob* SimBlob,
-        openfluid::fluidx::RunDescriptor& RunDesc);
-
-    bool getGlobalCheckState();
-
-  protected:
-
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::machine::SimulationBlob* mp_SimBlob;
-
-    openfluid::fluidx::RunDescriptor* mp_RunDesc;
-
-    void checkModelFilled();
-
-    void checkDomainFilled();
-
-    void checkOutputsFilled();
-
-    void checkRunDate();
-
-    void checkModelItemParams(openfluid::machine::ModelItemInstance* Item);
-
-    void checkParamFilled(openfluid::machine::ModelItemInstance* Item,
-        std::string ParamName);
-
-    void checkGeneratorParamsConsistency(
-        openfluid::machine::ModelItemInstance* Item);
-
-    void checkRandomMinMax(openfluid::machine::ModelItemInstance* Item);
-
-    void checkInterpMinMax(openfluid::machine::ModelItemInstance* Item);
-
-    void checkModelItemVars(openfluid::machine::ModelItemInstance* Item);
-
-    bool checkVar(openfluid::ware::SignatureHandledDataItem Var);
-
   private:
 
-    openfluid::ware::WareParams_t m_GlobalParams;
+    openfluid::guicommon::BuilderDescriptor* mp_Desc;
 
     bool m_RandomMinMaxChecked;
     bool m_InterpMinMaxChecked;
     bool m_InjectMinMaxChecked;
 
-    bool localParamIsSet(openfluid::machine::ModelItemInstance* Item,
-        std::string ParamName);
+    void clearAll();
 
-    bool globalParamIsSet(std::string ParamName);
+    bool getGlobalCheckState();
+
+    void checkModelRequirements();
+
+    void checkModelVars();
+
+    void checkGeneratorParam(std::string MinParamName, std::string MaxParamName,
+                             openfluid::fluidx::ModelItemDescriptor* Item,
+                             std::string ItemId);
+
+  protected:
+
+    bool isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
+                    std::string ParamName);
+
+    bool isParamSetAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                            std::string ParamName);
+
+    double getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                            std::string ParamName);
+
+  public:
+
+    bool IsProjectOk;
+    bool IsModelOk;
+    bool IsParamsOk;
+    bool IsDomainOk;
+    bool IsInputdataOk;
+    bool IsGeneratorParamsOk;
+    bool IsExtraFilesOk;
+    bool IsRunConfigOk;
+    bool IsMonitoringOk;
+
+    std::string ProjectMsg;
+    std::string ModelMsg;
+    std::string ParamsMsg;
+    std::string DomainMsg;
+    std::string InputdataMsg;
+    std::string ExtraFilesMsg;
+    std::string RunConfigMsg;
+    std::string MonitoringMsg;
+
+    ProjectChecker(openfluid::guicommon::BuilderDescriptor& Desc);
+
+    ~ProjectChecker();
+
+    bool check();
+
 };
 
-#endif /* __BUILDERPRESTESTINFO_HPP__ */
+#endif /* PROJECTCHECKER_HPP_ */
