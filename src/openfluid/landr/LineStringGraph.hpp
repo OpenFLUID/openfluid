@@ -65,8 +65,8 @@
  @param[in] loopid ID of the loop
  */
 #define DECLARE_ENTITIES_GRAPH_LOOP(loopid) \
-  std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
-  std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
+		std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
+		std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
 
 
 /**
@@ -74,8 +74,8 @@
  @param[in] loopid ID of the loop
  */
 #define DECLARE_ENTITIES_ORDERED_LOOP(loopid) \
-  std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
-  std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
+		std::list<openfluid::landr::LandREntity*>::iterator _M_##loopid##_it;\
+		std::list<openfluid::landr::LandREntity*> _M_##loopid##_uvect; \
 
 /**
  Macro for the beginning of a loop processing all entities of a graph
@@ -84,12 +84,12 @@
  @param[out] entity pointer to a openfluid::landr::LineStringEntity object, pointing to the current processed entity
  */
 #define BEGIN_ENTITIES_GRAPH_LOOP(loopid,graph,entity) \
-  if (graph) \
-  { \
-  _M_##loopid##_uvect = graph->getEntities();\
-  for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
-  { \
-    entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
+		if (graph) \
+		{ \
+			_M_##loopid##_uvect = graph->getEntities();\
+			for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+			{ \
+				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
 /**
  Macro for the beginning of a loop processing all entities of a graph, following their selfid
@@ -98,19 +98,19 @@
  @param[out] entity pointer to a openfluid::landr::LineStringEntity object, pointing to the current processed entity
  */
 #define BEGIN_ENTITIES_ORDERED_LOOP(loopid,graph,entity) \
-  if (graph) \
-  { \
-    _M_##loopid##_uvect = graph->getSelfIdOrderedEntities();\
-    for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
-    { \
-      entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
+		if (graph) \
+		{ \
+			_M_##loopid##_uvect = graph->getSelfIdOrderedEntities();\
+			for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+			{ \
+				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
 /**
  Macro for the ending of a loop
  */
 #define END_LOOP \
-    } \
-  }
+		} \
+		}
 
 namespace openfluid {
 namespace landr {
@@ -122,112 +122,119 @@ class VectorDataset;
  */
 class LineStringGraph: public LandRGraph
 {
-  private:
+private:
 
-    LineStringGraph(LineStringGraph& Other);
+	LineStringGraph(LineStringGraph& Other);
 
-  protected:
+protected:
 
-    LineStringGraph();
+	LineStringGraph();
 
-    LineStringGraph(openfluid::core::GeoVectorValue& Val);
+	LineStringGraph(openfluid::core::GeoVectorValue& Val);
 
-    LineStringGraph(openfluid::landr::VectorDataset& Vect);
+	LineStringGraph(openfluid::landr::VectorDataset& Vect);
 
-    virtual void addEntity(LandREntity* Entity);
+	virtual void addEntity(LandREntity* Entity);
 
-    virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-                                      unsigned int SelfId);
+	virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
+			unsigned int SelfId);
 
-  public:
+public:
 
-    /**
-     * @brief Create a new graph initialized with Val elements.
-     * @details Val must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
-     */
-    static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
+	/**
+	 * @brief Create a new graph initialized with Val elements.
+	 * @details Val must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
+	 */
+	static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
 
-    /**
-     * @brief Create a new graph initialized with Vect elements.
-     * @details Vect must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
-     */
-    static LineStringGraph* create(openfluid::landr::VectorDataset& Vect);
+	/**
+	 * @brief Create a new graph initialized with Vect elements.
+	 * @details Vect must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
+	 */
+	static LineStringGraph* create(openfluid::landr::VectorDataset& Vect);
 
-    /**
-     * @brief Create a new graph initialized with Entities.
-     * @details Entities must be LineStringEntities.
-     */
-    static LineStringGraph* create(const LandRGraph::Entities_t& Entities);
+	/**
+	 * @brief Create a new graph initialized with Entities.
+	 * @details Entities must be LineStringEntities.
+	 */
+	static LineStringGraph* create(const LandRGraph::Entities_t& Entities);
 
-    virtual ~LineStringGraph();
+	virtual ~LineStringGraph();
 
-//    /**
-//     * @attention Do not copy associated raster.
-//     */
-//    LineStringGraph* clone();
+	//    /**
+	//     * @attention Do not copy associated raster.
+	//     */
+	//    LineStringGraph* clone();
 
-    LandRGraph::GraphType getType();
+	LandRGraph::GraphType getType();
 
-    /**
-     * @see LandRGraph::getEntity;
-     */
-    LineStringEntity* getEntity(int SelfId);
+	/**
+	 * @see LandRGraph::getEntity;
+	 */
+	LineStringEntity* getEntity(int SelfId);
 
-    /**
-     * @brief Remove from the graph the entity with SelfId and its associated nodes.
-     * @param SelfId
-     */
-    void removeEntity(int SelfId);
+	/**
+	 * @brief Remove from the graph the entity with SelfId and its associated nodes.
+	 * @param SelfId
+	 */
+	void removeEntity(int SelfId);
 
-    /**
-     * @brief Return the last LineStringEntity of the graph, according to LineString orientations,
-     * ie the one that has no down neighbour.
-     *
-     * @return The last LineStringEntity or 0 if there is zero or more than one LineStringENtity whith no down neighbour.
-     */
-    LineStringEntity* getLastLineStringEntity();
+	/**
+	 * @brief Return the last LineStringEntity of the graph, according to LineString orientations,
+	 * ie the one that has no down neighbour.
+	 *
+	 * @return The last LineStringEntity or 0 if there is zero or more than one LineStringENtity whith no down neighbour.
+	 */
+	LineStringEntity* getLastLineStringEntity();
 
-    /**
-     * @brief Return a vector of LineStringEntities that have no down neighbour, according to LineString orientations.
-     */
-    std::vector<LineStringEntity*> getEndLineStringEntities();
+	/**
+	 * @brief Return a vector of LineStringEntities that have no down neighbour, according to LineString orientations.
+	 */
+	std::vector<LineStringEntity*> getEndLineStringEntities();
 
-    /**
-     * @brief Return a vector of LineStringEntities that have no up neighbour, according to LineString orientations.
-     */
-    std::vector<LineStringEntity*> getStartLineStringEntities();
+	/**
+	 * @brief Return a vector of LineStringEntities that have no up neighbour, according to LineString orientations.
+	 */
+	std::vector<LineStringEntity*> getStartLineStringEntities();
 
-    /**
-     * @brief Fetch the raster value corresponding to the entity StartNode coordinate.
-     *
-     * @param Entity The LandREntity to get the StartNode coordinate from.
-     * @return The raster value corresponding to the Entity StartNode coordinate.
-     */
-    float* getRasterValueForEntityStartNode(LineStringEntity& Entity);
+	/**
+	 * @brief Fetch the raster value corresponding to the entity StartNode coordinate.
+	 *
+	 * @param Entity The LandREntity to get the StartNode coordinate from.
+	 * @return The raster value corresponding to the Entity StartNode coordinate.
+	 */
+	float* getRasterValueForEntityStartNode(LineStringEntity& Entity);
 
-    /**
-     * @brief Fetch the raster value corresponding to the entity EndNode coordinate.
-     *
-     * @param Entity The LandREntity to get the EndNode coordinate from.
-     * @return The raster value corresponding to the Entity EndNode coordinate.
-     */
-    float* getRasterValueForEntityEndNode(LineStringEntity& Entity);
+	/**
+	 * @brief Fetch the raster value corresponding to the entity EndNode coordinate.
+	 *
+	 * @param Entity The LandREntity to get the EndNode coordinate from.
+	 * @return The raster value corresponding to the Entity EndNode coordinate.
+	 */
+	float* getRasterValueForEntityEndNode(LineStringEntity& Entity);
 
-    /**
-     * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
-     * this attribute value as the raster values corresponding to the StartNode LineStringEntity coordinates.
-     *
-     * @param AttributeName The name of the attribute to create for the StartNode
-     */
-    void setAttributeFromRasterValueAtStartNode(std::string AttributeName);
+	/**
+	 * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
+	 * this attribute value as the raster values corresponding to the StartNode LineStringEntity coordinates.
+	 *
+	 * @param AttributeName The name of the attribute to create for the StartNode
+	 */
+	void setAttributeFromRasterValueAtStartNode(std::string AttributeName);
 
-    /**
-     * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
-     * this attribute value as the raster values corresponding to the EndNode LineStringEntity coordinates.
-     *
-     * @param AttributeName The name of the attribute to create for the EndNode
-     */
-    void setAttributeFromRasterValueAtEndNode(std::string AttributeName);
+	/**
+	 * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
+	 * this attribute value as the raster values corresponding to the EndNode LineStringEntity coordinates.
+	 *
+	 * @param AttributeName The name of the attribute to create for the EndNode
+	 */
+	void setAttributeFromRasterValueAtEndNode(std::string AttributeName);
+
+	/**
+	 * @brief Reverse a LineStringEntity orientation.
+	 *
+	 * @param Entity The LandREntity to reverse.
+	 */
+	void reverseLineStringEntity(LineStringEntity& Entity);
 
 };
 

@@ -399,5 +399,35 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(
 
 }
 
+// =====================================================================
+// =====================================================================
+
+void LineStringGraph::reverseLineStringEntity(
+		LineStringEntity& Entity)
+{
+
+	const geos::geom::LineString* Ent=Entity.getLine();
+	geos::geom::Geometry* ReverseEnt=Ent->reverse();
+	 LandREntity* LandEnt = dynamic_cast<LandREntity*>(&Entity);
+	int selfId=LandEnt->getSelfId();
+	removeEntity(selfId);
+	try {
+		addEntity(new LineStringEntity(ReverseEnt,selfId));
+	} catch (openfluid::base::OFException& e) {
+		std::ostringstream s;
+		      s << "Reverse orientation impossible for entity" << selfId<<" : "<<e.what() ;
+		      throw openfluid::base::OFException(
+		"OpenFLUID Framework",
+		          "LineStringGraph::reverseLineStringEntity",s.str());
+	}
+
+
+
+
+}
+
+// =====================================================================
+// =====================================================================
+
 } // namespace landr
 } /* namespace openfluid */
