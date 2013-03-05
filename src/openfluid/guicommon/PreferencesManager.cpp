@@ -469,6 +469,73 @@ std::vector<std::string> PreferencesManager::getExtraExtensionPaths()
   return ExtraExtPaths;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+void PreferencesManager::setExtraObserversPaths(
+    std::vector<Glib::ustring> ExtraObsPaths)
+{
+  mp_KFile->set_string_list("openfluid.builder.paths", "extraobspaths",
+      ExtraObsPaths);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::addExtraObserversPath(Glib::ustring Path)
+{
+  std::vector<Glib::ustring> ExtraObsPaths;
+
+  if (isValidKey("openfluid.builder.paths", "extraobspaths"))
+    ExtraObsPaths = mp_KFile->get_string_list("openfluid.builder.paths",
+        "extraobspaths");
+
+  ExtraObsPaths.push_back(Path);
+
+  mp_KFile->set_string_list("openfluid.builder.paths", "extraobspaths",
+                            ExtraObsPaths);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::removeExtraObserversPath(Glib::ustring Path)
+{
+  if (isValidKey("openfluid.builder.paths", "extraobspaths"))
+  {
+    std::vector<Glib::ustring> ExtraObsPaths = mp_KFile->get_string_list(
+        "openfluid.builder.paths", "extraobspaths");
+
+    std::vector<Glib::ustring>::iterator it = std::find(ExtraObsPaths.begin(),
+                                                        ExtraObsPaths.end(), Path);
+
+    if (it != ExtraObsPaths.end())
+      ExtraObsPaths.erase(it);
+
+    mp_KFile->set_string_list("openfluid.builder.paths", "extraobspaths",
+                              ExtraObsPaths);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> PreferencesManager::getExtraObserversPaths()
+{
+  std::vector<std::string> ExtraObsPaths;
+
+  if (isValidKey("openfluid.builder.paths", "extraobspaths"))
+    ExtraObsPaths = mp_KFile->get_string_list("openfluid.builder.paths",
+        "extraobspaths");
+
+  return ExtraObsPaths;
+}
+
 // =====================================================================
 // =====================================================================
 

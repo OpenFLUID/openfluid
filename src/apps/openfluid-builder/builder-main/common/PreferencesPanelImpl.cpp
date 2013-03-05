@@ -279,6 +279,17 @@ PreferencesPathsPanel::PreferencesPathsPanel() :
   ExtensionsPaths->set_visible(true);
 
   /*
+   * Observers
+   */
+
+  mp_ObserversPathListWidget = new PreferencesPathListWidget();
+  mp_ObserversPathListWidget->signal_PathListChanged().connect(sigc::mem_fun(
+      *this, &PreferencesPathsPanel::onObserversPathListChanged));
+
+  Gtk::Widget* ObserversPaths = mp_ObserversPathListWidget->asWidget();
+  ObserversPaths->set_visible(true);
+
+  /*
    * Main panel
    */
 
@@ -298,6 +309,12 @@ PreferencesPathsPanel::PreferencesPathsPanel() :
   ExtExpander->add(*createSubBoxAlignement(ExtensionsPaths));
   ExtExpander->set_visible(true);
   PanelBox->pack_start(*ExtExpander, Gtk::PACK_SHRINK);
+
+  Gtk::Expander* ObsExpander = Gtk::manage(new Gtk::Expander());
+  ObsExpander->set_label_widget(*createSubTitle(_("Search paths for observers (restart needed)")));
+  ObsExpander->add(*createSubBoxAlignement(ObserversPaths));
+  ObsExpander->set_visible(true);
+  PanelBox->pack_start(*ObsExpander, Gtk::PACK_SHRINK);
 
   mp_ContentWindow->add(*PanelBox);
 }
@@ -321,6 +338,12 @@ void PreferencesPathsPanel::init()
 
   mp_ExtensionsPathListWidget->setUserDefinedPaths(
       BuilderExtensionsManager::getInstance()->getExtensionsExtraSearchPaths());
+
+  mp_ObserversPathListWidget->setPreDefinedPaths(
+      openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths());
+
+  mp_ObserversPathListWidget->setUserDefinedPaths(
+      openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
 }
 
 // =====================================================================
@@ -372,6 +395,15 @@ void PreferencesPathsPanel::onExtensionsPathListChanged()
 {
   openfluid::guicommon::PreferencesManager::getInstance()->setExtraExtensionPaths(
       mp_ExtensionsPathListWidget->getUserDefinedPaths());
+}
+
+// =====================================================================
+// =====================================================================
+
+void PreferencesPathsPanel::onObserversPathListChanged()
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setExtraObserversPaths(
+        mp_ObserversPathListWidget->getUserDefinedPaths());
 }
 
 // =====================================================================

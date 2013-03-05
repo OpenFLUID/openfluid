@@ -126,6 +126,12 @@ class DLLEXPORT PreferencesManager
     void removeExtraExtensionPath(Glib::ustring Path);
     std::vector<std::string> getExtraExtensionPaths();
 
+    void setExtraObserversPaths(std::vector<Glib::ustring> ExtraObsPaths);
+    void addExtraObserversPath(Glib::ustring Path);
+    void removeExtraObserversPath(Glib::ustring Path);
+    std::vector<std::string> getExtraObserversPaths();
+
+
     void setDeltaT(unsigned int DeltaT);
     int getDeltaT();
 
