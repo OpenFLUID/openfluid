@@ -275,7 +275,7 @@ std::map<int, LandREntity*> LandRGraph::getEntitiesBySelfId()
 // =====================================================================
 // =====================================================================
 
-unsigned int LandRGraph::getSize()
+unsigned int LandRGraph::getSize() const
 {
   return m_Entities.size();
 }

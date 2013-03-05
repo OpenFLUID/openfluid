@@ -168,7 +168,7 @@ class LandRGraph: public geos::planargraph::PlanarGraph
     /**
      * @brief Get the number of elements in the graph.
      */
-    unsigned int getSize();
+    unsigned int getSize() const;
 
     /**
      * @brief Removes from this Graph the nodes of degree 0.
