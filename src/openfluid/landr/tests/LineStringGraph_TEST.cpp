@@ -69,6 +69,7 @@
 #include <openfluid/tools.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
+#include <geos/planargraph/Node.h>
 
 // =====================================================================
 // =====================================================================
@@ -633,6 +634,33 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelTyp
   delete Graph;
   delete Vector;
   delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_reverse_orientation_LineStringEntity)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Val);
+
+  BOOST_CHECK_EQUAL(Graph->getSize(), 8);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), 8);
+  openfluid::landr::LineStringEntity* U1 = Graph->getEntity(1);
+  geos::planargraph::Node *oldStartNode= U1->getStartNode();
+  geos::planargraph::Node *oldEndNode=U1->getEndNode();
+
+  Graph->reverseLineStringEntity(*U1);
+  openfluid::landr::LineStringEntity* U1reverse = Graph->getEntity(1);
+  BOOST_CHECK(U1reverse->getStartNode()->getCoordinate().equals(oldEndNode->getCoordinate()));
+  BOOST_CHECK(U1reverse->getEndNode()->getCoordinate().equals(oldStartNode->getCoordinate()));
+
+
+  delete Graph;
+  delete Val;
 }
 
 // =====================================================================
