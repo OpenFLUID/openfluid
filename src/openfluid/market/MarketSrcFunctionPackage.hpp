@@ -69,7 +69,7 @@ class DLLEXPORT MarketSrcFunctionPackage : public MarketSrcPackage
 
     MarketSrcFunctionPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
 
-    virtual std::string getInstallPath();
+    std::string getInstallPath();
 
 };
 

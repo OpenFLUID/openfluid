@@ -51,6 +51,7 @@
 #include <openfluid/market/MarketSrcFunctionPackage.hpp>
 #include <openfluid/market/MarketBinObserverPackage.hpp>
 #include <openfluid/market/MarketSrcObserverPackage.hpp>
+#include <openfluid/market/MarketDatasetPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/config.hpp>
 
@@ -80,6 +81,7 @@ MarketClient::MarketClient() :
   MarketPackage::setWorksDirs(boost::filesystem::path(m_TempDir).string(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagFuncVersionDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagObsVersionDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagDataVersionDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinSubDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSrcSubDir());
 
@@ -144,6 +146,11 @@ void MarketClient::initMarketBag()
     + "/" + MarketPackage::getMarketBagSrcSubDir())))
     throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observer source subdirectory");
 
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagDatasetDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagDatasetDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag dataset directory");
 }
 
 
@@ -665,8 +672,10 @@ void MarketClient::displayPackages() const
       {
         std::cout << "\t" << selectionTypeToString(APit->first) << std::endl;
       }
+
       std::cout << std::endl;
     }
+
     std::cout << "\n#####################\n";
   }
 }

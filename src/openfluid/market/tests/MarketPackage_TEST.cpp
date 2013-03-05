@@ -67,6 +67,7 @@
 #include <openfluid/market/MarketBinFunctionPackage.hpp>
 #include <openfluid/market/MarketSrcObserverPackage.hpp>
 #include <openfluid/market/MarketBinObserverPackage.hpp>
+#include <openfluid/market/MarketDatasetPackage.hpp>
 
 #include <tests-config.hpp>
 
@@ -79,17 +80,19 @@ BOOST_AUTO_TEST_CASE(check_construction)
   std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp").string();;
   std::string MarketBagFunctionDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-functions").string();
   std::string MarketBagObserverDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers").string();
-  std::string MarketBagBinSubDir = boost::filesystem::path("bin").string();
-  std::string MarketBagSrcSubDir = boost::filesystem::path("src").string();
+  std::string MarketBagDatasetDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets").string();
+  std::string MarketBagBinSubDir = "bin";
+  std::string MarketBagSrcSubDir = "src";
 
   openfluid::market::MarketPackage::setWorksDirs(TmpDir, MarketBagFunctionDir, MarketBagObserverDir,
-      MarketBagBinSubDir, MarketBagSrcSubDir);
+      MarketBagDatasetDir, MarketBagBinSubDir, MarketBagSrcSubDir);
 
   openfluid::market::MarketPackage::initialize(false);
 
   boost::filesystem::remove_all(boost::filesystem::path(TmpDir));
   boost::filesystem::remove_all(boost::filesystem::path(MarketBagFunctionDir));
   boost::filesystem::remove_all(boost::filesystem::path(MarketBagObserverDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagDatasetDir));
   boost::filesystem::remove_all(boost::filesystem::path(MarketBagSrcSubDir));
   boost::filesystem::remove_all(boost::filesystem::path(MarketBagBinSubDir));
 
@@ -105,6 +108,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
                 +"/"+ openfluid::market::MarketPackage::getMarketBagBinSubDir())));
   BOOST_REQUIRE(boost::filesystem::create_directories(boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagObserverDir()
                 +"/"+ openfluid::market::MarketPackage::getMarketBagSrcSubDir())));
+
+  BOOST_REQUIRE(boost::filesystem::create_directories(boost::filesystem::path(openfluid::market::MarketPackage::getMarketBagDatasetDir())));
 
   BOOST_REQUIRE(boost::filesystem::create_directories(boost::filesystem::path(openfluid::market::MarketPackage::getTempBuildsDir())));
   BOOST_REQUIRE(boost::filesystem::create_directories(boost::filesystem::path(openfluid::market::MarketPackage::getTempDownloadsDir())));
@@ -130,6 +135,11 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(BOPack.getID(),"dummy.id");
   BOOST_REQUIRE_EQUAL(BOPack.getInstallPath(), openfluid::market::MarketPackage::getMarketBagObserverDir()
                       + "/" + openfluid::market::MarketPackage::getMarketBagBinSubDir());
+
+
+  openfluid::market::MarketDatasetPackage DPack("dummy.id","file:://path/to/file");
+  BOOST_REQUIRE_EQUAL(DPack.getID(),"dummy.id");
+  BOOST_REQUIRE_EQUAL(DPack.getInstallPath(), openfluid::market::MarketPackage::getMarketBagDatasetDir());
 }
 
 // =====================================================================
@@ -141,10 +151,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp").string();;
   std::string MarketBagFunctionDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-functions").string();
   std::string MarketBagObserverDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers").string();
-  std::string MarketBagBinSubDir = boost::filesystem::path("bin").string();
-  std::string MarketBagSrcSubDir = boost::filesystem::path("src").string();
+  std::string MarketBagDatasetDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets").string();
+  std::string MarketBagBinSubDir = "bin";
+  std::string MarketBagSrcSubDir = "src";
 
-  openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagFunctionDir,MarketBagObserverDir,MarketBagBinSubDir,MarketBagSrcSubDir);
+  openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagFunctionDir,MarketBagObserverDir,
+      MarketBagDatasetDir,MarketBagBinSubDir,MarketBagSrcSubDir);
 
   openfluid::market::MarketPackage::initialize(true);
 
@@ -195,6 +207,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers/bin/tests.market.src.use"+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)));
 
 
+
+  openfluid::market::MarketDatasetPackage DPack("tests.market.fluidx.dummy","file:://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/market/packages/tests.market.fluidx.dummy.ofpk").string());
+
+  DPack.download();
+  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp/downloads/tests.market.fluidx.dummy.ofpk")));
+
+  DPack.process();
+  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets/tests.market.fluidx.dummy")));
 }
 
 

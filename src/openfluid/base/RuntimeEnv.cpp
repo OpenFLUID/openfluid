@@ -171,10 +171,9 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   m_MarketBagVersionDir = boost::filesystem::path(m_MarketBagDir + "/"
       + m_Version).string();
-  m_MarketBagFuncVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/"
-      + "functions").string();
-  m_MarketBagObsVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/"
-      + "observers").string();
+  m_MarketBagFuncVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "functions").string();
+  m_MarketBagObsVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "observers").string();
+  m_MarketBagDataVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "datasets").string();
   m_MarketBagBinSubDir = boost::filesystem::path(m_Arch).string();
   m_MarketBagSrcSubDir = boost::filesystem::path("src").string();
 

@@ -45,140 +45,101 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-/**
-  \file MarketInfos.hpp
-  \brief Header of ...
-
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+/*
+ * MarketDatasetPackage.cpp
+ *
+ *  Created on: 4 mars 2013
+ *      Author: Manuel CHATAIGNER
  */
 
 
-#ifndef __MARKETINFOS_HPP__
-#define __MARKETINFOS_HPP__
+#include <openfluid/market/MarketDatasetPackage.hpp>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/convenience.hpp>
+
+#include <glibmm/error.h>
+#include <glibmm/spawn.h>
+
 
 
 namespace openfluid { namespace market {
 
-// =====================================================================
-// =====================================================================
 
-
-class DLLEXPORT MarketInfo
+MarketDatasetPackage::MarketDatasetPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+                    : MarketPackage(ID, PackageURL)
 {
-  public:
 
-    std::string Name;
-
-    std::string Description;
-
-    std::string Contact;
-
-    MarketInfo()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
-
-    ~MarketInfo() { }
-
-
-    void clear()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
-
-
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT PackageInfo
+std::string MarketDatasetPackage::getInstallPath()
 {
-  public:
-
-    std::string URL;
-
-    std::string License;
-
-    std::string Dependencies;
-
-    std::string BuildOptions;
-
-    PackageInfo()
-    {
-      URL.clear();
-      License.clear();
-      Dependencies.clear();
-      BuildOptions.clear();
-    }
-
-    ~PackageInfo() {  }
-
-};
+  return m_MarketBagDatasetDir;
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT MetaPackageInfo
+void MarketDatasetPackage::process()
 {
-  public:
-
-    enum SelectionType { NONE, BIN, SRC, FLUIDX};
-
-    enum TypePackage { FUNC, OBS, BUILD, DATA};
-
-    openfluid::ware::WareID_t ID;
-
-    std::map<SelectionType,PackageInfo> AvailablePackages;
-
-    SelectionType Selected;
-
-    std::string Name;
-
-    std::string Description;
-
-    std::string Authors;
-
-    std::string Version;
+  if (!m_Initialized)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::download()","package "+m_PackageFilename+" not initialized");
 
 
-    MetaPackageInfo()
+  if (!m_Downloaded)
+    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
+
+
+  if (m_CMakeCommand.empty())
+    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","CMake command not defined");
+
+
+  std::string StrOut;
+  std::string StrErr;
+  int RetValue;
+
+  std::string DatasetInstallDir = getInstallPath() + "/" + m_ID;
+
+  if (boost::filesystem::is_directory(boost::filesystem::path(DatasetInstallDir)))
+    boost::filesystem::remove_all(boost::filesystem::path(DatasetInstallDir));
+
+  if (!boost::filesystem::create_directories(boost::filesystem::path(DatasetInstallDir)))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","unable to create dataset directory for "+m_ID+" package");
+
+  std::string ProcessCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + DatasetInstallDir+ "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
+
+  try
+  {
+    appendToLogFile(m_PackageFilename,"uncompressing datasets",ProcessCommand);
+
+    StrOut.clear();
+    StrErr.clear();
+    RetValue = 0;
+    Glib::spawn_command_line_sync(ProcessCommand,&StrOut,&StrErr,&RetValue);
+
+    appendToLogFile(StrOut);
+
+    if (RetValue != 0)
     {
-      ID.clear();
-      Selected = NONE;
-      AvailablePackages.clear();
-      Name.clear();
-      Authors.clear();
-      Description.clear();
-      Version.clear();
+      appendToLogFile(StrErr);
+      throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","Error uncompressing package using CMake");
+
     }
 
-    ~MetaPackageInfo()
-    {
-    }
+  }
+  catch (Glib::Error& E)
+  {
+    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","Glib error uncompressing package using CMake");
+  }
+}
 
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-typedef std::map<openfluid::ware::WareID_t,MetaPackageInfo> MetaPackagesCatalog_t;
 
 
 } } // namespaces
-
-
-#endif /* __MARKETINFOS_HPP__ */
