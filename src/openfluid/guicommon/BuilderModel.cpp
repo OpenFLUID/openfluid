@@ -70,7 +70,7 @@ namespace guicommon {
 BuilderModel::BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
     mp_ModelDesc(&ModelDesc)
 {
-//  checkModel();
+
 }
 
 // =====================================================================
@@ -83,7 +83,7 @@ BuilderModel::~BuilderModel()
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::checkModel()
+std::string BuilderModel::checkAndAdaptModel()
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>* Items =
       &(mp_ModelDesc->getItems());
@@ -115,19 +115,7 @@ void BuilderModel::checkModel()
       ++it;
   }
 
-  if (MissingFunctions != "")
-  {
-    Glib::ustring Msg =
-        Glib::ustring::compose(
-            _("Unable to find plugin file(s):\n%1\n\n"
-                "Corresponding simulation functions will be removed from the model.\n"
-                "Do you want to continue?"),
-            MissingFunctions);
-
-    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-        Msg))
-      throw openfluid::base::OFException("");
-  }
+  return MissingFunctions;
 }
 
 // =====================================================================

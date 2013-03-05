@@ -134,14 +134,20 @@ void BuilderDomain::dispatchIData()
           if (!m_Units.at(it->getUnitsClass()).at(it2->first).m_IData.insert(
               std::make_pair(it3->first, &it3->second)).second)
             throw openfluid::base::OFException(
-                "OpenFLUID-Builder", "BuilderDomain::dispatchIData",
-                "trying to add an input data that already exists");
+                "OpenFLUID-Builder",
+                "BuilderDomain::dispatchIData",
+                "trying to add an input data (" + it3->first
+                + ") that already exists");
         }
         catch (std::out_of_range& e)
         {
-          throw openfluid::base::OFException(
-              "OpenFLUID-Builder", "BuilderDomain::dispatchIData",
-              "trying to add an input data to a Unit that doesn't exist");
+          std::ostringstream ss;
+          ss << "trying to add an input data (" << it3->first
+             << ") to a Unit that doesn't exist (class " << it->getUnitsClass()
+             << " - ID " << it2->first << ")";
+          throw openfluid::base::OFException("OpenFLUID-Builder",
+                                             "BuilderDomain::dispatchIData",
+                                             ss.str());
         }
       }
     }

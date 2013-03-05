@@ -108,17 +108,7 @@ class EngineProject
 
     void setDefaultRunDesc();
 
-    // TODO to be removed or replaced by monitoring
-    //void setDefaultOutDesc();
-
     void checkAndSetDefaultRunValues();
-
-    // TODO to be removed or replaced by monitoring
-    //void checkAndSetDefaultOutputValues();
-
-    void checkModelDesc();
-
-    void addSignatureToGenerators();
 
     void deleteEngineObjects();
 
@@ -151,12 +141,7 @@ class EngineProject
 
     openfluid::guicommon::BuilderDescriptor& getBuilderDesc();
 
-//    openfluid::core::Datastore& getDatastore();
-
     ~EngineProject();
-
-//    Glib::ustring checkOutputsConsistency();
-
 };
 
 class EngineProjectSub: public EngineProject

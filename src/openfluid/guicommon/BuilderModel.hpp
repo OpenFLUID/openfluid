@@ -66,8 +66,6 @@ class BuilderModel
 
     openfluid::fluidx::CoupledModelDescriptor* mp_ModelDesc;
 
-    void checkModel();
-
     BuilderModel(){};
 
   public:
@@ -75,6 +73,8 @@ class BuilderModel
     BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
 
     ~BuilderModel();
+
+    std::string checkAndAdaptModel();
 
     const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems();
 
