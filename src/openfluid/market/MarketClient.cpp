@@ -224,7 +224,7 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 // =====================================================================
 
 
-std::string MarketClient::getTypeDirectory(const MetaPackageInfo::TypePackage& Type) const
+std::string MarketClient::getTypeDirectory(const PackageInfo::TypePackage& Type) const
 {
   std::string TypesDirectoriesList[] = { "functions", "observers", "builderexts", "datasets"};
   return TypesDirectoriesList[Type];
@@ -235,7 +235,7 @@ std::string MarketClient::getTypeDirectory(const MetaPackageInfo::TypePackage& T
 // =====================================================================
 
 
-void MarketClient::parseCatalogData(const MetaPackageInfo::TypePackage& TypeCatalog, const std::string& CatalogData)
+void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog, const std::string& CatalogData)
 {
   std::string TmpVersion, TmpArch, TmpID;
   std::vector<std::string> PackagesIDs;
@@ -290,10 +290,6 @@ void MarketClient::parseCatalogData(const MetaPackageInfo::TypePackage& TypeCata
              if (KFile.has_key(TmpID,BinaryArchKey+".license"))
               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].License = KFile.get_string(TmpID,BinaryArchKey+".license");
 
-             // dependencies
-             if (KFile.has_key(TmpID,BinaryArchKey+".depends"))
-              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].Dependencies = KFile.get_string(TmpID,BinaryArchKey+".depends");
-
 
            }
 
@@ -307,9 +303,6 @@ void MarketClient::parseCatalogData(const MetaPackageInfo::TypePackage& TypeCata
              if (KFile.has_key(TmpID,"arch.src.license"))
                MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].License = KFile.get_string(TmpID,"arch.src.license");
 
-             // dependencies
-             if (KFile.has_key(TmpID,"arch.src.depends"))
-               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].Dependencies = KFile.get_string(TmpID,"arch.src.depends");
 
              // build options
              if (KFile.has_key(TmpID,"arch.src.buildoptions"))
@@ -325,8 +318,15 @@ void MarketClient::parseCatalogData(const MetaPackageInfo::TypePackage& TypeCata
              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeDirectory(TypeCatalog)+"/"+KFile.get_string(TmpID,"file");
 
              // license
-             if (KFile.has_key(TmpID, "license"))
+             if (KFile.has_key(TmpID,"license"))
                MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].License = KFile.get_string(TmpID,"license");
+
+             // dependencies
+             if (KFile.has_key(TmpID,"dependencies.func"))
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string(TmpID,"dependencies.func");
+
+             if (KFile.has_key(TmpID,"dependencies.obs"))
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::OBS] = KFile.get_string(TmpID,"dependencies.obs");
            }
          }
       }
@@ -395,10 +395,10 @@ void MarketClient::connect(const std::string URL)
   std::string CatalogFile = m_URL + "/" + openfluid::config::MARKETPLACE_CATALOGFILE;
   std::string Version = openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
 
-  CatalogFilesURL[MetaPackageInfo::FUNC] = CatalogFile + "Functions_" + Version;
-  CatalogFilesURL[MetaPackageInfo::OBS] = CatalogFile + "Observers_" + Version;
-  CatalogFilesURL[MetaPackageInfo::BUILD] = CatalogFile + "Builderexts_" + Version;
-  CatalogFilesURL[MetaPackageInfo::DATA] = CatalogFile + "Datasets_" + Version;
+  CatalogFilesURL[PackageInfo::FUNC] = CatalogFile + "Functions_" + Version;
+  CatalogFilesURL[PackageInfo::OBS] = CatalogFile + "Observers_" + Version;
+  CatalogFilesURL[PackageInfo::BUILD] = CatalogFile + "Builderexts_" + Version;
+  CatalogFilesURL[PackageInfo::DATA] = CatalogFile + "Datasets_" + Version;
 
 
   if (!m_IsConnected && openfluid::tools::CURLDownloader::downloadToString(MarketFileURL, MarketData) == openfluid::tools::CURLDownloader::NO_ERROR)
@@ -694,6 +694,10 @@ void MarketClient::displayPackages() const
       for (APit = PCit->second.AvailablePackages.begin(); APit != PCit->second.AvailablePackages.end(); ++APit)
       {
         std::cout << "\t" << selectionTypeToString(APit->first) << std::endl;
+        if (APit->first == MetaPackageInfo::FLUIDX)
+          std::cout << "\tDependencies : " << std::endl
+            << "\t\tfunc : " << APit->second.Dependencies.find(PackageInfo::FUNC)->second << std::endl
+            << "\t\tobs : " << APit->second.Dependencies.find(PackageInfo::OBS)->second << std::endl;
       }
 
       std::cout << std::endl;
