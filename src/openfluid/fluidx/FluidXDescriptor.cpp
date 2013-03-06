@@ -1024,10 +1024,13 @@ std::string FluidXDescriptor::getParamsAsStr(
 {
   std::string ParamsStr = "";
 
-  for (openfluid::ware::WareParams_t::const_iterator it = Params.begin();
-      it != Params.end(); ++it)
-    ParamsStr += m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
-                 + it->first + "\" value=\"" + it->second.data() + "\"/>\n";
+  std::map<std::string, std::string> ParamsMap = WareDescriptor::getParamsAsMap(
+      Params);
+
+  for (std::map<std::string, std::string>::iterator itt = ParamsMap.begin();
+      itt != ParamsMap.end(); ++itt)
+    ParamsStr += (m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
+                  + itt->first + "\" value=\"" + itt->second + "\"/>\n");
 
   return ParamsStr;
 }
@@ -1235,93 +1238,6 @@ std::string FluidXDescriptor::getRunConfigurationToWrite()
 // =====================================================================
 // =====================================================================
 
-//void FluidXDescriptor::setOutputConfigurationToWrite()
-//{
-//  std::ostringstream Contents;
-//
-//  if (!m_OutputDescriptor.getFileSets().empty())
-//  {
-//
-//    std::vector<openfluid::base::OutputFilesDescriptor> FileSetDesc = m_OutputDescriptor.getFileSets();
-//
-//    if (!FileSetDesc.empty())
-//    {
-//      Contents << m_IndentStr << "<output>\n";
-//
-//      for (unsigned int i = 0; i< FileSetDesc.size();i++)
-//      {
-//        std::string ColSep = FileSetDesc[i].getColSeparator();
-//        boost::algorithm::replace_all(ColSep,"\t","\\t");
-//
-//        std::string CommentChar = FileSetDesc[i].getCommentChar();
-//        boost::algorithm::replace_all(CommentChar,"\t","\\t");
-//
-//        std::string HeaderType;
-//        openfluid::base::OutputFilesDescriptor::HeaderType Header = FileSetDesc[i].getHeaderType();
-//        if(Header == openfluid::base::OutputFilesDescriptor::None)
-//        HeaderType = "none";
-//        else if(Header == openfluid::base::OutputFilesDescriptor::Full)
-//        HeaderType = "full";
-//        else if(Header == openfluid::base::OutputFilesDescriptor::ColnamesAsData)
-//        HeaderType = "colnames-as-data";
-//        else
-//        HeaderType = "info";
-//
-//        Contents << m_IndentStr << m_IndentStr << "<files colsep=\"" << ColSep << "\" " <<
-//        "dtformat=\"" << FileSetDesc[i].getDateFormat() << "\" " <<
-//        "commentchar=\"" << CommentChar << "\" " << "header=\"" << HeaderType << "\">\n";
-//
-//        std::vector<openfluid::base::OutputSetDescriptor> SetsDesc = FileSetDesc[i].getSets();
-//
-//        for (unsigned int j = 0; j< SetsDesc.size();j++)
-//        {
-//          std::string VarsStr = "";
-//          std::string IDsStr = "";
-//
-//          if (SetsDesc[j].isAllUnits()) IDsStr = "*";
-//          else
-//          {
-//            std::ostringstream IDsStrStr;
-//            IDsStrStr.clear();
-//            for (unsigned int k = 0; k< SetsDesc[j].getUnitsIDs().size();k++)
-//            {
-//              IDsStrStr << SetsDesc[j].getUnitsIDs()[k];
-//              if ((k != SetsDesc[j].getUnitsIDs().size()-1))
-//              IDsStrStr << ";";
-//            }
-//            IDsStr = IDsStrStr.str();
-//          }
-//
-//          if (SetsDesc[j].isAllVariables()) VarsStr = "*";
-//          else
-//          {
-//            for (unsigned int k = 0; k< SetsDesc[j].getVariables().size();k++)
-//            {
-//              VarsStr += SetsDesc[j].getVariables()[k];
-//              if ((k != (SetsDesc[j].getVariables().size()-1)) /*|| (!SetsDesc[j].getVariables().empty())*/)
-//              VarsStr += ";";
-//            }
-//          }
-//
-//          Contents << m_IndentStr << m_IndentStr << m_IndentStr;
-//          Contents << "<set name=\"" << SetsDesc[j].getName() << "\" " <<
-//          "unitsclass=\"" << SetsDesc[j].getUnitsClass() << "\" " <<
-//          "unitsIDs=\"" << IDsStr << "\" " <<
-//          "vars=\"" << VarsStr << "\" " <<
-//          "precision=\"" << SetsDesc[j].getPrecision() << "\" />\n";
-//        }
-//        Contents << m_IndentStr << m_IndentStr << "</files>\n";
-//      }
-//      Contents << m_IndentStr << "</output>\n";
-//    }
-//  }
-//
-//  m_OutputStrToWrite = Contents.str();
-//}
-
-// =====================================================================
-// =====================================================================
-
 std::string FluidXDescriptor::getDatastoreToWrite()
 {
   openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t& Items =
@@ -1372,7 +1288,7 @@ std::string FluidXDescriptor::getMonitoringToWrite()
     Contents << m_IndentStr << m_IndentStr << "<observer ID=\""
              << (*it)->getID() << "\">\n";
 
-    appendPTreeParams((*it)->getParameters(), "", Contents);
+    Contents << getParamsAsStr((*it)->getParameters());
 
     Contents << m_IndentStr << m_IndentStr << "</observer>\n";
   }
@@ -1380,24 +1296,6 @@ std::string FluidXDescriptor::getMonitoringToWrite()
   Contents << m_IndentStr << "</monitoring>\n";
 
   return Contents.str();
-}
-
-// =====================================================================
-// =====================================================================
-
-void FluidXDescriptor::appendPTreeParams(
-    const boost::property_tree::ptree& Parent, const std::string& Name,
-    std::ostringstream& Contents)
-{
-  for (boost::property_tree::ptree::const_iterator it = Parent.begin();
-      it != Parent.end(); ++it)
-  {
-    if (!it->second.empty())
-      appendPTreeParams(it->second, Name + it->first + ".", Contents);
-    else
-      Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<param name=\""
-      << Name << it->first << "\" value=\"" << it->second.data() << "\"/>\n";
-  }
 }
 
 // =====================================================================
@@ -1454,20 +1352,6 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
   OutFile.close();
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
 
-  // output
-//  OutFilename = boost::filesystem::path(DirPath + "/output.fluidx").string();
-//  mp_Listener->onFileWrite(OutFilename);
-//  OutFile.open(OutFilename.c_str(), std::ios::out);
-//
-//  OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
-//  OutFile << "<openfluid>\n";
-//  OutFile << m_OutputStrToWrite << "\n\n";
-//  OutFile << "</openfluid>\n";
-//  OutFile << "\n";
-//
-//  OutFile.close();
-//  mp_Listener->onFileWritten(openfluid::base::Listener::OK);
-
   // datastore
   OutFilename = boost::filesystem::path(DirPath + "/datastore.fluidx").string();
   mp_Listener->onFileWrite(OutFilename);
@@ -1521,7 +1405,6 @@ void FluidXDescriptor::writeToSingleFile(std::string FilePath)
   OutFile << getModelToWrite() << "\n\n";
   OutFile << getDomainToWrite() << "\n\n";
   OutFile << getRunConfigurationToWrite() << "\n\n";
-//  OutFile << m_OutputStrToWrite << "\n\n";
   OutFile << getDatastoreToWrite() << "\n\n";
   OutFile << getMonitoringToWrite() << "\n\n";
 

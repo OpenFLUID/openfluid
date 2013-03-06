@@ -454,19 +454,6 @@ void TestDataset(std::string DatasetPath)
 
    BOOST_CHECK_EQUAL(Params.get_child("set").size(), 9);
 
-   std::vector<std::string> SetNames;
-   BOOST_FOREACH(boost::property_tree::ptree::value_type &v,Params.get_child("set"))SetNames.push_back(v.first);
-
-   BOOST_CHECK_EQUAL(SetNames[0], "full");
-   BOOST_CHECK_EQUAL(SetNames[1], "2vars");
-   BOOST_CHECK_EQUAL(SetNames[2], "3units");
-   BOOST_CHECK_EQUAL(SetNames[3], "full2");
-   BOOST_CHECK_EQUAL(SetNames[4], "3vars");
-   BOOST_CHECK_EQUAL(SetNames[5], "2units");
-   BOOST_CHECK_EQUAL(SetNames[6], "full3");
-   BOOST_CHECK_EQUAL(SetNames[7], "full4");
-   BOOST_CHECK_EQUAL(SetNames[8], "full5");
-
    BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.format"), "ft1");
    BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.unitsclass"), "XU");
    BOOST_CHECK_EQUAL(Params.get<std::string>("set.full.unitsIDs"), "*");
@@ -558,12 +545,6 @@ void TestDataset(std::string DatasetPath)
    BOOST_CHECK_EQUAL(Params.get<bool>("visitfile.create"), true);
 
    BOOST_CHECK_EQUAL(Params.get_child("serie").size(), 2);
-
-   std::vector<std::string> SerieNames;
-   BOOST_FOREACH(boost::property_tree::ptree::value_type &v,Params.get_child("serie"))SerieNames.push_back(v.first);
-
-   BOOST_CHECK_EQUAL(SerieNames[0], "vtk1");
-   BOOST_CHECK_EQUAL(SerieNames[1], "vtk7");
 
    BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk1.unitclass"), "SU");
    BOOST_CHECK_EQUAL(Params.get<std::string>("serie.vtk1.var"), "tests.var1");
