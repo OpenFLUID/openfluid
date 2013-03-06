@@ -182,6 +182,16 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
 
 
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data.dummy",openfluid::market::MetaPackageInfo::FLUIDX));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.data.dummy"),openfluid::market::MetaPackageInfo::FLUIDX);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data.dummy",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.data.dummy"),openfluid::market::MetaPackageInfo::NONE);
+
+
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data.dummy",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data.dummy",openfluid::market::MetaPackageInfo::FLUIDX));
+
+
   //MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
   openfluid::market::MarketPackage::setCommonBuildOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
@@ -192,6 +202,5 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(MC.isConnected(),false);
 }
-
 
 

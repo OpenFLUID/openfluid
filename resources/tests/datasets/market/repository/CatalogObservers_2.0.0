@@ -3,7 +3,7 @@
 [tests.market.obs.dummy]
 
 name = package for tests
-description = This function is a test ...
+description = This observer is a test ...
 authors = 
 
 arch.linux-x86-64.license = INRA-wosrc
@@ -19,7 +19,7 @@ arch.src.license = GPLv3-OF
 
 [tests.market.obs.binonly.dummy]
 name = package for tests
-description = This function is a test ...
+description = This observer is a test ...
 authors = 
 
 arch.linux-x86-64.license = INRA-wosrc
@@ -33,7 +33,7 @@ arch.linux-i386.file = tests.market.obs.binonly.dummy_2.0.0_linux-i386.ofpk
 
 [tests.market.obs.srconly.dummy]
 name = package for tests
-description = This function is a test ...
+description = This observer is a test ...
 authors = 
 
 arch.src.file = tests.market.obs.srconly.dummy_2.0.0_src.ofpk

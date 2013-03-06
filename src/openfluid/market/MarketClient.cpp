@@ -259,7 +259,7 @@ void MarketClient::parseCatalogData(const MetaPackageInfo::TypePackage& TypeCata
          std::string TmpID = PackagesIDs[i];
 
 
-         if (KFile.has_key(TmpID,BinaryArchKey+".file") || KFile.has_key(TmpID,"arch.src.file"))
+         if (KFile.has_key(TmpID,BinaryArchKey+".file") || KFile.has_key(TmpID,"arch.src.file") || KFile.has_key(TmpID,"file"))
          {
 
            MetaPackagesCatalog[TmpID].ID = TmpID;
@@ -316,6 +316,17 @@ void MarketClient::parseCatalogData(const MetaPackageInfo::TypePackage& TypeCata
                MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].BuildOptions = KFile.get_string(TmpID,"arch.src.buildoptions");
 
 
+           }
+
+           // dataset ?
+           if (KFile.has_key(TmpID,"file"))
+           {
+             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX] = PackageInfo();
+             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeDirectory(TypeCatalog)+"/"+KFile.get_string(TmpID,"file");
+
+             // license
+             if (KFile.has_key(TmpID, "license"))
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].License = KFile.get_string(TmpID,"license");
            }
          }
       }
@@ -482,6 +493,10 @@ bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const M
         && PCit->second.AvailablePackages.find(MetaPackageInfo::SRC) ==  PCit->second.AvailablePackages.end())
       return false;
 
+    if (Flag == MetaPackageInfo::FLUIDX
+        && PCit->second.AvailablePackages.find(MetaPackageInfo::FLUIDX) == PCit->second.AvailablePackages.end())
+      return false;
+
     PCit->second.Selected = Flag;
     return true;
   }
@@ -567,6 +582,10 @@ void MarketClient::preparePackagesInstallation()
         if (!BuildOptsStr.empty())
           ((MarketSrcPackage*)m_PacksToInstall.back())->setBuildConfigOptions(BuildOptsStr);
       }
+      if (PCit->second.Selected == MetaPackageInfo::FLUIDX)
+      {
+        m_PacksToInstall.push_back(new MarketDatasetPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::FLUIDX].URL));
+      }
     }
   }
 }
@@ -642,6 +661,10 @@ std::string MarketClient::selectionTypeToString(MetaPackageInfo::SelectionType S
   else if (Selec == MetaPackageInfo::SRC)
   {
     return "SRC";
+  }
+  else if (Selec == MetaPackageInfo::FLUIDX)
+  {
+    return "FLUIDX";
   }
 
   return "";

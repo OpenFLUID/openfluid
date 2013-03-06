@@ -125,6 +125,13 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& Met
     TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::BIN;
   }
 
+  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::FLUIDX) != MetaPackInfo.AvailablePackages.end())
+  {
+    TmpFormatRow = *(m_RefFormatComboBoxModel->append());
+    TmpFormatRow[m_FormatColumns.m_FormatName] = _("fluidx");
+    TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::FLUIDX;
+  }
+
   m_FormatCombo.set_active(0);
 
   Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
@@ -334,4 +341,3 @@ std::string MarketPackWidget::replaceByNoneIfEmpty(const std::string& Str)
 
 
 } } //namespaces
-
