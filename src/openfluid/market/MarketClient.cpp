@@ -593,20 +593,48 @@ void MarketClient::preparePackagesInstallation()
   {
     for (PCit = TPCit->second.begin(); PCit != TPCit->second.end();++PCit)
     {
+      // Binary
       if (PCit->second.Selected == MetaPackageInfo::BIN)
       {
-        m_PacksToInstall.push_back(new MarketBinFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+        if (TPCit->first == PackageInfo::FUNC)
+        {
+          m_PacksToInstall.push_back(new MarketBinFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+        }
+        else if (TPCit->first == PackageInfo::OBS)
+        {
+          m_PacksToInstall.push_back(new MarketBinObserverPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+        }
+        else if (TPCit->first == PackageInfo::BUILD)
+        {
+          m_PacksToInstall.push_back(new MarketBinBuilderextPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+        }
       }
+
+
+      // Source
       if (PCit->second.Selected == MetaPackageInfo::SRC)
       {
-        m_PacksToInstall.push_back(new MarketSrcFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+        if (TPCit->first == PackageInfo::FUNC)
+        {
+          m_PacksToInstall.push_back(new MarketSrcFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+        }
+        else if (TPCit->first == PackageInfo::OBS)
+        {
+          m_PacksToInstall.push_back(new MarketSrcObserverPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+        }
+        else if (TPCit->first == PackageInfo::BUILD)
+        {
+          m_PacksToInstall.push_back(new MarketSrcBuilderextPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+        }
 
         std::string BuildOptsStr = PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions;
-
 
         if (!BuildOptsStr.empty())
           ((MarketSrcPackage*)m_PacksToInstall.back())->setBuildConfigOptions(BuildOptsStr);
       }
+
+
+      // Dataset
       if (PCit->second.Selected == MetaPackageInfo::FLUIDX)
       {
         m_PacksToInstall.push_back(new MarketDatasetPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::FLUIDX].URL));
