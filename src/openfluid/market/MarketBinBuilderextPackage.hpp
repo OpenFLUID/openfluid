@@ -69,7 +69,7 @@ class DLLEXPORT MarketBinBuilderextPackage : public MarketBinPackage
 
     MarketBinBuilderextPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
 
-    std::string getInstallPath();
+    std::string getInstallPath() const;
 
 };
 

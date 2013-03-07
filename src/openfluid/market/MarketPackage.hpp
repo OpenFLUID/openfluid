@@ -171,7 +171,7 @@ class DLLEXPORT MarketPackage
     /**
       @return the market-bag path directory for the type package class
     */
-    virtual std::string getInstallPath() = 0;
+    virtual std::string getInstallPath() const = 0;
 
     virtual void process() = 0;
 

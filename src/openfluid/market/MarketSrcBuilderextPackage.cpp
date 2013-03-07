@@ -71,7 +71,7 @@ MarketSrcBuilderextPackage::MarketSrcBuilderextPackage(openfluid::ware::WareID_t
 // =====================================================================
 
 
-std::string MarketSrcBuilderextPackage::getInstallPath()
+std::string MarketSrcBuilderextPackage::getInstallPath() const
 {
   return m_MarketBagBuilderextDir + "/" + m_MarketBagSrcSubDir;
 }

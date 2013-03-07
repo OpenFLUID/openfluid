@@ -71,7 +71,7 @@ MarketBinObserverPackage::MarketBinObserverPackage(openfluid::ware::WareID_t ID,
 // =====================================================================
 
 
-std::string MarketBinObserverPackage::getInstallPath()
+std::string MarketBinObserverPackage::getInstallPath() const
 {
   return m_MarketBagObserverDir + "/" + m_MarketBagBinSubDir;
 }

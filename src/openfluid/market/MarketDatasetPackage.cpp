@@ -77,7 +77,7 @@ MarketDatasetPackage::MarketDatasetPackage(openfluid::ware::WareID_t ID, std::st
 // =====================================================================
 
 
-std::string MarketDatasetPackage::getInstallPath()
+std::string MarketDatasetPackage::getInstallPath() const
 {
   return m_MarketBagDatasetDir;
 }
