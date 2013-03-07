@@ -53,14 +53,18 @@
  */
 
 #include "MonitoringModel.hpp"
-#include <openfluid/fluidx/MonitoringDescriptor.hpp>
+
+#include <openfluid/fluidx/ObserverDescriptor.hpp>
+#include <openfluid/machine/ObserverPluginsManager.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
 
 // =====================================================================
 // =====================================================================
 
 MonitoringModel::MonitoringModel(
-    openfluid::fluidx::MonitoringDescriptor& MonitoringDesc) :
-    mp_MonitoringDesc(&MonitoringDesc)
+    openfluid::guicommon::BuilderMonitoring& Monitoring) :
+    mp_Monitoring(&Monitoring)
 {
 
 }

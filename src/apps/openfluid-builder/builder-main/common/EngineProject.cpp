@@ -164,7 +164,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     throw;
   }
 
-  std::string MissingFunctions = mp_BuilderDesc->getModel().checkAndAdaptModel();
+  std::string MissingFunctions =
+      mp_BuilderDesc->getModel().checkAndAdaptModel();
   if (!MissingFunctions.empty())
   {
     Glib::ustring Msg =
@@ -173,6 +174,25 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
                 "Corresponding simulation functions will be removed from the model.\n"
                 "Do you want to continue?"),
             MissingFunctions);
+
+    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+        Msg))
+    {
+      deleteEngineObjects();
+      delete mp_BuilderDesc;
+      throw openfluid::base::OFException("");
+    }
+  }
+
+  std::string MissingObservers =
+      mp_BuilderDesc->getMonitoring().checkAndAdaptMonitoring();
+  if (!MissingObservers.empty())
+  {
+    Glib::ustring Msg = Glib::ustring::compose(
+        _("Unable to find plugin file(s):\n%1\n\n"
+            "Corresponding observers will be removed from the model.\n"
+            "Do you want to continue?"),
+        MissingObservers);
 
     if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
         Msg))

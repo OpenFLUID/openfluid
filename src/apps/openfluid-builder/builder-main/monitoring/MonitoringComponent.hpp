@@ -57,7 +57,7 @@
 
 #include "BuilderMVPComponent.hpp"
 
-#include <openfluid/fluidx/MonitoringDescriptor.hpp>
+#include <openfluid/guicommon/BuilderMonitoring.hpp>
 
 class MonitoringModel;
 class MonitoringView;
@@ -74,7 +74,7 @@ class MonitoringComponent: public BuilderMVPComponent
   public:
 
     MonitoringComponent(
-        openfluid::fluidx::MonitoringDescriptor& MonitoringDesc);
+        openfluid::guicommon::BuilderMonitoring& Monitoring);
 
     ~MonitoringComponent();
 

@@ -62,9 +62,9 @@
 // =====================================================================
 
 MonitoringComponent::MonitoringComponent(
-    openfluid::fluidx::MonitoringDescriptor& MonitoringDesc)
+    openfluid::guicommon::BuilderMonitoring& Monitoring)
 {
-  mp_Model = new MonitoringModel(MonitoringDesc);
+  mp_Model = new MonitoringModel(Monitoring);
   mp_View = new MonitoringView();
   mp_Presenter = new MonitoringPresenter(*mp_Model, *mp_View);
 }

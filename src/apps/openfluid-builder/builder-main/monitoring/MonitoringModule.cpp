@@ -66,8 +66,7 @@ MonitoringModule::MonitoringModule(
 {
   mp_MainPanel = 0;
 
-  mp_MonitoringMVP = new MonitoringComponent(
-      BuilderDesc.getMonitoringDescriptor());
+  mp_MonitoringMVP = new MonitoringComponent(BuilderDesc.getMonitoring());
 }
 
 // =====================================================================

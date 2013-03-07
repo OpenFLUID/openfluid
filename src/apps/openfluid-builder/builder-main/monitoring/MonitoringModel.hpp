@@ -55,17 +55,17 @@
 #ifndef MONITORINGMODEL_HPP_
 #define MONITORINGMODEL_HPP_
 
-#include <openfluid/fluidx/MonitoringDescriptor.hpp>
+#include <openfluid/guicommon/BuilderMonitoring.hpp>
 
 class MonitoringModel
 {
   private:
 
-    openfluid::fluidx::MonitoringDescriptor* mp_MonitoringDesc;
+    openfluid::guicommon::BuilderMonitoring* mp_Monitoring;
 
   public:
 
-    MonitoringModel(openfluid::fluidx::MonitoringDescriptor& MonitoringDesc);
+    MonitoringModel(openfluid::guicommon::BuilderMonitoring& Monitoring);
 
     ~MonitoringModel();
 };
