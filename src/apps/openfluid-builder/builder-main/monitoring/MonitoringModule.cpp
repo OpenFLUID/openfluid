@@ -56,6 +56,7 @@
 
 #include <openfluid/guicommon/BuilderDescriptor.hpp>
 #include "MonitoringComponent.hpp"
+#include "MonitoringCoordinator.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -67,6 +68,10 @@ MonitoringModule::MonitoringModule(
   mp_MainPanel = 0;
 
   mp_MonitoringMVP = new MonitoringComponent(BuilderDesc.getMonitoring());
+
+  mp_Coordinator = new MonitoringCoordinator(*mp_MonitoringMVP->getModel());
+
+  mp_Coordinator->update();
 }
 
 // =====================================================================

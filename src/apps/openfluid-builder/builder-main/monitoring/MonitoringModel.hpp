@@ -55,6 +55,7 @@
 #ifndef MONITORINGMODEL_HPP_
 #define MONITORINGMODEL_HPP_
 
+#include <sigc++/sigc++.h>
 #include <openfluid/guicommon/BuilderMonitoring.hpp>
 
 class MonitoringModel
@@ -63,11 +64,33 @@ class MonitoringModel
 
     openfluid::guicommon::BuilderMonitoring* mp_Monitoring;
 
+    sigc::signal<void> m_signal_UpdateAsked;
+
+    sigc::signal<void, std::string> m_signal_EditParamsAsked;
+
+    sigc::signal<void> m_signal_AddObserverAsked;
+
   public:
 
     MonitoringModel(openfluid::guicommon::BuilderMonitoring& Monitoring);
 
     ~MonitoringModel();
+
+    sigc::signal<void> signal_UpdateAsked();
+
+    sigc::signal<void, std::string> signal_EditParamsAsked();
+
+    sigc::signal<void> signal_AddObserverAsked();
+
+    void update();
+
+    std::list<std::pair<std::string, std::string> > getItems();
+
+    void addObserver();
+
+    void editParams(std::string ObserverID);
+
+    void removeObserver(std::string ObserverID);
 };
 
 #endif /* MONITORINGMODEL_HPP_ */

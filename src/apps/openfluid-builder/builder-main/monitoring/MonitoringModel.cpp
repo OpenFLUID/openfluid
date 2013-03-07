@@ -80,3 +80,81 @@ MonitoringModel::~MonitoringModel()
 // =====================================================================
 // =====================================================================
 
+sigc::signal<void> MonitoringModel::signal_UpdateAsked()
+{
+  return m_signal_UpdateAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void, std::string> MonitoringModel::signal_EditParamsAsked()
+{
+  return m_signal_EditParamsAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void> MonitoringModel::signal_AddObserverAsked()
+{
+  return m_signal_AddObserverAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::update()
+{
+  m_signal_UpdateAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+std::list<std::pair<std::string, std::string> > MonitoringModel::getItems()
+{
+  std::list<std::pair<std::string, std::string> > Items;
+
+  const std::list<openfluid::fluidx::ObserverDescriptor*>& ItemDesc =
+      mp_Monitoring->getItems();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it =
+      ItemDesc.begin(); it != ItemDesc.end(); ++it)
+  {
+    std::string ID = (*it)->getID();
+    std::string Name = mp_Monitoring->getSignature(ID).Signature->Name;
+    Items.push_back(std::make_pair(ID, Name));
+  }
+
+  return Items;
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::addObserver()
+{
+  m_signal_AddObserverAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::editParams(std::string ObserverID)
+{
+  m_signal_EditParamsAsked.emit(ObserverID);
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::removeObserver(std::string ObserverID)
+{
+  mp_Monitoring->removeFromObserverList(ObserverID);
+  m_signal_UpdateAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+

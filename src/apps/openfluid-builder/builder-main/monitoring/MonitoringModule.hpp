@@ -60,6 +60,7 @@
 #include <gtkmm/box.h>
 
 class MonitoringComponent;
+class MonitoringCoordinator;
 
 class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
@@ -70,6 +71,8 @@ class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
   protected:
 
     MonitoringComponent* mp_MonitoringMVP;
+
+    MonitoringCoordinator* mp_Coordinator;
 
     sigc::signal<void> m_signal_MonitoringChanged;
 

@@ -55,6 +55,8 @@
 #ifndef MONITORINGPRESENTER_HPP_
 #define MONITORINGPRESENTER_HPP_
 
+#include <string>
+
 class MonitoringModel;
 class MonitoringView;
 
@@ -65,6 +67,14 @@ class MonitoringPresenter
     MonitoringModel& m_Model;
 
     MonitoringView& m_View;
+
+    void whenUpdateAsked();
+
+    void whenAddObserverAsked();
+
+    void whenEditParamsAsked(std::string ObserverID);
+
+    void whenRemoveObserverAsked(std::string ObserverID);
 
   public:
 

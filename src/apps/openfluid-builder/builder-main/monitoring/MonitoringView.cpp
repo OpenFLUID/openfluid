@@ -55,13 +55,29 @@
 #include "MonitoringView.hpp"
 
 #include <glibmm/i18n.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/label.h>
 
 // =====================================================================
 // =====================================================================
 
 MonitoringView::MonitoringView()
 {
+  mp_AddButton = Gtk::manage(new Gtk::Button());
+  mp_AddButton->set_image(
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_BUTTON)));
+  mp_AddButton->set_tooltip_text(_("Add an observer"));
+  mp_AddButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &MonitoringView::onAddButtonClicked));
+
+  Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
+  TopBox->pack_start(*mp_AddButton, Gtk::PACK_SHRINK, 10);
+
+  mp_ListBox = Gtk::manage(new Gtk::VBox());
+
   mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK, 10);
+  mp_MainBox->pack_start(*mp_ListBox, Gtk::PACK_EXPAND_WIDGET, 10);
   mp_MainBox->set_visible(true);
   mp_MainBox->show_all_children();
 }
@@ -77,6 +93,56 @@ MonitoringView::~MonitoringView()
 // =====================================================================
 // =====================================================================
 
+void MonitoringView::update(
+    std::list<std::pair<std::string, std::string> > Items)
+{
+  int ItemsCount = mp_ListBox->children().size();
+
+  for (int i = 0; i < ItemsCount; i++)
+    mp_ListBox->remove(*mp_ListBox->children().begin()->get_widget());
+
+  for (std::list<std::pair<std::string, std::string> >::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    Gtk::Label* IDLabel = Gtk::manage(new Gtk::Label(it->first));
+    IDLabel->set_justify(Gtk::JUSTIFY_LEFT);
+    Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(it->second));
+    NameLabel->set_justify(Gtk::JUSTIFY_LEFT);
+
+    Gtk::VBox* InfoBox = Gtk::manage(new Gtk::VBox());
+    InfoBox->pack_start(*IDLabel, Gtk::PACK_SHRINK);
+    InfoBox->pack_start(*NameLabel, Gtk::PACK_SHRINK);
+
+    Gtk::Button* EditBt = Gtk::manage(new Gtk::Button(_("Edit parameters...")));
+    EditBt->signal_clicked().connect(
+        sigc::bind<std::string>(
+            sigc::mem_fun(*this, &MonitoringView::onEditButtonClicked),
+            it->first));
+
+    Gtk::Button* RemoveBt = Gtk::manage(new Gtk::Button());
+    RemoveBt->set_image(
+        *Gtk::manage(
+            new Gtk::Image(Gtk::Stock::REMOVE, Gtk::ICON_SIZE_BUTTON)));
+    RemoveBt->set_tooltip_text(_("Remove this observer"));
+    RemoveBt->signal_clicked().connect(
+        sigc::bind<std::string>(
+            sigc::mem_fun(*this, &MonitoringView::onRemoveButtonClicked),
+            it->first));
+
+    Gtk::HBox* ObsBox = Gtk::manage(new Gtk::HBox());
+    ObsBox->pack_start(*InfoBox, Gtk::PACK_SHRINK);
+    ObsBox->pack_end(*RemoveBt, Gtk::PACK_SHRINK, 0, 5);
+    ObsBox->pack_end(*EditBt, Gtk::PACK_SHRINK, 0, 5);
+
+    mp_ListBox->pack_start(*ObsBox, Gtk::PACK_SHRINK, 0, 10);
+  }
+
+  mp_ListBox->show_all_children();
+}
+
+// =====================================================================
+// =====================================================================
+
 Gtk::Widget* MonitoringView::asWidget()
 {
   return mp_MainBox;
@@ -85,3 +151,50 @@ Gtk::Widget* MonitoringView::asWidget()
 // =====================================================================
 // =====================================================================
 
+void MonitoringView::onAddButtonClicked()
+{
+  m_signal_AddObserverAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringView::onEditButtonClicked(std::string ObserverID)
+{
+  m_signal_EditParamsAsked.emit(ObserverID);
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringView::onRemoveButtonClicked(std::string ObserverID)
+{
+  m_signal_RemoveObserverAsked(ObserverID);
+}
+
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void, std::string> MonitoringView::signal_EditParamsAsked()
+{
+  return m_signal_EditParamsAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void, std::string> MonitoringView::signal_RemoveObserverAsked()
+{
+  return m_signal_RemoveObserverAsked;
+}
+
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void> MonitoringView::signal_AddObserverAsked()
+{
+  return m_signal_AddObserverAsked;
+}
+
+// =====================================================================
+// =====================================================================

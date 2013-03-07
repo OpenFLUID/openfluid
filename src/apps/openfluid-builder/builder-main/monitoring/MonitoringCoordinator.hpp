@@ -46,74 +46,30 @@
  */
 
 /**
- \file MonitoringPresenter.cpp
- \brief Implements ...
+ \file MonitoringCoordinator.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "MonitoringPresenter.hpp"
+#ifndef MONITORINGCOORDINATOR_HPP_
+#define MONITORINGCOORDINATOR_HPP_
 
 #include "MonitoringModel.hpp"
-#include "MonitoringView.hpp"
 
-// =====================================================================
-// =====================================================================
-
-MonitoringPresenter::MonitoringPresenter(MonitoringModel& Model,
-                                         MonitoringView& View) :
-    m_Model(Model), m_View(View)
+class MonitoringCoordinator
 {
-  m_Model.signal_UpdateAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenUpdateAsked));
+  private:
 
-  m_View.signal_AddObserverAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenAddObserverAsked));
-  m_View.signal_EditParamsAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenEditParamsAsked));
-  m_View.signal_RemoveObserverAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenRemoveObserverAsked));
-}
+    MonitoringModel& m_MonitoringModel;
 
-// =====================================================================
-// =====================================================================
+  public:
 
-MonitoringPresenter::~MonitoringPresenter()
-{
+    MonitoringCoordinator(MonitoringModel& MonitoringModel);
 
-}
+    ~MonitoringCoordinator();
 
-// =====================================================================
-// =====================================================================
+    void update();
+};
 
-void MonitoringPresenter::whenUpdateAsked()
-{
-  m_View.update(m_Model.getItems());
-}
-
-// =====================================================================
-// =====================================================================
-
-void MonitoringPresenter::whenAddObserverAsked()
-{
-  m_Model.addObserver();
-}
-
-// =====================================================================
-// =====================================================================
-
-void MonitoringPresenter::whenEditParamsAsked(std::string ObserverID)
-{
-  m_Model.editParams(ObserverID);
-}
-
-// =====================================================================
-// =====================================================================
-
-void MonitoringPresenter::whenRemoveObserverAsked(std::string ObserverID)
-{
-  m_Model.removeObserver(ObserverID);
-}
-
-// =====================================================================
-// =====================================================================
+#endif /* MONITORINGCOORDINATOR_HPP_ */

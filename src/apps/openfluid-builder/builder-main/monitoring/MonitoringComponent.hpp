@@ -79,6 +79,8 @@ class MonitoringComponent: public BuilderMVPComponent
     ~MonitoringComponent();
 
     Gtk::Widget* asWidget();
+
+    MonitoringModel* getModel();
 };
 
 #endif /* MONITORINGCOMPONENT_HPP_ */

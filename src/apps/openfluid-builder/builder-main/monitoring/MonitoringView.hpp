@@ -55,7 +55,9 @@
 #ifndef MONITORINGVIEW_HPP_
 #define MONITORINGVIEW_HPP_
 
+#include <sigc++/sigc++.h>
 #include <gtkmm/box.h>
+#include <gtkmm/button.h>
 
 class MonitoringView
 {
@@ -63,13 +65,38 @@ class MonitoringView
 
     Gtk::Box* mp_MainBox;
 
+    Gtk::Button* mp_AddButton;
+
+    Gtk::VBox* mp_ListBox;
+
+    sigc::signal<void> m_signal_AddObserverAsked;
+
+    sigc::signal<void, std::string> m_signal_EditParamsAsked;
+
+    sigc::signal<void, std::string> m_signal_RemoveObserverAsked;
+
+    void onAddButtonClicked();
+
+    void onEditButtonClicked(std::string ObserverID);
+
+    void onRemoveButtonClicked(std::string ObserverID);
+
   public:
 
     MonitoringView();
 
     ~MonitoringView();
 
+    void update(std::list<std::pair<std::string, std::string> > Items);
+
     Gtk::Widget* asWidget();
+
+    sigc::signal<void> signal_AddObserverAsked();
+
+    sigc::signal<void, std::string> signal_EditParamsAsked();
+
+    sigc::signal<void, std::string> signal_RemoveObserverAsked();
+
 };
 
 #endif /* MONITORINGVIEW_HPP_ */
