@@ -46,36 +46,35 @@
 */
 
 /**
- * MarketSrcFunctionPackage.cpp
+ * MarketSrcBuilderextPackage.hpp
  *
- *  Created on: 25 févr. 2013
+ *  Created on: 7 mars 2013
  *      Author: Manuel CHATAIGNER
 */
 
+#ifndef __MARKETSRCBUILDEREXTPACKAGE_HPP__
+#define __MARKETSRCBUILDEREXTPACKAGE_HPP__
 
-#include <openfluid/market/MarketSrcFunctionPackage.hpp>
 
+#include <openfluid/dllexport.hpp>
+#include <openfluid/market/MarketSrcPackage.hpp>
 
 
 namespace openfluid { namespace market {
 
 
-MarketSrcFunctionPackage::MarketSrcFunctionPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
-                        : MarketSrcPackage(ID, PackageURL)
+class DLLEXPORT MarketSrcBuilderextPackage : public MarketSrcPackage
 {
+  public:
 
-}
+    MarketSrcBuilderextPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
 
+    std::string getInstallPath();
 
-// =====================================================================
-// =====================================================================
-
-
-std::string MarketSrcFunctionPackage::getInstallPath()
-{
-  return m_MarketBagFunctionDir + "/" + m_MarketBagSrcSubDir;
-}
-
+};
 
 
 } } // namespaces
+
+
+#endif /* __MARKETSRCBUILDEREXTPACKAGE_HPP__ */

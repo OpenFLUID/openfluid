@@ -45,7 +45,7 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-/*
+/**
  * MarketBinFunctionPackage.hpp
  *
  *  Created on: 25 févr. 2013

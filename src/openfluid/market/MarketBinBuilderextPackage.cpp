@@ -45,23 +45,22 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-/**
- * MarketSrcFunctionPackage.cpp
+/*
+ * MarketBinBuilderextPackage.cpp
  *
- *  Created on: 25 févr. 2013
+ *  Created on: 7 mars 2013
  *      Author: Manuel CHATAIGNER
 */
 
 
-#include <openfluid/market/MarketSrcFunctionPackage.hpp>
-
+#include <openfluid/market/MarketBinBuilderextPackage.hpp>
 
 
 namespace openfluid { namespace market {
 
 
-MarketSrcFunctionPackage::MarketSrcFunctionPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
-                        : MarketSrcPackage(ID, PackageURL)
+MarketBinBuilderextPackage::MarketBinBuilderextPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+                          : MarketBinPackage(ID, PackageURL)
 {
 
 }
@@ -71,9 +70,9 @@ MarketSrcFunctionPackage::MarketSrcFunctionPackage(openfluid::ware::WareID_t ID,
 // =====================================================================
 
 
-std::string MarketSrcFunctionPackage::getInstallPath()
+std::string MarketBinBuilderextPackage::getInstallPath()
 {
-  return m_MarketBagFunctionDir + "/" + m_MarketBagSrcSubDir;
+  return m_MarketBagBuilderextDir + "/" + m_MarketBagBinSubDir;
 }
 
 

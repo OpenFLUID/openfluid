@@ -46,22 +46,22 @@
 */
 
 /**
- * MarketSrcFunctionPackage.cpp
+ * MarketSrcBuilderextPackage.cpp
  *
- *  Created on: 25 févr. 2013
+ *  Created on: 7 mars 2013
  *      Author: Manuel CHATAIGNER
 */
 
 
-#include <openfluid/market/MarketSrcFunctionPackage.hpp>
+#include <openfluid/market/MarketSrcBuilderextPackage.hpp>
 
 
 
 namespace openfluid { namespace market {
 
 
-MarketSrcFunctionPackage::MarketSrcFunctionPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
-                        : MarketSrcPackage(ID, PackageURL)
+MarketSrcBuilderextPackage::MarketSrcBuilderextPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+                          : MarketSrcPackage(ID, PackageURL)
 {
 
 }
@@ -71,9 +71,9 @@ MarketSrcFunctionPackage::MarketSrcFunctionPackage(openfluid::ware::WareID_t ID,
 // =====================================================================
 
 
-std::string MarketSrcFunctionPackage::getInstallPath()
+std::string MarketSrcBuilderextPackage::getInstallPath()
 {
-  return m_MarketBagFunctionDir + "/" + m_MarketBagSrcSubDir;
+  return m_MarketBagBuilderextDir + "/" + m_MarketBagSrcSubDir;
 }
 
 

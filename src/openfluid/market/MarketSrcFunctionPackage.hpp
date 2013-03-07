@@ -45,12 +45,12 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-/*
+/**
  * MarketSrcFunctionPackage.hpp
  *
  *  Created on: 25 févr. 2013
  *      Author: Manuel CHATAIGNER
- */
+*/
 
 #ifndef __MARKETSRCFUNCTIONPACKAGE_HPP__
 #define __MARKETSRCFUNCTIONPACKAGE_HPP__
