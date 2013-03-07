@@ -67,7 +67,7 @@ DECLARE_FUNCTION_PLUGIN
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.market.src.use")
+BEGIN_FUNCTION_SIGNATURE("tests.market.func.src.use")
 
   DECLARE_SIGNATURE_NAME("test function for market as source package");
   DECLARE_SIGNATURE_DESCRIPTION("");

@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware)
 
 
-SET(FUNC_ID tests.market.src.use)
+SET(FUNC_ID tests.market.obs.src.use)
 SET(FUNC_CPP MarketUseFunc.cpp)
 
 OPENFLUID_SHOW_CMAKE_VARIABLES()
