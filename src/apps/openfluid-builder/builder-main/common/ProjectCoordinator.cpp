@@ -248,6 +248,9 @@ void ProjectCoordinator::whenActivationChanged()
         Module =
             static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMonitoringModule());
 
+        Module->signal_ModuleChanged().connect(
+            sigc::mem_fun(*this, &ProjectCoordinator::whenMonitoringChanged));
+
         addModuleToWorkspace(PageName, *Module);
       }
       break;
@@ -497,10 +500,10 @@ void ProjectCoordinator::computeDomainChanges()
 // =====================================================================
 // =====================================================================
 
-//void ProjectCoordinator::whenResultsChanged()
-//{
-//
-//}
+void ProjectCoordinator::whenMonitoringChanged()
+{
+  m_signal_ChangeHappened.emit();
+}
 
 // =====================================================================
 // =====================================================================

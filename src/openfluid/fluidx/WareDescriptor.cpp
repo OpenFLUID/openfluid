@@ -135,6 +135,14 @@ void WareDescriptor::eraseParamRecurs(boost::property_tree::ptree& pt,
 // =====================================================================
 // =====================================================================
 
+void WareDescriptor::clearParameters()
+{
+  m_Params.clear();
+}
+
+// =====================================================================
+// =====================================================================
+
 std::map<std::string, std::string> WareDescriptor::getParamsAsMap(
     const openfluid::ware::WareParams_t& Params)
 {

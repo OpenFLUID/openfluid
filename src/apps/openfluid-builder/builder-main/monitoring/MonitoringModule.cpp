@@ -72,8 +72,13 @@ MonitoringModule::MonitoringModule(
 
   mp_AddDialog = new MonitoringAddObserverDialog(BuilderDesc.getMonitoring());
 
+  mp_ParamsDialog = new MonitoringEditParamsDialog(BuilderDesc.getMonitoring());
+
   mp_Coordinator = new MonitoringCoordinator(*mp_MonitoringMVP->getModel(),
-                                             *mp_AddDialog);
+                                             *mp_AddDialog, *mp_ParamsDialog);
+
+  mp_Coordinator->signal_MonitoringChanged().connect(
+      sigc::mem_fun(*this, &MonitoringModule::whenMonitoringChanged));
 
   mp_Coordinator->update();
 }
@@ -118,6 +123,22 @@ Gtk::Widget* MonitoringModule::asWidget()
 sigc::signal<void> MonitoringModule::signal_ModuleChanged()
 {
   return m_signal_MonitoringChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModule::whenMonitoringChanged()
+{
+  m_signal_MonitoringChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModule::update()
+{
+  mp_Coordinator->update();
 }
 
 // =====================================================================

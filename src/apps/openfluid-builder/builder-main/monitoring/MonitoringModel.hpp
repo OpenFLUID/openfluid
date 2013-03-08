@@ -71,6 +71,8 @@ class MonitoringModel
 
     sigc::signal<void> m_signal_AddObserverAsked;
 
+    sigc::signal<void> m_signal_ObserverRemoved;
+
   public:
 
     MonitoringModel(openfluid::guicommon::BuilderMonitoring& Monitoring);
@@ -83,6 +85,8 @@ class MonitoringModel
 
     sigc::signal<void> signal_AddObserverAsked();
 
+    sigc::signal<void> signal_ObserverRemoved();
+
     void update();
 
     std::list<std::pair<std::string, std::string> > getItems();
@@ -94,6 +98,9 @@ class MonitoringModel
     void removeObserver(std::string ObserverID);
 
     void addObservers(std::set<std::string> ObserverIDs);
+
+    void setParameters(std::string ObserverID,
+                       openfluid::ware::WareParams_t Params);
 };
 
 #endif /* MONITORINGMODEL_HPP_ */

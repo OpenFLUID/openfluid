@@ -104,6 +104,14 @@ sigc::signal<void> MonitoringModel::signal_AddObserverAsked()
 // =====================================================================
 // =====================================================================
 
+sigc::signal<void> MonitoringModel::signal_ObserverRemoved()
+{
+  return m_signal_ObserverRemoved;
+}
+
+// =====================================================================
+// =====================================================================
+
 void MonitoringModel::update()
 {
   m_signal_UpdateAsked.emit();
@@ -153,6 +161,7 @@ void MonitoringModel::removeObserver(std::string ObserverID)
 {
   mp_Monitoring->removeFromObserverList(ObserverID);
   m_signal_UpdateAsked.emit();
+  m_signal_ObserverRemoved.emit();
 }
 
 // =====================================================================
@@ -171,3 +180,16 @@ void MonitoringModel::addObservers(std::set<std::string> ObserverIDs)
 // =====================================================================
 // =====================================================================
 
+void MonitoringModel::setParameters(std::string ObserverID,
+                                    openfluid::ware::WareParams_t Params)
+{
+  openfluid::fluidx::ObserverDescriptor& Obs = mp_Monitoring->getDescriptor(
+      ObserverID);
+
+  Obs.clearParameters();
+
+  Obs.setParameters(Params);
+}
+
+// =====================================================================
+// =====================================================================

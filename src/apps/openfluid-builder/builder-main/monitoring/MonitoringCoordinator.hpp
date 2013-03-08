@@ -55,8 +55,10 @@
 #ifndef MONITORINGCOORDINATOR_HPP_
 #define MONITORINGCOORDINATOR_HPP_
 
+#include <sigc++/sigc++.h>
 #include "MonitoringModel.hpp"
 #include "MonitoringAddObserverDialog.hpp"
+#include "MonitoringEditParamsDialog.hpp"
 
 class MonitoringCoordinator
 {
@@ -66,18 +68,28 @@ class MonitoringCoordinator
 
     MonitoringAddObserverDialog& m_AddDialog;
 
+    MonitoringEditParamsDialog& m_EditParamsDialog;
+
+    sigc::signal<void> m_signal_MonitoringChanged;
+
     void whenAddObserverAsked();
 
     void whenEditParamsAsked(std::string ObserverID);
 
+    void whenObserverRemoved();
+
   public:
 
     MonitoringCoordinator(MonitoringModel& MonitoringModel,
-                          MonitoringAddObserverDialog& AddDialog);
+                          MonitoringAddObserverDialog& AddDialog,
+                          MonitoringEditParamsDialog& ParamsDialog);
 
     ~MonitoringCoordinator();
 
     void update();
+
+    sigc::signal<void> signal_MonitoringChanged();
+
 };
 
 #endif /* MONITORINGCOORDINATOR_HPP_ */

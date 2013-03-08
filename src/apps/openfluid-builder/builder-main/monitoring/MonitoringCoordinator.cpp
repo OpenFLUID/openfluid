@@ -58,13 +58,17 @@
 // =====================================================================
 
 MonitoringCoordinator::MonitoringCoordinator(
-    MonitoringModel& MonitoringModel, MonitoringAddObserverDialog& AddDialog) :
-    m_MonitoringModel(MonitoringModel), m_AddDialog(AddDialog)
+    MonitoringModel& MonitoringModel, MonitoringAddObserverDialog& AddDialog,
+    MonitoringEditParamsDialog& ParamsDialog) :
+    m_MonitoringModel(MonitoringModel), m_AddDialog(AddDialog), m_EditParamsDialog(
+        ParamsDialog)
 {
   m_MonitoringModel.signal_AddObserverAsked().connect(
       sigc::mem_fun(*this, &MonitoringCoordinator::whenAddObserverAsked));
   m_MonitoringModel.signal_EditParamsAsked().connect(
       sigc::mem_fun(*this, &MonitoringCoordinator::whenEditParamsAsked));
+  m_MonitoringModel.signal_ObserverRemoved().connect(
+      sigc::mem_fun(*this, &MonitoringCoordinator::whenObserverRemoved));
 }
 
 // =====================================================================
@@ -86,9 +90,22 @@ void MonitoringCoordinator::update()
 // =====================================================================
 // =====================================================================
 
+sigc::signal<void> MonitoringCoordinator::signal_MonitoringChanged()
+{
+  return m_signal_MonitoringChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
 void MonitoringCoordinator::whenAddObserverAsked()
 {
-  m_MonitoringModel.addObservers(m_AddDialog.show());
+  std::set<std::string> NewObservers = m_AddDialog.show();
+  if (!NewObservers.empty())
+  {
+    m_MonitoringModel.addObservers(NewObservers);
+    m_signal_MonitoringChanged.emit();
+  }
 }
 
 // =====================================================================
@@ -96,7 +113,19 @@ void MonitoringCoordinator::whenAddObserverAsked()
 
 void MonitoringCoordinator::whenEditParamsAsked(std::string ObserverID)
 {
+  if (m_EditParamsDialog.show(ObserverID))
+  {
+    m_MonitoringModel.setParameters(ObserverID, m_EditParamsDialog.getParams());
+    m_signal_MonitoringChanged.emit();
+  }
+}
 
+// =====================================================================
+// =====================================================================
+
+void MonitoringCoordinator::whenObserverRemoved()
+{
+  m_signal_MonitoringChanged.emit();
 }
 
 // =====================================================================

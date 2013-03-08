@@ -71,10 +71,11 @@ class WareDescriptor
   private:
 
     static void getParamsRecurs(const boost::property_tree::ptree& Parent,
-                           const std::string& Name,
-                           std::map<std::string, std::string>& Contents);
+                                const std::string& Name,
+                                std::map<std::string, std::string>& Contents);
 
-    void eraseParamRecurs(boost::property_tree::ptree& pt,boost::property_tree::path& Path);
+    void eraseParamRecurs(boost::property_tree::ptree& pt,
+                          boost::property_tree::path& Path);
 
   protected:
 
@@ -97,6 +98,8 @@ class WareDescriptor
     bool isType(ModelItemType MIType) const;
 
     void eraseParameter(const openfluid::ware::WareParamKey_t& Key);
+
+    void clearParameters();
 
     /**
      * @warning be careful with Params structure, that must match a real xml structure

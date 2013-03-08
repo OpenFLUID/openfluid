@@ -46,58 +46,92 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file MonitoringEditParamsDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
+#ifndef MONITORINGEDITPARAMSDIALOG_HPP_
+#define MONITORINGEDITPARAMSDIALOG_HPP_
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/table.h>
+#include <gtkmm/scrolledwindow.h>
+#include <openfluid/guicommon/BuilderMonitoring.hpp>
+#include "BuilderTableRowWidget.hpp"
 
-#include <gtkmm/box.h>
+// =====================================================================
+// =====================================================================
 
-class MonitoringComponent;
-class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-class MonitoringEditParamsDialog;
-
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class MonitoringParamRow: public BuilderTableRowWidget
 {
   private:
 
-    Gtk::Box* mp_MainPanel;
+    const int m_Index;
 
-  protected:
+    Gtk::Entry* mp_ParamValueEntry;
+    Gtk::Entry* mp_ParamNameEntry;
 
-    MonitoringComponent* mp_MonitoringMVP;
+    Gtk::Button* mp_RemoveButton;
 
-    MonitoringAddObserverDialog* mp_AddDialog;
+    sigc::signal<void, int> m_signal_removeAsked;
 
-    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-    MonitoringCoordinator* mp_Coordinator;
-
-    sigc::signal<void> m_signal_MonitoringChanged;
-
-    void whenMonitoringChanged();
+    void onRemoveButtonClicked();
 
   public:
 
-    MonitoringModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+    MonitoringParamRow(std::string ParamName, std::string ParamValue,
+                       const int Index);
 
-    ~MonitoringModule();
+    std::string getName();
+    std::string getValue();
 
-    sigc::signal<void> signal_ModuleChanged();
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-    void update();
-
+    sigc::signal<void, int> signal_removeAsked();
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+// =====================================================================
+// =====================================================================
+
+class MonitoringEditParamsDialog
+{
+  private:
+
+    openfluid::guicommon::BuilderMonitoring& m_Monit;
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Label* mp_IdLabel;
+
+    Gtk::Label* mp_DescLabel;
+
+    Gtk::Table* mp_Table;
+
+    std::map<int, std::pair<std::string, std::string> > m_ParamsByIndex;
+
+    unsigned int m_CurrentTableBottom;
+
+    std::map<int, MonitoringParamRow*> m_ParamRowsByIndex;
+
+    void init(std::string ObserverID);
+
+    void updateRows();
+
+    void onAddButtonClicked();
+
+    void onRemoveAsked(int Index);
+
+  public:
+
+    MonitoringEditParamsDialog(openfluid::guicommon::BuilderMonitoring& Monit);
+
+    ~MonitoringEditParamsDialog();
+
+    bool show(std::string ObserverID);
+
+    openfluid::ware::WareParams_t getParams();
+};
+
+#endif /* MONITORINGEDITPARAMSDIALOG_HPP_ */
