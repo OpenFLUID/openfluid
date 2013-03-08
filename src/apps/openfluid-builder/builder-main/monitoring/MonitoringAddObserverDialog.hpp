@@ -46,74 +46,61 @@
  */
 
 /**
- \file MonitoringPresenter.cpp
- \brief Implements ...
+ \file MonitoringAddObserverDialog.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "MonitoringPresenter.hpp"
+#ifndef MONITORINGADDOBSERVERDIALOG_HPP_
+#define MONITORINGADDOBSERVERDIALOG_HPP_
 
-#include "MonitoringModel.hpp"
-#include "MonitoringView.hpp"
+#include <set>
+#include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/liststore.h>
+#include <openfluid/guicommon/BuilderMonitoring.hpp>
 
-// =====================================================================
-// =====================================================================
-
-MonitoringPresenter::MonitoringPresenter(MonitoringModel& Model,
-                                         MonitoringView& View) :
-    m_Model(Model), m_View(View)
+class MonitoringAddObserverDialog
 {
-  m_Model.signal_UpdateAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenUpdateAsked));
+  private:
 
-  m_View.signal_AddObserverAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenAddObserverAsked));
-  m_View.signal_EditParamsAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenEditParamsAsked));
-  m_View.signal_RemoveObserverAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenRemoveObserverAsked));
-}
+    openfluid::guicommon::BuilderMonitoring& m_Monit;
 
-// =====================================================================
-// =====================================================================
+    Gtk::Dialog* mp_Dialog;
 
-MonitoringPresenter::~MonitoringPresenter()
-{
+    class ObserversListColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        ObserversListColumns()
+        {
+          add(m_Id);
+          add(m_Name);
+        }
+        Gtk::TreeModelColumn<std::string> m_Id;
+        Gtk::TreeModelColumn<std::string> m_Name;
+    };
 
-}
+    ObserversListColumns m_Columns;
 
-// =====================================================================
-// =====================================================================
+    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
 
-void MonitoringPresenter::whenUpdateAsked()
-{
-  m_View.update(m_Model.getItems());
-}
+    Gtk::TreeView* mp_TreeView;
 
-// =====================================================================
-// =====================================================================
+    std::set<std::string> m_SelectedIDs;
 
-void MonitoringPresenter::whenAddObserverAsked()
-{
-  m_Model.addObserverAsked();
-}
+    void init();
 
-// =====================================================================
-// =====================================================================
+    void selected_row_callback(const Gtk::TreeModel::iterator& Iter);
 
-void MonitoringPresenter::whenEditParamsAsked(std::string ObserverID)
-{
-  m_Model.editParamsAsked(ObserverID);
-}
+  public:
 
-// =====================================================================
-// =====================================================================
+    MonitoringAddObserverDialog(openfluid::guicommon::BuilderMonitoring& Monit);
 
-void MonitoringPresenter::whenRemoveObserverAsked(std::string ObserverID)
-{
-  m_Model.removeObserver(ObserverID);
-}
+    ~MonitoringAddObserverDialog();
 
-// =====================================================================
-// =====================================================================
+    std::set<std::string> show();
+};
+
+#endif /* MONITORINGADDOBSERVERDIALOG_HPP_ */

@@ -56,6 +56,7 @@
 #define MONITORINGCOORDINATOR_HPP_
 
 #include "MonitoringModel.hpp"
+#include "MonitoringAddObserverDialog.hpp"
 
 class MonitoringCoordinator
 {
@@ -63,9 +64,16 @@ class MonitoringCoordinator
 
     MonitoringModel& m_MonitoringModel;
 
+    MonitoringAddObserverDialog& m_AddDialog;
+
+    void whenAddObserverAsked();
+
+    void whenEditParamsAsked(std::string ObserverID);
+
   public:
 
-    MonitoringCoordinator(MonitoringModel& MonitoringModel);
+    MonitoringCoordinator(MonitoringModel& MonitoringModel,
+                          MonitoringAddObserverDialog& AddDialog);
 
     ~MonitoringCoordinator();
 

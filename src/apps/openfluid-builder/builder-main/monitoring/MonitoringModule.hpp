@@ -61,6 +61,7 @@
 
 class MonitoringComponent;
 class MonitoringCoordinator;
+class MonitoringAddObserverDialog;
 
 class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
@@ -71,6 +72,8 @@ class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
   protected:
 
     MonitoringComponent* mp_MonitoringMVP;
+
+    MonitoringAddObserverDialog* mp_AddDialog;
 
     MonitoringCoordinator* mp_Coordinator;
 

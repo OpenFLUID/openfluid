@@ -46,39 +46,55 @@
  */
 
 /**
- \file MonitoringPresenter.cpp
+ \file MonitoringAddObserverDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "MonitoringPresenter.hpp"
+#include "MonitoringAddObserverDialog.hpp"
 
-#include "MonitoringModel.hpp"
-#include "MonitoringView.hpp"
+#include <glibmm/i18n.h>
+#include <gtkmm/stock.h>
+#include <openfluid/machine/ObserverInstance.hpp>
 
 // =====================================================================
 // =====================================================================
 
-MonitoringPresenter::MonitoringPresenter(MonitoringModel& Model,
-                                         MonitoringView& View) :
-    m_Model(Model), m_View(View)
+MonitoringAddObserverDialog::MonitoringAddObserverDialog(
+    openfluid::guicommon::BuilderMonitoring& Monit) :
+    m_Monit(Monit)
 {
-  m_Model.signal_UpdateAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenUpdateAsked));
+  mref_ListStore = Gtk::ListStore::create(m_Columns);
 
-  m_View.signal_AddObserverAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenAddObserverAsked));
-  m_View.signal_EditParamsAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenEditParamsAsked));
-  m_View.signal_RemoveObserverAsked().connect(
-      sigc::mem_fun(*this, &MonitoringPresenter::whenRemoveObserverAsked));
+  mp_TreeView = Gtk::manage(new Gtk::TreeView());
+  mp_TreeView->append_column("", m_Columns.m_Id);
+  mp_TreeView->append_column("", m_Columns.m_Name);
+  mp_TreeView->set_headers_visible(false);
+  mp_TreeView->set_model(mref_ListStore);
+  mp_TreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+
+  Gtk::ScrolledWindow* ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ModelWin->add(*mp_TreeView);
+  ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
+  mp_Dialog = new Gtk::Dialog(_("Add of observers"));
+  mp_Dialog->get_vbox()->pack_start(*ModelWin);
+  mp_Dialog->set_default_size(600, 200);
+
+  mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
+
+  mp_Dialog->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
-MonitoringPresenter::~MonitoringPresenter()
+MonitoringAddObserverDialog::~MonitoringAddObserverDialog()
 {
 
 }
@@ -86,34 +102,53 @@ MonitoringPresenter::~MonitoringPresenter()
 // =====================================================================
 // =====================================================================
 
-void MonitoringPresenter::whenUpdateAsked()
+std::set<std::string> MonitoringAddObserverDialog::show()
 {
-  m_View.update(m_Model.getItems());
+  init();
+
+  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
+  {
+    mp_TreeView->get_selection()->selected_foreach_iter(
+        sigc::mem_fun(*this,
+                      &MonitoringAddObserverDialog::selected_row_callback));
+  }
+
+  mp_Dialog->hide();
+
+  return m_SelectedIDs;
 }
 
 // =====================================================================
 // =====================================================================
 
-void MonitoringPresenter::whenAddObserverAsked()
+void MonitoringAddObserverDialog::init()
 {
-  m_Model.addObserverAsked();
+  m_SelectedIDs.clear();
+
+  mref_ListStore->clear();
+
+  std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
+      m_Monit.getUnusedAvailableSignatures();
+
+  for (unsigned int i = 0; i < Unused.size(); i++)
+  {
+    Gtk::TreeRow Row = *(mref_ListStore->append());
+    Row[m_Columns.m_Id] = Unused[i]->Signature->ID;
+    Row[m_Columns.m_Name] = Unused[i]->Signature->Name;
+  }
+
 }
 
 // =====================================================================
 // =====================================================================
 
-void MonitoringPresenter::whenEditParamsAsked(std::string ObserverID)
+void MonitoringAddObserverDialog::selected_row_callback(
+    const Gtk::TreeModel::iterator& Iter)
 {
-  m_Model.editParamsAsked(ObserverID);
+  Gtk::TreeModel::Row Row = *Iter;
+  m_SelectedIDs.insert(Row[m_Columns.m_Id]);
 }
 
 // =====================================================================
 // =====================================================================
 
-void MonitoringPresenter::whenRemoveObserverAsked(std::string ObserverID)
-{
-  m_Model.removeObserver(ObserverID);
-}
-
-// =====================================================================
-// =====================================================================

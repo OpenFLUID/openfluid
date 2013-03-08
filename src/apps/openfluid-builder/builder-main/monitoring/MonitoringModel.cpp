@@ -133,7 +133,7 @@ std::list<std::pair<std::string, std::string> > MonitoringModel::getItems()
 // =====================================================================
 // =====================================================================
 
-void MonitoringModel::addObserver()
+void MonitoringModel::addObserverAsked()
 {
   m_signal_AddObserverAsked.emit();
 }
@@ -141,7 +141,7 @@ void MonitoringModel::addObserver()
 // =====================================================================
 // =====================================================================
 
-void MonitoringModel::editParams(std::string ObserverID)
+void MonitoringModel::editParamsAsked(std::string ObserverID)
 {
   m_signal_EditParamsAsked.emit(ObserverID);
 }
@@ -153,6 +153,19 @@ void MonitoringModel::removeObserver(std::string ObserverID)
 {
   mp_Monitoring->removeFromObserverList(ObserverID);
   m_signal_UpdateAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::addObservers(std::set<std::string> ObserverIDs)
+{
+  for (std::set<std::string>::iterator it = ObserverIDs.begin();
+      it != ObserverIDs.end(); ++it)
+    mp_Monitoring->addToObserverList(*it);
+
+  if (!ObserverIDs.empty())
+    m_signal_UpdateAsked.emit();
 }
 
 // =====================================================================

@@ -57,10 +57,14 @@
 // =====================================================================
 // =====================================================================
 
-MonitoringCoordinator::MonitoringCoordinator(MonitoringModel& MonitoringModel) :
-    m_MonitoringModel(MonitoringModel)
+MonitoringCoordinator::MonitoringCoordinator(
+    MonitoringModel& MonitoringModel, MonitoringAddObserverDialog& AddDialog) :
+    m_MonitoringModel(MonitoringModel), m_AddDialog(AddDialog)
 {
-
+  m_MonitoringModel.signal_AddObserverAsked().connect(
+      sigc::mem_fun(*this, &MonitoringCoordinator::whenAddObserverAsked));
+  m_MonitoringModel.signal_EditParamsAsked().connect(
+      sigc::mem_fun(*this, &MonitoringCoordinator::whenEditParamsAsked));
 }
 
 // =====================================================================
@@ -77,6 +81,22 @@ MonitoringCoordinator::~MonitoringCoordinator()
 void MonitoringCoordinator::update()
 {
   m_MonitoringModel.update();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringCoordinator::whenAddObserverAsked()
+{
+  m_MonitoringModel.addObservers(m_AddDialog.show());
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringCoordinator::whenEditParamsAsked(std::string ObserverID)
+{
+
 }
 
 // =====================================================================

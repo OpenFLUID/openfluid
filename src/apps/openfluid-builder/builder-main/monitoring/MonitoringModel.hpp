@@ -55,6 +55,7 @@
 #ifndef MONITORINGMODEL_HPP_
 #define MONITORINGMODEL_HPP_
 
+#include <set>
 #include <sigc++/sigc++.h>
 #include <openfluid/guicommon/BuilderMonitoring.hpp>
 
@@ -86,11 +87,13 @@ class MonitoringModel
 
     std::list<std::pair<std::string, std::string> > getItems();
 
-    void addObserver();
+    void addObserverAsked();
 
-    void editParams(std::string ObserverID);
+    void editParamsAsked(std::string ObserverID);
 
     void removeObserver(std::string ObserverID);
+
+    void addObservers(std::set<std::string> ObserverIDs);
 };
 
 #endif /* MONITORINGMODEL_HPP_ */
