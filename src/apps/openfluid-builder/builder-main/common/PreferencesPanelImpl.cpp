@@ -340,7 +340,7 @@ void PreferencesPathsPanel::init()
       BuilderExtensionsManager::getInstance()->getExtensionsExtraSearchPaths());
 
   mp_ObserversPathListWidget->setPreDefinedPaths(
-      openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths());
+      openfluid::base::RuntimeEnvironment::getInstance()->getDefaultObserversPluginsPaths());
 
   mp_ObserversPathListWidget->setUserDefinedPaths(
       openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
