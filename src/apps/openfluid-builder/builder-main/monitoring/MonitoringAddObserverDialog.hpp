@@ -60,6 +60,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/infobar.h>
 #include <openfluid/guicommon/BuilderMonitoring.hpp>
 
 class MonitoringAddObserverDialog
@@ -69,6 +70,8 @@ class MonitoringAddObserverDialog
     openfluid::guicommon::BuilderMonitoring& m_Monit;
 
     Gtk::Dialog* mp_Dialog;
+
+    Gtk::InfoBar* mp_InfoBar;
 
     class ObserversListColumns: public Gtk::TreeModel::ColumnRecord
     {

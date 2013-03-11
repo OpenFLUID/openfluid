@@ -65,12 +65,18 @@ MonitoringAddObserverDialog::MonitoringAddObserverDialog(
     openfluid::guicommon::BuilderMonitoring& Monit) :
     m_Monit(Monit)
 {
+  Gtk::Label* InfoBarLabel = Gtk::manage(
+      new Gtk::Label(_("No observer available")));
+
+  mp_InfoBar = Gtk::manage(new Gtk::InfoBar());
+  mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
+  ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*InfoBarLabel);
+
   mref_ListStore = Gtk::ListStore::create(m_Columns);
 
   mp_TreeView = Gtk::manage(new Gtk::TreeView());
-  mp_TreeView->append_column("", m_Columns.m_Id);
-  mp_TreeView->append_column("", m_Columns.m_Name);
-  mp_TreeView->set_headers_visible(false);
+  mp_TreeView->append_column(_("Observer ID"), m_Columns.m_Id);
+  mp_TreeView->append_column(_("Observer short description"), m_Columns.m_Name);
   mp_TreeView->set_model(mref_ListStore);
   mp_TreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
 
@@ -80,13 +86,12 @@ MonitoringAddObserverDialog::MonitoringAddObserverDialog(
   ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 
   mp_Dialog = new Gtk::Dialog(_("Add of observers"));
+  mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*ModelWin);
-  mp_Dialog->set_default_size(600, 200);
+  mp_Dialog->set_default_size(700, 200);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-
-  mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
 
   mp_Dialog->show_all_children();
 }
@@ -130,11 +135,26 @@ void MonitoringAddObserverDialog::init()
   std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
       m_Monit.getUnusedAvailableSignatures();
 
-  for (unsigned int i = 0; i < Unused.size(); i++)
+  if (Unused.empty())
   {
-    Gtk::TreeRow Row = *(mref_ListStore->append());
-    Row[m_Columns.m_Id] = Unused[i]->Signature->ID;
-    Row[m_Columns.m_Name] = Unused[i]->Signature->Name;
+    mp_InfoBar->set_visible(true);
+    mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, false);
+    mp_Dialog->set_default_response(Gtk::RESPONSE_CANCEL);
+  }
+  else
+  {
+    mp_InfoBar->set_visible(false);
+    mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, true);
+    mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
+
+    for (unsigned int i = 0; i < Unused.size(); i++)
+    {
+      Gtk::TreeRow Row = *(mref_ListStore->append());
+      Row[m_Columns.m_Id] = Unused[i]->Signature->ID;
+      Row[m_Columns.m_Name] = Unused[i]->Signature->Name;
+    }
+
+    mp_TreeView->get_selection()->select(mref_ListStore->children().begin());
   }
 
 }
