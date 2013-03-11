@@ -81,7 +81,7 @@ MonitoringParamRow::MonitoringParamRow(std::string ParamName,
 
   mp_RemoveButton = Gtk::manage(new Gtk::Button());
   mp_RemoveButton->set_image(
-      *Gtk::manage(new Gtk::Image(Gtk::Stock::DELETE, Gtk::ICON_SIZE_BUTTON)));
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::REMOVE, Gtk::ICON_SIZE_BUTTON)));
   mp_RemoveButton->set_tooltip_text(_("Remove this parameter"));
   mp_RemoveButton->signal_clicked().connect(
       sigc::mem_fun(*this, &MonitoringParamRow::onRemoveButtonClicked));
@@ -156,14 +156,15 @@ MonitoringEditParamsDialog::MonitoringEditParamsDialog(
 
   mp_IdLabel = Gtk::manage(new Gtk::Label(""));
   mp_DescLabel = Gtk::manage(new Gtk::Label(""));
+  mp_DescLabel->set_selectable(true);
 
   mp_Dialog = new Gtk::Dialog(_("Edit observer parameters"));
   mp_Dialog->get_vbox()->pack_start(*mp_IdLabel, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*mp_DescLabel, Gtk::PACK_SHRINK, 10);
-  mp_Dialog->get_vbox()->pack_start(*HSep, Gtk::PACK_SHRINK, 5);
-  mp_Dialog->get_vbox()->pack_start(*ButtonBox, Gtk::PACK_SHRINK, 5);
+  mp_Dialog->get_vbox()->pack_start(*HSep, Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*ButtonBox, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*BottomWin);
-  mp_Dialog->set_default_size(600, 400);
+  mp_Dialog->set_default_size(600, 500);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
@@ -203,7 +204,8 @@ bool MonitoringEditParamsDialog::show(std::string ObserverID)
 
 void MonitoringEditParamsDialog::init(std::string ObserverID)
 {
-  mp_IdLabel->set_text(ObserverID);
+  mp_IdLabel->set_markup("<b>" + ObserverID + "</b>");
+
   mp_DescLabel->set_text(
       m_Monit.getSignature(ObserverID).Signature->Description);
 
@@ -240,6 +242,12 @@ void MonitoringEditParamsDialog::updateRows()
   Lab2->set_visible(true);
   mp_Table->attach(*Lab1, 0, 1, 0, 1, Gtk::FILL, Gtk::FILL, 0, 0);
   mp_Table->attach(*Lab2, 1, 2, 0, 1, Gtk::FILL, Gtk::FILL, 0, 0);
+
+  if (m_ParamsByIndex.empty())
+  {
+    onAddButtonClicked();
+    return;
+  }
 
   for (std::map<int, std::pair<std::string, std::string> >::iterator it =
       m_ParamsByIndex.begin(); it != m_ParamsByIndex.end(); ++it)
