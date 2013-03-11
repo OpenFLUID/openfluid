@@ -57,6 +57,8 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/frame.h>
 
 // =====================================================================
 // =====================================================================
@@ -71,13 +73,18 @@ MonitoringView::MonitoringView()
       sigc::mem_fun(*this, &MonitoringView::onAddButtonClicked));
 
   Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
-  TopBox->pack_start(*mp_AddButton, Gtk::PACK_SHRINK, 10);
+  TopBox->pack_start(*mp_AddButton, Gtk::PACK_SHRINK);
 
   mp_ListBox = Gtk::manage(new Gtk::VBox());
 
+  Gtk::ScrolledWindow* ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ModelWin->add(*mp_ListBox);
+  ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
   mp_MainBox = Gtk::manage(new Gtk::VBox());
-  mp_MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK, 10);
-  mp_MainBox->pack_start(*mp_ListBox, Gtk::PACK_EXPAND_WIDGET, 10);
+  mp_MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK, 5);
+  mp_MainBox->pack_start(*ModelWin, Gtk::PACK_EXPAND_WIDGET, 0);
   mp_MainBox->set_visible(true);
   mp_MainBox->show_all_children();
 }
@@ -104,10 +111,13 @@ void MonitoringView::update(
   for (std::list<std::pair<std::string, std::string> >::iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
-    Gtk::Label* IDLabel = Gtk::manage(new Gtk::Label(it->first));
+    Gtk::Label* IDLabel = Gtk::manage(new Gtk::Label());
     IDLabel->set_justify(Gtk::JUSTIFY_LEFT);
+    IDLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
+    IDLabel->set_markup("<b>" + it->first + "</b>");
+
     Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(it->second));
-    NameLabel->set_justify(Gtk::JUSTIFY_LEFT);
+    NameLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
 
     Gtk::VBox* InfoBox = Gtk::manage(new Gtk::VBox());
     InfoBox->pack_start(*IDLabel, Gtk::PACK_SHRINK);
@@ -130,11 +140,17 @@ void MonitoringView::update(
             it->first));
 
     Gtk::HBox* ObsBox = Gtk::manage(new Gtk::HBox());
-    ObsBox->pack_start(*InfoBox, Gtk::PACK_SHRINK);
-    ObsBox->pack_end(*RemoveBt, Gtk::PACK_SHRINK, 0, 5);
+    ObsBox->pack_start(*InfoBox, Gtk::PACK_EXPAND_WIDGET);
+    ObsBox->pack_end(*RemoveBt, Gtk::PACK_SHRINK);
     ObsBox->pack_end(*EditBt, Gtk::PACK_SHRINK, 0, 5);
+    ObsBox->set_border_width(5);
 
-    mp_ListBox->pack_start(*ObsBox, Gtk::PACK_SHRINK, 0, 10);
+    Gtk::Frame* Frame = Gtk::manage(new Gtk::Frame());
+    Frame->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+    Frame->set_border_width(5);
+    Frame->add(*ObsBox);
+
+    mp_ListBox->pack_start(*Frame, Gtk::PACK_SHRINK, 0, 1);
   }
 
   mp_ListBox->show_all_children();
