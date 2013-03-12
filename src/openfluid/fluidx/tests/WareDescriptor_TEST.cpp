@@ -68,6 +68,20 @@
 
 BOOST_AUTO_TEST_CASE(check_parameters)
 {
+  //  <param1>
+  //    <level2A>
+  //      <level3A> var12A3A </level3A>
+  //      <level3B> var12A3B </level3B>
+  //    </level2A>
+  //    <level2B>
+  //      <level3> var12B3 </level3>
+  //    </level2B>
+  //  </param1>
+  //  <param2> var2 </param2>
+  //  <param3>
+  //    <level2A> var32A </level2A>
+  //    <level2B> var32B </level2B>
+  //  </param3>
   openfluid::fluidx::FunctionDescriptor FuncDesc("test1.id");
   FuncDesc.setParameter("param1.level2A.level3A", "var12A3A");
   FuncDesc.setParameter("param2", "var2");
@@ -90,6 +104,19 @@ BOOST_AUTO_TEST_CASE(check_parameters)
   BOOST_CHECK_EQUAL(Params["param1.level2B.level3"], "var12B3");
   BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
 
+  //  <param1>
+  //    <level2A>
+  //      <level3A> var12A3A </level3A>
+  //      <level3B> var12A3B </level3B>
+  //    </level2A>
+  //    <level2B>
+  //      <level3> var12B3 </level3>
+  //    </level2B>
+  //  </param1>
+  //  <param2> var2 </param2>
+  //  <param3>
+  //    <level2A> var32A </level2A>
+  //  </param3>
   FuncDesc.eraseParameter("param3.level2B");
   Params = openfluid::fluidx::WareDescriptor::getParamsAsMap(
       FuncDesc.getParameters());
@@ -101,6 +128,18 @@ BOOST_AUTO_TEST_CASE(check_parameters)
   BOOST_CHECK_EQUAL(Params["param1.level2B.level3"], "var12B3");
   BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
 
+  //  <param1>
+  //    <level2A>
+  //      <level3A> var12A3A </level3A>
+  //      <level3B> var12A3B </level3B>
+  //    </level2A>
+  //    <level2B>
+  //      <level3> var12B3 </level3>
+  //    </level2B>
+  //  </param1>
+  //  <param3>
+  //    <level2A> var32A </level2A>
+  //  </param3>
   FuncDesc.eraseParameter("param2");
   Params = openfluid::fluidx::WareDescriptor::getParamsAsMap(
       FuncDesc.getParameters());
@@ -112,19 +151,31 @@ BOOST_AUTO_TEST_CASE(check_parameters)
   BOOST_CHECK_EQUAL(Params["param1.level2B.level3"], "var12B3");
   BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
 
+  //  <param1>
+  //    <level2A>
+  //      <level3A> var12A3A </level3A>
+  //      <level3B> var12A3B </level3B>
+  //    </level2A>
+  //  </param1>
+  //  <param3>
+  //    <level2A> var32A </level2A>
+  //  </param3>
   FuncDesc.eraseParameter("param1.level2B.level3");
   Params = openfluid::fluidx::WareDescriptor::getParamsAsMap(
       FuncDesc.getParameters());
 
-  BOOST_CHECK_EQUAL(Params.size(), 4);
+  BOOST_CHECK_EQUAL(Params.size(), 3);
   BOOST_CHECK_EQUAL(Params["param1.level2A.level3A"], "var12A3A");
   BOOST_CHECK(!Params.count("param2"));
   BOOST_CHECK_EQUAL(Params["param3.level2A"], "var32A");
   BOOST_CHECK(!Params.count("param3.level2B"));
   BOOST_CHECK(!Params.count("param1.level2B.level3"));
-  BOOST_CHECK_EQUAL(Params["param1.level2B"], "");
+  BOOST_CHECK(!Params.count("param1.level2B"));
   BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
 
+  //  <param3>
+  //    <level2A> var32A </level2A>
+  //  </param3>
   FuncDesc.eraseParameter("param1");
   Params = openfluid::fluidx::WareDescriptor::getParamsAsMap(
       FuncDesc.getParameters());
@@ -137,4 +188,11 @@ BOOST_AUTO_TEST_CASE(check_parameters)
   BOOST_CHECK(!Params.count("param1.level2B.level3"));
   BOOST_CHECK(!Params.count("param1.level2B"));
   BOOST_CHECK(!Params.count("param1.level2A.level3B"));
+
+  //  empty
+  FuncDesc.eraseParameter("param3.level2A");
+  Params = openfluid::fluidx::WareDescriptor::getParamsAsMap(
+      FuncDesc.getParameters());
+
+  BOOST_CHECK(Params.empty());
 }
