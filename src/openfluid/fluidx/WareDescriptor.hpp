@@ -74,7 +74,7 @@ class WareDescriptor
                                 const std::string& Name,
                                 std::map<std::string, std::string>& Contents);
 
-    void eraseParamRecurs(boost::property_tree::ptree& pt,
+    bool eraseParamRecurs(boost::property_tree::ptree& pt,
                           boost::property_tree::path& Path);
 
   protected:
