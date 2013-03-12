@@ -256,11 +256,14 @@ void MonitoringEditParamsDialog::updateRows()
                                                      it->second.second,
                                                      it->first);
 
-    for (unsigned int i = 0; i < Row->getColumnCount(); i++)
+    for (unsigned int i = 0; i < Row->getColumnCount() - 1; i++)
     {
       mp_Table->attach(*Row->getWidgets()[i], i, i + 1, m_CurrentTableBottom,
-                       m_CurrentTableBottom + 1, Gtk::FILL, Gtk::FILL, 0, 0);
+                       m_CurrentTableBottom + 1, Gtk::FILL | Gtk::EXPAND,
+                       Gtk::FILL, 0, 0);
     }
+    mp_Table->attach(*Row->getWidgets()[2], 2, 3, m_CurrentTableBottom,
+                     m_CurrentTableBottom + 1, Gtk::SHRINK, Gtk::FILL, 0, 0);
 
     Row->signal_removeAsked().connect(
         sigc::mem_fun(*this, &MonitoringEditParamsDialog::onRemoveAsked));
@@ -281,11 +284,14 @@ void MonitoringEditParamsDialog::onAddButtonClicked()
 
   MonitoringParamRow* Row = new MonitoringParamRow("", "", Index);
 
-  for (unsigned int i = 0; i < Row->getColumnCount(); i++)
+  for (unsigned int i = 0; i < Row->getColumnCount() - 1; i++)
   {
     mp_Table->attach(*Row->getWidgets()[i], i, i + 1, m_CurrentTableBottom,
-                     m_CurrentTableBottom + 1, Gtk::FILL, Gtk::FILL, 0, 0);
+                     m_CurrentTableBottom + 1, Gtk::FILL | Gtk::EXPAND,
+                     Gtk::FILL, 0, 0);
   }
+  mp_Table->attach(*Row->getWidgets()[2], 2, 3, m_CurrentTableBottom,
+                   m_CurrentTableBottom + 1, Gtk::SHRINK, Gtk::FILL, 0, 0);
 
   Row->signal_removeAsked().connect(
       sigc::mem_fun(*this, &MonitoringEditParamsDialog::onRemoveAsked));

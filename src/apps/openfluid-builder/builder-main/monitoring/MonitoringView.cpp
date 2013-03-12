@@ -59,6 +59,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/frame.h>
+#include <gtkmm/eventbox.h>
 
 // =====================================================================
 // =====================================================================
@@ -143,12 +144,17 @@ void MonitoringView::update(
     ObsBox->pack_start(*InfoBox, Gtk::PACK_EXPAND_WIDGET);
     ObsBox->pack_end(*RemoveBt, Gtk::PACK_SHRINK);
     ObsBox->pack_end(*EditBt, Gtk::PACK_SHRINK, 0, 5);
-    ObsBox->set_border_width(5);
+    ObsBox->set_border_width(10);
+
+    // for background color
+    Gtk::EventBox* ObsEventBox = Gtk::manage(new Gtk::EventBox());
+    ObsEventBox->add(*ObsBox);
+    ObsEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#FFFFFF"));
 
     Gtk::Frame* Frame = Gtk::manage(new Gtk::Frame());
     Frame->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
     Frame->set_border_width(5);
-    Frame->add(*ObsBox);
+    Frame->add(*ObsEventBox);
 
     mp_ListBox->pack_start(*Frame, Gtk::PACK_SHRINK, 0, 1);
   }
