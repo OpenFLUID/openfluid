@@ -85,8 +85,8 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
     m_ExplorerModel(ExplorerModel), m_Workspace(Workspace), m_EngineProject(
         TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(
         false), m_ModelPageName(_("Model")), m_DomainPageName(
-        _("Spatial domain")), m_RunPageName(_("Run configuration"))/*, m_OutputsPageName(
-     _("Outputs configuration"))*/, m_FileMonitorHasChanged(false), m_FileMonitorHasToDisplay(
+        _("Spatial domain")), m_RunPageName(_("Run configuration")), m_MonitoringPageName(
+        _("Monitoring")), m_FileMonitorHasChanged(false), m_FileMonitorHasToDisplay(
         true)
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
@@ -241,36 +241,19 @@ void ProjectCoordinator::whenActivationChanged()
       }
       break;
 
-//    case ProjectExplorerCategories::EXPLORER_OUTPUTS:
-//      PageName = m_OutputsPageName;
-//      if (!m_Workspace.existsPageName(PageName))
-//      {
-//        Module
-//            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createSimulationOutModule());
-//
-//        Module->signal_ModuleChanged().connect(sigc::mem_fun(*this,
-//            &ProjectCoordinator::whenOutChanged));
-//
-//        addModuleToWorkspace(PageName, *Module);
-//      }
-//      break;
+    case ProjectExplorerCategories::EXPLORER_MONITORING:
+      PageName = m_MonitoringPageName;
+      if (!m_Workspace.existsPageName(PageName))
+      {
+        Module =
+            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMonitoringModule());
 
-//    case ProjectExplorerCategories::EXPLORER_SET:
-//      PageName = constructSetPageName(
-//          m_ExplorerModel.getActivatedElement().second);
-//      if (!m_Workspace.existsPageName(PageName))
-//      {
-//        Module
-//            = static_cast<openfluid::guicommon::ProjectWorkspaceModule*> (mp_ModuleFactory->createResultsSetModule());
-//
-//        (static_cast<ResultsSetModule*> (Module))->setSelectedSetFromApp(
-//            m_ExplorerModel.getActivatedElement().second);
-//
-//        m_SetPageNames.insert(PageName);
-//
-//        addModuleToWorkspace(PageName, *Module);
-//      }
-//      break;
+        Module->signal_ModuleChanged().connect(
+            sigc::mem_fun(*this, &ProjectCoordinator::whenMonitoringChanged));
+
+        addModuleToWorkspace(PageName, *Module);
+      }
+      break;
 
     case ProjectExplorerCategories::EXPLORER_NONE:
     default:
@@ -517,10 +500,10 @@ void ProjectCoordinator::computeDomainChanges()
 // =====================================================================
 // =====================================================================
 
-//void ProjectCoordinator::whenResultsChanged()
-//{
-//
-//}
+void ProjectCoordinator::whenMonitoringChanged()
+{
+  m_signal_ChangeHappened.emit();
+}
 
 // =====================================================================
 // =====================================================================
@@ -865,6 +848,18 @@ void ProjectCoordinator::whenRunStopped()
       m_ModelessWindowsExtensionsMap.begin();
       it != m_ModelessWindowsExtensionsMap.end(); ++it)
     it->second->onRunStopped();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ProjectCoordinator::updateMonitoringModule()
+{
+  std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator it =
+      m_ModulesByPageNameMap.find(m_MonitoringPageName);
+
+  if(it != m_ModulesByPageNameMap.end())
+    it->second->update();
 }
 
 // =====================================================================

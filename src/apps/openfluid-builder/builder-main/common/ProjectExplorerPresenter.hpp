@@ -78,9 +78,6 @@ class ProjectExplorerPresenter: public sigc::trackable
 
     void whenFromAppUpdateSimulationAsked();
 
-//    void whenFromAppUpdateResultsAsked(bool WithWarningState);
-
-
   public:
 
     ProjectExplorerPresenter(ProjectExplorerModel& Model,

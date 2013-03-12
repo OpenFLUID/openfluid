@@ -64,13 +64,15 @@
 #include "PreferencesPanelImpl.hpp"
 #include "BuilderExtensionsManager.hpp"
 #include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include "EngineProject.hpp"
 
 // =====================================================================
 // =====================================================================
 
 
 PreferencesDialog::PreferencesDialog() :
-  mp_CurrentPanel(0)
+  mp_CurrentPanel(0), mp_Project(0)
 {
   mref_GroupsTreeModel = Gtk::TreeStore::create(m_GroupsColumns);
   Gtk::TreeRow Row;
@@ -113,14 +115,17 @@ PreferencesDialog::PreferencesDialog() :
   mp_MainBox = Gtk::manage(new Gtk::HBox());
   mp_MainBox->pack_start(*mp_GroupsSWindow, Gtk::PACK_SHRINK, 6);
 
+  Gtk::Button* CloseButton = Gtk::manage(new Gtk::Button(Gtk::Stock::CLOSE));
+  CloseButton->signal_clicked().connect(sigc::mem_fun(*this,
+      &PreferencesDialog::onCloseClicked));
+
   mp_Dialog = new Gtk::Dialog();
   mp_Dialog->get_vbox()->pack_start(*mp_MainBox, Gtk::PACK_EXPAND_WIDGET, 6);
+  mp_Dialog->get_action_area()->add(*CloseButton);
   mp_Dialog->set_default_size(950, 500);
   mp_Dialog->set_border_width(6);
   mp_Dialog->set_title(_("Preferences"));
   mp_Dialog->show_all_children();
-
-  mp_Dialog->add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE);
 
   //select first group
   mp_GroupsTreeView->get_selection()->select(
@@ -140,13 +145,16 @@ PreferencesDialog::~PreferencesDialog()
 // =====================================================================
 
 
-void PreferencesDialog::show()
+void PreferencesDialog::show(EngineProject* Project)
 {
+  mp_Project = Project;
+
   openfluid::guicommon::PreferencesManager* PrefMgr =
       openfluid::guicommon::PreferencesManager::getInstance();
 
   m_PlugPathsHaveChanged = false;
   m_RecentsHaveChanged = false;
+  m_ObsPathsHaveChanged = false;
 
   int OldRecentMax = PrefMgr->getRecentMax();
   int OldRecentCount = PrefMgr->getRecentProjects().size();
@@ -240,6 +248,82 @@ void PreferencesDialog::onGroupSelectionChanged()
 
   mp_MainBox->pack_start(*mp_CurrentPanel, Gtk::PACK_EXPAND_WIDGET, 6);
 
+}
+
+// =====================================================================
+// =====================================================================
+
+void PreferencesDialog::onCloseClicked()
+{
+  openfluid::base::RuntimeEnvironment* RunEnv =
+      openfluid::base::RuntimeEnvironment::getInstance();
+
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
+
+  // check observers paths
+
+  std::vector<std::string> ExistingObsPaths = RunEnv->getExtraObserversPluginsPaths();
+  std::vector<std::string> PrefObsPaths = PrefMgr->getExtraObserversPaths();
+
+  if (ExistingObsPaths.size() == PrefObsPaths.size() && std::equal(
+      ExistingObsPaths.begin(), ExistingObsPaths.end(),
+      PrefObsPaths.begin()))
+  {
+    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
+    return;
+  }
+
+  // RunEnv <- Pref
+  RunEnv->resetExtraObserversPluginsPaths();
+  for (int i = PrefObsPaths.size() - 1; i >= 0; i--)
+    RunEnv->addExtraObserversPluginsPaths(PrefObsPaths[i]);
+
+  if(!mp_Project)
+  {
+    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
+    m_ObsPathsHaveChanged = true;
+    return;
+  }
+
+  openfluid::guicommon::BuilderMonitoring& Monit = mp_Project->getBuilderDesc().getMonitoring();
+
+  std::string MissingObserversStr = "";
+
+  std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
+      Monit.checkAndGetModifiedMonitoring(
+          MissingObserversStr);
+
+  if (MissingObserversStr.empty())
+  {
+    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
+    m_ObsPathsHaveChanged = true;
+    return;
+  }
+
+  Glib::ustring Msg = Glib::ustring::compose(
+      _("These plugin file(s) are no more available:\n%1\n\n"
+          "Corresponding observers will be removed from the monitoring.\n"
+          "Do you want to continue?"),
+          MissingObserversStr);
+
+  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+      Msg))
+  {
+    Monit.setItems(ModifiedObservers);
+
+    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
+    m_ObsPathsHaveChanged = true;
+    return;
+  }
+
+  // reset RunEnv
+  RunEnv->resetExtraObserversPluginsPaths();
+  for (int i = ExistingObsPaths.size() - 1; i >= 0; i--)
+    RunEnv->addExtraObserversPluginsPaths(ExistingObsPaths[i]);
+
+  // reset Monitoring
+  Monit.update();
 }
 
 // =====================================================================

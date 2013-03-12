@@ -46,79 +46,74 @@
  */
 
 /**
- \file ProjectExplorerPresenter.cpp
+ \file MonitoringPresenter.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ProjectExplorerPresenter.hpp"
+#include "MonitoringPresenter.hpp"
 
-#include "ProjectExplorerModel.hpp"
-#include "ProjectExplorerAdapter.hpp"
+#include "MonitoringModel.hpp"
+#include "MonitoringView.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-ProjectExplorerPresenter::ProjectExplorerPresenter(ProjectExplorerModel& Model,
-    ProjectExplorerAdapter& Adapter) :
-  m_Model(Model), m_Adapter(Adapter)
+MonitoringPresenter::MonitoringPresenter(MonitoringModel& Model,
+                                         MonitoringView& View) :
+    m_Model(Model), m_View(View)
 {
-  m_Model.signal_Initialized().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromAppInitialized));
-  m_Model.signal_UpdateModelAsked().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromAppUpdateModelAsked));
-  m_Model.signal_UpdateDomainAsked().connect(sigc::mem_fun(*this,
-        &ProjectExplorerPresenter::whenFromAppUpdateDomainAsked));
-  m_Model.signal_UpdateSimulationAsked().connect(sigc::mem_fun(*this,
-        &ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked));
+  m_Model.signal_UpdateAsked().connect(
+      sigc::mem_fun(*this, &MonitoringPresenter::whenUpdateAsked));
 
-  m_Adapter.signal_FromUserActivationChanged().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromUserActivationChanged));
+  m_View.signal_AddObserverAsked().connect(
+      sigc::mem_fun(*this, &MonitoringPresenter::whenAddObserverAsked));
+  m_View.signal_EditParamsAsked().connect(
+      sigc::mem_fun(*this, &MonitoringPresenter::whenEditParamsAsked));
+  m_View.signal_RemoveObserverAsked().connect(
+      sigc::mem_fun(*this, &MonitoringPresenter::whenRemoveObserverAsked));
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppInitialized()
+MonitoringPresenter::~MonitoringPresenter()
 {
-  m_Adapter.initialize();
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateModelAsked()
+void MonitoringPresenter::whenUpdateAsked()
 {
-  m_Adapter.updateModel();
+  m_View.update(m_Model.getItems());
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateDomainAsked()
+void MonitoringPresenter::whenAddObserverAsked()
 {
-  m_Adapter.updateDomain();
+  m_Model.addObserverAsked();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked()
+void MonitoringPresenter::whenEditParamsAsked(std::string ObserverID)
 {
-  m_Adapter.updateSimulation();
+  m_Model.editParamsAsked(ObserverID);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromUserActivationChanged()
+void MonitoringPresenter::whenRemoveObserverAsked(std::string ObserverID)
 {
-  m_Model.setActivatedElements(m_Adapter.getActivatedElements());
+  m_Model.removeObserver(ObserverID);
 }
+
+// =====================================================================
+// =====================================================================

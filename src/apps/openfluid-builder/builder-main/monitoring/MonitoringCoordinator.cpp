@@ -46,79 +46,88 @@
  */
 
 /**
- \file ProjectExplorerPresenter.cpp
+ \file MonitoringCoordinator.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ProjectExplorerPresenter.hpp"
-
-#include "ProjectExplorerModel.hpp"
-#include "ProjectExplorerAdapter.hpp"
+#include "MonitoringCoordinator.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-ProjectExplorerPresenter::ProjectExplorerPresenter(ProjectExplorerModel& Model,
-    ProjectExplorerAdapter& Adapter) :
-  m_Model(Model), m_Adapter(Adapter)
+MonitoringCoordinator::MonitoringCoordinator(
+    MonitoringModel& MonitoringModel, MonitoringAddObserverDialog& AddDialog,
+    MonitoringEditParamsDialog& ParamsDialog) :
+    m_MonitoringModel(MonitoringModel), m_AddDialog(AddDialog), m_EditParamsDialog(
+        ParamsDialog)
 {
-  m_Model.signal_Initialized().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromAppInitialized));
-  m_Model.signal_UpdateModelAsked().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromAppUpdateModelAsked));
-  m_Model.signal_UpdateDomainAsked().connect(sigc::mem_fun(*this,
-        &ProjectExplorerPresenter::whenFromAppUpdateDomainAsked));
-  m_Model.signal_UpdateSimulationAsked().connect(sigc::mem_fun(*this,
-        &ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked));
-
-  m_Adapter.signal_FromUserActivationChanged().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromUserActivationChanged));
+  m_MonitoringModel.signal_AddObserverAsked().connect(
+      sigc::mem_fun(*this, &MonitoringCoordinator::whenAddObserverAsked));
+  m_MonitoringModel.signal_EditParamsAsked().connect(
+      sigc::mem_fun(*this, &MonitoringCoordinator::whenEditParamsAsked));
+  m_MonitoringModel.signal_ObserverRemoved().connect(
+      sigc::mem_fun(*this, &MonitoringCoordinator::whenObserverRemoved));
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppInitialized()
+MonitoringCoordinator::~MonitoringCoordinator()
 {
-  m_Adapter.initialize();
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateModelAsked()
+void MonitoringCoordinator::update()
 {
-  m_Adapter.updateModel();
+  m_MonitoringModel.update();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateDomainAsked()
+sigc::signal<void> MonitoringCoordinator::signal_MonitoringChanged()
 {
-  m_Adapter.updateDomain();
+  return m_signal_MonitoringChanged;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked()
+void MonitoringCoordinator::whenAddObserverAsked()
 {
-  m_Adapter.updateSimulation();
+  std::set<std::string> NewObservers = m_AddDialog.show();
+  if (!NewObservers.empty())
+  {
+    m_MonitoringModel.addObservers(NewObservers);
+    m_signal_MonitoringChanged.emit();
+  }
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromUserActivationChanged()
+void MonitoringCoordinator::whenEditParamsAsked(std::string ObserverID)
 {
-  m_Model.setActivatedElements(m_Adapter.getActivatedElements());
+  if (m_EditParamsDialog.show(ObserverID))
+  {
+    m_MonitoringModel.setParameters(ObserverID, m_EditParamsDialog.getParams());
+    m_signal_MonitoringChanged.emit();
+  }
 }
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringCoordinator::whenObserverRemoved()
+{
+  m_signal_MonitoringChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+

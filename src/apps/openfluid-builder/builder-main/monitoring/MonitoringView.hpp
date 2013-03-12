@@ -46,96 +46,57 @@
  */
 
 /**
- \file BuilderProjectWithExplorer.hpp
+ \file MonitoringView.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERPROJECTWITHEXPLORER_HPP__
-#define __BUILDERPROJECTWITHEXPLORER_HPP__
-
-#include <glibmm/i18n.h>
-
-#include <gtkmm/paned.h>
+#ifndef MONITORINGVIEW_HPP_
+#define MONITORINGVIEW_HPP_
 
 #include <sigc++/sigc++.h>
+#include <gtkmm/box.h>
+#include <gtkmm/button.h>
 
-#include <openfluid/guicommon/BuilderModule.hpp>
-
-class EngineProject;
-class ProjectExplorerComponent;
-class ProjectWorkspace;
-class ProjectCoordinator;
-class ProjectDashboard;
-class BuilderListToolBoxFactory;
-
-class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, public sigc::trackable
+class MonitoringView
 {
   private:
 
-    sigc::signal<void, bool> m_signal_CheckHappened;
+    Gtk::Box* mp_MainBox;
 
-    sigc::signal<void> m_signal_ChangeHappened;
+    Gtk::Button* mp_AddButton;
 
-    sigc::signal<void> m_signal_SaveHappened;
+    Gtk::VBox* mp_ListBox;
 
-    EngineProject* mp_EngineProject;
+    sigc::signal<void> m_signal_AddObserverAsked;
 
-    BuilderListToolBoxFactory* mp_ToolBoxFactory;
+    sigc::signal<void, std::string> m_signal_EditParamsAsked;
 
-    ProjectExplorerComponent* mp_ProjectExplorerMVP;
+    sigc::signal<void, std::string> m_signal_RemoveObserverAsked;
 
-    ProjectWorkspace* mp_Workspace;
+    void onAddButtonClicked();
 
-    ProjectDashboard* mp_ProjectDashboard;
+    void onEditButtonClicked(std::string ObserverID);
 
-    ProjectCoordinator* mp_Coordinator;
-
-    Gtk::Paned* mp_MainPaned;
-
-    void whenCheckHappened(bool IsCheckOk);
-
-    void whenChangeHappened();
-
-    void whenSaveHappened();
-
-  protected:
-
-    void compose();
-
-    Gtk::Widget* asWidget();
+    void onRemoveButtonClicked(std::string ObserverID);
 
   public:
 
-    BuilderProjectWithExplorer(std::string ProjectFolder);
+    MonitoringView();
 
-    sigc::signal<void, bool> signal_CheckHappened();
+    ~MonitoringView();
 
-    sigc::signal<void> signal_ChangeHappened();
+    void update(std::list<std::pair<std::string, std::string> > Items);
 
-    sigc::signal<void> signal_SaveHappened();
+    Gtk::Widget* asWidget();
 
-    ~BuilderProjectWithExplorer();
+    sigc::signal<void> signal_AddObserverAsked();
 
-    void runAsked();
+    sigc::signal<void, std::string> signal_EditParamsAsked();
 
-    void saveAsked();
-
-    void checkAsked();
-
-    void refreshAsked();
-
-    void updatePluginPathsMonitors();
-
-    void mapViewAsked();
-
-    void extensionAsked(const std::string& ExtensionID);
-
-    EngineProject* getEngineProject();
-
-    void updateMonitoringAsked();
+    sigc::signal<void, std::string> signal_RemoveObserverAsked();
 
 };
 
-#endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */
+#endif /* MONITORINGVIEW_HPP_ */

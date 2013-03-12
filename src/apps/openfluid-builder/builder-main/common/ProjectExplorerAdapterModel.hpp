@@ -87,7 +87,7 @@ class ProjectExplorerAdapterModel
 
     virtual void updateRunInfo() = 0;
 
-//    virtual void updateResults(bool WithWarningState) = 0;
+    virtual void updateMonitoringInfo() = 0;
 
     virtual void setActivated(Gtk::TreePath Path) = 0;
 
@@ -112,9 +112,6 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
     std::string generateClassInfoStr(std::string ClassName,
                                      unsigned int UnitsCount);
 
-//    std::string generateSetInfoStr(std::string SetName, std::string ClassName,
-//        unsigned int UnitsCount);
-
   protected:
 
     openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
@@ -126,6 +123,8 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
     Gtk::TreeRowReference* mp_RunInfoRowRef;
 
     Gtk::TreeRowReference* mp_ResultsRowRef;
+
+    Gtk::TreeRowReference* mp_MonitoringRowRef;
 
     std::string generateRunInfoStr(std::string Begin, std::string End,
                                    unsigned int DeltaT);
@@ -147,7 +146,7 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     void updateRunInfo();
 
-//    void updateResults(bool WithWarningState);
+    void updateMonitoringInfo();
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 

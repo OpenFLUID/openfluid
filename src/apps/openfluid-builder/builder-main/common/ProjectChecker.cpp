@@ -124,7 +124,7 @@ bool ProjectChecker::check()
   if (mp_Desc->getRunDescriptor().getBeginDate() >= mp_Desc->getRunDescriptor().getEndDate())
     RunConfigMsg = "End date must be after begin date in run period";
 
-  if(mp_Desc->getMonitoringDescriptor().getItems().empty())
+  if(mp_Desc->getMonitoring().getItems().empty())
     MonitoringMsg = "No observer defined";
 
   IsExtraFilesOk = ExtraFilesMsg.empty();

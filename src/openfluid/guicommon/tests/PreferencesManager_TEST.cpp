@@ -91,6 +91,9 @@ BOOST_AUTO_TEST_CASE(test_SetFileName)
   delete PrefMgr;
 }
 
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 {
   boost::filesystem::path ConfigPath = boost::filesystem::path(
@@ -121,6 +124,9 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 
   delete PrefMgr;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 {
@@ -172,6 +178,9 @@ BOOST_AUTO_TEST_CASE(test_RecentProjectsManagement)
 
   delete PrefMgr;
 }
+
+// =====================================================================
+// =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
 {
@@ -258,6 +267,9 @@ BOOST_AUTO_TEST_CASE(test_ExtraPlugPathManagement)
   delete PrefMgr;
 }
 
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
 {
   boost::filesystem::path ConfigPath = boost::filesystem::path(
@@ -343,6 +355,9 @@ BOOST_AUTO_TEST_CASE(test_ExtraExtensionPathManagement)
   delete PrefMgr;
 }
 
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
 {
   boost::filesystem::path ConfigPath = boost::filesystem::path(
@@ -401,6 +416,9 @@ BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
   delete PrefMgr;
 }
 
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(test_Save)
 {
   boost::filesystem::path ConfigPath = boost::filesystem::path(
@@ -441,6 +459,94 @@ BOOST_AUTO_TEST_CASE(test_Save)
 
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),1111);
   BOOST_CHECK_EQUAL(PrefMgr->getExtraPlugPaths().size(),2);
+
+  delete PrefMgr;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(test_ExtraObserverPathManagement)
+{
+  boost::filesystem::path ConfigPath = boost::filesystem::path(
+      CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
+
+  if (boost::filesystem::exists(ConfigPath))
+    boost::filesystem::remove(ConfigPath);
+
+  openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string());
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
+
+  std::vector<std::string> ExtraObsPaths = PrefMgr->getExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraObsPaths.size(),0);
+
+  PrefMgr->addExtraObserversPath("aa/bb/dir1");
+  PrefMgr->addExtraObserversPath("aa/bb/dir2");
+  PrefMgr->addExtraObserversPath("aa/bb/dir3");
+
+  ExtraObsPaths = PrefMgr->getExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraObsPaths.size(),3);
+  BOOST_CHECK_EQUAL(ExtraObsPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraObsPaths[1],"aa/bb/dir2");
+  BOOST_CHECK_EQUAL(ExtraObsPaths[2],"aa/bb/dir3");
+
+  PrefMgr->removeExtraObserversPath("aa/bb/dir2");
+
+  ExtraObsPaths = PrefMgr->getExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraObsPaths.size(),2);
+  BOOST_CHECK_EQUAL(ExtraObsPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraObsPaths[1],"aa/bb/dir3");
+
+  PrefMgr->removeExtraObserversPath("aa/bb/wrongdir");
+
+  ExtraObsPaths = PrefMgr->getExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraObsPaths.size(),2);
+  BOOST_CHECK_EQUAL(ExtraObsPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraObsPaths[1],"aa/bb/dir3");
+
+  PrefMgr->removeExtraObserversPath("aa/bb/dir1");
+
+  ExtraObsPaths = PrefMgr->getExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraObsPaths.size(),1);
+  BOOST_CHECK_EQUAL(ExtraObsPaths[0],"aa/bb/dir3");
+
+  PrefMgr->removeExtraObserversPath("aa/bb/dir3");
+
+  ExtraObsPaths = PrefMgr->getExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraObsPaths.size(),0);
+
+  std::vector<Glib::ustring> Paths;
+  Paths.push_back("aa/bb/dir1");
+  Paths.push_back("aa/bb/dir2");
+  Paths.push_back("aa/bb/dir3");
+
+  PrefMgr->setExtraObserversPaths(Paths);
+
+  ExtraObsPaths = PrefMgr->getExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraObsPaths.size(),3);
+  BOOST_CHECK_EQUAL(ExtraObsPaths[0],"aa/bb/dir1");
+  BOOST_CHECK_EQUAL(ExtraObsPaths[1],"aa/bb/dir2");
+  BOOST_CHECK_EQUAL(ExtraObsPaths[2],"aa/bb/dir3");
+
+  Paths.clear();
+  Paths.push_back("cc/dd/dir1");
+  Paths.push_back("cc/dd/dir2");
+
+  PrefMgr->setExtraObserversPaths(Paths);
+
+  ExtraObsPaths = PrefMgr->getExtraObserversPaths();
+
+  BOOST_CHECK_EQUAL(ExtraObsPaths.size(),2);
+  BOOST_CHECK_EQUAL(ExtraObsPaths[0],"cc/dd/dir1");
+  BOOST_CHECK_EQUAL(ExtraObsPaths[1],"cc/dd/dir2");
 
   delete PrefMgr;
 }

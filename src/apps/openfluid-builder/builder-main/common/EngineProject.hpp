@@ -116,6 +116,8 @@ class EngineProject
 
     void whenSimulationStopped();
 
+    void checkAndAdaptMonitoring();
+
   protected:
 
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;

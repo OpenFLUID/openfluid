@@ -102,7 +102,7 @@ BOOST_FIXTURE_TEST_SUITE(ProjectExplorerAdapterModelTest, init_AdapterModel)
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 4);
 }
 
 // =====================================================================
@@ -110,13 +110,13 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
 BOOST_AUTO_TEST_CASE(test_updateModel)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 4);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[0].children().size(), 0);
 
   mp_AdapterModel->updateModel();
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 4);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[0].children().size(), 2);
 }
@@ -126,13 +126,13 @@ BOOST_AUTO_TEST_CASE(test_updateModel)
 
 BOOST_AUTO_TEST_CASE(test_updateDomain)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 4);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[1].children().size(), 0);
 
   mp_AdapterModel->updateDomain();
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 3);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 4);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[1].children().size(), 2);
 }
@@ -164,24 +164,7 @@ BOOST_AUTO_TEST_CASE(test_updateRunInfo)
 
   BOOST_CHECK_EQUAL(NewRunInfoName, RunInfoStr);
 }
-//BOOST_AUTO_TEST_CASE(test_updateResults)
-//{
-//  std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-//  + "/OPENFLUID.IN.Primitives";
-//  EngineProject* EngProject = new EngineProject(Path);
-//
-//  mp_AdapterModel->setSimulationBlob(EngProject->getSimBlob());
-//
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[3].children().size(),0);
-//
-//  mp_AdapterModel->updateResults(false);
-//
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(),4);
-//  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children()[3].children().size(),2);
-//
-//  delete EngProject;
-//}
+
 // =====================================================================
 // =====================================================================
 BOOST_AUTO_TEST_SUITE_END();

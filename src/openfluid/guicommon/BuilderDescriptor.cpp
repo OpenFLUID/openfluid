@@ -67,7 +67,7 @@ BuilderDescriptor::BuilderDescriptor(
   mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
   mp_RunDesc = &(FluidXDesc.getRunDescriptor());
   mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_MonitoringDescriptor = &(FluidXDesc.getMonitoringDescriptor());
+  mp_Monitoring = new BuilderMonitoring(FluidXDesc.getMonitoringDescriptor());
 }
 
 // =====================================================================
@@ -113,9 +113,9 @@ openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescripto
 // =====================================================================
 // =====================================================================
 
-openfluid::fluidx::MonitoringDescriptor& BuilderDescriptor::getMonitoringDescriptor()
+BuilderMonitoring& BuilderDescriptor::getMonitoring()
 {
-  return *mp_MonitoringDescriptor;
+  return *mp_Monitoring;
 }
 
 // =====================================================================

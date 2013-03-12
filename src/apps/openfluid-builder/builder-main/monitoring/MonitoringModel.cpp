@@ -46,94 +46,150 @@
  */
 
 /**
- \file ProjectExplorerAdapter.cpp
+ \file MonitoringModel.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ProjectExplorerAdapter.hpp"
+#include "MonitoringModel.hpp"
 
-#include "ProjectExplorerAdapterModel.hpp"
-#include "ProjectExplorerView.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/ObserverDescriptor.hpp>
+#include <openfluid/machine/ObserverPluginsManager.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/ware/PluggableWare.hpp>
 
 // =====================================================================
 // =====================================================================
 
-
-ProjectExplorerAdapter::ProjectExplorerAdapter(
-    ProjectExplorerAdapterModel& Model, ProjectExplorerView& View) :
-  m_Model(Model), m_View(View)
+MonitoringModel::MonitoringModel(
+    openfluid::guicommon::BuilderMonitoring& Monitoring) :
+    mp_Monitoring(&Monitoring)
 {
-  m_View.signal_ActivationChanged().connect(sigc::mem_fun(*this,
-      &ProjectExplorerAdapter::whenActivationChanged));
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-sigc::signal<void> ProjectExplorerAdapter::signal_FromUserActivationChanged()
+MonitoringModel::~MonitoringModel()
 {
-  return m_signal_FromUserActivationChanged;
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerAdapter::initialize()
+sigc::signal<void> MonitoringModel::signal_UpdateAsked()
 {
-  m_Model.initialize();
-  m_View.setTreeModel(m_Model.getTreeModel());
+  return m_signal_UpdateAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerAdapter::whenActivationChanged()
+sigc::signal<void, std::string> MonitoringModel::signal_EditParamsAsked()
 {
-  m_Model.setActivated(m_View.getActivatedPath());
-  m_signal_FromUserActivationChanged.emit();
+  return m_signal_EditParamsAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerAdapter::updateModel()
+sigc::signal<void> MonitoringModel::signal_AddObserverAsked()
 {
-  m_Model.updateModel();
-  m_View.setTreeModel(m_Model.getTreeModel());
+  return m_signal_AddObserverAsked;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerAdapter::updateDomain()
+sigc::signal<void> MonitoringModel::signal_ObserverRemoved()
 {
-  m_Model.updateDomain();
-  m_View.setTreeModel(m_Model.getTreeModel());
+  return m_signal_ObserverRemoved;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerAdapter::updateSimulation()
+void MonitoringModel::update()
 {
-  m_Model.updateRunInfo();
-  m_View.setTreeModel(m_Model.getTreeModel());
+  m_signal_UpdateAsked.emit();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::pair<ProjectExplorerCategories::ProjectExplorerCategory, std::string> ProjectExplorerAdapter::getActivatedElements()
+std::list<std::pair<std::string, std::string> > MonitoringModel::getItems()
 {
-  return m_Model.getActivatedElements();
+  std::list<std::pair<std::string, std::string> > Items;
+
+  const std::list<openfluid::fluidx::ObserverDescriptor*>& ItemDesc =
+      mp_Monitoring->getItems();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it =
+      ItemDesc.begin(); it != ItemDesc.end(); ++it)
+  {
+    std::string ID = (*it)->getID();
+    std::string Name = mp_Monitoring->getSignature(ID).Signature->Name;
+    Items.push_back(std::make_pair(ID, Name));
+  }
+
+  return Items;
 }
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::addObserverAsked()
+{
+  m_signal_AddObserverAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::editParamsAsked(std::string ObserverID)
+{
+  m_signal_EditParamsAsked.emit(ObserverID);
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::removeObserver(std::string ObserverID)
+{
+  mp_Monitoring->removeFromObserverList(ObserverID);
+  m_signal_UpdateAsked.emit();
+  m_signal_ObserverRemoved.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::addObservers(std::set<std::string> ObserverIDs)
+{
+  for (std::set<std::string>::iterator it = ObserverIDs.begin();
+      it != ObserverIDs.end(); ++it)
+    mp_Monitoring->addToObserverList(*it);
+
+  if (!ObserverIDs.empty())
+    m_signal_UpdateAsked.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModel::setParameters(std::string ObserverID,
+                                    openfluid::ware::WareParams_t Params)
+{
+  openfluid::fluidx::ObserverDescriptor& Obs = mp_Monitoring->getDescriptor(
+      ObserverID);
+
+  Obs.clearParameters();
+
+  Obs.setParameters(Params);
+}
+
+// =====================================================================
+// =====================================================================

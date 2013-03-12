@@ -96,17 +96,15 @@ class ProjectCoordinator
 
     BuilderModuleFactory* mp_ModuleFactory;
 
-    std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>
-        m_ModulesByPageNameMap;
+    std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*> m_ModulesByPageNameMap;
 
     std::set<std::string> m_ClassPageNames;
 
 //    std::set<std::string> m_SetPageNames;
 
-    std::map<std::string,std::string> m_TabExtensionIdByNameMap;
+    std::map<std::string, std::string> m_TabExtensionIdByNameMap;
 
-    std::map<std::string, openfluid::builderext::ModelessWindow*>
-        m_ModelessWindowsExtensionsMap;
+    std::map<std::string, openfluid::builderext::ModelessWindow*> m_ModelessWindowsExtensionsMap;
 
     bool m_HasRun;
 
@@ -116,9 +114,11 @@ class ProjectCoordinator
 
     std::string m_RunPageName;
 
+    std::string m_MonitoringPageName;
+
 //    std::string m_OutputsPageName;
 
-    // only to keep ref to FileMonitors (otherwise they're lost)
+// only to keep ref to FileMonitors (otherwise they're lost)
     std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
 
     Gtk::MessageDialog* mp_FileMonitorDialog;
@@ -139,7 +139,7 @@ class ProjectCoordinator
 
 //    void whenOutChanged();
 
-//    void whenResultsChanged();
+    void whenMonitoringChanged();
 
     void whenMapViewChanged();
 
@@ -154,14 +154,15 @@ class ProjectCoordinator
     void updateWorkspaceModules();
 
     void onDirMonitorChanged(const Glib::RefPtr<Gio::File>& File,
-        const Glib::RefPtr<Gio::File>& OtherFile,
-        Gio::FileMonitorEvent EventType);
+                             const Glib::RefPtr<Gio::File>& OtherFile,
+                             Gio::FileMonitorEvent EventType);
 
     std::string constructClassPageName(std::string ClassName);
 
 //    std::string constructSetPageName(std::string SetName);
 
-    void addModuleToWorkspace(std::string PageName,
+    void addModuleToWorkspace(
+        std::string PageName,
         openfluid::guicommon::ProjectWorkspaceModule& Module);
 
     void removeDeletedClassPages();
@@ -181,8 +182,9 @@ class ProjectCoordinator
     sigc::signal<void> signal_ChangeHappened();
 
     ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
-        ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
-        ProjectDashboard& TheProjectDashboard);
+                       ProjectWorkspace& Workspace,
+                       EngineProject& TheEngineProject,
+                       ProjectDashboard& TheProjectDashboard);
 
     ~ProjectCoordinator();
 
@@ -202,6 +204,8 @@ class ProjectCoordinator
 
     void whenRunStopped();
 
+    void updateMonitoringModule();
+
 };
 
 class ProjectCoordinatorSub: public ProjectCoordinator
@@ -209,8 +213,9 @@ class ProjectCoordinatorSub: public ProjectCoordinator
   public:
 
     ProjectCoordinatorSub(ProjectExplorerModel& ExplorerModel,
-        ProjectWorkspace& Workspace, EngineProject& TheEngineProject,
-        ProjectDashboard& TheProjectDashboard);
+                          ProjectWorkspace& Workspace,
+                          EngineProject& TheEngineProject,
+                          ProjectDashboard& TheProjectDashboard);
 
     std::string constructClassPageName(std::string ClassName)
     {

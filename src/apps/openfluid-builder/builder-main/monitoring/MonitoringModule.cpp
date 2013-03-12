@@ -46,79 +46,101 @@
  */
 
 /**
- \file ProjectExplorerPresenter.cpp
+ \file MonitoringModule.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ProjectExplorerPresenter.hpp"
+#include "MonitoringModule.hpp"
 
-#include "ProjectExplorerModel.hpp"
-#include "ProjectExplorerAdapter.hpp"
+#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include "MonitoringComponent.hpp"
+#include "MonitoringCoordinator.hpp"
+#include "MonitoringAddObserverDialog.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-ProjectExplorerPresenter::ProjectExplorerPresenter(ProjectExplorerModel& Model,
-    ProjectExplorerAdapter& Adapter) :
-  m_Model(Model), m_Adapter(Adapter)
+MonitoringModule::MonitoringModule(
+    openfluid::guicommon::BuilderDescriptor& BuilderDesc) :
+    ProjectWorkspaceModule(BuilderDesc)
 {
-  m_Model.signal_Initialized().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromAppInitialized));
-  m_Model.signal_UpdateModelAsked().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromAppUpdateModelAsked));
-  m_Model.signal_UpdateDomainAsked().connect(sigc::mem_fun(*this,
-        &ProjectExplorerPresenter::whenFromAppUpdateDomainAsked));
-  m_Model.signal_UpdateSimulationAsked().connect(sigc::mem_fun(*this,
-        &ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked));
+  mp_MainPanel = 0;
 
-  m_Adapter.signal_FromUserActivationChanged().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromUserActivationChanged));
+  mp_MonitoringMVP = new MonitoringComponent(BuilderDesc.getMonitoring());
+
+  mp_AddDialog = new MonitoringAddObserverDialog(BuilderDesc.getMonitoring());
+
+  mp_ParamsDialog = new MonitoringEditParamsDialog(BuilderDesc.getMonitoring());
+
+  mp_Coordinator = new MonitoringCoordinator(*mp_MonitoringMVP->getModel(),
+                                             *mp_AddDialog, *mp_ParamsDialog);
+
+  mp_Coordinator->signal_MonitoringChanged().connect(
+      sigc::mem_fun(*this, &MonitoringModule::whenMonitoringChanged));
+
+  mp_Coordinator->update();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppInitialized()
+MonitoringModule::~MonitoringModule()
 {
-  m_Adapter.initialize();
+  delete mp_MonitoringMVP;
+  delete mp_AddDialog;
+  delete mp_Coordinator;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateModelAsked()
+void MonitoringModule::compose()
 {
-  m_Adapter.updateModel();
+  mp_MainPanel = Gtk::manage(new Gtk::VBox());
+
+  mp_MainPanel->set_border_width(5);
+  mp_MainPanel->pack_start(*mp_MonitoringMVP->asWidget());
+
+  mp_MainPanel->set_visible(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateDomainAsked()
+Gtk::Widget* MonitoringModule::asWidget()
 {
-  m_Adapter.updateDomain();
+  if (mp_MainPanel)
+    return mp_MainPanel;
+  throw std::logic_error(
+      "MonitoringModule : you try to get a widget from a non yet composed module.");
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked()
+sigc::signal<void> MonitoringModule::signal_ModuleChanged()
 {
-  m_Adapter.updateSimulation();
+  return m_signal_MonitoringChanged;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromUserActivationChanged()
+void MonitoringModule::whenMonitoringChanged()
 {
-  m_Model.setActivatedElements(m_Adapter.getActivatedElements());
+  m_signal_MonitoringChanged.emit();
 }
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModule::update()
+{
+  mp_Coordinator->update();
+}
+
+// =====================================================================
+// =====================================================================
+

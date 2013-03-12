@@ -46,96 +46,92 @@
  */
 
 /**
- \file BuilderProjectWithExplorer.hpp
+ \file MonitoringEditParamsDialog.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERPROJECTWITHEXPLORER_HPP__
-#define __BUILDERPROJECTWITHEXPLORER_HPP__
+#ifndef MONITORINGEDITPARAMSDIALOG_HPP_
+#define MONITORINGEDITPARAMSDIALOG_HPP_
 
-#include <glibmm/i18n.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/label.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/table.h>
+#include <gtkmm/scrolledwindow.h>
+#include <openfluid/guicommon/BuilderMonitoring.hpp>
+#include "BuilderTableRowWidget.hpp"
 
-#include <gtkmm/paned.h>
+// =====================================================================
+// =====================================================================
 
-#include <sigc++/sigc++.h>
-
-#include <openfluid/guicommon/BuilderModule.hpp>
-
-class EngineProject;
-class ProjectExplorerComponent;
-class ProjectWorkspace;
-class ProjectCoordinator;
-class ProjectDashboard;
-class BuilderListToolBoxFactory;
-
-class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, public sigc::trackable
+class MonitoringParamRow: public BuilderTableRowWidget
 {
   private:
 
-    sigc::signal<void, bool> m_signal_CheckHappened;
+    const int m_Index;
 
-    sigc::signal<void> m_signal_ChangeHappened;
+    Gtk::Entry* mp_ParamValueEntry;
+    Gtk::Entry* mp_ParamNameEntry;
 
-    sigc::signal<void> m_signal_SaveHappened;
+    Gtk::Button* mp_RemoveButton;
 
-    EngineProject* mp_EngineProject;
+    sigc::signal<void, int> m_signal_removeAsked;
 
-    BuilderListToolBoxFactory* mp_ToolBoxFactory;
-
-    ProjectExplorerComponent* mp_ProjectExplorerMVP;
-
-    ProjectWorkspace* mp_Workspace;
-
-    ProjectDashboard* mp_ProjectDashboard;
-
-    ProjectCoordinator* mp_Coordinator;
-
-    Gtk::Paned* mp_MainPaned;
-
-    void whenCheckHappened(bool IsCheckOk);
-
-    void whenChangeHappened();
-
-    void whenSaveHappened();
-
-  protected:
-
-    void compose();
-
-    Gtk::Widget* asWidget();
+    void onRemoveButtonClicked();
 
   public:
 
-    BuilderProjectWithExplorer(std::string ProjectFolder);
+    MonitoringParamRow(std::string ParamName, std::string ParamValue,
+                       const int Index);
 
-    sigc::signal<void, bool> signal_CheckHappened();
+    std::string getName();
+    std::string getValue();
 
-    sigc::signal<void> signal_ChangeHappened();
-
-    sigc::signal<void> signal_SaveHappened();
-
-    ~BuilderProjectWithExplorer();
-
-    void runAsked();
-
-    void saveAsked();
-
-    void checkAsked();
-
-    void refreshAsked();
-
-    void updatePluginPathsMonitors();
-
-    void mapViewAsked();
-
-    void extensionAsked(const std::string& ExtensionID);
-
-    EngineProject* getEngineProject();
-
-    void updateMonitoringAsked();
-
+    sigc::signal<void, int> signal_removeAsked();
 };
 
-#endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */
+// =====================================================================
+// =====================================================================
+
+class MonitoringEditParamsDialog
+{
+  private:
+
+    openfluid::guicommon::BuilderMonitoring& m_Monit;
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::Label* mp_IdLabel;
+
+    Gtk::Label* mp_DescLabel;
+
+    Gtk::Table* mp_Table;
+
+    std::map<int, std::pair<std::string, std::string> > m_ParamsByIndex;
+
+    unsigned int m_CurrentTableBottom;
+
+    std::map<int, MonitoringParamRow*> m_ParamRowsByIndex;
+
+    void init(std::string ObserverID);
+
+    void updateRows();
+
+    void onAddButtonClicked();
+
+    void onRemoveAsked(int Index);
+
+  public:
+
+    MonitoringEditParamsDialog(openfluid::guicommon::BuilderMonitoring& Monit);
+
+    ~MonitoringEditParamsDialog();
+
+    bool show(std::string ObserverID);
+
+    openfluid::ware::WareParams_t getParams();
+};
+
+#endif /* MONITORINGEDITPARAMSDIALOG_HPP_ */

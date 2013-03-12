@@ -46,96 +46,64 @@
  */
 
 /**
- \file BuilderProjectWithExplorer.hpp
+ \file MonitoringAddObserverDialog.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERPROJECTWITHEXPLORER_HPP__
-#define __BUILDERPROJECTWITHEXPLORER_HPP__
+#ifndef MONITORINGADDOBSERVERDIALOG_HPP_
+#define MONITORINGADDOBSERVERDIALOG_HPP_
 
-#include <glibmm/i18n.h>
+#include <set>
+#include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/infobar.h>
+#include <openfluid/guicommon/BuilderMonitoring.hpp>
 
-#include <gtkmm/paned.h>
-
-#include <sigc++/sigc++.h>
-
-#include <openfluid/guicommon/BuilderModule.hpp>
-
-class EngineProject;
-class ProjectExplorerComponent;
-class ProjectWorkspace;
-class ProjectCoordinator;
-class ProjectDashboard;
-class BuilderListToolBoxFactory;
-
-class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, public sigc::trackable
+class MonitoringAddObserverDialog
 {
   private:
 
-    sigc::signal<void, bool> m_signal_CheckHappened;
+    openfluid::guicommon::BuilderMonitoring& m_Monit;
 
-    sigc::signal<void> m_signal_ChangeHappened;
+    Gtk::Dialog* mp_Dialog;
 
-    sigc::signal<void> m_signal_SaveHappened;
+    Gtk::InfoBar* mp_InfoBar;
 
-    EngineProject* mp_EngineProject;
+    class ObserversListColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        ObserversListColumns()
+        {
+          add(m_Id);
+          add(m_Name);
+        }
+        Gtk::TreeModelColumn<std::string> m_Id;
+        Gtk::TreeModelColumn<std::string> m_Name;
+    };
 
-    BuilderListToolBoxFactory* mp_ToolBoxFactory;
+    ObserversListColumns m_Columns;
 
-    ProjectExplorerComponent* mp_ProjectExplorerMVP;
+    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
 
-    ProjectWorkspace* mp_Workspace;
+    Gtk::TreeView* mp_TreeView;
 
-    ProjectDashboard* mp_ProjectDashboard;
+    std::set<std::string> m_SelectedIDs;
 
-    ProjectCoordinator* mp_Coordinator;
+    void init();
 
-    Gtk::Paned* mp_MainPaned;
-
-    void whenCheckHappened(bool IsCheckOk);
-
-    void whenChangeHappened();
-
-    void whenSaveHappened();
-
-  protected:
-
-    void compose();
-
-    Gtk::Widget* asWidget();
+    void selected_row_callback(const Gtk::TreeModel::iterator& Iter);
 
   public:
 
-    BuilderProjectWithExplorer(std::string ProjectFolder);
+    MonitoringAddObserverDialog(openfluid::guicommon::BuilderMonitoring& Monit);
 
-    sigc::signal<void, bool> signal_CheckHappened();
+    ~MonitoringAddObserverDialog();
 
-    sigc::signal<void> signal_ChangeHappened();
-
-    sigc::signal<void> signal_SaveHappened();
-
-    ~BuilderProjectWithExplorer();
-
-    void runAsked();
-
-    void saveAsked();
-
-    void checkAsked();
-
-    void refreshAsked();
-
-    void updatePluginPathsMonitors();
-
-    void mapViewAsked();
-
-    void extensionAsked(const std::string& ExtensionID);
-
-    EngineProject* getEngineProject();
-
-    void updateMonitoringAsked();
-
+    std::set<std::string> show();
 };
 
-#endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */
+#endif /* MONITORINGADDOBSERVERDIALOG_HPP_ */

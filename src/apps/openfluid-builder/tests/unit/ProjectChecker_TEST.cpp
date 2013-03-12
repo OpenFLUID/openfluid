@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(PC.IsProjectOk);
   BOOST_CHECK(PC.ProjectMsg.empty());
 
-  Desc.getMonitoringDescriptor().getItems().clear();
+  Desc.getMonitoring().removeFromObserverList("tests.hopla");
   PC.check();
   BOOST_CHECK(!PC.IsMonitoringOk);
   BOOST_CHECK_EQUAL(PC.MonitoringMsg,"No observer defined");

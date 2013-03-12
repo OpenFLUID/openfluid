@@ -197,12 +197,17 @@ void BuilderAppProjectState::whenPreferencesAsked()
 {
   PreferencesDialog* PrefDialog = m_App.getPreferencesDialog();
 
-  PrefDialog->show();
+  PrefDialog->show(((BuilderProjectWithExplorer*) m_App.getCurrentModule())->getEngineProject());
 
   if (PrefDialog->plugPathsHaveChanged())
   {
     ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->updatePluginPathsMonitors();
     ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->refreshAsked();
+  }
+
+  if(PrefDialog->obsPathsHaveChanged())
+  {
+    ((BuilderProjectWithExplorer*) m_App.getCurrentModule())->updateMonitoringAsked();
   }
 
 }

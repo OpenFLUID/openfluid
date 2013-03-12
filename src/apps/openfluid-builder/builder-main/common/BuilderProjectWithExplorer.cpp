@@ -262,3 +262,18 @@ Gtk::Widget* BuilderProjectWithExplorer::asWidget()
   return mp_MainPaned;
 }
 
+// =====================================================================
+// =====================================================================
+
+EngineProject* BuilderProjectWithExplorer::getEngineProject()
+{
+  return mp_EngineProject;
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderProjectWithExplorer::updateMonitoringAsked()
+{
+  mp_Coordinator->updateMonitoringModule();
+}

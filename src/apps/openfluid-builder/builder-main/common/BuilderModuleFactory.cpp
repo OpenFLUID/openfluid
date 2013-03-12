@@ -59,8 +59,7 @@
 #include "DomainStructureModule.hpp"
 #include "DomainClassModule.hpp"
 #include "SimulationRunModule.hpp"
-//#include "SimulationOutModule.hpp"
-//#include "ResultsSetModule.hpp"
+#include "MonitoringModule.hpp"
 #include "EngineProject.hpp"
 
 #include "MapViewModule.hpp"
@@ -128,26 +127,11 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunMo
 // =====================================================================
 
 
-//openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationOutModule()
-//{
-//  SimulationOutModule* Module = new SimulationOutModule();
-//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-//      *mp_EngineProject.getSimBlob(),
-//      mp_EngineProject.getFluidXDescriptor());
-//  return Module;
-//}
-
-// =====================================================================
-// =====================================================================
-
-
-//openfluid::guicommon::BuilderModule* BuilderModuleFactory::createResultsSetModule()
-//{
-//  ResultsSetModule* Module = new ResultsSetModule();
-//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-//      *mp_EngineProject.getSimBlob());
-//  return Module;
-//}
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMonitoringModule()
+{
+  MonitoringModule* Module = new MonitoringModule(mp_EngineProject.getBuilderDesc());
+  return Module;
+}
 
 // =====================================================================
 // =====================================================================

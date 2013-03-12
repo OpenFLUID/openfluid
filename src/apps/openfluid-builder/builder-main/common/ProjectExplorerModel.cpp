@@ -114,15 +114,6 @@ sigc::signal<void> ProjectExplorerModelImpl::signal_UpdateSimulationAsked()
 // =====================================================================
 
 
-//sigc::signal<void, bool> ProjectExplorerModelImpl::signal_UpdateResultsAsked()
-//{
-//  return m_signal_UpdateResultsAsked;
-//}
-
-// =====================================================================
-// =====================================================================
-
-
 void ProjectExplorerModelImpl::updateModelAsked()
 {
   m_signal_UpdateModelAsked.emit();
@@ -145,15 +136,6 @@ void ProjectExplorerModelImpl::updateSimulationAsked()
 {
   m_signal_UpdateSimulationAsked.emit();
 }
-
-// =====================================================================
-// =====================================================================
-
-
-//void ProjectExplorerModelImpl::updateResultsAsked(bool WithWarningState)
-//{
-//  m_signal_UpdateResultsAsked.emit(WithWarningState);
-//}
 
 // =====================================================================
 // =====================================================================

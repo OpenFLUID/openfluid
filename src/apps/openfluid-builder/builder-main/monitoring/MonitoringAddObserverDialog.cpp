@@ -46,79 +46,129 @@
  */
 
 /**
- \file ProjectExplorerPresenter.cpp
+ \file MonitoringAddObserverDialog.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ProjectExplorerPresenter.hpp"
+#include "MonitoringAddObserverDialog.hpp"
 
-#include "ProjectExplorerModel.hpp"
-#include "ProjectExplorerAdapter.hpp"
+#include <glibmm/i18n.h>
+#include <gtkmm/stock.h>
+#include <openfluid/machine/ObserverInstance.hpp>
 
 // =====================================================================
 // =====================================================================
 
-
-ProjectExplorerPresenter::ProjectExplorerPresenter(ProjectExplorerModel& Model,
-    ProjectExplorerAdapter& Adapter) :
-  m_Model(Model), m_Adapter(Adapter)
+MonitoringAddObserverDialog::MonitoringAddObserverDialog(
+    openfluid::guicommon::BuilderMonitoring& Monit) :
+    m_Monit(Monit)
 {
-  m_Model.signal_Initialized().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromAppInitialized));
-  m_Model.signal_UpdateModelAsked().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromAppUpdateModelAsked));
-  m_Model.signal_UpdateDomainAsked().connect(sigc::mem_fun(*this,
-        &ProjectExplorerPresenter::whenFromAppUpdateDomainAsked));
-  m_Model.signal_UpdateSimulationAsked().connect(sigc::mem_fun(*this,
-        &ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked));
+  Gtk::Label* InfoBarLabel = Gtk::manage(
+      new Gtk::Label(_("No observer available")));
 
-  m_Adapter.signal_FromUserActivationChanged().connect(sigc::mem_fun(*this,
-      &ProjectExplorerPresenter::whenFromUserActivationChanged));
+  mp_InfoBar = Gtk::manage(new Gtk::InfoBar());
+  mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
+  ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*InfoBarLabel);
+
+  mref_ListStore = Gtk::ListStore::create(m_Columns);
+
+  mp_TreeView = Gtk::manage(new Gtk::TreeView());
+  mp_TreeView->append_column(_("Observer ID"), m_Columns.m_Id);
+  mp_TreeView->append_column(_("Observer short description"), m_Columns.m_Name);
+  mp_TreeView->set_model(mref_ListStore);
+  mp_TreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+
+  Gtk::ScrolledWindow* ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ModelWin->add(*mp_TreeView);
+  ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
+  mp_Dialog = new Gtk::Dialog(_("Add of observers"));
+  mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*ModelWin);
+  mp_Dialog->set_default_size(700, 200);
+
+  mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  mp_Dialog->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppInitialized()
+MonitoringAddObserverDialog::~MonitoringAddObserverDialog()
 {
-  m_Adapter.initialize();
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateModelAsked()
+std::set<std::string> MonitoringAddObserverDialog::show()
 {
-  m_Adapter.updateModel();
+  init();
+
+  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
+  {
+    mp_TreeView->get_selection()->selected_foreach_iter(
+        sigc::mem_fun(*this,
+                      &MonitoringAddObserverDialog::selected_row_callback));
+  }
+
+  mp_Dialog->hide();
+
+  return m_SelectedIDs;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateDomainAsked()
+void MonitoringAddObserverDialog::init()
 {
-  m_Adapter.updateDomain();
+  m_SelectedIDs.clear();
+
+  mref_ListStore->clear();
+
+  std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
+      m_Monit.getUnusedAvailableSignatures();
+
+  if (Unused.empty())
+  {
+    mp_InfoBar->set_visible(true);
+    mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, false);
+    mp_Dialog->set_default_response(Gtk::RESPONSE_CANCEL);
+  }
+  else
+  {
+    mp_InfoBar->set_visible(false);
+    mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, true);
+    mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
+
+    for (unsigned int i = 0; i < Unused.size(); i++)
+    {
+      Gtk::TreeRow Row = *(mref_ListStore->append());
+      Row[m_Columns.m_Id] = Unused[i]->Signature->ID;
+      Row[m_Columns.m_Name] = Unused[i]->Signature->Name;
+    }
+
+    mp_TreeView->get_selection()->select(mref_ListStore->children().begin());
+  }
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromAppUpdateSimulationAsked()
+void MonitoringAddObserverDialog::selected_row_callback(
+    const Gtk::TreeModel::iterator& Iter)
 {
-  m_Adapter.updateSimulation();
+  Gtk::TreeModel::Row Row = *Iter;
+  m_SelectedIDs.insert(Row[m_Columns.m_Id]);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ProjectExplorerPresenter::whenFromUserActivationChanged()
-{
-  m_Model.setActivatedElements(m_Adapter.getActivatedElements());
-}

@@ -58,6 +58,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/guicommon/BuilderDomain.hpp>
 #include <openfluid/guicommon/BuilderModel.hpp>
+#include <openfluid/guicommon/BuilderMonitoring.hpp>
 
 namespace openfluid {
 namespace guicommon {
@@ -74,7 +75,7 @@ class BuilderDescriptor
 
     openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
 
-    openfluid::fluidx::MonitoringDescriptor* mp_MonitoringDescriptor;
+    BuilderMonitoring* mp_Monitoring;
 
   public:
 
@@ -90,9 +91,10 @@ class BuilderDescriptor
 
     openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
 
-    openfluid::fluidx::MonitoringDescriptor& getMonitoringDescriptor();
+    BuilderMonitoring& getMonitoring();
 };
 
-}} // namespaces
+}
+} // namespaces
 
 #endif /* BUILDERDESCRIPTOR_HPP_ */

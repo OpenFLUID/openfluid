@@ -46,96 +46,55 @@
  */
 
 /**
- \file BuilderProjectWithExplorer.hpp
- \brief Header of ...
+ \file MonitoringComponent.cpp
+ \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERPROJECTWITHEXPLORER_HPP__
-#define __BUILDERPROJECTWITHEXPLORER_HPP__
+#include "MonitoringComponent.hpp"
 
-#include <glibmm/i18n.h>
+#include "MonitoringModel.hpp"
+#include "MonitoringView.hpp"
+#include "MonitoringPresenter.hpp"
 
-#include <gtkmm/paned.h>
+// =====================================================================
+// =====================================================================
 
-#include <sigc++/sigc++.h>
-
-#include <openfluid/guicommon/BuilderModule.hpp>
-
-class EngineProject;
-class ProjectExplorerComponent;
-class ProjectWorkspace;
-class ProjectCoordinator;
-class ProjectDashboard;
-class BuilderListToolBoxFactory;
-
-class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, public sigc::trackable
+MonitoringComponent::MonitoringComponent(
+    openfluid::guicommon::BuilderMonitoring& Monitoring)
 {
-  private:
+  mp_Model = new MonitoringModel(Monitoring);
+  mp_View = new MonitoringView();
+  mp_Presenter = new MonitoringPresenter(*mp_Model, *mp_View);
+}
 
-    sigc::signal<void, bool> m_signal_CheckHappened;
+// =====================================================================
+// =====================================================================
 
-    sigc::signal<void> m_signal_ChangeHappened;
+MonitoringComponent::~MonitoringComponent()
+{
+  delete mp_Presenter;
+  delete mp_Model;
+  delete mp_View;
+}
 
-    sigc::signal<void> m_signal_SaveHappened;
+// =====================================================================
+// =====================================================================
 
-    EngineProject* mp_EngineProject;
+Gtk::Widget* MonitoringComponent::asWidget()
+{
+  return mp_View->asWidget();
+}
 
-    BuilderListToolBoxFactory* mp_ToolBoxFactory;
+// =====================================================================
+// =====================================================================
 
-    ProjectExplorerComponent* mp_ProjectExplorerMVP;
+MonitoringModel* MonitoringComponent::getModel()
+{
+  return mp_Model;
+}
 
-    ProjectWorkspace* mp_Workspace;
+// =====================================================================
+// =====================================================================
 
-    ProjectDashboard* mp_ProjectDashboard;
-
-    ProjectCoordinator* mp_Coordinator;
-
-    Gtk::Paned* mp_MainPaned;
-
-    void whenCheckHappened(bool IsCheckOk);
-
-    void whenChangeHappened();
-
-    void whenSaveHappened();
-
-  protected:
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-  public:
-
-    BuilderProjectWithExplorer(std::string ProjectFolder);
-
-    sigc::signal<void, bool> signal_CheckHappened();
-
-    sigc::signal<void> signal_ChangeHappened();
-
-    sigc::signal<void> signal_SaveHappened();
-
-    ~BuilderProjectWithExplorer();
-
-    void runAsked();
-
-    void saveAsked();
-
-    void checkAsked();
-
-    void refreshAsked();
-
-    void updatePluginPathsMonitors();
-
-    void mapViewAsked();
-
-    void extensionAsked(const std::string& ExtensionID);
-
-    EngineProject* getEngineProject();
-
-    void updateMonitoringAsked();
-
-};
-
-#endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */

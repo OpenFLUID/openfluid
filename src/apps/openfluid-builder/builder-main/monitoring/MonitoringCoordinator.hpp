@@ -46,96 +46,50 @@
  */
 
 /**
- \file BuilderProjectWithExplorer.hpp
+ \file MonitoringCoordinator.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERPROJECTWITHEXPLORER_HPP__
-#define __BUILDERPROJECTWITHEXPLORER_HPP__
-
-#include <glibmm/i18n.h>
-
-#include <gtkmm/paned.h>
+#ifndef MONITORINGCOORDINATOR_HPP_
+#define MONITORINGCOORDINATOR_HPP_
 
 #include <sigc++/sigc++.h>
+#include "MonitoringModel.hpp"
+#include "MonitoringAddObserverDialog.hpp"
+#include "MonitoringEditParamsDialog.hpp"
 
-#include <openfluid/guicommon/BuilderModule.hpp>
-
-class EngineProject;
-class ProjectExplorerComponent;
-class ProjectWorkspace;
-class ProjectCoordinator;
-class ProjectDashboard;
-class BuilderListToolBoxFactory;
-
-class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, public sigc::trackable
+class MonitoringCoordinator
 {
   private:
 
-    sigc::signal<void, bool> m_signal_CheckHappened;
+    MonitoringModel& m_MonitoringModel;
 
-    sigc::signal<void> m_signal_ChangeHappened;
+    MonitoringAddObserverDialog& m_AddDialog;
 
-    sigc::signal<void> m_signal_SaveHappened;
+    MonitoringEditParamsDialog& m_EditParamsDialog;
 
-    EngineProject* mp_EngineProject;
+    sigc::signal<void> m_signal_MonitoringChanged;
 
-    BuilderListToolBoxFactory* mp_ToolBoxFactory;
+    void whenAddObserverAsked();
 
-    ProjectExplorerComponent* mp_ProjectExplorerMVP;
+    void whenEditParamsAsked(std::string ObserverID);
 
-    ProjectWorkspace* mp_Workspace;
-
-    ProjectDashboard* mp_ProjectDashboard;
-
-    ProjectCoordinator* mp_Coordinator;
-
-    Gtk::Paned* mp_MainPaned;
-
-    void whenCheckHappened(bool IsCheckOk);
-
-    void whenChangeHappened();
-
-    void whenSaveHappened();
-
-  protected:
-
-    void compose();
-
-    Gtk::Widget* asWidget();
+    void whenObserverRemoved();
 
   public:
 
-    BuilderProjectWithExplorer(std::string ProjectFolder);
+    MonitoringCoordinator(MonitoringModel& MonitoringModel,
+                          MonitoringAddObserverDialog& AddDialog,
+                          MonitoringEditParamsDialog& ParamsDialog);
 
-    sigc::signal<void, bool> signal_CheckHappened();
+    ~MonitoringCoordinator();
 
-    sigc::signal<void> signal_ChangeHappened();
+    void update();
 
-    sigc::signal<void> signal_SaveHappened();
-
-    ~BuilderProjectWithExplorer();
-
-    void runAsked();
-
-    void saveAsked();
-
-    void checkAsked();
-
-    void refreshAsked();
-
-    void updatePluginPathsMonitors();
-
-    void mapViewAsked();
-
-    void extensionAsked(const std::string& ExtensionID);
-
-    EngineProject* getEngineProject();
-
-    void updateMonitoringAsked();
+    sigc::signal<void> signal_MonitoringChanged();
 
 };
 
-#endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */
+#endif /* MONITORINGCOORDINATOR_HPP_ */

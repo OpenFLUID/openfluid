@@ -222,4 +222,16 @@
   	<dataitem id="myrast" type="georaster" source="datastore/testrast.tif" /> -->
   </datastore>
   
+  <monitoring>
+    <observer ID="export.vars.files.csv">
+	<param name="format.Format1.date" value="DD/MM/YYYY:HH-MM-SS" />
+	<param name="format.Format1.commentchar" value="#" />
+	<param name="set.SetA.format" value="Format1" />
+    </observer>
+    <observer ID="export.spatial-graph.files.dot">
+	<param name="title" value="A title" />
+	<param name="when.final" value="1" />
+    </observer>
+  </monitoring>
+ 
 </openfluid>

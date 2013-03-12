@@ -46,96 +46,58 @@
  */
 
 /**
- \file BuilderProjectWithExplorer.hpp
+ \file MonitoringModule.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERPROJECTWITHEXPLORER_HPP__
-#define __BUILDERPROJECTWITHEXPLORER_HPP__
+#ifndef MONITORINGMODULE_HPP_
+#define MONITORINGMODULE_HPP_
 
-#include <glibmm/i18n.h>
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
-#include <gtkmm/paned.h>
+#include <gtkmm/box.h>
 
-#include <sigc++/sigc++.h>
+class MonitoringComponent;
+class MonitoringCoordinator;
+class MonitoringAddObserverDialog;
+class MonitoringEditParamsDialog;
 
-#include <openfluid/guicommon/BuilderModule.hpp>
-
-class EngineProject;
-class ProjectExplorerComponent;
-class ProjectWorkspace;
-class ProjectCoordinator;
-class ProjectDashboard;
-class BuilderListToolBoxFactory;
-
-class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, public sigc::trackable
+class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
 
-    sigc::signal<void, bool> m_signal_CheckHappened;
-
-    sigc::signal<void> m_signal_ChangeHappened;
-
-    sigc::signal<void> m_signal_SaveHappened;
-
-    EngineProject* mp_EngineProject;
-
-    BuilderListToolBoxFactory* mp_ToolBoxFactory;
-
-    ProjectExplorerComponent* mp_ProjectExplorerMVP;
-
-    ProjectWorkspace* mp_Workspace;
-
-    ProjectDashboard* mp_ProjectDashboard;
-
-    ProjectCoordinator* mp_Coordinator;
-
-    Gtk::Paned* mp_MainPaned;
-
-    void whenCheckHappened(bool IsCheckOk);
-
-    void whenChangeHappened();
-
-    void whenSaveHappened();
+    Gtk::Box* mp_MainPanel;
 
   protected:
+
+    MonitoringComponent* mp_MonitoringMVP;
+
+    MonitoringAddObserverDialog* mp_AddDialog;
+
+    MonitoringEditParamsDialog* mp_ParamsDialog;
+
+    MonitoringCoordinator* mp_Coordinator;
+
+    sigc::signal<void> m_signal_MonitoringChanged;
+
+    void whenMonitoringChanged();
+
+  public:
+
+    MonitoringModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+
+    ~MonitoringModule();
+
+    sigc::signal<void> signal_ModuleChanged();
 
     void compose();
 
     Gtk::Widget* asWidget();
 
-  public:
-
-    BuilderProjectWithExplorer(std::string ProjectFolder);
-
-    sigc::signal<void, bool> signal_CheckHappened();
-
-    sigc::signal<void> signal_ChangeHappened();
-
-    sigc::signal<void> signal_SaveHappened();
-
-    ~BuilderProjectWithExplorer();
-
-    void runAsked();
-
-    void saveAsked();
-
-    void checkAsked();
-
-    void refreshAsked();
-
-    void updatePluginPathsMonitors();
-
-    void mapViewAsked();
-
-    void extensionAsked(const std::string& ExtensionID);
-
-    EngineProject* getEngineProject();
-
-    void updateMonitoringAsked();
+    void update();
 
 };
 
-#endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */
+#endif /* MONITORINGMODULE_HPP_ */
