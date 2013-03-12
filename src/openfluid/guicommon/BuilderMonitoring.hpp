@@ -88,7 +88,8 @@ class BuilderMonitoring
      * @details Update the list of all available Observers before checking
      * @return A textual list of unavailable Observers, or an empty string if all Observers are available
      */
-    std::string checkAndAdaptMonitoring();
+    std::list<openfluid::fluidx::ObserverDescriptor*> checkAndGetModifiedMonitoring(
+        std::string& MissingObservers);
 
     const std::list<openfluid::fluidx::ObserverDescriptor*>& getItems();
 
@@ -119,6 +120,17 @@ class BuilderMonitoring
     void removeFromObserverList(std::string ObserverID);
 
     std::vector<openfluid::machine::ObserverSignatureInstance*> getUnusedAvailableSignatures();
+
+    /**
+     * @brief Replace existing observers with ObserversList
+     */
+    void setItems(
+        std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList);
+
+    /**
+     * @brief Updates the list of available signatures, according to Runtime environment paths
+     */
+    void update();
 
 };
 

@@ -311,7 +311,7 @@ PreferencesPathsPanel::PreferencesPathsPanel() :
   PanelBox->pack_start(*ExtExpander, Gtk::PACK_SHRINK);
 
   Gtk::Expander* ObsExpander = Gtk::manage(new Gtk::Expander());
-  ObsExpander->set_label_widget(*createSubTitle(_("Search paths for observers (restart needed)")));
+  ObsExpander->set_label_widget(*createSubTitle(_("Search paths for observers")));
   ObsExpander->add(*createSubBoxAlignement(ObserversPaths));
   ObsExpander->set_visible(true);
   PanelBox->pack_start(*ObsExpander, Gtk::PACK_SHRINK);
@@ -343,7 +343,7 @@ void PreferencesPathsPanel::init()
       openfluid::base::RuntimeEnvironment::getInstance()->getDefaultObserversPluginsPaths());
 
   mp_ObserversPathListWidget->setUserDefinedPaths(
-      openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
+      openfluid::guicommon::PreferencesManager::getInstance()->getExtraObserversPaths());
 }
 
 // =====================================================================

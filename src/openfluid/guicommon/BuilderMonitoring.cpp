@@ -82,15 +82,13 @@ BuilderMonitoring::~BuilderMonitoring()
 // =====================================================================
 // =====================================================================
 
-std::string BuilderMonitoring::checkAndAdaptMonitoring()
+std::list<openfluid::fluidx::ObserverDescriptor*> BuilderMonitoring::checkAndGetModifiedMonitoring(
+    std::string& MissingObservers)
 {
-  mp_Manager->unloadAllWares();
-  m_AvailableSignatures = mp_Manager->getAvailableWaresSignatures();
+  update();
 
-  std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
+  std::list<openfluid::fluidx::ObserverDescriptor*> Observers =
       mp_MonitoringDesc->getItems();
-
-  std::string MissingObservers = "";
 
   std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
       Observers.begin();
@@ -110,7 +108,7 @@ std::string BuilderMonitoring::checkAndAdaptMonitoring()
     }
   }
 
-  return MissingObservers;
+  return Observers;
 }
 
 // =====================================================================
@@ -215,6 +213,24 @@ std::vector<openfluid::machine::ObserverSignatureInstance*> BuilderMonitoring::g
     }
   }
   return Signs;
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderMonitoring::setItems(
+    std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList)
+{
+  mp_MonitoringDesc->getItems() = ObserversList;
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderMonitoring::update()
+{
+  mp_Manager->unloadAllWares();
+  m_AvailableSignatures = mp_Manager->getAvailableWaresSignatures();
 }
 
 // =====================================================================

@@ -74,6 +74,8 @@ class PreferencesPanel;
 }
 }
 
+class EngineProject;
+
 // =====================================================================
 // =====================================================================
 
@@ -114,8 +116,13 @@ class PreferencesDialog
 
     bool m_RecentsHaveChanged;
 
+    bool m_ObsPathsHaveChanged;
+
+    EngineProject* mp_Project;
+
     void onGroupSelectionChanged();
 
+    void onCloseClicked();
 
   public:
 
@@ -123,13 +130,16 @@ class PreferencesDialog
 
     ~PreferencesDialog();
 
-    void show();
+    void show(EngineProject* Project = 0);
 
     bool plugPathsHaveChanged()
     { return m_PlugPathsHaveChanged; }
 
     bool recentsHaveChanged()
     { return m_RecentsHaveChanged; }
+
+    bool obsPathsHaveChanged()
+    { return m_ObsPathsHaveChanged; }
 
 };
 

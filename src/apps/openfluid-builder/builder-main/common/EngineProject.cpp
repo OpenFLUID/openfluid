@@ -184,15 +184,29 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     }
   }
 
-  std::string MissingObservers =
-      mp_BuilderDesc->getMonitoring().checkAndAdaptMonitoring();
-  if (!MissingObservers.empty())
+  checkAndAdaptMonitoring();
+
+  mp_Checker = new ProjectChecker(*mp_BuilderDesc);
+}
+
+// =====================================================================
+// =====================================================================
+
+void EngineProject::checkAndAdaptMonitoring()
+{
+  std::string MissingObserversStr = "";
+
+  std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
+      mp_BuilderDesc->getMonitoring().checkAndGetModifiedMonitoring(
+          MissingObserversStr);
+
+  if (!MissingObserversStr.empty())
   {
     Glib::ustring Msg = Glib::ustring::compose(
         _("Unable to find plugin file(s):\n%1\n\n"
-            "Corresponding observers will be removed from the model.\n"
+            "Corresponding observers will be removed from the monitoring.\n"
             "Do you want to continue?"),
-        MissingObservers);
+        MissingObserversStr);
 
     if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
         Msg))
@@ -201,9 +215,10 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       delete mp_BuilderDesc;
       throw openfluid::base::OFException("");
     }
+    else
+      mp_BuilderDesc->getMonitoring().setItems(ModifiedObservers);
   }
 
-  mp_Checker = new ProjectChecker(*mp_BuilderDesc);
 }
 
 // =====================================================================

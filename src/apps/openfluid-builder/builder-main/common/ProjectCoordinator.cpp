@@ -853,6 +853,18 @@ void ProjectCoordinator::whenRunStopped()
 // =====================================================================
 // =====================================================================
 
+void ProjectCoordinator::updateMonitoringModule()
+{
+  std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator it =
+      m_ModulesByPageNameMap.find(m_MonitoringPageName);
+
+  if(it != m_ModulesByPageNameMap.end())
+    it->second->update();
+}
+
+// =====================================================================
+// =====================================================================
+
 // =====================================================================
 // =====================================================================
 

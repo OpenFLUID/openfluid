@@ -204,6 +204,8 @@ class ProjectCoordinator
 
     void whenRunStopped();
 
+    void updateMonitoringModule();
+
 };
 
 class ProjectCoordinatorSub: public ProjectCoordinator

@@ -132,6 +132,10 @@ class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, pu
 
     void extensionAsked(const std::string& ExtensionID);
 
+    EngineProject* getEngineProject();
+
+    void updateMonitoringAsked();
+
 };
 
 #endif /* __BUILDERPROJECTWITHEXPLORER_HPP__ */

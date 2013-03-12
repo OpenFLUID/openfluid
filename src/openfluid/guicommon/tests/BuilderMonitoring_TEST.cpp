@@ -104,7 +104,8 @@ BOOST_AUTO_TEST_CASE(check_checkAndAdapt)
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(
       Path.string());
 
-  Monit.checkAndAdaptMonitoring();
+  std::string Str = "";
+  Monit.setItems(Monit.checkAndGetModifiedMonitoring(Str));
 
   BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
 
@@ -157,7 +158,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   Path / "openfluid" / "observers";
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(
       Path.string());
-  Monit.checkAndAdaptMonitoring();
+  std::string Str = "";
+  Monit.setItems(Monit.checkAndGetModifiedMonitoring(Str));
 
   BOOST_CHECK_THROW(Monit.addToObserverList("dummy"),
                     openfluid::base::OFException);
@@ -190,7 +192,8 @@ BOOST_AUTO_TEST_CASE(check_getUnusedSignatures)
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(
       Path.string());
 
-  Monit.checkAndAdaptMonitoring();
+  std::string Str = "";
+  Monit.setItems(Monit.checkAndGetModifiedMonitoring(Str));
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
       Monit.getUnusedAvailableSignatures();
