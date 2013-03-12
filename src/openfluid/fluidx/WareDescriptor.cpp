@@ -118,18 +118,17 @@ void WareDescriptor::eraseParameter(const openfluid::ware::WareParamKey_t& Key)
 // =====================================================================
 // =====================================================================
 
-void WareDescriptor::eraseParamRecurs(boost::property_tree::ptree& pt,
+bool WareDescriptor::eraseParamRecurs(boost::property_tree::ptree& pt,
                                       boost::property_tree::path& Path)
 {
   std::string PathStr = Path.reduce();
 
   if (Path.empty())
-  {
     pt.erase(PathStr);
-    return;
-  }
-  else
-    eraseParamRecurs(pt.get_child(PathStr), Path);
+  else if (eraseParamRecurs(pt.get_child(PathStr), Path))
+    pt.erase(PathStr);
+
+  return pt.empty();
 }
 
 // =====================================================================

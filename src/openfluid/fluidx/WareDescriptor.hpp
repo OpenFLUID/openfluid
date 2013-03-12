@@ -74,9 +74,6 @@ class WareDescriptor
                                 const std::string& Name,
                                 std::map<std::string, std::string>& Contents);
 
-    void eraseParamRecurs(boost::property_tree::ptree& pt,
-                          boost::property_tree::path& Path);
-
   protected:
 
     ModelItemType m_ModelItemType;
@@ -98,6 +95,9 @@ class WareDescriptor
     bool isType(ModelItemType MIType) const;
 
     void eraseParameter(const openfluid::ware::WareParamKey_t& Key);
+
+    static bool eraseParamRecurs(boost::property_tree::ptree& pt,
+                                 boost::property_tree::path& Path);
 
     void clearParameters();
 
