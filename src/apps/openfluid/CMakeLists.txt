@@ -7,16 +7,16 @@ INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS})
 LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 
-ADD_EXECUTABLE(openfluid-engine
+ADD_EXECUTABLE(${OPENFLUID_CMD_APP}
                DefaultIOListener.hpp 
                DefaultBuddiesListener.hpp 
                DefaultMachineListener.hpp VerboseMachineListener.hpp 
                OpenFLUID.cpp OpenFLUID.hpp             
                main.cpp
               )
-SET_TARGET_PROPERTIES(openfluid-engine PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
+SET_TARGET_PROPERTIES(${OPENFLUID_CMD_APP} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
 
-TARGET_LINK_LIBRARIES(openfluid-engine 
+TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP} 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
@@ -30,7 +30,7 @@ TARGET_LINK_LIBRARIES(openfluid-engine
 
 
 
-INSTALL(TARGETS openfluid-engine
+INSTALL(TARGETS ${OPENFLUID_CMD_APP}
         RUNTIME DESTINATION ${BIN_INSTALL_PATH})
 
        

@@ -6,7 +6,7 @@ INCLUDE(OpenFLUIDHelpers)
 
 
 OPENFLUID_ADD_TEST(NAME examples-Primitives 
-                   COMMAND "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                               "-i" "${CMAKE_CURRENT_SOURCE_DIR}/projects/Primitives/IN"
                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives" 
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Primitives"

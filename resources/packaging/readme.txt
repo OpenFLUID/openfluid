@@ -16,7 +16,7 @@ Usage
 
 Open a terminal and type the following command to get help 
 
-   openfluid-engine -h
+   openfluid -h
 
 
 Also refer to documentation available on the OpenFLUID web site:

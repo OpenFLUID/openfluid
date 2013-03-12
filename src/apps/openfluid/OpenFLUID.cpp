@@ -117,7 +117,7 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 {
 
   int Width = 60;
-  std::string VersionInfo = "OpenFLUID-engine v";
+  std::string VersionInfo = "OpenFLUID v";
   std::string Whites = "";
 
   VersionInfo = VersionInfo + openfluid::config::FULL_VERSION;
@@ -613,7 +613,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   openfluid::tools::ConvertValue(openfluid::config::FUNCTIONS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
 
   // TODO adapt colon or semicolon separated path to system win32 or unix
-  boost::program_options::options_description OptionsDesc("openfluid-engine allowed options");
+  boost::program_options::options_description OptionsDesc("openfluid allowed options");
   OptionsDesc.add_options()
       ("auto-output-dir,a","generate automatic results output directory")
       ("buddy,b",boost::program_options::value< std::string >(),"run specified OpenFLUID buddy")
@@ -675,7 +675,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       Buddy->invokeHelp();
       delete Buddy;
     }
-    else throw openfluid::base::OFException("openfluid-engine","Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
+    else throw openfluid::base::OFException("openfluid","Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
     m_RunType = None;
     return;
   }
@@ -758,7 +758,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       openfluid::base::ProjectManager::getInstance()->updateOutputDir();
     }
     else
-      throw openfluid::base::OFException("openfluid-engine",OptionsVars["project"].as<std::string>() + " is not a correct project path");
+      throw openfluid::base::OFException("openfluid",OptionsVars["project"].as<std::string>() + " is not a correct project path");
   }
 
 
@@ -844,7 +844,7 @@ void OpenFLUIDApp::runBuddy()
     Buddy->run();
     delete Buddy;
   }
-  else throw openfluid::base::OFException("openfluid-engine","Buddy " + m_BuddyToRun.first + " does not exists");
+  else throw openfluid::base::OFException("openfluid","Buddy " + m_BuddyToRun.first + " does not exists");
 
 }
 

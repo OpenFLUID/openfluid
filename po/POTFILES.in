@@ -1,10 +1,10 @@
-src/apps/openfluid-engine/DefaultBuddiesListener.hpp
-src/apps/openfluid-engine/DefaultIOListener.hpp
-src/apps/openfluid-engine/main.cpp
-src/apps/openfluid-engine/OpenFLUID.hpp
-src/apps/openfluid-engine/VerboseMachineListener.hpp
-src/apps/openfluid-engine/OpenFLUID.cpp
-src/apps/openfluid-engine/DefaultMachineListener.hpp
+src/apps/openfluid/DefaultBuddiesListener.hpp
+src/apps/openfluid/DefaultIOListener.hpp
+src/apps/openfluid/main.cpp
+src/apps/openfluid/OpenFLUID.hpp
+src/apps/openfluid/VerboseMachineListener.hpp
+src/apps/openfluid/OpenFLUID.cpp
+src/apps/openfluid/DefaultMachineListener.hpp
 src/apps/openfluid-minimal/main.cpp
 src/apps/openfluid-market-client/main.cpp
 src/apps/openfluid-minimal-gui/main.cpp
