@@ -110,8 +110,6 @@ class DLLEXPORT MarketClient
 
     void parseMarketSiteData(const std::string& SiteData);
 
-    std::string getTypeDirectory(const PackageInfo::TypePackage& Type) const;
-
     void parseCatalogData(const PackageInfo::TypePackage& TypeCatalog, const std::string& CatalogData);
 
     void downloadAssociatedLicenses();
@@ -123,6 +121,8 @@ class DLLEXPORT MarketClient
     MarketClient();
 
     ~MarketClient();
+
+    std::string getTypeName(const PackageInfo::TypePackage& Type, const bool Maj) const;
 
     void connect(const std::string URL);
 

@@ -249,10 +249,15 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 // =====================================================================
 
 
-std::string MarketClient::getTypeDirectory(const PackageInfo::TypePackage& Type) const
+std::string MarketClient::getTypeName(const PackageInfo::TypePackage& Type, const bool Maj) const
 {
-  std::string TypesDirectoriesList[] = { "functions", "observers", "builderexts", "datasets"};
-  return TypesDirectoriesList[Type];
+  std::string TypesNames[] = { "functions", "observers", "builderexts", "datasets"};
+  std::string Name = TypesNames[Type];
+
+  if (Maj)
+    Name[0] = toupper(Name[0]);
+
+  return Name;
 }
 
 
@@ -309,7 +314,7 @@ void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog,
            if (KFile.has_key(TmpID,BinaryArchKey+".file"))
            {
              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+getTypeDirectory(TypeCatalog)+"/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
+             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+getTypeName(TypeCatalog,false)+"/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
 
              // license
              if (KFile.has_key(TmpID,BinaryArchKey+".license"))
@@ -322,7 +327,7 @@ void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog,
            if (KFile.has_key(TmpID,"arch.src.file"))
            {
              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/"+getTypeDirectory(TypeCatalog)+"/src/"+KFile.get_string(TmpID,"arch.src.file");
+             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/"+getTypeName(TypeCatalog,false)+"/src/"+KFile.get_string(TmpID,"arch.src.file");
 
              // license
              if (KFile.has_key(TmpID,"arch.src.license"))
@@ -340,7 +345,7 @@ void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog,
            if (KFile.has_key(TmpID,"file"))
            {
              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeDirectory(TypeCatalog)+"/"+KFile.get_string(TmpID,"file");
+             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeName(TypeCatalog,false)+"/"+KFile.get_string(TmpID,"file");
 
              // license
              if (KFile.has_key(TmpID,"license"))
@@ -436,7 +441,7 @@ void MarketClient::connect(const std::string URL)
   if (m_IsConnected)
   {
     CatalogFilesURL_t::iterator CUit;
-    for( CUit = CatalogFilesURL.begin(); CUit != CatalogFilesURL.end(); ++CUit)
+    for (CUit = CatalogFilesURL.begin(); CUit != CatalogFilesURL.end(); ++CUit)
     {
       if (openfluid::tools::CURLDownloader::downloadToString(CUit->second, CatalogsData[CUit->first])  != openfluid::tools::CURLDownloader::NO_ERROR)
         CatalogsData[CUit->first].clear();
@@ -738,7 +743,7 @@ void MarketClient::displayPackages() const
 
   for (TPCit = m_TypesMetaPackagesCatalogs.begin(); TPCit != m_TypesMetaPackagesCatalogs.end(); ++TPCit)
   {
-    std::cout << "List of " << getTypeDirectory(TPCit->first) << std::endl;
+    std::cout << "List of " << getTypeName(TPCit->first,false) << std::endl;
 
     for (PCit = TPCit->second.begin(); PCit != TPCit->second.end(); ++PCit)
     {
