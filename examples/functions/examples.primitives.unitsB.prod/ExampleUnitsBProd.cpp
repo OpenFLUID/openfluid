@@ -79,11 +79,12 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
     // =====================================================================
   
   
-    void initParams(const openfluid::ware::WareParams_t& Params)
+    void initParams(const openfluid::ware::WareParams_t& /*Params*/)
     {
 
     }
-  
+
+
     // =====================================================================
     // =====================================================================
   
@@ -119,7 +120,8 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
 
       return DefaultDeltaT();
     }
-  
+
+
     // =====================================================================
     // =====================================================================
   
@@ -131,7 +133,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
       openfluid::core::UnitsPtrList_t *FromAList, *FromBList;
       openfluid::core::DoubleValue Value5, AuxValue;
 
-      unsigned int CurrentStep = (OPENFLUID_GetCurrentTimeIndex());
+      unsigned int CurrentTimeIndex = OPENFLUID_GetCurrentTimeIndex();
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsB",B)
       {
@@ -147,16 +149,16 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
           OPENFLUID_UNITSLIST_LOOP(FromAList,FromA)
           {
 
-            if (OPENFLUID_IsVariableExist(FromA,"var2",CurrentStep))
+            if (OPENFLUID_IsVariableExist(FromA,"var2",CurrentTimeIndex))
             {
-              OPENFLUID_GetVariable(FromA,"var2",CurrentStep,AuxValue);
+              OPENFLUID_GetVariable(FromA,"var2",CurrentTimeIndex,AuxValue);
               Value5 = Value5 + AuxValue;
             }
             else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod","var2 is not present, ignored");
 
-            if (OPENFLUID_IsVariableExist(FromA,"var3",CurrentStep))
+            if (OPENFLUID_IsVariableExist(FromA,"var3",CurrentTimeIndex))
             {
-              OPENFLUID_GetVariable(FromA,"var3",CurrentStep,AuxValue);
+              OPENFLUID_GetVariable(FromA,"var3",CurrentTimeIndex,AuxValue);
               Value5 = Value5 + AuxValue;
             }
             else OPENFLUID_RaiseWarning("examples.primitives.unitsB.prod","var3 is not present, ignored");
@@ -172,7 +174,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
           {
             OPENFLUID_UNITSLIST_LOOP(FromBList,FromB)
             {
-              OPENFLUID_GetVariable(FromB,"var5",CurrentStep-OPENFLUID_GetDefaultDeltaT(),AuxValue);
+              OPENFLUID_GetVariable(FromB,"var5",CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),AuxValue);
               Value5 = Value5 + AuxValue;
 
             }

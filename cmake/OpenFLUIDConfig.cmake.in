@@ -52,6 +52,7 @@
 # This module provides the following variables
 # OpenFLUID_FOUND 
 # OpenFLUID_VERSION
+# OpenFLUID_HOME_DIR
 # OpenFLUID_INCLUDE_DIR
 # OpenFLUID_INCLUDE_DIRS
 # OpenFLUID_LIBRARY_DIR
@@ -61,6 +62,7 @@
 # OpenFLUID_FUNCTION_FILENAME_SUFFIX
 # OpenFLUID_OBSERVER_FILENAME_SUFFIX
 # OpenFLUID_BUILDEREX_FILENAME_SUFFIX
+# OpenFLUID_ENGINE_PROGRAM
 #
 # This module uses hints about search locations from variables
 # OpenFLUID_ROOT_DIR
@@ -89,7 +91,8 @@ ENDIF()
 
 SET(_OpenFLUID_SEARCH_DIRS
   ${OpenFLUID_ROOT_DIR}
-  $ENV{OPENFLUID_INSTALL_PATH}  
+  $ENV{OPENFLUID_INSTALL_PATH}
+  @CMAKE_INSTALL_PREFIX@  
   /usr
   /usr/local
   /sw # Fink
@@ -121,7 +124,7 @@ FIND_PATH(_OpenFLUID_INCLUDE_DIR
   HINTS
     ${_OpenFLUID_SEARCH_DIRS}
   PATH_SUFFIXES
-    include
+    @INCLUDE_INSTALL_PATH@
 )
 
 
@@ -138,7 +141,7 @@ FIND_PROGRAM(_OpenFLUID_ENGINE_PROGRAM
   HINTS
     ${_OpenFLUID_SEARCH_DIRS}
   PATH_SUFFIXES
-    bin
+    @BIN_INSTALL_PATH@
 )
 
 
@@ -201,7 +204,7 @@ FOREACH(COMPONENT ${_OpenFLUID_FIND_COMPONENTS})
       HINTS
         ${_OpenFLUID_SEARCH_DIRS}
       PATH_SUFFIXES
-        include        
+        @INCLUDE_INSTALL_PATH@        
     )
     
     IF("${_OpenFLUID_${UPPERCOMPONENT}_HEADER}" STREQUAL "_OpenFLUID_${UPPERCOMPONENT}_HEADER-NOTFOUND")
@@ -217,7 +220,7 @@ FOREACH(COMPONENT ${_OpenFLUID_FIND_COMPONENTS})
       HINTS
         ${_OpenFLUID_SEARCH_DIRS}
       PATH_SUFFIXES
-        lib lib64
+        @LIB_INSTALL_PATH@ @LIB_INSTALL_PATH@64
       )
     
     IF("${_OpenFLUID_${UPPERCOMPONENT}_LIBRARY}" STREQUAL "_OpenFLUID_${UPPERCOMPONENT}_LIBRARY-NOTFOUND")
@@ -238,8 +241,20 @@ ENDFOREACH()
 ###########################################################################
 
 
+FIND_PATH(_OpenFLUID_HOME_DIR
+  NAME @BIN_INSTALL_PATH@/openfluid-engine
+  HINTS
+    ${_OpenFLUID_SEARCH_DIRS}
+  PATH_SUFFIXES
+)
+
+
+###########################################################################
+
 IF(_OpenFLUID_FOUND)
   SET(OpenFLUID_VERSION ${_OpenFLUID_VERSION} CACHE STRING "OpenFLUID version")
+
+  SET(OpenFLUID_HOME_DIR ${_OpenFLUID_HOME_DIR} CACHE PATH "OpenFLUID home directory")
 
   SET(OpenFLUID_INCLUDE_DIR ${_OpenFLUID_INCLUDE_DIR} CACHE PATH "OpenFLUID include directory")
   SET(OpenFLUID_INCLUDE_DIRS ${_OpenFLUID_INCLUDE_DIR} CACHE PATH "OpenFLUID include directories")
