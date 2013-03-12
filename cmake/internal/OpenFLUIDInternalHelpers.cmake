@@ -49,6 +49,9 @@
 INCLUDE(CMakeParseArguments)
 
 
+###########################################################################
+
+
 # Macro for compiling a simulation function
 MACRO(OPNFLD_ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
 
@@ -73,6 +76,20 @@ MACRO(OPNFLD_ADD_FUNCTION FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
                         openfluid-ware
                         openfluid-tools)
       
+ENDMACRO()
+
+
+###########################################################################
+
+
+# Macro for compiling a simulation observer and add installation directives
+MACRO(OPNFLD_ADD_FUNCTION_WITH_INSTALL FUNC_NAME FUNC_SRCDIR FUNC_BINDIR)
+
+  OPNFLD_ADD_FUNCTION(${FUNC_NAME} ${FUNC_SRCDIR} ${FUNC_BINDIR})
+
+  INSTALL(TARGETS "${FUNC_NAME}${OPENFLUID_FUNCTIONS_SUFFIX}"
+          DESTINATION "${FUNCTIONS_INSTALL_PATH}")
+        
 ENDMACRO()
 
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
+
   <domain>
+ 
     <definition>
 
       <!-- units of class A -->
@@ -45,5 +47,26 @@
       </unit>
 
     </definition>
+
+ 
+    <inputdata unitclass="unitsA" colorder="inivar1">
+3	1.25
+8	2.385
+5	5.1
+9	2.1
+6	5.3
+2	1.235
+7	1.0
+1	1.0
+    </inputdata>
+    
+  <inputdata unitclass="unitsB" colorder="mult">
+1	1
+11	2
+3	5
+2	2
+7	1
+    </inputdata>        
+    
   </domain>
 </openfluid>

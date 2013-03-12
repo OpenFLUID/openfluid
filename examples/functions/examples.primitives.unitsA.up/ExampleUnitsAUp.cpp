@@ -84,7 +84,8 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
       m_Mult = 1.0;
       OPENFLUID_GetFunctionParameter(Params,"gmult",&m_Mult);
     }
-  
+
+
     // =====================================================================
     // =====================================================================
   
@@ -121,7 +122,8 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
 
       return DefaultDeltaT();
     }
-  
+
+
     // =====================================================================
     // =====================================================================
   
@@ -131,19 +133,19 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
       openfluid::core::Unit* A;
       openfluid::core::DoubleValue Value1, Value2;
 
-      unsigned int CurrentStep = (OPENFLUID_GetCurrentTimeIndex());
+      unsigned int CurrentTimeIndex = OPENFLUID_GetCurrentTimeIndex();
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
       {
 
-        OPENFLUID_GetVariable(A,"var1",CurrentStep,Value1);
+        OPENFLUID_GetVariable(A,"var1",CurrentTimeIndex,Value1);
 
 
-        if (OPENFLUID_IsVariableExist(A,"var2",CurrentStep,openfluid::core::Value::DOUBLE))
+        if (OPENFLUID_IsVariableExist(A,"var2",CurrentTimeIndex,openfluid::core::Value::DOUBLE))
         {
-          OPENFLUID_GetVariable(A,"var2",CurrentStep,Value2);
+          OPENFLUID_GetVariable(A,"var2",CurrentTimeIndex,Value2);
           Value2 = Value2 * m_Mult;
-          OPENFLUID_SetVariable(A,"var2",CurrentStep,Value2);
+          OPENFLUID_SetVariable(A,"var2",CurrentTimeIndex,Value2);
         }
         else
         {
