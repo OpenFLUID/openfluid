@@ -122,9 +122,21 @@ class DLLEXPORT WareSetDescriptor
     // =====================================================================
     // =====================================================================
 
+    std::map<std::string, std::string> getGlobalParamsAsMap(
+        const openfluid::ware::WareParams_t& Params)
+    {
+      std::map<std::string, std::string> Contents;
+      WareDescriptor::getParamsRecurs(Params, "", Contents);
+      return Contents;
+    }
+
+    // =====================================================================
+    // =====================================================================
+
     void eraseGlobalParameter(const openfluid::ware::WareParamKey_t& Key)
     {
-      m_Params.erase(Key);
+      boost::property_tree::path Path(Key);
+      WareDescriptor::eraseParamRecurs(m_Params, Path);
     }
 
     // =====================================================================
