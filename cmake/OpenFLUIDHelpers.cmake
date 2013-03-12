@@ -77,7 +77,7 @@ MACRO(OPENFLUID_SHOW_CMAKE_VARIABLES)
   MESSAGE("OpenFLUID_TOOLS_LIBRARY: " ${OpenFLUID_TOOLS_LIBRARY})
   MESSAGE("OpenFLUID_WARE_LIBRARY: " ${OpenFLUID_WARE_LIBRARY})
   MESSAGE("OpenFLUID_LIBRARIES: " ${OpenFLUID_LIBRARIES})
-  MESSAGE("OpenFLUID_ENGINE_PROGRAM: " ${OpenFLUID_ENGINE_PROGRAM})
+  MESSAGE("OpenFLUID_PROGRAM: " ${OpenFLUID_CMD_PROGRAM})
   MESSAGE("OpenFLUID_OBSERVER_FILENAME_SUFFIX: " ${OpenFLUID_OBSERVER_FILENAME_SUFFIX})
   MESSAGE("OpenFLUID_FUNCTION_FILENAME_SUFFIX: " ${OpenFLUID_FUNCTION_FILENAME_SUFFIX})
 ENDMACRO()
@@ -154,14 +154,6 @@ ENDMACRO()
 ###########################################################################
 
 
-# OPENFLUID_ADD_TEST(NAME dummy-test
-#                    COMMAND "exec" "arg1" "arg2" "arg3"
-#                    PRE_TEST REMOVE_DIRECTORY "/foo"
-#                             CHECK_FILE_NOT_EXIST "bar.txt"
-#                    POST_TEST CHECK_FILE_EXIST "bar.txt" 
-#                              COMPARE_DIRECTORIES "/foo" "/bar"
-#                              COMPARE_DIRECTORIES "/bar" "/xxx"
-#                    )
 MACRO(OPENFLUID_ADD_TEST)
 
   SET(_ONEARGS_CMDS NAME)

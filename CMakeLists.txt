@@ -123,10 +123,10 @@ ELSE()
   MESSAGE(STATUS "Build openfluid-landr library : no")  
 ENDIF()
 
-IF(BUILD_APP_ENGINE)
-  MESSAGE(STATUS "Build openfluid-engine application : yes")  
+IF(BUILD_APP_CMD)
+  MESSAGE(STATUS "Build openfluid application : yes")  
 ELSE()
-  MESSAGE(STATUS "Build openfluid-engine application : no")  
+  MESSAGE(STATUS "Build openfluid application : no")  
 ENDIF()
 
 IF(BUILD_APP_MINIMAL)

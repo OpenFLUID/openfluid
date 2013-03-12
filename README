@@ -11,8 +11,8 @@ The OpenFLUID source tree is organized as follow
 - resources/packaging : files used for packaging
 - resources/graphics : source graphics used in documentation
 - share : shared resources at runtime
-- src/apps/openfluid-engine : sources of the openfluid-engine application
-- src/apps/openfluid-builder : sources of the openfluid-builder application
+- src/apps/openfluid-cmd : sources of the openfluid command line application
+- src/apps/openfluid-builder : sources of the openfluid-builder GUI application
 - src/openfluid : sources of the OpenFLUID framework
 
 
@@ -24,7 +24,8 @@ for the OpenFLUID framework libraries:
   - Glibmm 
   - libCURL
   - GDAL/OGR
-for openfluid-engine application: 
+  - GEOS (optional)
+for openfluid application: 
   - OpenFLUID framework libraries
   - C++ STL
   - Boost (system, filesystem, program_options, date_time, regex)  

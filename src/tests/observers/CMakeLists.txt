@@ -15,7 +15,7 @@ OPNFLD_ADD_OBSERVER(tests.empty tests.empty ${TEST_OUTPUT_PATH})
 
 OPNFLD_ADD_OBSERVER(tests.hopla tests.hopla ${TEST_OUTPUT_PATH})
 OPENFLUID_ADD_TEST(NAME observers-Hopla 
-                   COMMAND "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                                  "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesHopla"
                                  "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesHopla" 
                                  "-p${TEST_OUTPUT_PATH}"
@@ -29,7 +29,7 @@ OPENFLUID_ADD_TEST(NAME observers-Hopla
 
                                  
 OPENFLUID_ADD_TEST(NAME observers-CSVFiles 
-                   COMMAND "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CSVObserver"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CSVObserver" 
                         "-p${TEST_OUTPUT_PATH}"
@@ -47,7 +47,7 @@ OPENFLUID_ADD_TEST(NAME observers-CSVFiles
 
                         
 OPENFLUID_ADD_TEST(NAME observers-DotFiles 
-                   COMMAND "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.DotObserver"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DotObserver" 
                         "-p${TEST_OUTPUT_PATH}"
@@ -63,7 +63,7 @@ OPENFLUID_ADD_TEST(NAME observers-DotFiles
 
                         
 OPENFLUID_ADD_TEST(NAME observers-KmlFiles 
-                   COMMAND "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.KmlObservers"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers" 
                         "-p${TEST_OUTPUT_PATH}"
@@ -78,7 +78,7 @@ OPENFLUID_ADD_TEST(NAME observers-KmlFiles
 
                         
 OPENFLUID_ADD_TEST(NAME observers-VtkFiles 
-                   COMMAND "${BIN_OUTPUT_PATH}/openfluid-engine" 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.VtkObserver"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver" 
                         "-p${TEST_OUTPUT_PATH}"
