@@ -84,6 +84,8 @@ BEGIN_FUNCTION_SIGNATURE("tests.primitives.prod")
   DECLARE_PRODUCED_VAR("tests.vector[]","TestUnits","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.scalar","TestUnits","scalar for tests","");
 
+  DECLARE_SCHEDULING_DEFAULT();
+
 END_FUNCTION_SIGNATURE
 
 

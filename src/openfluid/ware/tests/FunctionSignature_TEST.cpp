@@ -73,6 +73,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::ware::SignatureHandledData SignatureData;
   openfluid::ware::SignatureHandledDataItem SignatureDataItem;
 
+  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
+  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Min,0);
+  BOOST_REQUIRE_EQUAL(Signature.TimeScheduling.Max,0);
 }
 
 // =====================================================================
@@ -124,6 +127,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   DECLARE_REQUIRED_EXTRAFILE("reqfile.dat");
   DECLARE_USED_EXTRAFILE("usedfile.dat");
 
+  DECLARE_SCHEDULING_RANGE(10,30);
+
   // ----------------------------------------------------------
 
   BOOST_REQUIRE_EQUAL(Signature->Name,"name of the test");
@@ -134,6 +139,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->Description,"this is the description");
   BOOST_REQUIRE_EQUAL(Signature->Version,"4.7");
   BOOST_REQUIRE_EQUAL(Signature->Status,openfluid::ware::BETA);
+
+
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::RANGE);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,10);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,30);
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.FunctionParams[1].DataName,"param2");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.FunctionParams[1].Description,"this is param2");
@@ -166,6 +176,26 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredExtraFiles.size(),1);
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedExtraFiles.size(),1);
+
+
+  // ----------------------------------------------------------
+
+  DECLARE_SCHEDULING_DEFAULT();
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::DEFAULT);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,0);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,0);
+
+
+  DECLARE_SCHEDULING_FIXED(51);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::FIXED);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,51);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,51);
+
+  DECLARE_SCHEDULING_UNDEFINED();
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,0);
+  BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,0);
+
 }
 
 // =====================================================================
@@ -261,3 +291,4 @@ BOOST_AUTO_TEST_CASE(check_GetVariableNameAndType)
 
   BOOST_CHECK_EQUAL(openfluid::ware::SignatureHandledTypedDataItem::getVariableNameAndType("badparam[string",ParamName,ParamType),false);
 }
+

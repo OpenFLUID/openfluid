@@ -84,6 +84,8 @@ BEGIN_FUNCTION_SIGNATURE("tests.fortran")
   DECLARE_SIGNATURE_METHOD("");
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
+
+  DECLARE_SCHEDULING_DEFAULT();
 END_FUNCTION_SIGNATURE
 
 // =====================================================================

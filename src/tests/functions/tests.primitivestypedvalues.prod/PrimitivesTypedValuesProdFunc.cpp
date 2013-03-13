@@ -93,6 +93,8 @@ BEGIN_FUNCTION_SIGNATURE("tests.primitivestypedvalues.prod")
   DECLARE_PRODUCED_VAR("tests.matrix[matrix]","TestUnits","matrix for tests","");
   DECLARE_PRODUCED_VAR("tests.map[map]","TestUnits","map for tests","");
 
+  DECLARE_SCHEDULING_DEFAULT();
+
 END_FUNCTION_SIGNATURE
 
 
