@@ -212,8 +212,7 @@ void MonitoringEditParamsDialog::init(std::string ObserverID)
   m_ParamsByIndex.clear();
 
   std::map<std::string, std::string> Params =
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(
-          m_Monit.getDescriptor(ObserverID).getParameters());
+      m_Monit.getDescriptor(ObserverID).getParametersAsMap();
 
   int Index = 0;
   for (std::map<std::string, std::string>::iterator it = Params.begin();

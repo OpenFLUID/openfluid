@@ -92,6 +92,15 @@ class WareDescriptor
 
     openfluid::ware::WareParams_t getParameters();
 
+    std::map<std::string, std::string> getParametersAsMap();
+
+    /**
+     * @warning be careful with Params structure, that must match a real xml structure
+     * (see. http://www.boost.org/doc/libs/1_41_0/doc/html/boost/property_tree/basic_ptree.html#id973373-bb)
+     */
+    static std::map<std::string, std::string> getParamsAsMap(
+        const openfluid::ware::WareParams_t& Params);
+
     bool isType(ModelItemType MIType) const;
 
     void eraseParameter(const openfluid::ware::WareParamKey_t& Key);
@@ -101,12 +110,6 @@ class WareDescriptor
 
     void clearParameters();
 
-    /**
-     * @warning be careful with Params structure, that must match a real xml structure
-     * (see. http://www.boost.org/doc/libs/1_41_0/doc/html/boost/property_tree/basic_ptree.html#id973373-bb)
-     */
-    static std::map<std::string, std::string> getParamsAsMap(
-        const openfluid::ware::WareParams_t& Params);
 };
 
 }

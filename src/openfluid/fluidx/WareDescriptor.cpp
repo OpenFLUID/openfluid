@@ -101,6 +101,25 @@ openfluid::ware::WareParams_t WareDescriptor::getParameters()
 // =====================================================================
 // =====================================================================
 
+std::map<std::string, std::string> WareDescriptor::getParametersAsMap()
+{
+  return getParamsAsMap(m_Params);
+}
+
+// =====================================================================
+// =====================================================================
+
+std::map<std::string, std::string> WareDescriptor::getParamsAsMap(
+    const openfluid::ware::WareParams_t& Params)
+{
+  std::map<std::string, std::string> Contents;
+  getParamsRecurs(Params, "", Contents);
+  return Contents;
+}
+
+// =====================================================================
+// =====================================================================
+
 bool WareDescriptor::isType(ModelItemType MIType) const
 {
   return (m_ModelItemType == MIType);
@@ -137,17 +156,6 @@ bool WareDescriptor::eraseParamRecurs(boost::property_tree::ptree& pt,
 void WareDescriptor::clearParameters()
 {
   m_Params.clear();
-}
-
-// =====================================================================
-// =====================================================================
-
-std::map<std::string, std::string> WareDescriptor::getParamsAsMap(
-    const openfluid::ware::WareParams_t& Params)
-{
-  std::map<std::string, std::string> Contents;
-  getParamsRecurs(Params, "", Contents);
-  return Contents;
 }
 
 // =====================================================================
