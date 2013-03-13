@@ -1,0 +1,114 @@
+\documentclass[a4paper,10pt,twoside]{book}
+\usepackage{a4wide}
+\usepackage{makeidx}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{ifthen}
+\usepackage[table]{xcolor}
+\usepackage{textcomp}
+\usepackage{alltt}
+\usepackage{ifpdf}
+\ifpdf
+\usepackage[pdftex,
+            pagebackref=true,
+            colorlinks=true,
+            linkcolor=blue,
+            unicode
+           ]{hyperref}
+\else
+\usepackage[ps2pdf,
+            pagebackref=true,
+            colorlinks=true,
+            linkcolor=blue,
+            unicode
+           ]{hyperref}
+\usepackage{pspicture}
+\fi
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx}
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
+\usepackage{sectsty}
+\usepackage[titles]{tocloft}
+\usepackage{tikz}
+\usepackage{doxyopenfluid}
+\lstset{language=C++,inputencoding=utf8,basicstyle=\footnotesize,breaklines=true,breakatwhitespace=true,tabsize=8,numbers=left }
+\makeindex
+\setcounter{tocdepth}{3}
+\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\familydefault}{\sfdefault}
+\hfuzz=15pt
+\setlength{\emergencystretch}{15pt}
+\hbadness=750
+\tolerance=750
+\begin{document}
+\hypersetup{pageanchor=false,citecolor=blue}
+
+\definecolor{OFBlue}{HTML}{47617B}
+
+\newcommand{\coverpage}[3]{
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture, overlay]
+    \draw [fill=OFBlue] (-4,4) rectangle (-0.5,-29.7);
+    \draw (7.8,-2.0) node {\includegraphics[width=120mm]{openfluid.pdf}};
+    \draw (16, -15) node [anchor=east] {\huge{\textbf{#1}}};
+    \draw (16, -16) node [anchor=east] {\Large{\textbf{#2}}};
+    \draw (1,-24) node [anchor=west] {\includegraphics[width=50mm]{LISAH.png}};
+    \draw (16,-24) node [anchor=east,text centered,text width=4cm]{\Large{\textit{#3}}};
+ \end{tikzpicture}
+\end{titlepage}
+}
+
+\coverpage{User's and Scientific developer's manual}{OpenFLUID $$@LATEX_FULL_VERSION@$$}{OpenFLUID team, \the\year}
+
+
+\clearemptydoublepage
+\pagenumbering{roman}
+\tableofcontents
+\clearemptydoublepage
+\pagenumbering{arabic}
+\hypersetup{pageanchor=true,citecolor=blue}
+
+%% pages
+
+\frontmatter
+\chapter*{Foreword}\label{foreword}\hypertarget{foreword}{}\input{foreword}
+
+\mainmatter
+
+\part{User's manual}
+\chapter{\-Running simulations with OpenFLUID}\label{user_runsims}\hypertarget{user_runsims}{}\input{user_runsims}
+\chapter{\-FluidX file format}\label{user_fluidx}\hypertarget{user_fluidx}{}\input{user_fluidx}
+\chapter{\-Examples}\label{user_examples}\hypertarget{user_examples}{}\input{user_examples}
+\chapter{\-Using buddies}\label{user_buddies}\hypertarget{user_buddies}{}\input{user_buddies}
+\chapter{\-Other informations}\label{user_otherinfos}\hypertarget{user_otherinfos}{}\input{user_otherinfos}
+
+
+
+\part{Scientific developer's manual}
+\chapter{\-General information}\label{dev_howitworks}\hypertarget{dev_howitworks}{}\input{dev_howitworks}
+\chapter{\-Creating an empty simulation function}\label{dev_emptyfunc}\hypertarget{dev_emptyfunc}{}\input{dev_emptyfunc}
+\chapter{\-About datatypes}\label{dev_values}\hypertarget{dev_values}{}\input{dev_values}
+\chapter{\-C++ class of a simulation function}\label{dev_classoview}\hypertarget{dev_classoview}{}\input{dev_classoview}
+\chapter{\-Handling space}\label{dev_space}\hypertarget{dev_space}{}\input{dev_space}
+\chapter{\-Handling time}\label{dev_time}\hypertarget{dev_time}{}\input{dev_time}
+\chapter{\-Access to simulation parameters, input data, variables and events}\label{dev_simdatavar}\hypertarget{dev_simdatavar}{}\input{dev_simdatavar}
+\chapter{\-Internal data and status of simulation functions}\label{dev_internaldata}\hypertarget{dev_internaldata}{}\input{dev_internaldata}
+\chapter{\-Logs, Warnings, Errors}\label{dev_warnerrorlog}\hypertarget{dev_warnerrorlog}{}\input{dev_warnerrorlog}
+\chapter{\-Access to runtime environment}\label{dev_runenv}\hypertarget{dev_runenv}{}\input{dev_runenv}
+\chapter{\-Fortran77/90 code integration}\label{dev_fortran}\hypertarget{dev_fortran}{}\input{dev_fortran}
+\chapter{\-Debugging macros}\label{dev_debug}\hypertarget{dev_debug}{}\input{dev_debug}
+\chapter{\-Miscellaneous information}\label{dev_misc}\hypertarget{dev_misc}{}\input{dev_misc}
+
+
+
+%% pages
+
+\printindex
+\end{document}
+
+

@@ -1,0 +1,62 @@
+/** 
+\mainpage OpenFLUID documentation
+ 
+\n 
+ 
+This manual is made of two parts...
+
+
+
+\section mainpage_userman User's manual
+
+<ul>
+  <li> \subpage user_runsims
+  <li> \subpage user_fluidx
+  <li> \subpage user_examples
+  <li> \subpage user_buddies
+  <li> \subpage user_otherinfos
+</ul>
+
+\n
+\n
+
+
+\section mainpage_devman Scientific developer's manual  
+
+The OpenFLUID API includes all available features provided by the OpenFLUID libraries that can be used
+to build OpenFLUID software applications and to develop simulation functions.  
+
+
+Along with the technical information, this API documentation contains specific parts about simulation function development: 
+<ul>
+  <li> the \subpage dev_howitworks part giving the general organization and features of the library     
+  <li> the \subpage dev_emptyfunc part explaining how to create and build a simulation function
+  <li> the parts for integration of your own code and how to access to simulation data and information
+  <ul>
+  <li>\subpage dev_values
+  <li>\subpage dev_signature
+  <li>\subpage dev_classoview
+  <li>\subpage dev_space
+  <li>\subpage dev_time
+  <li>\subpage dev_simdatavar
+  <li>\subpage dev_internaldata  
+  <li>\subpage dev_warnerrorlog
+  <li>\subpage dev_runenv
+  <li>\subpage dev_fortran
+  <li>\subpage dev_debug
+  <li>\subpage dev_misc 
+  </ul> 
+</ul>   
+
+\n
+
+Have fun!   
+
+\n
+\n
+\n
+
+
+
+*/
+

@@ -1,0 +1,120 @@
+/**
+
+\page user_buddies Using buddies
+
+
+Buddies are small tools that help scientific developers in order to complete
+the modelling and/or development works. They are usable from the command line,
+using the \c --buddyhelp, \c --buddy and
+\c --buddyopts options. Four buddies are available:
+<ul>
+  <li> \c func2doc
+  <li> \c newfunc
+  <li> \c newdata
+  <li> \c convert
+</ul>
+
+Options are given to buddies through a comma-separated list of \c key=value arguments, using the \c --buddyopts command line option.\n
+
+General usage is:\n
+<tt>openfluid-engine --buddy buddyname --buddyopts abuddyopt=avalue,anotherbuddyopt=anothervalue</tt>
+
+\section user_buddies_func2doc func2doc
+
+The \c func2doc buddy extracts scientific information from the source code
+of simulation functions. It uses the function signature and LaTeX-formatted text
+placed between the \c <func2doc> and \c </func2doc> tags into C++ comments.
+From these sources of information, it builds a LaTeX
+document which could be compiled into a PDF document and/or HTML pages.\n
+The \c func2doc buddy can also use information from an optional
+sub-directory named \c doc, located in the same directory as the input source file. The
+information in the \c doc subdirectory should be linked to the information
+from the source code using LaTeX \c \\input command. The
+\c func2doc buddy is available on UNIX only systems (Linux, MacOSX).
+
+\n
+
+Required options:
+<ul>
+ <li>\c inputcpp : path for cpp file to parse
+ <li>\c outputdir : path for generated files
+</ul>
+
+Other options:
+<ul>
+  <li>\c html : set to 1 in order to generate documentation as HTML files
+  <li>\c pdf : set to 1 in order to generate documentation as PDF file
+  <li>\c tplfile : path to template file
+</ul>
+
+\n
+
+Usage example:\n
+<tt>openfluid-engine --buddy func2doc --buddyopts
+inputcpp=/path/to/cppfile.cpp, outputdir=/path/to/outputdir,pdf=1</tt>
+
+
+\section user_buddies_newfunc newfunc
+
+The \c newfunc buddy generate a skeleton source code of a simulation
+function, using given options.
+
+
+Required options:
+<ul>
+  <li>\c cppclass : C++ class name of the function
+  <li>\c funcid : ID of the function
+</ul>
+    
+Other options:
+<ul>
+  <li>\c authoremail : email(s) of the author(s) of the function
+  <li>\c authorname : name(s) of the author(s) of the function
+  <li>\c outputdir : path for generated files\n
+</ul>
+
+\n
+
+Usage example:\n
+<tt>openfluid-engine --buddy newfunc --buddyopts
+funcid=domain.subdomain.process.method, outputdir=/path/to/outputdir</tt>
+
+
+\section user_buddies_newdata newdata
+
+The \c newdata buddy generate a skeleton dataset. 
+
+\n
+
+Required options:
+<ul>
+  <li>\c outputdir : Output directory for generated dataset
+</ul>
+
+\n
+
+Usage example:\n
+<tt>openfluid-engine --buddy newdata --buddyopts
+outputdir=/path/to/outputdir</tt>
+
+\section user_buddies_convert convert
+
+The \c convert buddy converts a dataset from a specific version format to another one.
+Currently, conversion is possible from 1.3.x format to 1.4.x format, and from 1.4.x format to 1.5.x format 
+
+\n
+
+Required options:
+<ul>
+  <li>\c convmode : Conversion mode. Available modes are: \c 13_14, \c 14_15
+  <li>\c inputdir : Input directory for dataset to convert
+  <li>\c outputdir : Output directory for converted dataset
+</ul>
+
+\n
+
+Usage example:\n
+<tt>openfluid-engine --buddy convert --buddyopts convmode=13_14,
+inputdir=/path/to/inputdir,outputdir=/path/to/outputdir</tt>
+
+*/

@@ -58,7 +58,7 @@ ELSE()
 ENDIF()  
 
 SET(DOC_INSTALL_PATH "${SHARE_INSTALL_PATH}/doc/openfluid")
-SET(API_DOC_INSTALL_PATH "${DOC_INSTALL_PATH}/API")
+SET(MAIN_DOC_INSTALL_PATH "${DOC_INSTALL_PATH}/main")
 SET(FUNCTIONS_DOC_INSTALL_PATH "${DOC_INSTALL_PATH}/functions")
 SET(OBSERVERS_DOC_INSTALL_PATH "${DOC_INSTALL_PATH}/observers")
 SET(EXAMPLES_INSTALL_PATH "${DOC_INSTALL_PATH}/examples")
@@ -83,9 +83,12 @@ SET(BIN_OUTPUT_PATH "${BUILD_OUTPUT_PATH}/${BIN_INSTALL_PATH}")
 SET(PKGCONFIG_OUTPUT_PATH "${BUILD_OUTPUT_PATH}/${PKGCONFIG_INSTALL_PATH}")
 SET(CMAKE_MODULES_OUTPUT_PATH "${BUILD_OUTPUT_PATH}/${CMAKE_MODULES_INSTALL_PATH}")
 
-SET(APIDOC_OUTPUT_PATH "${BUILD_OUTPUT_PATH}/${API_DOC_INSTALL_PATH}")
-SET(APIDOC_SOURCE_DIR "${CMAKE_SOURCE_DIR}/src/openfluid")
-SET(APIDOC_DOCFILES_DIR "${CMAKE_SOURCE_DIR}/doc/API-doxygen")
+SET(DOC_OUTPUT_PATH "${BUILD_OUTPUT_PATH}/${DOC_INSTALL_PATH}")
+SET(MAIN_DOC_OUTPUT_PATH "${BUILD_OUTPUT_PATH}/${MAIN_DOC_INSTALL_PATH}")
+SET(DOC_LAYOUT_DIR "${CMAKE_SOURCE_DIR}/doc/layout")
+SET(DOC_CONTENTS_DIR "${CMAKE_SOURCE_DIR}/doc/contents")
+SET(DOC_SOURCES_DIR "${CMAKE_SOURCE_DIR}/src/openfluid")
+
 
 SET(DOCFORDEV_OUTPUT_PATH "${CMAKE_BINARY_DIR}/docfordev")
 SET(DOCFORDEV_SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
@@ -173,22 +176,14 @@ SET(BUILD_APP_MINIMALGUI 0)
 
 ################### functions build ###################
 
-# uncomment this to build functions in foundry directory
-#SET(BUILD_FUNCTIONS_FOUNDRY 1)
-
 # uncomment this to build functions mixing C++ and fortran source codes (in this source tree)
 #SET(BUILD_FORTRAN_FUNCTIONS 1)
 
 
-################### latex build ###################
+################### doc build ###################
 
 # uncomment this to build latex docs
-#SET(BUILD_LATEX_DOCS 1)
-
-
-################### docs for developers build ###################
-
-#SET(BUILD_DOCFORDEV 1)
+SET(BUILD_DOCS 1)
 
 
 ################### logfiles ###################

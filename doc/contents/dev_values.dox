@@ -1,0 +1,55 @@
+/**
+
+\page dev_values Preliminary information about data types
+
+
+\section valuesview_ssec Overview
+
+Many types of data are usable in OpenFLUID.\n
+Simple types:
+<ul>
+<li> openfluid::core::BooleanValue
+<li> openfluid::core::IntegerValue
+<li> openfluid::core::DoubleValue
+<li> openfluid::core::StringValue
+</ul>
+
+Compound types:
+<ul>
+<li> openfluid::core::VectorValue
+<li> openfluid::core::MatrixValue
+<li> openfluid::core::MapValue
+</ul>
+
+Other type:
+<ul>
+<li> openfluid::core::NullValue
+</ul>
+
+
+\n
+
+
+\section valuesusage_ssec Usage
+
+Simple examples of use are available through the above links for each type.\n
+
+
+OpenFLUID handles various kind of data : 
+<ul>
+<li>simulation variables : data exchanged between simulation functions. These data can be directly stored as any type. 
+<li>inputdata : distributed data giving properties of spatial units. These data are stored as openfluid::core::StringValue but can be converted to any other type.
+<li>functions parameters : parameters of simulation functions. These data are stored as openfluid::core::StringValue but can be converted to any other type.
+<li>events : discrete events integrating informations . These integrated informations are stored as openfluid::core::StringValue but can be converted to any other type.
+</ul>
+
+
+Each data type can be converted to and from openfluid::core::StringValue (as far as the string format is correct). 
+
+
+Simulation variables can be typed or untyped. This is set at the declaration of these variables in the \link signature signature of simulation functions\endlink.\n
+In case of typed variables, each value of the variable must be of the type of the variable. In case of untyped variables, i.e. values for the variable can be of any type. 
+
+*/
+
+

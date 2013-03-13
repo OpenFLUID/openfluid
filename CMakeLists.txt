@@ -158,6 +158,17 @@ IF(BUILD_APP_MARKETCLIENT AND OPENFLUID_ENABLE_GUI)
 ELSE()
   MESSAGE(STATUS "Build openfluid-market-client application : no")  
 ENDIF()  
+
+IF(BUILD_DOCS AND DOXYGEN)
+  IF(PDFLATEX_COMPILER)
+    MESSAGE(STATUS "Build OpenFLUID documentation : html, pdf")
+  ELSE()
+    MESSAGE(STATUS "Build OpenFLUID documentation : html")
+  ENDIF()
+ELSE()
+  MESSAGE(STATUS "Build OpenFLUID documentation : no") 
+ENDIF()
+
   
 MESSAGE(STATUS "****************************************")
 
