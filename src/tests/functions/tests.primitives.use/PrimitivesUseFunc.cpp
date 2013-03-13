@@ -90,12 +90,14 @@ BEGIN_FUNCTION_SIGNATURE("tests.primitives.use")
   DECLARE_REQUIRED_INPUTDATA("indataA","TestUnits","input data for tests","")
   DECLARE_REQUIRED_INPUTDATA("indataB","TestUnits","input data for tests","")
 
-  DECLARE_FUNCTION_PARAM ("strparam","=strvalue","-");
-  DECLARE_FUNCTION_PARAM ("doubleparam","=1.1","-");
-  DECLARE_FUNCTION_PARAM ("longparam","=11","-");
-  DECLARE_FUNCTION_PARAM ("strarrayparam","=strvalue1;strvalue2;strvalue3","-");
-  DECLARE_FUNCTION_PARAM ("doublearrayparam","=1.1;1.3;1.3;1.4","-");
-  DECLARE_FUNCTION_PARAM ("longarrayparam","=11;12;13;14;15","-");
+  DECLARE_FUNCTION_PARAM("strparam","=strvalue","-");
+  DECLARE_FUNCTION_PARAM("doubleparam","=1.1","-");
+  DECLARE_FUNCTION_PARAM("longparam","=11","-");
+  DECLARE_FUNCTION_PARAM("strarrayparam","=strvalue1;strvalue2;strvalue3","-");
+  DECLARE_FUNCTION_PARAM("doublearrayparam","=1.1;1.3;1.3;1.4","-");
+  DECLARE_FUNCTION_PARAM("longarrayparam","=11;12;13;14;15","-");
+
+  DECLARE_SCHEDULING_DEFAULT();
 
 END_FUNCTION_SIGNATURE
 

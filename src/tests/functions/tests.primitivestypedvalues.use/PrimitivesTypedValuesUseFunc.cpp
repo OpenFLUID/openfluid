@@ -98,6 +98,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.primitivestypedvalues.use")
   DECLARE_REQUIRED_VAR("tests.matrix[matrix]","TestUnits","matrix for tests","");
   DECLARE_REQUIRED_VAR("tests.map[map]","TestUnits","map for tests","");
 
+  DECLARE_SCHEDULING_DEFAULT();
 
 END_FUNCTION_SIGNATURE
 

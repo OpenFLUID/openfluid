@@ -60,7 +60,9 @@
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/core/DateTime.hpp>
 #include <openfluid/ware/WareSignature.hpp>
+
 
 
 // =====================================================================
@@ -246,6 +248,33 @@
 #define DECLARE_USED_EXTRAFILE(name) \
   Signature->HandledData.UsedExtraFiles.push_back(name);
 
+/**
+  Macro for declaration of time scheduling as undefined
+*/
+#define DECLARE_SCHEDULING_UNDEFINED() \
+  Signature->TimeScheduling.setAsUndefined();
+
+/**
+  Macro for declaration of time scheduling as default delta T
+*/
+#define DECLARE_SCHEDULING_DEFAULT() \
+  Signature->TimeScheduling.setAsDefaultDeltaT();
+
+/**
+  Macro for declaration of fixed time scheduling
+  @param[in] deltat fixed time scheduling value
+*/
+#define DECLARE_SCHEDULING_FIXED(deltat) \
+  Signature->TimeScheduling.setAsFixed(deltat);
+
+/**
+  Macro for declaration of range of time scheduling
+  @param[in] min minimal time scheduling value
+  @param[in] max maximal time scheduling value
+*/
+#define DECLARE_SCHEDULING_RANGE(min,max) \
+  Signature->TimeScheduling.setAsRange(min,max);
+
 
 // =====================================================================
 // =====================================================================
@@ -418,6 +447,52 @@ class SignatureHandledUnitsGraph
 };
 
 
+class SignatureTimeScheduling
+{
+  public:
+
+    enum SchedulingType { UNDEFINED, DEFAULT, FIXED, RANGE };
+
+    SchedulingType Type;
+
+    openfluid::core::Duration_t Min;
+
+    openfluid::core::Duration_t Max;
+
+    SignatureTimeScheduling():
+      Type(UNDEFINED), Min(0), Max(0)
+    { }
+
+    void setAsUndefined()
+    {
+      Type = UNDEFINED;
+      Min = 0;
+      Max = 0;
+    }
+
+    void setAsDefaultDeltaT()
+    {
+      Type = DEFAULT;
+      Min = 0;
+      Max = 0;
+    }
+
+    void setAsFixed(openfluid::core::Duration_t Val)
+    {
+      Type = FIXED;
+      Min = Val;
+      Max = Val;
+    }
+
+    void setAsRange(openfluid::core::Duration_t MinVal, openfluid::core::Duration_t MaxVal)
+    {
+      Type = RANGE;
+      Min = MinVal;
+      Max = MaxVal;
+    }
+
+};
+
 
 /**
   Class encapsulating the plugin signature,
@@ -454,6 +529,10 @@ class DLLEXPORT FunctionSignature : public WareSignature
     */
     SignatureHandledUnitsGraph HandledUnitsGraph;
 
+    /**
+      Time scheduling
+    */
+    SignatureTimeScheduling TimeScheduling;
 
     FunctionSignature() : WareSignature(),
       Domain(""),Process(""),Method("")

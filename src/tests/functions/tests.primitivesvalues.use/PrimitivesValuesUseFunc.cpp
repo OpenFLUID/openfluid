@@ -120,6 +120,8 @@ BEGIN_FUNCTION_SIGNATURE("tests.primitivesvalues.use")
   DECLARE_FUNCTION_PARAM ("matrixparam","=1.1;1.2|2.1;2.2|3.1;3.2","-");
   DECLARE_FUNCTION_PARAM ("mapparam","=key1=1.1;key2=a string;key3=true","-");
 
+  DECLARE_SCHEDULING_DEFAULT();
+
 END_FUNCTION_SIGNATURE
 
 

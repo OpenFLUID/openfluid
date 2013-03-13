@@ -89,6 +89,8 @@ BEGIN_FUNCTION_SIGNATURE("tests.deltaTtime.prod")
   DECLARE_PRODUCED_VAR("tests.vector.dt","TestUnits","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.matrix.dt","TestUnits","matrix for tests","");
 
+  DECLARE_SCHEDULING_DEFAULT();
+
 END_FUNCTION_SIGNATURE
 
 /**

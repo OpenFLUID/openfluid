@@ -290,6 +290,31 @@ void OpenFLUIDApp::printFunctionsHandledUnitsGraphReport(openfluid::ware::Signat
 // =====================================================================
 
 
+void OpenFLUIDApp::printFunctionsTimeSchedulingReport(openfluid::ware::SignatureTimeScheduling TScheduling)
+{
+  if (TScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
+  {
+    std::cout << "fixed to default deltaT" << std::endl;
+  }
+  else if (TScheduling.Type == openfluid::ware::SignatureTimeScheduling::FIXED)
+  {
+    std::cout << "fixed to " <<  TScheduling.Min << " seconds" << std::endl;
+  }
+  else if (TScheduling.Type == openfluid::ware::SignatureTimeScheduling::RANGE)
+  {
+    std::cout << "range between " <<  TScheduling.Min << " and " << TScheduling.Max << " seconds" << std::endl;
+  }
+  else
+  {
+    std::cout << "undefined" << std::endl;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void OpenFLUIDApp::printFunctionsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix)
 {
 
@@ -358,6 +383,8 @@ void OpenFLUIDApp::printFunctionsReport(const std::string Pattern)
       std::cout << "   - Development status: " << StatusStr <<  std::endl;
       std::cout << "   - Author(s): " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)")) << std::endl;
       std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;
+      std::cout << "   - Time scheduling : ";
+      printFunctionsTimeSchedulingReport(PlugContainers[i]->Signature->TimeScheduling);
       std::cout << "   - Handled data" << std::endl;
       printFunctionsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "));
       std::cout << "   - Handled units graph" << std::endl;
