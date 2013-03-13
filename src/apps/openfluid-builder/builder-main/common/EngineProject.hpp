@@ -116,6 +116,8 @@ class EngineProject
 
     void whenSimulationStopped();
 
+    void checkAndAdaptModel();
+
     void checkAndAdaptMonitoring();
 
   protected:

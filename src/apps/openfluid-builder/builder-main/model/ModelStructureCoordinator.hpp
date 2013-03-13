@@ -126,6 +126,10 @@ class ModelStructureCoordinator: public sigc::trackable
 
     void whenParamsChanged();
 
+    void createParamsComponents();
+
+    void clearParamsComponents();
+
   public:
 
     ModelStructureCoordinator(
@@ -140,8 +144,6 @@ class ModelStructureCoordinator: public sigc::trackable
     void setCurrentFunction(std::string FunctionName);
 
     void update();
-
-    void createParamsComponents();
 
     void updateWithFctParamsComponents();
 

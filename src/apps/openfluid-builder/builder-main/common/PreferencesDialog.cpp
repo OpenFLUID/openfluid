@@ -70,9 +70,8 @@
 // =====================================================================
 // =====================================================================
 
-
 PreferencesDialog::PreferencesDialog() :
-  mp_CurrentPanel(0), mp_Project(0)
+    mp_CurrentPanel(0), mp_Project(0)
 {
   mref_GroupsTreeModel = Gtk::TreeStore::create(m_GroupsColumns);
   Gtk::TreeRow Row;
@@ -97,8 +96,8 @@ PreferencesDialog::PreferencesDialog() :
   mp_GroupsTreeView->append_column("", m_GroupsColumns.m_Name);
   mp_GroupsTreeView->set_headers_visible(false);
   mp_GroupsTreeView->set_border_width(5);
-  mp_GroupsTreeView->get_selection()->signal_changed().connect(sigc::mem_fun(
-      *this, &PreferencesDialog::onGroupSelectionChanged));
+  mp_GroupsTreeView->get_selection()->signal_changed().connect(
+      sigc::mem_fun(*this, &PreferencesDialog::onGroupSelectionChanged));
 
   mp_GroupsSWindow = Gtk::manage(new Gtk::ScrolledWindow());
   mp_GroupsSWindow->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -116,8 +115,8 @@ PreferencesDialog::PreferencesDialog() :
   mp_MainBox->pack_start(*mp_GroupsSWindow, Gtk::PACK_SHRINK, 6);
 
   Gtk::Button* CloseButton = Gtk::manage(new Gtk::Button(Gtk::Stock::CLOSE));
-  CloseButton->signal_clicked().connect(sigc::mem_fun(*this,
-      &PreferencesDialog::onCloseClicked));
+  CloseButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &PreferencesDialog::onCloseClicked));
 
   mp_Dialog = new Gtk::Dialog();
   mp_Dialog->get_vbox()->pack_start(*mp_MainBox, Gtk::PACK_EXPAND_WIDGET, 6);
@@ -135,7 +134,6 @@ PreferencesDialog::PreferencesDialog() :
 // =====================================================================
 // =====================================================================
 
-
 PreferencesDialog::~PreferencesDialog()
 {
   BuilderExtensionsManager::getInstance()->deleteRegisteredExtensionPreferences();
@@ -143,7 +141,6 @@ PreferencesDialog::~PreferencesDialog()
 
 // =====================================================================
 // =====================================================================
-
 
 void PreferencesDialog::show(EngineProject* Project)
 {
@@ -171,8 +168,8 @@ void PreferencesDialog::show(EngineProject* Project)
 
     ExtensionContainerMap_t* Exts = BEM->getRegisteredExtensionPreferences();
 
-    for (ExtensionContainerMap_t::iterator it = Exts->begin(); it
-        != Exts->end(); ++it)
+    for (ExtensionContainerMap_t::iterator it = Exts->begin();
+        it != Exts->end(); ++it)
     {
       Gtk::TreeRow ExtRow = *mref_GroupsTreeModel->append(Row.children());
       ExtRow[m_GroupsColumns.m_Id] = it->second.Infos.ID;
@@ -182,8 +179,8 @@ void PreferencesDialog::show(EngineProject* Project)
 
   }
 
-  for (std::map<Glib::ustring, openfluid::guicommon::PreferencesPanel*>::iterator
-      it = m_GroupPanels.begin(); it != m_GroupPanels.end(); ++it)
+  for (std::map<Glib::ustring, openfluid::guicommon::PreferencesPanel*>::iterator it =
+      m_GroupPanels.begin(); it != m_GroupPanels.end(); ++it)
     it->second->init();
 
   //select first group
@@ -192,41 +189,13 @@ void PreferencesDialog::show(EngineProject* Project)
 
   if (mp_Dialog->run())
   {
-    openfluid::base::RuntimeEnvironment* RunEnv =
-        openfluid::base::RuntimeEnvironment::getInstance();
-
     PrefMgr->save();
-
-    if (PrefMgr->getRecentMax() != OldRecentMax
-        || PrefMgr->getRecentProjects().size() != OldRecentCount)
-      m_RecentsHaveChanged = true;
-
-    // update plugs paths
-
-    std::vector<std::string> ExistingPlugPaths = RunEnv->getExtraFunctionsPluginsPaths();
-    std::vector<std::string> PrefPlugPaths = PrefMgr->getExtraPlugPaths();
-
-    if (!(ExistingPlugPaths.size() == PrefPlugPaths.size() && std::equal(
-        ExistingPlugPaths.begin(), ExistingPlugPaths.end(),
-        PrefPlugPaths.begin())))
-    {
-      m_PlugPathsHaveChanged = true;
-
-      RunEnv->resetExtraFunctionsPluginsPaths();
-
-      for (int i = PrefPlugPaths.size() - 1; i >= 0; i--)
-        RunEnv->addExtraFunctionsPluginsPaths(PrefPlugPaths[i]);
-
-      openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
-    }
-
     mp_Dialog->hide();
   }
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void PreferencesDialog::onGroupSelectionChanged()
 {
@@ -255,23 +224,29 @@ void PreferencesDialog::onGroupSelectionChanged()
 
 void PreferencesDialog::onCloseClicked()
 {
+  if (checkFunctionsPaths() && checkObserversPaths())
+    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
+}
+
+// =====================================================================
+// =====================================================================
+
+bool PreferencesDialog::checkObserversPaths()
+{
   openfluid::base::RuntimeEnvironment* RunEnv =
       openfluid::base::RuntimeEnvironment::getInstance();
 
   openfluid::guicommon::PreferencesManager* PrefMgr =
       openfluid::guicommon::PreferencesManager::getInstance();
 
-  // check observers paths
-
-  std::vector<std::string> ExistingObsPaths = RunEnv->getExtraObserversPluginsPaths();
+  std::vector<std::string> ExistingObsPaths =
+      RunEnv->getExtraObserversPluginsPaths();
   std::vector<std::string> PrefObsPaths = PrefMgr->getExtraObserversPaths();
 
   if (ExistingObsPaths.size() == PrefObsPaths.size() && std::equal(
-      ExistingObsPaths.begin(), ExistingObsPaths.end(),
-      PrefObsPaths.begin()))
+      ExistingObsPaths.begin(), ExistingObsPaths.end(), PrefObsPaths.begin()))
   {
-    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
-    return;
+    return true;
   }
 
   // RunEnv <- Pref
@@ -279,42 +254,39 @@ void PreferencesDialog::onCloseClicked()
   for (int i = PrefObsPaths.size() - 1; i >= 0; i--)
     RunEnv->addExtraObserversPluginsPaths(PrefObsPaths[i]);
 
-  if(!mp_Project)
+  if (!mp_Project)
   {
-    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
     m_ObsPathsHaveChanged = true;
-    return;
+    return true;
   }
 
-  openfluid::guicommon::BuilderMonitoring& Monit = mp_Project->getBuilderDesc().getMonitoring();
+  openfluid::guicommon::BuilderMonitoring& Monit =
+      mp_Project->getBuilderDesc().getMonitoring();
 
   std::string MissingObserversStr = "";
 
   std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
-      Monit.checkAndGetModifiedMonitoring(
-          MissingObserversStr);
+      Monit.checkAndGetModifiedMonitoring(MissingObserversStr);
 
   if (MissingObserversStr.empty())
   {
-    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
     m_ObsPathsHaveChanged = true;
-    return;
+    return true;
   }
 
   Glib::ustring Msg = Glib::ustring::compose(
       _("These plugin file(s) are no more available:\n%1\n\n"
           "Corresponding observers will be removed from the monitoring.\n"
           "Do you want to continue?"),
-          MissingObserversStr);
+      MissingObserversStr);
 
   if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       Msg))
   {
     Monit.setItems(ModifiedObservers);
 
-    mp_Dialog->response(Gtk::RESPONSE_CLOSE);
     m_ObsPathsHaveChanged = true;
-    return;
+    return true;
   }
 
   // reset RunEnv
@@ -324,8 +296,81 @@ void PreferencesDialog::onCloseClicked()
 
   // reset Monitoring
   Monit.update();
+
+  return false;
 }
 
 // =====================================================================
 // =====================================================================
 
+bool PreferencesDialog::checkFunctionsPaths()
+{
+  openfluid::base::RuntimeEnvironment* RunEnv =
+      openfluid::base::RuntimeEnvironment::getInstance();
+
+  openfluid::guicommon::PreferencesManager* PrefMgr =
+      openfluid::guicommon::PreferencesManager::getInstance();
+
+  std::vector<std::string> ExistingFctPaths =
+      RunEnv->getExtraFunctionsPluginsPaths();
+  std::vector<std::string> PrefFctPaths = PrefMgr->getExtraPlugPaths();
+
+  if (ExistingFctPaths.size() == PrefFctPaths.size() && std::equal(
+      ExistingFctPaths.begin(), ExistingFctPaths.end(), PrefFctPaths.begin()))
+  {
+    return true;
+  }
+
+  // RunEnv <- Pref
+  RunEnv->resetExtraFunctionsPluginsPaths();
+  for (int i = PrefFctPaths.size() - 1; i >= 0; i--)
+    RunEnv->addExtraFunctionsPluginsPaths(PrefFctPaths[i]);
+
+  if (!mp_Project)
+  {
+    m_PlugPathsHaveChanged = true;
+    return true;
+  }
+
+  openfluid::guicommon::BuilderModel& Model =
+      mp_Project->getBuilderDesc().getModel();
+
+  std::string MissingFunctionsStr = "";
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
+      Model.checkAndGetModifiedModel(MissingFunctionsStr);
+
+  if (MissingFunctionsStr.empty())
+  {
+    m_PlugPathsHaveChanged = true;
+    return true;
+  }
+
+  Glib::ustring Msg = Glib::ustring::compose(
+      _("These plugin file(s) are no more available:\n%1\n\n"
+          "Corresponding simulation functions will be removed from the model.\n"
+          "Do you want to continue?"),
+      MissingFunctionsStr);
+
+  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+      Msg))
+  {
+    Model.setItems(ModifiedFunctions);
+
+    m_PlugPathsHaveChanged = true;
+    return true;
+  }
+
+  // reset RunEnv
+  RunEnv->resetExtraFunctionsPluginsPaths();
+  for (int i = ExistingFctPaths.size() - 1; i >= 0; i--)
+    RunEnv->addExtraFunctionsPluginsPaths(ExistingFctPaths[i]);
+
+  // reset Model
+  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
