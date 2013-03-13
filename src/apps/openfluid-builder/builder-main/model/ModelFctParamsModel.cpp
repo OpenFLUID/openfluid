@@ -101,9 +101,9 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParams()
   ParamsMap[Param.DataName] = Param.DataUnit;
 }
 
-  openfluid::ware::WareParams_t Params = mp_Item->getParameters();
+  std::map<std::string, std::string> Params = mp_Item->getParametersAsMap();
 
-  for (openfluid::ware::WareParams_t::iterator it = Params.begin();
+  for (std::map<std::string, std::string>::iterator it = Params.begin();
       it != Params.end(); ++it)
   {
     //add possible params which are not in signature
@@ -119,17 +119,7 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParams()
 
 std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
 {
-  std::map<std::string, std::string> StrMap;
-
-  openfluid::ware::WareParams_t Params = mp_Item->getParameters();
-
-  for (openfluid::ware::WareParams_t::iterator it = Params.begin();
-      it != Params.end(); ++it)
-  {
-    StrMap[it->first] = it->second.data();
-  }
-
-  return StrMap;
+  return mp_Item->getParametersAsMap();
 }
 
 // =====================================================================
@@ -137,17 +127,8 @@ std::map<std::string, std::string> ModelFctParamsModelImpl::getParamValues()
 
 std::map<std::string, std::string> ModelFctParamsModelImpl::getGlobalValues()
 {
-  std::map<std::string, std::string> StrMap;
-
-  openfluid::ware::WareParams_t GlobalParams = mp_Model->getGlobalParameters();
-
-  for (openfluid::ware::WareParams_t::iterator it = GlobalParams.begin();
-      it != GlobalParams.end(); ++it)
-  {
-    StrMap[it->first] = it->second.data();
-  }
-
-  return StrMap;
+  return openfluid::fluidx::WareDescriptor::getParamsAsMap(
+      mp_Model->getGlobalParameters());
 }
 
 // =====================================================================

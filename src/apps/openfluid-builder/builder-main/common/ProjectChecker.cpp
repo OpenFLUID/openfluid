@@ -186,8 +186,6 @@ void ProjectChecker::checkModelRequirements()
     }
 
     // check Params
-    openfluid::ware::WareParams_t RealParams = (*it)->getParameters();
-
     m_RandomMinMaxChecked = false;
     m_InterpMinMaxChecked = false;
     m_InjectMinMaxChecked = false;

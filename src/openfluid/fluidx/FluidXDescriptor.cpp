@@ -155,11 +155,13 @@ openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
 {
   openfluid::ware::WareParams_t FinalParams = Params;
 
-  openfluid::ware::WareParams_t::const_iterator it;
+  std::map<std::string, std::string> OverloadParamsMap =
+      openfluid::fluidx::WareDescriptor::getParamsAsMap(OverloadParams);
+  std::map<std::string, std::string>::iterator it;
 
-  for (it = OverloadParams.begin(); it != OverloadParams.end(); ++it)
+  for (it = OverloadParamsMap.begin(); it != OverloadParamsMap.end(); ++it)
   {
-    FinalParams.put(it->first, it->second.data());
+    FinalParams.put(it->first, it->second);
   }
 
   return FinalParams;

@@ -99,8 +99,9 @@ void ModelGlobalParamsModelImpl::update()
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_Model->getItems();
 
-  openfluid::ware::WareParams_t ModelGlobalParams =
-      mp_Model->getGlobalParameters();
+  std::map<std::string, std::string> ModelGlobalParams =
+      openfluid::fluidx::WareDescriptor::getParamsAsMap(
+          mp_Model->getGlobalParameters());
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -111,7 +112,7 @@ void ModelGlobalParamsModelImpl::update()
     BOOST_FOREACH(openfluid::ware::SignatureHandledDataItem Param, Signature->HandledData.FunctionParams){
     {
       if(ModelGlobalParams.find(Param.DataName)
-          == ModelGlobalParams.not_found())
+          == ModelGlobalParams.end())
       m_GloballyNotUsed.insert(Param.DataName);
     }
 
@@ -130,13 +131,14 @@ std::map<std::string, std::pair<std::string, std::string> > ModelGlobalParamsMod
 {
   std::map<std::string, std::pair<std::string, std::string> > GlobalParams;
 
-  openfluid::ware::WareParams_t ModelGlobalParams =
-      mp_Model->getGlobalParameters();
+  std::map<std::string, std::string> ModelGlobalParams =
+      openfluid::fluidx::WareDescriptor::getParamsAsMap(
+          mp_Model->getGlobalParameters());
 
-  for (openfluid::ware::WareParams_t::iterator it = ModelGlobalParams.begin();
-      it != ModelGlobalParams.end(); ++it)
+  for (std::map<std::string, std::string>::iterator it =
+      ModelGlobalParams.begin(); it != ModelGlobalParams.end(); ++it)
     GlobalParams[it->first] = std::make_pair(m_ByParamNameParamUnit[it->first],
-                                             it->second.data());
+                                             it->second);
 
   return GlobalParams;
 }
