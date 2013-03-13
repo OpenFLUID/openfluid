@@ -124,6 +124,10 @@ class PreferencesDialog
 
     void onCloseClicked();
 
+    bool checkObserversPaths();
+
+    bool checkFunctionsPaths();
+
   public:
 
     PreferencesDialog();

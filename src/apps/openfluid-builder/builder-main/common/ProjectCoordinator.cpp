@@ -571,9 +571,27 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   if (ResponseId != Gtk::RESPONSE_OK)
     return;
 
-  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  std::string MissingFunctionsStr = "";
 
-  // remove (delete) all functions and add (using function constructor) those which are available
+  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
+      m_EngineProject.getBuilderDesc().getModel().checkAndGetModifiedModel(
+          MissingFunctionsStr);
+
+  if (!MissingFunctionsStr.empty())
+  {
+    m_EngineProject.getBuilderDesc().getModel().setItems(ModifiedFunctions);
+
+    Glib::ustring Msg =
+        Glib::ustring::compose(
+            _("These plugin file(s) are no more available:\n%1\n\n"
+                "Corresponding simulation functions have been removed from the model.\n"),
+            MissingFunctionsStr);
+
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(Msg);
+  }
+
+  // to clear and re-create all FctParamsComponents with right function signatures,
+  // and update AddFctDialog with available signatures
   if (m_Workspace.existsPageName(m_ModelPageName))
   {
     (static_cast<ModelStructureModule*>(m_ModulesByPageNameMap[m_ModelPageName]))->updateWithFctParamsComponents();
@@ -858,8 +876,10 @@ void ProjectCoordinator::updateMonitoringModule()
   std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator it =
       m_ModulesByPageNameMap.find(m_MonitoringPageName);
 
-  if(it != m_ModulesByPageNameMap.end())
+  if (it != m_ModulesByPageNameMap.end())
     it->second->update();
+
+  m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================

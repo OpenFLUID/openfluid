@@ -83,10 +83,11 @@ class BuilderMonitoring
     ~BuilderMonitoring();
 
     /**
-     * @brief Checks that each Observer of the Monitoring descriptor is available,
-     * otherwise remove it from the Monitoring descriptor
+     * @brief Checks that each Observer of the Monitoring descriptor is available
      * @details Update the list of all available Observers before checking
-     * @return A textual list of unavailable Observers, or an empty string if all Observers are available
+     * @param MissingObservers a textual list of Observers that are in the Monitoring but whose plugin files are not available,
+     * or an empty string if all Observers of the Monitoring are available
+     * @return A copy of the list of Observers that are in the Monitoring, whithout that are not available
      */
     std::list<openfluid::fluidx::ObserverDescriptor*> checkAndGetModifiedMonitoring(
         std::string& MissingObservers);

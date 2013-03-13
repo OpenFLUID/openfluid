@@ -164,16 +164,30 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     throw;
   }
 
-  std::string MissingFunctions =
-      mp_BuilderDesc->getModel().checkAndAdaptModel();
-  if (!MissingFunctions.empty())
+  checkAndAdaptModel();
+  checkAndAdaptMonitoring();
+
+  mp_Checker = new ProjectChecker(*mp_BuilderDesc);
+}
+
+// =====================================================================
+// =====================================================================
+
+void EngineProject::checkAndAdaptModel()
+{
+  std::string MissingFunctionsStr = "";
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
+      mp_BuilderDesc->getModel().checkAndGetModifiedModel(MissingFunctionsStr);
+
+  if (!MissingFunctionsStr.empty())
   {
     Glib::ustring Msg =
         Glib::ustring::compose(
             _("Unable to find plugin file(s):\n%1\n\n"
                 "Corresponding simulation functions will be removed from the model.\n"
                 "Do you want to continue?"),
-            MissingFunctions);
+            MissingFunctionsStr);
 
     if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
         Msg))
@@ -182,11 +196,10 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
       delete mp_BuilderDesc;
       throw openfluid::base::OFException("");
     }
+    else
+      mp_BuilderDesc->getModel().setItems(ModifiedFunctions);
   }
 
-  checkAndAdaptMonitoring();
-
-  mp_Checker = new ProjectChecker(*mp_BuilderDesc);
 }
 
 // =====================================================================

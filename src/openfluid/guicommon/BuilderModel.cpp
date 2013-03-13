@@ -83,19 +83,19 @@ BuilderModel::~BuilderModel()
 // =====================================================================
 // =====================================================================
 
-std::string BuilderModel::checkAndAdaptModel()
+std::list<openfluid::fluidx::ModelItemDescriptor*> BuilderModel::checkAndGetModifiedModel(
+    std::string& MissingFunctions)
 {
-  std::list<openfluid::fluidx::ModelItemDescriptor*>* Items =
-      &(mp_ModelDesc->getItems());
-
   FunctionSignatureRegistry* Reg = FunctionSignatureRegistry::getInstance();
+  Reg->updatePluggableSignatures();
 
-  std::string MissingFunctions = "";
+  std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
+      mp_ModelDesc->getItems();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
-      Items->begin();
+      Items.begin();
 
-  while (it != Items->end())
+  while (it != Items.end())
   {
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
     {
@@ -106,7 +106,7 @@ std::string BuilderModel::checkAndAdaptModel()
       {
         MissingFunctions.append("- " + ID + "\n");
 
-        it = Items->erase(it);
+        it = Items.erase(it);
       }
       else
         ++it;
@@ -115,7 +115,7 @@ std::string BuilderModel::checkAndAdaptModel()
       ++it;
   }
 
-  return MissingFunctions;
+  return Items;
 }
 
 // =====================================================================
@@ -246,6 +246,15 @@ void BuilderModel::insertItem(openfluid::fluidx::ModelItemDescriptor* Item,
     throw openfluid::base::OFException("OpenFLUID framework",
                                        "BuilderModel::insertItem()",
                                        "Bad index of item to insert");
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderModel::setItems(
+    std::list<openfluid::fluidx::ModelItemDescriptor*> FunctionsList)
+{
+  mp_ModelDesc->getItems() = FunctionsList;
 }
 
 // =====================================================================
