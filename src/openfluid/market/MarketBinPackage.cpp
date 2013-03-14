@@ -92,7 +92,7 @@ void MarketBinPackage::process()
   std::string StrErr;
   int RetValue;
 
-  std::string ProcessCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + m_MarketBagBinDir+ "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
+  std::string ProcessCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + getInstallPath()+ "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
 
   try
   {

@@ -45,140 +45,128 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file MarketInfos.hpp
-  \brief Header of ...
+  \file CmakeFunc.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MARKETINFOS_HPP__
-#define __MARKETINFOS_HPP__
+#include <openfluid/ware/PluggableFunction.hpp>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
-
-
-namespace openfluid { namespace market {
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT MarketInfo
+DECLARE_FUNCTION_PLUGIN
+
+// =====================================================================
+// =====================================================================
+
+
+BEGIN_FUNCTION_SIGNATURE("tests.market.build.src.use")
+
+  DECLARE_SIGNATURE_NAME("test function for market as source package");
+  DECLARE_SIGNATURE_DESCRIPTION("");
+
+  DECLARE_SIGNATURE_VERSION(("1.0"));
+  DECLARE_SIGNATURE_SDKVERSION;
+  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+
+  DECLARE_SIGNATURE_DOMAIN((""));
+  DECLARE_SIGNATURE_PROCESS((""));
+  DECLARE_SIGNATURE_METHOD((""));
+  DECLARE_SIGNATURE_AUTHORNAME((""));
+  DECLARE_SIGNATURE_AUTHOREMAIL((""));
+END_FUNCTION_SIGNATURE
+
+/**
+
+*/
+class MarketUseFunc : public openfluid::ware::PluggableFunction
 {
+  private:
+
   public:
 
-    std::string Name;
 
-    std::string Description;
-
-    std::string Contact;
-
-    MarketInfo()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
-
-    ~MarketInfo() { }
+  MarketUseFunc() : PluggableFunction()
+  {
 
 
-    void clear()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
+  }
 
+
+  // =====================================================================
+  // =====================================================================
+
+
+  ~MarketUseFunc()
+  {
+
+
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void prepareData() { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void checkConsistency() { }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  openfluid::base::SchedulingRequest initializeRun()
+  {
+
+    return DefaultDeltaT();
+  }
+
+
+  // =====================================================================
+  // =====================================================================
+
+
+  openfluid::base::SchedulingRequest runStep()
+  {
+
+    return DefaultDeltaT();
+  }
+
+  // =====================================================================
+  // =====================================================================
+
+
+  void finalizeRun()
+  {
+
+  }
 
 };
 
-
 // =====================================================================
 // =====================================================================
 
-
-class DLLEXPORT PackageInfo
-{
-  public:
-
-    enum TypePackage { FUNC, OBS, BUILD, DATA};
-
-    std::string URL;
-
-    std::string License;
-
-    std::map<TypePackage,std::string> Dependencies;
-
-    std::string BuildOptions;
-
-    PackageInfo()
-    {
-      URL.clear();
-      License.clear();
-      Dependencies.clear();
-      BuildOptions.clear();
-    }
-
-    ~PackageInfo() {  }
-
-};
+DEFINE_FUNCTION_CLASS(MarketUseFunc)
 
 
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT MetaPackageInfo
-{
-  public:
-
-    enum SelectionType { NONE, BIN, SRC, FLUIDX};
-
-    openfluid::ware::WareID_t ID;
-
-    std::map<SelectionType,PackageInfo> AvailablePackages;
-
-    SelectionType Selected;
-
-    std::string Name;
-
-    std::string Description;
-
-    std::string Authors;
-
-    std::string Version;
-
-
-    MetaPackageInfo()
-    {
-      ID.clear();
-      Selected = NONE;
-      AvailablePackages.clear();
-      Name.clear();
-      Authors.clear();
-      Description.clear();
-      Version.clear();
-    }
-
-    ~MetaPackageInfo()
-    {
-    }
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-typedef std::map<openfluid::ware::WareID_t,MetaPackageInfo> MetaPackagesCatalog_t;
-
-
-} } // namespaces
-
-
-#endif /* __MARKETINFOS_HPP__ */

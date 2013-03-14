@@ -168,10 +168,15 @@ RuntimeEnvironment::RuntimeEnvironment() :
       + openfluid::config::DEFAULT_INDIR).string();
   m_MarketBagDir = boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::MARKETBAG_SUBDIR).string();
-  m_MarketBagBinVersionDir = boost::filesystem::path(m_MarketBagDir + "/"
-      + m_Arch + "/" + m_FullVersion).string();
-  m_MarketBagSrcVersionDir = boost::filesystem::path(m_MarketBagDir + "/src/"
-      + m_MajorMinorVersion).string();
+
+  m_MarketBagVersionDir = boost::filesystem::path(m_MarketBagDir + "/"
+      + m_Version).string();
+  m_MarketBagFuncVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "functions").string();
+  m_MarketBagObsVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "observers").string();
+  m_MarketBagBuildVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "builderexts").string();
+  m_MarketBagDataVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "datasets").string();
+  m_MarketBagBinSubDir = boost::filesystem::path(m_Arch).string();
+  m_MarketBagSrcSubDir = boost::filesystem::path("src").string();
 
   m_DefaultConfigFilePath = boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::DEFAULT_CONFIGFILE).string();
@@ -221,7 +226,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
       + openfluid::config::FUNCTIONS_PLUGINS_SUBDIR).string());
 
   // market-bag dir (for current version)
-  m_DefaultFunctionsPlugsDirs.push_back(m_MarketBagBinVersionDir);
+  m_DefaultFunctionsPlugsDirs.push_back(m_MarketBagFuncVersionDir + m_MarketBagBinSubDir);
 
   // install directory
   std::string FunctionsPluginsInstallPath = boost::filesystem::path(m_InstallPrefix
@@ -251,7 +256,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
       + openfluid::config::OBSERVERS_PLUGINS_SUBDIR).string());
 
   // TODO market-bag dir (for current version)
-  // m_DefaultObserversPlugsDirs.push_back(m_MarketBagBinVersionDir);
+   m_DefaultObserversPlugsDirs.push_back(m_MarketBagObsVersionDir + m_MarketBagBinSubDir);
 
   // install directory
   std::string ObserversPluginsInstallPath = boost::filesystem::path(m_InstallPrefix

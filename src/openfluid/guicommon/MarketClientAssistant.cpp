@@ -187,10 +187,6 @@ void MarketClientAssistant::setupSelectionPage()
   m_URLBox.pack_start(m_URLCombo,Gtk::PACK_EXPAND_WIDGET);
 
 
-  m_AvailPacksSWindow.add(m_AvailPacksBox);
-  m_AvailPacksSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
-
-
   m_SelectAllButton.set_label(_("Select all"));
   m_SelectAllButton.set_sensitive(false);
   m_SelectNoneButton.set_label(_("Select none"));
@@ -213,7 +209,7 @@ void MarketClientAssistant::setupSelectionPage()
 
   m_SelectionPageBox.set_border_width(12);
   m_SelectionPageBox.pack_start(m_URLBox,Gtk::PACK_SHRINK,12);
-  m_SelectionPageBox.pack_start(m_AvailPacksSWindow,Gtk::PACK_EXPAND_WIDGET,6);
+  m_SelectionPageBox.pack_start(m_TypesTabs,Gtk::PACK_EXPAND_WIDGET,6);
   m_SelectionPageBox.pack_start(m_ActionButtonsBox,Gtk::PACK_SHRINK);
 
 
@@ -405,15 +401,25 @@ void MarketClientAssistant::onLicensesTreeviewChanged()
   {
     Gtk::TreeModel::Row Row = *Iter;
     std::string PackageID = Row.get_value(m_LicensesColumns.m_ID);
-    openfluid::market::MetaPackagesCatalog_t Catalog = m_MarketClient.getMetaPackagesCatalog();
-    std::string LicenseID = Catalog[PackageID].AvailablePackages[Catalog[PackageID].Selected].License;
+    openfluid::market::TypesMetaPackagesCatalogs_t Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
+    openfluid::market::TypesMetaPackagesCatalogs_t::iterator TCIter = Catalogs.begin();
 
-    std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.getLicensesTexts().find(LicenseID);
+    while (TCIter != Catalogs.end() && TCIter->second.find(PackageID) == TCIter->second.end())
+      TCIter++;
 
-    if (LIter != m_MarketClient.getLicensesTexts().end())
-      m_RefLicenseTextBuffer->set_text(LIter->second);
-    else
-      m_RefLicenseTextBuffer->set_text(_("(License content not available)"));
+    if (TCIter != Catalogs.end())
+    {
+      openfluid::market::MetaPackagesCatalog_t Catalog = TCIter->second;
+
+      std::string LicenseID = Catalog[PackageID].AvailablePackages[Catalog[PackageID].Selected].License;
+
+      std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.getLicensesTexts().find(LicenseID);
+
+      if (LIter != m_MarketClient.getLicensesTexts().end())
+        m_RefLicenseTextBuffer->set_text(LIter->second);
+      else
+        m_RefLicenseTextBuffer->set_text(_("(License content not available)"));
+    }
   }
 
 
@@ -451,8 +457,8 @@ void MarketClientAssistant::onURLComboChanged()
       {
         Glib::ustring TmpURL = TmpRow[m_URLColumns.m_URL];
         m_MarketClient.connect(TmpURL);
-        m_SelectAllButton.set_sensitive(!m_MarketClient.getMetaPackagesCatalog().empty());
-        m_SelectNoneButton.set_sensitive(!m_MarketClient.getMetaPackagesCatalog().empty());
+        m_SelectAllButton.set_sensitive(!m_MarketClient.getTypesMetaPackagesCatalogs().empty());
+        m_SelectNoneButton.set_sensitive(!m_MarketClient.getTypesMetaPackagesCatalogs().empty());
       }
     }
   }
@@ -621,19 +627,31 @@ void MarketClientAssistant::onInstallTimeoutOnce()
 
 void MarketClientAssistant::updateAvailPacksTreeview()
 {
+  m_MarketClient.displayPackages();
+
   // change mouse cursor to watch
   get_window()->set_cursor(Gdk::Cursor(Gdk::WATCH));
   while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
 
-  openfluid::market::MetaPackagesCatalog_t Catalog;
+  openfluid::market::TypesMetaPackagesCatalogs_t Catalogs;
+  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
-  std::vector<Gtk::Widget*> AvailPacksBoxChildren = m_AvailPacksBox.get_children();
-  std::vector<Gtk::Widget*>::iterator APBCiter;
+  std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*>::iterator ATPBiter;
 
-  // removing widgets from available packages display
-  for (APBCiter=AvailPacksBoxChildren.begin();APBCiter!=AvailPacksBoxChildren.end();++APBCiter)
-    m_AvailPacksBox.remove(**APBCiter);
+  for (ATPBiter = m_AvailTypesPacksBox.begin(); ATPBiter != m_AvailTypesPacksBox.end(); ++ATPBiter)
+  {
+    // VBox exists ?
+    if (ATPBiter->second != 0)
+    {
+      std::vector<Gtk::Widget*> AvailPacksBoxChildren = ATPBiter->second->get_children();
+      std::vector<Gtk::Widget*>::iterator APBCiter;
+
+      // removing widgets from available packages display
+      for (APBCiter=AvailPacksBoxChildren.begin();APBCiter!=AvailPacksBoxChildren.end();++APBCiter)
+        ATPBiter->second->remove(**APBCiter);
+    }
+  }
 
 
   std::list<MarketPackWidget*>::iterator APLiter;
@@ -649,23 +667,55 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   mp_AvailPacksWidgets.clear();
 
 
+  // removing tabs
+  while (m_TypesTabs.get_n_pages() > 0)
+  {
+    m_TypesTabs.remove_page();
+  }
 
-  Catalog = m_MarketClient.getMetaPackagesCatalog();
 
-  for (CIter=Catalog.begin();CIter!=Catalog.end();++CIter)
+  // initializing pointers
+  for (ATPBiter = m_AvailTypesPacksBox.begin(); ATPBiter != m_AvailTypesPacksBox.end(); ++ATPBiter)
+  {
+    ATPBiter->second = 0;
+    m_AvailTypesPacksSWindow[ATPBiter->first] = 0;
+  }
+
+
+  Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
+
+  for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
 
-    mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->second));
-    mp_AvailPacksWidgets.back()->signal_install_modified().connect(
-        sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
-    );
+    if (!TCIter->second.empty())
+    {
+      // Create ScrolledWindow and VBox
+      m_AvailTypesPacksSWindow[TCIter->first] = Gtk::manage(new Gtk::ScrolledWindow());
 
-    if (CIter != Catalog.begin()) m_AvailPacksBox.pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
-    m_AvailPacksBox.pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
+      m_AvailTypesPacksBox[TCIter->first] = Gtk::manage(new Gtk::VBox(false,0));
+      m_AvailTypesPacksSWindow[TCIter->first]->add(*m_AvailTypesPacksBox[TCIter->first]);
+      m_AvailTypesPacksSWindow[TCIter->first]->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
 
-    m_AvailPacksBox.show_all_children();
+      // Adding packages in VBox
+      for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
+      {
+
+        mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->second));
+        mp_AvailPacksWidgets.back()->signal_install_modified().connect(
+            sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
+        );
+
+        if (CIter != TCIter->second.begin()) m_AvailTypesPacksBox[TCIter->first]->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
+        m_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
+      }
+
+      // Create tab
+      m_TypesTabs.append_page(*m_AvailTypesPacksSWindow[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true));
+    }
   }
+
+  m_TypesTabs.show_all_children();
 
   // change mouse cursor to default
   get_window()->set_cursor();
@@ -679,22 +729,26 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
 void MarketClientAssistant::initializeLicencesTreeView()
 {
-  openfluid::market::MetaPackagesCatalog_t Catalog;
+  openfluid::market::TypesMetaPackagesCatalogs_t Catalogs;
+  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
 
   m_LicensesTreeView.remove_all_columns();
   m_RefLicenseTreeViewModel->clear();
 
-  Catalog = m_MarketClient.getMetaPackagesCatalog();
+  Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
 
-  for (CIter=Catalog.begin();CIter!=Catalog.end();++CIter)
+  for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
-
-    if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
+    for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
     {
-      Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append());
-      TmpRow[m_LicensesColumns.m_ID] = CIter->first;
+
+      if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
+      {
+        Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append());
+        TmpRow[m_LicensesColumns.m_ID] = CIter->first;
+      }
     }
   }
 

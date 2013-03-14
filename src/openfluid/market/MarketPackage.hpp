@@ -82,9 +82,17 @@ class DLLEXPORT MarketPackage
 
     static std::string m_TempDownloadsDir;
 
-    static std::string m_MarketBagBinDir;
+    static std::string m_MarketBagFunctionDir;
 
-    static std::string m_MarketBagSrcDir;
+    static std::string m_MarketBagObserverDir;
+
+    static std::string m_MarketBagBuilderextDir;
+
+    static std::string m_MarketBagDatasetDir;
+
+    static std::string m_MarketBagBinSubDir;
+
+    static std::string m_MarketBagSrcSubDir;
 
     static std::string m_CMakeCommand;
 
@@ -125,11 +133,21 @@ class DLLEXPORT MarketPackage
 
     static void initialize(bool EnableLog);
 
-    static void setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir);
+    static void setWorksDirs(std::string TempDir, std::string MarketBagFunctionDir, std::string MarketBagObserverDir,
+        std::string MarketBagBuilderextDir, std::string MarketBagDatasetDir,
+        std::string MarketBagBinSubDir, std::string MarketBagSrcSubDir);
 
-    static std::string getMarketBagBinDir() { return m_MarketBagBinDir; };
+    static std::string getMarketBagFunctionDir() { return m_MarketBagFunctionDir; };
 
-    static std::string getMarketBagSrcDir() { return m_MarketBagSrcDir; };
+    static std::string getMarketBagObserverDir() { return m_MarketBagObserverDir; };
+
+    static std::string getMarketBagBuilderextDir() { return m_MarketBagBuilderextDir; };
+
+    static std::string getMarketBagDatasetDir() { return m_MarketBagDatasetDir; };
+
+    static std::string getMarketBagBinSubDir() { return m_MarketBagBinSubDir; };
+
+    static std::string getMarketBagSrcSubDir() { return m_MarketBagSrcSubDir; };
 
     static std::string getTempDir() { return m_TempDir; };
 
@@ -148,6 +166,12 @@ class DLLEXPORT MarketPackage
     openfluid::ware::WareID_t getID() const { return m_ID; };
 
     virtual MetaPackageInfo::SelectionType getFormat() const = 0;
+
+
+    /**
+      @return the market-bag path directory for the type package class
+    */
+    virtual std::string getInstallPath() const = 0;
 
     virtual void process() = 0;
 

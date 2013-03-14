@@ -46,139 +46,36 @@
 */
 
 /**
-  \file MarketInfos.hpp
-  \brief Header of ...
+ * MarketSrcObserverPackage.cpp
+ *
+ *  Created on: 18 févr. 2013
+ *      Author: Manuel CHATAIGNER
+*/
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
 
+#include <openfluid/market/MarketSrcObserverPackage.hpp>
 
-#ifndef __MARKETINFOS_HPP__
-#define __MARKETINFOS_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
 
 
 namespace openfluid { namespace market {
 
-// =====================================================================
-// =====================================================================
 
-
-class DLLEXPORT MarketInfo
+MarketSrcObserverPackage::MarketSrcObserverPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+                        : MarketSrcPackage(ID, PackageURL)
 {
-  public:
 
-    std::string Name;
-
-    std::string Description;
-
-    std::string Contact;
-
-    MarketInfo()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
-
-    ~MarketInfo() { }
-
-
-    void clear()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
-
-
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-class DLLEXPORT PackageInfo
+std::string MarketSrcObserverPackage::getInstallPath() const
 {
-  public:
+  return m_MarketBagObserverDir + "/" + m_MarketBagSrcSubDir;
+}
 
-    enum TypePackage { FUNC, OBS, BUILD, DATA};
-
-    std::string URL;
-
-    std::string License;
-
-    std::map<TypePackage,std::string> Dependencies;
-
-    std::string BuildOptions;
-
-    PackageInfo()
-    {
-      URL.clear();
-      License.clear();
-      Dependencies.clear();
-      BuildOptions.clear();
-    }
-
-    ~PackageInfo() {  }
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT MetaPackageInfo
-{
-  public:
-
-    enum SelectionType { NONE, BIN, SRC, FLUIDX};
-
-    openfluid::ware::WareID_t ID;
-
-    std::map<SelectionType,PackageInfo> AvailablePackages;
-
-    SelectionType Selected;
-
-    std::string Name;
-
-    std::string Description;
-
-    std::string Authors;
-
-    std::string Version;
-
-
-    MetaPackageInfo()
-    {
-      ID.clear();
-      Selected = NONE;
-      AvailablePackages.clear();
-      Name.clear();
-      Authors.clear();
-      Description.clear();
-      Version.clear();
-    }
-
-    ~MetaPackageInfo()
-    {
-    }
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-typedef std::map<openfluid::ware::WareID_t,MetaPackageInfo> MetaPackagesCatalog_t;
 
 
 } } // namespaces
-
-
-#endif /* __MARKETINFOS_HPP__ */

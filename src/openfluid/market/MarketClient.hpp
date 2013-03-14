@@ -70,6 +70,9 @@ namespace openfluid { namespace market {
 
 
 typedef std::map<std::string,std::string> MarketLicensesTexts_t;
+typedef std::map<PackageInfo::TypePackage,std::string> CatalogFilesURL_t;
+typedef std::map<PackageInfo::TypePackage,std::string> CatalogsData_t;
+typedef std::map<PackageInfo::TypePackage,MetaPackagesCatalog_t> TypesMetaPackagesCatalogs_t;
 
 // =====================================================================
 // =====================================================================
@@ -84,7 +87,7 @@ class DLLEXPORT MarketClient
   private:
 
     MarketInfo m_MarketInfo;
-    MetaPackagesCatalog_t m_MetaPackagesCatalog;
+    TypesMetaPackagesCatalogs_t m_TypesMetaPackagesCatalogs;
     std::string m_TempDir;
 
     std::string m_URL;
@@ -107,15 +110,19 @@ class DLLEXPORT MarketClient
 
     void parseMarketSiteData(const std::string& SiteData);
 
-    void parseCatalogData(const std::string& CatalogData);
+    void parseCatalogData(const PackageInfo::TypePackage& TypeCatalog, const std::string& CatalogData);
 
     void downloadAssociatedLicenses();
+
+    std::string selectionTypeToString(MetaPackageInfo::SelectionType Selec) const;
 
   public:
 
     MarketClient();
 
     ~MarketClient();
+
+    std::string getTypeName(const PackageInfo::TypePackage& Type, const bool Maj) const;
 
     void connect(const std::string URL);
 
@@ -125,7 +132,7 @@ class DLLEXPORT MarketClient
 
     const MarketLicensesTexts_t& getLicensesTexts();
 
-    const MetaPackagesCatalog_t& getMetaPackagesCatalog();
+    const TypesMetaPackagesCatalogs_t& getTypesMetaPackagesCatalogs();
 
     bool setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag);
 
@@ -150,6 +157,8 @@ class DLLEXPORT MarketClient
     bool isConnected() const { return m_IsConnected; };
 
     void enableLog(bool Enabled) { m_IsLogEnabled = Enabled; };
+
+    void displayPackages() const;
 
 };
 

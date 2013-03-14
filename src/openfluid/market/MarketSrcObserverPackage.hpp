@@ -46,139 +46,35 @@
 */
 
 /**
-  \file MarketInfos.hpp
-  \brief Header of ...
+ * MarketSrcObserverPackage.hpp
+ *
+ *  Created on: 18 févr. 2013
+ *      Author: Manuel CHATAIGNER
+*/
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+#ifndef __MARKETSRCOBSERVERPACKAGE_HPP__
+#define __MARKETSRCOBSERVERPACKAGE_HPP__
 
-
-#ifndef __MARKETINFOS_HPP__
-#define __MARKETINFOS_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/market/MarketSrcPackage.hpp>
 
 
 namespace openfluid { namespace market {
 
-// =====================================================================
-// =====================================================================
 
-
-class DLLEXPORT MarketInfo
+class DLLEXPORT MarketSrcObserverPackage : public MarketSrcPackage
 {
   public:
 
-    std::string Name;
+    MarketSrcObserverPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
 
-    std::string Description;
-
-    std::string Contact;
-
-    MarketInfo()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
-
-    ~MarketInfo() { }
-
-
-    void clear()
-    {
-      Name.clear();
-      Description.clear();
-      Contact.clear();
-    }
-
+    std::string getInstallPath() const;
 
 };
-
-
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT PackageInfo
-{
-  public:
-
-    enum TypePackage { FUNC, OBS, BUILD, DATA};
-
-    std::string URL;
-
-    std::string License;
-
-    std::map<TypePackage,std::string> Dependencies;
-
-    std::string BuildOptions;
-
-    PackageInfo()
-    {
-      URL.clear();
-      License.clear();
-      Dependencies.clear();
-      BuildOptions.clear();
-    }
-
-    ~PackageInfo() {  }
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-class DLLEXPORT MetaPackageInfo
-{
-  public:
-
-    enum SelectionType { NONE, BIN, SRC, FLUIDX};
-
-    openfluid::ware::WareID_t ID;
-
-    std::map<SelectionType,PackageInfo> AvailablePackages;
-
-    SelectionType Selected;
-
-    std::string Name;
-
-    std::string Description;
-
-    std::string Authors;
-
-    std::string Version;
-
-
-    MetaPackageInfo()
-    {
-      ID.clear();
-      Selected = NONE;
-      AvailablePackages.clear();
-      Name.clear();
-      Authors.clear();
-      Description.clear();
-      Version.clear();
-    }
-
-    ~MetaPackageInfo()
-    {
-    }
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-typedef std::map<openfluid::ware::WareID_t,MetaPackageInfo> MetaPackagesCatalog_t;
 
 
 } } // namespaces
 
 
-#endif /* __MARKETINFOS_HPP__ */
+#endif /* __MARKETSRCOBSERVERPACKAGE_HPP__ */

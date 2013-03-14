@@ -72,8 +72,12 @@ const std::string MarketPackage::LOG_FILENAME = "packages_install.log";
 std::string MarketPackage::m_TempDir = "";
 std::string MarketPackage::m_TempBuildsDir = "";
 std::string MarketPackage::m_TempDownloadsDir = "";
-std::string MarketPackage::m_MarketBagBinDir = "";
-std::string MarketPackage::m_MarketBagSrcDir = "";
+std::string MarketPackage::m_MarketBagFunctionDir = "";
+std::string MarketPackage::m_MarketBagObserverDir = "";
+std::string MarketPackage::m_MarketBagBuilderextDir = "";
+std::string MarketPackage::m_MarketBagDatasetDir = "";
+std::string MarketPackage::m_MarketBagBinSubDir = "";
+std::string MarketPackage::m_MarketBagSrcSubDir = "";
 std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
 
@@ -144,13 +148,18 @@ void MarketPackage::initialize(bool EnableLog = false)
 // =====================================================================
 
 
-void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir)
+void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagFunctionDir, std::string MarketBagObserverDir,
+    std::string MarketBagBuilderextDir, std::string MarketBagDatasetDir, std::string MarketBagBinSubDir, std::string MarketBagSrcSubDir)
 {
   m_TempDir = boost::filesystem::path(TempDir).string();
   m_TempBuildsDir = boost::filesystem::path(TempDir+"/"+BUILDS_SUBDIR).string();
   m_TempDownloadsDir = boost::filesystem::path(TempDir+"/"+DLOADS_SUBDIR).string();
-  m_MarketBagBinDir = boost::filesystem::path(MarketBagBinDir).string();
-  m_MarketBagSrcDir = boost::filesystem::path(MarketBagSrcDir).string();
+  m_MarketBagFunctionDir = boost::filesystem::path(MarketBagFunctionDir).string();
+  m_MarketBagObserverDir = boost::filesystem::path(MarketBagObserverDir).string();
+  m_MarketBagBuilderextDir = boost::filesystem::path(MarketBagBuilderextDir).string();
+  m_MarketBagDatasetDir = boost::filesystem::path(MarketBagDatasetDir).string();
+  m_MarketBagBinSubDir = boost::filesystem::path(MarketBagBinSubDir).string();
+  m_MarketBagSrcSubDir = boost::filesystem::path(MarketBagSrcSubDir).string();
   m_LogFile = boost::filesystem::path(TempDir+"/"+LOG_FILENAME).string();
 
   m_Initialized = false;
