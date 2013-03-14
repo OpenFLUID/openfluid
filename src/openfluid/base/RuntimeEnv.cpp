@@ -175,8 +175,8 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_MarketBagObsVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "observers").string();
   m_MarketBagBuildVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "builderexts").string();
   m_MarketBagDataVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "datasets").string();
-  m_MarketBagBinSubDir = boost::filesystem::path(m_Arch).string();
-  m_MarketBagSrcSubDir = boost::filesystem::path("src").string();
+  m_MarketBagBinSubDir = m_Arch;
+  m_MarketBagSrcSubDir = "src";
 
   m_DefaultConfigFilePath = boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::DEFAULT_CONFIGFILE).string();
