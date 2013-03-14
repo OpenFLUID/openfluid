@@ -422,14 +422,10 @@ void MarketClient::connect(const std::string URL)
 
   std::string MarketFileURL = m_URL+"/"+openfluid::config::MARKETPLACE_SITEFILE;
 
-  std::string CatalogFile = m_URL + "/" + openfluid::config::MARKETPLACE_CATALOGFILE;
-  std::string Version = openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
-
-  CatalogFilesURL[PackageInfo::FUNC] = CatalogFile + "Functions_" + Version;
-  CatalogFilesURL[PackageInfo::OBS] = CatalogFile + "Observers_" + Version;
-  CatalogFilesURL[PackageInfo::BUILD] = CatalogFile + "Builderexts_" + Version;
-  CatalogFilesURL[PackageInfo::DATA] = CatalogFile + "Datasets_" + Version;
-
+  CatalogFilesURL[PackageInfo::FUNC] = "";
+  CatalogFilesURL[PackageInfo::OBS] = "";
+  CatalogFilesURL[PackageInfo::BUILD] = "";
+  CatalogFilesURL[PackageInfo::DATA] = "";
 
   if (!m_IsConnected && openfluid::tools::CURLDownloader::downloadToString(MarketFileURL, MarketData) == openfluid::tools::CURLDownloader::NO_ERROR)
   {
@@ -443,6 +439,8 @@ void MarketClient::connect(const std::string URL)
     CatalogFilesURL_t::iterator CUit;
     for (CUit = CatalogFilesURL.begin(); CUit != CatalogFilesURL.end(); ++CUit)
     {
+      CUit->second = m_URL+"/"+openfluid::config::MARKETPLACE_CATALOGFILE+getTypeName(CUit->first,true)+"_"+openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
+
       if (openfluid::tools::CURLDownloader::downloadToString(CUit->second, CatalogsData[CUit->first])  != openfluid::tools::CURLDownloader::NO_ERROR)
         CatalogsData[CUit->first].clear();
 
@@ -451,9 +449,8 @@ void MarketClient::connect(const std::string URL)
 
     downloadAssociatedLicenses();
   }
-
-
 }
+
 
 // =====================================================================
 // =====================================================================
