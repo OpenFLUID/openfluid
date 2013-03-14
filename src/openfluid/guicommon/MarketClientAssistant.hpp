@@ -67,6 +67,7 @@
 #include <gtkmm/alignment.h>
 #include <gtkmm/progressbar.h>
 #include <gtkmm/textview.h>
+#include <gtkmm/notebook.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketClient.hpp>
@@ -103,9 +104,10 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     URLComboColumns m_URLColumns;
 
 
-    Gtk::VBox m_AvailPacksBox;
+    Gtk::Notebook m_TypesTabs;
 
-    Gtk::ScrolledWindow m_AvailPacksSWindow;
+    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*> m_AvailTypesPacksBox;
+    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::ScrolledWindow*> m_AvailTypesPacksSWindow;
 
     Gtk::HBox m_ActionButtonsBox;
     Gtk::Button m_SelectAllButton;

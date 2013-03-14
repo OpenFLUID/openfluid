@@ -187,10 +187,6 @@ void MarketClientAssistant::setupSelectionPage()
   m_URLBox.pack_start(m_URLCombo,Gtk::PACK_EXPAND_WIDGET);
 
 
-  m_AvailPacksSWindow.add(m_AvailPacksBox);
-  m_AvailPacksSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
-
-
   m_SelectAllButton.set_label(_("Select all"));
   m_SelectAllButton.set_sensitive(false);
   m_SelectNoneButton.set_label(_("Select none"));
@@ -213,7 +209,7 @@ void MarketClientAssistant::setupSelectionPage()
 
   m_SelectionPageBox.set_border_width(12);
   m_SelectionPageBox.pack_start(m_URLBox,Gtk::PACK_SHRINK,12);
-  m_SelectionPageBox.pack_start(m_AvailPacksSWindow,Gtk::PACK_EXPAND_WIDGET,6);
+  m_SelectionPageBox.pack_start(m_TypesTabs,Gtk::PACK_EXPAND_WIDGET,6);
   m_SelectionPageBox.pack_start(m_ActionButtonsBox,Gtk::PACK_SHRINK);
 
 
@@ -641,12 +637,21 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
-  std::vector<Gtk::Widget*> AvailPacksBoxChildren = m_AvailPacksBox.get_children();
-  std::vector<Gtk::Widget*>::iterator APBCiter;
+  std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*>::iterator ATPBiter;
 
-  // removing widgets from available packages display
-  for (APBCiter=AvailPacksBoxChildren.begin();APBCiter!=AvailPacksBoxChildren.end();++APBCiter)
-    m_AvailPacksBox.remove(**APBCiter);
+  for (ATPBiter = m_AvailTypesPacksBox.begin(); ATPBiter != m_AvailTypesPacksBox.end(); ++ATPBiter)
+  {
+    // VBox exists ?
+    if (ATPBiter->second != 0)
+    {
+      std::vector<Gtk::Widget*> AvailPacksBoxChildren = ATPBiter->second->get_children();
+      std::vector<Gtk::Widget*>::iterator APBCiter;
+
+      // removing widgets from available packages display
+      for (APBCiter=AvailPacksBoxChildren.begin();APBCiter!=AvailPacksBoxChildren.end();++APBCiter)
+        ATPBiter->second->remove(**APBCiter);
+    }
+  }
 
 
   std::list<MarketPackWidget*>::iterator APLiter;
@@ -662,11 +667,34 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   mp_AvailPacksWidgets.clear();
 
 
+  // removing tabs
+  while (m_TypesTabs.get_n_pages() > 0)
+  {
+    m_TypesTabs.remove_page();
+  }
+
+
+  // initializing pointers
+  for (ATPBiter = m_AvailTypesPacksBox.begin(); ATPBiter != m_AvailTypesPacksBox.end(); ++ATPBiter)
+  {
+    ATPBiter->second = 0;
+    m_AvailTypesPacksSWindow[ATPBiter->first] = 0;
+  }
+
 
   Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
 
   for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
+    // Create ScrolledWindow and VBox
+    m_AvailTypesPacksSWindow[TCIter->first] = Gtk::manage(new Gtk::ScrolledWindow());
+
+    m_AvailTypesPacksBox[TCIter->first] = Gtk::manage(new Gtk::VBox(false,0));
+    m_AvailTypesPacksSWindow[TCIter->first]->add(*m_AvailTypesPacksBox[TCIter->first]);
+    m_AvailTypesPacksSWindow[TCIter->first]->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
+
+
+    // Adding packages in VBox
     for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
     {
 
@@ -675,13 +703,15 @@ void MarketClientAssistant::updateAvailPacksTreeview()
           sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
       );
 
-      if (CIter != TCIter->second.begin()) m_AvailPacksBox.pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
-      m_AvailPacksBox.pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
-
-
-      m_AvailPacksBox.show_all_children();
+      if (CIter != TCIter->second.begin()) m_AvailTypesPacksBox[TCIter->first]->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
+      m_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
     }
+
+    // Create tab
+    m_TypesTabs.append_page(*m_AvailTypesPacksSWindow[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true));
   }
+
+  m_TypesTabs.show_all_children();
 
   // change mouse cursor to default
   get_window()->set_cursor();
