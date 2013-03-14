@@ -56,13 +56,13 @@
 
 #include <glibmm/ustring.h>
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 DomainEventsModelImpl::DomainEventsModelImpl(
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), mp_Units(0)
 {
 
@@ -94,13 +94,13 @@ void DomainEventsModelImpl::setClass(std::string ClassName)
     m_signal_FromAppEventsInit.emit();
   }
   else
-    mp_Units = new std::map<int, openfluid::guicommon::BuilderUnit>();
+    mp_Units = new std::map<int, openfluid::fluidx::BuilderUnit>();
 }
 
 // =====================================================================
 // =====================================================================
 
-const std::map<int, openfluid::guicommon::BuilderUnit>* DomainEventsModelImpl::getUnits()
+const std::map<int, openfluid::fluidx::BuilderUnit>* DomainEventsModelImpl::getUnits()
 {
   return mp_Units;
 }

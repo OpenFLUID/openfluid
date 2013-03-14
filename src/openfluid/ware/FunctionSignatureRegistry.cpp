@@ -52,7 +52,7 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
@@ -64,7 +64,7 @@
 #include "GeneratorSignature.hpp"
 
 namespace openfluid {
-namespace guicommon {
+namespace ware {
 
 FunctionSignatureRegistry* FunctionSignatureRegistry::mp_Instance = 0;
 

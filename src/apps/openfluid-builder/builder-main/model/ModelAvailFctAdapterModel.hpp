@@ -60,7 +60,7 @@
 #include <gtkmm/treemodel.h>
 #include <glibmm/i18n.h>
 
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include "BuilderTreeStore.hpp"
 
 class ModelAvailFctColumns;
@@ -74,7 +74,7 @@ class ModelAvailFctAdapterModel
     virtual sigc::signal<void> signal_FunctionsChanged() = 0;
 
     virtual void setSignatures(
-        openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures) = 0;
+        openfluid::ware::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures) = 0;
 
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 
@@ -122,7 +122,7 @@ class ModelAvailFctAdapterModelImpl: public ModelAvailFctAdapterModel
     ~ModelAvailFctAdapterModelImpl();
 
     void setSignatures(
-        openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures);
+        openfluid::ware::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures);
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 

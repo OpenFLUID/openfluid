@@ -60,9 +60,9 @@
 #include <map>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
 class BuilderUnit;
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -74,7 +74,7 @@ class DomainEventsModel
 
     virtual void setClass(std::string ClassName) = 0;
 
-    virtual const std::map<int, openfluid::guicommon::BuilderUnit>* getUnits() = 0;
+    virtual const std::map<int, openfluid::fluidx::BuilderUnit>* getUnits() = 0;
 
 };
 
@@ -84,14 +84,14 @@ class DomainEventsModelImpl: public DomainEventsModel
 
     sigc::signal<void> m_signal_FromAppEventsInit;
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
-    const std::map<int, openfluid::guicommon::BuilderUnit>* mp_Units;
+    const std::map<int, openfluid::fluidx::BuilderUnit>* mp_Units;
 
 
   public:
 
-    DomainEventsModelImpl(openfluid::guicommon::BuilderDomain& Domain);
+    DomainEventsModelImpl(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     ~DomainEventsModelImpl();
 
@@ -99,7 +99,7 @@ class DomainEventsModelImpl: public DomainEventsModel
 
     void setClass(std::string ClassName);
 
-    const std::map<int, openfluid::guicommon::BuilderUnit>* getUnits();
+    const std::map<int, openfluid::fluidx::BuilderUnit>* getUnits();
 
 };
 

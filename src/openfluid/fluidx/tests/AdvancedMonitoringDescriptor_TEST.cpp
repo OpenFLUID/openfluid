@@ -46,7 +46,7 @@
  */
 
 /**
- \file BuilderMonitoring_TEST.cpp
+ \file AdvancedMonitoringDescriptor_TEST.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
@@ -55,10 +55,10 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_BuilderMonitoring
+#define BOOST_TEST_MODULE unittest_AdvancedMonitoringDescriptor
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/guicommon/BuilderMonitoring.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -71,9 +71,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderMonitoring Monit(
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
   BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
@@ -94,9 +94,9 @@ BOOST_AUTO_TEST_CASE(check_checkAndAdapt)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderMonitoring Monit(
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
   boost::filesystem::path Path(CONFIGTESTS_LIB_OUTPUT_PATH);
@@ -125,9 +125,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderMonitoring Monit(
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
   BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
@@ -182,9 +182,9 @@ BOOST_AUTO_TEST_CASE(check_getUnusedSignatures)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderMonitoring Monit(
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
   boost::filesystem::path Path(CONFIGTESTS_LIB_OUTPUT_PATH);

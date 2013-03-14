@@ -46,33 +46,33 @@
  */
 
 /**
- \file BuilderModel.hpp
+ \file AdvancedModelDescriptor.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef BUILDERMODEL_HPP_
-#define BUILDERMODEL_HPP_
+#ifndef ADVANCEDMODELDESCRIPTOR_HPP_
+#define ADVANCEDMODELDESCRIPTOR_HPP_
 
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 
 namespace openfluid {
-namespace guicommon {
+namespace fluidx {
 
-class BuilderModel
+class AdvancedModelDescriptor
 {
   protected:
 
     openfluid::fluidx::CoupledModelDescriptor* mp_ModelDesc;
 
-    BuilderModel(){};
+    AdvancedModelDescriptor(){};
 
   public:
 
-    BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
+    AdvancedModelDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
 
-    ~BuilderModel();
+    ~AdvancedModelDescriptor();
 
     /**
      * @brief Checks that each Function of the Model descriptor is available
@@ -154,4 +154,4 @@ class BuilderModel
 
 }
 } // namespaces
-#endif /* BUILDERMODEL_HPP_ */
+#endif /* ADVANCEDMODELDESCRIPTOR_HPP_ */

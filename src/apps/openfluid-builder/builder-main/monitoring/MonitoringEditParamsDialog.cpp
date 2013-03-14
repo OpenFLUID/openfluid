@@ -128,7 +128,7 @@ sigc::signal<void, int> MonitoringParamRow::signal_removeAsked()
 // =====================================================================
 
 MonitoringEditParamsDialog::MonitoringEditParamsDialog(
-    openfluid::guicommon::BuilderMonitoring& Monit) :
+    openfluid::fluidx::AdvancedMonitoringDescriptor& Monit) :
     m_Monit(Monit)
 {
   Gtk::Button* AddButton = Gtk::manage(new Gtk::Button());

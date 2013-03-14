@@ -66,14 +66,14 @@
 #include "EngineProject.hpp"
 #include "BuilderModuleFactory.hpp"
 #include "ProjectDashboard.hpp"
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
 
 #include "ModelStructureModule.hpp"
 #include "DomainClassModule.hpp"
 //#include "ResultsSetModule.hpp"
 
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -366,7 +366,7 @@ void ProjectCoordinator::removeDeletedClassPages()
   std::set<std::string> ClassNames;
 
   std::set<std::string> DomainClassNames =
-      m_EngineProject.getBuilderDesc().getDomain().getClassNames();
+      m_EngineProject.getAdvancedDesc().getDomain().getClassNames();
 
   std::set<std::string>::iterator it;
 
@@ -574,12 +574,12 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   std::string MissingFunctionsStr = "";
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
-      m_EngineProject.getBuilderDesc().getModel().checkAndGetModifiedModel(
+      m_EngineProject.getAdvancedDesc().getModel().checkAndGetModifiedModel(
           MissingFunctionsStr);
 
   if (!MissingFunctionsStr.empty())
   {
-    m_EngineProject.getBuilderDesc().getModel().setItems(ModifiedFunctions);
+    m_EngineProject.getAdvancedDesc().getModel().setItems(ModifiedFunctions);
 
     Glib::ustring Msg =
         Glib::ustring::compose(
@@ -728,7 +728,7 @@ void ProjectCoordinator::launchExtension(std::string ExtensionID)
 
   openfluid::builderext::PluggableBuilderExtension* Ext = ExtCont->Extension;
 
-  Ext->setBuilderDescriptor(m_EngineProject.getBuilderDesc());
+  Ext->setAdvancedFluidXDescriptor(m_EngineProject.getAdvancedDesc());
 
   Ext->signal_ChangedOccurs().connect(
       sigc::mem_fun(*this, &ProjectCoordinator::whenExtensionChanged));

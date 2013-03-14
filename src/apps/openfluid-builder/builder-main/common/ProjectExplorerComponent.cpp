@@ -64,7 +64,7 @@
 // =====================================================================
 
 
-ProjectExplorerComponent::ProjectExplorerComponent(openfluid::guicommon::BuilderDescriptor& Desc)
+ProjectExplorerComponent::ProjectExplorerComponent(openfluid::fluidx::AdvancedFluidXDescriptor& Desc)
 {
   mp_Model = new ProjectExplorerModelImpl();
   mp_View = new ProjectExplorerViewImpl();

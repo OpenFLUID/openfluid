@@ -57,7 +57,7 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include "EngineHelper.hpp"
 
@@ -65,7 +65,7 @@
 // =====================================================================
 
 DomainUnitRelationAddDialog::DomainUnitRelationAddDialog(
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain)
 {
   mp_Dialog = new Gtk::Dialog(_("Choose Units to link to"));
@@ -105,19 +105,19 @@ std::list<openfluid::core::UnitClassID_t> DomainUnitRelationAddDialog::show()
 {
   mref_TreeModel->clear();
 
-  const std::map<std::string, std::map<int, openfluid::guicommon::BuilderUnit> >& Units =
+  const std::map<std::string, std::map<int, openfluid::fluidx::BuilderUnit> >& Units =
       mp_Domain->getUnitsByIdByClass();
 
-  for (std::map<std::string, std::map<int, openfluid::guicommon::BuilderUnit> >::const_iterator it =
+  for (std::map<std::string, std::map<int, openfluid::fluidx::BuilderUnit> >::const_iterator it =
       Units.begin(); it != Units.end(); ++it)
   {
     Gtk::TreeRow ClassRow = *mref_TreeModel->append();
     ClassRow[m_Columns.m_Class] = it->first;
     ClassRow[m_Columns.m_Text] = it->first;
 
-    const std::map<int, openfluid::guicommon::BuilderUnit> UnitsOfClass = it->second;
+    const std::map<int, openfluid::fluidx::BuilderUnit> UnitsOfClass = it->second;
 
-    for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator itt = UnitsOfClass.begin();
+    for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator itt = UnitsOfClass.begin();
         itt != UnitsOfClass.end(); ++itt)
     {
       Gtk::TreeRow Row = *mref_TreeModel->append(ClassRow->children());

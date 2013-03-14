@@ -62,7 +62,7 @@ namespace machine {
 class ModelItemSignatureInstance;
 }
 
-namespace guicommon {
+namespace ware {
 
 class GeneratorSignature;
 

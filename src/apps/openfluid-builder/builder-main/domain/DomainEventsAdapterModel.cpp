@@ -54,7 +54,7 @@
 
 #include "DomainEventsAdapterModel.hpp"
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 #include "EngineHelper.hpp"
 
 // =====================================================================
@@ -69,14 +69,14 @@ DomainEventsAdapterModelImpl::DomainEventsAdapterModelImpl()
 // =====================================================================
 
 void DomainEventsAdapterModelImpl::setUnits(
-    const std::map<int, openfluid::guicommon::BuilderUnit>* Units)
+    const std::map<int, openfluid::fluidx::BuilderUnit>* Units)
 {
   mref_TreeModel->clear();
 
   if (!Units)
     return;
 
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it =
+  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it =
       Units->begin(); it != Units->end(); ++it)
   {
     std::list<openfluid::core::Event*>* Events = const_cast<std::list<openfluid::core::Event*>*>(&it->second.m_Events);

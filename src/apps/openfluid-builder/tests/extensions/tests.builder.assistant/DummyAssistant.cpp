@@ -65,13 +65,13 @@ class TheDummyAssistant: public Gtk::Assistant
 {
   private:
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     bool m_Applied;
 
   public:
 
-    TheDummyAssistant(openfluid::guicommon::BuilderDomain& Domain) :
+    TheDummyAssistant(openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
         Gtk::Assistant(), mp_Domain(&Domain), m_Applied(false)
     {
       set_title("Dummy assistant");
@@ -196,7 +196,7 @@ class DummyAssistant: public openfluid::builderext::ModalWindow
 
     void show()
     {
-      TheDummyAssistant Assist(mp_BuilderDesc->getDomain());
+      TheDummyAssistant Assist(mp_AdvancedDesc->getDomain());
 
       Gtk::Main::run(Assist);
 
@@ -206,7 +206,7 @@ class DummyAssistant: public openfluid::builderext::ModalWindow
 
     bool isReadyForShowtime() const
     {
-      return (mp_BuilderDesc != NULL);
+      return (mp_AdvancedDesc != NULL);
     }
     ;
 

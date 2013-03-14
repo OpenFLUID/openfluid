@@ -59,13 +59,11 @@
 #include <map>
 #include <string>
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 namespace openfluid {
 namespace fluidx {
 class UnitDescriptor;
-}
-namespace guicommon {
 class BuilderUnit;
 }
 }
@@ -90,7 +88,7 @@ class DomainStructureModel
     virtual sigc::signal<void>
     signal_FromUserSelectionChanged() = 0;
 
-    virtual const std::map<std::string, std::map<int, openfluid::guicommon::BuilderUnit> >& getUnitListByClass() = 0;
+    virtual const std::map<std::string, std::map<int, openfluid::fluidx::BuilderUnit> >& getUnitListByClass() = 0;
 
     virtual bool isEmpty() = 0;
 
@@ -127,7 +125,7 @@ class DomainStructureModelImpl: public DomainStructureModel
 
     sigc::signal<void> m_signal_FromUserSelectionChanged;
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     const openfluid::fluidx::UnitDescriptor* mp_SelectedUnit;
 
@@ -141,7 +139,7 @@ class DomainStructureModelImpl: public DomainStructureModel
 
   public:
 
-    DomainStructureModelImpl(openfluid::guicommon::BuilderDomain& Domain);
+    DomainStructureModelImpl(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     sigc::signal<void> signal_FromAppDomainChanged();
 
@@ -153,7 +151,7 @@ class DomainStructureModelImpl: public DomainStructureModel
 
     sigc::signal<void> signal_Activated();
 
-    const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& getUnitListByClass();
+    const openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t& getUnitListByClass();
 
     bool isEmpty();
 
@@ -178,7 +176,7 @@ class DomainStructureModelSub: public DomainStructureModelImpl
 {
   public:
 
-    DomainStructureModelSub(openfluid::guicommon::BuilderDomain& Domain);
+    DomainStructureModelSub(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     void deleteUnit(const openfluid::fluidx::UnitDescriptor* Unit);
 };

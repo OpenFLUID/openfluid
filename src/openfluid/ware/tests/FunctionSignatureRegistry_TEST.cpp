@@ -46,81 +46,83 @@
  */
 
 /**
- \file BuilderDescriptor.cpp
+ \file FunctionSignatureRegistry_TEST.cpp
  \brief Implements ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_FunctionSignatureRegistry
+#include <boost/test/unit_test.hpp>
 
-namespace openfluid {
-namespace guicommon {
+#include "tests-config.hpp"
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::BuilderDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
-  mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_Monitoring = new BuilderMonitoring(FluidXDesc.getMonitoringDescriptor());
+  openfluid::ware::FunctionSignatureRegistrySub Signatures;
+
+  BOOST_CHECK_EQUAL(
+      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
+      0);
+  BOOST_CHECK_EQUAL(
+      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
+      4);
 }
 
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::~BuilderDescriptor()
+BOOST_AUTO_TEST_CASE(test_add)
 {
+  openfluid::ware::FunctionSignatureRegistrySub Signatures;
+  for (int i = 0; i < 3; i++)
+  {
+    openfluid::machine::ModelItemSignatureInstance* Sign = openfluid::ware::FunctionSignatureRegistry::getEmptyPluggableSignature();
+    Sign->Signature->ID = i;
+    Signatures.addAPluggableSignature(Sign);
+  }
 
+  BOOST_CHECK_EQUAL(
+      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
+      3);
+  BOOST_CHECK_EQUAL(
+      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
+      4);
+
+  Signatures.clearPluggableSignatures();
 }
 
 // =====================================================================
 // =====================================================================
 
-BuilderDomain& BuilderDescriptor::getDomain()
+BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
 {
-  return *mp_Domain;
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+            CONFIGTESTS_OUTPUT_BINARY_DIR);
+
+  openfluid::ware::FunctionSignatureRegistry* Reg = openfluid::ware::FunctionSignatureRegistry::getInstance();
+  Reg->updatePluggableSignatures();
+
+  openfluid::machine::ModelItemSignatureInstance* Sign = Reg->getSignatureItemInstance("tests.primitives.use");
+
+  BOOST_CHECK_EQUAL(Sign->Signature->ID,"tests.primitives.use");
+
+  openfluid::fluidx::FunctionDescriptor ItemDesc("tests.primitives.use");
+
+  openfluid::machine::ModelItemSignatureInstance* Sign2 = Reg->getSignatureItemInstance(&ItemDesc);
+
+  BOOST_CHECK_EQUAL(Sign2->Signature->ID,"tests.primitives.use");
 }
 
 // =====================================================================
 // =====================================================================
-
-BuilderModel& BuilderDescriptor::getModel()
-{
-  return *mp_Model;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::RunDescriptor& BuilderDescriptor::getRunDescriptor()
-{
-  return *mp_RunDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescriptor()
-{
-  return *mp_DatastoreDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-BuilderMonitoring& BuilderDescriptor::getMonitoring()
-{
-  return *mp_Monitoring;
-}
-
-// =====================================================================
-// =====================================================================
-
-}
-} // namespaces
-

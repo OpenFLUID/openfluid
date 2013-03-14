@@ -58,8 +58,8 @@
 #include "BuilderMVPComponent.hpp"
 
 namespace openfluid {
-namespace guicommon {
-class BuilderModel;
+namespace fluidx {
+class AdvancedModelDescriptor;
 }
 }
 
@@ -79,7 +79,7 @@ class ModelGlobalParamsComponent: public BuilderMVPComponent
 
   public:
 
-    ModelGlobalParamsComponent(openfluid::guicommon::BuilderModel& Model);
+    ModelGlobalParamsComponent(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
     ~ModelGlobalParamsComponent();
 

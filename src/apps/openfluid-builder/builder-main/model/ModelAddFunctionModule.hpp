@@ -61,12 +61,12 @@
 #include <gtkmm/dialog.h>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderModel;
+namespace fluidx {
+class AdvancedModelDescriptor;
 }
 }
 
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 
 class ModelAvailFctComponent;
 class ModelFctDetailComponent;
@@ -91,7 +91,7 @@ class ModelAddFunctionModule
 
     sigc::signal<void> m_signal_ModelFunctionAdded;
 
-    openfluid::guicommon::BuilderModel* mp_Model;
+    openfluid::fluidx::AdvancedModelDescriptor* mp_Model;
 
     void compose();
 
@@ -99,7 +99,7 @@ class ModelAddFunctionModule
 
   public:
 
-    ModelAddFunctionModule(openfluid::guicommon::BuilderModel& Model);
+    ModelAddFunctionModule(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
     ~ModelAddFunctionModule();
 
@@ -107,7 +107,7 @@ class ModelAddFunctionModule
 
     openfluid::machine::ModelItemSignatureInstance* showDialog();
 
-    void setSignatures(openfluid::guicommon::FunctionSignatureRegistry& Signatures);
+    void setSignatures(openfluid::ware::FunctionSignatureRegistry& Signatures);
 
 };
 

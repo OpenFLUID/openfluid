@@ -55,7 +55,7 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_PreferencesManager
+#define BOOST_TEST_MODULE unittest_PreferencesManager
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/guicommon/PreferencesManager.hpp>

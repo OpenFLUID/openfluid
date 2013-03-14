@@ -59,14 +59,14 @@
 
 #include <glibmm/i18n.h>
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 #include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
 DomainIDataEditDialog::DomainIDataEditDialog(
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), m_ClassName(""), m_IsValid(false)
 {
   mp_Dialog = new Gtk::Dialog(_("Changing Inputdata name"));

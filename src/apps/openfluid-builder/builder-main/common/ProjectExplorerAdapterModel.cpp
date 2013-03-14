@@ -62,14 +62,14 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
-    openfluid::guicommon::BuilderDescriptor& Desc) :
-    mp_BuilderDesc(&Desc)
+    openfluid::fluidx::AdvancedFluidXDescriptor& Desc) :
+    mp_AdvancedDesc(&Desc)
 {
   mref_TreeModel = BuilderTreeStore::create(m_Columns);
 
@@ -169,7 +169,7 @@ void ProjectExplorerAdapterModelImpl::updateModel()
 {
   mref_TreeModel->clearChildrenOfRowRef(*mp_ModelRowRef);
 
-  std::vector<std::string> IDs = mp_BuilderDesc->getModel().getOrderedIDs();
+  std::vector<std::string> IDs = mp_AdvancedDesc->getModel().getOrderedIDs();
 
   for (unsigned int i = 0; i < IDs.size(); i++)
   {
@@ -191,7 +191,7 @@ void ProjectExplorerAdapterModelImpl::updateDomain()
   mref_TreeModel->clearChildrenOfRowRef(*mp_DomainRowRef);
 
   std::set<std::string> ClassNames =
-      mp_BuilderDesc->getDomain().getClassNames();
+      mp_AdvancedDesc->getDomain().getClassNames();
 
   for (std::set<std::string>::iterator it = ClassNames.begin();
       it != ClassNames.end(); ++it)
@@ -202,7 +202,7 @@ void ProjectExplorerAdapterModelImpl::updateDomain()
 
     Row[m_Columns.m_Id] = ClassName;
     Row[m_Columns.m_Display] = generateClassInfoStr(
-        ClassName, mp_BuilderDesc->getDomain().getIDsOfClass(ClassName).size());
+        ClassName, mp_AdvancedDesc->getDomain().getIDsOfClass(ClassName).size());
     Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_CLASS;
   }
 }
@@ -226,9 +226,9 @@ void ProjectExplorerAdapterModelImpl::updateRunInfo()
   Gtk::TreeRow Row = mref_TreeModel->getRowFromRowRef(*mp_RunInfoRowRef);
 
   Row[m_Columns.m_Display] = generateRunInfoStr(
-      mp_BuilderDesc->getRunDescriptor().getBeginDate().getAsISOString(),
-      mp_BuilderDesc->getRunDescriptor().getEndDate().getAsISOString(),
-      mp_BuilderDesc->getRunDescriptor().getDeltaT());
+      mp_AdvancedDesc->getRunDescriptor().getBeginDate().getAsISOString(),
+      mp_AdvancedDesc->getRunDescriptor().getEndDate().getAsISOString(),
+      mp_AdvancedDesc->getRunDescriptor().getDeltaT());
 //  }
 }
 

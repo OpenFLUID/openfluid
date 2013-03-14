@@ -63,7 +63,7 @@
 
 #include "PreferencesPanelImpl.hpp"
 #include "BuilderExtensionsManager.hpp"
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include "EngineProject.hpp"
 
@@ -260,8 +260,8 @@ bool PreferencesDialog::checkObserversPaths()
     return true;
   }
 
-  openfluid::guicommon::BuilderMonitoring& Monit =
-      mp_Project->getBuilderDesc().getMonitoring();
+  openfluid::fluidx::AdvancedMonitoringDescriptor& Monit =
+      mp_Project->getAdvancedDesc().getMonitoring();
 
   std::string MissingObserversStr = "";
 
@@ -332,8 +332,8 @@ bool PreferencesDialog::checkFunctionsPaths()
     return true;
   }
 
-  openfluid::guicommon::BuilderModel& Model =
-      mp_Project->getBuilderDesc().getModel();
+  openfluid::fluidx::AdvancedModelDescriptor& Model =
+      mp_Project->getAdvancedDesc().getModel();
 
   std::string MissingFunctionsStr = "";
 
@@ -367,7 +367,7 @@ bool PreferencesDialog::checkFunctionsPaths()
     RunEnv->addExtraFunctionsPluginsPaths(ExistingFctPaths[i]);
 
   // reset Model
-  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::ware::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
 
   return false;
 }

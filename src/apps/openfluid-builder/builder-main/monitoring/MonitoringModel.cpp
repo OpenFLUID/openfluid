@@ -63,7 +63,7 @@
 // =====================================================================
 
 MonitoringModel::MonitoringModel(
-    openfluid::guicommon::BuilderMonitoring& Monitoring) :
+    openfluid::fluidx::AdvancedMonitoringDescriptor& Monitoring) :
     mp_Monitoring(&Monitoring)
 {
 

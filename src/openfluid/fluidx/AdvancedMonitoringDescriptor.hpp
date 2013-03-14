@@ -46,14 +46,14 @@
  */
 
 /**
- \file BuilderMonitoring.hpp
+ \file AdvancedMonitoringDescriptor.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef BUILDERMONITORING_HPP_
-#define BUILDERMONITORING_HPP_
+#ifndef ADVANCEDMONITORINGDESCRIPTOR_HPP_
+#define ADVANCEDMONITORINGDESCRIPTOR_HPP_
 
 #include  <openfluid/fluidx/MonitoringDescriptor.hpp>
 
@@ -64,9 +64,9 @@ class ObserverPluginsManager;
 class ObserverSignatureInstance;
 }
 
-namespace guicommon {
+namespace fluidx {
 
-class BuilderMonitoring
+class AdvancedMonitoringDescriptor
 {
   private:
 
@@ -78,9 +78,9 @@ class BuilderMonitoring
 
   public:
 
-    BuilderMonitoring(openfluid::fluidx::MonitoringDescriptor& MonitoringDesc);
+    AdvancedMonitoringDescriptor(openfluid::fluidx::MonitoringDescriptor& MonitoringDesc);
 
-    ~BuilderMonitoring();
+    ~AdvancedMonitoringDescriptor();
 
     /**
      * @brief Checks that each Observer of the Monitoring descriptor is available
@@ -137,4 +137,4 @@ class BuilderMonitoring
 
 }
 } //namespaces
-#endif /* BUILDERMONITORING_HPP_ */
+#endif /* ADVANCEDMONITORINGDESCRIPTOR_HPP_ */

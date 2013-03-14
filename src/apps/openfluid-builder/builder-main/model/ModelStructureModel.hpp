@@ -53,11 +53,9 @@
 #include <vector>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderModel;
-}
 namespace fluidx {
 class ModelItemDescriptor;
+class AdvancedModelDescriptor;
 }
 }
 
@@ -117,7 +115,7 @@ class ModelStructureModelImpl: public ModelStructureModel
 
     sigc::signal<void> m_signal_FromAppSelectionRequested;
 
-    openfluid::guicommon::BuilderModel* mp_Model;
+    openfluid::fluidx::AdvancedModelDescriptor* mp_Model;
 
     int m_CurrentSelection;
 
@@ -129,7 +127,7 @@ class ModelStructureModelImpl: public ModelStructureModel
 
   public:
 
-    ModelStructureModelImpl(openfluid::guicommon::BuilderModel& Model);
+    ModelStructureModelImpl(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
     ~ModelStructureModelImpl();
 

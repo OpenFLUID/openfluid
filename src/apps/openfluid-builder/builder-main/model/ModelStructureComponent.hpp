@@ -58,8 +58,8 @@
 #include "BuilderMVPComponent.hpp"
 
 namespace openfluid {
-namespace guicommon {
-class BuilderModel;
+namespace fluidx {
+class AdvancedModelDescriptor;
 }
 }
 
@@ -85,7 +85,7 @@ class ModelStructureComponent: public BuilderMVPComponent
 
   public:
 
-    ModelStructureComponent(openfluid::guicommon::BuilderModel& Model);
+    ModelStructureComponent(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
     ~ModelStructureComponent();
 

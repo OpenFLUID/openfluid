@@ -63,12 +63,12 @@ namespace openfluid {
 namespace machine {
 class ModelItemInstance;
 }
-namespace guicommon {
+namespace ware {
 class FunctionSignatureRegistry;
-class BuilderDescriptor;
 }
 namespace fluidx {
 class ModelItemDescriptor;
+class AdvancedFluidXDescriptor;
 }
 }
 
@@ -88,7 +88,7 @@ class ModelStructureCoordinator: public sigc::trackable
 
     sigc::signal<void> m_signal_ModelChanged;
 
-    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
 
     ModelFctDetailModel& m_FctDetailModel;
 
@@ -137,7 +137,7 @@ class ModelStructureCoordinator: public sigc::trackable
         ModelStructureModel& StructureModel,
         ModelGlobalParamsModel& GlobalParamsModel,
         ModelParamsPanel& ParamsPanel, BuilderListToolBox& StructureListToolBox,
-        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+        openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     sigc::signal<void> signal_ModelChanged();
 

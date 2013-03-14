@@ -62,7 +62,7 @@
 // =====================================================================
 
 MonitoringAddObserverDialog::MonitoringAddObserverDialog(
-    openfluid::guicommon::BuilderMonitoring& Monit) :
+    openfluid::fluidx::AdvancedMonitoringDescriptor& Monit) :
     m_Monit(Monit)
 {
   Gtk::Label* InfoBarLabel = Gtk::manage(

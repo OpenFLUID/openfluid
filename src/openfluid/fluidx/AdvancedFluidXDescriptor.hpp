@@ -46,42 +46,55 @@
  */
 
 /**
- \file GeneratorSignature.hpp
+ \file AdvancedFluidXDescriptor.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __GENERATORSIGNATURE_HPP__
-#define __GENERATORSIGNATURE_HPP__
+#ifndef ADVANCEDFLUIDXDESCRIPTOR_HPP_
+#define ADVANCEDFLUIDXDESCRIPTOR_HPP_
 
-#include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
 namespace openfluid {
-namespace guicommon {
+namespace fluidx {
 
-class GeneratorSignature: public openfluid::ware::FunctionSignature
+class AdvancedFluidXDescriptor
 {
   private:
 
-    void setFixedInfo();
+    AdvancedDomainDescriptor* mp_Domain;
 
-    void setRandomInfo();
+    AdvancedModelDescriptor* mp_Model;
 
-    void setInterpInfo();
+    openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
-    void setInjectInfo();
+    openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
+
+    AdvancedMonitoringDescriptor* mp_Monitoring;
 
   public:
 
-    GeneratorSignature(
-        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
+    AdvancedFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
 
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
+    ~AdvancedFluidXDescriptor();
 
+    AdvancedDomainDescriptor& getDomain();
+
+    AdvancedModelDescriptor& getModel();
+
+    openfluid::fluidx::RunDescriptor& getRunDescriptor();
+
+    openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
+
+    AdvancedMonitoringDescriptor& getMonitoring();
 };
 
-}} //namespaces
+}
+} // namespaces
 
-#endif /* __GENERATORSIGNATURE_HPP__ */
+#endif /* ADVANCEDFLUIDXDESCRIPTOR_HPP_ */

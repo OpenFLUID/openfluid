@@ -64,7 +64,7 @@
 #include "tests-config.hpp"
 
 #include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -87,7 +87,7 @@ struct init_Model
       mp_EngProject = new EngineProject(Path);
 
       mp_Model = new SimulRunModelImpl(
-          mp_EngProject->getBuilderDesc().getRunDescriptor());
+          mp_EngProject->getAdvancedDesc().getRunDescriptor());
     }
 
     ~init_Model()
@@ -105,7 +105,7 @@ BOOST_FIXTURE_TEST_SUITE(ModelStructureModelTest, init_Model)
 BOOST_AUTO_TEST_CASE(test_setRunDescriptor)
 {
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       false);
 
   BOOST_CHECK_EQUAL(mp_Model->getDelta(), 3600);
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(test_setUncoherentDateTime)
   BOOST_CHECK_EQUAL(mp_Model->getBeginColor(), "orange");
   BOOST_CHECK_EQUAL(mp_Model->getBegin(), "2012-11-10 01:23:45");
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().getBeginDate().getAsISOString(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().getBeginDate().getAsISOString(),
       "2012-11-10 01:23:45");
 
   mp_Model->setEnd("2010-11-12 02:34:56");
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(test_setUncoherentDateTime)
   BOOST_CHECK_EQUAL(mp_Model->getEndColor(), "orange");
   BOOST_CHECK_EQUAL(mp_Model->getEnd(), "2010-11-12 02:34:56");
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().getEndDate().getAsISOString(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().getEndDate().getAsISOString(),
       "2010-11-12 02:34:56");
 }
 
@@ -163,7 +163,7 @@ BOOST_AUTO_TEST_CASE(test_setValuesBuff)
 {
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       false);
 
   mp_Model->setValuesBuff(5);
@@ -171,17 +171,17 @@ BOOST_AUTO_TEST_CASE(test_setValuesBuff)
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), true);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 5);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       true);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().getValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().getValuesBufferSize(),
       5);
 
   mp_Model->setValuesBuffIsSet(false);
 
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       false);
 
   mp_Model->setValuesBuffIsSet(true);
@@ -189,10 +189,10 @@ BOOST_AUTO_TEST_CASE(test_setValuesBuff)
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), true);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 5);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       true);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().getValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().getValuesBufferSize(),
       5);
 }
 
@@ -207,9 +207,9 @@ BOOST_AUTO_TEST_CASE(test_setOtherValues)
   BOOST_CHECK_EQUAL(mp_Model->getDelta(), 360);
   BOOST_CHECK_EQUAL(mp_Model->getFilesBuff(), 4);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().getDeltaT(), 360);
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().getDeltaT(), 360);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().getFilesBufferSizeInKB(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().getFilesBufferSizeInKB(),
       4);
 }
 // =====================================================================

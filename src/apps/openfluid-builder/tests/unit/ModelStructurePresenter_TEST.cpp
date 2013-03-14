@@ -62,7 +62,7 @@
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -82,7 +82,7 @@ struct init_Presenter
       mp_EngProject = new EngineProject();
 
       mp_Component = new ModelStructureComponent(
-          mp_EngProject->getBuilderDesc().getModel());
+          mp_EngProject->getAdvancedDesc().getModel());
       mp_Model = mp_Component->getModel();
       mp_View = (ModelStructureViewSub*) (mp_Component->getView());
     }
@@ -484,7 +484,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
   mp_Model->requestSelectionByAppAt(2);
   mp_Model->moveTowardTheBegin();
   BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
-  ClassNames = mp_EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = mp_EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idA);
   it++;
@@ -496,7 +496,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
   mp_Model->requestSelectionByAppAt(0);
   mp_Model->moveTowardTheBegin();
   BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 2);
-  ClassNames = mp_EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = mp_EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idC);
   it++;
@@ -546,7 +546,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   mp_Model->requestSelectionByAppAt(0);
   mp_Model->moveTowardTheEnd();
   BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 1);
-  ClassNames = mp_EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = mp_EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idB);
   it++;
@@ -558,7 +558,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   mp_Model->requestSelectionByAppAt(2);
   mp_Model->moveTowardTheEnd();
   BOOST_CHECK_EQUAL(mp_Model->getCurrentSelection(), 0);
-  ClassNames = mp_EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = mp_EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idC);
   it++;

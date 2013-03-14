@@ -57,7 +57,7 @@
 #include <boost/foreach.hpp>
 
 #include <openfluid/fluidx/UnitDescriptor.hpp>
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -158,7 +158,7 @@ DomainStructureAdapterModelImpl::DomainStructureAdapterModelImpl(
 // =====================================================================
 
 void DomainStructureAdapterModelImpl::setDomainStructure(
-    const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass)
+    const openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t& UnitListByClass)
 {
   // store existing sorts
   std::map<std::string, std::pair<int, Gtk::SortType> > ByClassSorts;
@@ -180,7 +180,7 @@ void DomainStructureAdapterModelImpl::setDomainStructure(
 
   std::vector<std::string> ClassNames;
 
-  for (openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t::const_iterator it =
+  for (openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t::const_iterator it =
       UnitListByClass.begin(); it != UnitListByClass.end(); ++it)
   {
     std::string ClassName = it->first;
@@ -189,9 +189,9 @@ void DomainStructureAdapterModelImpl::setDomainStructure(
 
     createUnitStoreForClass(ClassName);
 
-    const std::map<int, openfluid::guicommon::BuilderUnit>* Units = &(it->second);
+    const std::map<int, openfluid::fluidx::BuilderUnit>* Units = &(it->second);
 
-    for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator itU = Units->begin();
+    for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator itU = Units->begin();
         itU != Units->end(); ++itU)
     {
       appendUnitRowToUnitListStore(m_ByClassUnitsStores[ClassName],

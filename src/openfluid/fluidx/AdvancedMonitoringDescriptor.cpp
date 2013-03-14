@@ -46,25 +46,25 @@
  */
 
 /**
- \file BuilderMonitoring.cpp
+ \file AdvancedMonitoringDescriptor.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "BuilderMonitoring.hpp"
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
 
 namespace openfluid {
-namespace guicommon {
+namespace fluidx {
 
 // =====================================================================
 // =====================================================================
 
-BuilderMonitoring::BuilderMonitoring(
+AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(
     openfluid::fluidx::MonitoringDescriptor& MonitoringDesc) :
     mp_MonitoringDesc(&MonitoringDesc)
 {
@@ -74,7 +74,7 @@ BuilderMonitoring::BuilderMonitoring(
 // =====================================================================
 // =====================================================================
 
-BuilderMonitoring::~BuilderMonitoring()
+AdvancedMonitoringDescriptor::~AdvancedMonitoringDescriptor()
 {
 
 }
@@ -82,7 +82,7 @@ BuilderMonitoring::~BuilderMonitoring()
 // =====================================================================
 // =====================================================================
 
-std::list<openfluid::fluidx::ObserverDescriptor*> BuilderMonitoring::checkAndGetModifiedMonitoring(
+std::list<openfluid::fluidx::ObserverDescriptor*> AdvancedMonitoringDescriptor::checkAndGetModifiedMonitoring(
     std::string& MissingObservers)
 {
   update();
@@ -114,14 +114,14 @@ std::list<openfluid::fluidx::ObserverDescriptor*> BuilderMonitoring::checkAndGet
 // =====================================================================
 // =====================================================================
 
-const std::list<openfluid::fluidx::ObserverDescriptor*>& BuilderMonitoring::getItems()
+const std::list<openfluid::fluidx::ObserverDescriptor*>& AdvancedMonitoringDescriptor::getItems()
 {
   return mp_MonitoringDesc->getItems();
 }
 // =====================================================================
 // =====================================================================
 
-const openfluid::machine::ObserverSignatureInstance& BuilderMonitoring::getSignature(
+const openfluid::machine::ObserverSignatureInstance& AdvancedMonitoringDescriptor::getSignature(
     std::string ObserverID)
 {
   for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
@@ -132,14 +132,14 @@ const openfluid::machine::ObserverSignatureInstance& BuilderMonitoring::getSigna
   }
 
   throw openfluid::base::OFException(
-      "OpenFLUID Framework", "BuilderMonitoring::getSignature",
+      "OpenFLUID Framework", "AdvancedMonitoringDescriptor::getSignature",
       "Observer " + ObserverID + " is not available");
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::fluidx::ObserverDescriptor& BuilderMonitoring::getDescriptor(
+openfluid::fluidx::ObserverDescriptor& AdvancedMonitoringDescriptor::getDescriptor(
     std::string ObserverID)
 {
   std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
@@ -152,14 +152,14 @@ openfluid::fluidx::ObserverDescriptor& BuilderMonitoring::getDescriptor(
   }
 
   throw openfluid::base::OFException(
-      "OpenFLUID Framework", "BuilderMonitoring::getDescriptor",
+      "OpenFLUID Framework", "AdvancedMonitoringDescriptor::getDescriptor",
       "Observer " + ObserverID + " is not in Observer list");
 }
 
 // =====================================================================
 // =====================================================================
 
-void BuilderMonitoring::addToObserverList(std::string ObserverID)
+void AdvancedMonitoringDescriptor::addToObserverList(std::string ObserverID)
 {
   try
   {
@@ -172,7 +172,7 @@ void BuilderMonitoring::addToObserverList(std::string ObserverID)
   {
     throw openfluid::base::OFException(
         "OpenFLUID Framework",
-        "BuilderMonitoring::addToObserverList",
+        "AdvancedMonitoringDescriptor::addToObserverList",
         "Unable to add Observer " + ObserverID
         + " because it is not available");
   }
@@ -182,7 +182,7 @@ void BuilderMonitoring::addToObserverList(std::string ObserverID)
 // =====================================================================
 // =====================================================================
 
-void BuilderMonitoring::removeFromObserverList(std::string ObserverID)
+void AdvancedMonitoringDescriptor::removeFromObserverList(std::string ObserverID)
 {
   openfluid::fluidx::ObserverDescriptor& Obs = getDescriptor(ObserverID);
   std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
@@ -196,7 +196,7 @@ void BuilderMonitoring::removeFromObserverList(std::string ObserverID)
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::machine::ObserverSignatureInstance*> BuilderMonitoring::getUnusedAvailableSignatures()
+std::vector<openfluid::machine::ObserverSignatureInstance*> AdvancedMonitoringDescriptor::getUnusedAvailableSignatures()
 {
   std::vector<openfluid::machine::ObserverSignatureInstance*> Signs;
 
@@ -218,7 +218,7 @@ std::vector<openfluid::machine::ObserverSignatureInstance*> BuilderMonitoring::g
 // =====================================================================
 // =====================================================================
 
-void BuilderMonitoring::setItems(
+void AdvancedMonitoringDescriptor::setItems(
     std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList)
 {
   mp_MonitoringDesc->getItems() = ObserversList;
@@ -227,7 +227,7 @@ void BuilderMonitoring::setItems(
 // =====================================================================
 // =====================================================================
 
-void BuilderMonitoring::update()
+void AdvancedMonitoringDescriptor::update()
 {
   mp_Manager->unloadAllWares();
   m_AvailableSignatures = mp_Manager->getAvailableWaresSignatures();

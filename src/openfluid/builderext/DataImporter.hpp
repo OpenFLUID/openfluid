@@ -74,7 +74,7 @@ class DataImporter : public ModalExtension
 
   public:
 
-    virtual bool isReadyForShowtime() const { return (mp_BuilderDesc != NULL); };
+    virtual bool isReadyForShowtime() const { return (mp_AdvancedDesc != NULL); };
 
 };
 

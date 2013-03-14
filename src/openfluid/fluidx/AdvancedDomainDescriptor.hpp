@@ -46,33 +46,30 @@
  */
 
 /**
- \file BuilderDomain.hpp
+ \file AdvancedDomainDescriptor.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef BUILDERDOMAIN_HPP_
-#define BUILDERDOMAIN_HPP_
+#ifndef ADVANCEDDOMAINDESCRIPTOR_HPP_
+#define ADVANCEDDOMAINDESCRIPTOR_HPP_
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <map>
 #include <set>
 
 namespace openfluid {
-namespace fluidx {
-class DomainDescriptor;
-class UnitDescriptor;
-class InputDataDescriptor;
-}
+
 namespace core {
 class Event;
 }
-}
 
+namespace fluidx {
 
-namespace openfluid {
-namespace guicommon {
+class DomainDescriptor;
+class UnitDescriptor;
+class InputDataDescriptor;
 
 // =====================================================================
 // =====================================================================
@@ -99,7 +96,7 @@ class BuilderUnit
 // =====================================================================
 // =====================================================================
 
-class BuilderDomain
+class AdvancedDomainDescriptor
 {
   public:
 
@@ -128,9 +125,9 @@ class BuilderDomain
 
   public:
 
-    BuilderDomain(openfluid::fluidx::DomainDescriptor& DomainDesc);
+    AdvancedDomainDescriptor(openfluid::fluidx::DomainDescriptor& DomainDesc);
 
-    ~BuilderDomain();
+    ~AdvancedDomainDescriptor();
 
     /**
      *
@@ -245,4 +242,4 @@ class BuilderDomain
 
 }} // namespaces
 
-#endif /* BUILDERDOMAIN_HPP_ */
+#endif /* ADVANCEDDOMAINDESCRIPTOR_HPP_ */

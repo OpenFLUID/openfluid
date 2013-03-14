@@ -46,28 +46,28 @@
  */
 
 /**
- \file BuilderModel.cpp
+ \file AdvancedModelDescriptor.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "BuilderModel.hpp"
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
 #include <glibmm/i18n.h>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 namespace openfluid {
-namespace guicommon {
+namespace fluidx {
 
 // =====================================================================
 // =====================================================================
 
-BuilderModel::BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
+AdvancedModelDescriptor::AdvancedModelDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
     mp_ModelDesc(&ModelDesc)
 {
 
@@ -76,17 +76,18 @@ BuilderModel::BuilderModel(openfluid::fluidx::CoupledModelDescriptor& ModelDesc)
 // =====================================================================
 // =====================================================================
 
-BuilderModel::~BuilderModel()
+AdvancedModelDescriptor::~AdvancedModelDescriptor()
 {
 }
 
 // =====================================================================
 // =====================================================================
 
-std::list<openfluid::fluidx::ModelItemDescriptor*> BuilderModel::checkAndGetModifiedModel(
+std::list<openfluid::fluidx::ModelItemDescriptor*> AdvancedModelDescriptor::checkAndGetModifiedModel(
     std::string& MissingFunctions)
 {
-  FunctionSignatureRegistry* Reg = FunctionSignatureRegistry::getInstance();
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
   Reg->updatePluggableSignatures();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
@@ -121,7 +122,7 @@ std::list<openfluid::fluidx::ModelItemDescriptor*> BuilderModel::checkAndGetModi
 // =====================================================================
 // =====================================================================
 
-const std::list<openfluid::fluidx::ModelItemDescriptor*>& BuilderModel::getItems()
+const std::list<openfluid::fluidx::ModelItemDescriptor*>& AdvancedModelDescriptor::getItems()
 {
   return mp_ModelDesc->getItems();
 }
@@ -129,7 +130,7 @@ const std::list<openfluid::fluidx::ModelItemDescriptor*>& BuilderModel::getItems
 // =====================================================================
 // =====================================================================
 
-openfluid::fluidx::ModelItemDescriptor* BuilderModel::getItemAt(
+openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::getItemAt(
     unsigned int Index)
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
@@ -145,14 +146,14 @@ openfluid::fluidx::ModelItemDescriptor* BuilderModel::getItemAt(
   }
   else
     throw openfluid::base::OFException("OpenFLUID framework",
-                                       "BuilderModel::getItemAt()",
+                                       "AdvancedModelDescriptor::getItemAt()",
                                        "Bad index of item to get");
 }
 
 // =====================================================================
 // =====================================================================
 
-int BuilderModel::getFirstItemIndex(std::string ItemID)
+int AdvancedModelDescriptor::getFirstItemIndex(std::string ItemID)
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_ModelDesc->getItems();
@@ -170,7 +171,7 @@ int BuilderModel::getFirstItemIndex(std::string ItemID)
 // =====================================================================
 // =====================================================================
 
-int BuilderModel::getFirstItemIndex(
+int AdvancedModelDescriptor::getFirstItemIndex(
     openfluid::fluidx::ModelItemDescriptor* Item)
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
@@ -188,7 +189,7 @@ int BuilderModel::getFirstItemIndex(
 // =====================================================================
 // =====================================================================
 
-std::vector<std::string> BuilderModel::getOrderedIDs()
+std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs()
 {
   std::vector<std::string> IDs;
 
@@ -205,7 +206,7 @@ std::vector<std::string> BuilderModel::getOrderedIDs()
 // =====================================================================
 // =====================================================================
 
-std::string BuilderModel::getID(openfluid::fluidx::ModelItemDescriptor* Item)
+std::string AdvancedModelDescriptor::getID(openfluid::fluidx::ModelItemDescriptor* Item)
 {
   if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
     return (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(Item))->getFileID();
@@ -217,7 +218,7 @@ std::string BuilderModel::getID(openfluid::fluidx::ModelItemDescriptor* Item)
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::appendItem(openfluid::fluidx::ModelItemDescriptor* Item)
+void AdvancedModelDescriptor::appendItem(openfluid::fluidx::ModelItemDescriptor* Item)
 {
   if (Item)
     mp_ModelDesc->appendItem(Item);
@@ -226,7 +227,7 @@ void BuilderModel::appendItem(openfluid::fluidx::ModelItemDescriptor* Item)
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::insertItem(openfluid::fluidx::ModelItemDescriptor* Item,
+void AdvancedModelDescriptor::insertItem(openfluid::fluidx::ModelItemDescriptor* Item,
                               unsigned int Position)
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
@@ -244,14 +245,14 @@ void BuilderModel::insertItem(openfluid::fluidx::ModelItemDescriptor* Item,
   }
   else
     throw openfluid::base::OFException("OpenFLUID framework",
-                                       "BuilderModel::insertItem()",
+                                       "AdvancedModelDescriptor::insertItem()",
                                        "Bad index of item to insert");
 }
 
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::setItems(
+void AdvancedModelDescriptor::setItems(
     std::list<openfluid::fluidx::ModelItemDescriptor*> FunctionsList)
 {
   mp_ModelDesc->getItems() = FunctionsList;
@@ -260,7 +261,7 @@ void BuilderModel::setItems(
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::removeItem(unsigned int Position)
+void AdvancedModelDescriptor::removeItem(unsigned int Position)
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_ModelDesc->getItems();
@@ -275,14 +276,14 @@ void BuilderModel::removeItem(unsigned int Position)
   }
   else
     throw openfluid::base::OFException("OpenFLUID framework",
-                                       "BuilderModel::deleteItem()",
+                                       "AdvancedModelDescriptor::deleteItem()",
                                        "Bad index of item to delete");
 }
 
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::moveItem(unsigned int From, unsigned int To)
+void AdvancedModelDescriptor::moveItem(unsigned int From, unsigned int To)
 {
   if (From == To)
     return;
@@ -294,7 +295,7 @@ void BuilderModel::moveItem(unsigned int From, unsigned int To)
 
   if (From > Last || To > Last)
     throw openfluid::base::OFException("OpenFLUID Builder",
-                                       "BuilderModel::moveItem",
+                                       "AdvancedModelDescriptor::moveItem",
                                        "Bad indexes of items to move");
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itFrom =
@@ -314,7 +315,7 @@ void BuilderModel::moveItem(unsigned int From, unsigned int To)
 // =====================================================================
 // =====================================================================
 
-unsigned int BuilderModel::getItemsCount() const
+unsigned int AdvancedModelDescriptor::getItemsCount() const
 {
   return mp_ModelDesc->getItems().size();
 }
@@ -322,7 +323,7 @@ unsigned int BuilderModel::getItemsCount() const
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::setGlobalParameter(
+void AdvancedModelDescriptor::setGlobalParameter(
     const openfluid::ware::WareParamKey_t& Key,
     const openfluid::ware::WareParamKey_t& Value)
 {
@@ -332,7 +333,7 @@ void BuilderModel::setGlobalParameter(
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::setGlobalParameters(
+void AdvancedModelDescriptor::setGlobalParameters(
     const openfluid::ware::WareParams_t& Params)
 {
   mp_ModelDesc->setGlobalParameters(Params);
@@ -341,7 +342,7 @@ void BuilderModel::setGlobalParameters(
 // =====================================================================
 // =====================================================================
 
-openfluid::ware::WareParams_t BuilderModel::getGlobalParameters()
+openfluid::ware::WareParams_t AdvancedModelDescriptor::getGlobalParameters()
 {
   return mp_ModelDesc->getGlobalParameters();
 }
@@ -349,7 +350,7 @@ openfluid::ware::WareParams_t BuilderModel::getGlobalParameters()
 // =====================================================================
 // =====================================================================
 
-void BuilderModel::eraseGlobalParameter(
+void AdvancedModelDescriptor::eraseGlobalParameter(
     const openfluid::ware::WareParamKey_t& Key)
 {
   mp_ModelDesc->eraseGlobalParameter(Key);

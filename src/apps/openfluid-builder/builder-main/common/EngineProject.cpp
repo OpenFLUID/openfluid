@@ -77,10 +77,10 @@
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Generator.hpp>
 
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 #include "EngineHelper.hpp"
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 #include "ProjectChecker.hpp"
 
@@ -152,7 +152,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
   try
   {
-    mp_BuilderDesc = new openfluid::guicommon::BuilderDescriptor(*mp_FXDesc);
+    mp_AdvancedDesc = new openfluid::fluidx::AdvancedFluidXDescriptor(*mp_FXDesc);
   }
   catch (openfluid::base::OFException& e)
   {
@@ -167,7 +167,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   checkAndAdaptModel();
   checkAndAdaptMonitoring();
 
-  mp_Checker = new ProjectChecker(*mp_BuilderDesc);
+  mp_Checker = new ProjectChecker(*mp_AdvancedDesc);
 }
 
 // =====================================================================
@@ -178,7 +178,7 @@ void EngineProject::checkAndAdaptModel()
   std::string MissingFunctionsStr = "";
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
-      mp_BuilderDesc->getModel().checkAndGetModifiedModel(MissingFunctionsStr);
+      mp_AdvancedDesc->getModel().checkAndGetModifiedModel(MissingFunctionsStr);
 
   if (!MissingFunctionsStr.empty())
   {
@@ -193,11 +193,11 @@ void EngineProject::checkAndAdaptModel()
         Msg))
     {
       deleteEngineObjects();
-      delete mp_BuilderDesc;
+      delete mp_AdvancedDesc;
       throw openfluid::base::OFException("");
     }
     else
-      mp_BuilderDesc->getModel().setItems(ModifiedFunctions);
+      mp_AdvancedDesc->getModel().setItems(ModifiedFunctions);
   }
 
 }
@@ -210,7 +210,7 @@ void EngineProject::checkAndAdaptMonitoring()
   std::string MissingObserversStr = "";
 
   std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
-      mp_BuilderDesc->getMonitoring().checkAndGetModifiedMonitoring(
+      mp_AdvancedDesc->getMonitoring().checkAndGetModifiedMonitoring(
           MissingObserversStr);
 
   if (!MissingObserversStr.empty())
@@ -225,11 +225,11 @@ void EngineProject::checkAndAdaptMonitoring()
         Msg))
     {
       deleteEngineObjects();
-      delete mp_BuilderDesc;
+      delete mp_AdvancedDesc;
       throw openfluid::base::OFException("");
     }
     else
-      mp_BuilderDesc->getMonitoring().setItems(ModifiedObservers);
+      mp_AdvancedDesc->getMonitoring().setItems(ModifiedObservers);
   }
 
 }
@@ -430,9 +430,9 @@ const ProjectChecker& EngineProject::check(bool& GlobalState)
 // =====================================================================
 // =====================================================================
 
-openfluid::guicommon::BuilderDescriptor& EngineProject::getBuilderDesc()
+openfluid::fluidx::AdvancedFluidXDescriptor& EngineProject::getAdvancedDesc()
 {
-  return *mp_BuilderDesc;
+  return *mp_AdvancedDesc;
 }
 
 // =====================================================================
@@ -441,7 +441,7 @@ openfluid::guicommon::BuilderDescriptor& EngineProject::getBuilderDesc()
 EngineProject::~EngineProject()
 {
   deleteEngineObjects();
-  delete mp_BuilderDesc;
+  delete mp_AdvancedDesc;
   delete mp_Checker;
 }
 

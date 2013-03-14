@@ -59,15 +59,15 @@
 
 #include <gtkmm/treeiter.h>
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 namespace openfluid {
 namespace fluidx {
 class UnitDescriptor;
+class BuilderUnit;
 }
 }
 
-class BuilderUnit;
 class DomainStructureAdapterModel;
 class DomainStructureView;
 
@@ -107,7 +107,7 @@ class DomainStructureAdapter: public sigc::trackable
     sigc::signal<void> signal_Activated();
 
     void setDomainStructure(
-        const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass);
+        const openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t& UnitListByClass);
 
     std::pair<Gtk::TreeIter, Gtk::TreeIter> getSelectedUnitIters();
 
