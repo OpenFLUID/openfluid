@@ -55,8 +55,50 @@
 #include "WaresHelper.hpp"
 
 #include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+
+// =====================================================================
+// =====================================================================
+
+std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModifiedModel(
+    const openfluid::fluidx::AdvancedModelDescriptor& Desc,
+    std::string& MissingFunctions)
+{
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  Reg->updatePluggableSignatures();
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*> Items = Desc.getItems();
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Items.begin();
+
+  while (it != Items.end())
+  {
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
+    {
+      std::string ID =
+          (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID();
+
+      if (!Reg->isPluggableFunctionAvailable(ID))
+      {
+        MissingFunctions.append("- " + ID + "\n");
+
+        it = Items.erase(it);
+      }
+      else
+        ++it;
+    }
+    else
+      ++it;
+  }
+
+  return Items;
+}
 
 // =====================================================================
 // =====================================================================

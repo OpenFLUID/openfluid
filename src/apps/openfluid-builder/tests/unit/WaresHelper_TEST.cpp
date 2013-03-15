@@ -59,12 +59,63 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/ware/ObserverSignatureRegistry.hpp>
 #include "WaresHelper.hpp"
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedModel)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
+
+  openfluid::fluidx::AdvancedModelDescriptor Model(FXDesc.getModelDescriptor());
+
+  std::string Str = "";
+  std::list<openfluid::fluidx::ModelItemDescriptor*> Modified =
+      WaresHelper::checkAndGetModifiedModel(Model, Str);
+
+  BOOST_CHECK(!Str.empty());
+  BOOST_CHECK_EQUAL(Modified.size(), 3);
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*> Existing =
+      Model.getItems();
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Modified.begin(); it != Modified.end(); ++it)
+  {
+    BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
+  }
+
+  FXDesc.getModelDescriptor().appendItem(
+      new openfluid::fluidx::FunctionDescriptor("tests.primitives.prod"));
+  Model = openfluid::fluidx::AdvancedModelDescriptor(
+      FXDesc.getModelDescriptor());
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+      CONFIGTESTS_OUTPUT_BINARY_DIR);
+
+  Str = "";
+  Modified = WaresHelper::checkAndGetModifiedModel(Model, Str);
+
+  BOOST_CHECK(!Str.empty());
+  BOOST_CHECK_EQUAL(Modified.size(), 4);
+
+  Existing = Model.getItems();
+  BOOST_CHECK_EQUAL(Existing.size(), 6);
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Modified.begin(); it != Modified.end(); ++it)
+  {
+    BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
+  }
+
+}
 
 // =====================================================================
 // =====================================================================

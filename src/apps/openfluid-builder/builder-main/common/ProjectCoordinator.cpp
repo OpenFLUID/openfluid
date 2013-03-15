@@ -74,6 +74,7 @@
 //#include "ResultsSetModule.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include "WaresHelper.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -574,8 +575,8 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   std::string MissingFunctionsStr = "";
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
-      m_EngineProject.getAdvancedDesc().getModel().checkAndGetModifiedModel(
-          MissingFunctionsStr);
+      WaresHelper::checkAndGetModifiedModel(
+          m_EngineProject.getAdvancedDesc().getModel(), MissingFunctionsStr);
 
   if (!MissingFunctionsStr.empty())
   {

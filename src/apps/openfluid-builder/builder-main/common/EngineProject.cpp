@@ -180,7 +180,8 @@ void EngineProject::checkAndAdaptModel()
   std::string MissingFunctionsStr = "";
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
-      mp_AdvancedDesc->getModel().checkAndGetModifiedModel(MissingFunctionsStr);
+      WaresHelper::checkAndGetModifiedModel(mp_AdvancedDesc->getModel(),
+                                            MissingFunctionsStr);
 
   if (!MissingFunctionsStr.empty())
   {

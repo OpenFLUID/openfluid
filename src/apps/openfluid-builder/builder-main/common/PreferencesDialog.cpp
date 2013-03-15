@@ -340,7 +340,7 @@ bool PreferencesDialog::checkFunctionsPaths()
   std::string MissingFunctionsStr = "";
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
-      Model.checkAndGetModifiedModel(MissingFunctionsStr);
+      WaresHelper::checkAndGetModifiedModel(Model, MissingFunctionsStr);
 
   if (MissingFunctionsStr.empty())
   {

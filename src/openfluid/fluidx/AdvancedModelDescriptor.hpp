@@ -74,17 +74,7 @@ class AdvancedModelDescriptor
 
     ~AdvancedModelDescriptor();
 
-    /**
-     * @brief Checks that each Function of the Model descriptor is available
-     * @details Update the list of all available Functions before checking
-     * @param MissingFunctions a textual list of Functions that are in the Model but whose plugin files are not available,
-     * or an empty string if all Functions of the Model are available
-     * @return A copy of the list of Functions that are in the Model, whithout that are not available
-     */
-    std::list<openfluid::fluidx::ModelItemDescriptor*> checkAndGetModifiedModel(
-        std::string& MissingFunctions);
-
-    const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems();
+    const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems() const;
 
     /**
      * @throw openfluid::base::OFException if Index is out of range

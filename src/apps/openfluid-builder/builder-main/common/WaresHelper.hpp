@@ -65,13 +65,27 @@ class ObserverSignatureInstance;
 }
 namespace fluidx {
 class AdvancedMonitoringDescriptor;
+class AdvancedModelDescriptor;
 class ObserverDescriptor;
+class ModelItemDescriptor;
 }
 }
 
 class WaresHelper
 {
   public:
+
+    /**
+     * @brief Checks that each Function of the Model descriptor is available
+     * @details Update the list of all available Functions before checking
+     * @param Desc the Model descriptor to check
+     * @param MissingFunctions a textual list of Functions that are in the Model but whose plugin files are not available,
+     * or an empty string if all Functions of the Model are available
+     * @return A copy of the list of Functions that are in the Model, whithout that are not available
+     */
+    static std::list<openfluid::fluidx::ModelItemDescriptor*> checkAndGetModifiedModel(
+        const openfluid::fluidx::AdvancedModelDescriptor& Desc,
+        std::string& MissingFunctions);
 
     /**
      * @brief Checks that each Observer of the Monitoring descriptor is available

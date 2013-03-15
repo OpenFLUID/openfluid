@@ -54,12 +54,9 @@
 
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
-#include <glibmm/i18n.h>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
-#include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>s
 
 namespace openfluid {
 namespace fluidx {
@@ -67,7 +64,8 @@ namespace fluidx {
 // =====================================================================
 // =====================================================================
 
-AdvancedModelDescriptor::AdvancedModelDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
+AdvancedModelDescriptor::AdvancedModelDescriptor(
+    openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
     mp_ModelDesc(&ModelDesc)
 {
 
@@ -83,46 +81,7 @@ AdvancedModelDescriptor::~AdvancedModelDescriptor()
 // =====================================================================
 // =====================================================================
 
-std::list<openfluid::fluidx::ModelItemDescriptor*> AdvancedModelDescriptor::checkAndGetModifiedModel(
-    std::string& MissingFunctions)
-{
-  openfluid::ware::FunctionSignatureRegistry* Reg =
-      openfluid::ware::FunctionSignatureRegistry::getInstance();
-  Reg->updatePluggableSignatures();
-
-  std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
-      mp_ModelDesc->getItems();
-
-  std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
-      Items.begin();
-
-  while (it != Items.end())
-  {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
-    {
-      std::string ID =
-          (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID();
-
-      if (!Reg->isPluggableFunctionAvailable(ID))
-      {
-        MissingFunctions.append("- " + ID + "\n");
-
-        it = Items.erase(it);
-      }
-      else
-        ++it;
-    }
-    else
-      ++it;
-  }
-
-  return Items;
-}
-
-// =====================================================================
-// =====================================================================
-
-const std::list<openfluid::fluidx::ModelItemDescriptor*>& AdvancedModelDescriptor::getItems()
+const std::list<openfluid::fluidx::ModelItemDescriptor*>& AdvancedModelDescriptor::getItems() const
 {
   return mp_ModelDesc->getItems();
 }
@@ -206,7 +165,8 @@ std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs()
 // =====================================================================
 // =====================================================================
 
-std::string AdvancedModelDescriptor::getID(openfluid::fluidx::ModelItemDescriptor* Item)
+std::string AdvancedModelDescriptor::getID(
+    openfluid::fluidx::ModelItemDescriptor* Item)
 {
   if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
     return (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(Item))->getFileID();
@@ -218,7 +178,8 @@ std::string AdvancedModelDescriptor::getID(openfluid::fluidx::ModelItemDescripto
 // =====================================================================
 // =====================================================================
 
-void AdvancedModelDescriptor::appendItem(openfluid::fluidx::ModelItemDescriptor* Item)
+void AdvancedModelDescriptor::appendItem(
+    openfluid::fluidx::ModelItemDescriptor* Item)
 {
   if (Item)
     mp_ModelDesc->appendItem(Item);
@@ -227,8 +188,8 @@ void AdvancedModelDescriptor::appendItem(openfluid::fluidx::ModelItemDescriptor*
 // =====================================================================
 // =====================================================================
 
-void AdvancedModelDescriptor::insertItem(openfluid::fluidx::ModelItemDescriptor* Item,
-                              unsigned int Position)
+void AdvancedModelDescriptor::insertItem(
+    openfluid::fluidx::ModelItemDescriptor* Item, unsigned int Position)
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_ModelDesc->getItems();
