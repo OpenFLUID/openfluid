@@ -66,11 +66,11 @@ namespace openfluid { namespace base {
 
 SimulationStatus::SimulationStatus(const openfluid::core::DateTime& Begin,
                                    const openfluid::core::DateTime& End,
-                                   const Duration_t DeltaT)
+                                   const openfluid::core::Duration_t DeltaT)
 : m_BeginDate(Begin), m_EndDate(End), m_CurrentDate(Begin),
   m_CurrentTimeIndex(0), m_DefaultDeltaT(DeltaT),m_CurrentStage(PRE)
 {
-  m_Duration = Duration_t(End.diffInSeconds(Begin));
+  m_Duration = openfluid::core::Duration_t(End.diffInSeconds(Begin));
 }
 
 
@@ -78,7 +78,7 @@ SimulationStatus::SimulationStatus(const openfluid::core::DateTime& Begin,
 // =====================================================================
 
 
-void SimulationStatus::setCurrentTimeIndex(const TimeIndex_t& Index)
+void SimulationStatus::setCurrentTimeIndex(const openfluid::core::TimeIndex_t& Index)
 {
   if (m_CurrentStage != RUNSTEP)
     throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index is allowed during RUNSTEP stage only");

@@ -8,7 +8,7 @@ INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 
 
 OPNFLD_ADD_OBSERVER(tests.empty tests.empty ${TEST_OUTPUT_PATH})
-
+OPNFLD_ADD_OBSERVER(tests.primitives.time tests.primitives.time ${TEST_OUTPUT_PATH})
 
 ###########################################################################
 

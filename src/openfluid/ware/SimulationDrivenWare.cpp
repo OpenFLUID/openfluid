@@ -112,7 +112,7 @@ openfluid::core::DateTime SimulationDrivenWare::OPENFLUID_GetCurrentDate() const
 // =====================================================================
 
 
-openfluid::base::Duration_t SimulationDrivenWare::OPENFLUID_GetSimulationDuration() const
+openfluid::core::Duration_t SimulationDrivenWare::OPENFLUID_GetSimulationDuration() const
 {
   if (mp_SimStatus == NULL)
     throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetSimulationDuration()","Simulation status is not set");
@@ -125,7 +125,7 @@ openfluid::base::Duration_t SimulationDrivenWare::OPENFLUID_GetSimulationDuratio
 // =====================================================================
 
 
-openfluid::base::Duration_t SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT() const
+openfluid::core::Duration_t SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT() const
 {
   if (mp_SimStatus == NULL)
     throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT()","Simulation status is not set");
@@ -138,12 +138,29 @@ openfluid::base::Duration_t SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT() c
 // =====================================================================
 
 
-openfluid::base::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex() const
+openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex() const
 {
   if (mp_SimStatus == NULL)
     throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex()","Simulation status is not set");
 
   return mp_SimStatus->getCurrentTimeIndex();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetPreviousRunTimeIndex() const
+{
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::RUNSTEP,
+                           "SimulationDrivenWare::OPENFLUID_GetPreviousRunTimeIndex",
+                           "Previous run time index cannot be accessed outside RUNSTEP or FINALIZERUN stages");
+
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetPreviousRunTimeIndex()","Simulation status is not set");
+
+  return m_PreviousTimeIndex;
 }
 
 

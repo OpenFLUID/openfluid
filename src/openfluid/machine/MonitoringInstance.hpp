@@ -98,7 +98,7 @@ class DLLEXPORT MonitoringInstance
 
     void call_onInitializedRun() const;
 
-    void call_onStepCompleted() const;
+    void call_onStepCompleted(const openfluid::core::TimeIndex_t& TimeIndex) const;
 
     void call_onFinalizedRun() const;
 };
