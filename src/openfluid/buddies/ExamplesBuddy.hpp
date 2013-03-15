@@ -45,18 +45,16 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file ExamplesBuddy.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __NEWDATABUDDY_H___
-#define __NEWDATABUDDY_H___
-
-#include <boost/filesystem/path.hpp>
+#ifndef __EXAMPLESBUDDY_HPP__
+#define __EXAMPLESBUDDY_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
@@ -65,40 +63,25 @@
 namespace openfluid { namespace buddies {
 
 
-class DLLEXPORT NewDataBuddy : public OpenFLUIDBuddy
+class ExamplesBuddy : public OpenFLUIDBuddy
 {
-  private:
-
-    boost::filesystem::path m_OutputDirPath;
-
-    std::string getXMLHeader();
-
-    std::string getXMLFooter();
-
-    void generateRunXML();
-
-    void generateModelXML();
-
-    void generateOutputXML();
-
-    void generateEventsXML();
-
-    void generateDDefXML();
-
-    void generateDDataXML();
-
   public:
 
-    NewDataBuddy(openfluid::buddies::BuddiesListener* Listener);
+    ExamplesBuddy(openfluid::buddies::BuddiesListener* Listener);
 
-    ~NewDataBuddy();
+    ~ExamplesBuddy();
 
     bool run();
 
+    bool installExampleProject(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath,
+                                 const std::string& ProjectDir, const bool Force = false);
+
+    bool installAllExamplesProjects(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath, const bool Force = false);
 };
 
 
-} } //namespaces
+
+} } // namespaces
 
 
-#endif /* __NEWDATABUDDY_H___ */
+#endif /* __EXAMPLESBUDDY_HPP__ */

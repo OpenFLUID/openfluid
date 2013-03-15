@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/buddies/OFBuddy.hpp>
+#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 
 #include <vector>
 
