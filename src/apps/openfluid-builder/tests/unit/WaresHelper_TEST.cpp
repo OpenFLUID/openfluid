@@ -46,7 +46,7 @@
  */
 
 /**
- \file AdvancedMonitoringDescriptor_TEST.cpp
+ \file ObserverSignatureRegistry_TEST.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
@@ -55,7 +55,7 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_AdvancedMonitoringDescriptor
+#define BOOST_TEST_MODULE builder_unittest_WaresHelper
 #include <boost/test/unit_test.hpp>
 
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
@@ -64,11 +64,12 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include "WaresHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_construction)
+BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedMonitoring)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
@@ -77,13 +78,45 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
+  std::string Str = "";
+  std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObs =
+      WaresHelper::checkAndGetModifiedMonitoring(Monit, Str);
+
+  BOOST_CHECK(Str.empty());
+  BOOST_CHECK_EQUAL(ModifiedObs.size(), 2);
+
+  std::list<openfluid::fluidx::ObserverDescriptor*> Existing = Monit.getItems();
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      ModifiedObs.begin(); it != ModifiedObs.end(); ++it)
+  {
+    BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
+  }
+
+  FXDesc.getMonitoringDescriptor().appendItem(
+      new openfluid::fluidx::ObserverDescriptor("dummy"));
+  Monit = openfluid::fluidx::AdvancedMonitoringDescriptor(
+      FXDesc.getMonitoringDescriptor());
+
+  Str = "";
+  ModifiedObs = WaresHelper::checkAndGetModifiedMonitoring(Monit, Str);
+
+  BOOST_CHECK(!Str.empty());
+  BOOST_CHECK_EQUAL(ModifiedObs.size(), 2);
+
+  Existing = Monit.getItems();
+  BOOST_CHECK_EQUAL(Existing.size(), 3);
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      ModifiedObs.begin(); it != ModifiedObs.end(); ++it)
+  {
+    BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
+  }
+
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_operations)
+BOOST_AUTO_TEST_CASE(check_getUnusedSignatures)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
@@ -92,36 +125,53 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
-  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
-                    "export.vars.files.csv");
-  BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
-      "export.spatial-graph.files.dot");
+  boost::filesystem::path Path(CONFIGTESTS_LIB_OUTPUT_PATH);
+  Path / "openfluid" / "observers";
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(
+      Path.string());
 
-  BOOST_CHECK_THROW(Monit.removeFromObserverList("dummy"),
-                    openfluid::base::OFException);
+  std::string Str = "";
+  Monit.setItems(WaresHelper::checkAndGetModifiedMonitoring(Monit, Str));
+
+  std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
+      WaresHelper::getUnusedAvailableObserverSignatures(Monit);
+
+  std::map<std::string, std::string> UnusedNameById;
+  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
+      Unused.begin(); it != Unused.end(); ++it)
+  {
+    UnusedNameById[(*it)->Signature->ID] = (*it)->Signature->Name;
+  }
+
+  BOOST_CHECK_GE(Unused.size(), 3);
+  BOOST_CHECK(!UnusedNameById.count("export.spatial-graph.files.dot"));
+  BOOST_CHECK(!UnusedNameById.count("export.vars.files.csv"));
 
   Monit.removeFromObserverList("export.vars.files.csv");
+  Monit.removeFromObserverList("export.spatial-graph.files.dot");
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 1);
-  BOOST_CHECK_THROW(Monit.getDescriptor("export.vars.files.csv"),
-                    openfluid::base::OFException);
-  BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
-      "export.spatial-graph.files.dot");
+  Unused = WaresHelper::getUnusedAvailableObserverSignatures(Monit);
+  UnusedNameById.clear();
+  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
+      Unused.begin(); it != Unused.end(); ++it)
+    UnusedNameById[(*it)->Signature->ID] = (*it)->Signature->Name;
 
-  BOOST_CHECK_THROW(Monit.addToObserverList("dummy"),
-                    openfluid::base::OFException);
+  BOOST_CHECK_GE(Unused.size(), 5);
+  BOOST_CHECK(UnusedNameById.count("export.spatial-graph.files.dot"));
+  BOOST_CHECK(UnusedNameById.count("export.vars.files.csv"));
 
-  Monit.addToObserverList("export.vars.files.csv");
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
-  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
-                    "export.vars.files.csv");
-  BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
-      "export.spatial-graph.files.dot");
+  Monit.addToObserverList("export.spatial-graph.files.dot");
+
+  Unused = WaresHelper::getUnusedAvailableObserverSignatures(Monit);
+  UnusedNameById.clear();
+  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
+      Unused.begin(); it != Unused.end(); ++it)
+    UnusedNameById[(*it)->Signature->ID] = (*it)->Signature->Name;
+  BOOST_CHECK_GE(Unused.size(), 4);
+  BOOST_CHECK(!UnusedNameById.count("export.spatial-graph.files.dot"));
+  BOOST_CHECK(UnusedNameById.count("export.vars.files.csv"));
 }
 
 // =====================================================================
 // =====================================================================
+

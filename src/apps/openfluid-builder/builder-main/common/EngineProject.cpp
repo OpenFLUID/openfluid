@@ -81,6 +81,7 @@
 #include "EngineHelper.hpp"
 #include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include "WaresHelper.hpp"
 
 #include "ProjectChecker.hpp"
 
@@ -152,7 +153,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
   try
   {
-    mp_AdvancedDesc = new openfluid::fluidx::AdvancedFluidXDescriptor(*mp_FXDesc);
+    mp_AdvancedDesc = new openfluid::fluidx::AdvancedFluidXDescriptor(
+        *mp_FXDesc);
   }
   catch (openfluid::base::OFException& e)
   {
@@ -210,8 +212,8 @@ void EngineProject::checkAndAdaptMonitoring()
   std::string MissingObserversStr = "";
 
   std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
-      mp_AdvancedDesc->getMonitoring().checkAndGetModifiedMonitoring(
-          MissingObserversStr);
+      WaresHelper::checkAndGetModifiedMonitoring(
+          mp_AdvancedDesc->getMonitoring(), MissingObserversStr);
 
   if (!MissingObserversStr.empty())
   {

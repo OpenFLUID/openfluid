@@ -57,6 +57,7 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 #include <openfluid/machine/ObserverInstance.hpp>
+#include "WaresHelper.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -133,7 +134,7 @@ void MonitoringAddObserverDialog::init()
   mref_ListStore->clear();
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
-      m_Monit.getUnusedAvailableSignatures();
+      WaresHelper::getUnusedAvailableObserverSignatures(m_Monit);
 
   if (Unused.empty())
   {

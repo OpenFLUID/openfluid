@@ -46,114 +46,79 @@
  */
 
 /**
- \file AdvancedMonitoringDescriptor.cpp
+ \file ObserverSignatureRegistry.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
-
-#include <openfluid/fluidx/ObserverDescriptor.hpp>
 #include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
+#include <openfluid/machine/ObserverPluginsManager.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+
 namespace openfluid {
-namespace fluidx {
+namespace ware {
+
+ObserverSignatureRegistry* ObserverSignatureRegistry::m_Instance = 0;
 
 // =====================================================================
 // =====================================================================
 
-AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(
-    openfluid::fluidx::MonitoringDescriptor& MonitoringDesc) :
-    mp_MonitoringDesc(&MonitoringDesc)
+ObserverSignatureRegistry::ObserverSignatureRegistry()
 {
+  update();
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedMonitoringDescriptor::~AdvancedMonitoringDescriptor()
+ObserverSignatureRegistry* ObserverSignatureRegistry::getInstance()
 {
+  if (!m_Instance)
+    m_Instance = new ObserverSignatureRegistry();
 
+  return m_Instance;
 }
 
 // =====================================================================
 // =====================================================================
 
-const std::list<openfluid::fluidx::ObserverDescriptor*>& AdvancedMonitoringDescriptor::getItems() const
+const openfluid::machine::ObserverSignatureInstance& ObserverSignatureRegistry::getSignature(
+    std::string ObserverID)
 {
-  return mp_MonitoringDesc->getItems();
-}
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::ObserverDescriptor& AdvancedMonitoringDescriptor::getDescriptor(
-    std::string ObserverID) const
-{
-  std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
-      mp_MonitoringDesc->getItems();
-  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
-      Observers.begin(); it != Observers.end(); ++it)
+  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
+      m_AvailableSignatures.begin(); it != m_AvailableSignatures.end(); ++it)
   {
-    if ((*it)->getID() == ObserverID)
+    if ((*it)->Signature->ID == ObserverID)
       return **it;
   }
 
   throw openfluid::base::OFException(
-      "OpenFLUID Framework", "AdvancedMonitoringDescriptor::getDescriptor",
-      "Observer " + ObserverID + " is not in Observer list");
+      "OpenFLUID Framework", "AdvancedMonitoringDescriptor::getSignature",
+      "Observer " + ObserverID + " is not available");
 }
 
 // =====================================================================
 // =====================================================================
 
-void AdvancedMonitoringDescriptor::addToObserverList(std::string ObserverID)
+void ObserverSignatureRegistry::update()
 {
-  try
-  {
-    openfluid::ware::ObserverSignatureRegistry::getInstance()->getSignature(
-        ObserverID);
-    openfluid::fluidx::ObserverDescriptor* Obs =
-        new openfluid::fluidx::ObserverDescriptor(ObserverID);
-    mp_MonitoringDesc->appendItem(Obs);
-  }
-  catch (openfluid::base::OFException& e)
-  {
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework",
-        "AdvancedMonitoringDescriptor::addToObserverList",
-        "Unable to add Observer " + ObserverID
-        + " because it is not available");
-  }
-
+  openfluid::machine::ObserverPluginsManager::getInstance()->unloadAllWares();
+  m_AvailableSignatures =
+      openfluid::machine::ObserverPluginsManager::getInstance()->getAvailableWaresSignatures();
 }
 
 // =====================================================================
 // =====================================================================
 
-void AdvancedMonitoringDescriptor::removeFromObserverList(
-    std::string ObserverID)
+std::vector<openfluid::machine::ObserverSignatureInstance*> ObserverSignatureRegistry::getAvailableSignatures()
 {
-  openfluid::fluidx::ObserverDescriptor& Obs = getDescriptor(ObserverID);
-  std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
-      mp_MonitoringDesc->getItems();
-  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it = std::find(
-      Observers.begin(), Observers.end(), &Obs);
-  if (it != Observers.end())
-    Observers.erase(it);
-}
-
-// =====================================================================
-// =====================================================================
-
-void AdvancedMonitoringDescriptor::setItems(
-    std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList)
-{
-  mp_MonitoringDesc->getItems() = ObserversList;
+  return m_AvailableSignatures;
 }
 
 // =====================================================================
 // =====================================================================
 
 }
-} //namespaces
+} /* namespace openfluid */

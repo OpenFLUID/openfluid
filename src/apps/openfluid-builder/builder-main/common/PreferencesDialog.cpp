@@ -60,12 +60,14 @@
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/guicommon/PreferencesPanel.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
 #include "PreferencesPanelImpl.hpp"
 #include "BuilderExtensionsManager.hpp"
 #include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include "EngineProject.hpp"
+#include "WaresHelper.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -266,7 +268,7 @@ bool PreferencesDialog::checkObserversPaths()
   std::string MissingObserversStr = "";
 
   std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
-      Monit.checkAndGetModifiedMonitoring(MissingObserversStr);
+      WaresHelper::checkAndGetModifiedMonitoring(Monit, MissingObserversStr);
 
   if (MissingObserversStr.empty())
   {
@@ -295,7 +297,7 @@ bool PreferencesDialog::checkObserversPaths()
     RunEnv->addExtraObserversPluginsPaths(ExistingObsPaths[i]);
 
   // reset Monitoring
-  Monit.update();
+  openfluid::ware::ObserverSignatureRegistry::getInstance()->update();
 
   return false;
 }

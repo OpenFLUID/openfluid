@@ -46,62 +46,80 @@
  */
 
 /**
- \file AdvancedMonitoringDescriptor.hpp
- \brief Header of ...
+ \file WaresHelper.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef ADVANCEDMONITORINGDESCRIPTOR_HPP_
-#define ADVANCEDMONITORINGDESCRIPTOR_HPP_
+#include "WaresHelper.hpp"
 
-#include  <openfluid/fluidx/MonitoringDescriptor.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
-namespace openfluid {
-namespace fluidx {
+// =====================================================================
+// =====================================================================
 
-class AdvancedMonitoringDescriptor
+std::list<openfluid::fluidx::ObserverDescriptor*> WaresHelper::checkAndGetModifiedMonitoring(
+    const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc,
+    std::string& MissingObservers)
 {
-  private:
+  openfluid::ware::ObserverSignatureRegistry* Reg =
+      openfluid::ware::ObserverSignatureRegistry::getInstance();
 
-    openfluid::fluidx::MonitoringDescriptor* mp_MonitoringDesc;
+  Reg->update();
 
-  public:
+  std::list<openfluid::fluidx::ObserverDescriptor*> Observers = Desc.getItems();
 
-    AdvancedMonitoringDescriptor(
-        openfluid::fluidx::MonitoringDescriptor& MonitoringDesc);
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Observers.begin();
 
-    ~AdvancedMonitoringDescriptor();
+  while (it != Observers.end())
+  {
+    try
+    {
+      Reg->getSignature((*it)->getID());
+      ++it;
+    }
+    catch (openfluid::base::OFException& e)
+    {
+      MissingObservers.append("- " + (*it)->getID() + "\n");
 
-    const std::list<openfluid::fluidx::ObserverDescriptor*>& getItems() const;
+      it = Observers.erase(it);
+    }
+  }
 
-    /**
-     * @brief Returns the Descriptor of the Observer with ObserverID if is in the Monitoring descriptor
-     * @throw openfluid::base::OFException if this Observer is not in the Monitoring descriptor
-     */
-    openfluid::fluidx::ObserverDescriptor& getDescriptor(
-        std::string ObserverID) const;
-
-    /**
-     * @brief Adds the Observer with ObserverID to the Monitoring descriptor if it's Signature is available
-     * @throw openfluid::base::OFException if this Observer plugin is not available
-     */
-    void addToObserverList(std::string ObserverID);
-
-    /**
-     * @brief Removes the Observer with ObserverID from the Monitoring descriptor
-     * @throw openfluid::base::OFException if this Observer is not in the Monitoring descriptor
-     */
-    void removeFromObserverList(std::string ObserverID);
-
-    /**
-     * @brief Replace existing observers with ObserversList
-     */
-    void setItems(
-        std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList);
-
-};
-
+  return Observers;
 }
-} //namespaces
-#endif /* ADVANCEDMONITORINGDESCRIPTOR_HPP_ */
+
+// =====================================================================
+// =====================================================================
+
+std::vector<openfluid::machine::ObserverSignatureInstance*> WaresHelper::getUnusedAvailableObserverSignatures(
+    const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc)
+{
+  std::vector<openfluid::machine::ObserverSignatureInstance*> Signs;
+
+  std::vector<openfluid::machine::ObserverSignatureInstance*> AvailableSignatures =
+      openfluid::ware::ObserverSignatureRegistry::getInstance()->getAvailableSignatures();
+
+  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
+      AvailableSignatures.begin(); it != AvailableSignatures.end(); ++it)
+  {
+    try
+    {
+      Desc.getDescriptor((*it)->Signature->ID);
+    }
+    catch (openfluid::base::OFException& e)
+    {
+      Signs.push_back(*it);
+    }
+  }
+
+  return Signs;
+}
+
+// =====================================================================
+// =====================================================================
+

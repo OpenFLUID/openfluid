@@ -59,6 +59,7 @@
 #include <gtkmm/separator.h>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -207,7 +208,8 @@ void MonitoringEditParamsDialog::init(std::string ObserverID)
   mp_IdLabel->set_markup("<b>" + ObserverID + "</b>");
 
   mp_DescLabel->set_text(
-      m_Monit.getSignature(ObserverID).Signature->Description);
+      openfluid::ware::ObserverSignatureRegistry::getInstance()->getSignature(
+          ObserverID).Signature->Description);
 
   m_ParamsByIndex.clear();
 
