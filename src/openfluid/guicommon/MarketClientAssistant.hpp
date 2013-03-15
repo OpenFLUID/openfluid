@@ -106,8 +106,8 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     Gtk::Notebook m_TypesTabs;
 
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*> m_AvailTypesPacksBox;
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::ScrolledWindow*> m_AvailTypesPacksSWindow;
+    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*> mp_AvailTypesPacksBox;
+    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::ScrolledWindow*> mp_AvailTypesPacksSWindow;
 
     Gtk::HBox m_ActionButtonsBox;
     Gtk::Button m_SelectAllButton;

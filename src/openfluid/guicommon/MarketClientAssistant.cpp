@@ -639,7 +639,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
   std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*>::iterator ATPBiter;
 
-  for (ATPBiter = m_AvailTypesPacksBox.begin(); ATPBiter != m_AvailTypesPacksBox.end(); ++ATPBiter)
+  for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
   {
     // VBox exists ?
     if (ATPBiter->second != 0)
@@ -675,10 +675,10 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
 
   // initializing pointers
-  for (ATPBiter = m_AvailTypesPacksBox.begin(); ATPBiter != m_AvailTypesPacksBox.end(); ++ATPBiter)
+  for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
   {
     ATPBiter->second = 0;
-    m_AvailTypesPacksSWindow[ATPBiter->first] = 0;
+    mp_AvailTypesPacksSWindow[ATPBiter->first] = 0;
   }
 
 
@@ -690,11 +690,11 @@ void MarketClientAssistant::updateAvailPacksTreeview()
     if (!TCIter->second.empty())
     {
       // Create ScrolledWindow and VBox
-      m_AvailTypesPacksSWindow[TCIter->first] = Gtk::manage(new Gtk::ScrolledWindow());
+      mp_AvailTypesPacksSWindow[TCIter->first] = Gtk::manage(new Gtk::ScrolledWindow());
 
-      m_AvailTypesPacksBox[TCIter->first] = Gtk::manage(new Gtk::VBox(false,0));
-      m_AvailTypesPacksSWindow[TCIter->first]->add(*m_AvailTypesPacksBox[TCIter->first]);
-      m_AvailTypesPacksSWindow[TCIter->first]->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
+      mp_AvailTypesPacksBox[TCIter->first] = Gtk::manage(new Gtk::VBox(false,0));
+      mp_AvailTypesPacksSWindow[TCIter->first]->add(*mp_AvailTypesPacksBox[TCIter->first]);
+      mp_AvailTypesPacksSWindow[TCIter->first]->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
 
       // Adding packages in VBox
@@ -706,12 +706,12 @@ void MarketClientAssistant::updateAvailPacksTreeview()
             sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
         );
 
-        if (CIter != TCIter->second.begin()) m_AvailTypesPacksBox[TCIter->first]->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
-        m_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
+        if (CIter != TCIter->second.begin()) mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
+        mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
       }
 
       // Create tab
-      m_TypesTabs.append_page(*m_AvailTypesPacksSWindow[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true));
+      m_TypesTabs.append_page(*mp_AvailTypesPacksSWindow[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true));
     }
   }
 
