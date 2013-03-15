@@ -114,7 +114,7 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     Gtk::Button m_SelectNoneButton;
     Gtk::Button m_CommonBuildConfigButton;
 
-    std::list<MarketPackWidget*> mp_AvailPacksWidgets;
+    std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > mp_AvailPacksWidgets;
 
     void onURLComboChanged();
 

@@ -482,22 +482,27 @@ void MarketClientAssistant::onPackageInstallModified()
 {
   bool Selection = false;
 
+  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
-  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
-  {
-    MarketPackWidget* MPW;
-    MPW = *APLiter;
-    Selection = Selection || MPW->isInstall();
 
-    if (MPW->isInstall())
+  for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
+  {
+    for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
     {
-      m_MarketClient.setSelectionFlag(MPW->getID(),MPW->getPackageFormat());
+      MarketPackWidget* MPW;
+      MPW = *APLiter;
+      Selection = Selection || MPW->isInstall();
+
+      if (MPW->isInstall())
+      {
+        m_MarketClient.setSelectionFlag(MPW->getID(),MPW->getPackageFormat());
+      }
+      else
+      {
+        m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
+      }
+      m_MarketClient.setSRCBuildOptions(MPW->getID(),MPW->getEditedBuildOptions());
     }
-    else
-    {
-      m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
-    }
-    m_MarketClient.setSRCBuildOptions(MPW->getID(),MPW->getEditedBuildOptions());
   }
 
   set_page_complete(m_SelectionPageBox,Selection);
@@ -512,13 +517,17 @@ void MarketClientAssistant::onPackageInstallModified()
 
 void MarketClientAssistant::onSelectAllClicked()
 {
+  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
 
-  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
   {
-    MarketPackWidget* MPW;
-    MPW = *APLiter;
-    MPW->setInstall(true);
+    for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
+    {
+      MarketPackWidget* MPW;
+      MPW = *APLiter;
+      MPW->setInstall(true);
+    }
   }
 
 }
@@ -529,13 +538,17 @@ void MarketClientAssistant::onSelectAllClicked()
 
 void MarketClientAssistant::onSelectNoneClicked()
 {
+  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
 
-  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
   {
-    MarketPackWidget* MPW;
-    MPW = *APLiter;
-    MPW->setInstall(false);
+    for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
+    {
+      MarketPackWidget* MPW;
+      MPW = *APLiter;
+      MPW->setInstall(false);
+    }
   }
 }
 
@@ -552,10 +565,14 @@ void MarketClientAssistant::onCommonBuildConfigClicked()
   {
     openfluid::market::MarketPackage::setCommonBuildOptions(OptDialog.getEditedOptions());
 
+    std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
     std::list<MarketPackWidget*>::iterator APLiter;
 
-    for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
-      ((MarketPackWidget*)(*APLiter))->updateDisplayedInfos();
+    for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
+    {
+      for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
+        ((MarketPackWidget*)(*APLiter))->updateDisplayedInfos();
+    }
   }
 }
 
@@ -654,14 +671,18 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   }
 
 
+  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
 
   // destroying widgets from available packages list
-  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
   {
-    MarketPackWidget* MPW;
-    MPW = *APLiter;
-    delete MPW;
+    for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
+    {
+      MarketPackWidget* MPW;
+      MPW = *APLiter;
+      delete MPW;
+    }
   }
 
   mp_AvailPacksWidgets.clear();
@@ -701,13 +722,13 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
       {
 
-        mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->second));
-        mp_AvailPacksWidgets.back()->signal_install_modified().connect(
+        mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(CIter->second));
+        mp_AvailPacksWidgets[TCIter->first].back()->signal_install_modified().connect(
             sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
         );
 
         if (CIter != TCIter->second.begin()) mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
-        mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
+        mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets[TCIter->first].back()),Gtk::PACK_SHRINK,0);
       }
 
       // Create tab
