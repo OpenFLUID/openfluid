@@ -694,6 +694,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     if (OptionsVars["buddyhelp"].as<std::string>() == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
+    if (OptionsVars["buddyhelp"].as<std::string>() == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
 
 
     if (Buddy != NULL)
@@ -864,6 +865,7 @@ void OpenFLUIDApp::runBuddy()
   if (m_BuddyToRun.first == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy(BuddyObs);
   if (m_BuddyToRun.first == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy(BuddyObs);
   if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
+  if (m_BuddyToRun.first == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
 
   if (Buddy != NULL)
   {

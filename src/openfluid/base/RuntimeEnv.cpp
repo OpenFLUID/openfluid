@@ -166,6 +166,9 @@ RuntimeEnvironment::RuntimeEnvironment() :
       + openfluid::config::DEFAULT_OUTDIR).string();
   m_InputDir = boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::DEFAULT_INDIR).string();
+
+  // ====== Market ======
+
   m_MarketBagDir = boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::MARKETBAG_SUBDIR).string();
   m_MarketBagBinVersionDir = boost::filesystem::path(m_MarketBagDir + "/"
@@ -173,8 +176,21 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_MarketBagSrcVersionDir = boost::filesystem::path(m_MarketBagDir + "/src/"
       + m_MajorMinorVersion).string();
 
+
+  // ====== Config file ======
+
   m_DefaultConfigFilePath = boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::DEFAULT_CONFIGFILE).string();
+
+
+  // ====== Examples ======
+
+  m_UserExamplesDir = boost::filesystem::path(m_UserDataDir + "/"
+      + openfluid::config::EXAMPLES_SUBDIR).string();
+
+  m_ProvidedExamplesDir = boost::filesystem::path(m_InstallPrefix + "/"
+        + openfluid::config::EXAMPLES_STDDIR).string();
+
 
   // ====== Default values ======
 

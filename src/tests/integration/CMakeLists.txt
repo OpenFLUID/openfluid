@@ -411,6 +411,40 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2DocPDFHTML
 ###########################################################################
 
 
+ADD_TEST(integration-BuddyExamplesHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
+                              "--buddyhelp" "examples"
+                              )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesInstallAll
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
+                              "--buddy" "examples"
+                              "--buddyopts" "selection=*,sourcedir=${EXAMPLES_PROJECTS_PATH},installdir=${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects,force=1"
+                   PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/examplesbuddy"                              
+                              )
+  
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesRunPrimitives 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                              "-w" "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives"                                                   
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/examples.primitives.unitsA.prod_ofware-func.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/examples.primitives.unitsB.prod_ofware-func.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/fullA_unitsA1_var1.csv"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/fullB_unitsB2_var5.csv"
+                   )
+SET_PROPERTY(TEST integration-BuddyExamplesRunPrimitives APPEND PROPERTY DEPENDS integration-BuddyExamplesInstallAll)
+
+
+###########################################################################
+
+
 ADD_TEST(integration-BuddyNewFuncHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                               "--buddyhelp" "newfunc"
                               )

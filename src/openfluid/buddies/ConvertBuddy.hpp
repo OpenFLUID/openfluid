@@ -59,7 +59,7 @@
 #include <map>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
+#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 //
 //#include <openfluid/core.hpp>

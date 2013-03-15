@@ -61,7 +61,7 @@
 #include <vector>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/buddies/OFBuddy.hpp>
+#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 
 
 namespace openfluid { namespace buddies {
