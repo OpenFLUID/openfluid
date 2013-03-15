@@ -56,7 +56,7 @@
 
 #include <boost/foreach.hpp>
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include "DomainIDataColumns.hpp"
 #include "BuilderListStore.hpp"
@@ -65,7 +65,7 @@
 // =====================================================================
 
 DomainIDataAdapterModelImpl::DomainIDataAdapterModelImpl(
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), mp_Columns(new DomainIDataColumns()), mref_ListStore(
         BuilderListStore::create(*mp_Columns)), m_SelectedUnit(-1), m_ClassName(
         "")

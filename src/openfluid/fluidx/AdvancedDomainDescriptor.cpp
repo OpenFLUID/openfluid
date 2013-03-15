@@ -46,13 +46,13 @@
  */
 
 /**
- \file BuilderDomain.cpp
+ \file AdvancedDomainDescriptor.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/UnitDescriptor.hpp>
@@ -61,12 +61,12 @@
 #include <algorithm>
 
 namespace openfluid {
-namespace guicommon {
+namespace fluidx {
 
 // =====================================================================
 // =====================================================================
 
-BuilderDomain::BuilderDomain(openfluid::fluidx::DomainDescriptor& DomainDesc) :
+AdvancedDomainDescriptor::AdvancedDomainDescriptor(openfluid::fluidx::DomainDescriptor& DomainDesc) :
     mp_DomainDesc(&DomainDesc)
 {
   dispatchUnits();
@@ -81,14 +81,14 @@ BuilderDomain::BuilderDomain(openfluid::fluidx::DomainDescriptor& DomainDesc) :
 // =====================================================================
 // =====================================================================
 
-BuilderDomain::~BuilderDomain()
+AdvancedDomainDescriptor::~AdvancedDomainDescriptor()
 {
 }
 
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::dispatchUnits()
+void AdvancedDomainDescriptor::dispatchUnits()
 {
   std::list<openfluid::fluidx::UnitDescriptor>* Units =
       &(mp_DomainDesc->getUnits());
@@ -99,7 +99,7 @@ void BuilderDomain::dispatchUnits()
     if (!m_Units[it->getUnitClass()].insert(
         std::make_pair(it->getUnitID(), BuilderUnit(*it))).second)
       throw openfluid::base::OFException(
-          "OpenFLUID-Builder", "BuilderDomain::dispatchUnits",
+          "OpenFLUID-Builder", "AdvancedDomainDescriptor::dispatchUnits",
           "trying to add a Unit that already exists");
   }
 }
@@ -107,7 +107,7 @@ void BuilderDomain::dispatchUnits()
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::checkUnitRelations()
+void AdvancedDomainDescriptor::checkUnitRelations()
 {
   std::list<openfluid::fluidx::UnitDescriptor>* Units =
       &(mp_DomainDesc->getUnits());
@@ -130,7 +130,7 @@ void BuilderDomain::checkUnitRelations()
            << " in \"To\" relation of unit " << it->getUnitID() << " of class "
            << it->getUnitClass() << " doesn't exist";
         throw openfluid::base::OFException("OpenFLUID-Builder",
-                                           "BuilderDomain::checkUnitRelations",
+                                           "AdvancedDomainDescriptor::checkUnitRelations",
                                            ss.str());
       }
     }
@@ -150,7 +150,7 @@ void BuilderDomain::checkUnitRelations()
            << " in \"Parent\" relation of unit " << it->getUnitID()
            << " of class " << it->getUnitClass() << " doesn't exist";
         throw openfluid::base::OFException("OpenFLUID-Builder",
-                                           "BuilderDomain::checkUnitRelations",
+                                           "AdvancedDomainDescriptor::checkUnitRelations",
                                            ss.str());
       }
     }
@@ -161,7 +161,7 @@ void BuilderDomain::checkUnitRelations()
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::dispatchIData()
+void AdvancedDomainDescriptor::dispatchIData()
 {
   std::list<openfluid::fluidx::InputDataDescriptor>* IData =
       &(mp_DomainDesc->getInputData());
@@ -190,7 +190,7 @@ void BuilderDomain::dispatchIData()
               std::make_pair(it3->first, &it3->second)).second)
             throw openfluid::base::OFException(
                 "OpenFLUID-Builder",
-                "BuilderDomain::dispatchIData",
+                "AdvancedDomainDescriptor::dispatchIData",
                 "trying to add an input data (" + it3->first
                 + ") that already exists");
         }
@@ -201,7 +201,7 @@ void BuilderDomain::dispatchIData()
              << ") to a Unit that doesn't exist (class " << it->getUnitsClass()
              << " - ID " << it2->first << ")";
           throw openfluid::base::OFException("OpenFLUID-Builder",
-                                             "BuilderDomain::dispatchIData",
+                                             "AdvancedDomainDescriptor::dispatchIData",
                                              ss.str());
         }
       }
@@ -212,7 +212,7 @@ void BuilderDomain::dispatchIData()
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::checkIDataConsistency()
+void AdvancedDomainDescriptor::checkIDataConsistency()
 {
   for (std::map<std::string, std::set<std::string> >::iterator it =
       m_IDataNames.begin(); it != m_IDataNames.end(); ++it)
@@ -222,7 +222,7 @@ void BuilderDomain::checkIDataConsistency()
 
     if (!isClassNameExists(ClassName))
       throw openfluid::base::OFException(
-          "OpenFLUID-Builder", "BuilderDomain::checkIDataConsistency",
+          "OpenFLUID-Builder", "AdvancedDomainDescriptor::checkIDataConsistency",
           "class " + ClassName + " doesn't exist");
 
     std::map<int, BuilderUnit>* Units = &(m_Units.at(ClassName));
@@ -243,7 +243,7 @@ void BuilderDomain::checkIDataConsistency()
           ss << "Input data " << IDataName << " doesn't exist for Unit " << ID
              << " of class " << ClassName;
           throw openfluid::base::OFException(
-              "OpenFLUID-Builder", "BuilderDomain::checkIDataConsistency",
+              "OpenFLUID-Builder", "AdvancedDomainDescriptor::checkIDataConsistency",
               ss.str());
         }
       }
@@ -255,7 +255,7 @@ void BuilderDomain::checkIDataConsistency()
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::dispatchEvents()
+void AdvancedDomainDescriptor::dispatchEvents()
 {
   std::list<openfluid::fluidx::EventDescriptor>* Events =
       &(mp_DomainDesc->getEvents());
@@ -273,7 +273,7 @@ void BuilderDomain::dispatchEvents()
       // Factory does nothing in this case
 //      throw openfluid::base::OFException(
 //          "OpenFLUID-Builder",
-//          "BuilderDomain::dispatchEvents",
+//          "AdvancedDomainDescriptor::dispatchEvents",
 //          "trying to add an event to a Unit that doesn't exist");
     }
   }
@@ -282,7 +282,7 @@ void BuilderDomain::dispatchEvents()
 // =====================================================================
 // =====================================================================
 
-const std::map<std::string, std::map<int, BuilderUnit> >& BuilderDomain::getUnitsByIdByClass()
+const std::map<std::string, std::map<int, BuilderUnit> >& AdvancedDomainDescriptor::getUnitsByIdByClass()
 {
   return m_Units;
 }
@@ -290,7 +290,7 @@ const std::map<std::string, std::map<int, BuilderUnit> >& BuilderDomain::getUnit
 // =====================================================================
 // =====================================================================
 
-const BuilderUnit& BuilderDomain::getUnit(std::string ClassName, int ID)
+const BuilderUnit& AdvancedDomainDescriptor::getUnit(std::string ClassName, int ID)
 {
   try
   {
@@ -299,7 +299,7 @@ const BuilderUnit& BuilderDomain::getUnit(std::string ClassName, int ID)
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::getUnit",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::getUnit",
         "trying to get a Unit that doesn't exist");
   }
 }
@@ -307,7 +307,7 @@ const BuilderUnit& BuilderDomain::getUnit(std::string ClassName, int ID)
 // =====================================================================
 // =====================================================================
 
-const openfluid::fluidx::UnitDescriptor& BuilderDomain::getUnitDescriptor(
+const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescriptor(
     std::string ClassName, int ID)
 {
   return *(getUnit(ClassName, ID).mp_UnitDesc);
@@ -316,7 +316,7 @@ const openfluid::fluidx::UnitDescriptor& BuilderDomain::getUnitDescriptor(
 // =====================================================================
 // =====================================================================
 
-std::set<int> BuilderDomain::getIDsOfClass(std::string ClassName)
+std::set<int> AdvancedDomainDescriptor::getIDsOfClass(std::string ClassName)
 {
   std::set<int> IDs;
 
@@ -333,7 +333,7 @@ std::set<int> BuilderDomain::getIDsOfClass(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-bool BuilderDomain::isClassNameExists(std::string ClassName)
+bool AdvancedDomainDescriptor::isClassNameExists(std::string ClassName)
 {
   return m_Units.count(ClassName);
 }
@@ -341,7 +341,7 @@ bool BuilderDomain::isClassNameExists(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-std::set<std::string> BuilderDomain::getClassNames()
+std::set<std::string> AdvancedDomainDescriptor::getClassNames()
 {
   std::set<std::string> Classes;
 
@@ -355,7 +355,7 @@ std::set<std::string> BuilderDomain::getClassNames()
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc)
+void AdvancedDomainDescriptor::addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc)
 {
   std::string ClassName = UnitDesc->getUnitClass();
   int ID = UnitDesc->getUnitID();
@@ -363,7 +363,7 @@ void BuilderDomain::addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc)
   // add in m_Units
   if (!m_Units[ClassName].insert(std::make_pair(ID, BuilderUnit(*UnitDesc))).second)
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::addUnit",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addUnit",
         "trying to add a Unit that already exists");
 
   // add in DomainDesc
@@ -394,7 +394,7 @@ void BuilderDomain::addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc)
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::deleteUnit(std::string ClassName, int ID)
+void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
 {
   // delete in m_Units
   m_Units[ClassName].erase(ID);
@@ -471,7 +471,7 @@ void BuilderDomain::deleteUnit(std::string ClassName, int ID)
 // =====================================================================
 // =====================================================================
 
-std::string& BuilderDomain::getInputData(std::string ClassName, int ID,
+std::string& AdvancedDomainDescriptor::getInputData(std::string ClassName, int ID,
                                          std::string IDataName)
 {
   try
@@ -481,7 +481,7 @@ std::string& BuilderDomain::getInputData(std::string ClassName, int ID,
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::getInputData",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::getInputData",
         "trying to get an Input data that doesn't exist");
   }
 }
@@ -489,7 +489,7 @@ std::string& BuilderDomain::getInputData(std::string ClassName, int ID,
 // =====================================================================
 // =====================================================================
 
-std::set<std::string> BuilderDomain::getInputDataNames(std::string ClassName)
+std::set<std::string> AdvancedDomainDescriptor::getInputDataNames(std::string ClassName)
 {
   std::set<std::string> Names;
 
@@ -502,17 +502,17 @@ std::set<std::string> BuilderDomain::getInputDataNames(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::addInputData(std::string ClassName, std::string IDataName,
+void AdvancedDomainDescriptor::addInputData(std::string ClassName, std::string IDataName,
                                  std::string DefaultValue)
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::addInputData",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addInputData",
         "trying to add an Input data to a Class that doesn't exist");
 
   if (getInputDataNames(ClassName).count(IDataName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::addInputData",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addInputData",
         "trying to add an Input data that already exists");
 
   // add in DomainDesc
@@ -548,17 +548,17 @@ void BuilderDomain::addInputData(std::string ClassName, std::string IDataName,
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::deleteInputData(std::string ClassName,
+void AdvancedDomainDescriptor::deleteInputData(std::string ClassName,
                                     std::string IDataName)
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::deleteInputData",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::deleteInputData",
         "trying to delete an Input data from a Class that doesn't exist");
 
   if (!getInputDataNames(ClassName).count(IDataName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::deleteInputData",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::deleteInputData",
         "trying to delete an Input data that doesn't exist");
 
   // delete in m_Units
@@ -596,7 +596,7 @@ void BuilderDomain::deleteInputData(std::string ClassName,
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::renameInputData(std::string ClassName,
+void AdvancedDomainDescriptor::renameInputData(std::string ClassName,
                                     std::string OldIDataName,
                                     std::string NewIDataName)
 {
@@ -605,12 +605,12 @@ void BuilderDomain::renameInputData(std::string ClassName,
 
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::renameInputData",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::renameInputData",
         "trying to rename an Input data of a Class that doesn't exist");
 
   if (!getInputDataNames(ClassName).count(OldIDataName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::renameInputData",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::renameInputData",
         "trying to rename an Input data that doesn't exist");
 
   //rename in DomainDesc
@@ -659,7 +659,7 @@ void BuilderDomain::renameInputData(std::string ClassName,
 // =====================================================================
 // =====================================================================
 
-std::list<openfluid::core::UnitClassID_t>& BuilderDomain::getUnitsToOf(
+std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUnitsToOf(
     const openfluid::core::UnitClassID_t Unit)
 {
   try
@@ -669,7 +669,7 @@ std::list<openfluid::core::UnitClassID_t>& BuilderDomain::getUnitsToOf(
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::getUnitsToOf",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::getUnitsToOf",
         "trying to get relations of a Unit that doesn't exist");
   }
 }
@@ -677,7 +677,7 @@ std::list<openfluid::core::UnitClassID_t>& BuilderDomain::getUnitsToOf(
 // =====================================================================
 // =====================================================================
 
-std::list<openfluid::core::UnitClassID_t>& BuilderDomain::getUnitsParentsOf(
+std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUnitsParentsOf(
     const openfluid::core::UnitClassID_t Unit)
 {
   try
@@ -687,7 +687,7 @@ std::list<openfluid::core::UnitClassID_t>& BuilderDomain::getUnitsParentsOf(
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "BuilderDomain::getUnitsParentsOf",
+        "OpenFLUID-Builder", "AdvancedDomainDescriptor::getUnitsParentsOf",
         "trying to get relations of a Unit that doesn't exist");
   }
 }
@@ -695,7 +695,7 @@ std::list<openfluid::core::UnitClassID_t>& BuilderDomain::getUnitsParentsOf(
 // =====================================================================
 // =====================================================================
 
-std::list<openfluid::core::UnitClassID_t> BuilderDomain::getUnitsFromOf(
+std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsFromOf(
     const openfluid::core::UnitClassID_t Unit)
 {
   std::list<openfluid::core::UnitClassID_t> Froms;
@@ -723,7 +723,7 @@ std::list<openfluid::core::UnitClassID_t> BuilderDomain::getUnitsFromOf(
 // =====================================================================
 // =====================================================================
 
-std::list<openfluid::core::UnitClassID_t> BuilderDomain::getUnitsChildrenOf(
+std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsChildrenOf(
     const openfluid::core::UnitClassID_t Unit)
 {
   std::list<openfluid::core::UnitClassID_t> Children;
@@ -751,7 +751,7 @@ std::list<openfluid::core::UnitClassID_t> BuilderDomain::getUnitsChildrenOf(
 // =====================================================================
 // =====================================================================
 
-void BuilderDomain::clearDomain()
+void AdvancedDomainDescriptor::clearDomain()
 {
   mp_DomainDesc->getUnits().clear();
   mp_DomainDesc->getInputData().clear();

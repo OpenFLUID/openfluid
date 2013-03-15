@@ -61,9 +61,7 @@
 namespace openfluid {
 namespace fluidx {
 class FluidXDescriptor;
-}
-namespace guicommon {
-class BuilderDescriptor;
+class AdvancedFluidXDescriptor;
 }
 }
 

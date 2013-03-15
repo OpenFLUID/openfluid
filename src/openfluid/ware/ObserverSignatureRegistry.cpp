@@ -46,55 +46,79 @@
  */
 
 /**
- \file MonitoringComponent.cpp
+ \file ObserverSignatureRegistry.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "MonitoringComponent.hpp"
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
-#include "MonitoringModel.hpp"
-#include "MonitoringView.hpp"
-#include "MonitoringPresenter.hpp"
+#include <openfluid/machine/ObserverPluginsManager.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+
+namespace openfluid {
+namespace ware {
+
+ObserverSignatureRegistry* ObserverSignatureRegistry::m_Instance = 0;
 
 // =====================================================================
 // =====================================================================
 
-MonitoringComponent::MonitoringComponent(
-    openfluid::fluidx::AdvancedMonitoringDescriptor& Monitoring)
+ObserverSignatureRegistry::ObserverSignatureRegistry()
 {
-  mp_Model = new MonitoringModel(Monitoring);
-  mp_View = new MonitoringView();
-  mp_Presenter = new MonitoringPresenter(*mp_Model, *mp_View);
+  update();
 }
 
 // =====================================================================
 // =====================================================================
 
-MonitoringComponent::~MonitoringComponent()
+ObserverSignatureRegistry* ObserverSignatureRegistry::getInstance()
 {
-  delete mp_Presenter;
-  delete mp_Model;
-  delete mp_View;
+  if (!m_Instance)
+    m_Instance = new ObserverSignatureRegistry();
+
+  return m_Instance;
 }
 
 // =====================================================================
 // =====================================================================
 
-Gtk::Widget* MonitoringComponent::asWidget()
+const openfluid::machine::ObserverSignatureInstance& ObserverSignatureRegistry::getSignature(
+    std::string ObserverID)
 {
-  return mp_View->asWidget();
+  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
+      m_AvailableSignatures.begin(); it != m_AvailableSignatures.end(); ++it)
+  {
+    if ((*it)->Signature->ID == ObserverID)
+      return **it;
+  }
+
+  throw openfluid::base::OFException(
+      "OpenFLUID Framework", "AdvancedMonitoringDescriptor::getSignature",
+      "Observer " + ObserverID + " is not available");
 }
 
 // =====================================================================
 // =====================================================================
 
-MonitoringModel* MonitoringComponent::getModel()
+void ObserverSignatureRegistry::update()
 {
-  return mp_Model;
+  openfluid::machine::ObserverPluginsManager::getInstance()->unloadAllWares();
+  m_AvailableSignatures =
+      openfluid::machine::ObserverPluginsManager::getInstance()->getAvailableWaresSignatures();
 }
 
 // =====================================================================
 // =====================================================================
 
+std::vector<openfluid::machine::ObserverSignatureInstance*> ObserverSignatureRegistry::getAvailableSignatures()
+{
+  return m_AvailableSignatures;
+}
+
+// =====================================================================
+// =====================================================================
+
+}
+} /* namespace openfluid */

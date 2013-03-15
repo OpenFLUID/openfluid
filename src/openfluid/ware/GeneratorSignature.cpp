@@ -52,10 +52,10 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "GeneratorSignature.hpp"
+#include <openfluid/ware/GeneratorSignature.hpp>
 
 namespace openfluid {
-namespace guicommon {
+namespace ware {
 
 // =====================================================================
 // =====================================================================

@@ -46,55 +46,81 @@
  */
 
 /**
- \file BuilderDescriptor.hpp
- \brief Header of ...
+ \file AdvancedFluidXDescriptor.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef BUILDERDESCRIPTOR_HPP_
-#define BUILDERDESCRIPTOR_HPP_
-
-#include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/guicommon/BuilderDomain.hpp>
-#include <openfluid/guicommon/BuilderModel.hpp>
-#include <openfluid/guicommon/BuilderMonitoring.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 namespace openfluid {
-namespace guicommon {
+namespace fluidx {
 
-class BuilderDescriptor
+// =====================================================================
+// =====================================================================
+
+AdvancedFluidXDescriptor::AdvancedFluidXDescriptor(
+    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
 {
-  private:
+  mp_Domain = new AdvancedDomainDescriptor(FluidXDesc.getDomainDescriptor());
+  mp_Model = new AdvancedModelDescriptor(FluidXDesc.getModelDescriptor());
+  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
+  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
+  mp_Monitoring = new AdvancedMonitoringDescriptor(FluidXDesc.getMonitoringDescriptor());
+}
 
-    BuilderDomain* mp_Domain;
+// =====================================================================
+// =====================================================================
 
-    BuilderModel* mp_Model;
+AdvancedFluidXDescriptor::~AdvancedFluidXDescriptor()
+{
 
-    openfluid::fluidx::RunDescriptor* mp_RunDesc;
+}
 
-    openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
+// =====================================================================
+// =====================================================================
 
-    BuilderMonitoring* mp_Monitoring;
+AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain()
+{
+  return *mp_Domain;
+}
 
-  public:
+// =====================================================================
+// =====================================================================
 
-    BuilderDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
+AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel()
+{
+  return *mp_Model;
+}
 
-    ~BuilderDescriptor();
+// =====================================================================
+// =====================================================================
 
-    BuilderDomain& getDomain();
+openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescriptor()
+{
+  return *mp_RunDesc;
+}
 
-    BuilderModel& getModel();
+// =====================================================================
+// =====================================================================
 
-    openfluid::fluidx::RunDescriptor& getRunDescriptor();
+openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatastoreDescriptor()
+{
+  return *mp_DatastoreDesc;
+}
 
-    openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
+// =====================================================================
+// =====================================================================
 
-    BuilderMonitoring& getMonitoring();
-};
+AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring()
+{
+  return *mp_Monitoring;
+}
+
+// =====================================================================
+// =====================================================================
 
 }
 } // namespaces
 
-#endif /* BUILDERDESCRIPTOR_HPP_ */

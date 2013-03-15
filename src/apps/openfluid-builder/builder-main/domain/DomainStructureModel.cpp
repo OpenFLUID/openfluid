@@ -55,7 +55,7 @@
 #include "DomainStructureModel.hpp"
 
 #include <openfluid/fluidx/UnitDescriptor.hpp>
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -73,7 +73,7 @@ void DomainStructureModelImpl::deleteUnit(
 // =====================================================================
 
 DomainStructureModelImpl::DomainStructureModelImpl(
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), mp_SelectedUnit(0), m_SelectedClass("")
 {
 }
@@ -121,7 +121,7 @@ sigc::signal<void> DomainStructureModelImpl::signal_Activated()
 // =====================================================================
 // =====================================================================
 
-const std::map<std::string, std::map<int, openfluid::guicommon::BuilderUnit> >& DomainStructureModelImpl::getUnitListByClass()
+const std::map<std::string, std::map<int, openfluid::fluidx::BuilderUnit> >& DomainStructureModelImpl::getUnitListByClass()
 {
   return mp_Domain->getUnitsByIdByClass();
 }
@@ -209,7 +209,7 @@ void DomainStructureModelImpl::update()
 // =====================================================================
 
 DomainStructureModelSub::DomainStructureModelSub(
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     DomainStructureModelImpl(Domain)
 {
 

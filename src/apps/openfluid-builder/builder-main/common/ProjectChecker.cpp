@@ -55,17 +55,17 @@
 #include "ProjectChecker.hpp"
 
 #include <boost/filesystem/operations.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 
 // =====================================================================
 // =====================================================================
 
-ProjectChecker::ProjectChecker(openfluid::guicommon::BuilderDescriptor& Desc) :
+ProjectChecker::ProjectChecker(openfluid::fluidx::AdvancedFluidXDescriptor& Desc) :
     mp_Desc(&Desc)
 {
   clearAll();
@@ -143,12 +143,12 @@ bool ProjectChecker::check()
 
 void ProjectChecker::checkModelRequirements()
 {
-  openfluid::guicommon::BuilderModel& Model = mp_Desc->getModel();
-  openfluid::guicommon::BuilderDomain& Domain = mp_Desc->getDomain();
+  openfluid::fluidx::AdvancedModelDescriptor& Model = mp_Desc->getModel();
+  openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       Model.getItems();
-  openfluid::guicommon::FunctionSignatureRegistry* Reg =
-      openfluid::guicommon::FunctionSignatureRegistry::getInstance();
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
   openfluid::base::RuntimeEnvironment* RunEnv =
       openfluid::base::RuntimeEnvironment::getInstance();
   openfluid::ware::FunctionSignature* Sign;
@@ -209,7 +209,7 @@ void ProjectChecker::checkModelRequirements()
       if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
       {
         openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
-            (static_cast<openfluid::guicommon::GeneratorSignature*>(Sign))->m_GeneratorMethod;
+            (static_cast<openfluid::ware::GeneratorSignature*>(Sign))->m_GeneratorMethod;
 
         if (Method == openfluid::fluidx::GeneratorDescriptor::Random && !m_RandomMinMaxChecked)
         {
@@ -325,11 +325,11 @@ double ProjectChecker::getParamAsDouble(
 
 void ProjectChecker::checkModelVars()
 {
-  openfluid::guicommon::BuilderDomain& Domain = mp_Desc->getDomain();
+  openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_Desc->getModel().getItems();
-  openfluid::guicommon::FunctionSignatureRegistry* Reg =
-      openfluid::guicommon::FunctionSignatureRegistry::getInstance();
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
   openfluid::ware::FunctionSignature* Sign;
   std::vector<openfluid::ware::SignatureHandledTypedDataItem>::iterator itt;
 

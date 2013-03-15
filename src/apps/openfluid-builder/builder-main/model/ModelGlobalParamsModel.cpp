@@ -57,15 +57,15 @@
 #include <boost/foreach.hpp>
 
 #include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/guicommon/BuilderModel.hpp>
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
 // =====================================================================
 // =====================================================================
 
 ModelGlobalParamsModelImpl::ModelGlobalParamsModelImpl(
-    openfluid::guicommon::BuilderModel& Model) :
+    openfluid::fluidx::AdvancedModelDescriptor& Model) :
     mp_Model(&Model)
 {
 }
@@ -93,8 +93,8 @@ void ModelGlobalParamsModelImpl::update()
 {
   m_GloballyNotUsed.clear();
 
-  openfluid::guicommon::FunctionSignatureRegistry* Reg =
-      openfluid::guicommon::FunctionSignatureRegistry::getInstance();
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_Model->getItems();

@@ -57,13 +57,13 @@
 
 #include <set>
 #include <sigc++/sigc++.h>
-#include <openfluid/guicommon/BuilderMonitoring.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
 class MonitoringModel
 {
   private:
 
-    openfluid::guicommon::BuilderMonitoring* mp_Monitoring;
+    openfluid::fluidx::AdvancedMonitoringDescriptor* mp_Monitoring;
 
     sigc::signal<void> m_signal_UpdateAsked;
 
@@ -75,7 +75,7 @@ class MonitoringModel
 
   public:
 
-    MonitoringModel(openfluid::guicommon::BuilderMonitoring& Monitoring);
+    MonitoringModel(openfluid::fluidx::AdvancedMonitoringDescriptor& Monitoring);
 
     ~MonitoringModel();
 

@@ -70,7 +70,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/config.hpp>
 #include <openfluid/guicommon/PreferencesPanel.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 
 // =====================================================================
@@ -199,7 +199,7 @@ class PluggableBuilderExtension
 
     sigc::signal<void> m_signal_ChangedOccurs;
 
-    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
 
   public:
 
@@ -208,14 +208,14 @@ class PluggableBuilderExtension
                          HomeLauncher };
 
 
-    PluggableBuilderExtension() : mp_BuilderDesc(NULL) { };
+    PluggableBuilderExtension() : mp_AdvancedDesc(NULL) { };
 
 
     virtual ~PluggableBuilderExtension() { };
 
 
-    void setBuilderDescriptor(openfluid::guicommon::BuilderDescriptor& BuilderDesc)
-      { mp_BuilderDesc = &BuilderDesc; };
+    void setAdvancedFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc)
+      { mp_AdvancedDesc = &AdvancedDesc; };
 
 
     sigc::signal<void> signal_ChangedOccurs()

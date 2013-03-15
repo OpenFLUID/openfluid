@@ -61,13 +61,13 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/infobar.h>
-#include <openfluid/guicommon/BuilderMonitoring.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
 class MonitoringAddObserverDialog
 {
   private:
 
-    openfluid::guicommon::BuilderMonitoring& m_Monit;
+    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monit;
 
     Gtk::Dialog* mp_Dialog;
 
@@ -99,7 +99,7 @@ class MonitoringAddObserverDialog
 
   public:
 
-    MonitoringAddObserverDialog(openfluid::guicommon::BuilderMonitoring& Monit);
+    MonitoringAddObserverDialog(openfluid::fluidx::AdvancedMonitoringDescriptor& Monit);
 
     ~MonitoringAddObserverDialog();
 

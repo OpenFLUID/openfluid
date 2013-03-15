@@ -63,8 +63,8 @@
 #include <set>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -81,7 +81,7 @@ class DomainIDataEditDialog
     Gtk::InfoBar* mp_InfoBar;
     Gtk::Label* mp_InfoBarLabel;
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     std::string m_ClassName;
 
@@ -93,7 +93,7 @@ class DomainIDataEditDialog
 
   public:
 
-    DomainIDataEditDialog(openfluid::guicommon::BuilderDomain& Domain);
+    DomainIDataEditDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     void setClass(std::string ClassName);
 

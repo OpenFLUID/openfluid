@@ -103,13 +103,13 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
     {
       unsigned int Size = 0;
 
-      if (!mp_BuilderDesc)
+      if (!mp_AdvancedDesc)
         mp_Dialog->set_message("I am DummyModelessWindow\n"
                                "Nb of units in TestUnits class: no Domain\n"
                                "Nothing to do");
       else
       {
-        Size = mp_BuilderDesc->getDomain().getIDsOfClass("TestUnits").size();
+        Size = mp_AdvancedDesc->getDomain().getIDsOfClass("TestUnits").size();
 
         mp_Dialog->set_message(
             Glib::ustring::compose(
@@ -169,7 +169,7 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
       {
         unsigned int NextId = 1;
 
-        std::set<int> m_IDs = mp_BuilderDesc->getDomain().getIDsOfClass(
+        std::set<int> m_IDs = mp_AdvancedDesc->getDomain().getIDsOfClass(
             "TestUnits");
 
         if (!m_IDs.empty())
@@ -181,7 +181,7 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
         Unit->getUnitID() = NextId;
         Unit->getProcessOrder() = 1;
 
-        mp_BuilderDesc->getDomain().addUnit(Unit);
+        mp_AdvancedDesc->getDomain().addUnit(Unit);
 
         signal_ChangedOccurs().emit();
       }
@@ -194,7 +194,7 @@ class DummyModelessWindow: public openfluid::builderext::ModelessWindow
 
     bool isReadyForShowtime() const
     {
-      return (mp_BuilderDesc != NULL);
+      return (mp_AdvancedDesc != NULL);
     }
 
 };

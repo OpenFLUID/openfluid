@@ -46,67 +46,41 @@
  */
 
 /**
- \file BuilderMonitoring.hpp
+ \file AdvancedMonitoringDescriptor.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef BUILDERMONITORING_HPP_
-#define BUILDERMONITORING_HPP_
+#ifndef ADVANCEDMONITORINGDESCRIPTOR_HPP_
+#define ADVANCEDMONITORINGDESCRIPTOR_HPP_
 
 #include  <openfluid/fluidx/MonitoringDescriptor.hpp>
 
 namespace openfluid {
+namespace fluidx {
 
-namespace machine {
-class ObserverPluginsManager;
-class ObserverSignatureInstance;
-}
-
-namespace guicommon {
-
-class BuilderMonitoring
+class AdvancedMonitoringDescriptor
 {
   private:
 
     openfluid::fluidx::MonitoringDescriptor* mp_MonitoringDesc;
 
-    openfluid::machine::ObserverPluginsManager* mp_Manager;
-
-    std::vector<openfluid::machine::ObserverSignatureInstance*> m_AvailableSignatures;
-
   public:
 
-    BuilderMonitoring(openfluid::fluidx::MonitoringDescriptor& MonitoringDesc);
+    AdvancedMonitoringDescriptor(
+        openfluid::fluidx::MonitoringDescriptor& MonitoringDesc);
 
-    ~BuilderMonitoring();
+    ~AdvancedMonitoringDescriptor();
 
-    /**
-     * @brief Checks that each Observer of the Monitoring descriptor is available
-     * @details Update the list of all available Observers before checking
-     * @param MissingObservers a textual list of Observers that are in the Monitoring but whose plugin files are not available,
-     * or an empty string if all Observers of the Monitoring are available
-     * @return A copy of the list of Observers that are in the Monitoring, whithout that are not available
-     */
-    std::list<openfluid::fluidx::ObserverDescriptor*> checkAndGetModifiedMonitoring(
-        std::string& MissingObservers);
-
-    const std::list<openfluid::fluidx::ObserverDescriptor*>& getItems();
-
-    /**
-     * @brief Returns the Signature of the Observer with ObserverID if available
-     * @throw openfluid::base::OFException if this Observer plugin is not available
-     */
-    const openfluid::machine::ObserverSignatureInstance& getSignature(
-        std::string ObserverID);
+    const std::list<openfluid::fluidx::ObserverDescriptor*>& getItems() const;
 
     /**
      * @brief Returns the Descriptor of the Observer with ObserverID if is in the Monitoring descriptor
      * @throw openfluid::base::OFException if this Observer is not in the Monitoring descriptor
      */
     openfluid::fluidx::ObserverDescriptor& getDescriptor(
-        std::string ObserverID);
+        std::string ObserverID) const;
 
     /**
      * @brief Adds the Observer with ObserverID to the Monitoring descriptor if it's Signature is available
@@ -120,21 +94,14 @@ class BuilderMonitoring
      */
     void removeFromObserverList(std::string ObserverID);
 
-    std::vector<openfluid::machine::ObserverSignatureInstance*> getUnusedAvailableSignatures();
-
     /**
      * @brief Replace existing observers with ObserversList
      */
     void setItems(
         std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList);
 
-    /**
-     * @brief Updates the list of available signatures, according to Runtime environment paths
-     */
-    void update();
-
 };
 
 }
 } //namespaces
-#endif /* BUILDERMONITORING_HPP_ */
+#endif /* ADVANCEDMONITORINGDESCRIPTOR_HPP_ */

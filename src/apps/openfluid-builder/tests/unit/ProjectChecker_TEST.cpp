@@ -62,9 +62,9 @@
 #include "tests-config.hpp"
 #include "ProjectChecker.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include <openfluid/base/OFException.hpp>
 
 // =====================================================================
@@ -73,7 +73,7 @@
 class ProjectCheckerSub: public ProjectChecker
 {
   public:
-    ProjectCheckerSub(openfluid::guicommon::BuilderDescriptor& Desc) :
+    ProjectCheckerSub(openfluid::fluidx::AdvancedFluidXDescriptor& Desc) :
         ProjectChecker(Desc)
     {
     }
@@ -103,9 +103,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDescriptor Desc(FXDesc);
+  openfluid::fluidx::AdvancedFluidXDescriptor Desc(FXDesc);
 
   ProjectChecker PC(Desc);
 
@@ -136,12 +136,12 @@ BOOST_AUTO_TEST_CASE(check_isParamSet)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
-  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::ware::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
 
-  openfluid::guicommon::BuilderDescriptor Desc(FXDesc);
+  openfluid::fluidx::AdvancedFluidXDescriptor Desc(FXDesc);
 
   ProjectCheckerSub PC(Desc);
 
@@ -177,12 +177,12 @@ BOOST_AUTO_TEST_CASE(check_check)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
-  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::ware::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
 
-  openfluid::guicommon::BuilderDescriptor Desc(FXDesc);
+  openfluid::fluidx::AdvancedFluidXDescriptor Desc(FXDesc);
 
   ProjectChecker PC(Desc);
   bool GlobalState = PC.check();

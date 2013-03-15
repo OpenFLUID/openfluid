@@ -58,7 +58,7 @@
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/base/OFException.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include <openfluid/guicommon/BuilderModel.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -80,7 +80,7 @@ int ModelStructureModelImpl::getLastPosition()
 // =====================================================================
 
 ModelStructureModelImpl::ModelStructureModelImpl(
-    openfluid::guicommon::BuilderModel& Model) :
+    openfluid::fluidx::AdvancedModelDescriptor& Model) :
     mp_Model(&Model), m_CurrentSelection(-1), m_AppRequestedSelection(-1)
 {
   if(Model.getItemsCount()>0)

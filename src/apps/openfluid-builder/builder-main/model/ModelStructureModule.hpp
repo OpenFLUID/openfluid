@@ -99,7 +99,7 @@ class ModelStructureModule : public openfluid::guicommon::ProjectWorkspaceModule
 
   public:
 
-    ModelStructureModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+    ModelStructureModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     ~ModelStructureModule();
 
@@ -108,7 +108,7 @@ class ModelStructureModule : public openfluid::guicommon::ProjectWorkspaceModule
     void setEngineRequirements(
         openfluid::machine::ModelInstance& /*ModelInstance*/,
         openfluid::machine::SimulationBlob& /*SimBlob*/,
-        openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/)
+        openfluid::fluidx::AdvancedFluidXDescriptor& /*AdvancedDesc*/)
     {};
 
     void setCurrentFunction(std::string FunctionName);

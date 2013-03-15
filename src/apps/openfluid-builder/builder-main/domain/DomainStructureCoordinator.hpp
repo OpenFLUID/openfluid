@@ -61,8 +61,8 @@ namespace openfluid {
 namespace machine {
 class ModelInstance;
 }
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
+class AdvancedDomainDescriptor;
 }
 }
 

@@ -66,7 +66,7 @@
 #include "tests-config.hpp"
 
 #include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -92,7 +92,7 @@ struct init_Presenter
       mp_EngProject = new EngineProject(Path);
 
       mp_Component = new SimulRunComponent(
-          mp_EngProject->getBuilderDesc().getRunDescriptor());
+          mp_EngProject->getAdvancedDesc().getRunDescriptor());
       mp_Model = mp_Component->getModel();
       mp_View = (SimulRunViewSub*) (mp_Component->getView());
 
@@ -124,10 +124,10 @@ BOOST_AUTO_TEST_CASE(test_SetRunDescriptor)
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 0);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       false);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().getValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().getValuesBufferSize(),
       0);
 }
 
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(test_ToggleValuesBuffIsSet)
 
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), true);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       true);
 
   mp_View->setValuesBuffIsSet(false);
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(test_ToggleValuesBuffIsSet)
 
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       false);
 }
 
@@ -172,10 +172,10 @@ BOOST_AUTO_TEST_CASE(test_changeValuesBuff)
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), true);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 10);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       true);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().getValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().getValuesBufferSize(),
       10);
 
   mp_View->setValuesBuffIsSet(false);
@@ -185,7 +185,7 @@ BOOST_AUTO_TEST_CASE(test_changeValuesBuff)
 
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(
-      mp_EngProject->getBuilderDesc().getRunDescriptor().isUserValuesBufferSize(),
+      mp_EngProject->getAdvancedDesc().getRunDescriptor().isUserValuesBufferSize(),
       false);
 }
 

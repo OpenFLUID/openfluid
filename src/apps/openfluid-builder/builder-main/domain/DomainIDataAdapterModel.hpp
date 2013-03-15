@@ -60,8 +60,8 @@
 #include <gtkmm/treemodel.h>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -95,7 +95,7 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 {
   protected:
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     DomainIDataColumns* mp_Columns;
 
@@ -109,7 +109,7 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 
   public:
 
-    DomainIDataAdapterModelImpl(openfluid::guicommon::BuilderDomain& Domain);
+    DomainIDataAdapterModelImpl(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     void dataInit(std::string ClassName);
 

@@ -59,6 +59,7 @@
 #include <gtkmm/separator.h>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -128,7 +129,7 @@ sigc::signal<void, int> MonitoringParamRow::signal_removeAsked()
 // =====================================================================
 
 MonitoringEditParamsDialog::MonitoringEditParamsDialog(
-    openfluid::guicommon::BuilderMonitoring& Monit) :
+    openfluid::fluidx::AdvancedMonitoringDescriptor& Monit) :
     m_Monit(Monit)
 {
   Gtk::Button* AddButton = Gtk::manage(new Gtk::Button());
@@ -207,7 +208,8 @@ void MonitoringEditParamsDialog::init(std::string ObserverID)
   mp_IdLabel->set_markup("<b>" + ObserverID + "</b>");
 
   mp_DescLabel->set_text(
-      m_Monit.getSignature(ObserverID).Signature->Description);
+      openfluid::ware::ObserverSignatureRegistry::getInstance()->getSignature(
+          ObserverID).Signature->Description);
 
   m_ParamsByIndex.clear();
 

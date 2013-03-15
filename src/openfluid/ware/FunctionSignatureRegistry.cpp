@@ -52,7 +52,7 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "FunctionSignatureRegistry.hpp"
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
@@ -64,7 +64,7 @@
 #include "GeneratorSignature.hpp"
 
 namespace openfluid {
-namespace guicommon {
+namespace ware {
 
 FunctionSignatureRegistry* FunctionSignatureRegistry::mp_Instance = 0;
 
@@ -101,6 +101,7 @@ FunctionSignatureRegistry::FunctionSignatureRegistry()
       openfluid::fluidx::GeneratorDescriptor::Inject);
   addAGeneratorSignature(InjectSignature);
 
+  updatePluggableSignatures();
 }
 
 // =====================================================================
@@ -253,41 +254,6 @@ openfluid::machine::ModelItemSignatureInstance* FunctionSignatureRegistry::getSi
             (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratorMethod());
 
   return getSignatureItemInstance(ItemID);
-}
-
-// =====================================================================
-// =====================================================================
-
-// =====================================================================
-// =====================================================================
-
-void FunctionSignatureRegistrySub::addAPluggableSignature(
-    openfluid::machine::ModelItemSignatureInstance* Signature)
-{
-  FunctionSignatureRegistry::addAPluggableSignature(Signature);
-}
-
-// =====================================================================
-// =====================================================================
-
-void FunctionSignatureRegistrySub::addAGeneratorSignature(
-    openfluid::machine::ModelItemSignatureInstance* Signature)
-{
-  FunctionSignatureRegistry::addAGeneratorSignature(Signature);
-}
-
-// =====================================================================
-// =====================================================================
-
-void FunctionSignatureRegistrySub::clearPluggableSignatures()
-{
-  for (FctSignaturesByName_t::iterator it =
-      m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].begin();
-      it != m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].end();
-      ++it)
-    delete it->second;
-
-  m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].clear();
 }
 
 // =====================================================================

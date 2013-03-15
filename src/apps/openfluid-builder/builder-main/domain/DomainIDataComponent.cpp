@@ -60,7 +60,7 @@
 #include "DomainIDataPresenter.hpp"
 #include "DomainIDataAdapter.hpp"
 
-DomainIDataComponent::DomainIDataComponent(openfluid::guicommon::BuilderDomain& Domain)
+DomainIDataComponent::DomainIDataComponent(openfluid::fluidx::AdvancedDomainDescriptor& Domain)
 {
   mp_Model = new DomainIDataModelImpl(Domain);
   mp_View = new DomainIDataViewImpl();

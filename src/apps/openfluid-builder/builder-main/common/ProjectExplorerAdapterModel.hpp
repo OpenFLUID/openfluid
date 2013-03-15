@@ -59,8 +59,8 @@
 #include <gtkmm/treemodel.h>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDescriptor;
+namespace fluidx {
+class AdvancedFluidXDescriptor;
 }
 }
 
@@ -114,7 +114,7 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
   protected:
 
-    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
 
     Gtk::TreeRowReference* mp_ModelRowRef;
 
@@ -132,7 +132,7 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
   public:
 
     ProjectExplorerAdapterModelImpl(
-        openfluid::guicommon::BuilderDescriptor& Desc);
+        openfluid::fluidx::AdvancedFluidXDescriptor& Desc);
 
     ~ProjectExplorerAdapterModelImpl();
 
@@ -162,7 +162,7 @@ class ProjectExplorerAdapterModelSub: public ProjectExplorerAdapterModelImpl
   public:
 
     ProjectExplorerAdapterModelSub(
-        openfluid::guicommon::BuilderDescriptor& Desc) :
+        openfluid::fluidx::AdvancedFluidXDescriptor& Desc) :
         ProjectExplorerAdapterModelImpl(Desc)
     {
     }

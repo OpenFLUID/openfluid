@@ -60,8 +60,8 @@
 #include <gtkmm/box.h>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDescriptor;
+namespace fluidx {
+class AdvancedFluidXDescriptor;
 }
 }
 
@@ -97,7 +97,7 @@ class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
 
   public:
 
-    DomainStructureModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+    DomainStructureModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     ~DomainStructureModule();
 
@@ -106,7 +106,7 @@ class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
     void setEngineRequirements(
         openfluid::machine::ModelInstance& /*ModelInstance*/,
         openfluid::machine::SimulationBlob& /*SimBlob*/,
-        openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/)
+        openfluid::fluidx::AdvancedFluidXDescriptor& /*AdvancedDesc*/)
     {};
 
     void update();

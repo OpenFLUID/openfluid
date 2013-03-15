@@ -67,8 +67,8 @@
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDescriptor;
+namespace fluidx {
+class AdvancedFluidXDescriptor;
 }
 }
 
@@ -76,7 +76,7 @@ class ModelGeneratorCreationDialog
 {
   private:
 
-    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
 
     Gtk::Dialog* mp_Dialog;
 
@@ -102,7 +102,7 @@ class ModelGeneratorCreationDialog
   public:
 
     ModelGeneratorCreationDialog(
-        openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+        openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     ~ModelGeneratorCreationDialog();
 

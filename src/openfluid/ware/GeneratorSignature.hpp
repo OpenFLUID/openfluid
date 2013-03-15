@@ -46,58 +46,42 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file GeneratorSignature.hpp
  \brief Header of ...
 
- \author Aline LIBRES <aline.libres@gmail.com>
+ \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
+#ifndef __GENERATORSIGNATURE_HPP__
+#define __GENERATORSIGNATURE_HPP__
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
-#include <gtkmm/box.h>
+namespace openfluid {
+namespace ware {
 
-class MonitoringComponent;
-class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-class MonitoringEditParamsDialog;
-
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class GeneratorSignature: public openfluid::ware::FunctionSignature
 {
   private:
 
-    Gtk::Box* mp_MainPanel;
+    void setFixedInfo();
 
-  protected:
+    void setRandomInfo();
 
-    MonitoringComponent* mp_MonitoringMVP;
+    void setInterpInfo();
 
-    MonitoringAddObserverDialog* mp_AddDialog;
-
-    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-    MonitoringCoordinator* mp_Coordinator;
-
-    sigc::signal<void> m_signal_MonitoringChanged;
-
-    void whenMonitoringChanged();
+    void setInjectInfo();
 
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    GeneratorSignature(
+        openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod);
 
-    ~MonitoringModule();
-
-    sigc::signal<void> signal_ModuleChanged();
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-    void update();
+    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod m_GeneratorMethod;
 
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+}} //namespaces
+
+#endif /* __GENERATORSIGNATURE_HPP__ */

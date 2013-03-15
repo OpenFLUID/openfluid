@@ -56,7 +56,7 @@
 
 #include "ProjectExplorerAdapterModel.hpp"
 #include "ProjectExplorerView.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================

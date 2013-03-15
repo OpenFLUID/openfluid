@@ -59,8 +59,8 @@
 #include "BuilderMVPComponent.hpp"
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -80,7 +80,7 @@ class DomainEventsComponent : public BuilderMVPComponent
     DomainEventsAdapter* mp_Adapter;
 
   public:
-    DomainEventsComponent(openfluid::guicommon::BuilderDomain& Domain);
+    DomainEventsComponent(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
     ~DomainEventsComponent();
     Gtk::Widget* asWidget();
     DomainEventsModel* getModel();

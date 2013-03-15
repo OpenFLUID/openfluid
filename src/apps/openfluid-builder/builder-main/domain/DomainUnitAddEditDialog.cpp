@@ -62,14 +62,14 @@
 #include "EngineHelper.hpp"
 #include "DomainUnitRelationAddDialog.hpp"
 #include "DomainUnitRelationWidget.hpp"
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 DomainUnitAddEditDialog::DomainUnitAddEditDialog(
     DomainUnitRelationAddDialog& UnitRelationAddDialog,
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), m_AddDialog(UnitRelationAddDialog), mp_Unit(0)
 {
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());

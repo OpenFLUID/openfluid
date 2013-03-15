@@ -61,8 +61,8 @@
 #include <string>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderModel;
+namespace fluidx {
+class AdvancedModelDescriptor;
 }
 }
 
@@ -105,7 +105,7 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
     sigc::signal<void> m_signal_GlobalValueChanged;
 
-    openfluid::guicommon::BuilderModel* mp_Model;
+    openfluid::fluidx::AdvancedModelDescriptor* mp_Model;
 
     std::map<std::string, std::string> m_ByParamNameParamUnit;
 
@@ -116,7 +116,7 @@ class ModelGlobalParamsModelImpl: public ModelGlobalParamsModel
 
   public:
 
-    ModelGlobalParamsModelImpl(openfluid::guicommon::BuilderModel& Model);
+    ModelGlobalParamsModelImpl(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
     sigc::signal<void> signal_FromAppModelChanged();
 

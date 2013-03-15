@@ -63,20 +63,20 @@
 #include "BuilderListToolBox.hpp"
 
 #include "BuilderFrame.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-DomainStructureModule::DomainStructureModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
-ProjectWorkspaceModule(BuilderDesc)
+DomainStructureModule::DomainStructureModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc):
+ProjectWorkspaceModule(AdvancedDesc)
 {
   mp_MainPanel = 0;
 
-  mp_DomainStructureMVP = new DomainStructureComponent(BuilderDesc.getDomain());
-  mp_DomainUnitRelationAddDialog = new DomainUnitRelationAddDialog(BuilderDesc.getDomain());
-  mp_DomainUnitAddEditDialog = new DomainUnitAddEditDialog(*mp_DomainUnitRelationAddDialog, BuilderDesc.getDomain());
+  mp_DomainStructureMVP = new DomainStructureComponent(AdvancedDesc.getDomain());
+  mp_DomainUnitRelationAddDialog = new DomainUnitRelationAddDialog(AdvancedDesc.getDomain());
+  mp_DomainUnitAddEditDialog = new DomainUnitAddEditDialog(*mp_DomainUnitRelationAddDialog, AdvancedDesc.getDomain());
 
 
   mp_StructureListToolBox = BuilderListToolBoxFactory::createDomainStructureToolBox();

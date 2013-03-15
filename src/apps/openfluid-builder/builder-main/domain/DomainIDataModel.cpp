@@ -54,13 +54,13 @@
 
 #include "DomainIDataModel.hpp"
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 DomainIDataModelImpl::DomainIDataModelImpl(
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), m_ClassName("")
 {
 }

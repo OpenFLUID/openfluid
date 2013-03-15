@@ -64,7 +64,7 @@
 #include "tests-config.hpp"
 #include "DomainIDataColumns.hpp"
 #include "BuilderListStore.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -73,7 +73,7 @@ struct init_Model
 {
     DomainIDataAdapterModelImpl* mp_AdapterModel;
     EngineProject* mp_EngProject;
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     init_Model()
     {
@@ -83,7 +83,7 @@ struct init_Model
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
 
-      mp_Domain = &mp_EngProject->getBuilderDesc().getDomain();
+      mp_Domain = &mp_EngProject->getAdvancedDesc().getDomain();
 
       mp_AdapterModel = new DomainIDataAdapterModelImpl(*mp_Domain);
     }
