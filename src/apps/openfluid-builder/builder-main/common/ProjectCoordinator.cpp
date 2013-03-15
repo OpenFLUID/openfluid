@@ -572,15 +572,20 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   if (ResponseId != Gtk::RESPONSE_OK)
     return;
 
-  std::string MissingFunctionsStr = "";
+  std::list<std::string> MissingFunctions;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
       WaresHelper::checkAndGetModifiedModel(
-          m_EngineProject.getAdvancedDesc().getModel(), MissingFunctionsStr);
+          m_EngineProject.getAdvancedDesc().getModel(), MissingFunctions);
 
-  if (!MissingFunctionsStr.empty())
+  if (!MissingFunctions.empty())
   {
     m_EngineProject.getAdvancedDesc().getModel().setItems(ModifiedFunctions);
+
+    std::string MissingFunctionsStr = "";
+    for (std::list<std::string>::iterator it = MissingFunctions.begin();
+        it != MissingFunctions.end(); ++it)
+      MissingFunctionsStr += "- " + *it + "\n";
 
     Glib::ustring Msg =
         Glib::ustring::compose(

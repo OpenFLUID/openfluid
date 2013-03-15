@@ -79,25 +79,23 @@ class WaresHelper
      * @brief Checks that each Function of the Model descriptor is available
      * @details Update the list of all available Functions before checking
      * @param Desc the Model descriptor to check
-     * @param MissingFunctions a textual list of Functions that are in the Model but whose plugin files are not available,
-     * or an empty string if all Functions of the Model are available
+     * @param MissingFunctions a list of IDs of Functions that are in the Model but whose plugin files are not available
      * @return A copy of the list of Functions that are in the Model, whithout that are not available
      */
     static std::list<openfluid::fluidx::ModelItemDescriptor*> checkAndGetModifiedModel(
         const openfluid::fluidx::AdvancedModelDescriptor& Desc,
-        std::string& MissingFunctions);
+        std::list<std::string>& MissingFunctions);
 
     /**
      * @brief Checks that each Observer of the Monitoring descriptor is available
      * @details Update the list of all available Observers before checking
      * @param Desc the Monitoring descriptor to check
-     * @param MissingObservers a textual list of Observers that are in the Monitoring but whose plugin files are not available,
-     * or an empty string if all Observers of the Monitoring are available
+     * @param MissingObservers a list of IDs of Observers that are in the Monitoring but whose plugin files are not available
      * @return A copy of the list of Observers that are in the Monitoring, whithout that are not available
      */
     static std::list<openfluid::fluidx::ObserverDescriptor*> checkAndGetModifiedMonitoring(
         const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc,
-        std::string& MissingObservers);
+        std::list<std::string>& MissingObservers);
 
     static std::vector<openfluid::machine::ObserverSignatureInstance*> getUnusedAvailableObserverSignatures(
         const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc);

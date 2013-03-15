@@ -66,7 +66,7 @@
 
 std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModifiedModel(
     const openfluid::fluidx::AdvancedModelDescriptor& Desc,
-    std::string& MissingFunctions)
+    std::list<std::string>& MissingFunctions)
 {
   openfluid::ware::FunctionSignatureRegistry* Reg =
       openfluid::ware::FunctionSignatureRegistry::getInstance();
@@ -86,7 +86,7 @@ std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModif
 
       if (!Reg->isPluggableFunctionAvailable(ID))
       {
-        MissingFunctions.append("- " + ID + "\n");
+        MissingFunctions.push_back(ID);
 
         it = Items.erase(it);
       }
@@ -105,7 +105,7 @@ std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModif
 
 std::list<openfluid::fluidx::ObserverDescriptor*> WaresHelper::checkAndGetModifiedMonitoring(
     const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc,
-    std::string& MissingObservers)
+    std::list<std::string>& MissingObservers)
 {
   openfluid::ware::ObserverSignatureRegistry* Reg =
       openfluid::ware::ObserverSignatureRegistry::getInstance();
@@ -126,7 +126,7 @@ std::list<openfluid::fluidx::ObserverDescriptor*> WaresHelper::checkAndGetModifi
     }
     catch (openfluid::base::OFException& e)
     {
-      MissingObservers.append("- " + (*it)->getID() + "\n");
+      MissingObservers.push_back((*it)->getID());
 
       it = Observers.erase(it);
     }

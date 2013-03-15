@@ -79,20 +79,21 @@ BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedModel)
 
   openfluid::fluidx::AdvancedModelDescriptor Model(FXDesc.getModelDescriptor());
 
-  std::string Str = "";
-  std::list<openfluid::fluidx::ModelItemDescriptor*> Modified =
-      WaresHelper::checkAndGetModifiedModel(Model, Str);
-
-  BOOST_CHECK(!Str.empty());
-  BOOST_CHECK_EQUAL(Modified.size(), 3);
-
   std::list<openfluid::fluidx::ModelItemDescriptor*> Existing =
       Model.getItems();
+
+  std::list<std::string> Missing;
+  std::list<openfluid::fluidx::ModelItemDescriptor*> Modified =
+      WaresHelper::checkAndGetModifiedModel(Model, Missing);
+
+  BOOST_CHECK_EQUAL(Missing.size(), 2);
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionA"));
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionB"));
+
+  BOOST_CHECK_EQUAL(Modified.size(), 3);
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Modified.begin(); it != Modified.end(); ++it)
-  {
     BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
-  }
 
   FXDesc.getModelDescriptor().appendItem(
       new openfluid::fluidx::FunctionDescriptor("tests.primitives.prod"));
@@ -100,21 +101,20 @@ BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedModel)
       FXDesc.getModelDescriptor());
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
-
-  Str = "";
-  Modified = WaresHelper::checkAndGetModifiedModel(Model, Str);
-
-  BOOST_CHECK(!Str.empty());
-  BOOST_CHECK_EQUAL(Modified.size(), 4);
-
   Existing = Model.getItems();
   BOOST_CHECK_EQUAL(Existing.size(), 6);
+
+  Missing.clear();
+  Modified = WaresHelper::checkAndGetModifiedModel(Model, Missing);
+
+  BOOST_CHECK_EQUAL(Missing.size(), 2);
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionA"));
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionB"));
+
+  BOOST_CHECK_EQUAL(Modified.size(), 4);
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
       Modified.begin(); it != Modified.end(); ++it)
-  {
     BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
-  }
-
 }
 
 // =====================================================================
@@ -129,39 +129,35 @@ BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedMonitoring)
   openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
-  std::string Str = "";
+  std::list<std::string> Missing;
   std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObs =
-      WaresHelper::checkAndGetModifiedMonitoring(Monit, Str);
+      WaresHelper::checkAndGetModifiedMonitoring(Monit, Missing);
 
-  BOOST_CHECK(Str.empty());
+  BOOST_CHECK(Missing.empty());
+
   BOOST_CHECK_EQUAL(ModifiedObs.size(), 2);
-
   std::list<openfluid::fluidx::ObserverDescriptor*> Existing = Monit.getItems();
   for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
       ModifiedObs.begin(); it != ModifiedObs.end(); ++it)
-  {
     BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
-  }
 
   FXDesc.getMonitoringDescriptor().appendItem(
       new openfluid::fluidx::ObserverDescriptor("dummy"));
   Monit = openfluid::fluidx::AdvancedMonitoringDescriptor(
       FXDesc.getMonitoringDescriptor());
-
-  Str = "";
-  ModifiedObs = WaresHelper::checkAndGetModifiedMonitoring(Monit, Str);
-
-  BOOST_CHECK(!Str.empty());
-  BOOST_CHECK_EQUAL(ModifiedObs.size(), 2);
-
   Existing = Monit.getItems();
   BOOST_CHECK_EQUAL(Existing.size(), 3);
+
+  Missing.clear();
+  ModifiedObs = WaresHelper::checkAndGetModifiedMonitoring(Monit, Missing);
+
+  BOOST_CHECK_EQUAL(Missing.size(), 1);
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"dummy"));
+
+  BOOST_CHECK_EQUAL(ModifiedObs.size(), 2);
   for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
       ModifiedObs.begin(); it != ModifiedObs.end(); ++it)
-  {
     BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
-  }
-
 }
 
 // =====================================================================
@@ -175,14 +171,6 @@ BOOST_AUTO_TEST_CASE(check_getUnusedSignatures)
 
   openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
-
-  boost::filesystem::path Path(CONFIGTESTS_LIB_OUTPUT_PATH);
-  Path / "openfluid" / "observers";
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(
-      Path.string());
-
-  std::string Str = "";
-  Monit.setItems(WaresHelper::checkAndGetModifiedMonitoring(Monit, Str));
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
       WaresHelper::getUnusedAvailableObserverSignatures(Monit);

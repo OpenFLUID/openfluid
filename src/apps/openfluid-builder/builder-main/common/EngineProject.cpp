@@ -177,14 +177,19 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
 void EngineProject::checkAndAdaptModel()
 {
-  std::string MissingFunctionsStr = "";
+  std::list<std::string> MissingFunctions;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
       WaresHelper::checkAndGetModifiedModel(mp_AdvancedDesc->getModel(),
-                                            MissingFunctionsStr);
+                                            MissingFunctions);
 
-  if (!MissingFunctionsStr.empty())
+  if (!MissingFunctions.empty())
   {
+    std::string MissingFunctionsStr = "";
+    for (std::list<std::string>::iterator it = MissingFunctions.begin();
+        it != MissingFunctions.end(); ++it)
+      MissingFunctionsStr += "- " + *it + "\n";
+
     Glib::ustring Msg =
         Glib::ustring::compose(
             _("Unable to find plugin file(s):\n%1\n\n"
@@ -210,14 +215,19 @@ void EngineProject::checkAndAdaptModel()
 
 void EngineProject::checkAndAdaptMonitoring()
 {
-  std::string MissingObserversStr = "";
+  std::list<std::string> MissingObservers;
 
   std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
       WaresHelper::checkAndGetModifiedMonitoring(
-          mp_AdvancedDesc->getMonitoring(), MissingObserversStr);
+          mp_AdvancedDesc->getMonitoring(), MissingObservers);
 
-  if (!MissingObserversStr.empty())
+  if (!MissingObservers.empty())
   {
+    std::string MissingObserversStr = "";
+    for (std::list<std::string>::iterator it = MissingObservers.begin();
+        it != MissingObservers.end(); ++it)
+      MissingObserversStr += "- " + *it + "\n";
+
     Glib::ustring Msg = Glib::ustring::compose(
         _("Unable to find plugin file(s):\n%1\n\n"
             "Corresponding observers will be removed from the monitoring.\n"

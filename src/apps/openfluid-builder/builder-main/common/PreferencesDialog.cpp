@@ -265,16 +265,21 @@ bool PreferencesDialog::checkObserversPaths()
   openfluid::fluidx::AdvancedMonitoringDescriptor& Monit =
       mp_Project->getAdvancedDesc().getMonitoring();
 
-  std::string MissingObserversStr = "";
+  std::list<std::string> MissingObservers;
 
   std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
-      WaresHelper::checkAndGetModifiedMonitoring(Monit, MissingObserversStr);
+      WaresHelper::checkAndGetModifiedMonitoring(Monit, MissingObservers);
 
-  if (MissingObserversStr.empty())
+  if (MissingObservers.empty())
   {
     m_ObsPathsHaveChanged = true;
     return true;
   }
+
+  std::string MissingObserversStr = "";
+  for (std::list<std::string>::iterator it = MissingObservers.begin();
+      it != MissingObservers.end(); ++it)
+    MissingObserversStr += "- " + *it + "\n";
 
   Glib::ustring Msg = Glib::ustring::compose(
       _("These plugin file(s) are no more available:\n%1\n\n"
@@ -337,16 +342,21 @@ bool PreferencesDialog::checkFunctionsPaths()
   openfluid::fluidx::AdvancedModelDescriptor& Model =
       mp_Project->getAdvancedDesc().getModel();
 
-  std::string MissingFunctionsStr = "";
+  std::list<std::string> MissingFunctions;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
-      WaresHelper::checkAndGetModifiedModel(Model, MissingFunctionsStr);
+      WaresHelper::checkAndGetModifiedModel(Model, MissingFunctions);
 
-  if (MissingFunctionsStr.empty())
+  if (MissingFunctions.empty())
   {
     m_PlugPathsHaveChanged = true;
     return true;
   }
+
+  std::string MissingFunctionsStr = "";
+  for (std::list<std::string>::iterator it = MissingFunctions.begin();
+      it != MissingFunctions.end(); ++it)
+    MissingFunctionsStr += "- " + *it + "\n";
 
   Glib::ustring Msg = Glib::ustring::compose(
       _("These plugin file(s) are no more available:\n%1\n\n"
