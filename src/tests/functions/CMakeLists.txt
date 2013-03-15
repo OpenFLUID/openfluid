@@ -35,6 +35,22 @@ ENDIF(BUILD_FORTRAN_FUNCTIONS)
 ###########################################################################
 
 
+OPNFLD_ADD_FUNCTION(tests.primitives.time tests.primitives.time ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-PrimitivesTime 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesTime"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           "-n${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/tests.primitives.time_ofware-func.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/tests.primitives.time_ofware-obs.log"
+                   )
+
+###########################################################################
+
+
 OPNFLD_ADD_FUNCTION(tests.primitives.prod tests.primitives.prod ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_FUNCTION(tests.primitives.use tests.primitives.use ${TEST_OUTPUT_PATH})
 

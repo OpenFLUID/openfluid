@@ -68,15 +68,6 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-typedef long long TimeIndex_t;
-
-typedef openfluid::core::RawTime_t Duration_t;
-
-
-// =====================================================================
-// =====================================================================
-
-
 class DLLEXPORT SimulationStatus
 {
   public:
@@ -90,13 +81,13 @@ class DLLEXPORT SimulationStatus
 
     openfluid::core::DateTime m_EndDate;
 
-    Duration_t m_Duration;
+    openfluid::core::Duration_t m_Duration;
 
     openfluid::core::DateTime m_CurrentDate;
 
-    TimeIndex_t m_CurrentTimeIndex;
+    openfluid::core::TimeIndex_t m_CurrentTimeIndex;
 
-    Duration_t m_DefaultDeltaT;
+    openfluid::core::Duration_t m_DefaultDeltaT;
 
     SimulationStage m_CurrentStage;
 
@@ -104,7 +95,7 @@ class DLLEXPORT SimulationStatus
 
     SimulationStatus(const openfluid::core::DateTime& Begin,
                      const openfluid::core::DateTime& End,
-                     const Duration_t DeltaT);
+                     const openfluid::core::Duration_t DeltaT);
 
     ~SimulationStatus() {}
 
@@ -114,15 +105,15 @@ class DLLEXPORT SimulationStatus
 
     inline openfluid::core::DateTime getCurrentDate() const { return m_CurrentDate; }
 
-    inline Duration_t getDefaultDeltaT() const { return m_DefaultDeltaT; }
+    inline openfluid::core::Duration_t getDefaultDeltaT() const { return m_DefaultDeltaT; }
 
-    inline Duration_t getSimulationDuration() const { return m_Duration; }
+    inline openfluid::core::Duration_t getSimulationDuration() const { return m_Duration; }
 
-    inline TimeIndex_t getCurrentTimeIndex() const { return m_CurrentTimeIndex; }
+    inline openfluid::core::TimeIndex_t getCurrentTimeIndex() const { return m_CurrentTimeIndex; }
 
     inline bool isFirstTimeIndex() const { return m_CurrentTimeIndex == 0; }
 
-    void setCurrentTimeIndex(const TimeIndex_t& Index);
+    void setCurrentTimeIndex(const openfluid::core::TimeIndex_t& Index);
 
     inline SimulationStage getCurrentStage() const { return m_CurrentStage; }
 
