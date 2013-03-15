@@ -85,6 +85,8 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
     const openfluid::base::SimulationStatus* mp_SimStatus;
 
+    openfluid::core::TimeIndex_t m_PreviousTimeIndex;
+
 
   protected:
 
@@ -96,11 +98,13 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
     openfluid::core::DateTime OPENFLUID_GetCurrentDate() const;
 
-    openfluid::base::Duration_t OPENFLUID_GetSimulationDuration() const;
+    openfluid::core::Duration_t OPENFLUID_GetSimulationDuration() const;
 
-    openfluid::base::Duration_t OPENFLUID_GetDefaultDeltaT() const;
+    openfluid::core::Duration_t OPENFLUID_GetDefaultDeltaT() const;
 
-    openfluid::base::TimeIndex_t OPENFLUID_GetCurrentTimeIndex() const;
+    openfluid::core::TimeIndex_t OPENFLUID_GetCurrentTimeIndex() const;
+
+    openfluid::core::TimeIndex_t OPENFLUID_GetPreviousRunTimeIndex() const;
 
     openfluid::base::SimulationStatus::SimulationStage OPENFLUID_GetCurrentStage() const;
 
@@ -137,7 +141,7 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
 
     SimulationDrivenWare(WareType WType) : PluggableWare(WType),
-        mp_SimStatus(NULL) { };
+        mp_SimStatus(NULL), m_PreviousTimeIndex(0) { };
 
 
   public:
@@ -145,6 +149,8 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
     virtual ~SimulationDrivenWare() { };
 
     void linkToSimulation(const openfluid::base::SimulationStatus* SimStatus);
+
+    void setPreviousTimeIndex(const openfluid::core::TimeIndex_t& TimeIndex) { m_PreviousTimeIndex = TimeIndex; };
 
 };
 

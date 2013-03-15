@@ -741,7 +741,7 @@ void Engine::run()
     try
     {
       m_ModelInstance.processNextTimePoint();
-      m_MonitoringInstance.call_onStepCompleted();
+      m_MonitoringInstance.call_onStepCompleted(mp_SimStatus->getCurrentTimeIndex());
 
       // TODO to remove? check simulation vars production at each time step
       //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);

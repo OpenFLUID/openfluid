@@ -217,7 +217,7 @@ void MonitoringInstance::call_onInitializedRun() const
 // =====================================================================
 
 
-void MonitoringInstance::call_onStepCompleted() const
+void MonitoringInstance::call_onStepCompleted(const openfluid::core::TimeIndex_t& TimeIndex) const
 {
   std::list<ObserverInstance*>::const_iterator ObsIter;
 
@@ -226,6 +226,7 @@ void MonitoringInstance::call_onStepCompleted() const
   while (ObsIter != m_Observers.end())
   {
     (*ObsIter)->Body->onStepCompleted();
+    (*ObsIter)->Body->setPreviousTimeIndex(TimeIndex);
     ObsIter++;
   }
 }
