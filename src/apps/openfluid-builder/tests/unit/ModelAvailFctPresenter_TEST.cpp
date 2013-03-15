@@ -99,35 +99,20 @@ BOOST_FIXTURE_TEST_SUITE(ModelAvailFctPresenterTest, init_Presenter)
 
 BOOST_AUTO_TEST_CASE(test_SetSignatures)
 {
-  BOOST_CHECK_EQUAL(mp_View->getPluggableBranchRowsNumber(),0);
-  BOOST_CHECK_EQUAL(mp_View->getGeneratorBranchRowsNumber(),0);
+  BOOST_CHECK_EQUAL(mp_View->getPluggableBranchRowsNumber(), 0);
+  BOOST_CHECK_EQUAL(mp_View->getGeneratorBranchRowsNumber(), 0);
 
   // set Generator signatures
-  openfluid::ware::FunctionSignatureRegistrySub Signatures;
-  int GeneratorCount = Signatures.getGeneratorSignatures().size();
-  mp_Model->setSignatures(Signatures);
+  openfluid::ware::FunctionSignatureRegistry* Signatures =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
 
-  BOOST_CHECK_EQUAL(mp_View->getPluggableBranchRowsNumber(),0);
-  BOOST_CHECK_EQUAL(mp_View->getGeneratorBranchRowsNumber(),GeneratorCount);
+  mp_Model->setSignatures(*Signatures);
 
-  // set dummy Pluggable signatures
-  for(int i=0; i<3; i++)
-  {
-    openfluid::machine::ModelItemSignatureInstance* Plug = new openfluid::machine::ModelItemSignatureInstance();
-    openfluid::ware::FunctionSignature* PlugSignature = new openfluid::ware::FunctionSignature();
-    PlugSignature->ID = i;
-    Plug->Signature = PlugSignature;
-    Signatures.addAPluggableSignature(Plug);
-  }
-  mp_Model->setSignatures(Signatures);
-
-  BOOST_CHECK_EQUAL(mp_View->getPluggableBranchRowsNumber(),3);
-  BOOST_CHECK_EQUAL(mp_View->getGeneratorBranchRowsNumber(),GeneratorCount);
-
-  Signatures.clearPluggableSignatures();
+  BOOST_CHECK_EQUAL(mp_View->getPluggableBranchRowsNumber(),
+                    Signatures->getPluggableSignatures().size());
+  BOOST_CHECK_EQUAL(mp_View->getGeneratorBranchRowsNumber(),
+                    Signatures->getGeneratorSignatures().size());
 }
-
 // =====================================================================
 // =====================================================================
-
 BOOST_AUTO_TEST_SUITE_END()

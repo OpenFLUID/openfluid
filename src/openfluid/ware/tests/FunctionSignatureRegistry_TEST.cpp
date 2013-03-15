@@ -69,37 +69,15 @@
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  openfluid::ware::FunctionSignatureRegistrySub Signatures;
+  openfluid::ware::FunctionSignatureRegistry* Signatures =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
 
   BOOST_CHECK_EQUAL(
-      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
-      0);
-  BOOST_CHECK_EQUAL(
-      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
-      4);
-}
-
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(test_add)
-{
-  openfluid::ware::FunctionSignatureRegistrySub Signatures;
-  for (int i = 0; i < 3; i++)
-  {
-    openfluid::machine::ModelItemSignatureInstance* Sign = openfluid::ware::FunctionSignatureRegistry::getEmptyPluggableSignature();
-    Sign->Signature->ID = i;
-    Signatures.addAPluggableSignature(Sign);
-  }
-
-  BOOST_CHECK_EQUAL(
-      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
+      Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
       3);
   BOOST_CHECK_EQUAL(
-      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
+      Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
       4);
-
-  Signatures.clearPluggableSignatures();
 }
 
 // =====================================================================
@@ -107,21 +85,21 @@ BOOST_AUTO_TEST_CASE(test_add)
 
 BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
-            CONFIGTESTS_OUTPUT_BINARY_DIR);
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
 
-  openfluid::ware::FunctionSignatureRegistry* Reg = openfluid::ware::FunctionSignatureRegistry::getInstance();
-  Reg->updatePluggableSignatures();
+  openfluid::machine::ModelItemSignatureInstance* Sign =
+      Reg->getSignatureItemInstance("examples.primitives.unitsA.prod");
 
-  openfluid::machine::ModelItemSignatureInstance* Sign = Reg->getSignatureItemInstance("tests.primitives.use");
+  BOOST_CHECK_EQUAL(Sign->Signature->ID, "examples.primitives.unitsA.prod");
 
-  BOOST_CHECK_EQUAL(Sign->Signature->ID,"tests.primitives.use");
+  openfluid::fluidx::FunctionDescriptor ItemDesc(
+      "examples.primitives.unitsB.prod");
 
-  openfluid::fluidx::FunctionDescriptor ItemDesc("tests.primitives.use");
+  openfluid::machine::ModelItemSignatureInstance* Sign2 =
+      Reg->getSignatureItemInstance(&ItemDesc);
 
-  openfluid::machine::ModelItemSignatureInstance* Sign2 = Reg->getSignatureItemInstance(&ItemDesc);
-
-  BOOST_CHECK_EQUAL(Sign2->Signature->ID,"tests.primitives.use");
+  BOOST_CHECK_EQUAL(Sign2->Signature->ID, "examples.primitives.unitsB.prod");
 }
 
 // =====================================================================

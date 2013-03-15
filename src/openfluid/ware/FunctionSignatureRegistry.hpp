@@ -121,23 +121,6 @@ public:
 // =====================================================================
 // =====================================================================
 
-class FunctionSignatureRegistrySub: public FunctionSignatureRegistry
-{
-public:
-
-  void addAPluggableSignature(
-      openfluid::machine::ModelItemSignatureInstance* Signature);
-
-  void addAGeneratorSignature(
-      openfluid::machine::ModelItemSignatureInstance* Signature);
-
-  void clearPluggableSignatures();
-
-};
-
-// =====================================================================
-// =====================================================================
-
 }
 } //namespaces
 

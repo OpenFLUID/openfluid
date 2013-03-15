@@ -104,8 +104,6 @@ bool BuilderAppModule::initialize()
   for (int i = PrefXPaths.size() - 1; i > -1; i--)
     openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(PrefXPaths[i]);
 
-  openfluid::ware::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
-
   // Setting observers
 
   std::vector<std::string> PrefObsPaths = PrefMgr->getExtraObserversPaths();
