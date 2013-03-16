@@ -55,11 +55,9 @@
 #include <string>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDescriptor;
-}
 namespace fluidx {
 class ModelItemDescriptor;
+class AdvancedFluidXDescriptor;
 }
 }
 
@@ -70,7 +68,7 @@ class ProjectChecker
 {
   private:
 
-    openfluid::guicommon::BuilderDescriptor* mp_Desc;
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_Desc;
 
     bool m_RandomMinMaxChecked;
     bool m_InterpMinMaxChecked;
@@ -120,7 +118,7 @@ class ProjectChecker
     std::string RunConfigMsg;
     std::string MonitoringMsg;
 
-    ProjectChecker(openfluid::guicommon::BuilderDescriptor& Desc);
+    ProjectChecker(openfluid::fluidx::AdvancedFluidXDescriptor& Desc);
 
     ~ProjectChecker();
 

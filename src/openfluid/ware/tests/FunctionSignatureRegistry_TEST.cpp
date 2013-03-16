@@ -46,99 +46,61 @@
  */
 
 /**
- \file FunctionSignatureRegistry.hpp
- \brief Header of ...
+ \file FunctionSignatureRegistry_TEST.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __FUNCTIONSIGNATUREREGISTRY_HPP__
-#define __FUNCTIONSIGNATUREREGISTRY_HPP__
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_FunctionSignatureRegistry
+#include <boost/test/unit_test.hpp>
 
-#include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include "tests-config.hpp"
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
 
-namespace openfluid {
-namespace machine {
-class ModelItemSignatureInstance;
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(test_constructor)
+{
+  openfluid::ware::FunctionSignatureRegistry* Signatures =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
+
+  BOOST_CHECK_EQUAL(
+      Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
+      3);
+  BOOST_CHECK_EQUAL(
+      Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
+      4);
 }
 
-namespace guicommon {
-
-class GeneratorSignature;
-
 // =====================================================================
 // =====================================================================
 
-class FunctionSignatureRegistry
+BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
 {
-public:
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
 
-  typedef std::map<std::string, openfluid::machine::ModelItemSignatureInstance*> FctSignaturesByName_t;
+  openfluid::machine::ModelItemSignatureInstance* Sign =
+      Reg->getSignatureItemInstance("examples.primitives.unitsA.prod");
 
-  typedef std::map<openfluid::fluidx::ModelItemDescriptor::ModelItemType,
-      FctSignaturesByName_t> FctSignaturesByTypeByName_t;
+  BOOST_CHECK_EQUAL(Sign->Signature->ID, "examples.primitives.unitsA.prod");
 
-private:
+  openfluid::fluidx::FunctionDescriptor ItemDesc(
+      "examples.primitives.unitsB.prod");
 
-  static FunctionSignatureRegistry* mp_Instance;
+  openfluid::machine::ModelItemSignatureInstance* Sign2 =
+      Reg->getSignatureItemInstance(&ItemDesc);
 
-protected:
-
-  FctSignaturesByTypeByName_t m_Signatures;
-
-  FunctionSignatureRegistry();
-
-  void addAPluggableSignature(
-      openfluid::machine::ModelItemSignatureInstance* Signature);
-
-  void addAGeneratorSignature(
-      openfluid::machine::ModelItemSignatureInstance* Signature);
-
-public:
-
-  static FunctionSignatureRegistry* getInstance();
-
-  FctSignaturesByTypeByName_t getFctSignatures();
-
-  FctSignaturesByName_t getGeneratorSignatures();
-
-  FctSignaturesByName_t getPluggableSignatures();
-
-  void updatePluggableSignatures();
-
-  static openfluid::machine::ModelItemSignatureInstance* getEmptyPluggableSignature();
-
-  bool isPluggableFunctionAvailable(std::string FunctionID);
-
-  openfluid::machine::ModelItemSignatureInstance* getSignatureItemInstance(
-      std::string FunctionID);
-
-  openfluid::machine::ModelItemSignatureInstance* getSignatureItemInstance(
-      openfluid::fluidx::ModelItemDescriptor* Item);
-
-};
-
-// =====================================================================
-// =====================================================================
-
-class FunctionSignatureRegistrySub: public FunctionSignatureRegistry
-{
-public:
-
-  void addAPluggableSignature(
-      openfluid::machine::ModelItemSignatureInstance* Signature);
-
-  void addAGeneratorSignature(
-      openfluid::machine::ModelItemSignatureInstance* Signature);
-
-  void clearPluggableSignatures();
-
-};
-
-// =====================================================================
-// =====================================================================
-
+  BOOST_CHECK_EQUAL(Sign2->Signature->ID, "examples.primitives.unitsB.prod");
 }
-} //namespaces
 
-#endif /* __FUNCTIONSIGNATUREREGISTRY_HPP__ */
+// =====================================================================
+// =====================================================================

@@ -61,7 +61,7 @@
 
 #include <openfluid/fluidx/UnitDescriptor.hpp>
 #include "tests-config.hpp"
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 
 class BuilderTestHelper
 {
@@ -75,7 +75,6 @@ class BuilderTestHelper
     {
       openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
           CONFIGTESTS_OUTPUT_BINARY_DIR);
-      openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
     }
 
   public:

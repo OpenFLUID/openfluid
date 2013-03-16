@@ -58,13 +58,13 @@
 
 #include <glibmm/i18n.h>
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 DomainIDataRemoveDialog::DomainIDataRemoveDialog(
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), m_ClassName("")
 {
   mp_Dialog = new Gtk::Dialog(_("Removing Inputdata"));

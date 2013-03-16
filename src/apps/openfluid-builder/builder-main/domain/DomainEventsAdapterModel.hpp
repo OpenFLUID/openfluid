@@ -60,7 +60,7 @@
 #include "DomainEventsColumns.hpp"
 
 namespace openfluid {
-namespace guicommon {
+namespace fluidx {
 class BuilderUnit;
 }
 }
@@ -69,7 +69,7 @@ class DomainEventsAdapterModel
 {
   public:
 
-    virtual void setUnits(const std::map<int, openfluid::guicommon::BuilderUnit>* Units) = 0;
+    virtual void setUnits(const std::map<int, openfluid::fluidx::BuilderUnit>* Units) = 0;
 
     virtual Glib::RefPtr<Gtk::TreeModel> getTreeModel() = 0;
 };
@@ -87,7 +87,7 @@ class DomainEventsAdapterModelImpl: public DomainEventsAdapterModel
 
     DomainEventsAdapterModelImpl();
 
-    void setUnits(const std::map<int, openfluid::guicommon::BuilderUnit>* Units);
+    void setUnits(const std::map<int, openfluid::fluidx::BuilderUnit>* Units);
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 };

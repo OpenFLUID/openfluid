@@ -61,18 +61,18 @@
 
 #include "BuilderFrame.hpp"
 
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 
-SimulationRunModule::SimulationRunModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
-ProjectWorkspaceModule(BuilderDesc)
+SimulationRunModule::SimulationRunModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc):
+ProjectWorkspaceModule(AdvancedDesc)
 {
   mp_MainPanel = 0;
 
-  mp_SimulRunMVP = new SimulRunComponent(BuilderDesc.getRunDescriptor());
+  mp_SimulRunMVP = new SimulRunComponent(AdvancedDesc.getRunDescriptor());
 
   mp_SimulRunMVP->getModel()->signal_SimulRunChanged().connect(sigc::mem_fun(
       *this, &SimulationRunModule::whenRunChanged));

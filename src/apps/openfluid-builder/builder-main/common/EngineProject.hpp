@@ -77,12 +77,10 @@ namespace machine {
 class MachineListener;
 class MonitoringInstance;
 }
-namespace guicommon {
-class BuilderDescriptor;
-}
 namespace fluidx {
 class RunDescriptor;
 class FluidXDescriptor;
+class AdvancedFluidXDescriptor;
 }
 }
 
@@ -94,7 +92,7 @@ class EngineProject
 
     bool m_WithProjectManager;
 
-    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
 
     openfluid::base::IOListener* mp_IOListener;
 
@@ -143,7 +141,7 @@ class EngineProject
 
     const ProjectChecker& check(bool& GlobalState);
 
-    openfluid::guicommon::BuilderDescriptor& getBuilderDesc();
+    openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDesc();
 
     ~EngineProject();
 };

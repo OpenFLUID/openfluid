@@ -64,7 +64,7 @@
 // =====================================================================
 
 
-ModelStructureComponent::ModelStructureComponent(openfluid::guicommon::BuilderModel& Model)
+ModelStructureComponent::ModelStructureComponent(openfluid::fluidx::AdvancedModelDescriptor& Model)
 {
   ModelStructureColumns* TreeColumns = new ModelStructureColumns();
   mp_Model = new ModelStructureModelImpl(Model);

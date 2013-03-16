@@ -78,8 +78,8 @@ class WorkspaceTab : public ModelessExtension, public openfluid::guicommon::Proj
 
   public:
 
-    WorkspaceTab(openfluid::guicommon::BuilderDescriptor& BuilderDesc) :
-    ProjectWorkspaceModule(BuilderDesc)
+    WorkspaceTab(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
+    ProjectWorkspaceModule(AdvancedDesc)
     {}
 
 //    WorkspaceTab()

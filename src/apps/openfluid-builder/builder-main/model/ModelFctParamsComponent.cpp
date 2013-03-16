@@ -63,7 +63,7 @@
 
 ModelFctParamsComponent::ModelFctParamsComponent(
     openfluid::fluidx::ModelItemDescriptor* Item,
-    openfluid::guicommon::BuilderModel& Model)
+    openfluid::fluidx::AdvancedModelDescriptor& Model)
 {
   mp_Model = new ModelFctParamsModelImpl(Model);
   mp_View = new ModelFctParamsViewImpl();

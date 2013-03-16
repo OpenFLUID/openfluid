@@ -62,7 +62,7 @@
 #include "DomainStructureModel.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(test_setDomainEmpty)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
+  mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
 
   BOOST_CHECK_EQUAL(mp_Model->isEmpty(), true);
   BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().empty(), true);
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(test_setDomainNonEmpty)
       + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
+  mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
 
   BOOST_CHECK_EQUAL(mp_Model->isEmpty(), false);
   BOOST_CHECK_EQUAL(mp_Model->getUnitListByClass().size(), 2);
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnit)
       + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
+  mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
 
   mp_Model->setCurrentSelectionByUser(std::make_pair("TestUnits", 1));
 
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
       + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
+  mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
 
   mp_Model->setCurrentSelectionByUser(std::make_pair("wrong class", 100));
   BOOST_CHECK(mp_Model->getSelectedUnit() == 0);
@@ -170,9 +170,9 @@ BOOST_AUTO_TEST_CASE(test_deleteUnit)
       + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
 
-  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
+  mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
 
   mp_Model->deleteUnit(&Domain->getUnitDescriptor("ParentTestUnits", 1));
 
@@ -194,9 +194,9 @@ BOOST_AUTO_TEST_CASE(test_deleteLastUnitOfClass)
       + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
 
-  mp_Model = new DomainStructureModelSub(EngProject->getBuilderDesc().getDomain());
+  mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
 
   mp_Model->deleteUnit(&Domain->getUnitDescriptor("ParentTestUnits", 1));
   mp_Model->deleteUnit(&Domain->getUnitDescriptor("ParentTestUnits", 2));

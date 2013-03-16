@@ -108,7 +108,7 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
     {
       std::set<int> m_IDs;
 
-      if (!mp_BuilderDesc)
+      if (!mp_AdvancedDesc)
       {
         mp_Dialog->set_message("I am DummyModalWindow\n"
                                "Nb of units in TestUnits class: no Domain\n"
@@ -116,7 +116,7 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
       }
       else
       {
-        m_IDs = mp_BuilderDesc->getDomain().getIDsOfClass("TestUnits");
+        m_IDs = mp_AdvancedDesc->getDomain().getIDsOfClass("TestUnits");
 
         mp_Dialog->set_message(
             Glib::ustring::compose(
@@ -126,7 +126,7 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
                 m_IDs.size()));
       }
 
-      if (mp_Dialog->run() == Gtk::RESPONSE_OK && mp_BuilderDesc)
+      if (mp_Dialog->run() == Gtk::RESPONSE_OK && mp_AdvancedDesc)
       {
         unsigned int NextId = 1;
 
@@ -139,7 +139,7 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
         Unit->getUnitID() = NextId;
         Unit->getProcessOrder() = 1;
 
-        mp_BuilderDesc->getDomain().addUnit(Unit);
+        mp_AdvancedDesc->getDomain().addUnit(Unit);
 
         signal_ChangedOccurs().emit();
       }
@@ -149,7 +149,7 @@ class DummyModalWindow: public openfluid::builderext::ModalWindow
 
     bool isReadyForShowtime() const
     {
-      return (mp_BuilderDesc != NULL);
+      return (mp_AdvancedDesc != NULL);
     }
 
 };

@@ -56,18 +56,18 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_GeneratorSignature
+#define BOOST_TEST_MODULE unittest_GeneratorSignature
 #include <boost/test/unit_test.hpp>
 
 
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 
 // =====================================================================
 // =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
-  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Fixed Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),1);
@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
-  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Random Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),2);
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 
 BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
-  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Interp Generator");
   BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),4);

@@ -63,7 +63,7 @@
 #include "BuilderAppWindow.hpp"
 #include "BuilderAppActions.hpp"
 #include "BuilderWorkdirCreationDialog.hpp"
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
 
 // =====================================================================
@@ -103,8 +103,6 @@ bool BuilderAppModule::initialize()
 
   for (int i = PrefXPaths.size() - 1; i > -1; i--)
     openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(PrefXPaths[i]);
-
-  openfluid::guicommon::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
 
   // Setting observers
 

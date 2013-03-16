@@ -60,7 +60,7 @@
 
 //#include <openfluid/base/OutputDescriptor.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include "EngineProject.hpp"
 #include "ProjectExplorerComponent.hpp"
 #include "ProjectExplorerModel.hpp"
@@ -80,7 +80,7 @@ struct init_Coordinator
     ProjectDashboard* mp_ProjectDashboard;
     ProjectCoordinatorSub* mp_Coordinator;
 
-    openfluid::guicommon::BuilderDescriptor* mp_BuilderDesc;
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
 
     std::string m_ModelPageName;
     std::string m_DomainPageName;
@@ -101,9 +101,9 @@ struct init_Coordinator
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
 
-      mp_BuilderDesc = &mp_EngProject->getBuilderDesc();
+      mp_AdvancedDesc = &mp_EngProject->getAdvancedDesc();
 
-      mp_ExplorerComponent = new ProjectExplorerComponentSub(*mp_BuilderDesc);
+      mp_ExplorerComponent = new ProjectExplorerComponentSub(*mp_AdvancedDesc);
       mp_ExplorerModel = mp_ExplorerComponent->getModel();
 
       mp_Workspace = new ProjectWorkspaceSub();
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(test_whenActivationChanged)
 
 BOOST_AUTO_TEST_CASE(test_removeDeletedClassPages)
 {
-  openfluid::guicommon::BuilderDomain* Domain = &mp_BuilderDesc->getDomain();
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &mp_AdvancedDesc->getDomain();
 
   mp_ExplorerModel->setActivatedElements(
       std::make_pair(ProjectExplorerCategories::EXPLORER_CLASS, "TestUnits"));
@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE(test_whenModelChanged)
                     m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(ModelRows.size(), 2);
 
-  mp_EngProject->getBuilderDesc().getModel().removeItem(1);
+  mp_EngProject->getAdvancedDesc().getModel().removeItem(1);
 
   mp_Coordinator->whenModelChanged();
   BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(), 2);
@@ -296,7 +296,7 @@ BOOST_AUTO_TEST_CASE(test_whenModelChanged)
                     m_ParentTestUnitsClassPageName);
   BOOST_CHECK_EQUAL(ModelRows.size(), 1);
 
-  mp_EngProject->getBuilderDesc().getModel().removeItem(0);
+  mp_EngProject->getAdvancedDesc().getModel().removeItem(0);
 
   mp_Coordinator->whenModelChanged();
   BOOST_CHECK_EQUAL(mp_Workspace->getPagesCount(), 2);
@@ -312,7 +312,7 @@ BOOST_AUTO_TEST_CASE(test_whenModelChanged)
 
 BOOST_AUTO_TEST_CASE(test_whenDomainChanged)
 {
-  openfluid::guicommon::BuilderDomain* Domain = &mp_BuilderDesc->getDomain();
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &mp_AdvancedDesc->getDomain();
 
   Gtk::TreeModel::Children DomainRows =
       mp_ExplorerComponent->getViewSub()->getTreeView()->get_model()->children()[1].children();

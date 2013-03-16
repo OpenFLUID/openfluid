@@ -62,14 +62,14 @@
 #include "EngineHelper.hpp"
 #include "DomainUnitRelationAddDialog.hpp"
 #include "DomainUnitRelationWidget.hpp"
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 DomainUnitAddEditDialog::DomainUnitAddEditDialog(
     DomainUnitRelationAddDialog& UnitRelationAddDialog,
-    openfluid::guicommon::BuilderDomain& Domain) :
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), m_AddDialog(UnitRelationAddDialog), mp_Unit(0)
 {
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
@@ -343,28 +343,8 @@ void DomainUnitAddEditDialog::clearAllRelations()
   if (!mp_Unit)
     return;
 
-  openfluid::core::UnitClassID_t Unit = std::make_pair(mp_Unit->getUnitClass(),
-                                                       mp_Unit->getUnitID());
-
-  std::list<openfluid::core::UnitClassID_t> Froms = mp_Domain->getUnitsFromOf(
-      Unit);
-  for (std::list<openfluid::core::UnitClassID_t>::iterator it = Froms.begin();
-      it != Froms.end(); ++it)
-  {
-    const_cast<openfluid::fluidx::UnitDescriptor&>(mp_Domain->getUnitDescriptor(
-        it->first, it->second)).getUnitsTos().remove(Unit);
-  }
-  std::list<openfluid::core::UnitClassID_t> Children =
-      mp_Domain->getUnitsChildrenOf(Unit);
-  for (std::list<openfluid::core::UnitClassID_t>::iterator it =
-      Children.begin(); it != Children.end(); ++it)
-  {
-    const_cast<openfluid::fluidx::UnitDescriptor&>(mp_Domain->getUnitDescriptor(
-        it->first, it->second)).getUnitsParents().remove(Unit);
-  }
-
-  mp_Unit->getUnitsTos().clear();
-  mp_Unit->getUnitsParents().clear();
+  mp_Domain->clearRelations(
+      std::make_pair(mp_Unit->getUnitClass(), mp_Unit->getUnitID()));
 }
 
 // =====================================================================
@@ -377,28 +357,24 @@ void DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets()
 
   std::list<openfluid::core::UnitClassID_t> Tos = mp_ToWidget->getUnits();
   for (std::list<openfluid::core::UnitClassID_t>::iterator it = Tos.begin();
-        it != Tos.end(); ++it)
+      it != Tos.end(); ++it)
   {
-    if(!std::count(mp_Unit->getUnitsTos().begin(),mp_Unit->getUnitsTos().end(),*it))
-      mp_Unit->getUnitsTos().push_back(*it);
+    mp_Domain->addFromToRelation(Unit, *it);
   }
 
   std::list<openfluid::core::UnitClassID_t> Parents =
       mp_ParentWidget->getUnits();
   for (std::list<openfluid::core::UnitClassID_t>::iterator it = Parents.begin();
-          it != Parents.end(); ++it)
-    {
-      if(!std::count(mp_Unit->getUnitsParents().begin(),mp_Unit->getUnitsParents().end(),*it))
-        mp_Unit->getUnitsParents().push_back(*it);
-    }
+      it != Parents.end(); ++it)
+  {
+    mp_Domain->addParentChildRelation(*it, Unit);
+  }
 
   std::list<openfluid::core::UnitClassID_t> Froms = mp_FromWidget->getUnits();
   for (std::list<openfluid::core::UnitClassID_t>::iterator it = Froms.begin();
       it != Froms.end(); ++it)
   {
-    std::list<openfluid::core::UnitClassID_t>& it_Tos = mp_Domain->getUnitsToOf(*it);
-    if(!std::count(it_Tos.begin(),it_Tos.end(),Unit))
-      it_Tos.push_back(Unit);
+    mp_Domain->addFromToRelation(*it, Unit);
   }
 
   std::list<openfluid::core::UnitClassID_t> Children =
@@ -406,9 +382,7 @@ void DomainUnitAddEditDialog::createAllRelationsFromRelationWidgets()
   for (std::list<openfluid::core::UnitClassID_t>::iterator it =
       Children.begin(); it != Children.end(); ++it)
   {
-    std::list<openfluid::core::UnitClassID_t>& it_Parents = mp_Domain->getUnitsParentsOf(*it);
-    if(!std::count(it_Parents.begin(),it_Parents.end(),Unit))
-      it_Parents.push_back(Unit);
+    mp_Domain->addParentChildRelation(Unit, *it);
   }
 }
 

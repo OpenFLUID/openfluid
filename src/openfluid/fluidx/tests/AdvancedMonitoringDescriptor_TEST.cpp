@@ -46,82 +46,81 @@
  */
 
 /**
- \file FunctionSignatureRegistry_TEST.cpp
+ \file AdvancedMonitoringDescriptor_TEST.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_FunctionSignatureRegistry
+#define BOOST_TEST_MODULE unittest_AdvancedMonitoringDescriptor
 #include <boost/test/unit_test.hpp>
 
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 #include "tests-config.hpp"
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/FunctionPluginsManager.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_constructor)
+BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::guicommon::FunctionSignatureRegistrySub Signatures;
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  BOOST_CHECK_EQUAL(
-      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
-      0);
-  BOOST_CHECK_EQUAL(
-      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
-      4);
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
+      FXDesc.getMonitoringDescriptor());
+
+  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_add)
+BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::guicommon::FunctionSignatureRegistrySub Signatures;
-  for (int i = 0; i < 3; i++)
-  {
-    openfluid::machine::ModelItemSignatureInstance* Sign = openfluid::guicommon::FunctionSignatureRegistry::getEmptyPluggableSignature();
-    Sign->Signature->ID = i;
-    Signatures.addAPluggableSignature(Sign);
-  }
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
+      FXDesc.getMonitoringDescriptor());
+
+  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
+  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
+                    "export.vars.files.csv");
   BOOST_CHECK_EQUAL(
-      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
-      3);
+      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
+      "export.spatial-graph.files.dot");
+
+  BOOST_CHECK_THROW(Monit.removeFromObserverList("dummy"),
+                    openfluid::base::OFException);
+
+  Monit.removeFromObserverList("export.vars.files.csv");
+
+  BOOST_CHECK_EQUAL(Monit.getItems().size(), 1);
+  BOOST_CHECK_THROW(Monit.getDescriptor("export.vars.files.csv"),
+                    openfluid::base::OFException);
   BOOST_CHECK_EQUAL(
-      Signatures.getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
-      4);
+      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
+      "export.spatial-graph.files.dot");
 
-  Signatures.clearPluggableSignatures();
-}
+  BOOST_CHECK_THROW(Monit.addToObserverList("dummy"),
+                    openfluid::base::OFException);
 
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
-{
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
-            CONFIGTESTS_OUTPUT_BINARY_DIR);
-
-  openfluid::guicommon::FunctionSignatureRegistry* Reg = openfluid::guicommon::FunctionSignatureRegistry::getInstance();
-  Reg->updatePluggableSignatures();
-
-  openfluid::machine::ModelItemSignatureInstance* Sign = Reg->getSignatureItemInstance("tests.primitives.use");
-
-  BOOST_CHECK_EQUAL(Sign->Signature->ID,"tests.primitives.use");
-
-  openfluid::fluidx::FunctionDescriptor ItemDesc("tests.primitives.use");
-
-  openfluid::machine::ModelItemSignatureInstance* Sign2 = Reg->getSignatureItemInstance(&ItemDesc);
-
-  BOOST_CHECK_EQUAL(Sign2->Signature->ID,"tests.primitives.use");
+  Monit.addToObserverList("export.vars.files.csv");
+  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
+  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
+                    "export.vars.files.csv");
+  BOOST_CHECK_EQUAL(
+      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
+      "export.spatial-graph.files.dot");
 }
 
 // =====================================================================

@@ -56,7 +56,7 @@
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
 #include "ModelItemInstanceFactory.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyModelInstance)
   EngineProject* EngProject = new EngineProject();
 
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
   BOOST_CHECK_EQUAL(mp_Model->getFctCount(), 0);
 
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(test_setNonEmptyModelInstance)
       + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
   BOOST_CHECK_EQUAL(mp_Model->getFctCount(), 2);
 
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(test_AppendAnUnavailableFunction)
 {
   EngineProject* EngProject = new EngineProject();
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
   openfluid::fluidx::ModelItemDescriptor* Item = 0;
 
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE(test_AppendARegularFunction)
 {
   EngineProject* EngProject = new EngineProject();
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
 //  openfluid::machine::ModelItemSignatureInstance FctSignature =
 //  *
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
 //  openfluid::machine::ModelItemSignatureInstance FctSignature =
 //  *
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
   EngineProject* EngProject = new EngineProject();
 
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
 
   // move to lower
   mp_Model->moveFunction(2, 1);
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idA);
   it++;
@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
 
   // move to upper
   mp_Model->moveFunction(0, 1);
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idC);
   it++;
@@ -295,7 +295,7 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
 
   // does nothing
   mp_Model->moveFunction(1, 1);
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idC);
   it++;
@@ -305,7 +305,7 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
 
   // move to top
   mp_Model->moveFunction(0, 2);
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idA);
   it++;
@@ -315,7 +315,7 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
 
   // move to the bottom
   mp_Model->moveFunction(2, 0);
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idC);
   it++;
@@ -334,7 +334,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
   EngineProject* EngProject = new EngineProject();
 
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
@@ -371,7 +371,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
   //select and move
   mp_Model->setCurrentSelectionByUserAt(2);
   mp_Model->moveTowardTheBegin();
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idA);
   it++;
@@ -382,7 +382,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
   //select and move (circular)
   mp_Model->setCurrentSelectionByUserAt(0);
   mp_Model->moveTowardTheBegin();
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idC);
   it++;
@@ -401,7 +401,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   EngineProject* EngProject = new EngineProject();
 
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";
@@ -438,7 +438,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   //select and move
   mp_Model->setCurrentSelectionByUserAt(0);
   mp_Model->moveTowardTheEnd();
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();
   BOOST_CHECK_EQUAL(*it, idB);
   it++;
@@ -449,7 +449,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   //select and move (circular)
   mp_Model->setCurrentSelectionByUserAt(2);
   mp_Model->moveTowardTheEnd();
-  ClassNames = EngProject->getBuilderDesc().getModel().getOrderedIDs();
+  ClassNames = EngProject->getAdvancedDesc().getModel().getOrderedIDs();
   it = ClassNames.begin();  BOOST_CHECK_EQUAL(*it, idC);
   it++;
   BOOST_CHECK_EQUAL(*it, idB);
@@ -469,12 +469,12 @@ BOOST_AUTO_TEST_CASE(test_getCurrentSelection)
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
   mp_Model->setCurrentSelectionByUserAt(1);
 
   BOOST_CHECK_EQUAL(
-      EngProject->getBuilderDesc().getModel().getOrderedIDs().at(mp_Model->getCurrentSelection()),
+      EngProject->getAdvancedDesc().getModel().getOrderedIDs().at(mp_Model->getCurrentSelection()),
       "tests.primitives.use");
 
   delete EngProject;
@@ -488,7 +488,7 @@ BOOST_AUTO_TEST_CASE(test_requestSelectionByApp)
   EngineProject* EngProject = new EngineProject();
 
   mp_Model = new ModelStructureModelImpl(
-      EngProject->getBuilderDesc().getModel());
+      EngProject->getAdvancedDesc().getModel());
 
   std::string idA = "tests.primitives.prod";
   std::string idB = "tests.primitives.use";

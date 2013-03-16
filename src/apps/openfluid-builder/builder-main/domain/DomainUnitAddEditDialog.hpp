@@ -69,9 +69,7 @@
 namespace openfluid {
 namespace fluidx {
 class UnitDescriptor;
-}
-namespace guicommon {
-class BuilderDomain;
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -99,7 +97,7 @@ class DomainUnitAddEditDialog
 
     Gtk::SpinButton* mp_PcsOrderSpin;
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     std::set<int> m_IDs;
 
@@ -137,7 +135,7 @@ class DomainUnitAddEditDialog
   public:
 
     DomainUnitAddEditDialog(DomainUnitRelationAddDialog& UnitRelationAddDialog,
-                            openfluid::guicommon::BuilderDomain& Domain);
+                            openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     void update();
 
@@ -156,7 +154,7 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
 
     DomainUnitAddEditDialogSub(
         DomainUnitRelationAddDialog& UnitRelationAddDialog,
-        openfluid::guicommon::BuilderDomain& Domain) :
+        openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
       DomainUnitAddEditDialog(UnitRelationAddDialog, Domain)
     {
     }

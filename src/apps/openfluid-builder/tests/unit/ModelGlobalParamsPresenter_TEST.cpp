@@ -65,7 +65,7 @@
 #include "ModelGlobalParamRow.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -87,7 +87,7 @@ struct init_Presenter
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
 
-      mp_Component = new ModelGlobalParamsComponent(mp_EngProject->getBuilderDesc().getModel());
+      mp_Component = new ModelGlobalParamsComponent(mp_EngProject->getAdvancedDesc().getModel());
 
       mp_Model = mp_Component->getModel();
       mp_View
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
 
   // adding a global parameter (from Model)
 
-  mp_EngProject->getBuilderDesc().getModel().setGlobalParameter("longparam","123");
+  mp_EngProject->getAdvancedDesc().getModel().setGlobalParameter("longparam","123");
   mp_Model->update();
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),1);
@@ -132,19 +132,19 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),2);
   BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),4);
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"");
-  BOOST_CHECK_EQUAL(mp_EngProject->getBuilderDesc().getModel().getGlobalParameters().size(),2);
-  BOOST_CHECK_EQUAL(mp_EngProject->getBuilderDesc().getModel().getGlobalParameters().get<std::string>("strparam"),"");
+  BOOST_CHECK_EQUAL(mp_EngProject->getAdvancedDesc().getModel().getGlobalParameters().size(),2);
+  BOOST_CHECK_EQUAL(mp_EngProject->getAdvancedDesc().getModel().getGlobalParameters().get<std::string>("strparam"),"");
 
   // changing a global parameter value
 
   mp_View->getByParamNameParamRow()["strparam"]->setValue("abc");
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"abc");
-  BOOST_CHECK_EQUAL(mp_EngProject->getBuilderDesc().getModel().getGlobalParameters().get<std::string>("strparam"),"abc");
+  BOOST_CHECK_EQUAL(mp_EngProject->getAdvancedDesc().getModel().getGlobalParameters().get<std::string>("strparam"),"abc");
 
   // removing a global parameter (from Model)
 
-  mp_EngProject->getBuilderDesc().getModel().eraseGlobalParameter("longparam");
+  mp_EngProject->getAdvancedDesc().getModel().eraseGlobalParameter("longparam");
   mp_Model->update();
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),1);
@@ -156,7 +156,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),0);
   BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),6);
-  BOOST_CHECK_EQUAL(mp_EngProject->getBuilderDesc().getModel().getGlobalParameters().size(),0);
+  BOOST_CHECK_EQUAL(mp_EngProject->getAdvancedDesc().getModel().getGlobalParameters().size(),0);
 }
 
 // =====================================================================

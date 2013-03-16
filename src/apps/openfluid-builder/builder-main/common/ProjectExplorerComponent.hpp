@@ -58,8 +58,8 @@
 #include "BuilderMVPComponent.hpp"
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDescriptor;
+namespace fluidx {
+class AdvancedFluidXDescriptor;
 }
 }
 
@@ -86,7 +86,7 @@ class ProjectExplorerComponent: public BuilderMVPComponent
 
   public:
 
-    ProjectExplorerComponent(openfluid::guicommon::BuilderDescriptor& Desc);
+    ProjectExplorerComponent(openfluid::fluidx::AdvancedFluidXDescriptor& Desc);
 
     ~ProjectExplorerComponent();
 
@@ -102,7 +102,7 @@ class ProjectExplorerComponentSub: public ProjectExplorerComponent
 {
   public:
 
-    ProjectExplorerComponentSub(openfluid::guicommon::BuilderDescriptor& Desc) :
+    ProjectExplorerComponentSub(openfluid::fluidx::AdvancedFluidXDescriptor& Desc) :
         ProjectExplorerComponent(Desc)
     {
     }

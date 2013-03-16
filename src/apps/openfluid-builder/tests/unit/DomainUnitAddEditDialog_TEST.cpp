@@ -63,7 +63,7 @@
 #include "DomainUnitRelationAddDialog.hpp"
 #include "tests-config.hpp"
 #include "EngineHelper.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -72,7 +72,7 @@ struct init_Dialog
 {
     DomainUnitAddEditDialogSub* mp_Dialog;
     DomainUnitRelationAddDialog* mp_AddDialog;
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
     init_Dialog()
@@ -81,9 +81,9 @@ struct init_Dialog
 
       mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(0);
       mp_FXDesc->loadFromDirectory(
-          CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+          CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-      mp_Domain = new openfluid::guicommon::BuilderDomain(
+      mp_Domain = new openfluid::fluidx::AdvancedDomainDescriptor(
           mp_FXDesc->getDomainDescriptor());
 
       mp_AddDialog = new DomainUnitRelationAddDialog(*mp_Domain);

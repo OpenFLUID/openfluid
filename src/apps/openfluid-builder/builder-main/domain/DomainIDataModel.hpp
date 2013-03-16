@@ -59,8 +59,8 @@
 #include <string>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -97,7 +97,7 @@ class DomainIDataModelImpl: public DomainIDataModel
 {
   private:
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     sigc::signal<void> m_signal_FromAppDataInit;
 
@@ -107,7 +107,7 @@ class DomainIDataModelImpl: public DomainIDataModel
 
   public:
 
-    DomainIDataModelImpl(openfluid::guicommon::BuilderDomain& Domain);
+    DomainIDataModelImpl(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     sigc::signal<void> signal_FromAppDataInit();
 

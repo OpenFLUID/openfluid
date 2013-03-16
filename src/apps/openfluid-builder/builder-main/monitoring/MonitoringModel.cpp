@@ -58,12 +58,13 @@
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
 
 MonitoringModel::MonitoringModel(
-    openfluid::guicommon::BuilderMonitoring& Monitoring) :
+    openfluid::fluidx::AdvancedMonitoringDescriptor& Monitoring) :
     mp_Monitoring(&Monitoring)
 {
 
@@ -122,6 +123,9 @@ void MonitoringModel::update()
 
 std::list<std::pair<std::string, std::string> > MonitoringModel::getItems()
 {
+  openfluid::ware::ObserverSignatureRegistry* Reg =
+      openfluid::ware::ObserverSignatureRegistry::getInstance();
+
   std::list<std::pair<std::string, std::string> > Items;
 
   const std::list<openfluid::fluidx::ObserverDescriptor*>& ItemDesc =
@@ -131,7 +135,7 @@ std::list<std::pair<std::string, std::string> > MonitoringModel::getItems()
       ItemDesc.begin(); it != ItemDesc.end(); ++it)
   {
     std::string ID = (*it)->getID();
-    std::string Name = mp_Monitoring->getSignature(ID).Signature->Name;
+    std::string Name = Reg->getSignature(ID).Signature->Name;
     Items.push_back(std::make_pair(ID, Name));
   }
 

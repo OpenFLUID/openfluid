@@ -46,7 +46,7 @@
  */
 
 /**
- \file BuilderModel_TEST.cpp
+ \file AdvancedModelDescriptor_TEST.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
@@ -55,10 +55,10 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_BuilderModel
+#define BOOST_TEST_MODULE unittest_AdvancedModelDescriptor
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/guicommon/BuilderModel.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/WareDescriptor.hpp>
@@ -69,12 +69,12 @@
 // =====================================================================
 // =====================================================================
 
-class BuilderModelSub : public openfluid::guicommon::BuilderModel
+class AdvancedModelDescriptorSub : public openfluid::fluidx::AdvancedModelDescriptor
 {
   public:
 
-  BuilderModelSub(openfluid::fluidx::CoupledModelDescriptor& ModelDesc):
-    openfluid::guicommon::BuilderModel::BuilderModel()
+  AdvancedModelDescriptorSub(openfluid::fluidx::CoupledModelDescriptor& ModelDesc):
+    openfluid::fluidx::AdvancedModelDescriptor()
   {mp_ModelDesc = &ModelDesc;};
 };
 
@@ -85,9 +85,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  BuilderModelSub Model(FXDesc.getModelDescriptor());
+  AdvancedModelDescriptorSub Model(FXDesc.getModelDescriptor());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 
@@ -145,9 +145,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  BuilderModelSub Model(FXDesc.getModelDescriptor());
+  AdvancedModelDescriptorSub Model(FXDesc.getModelDescriptor());
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 5);
 

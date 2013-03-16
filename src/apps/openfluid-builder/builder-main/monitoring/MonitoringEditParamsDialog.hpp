@@ -60,7 +60,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/table.h>
 #include <gtkmm/scrolledwindow.h>
-#include <openfluid/guicommon/BuilderMonitoring.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 #include "BuilderTableRowWidget.hpp"
 
 // =====================================================================
@@ -99,7 +99,7 @@ class MonitoringEditParamsDialog
 {
   private:
 
-    openfluid::guicommon::BuilderMonitoring& m_Monit;
+    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monit;
 
     Gtk::Dialog* mp_Dialog;
 
@@ -125,7 +125,7 @@ class MonitoringEditParamsDialog
 
   public:
 
-    MonitoringEditParamsDialog(openfluid::guicommon::BuilderMonitoring& Monit);
+    MonitoringEditParamsDialog(openfluid::fluidx::AdvancedMonitoringDescriptor& Monit);
 
     ~MonitoringEditParamsDialog();
 

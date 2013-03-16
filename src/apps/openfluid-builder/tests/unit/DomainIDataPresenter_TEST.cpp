@@ -64,7 +64,7 @@
 #include "DomainIDataView.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -77,7 +77,7 @@ struct init_Presenter
     DomainIDataViewSub* mp_View;
 
     EngineProject* mp_EngProject;
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     init_Presenter()
     {
@@ -87,7 +87,7 @@ struct init_Presenter
           + "/OPENFLUID.IN.Primitives";
       mp_EngProject = new EngineProject(Path);
 
-      mp_Domain = &mp_EngProject->getBuilderDesc().getDomain();
+      mp_Domain = &mp_EngProject->getAdvancedDesc().getDomain();
 
       mp_Component = new DomainIDataComponent(*mp_Domain);
       mp_Model = (DomainIDataModelImpl*) (mp_Component->getModel());

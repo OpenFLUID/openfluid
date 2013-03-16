@@ -57,7 +57,7 @@
 
 
 #include "BuilderModule.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 namespace openfluid {
 namespace machine {
@@ -76,16 +76,16 @@ class ProjectWorkspaceModule: public BuilderModule
 {
   protected:
 
-    BuilderDescriptor& m_BuilderDesc;
+    openfluid::fluidx::AdvancedFluidXDescriptor& m_AdvancedDesc;
 
   public:
 
-    ProjectWorkspaceModule(BuilderDescriptor& BuilderDesc) :
-      m_BuilderDesc(BuilderDesc)
+    ProjectWorkspaceModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
+      m_AdvancedDesc(AdvancedDesc)
     { }
 
 //    ProjectWorkspaceModule() :
-//      m_BuilderDesc(*new BuilderDescriptor())
+//      m_AdvancedDesc(*new openfluid::fluidx::AdvancedFluidXDescriptor())
 //    {}
 
     virtual sigc::signal<void> signal_ModuleChanged() = 0;
