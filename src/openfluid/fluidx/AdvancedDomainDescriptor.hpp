@@ -119,6 +119,8 @@ class AdvancedDomainDescriptor
 
     void checkUnitRelations();
 
+    void checkUnitRelations(openfluid::fluidx::UnitDescriptor& Unit);
+
     void checkIDataConsistency();
 
     void dispatchEvents();
@@ -229,10 +231,52 @@ class AdvancedDomainDescriptor
     void renameInputData(std::string ClassName, std::string OldIDataName,
                          std::string NewIDataName);
 
-    std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(const openfluid::core::UnitClassID_t Unit);
-    std::list<openfluid::core::UnitClassID_t>& getUnitsParentsOf(const openfluid::core::UnitClassID_t Unit);
-    std::list<openfluid::core::UnitClassID_t> getUnitsFromOf(const openfluid::core::UnitClassID_t Unit);
-    std::list<openfluid::core::UnitClassID_t> getUnitsChildrenOf(const openfluid::core::UnitClassID_t Unit);
+    const std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(
+        const openfluid::core::UnitClassID_t Unit);
+    const std::list<openfluid::core::UnitClassID_t>& getUnitsParentsOf(
+        const openfluid::core::UnitClassID_t Unit);
+    std::list<openfluid::core::UnitClassID_t> getUnitsFromOf(
+        const openfluid::core::UnitClassID_t Unit);
+    std::list<openfluid::core::UnitClassID_t> getUnitsChildrenOf(
+        const openfluid::core::UnitClassID_t Unit);
+
+    /**
+     * @brief Add ToUnit to the list of "Tos" of FromUnit
+     * @details Does nothing if the relation already exists
+     * @throw openfluid::base::OFException if FromUnit or ToUnit doesn't exist
+     */
+    void addFromToRelation(const openfluid::core::UnitClassID_t FromUnit,
+                           const openfluid::core::UnitClassID_t ToUnit);
+
+    /**
+     * @brief Remove ToUnit from the list of "Tos" of FromUnit
+     * @throw openfluid::base::OFException if FromUnit or ToUnit doesn't exist or if the relation doesn't exists
+     */
+    void removeFromToRelation(const openfluid::core::UnitClassID_t FromUnit,
+                              const openfluid::core::UnitClassID_t ToUnit);
+
+    /**
+     * @brief Add ChildUnit to the list of "Children" of ParentUnit
+     * @details Does nothing if the relation already exists
+     * @throw openfluid::base::OFException if ParentUnit or ChildUnit doesn't exist
+     */
+    void addParentChildRelation(const openfluid::core::UnitClassID_t ParentUnit,
+                                const openfluid::core::UnitClassID_t ChildUnit);
+
+    /**
+     * @brief Remove ChildUnit from the list of "Children" of ParentUnit
+     * @throw openfluid::base::OFException if ParentUnit or ChildUnit doesn't exist or if the relation doesn't exists
+     */
+    void removeParentChildRelation(
+        const openfluid::core::UnitClassID_t ParentUnit,
+        const openfluid::core::UnitClassID_t ChildUnit);
+
+    /**
+     * @brief Clear the list of "Tos" and "Parents" of Unit,
+     * and remove Unit from the list of "Tos" and "Parents" of all other Units of the Domain
+     * @throw openfluid::base::OFException if Unit doesn't exist
+     */
+    void clearRelations(const openfluid::core::UnitClassID_t Unit);
 
     void clearDomain();
 };
@@ -240,6 +284,7 @@ class AdvancedDomainDescriptor
 // =====================================================================
 // =====================================================================
 
-}} // namespaces
+}
+} // namespaces
 
 #endif /* ADVANCEDDOMAINDESCRIPTOR_HPP_ */
