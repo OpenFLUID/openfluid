@@ -54,7 +54,7 @@
 
 #include "MonitoringModule.hpp"
 
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include "MonitoringComponent.hpp"
 #include "MonitoringCoordinator.hpp"
 #include "MonitoringAddObserverDialog.hpp"
@@ -63,16 +63,16 @@
 // =====================================================================
 
 MonitoringModule::MonitoringModule(
-    openfluid::guicommon::BuilderDescriptor& BuilderDesc) :
-    ProjectWorkspaceModule(BuilderDesc)
+    openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
+    ProjectWorkspaceModule(AdvancedDesc)
 {
   mp_MainPanel = 0;
 
-  mp_MonitoringMVP = new MonitoringComponent(BuilderDesc.getMonitoring());
+  mp_MonitoringMVP = new MonitoringComponent(AdvancedDesc.getMonitoring());
 
-  mp_AddDialog = new MonitoringAddObserverDialog(BuilderDesc.getMonitoring());
+  mp_AddDialog = new MonitoringAddObserverDialog(AdvancedDesc.getMonitoring());
 
-  mp_ParamsDialog = new MonitoringEditParamsDialog(BuilderDesc.getMonitoring());
+  mp_ParamsDialog = new MonitoringEditParamsDialog(AdvancedDesc.getMonitoring());
 
   mp_Coordinator = new MonitoringCoordinator(*mp_MonitoringMVP->getModel(),
                                              *mp_AddDialog, *mp_ParamsDialog);

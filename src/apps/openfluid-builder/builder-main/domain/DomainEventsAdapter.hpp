@@ -58,7 +58,7 @@
 #include <map>
 
 namespace openfluid {
-namespace guicommon {
+namespace fluidx {
 class BuilderUnit;
 }
 }
@@ -79,7 +79,7 @@ class DomainEventsAdapter
 
     DomainEventsAdapter(DomainEventsAdapterModel& AdapterModel, DomainEventsView& View);
 
-    void setUnits(const std::map<int, openfluid::guicommon::BuilderUnit>* Units);
+    void setUnits(const std::map<int, openfluid::fluidx::BuilderUnit>* Units);
 };
 
 #endif /* __DOMAINEVENTSADAPTER_HPP__ */

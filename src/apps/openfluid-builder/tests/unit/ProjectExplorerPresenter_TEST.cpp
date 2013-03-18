@@ -90,7 +90,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
   EngineProject* EngProject = new EngineProject();
 
   ProjectExplorerComponent* Component = new ProjectExplorerComponent(
-      EngProject->getBuilderDesc());
+      EngProject->getAdvancedDesc());
   ProjectExplorerModelImpl* Model =
       (ProjectExplorerModelImpl*) (Component->getModel());
   ProjectExplorerViewSub* View =
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
   EngineProject* EngProject = new EngineProject(Path);
 
   ProjectExplorerComponent* Component = new ProjectExplorerComponent(
-      EngProject->getBuilderDesc());
+      EngProject->getAdvancedDesc());
   ProjectExplorerModelImpl* Model =
       (ProjectExplorerModelImpl*) (Component->getModel());
   ProjectExplorerViewSub* View =
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
   EngineProject* EngProject = new EngineProject(Path);
 
   ProjectExplorerComponent* Component = new ProjectExplorerComponent(
-      EngProject->getBuilderDesc());
+      EngProject->getAdvancedDesc());
   ProjectExplorerModelImpl* Model =
       (ProjectExplorerModelImpl*) (Component->getModel());
   ProjectExplorerViewSub* View =
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
       *TreeView->get_column(0));
 
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
-                    ProjectExplorerCategories::EXPLORER_NONE);
+                    ProjectExplorerCategories::EXPLORER_RUN);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   // Monitoring activated

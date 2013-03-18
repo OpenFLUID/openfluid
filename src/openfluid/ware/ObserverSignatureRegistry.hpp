@@ -46,58 +46,56 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file ObserverSignatureRegistry.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
+#ifndef OBSERVERSIGNATUREREGISTRY_HPP_
+#define OBSERVERSIGNATUREREGISTRY_HPP_
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#include <vector>
+#include <string>
 
-#include <gtkmm/box.h>
+namespace openfluid {
 
-class MonitoringComponent;
-class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-class MonitoringEditParamsDialog;
+namespace machine {
+class ObserverSignatureInstance;
+}
 
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+namespace ware {
+
+class ObserverSignatureRegistry
 {
   private:
 
-    Gtk::Box* mp_MainPanel;
+    static ObserverSignatureRegistry* m_Instance;
 
-  protected:
+    std::vector<openfluid::machine::ObserverSignatureInstance*> m_AvailableSignatures;
 
-    MonitoringComponent* mp_MonitoringMVP;
-
-    MonitoringAddObserverDialog* mp_AddDialog;
-
-    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-    MonitoringCoordinator* mp_Coordinator;
-
-    sigc::signal<void> m_signal_MonitoringChanged;
-
-    void whenMonitoringChanged();
+    ObserverSignatureRegistry();
 
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    static ObserverSignatureRegistry* getInstance();
 
-    ~MonitoringModule();
+    /**
+     * @brief Returns the Signature of the Observer with ObserverID if available
+     * @throw openfluid::base::OFException if this Observer plugin is not available
+     */
+    const openfluid::machine::ObserverSignatureInstance& getSignature(
+        std::string ObserverID);
 
-    sigc::signal<void> signal_ModuleChanged();
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
+    /**
+     * @brief Updates the list of available signatures, according to Runtime environment paths
+     */
     void update();
+
+    std::vector<openfluid::machine::ObserverSignatureInstance*> getAvailableSignatures();
 
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+}
+} // namespaces
+#endif /* OBSERVERSIGNATUREREGISTRY_HPP_ */

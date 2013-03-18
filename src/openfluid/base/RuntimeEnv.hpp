@@ -109,6 +109,9 @@ class DLLEXPORT RuntimeEnvironment
     std::vector<std::string> m_ExtraObserversPlugsDirs;
 
 
+    std::string m_ProvidedExamplesDir;
+    std::string m_UserExamplesDir;
+
     std::string m_UserID;
     std::string m_HostName;
     std::string m_Arch;
@@ -410,6 +413,21 @@ class DLLEXPORT RuntimeEnvironment
       @return the path for locale directory
     */
     std::string getLocaleDir()const;
+
+
+    /**
+      Returns the path for provided examples, taking into account the install prefix path
+      @return the path for provided examples
+     */
+    std::string getProvidedExamplesDir() const { return m_ProvidedExamplesDir; };
+
+
+    /**
+      Returns the path for examples in user's directory
+      @return the path for user's examples
+     */
+    std::string getUserExamplesDir() const { return m_UserExamplesDir; };
+
 
     /**
       Returns the extra properties list

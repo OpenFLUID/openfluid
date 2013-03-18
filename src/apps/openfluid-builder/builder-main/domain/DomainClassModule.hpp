@@ -100,7 +100,7 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
 
   public:
 
-    DomainClassModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc);
+    DomainClassModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     ~DomainClassModule();
 
@@ -109,7 +109,7 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
     void setEngineRequirements(
         openfluid::machine::ModelInstance& /*ModelInstance*/,
         openfluid::machine::SimulationBlob& /*SimBlob*/,
-        openfluid::guicommon::BuilderDescriptor& /*BuilderDesc*/)
+        openfluid::fluidx::AdvancedFluidXDescriptor& /*AdvancedDesc*/)
     {}
 
     void setSelectedClassFromApp(std::string ClassName);

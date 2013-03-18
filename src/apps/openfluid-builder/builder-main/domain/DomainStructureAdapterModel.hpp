@@ -59,7 +59,7 @@
 #include "BuilderClassListStore.hpp"
 #include "DomainStructureColumns.hpp"
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 namespace openfluid {
 namespace fluidx {
@@ -77,7 +77,7 @@ class DomainStructureAdapterModel
 
     virtual void
         setDomainStructure(
-            const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass) = 0;
+            const openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t& UnitListByClass) = 0;
 
     virtual Glib::RefPtr<Gtk::TreeModel> getClassesTreeModel() = 0;
 
@@ -148,7 +148,7 @@ class DomainStructureAdapterModelImpl: public DomainStructureAdapterModel
     DomainStructureAdapterModelImpl(DomainStructureColumns& Columns);
 
     void setDomainStructure(
-        const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass);
+        const openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t& UnitListByClass);
 
     Glib::RefPtr<Gtk::TreeModel> getClassesTreeModel();
 

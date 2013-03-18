@@ -46,58 +46,55 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file AdvancedFluidXDescriptor.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
+#ifndef ADVANCEDFLUIDXDESCRIPTOR_HPP_
+#define ADVANCEDFLUIDXDESCRIPTOR_HPP_
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
-#include <gtkmm/box.h>
+namespace openfluid {
+namespace fluidx {
 
-class MonitoringComponent;
-class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-class MonitoringEditParamsDialog;
-
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class AdvancedFluidXDescriptor
 {
   private:
 
-    Gtk::Box* mp_MainPanel;
+    AdvancedDomainDescriptor* mp_Domain;
 
-  protected:
+    AdvancedModelDescriptor* mp_Model;
 
-    MonitoringComponent* mp_MonitoringMVP;
+    openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
-    MonitoringAddObserverDialog* mp_AddDialog;
+    openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
 
-    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-    MonitoringCoordinator* mp_Coordinator;
-
-    sigc::signal<void> m_signal_MonitoringChanged;
-
-    void whenMonitoringChanged();
+    AdvancedMonitoringDescriptor* mp_Monitoring;
 
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    AdvancedFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
 
-    ~MonitoringModule();
+    ~AdvancedFluidXDescriptor();
 
-    sigc::signal<void> signal_ModuleChanged();
+    AdvancedDomainDescriptor& getDomain();
 
-    void compose();
+    AdvancedModelDescriptor& getModel();
 
-    Gtk::Widget* asWidget();
+    openfluid::fluidx::RunDescriptor& getRunDescriptor();
 
-    void update();
+    openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
 
+    AdvancedMonitoringDescriptor& getMonitoring();
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+}
+} // namespaces
+
+#endif /* ADVANCEDFLUIDXDESCRIPTOR_HPP_ */

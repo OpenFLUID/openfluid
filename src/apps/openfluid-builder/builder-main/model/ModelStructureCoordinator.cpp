@@ -58,10 +58,10 @@
 #include <algorithm>
 
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/config.hpp>
 
 #include "ModelAvailFctModel.hpp"
@@ -97,11 +97,11 @@ void ModelStructureCoordinator::whenStructureFctSelectionChanged()
 
   if (CurrentSelection < 0)
     m_FctDetailModel.setFctToDisplay(
-        openfluid::guicommon::FunctionSignatureRegistry::getEmptyPluggableSignature());
+        openfluid::ware::FunctionSignatureRegistry::getEmptyPluggableSignature());
   else
     m_FctDetailModel.setFctToDisplay(
-        openfluid::guicommon::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
-            mp_BuilderDesc->getModel().getItemAt(CurrentSelection)));
+        openfluid::ware::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
+            mp_AdvancedDesc->getModel().getItemAt(CurrentSelection)));
 
   updateStructureListToolBox();
 }
@@ -119,7 +119,7 @@ void ModelStructureCoordinator::whenAddFctAsked()
 
   openfluid::fluidx::ModelItemDescriptor* Item;
 
-  ModelGeneratorCreationDialog Dialog(*mp_BuilderDesc);
+  ModelGeneratorCreationDialog Dialog(*mp_AdvancedDesc);
 
   switch (Signature->ItemType)
   {
@@ -130,7 +130,7 @@ void ModelStructureCoordinator::whenAddFctAsked()
     case openfluid::fluidx::ModelItemDescriptor::Generator:
       Item =
           Dialog.show(
-              (dynamic_cast<openfluid::guicommon::GeneratorSignature*>(Signature->Signature))->m_GeneratorMethod);
+              (dynamic_cast<openfluid::ware::GeneratorSignature*>(Signature->Signature))->m_GeneratorMethod);
       break;
     default:
       std::cerr
@@ -162,7 +162,7 @@ void ModelStructureCoordinator::whenRemoveFctAsked()
     return;
 
   eraseModelFctParamsComponent(
-      mp_BuilderDesc->getModel().getOrderedIDs()[Index]);
+      mp_AdvancedDesc->getModel().getOrderedIDs()[Index]);
 
   m_StructureModel.removeFunctionAt(Index);
   updateStructureListToolBox();
@@ -212,8 +212,8 @@ ModelStructureCoordinator::ModelStructureCoordinator(
     ModelFctDetailModel& FctDetailModel, ModelStructureModel& StructureModel,
     ModelGlobalParamsModel& GlobalParamsModel, ModelParamsPanel& ParamsPanel,
     BuilderListToolBox& StructureListToolBox,
-    openfluid::guicommon::BuilderDescriptor& BuilderDesc) :
-    mp_BuilderDesc(&BuilderDesc), m_FctDetailModel(FctDetailModel), m_StructureModel(
+    openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
+    mp_AdvancedDesc(&AdvancedDesc), m_FctDetailModel(FctDetailModel), m_StructureModel(
         StructureModel), m_GlobalParamsModel(GlobalParamsModel), m_ParamsPanel(
         ParamsPanel), m_StructureListToolBox(StructureListToolBox), m_HasToUpdate(
         true)
@@ -238,7 +238,7 @@ ModelStructureCoordinator::ModelStructureCoordinator(
   m_GlobalParamsModel.signal_GlobalValueChanged().connect(
       sigc::mem_fun(*this, &ModelStructureCoordinator::whenGlobalValueChanged));
 
-  mp_AddFctModule = new ModelAddFunctionModule(mp_BuilderDesc->getModel());
+  mp_AddFctModule = new ModelAddFunctionModule(mp_AdvancedDesc->getModel());
 
   createParamsComponents();
 }
@@ -284,7 +284,7 @@ void ModelStructureCoordinator::update()
 void ModelStructureCoordinator::createParamsComponents()
 {
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      mp_BuilderDesc->getModel().getItems();
+      mp_AdvancedDesc->getModel().getItems();
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -323,7 +323,7 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
   createParamsComponents();
 
   mp_AddFctModule->setSignatures(
-      *openfluid::guicommon::FunctionSignatureRegistry::getInstance());
+      *openfluid::ware::FunctionSignatureRegistry::getInstance());
 
   m_ParamsPanel.setCurrentPage(SelectedPageName);
   m_StructureModel.requestSelectionByAppAt(0);
@@ -335,7 +335,7 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
 void ModelStructureCoordinator::createModelFctParamsComponent(
     openfluid::fluidx::ModelItemDescriptor* Item)
 {
-  openfluid::guicommon::BuilderModel* Model = &(mp_BuilderDesc->getModel());
+  openfluid::fluidx::AdvancedModelDescriptor* Model = &(mp_AdvancedDesc->getModel());
   ModelFctParamsComponent* FctParams = new ModelFctParamsComponent(Item,
                                                                    *Model);
 

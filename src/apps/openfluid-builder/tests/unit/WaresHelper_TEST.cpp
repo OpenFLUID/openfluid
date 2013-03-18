@@ -46,7 +46,7 @@
  */
 
 /**
- \file BuilderMonitoring_TEST.cpp
+ \file ObserverSignatureRegistry_TEST.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
@@ -55,124 +55,109 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_BuilderMonitoring
+#define BOOST_TEST_MODULE builder_unittest_WaresHelper
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/guicommon/BuilderMonitoring.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include "WaresHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_construction)
+BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedModel)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderMonitoring Monit(
-      FXDesc.getMonitoringDescriptor());
+  openfluid::fluidx::AdvancedModelDescriptor Model(FXDesc.getModelDescriptor());
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
+  std::list<openfluid::fluidx::ModelItemDescriptor*> Existing =
+      Model.getItems();
 
-  BOOST_CHECK_THROW(Monit.getSignature("dummy"), openfluid::base::OFException);
-  BOOST_CHECK_THROW(Monit.getSignature("export.vars.files.csv"),
-                    openfluid::base::OFException);
+  std::list<std::string> Missing;
+  std::list<openfluid::fluidx::ModelItemDescriptor*> Modified =
+      WaresHelper::checkAndGetModifiedModel(Model, Missing);
 
-  BOOST_CHECK_THROW(Monit.getDescriptor("dummy"), openfluid::base::OFException);
-  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
-                    "export.vars.files.csv");
+  BOOST_CHECK_EQUAL(Missing.size(), 2);
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionA"));
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionB"));
+
+  BOOST_CHECK_EQUAL(Modified.size(), 3);
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Modified.begin(); it != Modified.end(); ++it)
+    BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
+
+  FXDesc.getModelDescriptor().appendItem(
+      new openfluid::fluidx::FunctionDescriptor("tests.primitives.prod"));
+  Model = openfluid::fluidx::AdvancedModelDescriptor(
+      FXDesc.getModelDescriptor());
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+      CONFIGTESTS_OUTPUT_BINARY_DIR);
+  Existing = Model.getItems();
+  BOOST_CHECK_EQUAL(Existing.size(), 6);
+
+  Missing.clear();
+  Modified = WaresHelper::checkAndGetModifiedModel(Model, Missing);
+
+  BOOST_CHECK_EQUAL(Missing.size(), 2);
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionA"));
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionB"));
+
+  BOOST_CHECK_EQUAL(Modified.size(), 4);
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Modified.begin(); it != Modified.end(); ++it)
+    BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_checkAndAdapt)
+BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedMonitoring)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderMonitoring Monit(
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
-  boost::filesystem::path Path(CONFIGTESTS_LIB_OUTPUT_PATH);
-  Path / "openfluid" / "observers";
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(
-      Path.string());
+  std::list<std::string> Missing;
+  std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObs =
+      WaresHelper::checkAndGetModifiedMonitoring(Monit, Missing);
 
-  std::string Str = "";
-  Monit.setItems(Monit.checkAndGetModifiedMonitoring(Str));
+  BOOST_CHECK(Missing.empty());
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
+  BOOST_CHECK_EQUAL(ModifiedObs.size(), 2);
+  std::list<openfluid::fluidx::ObserverDescriptor*> Existing = Monit.getItems();
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      ModifiedObs.begin(); it != ModifiedObs.end(); ++it)
+    BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
 
-  BOOST_CHECK_THROW(Monit.getSignature("dummy"), openfluid::base::OFException);
-  BOOST_CHECK_EQUAL(Monit.getSignature("export.vars.files.csv").Signature->ID,
-                    "export.vars.files.csv");
-
-  BOOST_CHECK_THROW(Monit.getDescriptor("dummy"), openfluid::base::OFException);
-  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
-                    "export.vars.files.csv");
-}
-
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(check_operations)
-{
-  openfluid::fluidx::FluidXDescriptor FXDesc(0);
-  FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
-
-  openfluid::guicommon::BuilderMonitoring Monit(
+  FXDesc.getMonitoringDescriptor().appendItem(
+      new openfluid::fluidx::ObserverDescriptor("dummy"));
+  Monit = openfluid::fluidx::AdvancedMonitoringDescriptor(
       FXDesc.getMonitoringDescriptor());
+  Existing = Monit.getItems();
+  BOOST_CHECK_EQUAL(Existing.size(), 3);
 
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
-  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
-                    "export.vars.files.csv");
-  BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
-      "export.spatial-graph.files.dot");
+  Missing.clear();
+  ModifiedObs = WaresHelper::checkAndGetModifiedMonitoring(Monit, Missing);
 
-  BOOST_CHECK_THROW(Monit.removeFromObserverList("dummy"),
-                    openfluid::base::OFException);
+  BOOST_CHECK_EQUAL(Missing.size(), 1);
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"dummy"));
 
-  Monit.removeFromObserverList("export.vars.files.csv");
-
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 1);
-  BOOST_CHECK_THROW(Monit.getDescriptor("export.vars.files.csv"),
-                    openfluid::base::OFException);
-  BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
-      "export.spatial-graph.files.dot");
-
-  BOOST_CHECK_THROW(Monit.addToObserverList("export.vars.files.csv"),
-                    openfluid::base::OFException);
-  BOOST_CHECK_THROW(Monit.addToObserverList("dummy"),
-                    openfluid::base::OFException);
-
-  boost::filesystem::path Path(CONFIGTESTS_LIB_OUTPUT_PATH);
-  Path / "openfluid" / "observers";
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(
-      Path.string());
-  std::string Str = "";
-  Monit.setItems(Monit.checkAndGetModifiedMonitoring(Str));
-
-  BOOST_CHECK_THROW(Monit.addToObserverList("dummy"),
-                    openfluid::base::OFException);
-
-  Monit.addToObserverList("export.vars.files.csv");
-  BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
-  BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
-                    "export.vars.files.csv");
-  BOOST_CHECK_EQUAL(
-      Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
-      "export.spatial-graph.files.dot");
-  BOOST_CHECK_EQUAL(Monit.getSignature("export.vars.files.csv").Signature->ID,
-                    "export.vars.files.csv");
+  BOOST_CHECK_EQUAL(ModifiedObs.size(), 2);
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      ModifiedObs.begin(); it != ModifiedObs.end(); ++it)
+    BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
 }
 
 // =====================================================================
@@ -182,21 +167,13 @@ BOOST_AUTO_TEST_CASE(check_getUnusedSignatures)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderMonitoring Monit(
+  openfluid::fluidx::AdvancedMonitoringDescriptor Monit(
       FXDesc.getMonitoringDescriptor());
 
-  boost::filesystem::path Path(CONFIGTESTS_LIB_OUTPUT_PATH);
-  Path / "openfluid" / "observers";
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(
-      Path.string());
-
-  std::string Str = "";
-  Monit.setItems(Monit.checkAndGetModifiedMonitoring(Str));
-
   std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
-      Monit.getUnusedAvailableSignatures();
+      WaresHelper::getUnusedAvailableObserverSignatures(Monit);
 
   std::map<std::string, std::string> UnusedNameById;
   for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
@@ -212,7 +189,7 @@ BOOST_AUTO_TEST_CASE(check_getUnusedSignatures)
   Monit.removeFromObserverList("export.vars.files.csv");
   Monit.removeFromObserverList("export.spatial-graph.files.dot");
 
-  Unused = Monit.getUnusedAvailableSignatures();
+  Unused = WaresHelper::getUnusedAvailableObserverSignatures(Monit);
   UnusedNameById.clear();
   for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
       Unused.begin(); it != Unused.end(); ++it)
@@ -224,7 +201,7 @@ BOOST_AUTO_TEST_CASE(check_getUnusedSignatures)
 
   Monit.addToObserverList("export.spatial-graph.files.dot");
 
-  Unused = Monit.getUnusedAvailableSignatures();
+  Unused = WaresHelper::getUnusedAvailableObserverSignatures(Monit);
   UnusedNameById.clear();
   for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
       Unused.begin(); it != Unused.end(); ++it)
@@ -233,3 +210,7 @@ BOOST_AUTO_TEST_CASE(check_getUnusedSignatures)
   BOOST_CHECK(!UnusedNameById.count("export.spatial-graph.files.dot"));
   BOOST_CHECK(UnusedNameById.count("export.vars.files.csv"));
 }
+
+// =====================================================================
+// =====================================================================
+

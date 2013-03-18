@@ -81,7 +81,7 @@ ModelAddFunctionCoordinator::ModelAddFunctionCoordinator(
   m_AvailFctModel.signal_SelectedSignatureChanged().connect(sigc::mem_fun(
       *this, &ModelAddFunctionCoordinator::whenAvailFctSelectionChanged));
 
-  setSignatures(*openfluid::guicommon::FunctionSignatureRegistry::getInstance());
+  setSignatures(*openfluid::ware::FunctionSignatureRegistry::getInstance());
 }
 
 // =====================================================================
@@ -89,7 +89,7 @@ ModelAddFunctionCoordinator::ModelAddFunctionCoordinator(
 
 
 void ModelAddFunctionCoordinator::setSignatures(
-    openfluid::guicommon::FunctionSignatureRegistry& Signatures)
+    openfluid::ware::FunctionSignatureRegistry& Signatures)
 {
   m_AvailFctModel.setSignatures(Signatures);
 }

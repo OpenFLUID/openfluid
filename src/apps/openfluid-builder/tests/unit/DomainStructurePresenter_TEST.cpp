@@ -64,7 +64,7 @@
 #include "DomainStructureView.hpp"
 #include "EngineProject.hpp"
 #include "tests-config.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(test_SetEmptyCoreRepos)
 {
   EngineProject* EngProject = new EngineProject();
 
-  mp_Component = new DomainStructureComponent(EngProject->getBuilderDesc().getDomain());
+  mp_Component = new DomainStructureComponent(EngProject->getAdvancedDesc().getDomain());
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
   mp_View = (DomainStructureViewSub*) (mp_Component->getView());
   mp_Model->update();
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(test_SetDomain)
       + "/OPENFLUID.IN.Primitives";
   EngineProject* EngProject = new EngineProject(Path);
 
-  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
 
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
 {
   EngineProject* EngProject = new EngineProject();
 
-  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
 
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(test_selectClass)
 {
   EngineProject* EngProject = new EngineProject();
 
-  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
 
   Domain->addUnit(createAUnitDesc("class A", 100, 2));
   Domain->addUnit(createAUnitDesc("class B", 200, 3));
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(test_selectUnit)
 {
   EngineProject* EngProject = new EngineProject();
 
-  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
 
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());
@@ -265,7 +265,7 @@ BOOST_AUTO_TEST_CASE(test_deleteSelectedUnit)
 {
   EngineProject* EngProject = new EngineProject();
 
-  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
 
   mp_Component = new DomainStructureComponent(*Domain);
   mp_Model = (DomainStructureModelSub*) (mp_Component->getModel());

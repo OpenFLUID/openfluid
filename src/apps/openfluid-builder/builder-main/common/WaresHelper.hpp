@@ -46,58 +46,59 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file WaresHelper.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
+#ifndef WARESHELPER_HPP_
+#define WARESHELPER_HPP_
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#include <vector>
+#include <list>
+#include <string>
 
-#include <gtkmm/box.h>
+namespace openfluid {
+namespace machine {
+class ObserverSignatureInstance;
+}
+namespace fluidx {
+class AdvancedMonitoringDescriptor;
+class AdvancedModelDescriptor;
+class ObserverDescriptor;
+class ModelItemDescriptor;
+}
+}
 
-class MonitoringComponent;
-class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-class MonitoringEditParamsDialog;
-
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class WaresHelper
 {
-  private:
-
-    Gtk::Box* mp_MainPanel;
-
-  protected:
-
-    MonitoringComponent* mp_MonitoringMVP;
-
-    MonitoringAddObserverDialog* mp_AddDialog;
-
-    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-    MonitoringCoordinator* mp_Coordinator;
-
-    sigc::signal<void> m_signal_MonitoringChanged;
-
-    void whenMonitoringChanged();
-
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    /**
+     * @brief Checks that each Function of the Model descriptor is available
+     * @details Update the list of all available Functions before checking
+     * @param Desc the Model descriptor to check
+     * @param MissingFunctions a list of IDs of Functions that are in the Model but whose plugin files are not available
+     * @return A copy of the list of Functions that are in the Model, whithout that are not available
+     */
+    static std::list<openfluid::fluidx::ModelItemDescriptor*> checkAndGetModifiedModel(
+        const openfluid::fluidx::AdvancedModelDescriptor& Desc,
+        std::list<std::string>& MissingFunctions);
 
-    ~MonitoringModule();
+    /**
+     * @brief Checks that each Observer of the Monitoring descriptor is available
+     * @details Update the list of all available Observers before checking
+     * @param Desc the Monitoring descriptor to check
+     * @param MissingObservers a list of IDs of Observers that are in the Monitoring but whose plugin files are not available
+     * @return A copy of the list of Observers that are in the Monitoring, whithout that are not available
+     */
+    static std::list<openfluid::fluidx::ObserverDescriptor*> checkAndGetModifiedMonitoring(
+        const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc,
+        std::list<std::string>& MissingObservers);
 
-    sigc::signal<void> signal_ModuleChanged();
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-    void update();
-
+    static std::vector<openfluid::machine::ObserverSignatureInstance*> getUnusedAvailableObserverSignatures(
+        const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc);
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+#endif /* WARESHELPER_HPP_ */

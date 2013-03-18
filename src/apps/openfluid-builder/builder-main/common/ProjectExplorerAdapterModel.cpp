@@ -62,14 +62,14 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
-    openfluid::guicommon::BuilderDescriptor& Desc) :
-    mp_BuilderDesc(&Desc)
+    openfluid::fluidx::AdvancedFluidXDescriptor& Desc) :
+    mp_AdvancedDesc(&Desc)
 {
   mref_TreeModel = BuilderTreeStore::create(m_Columns);
 
@@ -95,23 +95,16 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
   Row = *(mref_TreeModel->append());
   Row[m_Columns.m_Id] = "";
   Row[m_Columns.m_Display] = _("Simulation");
-  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_NONE;
+  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_RUN;
   Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
 
-  // Simulation > Run
+  // Simulation > RunInfo
   Gtk::TreeRow SubRow1;
   SubRow1 = *(mref_TreeModel->append(Row->children()));
   SubRow1[m_Columns.m_Id] = "";
-  SubRow1[m_Columns.m_Display] = _("Run");
+  SubRow1[m_Columns.m_Display] = generateRunInfoStr("", "", 1);
   SubRow1[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_RUN;
-  SubRow1[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
-
-  // Simulation > Run > RunInfo
-  Gtk::TreeRow SubRow2 = *(mref_TreeModel->append(SubRow1->children()));
-  SubRow2[m_Columns.m_Id] = "";
-  SubRow2[m_Columns.m_Display] = generateRunInfoStr("", "", 1);
-  SubRow2[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_RUN;
-  mp_RunInfoRowRef = mref_TreeModel->createRowRefFromIter(*SubRow2);
+  mp_RunInfoRowRef = mref_TreeModel->createRowRefFromIter(*SubRow1);
 
   // Monitoring
   Row = *(mref_TreeModel->append());
@@ -169,7 +162,7 @@ void ProjectExplorerAdapterModelImpl::updateModel()
 {
   mref_TreeModel->clearChildrenOfRowRef(*mp_ModelRowRef);
 
-  std::vector<std::string> IDs = mp_BuilderDesc->getModel().getOrderedIDs();
+  std::vector<std::string> IDs = mp_AdvancedDesc->getModel().getOrderedIDs();
 
   for (unsigned int i = 0; i < IDs.size(); i++)
   {
@@ -191,7 +184,7 @@ void ProjectExplorerAdapterModelImpl::updateDomain()
   mref_TreeModel->clearChildrenOfRowRef(*mp_DomainRowRef);
 
   std::set<std::string> ClassNames =
-      mp_BuilderDesc->getDomain().getClassNames();
+      mp_AdvancedDesc->getDomain().getClassNames();
 
   for (std::set<std::string>::iterator it = ClassNames.begin();
       it != ClassNames.end(); ++it)
@@ -202,7 +195,7 @@ void ProjectExplorerAdapterModelImpl::updateDomain()
 
     Row[m_Columns.m_Id] = ClassName;
     Row[m_Columns.m_Display] = generateClassInfoStr(
-        ClassName, mp_BuilderDesc->getDomain().getIDsOfClass(ClassName).size());
+        ClassName, mp_AdvancedDesc->getDomain().getIDsOfClass(ClassName).size());
     Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_CLASS;
   }
 }
@@ -221,15 +214,12 @@ std::string ProjectExplorerAdapterModelImpl::generateClassInfoStr(
 
 void ProjectExplorerAdapterModelImpl::updateRunInfo()
 {
-//  if (mp_FXDesc)
-//  {
   Gtk::TreeRow Row = mref_TreeModel->getRowFromRowRef(*mp_RunInfoRowRef);
 
   Row[m_Columns.m_Display] = generateRunInfoStr(
-      mp_BuilderDesc->getRunDescriptor().getBeginDate().getAsISOString(),
-      mp_BuilderDesc->getRunDescriptor().getEndDate().getAsISOString(),
-      mp_BuilderDesc->getRunDescriptor().getDeltaT());
-//  }
+      mp_AdvancedDesc->getRunDescriptor().getBeginDate().getAsISOString(),
+      mp_AdvancedDesc->getRunDescriptor().getEndDate().getAsISOString(),
+      mp_AdvancedDesc->getRunDescriptor().getDeltaT());
 }
 
 // =====================================================================

@@ -57,18 +57,18 @@
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 
-#include <openfluid/guicommon/BuilderModel.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
 
 ModelFctParamsModelImpl::ModelFctParamsModelImpl(
-    openfluid::guicommon::BuilderModel& Model) :
+    openfluid::fluidx::AdvancedModelDescriptor& Model) :
     mp_Item(0), mp_ItemSignature(0), mp_Model(&Model)
 {
 }
@@ -84,7 +84,7 @@ void ModelFctParamsModelImpl::setModelItemDescriptor(
   if (mp_Item)
   {
     mp_ItemSignature =
-        openfluid::guicommon::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
+        openfluid::ware::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
             mp_Item);
     m_signal_ItemInit.emit();
   }
@@ -168,7 +168,7 @@ void ModelFctParamsModelImpl::updateInterpGeneratorRequiredExtraFiles()
 //  if (mp_Item->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
 //  {
 //    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
-//        (static_cast<openfluid::guicommon::GeneratorSignature*>(mp_ItemSignature->Signature))->m_GeneratorMethod;
+//        (static_cast<openfluid::ware::GeneratorSignature*>(mp_ItemSignature->Signature))->m_GeneratorMethod;
 //
 //    if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
 //        == openfluid::fluidx::GeneratorDescriptor::Inject)

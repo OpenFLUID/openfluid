@@ -59,8 +59,8 @@
 #include <gtkmm/comboboxtext.h>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -75,14 +75,14 @@ class DomainIDataRemoveDialog
 
     Gtk::ComboBoxText* mp_Combo;
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     std::string m_ClassName;
 
 
   public:
 
-    DomainIDataRemoveDialog(openfluid::guicommon::BuilderDomain& Domain);
+    DomainIDataRemoveDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     void setClass(std::string ClassName);
 

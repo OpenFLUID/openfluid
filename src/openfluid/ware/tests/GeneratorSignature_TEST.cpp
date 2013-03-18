@@ -47,123 +47,53 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  \file GeneratorSignature_TEST.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-
-#include <openfluid/buddies/OFBuddy.hpp>
-
-#include <vector>
-
-#include <openfluid/tools/SwissTools.hpp>
-
-
-namespace openfluid { namespace buddies {
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_GeneratorSignature
+#include <boost/test/unit_test.hpp>
 
 
-OpenFLUIDBuddy::OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener)
+#include <openfluid/ware/GeneratorSignature.hpp>
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
 {
-  mp_Listener = Listener;
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
 
-  if (mp_Listener == NULL) mp_Listener = new openfluid::buddies::BuddiesListener();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-OpenFLUIDBuddy::~OpenFLUIDBuddy()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDBuddy::setOptionIfNotSet(std::string OptionName, std::string OptionValue)
-{
-  if (m_Options.find(OptionName) == m_Options.end())
-  {
-    m_Options[OptionName] = OptionValue;
-  }
+  BOOST_CHECK_EQUAL(Sign.ID,"Fixed Generator");
+  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),1);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-std::string OpenFLUIDBuddy::getYesNoFromOneZero(std::string VStr)
+BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
 {
-  if (VStr == "1") return "yes";
-  else return "no";
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
+
+  BOOST_CHECK_EQUAL(Sign.ID,"Random Generator");
+  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),2);
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
+BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
 {
-  // example inputdir=/usr/lib,outputdir=./toto,withfoo=1
+  openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
 
-  std::vector<std::string> OptsItems;
-  std::vector<std::string> OptKeyValue;
-
-  OptsItems = openfluid::tools::SplitString(OptsStr,",");
-
-  for (unsigned int i = 0; i<OptsItems.size();i++)
-  {
-    OptKeyValue = openfluid::tools::SplitString(OptsItems[i],"=");
-
-    if (OptKeyValue.size() == 2 )
-    {
-      m_Options[OptKeyValue[0]] = OptKeyValue[1];
-    }
-    else
-    {
-      m_Options.clear();
-      return false;
-    }
-  }
-
-  return true;
+  BOOST_CHECK_EQUAL(Sign.ID,"Interp Generator");
+  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),4);
 }
 
-
 // =====================================================================
 // =====================================================================
-
-
-void OpenFLUIDBuddy::streamOptions(std::ostream& OStream)
-{
-
-  std::map<std::string,std::string>::iterator it;
-
-  for (it = m_Options.begin();it != m_Options.end();++it)
-  {
-    OStream << it->first << " : " << it->second << std::endl;
-  }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OpenFLUIDBuddy::invokeHelp()
-{
-  mp_Listener->onHelpRequired(m_RequiredOptionsHelp);
-  mp_Listener->onHelpOthers(m_OtherOptionsHelp);
-}
-
-
-} } //namespaces
-

@@ -46,56 +46,42 @@
 */
 
 /**
-  \file WorkspaceTab.hpp
+  \file ExamplesBuddy.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __WORKSPACETAB_HPP__
-#define __WORKSPACETAB_HPP__
+#ifndef __EXAMPLESBUDDY_HPP__
+#define __EXAMPLESBUDDY_HPP__
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 
 
-#include <openfluid/builderext/ModelessExtension.hpp>
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+namespace openfluid { namespace buddies {
 
 
-namespace openfluid { namespace builderext {
-
-
-// =====================================================================
-// =====================================================================
-
-
-class WorkspaceTab : public ModelessExtension, public openfluid::guicommon::ProjectWorkspaceModule
+class ExamplesBuddy : public OpenFLUIDBuddy
 {
-  protected:
-
-    void compose(){}
-
-    Gtk::Widget* asWidget(){ return getExtensionAsWidget(); }
-
   public:
 
-    WorkspaceTab(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
-    ProjectWorkspaceModule(AdvancedDesc)
-    {}
+    ExamplesBuddy(openfluid::buddies::BuddiesListener* Listener);
 
-//    WorkspaceTab()
-//    {}
+    ~ExamplesBuddy();
 
-    ExtensionType getType() const { return PluggableBuilderExtension::WorkspaceTab; };
+    bool run();
 
-    // unused here
-    void show() {};
+    bool installExampleProject(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath,
+                                 const std::string& ProjectDir, const bool Force = false);
 
-    sigc::signal<void> signal_ModuleChanged()
-    { return signal_ChangedOccurs(); }
+    bool installAllExamplesProjects(const std::string& ProjectsSourcePath, const std::string& ProjectsInstallPath, const bool Force = false);
 };
+
 
 
 } } // namespaces
 
 
-#endif /* __WORKSPACETAB_HPP__ */
+#endif /* __EXAMPLESBUDDY_HPP__ */

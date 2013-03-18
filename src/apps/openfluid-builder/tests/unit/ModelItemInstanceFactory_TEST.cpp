@@ -52,14 +52,14 @@
 #include <boost/test/unit_test.hpp>
 
 #include "ModelItemInstanceFactory.hpp"
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 #include "tests-builderconfig.hpp"
 
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 
 BOOST_AUTO_TEST_CASE(test_init)
 {
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(test_init)
 //BOOST_AUTO_TEST_CASE(test_GeneratorCreation)
 //{
 //  // create a generator signature
-//  openfluid::guicommon::GeneratorSignature FixedGenSignature(openfluid::fluidx::GeneratorDescriptor::Fixed);
+//  openfluid::ware::GeneratorSignature FixedGenSignature(openfluid::fluidx::GeneratorDescriptor::Fixed);
 //
 //  openfluid::machine::ModelItemSignatureInstance Sign;
 //  Sign.Signature = &FixedGenSignature;

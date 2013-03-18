@@ -54,7 +54,7 @@
 
 #include "DomainEventsAdapter.hpp"
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include "DomainEventsAdapterModel.hpp"
 #include "DomainEventsView.hpp"
@@ -73,7 +73,7 @@ DomainEventsAdapter::DomainEventsAdapter(
 // =====================================================================
 
 
-void DomainEventsAdapter::setUnits(const std::map<int, openfluid::guicommon::BuilderUnit>* Units)
+void DomainEventsAdapter::setUnits(const std::map<int, openfluid::fluidx::BuilderUnit>* Units)
 {
   m_AdapterModel.setUnits(Units);
   m_View.setTreeModel(m_AdapterModel.getTreeModel());

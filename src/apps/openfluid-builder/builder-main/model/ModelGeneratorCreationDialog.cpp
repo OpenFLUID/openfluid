@@ -62,18 +62,18 @@
 #include <glibmm/i18n.h>
 
 #include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
 // =====================================================================
 // =====================================================================
 
 ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
-    openfluid::guicommon::BuilderDescriptor& BuilderDesc) :
-    mp_BuilderDesc(&BuilderDesc)
+    openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
+    mp_AdvancedDesc(&AdvancedDesc)
 {
   mp_VarNameEntry = Gtk::manage(new Gtk::Entry());
   mp_VarNameEntry->set_activates_default(true);
@@ -149,7 +149,7 @@ openfluid::fluidx::GeneratorDescriptor* ModelGeneratorCreationDialog::show(
 {
   openfluid::fluidx::GeneratorDescriptor* GenDesc = 0;
 
-  if (mp_BuilderDesc->getDomain().getUnitsByIdByClass().empty())
+  if (mp_AdvancedDesc->getDomain().getUnitsByIdByClass().empty())
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
         _("You can't create a generator now:\n Domain is empty"));
@@ -183,7 +183,7 @@ void ModelGeneratorCreationDialog::init()
   mp_ClassCombo->clear();
 
   std::set<std::string> ClassNames =
-      mp_BuilderDesc->getDomain().getClassNames();
+      mp_AdvancedDesc->getDomain().getClassNames();
 
   for (std::set<std::string>::iterator it = ClassNames.begin();
       it != ClassNames.end(); ++it)
@@ -200,10 +200,10 @@ void ModelGeneratorCreationDialog::init()
   m_ExistingVars.clear();
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
-      mp_BuilderDesc->getModel().getItems();
+      mp_AdvancedDesc->getModel().getItems();
 
-  openfluid::guicommon::FunctionSignatureRegistry* Reg =
-      openfluid::guicommon::FunctionSignatureRegistry::getInstance();
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)

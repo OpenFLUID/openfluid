@@ -46,7 +46,7 @@
  */
 
 /**
- \file BuilderDomain_TEST.cpp
+ \file AdvancedDomainDescriptor_TEST.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
@@ -55,10 +55,10 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_BuilderDomain
+#define BOOST_TEST_MODULE unittest_AdvancedDomainDescriptor
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <algorithm>
@@ -70,21 +70,22 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
 
-  const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t* Units =
+  const openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t* Units =
       &(Domain.getUnitsByIdByClass());
 
   BOOST_CHECK_EQUAL(Units->size(), 3);
 
   // unitsA
-  openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t::const_iterator it =
+  openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t::const_iterator it =
       Units->begin();
   BOOST_CHECK_EQUAL(it->first, "unitsA");
   BOOST_CHECK_EQUAL(it->second.size(), 8);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it2 =
       it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
@@ -101,7 +102,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   it++;
   BOOST_CHECK_EQUAL(it->first, "unitsB");
   BOOST_CHECK_EQUAL(it->second.size(), 5);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it2 =
       it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
@@ -115,7 +116,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   it++;
   BOOST_CHECK_EQUAL(it->first, "unitsP");
   BOOST_CHECK_EQUAL(it->second.size(), 1);
-  for (std::map<int, openfluid::guicommon::BuilderUnit>::const_iterator it2 =
+  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it2 =
       it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.mp_UnitDesc->getUnitID());
@@ -183,19 +184,19 @@ BOOST_AUTO_TEST_CASE(check_wrong_construction)
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
 
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/wrongIData");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/wrongIData");
 
   // "Input data indataB1 doesn't exist for Unit 3 of class unitsB"
   BOOST_CHECK_THROW(
-      openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
+      openfluid::fluidx::AdvancedDomainDescriptor Domain(FXDesc.getDomainDescriptor()),
       openfluid::base::OFException);
 
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/wrongRelation");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/wrongRelation");
 
   // "Unit 99 of class unitsB in "To" relation of unit 1 of class unitsA doesn't exist"
   BOOST_CHECK_THROW(
-      openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor()),
+      openfluid::fluidx::AdvancedDomainDescriptor Domain(FXDesc.getDomainDescriptor()),
       openfluid::base::OFException);
 }
 
@@ -206,9 +207,10 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
 
   openfluid::fluidx::UnitDescriptor U;
   U.getUnitClass() = "unitsA";
@@ -237,6 +239,12 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
   BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
   BOOST_CHECK_EQUAL(Domain.getInputData("unitsB",99,"indataB1"), "-");
+
+  openfluid::fluidx::UnitDescriptor U3;
+  U3.getUnitClass() = "unitsB";
+  U3.getUnitID() = 999;
+  U3.getUnitsParents().push_back(std::make_pair("unitsB", 555));
+  BOOST_CHECK_THROW(Domain.addUnit(&U3), openfluid::base::OFException);
 }
 
 // =====================================================================
@@ -246,16 +254,17 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
 
   Domain.deleteUnit("unitsZ", 1);
 
   Domain.deleteUnit("unitsA", 7);
   Domain.deleteUnit("unitsP", 1);
 
-  const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t* Units =
+  const openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t* Units =
       &(Domain.getUnitsByIdByClass());
 
   BOOST_CHECK_EQUAL(Units->size(), 2);
@@ -324,9 +333,10 @@ BOOST_AUTO_TEST_CASE(check_add_replace_getIData)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
 
   BOOST_CHECK_THROW(Domain.addInputData("unitsZ", "IData", "123"),
                     openfluid::base::OFException);
@@ -390,9 +400,10 @@ BOOST_AUTO_TEST_CASE(check_deleteIData)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
 
   BOOST_CHECK_EQUAL(Domain.getUnit("unitsA",7).m_IData.size(), 1);
   BOOST_CHECK_EQUAL(Domain.getUnit("unitsB",7).m_IData.size(), 3);
@@ -415,9 +426,10 @@ BOOST_AUTO_TEST_CASE(check_renameIData)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
 
   BOOST_CHECK_EQUAL(Domain.getInputData("unitsA",7, "indataA"), "1.1");
   BOOST_CHECK_THROW(Domain.getInputData("unitsA",7, "NewData"),
@@ -442,17 +454,24 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
 
   openfluid::core::UnitClassID_t A3 = std::make_pair("unitsA", 3);
   openfluid::core::UnitClassID_t B11 = std::make_pair("unitsB", 11);
   openfluid::core::UnitClassID_t A5 = std::make_pair("unitsA", 5);
   openfluid::core::UnitClassID_t B3 = std::make_pair("unitsB", 3);
   openfluid::core::UnitClassID_t P1 = std::make_pair("unitsP", 1);
+  openfluid::core::UnitClassID_t Z2 = std::make_pair("wrongUnit", 2);
 
-  Domain.getUnitsToOf(B11).push_back(A5);
+  BOOST_CHECK_THROW(Domain.addFromToRelation(B11, Z2),
+                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.addFromToRelation(Z2, B11),
+                    openfluid::base::OFException);
+
+  Domain.addFromToRelation(B11, A5);
 
   std::list<openfluid::core::UnitClassID_t> B11_Tos = Domain.getUnitsToOf(B11);
   std::list<openfluid::core::UnitClassID_t> A5_Froms = Domain.getUnitsFromOf(
@@ -464,7 +483,12 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK_EQUAL(A5_Froms.size(), 1);
   BOOST_CHECK_EQUAL(std::count(A5_Froms.begin(), A5_Froms.end(),B11), 1);
 
-  Domain.getUnitsParentsOf(B11).push_back(A3);
+  BOOST_CHECK_THROW(Domain.addParentChildRelation(B11, Z2),
+                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.addParentChildRelation(Z2, B11),
+                    openfluid::base::OFException);
+
+  Domain.addParentChildRelation(A3, B11);
 
   std::list<openfluid::core::UnitClassID_t> B11_Parents =
       Domain.getUnitsParentsOf(B11);
@@ -477,7 +501,14 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK_EQUAL(A3_Children.size(), 1);
   BOOST_CHECK_EQUAL(std::count(A3_Children.begin(), A3_Children.end(),B11), 1);
 
-  Domain.getUnitsToOf(A3).remove(B11);
+  BOOST_CHECK_THROW(Domain.removeFromToRelation(Z2, B11),
+                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.removeFromToRelation(B11, Z2),
+                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.removeFromToRelation(B11, A3),
+                    openfluid::base::OFException);
+
+  Domain.removeFromToRelation(A3, B11);
 
   std::list<openfluid::core::UnitClassID_t> B11_Froms = Domain.getUnitsFromOf(
       B11);
@@ -486,7 +517,14 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK(B11_Froms.empty());
   BOOST_CHECK(A3_Tos.empty());
 
-  Domain.getUnitsParentsOf(A3).remove(P1);
+  BOOST_CHECK_THROW(Domain.removeParentChildRelation(Z2, B11),
+                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.removeParentChildRelation(B11, Z2),
+                    openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.removeParentChildRelation(A3, P1),
+                    openfluid::base::OFException);
+
+  Domain.removeParentChildRelation(P1, A3);
 
   std::list<openfluid::core::UnitClassID_t> A3_Parents =
       Domain.getUnitsParentsOf(A3);
@@ -498,6 +536,22 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
 
   BOOST_CHECK_EQUAL(P1_Children.size(), 1);
   BOOST_CHECK_EQUAL(std::count(P1_Children.begin(), P1_Children.end(),B11), 1);
+
+  Domain.addParentChildRelation(P1, A3);
+  Domain.addFromToRelation(A3, B11);
+  Domain.addFromToRelation(P1, A3);
+
+  BOOST_CHECK(!Domain.getUnitsChildrenOf(A3).empty());
+  BOOST_CHECK(!Domain.getUnitsParentsOf(A3).empty());
+  BOOST_CHECK(!Domain.getUnitsFromOf(A3).empty());
+  BOOST_CHECK(!Domain.getUnitsToOf(A3).empty());
+
+  Domain.clearRelations(A3);
+
+  BOOST_CHECK(Domain.getUnitsChildrenOf(A3).empty());
+  BOOST_CHECK(Domain.getUnitsParentsOf(A3).empty());
+  BOOST_CHECK(Domain.getUnitsFromOf(A3).empty());
+  BOOST_CHECK(Domain.getUnitsToOf(A3).empty());
 }
 
 // =====================================================================
@@ -507,9 +561,10 @@ BOOST_AUTO_TEST_CASE(check_clearDomain)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.BuilderDescriptors/singlefile");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefile");
 
-  openfluid::guicommon::BuilderDomain Domain(FXDesc.getDomainDescriptor());
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
 
   Domain.clearDomain();
 

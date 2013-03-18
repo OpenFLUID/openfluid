@@ -60,7 +60,7 @@
 class ModelAvailFctAdapterModel;
 class ModelAvailFctView;
 
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 
 class ModelAvailFctAdapter: public sigc::trackable
 {
@@ -86,7 +86,7 @@ class ModelAvailFctAdapter: public sigc::trackable
     sigc::signal<void> signal_FctSelectionChanged();
 
     void setSignatures(
-        openfluid::guicommon::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures);
+        openfluid::ware::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures);
 
     openfluid::machine::ModelItemSignatureInstance* getSelectedSignature();
 };

@@ -61,8 +61,8 @@
 #include "BuilderMVPComponent.hpp"
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -83,7 +83,7 @@ class DomainIDataComponent : public BuilderMVPComponent
     DomainIDataAdapter* mp_Adapter;
 
   public:
-    DomainIDataComponent(openfluid::guicommon::BuilderDomain& Domain);
+    DomainIDataComponent(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
     ~DomainIDataComponent();
     Gtk::Widget* asWidget();
     DomainIDataModel* getModel();

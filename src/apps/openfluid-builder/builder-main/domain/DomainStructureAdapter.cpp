@@ -60,7 +60,7 @@
 #include <iostream>
 
 #include <openfluid/fluidx/UnitDescriptor.hpp>
-#include <openfluid/guicommon/BuilderDomain.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -145,7 +145,7 @@ sigc::signal<void> DomainStructureAdapter::signal_Activated()
 
 
 void DomainStructureAdapter::setDomainStructure(
-    const openfluid::guicommon::BuilderDomain::UnitsByIdByClass_t& UnitListByClass)
+    const openfluid::fluidx::AdvancedDomainDescriptor::UnitsByIdByClass_t& UnitListByClass)
 {
   m_hasClassSelectionToBeStored = false;
   m_Model.setDomainStructure(UnitListByClass);

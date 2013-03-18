@@ -61,8 +61,8 @@
 #include "ProjectExplorerCategories.hpp"
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDescriptor;
+namespace fluidx {
+class AdvancedFluidXDescriptor;
 }
 }
 

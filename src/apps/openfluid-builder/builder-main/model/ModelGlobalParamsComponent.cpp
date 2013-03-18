@@ -62,7 +62,7 @@
 // =====================================================================
 
 ModelGlobalParamsComponent::ModelGlobalParamsComponent(
-    openfluid::guicommon::BuilderModel& Model)
+    openfluid::fluidx::AdvancedModelDescriptor& Model)
 {
   mp_Model = new ModelGlobalParamsModelImpl(Model);
   mp_View = new ModelGlobalParamsViewImpl();

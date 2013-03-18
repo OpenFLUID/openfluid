@@ -46,81 +46,122 @@
  */
 
 /**
- \file BuilderDescriptor.cpp
+ \file WaresHelper.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include "WaresHelper.hpp"
 
-namespace openfluid {
-namespace guicommon {
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::BuilderDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModifiedModel(
+    const openfluid::fluidx::AdvancedModelDescriptor& Desc,
+    std::list<std::string>& MissingFunctions)
 {
-  mp_Domain = new BuilderDomain(FluidXDesc.getDomainDescriptor());
-  mp_Model = new BuilderModel(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_Monitoring = new BuilderMonitoring(FluidXDesc.getMonitoringDescriptor());
+  openfluid::ware::FunctionSignatureRegistry* Reg =
+      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  Reg->updatePluggableSignatures();
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*> Items = Desc.getItems();
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Items.begin();
+
+  while (it != Items.end())
+  {
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
+    {
+      std::string ID =
+          (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID();
+
+      if (!Reg->isPluggableFunctionAvailable(ID))
+      {
+        MissingFunctions.push_back(ID);
+
+        it = Items.erase(it);
+      }
+      else
+        ++it;
+    }
+    else
+      ++it;
+  }
+
+  return Items;
 }
 
 // =====================================================================
 // =====================================================================
 
-BuilderDescriptor::~BuilderDescriptor()
+std::list<openfluid::fluidx::ObserverDescriptor*> WaresHelper::checkAndGetModifiedMonitoring(
+    const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc,
+    std::list<std::string>& MissingObservers)
 {
+  openfluid::ware::ObserverSignatureRegistry* Reg =
+      openfluid::ware::ObserverSignatureRegistry::getInstance();
 
+  Reg->update();
+
+  std::list<openfluid::fluidx::ObserverDescriptor*> Observers = Desc.getItems();
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Observers.begin();
+
+  while (it != Observers.end())
+  {
+    try
+    {
+      Reg->getSignature((*it)->getID());
+      ++it;
+    }
+    catch (openfluid::base::OFException& e)
+    {
+      MissingObservers.push_back((*it)->getID());
+
+      it = Observers.erase(it);
+    }
+  }
+
+  return Observers;
 }
 
 // =====================================================================
 // =====================================================================
 
-BuilderDomain& BuilderDescriptor::getDomain()
+std::vector<openfluid::machine::ObserverSignatureInstance*> WaresHelper::getUnusedAvailableObserverSignatures(
+    const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc)
 {
-  return *mp_Domain;
+  std::vector<openfluid::machine::ObserverSignatureInstance*> Signs;
+
+  std::vector<openfluid::machine::ObserverSignatureInstance*> AvailableSignatures =
+      openfluid::ware::ObserverSignatureRegistry::getInstance()->getAvailableSignatures();
+
+  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
+      AvailableSignatures.begin(); it != AvailableSignatures.end(); ++it)
+  {
+    try
+    {
+      Desc.getDescriptor((*it)->Signature->ID);
+    }
+    catch (openfluid::base::OFException& e)
+    {
+      Signs.push_back(*it);
+    }
+  }
+
+  return Signs;
 }
 
 // =====================================================================
 // =====================================================================
-
-BuilderModel& BuilderDescriptor::getModel()
-{
-  return *mp_Model;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::RunDescriptor& BuilderDescriptor::getRunDescriptor()
-{
-  return *mp_RunDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::fluidx::DatastoreDescriptor& BuilderDescriptor::getDatastoreDescriptor()
-{
-  return *mp_DatastoreDesc;
-}
-
-// =====================================================================
-// =====================================================================
-
-BuilderMonitoring& BuilderDescriptor::getMonitoring()
-{
-  return *mp_Monitoring;
-}
-
-// =====================================================================
-// =====================================================================
-
-}
-} // namespaces
 

@@ -63,7 +63,7 @@
 #include "DomainStructureColumns.hpp"
 #include "EngineProject.hpp"
 #include "BuilderClassListColumns.hpp"
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyDomainStructure)
   EngineProject* EngProject = new EngineProject();
 
   mp_AdapterModel->setDomainStructure(
-      EngProject->getBuilderDesc().getDomain().getUnitsByIdByClass());
+      EngProject->getAdvancedDesc().getDomain().getUnitsByIdByClass());
 
   BOOST_CHECK_EQUAL(mp_AdapterModel->getByClassUnitsStores().empty(), true);
   BOOST_CHECK_EQUAL(mp_AdapterModel->getClassStore()->isEmpty(), true);
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(test_setDomainStructure)
 {
   EngineProject* EngProject = new EngineProject();
 
-  openfluid::guicommon::BuilderDomain* Domain = &(EngProject->getBuilderDesc().getDomain());
+  openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
 
   Domain->addUnit(createAUnitDesc("class A", 100, 2));
   Domain->addUnit(createAUnitDesc("class B", 200, 3));

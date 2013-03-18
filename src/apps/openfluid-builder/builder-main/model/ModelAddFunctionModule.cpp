@@ -60,7 +60,7 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/guicommon/BuilderModel.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
 #include "ModelAvailFctComponent.hpp"
 #include "ModelFctDetailComponent.hpp"
@@ -71,7 +71,7 @@
 // =====================================================================
 
 ModelAddFunctionModule::ModelAddFunctionModule(
-    openfluid::guicommon::BuilderModel& Model) :
+    openfluid::fluidx::AdvancedModelDescriptor& Model) :
     mp_Model(&Model)
 {
   mp_ModelAvailFctMVP = new ModelAvailFctComponent();
@@ -170,7 +170,7 @@ void ModelAddFunctionModule::whenAvailFctSelectionChanged()
 // =====================================================================
 
 void ModelAddFunctionModule::setSignatures(
-    openfluid::guicommon::FunctionSignatureRegistry& Signatures)
+    openfluid::ware::FunctionSignatureRegistry& Signatures)
 {
   mp_Coordinator->setSignatures(Signatures);
 }

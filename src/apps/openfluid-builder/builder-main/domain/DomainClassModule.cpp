@@ -73,18 +73,18 @@
 // =====================================================================
 
 
-DomainClassModule::DomainClassModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
-ProjectWorkspaceModule(BuilderDesc)
+DomainClassModule::DomainClassModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc):
+ProjectWorkspaceModule(AdvancedDesc)
 {
   mp_MainPanel = 0;
 
-  mp_DomainIDataMVP = new DomainIDataComponent(BuilderDesc.getDomain());
+  mp_DomainIDataMVP = new DomainIDataComponent(AdvancedDesc.getDomain());
   mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
-  mp_IDataAddDialog = new DomainIDataAddDialog(BuilderDesc.getDomain());
-  mp_IDataRemoveDialog = new DomainIDataRemoveDialog(BuilderDesc.getDomain());
-  mp_IDataEditDialog = new DomainIDataEditDialog(BuilderDesc.getDomain());
+  mp_IDataAddDialog = new DomainIDataAddDialog(AdvancedDesc.getDomain());
+  mp_IDataRemoveDialog = new DomainIDataRemoveDialog(AdvancedDesc.getDomain());
+  mp_IDataEditDialog = new DomainIDataEditDialog(AdvancedDesc.getDomain());
 
-  mp_DomainEventsMVP = new DomainEventsComponent(BuilderDesc.getDomain());
+  mp_DomainEventsMVP = new DomainEventsComponent(AdvancedDesc.getDomain());
   mp_EventsListToolBox = BuilderListToolBoxFactory::createDomainEventsToolBox();
 
   mp_Coordinator = new DomainClassCoordinator(*mp_DomainIDataMVP->getModel(),

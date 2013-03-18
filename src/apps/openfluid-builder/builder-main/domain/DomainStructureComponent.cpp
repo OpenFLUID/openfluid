@@ -60,7 +60,7 @@
 #include "DomainStructurePresenter.hpp"
 #include "DomainStructureAdapter.hpp"
 
-DomainStructureComponent::DomainStructureComponent(openfluid::guicommon::BuilderDomain& Domain)
+DomainStructureComponent::DomainStructureComponent(openfluid::fluidx::AdvancedDomainDescriptor& Domain)
 {
   DomainStructureColumns* TreeColumns = new DomainStructureColumns();
   mp_Model = new DomainStructureModelImpl(Domain);

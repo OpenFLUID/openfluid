@@ -57,12 +57,13 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 #include <openfluid/machine/ObserverInstance.hpp>
+#include "WaresHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
 MonitoringAddObserverDialog::MonitoringAddObserverDialog(
-    openfluid::guicommon::BuilderMonitoring& Monit) :
+    openfluid::fluidx::AdvancedMonitoringDescriptor& Monit) :
     m_Monit(Monit)
 {
   Gtk::Label* InfoBarLabel = Gtk::manage(
@@ -133,7 +134,7 @@ void MonitoringAddObserverDialog::init()
   mref_ListStore->clear();
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
-      m_Monit.getUnusedAvailableSignatures();
+      WaresHelper::getUnusedAvailableObserverSignatures(m_Monit);
 
   if (Unused.empty())
   {

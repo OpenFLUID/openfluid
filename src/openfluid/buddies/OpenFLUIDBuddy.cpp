@@ -47,53 +47,123 @@
 
 
 /**
-  \file GeneratorSignature_TEST.cpp
-  \brief Implements ...
+  @file
+  @brief Implements ...
 
-  \author Aline LIBRES <libres@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_GeneratorSignature
-#include <boost/test/unit_test.hpp>
+
+#include <openfluid/buddies/OpenFLUIDBuddy.hpp>
+
+#include <vector>
+
+#include <openfluid/tools/SwissTools.hpp>
 
 
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+namespace openfluid { namespace buddies {
 
-// =====================================================================
-// =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
+OpenFLUIDBuddy::OpenFLUIDBuddy(openfluid::buddies::BuddiesListener* Listener)
 {
-  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
+  mp_Listener = Listener;
 
-  BOOST_CHECK_EQUAL(Sign.ID,"Fixed Generator");
-  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),1);
+  if (mp_Listener == NULL) mp_Listener = new openfluid::buddies::BuddiesListener();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+OpenFLUIDBuddy::~OpenFLUIDBuddy()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDBuddy::setOptionIfNotSet(std::string OptionName, std::string OptionValue)
+{
+  if (m_Options.find(OptionName) == m_Options.end())
+  {
+    m_Options[OptionName] = OptionValue;
+  }
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
-{
-  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
 
-  BOOST_CHECK_EQUAL(Sign.ID,"Random Generator");
-  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),2);
+std::string OpenFLUIDBuddy::getYesNoFromOneZero(std::string VStr)
+{
+  if (VStr == "1") return "yes";
+  else return "no";
 }
 
+
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
+
+bool OpenFLUIDBuddy::parseOptions(std::string OptsStr)
 {
-  openfluid::guicommon::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
+  // example inputdir=/usr/lib,outputdir=./toto,withfoo=1
 
-  BOOST_CHECK_EQUAL(Sign.ID,"Interp Generator");
-  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),4);
+  std::vector<std::string> OptsItems;
+  std::vector<std::string> OptKeyValue;
+
+  OptsItems = openfluid::tools::SplitString(OptsStr,",");
+
+  for (unsigned int i = 0; i<OptsItems.size();i++)
+  {
+    OptKeyValue = openfluid::tools::SplitString(OptsItems[i],"=");
+
+    if (OptKeyValue.size() == 2 )
+    {
+      m_Options[OptKeyValue[0]] = OptKeyValue[1];
+    }
+    else
+    {
+      m_Options.clear();
+      return false;
+    }
+  }
+
+  return true;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+void OpenFLUIDBuddy::streamOptions(std::ostream& OStream)
+{
+
+  std::map<std::string,std::string>::iterator it;
+
+  for (it = m_Options.begin();it != m_Options.end();++it)
+  {
+    OStream << it->first << " : " << it->second << std::endl;
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OpenFLUIDBuddy::invokeHelp()
+{
+  mp_Listener->onHelpRequired(m_RequiredOptionsHelp);
+  mp_Listener->onHelpOthers(m_OtherOptionsHelp);
+}
+
+
+} } //namespaces
+

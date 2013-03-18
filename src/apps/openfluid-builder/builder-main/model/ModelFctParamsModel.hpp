@@ -61,11 +61,9 @@
 #include <string>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderModel;
-}
 namespace fluidx {
 class ModelItemDescriptor;
+class AdvancedModelDescriptor;
 }
 namespace machine {
 class ModelItemSignatureInstance;
@@ -132,7 +130,7 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
     openfluid::machine::ModelItemSignatureInstance* mp_ItemSignature;
 
-    openfluid::guicommon::BuilderModel* mp_Model;
+    openfluid::fluidx::AdvancedModelDescriptor* mp_Model;
 
     void updateInterpGeneratorRequiredExtraFiles();
 
@@ -140,7 +138,7 @@ class ModelFctParamsModelImpl: public ModelFctParamsModel
 
   public:
 
-    ModelFctParamsModelImpl(openfluid::guicommon::BuilderModel& Model);
+    ModelFctParamsModelImpl(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
     void setModelItemDescriptor(openfluid::fluidx::ModelItemDescriptor* Item);
 

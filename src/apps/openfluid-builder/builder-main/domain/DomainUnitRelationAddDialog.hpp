@@ -64,8 +64,8 @@
 #include <openfluid/core/TypeDefs.hpp>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderDomain;
+namespace fluidx {
+class AdvancedDomainDescriptor;
 }
 }
 
@@ -98,11 +98,11 @@ class DomainUnitRelationAddDialog
 
     DomainUnitRelationIdsColumns m_Columns;
 
-    openfluid::guicommon::BuilderDomain* mp_Domain;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
   public:
 
-    DomainUnitRelationAddDialog(openfluid::guicommon::BuilderDomain& Domain);
+    DomainUnitRelationAddDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     std::list<openfluid::core::UnitClassID_t> show();
 };

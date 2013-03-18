@@ -60,7 +60,7 @@
 #include "ModelParamsPanel.hpp"
 
 #include "ModelStructureCoordinator.hpp"
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderListToolBox.hpp"
 
@@ -70,15 +70,15 @@
 // =====================================================================
 
 
-ModelStructureModule::ModelStructureModule(openfluid::guicommon::BuilderDescriptor& BuilderDesc):
-ProjectWorkspaceModule(BuilderDesc)
+ModelStructureModule::ModelStructureModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc):
+ProjectWorkspaceModule(AdvancedDesc)
 {
   mp_MainPanel = 0;
 
   mp_ModelFctDetailMVP = new ModelFctDetailComponent();
-  mp_ModelStructureMVP = new ModelStructureComponent(BuilderDesc.getModel());
+  mp_ModelStructureMVP = new ModelStructureComponent(AdvancedDesc.getModel());
 
-  mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent(BuilderDesc.getModel());
+  mp_ModelGlobalParamsMVP = new ModelGlobalParamsComponent(AdvancedDesc.getModel());
   mp_ModelParamsPanel = new ModelParamsPanel();
   mp_ModelParamsPanel->addAStaticPage(mp_ModelGlobalParamsMVP->asWidget(),
       _("Global parameters"), 0);
@@ -89,7 +89,7 @@ ProjectWorkspaceModule(BuilderDesc)
   mp_Coordinator = new ModelStructureCoordinator(
       *mp_ModelFctDetailMVP->getModel(), *mp_ModelStructureMVP->getModel(),
       *mp_ModelGlobalParamsMVP->getModel(), *mp_ModelParamsPanel,
-      *mp_StructureListToolBox,BuilderDesc);
+      *mp_StructureListToolBox,AdvancedDesc);
 
   mp_Coordinator->signal_ModelChanged().connect(sigc::mem_fun(*this,
       &ModelStructureModule::whenModelChanged));

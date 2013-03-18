@@ -77,10 +77,11 @@
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Generator.hpp>
 
-#include <openfluid/guicommon/GeneratorSignature.hpp>
+#include <openfluid/ware/GeneratorSignature.hpp>
 #include "EngineHelper.hpp"
-#include <openfluid/guicommon/FunctionSignatureRegistry.hpp>
-#include <openfluid/guicommon/BuilderDescriptor.hpp>
+#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include "WaresHelper.hpp"
 
 #include "ProjectChecker.hpp"
 
@@ -152,7 +153,8 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
   try
   {
-    mp_BuilderDesc = new openfluid::guicommon::BuilderDescriptor(*mp_FXDesc);
+    mp_AdvancedDesc = new openfluid::fluidx::AdvancedFluidXDescriptor(
+        *mp_FXDesc);
   }
   catch (openfluid::base::OFException& e)
   {
@@ -167,7 +169,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
   checkAndAdaptModel();
   checkAndAdaptMonitoring();
 
-  mp_Checker = new ProjectChecker(*mp_BuilderDesc);
+  mp_Checker = new ProjectChecker(*mp_AdvancedDesc);
 }
 
 // =====================================================================
@@ -175,13 +177,19 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
 void EngineProject::checkAndAdaptModel()
 {
-  std::string MissingFunctionsStr = "";
+  std::list<std::string> MissingFunctions;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
-      mp_BuilderDesc->getModel().checkAndGetModifiedModel(MissingFunctionsStr);
+      WaresHelper::checkAndGetModifiedModel(mp_AdvancedDesc->getModel(),
+                                            MissingFunctions);
 
-  if (!MissingFunctionsStr.empty())
+  if (!MissingFunctions.empty())
   {
+    std::string MissingFunctionsStr = "";
+    for (std::list<std::string>::iterator it = MissingFunctions.begin();
+        it != MissingFunctions.end(); ++it)
+      MissingFunctionsStr += "- " + *it + "\n";
+
     Glib::ustring Msg =
         Glib::ustring::compose(
             _("Unable to find plugin file(s):\n%1\n\n"
@@ -193,11 +201,11 @@ void EngineProject::checkAndAdaptModel()
         Msg))
     {
       deleteEngineObjects();
-      delete mp_BuilderDesc;
+      delete mp_AdvancedDesc;
       throw openfluid::base::OFException("");
     }
     else
-      mp_BuilderDesc->getModel().setItems(ModifiedFunctions);
+      mp_AdvancedDesc->getModel().setItems(ModifiedFunctions);
   }
 
 }
@@ -207,14 +215,19 @@ void EngineProject::checkAndAdaptModel()
 
 void EngineProject::checkAndAdaptMonitoring()
 {
-  std::string MissingObserversStr = "";
+  std::list<std::string> MissingObservers;
 
   std::list<openfluid::fluidx::ObserverDescriptor*> ModifiedObservers =
-      mp_BuilderDesc->getMonitoring().checkAndGetModifiedMonitoring(
-          MissingObserversStr);
+      WaresHelper::checkAndGetModifiedMonitoring(
+          mp_AdvancedDesc->getMonitoring(), MissingObservers);
 
-  if (!MissingObserversStr.empty())
+  if (!MissingObservers.empty())
   {
+    std::string MissingObserversStr = "";
+    for (std::list<std::string>::iterator it = MissingObservers.begin();
+        it != MissingObservers.end(); ++it)
+      MissingObserversStr += "- " + *it + "\n";
+
     Glib::ustring Msg = Glib::ustring::compose(
         _("Unable to find plugin file(s):\n%1\n\n"
             "Corresponding observers will be removed from the monitoring.\n"
@@ -225,11 +238,11 @@ void EngineProject::checkAndAdaptMonitoring()
         Msg))
     {
       deleteEngineObjects();
-      delete mp_BuilderDesc;
+      delete mp_AdvancedDesc;
       throw openfluid::base::OFException("");
     }
     else
-      mp_BuilderDesc->getMonitoring().setItems(ModifiedObservers);
+      mp_AdvancedDesc->getMonitoring().setItems(ModifiedObservers);
   }
 
 }
@@ -430,9 +443,9 @@ const ProjectChecker& EngineProject::check(bool& GlobalState)
 // =====================================================================
 // =====================================================================
 
-openfluid::guicommon::BuilderDescriptor& EngineProject::getBuilderDesc()
+openfluid::fluidx::AdvancedFluidXDescriptor& EngineProject::getAdvancedDesc()
 {
-  return *mp_BuilderDesc;
+  return *mp_AdvancedDesc;
 }
 
 // =====================================================================
@@ -441,7 +454,7 @@ openfluid::guicommon::BuilderDescriptor& EngineProject::getBuilderDesc()
 EngineProject::~EngineProject()
 {
   deleteEngineObjects();
-  delete mp_BuilderDesc;
+  delete mp_AdvancedDesc;
   delete mp_Checker;
 }
 
