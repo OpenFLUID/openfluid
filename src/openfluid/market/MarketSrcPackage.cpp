@@ -94,7 +94,7 @@ void MarketSrcPackage::process()
   std::string StrErr;
   int RetValue;
 
-  std::string BuildConfigOptions = composeFullBuildOptions(m_BuildConfigOptions);
+  std::string BuildConfigOptions = composeFullBuildOptions(getTypePackage(), m_BuildConfigOptions);
 
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
   std::string SrcInstallDir = getInstallPath() + "/" + m_ID;

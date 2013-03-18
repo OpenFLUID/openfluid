@@ -77,5 +77,14 @@ std::string MarketSrcObserverPackage::getInstallPath() const
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+PackageInfo::TypePackage MarketSrcObserverPackage::getTypePackage() const
+{
+  return PackageInfo::OBS;
+}
+
 
 } } // namespaces

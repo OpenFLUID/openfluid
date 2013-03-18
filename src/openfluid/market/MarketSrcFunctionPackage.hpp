@@ -71,6 +71,8 @@ class DLLEXPORT MarketSrcFunctionPackage : public MarketSrcPackage
 
     std::string getInstallPath() const;
 
+    PackageInfo::TypePackage getTypePackage() const;
+
 };
 
 

@@ -82,7 +82,9 @@ std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
 
 std::string MarketPackage::m_CMakeCommand = "";
-std::string MarketPackage::m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_FunctionBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_ObserverBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_BuilderextBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 
 bool MarketPackage::m_Initialized = false;
 
@@ -170,13 +172,56 @@ void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagFunct
 // =====================================================================
 
 
-std::string MarketPackage::composeFullBuildOptions(std::string BuildOptions)
+std::string MarketPackage::getCommonBuildOptions(PackageInfo::TypePackage Type)
+{
+  if (Type == PackageInfo::FUNC)
+  {
+    return m_FunctionBuildConfigOptions;
+  }
+  else if (Type == PackageInfo::OBS)
+  {
+    return m_ObserverBuildConfigOptions;
+  }
+  else if (Type == PackageInfo::BUILD)
+  {
+    return m_BuilderextBuildConfigOptions;
+  }
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketPackage::setCommonBuildOptions(PackageInfo::TypePackage Type, std::string BuildOptions)
+{
+  if (Type == PackageInfo::FUNC)
+  {
+    m_FunctionBuildConfigOptions = BuildOptions;
+  }
+  else if (Type == PackageInfo::OBS)
+  {
+    m_ObserverBuildConfigOptions = BuildOptions;
+  }
+  else if (Type == PackageInfo::BUILD)
+  {
+    m_BuilderextBuildConfigOptions = BuildOptions;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketPackage::composeFullBuildOptions(PackageInfo::TypePackage Type, std::string BuildOptions)
 {
   std::string FullOptions = "";
 
   if (!BuildOptions.empty()) FullOptions = " " + BuildOptions;
 
-  if (!m_CommonBuildConfigOptions.empty()) FullOptions = " " + m_CommonBuildConfigOptions + FullOptions;
+  if (!getCommonBuildOptions(Type).empty()) FullOptions = " " + getCommonBuildOptions(Type) + FullOptions;
 
   return FullOptions;
 }

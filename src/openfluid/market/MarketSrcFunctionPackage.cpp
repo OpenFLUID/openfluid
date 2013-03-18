@@ -77,5 +77,14 @@ std::string MarketSrcFunctionPackage::getInstallPath() const
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+PackageInfo::TypePackage MarketSrcFunctionPackage::getTypePackage() const
+{
+  return PackageInfo::FUNC;
+}
+
 
 } } // namespaces

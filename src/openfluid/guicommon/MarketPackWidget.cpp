@@ -75,8 +75,10 @@ const static Gdk::Color WHITE("#FFFFFF");
 // =====================================================================
 
 
-MarketPackWidget::MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo)
+MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::TypePackage& TypePackage,
+    const openfluid::market::MetaPackageInfo& MetaPackInfo)
  : Gtk::EventBox(),
+   m_TypePackage(TypePackage),
    m_MetaPackInfo(MetaPackInfo),
    m_EditedBuildOptions(""),
    m_FormatLabel(_("Package Format:"))
@@ -233,7 +235,7 @@ void MarketPackWidget::onInstallModified()
 
 void MarketPackWidget::onConfigClicked()
 {
-  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(),
+  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(m_TypePackage),
                                      m_EditedBuildOptions,m_MetaPackInfo.ID);
 
 
@@ -294,7 +296,7 @@ void MarketPackWidget::updateDisplayedInfos()
 
       if (SelType == openfluid::market::MetaPackageInfo::SRC)
       {
-        MarkupTooltip += std::string("\n<u>")+_("Build options:")+std::string("</u> ") + replaceByNoneIfEmpty(openfluid::market::MarketPackage::composeFullBuildOptions(m_EditedBuildOptions));
+        MarkupTooltip += std::string("\n<u>")+_("Build options:")+std::string("</u> ") + replaceByNoneIfEmpty(openfluid::market::MarketPackage::composeFullBuildOptions(m_TypePackage,m_EditedBuildOptions));
       }
     }
   }

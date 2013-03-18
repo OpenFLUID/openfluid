@@ -82,6 +82,8 @@ class DLLEXPORT MarketSrcPackage : public MarketPackage
 
     MetaPackageInfo::SelectionType getFormat() const { return MetaPackageInfo::SRC; };
 
+    virtual PackageInfo::TypePackage getTypePackage() const = 0;
+
 };
 
 

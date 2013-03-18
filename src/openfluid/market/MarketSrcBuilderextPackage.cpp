@@ -77,5 +77,14 @@ std::string MarketSrcBuilderextPackage::getInstallPath() const
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+PackageInfo::TypePackage MarketSrcBuilderextPackage::getTypePackage() const
+{
+  return PackageInfo::BUILD;
+}
+
 
 } } // namespaces

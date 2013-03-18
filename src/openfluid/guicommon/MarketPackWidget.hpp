@@ -83,6 +83,7 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 
   private:
 
+    openfluid::market::PackageInfo::TypePackage m_TypePackage;
     openfluid::market::MetaPackageInfo m_MetaPackInfo;
 
     std::string m_EditedBuildOptions;
@@ -134,7 +135,7 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 
 
   public:
-    MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo);
+    MarketPackWidget(const openfluid::market::PackageInfo::TypePackage& TypePackage,const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     ~MarketPackWidget();
 

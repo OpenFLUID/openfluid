@@ -512,14 +512,14 @@ void MarketClientAssistant::onSelectNoneClicked()
 
 void MarketClientAssistant::onCommonBuildConfigClicked()
 {
-  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(),"");
+  openfluid::market::PackageInfo::TypePackage CurrentTab = (openfluid::market::PackageInfo::TypePackage)m_TypesTabs.get_current_page();
+  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(CurrentTab),"");
 
   if (OptDialog.run() == Gtk::RESPONSE_OK)
   {
-    openfluid::market::MarketPackage::setCommonBuildOptions(OptDialog.getEditedOptions());
+    openfluid::market::MarketPackage::setCommonBuildOptions(CurrentTab,OptDialog.getEditedOptions());
 
     std::list<MarketPackWidget*>::iterator APLiter;
-    openfluid::market::PackageInfo::TypePackage CurrentTab = (openfluid::market::PackageInfo::TypePackage)m_TypesTabs.get_current_page();
 
     for (APLiter=mp_AvailPacksWidgets[CurrentTab].begin();APLiter!=mp_AvailPacksWidgets[CurrentTab].end();++APLiter)
       ((MarketPackWidget*)(*APLiter))->updateDisplayedInfos();
@@ -678,7 +678,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
       {
 
-        mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(CIter->second));
+        mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(TCIter->first,CIter->second));
         mp_AvailPacksWidgets[TCIter->first].back()->signal_install_modified().connect(
             sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
         );
