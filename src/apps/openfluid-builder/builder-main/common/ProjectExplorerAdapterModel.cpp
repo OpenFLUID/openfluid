@@ -95,23 +95,16 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
   Row = *(mref_TreeModel->append());
   Row[m_Columns.m_Id] = "";
   Row[m_Columns.m_Display] = _("Simulation");
-  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_NONE;
+  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_RUN;
   Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
 
-  // Simulation > Run
+  // Simulation > RunInfo
   Gtk::TreeRow SubRow1;
   SubRow1 = *(mref_TreeModel->append(Row->children()));
   SubRow1[m_Columns.m_Id] = "";
-  SubRow1[m_Columns.m_Display] = _("Run");
+  SubRow1[m_Columns.m_Display] = generateRunInfoStr("", "", 1);
   SubRow1[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_RUN;
-  SubRow1[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
-
-  // Simulation > Run > RunInfo
-  Gtk::TreeRow SubRow2 = *(mref_TreeModel->append(SubRow1->children()));
-  SubRow2[m_Columns.m_Id] = "";
-  SubRow2[m_Columns.m_Display] = generateRunInfoStr("", "", 1);
-  SubRow2[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_RUN;
-  mp_RunInfoRowRef = mref_TreeModel->createRowRefFromIter(*SubRow2);
+  mp_RunInfoRowRef = mref_TreeModel->createRowRefFromIter(*SubRow1);
 
   // Monitoring
   Row = *(mref_TreeModel->append());
@@ -221,15 +214,12 @@ std::string ProjectExplorerAdapterModelImpl::generateClassInfoStr(
 
 void ProjectExplorerAdapterModelImpl::updateRunInfo()
 {
-//  if (mp_FXDesc)
-//  {
   Gtk::TreeRow Row = mref_TreeModel->getRowFromRowRef(*mp_RunInfoRowRef);
 
   Row[m_Columns.m_Display] = generateRunInfoStr(
       mp_AdvancedDesc->getRunDescriptor().getBeginDate().getAsISOString(),
       mp_AdvancedDesc->getRunDescriptor().getEndDate().getAsISOString(),
       mp_AdvancedDesc->getRunDescriptor().getDeltaT());
-//  }
 }
 
 // =====================================================================
