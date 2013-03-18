@@ -46,113 +46,47 @@
  */
 
 /**
- \file BuilderModuleFactory.cpp
+ \file OutputsView.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "BuilderModuleFactory.hpp"
-
-#include "BuilderHomeModule.hpp"
-#include "ModelStructureModule.hpp"
-#include "DomainStructureModule.hpp"
-#include "DomainClassModule.hpp"
-#include "SimulationRunModule.hpp"
-#include "MonitoringModule.hpp"
-#include "OutputsModule.hpp"
-#include "EngineProject.hpp"
-
-#include "MapViewModule.hpp"
+#include "OutputsView.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-BuilderModuleFactory::BuilderModuleFactory(EngineProject& EngProject) :
-  mp_EngineProject(EngProject)
+OutputsView::OutputsView()
 {
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createHomeModule(
-    BuilderAppActions& Actions)
+OutputsView::~OutputsView()
 {
-  return new BuilderHomeModule(Actions);
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureModule()
+void OutputsView::update()
 {
-  ModelStructureModule* Module = new ModelStructureModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
+
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainStructureModule()
+Gtk::Widget* OutputsView::asWidget()
 {
-  DomainStructureModule* Module = new DomainStructureModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
+  return mp_MainBox;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainClassModule()
-{
-  DomainClassModule* Module = new DomainClassModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunModule()
-{
-  SimulationRunModule* Module = new SimulationRunModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMonitoringModule()
-{
-  MonitoringModule* Module = new MonitoringModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createOutputsModule()
-{
-  OutputsModule* Module = new OutputsModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMapViewModule()
-{
-  MapViewModule* Module = new MapViewModule(mp_EngineProject.getAdvancedDesc());
-//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-//      *mp_EngineProject.getSimBlob(),
-//      mp_EngineProject.getAdvancedDesc());
-  return Module;
-}

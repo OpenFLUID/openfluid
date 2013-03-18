@@ -113,6 +113,14 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
   Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_MONITORING;
   Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
   mp_MonitoringRowRef = mref_TreeModel->createRowRefFromIter(*Row);
+
+  // Output browser
+  Row = *(mref_TreeModel->append());
+  Row[m_Columns.m_Id] = "";
+  Row[m_Columns.m_Display] = _("Output browser");
+  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_OUTPUTS;
+  Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
+  mp_OutputsRowRef = mref_TreeModel->createRowRefFromIter(*Row);
 }
 
 // =====================================================================
