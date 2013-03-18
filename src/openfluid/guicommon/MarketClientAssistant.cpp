@@ -187,47 +187,14 @@ void MarketClientAssistant::setupSelectionPage()
   m_URLBox.pack_start(m_URLCombo,Gtk::PACK_EXPAND_WIDGET);
 
 
-  m_SelectAllButton.set_label(_("Select all"));
-  m_SelectAllButton.set_sensitive(false);
-  m_SelectNoneButton.set_label(_("Select none"));
-  m_SelectNoneButton.set_sensitive(false);
-
-  //m_CommonBuildConfigButton.set_label(_("Configure source builds"));
-  Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
-  Gtk::Label* Lbl = Gtk::manage(new Gtk::Label(_("Edit build options")));
-  Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());
-  Box->pack_start(*Img,Gtk::PACK_SHRINK,3);
-  Box->pack_end(*Lbl,Gtk::PACK_SHRINK,3);
-  m_CommonBuildConfigButton.add(*Box);
-  m_CommonBuildConfigButton.show_all_children(true);
-
-
-  m_ActionButtonsBox.pack_start(m_SelectAllButton,Gtk::PACK_SHRINK,0);
-  m_ActionButtonsBox.pack_start(m_SelectNoneButton,Gtk::PACK_SHRINK,12);
-  m_ActionButtonsBox.pack_start(*Gtk::manage(new Gtk::EventBox()),Gtk::PACK_EXPAND_WIDGET,0);
-  m_ActionButtonsBox.pack_start(m_CommonBuildConfigButton,Gtk::PACK_SHRINK,0);
-
   m_SelectionPageBox.set_border_width(12);
   m_SelectionPageBox.pack_start(m_URLBox,Gtk::PACK_SHRINK,12);
   m_SelectionPageBox.pack_start(m_TypesTabs,Gtk::PACK_EXPAND_WIDGET,6);
-  m_SelectionPageBox.pack_start(m_ActionButtonsBox,Gtk::PACK_SHRINK);
 
 
   m_URLCombo.signal_changed().connect(
     sigc::mem_fun(*this, &MarketClientAssistant::onURLComboChanged)
   );
-
-  m_SelectAllButton.signal_clicked().connect(
-      sigc::mem_fun(*this, &MarketClientAssistant::onSelectAllClicked)
-    );
-
-  m_SelectNoneButton.signal_clicked().connect(
-      sigc::mem_fun(*this, &MarketClientAssistant::onSelectNoneClicked)
-    );
-
-  m_CommonBuildConfigButton.signal_clicked().connect(
-      sigc::mem_fun(*this, &MarketClientAssistant::onCommonBuildConfigClicked)
-    );
 
 }
 
@@ -457,15 +424,8 @@ void MarketClientAssistant::onURLComboChanged()
       {
         Glib::ustring TmpURL = TmpRow[m_URLColumns.m_URL];
         m_MarketClient.connect(TmpURL);
-        m_SelectAllButton.set_sensitive(!m_MarketClient.getTypesMetaPackagesCatalogs().empty());
-        m_SelectNoneButton.set_sensitive(!m_MarketClient.getTypesMetaPackagesCatalogs().empty());
       }
     }
-  }
-  else
-  {
-    m_SelectAllButton.set_sensitive(false);
-    m_SelectNoneButton.set_sensitive(false);
   }
 
   set_page_complete(m_SelectionPageBox,false);
@@ -517,19 +477,15 @@ void MarketClientAssistant::onPackageInstallModified()
 
 void MarketClientAssistant::onSelectAllClicked()
 {
-  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
+  openfluid::market::PackageInfo::TypePackage CurrentTab = (openfluid::market::PackageInfo::TypePackage)m_TypesTabs.get_current_page();
 
-  for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
+  for (APLiter=mp_AvailPacksWidgets[CurrentTab].begin();APLiter!=mp_AvailPacksWidgets[CurrentTab].end();++APLiter)
   {
-    for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
-    {
-      MarketPackWidget* MPW;
-      MPW = *APLiter;
-      MPW->setInstall(true);
-    }
+    MarketPackWidget* MPW;
+    MPW = *APLiter;
+    MPW->setInstall(true);
   }
-
 }
 
 
@@ -538,17 +494,14 @@ void MarketClientAssistant::onSelectAllClicked()
 
 void MarketClientAssistant::onSelectNoneClicked()
 {
-  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
+  openfluid::market::PackageInfo::TypePackage CurrentTab = (openfluid::market::PackageInfo::TypePackage)m_TypesTabs.get_current_page();
 
-  for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
+  for (APLiter=mp_AvailPacksWidgets[CurrentTab].begin();APLiter!=mp_AvailPacksWidgets[CurrentTab].end();++APLiter)
   {
-    for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
-    {
-      MarketPackWidget* MPW;
-      MPW = *APLiter;
-      MPW->setInstall(false);
-    }
+    MarketPackWidget* MPW;
+    MPW = *APLiter;
+    MPW->setInstall(false);
   }
 }
 
@@ -565,14 +518,11 @@ void MarketClientAssistant::onCommonBuildConfigClicked()
   {
     openfluid::market::MarketPackage::setCommonBuildOptions(OptDialog.getEditedOptions());
 
-    std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
     std::list<MarketPackWidget*>::iterator APLiter;
+    openfluid::market::PackageInfo::TypePackage CurrentTab = (openfluid::market::PackageInfo::TypePackage)m_TypesTabs.get_current_page();
 
-    for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
-    {
-      for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
-        ((MarketPackWidget*)(*APLiter))->updateDisplayedInfos();
-    }
+    for (APLiter=mp_AvailPacksWidgets[CurrentTab].begin();APLiter!=mp_AvailPacksWidgets[CurrentTab].end();++APLiter)
+      ((MarketPackWidget*)(*APLiter))->updateDisplayedInfos();
   }
 }
 
@@ -700,6 +650,12 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   {
     ATPBiter->second = 0;
     mp_AvailTypesPacksSWindow[ATPBiter->first] = 0;
+    mp_TabBox[ATPBiter->first] = 0;
+
+    mp_ActionButtonsBox[ATPBiter->first] = 0;
+    mp_SelectAllButton[ATPBiter->first] = 0;
+    mp_SelectNoneButton[ATPBiter->first] = 0;
+    mp_CommonBuildConfigButton[ATPBiter->first] = 0;
   }
 
 
@@ -710,10 +666,10 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
     if (!TCIter->second.empty())
     {
-      // Create ScrolledWindow and VBox
+      // Create ScrolledWindow and VBoxes
       mp_AvailTypesPacksSWindow[TCIter->first] = Gtk::manage(new Gtk::ScrolledWindow());
 
-      mp_AvailTypesPacksBox[TCIter->first] = Gtk::manage(new Gtk::VBox(false,0));
+      mp_AvailTypesPacksBox[TCIter->first] = Gtk::manage(new Gtk::VBox());
       mp_AvailTypesPacksSWindow[TCIter->first]->add(*mp_AvailTypesPacksBox[TCIter->first]);
       mp_AvailTypesPacksSWindow[TCIter->first]->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
@@ -731,12 +687,52 @@ void MarketClientAssistant::updateAvailPacksTreeview()
         mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets[TCIter->first].back()),Gtk::PACK_SHRINK,0);
       }
 
+      mp_ActionButtonsBox[TCIter->first] = Gtk::manage(new Gtk::HBox());
+      mp_SelectAllButton[TCIter->first] = Gtk::manage(new Gtk::Button("Select all"));
+      mp_SelectNoneButton[TCIter->first] = Gtk::manage(new Gtk::Button("Select none"));
+      mp_CommonBuildConfigButton[TCIter->first] = Gtk::manage(new Gtk::Button());
+
+      //m_CommonBuildConfigButton.set_label(_("Configure source builds"));
+      Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
+      Gtk::Label* Lbl = Gtk::manage(new Gtk::Label(_("Edit build options")));
+      Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());
+      Box->pack_start(*Img,Gtk::PACK_SHRINK,3);
+      Box->pack_end(*Lbl,Gtk::PACK_SHRINK,3);
+      mp_CommonBuildConfigButton[TCIter->first]->add(*Box);
+      mp_CommonBuildConfigButton[TCIter->first]->show_all_children(true);
+
+
+      mp_ActionButtonsBox[TCIter->first]->pack_start(*mp_SelectAllButton[TCIter->first],Gtk::PACK_SHRINK,0);
+      mp_ActionButtonsBox[TCIter->first]->pack_start(*mp_SelectNoneButton[TCIter->first],Gtk::PACK_SHRINK,12);
+      mp_ActionButtonsBox[TCIter->first]->pack_start(*Gtk::manage(new Gtk::EventBox()),Gtk::PACK_EXPAND_WIDGET,0);
+      mp_ActionButtonsBox[TCIter->first]->pack_start(*mp_CommonBuildConfigButton[TCIter->first],Gtk::PACK_SHRINK,0);
+
+
+      mp_TabBox[TCIter->first] = Gtk::manage(new Gtk::VBox());
+      mp_TabBox[TCIter->first]->pack_start(*mp_AvailTypesPacksSWindow[TCIter->first],Gtk::PACK_EXPAND_WIDGET,6);
+      mp_TabBox[TCIter->first]->pack_start(*mp_ActionButtonsBox[TCIter->first],Gtk::PACK_SHRINK,4);
+
+
+      mp_SelectAllButton[TCIter->first]->signal_clicked().connect(
+          sigc::mem_fun(*this, &MarketClientAssistant::onSelectAllClicked)
+        );
+
+      mp_SelectNoneButton[TCIter->first]->signal_clicked().connect(
+          sigc::mem_fun(*this, &MarketClientAssistant::onSelectNoneClicked)
+        );
+
+      mp_CommonBuildConfigButton[TCIter->first]->signal_clicked().connect(
+          sigc::mem_fun(*this, &MarketClientAssistant::onCommonBuildConfigClicked)
+        );
+
+
       // Create tab
-      m_TypesTabs.append_page(*mp_AvailTypesPacksSWindow[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true));
+      m_TypesTabs.append_page(*mp_TabBox[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true));
     }
   }
 
   m_TypesTabs.show_all_children();
+
 
   // change mouse cursor to default
   get_window()->set_cursor();
