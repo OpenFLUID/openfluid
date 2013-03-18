@@ -122,8 +122,6 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     Gtk::TreeRowReference* mp_RunInfoRowRef;
 
-    Gtk::TreeRowReference* mp_ResultsRowRef;
-
     Gtk::TreeRowReference* mp_MonitoringRowRef;
 
     std::string generateRunInfoStr(std::string Begin, std::string End,
