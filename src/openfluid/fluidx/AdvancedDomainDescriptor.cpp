@@ -100,7 +100,7 @@ void AdvancedDomainDescriptor::dispatchUnits()
     if (!m_Units[it->getUnitClass()].insert(
         std::make_pair(it->getUnitID(), BuilderUnit(*it))).second)
       throw openfluid::base::OFException(
-          "OpenFLUID-Builder", "AdvancedDomainDescriptor::dispatchUnits",
+          "OpenFLUID-Framework", "AdvancedDomainDescriptor::dispatchUnits",
           "trying to add a Unit that already exists");
   }
 }
@@ -144,7 +144,7 @@ void AdvancedDomainDescriptor::checkUnitRelations(
          << " in \"To\" relation of unit " << Unit.getUnitID() << " of class "
          << Unit.getUnitClass() << " doesn't exist";
       throw openfluid::base::OFException(
-          "OpenFLUID-Builder", "AdvancedDomainDescriptor::checkUnitRelation",
+          "OpenFLUID-Framework", "AdvancedDomainDescriptor::checkUnitRelation",
           ss.str());
     }
   }
@@ -164,7 +164,7 @@ void AdvancedDomainDescriptor::checkUnitRelations(
          << " in \"Parent\" relation of unit " << Unit.getUnitID()
          << " of class " << Unit.getUnitClass() << " doesn't exist";
       throw openfluid::base::OFException(
-          "OpenFLUID-Builder", "AdvancedDomainDescriptor::checkUnitRelations",
+          "OpenFLUID-Framework", "AdvancedDomainDescriptor::checkUnitRelations",
           ss.str());
     }
   }
@@ -202,7 +202,7 @@ void AdvancedDomainDescriptor::dispatchIData()
           if (!m_Units.at(it->getUnitsClass()).at(it2->first).m_IData.insert(
               std::make_pair(it3->first, &it3->second)).second)
             throw openfluid::base::OFException(
-                "OpenFLUID-Builder",
+                "OpenFLUID-Framework",
                 "AdvancedDomainDescriptor::dispatchIData",
                 "trying to add an input data (" + it3->first
                 + ") that already exists");
@@ -214,7 +214,7 @@ void AdvancedDomainDescriptor::dispatchIData()
              << ") to a Unit that doesn't exist (class " << it->getUnitsClass()
              << " - ID " << it2->first << ")";
           throw openfluid::base::OFException(
-              "OpenFLUID-Builder", "AdvancedDomainDescriptor::dispatchIData",
+              "OpenFLUID-Framework", "AdvancedDomainDescriptor::dispatchIData",
               ss.str());
         }
       }
@@ -235,7 +235,7 @@ void AdvancedDomainDescriptor::checkIDataConsistency()
 
     if (!isClassNameExists(ClassName))
       throw openfluid::base::OFException(
-          "OpenFLUID-Builder",
+          "OpenFLUID-Framework",
           "AdvancedDomainDescriptor::checkIDataConsistency",
           "class " + ClassName + " doesn't exist");
 
@@ -257,7 +257,7 @@ void AdvancedDomainDescriptor::checkIDataConsistency()
           ss << "Input data " << IDataName << " doesn't exist for Unit " << ID
              << " of class " << ClassName;
           throw openfluid::base::OFException(
-              "OpenFLUID-Builder",
+              "OpenFLUID-Framework",
               "AdvancedDomainDescriptor::checkIDataConsistency", ss.str());
         }
       }
@@ -286,7 +286,7 @@ void AdvancedDomainDescriptor::dispatchEvents()
     {
       // Factory does nothing in this case
 //      throw openfluid::base::OFException(
-//          "OpenFLUID-Builder",
+//          "OpenFLUID-Framework",
 //          "AdvancedDomainDescriptor::dispatchEvents",
 //          "trying to add an event to a Unit that doesn't exist");
     }
@@ -316,7 +316,7 @@ const BuilderUnit& AdvancedDomainDescriptor::getUnit(std::string ClassName,
     std::ostringstream ss;
     ss << "trying to get a Unit that doesn't exist (UnitClass " << ClassName
        << " ID " << ID << ")";
-    throw openfluid::base::OFException("OpenFLUID-Builder",
+    throw openfluid::base::OFException("OpenFLUID-Framework",
                                        "AdvancedDomainDescriptor::getUnit",
                                        ss.str());
   }
@@ -382,7 +382,7 @@ void AdvancedDomainDescriptor::addUnit(
   // add in m_Units
   if (!m_Units[ClassName].insert(std::make_pair(ID, BuilderUnit(*UnitDesc))).second)
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addUnit",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addUnit",
         "trying to add a Unit that already exists");
 
   //check relations
@@ -504,7 +504,7 @@ std::string& AdvancedDomainDescriptor::getInputData(std::string ClassName,
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::getInputData",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getInputData",
         "trying to get an Input data that doesn't exist");
   }
 }
@@ -532,12 +532,12 @@ void AdvancedDomainDescriptor::addInputData(std::string ClassName,
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addInputData",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addInputData",
         "trying to add an Input data to a Class that doesn't exist");
 
   if (getInputDataNames(ClassName).count(IDataName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addInputData",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addInputData",
         "trying to add an Input data that already exists");
 
   // add in DomainDesc
@@ -578,12 +578,12 @@ void AdvancedDomainDescriptor::deleteInputData(std::string ClassName,
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::deleteInputData",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::deleteInputData",
         "trying to delete an Input data from a Class that doesn't exist");
 
   if (!getInputDataNames(ClassName).count(IDataName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::deleteInputData",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::deleteInputData",
         "trying to delete an Input data that doesn't exist");
 
   // delete in m_Units
@@ -630,12 +630,12 @@ void AdvancedDomainDescriptor::renameInputData(std::string ClassName,
 
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::renameInputData",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::renameInputData",
         "trying to rename an Input data of a Class that doesn't exist");
 
   if (!getInputDataNames(ClassName).count(OldIDataName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::renameInputData",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::renameInputData",
         "trying to rename an Input data that doesn't exist");
 
   //rename in DomainDesc
@@ -694,7 +694,7 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::getUnitsToOfPriv",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getUnitsToOfPriv",
         "trying to get relations of a Unit that doesn't exist");
   }
 }
@@ -712,7 +712,7 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::getUnitsParentsOfPriv",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getUnitsParentsOfPriv",
         "trying to get relations of a Unit that doesn't exist");
   }
 }
@@ -792,7 +792,7 @@ void AdvancedDomainDescriptor::addFromToRelation(
     ss << "trying to add a From/To relation from a Unit that doesn't exist (UnitClass "
        << FromUnit.first << " ID " << FromUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addFromToRelation",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addFromToRelation",
         ss.str());
   }
 
@@ -806,7 +806,7 @@ void AdvancedDomainDescriptor::addFromToRelation(
     ss << "trying to add a From/To relation to a Unit that doesn't exist (UnitClass "
        << ToUnit.first << " ID " << ToUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addFromToRelation",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addFromToRelation",
         ss.str());
   }
 
@@ -834,7 +834,7 @@ void AdvancedDomainDescriptor::removeFromToRelation(
     ss << "trying to remove a From/To relation from a Unit that doesn't exist (UnitClass "
        << FromUnit.first << " ID " << FromUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::removeFromToRelation",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::removeFromToRelation",
         ss.str());
   }
 
@@ -848,7 +848,7 @@ void AdvancedDomainDescriptor::removeFromToRelation(
     ss << "trying to remove a From/To relation to a Unit that doesn't exist (UnitClass "
        << ToUnit.first << " ID " << ToUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::removeFromToRelation",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::removeFromToRelation",
         ss.str());
   }
 
@@ -862,7 +862,7 @@ void AdvancedDomainDescriptor::removeFromToRelation(
        << FromUnit.first << " ID " << FromUnit.second << " to UnitClass "
        << ToUnit.first << " ID " << ToUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::removeFromToRelation",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::removeFromToRelation",
         ss.str());
   }
 }
@@ -886,7 +886,7 @@ void AdvancedDomainDescriptor::addParentChildRelation(
     ss << "trying to add a Parent/Child relation to a Unit that doesn't exist (UnitClass "
        << ChildUnit.first << " ID " << ChildUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addParentChildRelation",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addParentChildRelation",
         ss.str());
   }
 
@@ -900,7 +900,7 @@ void AdvancedDomainDescriptor::addParentChildRelation(
     ss << "trying to add a Parent/Child relation from a Unit that doesn't exist (UnitClass "
        << ParentUnit.first << " ID " << ParentUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::addParentChildRelation",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addParentChildRelation",
         ss.str());
   }
 
@@ -929,7 +929,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
     ss << "trying to remove a Parent/Child relation to a Unit that doesn't exist (UnitClass "
        << ChildUnit.first << " ID " << ChildUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder",
+        "OpenFLUID-Framework",
         "AdvancedDomainDescriptor::removeParentChildRelation", ss.str());
   }
 
@@ -943,7 +943,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
     ss << "trying to remove a Parent/Child relation from a Unit that doesn't exist (UnitClass "
        << ParentUnit.first << " ID " << ParentUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder",
+        "OpenFLUID-Framework",
         "AdvancedDomainDescriptor::removeParentChildRelation", ss.str());
   }
 
@@ -958,7 +958,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
        << ParentUnit.first << " ID " << ParentUnit.second << " to UnitClass "
        << ChildUnit.first << " ID " << ChildUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder",
+        "OpenFLUID-Framework",
         "AdvancedDomainDescriptor::removeParentChildRelation", ss.str());
   }
 
@@ -982,7 +982,7 @@ void AdvancedDomainDescriptor::clearRelations(
     ss << "trying to remove relations to a Unit that doesn't exist (UnitClass "
        << Unit.first << " ID " << Unit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Builder", "AdvancedDomainDescriptor::removeAllRelations",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::removeAllRelations",
         ss.str());
   }
 
