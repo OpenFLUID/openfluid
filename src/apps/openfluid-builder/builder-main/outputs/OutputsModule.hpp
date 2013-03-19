@@ -46,30 +46,48 @@
  */
 
 /**
- \file ProjectExplorerCategories.hpp
+ \file OutputsModule.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __PROJECTEXPLORERCATEGORIES_HPP__
-#define __PROJECTEXPLORERCATEGORIES_HPP__
+#ifndef OUTPUTSMODULE_HPP_
+#define OUTPUTSMODULE_HPP_
 
-class ProjectExplorerCategories
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+
+#include <gtkmm/box.h>
+
+class OutputsView;
+
+class OutputsModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
+  private:
+
+    Gtk::Box* mp_MainPanel;
+
+  protected:
+
+    OutputsView* mp_OutputsView;
+
+    sigc::signal<void> m_signal_OutputsChanged;
+
+    void whenOutputsChanged();
+
   public:
 
-    enum ProjectExplorerCategory
-    {
-      EXPLORER_MODEL,
-      EXPLORER_DOMAIN,
-      EXPLORER_CLASS,
-      EXPLORER_RUN,
-      EXPLORER_MONITORING,
-      EXPLORER_OUTPUTS,
-      EXPLORER_NONE
-    };
+    OutputsModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
+    ~OutputsModule();
+
+    sigc::signal<void> signal_ModuleChanged();
+
+    void compose();
+
+    Gtk::Widget* asWidget();
+
+    void update();
 };
 
-#endif /* __PROJECTEXPLORERCATEGORIES_HPP__ */
+#endif /* OUTPUTSMODULE_HPP_ */

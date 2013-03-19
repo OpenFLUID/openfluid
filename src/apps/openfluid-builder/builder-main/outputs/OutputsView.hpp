@@ -46,30 +46,45 @@
  */
 
 /**
- \file ProjectExplorerCategories.hpp
+ \file OutputsView.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __PROJECTEXPLORERCATEGORIES_HPP__
-#define __PROJECTEXPLORERCATEGORIES_HPP__
+#ifndef OUTPUTSVIEW_HPP_
+#define OUTPUTSVIEW_HPP_
 
-class ProjectExplorerCategories
+#include <gtkmm/box.h>
+#include <gtkmm/filechooserwidget.h>
+
+class OutputsView
 {
+  private:
+
+    Gtk::Box* mp_MainBox;
+
+    Gtk::FileChooserWidget* mp_FileChooser;
+
+    std::string m_SelectedFolder;
+
+    void onFileActivated();
+
+    void onFolderChanged();
+
+    void onMap();
+
   public:
 
-    enum ProjectExplorerCategory
-    {
-      EXPLORER_MODEL,
-      EXPLORER_DOMAIN,
-      EXPLORER_CLASS,
-      EXPLORER_RUN,
-      EXPLORER_MONITORING,
-      EXPLORER_OUTPUTS,
-      EXPLORER_NONE
-    };
+    OutputsView();
 
+    ~OutputsView();
+
+    void update();
+
+    Gtk::Widget* asWidget();
+
+    void resetToDefaultDir();
 };
 
-#endif /* __PROJECTEXPLORERCATEGORIES_HPP__ */
+#endif /* OUTPUTSVIEW_HPP_ */

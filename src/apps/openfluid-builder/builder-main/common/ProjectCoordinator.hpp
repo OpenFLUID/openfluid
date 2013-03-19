@@ -100,8 +100,6 @@ class ProjectCoordinator
 
     std::set<std::string> m_ClassPageNames;
 
-//    std::set<std::string> m_SetPageNames;
-
     std::map<std::string, std::string> m_TabExtensionIdByNameMap;
 
     std::map<std::string, openfluid::builderext::ModelessWindow*> m_ModelessWindowsExtensionsMap;
@@ -116,7 +114,7 @@ class ProjectCoordinator
 
     std::string m_MonitoringPageName;
 
-//    std::string m_OutputsPageName;
+    std::string m_OutputsPageName;
 
 // only to keep ref to FileMonitors (otherwise they're lost)
     std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
