@@ -663,7 +663,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
   for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
-
+    // New tab
     if (!TCIter->second.empty())
     {
       // Create ScrolledWindow and VBoxes
@@ -700,6 +700,9 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       Box->pack_end(*Lbl,Gtk::PACK_SHRINK,3);
       mp_CommonBuildConfigButton[TCIter->first]->add(*Box);
       mp_CommonBuildConfigButton[TCIter->first]->show_all_children(true);
+
+      if (TCIter->first == openfluid::market::PackageInfo::DATA)
+        mp_CommonBuildConfigButton[TCIter->first]->set_sensitive(false);
 
 
       mp_ActionButtonsBox[TCIter->first]->pack_start(*mp_SelectAllButton[TCIter->first],Gtk::PACK_SHRINK,0);
