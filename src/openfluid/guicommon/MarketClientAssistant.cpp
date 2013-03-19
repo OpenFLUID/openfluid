@@ -224,7 +224,7 @@ void MarketClientAssistant::setupLicensesPage()
 
   m_LicensesListSWindow.add(m_LicensesTreeView);
   m_LicensesListSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
-  m_LicensesListSWindow.set_size_request(100);
+  m_LicensesListSWindow.set_size_request(180);
 
   m_RefLicensesTreeSelection = m_LicensesTreeView.get_selection();
 
