@@ -176,14 +176,14 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
   openfluid::landr::LineStringGraph* Graph =
       openfluid::landr::LineStringGraph::create(Entities);
 
-//  openfluid::landr::LineStringGraph* Copy = Graph->clone();
-//
-//  BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
-//  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
-//  BOOST_CHECK_EQUAL(Graph->getEntities().size(), Copy->getEntities().size());
+  //  openfluid::landr::LineStringGraph* Copy = Graph->clone();
+  //
+  //  BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
+  //  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
+  //  BOOST_CHECK_EQUAL(Graph->getEntities().size(), Copy->getEntities().size());
 
   delete Graph;
-//  delete Copy;
+  //  delete Copy;
   delete Vect;
 }
 
@@ -290,8 +290,8 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
 
   DECLARE_ENTITIES_GRAPH_LOOP(1);
   BEGIN_ENTITIES_GRAPH_LOOP(1,NullGraph,CurrentEntity)
-      i++;
-    END_LOOP
+  i++;
+  END_LOOP
 
   BOOST_CHECK_EQUAL(i, 0);
 
@@ -304,18 +304,18 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
   i = 0;
   DECLARE_ENTITIES_GRAPH_LOOP(2);
   BEGIN_ENTITIES_GRAPH_LOOP(2,Graph,CurrentEntity)
-      i++;
-    END_LOOP;
+  i++;
+  END_LOOP;
 
   BOOST_CHECK_EQUAL(i, Graph->getSize());
 
   i = 1;
   DECLARE_ENTITIES_ORDERED_LOOP(3);
   BEGIN_ENTITIES_ORDERED_LOOP(3,Graph,CurrentEntity)
-      BOOST_CHECK_EQUAL(CurrentEntity->getSelfId(),
-                        Graph->getEntity(i)->getSelfId());
-      i++;
-    END_LOOP;
+  BOOST_CHECK_EQUAL(CurrentEntity->getSelfId(),
+                    Graph->getEntity(i)->getSelfId());
+  i++;
+  END_LOOP;
 
   delete Graph;
   delete Val;
@@ -665,3 +665,45 @@ BOOST_AUTO_TEST_CASE(check_reverse_orientation_LineStringEntity)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
+{
+
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*ValRS);
+  BOOST_CHECK_EQUAL(Graph->isLineStringGraphArborescence(),true);
+  delete Graph;
+  delete ValRS;
+
+  openfluid::core::GeoVectorValue* BadRS_1 = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_deco.shp");
+  openfluid::landr::LineStringGraph* BadGraph_1 =
+      openfluid::landr::LineStringGraph::create(*BadRS_1);
+  BOOST_CHECK_EQUAL(BadGraph_1->isLineStringGraphArborescence(),false);
+  delete BadRS_1;
+  delete BadGraph_1;
+
+  openfluid::core::GeoVectorValue* BadRS_2 = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_loop.shp");
+  openfluid::landr::LineStringGraph* BadGraph_2 =
+      openfluid::landr::LineStringGraph::create(*BadRS_2);
+  BOOST_CHECK_EQUAL(BadGraph_2->isLineStringGraphArborescence(),false);
+  delete BadRS_2;
+  delete BadGraph_2;
+
+  openfluid::core::GeoVectorValue* BadRS_3 = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS_non_connexe.shp");
+  openfluid::landr::LineStringGraph* BadGraph_3 =
+      openfluid::landr::LineStringGraph::create(*BadRS_3);
+  BOOST_CHECK_EQUAL(BadGraph_3->isLineStringGraphArborescence(),false);
+  delete BadRS_3;
+  delete BadGraph_3;
+
+
+}
+
+// =====================================================================
+// =====================================================================
+

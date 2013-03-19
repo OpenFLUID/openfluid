@@ -236,6 +236,8 @@ public:
 	 */
 	void reverseLineStringEntity(LineStringEntity& Entity);
 
+	bool isLineStringGraphArborescence();
+
 };
 
 } // namespace landr
