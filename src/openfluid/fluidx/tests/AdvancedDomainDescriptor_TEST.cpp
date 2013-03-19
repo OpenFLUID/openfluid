@@ -232,8 +232,6 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   BOOST_CHECK(Domain.getClassNames().count("unitsA"));
   BOOST_CHECK(Domain.getClassNames().count("unitsZ"));
 
-  BOOST_CHECK_EQUAL(&Domain.getUnitDescriptor("unitsZ",1), &U);
-
   openfluid::fluidx::UnitDescriptor U2;
   U2.getUnitClass() = "unitsB";
   U2.getUnitID() = 99;
@@ -558,6 +556,52 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK(Domain.getUnitsToOf(A3).empty());
 }
 
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_operations_on_relations_afterAdd)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
+
+  openfluid::core::UnitClassID_t A1 = std::make_pair("unitsA", 1);
+  openfluid::core::UnitClassID_t A2 = std::make_pair("unitsA", 2);
+
+  openfluid::fluidx::UnitDescriptor U1;
+  U1.getUnitClass() = "unitsA";
+  U1.getUnitID() = 1;
+
+  openfluid::fluidx::UnitDescriptor U2;
+  U2.getUnitClass() = "unitsA";
+  U2.getUnitID() = 2;
+
+  Domain.addUnit(&U1);
+  Domain.addUnit(&U2);
+
+  Domain.addParentChildRelation(A1, A2);
+
+  std::list<openfluid::core::UnitClassID_t> A1Children =
+      Domain.getUnitsChildrenOf(A1);
+  BOOST_CHECK_EQUAL(A1Children.size(), 1);
+  BOOST_CHECK(std::count(A1Children.begin(),A1Children.end(), A2));
+
+  std::list<openfluid::core::UnitClassID_t> A2Parents =
+      Domain.getUnitsParentsOf(A2);
+  BOOST_CHECK_EQUAL(A2Parents.size(), 1);
+  BOOST_CHECK(std::count(A2Parents.begin(),A2Parents.end(), A1));
+
+  Domain.addFromToRelation(A1, A2);
+
+  std::list<openfluid::core::UnitClassID_t> A1Tos = Domain.getUnitsToOf(A1);
+  BOOST_CHECK_EQUAL(A1Tos.size(), 1);
+  BOOST_CHECK(std::count(A1Tos.begin(),A1Tos.end(), A2));
+
+  std::list<openfluid::core::UnitClassID_t> A2Froms = Domain.getUnitsFromOf(A2);
+  BOOST_CHECK_EQUAL(A2Froms.size(), 1);
+  BOOST_CHECK(std::count(A2Froms.begin(),A2Froms.end(), A1));
+}
 // =====================================================================
 // =====================================================================
 
