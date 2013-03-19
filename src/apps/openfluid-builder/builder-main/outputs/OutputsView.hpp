@@ -56,12 +56,23 @@
 #define OUTPUTSVIEW_HPP_
 
 #include <gtkmm/box.h>
+#include <gtkmm/filechooserwidget.h>
 
 class OutputsView
 {
   private:
 
     Gtk::Box* mp_MainBox;
+
+    Gtk::FileChooserWidget* mp_FileChooser;
+
+    std::string m_SelectedFolder;
+
+    void onFileActivated();
+
+    void onFolderChanged();
+
+    void onMap();
 
   public:
 
@@ -72,6 +83,8 @@ class OutputsView
     void update();
 
     Gtk::Widget* asWidget();
+
+    void resetToDefaultDir();
 };
 
 #endif /* OUTPUTSVIEW_HPP_ */

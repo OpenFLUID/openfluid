@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
 
   Gtk::TreeView* TreeView = View->getTreeView();
 
-  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 4);
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 5);
 
   delete EngProject;
   delete Component;
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
 
   Gtk::TreeView* TreeView = View->getTreeView();
 
-  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 4);
+  BOOST_CHECK_EQUAL(TreeView->get_model()->children().size(), 5);
 
   delete EngProject;
   delete Component;
@@ -230,6 +230,15 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
                     ProjectExplorerCategories::EXPLORER_RUN);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
+
+  // Output browser activated
+  TreeView->row_activated(
+       TreeView->get_model()->get_path(TreeView->get_model()->children()[4]),
+       *TreeView->get_column(0));
+
+   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                     ProjectExplorerCategories::EXPLORER_OUTPUTS);
+   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   delete EngProject;
   delete Component;

@@ -54,12 +54,32 @@
 
 #include "OutputsView.hpp"
 
+#include <openfluid/base/ProjectManager.hpp>
+
 // =====================================================================
 // =====================================================================
 
 OutputsView::OutputsView()
 {
+  m_SelectedFolder =
+      openfluid::base::ProjectManager::getInstance()->getOutputDir();
+
+  mp_FileChooser = Gtk::manage(new Gtk::FileChooserWidget());
+
+  mp_FileChooser->set_local_only();
+
+  mp_FileChooser->signal_file_activated().connect(
+      sigc::mem_fun(*this, &OutputsView::onFileActivated));
+
+  mp_FileChooser->signal_current_folder_changed().connect(
+      sigc::mem_fun(*this, &OutputsView::onFolderChanged));
+
+  mp_FileChooser->signal_map().connect(
+      sigc::mem_fun(*this, &OutputsView::onMap));
+
   mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->pack_start(*mp_FileChooser);
+  mp_MainBox->set_visible(true);
   mp_MainBox->show_all_children();
 }
 
@@ -82,6 +102,15 @@ void OutputsView::update()
 // =====================================================================
 // =====================================================================
 
+void OutputsView::resetToDefaultDir()
+{
+  mp_FileChooser->set_current_folder(
+      openfluid::base::ProjectManager::getInstance()->getOutputDir());
+}
+
+// =====================================================================
+// =====================================================================
+
 Gtk::Widget* OutputsView::asWidget()
 {
   return mp_MainBox;
@@ -90,3 +119,24 @@ Gtk::Widget* OutputsView::asWidget()
 // =====================================================================
 // =====================================================================
 
+void OutputsView::onFileActivated()
+{
+  Gio::AppInfo::launch_default_for_uri(mp_FileChooser->get_uri());
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::onMap()
+{
+  if (!m_SelectedFolder.empty())
+    mp_FileChooser->set_current_folder(m_SelectedFolder);
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::onFolderChanged()
+{
+  m_SelectedFolder = mp_FileChooser->get_current_folder();
+}
