@@ -60,6 +60,7 @@
 #include "DomainClassModule.hpp"
 #include "SimulationRunModule.hpp"
 #include "MonitoringModule.hpp"
+#include "OutputsModule.hpp"
 #include "EngineProject.hpp"
 
 #include "MapViewModule.hpp"
@@ -130,6 +131,16 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunMo
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMonitoringModule()
 {
   MonitoringModule* Module = new MonitoringModule(mp_EngineProject.getAdvancedDesc());
+  return Module;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createOutputsModule()
+{
+  OutputsModule* Module = new OutputsModule(mp_EngineProject.getAdvancedDesc());
   return Module;
 }
 

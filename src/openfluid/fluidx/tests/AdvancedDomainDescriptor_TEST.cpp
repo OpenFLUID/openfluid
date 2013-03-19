@@ -220,6 +220,8 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   BOOST_CHECK_THROW(Domain.getUnit("unitsZ",1), openfluid::base::OFException);
   BOOST_CHECK(!Domain.isClassNameExists("unitsZ"));
   BOOST_CHECK_EQUAL(Domain.getIDsOfClass("unitsZ").size(), 0);
+  BOOST_CHECK(Domain.getClassNames().count("unitsA"));
+  BOOST_CHECK(!Domain.getClassNames().count("unitsZ"));
 
   U.getUnitClass() = "unitsZ";
   Domain.addUnit(&U);
@@ -227,6 +229,8 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   BOOST_CHECK_EQUAL(Domain.getUnitsByIdByClass().size(), 4);
   BOOST_CHECK(Domain.isClassNameExists("unitsZ"));
   BOOST_CHECK_EQUAL(Domain.getIDsOfClass("unitsZ").size(), 1);
+  BOOST_CHECK(Domain.getClassNames().count("unitsA"));
+  BOOST_CHECK(Domain.getClassNames().count("unitsZ"));
 
   BOOST_CHECK_EQUAL(&Domain.getUnitDescriptor("unitsZ",1), &U);
 

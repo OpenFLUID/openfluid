@@ -46,125 +46,118 @@
  */
 
 /**
- \file ProjectExplorerAdapterModel_TEST.cpp
+ \file OutputsView.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_ProjectExplorerAdapterModel
-#include <boost/test/unit_test.hpp>
+#include "OutputsView.hpp"
 
-#include "BuilderTestHelper.hpp"
-#include "ProjectExplorerAdapterModel.hpp"
-#include "ProjectExplorerColumns.hpp"
-#include "EngineProject.hpp"
-#include "tests-config.hpp"
-
-#include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <glibmm/i18n.h>
+#include <gtkmm/label.h>
+#include <gtkmm/button.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/separator.h>
+#include <openfluid/base/ProjectManager.hpp>
 
 // =====================================================================
 // =====================================================================
 
-struct init_AdapterModel
+OutputsView::OutputsView()
 {
-    ProjectExplorerAdapterModelSub* mp_AdapterModel;
-    ProjectExplorerColumns m_Columns;
-    EngineProject* mp_EngProject;
+  m_SelectedFolder =
+      openfluid::base::ProjectManager::getInstance()->getOutputDir();
 
-    init_AdapterModel()
-    {
-      BuilderTestHelper::getInstance()->initGtk();
+  Gtk::Button* ResetBt = Gtk::manage(new Gtk::Button());
+  ResetBt->set_image(
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_BUTTON)));
+  ResetBt->set_tooltip_text(_("Return to output directory"));
+  ResetBt->signal_clicked().connect(
+      sigc::mem_fun(*this, &OutputsView::resetToDefaultDir));
 
-      std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-          + "/OPENFLUID.IN.Primitives";
-      mp_EngProject = new EngineProject(Path);
+  Gtk::Label* OutputDirLabel = Gtk::manage(new Gtk::Label());
+  OutputDirLabel->set_markup(
+      Glib::ustring::compose(_("Output directory: %1%2%3"), "<b>",
+                             m_SelectedFolder, "</b>"));
+  OutputDirLabel->set_alignment(Gtk::ALIGN_LEFT);
 
-      mp_AdapterModel = new ProjectExplorerAdapterModelSub(
-          mp_EngProject->getAdvancedDesc());
-    }
+  Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
+  TopBox->pack_start(*ResetBt, Gtk::PACK_SHRINK);
+  TopBox->pack_start(*OutputDirLabel, Gtk::PACK_SHRINK, 10);
 
-    ~init_AdapterModel()
-    {
-      delete mp_EngProject;
-      delete mp_AdapterModel;
-    }
-};
+  mp_FileChooser = Gtk::manage(new Gtk::FileChooserWidget());
+  mp_FileChooser->set_local_only();
+  mp_FileChooser->signal_file_activated().connect(
+      sigc::mem_fun(*this, &OutputsView::onFileActivated));
+  mp_FileChooser->signal_current_folder_changed().connect(
+      sigc::mem_fun(*this, &OutputsView::onFolderChanged));
+  mp_FileChooser->signal_map().connect(
+      sigc::mem_fun(*this, &OutputsView::onMap));
 
-BOOST_FIXTURE_TEST_SUITE(ProjectExplorerAdapterModelTest, init_AdapterModel)
-
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(test_constructor)
-{
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK, 5);
+  mp_MainBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK,
+                         5);
+  mp_MainBox->pack_start(*mp_FileChooser, Gtk::PACK_EXPAND_WIDGET, 5);
+  mp_MainBox->set_visible(true);
+  mp_MainBox->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_updateModel)
+OutputsView::~OutputsView()
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[0].children().size(), 0);
 
-  mp_AdapterModel->updateModel();
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[0].children().size(), 2);
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_updateDomain)
+void OutputsView::update()
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[1].children().size(), 0);
 
-  mp_AdapterModel->updateDomain();
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[1].children().size(), 2);
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_updateRunInfo)
+void OutputsView::resetToDefaultDir()
 {
-  Glib::RefPtr<BuilderTreeStore> BuilderStore =
-      Glib::RefPtr<BuilderTreeStore>::cast_static(
-          mp_AdapterModel->getTreeModel());
-
-  Gtk::TreeRow RunInfoRow = BuilderStore->getRowFromRowRef(
-      *mp_AdapterModel->getRunInfoRowRef());
-
-  std::string RunInfoName = RunInfoRow[m_Columns.m_Display];
-
-  BOOST_CHECK_EQUAL(RunInfoName, mp_AdapterModel->generateRunInfoStr("","",1));
-
-  mp_AdapterModel->updateRunInfo();
-
-  std::string RunInfoStr = mp_AdapterModel->generateRunInfoStr(
-      mp_EngProject->getAdvancedDesc().getRunDescriptor().getBeginDate().getAsISOString(),
-      mp_EngProject->getAdvancedDesc().getRunDescriptor().getEndDate().getAsISOString(),
-      mp_EngProject->getAdvancedDesc().getRunDescriptor().getDeltaT());
-
-  std::string NewRunInfoName = RunInfoRow[m_Columns.m_Display];
-
-  BOOST_CHECK_EQUAL(NewRunInfoName, RunInfoStr);
+  mp_FileChooser->set_current_folder(
+      openfluid::base::ProjectManager::getInstance()->getOutputDir());
 }
 
 // =====================================================================
 // =====================================================================
-BOOST_AUTO_TEST_SUITE_END();
+
+Gtk::Widget* OutputsView::asWidget()
+{
+  return mp_MainBox;
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::onFileActivated()
+{
+  Gio::AppInfo::launch_default_for_uri(mp_FileChooser->get_uri());
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::onMap()
+{
+  if (!m_SelectedFolder.empty())
+    mp_FileChooser->set_current_folder(m_SelectedFolder);
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::onFolderChanged()
+{
+  m_SelectedFolder = mp_FileChooser->get_current_folder();
+}

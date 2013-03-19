@@ -55,8 +55,6 @@
 #ifndef __BUILDERMODULEFACTORY_HPP__
 #define __BUILDERMODULEFACTORY_HPP__
 
-
-
 namespace openfluid {
 namespace guicommon {
 class BuilderModule;
@@ -74,7 +72,8 @@ class BuilderModuleFactory
 
   public:
 
-    static openfluid::guicommon::BuilderModule* createHomeModule(BuilderAppActions& Actions);
+    static openfluid::guicommon::BuilderModule* createHomeModule(
+        BuilderAppActions& Actions);
 
     BuilderModuleFactory(EngineProject& EngProject);
 
@@ -87,6 +86,8 @@ class BuilderModuleFactory
     openfluid::guicommon::BuilderModule* createSimulationRunModule();
 
     openfluid::guicommon::BuilderModule* createMonitoringModule();
+
+    openfluid::guicommon::BuilderModule* createOutputsModule();
 
     openfluid::guicommon::BuilderModule* createMapViewModule();
 

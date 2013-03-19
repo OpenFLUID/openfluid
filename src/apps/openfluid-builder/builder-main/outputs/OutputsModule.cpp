@@ -46,125 +46,84 @@
  */
 
 /**
- \file ProjectExplorerAdapterModel_TEST.cpp
+ \file OutputsModule.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE builder_unittest_ProjectExplorerAdapterModel
-#include <boost/test/unit_test.hpp>
+#include "OutputsModule.hpp"
 
-#include "BuilderTestHelper.hpp"
-#include "ProjectExplorerAdapterModel.hpp"
-#include "ProjectExplorerColumns.hpp"
-#include "EngineProject.hpp"
-#include "tests-config.hpp"
-
-#include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include "OutputsView.hpp"
 
 // =====================================================================
 // =====================================================================
 
-struct init_AdapterModel
+OutputsModule::OutputsModule(
+    openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
+    ProjectWorkspaceModule(AdvancedDesc)
 {
-    ProjectExplorerAdapterModelSub* mp_AdapterModel;
-    ProjectExplorerColumns m_Columns;
-    EngineProject* mp_EngProject;
+  mp_MainPanel = 0;
 
-    init_AdapterModel()
-    {
-      BuilderTestHelper::getInstance()->initGtk();
-
-      std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-          + "/OPENFLUID.IN.Primitives";
-      mp_EngProject = new EngineProject(Path);
-
-      mp_AdapterModel = new ProjectExplorerAdapterModelSub(
-          mp_EngProject->getAdvancedDesc());
-    }
-
-    ~init_AdapterModel()
-    {
-      delete mp_EngProject;
-      delete mp_AdapterModel;
-    }
-};
-
-BOOST_FIXTURE_TEST_SUITE(ProjectExplorerAdapterModelTest, init_AdapterModel)
-
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(test_constructor)
-{
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
+  mp_OutputsView = new OutputsView();
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_updateModel)
+OutputsModule::~OutputsModule()
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[0].children().size(), 0);
-
-  mp_AdapterModel->updateModel();
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[0].children().size(), 2);
+  delete mp_OutputsView;
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_updateDomain)
+void OutputsModule::compose()
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[1].children().size(), 0);
+  mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
-  mp_AdapterModel->updateDomain();
+  mp_MainPanel->set_border_width(5);
+  mp_MainPanel->pack_start(*mp_OutputsView->asWidget());
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[1].children().size(), 2);
+  mp_MainPanel->set_visible(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_updateRunInfo)
+Gtk::Widget* OutputsModule::asWidget()
 {
-  Glib::RefPtr<BuilderTreeStore> BuilderStore =
-      Glib::RefPtr<BuilderTreeStore>::cast_static(
-          mp_AdapterModel->getTreeModel());
-
-  Gtk::TreeRow RunInfoRow = BuilderStore->getRowFromRowRef(
-      *mp_AdapterModel->getRunInfoRowRef());
-
-  std::string RunInfoName = RunInfoRow[m_Columns.m_Display];
-
-  BOOST_CHECK_EQUAL(RunInfoName, mp_AdapterModel->generateRunInfoStr("","",1));
-
-  mp_AdapterModel->updateRunInfo();
-
-  std::string RunInfoStr = mp_AdapterModel->generateRunInfoStr(
-      mp_EngProject->getAdvancedDesc().getRunDescriptor().getBeginDate().getAsISOString(),
-      mp_EngProject->getAdvancedDesc().getRunDescriptor().getEndDate().getAsISOString(),
-      mp_EngProject->getAdvancedDesc().getRunDescriptor().getDeltaT());
-
-  std::string NewRunInfoName = RunInfoRow[m_Columns.m_Display];
-
-  BOOST_CHECK_EQUAL(NewRunInfoName, RunInfoStr);
+  if (mp_MainPanel)
+    return mp_MainPanel;
+  throw std::logic_error(
+      "OutputsModule : you try to get a widget from a non yet composed module.");
 }
 
 // =====================================================================
 // =====================================================================
-BOOST_AUTO_TEST_SUITE_END();
+
+sigc::signal<void> OutputsModule::signal_ModuleChanged()
+{
+  return m_signal_OutputsChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsModule::whenOutputsChanged()
+{
+  m_signal_OutputsChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsModule::update()
+{
+  mp_OutputsView->update();
+}
+
+// =====================================================================
+// =====================================================================

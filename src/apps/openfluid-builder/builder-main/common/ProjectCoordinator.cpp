@@ -87,8 +87,8 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
         TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(
         false), m_ModelPageName(_("Model")), m_DomainPageName(
         _("Spatial domain")), m_RunPageName(_("Run configuration")), m_MonitoringPageName(
-        _("Monitoring")), m_FileMonitorHasChanged(false), m_FileMonitorHasToDisplay(
-        true)
+        _("Monitoring")), m_OutputsPageName(_("Output browser")), m_FileMonitorHasChanged(
+        false), m_FileMonitorHasToDisplay(true)
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
@@ -251,6 +251,17 @@ void ProjectCoordinator::whenActivationChanged()
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenMonitoringChanged));
+
+        addModuleToWorkspace(PageName, *Module);
+      }
+      break;
+
+    case ProjectExplorerCategories::EXPLORER_OUTPUTS:
+      PageName = m_OutputsPageName;
+      if (!m_Workspace.existsPageName(PageName))
+      {
+        Module =
+            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createOutputsModule());
 
         addModuleToWorkspace(PageName, *Module);
       }
