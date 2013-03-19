@@ -54,6 +54,11 @@
 
 #include "OutputsView.hpp"
 
+#include <glibmm/i18n.h>
+#include <gtkmm/label.h>
+#include <gtkmm/button.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/separator.h>
 #include <openfluid/base/ProjectManager.hpp>
 
 // =====================================================================
@@ -64,21 +69,37 @@ OutputsView::OutputsView()
   m_SelectedFolder =
       openfluid::base::ProjectManager::getInstance()->getOutputDir();
 
+  Gtk::Button* ResetBt = Gtk::manage(new Gtk::Button());
+  ResetBt->set_image(
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_BUTTON)));
+  ResetBt->set_tooltip_text(_("Return to output directory"));
+  ResetBt->signal_clicked().connect(
+      sigc::mem_fun(*this, &OutputsView::resetToDefaultDir));
+
+  Gtk::Label* OutputDirLabel = Gtk::manage(new Gtk::Label());
+  OutputDirLabel->set_markup(
+      Glib::ustring::compose(_("Output directory: %1%2%3"), "<b>",
+                             m_SelectedFolder, "</b>"));
+  OutputDirLabel->set_alignment(Gtk::ALIGN_LEFT);
+
+  Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
+  TopBox->pack_start(*ResetBt, Gtk::PACK_SHRINK);
+  TopBox->pack_start(*OutputDirLabel, Gtk::PACK_SHRINK, 10);
+
   mp_FileChooser = Gtk::manage(new Gtk::FileChooserWidget());
-
   mp_FileChooser->set_local_only();
-
   mp_FileChooser->signal_file_activated().connect(
       sigc::mem_fun(*this, &OutputsView::onFileActivated));
-
   mp_FileChooser->signal_current_folder_changed().connect(
       sigc::mem_fun(*this, &OutputsView::onFolderChanged));
-
   mp_FileChooser->signal_map().connect(
       sigc::mem_fun(*this, &OutputsView::onMap));
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());
-  mp_MainBox->pack_start(*mp_FileChooser);
+  mp_MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK, 5);
+  mp_MainBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK,
+                         5);
+  mp_MainBox->pack_start(*mp_FileChooser, Gtk::PACK_EXPAND_WIDGET, 5);
   mp_MainBox->set_visible(true);
   mp_MainBox->show_all_children();
 }
