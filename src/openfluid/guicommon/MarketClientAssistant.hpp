@@ -69,6 +69,7 @@
 #include <gtkmm/progressbar.h>
 #include <gtkmm/textview.h>
 #include <gtkmm/notebook.h>
+#include <gtkmm/paned.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketClient.hpp>
@@ -135,7 +136,7 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     Gtk::Label m_LicensesLabel;
 
-    Gtk::HBox m_LicensesReviewBox;
+    Gtk::HPaned m_LicensesReviewPaned;
     Gtk::TreeView m_LicensesTreeView;
 
     Glib::RefPtr<Gtk::TreeStore> m_RefLicenseTreeViewModel;

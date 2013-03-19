@@ -228,9 +228,8 @@ void MarketClientAssistant::setupLicensesPage()
 
   m_RefLicensesTreeSelection = m_LicensesTreeView.get_selection();
 
-  m_LicensesReviewBox.set_spacing(12);
-  m_LicensesReviewBox.pack_start(m_LicensesListSWindow,Gtk::PACK_SHRINK);
-  m_LicensesReviewBox.pack_start(m_LicensesReviewSWindow,Gtk::PACK_EXPAND_WIDGET);
+  m_LicensesReviewPaned.pack1(m_LicensesListSWindow);
+  m_LicensesReviewPaned.pack2(m_LicensesReviewSWindow);
 
 
   m_LicensesAcceptRadio.set_label(_("I accept the terms of the license(s) agreement(s)"));
@@ -241,7 +240,7 @@ void MarketClientAssistant::setupLicensesPage()
 
   m_LicensesPageBox.set_border_width(12);
   m_LicensesPageBox.pack_start(m_LicensesLabel,Gtk::PACK_SHRINK);
-  m_LicensesPageBox.pack_start(m_LicensesReviewBox,Gtk::PACK_EXPAND_WIDGET);
+  m_LicensesPageBox.pack_start(m_LicensesReviewPaned,Gtk::PACK_EXPAND_WIDGET);
   m_LicensesPageBox.pack_start(m_LicensesAcceptRadio,Gtk::PACK_SHRINK);
   m_LicensesPageBox.pack_start(m_LicensesDoNotRadio,Gtk::PACK_SHRINK);
 
