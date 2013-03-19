@@ -218,13 +218,13 @@ void MarketClientAssistant::setupLicensesPage()
   m_LicensesReviewSWindow.add(m_LicensesTextView);
   m_LicensesReviewSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
-  m_RefLicenseTreeViewModel = Gtk::ListStore::create(m_LicensesColumns);
+  m_RefLicenseTreeViewModel = Gtk::TreeStore::create(m_LicensesColumns);
   m_LicensesTreeView.set_model(m_RefLicenseTreeViewModel);
   m_LicensesTreeView.set_headers_visible(false);
 
   m_LicensesListSWindow.add(m_LicensesTreeView);
   m_LicensesListSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
-
+  m_LicensesListSWindow.set_size_request(100);
 
   m_RefLicensesTreeSelection = m_LicensesTreeView.get_selection();
 
@@ -761,13 +761,19 @@ void MarketClientAssistant::initializeLicencesTreeView()
 
   for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
-    for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
+    if (!TCIter->second.empty())
     {
+      Gtk::TreeModel::Row TypeRow = *(m_RefLicenseTreeViewModel->append());
+      TypeRow[m_LicensesColumns.m_ID] = m_MarketClient.getTypeName(TCIter->first,true);
 
-      if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
+      for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
       {
-        Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append());
-        TmpRow[m_LicensesColumns.m_ID] = CIter->first;
+
+        if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
+        {
+          Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append(TypeRow.children()));
+          TmpRow[m_LicensesColumns.m_ID] = CIter->first;
+        }
       }
     }
   }

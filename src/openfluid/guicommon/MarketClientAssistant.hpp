@@ -61,6 +61,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/combobox.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/button.h>
 #include <gtkmm/radiobutton.h>
@@ -137,7 +138,8 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     Gtk::HBox m_LicensesReviewBox;
     Gtk::TreeView m_LicensesTreeView;
 
-    Glib::RefPtr<Gtk::ListStore> m_RefLicenseTreeViewModel;
+    Glib::RefPtr<Gtk::TreeStore> m_RefLicenseTreeViewModel;
+
 
     class LicensesTreeViewColumns : public Gtk::TreeModel::ColumnRecord
     {
