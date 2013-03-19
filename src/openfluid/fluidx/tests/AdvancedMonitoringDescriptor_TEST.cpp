@@ -111,9 +111,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
       Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
       "export.spatial-graph.files.dot");
 
-  BOOST_CHECK_THROW(Monit.addToObserverList("dummy"),
-                    openfluid::base::OFException);
-
   Monit.addToObserverList("export.vars.files.csv");
   BOOST_CHECK_EQUAL(Monit.getItems().size(), 2);
   BOOST_CHECK_EQUAL(Monit.getDescriptor("export.vars.files.csv").getID(),
