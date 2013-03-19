@@ -756,23 +756,30 @@ void MarketClientAssistant::initializeLicencesTreeView()
   m_LicensesTreeView.remove_all_columns();
   m_RefLicenseTreeViewModel->clear();
 
+  std::map<openfluid::market::PackageInfo::TypePackage,bool> PackagesContainers;
   Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
 
   for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
-    if (!TCIter->second.empty())
+    Gtk::TreeModel::Row TypeRow;
+
+    for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
     {
-      Gtk::TreeModel::Row TypeRow = *(m_RefLicenseTreeViewModel->append());
-      TypeRow[m_LicensesColumns.m_ID] = m_MarketClient.getTypeName(TCIter->first,true);
-
-      for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
+      // If package is selected
+      if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
       {
-
-        if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
+        // If TypeRow not created
+        if (!PackagesContainers[TCIter->first])
         {
-          Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append(TypeRow.children()));
-          TmpRow[m_LicensesColumns.m_ID] = CIter->first;
+          TypeRow = *(m_RefLicenseTreeViewModel->append());
+          TypeRow[m_LicensesColumns.m_ID] = m_MarketClient.getTypeName(TCIter->first,true);
+
+          PackagesContainers[TCIter->first] = true;
         }
+
+        // Creation of sub-tree
+        Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append(TypeRow.children()));
+        TmpRow[m_LicensesColumns.m_ID] = CIter->first;
       }
     }
   }
