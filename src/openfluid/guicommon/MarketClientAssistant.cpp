@@ -808,7 +808,8 @@ void MarketClientAssistant::updateInstallTreeview()
     Gtk::TreeModel::Row TmpRow = *(m_RefInstallTreeViewModel->append());
     TmpRow[m_InstallColumns.m_ID] = (*PLiter)->getID();
     if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::BIN) TmpRow[m_InstallColumns.m_Format] = _("binary");
-    else TmpRow[m_InstallColumns.m_Format] = _("source");
+    else if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::SRC) TmpRow[m_InstallColumns.m_Format] = _("source");
+    else TmpRow[m_InstallColumns.m_Format] = _("dataset");
     TmpRow[m_InstallColumns.m_Status] = _("Pending");
   }
 }
