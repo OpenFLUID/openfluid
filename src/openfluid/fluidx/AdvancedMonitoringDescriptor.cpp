@@ -55,7 +55,6 @@
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
-#include <openfluid/ware/ObserverSignatureRegistry.hpp>
 
 namespace openfluid {
 namespace fluidx {
@@ -109,23 +108,9 @@ openfluid::fluidx::ObserverDescriptor& AdvancedMonitoringDescriptor::getDescript
 
 void AdvancedMonitoringDescriptor::addToObserverList(std::string ObserverID)
 {
-  try
-  {
-    openfluid::ware::ObserverSignatureRegistry::getInstance()->getSignature(
-        ObserverID);
-    openfluid::fluidx::ObserverDescriptor* Obs =
-        new openfluid::fluidx::ObserverDescriptor(ObserverID);
-    mp_MonitoringDesc->appendItem(Obs);
-  }
-  catch (openfluid::base::OFException& e)
-  {
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework",
-        "AdvancedMonitoringDescriptor::addToObserverList",
-        "Unable to add Observer " + ObserverID
-        + " because it is not available");
-  }
-
+  openfluid::fluidx::ObserverDescriptor* Obs =
+      new openfluid::fluidx::ObserverDescriptor(ObserverID);
+  mp_MonitoringDesc->appendItem(Obs);
 }
 
 // =====================================================================
