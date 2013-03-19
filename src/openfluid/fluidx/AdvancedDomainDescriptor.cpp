@@ -379,17 +379,38 @@ void AdvancedDomainDescriptor::addUnit(
   std::string ClassName = UnitDesc->getUnitClass();
   int ID = UnitDesc->getUnitID();
 
+  // add in DomainDesc - to do first to fetch the newly added pointer
+  mp_DomainDesc->getUnits().push_back(*UnitDesc);
+  openfluid::fluidx::UnitDescriptor* NewUnitDesc =
+      &mp_DomainDesc->getUnits().back();
+
   // add in m_Units
-  if (!m_Units[ClassName].insert(std::make_pair(ID, BuilderUnit(*UnitDesc))).second)
+  if (!m_Units[ClassName].insert(std::make_pair(ID, BuilderUnit(*NewUnitDesc))).second)
+  {
+    // if fails, remove the newly added from DomainDesc
+    mp_DomainDesc->getUnits().erase(
+        mp_DomainDesc->getUnits().end().operator --());
+
     throw openfluid::base::OFException(
         "OpenFLUID-Framework", "AdvancedDomainDescriptor::addUnit",
         "trying to add a Unit that already exists");
+  }
 
   //check relations
-  checkUnitRelations(*UnitDesc);
-
-  // add in DomainDesc
-  mp_DomainDesc->getUnits().push_back(*UnitDesc);
+  try
+  {
+    checkUnitRelations(*NewUnitDesc);
+  }
+  catch (openfluid::base::OFException& e)
+  {
+    // if fails, remove the newly added from DomainDesc and from Units
+    mp_DomainDesc->getUnits().erase(
+        mp_DomainDesc->getUnits().end().operator --());
+    m_Units[ClassName].erase(ID);
+    if (m_Units.at(ClassName).empty())
+      m_Units.erase(ClassName);
+    throw;
+  }
 
   // add Input Data
   std::set<std::string> IDataNames = getInputDataNames(ClassName);
@@ -555,7 +576,7 @@ void AdvancedDomainDescriptor::addInputData(std::string ClassName,
   // add in m_Units
   std::map<openfluid::core::UnitID_t,
       openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* Data =
-      &(mp_DomainDesc->getInputData().end().operator --()->getData());
+      &(mp_DomainDesc->getInputData().back().getData());
 
   for (std::map<openfluid::core::UnitID_t,
       openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>::iterator it =
@@ -694,7 +715,7 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getUnitsToOfPriv",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getUnitsToOf",
         "trying to get relations of a Unit that doesn't exist");
   }
 }
@@ -712,7 +733,7 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getUnitsParentsOfPriv",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getUnitsParentsOf",
         "trying to get relations of a Unit that doesn't exist");
   }
 }
@@ -886,8 +907,8 @@ void AdvancedDomainDescriptor::addParentChildRelation(
     ss << "trying to add a Parent/Child relation to a Unit that doesn't exist (UnitClass "
        << ChildUnit.first << " ID " << ChildUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addParentChildRelation",
-        ss.str());
+        "OpenFLUID-Framework",
+        "AdvancedDomainDescriptor::addParentChildRelation", ss.str());
   }
 
   try
@@ -900,8 +921,8 @@ void AdvancedDomainDescriptor::addParentChildRelation(
     ss << "trying to add a Parent/Child relation from a Unit that doesn't exist (UnitClass "
        << ParentUnit.first << " ID " << ParentUnit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addParentChildRelation",
-        ss.str());
+        "OpenFLUID-Framework",
+        "AdvancedDomainDescriptor::addParentChildRelation", ss.str());
   }
 
   std::list<openfluid::core::UnitClassID_t>& Parents =

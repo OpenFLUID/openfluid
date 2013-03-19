@@ -172,7 +172,8 @@ class AdvancedDomainDescriptor
     /**
      * @details Add this UnitDesc ID to the IData descriptor for all input data of this UnitDesc class,
      * with a default value of "-"
-     * @throw openfluid::base::OFException if Unit already exists
+     * @warning Invalidate UnitDesc
+     * @throw openfluid::base::OFException if Unit already exists or if Unit has a relation with a non-existent Unit
      * @param UnitDesc
      */
     void addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc);
