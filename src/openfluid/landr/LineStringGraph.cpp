@@ -57,6 +57,7 @@
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
+#include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -74,7 +75,7 @@ namespace landr {
 // =====================================================================
 
 LineStringGraph::LineStringGraph() :
-    LandRGraph()
+            LandRGraph()
 {
 
 }
@@ -83,7 +84,7 @@ LineStringGraph::LineStringGraph() :
 // =====================================================================
 
 LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) :
-    LandRGraph(Val)
+            LandRGraph(Val)
 {
 
 }
@@ -92,7 +93,7 @@ LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 
 LineStringGraph::LineStringGraph(openfluid::landr::VectorDataset& Vect) :
-    LandRGraph(Vect)
+            LandRGraph(Vect)
 {
 
 }
@@ -403,23 +404,23 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(
 // =====================================================================
 
 void LineStringGraph::reverseLineStringEntity(
-		LineStringEntity& Entity)
+    LineStringEntity& Entity)
 {
 
-	const geos::geom::LineString* Ent=Entity.getLine();
-	geos::geom::Geometry* ReverseEnt=Ent->reverse();
-	 LandREntity* LandEnt = dynamic_cast<LandREntity*>(&Entity);
-	int selfId=LandEnt->getSelfId();
-	removeEntity(selfId);
-	try {
-		addEntity(new LineStringEntity(ReverseEnt,selfId));
-	} catch (openfluid::base::OFException& e) {
-		std::ostringstream s;
-		      s << "Reverse orientation impossible for entity" << selfId<<" : "<<e.what() ;
-		      throw openfluid::base::OFException(
-		"OpenFLUID Framework",
-		          "LineStringGraph::reverseLineStringEntity",s.str());
-	}
+  const geos::geom::LineString* Ent=Entity.getLine();
+  geos::geom::Geometry* ReverseEnt=Ent->reverse();
+  LandREntity* LandEnt = dynamic_cast<LandREntity*>(&Entity);
+  int selfId=LandEnt->getSelfId();
+  removeEntity(selfId);
+  try {
+    addEntity(new LineStringEntity(ReverseEnt,selfId));
+  } catch (openfluid::base::OFException& e) {
+    std::ostringstream s;
+    s << "Reverse orientation impossible for entity" << selfId<<" : "<<e.what() ;
+    throw openfluid::base::OFException(
+        "OpenFLUID Framework",
+        "LineStringGraph::reverseLineStringEntity",s.str());
+  }
 
 
 
@@ -428,6 +429,55 @@ void LineStringGraph::reverseLineStringEntity(
 
 // =====================================================================
 // =====================================================================
+
+bool LineStringGraph::isLineStringGraphArborescence( )
+{
+  int nEntities=this->getSize();
+  int nNodes=std::distance(this->nodeBegin(), this->nodeEnd());
+
+  if(nNodes!=(nEntities+1))
+    return false;
+
+  // use DFS method to travel in the nodes, if all nodes are visited, LineStringGraph is a corrected arborescence
+  // first, mark all nodes as no visited
+
+  std::vector<geos::planargraph::Node *> vNode;
+
+  this->getNodes(vNode);
+  for (std::vector<geos::planargraph::Node*>::iterator
+      it=vNode.begin(); it!=vNode.end();it++)
+      (*it)->setVisited(false);
+
+  // mark all edges as non marked
+   std::vector<geos::planargraph::Edge *> *vEdge= this->getEdges();
+   for (std::vector<geos::planargraph::Edge*>::iterator
+       it=vEdge->begin(); it!=vEdge->end();it++)
+     (*it)->setVisited(false);
+
+
+
+  //call DFS method on an arbitrary node
+  openfluid::landr::LandRTools::markVisitedNodesUsingDFS(vNode[0]);
+
+
+  //check if all node have been visited
+  vNode.clear();
+  this->getNodes(vNode);
+  for (std::vector<geos::planargraph::Node*>::iterator
+      it=vNode.begin(); it!=vNode.end();it++)
+  {
+    if(!(*it)->isVisited())
+      return false;
+  }
+
+
+  return true;
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 } // namespace landr
 } /* namespace openfluid */

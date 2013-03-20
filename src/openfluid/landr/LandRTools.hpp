@@ -57,7 +57,7 @@
 
 #include <vector>
 #include <list>
-
+#include <openfluid/landr/LineStringGraph.hpp>
 namespace geos {
 namespace geom {
 class Geometry;
@@ -155,7 +155,7 @@ class LandRTools
      * @param Tolerance The tolerance to use.
      */
     static bool exists(geos::geom::LineString* Line,
-                std::list<geos::geom::LineString*> RefLines, double Tolerance = 0);
+                       std::list<geos::geom::LineString*> RefLines, double Tolerance = 0);
 
     /**
      * @brief Create all possible Polygons from a Geometry.
@@ -168,6 +168,13 @@ class LandRTools
         std::vector<geos::geom::Geometry*>& Lines,
         std::vector<geos::geom::Polygon*>& Polygons,
         std::vector<const geos::geom::LineString*>& Dangles);
+
+    /**
+     * @brief recursive depth first search algorithm in a LineStringGraph and mark visited Nodes
+     *
+     * @param Node the begin Node of LineStringGraph
+     */
+    static void markVisitedNodesUsingDFS(geos::planargraph::Node* Node);
 };
 
 }
