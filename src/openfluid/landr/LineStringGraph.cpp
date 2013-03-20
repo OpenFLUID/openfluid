@@ -442,13 +442,23 @@ bool LineStringGraph::isLineStringGraphArborescence( )
   // first, mark all nodes as no visited
 
   std::vector<geos::planargraph::Node *> vNode;
+
   this->getNodes(vNode);
   for (std::vector<geos::planargraph::Node*>::iterator
       it=vNode.begin(); it!=vNode.end();it++)
-    (*it)->setVisited(false);
+      (*it)->setVisited(false);
+
+  // mark all edges as non marked
+   std::vector<geos::planargraph::Edge *> *vEdge= this->getEdges();
+   for (std::vector<geos::planargraph::Edge*>::iterator
+       it=vEdge->begin(); it!=vEdge->end();it++)
+     (*it)->setVisited(false);
+
+
 
   //call DFS method on an arbitrary node
   openfluid::landr::LandRTools::markVisitedNodesUsingDFS(vNode[0]);
+
 
   //check if all node have been visited
   vNode.clear();

@@ -238,9 +238,9 @@ geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
   RemGeom.second.reset(cbr->removeCommonBits(Geom2.clone()));
 
   geos::operation::overlay::snap::GeometrySnapper::snap(*RemGeom.first,
-      *RemGeom.second,
-      SnapTolerance,
-      PrepGeom);
+                                                        *RemGeom.second,
+                                                        SnapTolerance,
+                                                        PrepGeom);
 
   std::auto_ptr<geos::geom::Geometry> Result(
       geos::operation::overlay::OverlayOp::overlayOp(
@@ -306,18 +306,13 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
   {
     if(!(*it)->getEdge()->isVisited())
     {
-
       geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getStartNode();
 
-      // case if LineStringEntity is miss oriented, need to take the EndNode instead of StartNode
       if(Node->getCoordinate()==theNextNode->getCoordinate())
-      {
         theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getEndNode();
 
-      }
       // set Edge visited as true
       (*it)->getEdge()->setVisited(true);
-
 
       if(!theNextNode->isVisited())
         markVisitedNodesUsingDFS(theNextNode);
@@ -325,6 +320,9 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
   }
 
 }
+
+
+
 
 // =====================================================================
 // =====================================================================

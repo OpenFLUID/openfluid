@@ -678,7 +678,7 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
   delete ValRS;
 
   openfluid::core::GeoVectorValue* BadRS_1 = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_deco.shp");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_disconnected.shp");
   openfluid::landr::LineStringGraph* BadGraph_1 =
       openfluid::landr::LineStringGraph::create(*BadRS_1);
   BOOST_CHECK_EQUAL(BadGraph_1->isLineStringGraphArborescence(),false);
@@ -686,7 +686,7 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
   delete BadGraph_1;
 
   openfluid::core::GeoVectorValue* BadRS_2 = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_loop.shp");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_with_loop.shp");
   openfluid::landr::LineStringGraph* BadGraph_2 =
       openfluid::landr::LineStringGraph::create(*BadRS_2);
   BOOST_CHECK_EQUAL(BadGraph_2->isLineStringGraphArborescence(),false);
@@ -694,12 +694,21 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
   delete BadGraph_2;
 
   openfluid::core::GeoVectorValue* BadRS_3 = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS_non_connexe.shp");
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_non_connected.shp");
   openfluid::landr::LineStringGraph* BadGraph_3 =
       openfluid::landr::LineStringGraph::create(*BadRS_3);
   BOOST_CHECK_EQUAL(BadGraph_3->isLineStringGraphArborescence(),false);
   delete BadRS_3;
   delete BadGraph_3;
+
+
+  openfluid::core::GeoVectorValue* ValRS4 = new openfluid::core::GeoVectorValue(
+       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+   openfluid::landr::LineStringGraph* Graph4 =
+       openfluid::landr::LineStringGraph::create(*ValRS4);
+   BOOST_CHECK_EQUAL(Graph4->isLineStringGraphArborescence(),true);
+   delete Graph4;
+   delete ValRS4;
 
 
 }
