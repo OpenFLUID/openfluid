@@ -635,23 +635,23 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
 
 void ProjectCoordinator::whenMapViewAsked()
 {
-//  std::string PageName = "MapView";
-//  openfluid::guicommon::ProjectWorkspaceModule* Module;
-//
-//  if (m_Workspace.existsPageName(PageName))
-//    Module = m_ModulesByPageNameMap[PageName];
-//  else
-//  {
-//    Module =
-//        static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMapViewModule());
-//
-//    Module->signal_ModuleChanged().connect(
-//        sigc::mem_fun(*this, &ProjectCoordinator::whenMapViewChanged));
-//
-//    addModuleToWorkspace(PageName, *Module);
-//  }
-//
-//  m_Workspace.setCurrentPage(PageName);
+  std::string PageName = "MapView";
+  openfluid::guicommon::ProjectWorkspaceModule* Module;
+
+  if (m_Workspace.existsPageName(PageName))
+    Module = m_ModulesByPageNameMap[PageName];
+  else
+  {
+    Module =
+        static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMapViewModule());
+
+    Module->signal_ModuleChanged().connect(
+        sigc::mem_fun(*this, &ProjectCoordinator::whenMapViewChanged));
+
+    addModuleToWorkspace(PageName, *Module);
+  }
+
+  m_Workspace.setCurrentPage(PageName);
 }
 
 // =====================================================================

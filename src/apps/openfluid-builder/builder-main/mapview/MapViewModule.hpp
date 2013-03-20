@@ -62,8 +62,6 @@
 #include <gtkmm/viewport.h>
 #include <gtkmm/statusbar.h>
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 class DrawingArea;
@@ -100,11 +98,6 @@ class MapViewModule: public openfluid::guicommon::ProjectWorkspaceModule
     void compose();
 
     Gtk::Widget* asWidget();
-
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& ModelInstance,
-        openfluid::machine::SimulationBlob& SimBlob,
-        openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     void update()
     {

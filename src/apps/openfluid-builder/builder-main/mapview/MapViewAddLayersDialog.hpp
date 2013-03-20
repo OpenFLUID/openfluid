@@ -64,11 +64,11 @@
 
 namespace openfluid {
 namespace core {
-class CoreRepository;
 class Datastore;
 }
-namespace machine {
-class SimulationBlob;
+namespace fluidx {
+class AdvancedDomainDescriptor;
+class DatastoreDescriptor;
 }
 }
 
@@ -78,7 +78,7 @@ class MapViewAddLayersDialog
 
     Gtk::Dialog* mp_Dialog;
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     openfluid::core::Datastore* mp_Datastore;
 
@@ -108,11 +108,10 @@ class MapViewAddLayersDialog
 
   public:
 
-    MapViewAddLayersDialog();
+    MapViewAddLayersDialog(openfluid::fluidx::AdvancedDomainDescriptor& DomainDesc,
+                           openfluid::core::Datastore& Datastore);
 
     ~MapViewAddLayersDialog();
-
-    void setEngineRequirements(openfluid::machine::SimulationBlob& SimBlob);
 
     void update(const std::set<std::string>& AlreadyDisplayedLayersIds);
 

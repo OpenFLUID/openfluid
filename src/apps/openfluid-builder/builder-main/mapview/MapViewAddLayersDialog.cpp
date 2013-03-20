@@ -60,10 +60,9 @@
 #include <gtkmm/label.h>
 #include <gtkmm/frame.h>
 
-#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
 
 #include "Mediator.hpp"
 
@@ -71,7 +70,10 @@
 // =====================================================================
 
 
-MapViewAddLayersDialog::MapViewAddLayersDialog()
+MapViewAddLayersDialog::MapViewAddLayersDialog(
+    openfluid::fluidx::AdvancedDomainDescriptor& DomainDesc,
+    openfluid::core::Datastore& Datastore):
+    mp_Domain(&DomainDesc), mp_Datastore(&Datastore)
 {
   mp_Dialog = new Gtk::Dialog(_("Displaying resources in MapView"));
 
@@ -134,17 +136,6 @@ MapViewAddLayersDialog::~MapViewAddLayersDialog()
 // =====================================================================
 
 
-void MapViewAddLayersDialog::setEngineRequirements(
-    openfluid::machine::SimulationBlob& SimBlob)
-{
-  mp_CoreRepos = &SimBlob.getCoreRepository();
-  mp_Datastore = &SimBlob.getDatastore();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 std::set<std::string> MapViewAddLayersDialog::show(
     const std::set<std::string>& AlreadyDisplayedLayersIds)
 {
@@ -189,7 +180,7 @@ void MapViewAddLayersDialog::update(
     if (AlreadyDisplayedLayersIds.count(it->first))
       continue;
 
-    if (!(Mediator::hasADisplayableVectorValue(*it->second, *mp_CoreRepos)
+    if (!(Mediator::hasADisplayableVectorValue(*it->second, *mp_Domain)
         || Mediator::hasADisplayableRasterValue(*it->second)))
       continue;
 

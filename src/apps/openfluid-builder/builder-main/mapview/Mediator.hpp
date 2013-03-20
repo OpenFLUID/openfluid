@@ -71,11 +71,12 @@
 
 namespace openfluid {
 namespace core {
-class Datastore;
 class DatastoreItem;
+class Datastore;
 }
-namespace machine {
-class SimulationBlob;
+namespace fluidx {
+class AdvancedDomainDescriptor;
+class AdvancedFluidXDescriptor;
 }
 }
 
@@ -94,7 +95,7 @@ class Mediator
     Gtk::Statusbar& mref_StatusBar;
     ToolBar& mref_ToolBar;
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
     openfluid::core::Datastore* mp_Datastore;
 
     bool m_IsFirstExposeEvent;
@@ -164,11 +165,10 @@ class Mediator
 
   public:
 
-    Mediator(DrawingArea&, Gtk::Statusbar&, ToolBar&);
+    Mediator(DrawingArea&, Gtk::Statusbar&, ToolBar&,
+             openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     Gtk::Widget* asWidget();
-
-    void setEngineRequirements(openfluid::machine::SimulationBlob& SimBlob);
 
     sigc::signal<void> signal_DrawingAreaExposeEventChanged();
 
@@ -178,7 +178,7 @@ class Mediator
 
     static bool hasADisplayableVectorValue(
         openfluid::core::DatastoreItem& Item,
-        openfluid::core::CoreRepository& CoreRepos);
+        openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     static bool
     hasADisplayableRasterValue(openfluid::core::DatastoreItem& Item);

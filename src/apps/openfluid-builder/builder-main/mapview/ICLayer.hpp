@@ -61,7 +61,7 @@
 #include <cairomm/context.h>
 #include <set>
 
-#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include "ICLayerObject.hpp"
 
@@ -70,7 +70,7 @@ class ICLayer
 
   private:
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
   public:
 
@@ -87,7 +87,7 @@ class ICLayer
 
     void update(std::string);
 
-    void setEngineRequirements(openfluid::core::CoreRepository&);
+    void setEngineRequirements(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     virtual int isSelected(double, double, double) = 0;
     std::set<int> selectObject(std::string);
