@@ -467,9 +467,9 @@ Layer::mtype_SignalLayer Layer::signalWidgetExpanderBaseChanged()
 // =====================================================================
 // =====================================================================
 
-void Layer::update(openfluid::core::CoreRepository& CoreRepos)
+void Layer::update(openfluid::fluidx::AdvancedDomainDescriptor& Domain)
 {
-  mp_ICLayer->setEngineRequirements(CoreRepos);
+  mp_ICLayer->setEngineRequirements(Domain);
   mp_ICLayer->update(m_ClassName);
   m_MinMaxLayer = mp_ICLayer->getMinMax();
 }

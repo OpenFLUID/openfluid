@@ -61,24 +61,28 @@
 
 #include <glibmm/i18n.h>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/machine/Factory.hpp>
 
 #include "LayerType.hpp"
 #include "EngineHelper.hpp"
 #include "MapViewAddLayersDialog.hpp"
 
 Mediator::Mediator(DrawingArea& DrawingArea, Gtk::Statusbar& StatusBar,
-    ToolBar& ToolBar) :
+    ToolBar& ToolBar, openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
   mref_DrawingArea(DrawingArea), mref_StatusBar(StatusBar), mref_ToolBar(
-      ToolBar), mp_CoreRepos(0), mp_Datastore(0), m_IsFirstExposeEvent(true)
+      ToolBar), mp_Domain(&AdvancedDesc.getDomain()),
+      m_IsFirstExposeEvent(true)
 {
+  mp_Datastore = new openfluid::core::Datastore();
+  openfluid::machine::Factory::buildDatastoreFromDescriptor(AdvancedDesc.getDatastoreDescriptor(),*mp_Datastore);
+
   m_SelectedClassName = "";
   m_infoDialogCreate = false;
 
-  mp_AddLayersDialog = new MapViewAddLayersDialog();
+  mp_AddLayersDialog = new MapViewAddLayersDialog(AdvancedDesc.getDomain(),*mp_Datastore);
 
   mp_MainVBoxMediator = Gtk::manage(new Gtk::VBox());
 
@@ -122,6 +126,8 @@ Mediator::Mediator(DrawingArea& DrawingArea, Gtk::Statusbar& StatusBar,
       &Mediator::whenOnSelectObjectChanged));
 
   mp_MainVBoxMediator->set_visible(true);
+
+  addAvailableLayersFromDatastore();
 }
 
 // =====================================================================
@@ -142,7 +148,7 @@ void Mediator::addAvailableLayersFromDatastore()
     if (DisplayedLayers.count((*Item).getUnitClass()))
       continue;
 
-    if (!(hasADisplayableVectorValue(*Item, *mp_CoreRepos)
+    if (!(hasADisplayableVectorValue(*Item, *mp_Domain)
         || hasADisplayableRasterValue(*Item)))
       continue;
 
@@ -208,7 +214,7 @@ void Mediator::addALayer(Layer& ALayer)
   m_Layers.push_back(&ALayer);
   m_LayersIds.insert(ALayer.getId());
 
-  ALayer.update(*mp_CoreRepos);
+  ALayer.update(*mp_Domain);
 
   ALayer.signalUpLayerButtonClicked().connect(sigc::mem_fun(*this,
       &Mediator::whenOnUpLayerButtonClicked));
@@ -232,11 +238,11 @@ void Mediator::addALayer(Layer& ALayer)
 // =====================================================================
 
 bool Mediator::hasADisplayableVectorValue(openfluid::core::DatastoreItem& Item,
-    openfluid::core::CoreRepository& CoreRepos)
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain)
 {
   return Item.getValue() && Item.getValue()->getType()
       == openfluid::core::UnstructuredValue::GeoVectorValue
-      && EngineHelper::getClassNames(&CoreRepos).count(Item.getUnitClass());
+      && Domain.isClassNameExists(Item.getUnitClass());
 }
 
 // =====================================================================
@@ -255,20 +261,6 @@ bool Mediator::hasADisplayableRasterValue(openfluid::core::DatastoreItem& /*Item
 Gtk::Widget* Mediator::asWidget()
 {
   return mp_MainVBoxMediator;
-}
-
-// =====================================================================
-// =====================================================================
-
-void Mediator::setEngineRequirements(
-    openfluid::machine::SimulationBlob& SimBlob)
-{
-  mp_CoreRepos = &SimBlob.getCoreRepository();
-  mp_Datastore = &SimBlob.getDatastore();
-
-  mp_AddLayersDialog->setEngineRequirements(SimBlob);
-
-  addAvailableLayersFromDatastore();
 }
 
 // =====================================================================
@@ -513,7 +505,11 @@ void Mediator::whenInfoAsked()
 
   for (it = m_SelectedUnitIds.begin(); it != m_SelectedUnitIds.end(); ++it)
   {
-    if (!mp_CoreRepos->getUnit(m_SelectedClassName, *it))
+    try
+    {
+      mp_Domain->getUnit(m_SelectedClassName, *it);
+    }
+    catch(openfluid::base::OFException& e)
     {
       UnavailableIds.insert(*it);
       AvailableIds.erase(*it);
@@ -546,7 +542,7 @@ void Mediator::whenInfoAsked()
     {
       mp_InfoDialog = new Info(
           dynamic_cast<Gtk::Window&> (*asWidget()->get_toplevel()),
-          _("Management"), *mp_CoreRepos);
+          _("Management"), *mp_Domain);
       m_infoDialogCreate = true;
     }
     mp_InfoDialog->show(m_SelectedClassName, AvailableIds);
