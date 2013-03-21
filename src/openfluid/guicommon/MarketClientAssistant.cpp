@@ -792,8 +792,12 @@ void MarketClientAssistant::initializeLicencesTreeView()
   m_LicensesTreeView.append_column("", m_LicensesColumns.m_ID);
 
 
+  // open first type row
+  Gtk::TreeModel::Path RowPath = m_RefLicenseTreeViewModel->get_path(m_RefLicenseTreeViewModel->children().begin());
+  m_LicensesTreeView.expand_row(RowPath, false);
+
   // select first package
-  Gtk::TreeModel::Row TmpSelRow = m_RefLicenseTreeViewModel->children()[0];
+  Gtk::TreeModel::Row TmpSelRow = m_RefLicenseTreeViewModel->children()[0]->children()[0];
   m_RefLicensesTreeSelection->select(TmpSelRow);
 
 }
