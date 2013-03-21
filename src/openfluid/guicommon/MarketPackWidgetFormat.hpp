@@ -46,96 +46,65 @@
 */
 
 /**
-  \file MarketPackWidget.hpp
-  \brief Header of ...
+ * MarketPackWidgetFormat.hpp
+ *
+ *  Created on: 21 mars 2013
+ *      Author: Manuel CHATAIGNER
+*/
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+#ifndef __MARKETPACKWIDGETFORMAT__HPP__
+#define __MARKETPACKWIDGETFORMAT__HPP__
 
 
-#ifndef __MARKETPACKWIDGET_HPP__
-#define __MARKETPACKWIDGET_HPP__
-
-
-#include <gtkmm/eventbox.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
-#include <gtkmm/box.h>
-#include <gtkmm/combobox.h>
-#include <gtkmm/button.h>
-#include <gtkmm/togglebutton.h>
-#include <gtkmm/liststore.h>
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/market/MarketInfos.hpp>
+#include <openfluid/guicommon/MarketPackWidget.hpp>
 
 
 namespace openfluid { namespace guicommon {
 
-// =====================================================================
-// =====================================================================
 
-class DLLEXPORT MarketPackWidget : public Gtk::EventBox
+class DLLEXPORT MarketPackWidgetFormat : public MarketPackWidget
 {
-
-  public:
-    typedef sigc::signal<void> signal_install_modified_t;
 
   private:
 
-    Gtk::Image* m_EmptyCartImage;
-    Gtk::Image* m_FullCartImage;
+    std::string m_EditedBuildOptions;
 
-    Gtk::Label m_VersionLabel;
+    Gtk::HBox m_FormatHBox;
+    Gtk::Label m_FormatLabel;
+    Gtk::ComboBox m_FormatCombo;
+    Gtk::Button m_ConfigButton;
 
+    Gtk::VBox m_DetailsLeftVBox;
 
-    bool onButtonRelease(GdkEventButton* Event);
+    Glib::RefPtr<Gtk::ListStore> m_RefFormatComboBoxModel;
 
+    class FormatComboColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
 
-  protected:
-    openfluid::market::PackageInfo::TypePackage m_TypePackage;
-    openfluid::market::MetaPackageInfo m_MetaPackInfo;
+        Gtk::TreeModelColumn<Glib::ustring> m_FormatName;
+        Gtk::TreeModelColumn<openfluid::market::MetaPackageInfo::SelectionType> m_SelType;
 
-    Gtk::Label m_IDLabel;
-    Gtk::Label m_LicenseLabel;
+        FormatComboColumns() { add(m_FormatName); add(m_SelType); }
+    };
 
-    Gtk::HBox m_MainHBox;
+    FormatComboColumns m_FormatColumns;
 
-    Gtk::ToggleButton m_InstallToggle;
-
-    Gtk::VBox m_DetailsRightVBox;
-
-    signal_install_modified_t m_signal_install_modified;
-
-    void onInstallModified();
-
-    static std::string replaceByUnknownIfEmpty(const std::string& Str);
-
-    static std::string replaceByNoneIfEmpty(const std::string& Str);
-
+    void onConfigClicked();
 
   public:
-    MarketPackWidget(const openfluid::market::PackageInfo::TypePackage& TypePackage,const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
-    ~MarketPackWidget();
-
-    std::string getID() const { return m_MetaPackInfo.ID; };
-
-    bool isInstall() const { return m_InstallToggle.get_active(); };
-
-    void setInstall(bool Install) { m_InstallToggle.set_active(Install); };
+    MarketPackWidgetFormat(const openfluid::market::PackageInfo::TypePackage& TypePackage,const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
-    signal_install_modified_t signal_install_modified();
+    std::string getEditedBuildOptions() const { return m_EditedBuildOptions; };
 
     virtual void updateDisplayedInfos();
-
-
 };
 
 
 } } //namespaces
 
 
-#endif /* __MARKETPACKWIDGET_HPP__ */
+#endif /* __MARKETPACKWIDGETFORMAT_HPP__ */

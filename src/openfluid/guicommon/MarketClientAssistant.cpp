@@ -72,7 +72,7 @@
 #include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/guicommon/MarketPackWidget.hpp>
+#include <openfluid/guicommon/MarketPackWidgetFormat.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
 
@@ -460,7 +460,9 @@ void MarketClientAssistant::onPackageInstallModified()
       {
         m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
       }
-      m_MarketClient.setSRCBuildOptions(MPW->getID(),MPW->getEditedBuildOptions());
+
+      if (APMiter->first != openfluid::market::PackageInfo::DATA)
+        m_MarketClient.setSRCBuildOptions(MPW->getID(),((MarketPackWidgetFormat*)MPW)->getEditedBuildOptions());
     }
   }
 
@@ -676,8 +678,11 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       // Adding packages in VBox
       for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
       {
+        if (TCIter->first == openfluid::market::PackageInfo::DATA)
+          mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(TCIter->first,CIter->second));
+        else
+          mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidgetFormat(TCIter->first,CIter->second));
 
-        mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(TCIter->first,CIter->second));
         mp_AvailPacksWidgets[TCIter->first].back()->signal_install_modified().connect(
             sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
         );

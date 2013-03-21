@@ -54,12 +54,9 @@
 */
 
 #include <openfluid/guicommon/MarketPackWidget.hpp>
-#include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 
 #include <glibmm/i18n.h>
-
-#include <gtkmm/stock.h>
 
 namespace openfluid { namespace guicommon {
 
@@ -79,9 +76,7 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::TypePac
     const openfluid::market::MetaPackageInfo& MetaPackInfo)
  : Gtk::EventBox(),
    m_TypePackage(TypePackage),
-   m_MetaPackInfo(MetaPackInfo),
-   m_EditedBuildOptions(""),
-   m_FormatLabel(_("Package Format:"))
+   m_MetaPackInfo(MetaPackInfo)
 {
   m_EmptyCartImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart.png"));
   m_FullCartImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart_full.png"));
@@ -105,57 +100,16 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::TypePac
 
   m_MainHBox.set_border_width(10);
 
-  m_RefFormatComboBoxModel = Gtk::ListStore::create(m_FormatColumns);
-  m_FormatCombo.set_model(m_RefFormatComboBoxModel);
-
-  m_FormatCombo.pack_start(m_FormatColumns.m_FormatName);
-
-  Gtk::TreeModel::Row TmpFormatRow;
-
-  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != MetaPackInfo.AvailablePackages.end())
-  {
-    TmpFormatRow = *(m_RefFormatComboBoxModel->append());
-    TmpFormatRow[m_FormatColumns.m_FormatName] = _("source");
-    TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::SRC;
-    m_EditedBuildOptions = m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].BuildOptions;
-  }
-
-  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != MetaPackInfo.AvailablePackages.end())
-  {
-    TmpFormatRow = *(m_RefFormatComboBoxModel->append());
-    TmpFormatRow[m_FormatColumns.m_FormatName] = _("binary");
-    TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::BIN;
-  }
-
-  if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::FLUIDX) != MetaPackInfo.AvailablePackages.end())
-  {
-    TmpFormatRow = *(m_RefFormatComboBoxModel->append());
-    TmpFormatRow[m_FormatColumns.m_FormatName] = _("fluidx");
-    TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::FLUIDX;
-  }
-
-  m_FormatCombo.set_active(0);
-
-  Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
-  m_ConfigButton.add(*Img);
-  m_ConfigButton.set_image_position(Gtk::POS_LEFT);
-  m_ConfigButton.set_tooltip_text(_("Edit build options for ") + MetaPackInfo.ID);
-  m_ConfigButton.show_all_children(true);
-
-  m_FormatHBox.pack_start(m_FormatLabel,Gtk::PACK_SHRINK,6);
-  m_FormatHBox.pack_start(m_FormatCombo,Gtk::PACK_SHRINK);
-  m_FormatHBox.pack_start(m_ConfigButton,Gtk::PACK_SHRINK,6);
-
-  m_DetailsLeftVBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET);
-  m_DetailsLeftVBox.pack_start(m_FormatHBox,Gtk::PACK_EXPAND_WIDGET);
 
   m_DetailsRightVBox.pack_start(m_VersionLabel,Gtk::PACK_EXPAND_WIDGET);
   m_DetailsRightVBox.pack_start(m_LicenseLabel,Gtk::PACK_EXPAND_WIDGET);
 
-
-  m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
-  m_MainHBox.pack_start(m_DetailsLeftVBox,Gtk::PACK_EXPAND_WIDGET,12);
-  m_MainHBox.pack_start(m_DetailsRightVBox,Gtk::PACK_EXPAND_WIDGET,12);
+  if (m_TypePackage == openfluid::market::PackageInfo::DATA)
+  {
+    m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
+    m_MainHBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET,12);
+    m_MainHBox.pack_start(m_DetailsRightVBox,Gtk::PACK_EXPAND_WIDGET,12);
+  }
 
   m_InstallToggle.modify_bg(Gtk::STATE_ACTIVE, GREY);
   m_InstallToggle.modify_bg(Gtk::STATE_NORMAL, LIGHTGREY);
@@ -165,17 +119,11 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::TypePac
 
   updateDisplayedInfos();
 
-
-  add(m_MainHBox);
+  if (m_TypePackage == openfluid::market::PackageInfo::DATA)
+    add(m_MainHBox);
 
   m_InstallToggle.signal_toggled().connect(sigc::mem_fun(*this,
         &MarketPackWidget::onInstallModified));
-
-  m_FormatCombo.signal_changed().connect(sigc::mem_fun(*this,
-        &MarketPackWidget::onInstallModified));
-
-  m_ConfigButton.signal_clicked().connect(sigc::mem_fun(*this,
-      &MarketPackWidget::onConfigClicked));
 
   signal_button_release_event().connect(sigc::mem_fun(*this,
       &MarketPackWidget::onButtonRelease));
@@ -232,37 +180,9 @@ void MarketPackWidget::onInstallModified()
 // =====================================================================
 
 
-
-void MarketPackWidget::onConfigClicked()
-{
-  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(m_TypePackage),
-                                     m_EditedBuildOptions,m_MetaPackInfo.ID);
-
-
-  if (OptDialog.run() == Gtk::RESPONSE_OK)
-    m_EditedBuildOptions = OptDialog.getEditedOptions();
-
-  onInstallModified();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 openfluid::market::MetaPackageInfo::SelectionType MarketPackWidget::getPackageFormat() const
 {
-  Gtk::TreeModel::iterator TmpIter = m_FormatCombo.get_active();
-  if (TmpIter)
-  {
-    Gtk::TreeModel::Row TmpRow = *TmpIter;
-    if (TmpRow)
-    {
-      return TmpRow[m_FormatColumns.m_SelType];
-    }
-  }
-
-  return openfluid::market::MetaPackageInfo::NONE;
+  return openfluid::market::MetaPackageInfo::FLUIDX;
 }
 
 
@@ -282,28 +202,16 @@ void MarketPackWidget::updateDisplayedInfos()
   MarkupTooltip += std::string("\n<u>")+_("Version:")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Version);
   MarkupTooltip += std::string("\n<u>")+_("Author(s):")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Authors);
 
-  Gtk::TreeModel::iterator TmpIter = m_FormatCombo.get_active();
-  if (TmpIter)
+  if (m_MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::FLUIDX) != m_MetaPackInfo.AvailablePackages.end())
   {
-    Gtk::TreeModel::Row TmpRow = *TmpIter;
-    if (TmpRow)
-    {
-      SelType = TmpRow[m_FormatColumns.m_SelType];
-      std::string LicenseStr = (*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License;
+    SelType = openfluid::market::MetaPackageInfo::FLUIDX;
+    std::string LicenseStr = (*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License;
 
-      MarkupTooltip += std::string("\n<u>")+_("License:")+std::string("</u> ") + replaceByUnknownIfEmpty(LicenseStr);
-      m_LicenseLabel.set_markup(std::string("<u>")+_("License:")+std::string("</u> ")+replaceByUnknownIfEmpty(LicenseStr));
+    MarkupTooltip += std::string("\n<u>")+_("License:")+std::string("</u> ") + replaceByUnknownIfEmpty(LicenseStr);
+    m_LicenseLabel.set_markup(std::string("<u>")+_("License:")+std::string("</u> ")+replaceByUnknownIfEmpty(LicenseStr));
 
-      if (SelType == openfluid::market::MetaPackageInfo::SRC)
-      {
-        MarkupTooltip += std::string("\n<u>")+_("Build options:")+std::string("</u> ") + replaceByNoneIfEmpty(openfluid::market::MarketPackage::composeFullBuildOptions(m_TypePackage,m_EditedBuildOptions));
-      }
-    }
+    if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "\n\n"+m_MetaPackInfo.Description;
   }
-
-  if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "\n\n"+m_MetaPackInfo.Description;
-
-  m_ConfigButton.set_sensitive(getPackageFormat() == openfluid::market::MetaPackageInfo::SRC);
 
   set_tooltip_markup(MarkupTooltip);
 }
