@@ -61,7 +61,7 @@
 
 #include <openfluid/fluidx/UnitDescriptor.hpp>
 #include "tests-config.hpp"
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 
 class BuilderTestHelper
 {

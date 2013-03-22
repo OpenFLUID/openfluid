@@ -60,11 +60,11 @@
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/guicommon/PreferencesPanel.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
 
 #include "PreferencesPanelImpl.hpp"
 #include "BuilderExtensionsManager.hpp"
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include "EngineProject.hpp"
 #include "WaresHelper.hpp"
@@ -302,7 +302,7 @@ bool PreferencesDialog::checkObserversPaths()
     RunEnv->addExtraObserversPluginsPaths(ExistingObsPaths[i]);
 
   // reset Monitoring
-  openfluid::ware::ObserverSignatureRegistry::getInstance()->update();
+  openfluid::machine::ObserverSignatureRegistry::getInstance()->update();
 
   return false;
 }
@@ -379,7 +379,7 @@ bool PreferencesDialog::checkFunctionsPaths()
     RunEnv->addExtraFunctionsPluginsPaths(ExistingFctPaths[i]);
 
   // reset Model
-  openfluid::ware::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::machine::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
 
   return false;
 }

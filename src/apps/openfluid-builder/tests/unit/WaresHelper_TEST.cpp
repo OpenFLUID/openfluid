@@ -65,7 +65,7 @@
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include "WaresHelper.hpp"
 
 // =====================================================================

@@ -59,12 +59,9 @@
 #include <string>
 
 namespace openfluid {
-
 namespace machine {
-class ObserverSignatureInstance;
-}
 
-namespace ware {
+class ObserverSignatureInstance;
 
 class ObserverSignatureRegistry
 {
@@ -72,7 +69,7 @@ class ObserverSignatureRegistry
 
     static ObserverSignatureRegistry* m_Instance;
 
-    std::vector<openfluid::machine::ObserverSignatureInstance*> m_AvailableSignatures;
+    std::vector<ObserverSignatureInstance*> m_AvailableSignatures;
 
     ObserverSignatureRegistry();
 

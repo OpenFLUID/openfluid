@@ -59,62 +59,59 @@
 
 namespace openfluid {
 namespace machine {
+
 class ModelItemSignatureInstance;
-}
-
-namespace ware {
-
 class GeneratorSignature;
 
 // =====================================================================
 // =====================================================================
 
-class FunctionSignatureRegistry
+class DLLEXPORT FunctionSignatureRegistry
 {
-public:
+  public:
 
-  typedef std::map<std::string, openfluid::machine::ModelItemSignatureInstance*> FctSignaturesByName_t;
+    typedef std::map<std::string, openfluid::machine::ModelItemSignatureInstance*> FctSignaturesByName_t;
 
-  typedef std::map<openfluid::fluidx::ModelItemDescriptor::ModelItemType,
-      FctSignaturesByName_t> FctSignaturesByTypeByName_t;
+    typedef std::map<openfluid::fluidx::ModelItemDescriptor::ModelItemType,
+        FctSignaturesByName_t> FctSignaturesByTypeByName_t;
 
-private:
+  private:
 
-  static FunctionSignatureRegistry* mp_Instance;
+    static FunctionSignatureRegistry* mp_Instance;
 
-protected:
+  protected:
 
-  FctSignaturesByTypeByName_t m_Signatures;
+    FctSignaturesByTypeByName_t m_Signatures;
 
-  FunctionSignatureRegistry();
+    FunctionSignatureRegistry();
 
-  void addAPluggableSignature(
-      openfluid::machine::ModelItemSignatureInstance* Signature);
+    void addAPluggableSignature(
+        openfluid::machine::ModelItemSignatureInstance* Signature);
 
-  void addAGeneratorSignature(
-      openfluid::machine::ModelItemSignatureInstance* Signature);
+    void addAGeneratorSignature(
+        openfluid::machine::ModelItemSignatureInstance* Signature);
 
-public:
+  public:
 
-  static FunctionSignatureRegistry* getInstance();
+    static FunctionSignatureRegistry* getInstance();
 
-  FctSignaturesByTypeByName_t getFctSignatures();
+    FctSignaturesByTypeByName_t getFctSignatures();
 
-  FctSignaturesByName_t getGeneratorSignatures();
+    FctSignaturesByName_t getGeneratorSignatures();
 
-  FctSignaturesByName_t getPluggableSignatures();
+    FctSignaturesByName_t getPluggableSignatures();
 
-  void updatePluggableSignatures();
+    void updatePluggableSignatures();
 
-  static openfluid::machine::ModelItemSignatureInstance* getEmptyPluggableSignature();
+    static ModelItemSignatureInstance* getEmptyPluggableSignature();
 
-  bool isPluggableFunctionAvailable(std::string FunctionID);
+    bool isPluggableFunctionAvailable(std::string FunctionID);
 
-  openfluid::machine::ModelItemSignatureInstance* getSignatureItemInstance(
-      std::string FunctionID);
+    ModelItemSignatureInstance* getSignatureItemInstance(
+        std::string FunctionID);
 
-  openfluid::machine::ModelItemSignatureInstance* getSignatureItemInstance(
-      openfluid::fluidx::ModelItemDescriptor* Item);
+    ModelItemSignatureInstance* getSignatureItemInstance(
+        openfluid::fluidx::ModelItemDescriptor* Item);
 
 };
 

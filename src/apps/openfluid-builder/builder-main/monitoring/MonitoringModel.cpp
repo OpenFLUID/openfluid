@@ -58,7 +58,7 @@
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -123,8 +123,8 @@ void MonitoringModel::update()
 
 std::list<std::pair<std::string, std::string> > MonitoringModel::getItems()
 {
-  openfluid::ware::ObserverSignatureRegistry* Reg =
-      openfluid::ware::ObserverSignatureRegistry::getInstance();
+  openfluid::machine::ObserverSignatureRegistry* Reg =
+      openfluid::machine::ObserverSignatureRegistry::getInstance();
 
   std::list<std::pair<std::string, std::string> > Items;
 

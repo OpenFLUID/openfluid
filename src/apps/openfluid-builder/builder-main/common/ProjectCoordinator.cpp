@@ -66,7 +66,7 @@
 #include "EngineProject.hpp"
 #include "BuilderModuleFactory.hpp"
 #include "ProjectDashboard.hpp"
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
 
 #include "ModelStructureModule.hpp"

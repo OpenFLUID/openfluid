@@ -52,13 +52,13 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
 
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 
 namespace openfluid {
-namespace ware {
+namespace machine {
 
 ObserverSignatureRegistry* ObserverSignatureRegistry::m_Instance = 0;
 
@@ -84,7 +84,7 @@ ObserverSignatureRegistry* ObserverSignatureRegistry::getInstance()
 // =====================================================================
 // =====================================================================
 
-const openfluid::machine::ObserverSignatureInstance& ObserverSignatureRegistry::getSignature(
+const ObserverSignatureInstance& ObserverSignatureRegistry::getSignature(
     std::string ObserverID)
 {
   for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
@@ -112,7 +112,7 @@ void ObserverSignatureRegistry::update()
 // =====================================================================
 // =====================================================================
 
-std::vector<openfluid::machine::ObserverSignatureInstance*> ObserverSignatureRegistry::getAvailableSignatures()
+std::vector<ObserverSignatureInstance*> ObserverSignatureRegistry::getAvailableSignatures()
 {
   return m_AvailableSignatures;
 }

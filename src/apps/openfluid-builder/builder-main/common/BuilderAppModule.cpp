@@ -63,7 +63,7 @@
 #include "BuilderAppWindow.hpp"
 #include "BuilderAppActions.hpp"
 #include "BuilderWorkdirCreationDialog.hpp"
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
 
 // =====================================================================

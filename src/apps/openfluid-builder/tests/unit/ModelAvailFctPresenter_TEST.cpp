@@ -64,7 +64,7 @@
 #include "ModelAvailFctView.hpp"
 
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -103,8 +103,8 @@ BOOST_AUTO_TEST_CASE(test_SetSignatures)
   BOOST_CHECK_EQUAL(mp_View->getGeneratorBranchRowsNumber(), 0);
 
   // set Generator signatures
-  openfluid::ware::FunctionSignatureRegistry* Signatures =
-      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::FunctionSignatureRegistry* Signatures =
+      openfluid::machine::FunctionSignatureRegistry::getInstance();
 
   mp_Model->setSignatures(*Signatures);
 

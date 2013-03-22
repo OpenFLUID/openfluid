@@ -66,7 +66,7 @@ class AdvancedModelDescriptor;
 }
 }
 
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 
 class ModelAvailFctComponent;
 class ModelFctDetailComponent;
@@ -107,7 +107,7 @@ class ModelAddFunctionModule
 
     openfluid::machine::ModelItemSignatureInstance* showDialog();
 
-    void setSignatures(openfluid::ware::FunctionSignatureRegistry& Signatures);
+    void setSignatures(openfluid::machine::FunctionSignatureRegistry& Signatures);
 
 };
 

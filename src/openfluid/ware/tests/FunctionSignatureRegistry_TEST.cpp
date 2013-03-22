@@ -59,7 +59,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include "tests-config.hpp"
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/FunctionPluginsManager.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
@@ -69,8 +69,8 @@
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  openfluid::ware::FunctionSignatureRegistry* Signatures =
-      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::FunctionSignatureRegistry* Signatures =
+      openfluid::machine::FunctionSignatureRegistry::getInstance();
 
   BOOST_CHECK_EQUAL(
       Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
@@ -85,8 +85,8 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
 BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
 {
-  openfluid::ware::FunctionSignatureRegistry* Reg =
-      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::FunctionSignatureRegistry* Reg =
+      openfluid::machine::FunctionSignatureRegistry::getInstance();
 
   openfluid::machine::ModelItemSignatureInstance* Sign =
       Reg->getSignatureItemInstance("examples.primitives.unitsA.prod");

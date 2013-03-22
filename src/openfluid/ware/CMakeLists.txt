@@ -16,7 +16,8 @@ SET_TARGET_PROPERTIES(openfluid-ware PROPERTIES VERSION "${VERSION_MAJOR}.${VERS
 
 TARGET_LINK_LIBRARIES(openfluid-ware
                       openfluid-core
-                      openfluid-base                     
+                      openfluid-base
+                      openfluid-fluidx                     
                       ${Boost_SYSTEM_LIBRARY})
 
 
