@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(test_setDomainEmpty)
 BOOST_AUTO_TEST_CASE(test_setDomainNonEmpty)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(test_setDomainNonEmpty)
 BOOST_AUTO_TEST_CASE(test_setSelectedUnit)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnit)
 BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model = new DomainStructureModelSub(EngProject->getAdvancedDesc().getDomain());
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(test_setSelectedUnitWithWrongParams)
 BOOST_AUTO_TEST_CASE(test_deleteUnit)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());
@@ -191,7 +191,7 @@ BOOST_AUTO_TEST_CASE(test_deleteUnit)
 BOOST_AUTO_TEST_CASE(test_deleteLastUnitOfClass)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());

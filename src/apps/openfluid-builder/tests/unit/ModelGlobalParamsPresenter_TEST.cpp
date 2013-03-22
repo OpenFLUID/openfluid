@@ -84,7 +84,7 @@ struct init_Presenter
       BuilderTestHelper::getInstance()->initGtk();
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-          + "/OPENFLUID.IN.Primitives";
+          + "/OPENFLUID.IN.BuilderUnitTesting";
       mp_EngProject = new EngineProject(Path);
 
       mp_Component = new ModelGlobalParamsComponent(mp_EngProject->getAdvancedDesc().getModel());
@@ -113,7 +113,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   // initial state
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),0);
-  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),6);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),3);
 
   // adding a global parameter (from Model)
 
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   mp_Model->update();
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),1);
-  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),5);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),2);
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["longparam"]->getValue(),"123");
 
   // adding a second global parameter (from View)
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   mp_View->getAddButton()->clicked();
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),2);
-  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),4);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),1);
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow()["strparam"]->getValue(),"");
   BOOST_CHECK_EQUAL(mp_EngProject->getAdvancedDesc().getModel().getGlobalParameters().size(),2);
   BOOST_CHECK_EQUAL(mp_EngProject->getAdvancedDesc().getModel().getGlobalParameters().get<std::string>("strparam"),"");
@@ -148,14 +148,14 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   mp_Model->update();
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),1);
-  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),5);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),2);
 
   // removing last global parameter (from View)
 
   mp_View->getByParamNameParamRow()["strparam"]->signal_removeAsked().emit("strparam");
 
   BOOST_CHECK_EQUAL(mp_View->getByParamNameParamRow().size(),0);
-  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),6);
+  BOOST_CHECK_EQUAL(mp_View->getCombo()->get_model()->children().size(),3);
   BOOST_CHECK_EQUAL(mp_EngProject->getAdvancedDesc().getModel().getGlobalParameters().size(),0);
 }
 

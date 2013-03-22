@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyEngineRequirements)
 BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   ProjectExplorerComponent* Component = new ProjectExplorerComponent(
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(test_setNotEmptyEngineRequirements)
 BOOST_AUTO_TEST_CASE(test_activateRows)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   ProjectExplorerComponent* Component = new ProjectExplorerComponent(
@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
                     ProjectExplorerCategories::EXPLORER_MODEL);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second,
-                    "tests.primitives.prod");
+                    "tests.primitives.variables.prod");
 
   // First Class activated
   TreeView->row_activated(

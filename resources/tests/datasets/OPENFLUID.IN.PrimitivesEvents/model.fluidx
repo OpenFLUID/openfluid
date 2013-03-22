@@ -2,9 +2,8 @@
 <openfluid>
 
     <model>
-
-   
-      <function ID="tests.primitives.time" />                  
-    
+      
+     <function ID="tests.primitives.events" />
+  
   </model>
 </openfluid>

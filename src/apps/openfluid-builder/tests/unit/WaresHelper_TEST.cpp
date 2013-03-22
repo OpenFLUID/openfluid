@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedModel)
     BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
 
   FXDesc.getModelDescriptor().appendItem(
-      new openfluid::fluidx::FunctionDescriptor("tests.primitives.prod"));
+      new openfluid::fluidx::FunctionDescriptor("tests.primitives.variables.prod"));
   Model = openfluid::fluidx::AdvancedModelDescriptor(
       FXDesc.getModelDescriptor());
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(

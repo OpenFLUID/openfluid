@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(test_constructor_Empty)
 BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-  + "/OPENFLUID.IN.Primitives";
+  + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProjectSub* EngProject = new EngineProjectSub(Path);
 
   openfluid::core::DateTime DT;

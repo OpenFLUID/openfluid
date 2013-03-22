@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(test_setEmptyModelInstance)
 BOOST_AUTO_TEST_CASE(test_setNonEmptyModelInstance)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
   mp_Model = new ModelStructureModelImpl(
       EngProject->getAdvancedDesc().getModel());
@@ -143,10 +143,10 @@ BOOST_AUTO_TEST_CASE(test_AppendARegularFunction)
 //  openfluid::machine::ModelItemSignatureInstance FctSignature =
 //  *
   openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
-      "tests.primitives.use");
+      "tests.primitives.variables.use");
 
   openfluid::fluidx::ModelItemDescriptor* Item =
-      new openfluid::fluidx::FunctionDescriptor("tests.primitives.use");
+      new openfluid::fluidx::FunctionDescriptor("tests.primitives.variables.use");
 
   mp_Model->appendFunction(Item);
 
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(test_AppendARegularFunction)
 BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model = new ModelStructureModelImpl(
@@ -170,9 +170,9 @@ BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
 //  openfluid::machine::ModelItemSignatureInstance FctSignature =
 //  *
   openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
-      "tests.primitivesvalues.prod");
+      "tests.primitives.variables.prod");
   openfluid::fluidx::ModelItemDescriptor* Item =
-      new openfluid::fluidx::FunctionDescriptor("tests.primitivesvalues.prod");
+      new openfluid::fluidx::FunctionDescriptor("tests.primitives.variables.prod");
 
   mp_Model->appendFunction(Item);
 
@@ -195,23 +195,23 @@ BOOST_AUTO_TEST_CASE(test_RemoveAFunction)
 //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
 //  *
   openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
-      "tests.primitivesvalues.prod");
+      "tests.primitives.variables.prod");
   openfluid::fluidx::ModelItemDescriptor* Item1 =
-      new openfluid::fluidx::FunctionDescriptor("tests.primitivesvalues.prod");
+      new openfluid::fluidx::FunctionDescriptor("tests.primitives.variables.prod");
 
 //  openfluid::machine::ModelItemSignatureInstance FctSignature2 =
 //  *
   openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
-      "tests.primitivesvalues.use");
+      "tests.primitives.variables.use");
   openfluid::fluidx::ModelItemDescriptor* Item2 =
-      new openfluid::fluidx::FunctionDescriptor("tests.primitivesvalues.use");
+      new openfluid::fluidx::FunctionDescriptor("tests.primitives.variables.use");
 
 //  openfluid::machine::ModelItemSignatureInstance FctSignature3 =
 //  *
   openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
-      "tests.primitives.prod");
+      "tests.primitives.variables.prod");
   openfluid::fluidx::ModelItemDescriptor* Item3 =
-      new openfluid::fluidx::FunctionDescriptor("tests.primitives.prod");
+      new openfluid::fluidx::FunctionDescriptor("tests.primitives.variables.prod");
 
   mp_Model->appendFunction(Item1);
   mp_Model->appendFunction(Item2);
@@ -235,9 +235,9 @@ BOOST_AUTO_TEST_CASE(test_MoveAFunction)
   mp_Model = new ModelStructureModelImpl(
       EngProject->getAdvancedDesc().getModel());
 
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.variables.prod";
 
 //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
 //  *
@@ -336,9 +336,9 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
   mp_Model = new ModelStructureModelImpl(
       EngProject->getAdvancedDesc().getModel());
 
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.variables.prod";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -403,9 +403,9 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
   mp_Model = new ModelStructureModelImpl(
       EngProject->getAdvancedDesc().getModel());
 
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -465,7 +465,7 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
 BOOST_AUTO_TEST_CASE(test_getCurrentSelection)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   mp_Model = new ModelStructureModelImpl(
@@ -475,7 +475,7 @@ BOOST_AUTO_TEST_CASE(test_getCurrentSelection)
 
   BOOST_CHECK_EQUAL(
       EngProject->getAdvancedDesc().getModel().getOrderedIDs().at(mp_Model->getCurrentSelection()),
-      "tests.primitives.use");
+      "tests.primitives.variables.use");
 
   delete EngProject;
 }
@@ -490,9 +490,9 @@ BOOST_AUTO_TEST_CASE(test_requestSelectionByApp)
   mp_Model = new ModelStructureModelImpl(
       EngProject->getAdvancedDesc().getModel());
 
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *

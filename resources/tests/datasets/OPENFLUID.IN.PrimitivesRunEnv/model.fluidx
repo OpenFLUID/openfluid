@@ -2,9 +2,9 @@
 <openfluid>
 
     <model>
-
    
-      <function ID="tests.primitives.time" />                  
+      <function ID="tests.primitives.runenv" />                  
     
-  </model>
+    </model>
+    
 </openfluid>
