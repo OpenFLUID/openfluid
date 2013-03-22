@@ -114,7 +114,7 @@ class DLLEXPORT MarketClient
 
     void downloadAssociatedLicenses();
 
-    std::string selectionTypeToString(MetaPackageInfo::SelectionType Selec) const;
+    //std::string selectionTypeToString(MetaPackageInfo::SelectionType Selec) const;
 
   public:
 

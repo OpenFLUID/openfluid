@@ -111,7 +111,7 @@ class DLLEXPORT PackageInfo
 
     std::string License;
 
-    std::map<TypePackage,std::string> Dependencies;
+    std::map<TypePackage,std::list<openfluid::ware::WareID_t> > Dependencies;
 
     std::string BuildOptions;
 

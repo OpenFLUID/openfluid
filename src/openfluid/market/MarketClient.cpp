@@ -356,10 +356,10 @@ void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog,
 
              // dependencies
              if (KFile.has_key(TmpID,"dependencies.func"))
-               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string(TmpID,"dependencies.func");
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string_list(TmpID,"dependencies.func");
 
              if (KFile.has_key(TmpID,"dependencies.obs"))
-               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::OBS] = KFile.get_string(TmpID,"dependencies.obs");
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::OBS] = KFile.get_string_list(TmpID,"dependencies.obs");
            }
          }
       }
@@ -704,7 +704,7 @@ void MarketClient::installNextSelectedPackage()
 // =====================================================================
 // =====================================================================
 
-
+/*
 std::string MarketClient::selectionTypeToString(MetaPackageInfo::SelectionType Selec) const
 {
   const bool WithArch = true;
@@ -732,7 +732,7 @@ std::string MarketClient::selectionTypeToString(MetaPackageInfo::SelectionType S
 // =====================================================================
 // =====================================================================
 
-/*
+
 void MarketClient::displayPackages() const
 {
   TypesMetaPackagesCatalogs_t::const_iterator TPCit;
@@ -752,10 +752,24 @@ void MarketClient::displayPackages() const
       for (APit = PCit->second.AvailablePackages.begin(); APit != PCit->second.AvailablePackages.end(); ++APit)
       {
         std::cout << "\t" << selectionTypeToString(APit->first) << std::endl;
+
+        // dependencies
         if (APit->first == MetaPackageInfo::FLUIDX)
-          std::cout << "\tDependencies : " << std::endl
-            << "\t\tfunc : " << APit->second.Dependencies.find(PackageInfo::FUNC)->second << std::endl
-            << "\t\tobs : " << APit->second.Dependencies.find(PackageInfo::OBS)->second << std::endl;
+        {
+          std::map<PackageInfo::TypePackage,std::list<openfluid::ware::WareID_t> >::const_iterator DMit;
+          std::list<openfluid::ware::WareID_t>::const_iterator DLit;
+          std::cout << "\tDependencies : " << std::endl;
+
+          for (DMit = APit->second.Dependencies.begin(); DMit != APit->second.Dependencies.end(); ++DMit)
+          {
+            std::cout << "\t\t" << getTypeName(DMit->first,true,false) << std::endl;
+            for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
+            {
+              std::cout << "\t\t\t" << *DLit << std::endl;
+            }
+          }
+
+        }
       }
 
       std::cout << std::endl;
