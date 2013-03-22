@@ -60,56 +60,89 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/separator.h>
 #include <openfluid/base/ProjectManager.hpp>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/icontheme.h>
+#include <gtkmm/iconinfo.h>
+#include <gtkmm/alignment.h>
+
+#include <iostream>
 
 // =====================================================================
 // =====================================================================
 
-OutputsView::OutputsView()
+OutputsView::OutputsView() :
+    mp_AppChooserDialog(0)
 {
-  m_SelectedFolder =
+  std::string RootDir =
       openfluid::base::ProjectManager::getInstance()->getOutputDir();
 
-  Gtk::Button* ResetBt = Gtk::manage(new Gtk::Button());
-  ResetBt->set_image(
-      *Gtk::manage(new Gtk::Image(Gtk::Stock::REFRESH, Gtk::ICON_SIZE_BUTTON)));
-  ResetBt->set_tooltip_text(_("Return to output directory"));
-  ResetBt->signal_clicked().connect(
-      sigc::mem_fun(*this, &OutputsView::resetToDefaultDir));
+  mref_Root = Gio::File::create_for_path(RootDir);
 
   Gtk::Label* OutputDirLabel = Gtk::manage(new Gtk::Label());
   OutputDirLabel->set_markup(
-      Glib::ustring::compose(_("Output directory: %1%2%3"), "<b>",
-                             m_SelectedFolder, "</b>"));
+      Glib::ustring::compose(_("Output directory: %1%2%3"), "<b>", RootDir,
+                             "</b>"));
   OutputDirLabel->set_alignment(Gtk::ALIGN_LEFT);
 
   Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
-  TopBox->pack_start(*ResetBt, Gtk::PACK_SHRINK);
   TopBox->pack_start(*OutputDirLabel, Gtk::PACK_SHRINK, 10);
 
-  mp_FileChooser = Gtk::manage(new Gtk::FileChooserWidget());
-  mp_FileChooser->set_local_only();
-  mp_FileChooser->signal_file_activated().connect(
-      sigc::mem_fun(*this, &OutputsView::onFileActivated));
-  mp_FileChooser->signal_current_folder_changed().connect(
-      sigc::mem_fun(*this, &OutputsView::onFolderChanged));
-  mp_FileChooser->signal_map().connect(
-      sigc::mem_fun(*this, &OutputsView::onMap));
+  mp_NavBox = Gtk::manage(new Gtk::HBox(false, 5));
+  mp_NavBox->set_visible(true);
+
+  mref_ListStore = Gtk::ListStore::create(m_Columns);
+
+  mp_TreeView = Gtk::manage(new Gtk::TreeView());
+
+  Gtk::TreeView::Column* NameColumn = Gtk::manage(
+      new Gtk::TreeView::Column(_("Name")));
+  NameColumn->pack_start(m_Columns.m_Icon, false);
+  NameColumn->pack_start(m_Columns.m_DisplayName);
+  mp_TreeView->append_column(*NameColumn);
+
+  mref_ListStore->set_sort_column(m_Columns.m_DisplayName, Gtk::SORT_ASCENDING);
+
+  mp_TreeView->set_visible(true);
+
+  mp_TreeView->signal_row_activated().connect(
+      sigc::mem_fun(*this, &OutputsView::onRowActivated));
+
+  mp_TreeView->signal_button_press_event().connect(
+      sigc::mem_fun(*this, &OutputsView::onBtPressEvent), false);
+
+  Gtk::ScrolledWindow* mp_ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_ModelWin->set_visible(true);
+  mp_ModelWin->add(*mp_TreeView);
+  mp_ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
+  mp_TreeView->set_model(mref_ListStore);
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());
   mp_MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK, 5);
   mp_MainBox->pack_start(*Gtk::manage(new Gtk::HSeparator()), Gtk::PACK_SHRINK,
                          5);
-  mp_MainBox->pack_start(*mp_FileChooser, Gtk::PACK_EXPAND_WIDGET, 5);
+  mp_MainBox->pack_start(*mp_NavBox, Gtk::PACK_SHRINK, 5);
+  mp_MainBox->pack_start(*mp_ModelWin, Gtk::PACK_EXPAND_WIDGET, 5);
   mp_MainBox->set_visible(true);
   mp_MainBox->show_all_children();
-}
 
-// =====================================================================
-// =====================================================================
+  addNavButton(mref_Root);
+  setBrowserToPath(mref_Root);
 
-OutputsView::~OutputsView()
-{
+  Gtk::MenuItem* Item = Gtk::manage(new Gtk::MenuItem(_("Open with...")));
+  Item->signal_activate().connect(
+      sigc::mem_fun(*this, &OutputsView::on_MenuPopupOpenActivated));
+  m_MenuPopup.append(*Item);
 
+  Item = Gtk::manage(new Gtk::MenuItem(_("Delete")));
+  Item->signal_activate().connect(
+      sigc::mem_fun(*this, &OutputsView::on_MenuPopupDeleteActivated));
+  m_MenuPopup.append(*Item);
+
+  m_MenuPopup.show_all();
+
+  mp_AppChooserDialog = new AppChooserDialog();
 }
 
 // =====================================================================
@@ -123,15 +156,6 @@ void OutputsView::update()
 // =====================================================================
 // =====================================================================
 
-void OutputsView::resetToDefaultDir()
-{
-  mp_FileChooser->set_current_folder(
-      openfluid::base::ProjectManager::getInstance()->getOutputDir());
-}
-
-// =====================================================================
-// =====================================================================
-
 Gtk::Widget* OutputsView::asWidget()
 {
   return mp_MainBox;
@@ -140,24 +164,155 @@ Gtk::Widget* OutputsView::asWidget()
 // =====================================================================
 // =====================================================================
 
-void OutputsView::onFileActivated()
+void OutputsView::setBrowserToPath(Glib::RefPtr<Gio::File> Asked)
 {
-  Gio::AppInfo::launch_default_for_uri(mp_FileChooser->get_uri());
+  mref_ListStore->clear();
+
+  Glib::RefPtr<Gtk::IconTheme> Theme = Gtk::IconTheme::get_default();
+
+  Glib::RefPtr<Gio::FileEnumerator> Children = Asked->enumerate_children();
+
+  for (Glib::RefPtr<Gio::FileInfo> Child = Children->next_file(); Child != 0;
+      Child = Children->next_file())
+  {
+    if (!Child->is_backup() && !Child->is_hidden() && !Child->is_symlink())
+    {
+      Gtk::TreeRow Row = *(mref_ListStore->append());
+
+      Row[m_Columns.m_DisplayName] = Child->get_display_name();
+
+      Gtk::IconInfo IconInfo = Theme->lookup_icon(
+          Child->get_icon(), 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
+      if (IconInfo)
+        Row[m_Columns.m_Icon] = IconInfo.load_icon();
+      else
+        Row[m_Columns.m_Icon] = Theme->load_icon(
+            "text-x-generic", 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
+
+      Row[m_Columns.m_File] = Asked->get_child(Child->get_name());
+    }
+
+  }
+
+  Children->close();
 }
 
 // =====================================================================
 // =====================================================================
 
-void OutputsView::onMap()
+void OutputsView::addNavButton(Glib::RefPtr<Gio::File> File)
 {
-  if (!m_SelectedFolder.empty())
-    mp_FileChooser->set_current_folder(m_SelectedFolder);
+  Gtk::RadioButton* NavBt = Gtk::manage(
+      new Gtk::RadioButton(m_NavGroup, File->query_info()->get_display_name()));
+
+  NavBt->set_visible(true);
+  NavBt->set_mode(false); // to look like a standard button
+
+  NavBt->signal_toggled().connect(
+      sigc::bind<Glib::RefPtr<Gio::File> >(
+          sigc::mem_fun(*this, &OutputsView::setBrowserToPath), File));
+
+  mp_NavBox->pack_start(*NavBt, Gtk::PACK_SHRINK);
+  mp_NavBox->reorder_child(*NavBt, 0);
+
+  m_NavButtons[File->get_path()] = NavBt;
 }
 
 // =====================================================================
 // =====================================================================
 
-void OutputsView::onFolderChanged()
+void OutputsView::onRowActivated(const Gtk::TreeModel::Path& Path,
+                                 Gtk::TreeViewColumn* /*Column*/)
 {
-  m_SelectedFolder = mp_FileChooser->get_current_folder();
+  Gtk::TreeIter it = mref_ListStore->get_iter(Path);
+
+  if (!it)
+    return;
+
+  Glib::RefPtr<Gio::File> Asked = it->get_value(m_Columns.m_File);
+
+  if (Asked->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+  {
+    NavBtList_t::iterator Found = m_NavButtons.find(Asked->get_path());
+
+    if (Found != m_NavButtons.end())
+    {
+      Found->second->set_active();
+    }
+    else
+    {
+      for (NavBtList_t::iterator it = m_NavButtons.begin();
+          it != m_NavButtons.end(); ++it)
+        mp_NavBox->remove(*it->second);
+      m_NavButtons.clear();
+
+      for (Glib::RefPtr<Gio::File> Current = Asked;
+          Current->get_path() != mref_Root->get_parent()->get_path(); Current =
+              Current->get_parent())
+        addNavButton(Current);
+
+      m_NavButtons.at(Asked->get_path())->set_active();
+    }
+  }
+  else
+  {
+    try
+    {
+      Gio::AppInfo::launch_default_for_uri(Asked->get_uri());
+    }
+    catch (...)
+    {
+      mp_AppChooserDialog->show(Asked);
+    }
+  }
+
 }
+
+// =====================================================================
+// =====================================================================
+
+bool OutputsView::onBtPressEvent(GdkEventButton* Event)
+{
+  if ((Event->type == GDK_BUTTON_PRESS) && (Event->button == 3))
+    m_MenuPopup.popup(Event->button, Event->time);
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::on_MenuPopupOpenActivated()
+{
+  Glib::RefPtr<Gtk::TreeView::Selection> RefSelection =
+      mp_TreeView->get_selection();
+
+  if (RefSelection)
+  {
+    Gtk::TreeModel::iterator Iter = RefSelection->get_selected();
+
+    if (Iter)
+      mp_AppChooserDialog->show(Iter->get_value(m_Columns.m_File));
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::on_MenuPopupDeleteActivated()
+{
+  Glib::RefPtr<Gtk::TreeView::Selection> RefSelection =
+      mp_TreeView->get_selection();
+
+  if (RefSelection)
+  {
+    Gtk::TreeModel::iterator Iter = RefSelection->get_selected();
+
+     //TODO
+//    if (Iter)
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
