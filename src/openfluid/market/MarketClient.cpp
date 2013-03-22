@@ -764,7 +764,7 @@ void MarketClient::displayPackages() const
         // dependencies
         if (APit->first == MetaPackageInfo::FLUIDX)
         {
-          std::map<PackageInfo::TypePackage,std::list<openfluid::ware::WareID_t> >::const_iterator DMit;
+          PackageInfo::Dependencies_t::const_iterator DMit;
           std::list<openfluid::ware::WareID_t>::const_iterator DLit;
           std::cout << "\tDependencies : " << std::endl;
 
