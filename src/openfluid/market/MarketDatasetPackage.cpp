@@ -87,6 +87,16 @@ std::string MarketDatasetPackage::getInstallPath() const
 // =====================================================================
 
 
+PackageInfo::TypePackage MarketDatasetPackage::getTypePackage() const
+{
+  return PackageInfo::DATA;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketDatasetPackage::process()
 {
   if (!m_Initialized)

@@ -249,13 +249,16 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 // =====================================================================
 
 
-std::string MarketClient::getTypeName(const PackageInfo::TypePackage& Type, const bool Maj) const
+std::string MarketClient::getTypeName(const PackageInfo::TypePackage& Type, const bool Maj, const bool Plural) const
 {
-  std::string TypesNames[] = { "functions", "observers", "builderexts", "datasets"};
+  std::string TypesNames[] = { "function", "observer", "builderext", "dataset"};
   std::string Name = TypesNames[Type];
 
   if (Maj)
     Name[0] = toupper(Name[0]);
+
+  if (Plural)
+    Name += "s";
 
   return Name;
 }
@@ -314,7 +317,7 @@ void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog,
            if (KFile.has_key(TmpID,BinaryArchKey+".file"))
            {
              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+getTypeName(TypeCatalog,false)+"/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
+             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+getTypeName(TypeCatalog,false,true)+"/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
 
              // license
              if (KFile.has_key(TmpID,BinaryArchKey+".license"))
@@ -327,7 +330,7 @@ void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog,
            if (KFile.has_key(TmpID,"arch.src.file"))
            {
              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/"+getTypeName(TypeCatalog,false)+"/src/"+KFile.get_string(TmpID,"arch.src.file");
+             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/"+getTypeName(TypeCatalog,false,true)+"/src/"+KFile.get_string(TmpID,"arch.src.file");
 
              // license
              if (KFile.has_key(TmpID,"arch.src.license"))
@@ -345,7 +348,7 @@ void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog,
            if (KFile.has_key(TmpID,"file"))
            {
              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeName(TypeCatalog,false)+"/"+KFile.get_string(TmpID,"file");
+             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeName(TypeCatalog,false,true)+"/"+KFile.get_string(TmpID,"file");
 
              // license
              if (KFile.has_key(TmpID,"license"))
@@ -439,7 +442,7 @@ void MarketClient::connect(const std::string URL)
     CatalogFilesURL_t::iterator CUit;
     for (CUit = CatalogFilesURL.begin(); CUit != CatalogFilesURL.end(); ++CUit)
     {
-      CUit->second = m_URL+"/"+openfluid::config::MARKETPLACE_CATALOGFILE+getTypeName(CUit->first,true)+"_"+openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
+      CUit->second = m_URL+"/"+openfluid::config::MARKETPLACE_CATALOGFILE+getTypeName(CUit->first,true,true)+"_"+openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
 
       if (openfluid::tools::CURLDownloader::downloadToString(CUit->second, CatalogsData[CUit->first])  != openfluid::tools::CURLDownloader::NO_ERROR)
         CatalogsData[CUit->first].clear();
@@ -740,7 +743,7 @@ void MarketClient::displayPackages() const
 
   for (TPCit = m_TypesMetaPackagesCatalogs.begin(); TPCit != m_TypesMetaPackagesCatalogs.end(); ++TPCit)
   {
-    std::cout << "List of " << getTypeName(TPCit->first,false) << std::endl;
+    std::cout << "List of " << getTypeName(TPCit->first,false,true) << std::endl;
 
     for (PCit = TPCit->second.begin(); PCit != TPCit->second.end(); ++PCit)
     {

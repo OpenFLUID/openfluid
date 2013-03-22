@@ -71,6 +71,8 @@ class DLLEXPORT MarketDatasetPackage : public MarketPackage
 
     std::string getInstallPath() const;
 
+    PackageInfo::TypePackage getTypePackage() const;
+
     void process();
 
     MetaPackageInfo::SelectionType getFormat() const { return MetaPackageInfo::FLUIDX; };

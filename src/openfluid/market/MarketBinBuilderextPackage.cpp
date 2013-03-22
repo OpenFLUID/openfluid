@@ -76,5 +76,14 @@ std::string MarketBinBuilderextPackage::getInstallPath() const
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+PackageInfo::TypePackage MarketBinBuilderextPackage::getTypePackage() const
+{
+  return PackageInfo::BUILD;
+}
+
 
 } } // namespaces

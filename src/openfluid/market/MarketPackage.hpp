@@ -177,6 +177,8 @@ class DLLEXPORT MarketPackage
     */
     virtual std::string getInstallPath() const = 0;
 
+    virtual PackageInfo::TypePackage getTypePackage() const = 0;
+
     virtual void process() = 0;
 
     void download();

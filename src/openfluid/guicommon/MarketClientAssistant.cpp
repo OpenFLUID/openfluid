@@ -267,6 +267,7 @@ void MarketClientAssistant::setupDownloadPage()
 
 
   m_InstallTreeView.append_column(_("Package ID"),m_InstallColumns.m_ID);
+  m_InstallTreeView.append_column(_("Type"),m_InstallColumns.m_Type);
   m_InstallTreeView.append_column(_("Format"),m_InstallColumns.m_Format);
   m_InstallTreeView.append_column(_("Status"),m_InstallColumns.m_Status);
   m_InstallSWindow.add(m_InstallTreeView);
@@ -734,7 +735,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
 
       // Create tab
-      m_TypesTabs.append_page(*mp_TabBox[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true));
+      m_TypesTabs.append_page(*mp_TabBox[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true,true));
     }
   }
 
@@ -777,7 +778,7 @@ void MarketClientAssistant::initializeLicencesTreeView()
         if (!PackagesContainers[TCIter->first])
         {
           TypeRow = *(m_RefLicenseTreeViewModel->append());
-          TypeRow[m_LicensesColumns.m_ID] = m_MarketClient.getTypeName(TCIter->first,true);
+          TypeRow[m_LicensesColumns.m_ID] = m_MarketClient.getTypeName(TCIter->first,true,true);
 
           PackagesContainers[TCIter->first] = true;
         }
@@ -816,6 +817,7 @@ void MarketClientAssistant::updateInstallTreeview()
   {
     Gtk::TreeModel::Row TmpRow = *(m_RefInstallTreeViewModel->append());
     TmpRow[m_InstallColumns.m_ID] = (*PLiter)->getID();
+    TmpRow[m_InstallColumns.m_Type] = m_MarketClient.getTypeName((*PLiter)->getTypePackage(),true,false);
     if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::BIN) TmpRow[m_InstallColumns.m_Format] = _("binary");
     else if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::SRC) TmpRow[m_InstallColumns.m_Format] = _("source");
     else TmpRow[m_InstallColumns.m_Format] = _("dataset");

@@ -184,10 +184,11 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
       public:
 
         Gtk::TreeModelColumn<Glib::ustring> m_ID;
+        Gtk::TreeModelColumn<Glib::ustring> m_Type;
         Gtk::TreeModelColumn<Glib::ustring> m_Format;
         Gtk::TreeModelColumn<Glib::ustring> m_Status;
 
-        InstallTreeViewColumns() { add(m_ID); add(m_Format); add(m_Status);}
+        InstallTreeViewColumns() { add(m_ID); add(m_Type); add(m_Format); add(m_Status);}
     };
 
     InstallTreeViewColumns m_InstallColumns;

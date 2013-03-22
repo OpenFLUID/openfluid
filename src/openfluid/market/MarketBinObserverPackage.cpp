@@ -77,5 +77,14 @@ std::string MarketBinObserverPackage::getInstallPath() const
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+PackageInfo::TypePackage MarketBinObserverPackage::getTypePackage() const
+{
+  return PackageInfo::OBS;
+}
+
 
 } } // namespaces

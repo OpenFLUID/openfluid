@@ -71,6 +71,8 @@ class DLLEXPORT MarketBinBuilderextPackage : public MarketBinPackage
 
     std::string getInstallPath() const;
 
+    PackageInfo::TypePackage getTypePackage() const;
+
 };
 
 

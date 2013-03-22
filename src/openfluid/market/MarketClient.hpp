@@ -122,7 +122,7 @@ class DLLEXPORT MarketClient
 
     ~MarketClient();
 
-    std::string getTypeName(const PackageInfo::TypePackage& Type, const bool Maj) const;
+    std::string getTypeName(const PackageInfo::TypePackage& Type, const bool Maj, const bool Plural) const;
 
     void connect(const std::string URL);
 
