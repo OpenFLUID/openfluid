@@ -596,8 +596,6 @@ void MarketClientAssistant::onInstallTimeoutOnce()
 
 void MarketClientAssistant::updateAvailPacksTreeview()
 {
-  m_MarketClient.displayPackages();
-
   // change mouse cursor to watch
   get_window()->set_cursor(Gdk::Cursor(Gdk::WATCH));
   while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();

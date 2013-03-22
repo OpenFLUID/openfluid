@@ -123,8 +123,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::market::TypesMetaPackagesCatalogs_t::iterator TPCit;
   openfluid::market::MetaPackagesCatalog_t::iterator PCit;
 
-  MC.displayPackages();
-
 
   for (TPCit = TPC.begin(); TPCit != TPC.end(); ++TPCit)
   {

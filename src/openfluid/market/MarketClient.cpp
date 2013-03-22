@@ -732,7 +732,7 @@ std::string MarketClient::selectionTypeToString(MetaPackageInfo::SelectionType S
 // =====================================================================
 // =====================================================================
 
-
+/*
 void MarketClient::displayPackages() const
 {
   TypesMetaPackagesCatalogs_t::const_iterator TPCit;
@@ -764,5 +764,6 @@ void MarketClient::displayPackages() const
     std::cout << "\n#####################\n";
   }
 }
+*/
 
 } } // namespaces

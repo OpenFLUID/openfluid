@@ -158,7 +158,7 @@ class DLLEXPORT MarketClient
 
     void enableLog(bool Enabled) { m_IsLogEnabled = Enabled; };
 
-    void displayPackages() const;
+    //void displayPackages() const;
 
 };
 
