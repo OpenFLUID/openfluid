@@ -96,7 +96,7 @@ void MarketBinPackage::process()
 
   try
   {
-    appendToLogFile(m_PackageFilename,"processing binaries",ProcessCommand);
+    appendToLogFile(m_PackageFilename,getTypePackage(),"processing binaries",ProcessCommand);
 
     StrOut.clear();
     StrErr.clear();

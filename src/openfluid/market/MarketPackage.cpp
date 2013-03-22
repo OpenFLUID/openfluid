@@ -232,15 +232,22 @@ std::string MarketPackage::composeFullBuildOptions(PackageInfo::TypePackage Type
 
 
 void MarketPackage::appendToLogFile(const std::string& PackageName,
+                                    const PackageInfo::TypePackage& Type,
                                     const std::string& Action,
                                     const std::string& Str)
 {
   if (m_IsLogEnabled)
   {
+    std::string StrType;
+    if (Type == PackageInfo::FUNC) StrType = "FUNC";
+    else if (Type == PackageInfo::OBS) StrType = "OBS";
+    else if (Type == PackageInfo::BUILD) StrType = "BEXT";
+    else StrType = "DATA";
+
     std::ofstream LogFileStream;
     LogFileStream.open(boost::filesystem::path(m_LogFile).string().c_str(),std::ios_base::app);
     LogFileStream << "\n================================================================================\n";
-    LogFileStream << "  " << PackageName << " : " << Action << "\n";
+    LogFileStream << "  " << "[" << StrType << "] " << PackageName << " : " << Action << "\n";
     LogFileStream << "================================================================================\n";
     LogFileStream << Str << "\n";
     LogFileStream.close();
@@ -292,7 +299,7 @@ void MarketPackage::download()
 
   m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
 
-  appendToLogFile(m_PackageFilename,"downloading","");
+  appendToLogFile(m_PackageFilename,getTypePackage(),"downloading","");
 
   if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
   {

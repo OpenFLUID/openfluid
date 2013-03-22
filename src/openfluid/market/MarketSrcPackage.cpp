@@ -121,7 +121,7 @@ void MarketSrcPackage::process()
   // uncompressing package
   try
   {
-    appendToLogFile(m_PackageFilename,"uncompressing sources",UntarCommand);
+    appendToLogFile(m_PackageFilename,getTypePackage(),"uncompressing sources",UntarCommand);
 
     StrOut.clear();
     StrErr.clear();
@@ -145,7 +145,7 @@ void MarketSrcPackage::process()
   // configuring build
   try
   {
-    appendToLogFile(m_PackageFilename,"configuring sources build",BuildConfigCommand);
+    appendToLogFile(m_PackageFilename,getTypePackage(),"configuring sources build",BuildConfigCommand);
 
     StrOut.clear();
     StrErr.clear();
@@ -170,7 +170,7 @@ void MarketSrcPackage::process()
   // building
   try
   {
-    appendToLogFile(m_PackageFilename,"building sources",BuildCommand);
+    appendToLogFile(m_PackageFilename,getTypePackage(),"building sources",BuildCommand);
 
     StrOut.clear();
     StrErr.clear();

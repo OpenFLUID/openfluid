@@ -123,6 +123,7 @@ class DLLEXPORT MarketPackage
     static void resetLogFile();
 
     static void appendToLogFile(const std::string& PackageName,
+        const PackageInfo::TypePackage& Type,
         const std::string& Action,
         const std::string& Str);
 

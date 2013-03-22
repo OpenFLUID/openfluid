@@ -127,7 +127,7 @@ void MarketDatasetPackage::process()
 
   try
   {
-    appendToLogFile(m_PackageFilename,"uncompressing datasets",ProcessCommand);
+    appendToLogFile(m_PackageFilename,getTypePackage(),"uncompressing datasets",ProcessCommand);
 
     StrOut.clear();
     StrErr.clear();
