@@ -62,8 +62,8 @@
 #include "Info.hpp"
 
 Info::Info(Gtk::Window& ParentWindow, const Glib::ustring& Title,
-    openfluid::core::CoreRepository& CoreRepos) :
-  mp_CoreRepos(&CoreRepos)
+           openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
+  mp_Domain(&Domain)
 {
   mp_Dialog = new Gtk::Dialog();
   mp_Dialog->set_transient_for(ParentWindow);
@@ -299,36 +299,30 @@ void Info::loadInfo(int ID, int SelectionSize)
 
   if (SelectionSize == 1)
   {
-    openfluid::core::Unit* TempUnit = mp_CoreRepos->getUnit(
+    openfluid::fluidx::UnitDescriptor TempUnit = mp_Domain->getUnitDescriptor(
         mp_NameClassLabel->get_label(), ID);
     std::stringstream streamID;
     std::stringstream streamProcessOrder;
     streamID << ID;
-    streamProcessOrder << TempUnit->getProcessOrder();
+    streamProcessOrder << TempUnit.getProcessOrder();
     std::string IDstr = streamID.str();
     std::string ProcessOrderstr = streamProcessOrder.str();
     mp_IDLabel->set_label(IDstr);
     mp_ProcessOrderLabel->set_label(ProcessOrderstr);
 
-    std::set<std::string> ClassNames =
-        EngineHelper::getClassNames(mp_CoreRepos);
-    std::set<std::string>::iterator iter;
-    for (iter = ClassNames.begin(); iter != ClassNames.end(); iter++)
-    {
-      const openfluid::core::UnitsPtrList_t* TempListUnit =
-          TempUnit->getFromUnits(*iter);
-      fillNameClassIDListStore(mref_ListStoreFrom,
-          m_ModelColumnsNameClassIDsFrom, TempListUnit, *iter);
-      TempListUnit = TempUnit->getToUnits(*iter);
-      fillNameClassIDListStore(mref_ListStoreTo, m_ModelColumnsNameClassIDsTo,
-          TempListUnit, *iter);
-      TempListUnit = TempUnit->getParentUnits(*iter);
-      fillNameClassIDListStore(mref_ListStoreParent,
-          m_ModelColumnsNameClassIDsParent, TempListUnit, *iter);
-      TempListUnit = TempUnit->getChildrenUnits(*iter);
-      fillNameClassIDListStore(mref_ListStoreChildren,
-          m_ModelColumnsNameClassIDsChildren, TempListUnit, *iter);
-    }
+    openfluid::core::UnitClassID_t U = std::make_pair(mp_NameClassLabel->get_label(),ID);
+
+    fillNameClassIDListStore(mref_ListStoreFrom,
+                             m_ModelColumnsNameClassIDsFrom, mp_Domain->getUnitsFromOf(U));
+
+    fillNameClassIDListStore(mref_ListStoreTo, m_ModelColumnsNameClassIDsTo,
+                             mp_Domain->getUnitsToOf(U));
+
+    fillNameClassIDListStore(mref_ListStoreParent,
+                             m_ModelColumnsNameClassIDsParent,mp_Domain->getUnitsParentsOf(U));
+
+    fillNameClassIDListStore(mref_ListStoreChildren,
+                             m_ModelColumnsNameClassIDsChildren, mp_Domain->getUnitsChildrenOf(U));
   }
 }
 
@@ -342,10 +336,7 @@ void Info::loadInputData(int ID, int SelectionSize)
     std::map<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >::iterator it;
     for (it = m_InputDataLineTable.begin(); it != m_InputDataLineTable.end(); ++it)
     {
-      openfluid::core::Unit* TempUnit = mp_CoreRepos->getUnit(
-          mp_NameClassLabel->get_label(), ID);
-      std::string Val;
-      TempUnit->getInputData()->getValue(((*it).first)->get_label(), Val);
+      std::string Val = mp_Domain->getInputData(mp_NameClassLabel->get_label(), ID, ((*it).first)->get_label());
       (*it).second.first->set_text(Val);
     }
   }
@@ -364,19 +355,17 @@ void Info::loadEvent(int /*ID*/, int /*SelectionSize*/)
 
 void Info::fillNameClassIDListStore(Glib::RefPtr<Gtk::ListStore>& ListStore,
     ModelColumnsNameClassIDs& ModelColumnsNameClassIDs,
-    const openfluid::core::UnitsPtrList_t* TempListUnit, std::string ClassName)
+    const std::list<openfluid::core::UnitClassID_t> UnitsList)
 {
-  openfluid::core::UnitsPtrList_t::const_iterator itF;
+  std::list<openfluid::core::UnitClassID_t>::const_iterator itF;
 
-  if (TempListUnit != NULL)
+  for (itF = UnitsList.begin(); itF != UnitsList.end(); ++itF)
   {
-    for (itF = TempListUnit->begin(); itF != TempListUnit->end(); ++itF)
-    {
-      Gtk::TreeRow Row = *ListStore->append();
-      Row[ModelColumnsNameClassIDs.m_ID] = (*itF)->getID();
-      Row[ModelColumnsNameClassIDs.m_NameClass] = ClassName;
-    }
+    Gtk::TreeRow Row = *ListStore->append();
+    Row[ModelColumnsNameClassIDs.m_ID] = itF->second;
+    Row[ModelColumnsNameClassIDs.m_NameClass] = itF->first;
   }
+
 }
 
 // =====================================================================
@@ -488,14 +477,14 @@ void Info::show(std::string ClassName, std::set<int> UnitIDs)
   mp_NameClassLabel->set_label(ClassName);
   mp_TreeViewIDs->set_name("");
 
+  std::set<std::string> IDataNames = mp_Domain->getInputDataNames(ClassName);
+  m_InputDataNames.insert(m_InputDataNames.begin(),IDataNames.begin(), IDataNames.end());
+
   std::set<int>::iterator it;
   for (it = UnitIDs.begin(); it != UnitIDs.end(); it++)
   {
     Gtk::TreeRow Row = *mref_ListStoreIDs->append();
     Row[m_ModelColumnIDs.m_ID] = *it;
-
-    m_InputDataNames
-    = mp_CoreRepos->getUnit(ClassName, *it)->getInputData()->getInputDataNames();
 
     if(m_InputDataNames.empty())
       mp_InputDataTable->set_visible(false);

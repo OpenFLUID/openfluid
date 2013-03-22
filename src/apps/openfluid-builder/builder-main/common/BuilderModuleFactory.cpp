@@ -151,8 +151,5 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createOutputsModule()
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMapViewModule()
 {
   MapViewModule* Module = new MapViewModule(mp_EngineProject.getAdvancedDesc());
-//  Module->setEngineRequirements(*mp_EngineProject.getModelInstance(),
-//      *mp_EngineProject.getSimBlob(),
-//      mp_EngineProject.getAdvancedDesc());
   return Module;
 }

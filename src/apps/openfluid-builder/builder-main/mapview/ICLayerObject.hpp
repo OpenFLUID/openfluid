@@ -58,7 +58,6 @@
 
 #include <iostream>
 #include <ogrsf_frmts.h>
-#include <openfluid/core/Unit.hpp>
 
 class ICLayerObject
 {
@@ -66,23 +65,23 @@ class ICLayerObject
   private :
 
     OGRGeometry* mp_OGRGeometryObject;
-    openfluid::core::Unit* mp_SelfIdExist;
+    bool mp_SelfIdExist;
     std::pair<double, double> m_Centroid;
 
   public :
 
     ICLayerObject(OGRGeometry*);
 
-    void update(openfluid::core::Unit*);
+    void update(bool);
     bool selfIdExisting();
 
     //accessor
     //get
     OGRGeometry* getOGRGeometryObject();
-    openfluid::core::Unit* getSelfIdExist();
+//    openfluid::core::Unit* getSelfIdExist();
     std::pair<double, double> getCentroid();
     //set
-    void setSelfIdExist(openfluid::core::Unit*);
+//    void setSelfIdExist(openfluid::core::Unit*);
     void setCentroid(std::pair<double, double>);
 };
 

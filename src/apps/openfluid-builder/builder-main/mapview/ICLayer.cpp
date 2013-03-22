@@ -55,7 +55,7 @@
 #include "ICLayer.hpp"
 
 ICLayer::ICLayer() :
-  mp_CoreRepos(0)
+  mp_Domain(0)
 {
 
 }
@@ -80,9 +80,9 @@ std::map<int, ICLayerObject*> ICLayer::getICLayerObject()
 // =====================================================================
 // =====================================================================
 
-void ICLayer::setEngineRequirements(openfluid::core::CoreRepository& CoreRepos)
+void ICLayer::setEngineRequirements(openfluid::fluidx::AdvancedDomainDescriptor& Domain)
 {
-  mp_CoreRepos = &CoreRepos;
+  mp_Domain = &Domain;
 }
 
 // =====================================================================
@@ -93,10 +93,12 @@ void ICLayer::setEngineRequirements(openfluid::core::CoreRepository& CoreRepos)
 void ICLayer::update(std::string ClassName)
 {
   std::map<int, ICLayerObject*>::iterator it;
+
+  std::set<int> IDs = mp_Domain->getIDsOfClass(ClassName);
+
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
-    if (mp_CoreRepos->getUnit(ClassName, (*it).first) != NULL)
-      (*it).second->update(mp_CoreRepos->getUnit(ClassName, (*it).first));
+    (*it).second->update((IDs.count((*it).first)));
   }
 }
 
@@ -107,9 +109,11 @@ std::set<int> ICLayer::selectObject(std::string ClassName)
 {
   std::set<int> temp;
   std::map<int, ICLayerObject*>::iterator it;
+
+  std::set<int> IDs = mp_Domain->getIDsOfClass(ClassName);
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)
   {
-    if (mp_CoreRepos->getUnit(ClassName, (*it).first) != NULL)
+    if (IDs.count((*it).first))
       temp.insert((*it).first);
   }
   return temp;

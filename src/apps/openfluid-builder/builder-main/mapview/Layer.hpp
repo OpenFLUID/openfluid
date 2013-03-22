@@ -59,7 +59,7 @@
 #include <vector>
 #include <set>
 #include <gtkmm/comboboxtext.h>
-#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include "ICLayer.hpp"
 #include "LayerType.hpp"
@@ -146,7 +146,7 @@ class Layer
     mtype_SignalLayer signalIsDisplayButtonChecked();
     mtype_SignalLayer signalWidgetExpanderBaseChanged();
 
-    void update(openfluid::core::CoreRepository&);
+    void update(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     //accessor
     //get

@@ -55,7 +55,7 @@
 #include "ICLayerObject.hpp"
 
 ICLayerObject::ICLayerObject(OGRGeometry* OGRGeometryObject) :
-  mp_OGRGeometryObject(OGRGeometryObject), mp_SelfIdExist(0)
+  mp_OGRGeometryObject(OGRGeometryObject), mp_SelfIdExist(false)
 {
 
 }
@@ -73,10 +73,10 @@ OGRGeometry* ICLayerObject::getOGRGeometryObject()
 // =====================================================================
 // =====================================================================
 
-openfluid::core::Unit* ICLayerObject::getSelfIdExist()
-{
-  return mp_SelfIdExist;
-}
+//openfluid::core::Unit* ICLayerObject::getSelfIdExist()
+//{
+//  return mp_SelfIdExist;
+//}
 
 // =====================================================================
 // =====================================================================
@@ -89,10 +89,10 @@ std::pair<double, double> ICLayerObject::getCentroid()
 // =====================================================================
 // =====================================================================
 
-void ICLayerObject::setSelfIdExist(openfluid::core::Unit* SelfIdExist)
-{
-  mp_SelfIdExist = SelfIdExist;
-}
+//void ICLayerObject::setSelfIdExist(openfluid::core::Unit* SelfIdExist)
+//{
+//  mp_SelfIdExist = SelfIdExist;
+//}
 
 // =====================================================================
 // =====================================================================
@@ -105,9 +105,9 @@ void ICLayerObject::setCentroid(std::pair<double, double> Centroid)
 // =====================================================================
 // =====================================================================
 
-void ICLayerObject::update(openfluid::core::Unit* SelfIdExist)
+void ICLayerObject::update(bool SelfIdExist)
 {
-  setSelfIdExist(SelfIdExist);
+  mp_SelfIdExist = SelfIdExist;
 }
 
 // =====================================================================
@@ -115,9 +115,7 @@ void ICLayerObject::update(openfluid::core::Unit* SelfIdExist)
 
 bool ICLayerObject::selfIdExisting()
 {
-  if(mp_SelfIdExist != NULL)
-    return true;
-  return false;
+  return mp_SelfIdExist;
 }
 
 // =====================================================================

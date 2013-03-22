@@ -67,7 +67,7 @@ ProjectWorkspaceModule(AdvancedDesc), m_ScrollbarSpacing(3)
   mp_ToolBar = new ToolBar();
   mp_Statusbar = Gtk::manage(new Gtk::Statusbar());
 
-  mp_Mediator = new Mediator(*mp_DrawingArea, *mp_Statusbar, *mp_ToolBar);
+  mp_Mediator = new Mediator(*mp_DrawingArea, *mp_Statusbar, *mp_ToolBar, AdvancedDesc);
 
   mp_Mediator->signal_DrawingAreaExposeEventChanged().connect(sigc::mem_fun(
       *this, &MapViewModule::whenChanged));
@@ -125,17 +125,6 @@ void MapViewModule::compose()
 Gtk::Widget* MapViewModule::asWidget()
 {
   return mp_MainBox;
-}
-
-// =====================================================================
-// =====================================================================
-
-void MapViewModule::setEngineRequirements(
-    openfluid::machine::ModelInstance& /*ModelInstance*/,
-    openfluid::machine::SimulationBlob& SimBlob,
-    openfluid::fluidx::AdvancedFluidXDescriptor& /*AdvancedDesc*/)
-{
-  mp_Mediator->setEngineRequirements(SimBlob);
 }
 
 // =====================================================================

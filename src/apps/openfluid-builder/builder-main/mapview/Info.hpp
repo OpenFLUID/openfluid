@@ -64,8 +64,8 @@
 #include <gtkmm/scrolledwindow.h>
 #include <set>
 
-#include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/core/Unit.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/UnitDescriptor.hpp>
 
 class Info
 {
@@ -115,7 +115,7 @@ class Info
     std::vector<std::string> m_InputDataNames;
     std::set<int> m_SelectedUnitId;
 
-    openfluid::core::CoreRepository* mp_CoreRepos;
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     class ModelColumnsIDs: public Gtk::TreeModelColumnRecord
     {
@@ -168,14 +168,13 @@ class Info
     void loadInputData(int, int);
     void loadEvent(int, int);
     void fillNameClassIDListStore(Glib::RefPtr<Gtk::ListStore>&,
-        ModelColumnsNameClassIDs&, const openfluid::core::UnitsPtrList_t*,
-        std::string);
+        ModelColumnsNameClassIDs&, const std::list<openfluid::core::UnitClassID_t> UnitsList);
     void onEntryInputDataChanged(std::string);
     bool on_focus_out_event(GdkEventFocus*, std::string);
   public:
 
     Info(Gtk::Window&, const Glib::ustring&,
-        openfluid::core::CoreRepository& CoreRepos);
+         openfluid::fluidx::AdvancedDomainDescriptor& Domain);
     void show(std::string, std::set<int>);
 };
 
