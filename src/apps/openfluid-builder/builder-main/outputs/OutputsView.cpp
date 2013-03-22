@@ -64,8 +64,7 @@
 #include <gtkmm/icontheme.h>
 #include <gtkmm/iconinfo.h>
 #include <gtkmm/alignment.h>
-
-#include <iostream>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -274,7 +273,13 @@ void OutputsView::onRowActivated(const Gtk::TreeModel::Path& Path,
 bool OutputsView::onBtPressEvent(GdkEventButton* Event)
 {
   if ((Event->type == GDK_BUTTON_PRESS) && (Event->button == 3))
-    m_MenuPopup.popup(Event->button, Event->time);
+  {
+    Gtk::TreePath Path;
+    mp_TreeView->get_path_at_pos((int) Event->x, (int) Event->y, Path);
+
+    if (mref_ListStore->get_iter(Path)->get_value(m_Columns.m_File)->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
+      m_MenuPopup.popup(Event->button, Event->time);
+  }
 
   return false;
 }
@@ -308,8 +313,14 @@ void OutputsView::on_MenuPopupDeleteActivated()
   {
     Gtk::TreeModel::iterator Iter = RefSelection->get_selected();
 
-     //TODO
-//    if (Iter)
+    if (Iter)
+    {
+      if (!Iter->get_value(m_Columns.m_File)->remove())
+        openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+            _("Unable to delete the file"));
+      else
+        mref_ListStore->erase(Iter);
+    }
   }
 }
 
