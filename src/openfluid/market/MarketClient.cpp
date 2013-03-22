@@ -505,7 +505,7 @@ const MarketLicensesTexts_t& MarketClient::getLicensesTexts()
 // =====================================================================
 
 
-bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag)
+MetaPackagesCatalog_t::iterator MarketClient::findInTypesMetaPackagesCatalogs(const openfluid::ware::WareID_t& ID)
 {
   TypesMetaPackagesCatalogs_t::iterator TPCit = m_TypesMetaPackagesCatalogs.begin();
   MetaPackagesCatalog_t::iterator PCit;
@@ -513,7 +513,19 @@ bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const M
   while (TPCit != m_TypesMetaPackagesCatalogs.end() && (PCit = TPCit->second.find(ID)) == TPCit->second.end())
     TPCit++;
 
-  if (TPCit != m_TypesMetaPackagesCatalogs.end())
+  return PCit;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag)
+{
+  MetaPackagesCatalog_t::iterator PCit = findInTypesMetaPackagesCatalogs(ID);
+
+  if (PCit != m_TypesMetaPackagesCatalogs.rbegin()->second.end())
   {
     if (Flag == MetaPackageInfo::BIN
         && PCit->second.AvailablePackages.find(MetaPackageInfo::BIN) ==  PCit->second.AvailablePackages.end())
@@ -541,13 +553,9 @@ bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const M
 
 void MarketClient::setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const std::string& BuildOpts)
 {
-  TypesMetaPackagesCatalogs_t::iterator TPCit = m_TypesMetaPackagesCatalogs.begin();
-  MetaPackagesCatalog_t::iterator PCit;
+  MetaPackagesCatalog_t::iterator PCit = findInTypesMetaPackagesCatalogs(ID);
 
-  while (TPCit != m_TypesMetaPackagesCatalogs.end() && (PCit = TPCit->second.find(ID)) == TPCit->second.end())
-    TPCit++;
-
-  if (TPCit != m_TypesMetaPackagesCatalogs.end())
+  if (PCit != m_TypesMetaPackagesCatalogs.rbegin()->second.end())
   {
     if (PCit->second.AvailablePackages.find(MetaPackageInfo::SRC) !=  PCit->second.AvailablePackages.end())
     {

@@ -369,16 +369,11 @@ void MarketClientAssistant::onLicensesTreeviewChanged()
     Gtk::TreeModel::Row Row = *Iter;
     std::string PackageID = Row.get_value(m_LicensesColumns.m_ID);
     openfluid::market::TypesMetaPackagesCatalogs_t Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
-    openfluid::market::TypesMetaPackagesCatalogs_t::iterator TCIter = Catalogs.begin();
+    openfluid::market::MetaPackagesCatalog_t::iterator PCit = m_MarketClient.findInTypesMetaPackagesCatalogs(PackageID);
 
-    while (TCIter != Catalogs.end() && TCIter->second.find(PackageID) == TCIter->second.end())
-      TCIter++;
-
-    if (TCIter != Catalogs.end())
+    if (PCit != Catalogs.rbegin()->second.end())
     {
-      openfluid::market::MetaPackagesCatalog_t Catalog = TCIter->second;
-
-      std::string LicenseID = Catalog[PackageID].AvailablePackages[Catalog[PackageID].Selected].License;
+      std::string LicenseID = PCit->second.AvailablePackages[PCit->second.Selected].License;
 
       std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.getLicensesTexts().find(LicenseID);
 

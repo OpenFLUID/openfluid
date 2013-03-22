@@ -134,6 +134,8 @@ class DLLEXPORT MarketClient
 
     const TypesMetaPackagesCatalogs_t& getTypesMetaPackagesCatalogs();
 
+    MetaPackagesCatalog_t::iterator findInTypesMetaPackagesCatalogs(const openfluid::ware::WareID_t& ID);
+
     bool setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag);
 
     void setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const std::string& BuildOpts);
