@@ -63,6 +63,7 @@
 #include <gtkmm/menu.h>
 #include <gdkmm/pixbuf.h>
 #include <giomm/file.h>
+#include <giomm/filemonitor.h>
 #include "AppChooserDialog.hpp"
 
 class OutputsView
@@ -104,18 +105,32 @@ class OutputsView
 
     Gtk::Menu m_MenuPopup;
 
+    Glib::RefPtr<Gio::FileMonitor> m_CurrentMonitor;
+
+    Glib::RefPtr<Gio::File> m_CurrentDir;
+
+    sigc::connection m_TimeoutConn;
+
     void onRowActivated(const Gtk::TreeModel::Path& Path,
                         Gtk::TreeViewColumn* Column);
 
     bool onBtPressEvent(GdkEventButton* Event);
 
-    void setBrowserToPath(Glib::RefPtr<Gio::File> Asked);
+    void setCurrentDir(Glib::RefPtr<Gio::File> Asked);
+
+    void updateBrowser();
 
     void addNavButton(Glib::RefPtr<Gio::File> File);
 
-    void on_MenuPopupOpenActivated();
+    void onMenuPopupOpenActivated();
 
-    void on_MenuPopupDeleteActivated();
+    void onMenuPopupDeleteActivated();
+
+    void onDirMonitoringChanged(const Glib::RefPtr<Gio::File>& File,
+                                const Glib::RefPtr<Gio::File>& OtherFile,
+                                Gio::FileMonitorEvent EventType);
+
+    bool onTimout_applyPendingChanges();
 
   public:
 

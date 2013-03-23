@@ -127,16 +127,16 @@ OutputsView::OutputsView() :
   mp_MainBox->show_all_children();
 
   addNavButton(mref_Root);
-  setBrowserToPath(mref_Root);
+  setCurrentDir(mref_Root);
 
   Gtk::MenuItem* Item = Gtk::manage(new Gtk::MenuItem(_("Open with...")));
   Item->signal_activate().connect(
-      sigc::mem_fun(*this, &OutputsView::on_MenuPopupOpenActivated));
+      sigc::mem_fun(*this, &OutputsView::onMenuPopupOpenActivated));
   m_MenuPopup.append(*Item);
 
   Item = Gtk::manage(new Gtk::MenuItem(_("Delete")));
   Item->signal_activate().connect(
-      sigc::mem_fun(*this, &OutputsView::on_MenuPopupDeleteActivated));
+      sigc::mem_fun(*this, &OutputsView::onMenuPopupDeleteActivated));
   m_MenuPopup.append(*Item);
 
   m_MenuPopup.show_all();
@@ -163,13 +163,28 @@ Gtk::Widget* OutputsView::asWidget()
 // =====================================================================
 // =====================================================================
 
-void OutputsView::setBrowserToPath(Glib::RefPtr<Gio::File> Asked)
+void OutputsView::setCurrentDir(Glib::RefPtr<Gio::File> Asked)
+{
+  m_CurrentDir = Asked;
+
+  m_CurrentMonitor = Asked->monitor_directory();
+  m_CurrentMonitor->signal_changed().connect(
+      sigc::mem_fun(*this, &OutputsView::onDirMonitoringChanged));
+
+  updateBrowser();
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::updateBrowser()
 {
   mref_ListStore->clear();
 
   Glib::RefPtr<Gtk::IconTheme> Theme = Gtk::IconTheme::get_default();
 
-  Glib::RefPtr<Gio::FileEnumerator> Children = Asked->enumerate_children();
+  Glib::RefPtr<Gio::FileEnumerator> Children =
+      m_CurrentDir->enumerate_children();
 
   for (Glib::RefPtr<Gio::FileInfo> Child = Children->next_file(); Child != 0;
       Child = Children->next_file())
@@ -188,7 +203,7 @@ void OutputsView::setBrowserToPath(Glib::RefPtr<Gio::File> Asked)
         Row[m_Columns.m_Icon] = Theme->load_icon(
             "text-x-generic", 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
 
-      Row[m_Columns.m_File] = Asked->get_child(Child->get_name());
+      Row[m_Columns.m_File] = m_CurrentDir->get_child(Child->get_name());
     }
 
   }
@@ -209,7 +224,7 @@ void OutputsView::addNavButton(Glib::RefPtr<Gio::File> File)
 
   NavBt->signal_toggled().connect(
       sigc::bind<Glib::RefPtr<Gio::File> >(
-          sigc::mem_fun(*this, &OutputsView::setBrowserToPath), File));
+          sigc::mem_fun(*this, &OutputsView::setCurrentDir), File));
 
   mp_NavBox->pack_start(*NavBt, Gtk::PACK_SHRINK);
   mp_NavBox->reorder_child(*NavBt, 0);
@@ -287,7 +302,7 @@ bool OutputsView::onBtPressEvent(GdkEventButton* Event)
 // =====================================================================
 // =====================================================================
 
-void OutputsView::on_MenuPopupOpenActivated()
+void OutputsView::onMenuPopupOpenActivated()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> RefSelection =
       mp_TreeView->get_selection();
@@ -304,7 +319,7 @@ void OutputsView::on_MenuPopupOpenActivated()
 // =====================================================================
 // =====================================================================
 
-void OutputsView::on_MenuPopupDeleteActivated()
+void OutputsView::onMenuPopupDeleteActivated()
 {
   Glib::RefPtr<Gtk::TreeView::Selection> RefSelection =
       mp_TreeView->get_selection();
@@ -327,3 +342,26 @@ void OutputsView::on_MenuPopupDeleteActivated()
 // =====================================================================
 // =====================================================================
 
+/* To avoid too many successive updates (and because the monitoring rate limit
+ * concerns successive changes on a single file only, not on the monitored directory)
+ * we call a timeout function, allowing us to update each second only, and only if needed.
+ */
+void OutputsView::onDirMonitoringChanged(
+    const Glib::RefPtr<Gio::File>& /*File*/,
+    const Glib::RefPtr<Gio::File>& /*OtherFile*/,
+    Gio::FileMonitorEvent /*EventType*/)
+{
+  if (!m_TimeoutConn.connected())
+    m_TimeoutConn = Glib::signal_timeout().connect_seconds(
+        sigc::mem_fun(*this, &OutputsView::onTimout_applyPendingChanges), 1);
+
+}
+
+// =====================================================================
+// =====================================================================
+
+bool OutputsView::onTimout_applyPendingChanges()
+{
+  updateBrowser();
+  return false; // disconnect
+}
