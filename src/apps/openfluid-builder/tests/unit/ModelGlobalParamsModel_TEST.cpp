@@ -77,7 +77,7 @@ struct init_Model
       BuilderTestHelper::getInstance()->initGtk();
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-          + "/OPENFLUID.IN.Primitives";
+          + "/OPENFLUID.IN.BuilderUnitTesting";
       mp_EngProject = new EngineProject(Path);
 
       mp_Model = new ModelGlobalParamsModelImpl(mp_EngProject->getAdvancedDesc().getModel());
@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
 {
   // initial state
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
+  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),3);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
 
   // adding a global parameter (from ModelInstance)
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   mp_EngProject->getAdvancedDesc().getModel().setGlobalParameter("longparam","123");
   mp_Model->update();
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
+  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["longparam"].second,"123");
 
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   mp_Model->fromUserGloballyUsedSet("strparam");
   mp_Model->update();
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),4);
+  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),1);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),2);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["longparam"].second,"123");
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["strparam"].second,"");
@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   mp_EngProject->getAdvancedDesc().getModel().eraseGlobalParameter("longparam");
   mp_Model->update();
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),5);
+  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),2);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),1);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed()["strparam"].second,"abc");
 
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(test_globalparams_management)
   mp_Model->fromUserGloballyUsedUnset("strparam");
   mp_Model->update();
 
-  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),6);
+  BOOST_CHECK_EQUAL(mp_Model->getGloballyNotUsed().size(),3);
   BOOST_CHECK_EQUAL(mp_Model->getGloballyUsed().size(),0);
 
   Globals = mp_Model->getGloballyNotUsed();

@@ -11,7 +11,7 @@
      </gparams>
    
    
-      <function ID="tests.primitives.prod" />       
+      <function ID="tests.primitives.variables.prod" />       
       
       <generator varname="tests.fixed" unitclass="TestUnits" method="fixed">
          <param name="fixedvalue" value="12.7" />
@@ -35,7 +35,7 @@
          <param name="distribution" value="distrib.txt" />
       </generator>
       
-      <function ID="tests.primitives.use"> 
+      <function ID="tests.primitives.variables.use"> 
         <param name="strparam" value="strvalue" />
         <param name="doubleparam" value="1.1" />
         <param name="longparam" value="11" />

@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(test_SetEmptyCoreRepos)
 BOOST_AUTO_TEST_CASE(test_SetDomain)
 {
   std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-      + "/OPENFLUID.IN.Primitives";
+      + "/OPENFLUID.IN.BuilderUnitTesting";
   EngineProject* EngProject = new EngineProject(Path);
 
   openfluid::fluidx::AdvancedDomainDescriptor* Domain = &(EngProject->getAdvancedDesc().getDomain());

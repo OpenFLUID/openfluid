@@ -101,9 +101,9 @@ BOOST_FIXTURE_TEST_SUITE(ModelStructurePresenterTest, init_Presenter)
 
 BOOST_AUTO_TEST_CASE(test_SetModelInstance)
 {
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -142,9 +142,9 @@ BOOST_AUTO_TEST_CASE(test_SetModelInstance)
 
 BOOST_AUTO_TEST_CASE(test_SelectAFunctionByApp)
 {
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(test_SelectAFunctionByApp)
 BOOST_AUTO_TEST_CASE(test_AppendAFunction)
 {
   // append a function
-  std::string idA = "tests.primitives.prod";
+  std::string idA = "tests.primitives.variables.prod";
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
   openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(test_AppendAFunction)
   BOOST_CHECK_EQUAL(mp_View->getSelectedRowPosition(), 0);
 
   // append another function
-  std::string idB = "tests.primitives.use";
+  std::string idB = "tests.primitives.variables.use";
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
   openfluid::machine::FunctionPluginsManager::getInstance()->loadWareSignatureOnly(
@@ -224,9 +224,9 @@ BOOST_AUTO_TEST_CASE(test_AppendAFunction)
 
 BOOST_AUTO_TEST_CASE(test_RemoveFunctionAt)
 {
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -290,9 +290,9 @@ BOOST_AUTO_TEST_CASE(test_RemoveFunctionAt)
 
 BOOST_AUTO_TEST_CASE(test_RemoveFirst)
 {
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -329,9 +329,9 @@ BOOST_AUTO_TEST_CASE(test_RemoveFirst)
 
 BOOST_AUTO_TEST_CASE(test_MoveFunction)
 {
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -405,9 +405,9 @@ BOOST_AUTO_TEST_CASE(test_MoveFunction)
 
 BOOST_AUTO_TEST_CASE(test_SelectAFunction)
 {
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -448,9 +448,9 @@ BOOST_AUTO_TEST_CASE(test_SelectAFunction)
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 {
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *
@@ -510,9 +510,9 @@ BOOST_AUTO_TEST_CASE(test_moveTowardTheBegin)
 
 BOOST_AUTO_TEST_CASE(test_moveTowardTheEnd)
 {
-  std::string idA = "tests.primitives.prod";
-  std::string idB = "tests.primitives.use";
-  std::string idC = "tests.primitivesvalues.prod";
+  std::string idA = "tests.primitives.variables.prod";
+  std::string idB = "tests.primitives.variables.use";
+  std::string idC = "tests.primitives.events";
 
   //  openfluid::machine::ModelItemSignatureInstance FctSignature1 =
   //  *

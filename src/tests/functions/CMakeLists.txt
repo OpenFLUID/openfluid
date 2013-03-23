@@ -35,6 +35,22 @@ ENDIF(BUILD_FORTRAN_FUNCTIONS)
 ###########################################################################
 
 
+OPNFLD_ADD_FUNCTION(tests.primitives.runenv tests.primitives.runenv ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-PrimitivesRunEnv 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesRunEnv"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           "-n${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv/tests.primitives.runenv_ofware-func.log"
+                   )
+
+
+###########################################################################
+
+
 OPNFLD_ADD_FUNCTION(tests.primitives.time tests.primitives.time ${TEST_OUTPUT_PATH})
 OPENFLUID_ADD_TEST(NAME functions-PrimitivesTime 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
@@ -48,61 +64,100 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesTime
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/tests.primitives.time_ofware-obs.log"
                    )
 
+
 ###########################################################################
 
 
-OPNFLD_ADD_FUNCTION(tests.primitives.prod tests.primitives.prod ${TEST_OUTPUT_PATH})
-OPNFLD_ADD_FUNCTION(tests.primitives.use tests.primitives.use ${TEST_OUTPUT_PATH})
-
-OPENFLUID_ADD_TEST(NAME functions-Primitives 
+OPNFLD_ADD_FUNCTION(tests.primitives.funcparams tests.primitives.funcparams ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-PrimitivesFuncParams 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Primitives"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Primitives" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesFuncParams"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams" 
                            "-p${TEST_OUTPUT_PATH}"
-                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Primitives"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Primitives/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Primitives/tests.primitives.prod_ofware-func.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Primitives/tests.primitives.use_ofware-func.log"
+                           "-n${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams/tests.primitives.funcparams_ofware-func.log"
                    )
 
 
 ###########################################################################
 
 
-OPNFLD_ADD_FUNCTION(tests.landprimitives tests.landprimitives ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-LandPrimitives 
+OPNFLD_ADD_FUNCTION(tests.primitives.inputdata.prod tests.primitives.inputdata.prod ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_FUNCTION(tests.primitives.inputdata.use tests.primitives.inputdata.use ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-PrimitivesInputdata 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.LandPrimitives"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LandPrimitives" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesInputdata"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata" 
                            "-p${TEST_OUTPUT_PATH}"
-                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LandPrimitives"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LandPrimitives/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.LandPrimitives/tests.landprimitives_ofware-func.log"                                                     
+                           "-n${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata/tests.primitives.inputdata.prod_ofware-func.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata/tests.primitives.inputdata.use_ofware-func.log"
+                   )
+
+
+###########################################################################
+
+
+OPNFLD_ADD_FUNCTION(tests.primitives.events tests.primitives.events ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-PrimitivesEvents 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesEvents"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           "-n${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents/tests.primitives.events_ofware-func.log"
+                   )
+                   
+
+###########################################################################
+
+
+OPNFLD_ADD_FUNCTION(tests.primitives.variables.prod tests.primitives.variables.prod ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_FUNCTION(tests.primitives.variables.use tests.primitives.variables.use ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-PrimitivesVariables 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesVariables"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           "-n${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables/tests.primitives.variables.prod_ofware-func.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables/tests.primitives.variables.use_ofware-func.log"
+                   )
+
+
+###########################################################################
+
+
+OPNFLD_ADD_FUNCTION(tests.primitives.land tests.primitives.land ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-PrimitivesLand 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesLand"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand" 
+                           "-p${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand/tests.primitives.land_ofware-func.log"                                                     
                     )
 
 
 ###########################################################################
 
 
-OPNFLD_ADD_FUNCTION(tests.primitivesvalues.prod tests.primitivesvalues.prod ${TEST_OUTPUT_PATH})
-OPNFLD_ADD_FUNCTION(tests.primitivesvalues.use tests.primitivesvalues.use ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesValues 
+OPENFLUID_ADD_TEST(NAME functions-PrimitivesAll 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesValues"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesValues" 
-                           "-p${TEST_OUTPUT_PATH}")
-
-
-###########################################################################
-
-
-OPNFLD_ADD_FUNCTION(tests.primitivestypedvalues.prod tests.primitivestypedvalues.prod ${TEST_OUTPUT_PATH})
-OPNFLD_ADD_FUNCTION(tests.primitivestypedvalues.use tests.primitivestypedvalues.use ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesTypedValues 
-                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesTypedValues"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTypedValues" 
-                           "-p${TEST_OUTPUT_PATH}")
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesAll"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAll" 
+                           "-p${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAll"
+                    )
 
 
 ###########################################################################
@@ -189,18 +244,7 @@ OPENFLUID_ADD_TEST(NAME functions-Tools
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Tools"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Tools" 
-                        "-p${TEST_OUTPUT_PATH}")
-
-
-###########################################################################
-
-
-OPNFLD_ADD_FUNCTION(tests.events tests.events ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-Events
-                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Events"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Events" 
-                        "-p${TEST_OUTPUT_PATH}")                              
+                        "-p${TEST_OUTPUT_PATH}")                 
 
 
 ###########################################################################

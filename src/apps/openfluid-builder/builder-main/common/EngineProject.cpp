@@ -79,7 +79,7 @@
 
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include "EngineHelper.hpp"
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include "WaresHelper.hpp"
 

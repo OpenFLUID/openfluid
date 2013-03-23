@@ -58,8 +58,8 @@
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include <openfluid/ware/ObserverSignatureRegistry.hpp>
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -68,8 +68,8 @@ std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModif
     const openfluid::fluidx::AdvancedModelDescriptor& Desc,
     std::list<std::string>& MissingFunctions)
 {
-  openfluid::ware::FunctionSignatureRegistry* Reg =
-      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::FunctionSignatureRegistry* Reg =
+      openfluid::machine::FunctionSignatureRegistry::getInstance();
   Reg->updatePluggableSignatures();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> Items = Desc.getItems();
@@ -107,8 +107,8 @@ std::list<openfluid::fluidx::ObserverDescriptor*> WaresHelper::checkAndGetModifi
     const openfluid::fluidx::AdvancedMonitoringDescriptor& Desc,
     std::list<std::string>& MissingObservers)
 {
-  openfluid::ware::ObserverSignatureRegistry* Reg =
-      openfluid::ware::ObserverSignatureRegistry::getInstance();
+  openfluid::machine::ObserverSignatureRegistry* Reg =
+      openfluid::machine::ObserverSignatureRegistry::getInstance();
 
   Reg->update();
 
@@ -144,7 +144,7 @@ std::vector<openfluid::machine::ObserverSignatureInstance*> WaresHelper::getUnus
   std::vector<openfluid::machine::ObserverSignatureInstance*> Signs;
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> AvailableSignatures =
-      openfluid::ware::ObserverSignatureRegistry::getInstance()->getAvailableSignatures();
+      openfluid::machine::ObserverSignatureRegistry::getInstance()->getAvailableSignatures();
 
   for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
       AvailableSignatures.begin(); it != AvailableSignatures.end(); ++it)

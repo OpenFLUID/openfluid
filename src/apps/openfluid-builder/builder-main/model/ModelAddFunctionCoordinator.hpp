@@ -61,7 +61,7 @@ namespace openfluid {
 namespace machine {
 class ModelItemSignatureInstance;
 }
-namespace ware {
+namespace machine {
 class FunctionSignatureRegistry;
 }
 }
@@ -74,7 +74,7 @@ class ModelAddFunctionCoordinator: public sigc::trackable
 {
   private:
 
-    openfluid::ware::FunctionSignatureRegistry* mp_SignatureRegistry;
+    openfluid::machine::FunctionSignatureRegistry* mp_SignatureRegistry;
 
     ModelAvailFctModel& m_AvailFctModel;
 
@@ -90,7 +90,7 @@ class ModelAddFunctionCoordinator: public sigc::trackable
     ModelAddFunctionCoordinator(ModelAvailFctModel& AvailFctModel,
         ModelFctDetailModel& FctDetailModel);
 
-    void setSignatures(openfluid::ware::FunctionSignatureRegistry& Signatures);
+    void setSignatures(openfluid::machine::FunctionSignatureRegistry& Signatures);
 
     void setFctToDisplay(openfluid::machine::ModelItemSignatureInstance* Signature);
 

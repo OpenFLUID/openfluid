@@ -78,7 +78,7 @@ struct init_Model
       BuilderTestHelper::getInstance()->initGtk();
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-          + "/OPENFLUID.IN.Primitives";
+          + "/OPENFLUID.IN.BuilderUnitTesting";
       mp_EngProject = new EngineProject(Path);
 
       mp_Domain = &mp_EngProject->getAdvancedDesc().getDomain();

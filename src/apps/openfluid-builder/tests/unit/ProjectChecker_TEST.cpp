@@ -64,7 +64,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/base/OFException.hpp>
 
 // =====================================================================
@@ -136,7 +136,7 @@ BOOST_AUTO_TEST_CASE(check_isParamSet)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
-  openfluid::ware::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::machine::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(check_check)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
-  openfluid::ware::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::machine::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");

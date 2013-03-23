@@ -185,13 +185,13 @@ ModelAvailFctAdapterModelImpl::~ModelAvailFctAdapterModelImpl()
 // =====================================================================
 
 void ModelAvailFctAdapterModelImpl::setSignatures(
-    openfluid::ware::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures)
+    openfluid::machine::FunctionSignatureRegistry::FctSignaturesByTypeByName_t Signatures)
 {
   mref_TreeModel->clear();
   m_SignaturesById.clear();
   createTitleRows();
 
-  openfluid::ware::FunctionSignatureRegistry::FctSignaturesByName_t::iterator it;
+  openfluid::machine::FunctionSignatureRegistry::FctSignaturesByName_t::iterator it;
   for (it =
       Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].begin();
       it != Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].end();

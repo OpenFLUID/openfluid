@@ -62,7 +62,7 @@
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -84,7 +84,7 @@ void ModelFctParamsModelImpl::setModelItemDescriptor(
   if (mp_Item)
   {
     mp_ItemSignature =
-        openfluid::ware::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
+        openfluid::machine::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
             mp_Item);
     m_signal_ItemInit.emit();
   }
