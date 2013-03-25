@@ -46,7 +46,7 @@
  */
 
 /**
- \file EnginProjectPreviewWidget.cpp
+ \file EngineProjectPreviewWidget.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>

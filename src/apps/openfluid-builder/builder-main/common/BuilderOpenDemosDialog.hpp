@@ -56,6 +56,15 @@
 #define BUILDEROPENDEMOSDIALOG_HPP_
 
 #include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
+#include "EngineProjectPreviewWidget.hpp"
+
+namespace openfluid {
+namespace buddies {
+class ExamplesBuddy;
+}
+}
 
 class BuilderOpenDemosDialog
 {
@@ -63,13 +72,40 @@ class BuilderOpenDemosDialog
 
     Gtk::Dialog* mp_Dialog;
 
+    openfluid::buddies::ExamplesBuddy* mp_Buddy;
+
+    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
+
+    class DemosColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        DemosColumns()
+        {
+          add(m_Name);
+          add(m_Path);
+        }
+        Gtk::TreeModelColumn<std::string> m_Name;
+        Gtk::TreeModelColumn<std::string> m_Path;
+    };
+
+    DemosColumns m_Columns;
+
+    Gtk::TreeView* mp_TreeView;
+
+    EngineProjectPreviewWidget* mp_PreviewWidget;
+
+    void onSelectionChanged();
+
+    void onRowActivated(const Gtk::TreeModel::Path& Path,
+                           Gtk::TreeViewColumn* Column);
+
   public:
 
     BuilderOpenDemosDialog();
 
     ~BuilderOpenDemosDialog();
 
-    void show();
+    std::string show();
 };
 
 #endif /* BUILDEROPENDEMOSDIALOG_HPP_ */

@@ -54,24 +54,66 @@
 
 #include "BuilderOpenDemosDialog.hpp"
 
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/operations.hpp>
 #include <glibmm/i18n.h>
+#include <giomm/file.h>
 #include <gtkmm/stock.h>
+#include <gtkmm/scrolledwindow.h>
+#include <openfluid/buddies/ExamplesBuddy.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/config.hpp>
 
 // =====================================================================
 // =====================================================================
 
 BuilderOpenDemosDialog::BuilderOpenDemosDialog()
 {
+  mp_Buddy = new openfluid::buddies::ExamplesBuddy(0);
+
+  mref_ListStore = Gtk::ListStore::create(m_Columns);
+
+  mp_TreeView = Gtk::manage(new Gtk::TreeView());
+
+  mp_TreeView->append_column("", m_Columns.m_Name);
+
+  mp_TreeView->get_selection()->signal_changed().connect(
+      sigc::mem_fun(*this, &BuilderOpenDemosDialog::onSelectionChanged));
+
+  mp_TreeView->signal_row_activated().connect(
+      sigc::mem_fun(*this, &BuilderOpenDemosDialog::onRowActivated));
+
+  mp_TreeView->set_model(mref_ListStore);
+  mp_TreeView->set_headers_visible(false);
+
+  mp_TreeView->set_visible(true);
+
+  Gtk::ScrolledWindow* ScrolledWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ScrolledWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ScrolledWin->set_visible(true);
+  ScrolledWin->add(*mp_TreeView);
+  ScrolledWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+  ScrolledWin->set_border_width(5);
+
+  mp_PreviewWidget = new EngineProjectPreviewWidget();
+
+  Gtk::HBox* MainBox = Gtk::manage(new Gtk::HBox());
+  MainBox->pack_start(*ScrolledWin);
+  MainBox->pack_start(*mp_PreviewWidget->asWidget(), Gtk::PACK_EXPAND_WIDGET,
+                      5);
+
   mp_Dialog = new Gtk::Dialog(_("Open Demo project"));
   mp_Dialog->set_has_separator(true);
-//  mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK, 5);
+  mp_Dialog->get_vbox()->pack_start(*MainBox, Gtk::PACK_EXPAND_WIDGET, 5);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
   mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
 
-  mp_Dialog->set_default_size(-1, 500);
+  mp_Dialog->set_default_size(500, 500);
+  mp_Dialog->show_all_children();
 }
 
 // =====================================================================
@@ -85,16 +127,89 @@ BuilderOpenDemosDialog::~BuilderOpenDemosDialog()
 // =====================================================================
 // =====================================================================
 
-void BuilderOpenDemosDialog::show()
+std::string BuilderOpenDemosDialog::show()
 {
+  std::string SelectedPath = "";
+
+  openfluid::base::ProjectManager* Manager =
+      openfluid::base::ProjectManager::getInstance();
+
+  mref_ListStore->clear();
+
+  mp_Buddy->run();
+
+  std::string DemosPath =
+      boost::filesystem::path(
+          openfluid::base::RuntimeEnvironment::getInstance()->getUserExamplesDir() + "/"
+          + openfluid::config::PROJECTS_SUBDIR).string();
+
+  Glib::RefPtr<Gio::File> DemosDir = Gio::File::create_for_path(DemosPath);
+
+  Glib::RefPtr<Gio::FileEnumerator> Children = DemosDir->enumerate_children();
+  for (Glib::RefPtr<Gio::FileInfo> Child = Children->next_file(); Child != 0;
+      Child = Children->next_file())
+  {
+    std::string ChildPath = DemosDir->get_child(Child->get_name())->get_path();
+
+    if (openfluid::base::ProjectManager::isProject(ChildPath))
+    {
+      Manager->open(ChildPath);
+
+      Gtk::TreeRow Row = *(mref_ListStore->append());
+
+      Row[m_Columns.m_Name] = Manager->getName();
+      Row[m_Columns.m_Path] = ChildPath;
+
+      Manager->close();
+    }
+  }
+  Children->close();
+
+  if (!mref_ListStore->children().empty())
+    mp_TreeView->get_selection()->select(mref_ListStore->children().begin());
+
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
+    Glib::RefPtr<Gtk::TreeSelection> Selection = mp_TreeView->get_selection();
+
+    if (Selection)
+    {
+      Gtk::TreeIter it = Selection->get_selected();
+
+      if (it)
+        SelectedPath = it->get_value(m_Columns.m_Path);
+    }
 
   }
 
   mp_Dialog->hide();
+
+  return SelectedPath;
 }
 
 // =====================================================================
 // =====================================================================
 
+void BuilderOpenDemosDialog::onSelectionChanged()
+{
+  Glib::RefPtr<Gtk::TreeSelection> Selection = mp_TreeView->get_selection();
+
+  if (!Selection)
+    return;
+
+  Gtk::TreeIter it = Selection->get_selected();
+
+  if (!it)
+    return;
+
+  mp_PreviewWidget->update(it->get_value(m_Columns.m_Path));
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderOpenDemosDialog::onRowActivated(
+    const Gtk::TreeModel::Path& /*Path*/, Gtk::TreeViewColumn* /*Column*/)
+{
+  mp_Dialog->response(Gtk::RESPONSE_OK);
+}
