@@ -379,8 +379,9 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 
     updateRecentsList();
 
-    //TODO: remove save, do only onSaveHappened() instead. Think to check messages at project start.
-//    ProjectModule->saveAsked();
+    // to save it if it's a new project
+    if(ProjectFolder.empty())
+      ProjectModule->saveAsked();
 
     ProjectModule->checkAsked();
   }
