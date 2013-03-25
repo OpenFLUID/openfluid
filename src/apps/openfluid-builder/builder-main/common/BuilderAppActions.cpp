@@ -150,6 +150,7 @@ void BuilderAppActions::createProjectUiXml()
     "  <toolbar  name='ToolBar'>"
     "  <placeholder name='ProjectFilePlaceholder'>"
     "    <toolitem action='FileSave'/>"
+    "    <toolitem action='FileSaveAs'/>"
     "    <toolitem action='FileClose'/>"
     "  </placeholder>"
     "  <placeholder name='SimulationPlaceholder'>"
