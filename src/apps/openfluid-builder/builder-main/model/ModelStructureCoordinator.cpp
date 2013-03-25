@@ -97,10 +97,10 @@ void ModelStructureCoordinator::whenStructureFctSelectionChanged()
 
   if (CurrentSelection < 0)
     m_FctDetailModel.setFctToDisplay(
-        openfluid::ware::FunctionSignatureRegistry::getEmptyPluggableSignature());
+        openfluid::machine::FunctionSignatureRegistry::getEmptyPluggableSignature());
   else
     m_FctDetailModel.setFctToDisplay(
-        openfluid::ware::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
+        openfluid::machine::FunctionSignatureRegistry::getInstance()->getSignatureItemInstance(
             mp_AdvancedDesc->getModel().getItemAt(CurrentSelection)));
 
   updateStructureListToolBox();
@@ -323,7 +323,7 @@ void ModelStructureCoordinator::updateWithFctParamsComponents()
   createParamsComponents();
 
   mp_AddFctModule->setSignatures(
-      *openfluid::ware::FunctionSignatureRegistry::getInstance());
+      *openfluid::machine::FunctionSignatureRegistry::getInstance());
 
   m_ParamsPanel.setCurrentPage(SelectedPageName);
   m_StructureModel.requestSelectionByAppAt(0);

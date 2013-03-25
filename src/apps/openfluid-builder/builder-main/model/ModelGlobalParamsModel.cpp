@@ -58,7 +58,7 @@
 
 #include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
 // =====================================================================
@@ -93,8 +93,8 @@ void ModelGlobalParamsModelImpl::update()
 {
   m_GloballyNotUsed.clear();
 
-  openfluid::ware::FunctionSignatureRegistry* Reg =
-      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::FunctionSignatureRegistry* Reg =
+      openfluid::machine::FunctionSignatureRegistry::getInstance();
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_Model->getItems();

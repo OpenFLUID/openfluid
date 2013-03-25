@@ -57,7 +57,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include <openfluid/ware/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
@@ -147,8 +147,8 @@ void ProjectChecker::checkModelRequirements()
   openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       Model.getItems();
-  openfluid::ware::FunctionSignatureRegistry* Reg =
-      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::FunctionSignatureRegistry* Reg =
+      openfluid::machine::FunctionSignatureRegistry::getInstance();
   openfluid::base::RuntimeEnvironment* RunEnv =
       openfluid::base::RuntimeEnvironment::getInstance();
   openfluid::ware::FunctionSignature* Sign;
@@ -328,8 +328,8 @@ void ProjectChecker::checkModelVars()
   openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_Desc->getModel().getItems();
-  openfluid::ware::FunctionSignatureRegistry* Reg =
-      openfluid::ware::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::FunctionSignatureRegistry* Reg =
+      openfluid::machine::FunctionSignatureRegistry::getInstance();
   openfluid::ware::FunctionSignature* Sign;
   std::vector<openfluid::ware::SignatureHandledTypedDataItem>::iterator itt;
 

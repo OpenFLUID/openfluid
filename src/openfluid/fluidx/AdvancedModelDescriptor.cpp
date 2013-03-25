@@ -56,7 +56,7 @@
 
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>s
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
 namespace openfluid {
 namespace fluidx {

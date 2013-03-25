@@ -82,7 +82,7 @@ sigc::signal<void> ModelAvailFctModelImpl::signal_SelectedSignatureChanged()
 // =====================================================================
 
 void ModelAvailFctModelImpl::setSignatures(
-    openfluid::ware::FunctionSignatureRegistry& Signatures)
+    openfluid::machine::FunctionSignatureRegistry& Signatures)
 {
   m_Signatures = Signatures.getFctSignatures();
   m_signal_SignaturesChanged.emit();
@@ -91,7 +91,7 @@ void ModelAvailFctModelImpl::setSignatures(
 // =====================================================================
 // =====================================================================
 
-openfluid::ware::FunctionSignatureRegistry::FctSignaturesByTypeByName_t ModelAvailFctModelImpl::getSignatures()
+openfluid::machine::FunctionSignatureRegistry::FctSignaturesByTypeByName_t ModelAvailFctModelImpl::getSignatures()
 {
   return m_Signatures;
 }

@@ -63,7 +63,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/ware/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================

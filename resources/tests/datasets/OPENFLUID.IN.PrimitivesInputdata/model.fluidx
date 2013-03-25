@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+      
+   
+     <function ID="tests.primitives.inputdata.prod" />
+    
+     <function ID="tests.primitives.inputdata.use" />
+     
+    
+    
+  </model>
+</openfluid>

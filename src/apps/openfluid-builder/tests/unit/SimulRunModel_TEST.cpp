@@ -83,7 +83,7 @@ struct init_Model
           CONFIGTESTS_OUTPUT_DATA_DIR + "/SimulRunModel_TEST.OUT");
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-          + "/OPENFLUID.IN.Primitives";
+          + "/OPENFLUID.IN.BuilderUnitTesting";
       mp_EngProject = new EngineProject(Path);
 
       mp_Model = new SimulRunModelImpl(

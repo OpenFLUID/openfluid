@@ -85,7 +85,7 @@ struct init_Presenter
       BuilderTestHelper::getInstance()->initGtk();
 
       std::string Path = CONFIGTESTS_INPUT_DATASETS_DIR
-          + "/OPENFLUID.IN.Primitives";
+          + "/OPENFLUID.IN.BuilderUnitTesting";
 
       openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(
           CONFIGTESTS_OUTPUT_DATA_DIR + "/SimulRunPresenter_TEST.OUT");
