@@ -46,110 +46,58 @@
  */
 
 /**
- \file OutputsView.hpp
+ \file AppChooserDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef OUTPUTSVIEW_HPP_
-#define OUTPUTSVIEW_HPP_
+#ifndef APPCHOOSERDIALOG_HPP_
+#define APPCHOOSERDIALOG_HPP_
 
-#include <gtkmm/box.h>
-#include <gtkmm/treemodel.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/radiobuttongroup.h>
-#include <gtkmm/menu.h>
-#include <gdkmm/pixbuf.h>
 #include <giomm/file.h>
-#include <giomm/filemonitor.h>
-#include "AppChooserDialog.hpp"
+#include <gdkmm/pixbuf.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/label.h>
 
-class OutputsView
+class AppChooserDialog
 {
   private:
 
-    Gtk::Box* mp_MainBox;
+    Gtk::Dialog* mp_AppChooserDialog;
 
-    Gtk::HBox* mp_NavBox;
+    Gtk::Label* mp_AppLabel;
 
-    Gtk::RadioButtonGroup m_NavGroup;
+    Glib::RefPtr<Gtk::ListStore> mref_AppListStore;
 
-    typedef std::map<std::string, Gtk::RadioButton*> NavBtList_t;
-    NavBtList_t m_NavButtons;
-
-    Glib::RefPtr<Gio::File> mref_Root;
-
-    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
-
-    class BrowserColumns: public Gtk::TreeModel::ColumnRecord
+    class AppColumns: public Gtk::TreeModel::ColumnRecord
     {
       public:
-        BrowserColumns()
+        AppColumns()
         {
           add(m_DisplayName);
           add(m_Icon);
-          add(m_File);
+          add(m_AppInfo);
         }
         Gtk::TreeModelColumn<std::string> m_DisplayName;
         Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_Icon;
-        Gtk::TreeModelColumn<Glib::RefPtr<Gio::File> > m_File;
+        Gtk::TreeModelColumn<Glib::RefPtr<Gio::AppInfo> > m_AppInfo;
     };
 
-    BrowserColumns m_Columns;
+    AppColumns m_AppColumns;
 
-    Gtk::TreeView* mp_TreeView;
+    Gtk::TreeView* mp_AppTreeView;
 
-    AppChooserDialog* mp_AppChooserDialog;
-
-    Gtk::Menu m_MenuPopup;
-
-    Glib::RefPtr<Gio::FileMonitor> m_CurrentMonitor;
-
-    Glib::RefPtr<Gio::File> m_CurrentDir;
-
-    sigc::connection m_TimeoutConn;
-
-    void onRowActivated(const Gtk::TreeModel::Path& Path,
-                        Gtk::TreeViewColumn* Column);
-
-    void setNavigationBar(Glib::RefPtr<Gio::File> Asked);
-
-    bool onBtPressEvent(GdkEventButton* Event);
-
-    bool onKeyPressEvent(GdkEventKey* Event);
-
-    void setCurrentDir(Glib::RefPtr<Gio::File> Asked);
-
-    void updateBrowser();
-
-    void addNavButton(Glib::RefPtr<Gio::File> File);
-
-    void onMenuPopupOpenActivated();
-
-    void onMenuPopupDeleteActivated();
-
-    void showAppChooser(const Gtk::TreeModel::iterator& Iter);
-
-    void deleteFile(Glib::RefPtr<Gio::File> File);
-
-    void onDirMonitoringChanged(const Glib::RefPtr<Gio::File>& File,
-                                const Glib::RefPtr<Gio::File>& OtherFile,
-                                Gio::FileMonitorEvent EventType);
-
-    bool onTimout_applyPendingChanges();
-
-    int onSortCompare(const Gtk::TreeModel::iterator& a,
-                      const Gtk::TreeModel::iterator& b);
+    void onAppRowActivated(const Gtk::TreeModel::Path& Path,
+                           Gtk::TreeViewColumn* Column);
 
   public:
 
-    OutputsView();
+    AppChooserDialog();
 
-    void update();
-
-    Gtk::Widget* asWidget();
+    void show(Glib::RefPtr<Gio::File> Asked);
 };
 
-#endif /* OUTPUTSVIEW_HPP_ */
+#endif /* APPCHOOSERDIALOG_HPP_ */
