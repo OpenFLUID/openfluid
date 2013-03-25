@@ -464,29 +464,26 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
   {
     MarketPackWidget* MPW = getAvailPackWidget(ID);
 
-    if (MPW->isInstall())
+    openfluid::market::PackageInfo::Dependencies_t Dependencies = PCit->second.AvailablePackages[MPW->getPackageFormat()].Dependencies;
+    openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
+    std::list<openfluid::ware::WareID_t>::const_iterator DLit;
+
+    for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
     {
-      openfluid::market::PackageInfo::Dependencies_t Dependencies = PCit->second.AvailablePackages[MPW->getPackageFormat()].Dependencies;
-      openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
-      std::list<openfluid::ware::WareID_t>::const_iterator DLit;
-
-      for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
+      for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
       {
-        for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
+        // For each dependence
+        openfluid::ware::WareID_t DependenceID = *DLit;
+        std::list<MarketPackWidget*>::iterator APLiter = mp_AvailPacksWidgets[DMit->first].begin();
+
+        while (APLiter != mp_AvailPacksWidgets[DMit->first].end() && (*APLiter)->getID() != DependenceID)
+          ++APLiter;
+
+        // dependence found ?
+        if (APLiter != mp_AvailPacksWidgets[DMit->first].end())
         {
-          // For each dependence
-          openfluid::ware::WareID_t DependenceID = *DLit;
-          std::list<MarketPackWidget*>::iterator APLiter = mp_AvailPacksWidgets[DMit->first].begin();
-
-          while (APLiter != mp_AvailPacksWidgets[DMit->first].end() && (*APLiter)->getID() != DependenceID)
-            ++APLiter;
-
-          // dependence found ?
-          if (APLiter != mp_AvailPacksWidgets[DMit->first].end())
-          {
-            MarketPackWidget* MPW = *APLiter;
-            MPW->setInstall(true);
-          }
+          MarketPackWidget* Dependence = *APLiter;
+          Dependence->setInstall(MPW->isInstall());
         }
       }
 
