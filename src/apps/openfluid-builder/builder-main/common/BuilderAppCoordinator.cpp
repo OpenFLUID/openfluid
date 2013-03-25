@@ -70,6 +70,7 @@
 #include "EngineProjectNewDialog.hpp"
 #include "EngineProjectOpenDialog.hpp"
 #include "PreferencesDialog.hpp"
+#include "BuilderOpenDemosDialog.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -262,6 +263,7 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   mp_NewProjectDialog = new EngineProjectNewDialog();
   mp_OpenProjectDialog = new EngineProjectOpenDialog();
+  mp_OpenDemosDialog = new BuilderOpenDemosDialog();
 
   mp_PreferencesDialog = new PreferencesDialog();
 
@@ -487,6 +489,14 @@ bool BuilderAppCoordinator::showQuitAppDialog()
 {
   return openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       _("Are you sure you want to quit?"));
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppCoordinator::showOpenDemoProjectDialog()
+{
+  mp_OpenDemosDialog->show();
 }
 
 // =====================================================================
