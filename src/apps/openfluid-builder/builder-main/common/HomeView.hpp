@@ -108,6 +108,7 @@ class HomeViewImpl: public HomeView
 
     BuilderHomeButton* mp_NewButton;
     BuilderHomeButton* mp_OpenButton;
+    BuilderHomeButton* mp_DemosButton;
     BuilderHomeButton* mp_MarketButton;
 
     void createHeadPanel();

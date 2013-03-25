@@ -63,6 +63,7 @@ class BuilderAppState;
 class EngineProjectNewDialog;
 class EngineProjectOpenDialog;
 class PreferencesDialog;
+class BuilderOpenDemosDialog;
 
 class BuilderAppCoordinator: public sigc::trackable
 {
@@ -76,6 +77,7 @@ class BuilderAppCoordinator: public sigc::trackable
 
     EngineProjectNewDialog* mp_NewProjectDialog;
     EngineProjectOpenDialog* mp_OpenProjectDialog;
+    BuilderOpenDemosDialog* mp_OpenDemosDialog;
 
     PreferencesDialog* mp_PreferencesDialog;
 
@@ -98,6 +100,8 @@ class BuilderAppCoordinator: public sigc::trackable
     void whenRunAsked();
 
     void whenMarketAsked();
+
+    void whenDemosAsked();
 
     void whenPreferencesAsked();
 
@@ -147,6 +151,8 @@ class BuilderAppCoordinator: public sigc::trackable
     bool showCloseProjectDialog();
 
     bool showQuitAppDialog();
+
+    void showOpenDemoProjectDialog();
 
     void openProject(std::string ProjectPath = "");
 

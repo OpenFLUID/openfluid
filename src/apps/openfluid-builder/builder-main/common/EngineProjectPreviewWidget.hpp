@@ -46,35 +46,48 @@
  */
 
 /**
- \file EngineProjectOpenDialog.hpp
+ \file EngineProjectPreviewWidget.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __ENGINEPROJECTOPENDIALOG_HPP__
-#define __ENGINEPROJECTOPENDIALOG_HPP__
+#ifndef ENGINEPROJECTPREVIEWWIDGET_HPP_
+#define ENGINEPROJECTPREVIEWWIDGET_HPP_
 
-#include <gtkmm/filechooserdialog.h>
-#include "EngineProjectPreviewWidget.hpp"
+#include <gtkmm/label.h>
+#include <gtkmm/box.h>
 
-class EngineProjectOpenDialog
+class EngineProjectPreviewWidget
 {
   private:
 
-    Gtk::FileChooserDialog* mp_Dialog;
+    Gtk::Label* mp_ProjectName;
 
-    std::string m_ProjectFolder;
+    Gtk::Label* mp_ProjectDesc;
 
-    EngineProjectPreviewWidget* mp_PreviewWidget;
+    Gtk::Label* mp_ProjectAuthors;
 
-    void onProjectFolderSelectionChanged();
+    Gtk::Label* mp_ProjectCreationDate;
+
+    Gtk::Label* mp_ProjectLastModDate;
+
+    Gtk::VBox* mp_PreviewBox;
+
+    std::string replaceEmpty(std::string StringToCheck);
 
   public:
 
-    EngineProjectOpenDialog();
+    EngineProjectPreviewWidget();
 
-    std::string show();
+    ~EngineProjectPreviewWidget();
+
+    Gtk::Widget* asWidget();
+
+    /**
+     * @return True if FileName is an OpenFLUID Project, false otherwise
+     */
+    bool update(std::string FileName);
 };
 
-#endif /* __ENGINEPROJECTOPENDIALOG_HPP__ */
+#endif /* ENGINEPROJECTPREVIEWWIDGET_HPP_ */

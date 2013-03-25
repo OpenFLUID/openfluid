@@ -4,7 +4,9 @@ ADD_SUBDIRECTORY(functions)
 
 INCLUDE(OpenFLUIDHelpers)
 
-
+FILE(COPY "${EXAMPLES_PROJECTS_PATH}" 
+     DESTINATION "${BUILD_OUTPUT_PATH}/${EXAMPLES_INSTALL_PATH}")
+       
 OPENFLUID_ADD_TEST(NAME examples-Primitives 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                               "-i" "${CMAKE_CURRENT_SOURCE_DIR}/projects/Primitives/IN"

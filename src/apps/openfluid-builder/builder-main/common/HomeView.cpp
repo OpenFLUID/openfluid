@@ -110,6 +110,10 @@ void HomeViewImpl::createButtonPanel()
       mp_Actions.getFileOpenAction()));
   mp_OpenButton->set_visible(true);
 
+  mp_DemosButton = Gtk::manage(new BuilderHomeButton(
+        mp_Actions.getAppDemosAction()));
+  mp_DemosButton->set_visible(true);
+
   mp_MarketButton = Gtk::manage(new BuilderHomeButton(
       mp_Actions.getAppMarketAction()));
   mp_MarketButton->set_visible(true);
@@ -120,16 +124,23 @@ void HomeViewImpl::createButtonPanel()
   ButtonBox->pack_start(*mp_NewButton, Gtk::PACK_SHRINK, 0);
   ButtonBox->pack_start(*mp_OpenButton, Gtk::PACK_SHRINK, 0);
 
-  Gtk::VButtonBox* ExtraButtonBox = Gtk::manage(new Gtk::VButtonBox(
+  Gtk::VButtonBox* ExtraButtonBox1 = Gtk::manage(new Gtk::VButtonBox(
       Gtk::BUTTONBOX_START, 4));
-  ExtraButtonBox->set_visible(true);
-  ExtraButtonBox->pack_start(*mp_MarketButton, Gtk::PACK_SHRINK, 0);
+  ExtraButtonBox1->set_visible(true);
+  ExtraButtonBox1->pack_start(*mp_DemosButton, Gtk::PACK_SHRINK, 0);
+
+  Gtk::VButtonBox* ExtraButtonBox2 = Gtk::manage(new Gtk::VButtonBox(
+        Gtk::BUTTONBOX_START, 4));
+  ExtraButtonBox2->set_visible(true);
+  ExtraButtonBox2->pack_start(*mp_MarketButton, Gtk::PACK_SHRINK, 0);
 
   mp_ButtonPanel = Gtk::manage(new Gtk::VBox(false, 0));
   mp_ButtonPanel->set_visible(true);
   mp_ButtonPanel->pack_start(*ButtonBox, Gtk::PACK_SHRINK, 10);
   mp_ButtonPanel->pack_start(*(new Gtk::HSeparator()), Gtk::PACK_SHRINK, 0);
-  mp_ButtonPanel->pack_start(*ExtraButtonBox, Gtk::PACK_SHRINK, 10);
+  mp_ButtonPanel->pack_start(*ExtraButtonBox1, Gtk::PACK_SHRINK, 10);
+  mp_ButtonPanel->pack_start(*(new Gtk::HSeparator()), Gtk::PACK_SHRINK, 0);
+  mp_ButtonPanel->pack_start(*ExtraButtonBox2, Gtk::PACK_SHRINK, 10);
   mp_ButtonPanel->show_all_children(true);
 }
 
