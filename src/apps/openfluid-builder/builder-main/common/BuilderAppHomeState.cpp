@@ -133,6 +133,14 @@ void BuilderAppHomeState::whenMarketAsked()
 // =====================================================================
 // =====================================================================
 
+void BuilderAppHomeState::whenDemosAsked()
+{
+  openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage("not yet implemented");
+}
+
+// =====================================================================
+// =====================================================================
+
 
 void BuilderAppHomeState::whenSaveAsked()
 {

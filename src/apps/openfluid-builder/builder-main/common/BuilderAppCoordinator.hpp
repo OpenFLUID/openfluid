@@ -99,6 +99,8 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void whenMarketAsked();
 
+    void whenDemosAsked();
+
     void whenPreferencesAsked();
 
     void whenAboutAsked();

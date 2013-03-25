@@ -103,7 +103,7 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getSimulationRunAction();
 
-    Glib::RefPtr<Gtk::Action> getAppMarketAction();
+    Glib::RefPtr<Gtk::Action> getAppDemosAction();
 
     Glib::RefPtr<Gtk::Action> getEditPreferencesAction();
 
@@ -122,6 +122,8 @@ class BuilderAppActions
     Glib::RefPtr<Gtk::Action> getSaveAsAction();
 
     Glib::RefPtr<Gtk::Action> getMapViewAction();
+
+    Glib::RefPtr<Gtk::Action> getAppMarketAction();
 
     Glib::RefPtr<Gtk::Action> getRefreshAction();
 

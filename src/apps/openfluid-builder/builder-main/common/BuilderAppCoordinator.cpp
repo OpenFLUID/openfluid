@@ -161,6 +161,14 @@ void BuilderAppCoordinator::whenMarketAsked()
 // =====================================================================
 // =====================================================================
 
+void BuilderAppCoordinator::whenDemosAsked()
+{
+  mp_CurrentState->whenDemosAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
 
 void BuilderAppCoordinator::whenPreferencesAsked()
 {
@@ -274,6 +282,9 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   m_Actions.getAppMarketAction()->signal_activate().connect(sigc::mem_fun(
       *this, &BuilderAppCoordinator::whenMarketAsked));
+
+  m_Actions.getAppDemosAction()->signal_activate().connect(sigc::mem_fun(
+      *this, &BuilderAppCoordinator::whenDemosAsked));
 
   m_Actions.getEditPreferencesAction()->signal_activate().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::whenPreferencesAsked));
