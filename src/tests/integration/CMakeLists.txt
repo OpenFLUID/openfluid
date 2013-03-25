@@ -265,7 +265,7 @@ OPENFLUID_ADD_TEST(NAME integration-FluidXWriterSingle
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterSingle"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunSingle"
                                "-p" "${TEST_OUTPUT_PATH}")
-SET_PROPERTY(TEST integration-FluidXWriterSingle APPEND PROPERTY DEPENDS api-FluidXDescriptor_TEST)
+SET_PROPERTY(TEST integration-FluidXWriterSingle APPEND PROPERTY DEPENDS unit-api-FluidXDescriptor_TEST)
 
 
 ###########################################################################
@@ -276,7 +276,7 @@ OPENFLUID_ADD_TEST(NAME integration-FluidXWriterMany
                                "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterMany"
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunMany"
                                "-p" "${TEST_OUTPUT_PATH}")
-SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS api-FluidXDescriptor_TEST)
+SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS unit-api-FluidXDescriptor_TEST)
   
 
 ###########################################################################
