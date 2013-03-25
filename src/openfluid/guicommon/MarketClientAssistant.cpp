@@ -433,6 +433,72 @@ void MarketClientAssistant::onURLComboChanged()
 // =====================================================================
 
 
+MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::ware::WareID_t& ID) const
+{
+  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::const_iterator APMiter;
+  std::list<MarketPackWidget*>::const_iterator APLiter;
+
+  for (APMiter = mp_AvailPacksWidgets.begin(); APMiter != mp_AvailPacksWidgets.end(); ++APMiter)
+  {
+    for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
+    {
+      if ((*APLiter)->getID() == ID)
+        return *APLiter;
+    }
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& ID)
+{
+  openfluid::market::MetaPackagesCatalog_t::iterator PCit = m_MarketClient.findInTypesMetaPackagesCatalogs(ID);
+
+  // package found
+  if (PCit != m_MarketClient.getTypesMetaPackagesCatalogs().rbegin()->second.end())
+  {
+    MarketPackWidget* MPW = getAvailPackWidget(ID);
+
+    if (MPW->isInstall())
+    {
+      openfluid::market::PackageInfo::Dependencies_t Dependencies = PCit->second.AvailablePackages[MPW->getPackageFormat()].Dependencies;
+      openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
+      std::list<openfluid::ware::WareID_t>::const_iterator DLit;
+
+      for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
+      {
+        for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
+        {
+          // For each dependence
+          openfluid::ware::WareID_t DependenceID = *DLit;
+          std::list<MarketPackWidget*>::iterator APLiter = mp_AvailPacksWidgets[DMit->first].begin();
+
+          while (APLiter != mp_AvailPacksWidgets[DMit->first].end() && (*APLiter)->getID() != DependenceID)
+            ++APLiter;
+
+          // dependence found ?
+          if (APLiter != mp_AvailPacksWidgets[DMit->first].end())
+          {
+            MarketPackWidget* MPW = *APLiter;
+            MPW->setInstall(true);
+          }
+        }
+      }
+
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketClientAssistant::onPackageInstallModified()
 {
   bool Selection = false;
@@ -676,6 +742,11 @@ void MarketClientAssistant::updateAvailPacksTreeview()
           mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(TCIter->first,CIter->second));
         else
           mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidgetFormat(TCIter->first,CIter->second));
+
+
+        mp_AvailPacksWidgets[TCIter->first].back()->signal_install_modified().connect(
+          sigc::bind<openfluid::ware::WareID_t>(sigc::mem_fun(*this,&MarketClientAssistant::selectDependencies),CIter->first)
+        );
 
         mp_AvailPacksWidgets[TCIter->first].back()->signal_install_modified().connect(
             sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)

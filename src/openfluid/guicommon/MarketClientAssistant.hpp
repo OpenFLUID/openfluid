@@ -122,6 +122,10 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     void onURLComboChanged();
 
+    MarketPackWidget* getAvailPackWidget(const openfluid::ware::WareID_t& ID) const;
+
+    void selectDependencies(const openfluid::ware::WareID_t& ID);
+
     void onPackageInstallModified();
 
     void onSelectAllClicked();
