@@ -64,6 +64,7 @@
 #include <gtkmm/icontheme.h>
 #include <gtkmm/iconinfo.h>
 #include <gtkmm/alignment.h>
+#include <gtkmm/treerowreference.h>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 
 // =====================================================================
@@ -84,7 +85,7 @@ OutputsView::OutputsView() :
   OutputDirLabel->set_alignment(Gtk::ALIGN_LEFT);
 
   Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
-  TopBox->pack_start(*OutputDirLabel, Gtk::PACK_SHRINK, 10);
+  TopBox->pack_start(*OutputDirLabel, Gtk::PACK_SHRINK);
 
   mp_NavBox = Gtk::manage(new Gtk::HBox(false, 5));
   mp_NavBox->set_visible(true);
@@ -97,8 +98,17 @@ OutputsView::OutputsView() :
       new Gtk::TreeView::Column(_("Name")));
   NameColumn->pack_start(m_Columns.m_Icon, false);
   NameColumn->pack_start(m_Columns.m_DisplayName);
+  NameColumn->set_sort_indicator(true);
+  NameColumn->set_sort_column_id(m_Columns.m_DisplayName);
   mp_TreeView->append_column(*NameColumn);
 
+  mp_TreeView->set_rules_hint(true);
+  mp_TreeView->set_headers_clickable(true);
+  mp_TreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+
+  mref_ListStore->set_sort_func(
+      m_Columns.m_DisplayName,
+      sigc::mem_fun(*this, &OutputsView::onSortCompare));
   mref_ListStore->set_sort_column(m_Columns.m_DisplayName, Gtk::SORT_ASCENDING);
 
   mp_TreeView->set_visible(true);
@@ -108,6 +118,9 @@ OutputsView::OutputsView() :
 
   mp_TreeView->signal_button_press_event().connect(
       sigc::mem_fun(*this, &OutputsView::onBtPressEvent), false);
+
+  mp_TreeView->signal_key_press_event().connect(
+      sigc::mem_fun(*this, &OutputsView::onKeyPressEvent), false);
 
   Gtk::ScrolledWindow* mp_ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
   mp_ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -142,6 +155,31 @@ OutputsView::OutputsView() :
   m_MenuPopup.show_all();
 
   mp_AppChooserDialog = new AppChooserDialog();
+}
+
+// =====================================================================
+// =====================================================================
+
+// If a and b are same type, we sort by alphabetical order, else directories come first
+int OutputsView::onSortCompare(const Gtk::TreeModel::iterator& a,
+                               const Gtk::TreeModel::iterator& b)
+{
+  Glib::ustring aName = a->get_value(m_Columns.m_DisplayName);
+  Glib::ustring bName = b->get_value(m_Columns.m_DisplayName);
+
+  // the model is not fully set, don't proceed in sort
+  if (aName.empty() || bName.empty())
+    return 0;
+
+  Gio::FileType aType = a->get_value(m_Columns.m_File)->query_file_type();
+  Gio::FileType bType = b->get_value(m_Columns.m_File)->query_file_type();
+
+  if (aType == bType)
+  {
+    return aName.lowercase().compare(bName.lowercase());
+  }
+
+  return (bType == Gio::FILE_TYPE_DIRECTORY);
 }
 
 // =====================================================================
@@ -193,6 +231,9 @@ void OutputsView::updateBrowser()
     {
       Gtk::TreeRow Row = *(mref_ListStore->append());
 
+      // set File first, because sort slot need it
+      Row[m_Columns.m_File] = m_CurrentDir->get_child(Child->get_name());
+
       Row[m_Columns.m_DisplayName] = Child->get_display_name();
 
       Gtk::IconInfo IconInfo = Theme->lookup_icon(
@@ -202,13 +243,13 @@ void OutputsView::updateBrowser()
       else
         Row[m_Columns.m_Icon] = Theme->load_icon(
             "text-x-generic", 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
-
-      Row[m_Columns.m_File] = m_CurrentDir->get_child(Child->get_name());
     }
 
   }
 
   Children->close();
+
+  mref_ListStore->set_sort_column(m_Columns.m_DisplayName, Gtk::SORT_ASCENDING);
 }
 
 // =====================================================================
@@ -216,8 +257,15 @@ void OutputsView::updateBrowser()
 
 void OutputsView::addNavButton(Glib::RefPtr<Gio::File> File)
 {
-  Gtk::RadioButton* NavBt = Gtk::manage(
-      new Gtk::RadioButton(m_NavGroup, File->query_info()->get_display_name()));
+  Gtk::RadioButton* NavBt = Gtk::manage(new Gtk::RadioButton(m_NavGroup));
+
+  if (File->get_path() == mref_Root->get_path())
+    NavBt->set_label(_("Output directory"));
+  else
+    NavBt->set_label(
+        File->query_info("standard::display-name")->get_display_name());
+
+  NavBt->set_tooltip_text(File->get_path());
 
   NavBt->set_visible(true);
   NavBt->set_mode(false); // to look like a standard button
@@ -255,17 +303,7 @@ void OutputsView::onRowActivated(const Gtk::TreeModel::Path& Path,
     }
     else
     {
-      for (NavBtList_t::iterator it = m_NavButtons.begin();
-          it != m_NavButtons.end(); ++it)
-        mp_NavBox->remove(*it->second);
-      m_NavButtons.clear();
-
-      for (Glib::RefPtr<Gio::File> Current = Asked;
-          Current->get_path() != mref_Root->get_parent()->get_path(); Current =
-              Current->get_parent())
-        addNavButton(Current);
-
-      m_NavButtons.at(Asked->get_path())->set_active();
+      setNavigationBar(Asked);
     }
   }
   else
@@ -285,15 +323,29 @@ void OutputsView::onRowActivated(const Gtk::TreeModel::Path& Path,
 // =====================================================================
 // =====================================================================
 
+void OutputsView::setNavigationBar(Glib::RefPtr<Gio::File> Asked)
+{
+  for (NavBtList_t::iterator it = m_NavButtons.begin();
+      it != m_NavButtons.end(); ++it)
+    mp_NavBox->remove(*it->second);
+  m_NavButtons.clear();
+
+  for (Glib::RefPtr<Gio::File> Current = Asked;
+      Current->get_path() != mref_Root->get_parent()->get_path(); Current =
+          Current->get_parent())
+    addNavButton(Current);
+
+  m_NavButtons.at(Asked->get_path())->set_active();
+}
+
+// =====================================================================
+// =====================================================================
+
 bool OutputsView::onBtPressEvent(GdkEventButton* Event)
 {
   if ((Event->type == GDK_BUTTON_PRESS) && (Event->button == 3))
   {
-    Gtk::TreePath Path;
-    mp_TreeView->get_path_at_pos((int) Event->x, (int) Event->y, Path);
-
-    if (mref_ListStore->get_iter(Path)->get_value(m_Columns.m_File)->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
-      m_MenuPopup.popup(Event->button, Event->time);
+    m_MenuPopup.popup(Event->button, Event->time);
   }
 
   return false;
@@ -309,11 +361,17 @@ void OutputsView::onMenuPopupOpenActivated()
 
   if (RefSelection)
   {
-    Gtk::TreeModel::iterator Iter = RefSelection->get_selected();
-
-    if (Iter)
-      mp_AppChooserDialog->show(Iter->get_value(m_Columns.m_File));
+    mp_TreeView->get_selection()->selected_foreach_iter(
+        sigc::mem_fun(*this, &OutputsView::showAppChooser));
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::showAppChooser(const Gtk::TreeModel::iterator& Iter)
+{
+  mp_AppChooserDialog->show(Iter->get_value(m_Columns.m_File));
 }
 
 // =====================================================================
@@ -326,17 +384,67 @@ void OutputsView::onMenuPopupDeleteActivated()
 
   if (RefSelection)
   {
-    Gtk::TreeModel::iterator Iter = RefSelection->get_selected();
+    std::vector<Gtk::TreePath> SelectionTreePaths =
+        RefSelection->get_selected_rows();
 
-    if (Iter)
+    /* don't use selected_foreach_iter nor pass a TreeRowIter, even
+     * a TreeRowRef, because deletion invalidate them
+     */
+    std::vector<Glib::RefPtr<Gio::File> > SelectionFiles;
+    for (unsigned int i = 0; i < SelectionTreePaths.size(); i++)
+      SelectionFiles.push_back(
+          mref_ListStore->get_iter(SelectionTreePaths[i])->get_value(
+              m_Columns.m_File));
+    for (unsigned int i = 0; i < SelectionFiles.size(); i++)
+      deleteFile(SelectionFiles[i]);
+
+    setNavigationBar(m_CurrentDir);
+    updateBrowser();
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+void OutputsView::deleteFile(Glib::RefPtr<Gio::File> File)
+{
+  if (!File->trash())
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+        _("Unable to delete the file"));
+}
+
+// =====================================================================
+// =====================================================================
+
+bool OutputsView::onKeyPressEvent(GdkEventKey* Event)
+{
+  if ((Event->type == GDK_KEY_PRESS) && (Event->keyval == GDK_KEY_Delete))
+  {
+    Glib::RefPtr<Gtk::TreeView::Selection> RefSelection =
+        mp_TreeView->get_selection();
+
+    if (RefSelection)
     {
-      if (!Iter->get_value(m_Columns.m_File)->remove())
-        openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-            _("Unable to delete the file"));
-      else
-        mref_ListStore->erase(Iter);
+      std::vector<Gtk::TreePath> SelectionTreePaths =
+          RefSelection->get_selected_rows();
+
+      /* don't use selected_foreach_iter nor pass an TreeRowIter, even
+       * a TreeRowRef, because deletion invalidate them
+       */
+      std::vector<Glib::RefPtr<Gio::File> > SelectionFiles;
+      for (unsigned int i = 0; i < SelectionTreePaths.size(); i++)
+        SelectionFiles.push_back(
+            mref_ListStore->get_iter(SelectionTreePaths[i])->get_value(
+                m_Columns.m_File));
+      for (unsigned int i = 0; i < SelectionFiles.size(); i++)
+        deleteFile(SelectionFiles[i]);
+
+      setNavigationBar(m_CurrentDir);
+      updateBrowser();
     }
   }
+
+  return false;
 }
 
 // =====================================================================
@@ -354,7 +462,6 @@ void OutputsView::onDirMonitoringChanged(
   if (!m_TimeoutConn.connected())
     m_TimeoutConn = Glib::signal_timeout().connect_seconds(
         sigc::mem_fun(*this, &OutputsView::onTimout_applyPendingChanges), 1);
-
 }
 
 // =====================================================================

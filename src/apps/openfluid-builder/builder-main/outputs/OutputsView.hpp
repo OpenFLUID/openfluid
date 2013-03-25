@@ -114,7 +114,11 @@ class OutputsView
     void onRowActivated(const Gtk::TreeModel::Path& Path,
                         Gtk::TreeViewColumn* Column);
 
+    void setNavigationBar(Glib::RefPtr<Gio::File> Asked);
+
     bool onBtPressEvent(GdkEventButton* Event);
+
+    bool onKeyPressEvent(GdkEventKey* Event);
 
     void setCurrentDir(Glib::RefPtr<Gio::File> Asked);
 
@@ -126,11 +130,18 @@ class OutputsView
 
     void onMenuPopupDeleteActivated();
 
+    void showAppChooser(const Gtk::TreeModel::iterator& Iter);
+
+    void deleteFile(Glib::RefPtr<Gio::File> File);
+
     void onDirMonitoringChanged(const Glib::RefPtr<Gio::File>& File,
                                 const Glib::RefPtr<Gio::File>& OtherFile,
                                 Gio::FileMonitorEvent EventType);
 
     bool onTimout_applyPendingChanges();
+
+    int onSortCompare(const Gtk::TreeModel::iterator& a,
+                      const Gtk::TreeModel::iterator& b);
 
   public:
 
