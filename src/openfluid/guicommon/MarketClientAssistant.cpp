@@ -455,13 +455,19 @@ MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::war
 // =====================================================================
 
 
-bool MarketClientAssistant::getUserChoice(const bool Select)
+bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select)
 {
-  std::string Action;
-  if (Select) Action = "select";
-  else Action = "unselect";
+  std::string Message = "<b>" + ID + "</b>";
+  if (Select)
+  {
+    Message += " needs packages to run.\nDo you want to select dependencies ?";
+  }
+  else
+  {
+    Message += " has dependencies selected.\nDo you want to unselect this packages ?";
+  }
 
-  Gtk::MessageDialog Dialog(*this,"Do you want to "+Action+" dependencies ?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
+  Gtk::MessageDialog Dialog(*this, Message, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
   Dialog.set_title("Dependencies");
   if (Select)
     Dialog.set_secondary_text("Warning, the selected package cannot be used without them.", true);
@@ -512,10 +518,10 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
       }
     }
 
-    // select dependencies
+    // selected dependencies
     if (!PacksToSelect.empty())
     {
-      if (getUserChoice(MPW->isInstall()))
+      if (getUserChoice(ID, MPW->isInstall()))
       {
         for (APLiter = PacksToSelect.begin(); APLiter != PacksToSelect.end(); ++APLiter)
         {
