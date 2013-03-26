@@ -70,6 +70,7 @@
 #include <gtkmm/textview.h>
 #include <gtkmm/notebook.h>
 #include <gtkmm/paned.h>
+#include <gtkmm/messagedialog.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketClient.hpp>
@@ -123,6 +124,8 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     void onURLComboChanged();
 
     MarketPackWidget* getAvailPackWidget(const openfluid::ware::WareID_t& ID) const;
+
+    bool getUserChoice(const bool Select);
 
     void selectDependencies(const openfluid::ware::WareID_t& ID);
 

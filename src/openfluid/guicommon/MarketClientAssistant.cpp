@@ -455,6 +455,26 @@ MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::war
 // =====================================================================
 
 
+bool MarketClientAssistant::getUserChoice(const bool Select)
+{
+  std::string Action;
+  if (Select) Action = "select";
+  else Action = "unselect";
+
+  Gtk::MessageDialog Dialog(*this,"Do you want to "+Action+" dependencies ?", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
+  Dialog.set_title("Dependencies");
+  if (Select)
+    Dialog.set_secondary_text("Warning, the selected package cannot be used without them.", true);
+  int Answer = Dialog.run();
+
+  return Answer == Gtk::RESPONSE_YES;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& ID)
 {
   openfluid::market::MetaPackagesCatalog_t::iterator PCit = m_MarketClient.findInTypesMetaPackagesCatalogs(ID);
@@ -468,13 +488,16 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
     openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
     std::list<openfluid::ware::WareID_t>::const_iterator DLit;
 
+    std::list<MarketPackWidget*> PacksToSelect;
+    std::list<MarketPackWidget*>::iterator APLiter;
+
     for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
     {
       for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
       {
         // For each dependence
         openfluid::ware::WareID_t DependenceID = *DLit;
-        std::list<MarketPackWidget*>::iterator APLiter = mp_AvailPacksWidgets[DMit->first].begin();
+        APLiter = mp_AvailPacksWidgets[DMit->first].begin();
 
         while (APLiter != mp_AvailPacksWidgets[DMit->first].end() && (*APLiter)->getID() != DependenceID)
           ++APLiter;
@@ -482,12 +505,25 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
         // dependence found ?
         if (APLiter != mp_AvailPacksWidgets[DMit->first].end())
         {
+          PacksToSelect.push_back(*APLiter);
+        }
+
+      }
+    }
+
+    // select dependencies
+    if (!PacksToSelect.empty())
+    {
+      if (getUserChoice(MPW->isInstall()))
+      {
+        for (APLiter = PacksToSelect.begin(); APLiter != PacksToSelect.end(); ++APLiter)
+        {
           MarketPackWidget* Dependence = *APLiter;
           Dependence->setInstall(MPW->isInstall());
         }
       }
-
     }
+
   }
 }
 
