@@ -55,7 +55,8 @@
 #include "BuilderGraphicsHelper.hpp"
 
 #include <gtkmm/iconfactory.h>
-
+#include <gtkmm/icontheme.h>
+#include <giomm/emblem.h>
 #include <boost/filesystem.hpp>
 
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -63,9 +64,8 @@
 // =====================================================================
 // =====================================================================
 
-
-Gtk::StockID* BuilderGraphicsHelper::createIconStockId(Glib::ustring FilePath,
-    Glib::ustring FileName, Glib::ustring StockIdString)
+Gtk::StockID* BuilderGraphicsHelper::createIconStockId(
+    Glib::ustring FilePath, Glib::ustring FileName, Glib::ustring StockIdString)
 {
   Gtk::IconSource IconSource;
 
@@ -88,12 +88,11 @@ Gtk::StockID* BuilderGraphicsHelper::createIconStockId(Glib::ustring FilePath,
 
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-Gdk::Color& BuilderGraphicsHelper::applyColorAlpha(Gdk::Color& Color, double Alpha)
+Gdk::Color& BuilderGraphicsHelper::applyColorAlpha(Gdk::Color& Color,
+                                                   double Alpha)
 {
 
   if (Alpha > 0 && Alpha < 1)
@@ -107,40 +106,34 @@ Gdk::Color& BuilderGraphicsHelper::applyColorAlpha(Gdk::Color& Color, double Alp
   return Color;
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 Glib::ustring BuilderGraphicsHelper::getPathForFileName(Glib::ustring FileName)
 {
-  std::string
-      Path =
-          openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath(
-              "openfluid-builder", FileName);
+  std::string Path =
+      openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath(
+          "openfluid-builder", FileName);
   if (!boost::filesystem::exists(Path))
-    Path
-        = openfluid::base::RuntimeEnvironment::getInstance()->getCommonResourceFilePath(
+    Path =
+        openfluid::base::RuntimeEnvironment::getInstance()->getCommonResourceFilePath(
             FileName);
   if (!boost::filesystem::exists(Path))
     Path = "";
   return Path;
 }
 
-
 // =====================================================================
 // =====================================================================
 
-
-Gtk::Image* BuilderGraphicsHelper::createImageFromFileName(Glib::ustring FileName)
+Gtk::Image* BuilderGraphicsHelper::createImageFromFileName(
+    Glib::ustring FileName)
 {
   return new Gtk::Image(getPathForFileName(FileName));
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 Gtk::StockID* BuilderGraphicsHelper::createBuilderIconStockId(
     Glib::ustring IconFileName, Glib::ustring StockIdString)
@@ -164,22 +157,18 @@ Gtk::StockID* BuilderGraphicsHelper::createBuilderIconStockId(
   return StockId;
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 Glib::RefPtr<Gdk::Pixbuf> BuilderGraphicsHelper::createSmallPixbufFromFile(
     Glib::ustring FileName)
 {
   return Gdk::Pixbuf::create_from_file(getPathForFileName(FileName), 8, -1,
-      true);
+                                       true);
 }
 
-
 // =====================================================================
 // =====================================================================
-
 
 Glib::RefPtr<Gdk::Pixbuf> BuilderGraphicsHelper::createPixbufFromFile(
     Glib::ustring FileName)
@@ -188,3 +177,34 @@ Glib::RefPtr<Gdk::Pixbuf> BuilderGraphicsHelper::createPixbufFromFile(
 
 }
 
+// =====================================================================
+// =====================================================================
+
+Gtk::Image* BuilderGraphicsHelper::createEmblemedImage(
+    Gtk::StockID IconStockID, int IconStockSize, Gtk::StockID EmblemIconStockID,
+    int EmblemIconStockSize, Gtk::IconSize ImageSize)
+{
+  Glib::RefPtr<Gtk::IconTheme> Theme = Gtk::IconTheme::get_default();
+
+  Gtk::IconInfo IconInfo = Theme->lookup_icon(IconStockID.get_string(),
+                                              IconStockSize,
+                                              Gtk::ICON_LOOKUP_USE_BUILTIN);
+
+  Glib::RefPtr<Gio::Icon> Icon = Gio::Icon::create(IconInfo.get_filename());
+
+  Gtk::IconInfo EmblemIconInfo = Theme->lookup_icon(
+      EmblemIconStockID.get_string(), EmblemIconStockSize,
+      Gtk::ICON_LOOKUP_USE_BUILTIN);
+
+  Glib::RefPtr<Gio::Icon> EmblemIcon = Gio::Icon::create(
+      EmblemIconInfo.get_filename());
+
+  Glib::RefPtr<Gio::Emblem> Emblem = Gio::Emblem::create(EmblemIcon);
+  // giomm version doesn't work
+  GIcon* Emblemed = g_emblemed_icon_new(Icon->gobj(), Emblem->gobj());
+
+  Gtk::Image* Image = Gtk::manage(new Gtk::Image());
+  Image->set(Glib::wrap(Emblemed), ImageSize);
+
+  return Image;
+}
