@@ -74,8 +74,6 @@ class DLLEXPORT MarketPackWidgetFormat : public MarketPackWidget
     Gtk::ComboBox m_FormatCombo;
     Gtk::Button m_ConfigButton;
 
-    Gtk::VBox m_DetailsLeftVBox;
-
     Glib::RefPtr<Gtk::ListStore> m_RefFormatComboBoxModel;
 
     class FormatComboColumns : public Gtk::TreeModel::ColumnRecord

@@ -106,8 +106,11 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::TypePac
 
   if (m_TypePackage == openfluid::market::PackageInfo::DATA)
   {
+    // display in the middle
+    m_DetailsLeftVBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET, 15);
+
     m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
-    m_MainHBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET,12);
+    m_MainHBox.pack_start(m_DetailsLeftVBox,Gtk::PACK_EXPAND_WIDGET,12);
     m_MainHBox.pack_start(m_DetailsRightVBox,Gtk::PACK_EXPAND_WIDGET,12);
   }
 

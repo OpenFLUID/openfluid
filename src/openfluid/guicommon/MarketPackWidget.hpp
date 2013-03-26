@@ -103,6 +103,7 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 
     Gtk::ToggleButton m_InstallToggle;
 
+    Gtk::VBox m_DetailsLeftVBox;
     Gtk::VBox m_DetailsRightVBox;
 
     signal_install_modified_t m_signal_install_modified;
