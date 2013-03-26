@@ -505,7 +505,8 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
         // dependence found ?
         if (APLiter != mp_AvailPacksWidgets[DMit->first].end())
         {
-          PacksToSelect.push_back(*APLiter);
+          if ((*APLiter)->isInstall() != MPW->isInstall())
+            PacksToSelect.push_back(*APLiter);
         }
 
       }
