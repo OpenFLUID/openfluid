@@ -55,6 +55,7 @@
 
 #include <openfluid/guicommon/MarketPackWidget.hpp>
 #include <openfluid/market/MarketPackage.hpp>
+#include <openfluid/market/MarketClient.hpp>
 
 #include <glibmm/i18n.h>
 
@@ -214,6 +215,21 @@ void MarketPackWidget::updateDisplayedInfos()
     m_LicenseLabel.set_markup(std::string("<u>")+_("License:")+std::string("</u> ")+replaceByUnknownIfEmpty(LicenseStr));
 
     if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "\n\n"+m_MetaPackInfo.Description;
+
+    // dependencies
+    openfluid::market::PackageInfo::Dependencies_t Dependencies = m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::FLUIDX].Dependencies;
+    openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
+    std::list<openfluid::ware::WareID_t>::const_iterator DLit;
+
+    MarkupTooltip += "\n\n<u>Dependencies:</u>";
+    for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
+    {
+      MarkupTooltip += "\n- "+openfluid::market::MarketClient::getTypeName(DMit->first, true, true)+": ";
+      for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
+      {
+        MarkupTooltip += "\n  " + *DLit;
+      }
+    }
   }
 
   set_tooltip_markup(MarkupTooltip);
