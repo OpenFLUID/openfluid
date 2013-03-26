@@ -249,7 +249,7 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 // =====================================================================
 
 
-std::string MarketClient::getTypeName(const PackageInfo::TypePackage& Type, const bool Maj, const bool Plural) const
+std::string MarketClient::getTypeName(const PackageInfo::TypePackage& Type, const bool Maj, const bool Plural)
 {
   std::string TypesNames[] = { "function", "observer", "builderext", "dataset"};
   std::string Name = TypesNames[Type];
