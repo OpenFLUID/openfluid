@@ -79,7 +79,29 @@ BEGIN_FUNCTION_SIGNATURE(THIS_FUNC_ID)
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
-#warning produced inputdata not declared
+  DECLARE_PRODUCED_INPUTDATA("indataDouble2","TestUnits","","")
+  DECLARE_PRODUCED_INPUTDATA("indataDouble3","TestUnits","","")
+
+  DECLARE_PRODUCED_INPUTDATA("indataLong2","TestUnits","","")
+  DECLARE_PRODUCED_INPUTDATA("indataLong3","TestUnits","","")
+
+  DECLARE_PRODUCED_INPUTDATA("indataBool2","TestUnits","","")
+  DECLARE_PRODUCED_INPUTDATA("indataBool3","TestUnits","","")
+
+  DECLARE_PRODUCED_INPUTDATA("indataString2","TestUnits","","")
+  DECLARE_PRODUCED_INPUTDATA("indataString3","TestUnits","","")
+
+  DECLARE_PRODUCED_INPUTDATA("indataVector2","TestUnits","","")
+  DECLARE_PRODUCED_INPUTDATA("indataVector3","TestUnits","","")
+
+  DECLARE_PRODUCED_INPUTDATA("indataMatrix2","TestUnits","","")
+  DECLARE_PRODUCED_INPUTDATA("indataMatrix3","TestUnits","","")
+
+  DECLARE_PRODUCED_INPUTDATA("indataMap2","TestUnits","","")
+  DECLARE_PRODUCED_INPUTDATA("indataMap3","TestUnits","","")
+
+  DECLARE_PRODUCED_INPUTDATA("indataNull2","TestUnits","","")
+  DECLARE_PRODUCED_INPUTDATA("indataNull3","TestUnits","","")
 
 END_FUNCTION_SIGNATURE
 

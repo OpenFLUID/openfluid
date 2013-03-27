@@ -149,9 +149,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->HandledData.FunctionParams[1].Description,"this is param2");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.FunctionParams[1].DataUnit,"m3");
 
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredInput.size(),2);
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredInputdata.size(),2);
 
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedInput.size(),1);
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedInputdata.size(),1);
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars.size(),3);
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[1].DataName,"pvar2");

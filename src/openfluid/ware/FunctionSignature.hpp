@@ -190,24 +190,34 @@
   Signature->HandledData.UsedPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
-  Macro for declaration of a required input data
-  @param[in] name name of the property
+  Macro for declaration of a produced input data
+  @param[in] name name of the input data
   @param[in] uclass class of the concerned units
-  @param[in] description description of the property
-  @param[in] unit unit of the property. Could be an empty string if there is no unit
+  @param[in] description description of the input data
+  @param[in] unit unit of the input data. Could be an empty string if there is no unit
+*/
+#define DECLARE_PRODUCED_INPUTDATA(name,uclass,description,unit) \
+  Signature->HandledData.ProducedInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+
+/**
+  Macro for declaration of a required input data
+  @param[in] name name of the input data
+  @param[in] uclass class of the concerned units
+  @param[in] description description of the input data
+  @param[in] unit unit of the input data. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_INPUTDATA(name,uclass,description,unit) \
-  Signature->HandledData.RequiredInput.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used input data
-  @param[in] name name of the property
+  @param[in] name name of the input data
   @param[in] uclass class of the concerned units
-  @param[in] description description of the property
-  @param[in] unit unit of the property. Could be an empty string if there is no unit
+  @param[in] description description of the input data
+  @param[in] unit unit of the input data. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_INPUTDATA(name,uclass,description,unit) \
-  Signature->HandledData.UsedInput.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of used events
@@ -413,9 +423,11 @@ class SignatureHandledData
 
     std::vector<SignatureHandledDataItem> FunctionParams;
 
-    std::vector<SignatureHandledDataItem> RequiredInput;
+    std::vector<SignatureHandledDataItem> ProducedInputdata;
 
-    std::vector<SignatureHandledDataItem> UsedInput;
+    std::vector<SignatureHandledDataItem> RequiredInputdata;
+
+    std::vector<SignatureHandledDataItem> UsedInputdata;
 
     std::vector<std::string> RequiredExtraFiles;
 
