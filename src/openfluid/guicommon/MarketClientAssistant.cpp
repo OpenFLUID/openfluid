@@ -368,10 +368,10 @@ void MarketClientAssistant::onLicensesTreeviewChanged()
   {
     Gtk::TreeModel::Row Row = *Iter;
     std::string PackageID = Row.get_value(m_LicensesColumns.m_ID);
-    openfluid::market::TypesMetaPackagesCatalogs_t Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
+
     openfluid::market::MetaPackagesCatalog_t::iterator PCit = m_MarketClient.findInTypesMetaPackagesCatalogs(PackageID);
 
-    if (PCit != Catalogs.rbegin()->second.end())
+    if (PCit != m_MarketClient.getTypesMetaPackagesCatalogs().rbegin()->second.end())
     {
       std::string LicenseID = PCit->second.AvailablePackages[PCit->second.Selected].License;
 
