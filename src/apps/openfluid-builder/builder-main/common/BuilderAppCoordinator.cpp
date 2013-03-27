@@ -58,6 +58,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/buddies/ExamplesBuddy.hpp>
 
 #include "builderconfig.hpp"
 #include "BuilderAppWindow.hpp"
@@ -155,7 +156,7 @@ void BuilderAppCoordinator::whenMarketAsked()
 
 void BuilderAppCoordinator::whenDemosAsked()
 {
-  mp_CurrentState->whenDemosAsked();
+  mp_CurrentState->whenDemoOpenAsked();
 }
 
 // =====================================================================
@@ -180,6 +181,14 @@ void BuilderAppCoordinator::whenAboutAsked()
 void BuilderAppCoordinator::whenOnlineAsked(const std::string& URL)
 {
   mp_CurrentState->whenOnlineAsked(URL);
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppCoordinator::whenDemoRestoreAsked()
+{
+  mp_CurrentState->whenDemoRestoreAsked();
 }
 
 // =====================================================================
@@ -266,7 +275,7 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
   m_Actions.getAppMarketAction()->signal_activate().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::whenMarketAsked));
 
-  m_Actions.getAppDemosAction()->signal_activate().connect(
+  m_Actions.getAppDemoOpenAction()->signal_activate().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::whenDemosAsked));
 
   m_Actions.getEditPreferencesAction()->signal_activate().connect(
@@ -294,6 +303,9 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
       sigc::bind<std::string>(
           sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
           BUILDER_URL_BUG));
+
+  m_Actions.getAppDemoRestoreAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenDemoRestoreAsked));
 
   m_Actions.getSaveAction()->signal_activate().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::whenSaveAsked));
@@ -379,8 +391,9 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 
     updateRecentsList();
 
-    //TODO: remove save, do only onSaveHappened() instead. Think to check messages at project start.
-//    ProjectModule->saveAsked();
+    // to save it if it's a new project
+    if(ProjectFolder.empty())
+      ProjectModule->saveAsked();
 
     ProjectModule->checkAsked();
   }
@@ -466,12 +479,32 @@ bool BuilderAppCoordinator::showQuitAppDialog()
 // =====================================================================
 // =====================================================================
 
-void BuilderAppCoordinator::showOpenDemoProjectDialog()
+std::string BuilderAppCoordinator::showOpenDemoProjectDialog()
 {
-  std::string AskedDemoPath = mp_OpenDemosDialog->show();
+  return mp_OpenDemosDialog->show();
+}
 
-  if (!AskedDemoPath.empty())
-    openProject(AskedDemoPath);
+// =====================================================================
+// =====================================================================
+
+void BuilderAppCoordinator::restoreDemoProjects()
+{
+  if(openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+      _("Restoring the default examples projects will overwrite any changes you might have done on them.\n"
+          "Are you sure you want to proceed ?")))
+  {
+    openfluid::buddies::ExamplesBuddy Buddy(0);
+    Buddy.parseOptions("force=1");
+    try
+    {
+      Buddy.run();
+    }
+    catch (openfluid::base::OFException& e)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+          _("No example project to install"));
+    }
+  }
 }
 
 // =====================================================================

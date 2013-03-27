@@ -83,7 +83,9 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenMarketAsked();
 
-    void whenDemosAsked();
+    void whenDemoOpenAsked();
+
+    void whenDemoRestoreAsked();
 
     void whenSaveAsked();
 

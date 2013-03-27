@@ -57,6 +57,9 @@
 #include <gtkmm/label.h>
 #include <gtkmm/action.h>
 
+// =====================================================================
+// =====================================================================
+
 void BuilderHomeButton::initialize()
 {
   set_size_request(350, 65);
@@ -66,34 +69,59 @@ void BuilderHomeButton::initialize()
   add(*mp_InnerBox);
 }
 
+// =====================================================================
+// =====================================================================
+
 BuilderHomeButton::BuilderHomeButton()
 {
   initialize();
 }
+
+// =====================================================================
+// =====================================================================
+
 void BuilderHomeButton::setImage(Gtk::Image& Image)
 {
   Image.property_icon_size() = Gtk::ICON_SIZE_DIALOG;
   Image.set_visible(true);
   mp_InnerBox->pack_start(Image, Gtk::PACK_SHRINK, 10);
 }
+
+// =====================================================================
+// =====================================================================
+
 void BuilderHomeButton::setLabelText(std::string LabelText)
 {
   Gtk::Label * Label = Gtk::manage(new Gtk::Label(LabelText, Gtk::ALIGN_LEFT));
   Label->set_line_wrap(true);
   Label->set_visible(true);
-  mp_InnerBox ->pack_end(*Label);
+  mp_InnerBox->pack_end(*Label);
 }
-BuilderHomeButton::BuilderHomeButton(Gtk::Image& Image, std::string LabelText)
+
+// =====================================================================
+// =====================================================================
+
+BuilderHomeButton::BuilderHomeButton(Gtk::Image& AlternativeImage,
+                                     Glib::RefPtr<Gtk::Action> Action)
 {
   initialize();
-  setImage(Image);
-  setLabelText(LabelText);
-}
-BuilderHomeButton::BuilderHomeButton(Glib::RefPtr<Gtk::Action> Action)
-{
-  initialize();
-  setImage(*Gtk::manage(new Gtk::Image(Action->get_stock_id(),
-      Gtk::ICON_SIZE_DIALOG)));
+  setImage(AlternativeImage);
   setLabelText(Action->get_tooltip());
   Action->connect_proxy(*this);
 }
+
+// =====================================================================
+// =====================================================================
+
+BuilderHomeButton::BuilderHomeButton(Glib::RefPtr<Gtk::Action> Action)
+{
+  initialize();
+  setImage(
+      *Gtk::manage(
+          new Gtk::Image(Action->get_stock_id(), Gtk::ICON_SIZE_DIALOG)));
+  setLabelText(Action->get_tooltip());
+  Action->connect_proxy(*this);
+}
+
+// =====================================================================
+// =====================================================================

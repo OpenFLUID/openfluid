@@ -58,7 +58,6 @@
 #include <gtkmm/uimanager.h>
 #include <gtkmm/actiongroup.h>
 
-
 class BuilderAppActions
 {
   private:
@@ -103,7 +102,7 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getSimulationRunAction();
 
-    Glib::RefPtr<Gtk::Action> getAppDemosAction();
+    Glib::RefPtr<Gtk::Action> getAppDemoOpenAction();
 
     Glib::RefPtr<Gtk::Action> getEditPreferencesAction();
 
@@ -117,6 +116,8 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getAppOnlineBugAction();
 
+    Glib::RefPtr<Gtk::Action> getAppDemoRestoreAction();
+
     Glib::RefPtr<Gtk::Action> getSaveAction();
 
     Glib::RefPtr<Gtk::Action> getSaveAsAction();
@@ -127,8 +128,9 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getRefreshAction();
 
-    Glib::RefPtr<Gtk::Action> addProjectExtensionAction(std::string ActionName,
-        std::string ActionLabel, std::string ActionTooltip = "");
+    Glib::RefPtr<Gtk::Action> addProjectExtensionAction(
+        std::string ActionName, std::string ActionLabel,
+        std::string ActionTooltip = "");
 
     Glib::RefPtr<Gtk::Action> addProjectDataAction(
         Glib::RefPtr<Gtk::Action> ParentMenuAction, std::string ActionName,

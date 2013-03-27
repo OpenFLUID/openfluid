@@ -58,16 +58,15 @@
 #include <gtkmm/stockid.h>
 #include <gtkmm/image.h>
 
-
 // =====================================================================
 // =====================================================================
-
 
 class BuilderGraphicsHelper
 {
   public:
     static Gtk::StockID* createIconStockId(Glib::ustring FilePath,
-        Glib::ustring FileName, Glib::ustring StockIdString);
+                                           Glib::ustring FileName,
+                                           Glib::ustring StockIdString);
 
     static Gdk::Color& applyColorAlpha(Gdk::Color& Color, double Alpha);
 
@@ -76,12 +75,19 @@ class BuilderGraphicsHelper
     static Gtk::Image* createImageFromFileName(Glib::ustring FileName);
 
     static Gtk::StockID* createBuilderIconStockId(Glib::ustring IconFileName,
-        Glib::ustring StockIdString);
+                                                  Glib::ustring StockIdString);
 
     static Glib::RefPtr<Gdk::Pixbuf> createSmallPixbufFromFile(
         Glib::ustring FileName);
 
-    static Glib::RefPtr<Gdk::Pixbuf> createPixbufFromFile(Glib::ustring FileName);
+    static Glib::RefPtr<Gdk::Pixbuf> createPixbufFromFile(
+        Glib::ustring FileName);
+
+    static Gtk::Image* createEmblemedImage(Gtk::StockID IconStockID,
+                                           int IconStockSize,
+                                           Gtk::StockID EmblemIconStockID,
+                                           int EmblemIconStockSize,
+                                           Gtk::IconSize ImageSize);
 
 };
 
