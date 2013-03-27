@@ -58,6 +58,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/buddies/ExamplesBuddy.hpp>
 
 #include "builderconfig.hpp"
 #include "BuilderAppWindow.hpp"
@@ -185,6 +186,14 @@ void BuilderAppCoordinator::whenOnlineAsked(const std::string& URL)
 // =====================================================================
 // =====================================================================
 
+void BuilderAppCoordinator::whenDemoRestoreAsked()
+{
+  mp_CurrentState->whenDemoRestoreAsked();
+}
+
+// =====================================================================
+// =====================================================================
+
 void BuilderAppCoordinator::whenSaveAsked()
 {
   mp_CurrentState->whenSaveAsked();
@@ -294,6 +303,9 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
       sigc::bind<std::string>(
           sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
           BUILDER_URL_BUG));
+
+  m_Actions.getAppDemoRestoreAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenDemoRestoreAsked));
 
   m_Actions.getSaveAction()->signal_activate().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::whenSaveAsked));
@@ -473,6 +485,29 @@ void BuilderAppCoordinator::showOpenDemoProjectDialog()
 
   if (!AskedDemoPath.empty())
     openProject(AskedDemoPath);
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppCoordinator::restoreDemoProjects()
+{
+  if(openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+      _("Restoring the default examples projects will overwrite any changes you might have done on them.\n"
+          "Are you sure you want to proceed ?")))
+  {
+    openfluid::buddies::ExamplesBuddy Buddy(0);
+    Buddy.parseOptions("force=1");
+    try
+    {
+      Buddy.run();
+    }
+    catch (openfluid::base::OFException& e)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+          _("No example project to install"));
+    }
+  }
 }
 
 // =====================================================================

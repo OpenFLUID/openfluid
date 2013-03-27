@@ -92,6 +92,8 @@ void BuilderAppActions::createAppUiXml()
                "        <menuitem action='HelpOnlineBug'/>"
                "      </menu>"
                "      <separator/>"
+               "      <menuitem action='HelpDemoRestore'/>"
+               "      <separator/>"
                "      <menuitem action='HelpAbout'/>"
                "    </menu>"
                "  </menubar>"
@@ -199,6 +201,7 @@ void BuilderAppActions::createAppActionGroup()
   mref_AppActionGroup->add(
       Gtk::Action::create("HelpOnlineBug", _("Bug tracking")));
   mref_AppActionGroup->add(Gtk::Action::create("HelpAbout", Gtk::Stock::ABOUT));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpDemoRestore", _("Restore default example projects")));
 
   //Home menu
   mref_AppActionGroup->add(
@@ -329,6 +332,7 @@ void BuilderAppActions::setProjectActionGroupSensitive(bool Sensitive)
 void BuilderAppActions::setProjectActionGroupVisible(bool Visible)
 {
   mref_ProjectActionGroup->set_visible(Visible);
+  getAppDemoRestoreAction()->set_visible(!Visible);
 }
 
 // =====================================================================
@@ -441,6 +445,14 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineDevAction()
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineBugAction()
 {
   return mref_AppActionGroup->get_action("HelpOnlineBug");
+}
+
+// =====================================================================
+// =====================================================================
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppDemoRestoreAction()
+{
+  return mref_AppActionGroup->get_action("HelpDemoRestore");
 }
 
 // =====================================================================

@@ -85,6 +85,8 @@ class BuilderAppHomeState: public BuilderAppState
 
     void whenDemosAsked();
 
+    void whenDemoRestoreAsked();
+
     void whenSaveAsked();
 
     void whenSaveAsAsked();

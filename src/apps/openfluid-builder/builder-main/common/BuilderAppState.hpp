@@ -79,6 +79,8 @@ class BuilderAppState
 
     void whenOnlineAsked(const std::string& URL);
 
+    virtual void whenDemoRestoreAsked() = 0;
+
     virtual void whenSaveAsked() = 0;
 
     virtual void whenSaveAsAsked() = 0;

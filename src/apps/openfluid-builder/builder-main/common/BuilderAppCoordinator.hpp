@@ -109,6 +109,8 @@ class BuilderAppCoordinator: public sigc::trackable
 
     void whenOnlineAsked(const std::string& URL);
 
+    void whenDemoRestoreAsked();
+
     void whenSaveAsked();
 
     void whenSaveAsAsked();
@@ -153,6 +155,8 @@ class BuilderAppCoordinator: public sigc::trackable
     bool showQuitAppDialog();
 
     void showOpenDemoProjectDialog();
+
+    void restoreDemoProjects();
 
     void openProject(std::string ProjectPath = "");
 
