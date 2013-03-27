@@ -258,6 +258,7 @@ void OpenFLUIDApp::printFunctionsHandledDataItemReport(openfluid::ware::Signatur
 
   if (Type == ("fpar")) TypeStr = ("function parameter");
 
+  if (Type == ("pinput")) TypeStr = ("produced input data");
   if (Type == ("rinput")) TypeStr = ("required input data");
   if (Type == ("sinput")) TypeStr = ("used input data");
 
@@ -327,8 +328,9 @@ void OpenFLUIDApp::printFunctionsHandledDataReport(openfluid::ware::SignatureHan
   for (i=0;i<HandledData.UsedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
   for (i=0;i<HandledData.RequiredPrevVars.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredPrevVars[i],Suffix,("rprevvar"));
   for (i=0;i<HandledData.UsedPrevVars.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedPrevVars[i],Suffix,("sprevvar"));
-  for (i=0;i<HandledData.RequiredInput.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredInput[i],Suffix,("rinput"));
-  for (i=0;i<HandledData.UsedInput.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedInput[i],Suffix,("sinput"));
+  for (i=0;i<HandledData.ProducedInputdata.size();i++) printFunctionsHandledDataItemReport(HandledData.ProducedInputdata[i],Suffix,("pinput"));
+  for (i=0;i<HandledData.RequiredInputdata.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredInputdata[i],Suffix,("rinput"));
+  for (i=0;i<HandledData.UsedInputdata.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedInputdata[i],Suffix,("sinput"));
 
   if (HandledData.UsedEventsOnUnits.size() > 0)
   {

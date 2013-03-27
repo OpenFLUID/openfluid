@@ -131,24 +131,28 @@ class DLLEXPORT Engine
 
      void checkModelConsistency();
 
-     void checkInputDataConsistency();
+     void checkInputdataConsistency();
 
      void checkExtraFilesConsistency();
 
-     void checkExistingVariable(openfluid::core::VariableName_t VarName,
-                                openfluid::core::Value::Type VarType,
-                                openfluid::core::UnitClass_t ClassName,
-                                std::string FunctionName);
+     void checkExistingVariable(const openfluid::core::VariableName_t& VarName,
+                                const openfluid::core::Value::Type& VarType,
+                                const openfluid::core::UnitClass_t& ClassName,
+                                const std::string& FunctionID);
 
-     void createVariable(openfluid::core::VariableName_t VarName,
-                         openfluid::core::Value::Type VarType,
-                         openfluid::core::UnitClass_t ClassName,
+     void createVariable(const openfluid::core::VariableName_t& VarName,
+                         const openfluid::core::Value::Type& VarType,
+                         const openfluid::core::UnitClass_t& ClassName,
                          bool UpdateMode,
-                         std::string FunctionName);
+                         const std::string& FunctionID);
 
-     void checkExistingInputData(openfluid::core::InputDataName_t DataName,
+     void checkExistingInputdata(openfluid::core::InputDataName_t DataName,
                                  openfluid::core::UnitClass_t ClassName,
-                                 std::string FunctionName);
+                                 const std::string& FunctionID);
+
+     void createInputdata(openfluid::core::InputDataName_t DataName,
+                          openfluid::core::UnitClass_t ClassName,
+                          const std::string& FunctionID);
 
      void prepareOutputDir();
 

@@ -117,17 +117,17 @@ Engine::~Engine()
 // =====================================================================
 
 
-void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
-                                   openfluid::core::Value::Type VarType,
-                                   openfluid::core::UnitClass_t ClassName,
-                                   std::string FunctionName)
+void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarName,
+                                   const openfluid::core::Value::Type& VarType,
+                                   const openfluid::core::UnitClass_t& ClassName,
+                                   const std::string& FunctionID)
 {
   openfluid::core::UnitsList_t::const_iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + FunctionName);
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + FunctionID);
 
   bool Status = true;
 
@@ -140,7 +140,7 @@ void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
       Status = (*UnitIter).getVariables()->isTypedVariableExist(VarName,VarType);
 
     if (!Status)
-      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + FunctionName + " is not previously created");
+      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + FunctionID + " is not previously created");
 
     ++UnitIter;
   }
@@ -152,18 +152,18 @@ void Engine::checkExistingVariable(openfluid::core::VariableName_t VarName,
 // =====================================================================
 
 
-void Engine::createVariable(openfluid::core::VariableName_t VarName,
-                            openfluid::core::Value::Type VarType,
-                            openfluid::core::UnitClass_t ClassName,
+void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
+                            const openfluid::core::Value::Type& VarType,
+                            const openfluid::core::UnitClass_t& ClassName,
                             bool UpdateMode,
-                            std::string FunctionName)
+                            const std::string& FunctionID)
 {
   openfluid::core::UnitsList_t::iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + FunctionName);
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + FunctionID);
 
   bool Status = true;
 
@@ -176,7 +176,7 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
        Status = !((*UnitIter).getVariables()->isVariableExist(VarName));
 
       if (!Status)
-        throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + FunctionName + " cannot be created because it is previously created");
+        throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + FunctionID + " cannot be created because it is previously created");
 
       ++UnitIter;
     }
@@ -189,21 +189,21 @@ void Engine::createVariable(openfluid::core::VariableName_t VarName,
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-
-void Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
+void Engine::checkExistingInputdata(openfluid::core::InputDataName_t DataName,
                                     openfluid::core::UnitClass_t ClassName,
-                                    std::string FunctionName)
+                                    const std::string& FunctionID)
 {
   openfluid::core::UnitsList_t::const_iterator UnitIter;
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData","Unit " + ClassName + " class does not exist for " + DataName + " input data required by " + FunctionName);
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData","Unit " + ClassName + " class does not exist for " + DataName + " input data required by " + FunctionID);
 
   bool Status = true;
 
@@ -212,7 +212,7 @@ void Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
   {
     Status = (*UnitIter).getInputData()->isDataExist(DataName);
     if (!Status)
-      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData",DataName + " input data on " + ClassName + " required by " + FunctionName + " is not available");
+      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData",DataName + " input data on " + ClassName + " required by " + FunctionID + " is not available");
 
     ++UnitIter;
   }
@@ -222,6 +222,28 @@ void Engine::checkExistingInputData(openfluid::core::InputDataName_t DataName,
 // =====================================================================
 // =====================================================================
 
+
+void Engine::createInputdata(openfluid::core::InputDataName_t DataName,
+                             openfluid::core::UnitClass_t ClassName,
+                             const std::string& FunctionID)
+{
+  openfluid::core::UnitsList_t::iterator UnitIter;
+  openfluid::core::UnitsList_t* UnitList;
+
+  UnitList = NULL;
+  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::createInputdata","Unit class " + ClassName + " does not exist for " + DataName + " inputdata produced by " + FunctionID);
+
+
+  for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
+  {
+    (*UnitIter).getInputData()->setValue(DataName,openfluid::core::NullValue());
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
@@ -285,7 +307,6 @@ void Engine::checkModelConsistency()
                             CurrentFunction->Signature->ID);
 
     // checking variables to create (produced)
-
     for (i=0;i< HData.ProducedVars.size();i++)
       createVariable(HData.ProducedVars[i].DataName,
                      HData.ProducedVars[i].DataType,
@@ -331,7 +352,7 @@ void Engine::checkModelConsistency()
 
 
 
-void Engine::checkInputDataConsistency()
+void Engine::checkInputdataConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator FuncIter;
   openfluid::ware::SignatureHandledData HData;
@@ -346,11 +367,16 @@ void Engine::checkInputDataConsistency()
     CurrentFunction = (*FuncIter);
     HData = CurrentFunction->Signature->HandledData;
 
-
     // checking required input data
-    for(i=0; i < HData.RequiredInput.size();i++)
-      checkExistingInputData(HData.RequiredInput[i].DataName,
-          HData.RequiredInput[i].UnitClass,
+    for(i=0; i < HData.RequiredInputdata.size();i++)
+      checkExistingInputdata(HData.RequiredInputdata[i].DataName,
+          HData.RequiredInputdata[i].UnitClass,
+          CurrentFunction->Signature->ID);
+
+    // checking produced input data
+    for(i=0; i < HData.ProducedInputdata.size();i++)
+      createInputdata(HData.ProducedInputdata[i].DataName,
+          HData.ProducedInputdata[i].UnitClass,
           CurrentFunction->Signature->ID);
 
     FuncIter++;
@@ -442,7 +468,7 @@ void Engine::pretestConsistency(PretestInfos_t& PretestInfos)
 
     try
     {
-      checkInputDataConsistency();
+      checkInputdataConsistency();
     }
     catch (openfluid::base::OFException& E)
     {
@@ -660,7 +686,7 @@ void Engine::checkConsistency()
 
     checkModelConsistency();
 
-    checkInputDataConsistency();
+    checkInputdataConsistency();
   }
   catch (openfluid::base::OFException& E)
   {

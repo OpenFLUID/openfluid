@@ -85,9 +85,9 @@ class ModelFctDetailIDataTreeStore: public ModelFctDetailTreeStore
     }
     void extractItems(openfluid::ware::FunctionSignature* Signature)
     {
-      extractInnerItems(Signature->HandledData.RequiredInput,
+      extractInnerItems(Signature->HandledData.RequiredInputdata,
           m_RequiredTitleRow);
-      extractInnerItems(Signature->HandledData.UsedInput, m_UsedTitleRow);
+      extractInnerItems(Signature->HandledData.UsedInputdata, m_UsedTitleRow);
     }
 };
 
