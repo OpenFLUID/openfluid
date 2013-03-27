@@ -70,10 +70,10 @@
 #include "EngineProjectNewDialog.hpp"
 #include "EngineProjectOpenDialog.hpp"
 #include "PreferencesDialog.hpp"
+#include "BuilderOpenDemosDialog.hpp"
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::unsetCurrentModule()
 {
@@ -83,7 +83,6 @@ void BuilderAppCoordinator::unsetCurrentModule()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::setCurrentModule(
     openfluid::guicommon::BuilderModule* Module)
@@ -97,7 +96,6 @@ void BuilderAppCoordinator::setCurrentModule(
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::whenNewProjectAsked()
 {
   mp_CurrentState->whenNewProjectAsked();
@@ -105,7 +103,6 @@ void BuilderAppCoordinator::whenNewProjectAsked()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::whenOpenProjectAsked()
 {
@@ -115,7 +112,6 @@ void BuilderAppCoordinator::whenOpenProjectAsked()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::whenCloseProjectAsked()
 {
   mp_CurrentState->whenCloseProjectAsked();
@@ -124,7 +120,6 @@ void BuilderAppCoordinator::whenCloseProjectAsked()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::whenQuitAsked()
 {
   mp_CurrentState->whenQuitAsked();
@@ -132,7 +127,6 @@ void BuilderAppCoordinator::whenQuitAsked()
 
 // =====================================================================
 // =====================================================================
-
 
 bool BuilderAppCoordinator::whenMainWindowCloseAsked(GdkEventAny* /*Event*/)
 {
@@ -143,7 +137,6 @@ bool BuilderAppCoordinator::whenMainWindowCloseAsked(GdkEventAny* /*Event*/)
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::whenRunAsked()
 {
   mp_CurrentState->whenRunAsked();
@@ -151,7 +144,6 @@ void BuilderAppCoordinator::whenRunAsked()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::whenMarketAsked()
 {
@@ -161,6 +153,13 @@ void BuilderAppCoordinator::whenMarketAsked()
 // =====================================================================
 // =====================================================================
 
+void BuilderAppCoordinator::whenDemosAsked()
+{
+  mp_CurrentState->whenDemosAsked();
+}
+
+// =====================================================================
+// =====================================================================
 
 void BuilderAppCoordinator::whenPreferencesAsked()
 {
@@ -170,7 +169,6 @@ void BuilderAppCoordinator::whenPreferencesAsked()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::whenAboutAsked()
 {
   mp_CurrentState->whenAboutAsked();
@@ -178,7 +176,6 @@ void BuilderAppCoordinator::whenAboutAsked()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::whenOnlineAsked(const std::string& URL)
 {
@@ -188,7 +185,6 @@ void BuilderAppCoordinator::whenOnlineAsked(const std::string& URL)
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::whenSaveAsked()
 {
   mp_CurrentState->whenSaveAsked();
@@ -196,7 +192,6 @@ void BuilderAppCoordinator::whenSaveAsked()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::whenMapViewAsked()
 {
@@ -206,7 +201,6 @@ void BuilderAppCoordinator::whenMapViewAsked()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::whenRefreshAsked()
 {
   mp_CurrentState->whenRefreshAsked();
@@ -214,7 +208,6 @@ void BuilderAppCoordinator::whenRefreshAsked()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::whenSaveAsAsked()
 {
@@ -224,7 +217,6 @@ void BuilderAppCoordinator::whenSaveAsAsked()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::whenPropertiesAsked()
 {
   mp_CurrentState->whenPropertiesAsked();
@@ -232,7 +224,6 @@ void BuilderAppCoordinator::whenPropertiesAsked()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::whenExtensionAsked(const std::string& ExtensionID)
 {
@@ -242,10 +233,9 @@ void BuilderAppCoordinator::whenExtensionAsked(const std::string& ExtensionID)
 // =====================================================================
 // =====================================================================
 
-
 BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
-    BuilderAppActions& Actions) :
-  m_MainWindow(MainWindow), m_Actions(Actions), m_HasToBeSaved(true)
+                                             BuilderAppActions& Actions) :
+    m_MainWindow(MainWindow), m_Actions(Actions), m_HasToBeSaved(true)
 {
   mp_CurrentModule = 0;
 
@@ -254,66 +244,71 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
 
   mp_NewProjectDialog = new EngineProjectNewDialog();
   mp_OpenProjectDialog = new EngineProjectOpenDialog();
+  mp_OpenDemosDialog = new BuilderOpenDemosDialog();
 
   mp_PreferencesDialog = new PreferencesDialog();
 
-  m_Actions.getFileNewAction()->signal_activate().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenNewProjectAsked));
-  m_Actions.getFileOpenAction()->signal_activate().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenOpenProjectAsked));
-  m_Actions.getFileCloseAction()->signal_activate().connect(sigc::mem_fun(
-      *this, &BuilderAppCoordinator::whenCloseProjectAsked));
-  m_Actions.getFileQuitAction()->signal_activate().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenQuitAsked));
+  m_Actions.getFileNewAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenNewProjectAsked));
+  m_Actions.getFileOpenAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenOpenProjectAsked));
+  m_Actions.getFileCloseAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenCloseProjectAsked));
+  m_Actions.getFileQuitAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenQuitAsked));
 
-  m_Actions.getFilePropertiesAction()->signal_activate().connect(sigc::mem_fun(
-      *this, &BuilderAppCoordinator::whenPropertiesAsked));
+  m_Actions.getFilePropertiesAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenPropertiesAsked));
 
-  m_Actions.getSimulationRunAction()->signal_activate().connect(sigc::mem_fun(
-      *this, &BuilderAppCoordinator::whenRunAsked));
+  m_Actions.getSimulationRunAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenRunAsked));
 
-  m_Actions.getAppMarketAction()->signal_activate().connect(sigc::mem_fun(
-      *this, &BuilderAppCoordinator::whenMarketAsked));
+  m_Actions.getAppMarketAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenMarketAsked));
+
+  m_Actions.getAppDemosAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenDemosAsked));
 
   m_Actions.getEditPreferencesAction()->signal_activate().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::whenPreferencesAsked));
 
-  m_Actions.getAppAboutAction()->signal_activate().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenAboutAsked));
+  m_Actions.getAppAboutAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenAboutAsked));
 
-  m_Actions.getAppOnlineWebsiteAction()->signal_activate().connect(sigc::bind<
-      std::string>(
-      sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
-      BUILDER_URL_WEBSITE));
+  m_Actions.getAppOnlineWebsiteAction()->signal_activate().connect(
+      sigc::bind<std::string>(
+          sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
+          BUILDER_URL_WEBSITE));
 
   m_Actions.getAppOnlineCommunityAction()->signal_activate().connect(
-      sigc::bind<std::string>(sigc::mem_fun(*this,
-          &BuilderAppCoordinator::whenOnlineAsked), BUILDER_URL_COMMUNITY));
+      sigc::bind<std::string>(
+          sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
+          BUILDER_URL_COMMUNITY));
 
-  m_Actions.getAppOnlineDevAction()->signal_activate().connect(sigc::bind<
-      std::string>(
-      sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
-      BUILDER_URL_DEV));
+  m_Actions.getAppOnlineDevAction()->signal_activate().connect(
+      sigc::bind<std::string>(
+          sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
+          BUILDER_URL_DEV));
 
-  m_Actions.getAppOnlineBugAction()->signal_activate().connect(sigc::bind<
-      std::string>(
-      sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
-      BUILDER_URL_BUG));
+  m_Actions.getAppOnlineBugAction()->signal_activate().connect(
+      sigc::bind<std::string>(
+          sigc::mem_fun(*this, &BuilderAppCoordinator::whenOnlineAsked),
+          BUILDER_URL_BUG));
 
-  m_Actions.getSaveAction()->signal_activate().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenSaveAsked));
+  m_Actions.getSaveAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenSaveAsked));
 
-  m_Actions.getSaveAsAction()->signal_activate().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenSaveAsAsked));
+  m_Actions.getSaveAsAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenSaveAsAsked));
 
-  m_Actions.getMapViewAction()->signal_activate().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenMapViewAsked));
+  m_Actions.getMapViewAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenMapViewAsked));
 
-  m_Actions.getRefreshAction()->signal_activate().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenRefreshAsked));
+  m_Actions.getRefreshAction()->signal_activate().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenRefreshAsked));
 
-  m_MainWindow.signal_delete_event().connect(sigc::mem_fun(*this,
-      &BuilderAppCoordinator::whenMainWindowCloseAsked));
+  m_MainWindow.signal_delete_event().connect(
+      sigc::mem_fun(*this, &BuilderAppCoordinator::whenMainWindowCloseAsked));
 
   setState(*mp_HomeState);
 }
@@ -329,7 +324,6 @@ void BuilderAppCoordinator::setState(BuilderAppState& State)
 // =====================================================================
 // =====================================================================
 
-
 BuilderAppState* BuilderAppCoordinator::getHomeState()
 {
   return mp_HomeState;
@@ -342,7 +336,6 @@ BuilderAppState* BuilderAppCoordinator::getProjectState()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::setHomeModule()
 {
@@ -360,7 +353,6 @@ void BuilderAppCoordinator::setHomeModule()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 {
   if (openfluid::base::ProjectManager::getInstance()->isOpened())
@@ -370,14 +362,14 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 
     setCurrentModule(ProjectModule);
 
-    ProjectModule->signal_CheckHappened().connect(sigc::mem_fun(*this,
-        &BuilderAppCoordinator::onCheckHappened));
+    ProjectModule->signal_CheckHappened().connect(
+        sigc::mem_fun(*this, &BuilderAppCoordinator::onCheckHappened));
 
-    ProjectModule->signal_ChangeHappened().connect(sigc::mem_fun(*this,
-        &BuilderAppCoordinator::onChangeHappened));
+    ProjectModule->signal_ChangeHappened().connect(
+        sigc::mem_fun(*this, &BuilderAppCoordinator::onChangeHappened));
 
-    ProjectModule->signal_SaveHappened().connect(sigc::mem_fun(*this,
-        &BuilderAppCoordinator::onSaveHappened));
+    ProjectModule->signal_SaveHappened().connect(
+        sigc::mem_fun(*this, &BuilderAppCoordinator::onSaveHappened));
 
     m_Actions.setProjectActionGroupVisible(true);
     m_MainWindow.setToolBarVisible(true);
@@ -394,8 +386,8 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
   }
   else
   {
-    throw openfluid::base::OFException("OpenFLUID Builder",
-        "BuilderAppCoordinator::setProjectModule",
+    throw openfluid::base::OFException(
+        "OpenFLUID Builder", "BuilderAppCoordinator::setProjectModule",
         "ProjectModule needs an opened Project Manager");
   }
 
@@ -404,7 +396,6 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::onCheckHappened(bool IsCheckOk)
 {
   m_Actions.getSimulationRunAction()->set_sensitive(IsCheckOk);
@@ -412,7 +403,6 @@ void BuilderAppCoordinator::onCheckHappened(bool IsCheckOk)
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::onChangeHappened()
 {
@@ -423,7 +413,6 @@ void BuilderAppCoordinator::onChangeHappened()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::onSaveHappened()
 {
   m_Actions.getSaveAction()->set_sensitive(false);
@@ -433,7 +422,6 @@ void BuilderAppCoordinator::onSaveHappened()
 // =====================================================================
 // =====================================================================
 
-
 openfluid::guicommon::BuilderModule* BuilderAppCoordinator::getCurrentModule()
 {
   return mp_CurrentModule;
@@ -441,7 +429,6 @@ openfluid::guicommon::BuilderModule* BuilderAppCoordinator::getCurrentModule()
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::quitApp()
 {
@@ -451,7 +438,6 @@ void BuilderAppCoordinator::quitApp()
 
 // =====================================================================
 // =====================================================================
-
 
 bool BuilderAppCoordinator::showCloseProjectDialog()
 {
@@ -471,11 +457,21 @@ bool BuilderAppCoordinator::showCloseProjectDialog()
 // =====================================================================
 // =====================================================================
 
-
 bool BuilderAppCoordinator::showQuitAppDialog()
 {
   return openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       _("Are you sure you want to quit?"));
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppCoordinator::showOpenDemoProjectDialog()
+{
+  std::string AskedDemoPath = mp_OpenDemosDialog->show();
+
+  if (!AskedDemoPath.empty())
+    openProject(AskedDemoPath);
 }
 
 // =====================================================================
@@ -550,7 +546,6 @@ void BuilderAppCoordinator::createProject()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::closeProject()
 {
   openfluid::base::ProjectManager::getInstance()->close();
@@ -561,7 +556,6 @@ void BuilderAppCoordinator::closeProject()
 // =====================================================================
 // =====================================================================
 
-
 PreferencesDialog* BuilderAppCoordinator::getPreferencesDialog()
 {
   return mp_PreferencesDialog;
@@ -569,7 +563,6 @@ PreferencesDialog* BuilderAppCoordinator::getPreferencesDialog()
 
 // =====================================================================
 // =====================================================================
-
 
 BuilderAppCoordinator::~BuilderAppCoordinator()
 {
@@ -580,19 +573,18 @@ BuilderAppCoordinator::~BuilderAppCoordinator()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::updateMainWindowInformation()
 {
-  m_MainWindow.set_title("OpenFLUID-Builder  ["
-      + openfluid::base::ProjectManager::getInstance()->getName() + "]");
+  m_MainWindow.set_title(
+      "OpenFLUID-Builder  [" + openfluid::base::ProjectManager::getInstance()->getName()
+      + "]");
 
-  m_MainWindow.setStatusBarMessage("Current project path: "
-      + openfluid::base::ProjectManager::getInstance()->getPath());
+  m_MainWindow.setStatusBarMessage(
+      "Current project path: " + openfluid::base::ProjectManager::getInstance()->getPath());
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void BuilderAppCoordinator::updateRecentsList()
 {
@@ -606,7 +598,6 @@ void BuilderAppCoordinator::updateRecentsList()
 // =====================================================================
 // =====================================================================
 
-
 void BuilderAppCoordinator::configExtensionsMenus()
 {
   CollectionOfExtensions_t* ExtColl =
@@ -614,8 +605,8 @@ void BuilderAppCoordinator::configExtensionsMenus()
 
   ExtensionContainerMap_t::iterator ECMit;
 
-  for (CollectionOfExtensions_t::iterator COEit = ExtColl->begin(); COEit
-      != ExtColl->end(); ++COEit)
+  for (CollectionOfExtensions_t::iterator COEit = ExtColl->begin();
+      COEit != ExtColl->end(); ++COEit)
   {
     ExtensionContainerMap_t ExtContainerMap = COEit->second;
 
@@ -624,61 +615,79 @@ void BuilderAppCoordinator::configExtensionsMenus()
       case openfluid::builderext::PluggableBuilderExtension::WorkspaceTab:
       case openfluid::builderext::PluggableBuilderExtension::ModelessWindow:
       case openfluid::builderext::PluggableBuilderExtension::ModalWindow:
-        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end();
+            ++ECMit)
           m_Actions.addProjectExtensionAction(ECMit->second.Infos.ID,
-              ECMit->second.Infos.ShortName, ECMit->second.Infos.Description)->signal_activate().connect(
-              sigc::bind<std::string>(sigc::mem_fun(*this,
-                  &BuilderAppCoordinator::whenExtensionAsked),
+                                              ECMit->second.Infos.ShortName,
+                                              ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(
+                  sigc::mem_fun(*this,
+                                &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));
         break;
 
       case openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter:
-        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end();
+            ++ECMit)
           m_Actions.addProjectDataAction(m_Actions.getDataDomainMenuAction(),
-              ECMit->second.Infos.ID, ECMit->second.Infos.ShortName,
-              ECMit->second.Infos.Description)->signal_activate().connect(
-              sigc::bind<std::string>(sigc::mem_fun(*this,
-                  &BuilderAppCoordinator::whenExtensionAsked),
+                                         ECMit->second.Infos.ID,
+                                         ECMit->second.Infos.ShortName,
+                                         ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(
+                  sigc::mem_fun(*this,
+                                &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));
         break;
 
       case openfluid::builderext::PluggableBuilderExtension::InputdataImporter:
-        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
-          m_Actions.addProjectDataAction(
-              m_Actions.getDataInputdataMenuAction(), ECMit->second.Infos.ID,
-              ECMit->second.Infos.ShortName, ECMit->second.Infos.Description)->signal_activate().connect(
-              sigc::bind<std::string>(sigc::mem_fun(*this,
-                  &BuilderAppCoordinator::whenExtensionAsked),
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end();
+            ++ECMit)
+          m_Actions.addProjectDataAction(m_Actions.getDataInputdataMenuAction(),
+                                         ECMit->second.Infos.ID,
+                                         ECMit->second.Infos.ShortName,
+                                         ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(
+                  sigc::mem_fun(*this,
+                                &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));
         break;
 
       case openfluid::builderext::PluggableBuilderExtension::EventsImporter:
-        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end();
+            ++ECMit)
           m_Actions.addProjectDataAction(m_Actions.getDataEventsMenuAction(),
-              ECMit->second.Infos.ID, ECMit->second.Infos.ShortName,
-              ECMit->second.Infos.Description)->signal_activate().connect(
-              sigc::bind<std::string>(sigc::mem_fun(*this,
-                  &BuilderAppCoordinator::whenExtensionAsked),
+                                         ECMit->second.Infos.ID,
+                                         ECMit->second.Infos.ShortName,
+                                         ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(
+                  sigc::mem_fun(*this,
+                                &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));
         break;
 
       case openfluid::builderext::PluggableBuilderExtension::ExtraImporter:
-        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end();
+            ++ECMit)
           m_Actions.addProjectDataAction(m_Actions.getDataExtraMenuAction(),
-              ECMit->second.Infos.ID, ECMit->second.Infos.ShortName,
-              ECMit->second.Infos.Description)->signal_activate().connect(
-              sigc::bind<std::string>(sigc::mem_fun(*this,
-                  &BuilderAppCoordinator::whenExtensionAsked),
+                                         ECMit->second.Infos.ID,
+                                         ECMit->second.Infos.ShortName,
+                                         ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(
+                  sigc::mem_fun(*this,
+                                &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));
         break;
 
       case openfluid::builderext::PluggableBuilderExtension::MixedImporter:
-        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end(); ++ECMit)
+        for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end();
+            ++ECMit)
           m_Actions.addProjectDataAction(m_Actions.getDataMixedMenuAction(),
-              ECMit->second.Infos.ID, ECMit->second.Infos.ShortName,
-              ECMit->second.Infos.Description)->signal_activate().connect(
-              sigc::bind<std::string>(sigc::mem_fun(*this,
-                  &BuilderAppCoordinator::whenExtensionAsked),
+                                         ECMit->second.Infos.ID,
+                                         ECMit->second.Infos.ShortName,
+                                         ECMit->second.Infos.Description)->signal_activate().connect(
+              sigc::bind<std::string>(
+                  sigc::mem_fun(*this,
+                                &BuilderAppCoordinator::whenExtensionAsked),
                   ECMit->second.Infos.ID));
         break;
 

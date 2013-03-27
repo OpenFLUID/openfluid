@@ -46,35 +46,66 @@
  */
 
 /**
- \file EngineProjectOpenDialog.hpp
+ \file BuilderOpenDemosDialog.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __ENGINEPROJECTOPENDIALOG_HPP__
-#define __ENGINEPROJECTOPENDIALOG_HPP__
+#ifndef BUILDEROPENDEMOSDIALOG_HPP_
+#define BUILDEROPENDEMOSDIALOG_HPP_
 
-#include <gtkmm/filechooserdialog.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
 #include "EngineProjectPreviewWidget.hpp"
 
-class EngineProjectOpenDialog
+namespace openfluid {
+namespace buddies {
+class ExamplesBuddy;
+}
+}
+
+class BuilderOpenDemosDialog
 {
   private:
 
-    Gtk::FileChooserDialog* mp_Dialog;
+    Gtk::Dialog* mp_Dialog;
 
-    std::string m_ProjectFolder;
+    openfluid::buddies::ExamplesBuddy* mp_Buddy;
+
+    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
+
+    class DemosColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        DemosColumns()
+        {
+          add(m_Name);
+          add(m_Path);
+        }
+        Gtk::TreeModelColumn<std::string> m_Name;
+        Gtk::TreeModelColumn<std::string> m_Path;
+    };
+
+    DemosColumns m_Columns;
+
+    Gtk::TreeView* mp_TreeView;
 
     EngineProjectPreviewWidget* mp_PreviewWidget;
 
-    void onProjectFolderSelectionChanged();
+    void onSelectionChanged();
+
+    void onRowActivated(const Gtk::TreeModel::Path& Path,
+                           Gtk::TreeViewColumn* Column);
 
   public:
 
-    EngineProjectOpenDialog();
+    BuilderOpenDemosDialog();
+
+    ~BuilderOpenDemosDialog();
 
     std::string show();
 };
 
-#endif /* __ENGINEPROJECTOPENDIALOG_HPP__ */
+#endif /* BUILDEROPENDEMOSDIALOG_HPP_ */

@@ -198,12 +198,16 @@ void BuilderAppActions::createAppActionGroup()
       _("Development website")));
   mref_AppActionGroup->add(Gtk::Action::create("HelpOnlineBug",
       _("Bug tracking")));
-
   mref_AppActionGroup->add(Gtk::Action::create("HelpAbout", Gtk::Stock::ABOUT));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpMarket",
+
+  //Home menu
+  mref_AppActionGroup->add(Gtk::Action::create("HomeMarket",
       *BuilderGraphicsHelper::createBuilderIconStockId("openfluid_in_cart.png",
           "openfluid_in_cart"), _("OpenFLUID Market..."),
       _("Access to OpenFLUID Market")));
+  mref_AppActionGroup->add(Gtk::Action::create("HomeDemos",
+        _("Open a demo project..."),_("Open a demo project...")));
+
 }
 
 // =====================================================================
@@ -395,7 +399,7 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSimulationRunAction()
 
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppMarketAction()
 {
-  return mref_AppActionGroup->get_action("HelpMarket");
+  return mref_AppActionGroup->get_action("HomeMarket");
 }
 
 // =====================================================================
@@ -477,6 +481,14 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAsAction()
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getMapViewAction()
 {
   return mref_ProjectActionGroup->get_action("MapView");
+}
+
+// =====================================================================
+// =====================================================================
+
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppDemosAction()
+{
+  return mref_AppActionGroup->get_action("HomeDemos");
 }
 
 // =====================================================================
