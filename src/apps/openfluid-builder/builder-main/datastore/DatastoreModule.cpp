@@ -46,121 +46,85 @@
  */
 
 /**
- \file BuilderModuleFactory.cpp
+ \file DatastoreModule.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "BuilderModuleFactory.hpp"
-
-#include "BuilderHomeModule.hpp"
-#include "ModelStructureModule.hpp"
-#include "DomainStructureModule.hpp"
-#include "DomainClassModule.hpp"
 #include "DatastoreModule.hpp"
-#include "SimulationRunModule.hpp"
-#include "MonitoringModule.hpp"
-#include "OutputsModule.hpp"
-#include "EngineProject.hpp"
 
-#include "MapViewModule.hpp"
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include "DatastoreView.hpp"
 
 // =====================================================================
 // =====================================================================
 
-
-BuilderModuleFactory::BuilderModuleFactory(EngineProject& EngProject) :
-  mp_EngineProject(EngProject)
+DatastoreModule::DatastoreModule(
+    openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
+    ProjectWorkspaceModule(AdvancedDesc)
 {
+  mp_MainPanel = 0;
+
+  mp_DatastoreView = new DatastoreView();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createHomeModule(
-    BuilderAppActions& Actions)
+DatastoreModule::~DatastoreModule()
 {
-  return new BuilderHomeModule(Actions);
+  delete mp_DatastoreView;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureModule()
+void DatastoreModule::compose()
 {
-  ModelStructureModule* Module = new ModelStructureModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
+  mp_MainPanel = Gtk::manage(new Gtk::VBox());
+
+  mp_MainPanel->set_border_width(5);
+  mp_MainPanel->pack_start(*mp_DatastoreView->asWidget());
+
+  mp_MainPanel->set_visible(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainStructureModule()
+Gtk::Widget* DatastoreModule::asWidget()
 {
-  DomainStructureModule* Module = new DomainStructureModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
+  if (mp_MainPanel)
+    return mp_MainPanel;
+  throw std::logic_error(
+      "DatastoreModule : you try to get a widget from a non yet composed module.");
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDatastoreModule()
+sigc::signal<void> DatastoreModule::signal_ModuleChanged()
 {
-  DatastoreModule* Module = new DatastoreModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
+  return m_signal_DatastoreChanged;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainClassModule()
+void DatastoreModule::whenDatastoreChanged()
 {
-  DomainClassModule* Module = new DomainClassModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
+  m_signal_DatastoreChanged.emit();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createSimulationRunModule()
+void DatastoreModule::update()
 {
-  SimulationRunModule* Module = new SimulationRunModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
+  mp_DatastoreView->update();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMonitoringModule()
-{
-  MonitoringModule* Module = new MonitoringModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createOutputsModule()
-{
-  OutputsModule* Module = new OutputsModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-openfluid::guicommon::BuilderModule* BuilderModuleFactory::createMapViewModule()
-{
-  MapViewModule* Module = new MapViewModule(mp_EngineProject.getAdvancedDesc());
-  return Module;
-}

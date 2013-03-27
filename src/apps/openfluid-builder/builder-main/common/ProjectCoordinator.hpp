@@ -110,6 +110,8 @@ class ProjectCoordinator
 
     std::string m_DomainPageName;
 
+    std::string m_DatastorePageName;
+
     std::string m_RunPageName;
 
     std::string m_MonitoringPageName;

@@ -64,6 +64,7 @@ class ProjectExplorerCategories
       EXPLORER_MODEL,
       EXPLORER_DOMAIN,
       EXPLORER_CLASS,
+      EXPLORER_DATASTORE,
       EXPLORER_RUN,
       EXPLORER_MONITORING,
       EXPLORER_OUTPUTS,

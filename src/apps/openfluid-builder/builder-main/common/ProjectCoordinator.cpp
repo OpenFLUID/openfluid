@@ -86,9 +86,10 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
     m_ExplorerModel(ExplorerModel), m_Workspace(Workspace), m_EngineProject(
         TheEngineProject), m_ProjectDashboard(TheProjectDashboard), m_HasRun(
         false), m_ModelPageName(_("Model")), m_DomainPageName(
-        _("Spatial domain")), m_RunPageName(_("Run configuration")), m_MonitoringPageName(
-        _("Monitoring")), m_OutputsPageName(_("Output browser")), m_FileMonitorHasChanged(
-        false), m_FileMonitorHasToDisplay(true)
+        _("Spatial domain")), m_DatastorePageName(_("Datastore")), m_RunPageName(
+        _("Run configuration")), m_MonitoringPageName(_("Monitoring")), m_OutputsPageName(
+        _("Output browser")), m_FileMonitorHasChanged(false), m_FileMonitorHasToDisplay(
+        true)
 {
   mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
 
@@ -223,6 +224,17 @@ void ProjectCoordinator::whenActivationChanged()
             m_ExplorerModel.getActivatedElement().second);
 
         m_ClassPageNames.insert(PageName);
+
+        addModuleToWorkspace(PageName, *Module);
+      }
+      break;
+
+    case ProjectExplorerCategories::EXPLORER_DATASTORE:
+      PageName = m_DatastorePageName;
+      if (!m_Workspace.existsPageName(PageName))
+      {
+        Module =
+            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createDatastoreModule());
 
         addModuleToWorkspace(PageName, *Module);
       }

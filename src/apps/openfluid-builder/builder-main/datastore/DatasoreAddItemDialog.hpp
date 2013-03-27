@@ -46,53 +46,20 @@
  */
 
 /**
- \file BuilderModuleFactory.hpp
+ \file DatasoreAddItemDialog.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERMODULEFACTORY_HPP__
-#define __BUILDERMODULEFACTORY_HPP__
+#ifndef DATASOREADDITEMDIALOG_HPP_
+#define DATASOREADDITEMDIALOG_HPP_
 
-namespace openfluid {
-namespace guicommon {
-class BuilderModule;
-}
-}
-
-class BuilderAppActions;
-class EngineProject;
-
-class BuilderModuleFactory
+class DatasoreAddItemDialog
 {
-  private:
-
-    EngineProject& mp_EngineProject;
-
   public:
-
-    static openfluid::guicommon::BuilderModule* createHomeModule(
-        BuilderAppActions& Actions);
-
-    BuilderModuleFactory(EngineProject& EngProject);
-
-    openfluid::guicommon::BuilderModule* createModelStructureModule();
-
-    openfluid::guicommon::BuilderModule* createDomainStructureModule();
-
-    openfluid::guicommon::BuilderModule* createDatastoreModule();
-
-    openfluid::guicommon::BuilderModule* createDomainClassModule();
-
-    openfluid::guicommon::BuilderModule* createSimulationRunModule();
-
-    openfluid::guicommon::BuilderModule* createMonitoringModule();
-
-    openfluid::guicommon::BuilderModule* createOutputsModule();
-
-    openfluid::guicommon::BuilderModule* createMapViewModule();
-
+    DatasoreAddItemDialog();
+    ~DatasoreAddItemDialog();
 };
 
-#endif /* __BUILDERMODULEFACTORY_HPP__ */
+#endif /* DATASOREADDITEMDIALOG_HPP_ */

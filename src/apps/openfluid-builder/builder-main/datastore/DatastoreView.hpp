@@ -46,53 +46,30 @@
  */
 
 /**
- \file BuilderModuleFactory.hpp
+ \file DatastoreView.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERMODULEFACTORY_HPP__
-#define __BUILDERMODULEFACTORY_HPP__
+#ifndef DATASTOREVIEW_HPP_
+#define DATASTOREVIEW_HPP_
 
-namespace openfluid {
-namespace guicommon {
-class BuilderModule;
-}
-}
+#include <gtkmm/box.h>
 
-class BuilderAppActions;
-class EngineProject;
-
-class BuilderModuleFactory
+class DatastoreView
 {
   private:
 
-    EngineProject& mp_EngineProject;
+    Gtk::Box* mp_MainBox;
 
   public:
 
-    static openfluid::guicommon::BuilderModule* createHomeModule(
-        BuilderAppActions& Actions);
+    DatastoreView();
 
-    BuilderModuleFactory(EngineProject& EngProject);
+    void update();
 
-    openfluid::guicommon::BuilderModule* createModelStructureModule();
-
-    openfluid::guicommon::BuilderModule* createDomainStructureModule();
-
-    openfluid::guicommon::BuilderModule* createDatastoreModule();
-
-    openfluid::guicommon::BuilderModule* createDomainClassModule();
-
-    openfluid::guicommon::BuilderModule* createSimulationRunModule();
-
-    openfluid::guicommon::BuilderModule* createMonitoringModule();
-
-    openfluid::guicommon::BuilderModule* createOutputsModule();
-
-    openfluid::guicommon::BuilderModule* createMapViewModule();
-
+    Gtk::Widget* asWidget();
 };
 
-#endif /* __BUILDERMODULEFACTORY_HPP__ */
+#endif /* DATASTOREVIEW_HPP_ */

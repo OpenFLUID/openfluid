@@ -46,53 +46,43 @@
  */
 
 /**
- \file BuilderModuleFactory.hpp
- \brief Header of ...
+ \file DatastoreView.cpp
+ \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERMODULEFACTORY_HPP__
-#define __BUILDERMODULEFACTORY_HPP__
+#include "DatastoreView.hpp"
 
-namespace openfluid {
-namespace guicommon {
-class BuilderModule;
-}
-}
+#include <glibmm/i18n.h>
 
-class BuilderAppActions;
-class EngineProject;
+// =====================================================================
+// =====================================================================
 
-class BuilderModuleFactory
+DatastoreView::DatastoreView()
 {
-  private:
+  mp_MainBox = Gtk::manage(new Gtk::VBox());
 
-    EngineProject& mp_EngineProject;
+  mp_MainBox->set_visible(true);
+  mp_MainBox->show_all_children();
+}
 
-  public:
+// =====================================================================
+// =====================================================================
 
-    static openfluid::guicommon::BuilderModule* createHomeModule(
-        BuilderAppActions& Actions);
+void DatastoreView::update()
+{
 
-    BuilderModuleFactory(EngineProject& EngProject);
+}
 
-    openfluid::guicommon::BuilderModule* createModelStructureModule();
+// =====================================================================
+// =====================================================================
 
-    openfluid::guicommon::BuilderModule* createDomainStructureModule();
+Gtk::Widget* DatastoreView::asWidget()
+{
+  return mp_MainBox;
+}
 
-    openfluid::guicommon::BuilderModule* createDatastoreModule();
+// =====================================================================
+// =====================================================================
 
-    openfluid::guicommon::BuilderModule* createDomainClassModule();
-
-    openfluid::guicommon::BuilderModule* createSimulationRunModule();
-
-    openfluid::guicommon::BuilderModule* createMonitoringModule();
-
-    openfluid::guicommon::BuilderModule* createOutputsModule();
-
-    openfluid::guicommon::BuilderModule* createMapViewModule();
-
-};
-
-#endif /* __BUILDERMODULEFACTORY_HPP__ */
