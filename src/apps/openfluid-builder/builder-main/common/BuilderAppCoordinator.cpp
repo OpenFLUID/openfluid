@@ -156,7 +156,7 @@ void BuilderAppCoordinator::whenMarketAsked()
 
 void BuilderAppCoordinator::whenDemosAsked()
 {
-  mp_CurrentState->whenDemosAsked();
+  mp_CurrentState->whenDemoOpenAsked();
 }
 
 // =====================================================================
@@ -479,12 +479,9 @@ bool BuilderAppCoordinator::showQuitAppDialog()
 // =====================================================================
 // =====================================================================
 
-void BuilderAppCoordinator::showOpenDemoProjectDialog()
+std::string BuilderAppCoordinator::showOpenDemoProjectDialog()
 {
-  std::string AskedDemoPath = mp_OpenDemosDialog->show();
-
-  if (!AskedDemoPath.empty())
-    openProject(AskedDemoPath);
+  return mp_OpenDemosDialog->show();
 }
 
 // =====================================================================

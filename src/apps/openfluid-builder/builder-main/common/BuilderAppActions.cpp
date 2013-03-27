@@ -338,7 +338,7 @@ void BuilderAppActions::setProjectActionGroupSensitive(bool Sensitive)
 void BuilderAppActions::setProjectActionGroupVisible(bool Visible)
 {
   mref_ProjectActionGroup->set_visible(Visible);
-  mref_AppActionGroup->get_action("HelpDemo")->set_visible(!Visible);
+  getAppDemoRestoreAction()->set_visible(!Visible);
 }
 
 // =====================================================================

@@ -154,7 +154,7 @@ class BuilderAppCoordinator: public sigc::trackable
 
     bool showQuitAppDialog();
 
-    void showOpenDemoProjectDialog();
+    std::string showOpenDemoProjectDialog();
 
     void restoreDemoProjects();
 

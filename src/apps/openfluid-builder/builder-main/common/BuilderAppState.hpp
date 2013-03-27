@@ -73,11 +73,11 @@ class BuilderAppState
 
     virtual void whenMarketAsked() = 0;
 
-    virtual void whenDemosAsked() = 0;
-
     void whenAboutAsked();
 
     void whenOnlineAsked(const std::string& URL);
+
+    virtual void whenDemoOpenAsked() = 0;
 
     virtual void whenDemoRestoreAsked() = 0;
 

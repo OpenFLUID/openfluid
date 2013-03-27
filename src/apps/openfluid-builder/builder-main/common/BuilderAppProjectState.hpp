@@ -80,6 +80,8 @@ class BuilderAppProjectState: public BuilderAppState
 
     void whenOpenProjectAsked();
 
+    void whenDemoOpenAsked();
+
     void whenCloseProjectAsked();
 
     void whenQuitAsked();
@@ -87,8 +89,6 @@ class BuilderAppProjectState: public BuilderAppState
     void whenRunAsked();
 
     void whenMarketAsked() {};
-
-    void whenDemosAsked() {};
 
     void whenDemoRestoreAsked() {};
 
