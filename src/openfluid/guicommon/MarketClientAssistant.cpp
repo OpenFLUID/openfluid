@@ -455,16 +455,30 @@ MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::war
 // =====================================================================
 
 
-bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select)
+bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
+    const std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > PacksToSelect)
 {
   std::string Message = "<b>" + ID + "</b>";
   if (Select)
   {
-    Message += " needs packages to run.\nDo you want to select dependencies ?";
+    Message += " needs some dependencies to run.\nDo you want to select this packages ?\n";
   }
   else
   {
-    Message += " has dependencies selected.\nDo you want to unselect this packages ?";
+    Message += " has dependencies selected.\nDo you want to unselect this packages ?\n";
+  }
+
+  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::const_iterator APMiter;
+  std::list<MarketPackWidget*>::const_iterator APLiter;
+
+  for (APMiter = PacksToSelect.begin(); APMiter != PacksToSelect.end(); ++APMiter)
+  {
+    Message += "\n- <u>"+m_MarketClient.getTypeName(APMiter->first, true, true)+":</u> ";
+    for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
+    {
+      Message += (*APLiter)->getID() + "; ";
+    }
+    Message = Message.substr(0, Message.size() - 2);
   }
 
   Gtk::MessageDialog Dialog(*this, Message, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
@@ -494,7 +508,8 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
     openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
     std::list<openfluid::ware::WareID_t>::const_iterator DLit;
 
-    std::list<MarketPackWidget*> PacksToSelect;
+    std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > PacksToSelect;
+    std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
     std::list<MarketPackWidget*>::iterator APLiter;
 
     for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
@@ -512,7 +527,7 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
         if (APLiter != mp_AvailPacksWidgets[DMit->first].end())
         {
           if ((*APLiter)->isInstall() != MPW->isInstall())
-            PacksToSelect.push_back(*APLiter);
+            PacksToSelect[DMit->first].push_back(*APLiter);
         }
 
       }
@@ -521,13 +536,17 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
     // selected dependencies
     if (!PacksToSelect.empty())
     {
-      if (getUserChoice(ID, MPW->isInstall()))
+      if (getUserChoice(ID, MPW->isInstall(), PacksToSelect))
       {
-        for (APLiter = PacksToSelect.begin(); APLiter != PacksToSelect.end(); ++APLiter)
+        for (APMiter = PacksToSelect.begin(); APMiter != PacksToSelect.end(); ++APMiter)
         {
-          MarketPackWidget* Dependence = *APLiter;
-          Dependence->setInstall(MPW->isInstall());
+          for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
+          {
+            MarketPackWidget* Dependence = *APLiter;
+            Dependence->setInstall(MPW->isInstall());
+          }
         }
+
       }
     }
 
