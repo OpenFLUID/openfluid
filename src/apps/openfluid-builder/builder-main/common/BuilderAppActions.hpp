@@ -102,7 +102,7 @@ class BuilderAppActions
 
     Glib::RefPtr<Gtk::Action> getSimulationRunAction();
 
-    Glib::RefPtr<Gtk::Action> getAppDemosAction();
+    Glib::RefPtr<Gtk::Action> getAppDemoOpenAction();
 
     Glib::RefPtr<Gtk::Action> getEditPreferencesAction();
 

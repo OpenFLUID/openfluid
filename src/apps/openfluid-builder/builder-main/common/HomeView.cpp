@@ -112,7 +112,7 @@ void HomeViewImpl::createButtonPanel()
           *BuilderGraphicsHelper::createEmblemedImage(Gtk::Stock::OPEN, 48,
                                                       Gtk::Stock::ABOUT, 48,
                                                       Gtk::ICON_SIZE_DIALOG),
-          mp_Actions.getAppDemosAction()));
+          mp_Actions.getAppDemoOpenAction()));
   mp_DemosButton->set_visible(true);
 
   mp_MarketButton = Gtk::manage(

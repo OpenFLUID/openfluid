@@ -275,7 +275,7 @@ BuilderAppCoordinator::BuilderAppCoordinator(BuilderAppWindow& MainWindow,
   m_Actions.getAppMarketAction()->signal_activate().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::whenMarketAsked));
 
-  m_Actions.getAppDemosAction()->signal_activate().connect(
+  m_Actions.getAppDemoOpenAction()->signal_activate().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::whenDemosAsked));
 
   m_Actions.getEditPreferencesAction()->signal_activate().connect(

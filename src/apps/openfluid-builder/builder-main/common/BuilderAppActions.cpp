@@ -92,7 +92,10 @@ void BuilderAppActions::createAppUiXml()
                "        <menuitem action='HelpOnlineBug'/>"
                "      </menu>"
                "      <separator/>"
-               "      <menuitem action='HelpDemoRestore'/>"
+               "      <menu action='HelpDemo'>"
+               "        <menuitem action='HelpDemoOpen'/>"
+               "        <menuitem action='HelpDemoRestore'/>"
+               "      </menu>"
                "      <separator/>"
                "      <menuitem action='HelpAbout'/>"
                "    </menu>"
@@ -201,7 +204,13 @@ void BuilderAppActions::createAppActionGroup()
   mref_AppActionGroup->add(
       Gtk::Action::create("HelpOnlineBug", _("Bug tracking")));
   mref_AppActionGroup->add(Gtk::Action::create("HelpAbout", Gtk::Stock::ABOUT));
-  mref_AppActionGroup->add(Gtk::Action::create("HelpDemoRestore", _("Restore default example projects")));
+  mref_AppActionGroup->add(Gtk::Action::create("HelpDemo", _("Examples")));
+  mref_AppActionGroup->add(
+      Gtk::Action::create("HelpDemoOpen", _("Open an example project..."),
+                          _("Open an example project")));
+  mref_AppActionGroup->add(
+      Gtk::Action::create("HelpDemoRestore",
+                          _("Restore default example projects")));
 
   //Home menu
   mref_AppActionGroup->add(
@@ -210,9 +219,6 @@ void BuilderAppActions::createAppActionGroup()
           *BuilderGraphicsHelper::createBuilderIconStockId(
               "openfluid_in_cart.png", "openfluid_in_cart"),
           _("OpenFLUID Market..."), _("Access to OpenFLUID Market")));
-  mref_AppActionGroup->add(
-      Gtk::Action::create("HomeDemos", _("Open an example project..."),
-                          _("Open an example project")));
 }
 
 // =====================================================================
@@ -332,7 +338,7 @@ void BuilderAppActions::setProjectActionGroupSensitive(bool Sensitive)
 void BuilderAppActions::setProjectActionGroupVisible(bool Visible)
 {
   mref_ProjectActionGroup->set_visible(Visible);
-  getAppDemoRestoreAction()->set_visible(!Visible);
+  mref_AppActionGroup->get_action("HelpDemo")->set_visible(!Visible);
 }
 
 // =====================================================================
@@ -450,6 +456,14 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppOnlineBugAction()
 // =====================================================================
 // =====================================================================
 
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppDemoOpenAction()
+{
+  return mref_AppActionGroup->get_action("HelpDemoOpen");
+}
+
+// =====================================================================
+// =====================================================================
+
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppDemoRestoreAction()
 {
   return mref_AppActionGroup->get_action("HelpDemoRestore");
@@ -477,14 +491,6 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getSaveAsAction()
 Glib::RefPtr<Gtk::Action> BuilderAppActions::getMapViewAction()
 {
   return mref_ProjectActionGroup->get_action("MapView");
-}
-
-// =====================================================================
-// =====================================================================
-
-Glib::RefPtr<Gtk::Action> BuilderAppActions::getAppDemosAction()
-{
-  return mref_AppActionGroup->get_action("HomeDemos");
 }
 
 // =====================================================================
