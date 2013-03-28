@@ -60,6 +60,7 @@
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderListToolBox.hpp"
+#include "DatasoreAddItemDialog.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -110,6 +111,8 @@ DatastoreView::DatastoreView(
 
   update();
   requestSelectionAt(0);
+
+  mp_AddDialog = new DatasoreAddItemDialog(Datastore);
 }
 
 // =====================================================================
@@ -173,7 +176,7 @@ void DatastoreView::updateListToolBox()
 
 void DatastoreView::whenAddAsked()
 {
-
+  mp_Datastore->appendItem(mp_AddDialog->show());
 }
 
 // =====================================================================

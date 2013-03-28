@@ -55,11 +55,68 @@
 #ifndef DATASOREADDITEMDIALOG_HPP_
 #define DATASOREADDITEMDIALOG_HPP_
 
+#include <gtkmm/dialog.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/checkbutton.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/radiobutton.h>
+
+namespace openfluid {
+namespace fluidx {
+class AdvancedDatastoreDescriptor;
+class DatastoreItemDescriptor;
+}
+}
+
 class DatasoreAddItemDialog
 {
+  private:
+
+    openfluid::fluidx::AdvancedDatastoreDescriptor* mp_Datastore;
+
+    Gtk::Dialog* mp_Dialog;
+
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
+
+    Gtk::Entry* mp_IDEntry;
+
+    Gtk::ComboBoxText* mp_TypeCombo;
+
+    Gtk::CheckButton* mp_ClassCheck;
+    Gtk::Entry* mp_ClassEntry;
+
+    Gtk::RadioButton* mp_FileRadio;
+    Gtk::RadioButton* mp_ResourceRadio;
+
+    Gtk::VBox* mp_FileDetailBox;
+
+    Gtk::Entry* mp_FilePathEntry;
+
+    Gtk::Entry* mp_ResourceStringEntry;
+
+    Gtk::RadioButton* mp_NoSubDirRadio;
+    Gtk::RadioButton* mp_SubDirRadio;
+
+    Gtk::Entry* mp_SubDirEntry;
+
+    void onIDChanged();
+
+    void onCheckToggled();
+
+    void onFileResourceToggled();
+
+    void onBrowseButtonClicked();
+
+    void onSubDirToggled();
+
   public:
-    DatasoreAddItemDialog();
-    ~DatasoreAddItemDialog();
+
+    DatasoreAddItemDialog(
+        openfluid::fluidx::AdvancedDatastoreDescriptor& Datastore);
+
+    openfluid::fluidx::DatastoreItemDescriptor* show();
 };
 
 #endif /* DATASOREADDITEMDIALOG_HPP_ */

@@ -119,6 +119,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL((*it)->getRelativePath(), "shapes/wrong_class.shp");
   BOOST_CHECK_EQUAL((*it)->getUnitClass(), "wrongClass");
 
+  BOOST_CHECK(!DS.isItemAlreadyExist("wrong.item"));
+  BOOST_CHECK(DS.isItemAlreadyExist("RastWOClass"));
 }
 
 // =====================================================================

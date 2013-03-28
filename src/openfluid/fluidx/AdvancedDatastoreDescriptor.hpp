@@ -56,6 +56,7 @@
 #define ADVANCEDDATASTOREDESCRIPTOR_HPP_
 
 #include <list>
+#include <string>
 
 namespace openfluid {
 namespace fluidx {
@@ -105,6 +106,8 @@ class AdvancedDatastoreDescriptor
      @throw openfluid::base::OFException if Position is out of range
      */
     void removeItem(unsigned int Position);
+
+    bool isItemAlreadyExist(std::string ItemID);
 };
 
 }

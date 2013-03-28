@@ -61,6 +61,7 @@
 #include <gtkmm/treeview.h>
 
 class BuilderListToolBox;
+class DatasoreAddItemDialog;
 
 namespace openfluid {
 namespace fluidx {
@@ -101,6 +102,8 @@ class DatastoreView
     BuilderListToolBox* mp_DSListToolBox;
 
     sigc::signal<void> m_signal_DatastoreChanged;
+
+    DatasoreAddItemDialog* mp_AddDialog;
 
     void updateListToolBox();
 
