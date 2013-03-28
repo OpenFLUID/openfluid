@@ -46,61 +46,68 @@
  */
 
 /**
- \file AdvancedFluidXDescriptor.hpp
+ \file AdvancedDatastoreDescriptor.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef ADVANCEDFLUIDXDESCRIPTOR_HPP_
-#define ADVANCEDFLUIDXDESCRIPTOR_HPP_
+#ifndef ADVANCEDDATASTOREDESCRIPTOR_HPP_
+#define ADVANCEDDATASTOREDESCRIPTOR_HPP_
 
-#include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#include <list>
 
 namespace openfluid {
 namespace fluidx {
 
-class AdvancedFluidXDescriptor
+class DatastoreDescriptor;
+class DatastoreItemDescriptor;
+
+class AdvancedDatastoreDescriptor
 {
   private:
 
-    AdvancedDomainDescriptor* mp_Domain;
-
-    AdvancedModelDescriptor* mp_Model;
-
-    openfluid::fluidx::RunDescriptor* mp_RunDesc;
-
-    // TODO check if still useful
     openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
-
-    AdvancedDatastoreDescriptor* mp_Datastore;
-
-    AdvancedMonitoringDescriptor* mp_Monitoring;
 
   public:
 
-    AdvancedFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc);
+    AdvancedDatastoreDescriptor(
+        openfluid::fluidx::DatastoreDescriptor& DatastoreDesc);
 
-    ~AdvancedFluidXDescriptor();
+    ~AdvancedDatastoreDescriptor();
 
-    AdvancedDomainDescriptor& getDomain();
+    const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& getItems() const;
 
-    AdvancedModelDescriptor& getModel();
+    /**
+     * Move the Item located at the given From position to the To position (positions starts at index 0)
+     * @param From
+     * @param To
+     * @throw openfluid::base::OFException a position is out of range
+     */
+    void moveItem(unsigned int From, unsigned int To);
 
-    openfluid::fluidx::RunDescriptor& getRunDescriptor();
+    void appendItem(openfluid::fluidx::DatastoreItemDescriptor* Item);
 
-    openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
+    /**
+     Insert an Item before the given position (positions starts at index 0)
+     @param[in] Item the DatastoreItemDescriptor to insert
+     @param[in] Position the position, should be between zero and list size - 1.
+     To insert an Item at the end of the list, use appendItem instead.
+     @throw openfluid::base::OFException if Position is out of range
+     */
+    void insertItem(openfluid::fluidx::DatastoreItemDescriptor* Item,
+                    unsigned int Position);
 
-    AdvancedDatastoreDescriptor& getDatastore();
-
-    AdvancedMonitoringDescriptor& getMonitoring();
+    /**
+     Remove from the list the Item located at the given Position (positions starts at index 0).
+     This doesn't delete the DatastoreItemDescriptor pointer.
+     @param[in] Position the position
+     @throw openfluid::base::OFException if Position is out of range
+     */
+    void removeItem(unsigned int Position);
 };
 
 }
 } // namespaces
 
-#endif /* ADVANCEDFLUIDXDESCRIPTOR_HPP_ */
+#endif /* ADVANCEDDATASTOREDESCRIPTOR_HPP_ */
