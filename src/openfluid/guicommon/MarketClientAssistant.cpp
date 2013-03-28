@@ -228,8 +228,8 @@ void MarketClientAssistant::setupLicensesPage()
 
   m_RefLicensesTreeSelection = m_LicensesTreeView.get_selection();
 
-  m_LicensesReviewPaned.pack1(m_LicensesListSWindow);
-  m_LicensesReviewPaned.pack2(m_LicensesReviewSWindow);
+  m_LicensesReviewPaned.pack1(m_LicensesListSWindow,false,false);
+  m_LicensesReviewPaned.pack2(m_LicensesReviewSWindow,true,false);
 
 
   m_LicensesAcceptRadio.set_label(_("I accept the terms of the license(s) agreement(s)"));
