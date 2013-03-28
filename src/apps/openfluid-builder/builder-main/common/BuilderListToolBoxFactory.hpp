@@ -72,6 +72,8 @@ class BuilderListToolBoxFactory
 
     static BuilderListToolBox* createDomainEventsToolBox();
 
+    static BuilderListToolBox* createDatastoreToolBox();
+
     static BuilderListToolBox* createSimulOutFilesToolBox();
 
     static BuilderListToolBox* createSimulOutSetsToolBox();

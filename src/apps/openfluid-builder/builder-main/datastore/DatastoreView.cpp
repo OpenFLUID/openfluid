@@ -55,16 +55,69 @@
 #include "DatastoreView.hpp"
 
 #include <glibmm/i18n.h>
+#include <gtkmm/scrolledwindow.h>
+#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
+#include "BuilderListToolBoxFactory.hpp"
+#include "BuilderListToolBox.hpp"
 
 // =====================================================================
 // =====================================================================
 
-DatastoreView::DatastoreView()
+DatastoreView::DatastoreView(
+    openfluid::fluidx::AdvancedDatastoreDescriptor& Datastore) :
+    mp_Datastore(&Datastore)
 {
-  mp_MainBox = Gtk::manage(new Gtk::VBox());
+  mp_MainBox = Gtk::manage(new Gtk::HBox());
 
+  mref_ListStore = Gtk::ListStore::create(m_Columns);
+
+  mp_TreeView = Gtk::manage(new Gtk::TreeView());
+
+  mp_TreeView->append_column("ID", m_Columns.m_ID);
+  mp_TreeView->append_column(_("Type"), m_Columns.m_Type);
+  mp_TreeView->append_column(_("Unit Class"), m_Columns.m_Class);
+  mp_TreeView->append_column(_("Source"), m_Columns.m_Source);
+
+  mp_TreeView->set_visible(true);
+
+  Gtk::ScrolledWindow* mp_ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_ModelWin->set_visible(true);
+  mp_ModelWin->add(*mp_TreeView);
+  mp_ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
+  mp_TreeView->set_model(mref_ListStore);
+
+  mp_DSListToolBox = BuilderListToolBoxFactory::createDatastoreToolBox();
+  mp_DSListToolBox->signal_AddCommandAsked().connect(
+      sigc::mem_fun(*this, &DatastoreView::whenAddAsked));
+  mp_DSListToolBox->signal_RemoveCommandAsked().connect(
+      sigc::mem_fun(*this, &DatastoreView::whenRemoveAsked));
+  mp_DSListToolBox->signal_UpCommandAsked().connect(
+      sigc::mem_fun(*this, &DatastoreView::whenUpAsked));
+  mp_DSListToolBox->signal_DownCommandAsked().connect(
+      sigc::mem_fun(*this, &DatastoreView::whenDownAsked));
+
+  Gtk::VBox* ButtonsPanel = Gtk::manage(new Gtk::VBox());
+  ButtonsPanel->pack_start(*mp_DSListToolBox->asWidget(), Gtk::PACK_SHRINK);
+  ButtonsPanel->set_visible(true);
+
+  mp_MainBox->pack_start(*mp_ModelWin);
+  mp_MainBox->pack_start(*ButtonsPanel, Gtk::PACK_SHRINK);
+  mp_MainBox->set_border_width(5);
   mp_MainBox->set_visible(true);
-  mp_MainBox->show_all_children();
+
+  update();
+  requestSelectionAt(0);
+}
+
+// =====================================================================
+// =====================================================================
+
+DatastoreView::~DatastoreView()
+{
+  delete mp_DSListToolBox;
 }
 
 // =====================================================================
@@ -72,7 +125,27 @@ DatastoreView::DatastoreView()
 
 void DatastoreView::update()
 {
+  mref_ListStore->clear();
 
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*> Items =
+      mp_Datastore->getItems();
+
+  for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+
+    Gtk::TreeRow Row = *(mref_ListStore->append());
+
+    Row[m_Columns.m_ID] = (*it)->getID();
+
+    Row[m_Columns.m_Type] =
+        openfluid::core::UnstructuredValue::getStringFromValueType(
+            (*it)->getType());
+    Row[m_Columns.m_Class] = (*it)->getUnitClass();
+    Row[m_Columns.m_Source] = (*it)->getRelativePath();
+  }
+
+  updateListToolBox();
 }
 
 // =====================================================================
@@ -86,3 +159,118 @@ Gtk::Widget* DatastoreView::asWidget()
 // =====================================================================
 // =====================================================================
 
+void DatastoreView::updateListToolBox()
+{
+  bool AtLeast1Item = !mp_Datastore->getItems().empty();
+  bool AtLeast2Item = mp_Datastore->getItems().size() > 1;
+  mp_DSListToolBox->setRemoveCommandAvailable(AtLeast1Item);
+  mp_DSListToolBox->setUpCommandAvailable(AtLeast2Item);
+  mp_DSListToolBox->setDownCommandAvailable(AtLeast2Item);
+}
+
+// =====================================================================
+// =====================================================================
+
+void DatastoreView::whenAddAsked()
+{
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void DatastoreView::whenRemoveAsked()
+{
+  Gtk::TreeIter Iter = mp_TreeView->get_selection()->get_selected();
+
+  if (!Iter)
+    return;
+
+  int Position = *mref_ListStore->get_path(Iter).begin();
+
+  mp_Datastore->removeItem(Position);
+
+  update();
+
+  // set new selection
+  int Size = mref_ListStore->children().size();
+  if (Position < Size)
+    requestSelectionAt(Position);
+  else if (Position == Size)
+    requestSelectionAt(Position - 1);
+
+  signal_DatastoreChanged().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void DatastoreView::whenUpAsked()
+{
+  Gtk::TreeIter Iter = mp_TreeView->get_selection()->get_selected();
+
+  if (!Iter)
+    return;
+
+  int From = *mref_ListStore->get_path(Iter).begin();
+  int To = (From == 0) ? getLastPosition() : (From - 1);
+
+  mp_Datastore->moveItem(From, To);
+
+  update();
+  requestSelectionAt(To);
+
+  signal_DatastoreChanged().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void DatastoreView::whenDownAsked()
+{
+  Gtk::TreeIter Iter = mp_TreeView->get_selection()->get_selected();
+
+  if (!Iter)
+    return;
+
+  int From = *mref_ListStore->get_path(Iter).begin();
+  int To = (From == getLastPosition()) ? 0 : (From + 1);
+
+  mp_Datastore->moveItem(From, To);
+
+  update();
+  requestSelectionAt(To);
+
+  signal_DatastoreChanged().emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+int DatastoreView::getLastPosition()
+{
+  int Size = mref_ListStore->children().size();
+  return (Size == 0) ? -1 : (Size - 1);
+}
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void> DatastoreView::signal_DatastoreChanged()
+{
+  return m_signal_DatastoreChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+void DatastoreView::requestSelectionAt(int Position)
+{
+  if (Position > -1 && Position < (int) mref_ListStore->children().size())
+  {
+    Gtk::TreeIter Iter = mref_ListStore->children().begin();
+    std::advance(Iter, Position);
+    mp_TreeView->get_selection()->select(Iter);
+  }
+  else
+    mp_TreeView->get_selection()->unselect_all();
+}

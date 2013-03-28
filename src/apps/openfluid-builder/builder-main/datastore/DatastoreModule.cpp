@@ -66,7 +66,10 @@ DatastoreModule::DatastoreModule(
 {
   mp_MainPanel = 0;
 
-  mp_DatastoreView = new DatastoreView();
+  mp_DatastoreView = new DatastoreView(AdvancedDesc.getDatastore());
+
+  mp_DatastoreView->signal_DatastoreChanged().connect(
+      sigc::mem_fun(*this, &DatastoreModule::whenDatastoreChanged));
 }
 
 // =====================================================================

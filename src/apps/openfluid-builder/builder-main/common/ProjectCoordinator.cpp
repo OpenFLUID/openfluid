@@ -236,6 +236,9 @@ void ProjectCoordinator::whenActivationChanged()
         Module =
             static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createDatastoreModule());
 
+        Module->signal_ModuleChanged().connect(
+            sigc::mem_fun(*this, &ProjectCoordinator::whenDatastoreChanged));
+
         addModuleToWorkspace(PageName, *Module);
       }
       break;
@@ -414,6 +417,14 @@ void ProjectCoordinator::whenClassChanged()
 
   checkProject();
 
+  m_signal_ChangeHappened.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ProjectCoordinator::whenDatastoreChanged()
+{
   m_signal_ChangeHappened.emit();
 }
 

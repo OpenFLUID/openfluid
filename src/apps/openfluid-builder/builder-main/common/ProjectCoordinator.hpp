@@ -135,6 +135,8 @@ class ProjectCoordinator
 
     void whenClassChanged();
 
+    void whenDatastoreChanged();
+
     void whenRunChanged();
 
 //    void whenOutChanged();

@@ -56,20 +56,78 @@
 #define DATASTOREVIEW_HPP_
 
 #include <gtkmm/box.h>
+#include <gtkmm/treemodel.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+
+class BuilderListToolBox;
+
+namespace openfluid {
+namespace fluidx {
+class AdvancedDatastoreDescriptor;
+}
+}
 
 class DatastoreView
 {
   private:
 
+    openfluid::fluidx::AdvancedDatastoreDescriptor* mp_Datastore;
+
     Gtk::Box* mp_MainBox;
+
+    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
+
+    class DSColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        DSColumns()
+        {
+          add(m_ID);
+          add(m_Type);
+          add(m_Class);
+          add(m_Source);
+        }
+        Gtk::TreeModelColumn<std::string> m_ID;
+        Gtk::TreeModelColumn<std::string> m_Type;
+        Gtk::TreeModelColumn<std::string> m_Class;
+        Gtk::TreeModelColumn<std::string> m_Source;
+    };
+
+    DSColumns m_Columns;
+
+    Gtk::TreeView* mp_TreeView;
+
+    BuilderListToolBox* mp_DSListToolBox;
+
+    sigc::signal<void> m_signal_DatastoreChanged;
+
+    void updateListToolBox();
+
+    void whenAddAsked();
+
+    void whenRemoveAsked();
+
+    void whenUpAsked();
+
+    void whenDownAsked();
+
+    int getLastPosition();
+
+    void requestSelectionAt(int Position);
 
   public:
 
-    DatastoreView();
+    DatastoreView(openfluid::fluidx::AdvancedDatastoreDescriptor& Datastore);
+
+    ~DatastoreView();
 
     void update();
 
     Gtk::Widget* asWidget();
+
+    sigc::signal<void> signal_DatastoreChanged();
+
 };
 
 #endif /* DATASTOREVIEW_HPP_ */
