@@ -892,10 +892,13 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
       // Create tab
       m_TypesTabs.append_page(*mp_TabBox[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true,true));
+
+      // load tab content
+      m_TypesTabs.get_nth_page(TCIter->first)->show_all();
+      m_TypesTabs.set_current_page(TCIter->first);
+      m_TypesTabs.set_current_page(0);
     }
   }
-
-  m_TypesTabs.show_all_children();
 
 
   // change mouse cursor to default
