@@ -80,6 +80,37 @@ BEGIN_FUNCTION_SIGNATURE(THIS_FUNC_ID)
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
+  DECLARE_REQUIRED_INPUTDATA("indataDouble","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataDouble2","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataDouble3","TestUnits","","")
+
+  DECLARE_REQUIRED_INPUTDATA("indataLong","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataLong2","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataLong3","TestUnits","","")
+
+  DECLARE_REQUIRED_INPUTDATA("indataBool","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataBool2","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataBool3","TestUnits","","")
+
+  DECLARE_REQUIRED_INPUTDATA("indataString","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataString2","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataString3","TestUnits","","")
+
+  DECLARE_REQUIRED_INPUTDATA("indataVector","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataVector2","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataVector3","TestUnits","","")
+
+  DECLARE_REQUIRED_INPUTDATA("indataMatrix","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataMatrix2","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataMatrix3","TestUnits","","")
+
+  DECLARE_REQUIRED_INPUTDATA("indataMap","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataMap2","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataMap3","TestUnits","","")
+
+  DECLARE_REQUIRED_INPUTDATA("indataNull2","TestUnits","","")
+  DECLARE_REQUIRED_INPUTDATA("indataNull3","TestUnits","","")
+
 END_FUNCTION_SIGNATURE
 
 

@@ -171,7 +171,7 @@ void ProjectChecker::checkModelRequirements()
 
     // check required InputData
     std::vector<openfluid::ware::SignatureHandledDataItem>& ReqData =
-        Sign->HandledData.RequiredInput;
+        Sign->HandledData.RequiredInputdata;
     for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt =
         ReqData.begin(); itt != ReqData.end(); ++itt)
     {

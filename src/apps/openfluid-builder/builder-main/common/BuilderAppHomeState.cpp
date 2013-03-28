@@ -133,9 +133,20 @@ void BuilderAppHomeState::whenMarketAsked()
 // =====================================================================
 // =====================================================================
 
-void BuilderAppHomeState::whenDemosAsked()
+void BuilderAppHomeState::whenDemoOpenAsked()
 {
-  m_App.showOpenDemoProjectDialog();
+  std::string AskedDemoPath = m_App.showOpenDemoProjectDialog();
+
+  if (!AskedDemoPath.empty())
+    m_App.openProject(AskedDemoPath);
+}
+
+// =====================================================================
+// =====================================================================
+
+void BuilderAppHomeState::whenDemoRestoreAsked()
+{
+  m_App.restoreDemoProjects();
 }
 
 // =====================================================================

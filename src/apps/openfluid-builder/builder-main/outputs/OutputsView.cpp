@@ -78,6 +78,10 @@ OutputsView::OutputsView() :
 
   mref_Root = Gio::File::create_for_path(RootDir);
 
+  if(!mref_Root->query_exists())
+    mref_Root->make_directory();
+
+
   Gtk::Label* OutputDirLabel = Gtk::manage(new Gtk::Label());
   OutputDirLabel->set_markup(
       Glib::ustring::compose(_("Output directory: %1%2%3"), "<b>", RootDir,

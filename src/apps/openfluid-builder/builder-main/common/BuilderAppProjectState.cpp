@@ -105,6 +105,20 @@ void BuilderAppProjectState::whenOpenProjectAsked()
 // =====================================================================
 // =====================================================================
 
+void BuilderAppProjectState::whenDemoOpenAsked()
+{
+  std::string AskedDemoPath = m_App.showOpenDemoProjectDialog();
+
+  if (!AskedDemoPath.empty() && m_App.showCloseProjectDialog())
+  {
+    m_App.closeProject();
+    m_App.openProject(AskedDemoPath);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
 
 void BuilderAppProjectState::whenCloseProjectAsked()
 {

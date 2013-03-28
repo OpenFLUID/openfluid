@@ -4,9 +4,9 @@
     <model>
 
    
-      <function ID="tests.primitives.prod" />       
+      <function ID="tests.primitives.inputdata.prod" />       
       
-      <function ID="tests.primitives.use"> 
+      <function ID="tests.primitives.inputdata.use"> 
         <param name="strparam" value="strvalue" />
         <param name="doubleparam" value="1.1" />
         <param name="longparam" value="11" />

@@ -62,13 +62,22 @@
 class BuilderHomeButton: public Gtk::Button
 {
   private:
+
     Gtk::Box* mp_InnerBox;
+
     void initialize();
+
   public:
+
     BuilderHomeButton();
+
     void setImage(Gtk::Image& Image);
+
     void setLabelText(std::string LabelText);
-    BuilderHomeButton(Gtk::Image& Image, std::string LabelText = "");
+
+    BuilderHomeButton(Gtk::Image& AlternativeImage,
+                      Glib::RefPtr<Gtk::Action> Action);
+
     BuilderHomeButton(Glib::RefPtr<Gtk::Action> Action);
 };
 

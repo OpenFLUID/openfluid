@@ -63,6 +63,8 @@
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/OFException.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/config.hpp>
 
 // =====================================================================
@@ -103,7 +105,7 @@ BuilderOpenDemosDialog::BuilderOpenDemosDialog()
   MainBox->pack_start(*mp_PreviewWidget->asWidget(), Gtk::PACK_EXPAND_WIDGET,
                       5);
 
-  mp_Dialog = new Gtk::Dialog(_("Open Demo project"));
+  mp_Dialog = new Gtk::Dialog(_("Open an example project"));
   mp_Dialog->set_has_separator(true);
   mp_Dialog->get_vbox()->pack_start(*MainBox, Gtk::PACK_EXPAND_WIDGET, 5);
 
@@ -136,7 +138,16 @@ std::string BuilderOpenDemosDialog::show()
 
   mref_ListStore->clear();
 
-  mp_Buddy->run();
+  try
+  {
+    mp_Buddy->run();
+  }
+  catch (openfluid::base::OFException& e)
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _("No example project to install"));
+    return "";
+  }
 
   std::string DemosPath =
       boost::filesystem::path(
@@ -144,6 +155,13 @@ std::string BuilderOpenDemosDialog::show()
           + openfluid::config::PROJECTS_SUBDIR).string();
 
   Glib::RefPtr<Gio::File> DemosDir = Gio::File::create_for_path(DemosPath);
+
+  if(!DemosDir->query_exists())
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _("Example projects directory doesn't exist"));
+    return "";
+  }
 
   Glib::RefPtr<Gio::FileEnumerator> Children = DemosDir->enumerate_children();
   for (Glib::RefPtr<Gio::FileInfo> Child = Children->next_file(); Child != 0;
@@ -167,6 +185,12 @@ std::string BuilderOpenDemosDialog::show()
 
   if (!mref_ListStore->children().empty())
     mp_TreeView->get_selection()->select(mref_ListStore->children().begin());
+  else
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
+        _("No example project installed"));
+    return "";
+  }
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
