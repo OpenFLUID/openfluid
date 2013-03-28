@@ -455,6 +455,32 @@ MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::war
 // =====================================================================
 
 
+bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& ID,
+    const openfluid::market::PackageInfo::TypePackage Type)
+{
+  openfluid::market::MetaPackagesCatalog_t DataCatalog = m_MarketClient.getTypesMetaPackagesCatalogs().at(openfluid::market::PackageInfo::DATA);
+  openfluid::market::MetaPackagesCatalog_t::iterator PCit;
+
+  for (PCit = DataCatalog.begin(); PCit != DataCatalog.end(); ++PCit)
+  {
+    std::list<openfluid::ware::WareID_t> Dependencies = PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::FLUIDX].Dependencies[Type];
+    std::list<openfluid::ware::WareID_t>::iterator Dit = Dependencies.begin();
+
+    while (Dit != Dependencies.end() && !(*Dit == ID && getAvailPackWidget(PCit->second.ID)->isInstall()))
+      ++Dit;
+
+    if (Dit != Dependencies.end())
+      return true;
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
     const std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > PacksToSelect)
 {
@@ -527,7 +553,14 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
         if (APLiter != mp_AvailPacksWidgets[DMit->first].end())
         {
           if ((*APLiter)->isInstall() != MPW->isInstall())
-            PacksToSelect[DMit->first].push_back(*APLiter);
+          {
+            // if select or if unselect + no parent selected
+            if (MPW->isInstall() ||
+                (!MPW->isInstall() && !hasParentSelected((*APLiter)->getID(), DMit->first)))
+            {
+              PacksToSelect[DMit->first].push_back(*APLiter);
+            }
+          }
         }
 
       }

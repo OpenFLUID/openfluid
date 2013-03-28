@@ -125,6 +125,9 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     MarketPackWidget* getAvailPackWidget(const openfluid::ware::WareID_t& ID) const;
 
+    bool hasParentSelected(const openfluid::ware::WareID_t& ID,
+        const openfluid::market::PackageInfo::TypePackage Type);
+
     bool getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
         const std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > PacksToSelect);
 
