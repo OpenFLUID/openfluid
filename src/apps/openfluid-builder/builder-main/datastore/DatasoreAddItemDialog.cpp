@@ -64,6 +64,7 @@
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 #include "BuilderFrame.hpp"
 #include "EngineHelper.hpp"
 
@@ -127,59 +128,66 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
 
   // Data source
 
-  Gtk::RadioButtonGroup FileResourceGroup;
+  Gtk::RadioButtonGroup SourceGroup;
 
   //  // File
-  mp_FileRadio = Gtk::manage(new Gtk::RadioButton(_("File")));
+
+  mp_FileRadio = Gtk::manage(new Gtk::RadioButton(SourceGroup, _("File")));
   mp_FileRadio->signal_toggled().connect(
-      sigc::mem_fun(*this, &DatasoreAddItemDialog::onFileResourceToggled));
-  mp_FileRadio->set_group(FileResourceGroup);
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::onSourceToggled));
 
   mp_FilePathEntry = Gtk::manage(new Gtk::Entry());
   mp_FilePathEntry->signal_changed().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::checkIsValid));
 
-  Gtk::Button* BrowseButton = Gtk::manage(new Gtk::Button(_("Browse...")));
-  BrowseButton->signal_clicked().connect(
-      sigc::mem_fun(*this, &DatasoreAddItemDialog::onBrowseButtonClicked));
+  Gtk::Button* BrowseFileButton = Gtk::manage(new Gtk::Button(_("Browse...")));
+  BrowseFileButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::onBrowseFileButtonClicked));
 
   Gtk::HBox* FilePathBox = Gtk::manage(new Gtk::HBox());
   FilePathBox->pack_start(*mp_FilePathEntry, Gtk::PACK_EXPAND_WIDGET);
-  FilePathBox->pack_start(*BrowseButton, Gtk::PACK_SHRINK);
-
-  Gtk::RadioButtonGroup SubDirGroup;
-
-  mp_NoSubDirRadio = Gtk::manage(
-      new Gtk::RadioButton(_("Copied into dataset directory")));
-  mp_NoSubDirRadio->set_group(SubDirGroup);
-
-  mp_SubDirRadio = Gtk::manage(
-      new Gtk::RadioButton(_("Copied into dataset subdirectory:")));
-  mp_SubDirRadio->set_group(SubDirGroup);
-  mp_SubDirRadio->signal_toggled().connect(
-      sigc::mem_fun(*this, &DatasoreAddItemDialog::onSubDirToggled));
-  mp_SubDirEntry = Gtk::manage(new Gtk::Entry());
-  mp_SubDirEntry->set_sensitive(false);
-  mp_SubDirBox = Gtk::manage(new Gtk::HBox());
-  mp_SubDirBox->pack_start(*mp_SubDirRadio, Gtk::PACK_SHRINK);
-  mp_SubDirBox->pack_start(*mp_SubDirEntry, Gtk::PACK_EXPAND_WIDGET);
+  FilePathBox->pack_start(*BrowseFileButton, Gtk::PACK_SHRINK);
 
   mp_FileDetailBox = Gtk::manage(new Gtk::VBox());
   mp_FileDetailBox->pack_start(*FilePathBox, Gtk::PACK_SHRINK);
-  mp_FileDetailBox->pack_start(*mp_NoSubDirRadio, Gtk::PACK_SHRINK);
-  mp_FileDetailBox->pack_start(*mp_SubDirBox);
-  mp_FileDetailBox->set_sensitive(true);
 
   Gtk::HBox* FileBox = Gtk::manage(new Gtk::HBox());
   FileBox->pack_start(*mp_FileRadio, Gtk::PACK_SHRINK);
   FileBox->pack_start(*mp_FileDetailBox);
 
+  //  // Directory
+
+  mp_DirRadio = Gtk::manage(new Gtk::RadioButton(SourceGroup, _("Directory")));
+  mp_DirRadio->signal_toggled().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::onSourceToggled));
+
+  mp_DirPathEntry = Gtk::manage(new Gtk::Entry());
+  mp_DirPathEntry->signal_changed().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::checkIsValid));
+
+  Gtk::Button* BrowseDirButton = Gtk::manage(new Gtk::Button(_("Browse...")));
+  BrowseDirButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::onBrowseDirButtonClicked));
+
+  Gtk::HBox* DirPathBox = Gtk::manage(new Gtk::HBox());
+  DirPathBox->pack_start(*mp_DirPathEntry, Gtk::PACK_EXPAND_WIDGET);
+  DirPathBox->pack_start(*BrowseDirButton, Gtk::PACK_SHRINK);
+
+  mp_DirDetailBox = Gtk::manage(new Gtk::VBox());
+  mp_DirDetailBox->pack_start(*DirPathBox, Gtk::PACK_SHRINK);
+
+  Gtk::HBox* DirBox = Gtk::manage(new Gtk::HBox());
+  DirBox->pack_start(*mp_DirRadio, Gtk::PACK_SHRINK);
+  DirBox->pack_start(*mp_DirDetailBox);
+
   //  // Resource
-  mp_ResourceRadio = Gtk::manage(new Gtk::RadioButton(_("Resource string")));
-  mp_ResourceRadio->set_group(FileResourceGroup);
+
+  mp_ResourceRadio = Gtk::manage(
+      new Gtk::RadioButton(SourceGroup, _("Resource string")));
+  mp_ResourceRadio->signal_toggled().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::onSourceToggled));
 
   mp_ResourceStringEntry = Gtk::manage(new Gtk::Entry());
-  mp_ResourceStringEntry->set_sensitive(false);
   mp_ResourceStringEntry->signal_changed().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::checkIsValid));
 
@@ -189,17 +197,48 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
 
   Gtk::VBox* DataSourceBox = Gtk::manage(new Gtk::VBox());
   DataSourceBox->pack_start(*FileBox, Gtk::PACK_SHRINK);
+  DataSourceBox->pack_start(*DirBox, Gtk::PACK_SHRINK);
   DataSourceBox->pack_start(*ResourceBox, Gtk::PACK_SHRINK);
 
   BuilderFrame* SourceFrame = Gtk::manage(new BuilderFrame());
   SourceFrame->setLabelText(_("Data source"));
   SourceFrame->add(*DataSourceBox);
 
-  mp_Dialog = new Gtk::Dialog(_("Add a Datasore item"));
+  // Destination
+
+  Gtk::RadioButtonGroup SubDirGroup;
+
+  mp_NoSubDirRadio = Gtk::manage(
+      new Gtk::RadioButton(SubDirGroup, _("Copied into dataset directory")));
+  mp_NoSubDirRadio->signal_toggled().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::onSubDirToggled));
+
+  mp_SubDirRadio = Gtk::manage(
+      new Gtk::RadioButton(SubDirGroup,
+                           _("Copied into dataset subdirectory:")));
+  mp_SubDirRadio->signal_toggled().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::onSubDirToggled));
+  mp_SubDirEntry = Gtk::manage(new Gtk::Entry());
+  mp_SubDirBox = Gtk::manage(new Gtk::HBox());
+  mp_SubDirBox->pack_start(*mp_SubDirRadio, Gtk::PACK_SHRINK);
+  mp_SubDirBox->pack_start(*mp_SubDirEntry, Gtk::PACK_EXPAND_WIDGET);
+
+  Gtk::VBox* DataDestBox = Gtk::manage(new Gtk::VBox());
+  DataDestBox->pack_start(*mp_NoSubDirRadio, Gtk::PACK_SHRINK);
+  DataDestBox->pack_start(*mp_SubDirBox);
+
+  BuilderFrame* DestFrame = Gtk::manage(new BuilderFrame());
+  DestFrame->setLabelText(_("Data destination"));
+  DestFrame->add(*DataDestBox);
+
+  // Dialog box
+
+  mp_Dialog = new Gtk::Dialog(_("Add a Datastore item"));
   mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK, 5);
   mp_Dialog->get_vbox()->pack_start(*IDTypeTable, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*ClassBox, Gtk::PACK_SHRINK, 5);
   mp_Dialog->get_vbox()->pack_start(*SourceFrame, Gtk::PACK_SHRINK, 5);
+  mp_Dialog->get_vbox()->pack_start(*DestFrame, Gtk::PACK_SHRINK, 5);
 //  mp_Dialog->set_default_size(700, 200);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -207,9 +246,10 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
 
   mp_Dialog->show_all_children();
 
-  checkIsValid();
+  mp_NoSubDirRadio->set_active(true);
+  onSubDirToggled();
   mp_FileRadio->set_active(true);
-  mp_SubDirRadio->set_active(false);
+  onSourceToggled();
 }
 
 // =====================================================================
@@ -223,9 +263,19 @@ openfluid::fluidx::DatastoreItemDescriptor* DatasoreAddItemDialog::show()
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
+    std::string FromPath = "";
+
     if (mp_FileRadio->get_active())
     {
-      std::string FromPath = mp_FilePathEntry->get_text();
+      FromPath = mp_FilePathEntry->get_text();
+    }
+    else if (mp_DirRadio->get_active())
+    {
+      FromPath = mp_DirPathEntry->get_text();
+    }
+
+    if (!FromPath.empty())
+    {
       Glib::RefPtr<Gio::File> FromFile = Gio::File::create_for_path(FromPath);
 
       if (FromFile->query_exists())
@@ -280,6 +330,7 @@ void DatasoreAddItemDialog::checkIsValid()
   }
 
   std::string FilePath = mp_FilePathEntry->get_text();
+  std::string DirPath = mp_DirPathEntry->get_text();
   std::string ResourcePath = mp_ResourceStringEntry->get_text();
 
   if (mp_FileRadio->get_active())
@@ -313,12 +364,46 @@ void DatasoreAddItemDialog::checkIsValid()
       }
     }
   }
+  else if (mp_DirRadio->get_active())
+  {
+    if (DirPath == "" || EngineHelper::isEmptyString(DirPath))
+    {
+      if (!InfoBarTxt.empty())
+        InfoBarTxt.append("\n");
+      InfoBarTxt.append(_("Directory path can not be empty"));
+    }
+    else
+    {
+      Glib::RefPtr<Gio::File> File = Gio::File::create_for_path(DirPath);
+      if (!File->query_exists())
+      {
+        if (!InfoBarTxt.empty())
+          InfoBarTxt.append("\n");
+        InfoBarTxt.append(_("This directory path doesn't exist"));
+      }
+      else if (File->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
+      {
+        if (!InfoBarTxt.empty())
+          InfoBarTxt.append("\n");
+        InfoBarTxt.append(_("This directory path is a file"));
+      }
+      else
+      {
+        bool ExistsInIN = isFileInInputDir(File);
+        mp_SubDirBox->set_sensitive(!ExistsInIN);
+        mp_NoSubDirRadio->set_sensitive(!ExistsInIN);
+      }
+    }
+  }
   else if (mp_ResourceRadio->get_active()
       && (ResourcePath == "" || EngineHelper::isEmptyString(ResourcePath)))
   {
     if (!InfoBarTxt.empty())
       InfoBarTxt.append("\n");
     InfoBarTxt.append(_("Resource string can not be empty"));
+
+    mp_SubDirBox->set_sensitive(false);
+    mp_NoSubDirRadio->set_sensitive(false);
   }
 
   mp_InfoBarLabel->set_text(InfoBarTxt);
@@ -337,11 +422,11 @@ void DatasoreAddItemDialog::onCheckToggled()
 // =====================================================================
 // =====================================================================
 
-void DatasoreAddItemDialog::onFileResourceToggled()
+void DatasoreAddItemDialog::onSourceToggled()
 {
-  mp_FileDetailBox->set_sensitive(!mp_FileDetailBox->get_sensitive());
-  mp_ResourceStringEntry->set_sensitive(
-      !mp_ResourceStringEntry->get_sensitive());
+  mp_FileDetailBox->set_sensitive(mp_FileRadio->get_active());
+  mp_DirDetailBox->set_sensitive(mp_DirRadio->get_active());
+  mp_ResourceStringEntry->set_sensitive(mp_ResourceRadio->get_active());
 
   checkIsValid();
 }
@@ -349,7 +434,7 @@ void DatasoreAddItemDialog::onFileResourceToggled()
 // =====================================================================
 // =====================================================================
 
-void DatasoreAddItemDialog::onBrowseButtonClicked()
+void DatasoreAddItemDialog::onBrowseFileButtonClicked()
 {
   Gtk::FileChooserDialog Dialog(_("Choose the file to add"));
 
@@ -376,9 +461,37 @@ void DatasoreAddItemDialog::onBrowseButtonClicked()
 // =====================================================================
 // =====================================================================
 
+void DatasoreAddItemDialog::onBrowseDirButtonClicked()
+{
+  Gtk::FileChooserDialog Dialog(_("Choose the directory to add"),
+                                Gtk::FILE_CHOOSER_ACTION_SELECT_FOLDER);
+
+  Dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  Dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  std::string DirPath = mp_DirPathEntry->get_text();
+  Glib::RefPtr<Gio::File> File = Gio::File::create_for_path(DirPath);
+  if (DirPath == "" || !File->query_exists())
+  {
+    Dialog.set_current_folder(
+        openfluid::base::ProjectManager::getInstance()->getInputDir());
+  }
+  else
+    Dialog.set_current_folder(DirPath);
+
+  if (Dialog.run() == Gtk::RESPONSE_OK)
+  {
+    mp_DirPathEntry->set_text(Glib::filename_to_utf8(Dialog.get_filename()));
+    mp_DirPathEntry->set_width_chars(mp_DirPathEntry->get_text_length());
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
 void DatasoreAddItemDialog::onSubDirToggled()
 {
-  mp_SubDirEntry->set_sensitive(!mp_SubDirEntry->get_sensitive());
+  mp_SubDirEntry->set_sensitive(mp_SubDirRadio->get_active());
 }
 
 // =====================================================================
@@ -422,24 +535,42 @@ bool DatasoreAddItemDialog::copyFile(Glib::RefPtr<Gio::File> FromFile,
   {
     if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
         Glib::ustring::compose(
-            _("The file %1 already exists.\nDo you want to overwrite it ?"),
-            ToPath)))
+            _("%1 already exists.\nDo you want to overwrite it ?"), ToPath)))
       return false;
 
     Flag = Gio::FILE_COPY_OVERWRITE;
   }
 
-  try
+  if (FromFile->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
   {
-    FromFile->copy(ToFile, Flag);
+    try
+    {
+      openfluid::tools::CopyDirectoryRecursively(
+          FromFile->get_path(), ToFile->get_parent()->get_path());
+    }
+    catch (...)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+          Glib::ustring::compose(
+              _("Error while copying %1 into %2\nOperation canceled"),
+              FromFile->get_path(), ToFile->get_parent()->get_path()));
+      return false;
+    }
   }
-  catch (Gio::Error& e)
+  else
   {
-    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-        Glib::ustring::compose(
-            _("Error while copying %1 to %2\n Operation canceled"),
-            FromFile->get_path(), ToPath));
-    return false;
+    try
+    {
+      FromFile->copy(ToFile, Flag);
+    }
+    catch (Gio::Error& e)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+          Glib::ustring::compose(
+              _("Error while copying %1 to %2\nOperation canceled"),
+              FromFile->get_path(), ToPath));
+      return false;
+    }
   }
 
   return true;

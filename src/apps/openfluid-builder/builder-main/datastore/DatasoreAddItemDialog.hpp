@@ -91,13 +91,16 @@ class DatasoreAddItemDialog
     Gtk::Entry* mp_ClassEntry;
 
     Gtk::RadioButton* mp_FileRadio;
+    Gtk::RadioButton* mp_DirRadio;
     Gtk::RadioButton* mp_ResourceRadio;
 
     Gtk::VBox* mp_FileDetailBox;
+    Gtk::VBox* mp_DirDetailBox;
 
     Gtk::HBox* mp_SubDirBox;
 
     Gtk::Entry* mp_FilePathEntry;
+    Gtk::Entry* mp_DirPathEntry;
 
     Gtk::Entry* mp_ResourceStringEntry;
 
@@ -110,9 +113,10 @@ class DatasoreAddItemDialog
 
     void onCheckToggled();
 
-    void onFileResourceToggled();
+    void onSourceToggled();
 
-    void onBrowseButtonClicked();
+    void onBrowseFileButtonClicked();
+    void onBrowseDirButtonClicked();
 
     void onSubDirToggled();
 
