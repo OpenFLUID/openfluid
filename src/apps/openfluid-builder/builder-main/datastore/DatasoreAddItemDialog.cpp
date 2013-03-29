@@ -63,6 +63,7 @@
 #include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include "BuilderFrame.hpp"
 #include "EngineHelper.hpp"
 
@@ -73,6 +74,9 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
     openfluid::fluidx::AdvancedDatastoreDescriptor& Datastore) :
     mp_Datastore(&Datastore)
 {
+  mref_InDirFile = Gio::File::create_for_path(
+      openfluid::base::ProjectManager::getInstance()->getInputDir());
+
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
 
   // InfoBar
@@ -85,7 +89,7 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
 
   mp_IDEntry = Gtk::manage(new Gtk::Entry());
   mp_IDEntry->signal_changed().connect(
-      sigc::mem_fun(*this, &DatasoreAddItemDialog::onIDChanged));
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::checkIsValid));
 
   mp_TypeCombo = Gtk::manage(new Gtk::ComboBoxText());
   mp_TypeCombo->append(
@@ -132,6 +136,8 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_FileRadio->set_group(FileResourceGroup);
 
   mp_FilePathEntry = Gtk::manage(new Gtk::Entry());
+  mp_FilePathEntry->signal_changed().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::checkIsValid));
 
   Gtk::Button* BrowseButton = Gtk::manage(new Gtk::Button(_("Browse...")));
   BrowseButton->signal_clicked().connect(
@@ -154,14 +160,14 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::onSubDirToggled));
   mp_SubDirEntry = Gtk::manage(new Gtk::Entry());
   mp_SubDirEntry->set_sensitive(false);
-  Gtk::HBox* SubDirBox = Gtk::manage(new Gtk::HBox());
-  SubDirBox->pack_start(*mp_SubDirRadio, Gtk::PACK_SHRINK);
-  SubDirBox->pack_start(*mp_SubDirEntry, Gtk::PACK_EXPAND_WIDGET);
+  mp_SubDirBox = Gtk::manage(new Gtk::HBox());
+  mp_SubDirBox->pack_start(*mp_SubDirRadio, Gtk::PACK_SHRINK);
+  mp_SubDirBox->pack_start(*mp_SubDirEntry, Gtk::PACK_EXPAND_WIDGET);
 
   mp_FileDetailBox = Gtk::manage(new Gtk::VBox());
   mp_FileDetailBox->pack_start(*FilePathBox, Gtk::PACK_SHRINK);
   mp_FileDetailBox->pack_start(*mp_NoSubDirRadio, Gtk::PACK_SHRINK);
-  mp_FileDetailBox->pack_start(*SubDirBox);
+  mp_FileDetailBox->pack_start(*mp_SubDirBox);
   mp_FileDetailBox->set_sensitive(true);
 
   Gtk::HBox* FileBox = Gtk::manage(new Gtk::HBox());
@@ -174,6 +180,8 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
 
   mp_ResourceStringEntry = Gtk::manage(new Gtk::Entry());
   mp_ResourceStringEntry->set_sensitive(false);
+  mp_ResourceStringEntry->signal_changed().connect(
+      sigc::mem_fun(*this, &DatasoreAddItemDialog::checkIsValid));
 
   Gtk::HBox* ResourceBox = Gtk::manage(new Gtk::HBox());
   ResourceBox->pack_start(*mp_ResourceRadio, Gtk::PACK_SHRINK);
@@ -199,7 +207,7 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
 
   mp_Dialog->show_all_children();
 
-  onIDChanged();
+  checkIsValid();
   mp_FileRadio->set_active(true);
   mp_SubDirRadio->set_active(false);
 }
@@ -209,11 +217,43 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
 
 openfluid::fluidx::DatastoreItemDescriptor* DatasoreAddItemDialog::show()
 {
+  checkIsValid();
+
   openfluid::fluidx::DatastoreItemDescriptor* NewItem = 0;
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    //TODO
+    if (mp_FileRadio->get_active())
+    {
+      std::string FromPath = mp_FilePathEntry->get_text();
+      Glib::RefPtr<Gio::File> FromFile = Gio::File::create_for_path(FromPath);
+
+      if (FromFile->query_exists())
+      {
+        std::string DSRelativePath = "";
+
+        if (isFileInInputDir(FromFile))
+        {
+          DSRelativePath = mref_InDirFile->get_relative_path(FromFile);
+        }
+        else
+        {
+          Glib::RefPtr<Gio::File> ToFile;
+
+          if (copyFile(FromFile, ToFile))
+            DSRelativePath = mref_InDirFile->get_relative_path(ToFile);
+        }
+
+        if (!DSRelativePath.empty())
+          NewItem = createItem(DSRelativePath);
+      }
+
+    }
+    else if (mp_ResourceRadio->get_active())
+    {
+      std::string ResourceStr = mp_ResourceStringEntry->get_text();
+      //TODO
+    }
   }
 
   mp_Dialog->hide();
@@ -224,27 +264,66 @@ openfluid::fluidx::DatastoreItemDescriptor* DatasoreAddItemDialog::show()
 // =====================================================================
 // =====================================================================
 
-void DatasoreAddItemDialog::onIDChanged()
+void DatasoreAddItemDialog::checkIsValid()
 {
-  std::string NewID = mp_IDEntry->get_text();
+  std::string InfoBarTxt = "";
 
-  bool IsValid = false;
+  std::string NewID = mp_IDEntry->get_text();
 
   if (NewID == "" || EngineHelper::isEmptyString(NewID))
   {
-    mp_InfoBarLabel->set_text(_("ID can not be empty"));
+    InfoBarTxt = _("ID can not be empty");
   }
   else if (mp_Datastore->isItemAlreadyExist(NewID))
   {
-    mp_InfoBarLabel->set_text(_("This ID already exists"));
-  }
-  else
-  {
-    IsValid = true;
+    InfoBarTxt = _("This ID already exists");
   }
 
-  mp_InfoBar->set_visible(!IsValid);
-  mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, IsValid);
+  std::string FilePath = mp_FilePathEntry->get_text();
+  std::string ResourcePath = mp_ResourceStringEntry->get_text();
+
+  if (mp_FileRadio->get_active())
+  {
+    if (FilePath == "" || EngineHelper::isEmptyString(FilePath))
+    {
+      if (!InfoBarTxt.empty())
+        InfoBarTxt.append("\n");
+      InfoBarTxt.append(_("File path can not be empty"));
+    }
+    else
+    {
+      Glib::RefPtr<Gio::File> File = Gio::File::create_for_path(FilePath);
+      if (!File->query_exists())
+      {
+        if (!InfoBarTxt.empty())
+          InfoBarTxt.append("\n");
+        InfoBarTxt.append(_("This file path doesn't exist"));
+      }
+      else if (File->query_file_type() == Gio::FILE_TYPE_DIRECTORY)
+      {
+        if (!InfoBarTxt.empty())
+          InfoBarTxt.append("\n");
+        InfoBarTxt.append(_("This file path is a directory"));
+      }
+      else
+      {
+        bool ExistsInIN = isFileInInputDir(File);
+        mp_SubDirBox->set_sensitive(!ExistsInIN);
+        mp_NoSubDirRadio->set_sensitive(!ExistsInIN);
+      }
+    }
+  }
+  else if (mp_ResourceRadio->get_active()
+      && (ResourcePath == "" || EngineHelper::isEmptyString(ResourcePath)))
+  {
+    if (!InfoBarTxt.empty())
+      InfoBarTxt.append("\n");
+    InfoBarTxt.append(_("Resource string can not be empty"));
+  }
+
+  mp_InfoBarLabel->set_text(InfoBarTxt);
+  mp_InfoBar->set_visible(!InfoBarTxt.empty());
+  mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, InfoBarTxt.empty());
 }
 
 // =====================================================================
@@ -263,6 +342,8 @@ void DatasoreAddItemDialog::onFileResourceToggled()
   mp_FileDetailBox->set_sensitive(!mp_FileDetailBox->get_sensitive());
   mp_ResourceStringEntry->set_sensitive(
       !mp_ResourceStringEntry->get_sensitive());
+
+  checkIsValid();
 }
 
 // =====================================================================
@@ -275,11 +356,21 @@ void DatasoreAddItemDialog::onBrowseButtonClicked()
   Dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   Dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
-  Dialog.set_current_folder(
-      openfluid::base::ProjectManager::getInstance()->getInputDir());
+  std::string FilePath = mp_FilePathEntry->get_text();
+  Glib::RefPtr<Gio::File> File = Gio::File::create_for_path(FilePath);
+  if (FilePath == "" || !File->query_exists())
+  {
+    Dialog.set_current_folder(
+        openfluid::base::ProjectManager::getInstance()->getInputDir());
+  }
+  else
+    Dialog.set_filename(FilePath);
 
   if (Dialog.run() == Gtk::RESPONSE_OK)
+  {
     mp_FilePathEntry->set_text(Glib::filename_to_utf8(Dialog.get_filename()));
+    mp_FilePathEntry->set_width_chars(mp_FilePathEntry->get_text_length());
+  }
 }
 
 // =====================================================================
@@ -293,3 +384,87 @@ void DatasoreAddItemDialog::onSubDirToggled()
 // =====================================================================
 // =====================================================================
 
+bool DatasoreAddItemDialog::isFileInInputDir(Glib::RefPtr<Gio::File> File)
+{
+  return !mref_InDirFile->get_relative_path(File).empty();
+}
+
+// =====================================================================
+// =====================================================================
+
+bool DatasoreAddItemDialog::copyFile(Glib::RefPtr<Gio::File> FromFile,
+                                     Glib::RefPtr<Gio::File>& ToFile)
+{
+  std::string ToPath = mref_InDirFile->get_path();
+
+  if (mp_SubDirRadio->get_active())
+  {
+    std::string SubDir = mp_SubDirEntry->get_text();
+
+    if (!EngineHelper::isEmptyString(SubDir))
+    {
+      ToPath.append("/").append(SubDir);
+
+      Glib::RefPtr<Gio::File> SubDir = Gio::File::create_for_path(ToPath);
+
+      if (!SubDir->query_exists())
+        SubDir->make_directory_with_parents();
+    }
+  }
+
+  ToPath.append("/").append(FromFile->get_basename());
+
+  ToFile = Gio::File::create_for_path(ToPath);
+
+  Gio::FileCopyFlags Flag = Gio::FILE_COPY_NONE;
+
+  if (ToFile->query_exists())
+  {
+    if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+        Glib::ustring::compose(
+            _("The file %1 already exists.\nDo you want to overwrite it ?"),
+            ToPath)))
+      return false;
+
+    Flag = Gio::FILE_COPY_OVERWRITE;
+  }
+
+  try
+  {
+    FromFile->copy(ToFile, Flag);
+  }
+  catch (Gio::Error& e)
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+        Glib::ustring::compose(
+            _("Error while copying %1 to %2\n Operation canceled"),
+            FromFile->get_path(), ToPath));
+    return false;
+  }
+
+  return true;
+}
+
+// =====================================================================
+// =====================================================================
+
+openfluid::fluidx::DatastoreItemDescriptor* DatasoreAddItemDialog::createItem(
+    std::string RelativePath)
+{
+  openfluid::core::UnstructuredValue::UnstructuredType Type;
+  openfluid::core::UnstructuredValue::getValueTypeFromString(
+      mp_TypeCombo->get_active_text(), Type);
+
+  openfluid::fluidx::DatastoreItemDescriptor* NewItem =
+      new openfluid::fluidx::DatastoreItemDescriptor(mp_IDEntry->get_text(),
+                                                     mref_InDirFile->get_path(),
+                                                     RelativePath, Type);
+
+  if (mp_ClassCheck->get_active())
+    NewItem->setUnitClass(mp_ClassEntry->get_text());
+
+  return NewItem;
+}
+
+// =====================================================================
+// =====================================================================

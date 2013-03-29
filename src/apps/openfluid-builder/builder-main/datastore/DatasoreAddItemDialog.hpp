@@ -55,6 +55,7 @@
 #ifndef DATASOREADDITEMDIALOG_HPP_
 #define DATASOREADDITEMDIALOG_HPP_
 
+#include <giomm/file.h>
 #include <gtkmm/dialog.h>
 #include <gtkmm/infobar.h>
 #include <gtkmm/entry.h>
@@ -77,6 +78,8 @@ class DatasoreAddItemDialog
 
     Gtk::Dialog* mp_Dialog;
 
+    Glib::RefPtr<Gio::File> mref_InDirFile;
+
     Gtk::InfoBar* mp_InfoBar;
     Gtk::Label* mp_InfoBarLabel;
 
@@ -92,6 +95,8 @@ class DatasoreAddItemDialog
 
     Gtk::VBox* mp_FileDetailBox;
 
+    Gtk::HBox* mp_SubDirBox;
+
     Gtk::Entry* mp_FilePathEntry;
 
     Gtk::Entry* mp_ResourceStringEntry;
@@ -101,7 +106,7 @@ class DatasoreAddItemDialog
 
     Gtk::Entry* mp_SubDirEntry;
 
-    void onIDChanged();
+    void checkIsValid();
 
     void onCheckToggled();
 
@@ -110,6 +115,14 @@ class DatasoreAddItemDialog
     void onBrowseButtonClicked();
 
     void onSubDirToggled();
+
+    bool isFileInInputDir(Glib::RefPtr<Gio::File> File);
+
+    bool copyFile(Glib::RefPtr<Gio::File> FromFile,
+                  Glib::RefPtr<Gio::File>& ToFile);
+
+    openfluid::fluidx::DatastoreItemDescriptor* createItem(
+        std::string RelativePath);
 
   public:
 

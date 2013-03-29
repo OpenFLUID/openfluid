@@ -176,7 +176,13 @@ void DatastoreView::updateListToolBox()
 
 void DatastoreView::whenAddAsked()
 {
-  mp_Datastore->appendItem(mp_AddDialog->show());
+  openfluid::fluidx::DatastoreItemDescriptor* NewItem = mp_AddDialog->show();
+  if (NewItem)
+  {
+    mp_Datastore->appendItem(NewItem);
+    update();
+    m_signal_DatastoreChanged.emit();
+  }
 }
 
 // =====================================================================
