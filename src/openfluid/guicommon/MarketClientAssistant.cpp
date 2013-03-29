@@ -499,12 +499,11 @@ bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, c
 
   for (APMiter = PacksToSelect.begin(); APMiter != PacksToSelect.end(); ++APMiter)
   {
-    Message += "\n- <u>"+m_MarketClient.getTypeName(APMiter->first, true, true)+":</u> ";
+    Message += "\n<u>"+m_MarketClient.getTypeName(APMiter->first, true, true)+":</u> ";
     for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
     {
-      Message += (*APLiter)->getID() + "; ";
+      Message += "\n - " + (*APLiter)->getID();
     }
-    Message = Message.substr(0, Message.size() - 2);
   }
 
   Gtk::MessageDialog Dialog(*this, Message, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);

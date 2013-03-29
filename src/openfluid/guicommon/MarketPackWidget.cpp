@@ -224,10 +224,10 @@ void MarketPackWidget::updateDisplayedInfos()
     MarkupTooltip += "\n\n<u>Dependencies:</u>";
     for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
     {
-      MarkupTooltip += "\n- "+openfluid::market::MarketClient::getTypeName(DMit->first, true, true)+": ";
+      MarkupTooltip += "\n"+openfluid::market::MarketClient::getTypeName(DMit->first, true, true)+": ";
       for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
       {
-        MarkupTooltip += "\n  " + *DLit;
+        MarkupTooltip += "\n  - " + *DLit;
       }
     }
   }
