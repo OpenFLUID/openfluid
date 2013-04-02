@@ -499,7 +499,7 @@ bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, c
 
   for (APMiter = PacksToSelect.begin(); APMiter != PacksToSelect.end(); ++APMiter)
   {
-    Message += "\n<u>"+m_MarketClient.getTypeName(APMiter->first, true, true)+":</u> ";
+    Message += "\n<u>"+getGraphicTypeName(APMiter->first, true, true)+":</u> ";
     for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
     {
       Message += "\n - " + (*APLiter)->getID();
@@ -895,7 +895,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
 
       // Create tab
-      m_TypesTabs.append_page(*mp_TabBox[TCIter->first], m_MarketClient.getTypeName(TCIter->first, true,true));
+      m_TypesTabs.append_page(*mp_TabBox[TCIter->first], getGraphicTypeName(TCIter->first, true,true));
 
       // load tab content
       m_TypesTabs.get_nth_page(TCIter->first)->show_all();
@@ -941,7 +941,7 @@ void MarketClientAssistant::initializeLicencesTreeView()
         if (!PackagesContainers[TCIter->first])
         {
           TypeRow = *(m_RefLicenseTreeViewModel->append());
-          TypeRow[m_LicensesColumns.m_ID] = m_MarketClient.getTypeName(TCIter->first,true,true);
+          TypeRow[m_LicensesColumns.m_ID] = getGraphicTypeName(TCIter->first,true,true);
 
           PackagesContainers[TCIter->first] = true;
         }
@@ -980,7 +980,7 @@ void MarketClientAssistant::updateInstallTreeview()
   {
     Gtk::TreeModel::Row TmpRow = *(m_RefInstallTreeViewModel->append());
     TmpRow[m_InstallColumns.m_ID] = (*PLiter)->getID();
-    TmpRow[m_InstallColumns.m_Type] = m_MarketClient.getTypeName((*PLiter)->getTypePackage(),true,false);
+    TmpRow[m_InstallColumns.m_Type] = getGraphicTypeName((*PLiter)->getTypePackage(),true,false);
     if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::BIN) TmpRow[m_InstallColumns.m_Format] = _("binary");
     else if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::SRC) TmpRow[m_InstallColumns.m_Format] = _("source");
     else TmpRow[m_InstallColumns.m_Format] = _("dataset");
@@ -999,6 +999,25 @@ void MarketClientAssistant::onViewLogClicked()
   ViewLogFileWindow LogWindow(openfluid::market::MarketPackage::getLogFile());
 
   Gtk::Main::run(LogWindow);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketClientAssistant::getGraphicTypeName(const openfluid::market::PackageInfo::TypePackage& Type, const bool Maj, const bool Plural)
+{
+  std::string TypesNames[] = { "function", "observer", "builder extension", "dataset"};
+  std::string Name = TypesNames[Type];
+
+  if (Maj)
+    Name[0] = toupper(Name[0]);
+
+  if (Plural)
+    Name += "s";
+
+  return Name;
 }
 
 

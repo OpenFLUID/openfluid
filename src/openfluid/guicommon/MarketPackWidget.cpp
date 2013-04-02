@@ -55,7 +55,7 @@
 
 #include <openfluid/guicommon/MarketPackWidget.hpp>
 #include <openfluid/market/MarketPackage.hpp>
-#include <openfluid/market/MarketClient.hpp>
+#include <openfluid/guicommon/MarketClientAssistant.hpp>
 
 #include <glibmm/i18n.h>
 
@@ -224,7 +224,7 @@ void MarketPackWidget::updateDisplayedInfos()
     MarkupTooltip += "\n\n<u>Dependencies:</u>";
     for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
     {
-      MarkupTooltip += "\n"+openfluid::market::MarketClient::getTypeName(DMit->first, true, true)+": ";
+      MarkupTooltip += "\n"+MarketClientAssistant::getGraphicTypeName(DMit->first, true, true)+": ";
       for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
       {
         MarkupTooltip += "\n  - " + *DLit;

@@ -242,6 +242,8 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     virtual ~MarketClientAssistant();
 
+    static std::string getGraphicTypeName(const openfluid::market::PackageInfo::TypePackage& Type, const bool Maj, const bool Plural);
+
 
 };
 
