@@ -825,6 +825,10 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       mp_AvailTypesPacksSWindow[TCIter->first]->add(*mp_AvailTypesPacksBox[TCIter->first]);
       mp_AvailTypesPacksSWindow[TCIter->first]->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
+      // removing ScrolledWindow border
+      Gtk::Viewport* pViewport=(Gtk::Viewport*) mp_AvailTypesPacksSWindow[TCIter->first]->get_child();
+      pViewport->set_shadow_type(Gtk::SHADOW_NONE);
+
 
       // Adding packages in VBox
       for (CIter=TCIter->second.begin();CIter!=TCIter->second.end();++CIter)
@@ -843,7 +847,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
             sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
         );
 
-        if (CIter != TCIter->second.begin()) mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
+        mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
         mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets[TCIter->first].back()),Gtk::PACK_SHRINK,0);
       }
 
@@ -873,6 +877,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
       mp_TabBox[TCIter->first] = Gtk::manage(new Gtk::VBox());
       mp_TabBox[TCIter->first]->pack_start(*mp_AvailTypesPacksSWindow[TCIter->first],Gtk::PACK_EXPAND_WIDGET,6);
+      mp_TabBox[TCIter->first]->pack_start(*(Gtk::manage(new Gtk::HSeparator())),Gtk::PACK_SHRINK,5);
       mp_TabBox[TCIter->first]->pack_start(*mp_ActionButtonsBox[TCIter->first],Gtk::PACK_SHRINK,4);
 
 

@@ -71,6 +71,7 @@
 #include <gtkmm/notebook.h>
 #include <gtkmm/paned.h>
 #include <gtkmm/messagedialog.h>
+#include <gtkmm/viewport.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketClient.hpp>
