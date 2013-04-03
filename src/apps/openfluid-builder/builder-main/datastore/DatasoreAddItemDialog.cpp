@@ -104,8 +104,8 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_TypeCombo->set_active(0);
 
   Gtk::Table* IDTypeTable = Gtk::manage(new Gtk::Table(2, 2));
-  IDTypeTable->set_col_spacings(3);
-  IDTypeTable->set_row_spacings(5);
+  IDTypeTable->set_col_spacings(5);
+  IDTypeTable->set_row_spacings(10);
   IDTypeTable->attach(
       *Gtk::manage(new Gtk::Label(_("ID"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER)),
       0, 1, 0, 1, Gtk::SHRINK | Gtk::FILL);
@@ -115,6 +115,7 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
       0, 1, 1, 2, Gtk::SHRINK | Gtk::FILL);
   IDTypeTable->attach(*mp_IDEntry, 1, 2, 0, 1, Gtk::SHRINK);
   IDTypeTable->attach(*mp_TypeCombo, 1, 2, 1, 2, Gtk::FILL);
+  IDTypeTable->set_border_width(5);
 
   mp_ClassCheck = Gtk::manage(new Gtk::CheckButton(_("Unit class")));
   mp_ClassCheck->signal_toggled().connect(
@@ -124,8 +125,9 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_ClassEntry = Gtk::manage(new Gtk::Entry());
   mp_ClassEntry->set_sensitive(false);
 
-  Gtk::HBox* ClassBox = Gtk::manage(new Gtk::HBox());
-  ClassBox->pack_start(*mp_ClassCheck, Gtk::PACK_SHRINK, 5);
+  Gtk::HBox* ClassBox = Gtk::manage(new Gtk::HBox(false, 5));
+  ClassBox->set_border_width(5);
+  ClassBox->pack_start(*mp_ClassCheck, Gtk::PACK_SHRINK);
   ClassBox->pack_start(*mp_ClassEntry, Gtk::PACK_SHRINK);
 
   // Data source
@@ -137,7 +139,8 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_FileRadio = Gtk::manage(new Gtk::RadioButton(SourceGroup, _("File")));
   mp_FileRadio->signal_toggled().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::onSourceToggled));
-  Gtk::Alignment* AlignFileRadio = Gtk::manage(new Gtk::Alignment(0.5,0,0,0));
+  Gtk::Alignment* AlignFileRadio = Gtk::manage(
+      new Gtk::Alignment(0.5, 0, 0, 0));
   AlignFileRadio->add(*mp_FileRadio);
 
   mp_FilePathEntry = Gtk::manage(new Gtk::Entry());
@@ -148,7 +151,7 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   BrowseFileButton->signal_clicked().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::onBrowseFileButtonClicked));
 
-  Gtk::HBox* FilePathBox = Gtk::manage(new Gtk::HBox());
+  Gtk::HBox* FilePathBox = Gtk::manage(new Gtk::HBox(false, 5));
   FilePathBox->pack_start(*mp_FilePathEntry, Gtk::PACK_EXPAND_WIDGET);
   FilePathBox->pack_start(*BrowseFileButton, Gtk::PACK_SHRINK);
 
@@ -174,14 +177,14 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   ModelWin->add(*mp_TreeView);
   ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 
-  mp_Expander = Gtk::manage(new Gtk::Expander("Associated files:"));
+  mp_Expander = Gtk::manage(new Gtk::Expander("Associated files"));
   mp_Expander->add(*ModelWin);
 
   mp_FileDetailBox = Gtk::manage(new Gtk::VBox());
   mp_FileDetailBox->pack_start(*FilePathBox, Gtk::PACK_SHRINK);
   mp_FileDetailBox->pack_start(*mp_Expander, Gtk::PACK_SHRINK);
 
-  Gtk::HBox* FileBox = Gtk::manage(new Gtk::HBox());
+  Gtk::HBox* FileBox = Gtk::manage(new Gtk::HBox(false, 5));
   FileBox->pack_start(*AlignFileRadio, Gtk::PACK_SHRINK);
   FileBox->pack_start(*mp_FileDetailBox);
 
@@ -199,14 +202,14 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   BrowseDirButton->signal_clicked().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::onBrowseDirButtonClicked));
 
-  Gtk::HBox* DirPathBox = Gtk::manage(new Gtk::HBox());
+  Gtk::HBox* DirPathBox = Gtk::manage(new Gtk::HBox(false, 5));
   DirPathBox->pack_start(*mp_DirPathEntry, Gtk::PACK_EXPAND_WIDGET);
   DirPathBox->pack_start(*BrowseDirButton, Gtk::PACK_SHRINK);
 
   mp_DirDetailBox = Gtk::manage(new Gtk::VBox());
   mp_DirDetailBox->pack_start(*DirPathBox, Gtk::PACK_SHRINK);
 
-  Gtk::HBox* DirBox = Gtk::manage(new Gtk::HBox());
+  Gtk::HBox* DirBox = Gtk::manage(new Gtk::HBox(false, 5));
   DirBox->pack_start(*mp_DirRadio, Gtk::PACK_SHRINK);
   DirBox->pack_start(*mp_DirDetailBox);
 
@@ -221,11 +224,12 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_ResourceStringEntry->signal_changed().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::checkIsValid));
 
-  Gtk::HBox* ResourceBox = Gtk::manage(new Gtk::HBox());
+  Gtk::HBox* ResourceBox = Gtk::manage(new Gtk::HBox(false, 5));
   ResourceBox->pack_start(*mp_ResourceRadio, Gtk::PACK_SHRINK);
   ResourceBox->pack_start(*mp_ResourceStringEntry, Gtk::PACK_EXPAND_WIDGET);
 
-  Gtk::VBox* DataSourceBox = Gtk::manage(new Gtk::VBox());
+  Gtk::VBox* DataSourceBox = Gtk::manage(new Gtk::VBox(false, 5));
+  DataSourceBox->set_border_width(5);
   DataSourceBox->pack_start(*FileBox, Gtk::PACK_SHRINK);
   DataSourceBox->pack_start(*DirBox, Gtk::PACK_SHRINK);
   DataSourceBox->pack_start(*ResourceBox, Gtk::PACK_SHRINK);
@@ -239,21 +243,21 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   Gtk::RadioButtonGroup SubDirGroup;
 
   mp_NoSubDirRadio = Gtk::manage(
-      new Gtk::RadioButton(SubDirGroup, _("Copied into dataset directory")));
+      new Gtk::RadioButton(SubDirGroup, _("Copy into dataset directory")));
   mp_NoSubDirRadio->signal_toggled().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::onSubDirToggled));
 
   mp_SubDirRadio = Gtk::manage(
-      new Gtk::RadioButton(SubDirGroup,
-                           _("Copied into dataset subdirectory:")));
+      new Gtk::RadioButton(SubDirGroup, _("Copy into dataset subdirectory")));
   mp_SubDirRadio->signal_toggled().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::onSubDirToggled));
   mp_SubDirEntry = Gtk::manage(new Gtk::Entry());
-  mp_SubDirBox = Gtk::manage(new Gtk::HBox());
+  mp_SubDirBox = Gtk::manage(new Gtk::HBox(false, 5));
   mp_SubDirBox->pack_start(*mp_SubDirRadio, Gtk::PACK_SHRINK);
   mp_SubDirBox->pack_start(*mp_SubDirEntry, Gtk::PACK_EXPAND_WIDGET);
 
-  Gtk::VBox* DataDestBox = Gtk::manage(new Gtk::VBox());
+  Gtk::VBox* DataDestBox = Gtk::manage(new Gtk::VBox(false, 5));
+  DataDestBox->set_border_width(5);
   DataDestBox->pack_start(*mp_NoSubDirRadio, Gtk::PACK_SHRINK);
   DataDestBox->pack_start(*mp_SubDirBox);
 
@@ -266,9 +270,9 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_Dialog = new Gtk::Dialog(_("Add a Datastore item"));
   mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK, 5);
   mp_Dialog->get_vbox()->pack_start(*IDTypeTable, Gtk::PACK_SHRINK);
-  mp_Dialog->get_vbox()->pack_start(*ClassBox, Gtk::PACK_SHRINK, 5);
-  mp_Dialog->get_vbox()->pack_start(*SourceFrame, Gtk::PACK_SHRINK, 5);
-  mp_Dialog->get_vbox()->pack_start(*DestFrame, Gtk::PACK_SHRINK, 5);
+  mp_Dialog->get_vbox()->pack_start(*ClassBox, Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*SourceFrame, Gtk::PACK_SHRINK);
+  mp_Dialog->get_vbox()->pack_start(*DestFrame, Gtk::PACK_SHRINK);
 //  mp_Dialog->set_default_size(700, 200);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
@@ -320,13 +324,15 @@ openfluid::fluidx::DatastoreItemDescriptor* DatasoreAddItemDialog::show()
         {
           Glib::RefPtr<Gio::File> ToFile;
 
-          if(mp_FileRadio->get_active())
+          if (mp_FileRadio->get_active())
           {
             Gtk::TreeModel::Children Children = mref_TreeModel->children();
-            for(Gtk::TreeModel::Children::iterator it = Children.begin(); it != Children.end(); ++it)
+            for (Gtk::TreeModel::Children::iterator it = Children.begin();
+                it != Children.end(); ++it)
             {
-              if(it->get_value(m_Columns.m_Selected) && it->get_value(m_Columns.m_Sensitive))
-                copyFile(it->get_value(m_Columns.m_File),ToFile);
+              if (it->get_value(m_Columns.m_Selected) && it->get_value(
+                  m_Columns.m_Sensitive))
+                copyFile(it->get_value(m_Columns.m_File), ToFile);
             }
           }
 
@@ -656,9 +662,9 @@ bool DatasoreAddItemDialog::copyFile(Glib::RefPtr<Gio::File> FromFile,
     catch (...)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-          Glib::ustring::compose(
-              _("Error while copying %1 into %2"),
-              FromFile->get_path(), ToFile->get_parent()->get_path()));
+          Glib::ustring::compose(_("Error while copying %1 into %2"),
+                                 FromFile->get_path(),
+                                 ToFile->get_parent()->get_path()));
       return false;
     }
   }
@@ -671,9 +677,8 @@ bool DatasoreAddItemDialog::copyFile(Glib::RefPtr<Gio::File> FromFile,
     catch (Gio::Error& e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
-          Glib::ustring::compose(
-              _("Error while copying %1 to %2"),
-              FromFile->get_path(), ToPath));
+          Glib::ustring::compose(_("Error while copying %1 to %2"),
+                                 FromFile->get_path(), ToPath));
       return false;
     }
   }
