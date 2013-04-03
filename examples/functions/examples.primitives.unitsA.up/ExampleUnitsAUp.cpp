@@ -33,7 +33,11 @@ BEGIN_FUNCTION_SIGNATURE("examples.primitives.unitsA.up")
   DECLARE_SIGNATURE_AUTHORNAME("Jean-Christophe Fabre");
   DECLARE_SIGNATURE_AUTHOREMAIL("fabrejc@supagro.inra.fr");
 
+  DECLARE_FUNCTION_PARAM("gmult","multiply coefficient","");
+
   DECLARE_REQUIRED_VAR("var1","unitsA","the variable 1","");
+  DECLARE_REQUIRED_VAR("var10","unitsA","the variable 1","");
+  DECLARE_REQUIRED_VAR("var11","unitsA","the variable 1","");
   
   DECLARE_PRODUCED_VAR("var3","unitsA","the variable 3","");
   
@@ -131,7 +135,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
     openfluid::base::SchedulingRequest runStep()
     {
       openfluid::core::Unit* A;
-      openfluid::core::DoubleValue Value1, Value2;
+      openfluid::core::DoubleValue Value1, Value2, Value10, Value11;
 
       unsigned int CurrentTimeIndex = OPENFLUID_GetCurrentTimeIndex();
 
@@ -139,6 +143,9 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
       {
 
         OPENFLUID_GetVariable(A,"var1",CurrentTimeIndex,Value1);
+
+        OPENFLUID_GetVariable(A,"var10",CurrentTimeIndex,Value10);
+        OPENFLUID_GetVariable(A,"var11",CurrentTimeIndex,Value11);
 
 
         if (OPENFLUID_IsVariableExist(A,"var2",CurrentTimeIndex,openfluid::core::Value::DOUBLE))
