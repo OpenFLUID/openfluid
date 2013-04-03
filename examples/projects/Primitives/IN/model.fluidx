@@ -3,6 +3,15 @@
   <model>
 
     <function ID="examples.primitives.unitsA.prod" />
+
+     <generator varname="var10" unitclass="unitsA" method="fixed">
+      <param name="fixedvalue" value="5.3" />
+    </generator>
+
+    <generator varname="var11" unitclass="unitsA" method="random">
+      <param name="min" value="5.0" />
+      <param name="max" value="6.0" />
+    </generator>
     
     <function ID="examples.primitives.unitsA.up">
        <param name="gmult" value="3" />
