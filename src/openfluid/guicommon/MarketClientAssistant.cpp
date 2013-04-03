@@ -629,10 +629,26 @@ void MarketClientAssistant::onPackageInstallModified()
 // =====================================================================
 
 
+openfluid::market::PackageInfo::TypePackage MarketClientAssistant::getCurrentTypeTab()
+{
+  std::string TabName = m_TypesTabs.get_tab_label_text(*m_TypesTabs.get_nth_page(m_TypesTabs.get_current_page()));
+  std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*>::const_iterator ATPBiter = mp_AvailTypesPacksBox.begin();
+
+  while (ATPBiter != mp_AvailTypesPacksBox.end() && getGraphicTypeName(ATPBiter->first,true,true) != TabName)
+    ++ATPBiter;
+
+  return ATPBiter->first;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketClientAssistant::onSelectAllClicked()
 {
   std::list<MarketPackWidget*>::iterator APLiter;
-  openfluid::market::PackageInfo::TypePackage CurrentTab = (openfluid::market::PackageInfo::TypePackage)m_TypesTabs.get_current_page();
+  openfluid::market::PackageInfo::TypePackage CurrentTab = getCurrentTypeTab();
 
   for (APLiter=mp_AvailPacksWidgets[CurrentTab].begin();APLiter!=mp_AvailPacksWidgets[CurrentTab].end();++APLiter)
   {
@@ -649,7 +665,7 @@ void MarketClientAssistant::onSelectAllClicked()
 void MarketClientAssistant::onSelectNoneClicked()
 {
   std::list<MarketPackWidget*>::iterator APLiter;
-  openfluid::market::PackageInfo::TypePackage CurrentTab = (openfluid::market::PackageInfo::TypePackage)m_TypesTabs.get_current_page();
+  openfluid::market::PackageInfo::TypePackage CurrentTab = getCurrentTypeTab();
 
   for (APLiter=mp_AvailPacksWidgets[CurrentTab].begin();APLiter!=mp_AvailPacksWidgets[CurrentTab].end();++APLiter)
   {
@@ -666,7 +682,7 @@ void MarketClientAssistant::onSelectNoneClicked()
 
 void MarketClientAssistant::onCommonBuildConfigClicked()
 {
-  openfluid::market::PackageInfo::TypePackage CurrentTab = (openfluid::market::PackageInfo::TypePackage)m_TypesTabs.get_current_page();
+  openfluid::market::PackageInfo::TypePackage CurrentTab = getCurrentTypeTab();
   MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(CurrentTab),"");
 
   if (OptDialog.run() == Gtk::RESPONSE_OK)
@@ -898,8 +914,9 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       m_TypesTabs.append_page(*mp_TabBox[TCIter->first], getGraphicTypeName(TCIter->first, true,true));
 
       // load tab content
-      m_TypesTabs.get_nth_page(TCIter->first)->show_all();
-      m_TypesTabs.set_current_page(TCIter->first);
+      int LastPage = m_TypesTabs.get_n_pages() - 1;
+      m_TypesTabs.get_nth_page(LastPage)->show_all();
+      m_TypesTabs.set_current_page(LastPage);
       m_TypesTabs.set_current_page(0);
     }
   }

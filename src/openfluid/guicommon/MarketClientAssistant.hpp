@@ -136,6 +136,8 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     void onPackageInstallModified();
 
+    openfluid::market::PackageInfo::TypePackage getCurrentTypeTab();
+
     void onSelectAllClicked();
 
     void onSelectNoneClicked();
