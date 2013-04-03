@@ -62,6 +62,9 @@
 #include <gtkmm/checkbutton.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/radiobutton.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/expander.h>
 
 namespace openfluid {
 namespace fluidx {
@@ -97,8 +100,6 @@ class DatasoreAddItemDialog
     Gtk::VBox* mp_FileDetailBox;
     Gtk::VBox* mp_DirDetailBox;
 
-    Gtk::HBox* mp_SubDirBox;
-
     Gtk::Entry* mp_FilePathEntry;
     Gtk::Entry* mp_DirPathEntry;
 
@@ -107,7 +108,32 @@ class DatasoreAddItemDialog
     Gtk::RadioButton* mp_NoSubDirRadio;
     Gtk::RadioButton* mp_SubDirRadio;
 
+    Gtk::HBox* mp_SubDirBox;
     Gtk::Entry* mp_SubDirEntry;
+
+    Gtk::Expander* mp_Expander;
+
+    class Columns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+
+        Columns()
+        {
+          add(m_File);
+          add(m_FileName);
+          add(m_Selected);
+          add(m_Sensitive);
+        }
+
+        Gtk::TreeModelColumn<Glib::RefPtr<Gio::File> > m_File;
+        Gtk::TreeModelColumn<std::string> m_FileName;
+        Gtk::TreeModelColumn<bool> m_Selected;
+        Gtk::TreeModelColumn<bool> m_Sensitive;
+    };
+
+    Columns m_Columns;
+    Gtk::TreeView* mp_TreeView;
+    Glib::RefPtr<Gtk::ListStore> mref_TreeModel;
 
     void checkIsValid();
 
@@ -127,6 +153,8 @@ class DatasoreAddItemDialog
 
     openfluid::fluidx::DatastoreItemDescriptor* createItem(
         std::string RelativePath);
+
+    std::string getRoot(std::string FileName);
 
   public:
 

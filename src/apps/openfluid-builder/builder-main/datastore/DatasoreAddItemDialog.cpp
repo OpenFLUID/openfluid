@@ -60,6 +60,8 @@
 #include <gtkmm/table.h>
 #include <gtkmm/button.h>
 #include <gtkmm/filechooserdialog.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/alignment.h>
 #include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
@@ -135,6 +137,8 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_FileRadio = Gtk::manage(new Gtk::RadioButton(SourceGroup, _("File")));
   mp_FileRadio->signal_toggled().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::onSourceToggled));
+  Gtk::Alignment* AlignFileRadio = Gtk::manage(new Gtk::Alignment(0.5,0,0,0));
+  AlignFileRadio->add(*mp_FileRadio);
 
   mp_FilePathEntry = Gtk::manage(new Gtk::Entry());
   mp_FilePathEntry->signal_changed().connect(
@@ -148,11 +152,37 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   FilePathBox->pack_start(*mp_FilePathEntry, Gtk::PACK_EXPAND_WIDGET);
   FilePathBox->pack_start(*BrowseFileButton, Gtk::PACK_SHRINK);
 
+  mref_TreeModel = Gtk::ListStore::create(m_Columns);
+  mp_TreeView = Gtk::manage(new Gtk::TreeView());
+  mp_TreeView->set_model(mref_TreeModel);
+  mp_TreeView->set_headers_visible(false);
+  mp_TreeView->append_column_editable("", m_Columns.m_Selected);
+  mp_TreeView->append_column_editable("", m_Columns.m_FileName);
+
+  mp_TreeView->get_column(0)->add_attribute(
+      ((Gtk::CellRendererToggle*) mp_TreeView->get_column_cell_renderer(0))->property_sensitive(),
+      m_Columns.m_Sensitive);
+  mp_TreeView->get_column(1)->add_attribute(
+      ((Gtk::CellRendererText*) mp_TreeView->get_column_cell_renderer(1))->property_sensitive(),
+      m_Columns.m_Sensitive);
+
+  mref_TreeModel->set_sort_column(m_Columns.m_FileName, Gtk::SORT_ASCENDING);
+
+  Gtk::ScrolledWindow* ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ModelWin->set_visible(true);
+  ModelWin->add(*mp_TreeView);
+  ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
+  mp_Expander = Gtk::manage(new Gtk::Expander("Associated files:"));
+  mp_Expander->add(*ModelWin);
+
   mp_FileDetailBox = Gtk::manage(new Gtk::VBox());
   mp_FileDetailBox->pack_start(*FilePathBox, Gtk::PACK_SHRINK);
+  mp_FileDetailBox->pack_start(*mp_Expander, Gtk::PACK_SHRINK);
 
   Gtk::HBox* FileBox = Gtk::manage(new Gtk::HBox());
-  FileBox->pack_start(*mp_FileRadio, Gtk::PACK_SHRINK);
+  FileBox->pack_start(*AlignFileRadio, Gtk::PACK_SHRINK);
   FileBox->pack_start(*mp_FileDetailBox);
 
   //  // Directory
@@ -289,6 +319,16 @@ openfluid::fluidx::DatastoreItemDescriptor* DatasoreAddItemDialog::show()
         else
         {
           Glib::RefPtr<Gio::File> ToFile;
+
+          if(mp_FileRadio->get_active())
+          {
+            Gtk::TreeModel::Children Children = mref_TreeModel->children();
+            for(Gtk::TreeModel::Children::iterator it = Children.begin(); it != Children.end(); ++it)
+            {
+              if(it->get_value(m_Columns.m_Selected) && it->get_value(m_Columns.m_Sensitive))
+                copyFile(it->get_value(m_Columns.m_File),ToFile);
+            }
+          }
 
           if (copyFile(FromFile, ToFile))
             DSRelativePath = mref_InDirFile->get_relative_path(ToFile);
@@ -455,7 +495,72 @@ void DatasoreAddItemDialog::onBrowseFileButtonClicked()
   {
     mp_FilePathEntry->set_text(Glib::filename_to_utf8(Dialog.get_filename()));
     mp_FilePathEntry->set_width_chars(mp_FilePathEntry->get_text_length());
+
+    mref_TreeModel->clear();
+
+    File = Gio::File::create_for_path(mp_FilePathEntry->get_text());
+    if (!File)
+      return;
+
+    Glib::RefPtr<Gio::File> Dir = File->get_parent();
+    if (!Dir)
+      return;
+
+    std::string Root = getRoot(File->get_basename());
+
+    int SelectedCount = 0;
+
+    Glib::RefPtr<Gio::FileEnumerator> Children = Dir->enumerate_children();
+    for (Glib::RefPtr<Gio::FileInfo> Child = Children->next_file(); Child != 0;
+        Child = Children->next_file())
+    {
+      if (!Child->is_backup() && !Child->is_hidden() && !Child->is_symlink())
+      {
+        Glib::RefPtr<Gio::File> ChildFile = Dir->get_child(Child->get_name());
+
+        if (ChildFile->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
+        {
+          Gtk::TreeRow Row = *mref_TreeModel->append();
+
+          Glib::ustring ChildName = Glib::filename_to_utf8(
+              ChildFile->get_basename());
+
+          Row[m_Columns.m_File] = ChildFile;
+          Row[m_Columns.m_FileName] = ChildName;
+
+          bool SetSelected = (Root == getRoot(ChildName));
+          Row[m_Columns.m_Selected] = SetSelected;
+
+          if (SetSelected)
+            SelectedCount++;
+
+          Row[m_Columns.m_Sensitive] = (ChildFile->get_path()
+              != File->get_path());
+        }
+      }
+    }
+    Children->close();
+
+    mp_Expander->set_expanded(SelectedCount > 1);
+
+    if (mref_TreeModel->children().size() > 5)
+      mp_TreeView->set_size_request(-1, 100);
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+std::string DatasoreAddItemDialog::getRoot(std::string FileName)
+{
+  std::string Root = FileName;
+
+  std::size_t DotPos = FileName.find_first_of(".");
+
+  if (DotPos != std::string::npos)
+    Root.erase(Root.begin() + DotPos, Root.end());
+
+  return Root;
 }
 
 // =====================================================================
@@ -552,7 +657,7 @@ bool DatasoreAddItemDialog::copyFile(Glib::RefPtr<Gio::File> FromFile,
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
           Glib::ustring::compose(
-              _("Error while copying %1 into %2\nOperation canceled"),
+              _("Error while copying %1 into %2"),
               FromFile->get_path(), ToFile->get_parent()->get_path()));
       return false;
     }
@@ -567,7 +672,7 @@ bool DatasoreAddItemDialog::copyFile(Glib::RefPtr<Gio::File> FromFile,
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
           Glib::ustring::compose(
-              _("Error while copying %1 to %2\nOperation canceled"),
+              _("Error while copying %1 to %2"),
               FromFile->get_path(), ToPath));
       return false;
     }
