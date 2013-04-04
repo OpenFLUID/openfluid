@@ -215,12 +215,13 @@
 
   </domain>
 
-  <datastore>
-   	<dataitem id="mymap" type="geovector" source="datastore/testvect" unitclass="unitsA" />
-  	<dataitem id="mymap2" type="geovector" source="datastore/testvect.shp" />
-    <!--  Temporarily disabled GeoRasterValue
-  	<dataitem id="myrast" type="georaster" source="datastore/testrast.tif" /> -->
-  </datastore>
+ <datastore>
+  <dataitem id="units_A" type="geovector" source="shapes/units_A.shp" unitclass="unitsA" />
+  <dataitem id="units_B" type="geovector" source="units_B.shp" unitclass="unitsB" />
+  <dataitem id="VectWOClass" type="geovector" source="shapes/Vect.shp" />
+  <dataitem id="RastWOClass" type="georaster" source="shapes/Rast.tif" />
+  <dataitem id="wrong_class" type="geovector" source="shapes/wrong_class.shp" unitclass="wrongClass" />
+ </datastore>
   
   <monitoring>
     <observer ID="export.vars.files.csv">

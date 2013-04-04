@@ -91,6 +91,14 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
   Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
   mp_DomainRowRef = mref_TreeModel->createRowRefFromIter(*Row);
 
+  // Datastore
+  Row = *(mref_TreeModel->append());
+  Row[m_Columns.m_Id] = "";
+  Row[m_Columns.m_Display] = _("Datastore");
+  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_DATASTORE;
+  Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
+  mp_DatastoreRowRef = mref_TreeModel->createRowRefFromIter(*Row);
+
   // Simulation
   Row = *(mref_TreeModel->append());
   Row[m_Columns.m_Id] = "";
@@ -203,7 +211,8 @@ void ProjectExplorerAdapterModelImpl::updateDomain()
 
     Row[m_Columns.m_Id] = ClassName;
     Row[m_Columns.m_Display] = generateClassInfoStr(
-        ClassName, mp_AdvancedDesc->getDomain().getIDsOfClass(ClassName).size());
+        ClassName,
+        mp_AdvancedDesc->getDomain().getIDsOfClass(ClassName).size());
     Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_CLASS;
   }
 }

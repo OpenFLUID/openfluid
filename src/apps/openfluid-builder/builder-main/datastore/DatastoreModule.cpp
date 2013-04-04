@@ -46,92 +46,88 @@
  */
 
 /**
- \file AdvancedFluidXDescriptor.cpp
+ \file DatastoreModule.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
+#include "DatastoreModule.hpp"
+
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-
-namespace openfluid {
-namespace fluidx {
+#include "DatastoreView.hpp"
 
 // =====================================================================
 // =====================================================================
 
-AdvancedFluidXDescriptor::AdvancedFluidXDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+DatastoreModule::DatastoreModule(
+    openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
+    ProjectWorkspaceModule(AdvancedDesc)
 {
-  mp_Domain = new AdvancedDomainDescriptor(FluidXDesc.getDomainDescriptor());
-  mp_Model = new AdvancedModelDescriptor(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_Datastore = new AdvancedDatastoreDescriptor(
-      FluidXDesc.getDatastoreDescriptor());
-  mp_Monitoring = new AdvancedMonitoringDescriptor(
-      FluidXDesc.getMonitoringDescriptor());
+  mp_MainPanel = 0;
+
+  mp_DatastoreView = new DatastoreView(AdvancedDesc.getDatastore());
+
+  mp_DatastoreView->signal_DatastoreChanged().connect(
+      sigc::mem_fun(*this, &DatastoreModule::whenDatastoreChanged));
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedFluidXDescriptor::~AdvancedFluidXDescriptor()
+DatastoreModule::~DatastoreModule()
 {
-
+  delete mp_DatastoreView;
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain()
+void DatastoreModule::compose()
 {
-  return *mp_Domain;
+  mp_MainPanel = Gtk::manage(new Gtk::VBox());
+
+  mp_MainPanel->set_border_width(5);
+  mp_MainPanel->pack_start(*mp_DatastoreView->asWidget());
+
+  mp_MainPanel->set_visible(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel()
+Gtk::Widget* DatastoreModule::asWidget()
 {
-  return *mp_Model;
+  if (mp_MainPanel)
+    return mp_MainPanel;
+  throw std::logic_error(
+      "DatastoreModule : you try to get a widget from a non yet composed module.");
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescriptor()
+sigc::signal<void> DatastoreModule::signal_ModuleChanged()
 {
-  return *mp_RunDesc;
+  return m_signal_DatastoreChanged;
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatastoreDescriptor()
+void DatastoreModule::whenDatastoreChanged()
 {
-  return *mp_DatastoreDesc;
+  m_signal_DatastoreChanged.emit();
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedDatastoreDescriptor& AdvancedFluidXDescriptor::getDatastore()
+void DatastoreModule::update()
 {
-  return *mp_Datastore;
+  mp_DatastoreView->update();
 }
 
 // =====================================================================
 // =====================================================================
-
-AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring()
-{
-  return *mp_Monitoring;
-}
-
-// =====================================================================
-// =====================================================================
-
-}
-} // namespaces
 

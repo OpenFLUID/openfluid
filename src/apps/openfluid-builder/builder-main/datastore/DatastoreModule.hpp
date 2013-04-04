@@ -46,53 +46,49 @@
  */
 
 /**
- \file BuilderModuleFactory.hpp
+ \file DatastoreModule.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERMODULEFACTORY_HPP__
-#define __BUILDERMODULEFACTORY_HPP__
+#ifndef DATASTOREMODULE_HPP_
+#define DATASTOREMODULE_HPP_
 
-namespace openfluid {
-namespace guicommon {
-class BuilderModule;
-}
-}
+#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
-class BuilderAppActions;
-class EngineProject;
+#include <gtkmm/box.h>
 
-class BuilderModuleFactory
+class DatastoreView;
+
+class DatastoreModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
+
   private:
 
-    EngineProject& mp_EngineProject;
+    Gtk::Box* mp_MainPanel;
+
+  protected:
+
+    DatastoreView* mp_DatastoreView;
+
+    sigc::signal<void> m_signal_DatastoreChanged;
+
+    void whenDatastoreChanged();
 
   public:
 
-    static openfluid::guicommon::BuilderModule* createHomeModule(
-        BuilderAppActions& Actions);
+    DatastoreModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
-    BuilderModuleFactory(EngineProject& EngProject);
+    ~DatastoreModule();
 
-    openfluid::guicommon::BuilderModule* createModelStructureModule();
+    sigc::signal<void> signal_ModuleChanged();
 
-    openfluid::guicommon::BuilderModule* createDomainStructureModule();
+    void compose();
 
-    openfluid::guicommon::BuilderModule* createDatastoreModule();
+    Gtk::Widget* asWidget();
 
-    openfluid::guicommon::BuilderModule* createDomainClassModule();
-
-    openfluid::guicommon::BuilderModule* createSimulationRunModule();
-
-    openfluid::guicommon::BuilderModule* createMonitoringModule();
-
-    openfluid::guicommon::BuilderModule* createOutputsModule();
-
-    openfluid::guicommon::BuilderModule* createMapViewModule();
-
+    void update();
 };
 
-#endif /* __BUILDERMODULEFACTORY_HPP__ */
+#endif /* DATASTOREMODULE_HPP_ */

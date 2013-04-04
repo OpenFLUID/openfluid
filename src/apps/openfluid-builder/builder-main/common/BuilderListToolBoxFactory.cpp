@@ -152,6 +152,24 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainEventsToolBox()
   return ToolBox;
 }
 
+// =====================================================================
+// =====================================================================
+
+BuilderListToolBox* BuilderListToolBoxFactory::createDatastoreToolBox()
+{
+  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  ToolBox->setAllCommandVisible();
+  ToolBox->setEditCommandVisible(false);
+  ToolBox->setAddCommandTooltipText(_(
+      "Add an item to the datastore"));
+  ToolBox->setRemoveCommandTooltipText(_(
+      "Remove an item from the datastore"));
+  ToolBox->setUpCommandTooltipText(_(
+      "Move the selected item toward the begin of the datastore"));
+  ToolBox->setDownCommandTooltipText(_(
+      "Move the selected item toward the end of the datastore"));
+  return ToolBox;
+}
 
 // =====================================================================
 // =====================================================================

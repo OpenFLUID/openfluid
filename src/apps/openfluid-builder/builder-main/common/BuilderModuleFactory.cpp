@@ -58,6 +58,7 @@
 #include "ModelStructureModule.hpp"
 #include "DomainStructureModule.hpp"
 #include "DomainClassModule.hpp"
+#include "DatastoreModule.hpp"
 #include "SimulationRunModule.hpp"
 #include "MonitoringModule.hpp"
 #include "OutputsModule.hpp"
@@ -101,6 +102,16 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureM
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDomainStructureModule()
 {
   DomainStructureModule* Module = new DomainStructureModule(mp_EngineProject.getAdvancedDesc());
+  return Module;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::guicommon::BuilderModule* BuilderModuleFactory::createDatastoreModule()
+{
+  DatastoreModule* Module = new DatastoreModule(mp_EngineProject.getAdvancedDesc());
   return Module;
 }
 
