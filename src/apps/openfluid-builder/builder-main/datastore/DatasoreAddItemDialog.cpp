@@ -403,6 +403,8 @@ void DatasoreAddItemDialog::checkIsValid()
   std::string DirPath = mp_DirPathEntry->get_text();
   std::string ResourcePath = mp_ResourceStringEntry->get_text();
 
+  bool SetSubDirSensitive = false;
+
   if (mp_FileRadio->get_active())
   {
     if (FilePath == "" || EngineHelper::isEmptyString(FilePath))
@@ -428,11 +430,11 @@ void DatasoreAddItemDialog::checkIsValid()
       }
       else
       {
-        bool ExistsInIN = isFileInInputDir(File);
-        mp_SubDirBox->set_sensitive(!ExistsInIN);
-        mp_NoSubDirRadio->set_sensitive(!ExistsInIN);
+        SetSubDirSensitive = !isFileInInputDir(File);
       }
     }
+
+    updateAssociatedFiles();
   }
   else if (mp_DirRadio->get_active())
   {
@@ -459,9 +461,7 @@ void DatasoreAddItemDialog::checkIsValid()
       }
       else
       {
-        bool ExistsInIN = isFileInInputDir(File);
-        mp_SubDirBox->set_sensitive(!ExistsInIN);
-        mp_NoSubDirRadio->set_sensitive(!ExistsInIN);
+        SetSubDirSensitive = !isFileInInputDir(File);
       }
     }
   }
@@ -478,6 +478,10 @@ void DatasoreAddItemDialog::checkIsValid()
 
   mp_InfoBarLabel->set_text(InfoBarTxt);
   mp_InfoBar->set_visible(!InfoBarTxt.empty());
+
+  mp_SubDirBox->set_sensitive(SetSubDirSensitive);
+  mp_NoSubDirRadio->set_sensitive(SetSubDirSensitive);
+
   mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, InfoBarTxt.empty());
 }
 
@@ -526,56 +530,69 @@ void DatasoreAddItemDialog::onBrowseFileButtonClicked()
     mp_FilePathEntry->set_text(Glib::filename_to_utf8(Dialog.get_filename()));
     mp_FilePathEntry->set_width_chars(mp_FilePathEntry->get_text_length());
 
-    mref_TreeModel->clear();
+    updateAssociatedFiles();
+  }
+}
 
-    File = Gio::File::create_for_path(mp_FilePathEntry->get_text());
-    if (!File)
-      return;
+// =====================================================================
+// =====================================================================
 
+void DatasoreAddItemDialog::updateAssociatedFiles()
+{
+  mref_TreeModel->clear();
+
+  int SelectedCount = 0;
+
+  Glib::RefPtr<Gio::File> File = Gio::File::create_for_path(
+      mp_FilePathEntry->get_text());
+
+  if (File && File->query_exists()
+      && File->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
+  {
     Glib::RefPtr<Gio::File> Dir = File->get_parent();
-    if (!Dir)
-      return;
 
-    std::string Root = getRoot(File->get_basename());
-
-    int SelectedCount = 0;
-
-    Glib::RefPtr<Gio::FileEnumerator> Children = Dir->enumerate_children();
-    for (Glib::RefPtr<Gio::FileInfo> Child = Children->next_file(); Child != 0;
-        Child = Children->next_file())
+    if (Dir)
     {
-      if (!Child->is_backup() && !Child->is_hidden() && !Child->is_symlink())
+      std::string Root = getRoot(File->get_basename());
+
+      Glib::RefPtr<Gio::FileEnumerator> Children = Dir->enumerate_children();
+      for (Glib::RefPtr<Gio::FileInfo> Child = Children->next_file();
+          Child != 0; Child = Children->next_file())
       {
-        Glib::RefPtr<Gio::File> ChildFile = Dir->get_child(Child->get_name());
-
-        if (ChildFile->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
+        if (!Child->is_backup() && !Child->is_hidden() && !Child->is_symlink())
         {
-          Gtk::TreeRow Row = *mref_TreeModel->append();
+          Glib::RefPtr<Gio::File> ChildFile = Dir->get_child(Child->get_name());
 
-          Glib::ustring ChildName = Glib::filename_to_utf8(
-              ChildFile->get_basename());
+          if (ChildFile->query_file_type() != Gio::FILE_TYPE_DIRECTORY)
+          {
+            Gtk::TreeRow Row = *mref_TreeModel->append();
 
-          Row[m_Columns.m_File] = ChildFile;
-          Row[m_Columns.m_FileName] = ChildName;
+            Glib::ustring ChildName = Glib::filename_to_utf8(
+                ChildFile->get_basename());
 
-          bool SetSelected = (Root == getRoot(ChildName));
-          Row[m_Columns.m_Selected] = SetSelected;
+            Row[m_Columns.m_File] = ChildFile;
+            Row[m_Columns.m_FileName] = ChildName;
 
-          if (SetSelected)
-            SelectedCount++;
+            bool SetSelected = (Root == getRoot(ChildName));
+            Row[m_Columns.m_Selected] = SetSelected;
 
-          Row[m_Columns.m_Sensitive] = (ChildFile->get_path()
-              != File->get_path());
+            if (SetSelected)
+              SelectedCount++;
+
+            Row[m_Columns.m_Sensitive] = (ChildFile->get_path()
+                != File->get_path());
+          }
         }
       }
+      Children->close();
+
     }
-    Children->close();
-
-    mp_Expander->set_expanded(SelectedCount > 1);
-
-    if (mref_TreeModel->children().size() > 5)
-      mp_TreeView->set_size_request(-1, 100);
   }
+
+  mp_Expander->set_expanded(SelectedCount > 1);
+
+  if (mref_TreeModel->children().size() > 5)
+    mp_TreeView->set_size_request(-1, 100);
 }
 
 // =====================================================================

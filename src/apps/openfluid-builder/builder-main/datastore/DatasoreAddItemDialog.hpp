@@ -158,6 +158,8 @@ class DatasoreAddItemDialog
 
     std::string getRoot(std::string FileName);
 
+    void updateAssociatedFiles();
+
   public:
 
     DatasoreAddItemDialog(
