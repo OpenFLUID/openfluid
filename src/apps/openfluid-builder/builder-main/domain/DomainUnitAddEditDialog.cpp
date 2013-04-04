@@ -333,6 +333,8 @@ void DomainUnitAddEditDialog::createUnit()
   mp_Unit->getUnitClass() = ClassName;
   mp_Unit->getUnitID() = ID;
   mp_Unit->getProcessOrder() = PcsOrder;
+
+  mp_Domain->addUnit(mp_Unit);
 }
 
 // =====================================================================

@@ -1153,13 +1153,13 @@ void FluidXDescriptor::appendDomainInputdata(std::ostringstream& Contents)
 
       openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t& DataVals =
           itData->second;
-      if (!DataVals.empty())
+
+      unsigned int i=0;
+      for(; i<Cols.size()-1;i++)
       {
-        itVal = DataVals.begin();
-        for (; itVal != DataVals.end().operator --(); ++itVal)
-          Contents << itVal->second << "\t";
-        Contents << itVal->second;
+        Contents << DataVals[Cols[i]] << "\t";
       }
+      Contents << DataVals[Cols[i]];
 
       Contents << "\n";
     }
