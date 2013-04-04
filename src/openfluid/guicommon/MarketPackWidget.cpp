@@ -221,7 +221,7 @@ void MarketPackWidget::updateDisplayedInfos()
     openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
     std::list<openfluid::ware::WareID_t>::const_iterator DLit;
 
-    MarkupTooltip += "\n\n<u>Dependencies:</u>";
+    MarkupTooltip += std::string("\n\n<u>") + _("Dependencies:") + std::string("</u>");
     for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
     {
       MarkupTooltip += "\n"+MarketClientAssistant::getGraphicTypeName(DMit->first, true, true)+": ";

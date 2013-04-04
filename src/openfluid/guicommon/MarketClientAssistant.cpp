@@ -487,11 +487,11 @@ bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, c
   std::string Message = "<b>" + ID + "</b>";
   if (Select)
   {
-    Message += " needs some dependencies to run.\nDo you want to select this packages ?\n";
+    Message += _(" needs some dependencies to run.\nDo you want to select this packages ?\n");
   }
   else
   {
-    Message += " has dependencies selected.\nDo you want to unselect this packages ?\n";
+    Message += _(" has dependencies selected.\nDo you want to unselect this packages ?\n");
   }
 
   std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::const_iterator APMiter;
@@ -507,9 +507,9 @@ bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, c
   }
 
   Gtk::MessageDialog Dialog(*this, Message, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
-  Dialog.set_title("Dependencies");
+  Dialog.set_title(_("Dependencies"));
   if (Select)
-    Dialog.set_secondary_text("Warning, the selected package cannot be used without them.", true);
+    Dialog.set_secondary_text(_("Warning, the selected package cannot be used without them."), true);
   int Answer = Dialog.run();
 
   return Answer == Gtk::RESPONSE_YES;
@@ -868,8 +868,8 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       }
 
       mp_ActionButtonsBox[TCIter->first] = Gtk::manage(new Gtk::HBox());
-      mp_SelectAllButton[TCIter->first] = Gtk::manage(new Gtk::Button("Select all"));
-      mp_SelectNoneButton[TCIter->first] = Gtk::manage(new Gtk::Button("Select none"));
+      mp_SelectAllButton[TCIter->first] = Gtk::manage(new Gtk::Button(_("Select all")));
+      mp_SelectNoneButton[TCIter->first] = Gtk::manage(new Gtk::Button(_("Select none")));
       mp_CommonBuildConfigButton[TCIter->first] = Gtk::manage(new Gtk::Button());
 
       //m_CommonBuildConfigButton.set_label(_("Configure source builds"));
@@ -1025,14 +1025,17 @@ void MarketClientAssistant::onViewLogClicked()
 
 std::string MarketClientAssistant::getGraphicTypeName(const openfluid::market::PackageInfo::TypePackage& Type, const bool Maj, const bool Plural)
 {
-  std::string TypesNames[] = { "function", "observer", "builder extension", "dataset"};
-  std::string Name = TypesNames[Type];
+  std::string TypeNames[] = { _("function"), _("observer"), _("builder extension"), _("dataset")};
+  std::string PluralTypeNames[] = { _("functions"), _("observers"), _("builder extensions"), _("datasets")};
+  std::string Name;
+
+  if (Plural)
+    Name = PluralTypeNames[Type];
+  else
+    Name = TypeNames[Type];
 
   if (Maj)
     Name[0] = toupper(Name[0]);
-
-  if (Plural)
-    Name += "s";
 
   return Name;
 }
