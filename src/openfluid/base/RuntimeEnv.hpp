@@ -226,29 +226,28 @@ class DLLEXPORT RuntimeEnvironment
     */
     inline std::string getMarketBagDir() const { return m_MarketBagDir; };
 
-
     /**
-      @return the market bag directory for the current OpenFLUID version
+      @return the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/2.0.0)
      */
     inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
 
     /**
-      @return the market bag directory for the functions of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0~alpha1/functions)
+      @return the market bag directory for functions of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/functions)
      */
     inline std::string getMarketBagFuncVersionDir() const { return m_MarketBagFuncVersionDir; };
 
     /**
-      @return the market bag directory for the observers of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0~alpha1/observers)
+      @return the market bag directory for observers of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/observers)
      */
     inline std::string getMarketBagObsVersionDir() const { return m_MarketBagObsVersionDir; };
 
     /**
-      @return the market bag directory for the builderexts of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0~alpha1/builderexts)
+      @return the market bag directory for builderexts of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/builderexts)
      */
     inline std::string getMarketBagBuildVersionDir() const { return m_MarketBagBuildVersionDir; };
 
     /**
-      @return the market bag directory for the datasets of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0~alpha1/datasets)
+      @return the market bag directory for datasets of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/datasets)
      */
     inline std::string getMarketBagDataVersionDir() const { return m_MarketBagDataVersionDir; };
 
