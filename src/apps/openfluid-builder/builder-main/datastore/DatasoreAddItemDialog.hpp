@@ -135,6 +135,8 @@ class DatasoreAddItemDialog
     Gtk::TreeView* mp_TreeView;
     Glib::RefPtr<Gtk::ListStore> mref_TreeModel;
 
+    void init();
+
     void checkIsValid();
 
     void onCheckToggled();

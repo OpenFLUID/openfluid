@@ -101,7 +101,6 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_TypeCombo->append(
       openfluid::core::UnstructuredValue::getStringFromValueType(
           openfluid::core::UnstructuredValue::GeoRasterValue));
-  mp_TypeCombo->set_active(0);
 
   Gtk::Table* IDTypeTable = Gtk::manage(new Gtk::Table(2, 2));
   IDTypeTable->set_col_spacings(5);
@@ -120,10 +119,8 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_ClassCheck = Gtk::manage(new Gtk::CheckButton(_("Unit class")));
   mp_ClassCheck->signal_toggled().connect(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::onCheckToggled));
-  mp_ClassCheck->set_active(false);
 
   mp_ClassEntry = Gtk::manage(new Gtk::Entry());
-  mp_ClassEntry->set_sensitive(false);
 
   Gtk::HBox* ClassBox = Gtk::manage(new Gtk::HBox(false, 5));
   ClassBox->set_border_width(5);
@@ -273,17 +270,11 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
   mp_Dialog->get_vbox()->pack_start(*ClassBox, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*SourceFrame, Gtk::PACK_SHRINK);
   mp_Dialog->get_vbox()->pack_start(*DestFrame, Gtk::PACK_SHRINK);
-//  mp_Dialog->set_default_size(700, 200);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
   mp_Dialog->show_all_children();
-
-  mp_NoSubDirRadio->set_active(true);
-  onSubDirToggled();
-  mp_FileRadio->set_active(true);
-  onSourceToggled();
 }
 
 // =====================================================================
@@ -291,7 +282,7 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
 
 openfluid::fluidx::DatastoreItemDescriptor* DatasoreAddItemDialog::show()
 {
-  checkIsValid();
+  init();
 
   openfluid::fluidx::DatastoreItemDescriptor* NewItem = 0;
 
@@ -355,6 +346,39 @@ openfluid::fluidx::DatastoreItemDescriptor* DatasoreAddItemDialog::show()
   mp_Dialog->hide();
 
   return NewItem;
+}
+
+// =====================================================================
+// =====================================================================
+
+void DatasoreAddItemDialog::init()
+{
+  mp_IDEntry->set_text("");
+  mp_TypeCombo->set_active(0);
+
+  mp_ClassCheck->set_active(false);
+  mp_ClassEntry->set_text("");
+  mp_ClassEntry->set_sensitive(false);
+
+  mp_FilePathEntry->set_text("");
+  mp_FilePathEntry->set_width_chars(-1);
+  mref_TreeModel->clear();
+  mp_Expander->set_expanded(false);
+
+  mp_DirPathEntry->set_text("");
+  mp_DirPathEntry->set_width_chars(-1);
+  mp_ResourceStringEntry->set_text("");
+
+  mp_SubDirEntry->set_text("");
+
+  mp_NoSubDirRadio->set_active(true);
+  onSubDirToggled();
+  mp_FileRadio->set_active(true);
+  onSourceToggled();
+
+  checkIsValid();
+
+  mp_Dialog->resize(600, 400);
 }
 
 // =====================================================================
