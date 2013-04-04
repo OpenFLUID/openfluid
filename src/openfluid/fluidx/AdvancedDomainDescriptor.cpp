@@ -621,6 +621,13 @@ void AdvancedDomainDescriptor::deleteInputData(std::string ClassName,
   {
     if (it->getUnitsClass() == ClassName)
     {
+      std::vector<std::string>& ColOrd = it->getColumnsOrder();
+      std::vector<std::string>::iterator Found = std::find(ColOrd.begin(),
+                                                           ColOrd.end(),
+                                                           IDataName);
+      if (Found != ColOrd.end())
+        ColOrd.erase((Found));
+
       std::map<openfluid::core::UnitID_t,
           openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* DataById =
           &(it->getData());
@@ -670,6 +677,9 @@ void AdvancedDomainDescriptor::renameInputData(std::string ClassName,
   {
     if (it->getUnitsClass() == ClassName)
     {
+      std::vector<std::string>& ColOrd = it->getColumnsOrder();
+      std::replace(ColOrd.begin(), ColOrd.end(), OldIDataName, NewIDataName);
+
       std::map<openfluid::core::UnitID_t,
           openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* DataById =
           &(it->getData());
@@ -689,7 +699,7 @@ void AdvancedDomainDescriptor::renameInputData(std::string ClassName,
     }
   }
 
-  // rename in m_Units
+// rename in m_Units
   for (std::map<int, BuilderUnit>::iterator it = m_Units.at(ClassName).begin();
       it != m_Units.at(ClassName).end(); ++it)
   {
