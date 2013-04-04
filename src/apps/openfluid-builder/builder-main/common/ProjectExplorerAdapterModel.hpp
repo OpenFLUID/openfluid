@@ -120,6 +120,8 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     Gtk::TreeRowReference* mp_DomainRowRef;
 
+    Gtk::TreeRowReference* mp_DatastoreRowRef;
+
     Gtk::TreeRowReference* mp_RunInfoRowRef;
 
     Gtk::TreeRowReference* mp_MonitoringRowRef;

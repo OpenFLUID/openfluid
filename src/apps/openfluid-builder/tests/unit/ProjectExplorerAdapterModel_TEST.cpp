@@ -102,7 +102,7 @@ BOOST_FIXTURE_TEST_SUITE(ProjectExplorerAdapterModelTest, init_AdapterModel)
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 6);
 }
 
 // =====================================================================
@@ -110,13 +110,13 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
 BOOST_AUTO_TEST_CASE(test_updateModel)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 6);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[0].children().size(), 0);
 
   mp_AdapterModel->updateModel();
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 6);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[0].children().size(), 2);
 }
@@ -126,13 +126,13 @@ BOOST_AUTO_TEST_CASE(test_updateModel)
 
 BOOST_AUTO_TEST_CASE(test_updateDomain)
 {
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 6);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[1].children().size(), 0);
 
   mp_AdapterModel->updateDomain();
 
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 5);
+  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 6);
   BOOST_CHECK_EQUAL(
       mp_AdapterModel->getTreeModel()->children()[1].children().size(), 2);
 }

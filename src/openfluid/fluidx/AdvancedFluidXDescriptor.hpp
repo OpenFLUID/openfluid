@@ -59,6 +59,7 @@
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
 
 namespace openfluid {
 namespace fluidx {
@@ -73,7 +74,10 @@ class AdvancedFluidXDescriptor
 
     openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
+    // TODO check if still useful
     openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
+
+    AdvancedDatastoreDescriptor* mp_Datastore;
 
     AdvancedMonitoringDescriptor* mp_Monitoring;
 
@@ -90,6 +94,8 @@ class AdvancedFluidXDescriptor
     openfluid::fluidx::RunDescriptor& getRunDescriptor();
 
     openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
+
+    AdvancedDatastoreDescriptor& getDatastore();
 
     AdvancedMonitoringDescriptor& getMonitoring();
 };

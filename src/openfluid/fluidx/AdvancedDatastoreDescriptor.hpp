@@ -46,53 +46,71 @@
  */
 
 /**
- \file BuilderModuleFactory.hpp
+ \file AdvancedDatastoreDescriptor.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERMODULEFACTORY_HPP__
-#define __BUILDERMODULEFACTORY_HPP__
+#ifndef ADVANCEDDATASTOREDESCRIPTOR_HPP_
+#define ADVANCEDDATASTOREDESCRIPTOR_HPP_
+
+#include <list>
+#include <string>
 
 namespace openfluid {
-namespace guicommon {
-class BuilderModule;
-}
-}
+namespace fluidx {
 
-class BuilderAppActions;
-class EngineProject;
+class DatastoreDescriptor;
+class DatastoreItemDescriptor;
 
-class BuilderModuleFactory
+class AdvancedDatastoreDescriptor
 {
   private:
 
-    EngineProject& mp_EngineProject;
+    openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
 
   public:
 
-    static openfluid::guicommon::BuilderModule* createHomeModule(
-        BuilderAppActions& Actions);
+    AdvancedDatastoreDescriptor(
+        openfluid::fluidx::DatastoreDescriptor& DatastoreDesc);
 
-    BuilderModuleFactory(EngineProject& EngProject);
+    ~AdvancedDatastoreDescriptor();
 
-    openfluid::guicommon::BuilderModule* createModelStructureModule();
+    const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& getItems() const;
 
-    openfluid::guicommon::BuilderModule* createDomainStructureModule();
+    /**
+     * Move the Item located at the given From position to the To position (positions starts at index 0)
+     * @param From
+     * @param To
+     * @throw openfluid::base::OFException a position is out of range
+     */
+    void moveItem(unsigned int From, unsigned int To);
 
-    openfluid::guicommon::BuilderModule* createDatastoreModule();
+    void appendItem(openfluid::fluidx::DatastoreItemDescriptor* Item);
 
-    openfluid::guicommon::BuilderModule* createDomainClassModule();
+    /**
+     Insert an Item before the given position (positions starts at index 0)
+     @param[in] Item the DatastoreItemDescriptor to insert
+     @param[in] Position the position, should be between zero and list size - 1.
+     To insert an Item at the end of the list, use appendItem instead.
+     @throw openfluid::base::OFException if Position is out of range
+     */
+    void insertItem(openfluid::fluidx::DatastoreItemDescriptor* Item,
+                    unsigned int Position);
 
-    openfluid::guicommon::BuilderModule* createSimulationRunModule();
+    /**
+     Remove from the list the Item located at the given Position (positions starts at index 0).
+     This doesn't delete the DatastoreItemDescriptor pointer.
+     @param[in] Position the position
+     @throw openfluid::base::OFException if Position is out of range
+     */
+    void removeItem(unsigned int Position);
 
-    openfluid::guicommon::BuilderModule* createMonitoringModule();
-
-    openfluid::guicommon::BuilderModule* createOutputsModule();
-
-    openfluid::guicommon::BuilderModule* createMapViewModule();
-
+    bool isItemAlreadyExist(std::string ItemID);
 };
 
-#endif /* __BUILDERMODULEFACTORY_HPP__ */
+}
+} // namespaces
+
+#endif /* ADVANCEDDATASTOREDESCRIPTOR_HPP_ */

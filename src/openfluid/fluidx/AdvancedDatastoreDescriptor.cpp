@@ -46,13 +46,17 @@
  */
 
 /**
- \file AdvancedFluidXDescriptor.cpp
+ \file AdvancedDatastoreDescriptor.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include "AdvancedDatastoreDescriptor.hpp"
+
+#include <openfluid/fluidx/DatastoreDescriptor.hpp>
+#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
+#include <openfluid/base/OFException.hpp>
 
 namespace openfluid {
 namespace fluidx {
@@ -60,73 +64,136 @@ namespace fluidx {
 // =====================================================================
 // =====================================================================
 
-AdvancedFluidXDescriptor::AdvancedFluidXDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+AdvancedDatastoreDescriptor::AdvancedDatastoreDescriptor(
+    openfluid::fluidx::DatastoreDescriptor& DatastoreDesc) :
+    mp_DatastoreDesc(&DatastoreDesc)
 {
-  mp_Domain = new AdvancedDomainDescriptor(FluidXDesc.getDomainDescriptor());
-  mp_Model = new AdvancedModelDescriptor(FluidXDesc.getModelDescriptor());
-  mp_RunDesc = &(FluidXDesc.getRunDescriptor());
-  mp_DatastoreDesc = &(FluidXDesc.getDatastoreDescriptor());
-  mp_Datastore = new AdvancedDatastoreDescriptor(
-      FluidXDesc.getDatastoreDescriptor());
-  mp_Monitoring = new AdvancedMonitoringDescriptor(
-      FluidXDesc.getMonitoringDescriptor());
-}
 
-// =====================================================================
-// =====================================================================
-
-AdvancedFluidXDescriptor::~AdvancedFluidXDescriptor()
-{
+  // TODO check if DataStore Items are unique
 
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain()
+AdvancedDatastoreDescriptor::~AdvancedDatastoreDescriptor()
 {
-  return *mp_Domain;
+
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel()
+const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& AdvancedDatastoreDescriptor::getItems() const
 {
-  return *mp_Model;
+  return mp_DatastoreDesc->getItems();
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescriptor()
+void AdvancedDatastoreDescriptor::moveItem(unsigned int From, unsigned int To)
 {
-  return *mp_RunDesc;
+  if (From == To)
+    return;
+
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
+      mp_DatastoreDesc->getItems();
+
+  unsigned int Last = Items.size() - 1;
+
+  if (From > Last || To > Last)
+    throw openfluid::base::OFException("OpenFLUID Builder",
+                                       "AdvancedDatastoreDescriptor::moveItem",
+                                       "Bad indexes of items to move");
+
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator itFrom =
+      Items.begin();
+  std::advance(itFrom, From);
+
+  openfluid::fluidx::DatastoreItemDescriptor* Item = *itFrom;
+
+  removeItem(From);
+
+  if (To == Last)
+    appendItem(Item);
+  else
+    insertItem(Item, To);
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatastoreDescriptor()
+void AdvancedDatastoreDescriptor::appendItem(
+    openfluid::fluidx::DatastoreItemDescriptor* Item)
 {
-  return *mp_DatastoreDesc;
+  if (Item)
+    mp_DatastoreDesc->appendItem(Item);
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedDatastoreDescriptor& AdvancedFluidXDescriptor::getDatastore()
+void AdvancedDatastoreDescriptor::insertItem(
+    openfluid::fluidx::DatastoreItemDescriptor* Item, unsigned int Position)
 {
-  return *mp_Datastore;
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
+      mp_DatastoreDesc->getItems();
+
+  if (Position == 0)
+    Items.insert(Items.begin(), Item);
+  else if (Position < Items.size())
+  {
+    std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it =
+        Items.begin();
+    std::advance(it, Position);
+
+    Items.insert(it, Item);
+  }
+  else
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "AdvancedDatastoreDescriptor::insertItem()",
+        "Bad index of item to insert");
 }
 
 // =====================================================================
 // =====================================================================
 
-AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring()
+void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
 {
-  return *mp_Monitoring;
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
+      mp_DatastoreDesc->getItems();
+
+  if (Position < Items.size())
+  {
+    std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it =
+        Items.begin();
+    std::advance(it, Position);
+
+    Items.erase(it);
+  }
+  else
+    throw openfluid::base::OFException(
+        "OpenFLUID framework", "AdvancedDatastoreDescriptor::deleteItem()",
+        "Bad index of item to delete");
+}
+
+// =====================================================================
+// =====================================================================
+
+bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID)
+{
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
+      mp_DatastoreDesc->getItems();
+
+  for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if ((*it)->getID() == ItemID)
+      return true;
+  }
+
+  return false;
 }
 
 // =====================================================================
@@ -134,4 +201,3 @@ AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring()
 
 }
 } // namespaces
-

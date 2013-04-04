@@ -46,53 +46,91 @@
  */
 
 /**
- \file BuilderModuleFactory.hpp
+ \file DatastoreView.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __BUILDERMODULEFACTORY_HPP__
-#define __BUILDERMODULEFACTORY_HPP__
+#ifndef DATASTOREVIEW_HPP_
+#define DATASTOREVIEW_HPP_
+
+#include <gtkmm/box.h>
+#include <gtkmm/treemodel.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+
+class BuilderListToolBox;
+class DatasoreAddItemDialog;
 
 namespace openfluid {
-namespace guicommon {
-class BuilderModule;
+namespace fluidx {
+class AdvancedDatastoreDescriptor;
 }
 }
 
-class BuilderAppActions;
-class EngineProject;
-
-class BuilderModuleFactory
+class DatastoreView
 {
   private:
 
-    EngineProject& mp_EngineProject;
+    openfluid::fluidx::AdvancedDatastoreDescriptor* mp_Datastore;
+
+    Gtk::Box* mp_MainBox;
+
+    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
+
+    class DSColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        DSColumns()
+        {
+          add(m_ID);
+          add(m_Type);
+          add(m_Class);
+          add(m_Source);
+        }
+        Gtk::TreeModelColumn<std::string> m_ID;
+        Gtk::TreeModelColumn<std::string> m_Type;
+        Gtk::TreeModelColumn<std::string> m_Class;
+        Gtk::TreeModelColumn<std::string> m_Source;
+    };
+
+    DSColumns m_Columns;
+
+    Gtk::TreeView* mp_TreeView;
+
+    BuilderListToolBox* mp_DSListToolBox;
+
+    sigc::signal<void> m_signal_DatastoreChanged;
+
+    DatasoreAddItemDialog* mp_AddDialog;
+
+    void updateListToolBox();
+
+    void whenAddAsked();
+
+    void whenRemoveAsked();
+
+    void whenUpAsked();
+
+    void whenDownAsked();
+
+    int getLastPosition();
+
+    void requestSelectionAt(int Position);
 
   public:
 
-    static openfluid::guicommon::BuilderModule* createHomeModule(
-        BuilderAppActions& Actions);
+    DatastoreView(openfluid::fluidx::AdvancedDatastoreDescriptor& Datastore);
 
-    BuilderModuleFactory(EngineProject& EngProject);
+    ~DatastoreView();
 
-    openfluid::guicommon::BuilderModule* createModelStructureModule();
+    void update();
 
-    openfluid::guicommon::BuilderModule* createDomainStructureModule();
+    Gtk::Widget* asWidget();
 
-    openfluid::guicommon::BuilderModule* createDatastoreModule();
-
-    openfluid::guicommon::BuilderModule* createDomainClassModule();
-
-    openfluid::guicommon::BuilderModule* createSimulationRunModule();
-
-    openfluid::guicommon::BuilderModule* createMonitoringModule();
-
-    openfluid::guicommon::BuilderModule* createOutputsModule();
-
-    openfluid::guicommon::BuilderModule* createMapViewModule();
+    sigc::signal<void> signal_DatastoreChanged();
 
 };
 
-#endif /* __BUILDERMODULEFACTORY_HPP__ */
+#endif /* DATASTOREVIEW_HPP_ */
