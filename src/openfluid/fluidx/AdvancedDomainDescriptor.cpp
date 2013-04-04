@@ -1003,7 +1003,7 @@ void AdvancedDomainDescriptor::clearRelations(
     ss << "trying to remove relations to a Unit that doesn't exist (UnitClass "
        << Unit.first << " ID " << Unit.second << ")";
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::removeAllRelations",
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::clearRelations",
         ss.str());
   }
 

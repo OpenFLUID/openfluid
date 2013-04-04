@@ -141,7 +141,10 @@ void DomainStructureModelImpl::addUnit(openfluid::fluidx::UnitDescriptor* Unit)
 {
   if (Unit)
   {
-    mp_Domain->addUnit(Unit);
+    if (!mp_Domain->getIDsOfClass(Unit->getUnitClass()).count(
+        Unit->getUnitID()))
+      mp_Domain->addUnit(Unit);
+
     m_signal_FromAppUnitAdded.emit(*Unit);
   }
 }
