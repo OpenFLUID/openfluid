@@ -132,15 +132,15 @@ class DLLEXPORT MarketPackage
 
   public:
 
-    MarketPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
+    MarketPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL);
 
     virtual ~MarketPackage();
 
     static void initialize(bool EnableLog);
 
-    static void setWorksDirs(std::string TempDir, std::string MarketBagFunctionDir, std::string MarketBagObserverDir,
-        std::string MarketBagBuilderextDir, std::string MarketBagDatasetDir,
-        std::string MarketBagBinSubDir, std::string MarketBagSrcSubDir);
+    static void setWorksDirs(const std::string& TempDir, const std::string& MarketBagFunctionDir,
+        const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
+        const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir, const std::string& MarketBagSrcSubDir);
 
     static std::string getMarketBagFunctionDir() { return m_MarketBagFunctionDir; };
 
@@ -162,11 +162,20 @@ class DLLEXPORT MarketPackage
 
     static std::string getLogFile() { return m_LogFile; };
 
-    static std::string getCommonBuildOptions(PackageInfo::PackageType Type);
+    /**
+     @return the build options of package type passed as parameter
+    */
+    static std::string getCommonBuildOptions(const PackageInfo::PackageType& Type);
 
-    static void setCommonBuildOptions(PackageInfo::PackageType Type, std::string BuildOptions);
+    /**
+     * Sets build options of package type passed as parameter to BuildOptions
+    */
+    static void setCommonBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 
-    static std::string composeFullBuildOptions(PackageInfo::PackageType Type, std::string BuildOptions);
+    /**
+     * Adds BuildOptions to options of package type
+    */
+    static std::string composeFullBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 
     openfluid::ware::WareID_t getID() const { return m_ID; };
 
@@ -174,10 +183,13 @@ class DLLEXPORT MarketPackage
 
 
     /**
-      @return the market-bag path directory for the type package class
+     @return the market-bag path directory for the package type class
     */
     virtual std::string getInstallPath() const = 0;
 
+    /**
+     @return type of current package
+    */
     virtual PackageInfo::PackageType getPackageType() const = 0;
 
     virtual void process() = 0;

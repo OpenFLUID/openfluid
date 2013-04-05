@@ -67,7 +67,7 @@ class DLLEXPORT MarketSrcBuilderextPackage : public MarketSrcPackage
 {
   public:
 
-    MarketSrcBuilderextPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
+    MarketSrcBuilderextPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL);
 
     std::string getInstallPath() const;
 

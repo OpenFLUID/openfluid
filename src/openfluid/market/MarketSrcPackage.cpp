@@ -67,7 +67,7 @@
 namespace openfluid { namespace market {
 
 
-MarketSrcPackage::MarketSrcPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+MarketSrcPackage::MarketSrcPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
                 : MarketPackage(ID,PackageURL),
                   m_KeepSources(true)
 {
@@ -195,7 +195,7 @@ void MarketSrcPackage::process()
   if (!boost::filesystem::exists(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error finding built package");
 
-  std::string BinInstallDir = getInstallPath() + "/../" + getMarketBagBinSubDir();
+  std::string BinInstallDir = getInstallPath() + "/../" + m_MarketBagBinSubDir;
   if (boost::filesystem::exists(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX +openfluid::config::PLUGINS_EXT)))
     boost::filesystem::remove(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 

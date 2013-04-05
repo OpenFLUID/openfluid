@@ -67,7 +67,7 @@ class DLLEXPORT MarketDatasetPackage : public MarketPackage
 {
   public:
 
-    MarketDatasetPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
+    MarketDatasetPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL);
 
     std::string getInstallPath() const;
 

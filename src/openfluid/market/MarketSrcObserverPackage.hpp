@@ -67,7 +67,7 @@ class DLLEXPORT MarketSrcObserverPackage : public MarketSrcPackage
 {
   public:
 
-    MarketSrcObserverPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
+    MarketSrcObserverPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL);
 
     std::string getInstallPath() const;
 

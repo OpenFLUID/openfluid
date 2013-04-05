@@ -66,7 +66,7 @@
 namespace openfluid { namespace market {
 
 
-MarketDatasetPackage::MarketDatasetPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+MarketDatasetPackage::MarketDatasetPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
                     : MarketPackage(ID, PackageURL)
 {
 
@@ -123,7 +123,7 @@ void MarketDatasetPackage::process()
   if (!boost::filesystem::create_directories(boost::filesystem::path(DatasetInstallDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","unable to create dataset directory for "+m_ID+" package");
 
-  std::string ProcessCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + DatasetInstallDir+ "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
+  std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + DatasetInstallDir + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
 
   try
   {

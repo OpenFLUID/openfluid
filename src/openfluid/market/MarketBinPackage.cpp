@@ -63,7 +63,7 @@
 namespace openfluid { namespace market {
 
 
-MarketBinPackage::MarketBinPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+MarketBinPackage::MarketBinPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
                 : MarketPackage(ID,PackageURL)
 {
 
@@ -92,7 +92,7 @@ void MarketBinPackage::process()
   std::string StrErr;
   int RetValue;
 
-  std::string ProcessCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + getInstallPath()+ "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
+  std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + getInstallPath() + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
 
   try
   {

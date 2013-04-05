@@ -79,7 +79,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp").string();;
+  std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp").string();
   std::string MarketBagFunctionDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-functions").string();
   std::string MarketBagObserverDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-observers").string();
   std::string MarketBagBuilderextDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-builderexts").string();
@@ -258,6 +258,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   DPack.process();
   BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets/tests.market.data.dummy")));
+  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets/tests.market.data.dummy/tests.market.data.dummy.fluidx")));
 }
 
 

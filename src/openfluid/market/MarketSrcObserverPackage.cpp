@@ -60,7 +60,7 @@
 namespace openfluid { namespace market {
 
 
-MarketSrcObserverPackage::MarketSrcObserverPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+MarketSrcObserverPackage::MarketSrcObserverPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
                         : MarketSrcPackage(ID, PackageURL)
 {
 
