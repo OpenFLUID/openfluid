@@ -60,6 +60,7 @@
 class ModelFctDetailIDataTreeStore: public ModelFctDetailTreeStore
 {
   private:
+    Gtk::TreeRowReference* m_ProducedTitleRow;
     Gtk::TreeRowReference* m_RequiredTitleRow;
     Gtk::TreeRowReference* m_UsedTitleRow;
     ModelFctDetailIDataTreeStore(ModelFctDetailColumns& Columns) :
@@ -75,16 +76,20 @@ class ModelFctDetailIDataTreeStore: public ModelFctDetailTreeStore
     }
     ~ModelFctDetailIDataTreeStore()
     {
+      delete m_ProducedTitleRow;
       delete m_RequiredTitleRow;
       delete m_UsedTitleRow;
     }
     void createTitleRows()
     {
+      m_ProducedTitleRow = appendATitleRow(_("Produced"));
       m_RequiredTitleRow = appendATitleRow(_("Required"));
       m_UsedTitleRow = appendATitleRow(_("Used"));
     }
     void extractItems(openfluid::ware::FunctionSignature* Signature)
     {
+      extractInnerItems(Signature->HandledData.ProducedInputdata,
+          m_ProducedTitleRow);
       extractInnerItems(Signature->HandledData.RequiredInputdata,
           m_RequiredTitleRow);
       extractInnerItems(Signature->HandledData.UsedInputdata, m_UsedTitleRow);

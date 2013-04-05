@@ -116,6 +116,7 @@ bool ProjectChecker::check()
   else
   {
     checkModelRequirements();
+    checkModelInputdata();
     checkModelVars();
   }
 
@@ -145,7 +146,6 @@ bool ProjectChecker::check()
 void ProjectChecker::checkModelRequirements()
 {
   openfluid::fluidx::AdvancedModelDescriptor& Model = mp_Desc->getModel();
-  openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       Model.getItems();
   openfluid::machine::FunctionSignatureRegistry* Reg =
@@ -168,22 +168,6 @@ void ProjectChecker::checkModelRequirements()
       if (!boost::filesystem::exists(RunEnv->getInputFullPath(*itt)))
         ExtraFilesMsg += "- File " + *itt + " required by " + ID
                          + " not found\n";
-    }
-
-    // check required InputData
-    std::vector<openfluid::ware::SignatureHandledDataItem>& ReqData =
-        Sign->HandledData.RequiredInputdata;
-    for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt =
-        ReqData.begin(); itt != ReqData.end(); ++itt)
-    {
-      if (!Domain.isClassNameExists(itt->UnitClass))
-        InputdataMsg += "- Unit " + itt->UnitClass
-                        + " class does not exist for " + itt->DataName
-                        + " input data required by " + ID + "\n";
-      else if (!Domain.getInputDataNames(itt->UnitClass).count(itt->DataName))
-        InputdataMsg += "- " + itt->DataName + " input data on "
-                        + itt->UnitClass + " required by " + ID
-                        + " is not available\n";
     }
 
     // check Params
@@ -309,6 +293,69 @@ double ProjectChecker::getParamAsDouble(
     throw openfluid::base::OFException(
         "OpenFLUID Framwework", "ProjectChecker::getParamAsDouble",
         "Parameter " + ParamName + " is not set as a double");
+}
+
+// =====================================================================
+// =====================================================================
+
+void ProjectChecker::checkModelInputdata()
+{
+  openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
+  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      mp_Desc->getModel().getItems();
+  openfluid::machine::FunctionSignatureRegistry* Reg =
+      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::ware::FunctionSignature* Sign;
+  std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt;
+
+  std::set<std::pair<std::string, std::string> > IDataUnits;
+
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    Sign = Reg->getSignatureItemInstance(*it)->Signature;
+    std::string ID = mp_Desc->getModel().getID(*it);
+
+    // check required Input data
+    std::vector<openfluid::ware::SignatureHandledDataItem>& ReqData =
+        Sign->HandledData.RequiredInputdata;
+    for (itt = ReqData.begin(); itt != ReqData.end(); ++itt)
+    {
+      if (!Domain.isClassNameExists(itt->UnitClass))
+        InputdataMsg += "- Unit " + itt->UnitClass
+                        + " class does not exist for " + itt->DataName
+                        + " input data required by " + ID + "\n";
+
+      else if (!(Domain.getInputDataNames(itt->UnitClass).count(itt->DataName)
+          || IDataUnits.count(std::make_pair(itt->UnitClass, itt->DataName))))
+        InputdataMsg += "- " + itt->DataName + " input data on "
+                        + itt->UnitClass + " required by " + ID
+                        + " is not available\n";
+    }
+
+    // check produced Input data
+    std::vector<openfluid::ware::SignatureHandledDataItem>& ProdData =
+        Sign->HandledData.ProducedInputdata;
+    for (itt = ProdData.begin(); itt != ProdData.end(); ++itt)
+    {
+      if (!Domain.isClassNameExists(itt->UnitClass))
+        InputdataMsg += "- Unit " + itt->UnitClass
+                        + " class does not exist for " + itt->DataName
+                        + " input data produced by " + ID + "\n";
+
+      if (!IDataUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
+      {
+        IDataUnits.insert(std::make_pair(itt->UnitClass, itt->DataName));
+      }
+      else
+        InputdataMsg += "- "
+            + itt->DataName + " input data on " + itt->UnitClass
+            + " produced by " + ID
+            + " cannot be created because it is previously created\n";
+    }
+
+  }
+
 }
 
 // =====================================================================
