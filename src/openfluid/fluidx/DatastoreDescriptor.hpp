@@ -82,7 +82,9 @@ class DLLEXPORT DatastoreDescriptor
 
     DatastoreDescription_t& getItems();
 
-    void appendItem(DatastoreItemDescriptor* Item);
+    bool appendItem(DatastoreItemDescriptor* Item);
+
+    bool isItemIDAlreadyExist(std::string ItemID);
 
 };
 
