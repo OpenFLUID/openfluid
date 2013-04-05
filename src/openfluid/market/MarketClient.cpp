@@ -249,7 +249,7 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 // =====================================================================
 
 
-std::string MarketClient::getTypeName(const PackageInfo::TypePackage& Type, const bool Maj, const bool Plural)
+std::string MarketClient::getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural)
 {
   std::string TypesNames[] = { "function", "observer", "builderext", "dataset"};
   std::string Name = TypesNames[Type];
@@ -268,7 +268,7 @@ std::string MarketClient::getTypeName(const PackageInfo::TypePackage& Type, cons
 // =====================================================================
 
 
-void MarketClient::parseCatalogData(const PackageInfo::TypePackage& TypeCatalog, const std::string& CatalogData)
+void MarketClient::parseCatalogData(const PackageInfo::PackageType& TypeCatalog, const std::string& CatalogData)
 {
   std::string TmpVersion, TmpArch, TmpID;
   std::vector<std::string> PackagesIDs;

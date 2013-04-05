@@ -73,10 +73,10 @@ const static Gdk::Color WHITE("#FFFFFF");
 // =====================================================================
 
 
-MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::TypePackage& TypePackage,
+MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::PackageType& PackageType,
     const openfluid::market::MetaPackageInfo& MetaPackInfo)
  : Gtk::EventBox(),
-   m_TypePackage(TypePackage),
+   m_PackageType(PackageType),
    m_MetaPackInfo(MetaPackInfo)
 {
   m_EmptyCartImage = new Gtk::Image(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","shopping_cart.png"));
@@ -105,7 +105,7 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::TypePac
   m_DetailsRightVBox.pack_start(m_VersionLabel,Gtk::PACK_EXPAND_WIDGET);
   m_DetailsRightVBox.pack_start(m_LicenseLabel,Gtk::PACK_EXPAND_WIDGET);
 
-  if (m_TypePackage == openfluid::market::PackageInfo::DATA)
+  if (m_PackageType == openfluid::market::PackageInfo::DATA)
   {
     // display in the middle
     m_DetailsLeftVBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET, 15);
@@ -123,7 +123,7 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::TypePac
 
   updateDisplayedInfos();
 
-  if (m_TypePackage == openfluid::market::PackageInfo::DATA)
+  if (m_PackageType == openfluid::market::PackageInfo::DATA)
     add(m_MainHBox);
 
   m_InstallToggle.signal_toggled().connect(sigc::mem_fun(*this,

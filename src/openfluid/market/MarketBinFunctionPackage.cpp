@@ -80,7 +80,7 @@ std::string MarketBinFunctionPackage::getInstallPath() const
 // =====================================================================
 
 
-PackageInfo::TypePackage MarketBinFunctionPackage::getTypePackage() const
+PackageInfo::PackageType MarketBinFunctionPackage::getPackageType() const
 {
   return PackageInfo::FUNC;
 }

@@ -94,7 +94,7 @@ void MarketSrcPackage::process()
   std::string StrErr;
   int RetValue;
 
-  std::string BuildConfigOptions = composeFullBuildOptions(getTypePackage(), m_BuildConfigOptions);
+  std::string BuildConfigOptions = composeFullBuildOptions(getPackageType(), m_BuildConfigOptions);
 
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
   std::string SrcInstallDir = getInstallPath() + "/" + m_ID;
@@ -121,7 +121,7 @@ void MarketSrcPackage::process()
   // uncompressing package
   try
   {
-    appendToLogFile(m_PackageFilename,getTypePackage(),"uncompressing sources",UntarCommand);
+    appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing sources",UntarCommand);
 
     StrOut.clear();
     StrErr.clear();
@@ -145,7 +145,7 @@ void MarketSrcPackage::process()
   // configuring build
   try
   {
-    appendToLogFile(m_PackageFilename,getTypePackage(),"configuring sources build",BuildConfigCommand);
+    appendToLogFile(m_PackageFilename,getPackageType(),"configuring sources build",BuildConfigCommand);
 
     StrOut.clear();
     StrErr.clear();
@@ -170,7 +170,7 @@ void MarketSrcPackage::process()
   // building
   try
   {
-    appendToLogFile(m_PackageFilename,getTypePackage(),"building sources",BuildCommand);
+    appendToLogFile(m_PackageFilename,getPackageType(),"building sources",BuildCommand);
 
     StrOut.clear();
     StrErr.clear();

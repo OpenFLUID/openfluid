@@ -81,7 +81,7 @@ std::string MarketSrcObserverPackage::getInstallPath() const
 // =====================================================================
 
 
-PackageInfo::TypePackage MarketSrcObserverPackage::getTypePackage() const
+PackageInfo::PackageType MarketSrcObserverPackage::getPackageType() const
 {
   return PackageInfo::OBS;
 }

@@ -81,7 +81,7 @@ std::string MarketSrcFunctionPackage::getInstallPath() const
 // =====================================================================
 
 
-PackageInfo::TypePackage MarketSrcFunctionPackage::getTypePackage() const
+PackageInfo::PackageType MarketSrcFunctionPackage::getPackageType() const
 {
   return PackageInfo::FUNC;
 }

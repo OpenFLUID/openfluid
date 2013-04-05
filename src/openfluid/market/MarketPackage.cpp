@@ -172,7 +172,7 @@ void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagFunct
 // =====================================================================
 
 
-std::string MarketPackage::getCommonBuildOptions(PackageInfo::TypePackage Type)
+std::string MarketPackage::getCommonBuildOptions(PackageInfo::PackageType Type)
 {
   if (Type == PackageInfo::FUNC)
   {
@@ -194,7 +194,7 @@ std::string MarketPackage::getCommonBuildOptions(PackageInfo::TypePackage Type)
 // =====================================================================
 
 
-void MarketPackage::setCommonBuildOptions(PackageInfo::TypePackage Type, std::string BuildOptions)
+void MarketPackage::setCommonBuildOptions(PackageInfo::PackageType Type, std::string BuildOptions)
 {
   if (Type == PackageInfo::FUNC)
   {
@@ -215,7 +215,7 @@ void MarketPackage::setCommonBuildOptions(PackageInfo::TypePackage Type, std::st
 // =====================================================================
 
 
-std::string MarketPackage::composeFullBuildOptions(PackageInfo::TypePackage Type, std::string BuildOptions)
+std::string MarketPackage::composeFullBuildOptions(PackageInfo::PackageType Type, std::string BuildOptions)
 {
   std::string FullOptions = "";
 
@@ -232,7 +232,7 @@ std::string MarketPackage::composeFullBuildOptions(PackageInfo::TypePackage Type
 
 
 void MarketPackage::appendToLogFile(const std::string& PackageName,
-                                    const PackageInfo::TypePackage& Type,
+                                    const PackageInfo::PackageType& Type,
                                     const std::string& Action,
                                     const std::string& Str)
 {
@@ -299,7 +299,7 @@ void MarketPackage::download()
 
   m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
 
-  appendToLogFile(m_PackageFilename,getTypePackage(),"downloading","");
+  appendToLogFile(m_PackageFilename,getPackageType(),"downloading","");
 
   if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
   {

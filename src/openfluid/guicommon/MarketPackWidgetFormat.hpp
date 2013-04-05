@@ -92,7 +92,7 @@ class DLLEXPORT MarketPackWidgetFormat : public MarketPackWidget
 
   public:
 
-    MarketPackWidgetFormat(const openfluid::market::PackageInfo::TypePackage& TypePackage,const openfluid::market::MetaPackageInfo& MetaPackInfo);
+    MarketPackWidgetFormat(const openfluid::market::PackageInfo::PackageType& Type,const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 

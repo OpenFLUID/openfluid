@@ -81,7 +81,7 @@ std::string MarketBinObserverPackage::getInstallPath() const
 // =====================================================================
 
 
-PackageInfo::TypePackage MarketBinObserverPackage::getTypePackage() const
+PackageInfo::PackageType MarketBinObserverPackage::getPackageType() const
 {
   return PackageInfo::OBS;
 }

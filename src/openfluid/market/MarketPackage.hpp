@@ -123,7 +123,7 @@ class DLLEXPORT MarketPackage
     static void resetLogFile();
 
     static void appendToLogFile(const std::string& PackageName,
-        const PackageInfo::TypePackage& Type,
+        const PackageInfo::PackageType& Type,
         const std::string& Action,
         const std::string& Str);
 
@@ -162,11 +162,11 @@ class DLLEXPORT MarketPackage
 
     static std::string getLogFile() { return m_LogFile; };
 
-    static std::string getCommonBuildOptions(PackageInfo::TypePackage Type);
+    static std::string getCommonBuildOptions(PackageInfo::PackageType Type);
 
-    static void setCommonBuildOptions(PackageInfo::TypePackage Type, std::string BuildOptions);
+    static void setCommonBuildOptions(PackageInfo::PackageType Type, std::string BuildOptions);
 
-    static std::string composeFullBuildOptions(PackageInfo::TypePackage Type, std::string BuildOptions);
+    static std::string composeFullBuildOptions(PackageInfo::PackageType Type, std::string BuildOptions);
 
     openfluid::ware::WareID_t getID() const { return m_ID; };
 
@@ -178,7 +178,7 @@ class DLLEXPORT MarketPackage
     */
     virtual std::string getInstallPath() const = 0;
 
-    virtual PackageInfo::TypePackage getTypePackage() const = 0;
+    virtual PackageInfo::PackageType getPackageType() const = 0;
 
     virtual void process() = 0;
 

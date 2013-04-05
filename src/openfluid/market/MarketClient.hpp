@@ -70,9 +70,9 @@ namespace openfluid { namespace market {
 
 
 typedef std::map<std::string,std::string> MarketLicensesTexts_t;
-typedef std::map<PackageInfo::TypePackage,std::string> CatalogFilesURL_t;
-typedef std::map<PackageInfo::TypePackage,std::string> CatalogsData_t;
-typedef std::map<PackageInfo::TypePackage,MetaPackagesCatalog_t> TypesMetaPackagesCatalogs_t;
+typedef std::map<PackageInfo::PackageType,std::string> CatalogFilesURL_t;
+typedef std::map<PackageInfo::PackageType,std::string> CatalogsData_t;
+typedef std::map<PackageInfo::PackageType,MetaPackagesCatalog_t> TypesMetaPackagesCatalogs_t;
 
 // =====================================================================
 // =====================================================================
@@ -110,7 +110,7 @@ class DLLEXPORT MarketClient
 
     void parseMarketSiteData(const std::string& SiteData);
 
-    void parseCatalogData(const PackageInfo::TypePackage& TypeCatalog, const std::string& CatalogData);
+    void parseCatalogData(const PackageInfo::PackageType& TypeCatalog, const std::string& CatalogData);
 
     void downloadAssociatedLicenses();
 
@@ -122,7 +122,7 @@ class DLLEXPORT MarketClient
 
     ~MarketClient();
 
-    static std::string getTypeName(const PackageInfo::TypePackage& Type, const bool Maj, const bool Plural);
+    static std::string getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
 
     void connect(const std::string URL);
 

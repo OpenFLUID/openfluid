@@ -110,33 +110,33 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     Gtk::Notebook m_TypesTabs;
 
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*> mp_TabBox;
+    std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*> mp_TabBox;
 
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*> mp_AvailTypesPacksBox;
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::ScrolledWindow*> mp_AvailTypesPacksSWindow;
+    std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*> mp_AvailTypesPacksBox;
+    std::map<openfluid::market::PackageInfo::PackageType,Gtk::ScrolledWindow*> mp_AvailTypesPacksSWindow;
 
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::HBox*> mp_ActionButtonsBox;
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::Button*> mp_SelectAllButton;
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::Button*> mp_SelectNoneButton;
-    std::map<openfluid::market::PackageInfo::TypePackage,Gtk::Button*> mp_CommonBuildConfigButton;
+    std::map<openfluid::market::PackageInfo::PackageType,Gtk::HBox*> mp_ActionButtonsBox;
+    std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_SelectAllButton;
+    std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_SelectNoneButton;
+    std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_CommonBuildConfigButton;
 
-    std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > mp_AvailPacksWidgets;
+    std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> > mp_AvailPacksWidgets;
 
     void onURLComboChanged();
 
     MarketPackWidget* getAvailPackWidget(const openfluid::ware::WareID_t& ID) const;
 
     bool hasParentSelected(const openfluid::ware::WareID_t& ID,
-        const openfluid::market::PackageInfo::TypePackage Type);
+        const openfluid::market::PackageInfo::PackageType Type);
 
     bool getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
-        const std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > PacksToSelect);
+        const std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> > PacksToSelect);
 
     void selectDependencies(const openfluid::ware::WareID_t& ID);
 
     void onPackageInstallModified();
 
-    openfluid::market::PackageInfo::TypePackage getCurrentTypeTab();
+    openfluid::market::PackageInfo::PackageType getCurrentTypeTab();
 
     void onSelectAllClicked();
 
@@ -244,7 +244,7 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     virtual ~MarketClientAssistant();
 
-    static std::string getGraphicTypeName(const openfluid::market::PackageInfo::TypePackage& Type, const bool Maj, const bool Plural);
+    static std::string getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
 
 
 };

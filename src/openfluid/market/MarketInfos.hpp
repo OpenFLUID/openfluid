@@ -105,9 +105,9 @@ class DLLEXPORT PackageInfo
 {
   public:
 
-    enum TypePackage { FUNC, OBS, BUILD, DATA};
+    enum PackageType { FUNC, OBS, BUILD, DATA};
 
-    typedef std::map<TypePackage,std::list<openfluid::ware::WareID_t> > Dependencies_t;
+    typedef std::map<PackageType,std::list<openfluid::ware::WareID_t> > Dependencies_t;
 
     std::string URL;
 

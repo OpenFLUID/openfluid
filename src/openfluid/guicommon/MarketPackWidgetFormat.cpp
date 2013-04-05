@@ -63,9 +63,9 @@
 namespace openfluid { namespace guicommon {
 
 
-MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageInfo::TypePackage& TypePackage,
+MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageInfo::PackageType& Type,
     const openfluid::market::MetaPackageInfo& MetaPackInfo)
-    : MarketPackWidget(TypePackage, MetaPackInfo), m_EditedBuildOptions(""), m_FormatLabel(_("Package Format:"))
+    : MarketPackWidget(Type, MetaPackInfo), m_EditedBuildOptions(""), m_FormatLabel(_("Package Format:"))
 {
 
   m_RefFormatComboBoxModel = Gtk::ListStore::create(m_FormatColumns);
@@ -127,7 +127,7 @@ MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageI
 
 void MarketPackWidgetFormat::onConfigClicked()
 {
-  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(m_TypePackage),
+  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(m_PackageType),
                                      m_EditedBuildOptions,m_MetaPackInfo.ID);
 
 
@@ -183,7 +183,7 @@ void MarketPackWidgetFormat::updateDisplayedInfos()
 
       if (SelType == openfluid::market::MetaPackageInfo::SRC)
       {
-        MarkupTooltip += std::string("\n<u>")+_("Build options:")+std::string("</u> ") + replaceByNoneIfEmpty(openfluid::market::MarketPackage::composeFullBuildOptions(m_TypePackage,m_EditedBuildOptions));
+        MarkupTooltip += std::string("\n<u>")+_("Build options:")+std::string("</u> ") + replaceByNoneIfEmpty(openfluid::market::MarketPackage::composeFullBuildOptions(m_PackageType,m_EditedBuildOptions));
       }
     }
   }

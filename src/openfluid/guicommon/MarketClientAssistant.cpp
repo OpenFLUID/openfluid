@@ -435,7 +435,7 @@ void MarketClientAssistant::onURLComboChanged()
 
 MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::ware::WareID_t& ID) const
 {
-  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::const_iterator APMiter;
+  std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::const_iterator APMiter;
   std::list<MarketPackWidget*>::const_iterator APLiter;
 
   for (APMiter = mp_AvailPacksWidgets.begin(); APMiter != mp_AvailPacksWidgets.end(); ++APMiter)
@@ -456,7 +456,7 @@ MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::war
 
 
 bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& ID,
-    const openfluid::market::PackageInfo::TypePackage Type)
+    const openfluid::market::PackageInfo::PackageType Type)
 {
   openfluid::market::MetaPackagesCatalog_t DataCatalog = m_MarketClient.getTypesMetaPackagesCatalogs().at(openfluid::market::PackageInfo::DATA);
   openfluid::market::MetaPackagesCatalog_t::iterator PCit;
@@ -482,7 +482,7 @@ bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& I
 
 
 bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
-    const std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > PacksToSelect)
+    const std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> > PacksToSelect)
 {
   std::string Message = "<b>" + ID + "</b>";
   if (Select)
@@ -494,7 +494,7 @@ bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, c
     Message += _(" has dependencies selected.\nDo you want to unselect this packages ?\n");
   }
 
-  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::const_iterator APMiter;
+  std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::const_iterator APMiter;
   std::list<MarketPackWidget*>::const_iterator APLiter;
 
   for (APMiter = PacksToSelect.begin(); APMiter != PacksToSelect.end(); ++APMiter)
@@ -533,8 +533,8 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
     openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
     std::list<openfluid::ware::WareID_t>::const_iterator DLit;
 
-    std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> > PacksToSelect;
-    std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
+    std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> > PacksToSelect;
+    std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::iterator APMiter;
     std::list<MarketPackWidget*>::iterator APLiter;
 
     for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
@@ -594,7 +594,7 @@ void MarketClientAssistant::onPackageInstallModified()
 {
   bool Selection = false;
 
-  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
+  std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
 
   for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
@@ -629,10 +629,10 @@ void MarketClientAssistant::onPackageInstallModified()
 // =====================================================================
 
 
-openfluid::market::PackageInfo::TypePackage MarketClientAssistant::getCurrentTypeTab()
+openfluid::market::PackageInfo::PackageType MarketClientAssistant::getCurrentTypeTab()
 {
   std::string TabName = m_TypesTabs.get_tab_label_text(*m_TypesTabs.get_nth_page(m_TypesTabs.get_current_page()));
-  std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*>::const_iterator ATPBiter = mp_AvailTypesPacksBox.begin();
+  std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*>::const_iterator ATPBiter = mp_AvailTypesPacksBox.begin();
 
   while (ATPBiter != mp_AvailTypesPacksBox.end() && getGraphicTypeName(ATPBiter->first,true,true) != TabName)
     ++ATPBiter;
@@ -648,7 +648,7 @@ openfluid::market::PackageInfo::TypePackage MarketClientAssistant::getCurrentTyp
 void MarketClientAssistant::onSelectAllClicked()
 {
   std::list<MarketPackWidget*>::iterator APLiter;
-  openfluid::market::PackageInfo::TypePackage CurrentTab = getCurrentTypeTab();
+  openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
 
   for (APLiter=mp_AvailPacksWidgets[CurrentTab].begin();APLiter!=mp_AvailPacksWidgets[CurrentTab].end();++APLiter)
   {
@@ -665,7 +665,7 @@ void MarketClientAssistant::onSelectAllClicked()
 void MarketClientAssistant::onSelectNoneClicked()
 {
   std::list<MarketPackWidget*>::iterator APLiter;
-  openfluid::market::PackageInfo::TypePackage CurrentTab = getCurrentTypeTab();
+  openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
 
   for (APLiter=mp_AvailPacksWidgets[CurrentTab].begin();APLiter!=mp_AvailPacksWidgets[CurrentTab].end();++APLiter)
   {
@@ -682,7 +682,7 @@ void MarketClientAssistant::onSelectNoneClicked()
 
 void MarketClientAssistant::onCommonBuildConfigClicked()
 {
-  openfluid::market::PackageInfo::TypePackage CurrentTab = getCurrentTypeTab();
+  openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
   MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(CurrentTab),"");
 
   if (OptDialog.run() == Gtk::RESPONSE_OK)
@@ -772,7 +772,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
-  std::map<openfluid::market::PackageInfo::TypePackage,Gtk::VBox*>::iterator ATPBiter;
+  std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*>::iterator ATPBiter;
 
   for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
   {
@@ -789,7 +789,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   }
 
 
-  std::map<openfluid::market::PackageInfo::TypePackage,std::list<MarketPackWidget*> >::iterator APMiter;
+  std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
 
   // destroying widgets from available packages list
@@ -942,7 +942,7 @@ void MarketClientAssistant::initializeLicencesTreeView()
   m_LicensesTreeView.remove_all_columns();
   m_RefLicenseTreeViewModel->clear();
 
-  std::map<openfluid::market::PackageInfo::TypePackage,bool> PackagesContainers;
+  std::map<openfluid::market::PackageInfo::PackageType,bool> PackagesContainers;
   Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
 
   for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
@@ -997,7 +997,7 @@ void MarketClientAssistant::updateInstallTreeview()
   {
     Gtk::TreeModel::Row TmpRow = *(m_RefInstallTreeViewModel->append());
     TmpRow[m_InstallColumns.m_ID] = (*PLiter)->getID();
-    TmpRow[m_InstallColumns.m_Type] = getGraphicTypeName((*PLiter)->getTypePackage(),true,false);
+    TmpRow[m_InstallColumns.m_Type] = getGraphicTypeName((*PLiter)->getPackageType(),true,false);
     if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::BIN) TmpRow[m_InstallColumns.m_Format] = _("binary");
     else if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::SRC) TmpRow[m_InstallColumns.m_Format] = _("source");
     else TmpRow[m_InstallColumns.m_Format] = _("dataset");
@@ -1023,7 +1023,7 @@ void MarketClientAssistant::onViewLogClicked()
 // =====================================================================
 
 
-std::string MarketClientAssistant::getGraphicTypeName(const openfluid::market::PackageInfo::TypePackage& Type, const bool Maj, const bool Plural)
+std::string MarketClientAssistant::getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural)
 {
   std::string TypeNames[] = { _("function"), _("observer"), _("builder extension"), _("dataset")};
   std::string PluralTypeNames[] = { _("functions"), _("observers"), _("builder extensions"), _("datasets")};

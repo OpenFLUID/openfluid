@@ -87,7 +87,7 @@ std::string MarketDatasetPackage::getInstallPath() const
 // =====================================================================
 
 
-PackageInfo::TypePackage MarketDatasetPackage::getTypePackage() const
+PackageInfo::PackageType MarketDatasetPackage::getPackageType() const
 {
   return PackageInfo::DATA;
 }
@@ -127,7 +127,7 @@ void MarketDatasetPackage::process()
 
   try
   {
-    appendToLogFile(m_PackageFilename,getTypePackage(),"uncompressing datasets",ProcessCommand);
+    appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand);
 
     StrOut.clear();
     StrErr.clear();

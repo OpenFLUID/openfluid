@@ -71,7 +71,7 @@ class DLLEXPORT MarketDatasetPackage : public MarketPackage
 
     std::string getInstallPath() const;
 
-    PackageInfo::TypePackage getTypePackage() const;
+    PackageInfo::PackageType getPackageType() const;
 
     void process();
 
