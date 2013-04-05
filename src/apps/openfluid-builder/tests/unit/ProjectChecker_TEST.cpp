@@ -66,6 +66,9 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/base/OFException.hpp>
+#include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -255,7 +258,41 @@ BOOST_AUTO_TEST_CASE(check_check)
   Desc.getMonitoring().removeFromObserverList("tests.hopla");
   PC.check();
   BOOST_CHECK(!PC.IsMonitoringOk);
-  BOOST_CHECK_EQUAL(PC.MonitoringMsg,"No observer defined");
+  BOOST_CHECK_EQUAL(PC.MonitoringMsg, "No observer defined");
+
+  Desc.getModel().appendItem(new openfluid::fluidx::FunctionDescriptor("tests.primitives.inputdata.use"));
+  PC.check();
+  BOOST_CHECK(!PC.IsInputdataOk);
+  BOOST_CHECK(!PC.InputdataMsg.empty());
+
+  Desc.getDomain().addInputData("TestUnits","indataDouble","");
+  Desc.getDomain().addInputData("TestUnits","indataLong","");
+  Desc.getDomain().addInputData("TestUnits","indataString","");
+  Desc.getDomain().addInputData("TestUnits","indataMatrix","");
+  Desc.getDomain().addInputData("TestUnits","indataMap","");
+  Desc.getDomain().addInputData("TestUnits","indataBool","");
+  Desc.getDomain().addInputData("TestUnits","indataVector","");
+  PC.check();
+  BOOST_CHECK(!PC.IsInputdataOk);
+  BOOST_CHECK(!PC.InputdataMsg.empty());
+
+  Desc.getModel().appendItem(new openfluid::fluidx::FunctionDescriptor("tests.primitives.inputdata.prod"));
+  Desc.getModel().moveItem(8,7);
+  PC.check();
+  BOOST_CHECK(PC.IsInputdataOk);
+  BOOST_CHECK(PC.InputdataMsg.empty());
+
+  Desc.getDomain().deleteInputData("TestUnits","indataDouble");
+  Desc.getDomain().deleteInputData("TestUnits","indataLong");
+  Desc.getDomain().deleteInputData("TestUnits","indataString");
+  Desc.getDomain().deleteInputData("TestUnits","indataMatrix");
+  Desc.getDomain().deleteInputData("TestUnits","indataMap");
+  Desc.getDomain().deleteInputData("TestUnits","indataBool");
+  Desc.getDomain().deleteInputData("TestUnits","indataVector");
+
+  PC.check();
+  BOOST_CHECK(!PC.IsInputdataOk);
+  BOOST_CHECK(!PC.InputdataMsg.empty());
 }
 
 // =====================================================================

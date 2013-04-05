@@ -80,6 +80,8 @@ class ProjectChecker
 
     void checkModelRequirements();
 
+    void checkModelInputdata();
+
     void checkModelVars();
 
     void checkGeneratorParam(std::string MinParamName, std::string MaxParamName,
