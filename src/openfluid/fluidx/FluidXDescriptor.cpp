@@ -807,7 +807,12 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
         if (xmlDataClass != NULL)
           Item->setUnitClass(std::string((char*) xmlDataClass));
 
-        m_DatastoreDescriptor.appendItem(Item);
+        if(!m_DatastoreDescriptor.appendItem(Item))
+          throw openfluid::base::OFException(
+              "OpenFLUID framework",
+              "FluidXDescriptor::extractDatastoreFromNode",
+              "already existing dataitem ID: " + DataID + " (" + m_CurrentFile
+              + ")");
       }
       else
         throw openfluid::base::OFException(
