@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc1";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1","UA","",""));
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc0";
   MIInstance->Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1","UA","",""));
@@ -217,7 +217,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc2";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var5[]","UB","",""));
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc0.5";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1","UA","",""));
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc3";
   MIInstance->Signature->HandledData.RequiredPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var7","UC","",""));
@@ -280,7 +280,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc4";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1","UA","",""));
@@ -338,7 +338,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc1";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1[double]","UA","",""));
@@ -362,7 +362,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc0";
   MIInstance->Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1[double]","UA","",""));
@@ -382,7 +382,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc2";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var5[vector]","UB","",""));
@@ -403,7 +403,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc0.5";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1","UA","",""));
@@ -425,7 +425,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc3";
   MIInstance->Signature->HandledData.RequiredPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var7[double]","UC","",""));
@@ -445,7 +445,7 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   MIInstance = new openfluid::machine::ModelItemInstance();
   MIInstance->Body = new EmptyFunction();
-  MIInstance->SDKCompatible = true;
+  MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc4";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1","UA","",""));

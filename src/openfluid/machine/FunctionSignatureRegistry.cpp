@@ -75,28 +75,28 @@ FunctionSignatureRegistry::FunctionSignatureRegistry()
 {
   openfluid::machine::ModelItemSignatureInstance* FixedSignature =
       new openfluid::machine::ModelItemSignatureInstance();
-  FixedSignature->SDKCompatible = true;
+  FixedSignature->Verified = true;
   FixedSignature->Signature = new openfluid::ware::GeneratorSignature(
       openfluid::fluidx::GeneratorDescriptor::Fixed);
   addAGeneratorSignature(FixedSignature);
 
   openfluid::machine::ModelItemSignatureInstance* RandomSignature =
       new openfluid::machine::ModelItemSignatureInstance();
-  RandomSignature->SDKCompatible = true;
+  RandomSignature->Verified = true;
   RandomSignature->Signature = new openfluid::ware::GeneratorSignature(
       openfluid::fluidx::GeneratorDescriptor::Random);
   addAGeneratorSignature(RandomSignature);
 
   openfluid::machine::ModelItemSignatureInstance* InterpSignature =
       new openfluid::machine::ModelItemSignatureInstance();
-  InterpSignature->SDKCompatible = true;
+  InterpSignature->Verified = true;
   InterpSignature->Signature = new openfluid::ware::GeneratorSignature(
       openfluid::fluidx::GeneratorDescriptor::Interp);
   addAGeneratorSignature(InterpSignature);
 
   openfluid::machine::ModelItemSignatureInstance* InjectSignature =
       new openfluid::machine::ModelItemSignatureInstance();
-  InjectSignature->SDKCompatible = true;
+  InjectSignature->Verified = true;
   InjectSignature->Signature = new openfluid::ware::GeneratorSignature(
       openfluid::fluidx::GeneratorDescriptor::Inject);
   addAGeneratorSignature(InjectSignature);
