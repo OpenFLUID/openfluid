@@ -119,14 +119,14 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   BOOST_CHECK_EQUAL(
       dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Model.getItemAt(0))->getGeneratedID(),
-      "GENERATOR__SCALAR__tests.generator.interp__TU");
+      "tests.generator.interp.TU.genscalar");
   BOOST_CHECK_EQUAL(
       dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(Model.getItemAt(4))->getFileID(),
       "tests.functionB");
   BOOST_CHECK_THROW(Model.getItemAt(5), openfluid::base::OFException);
 
   BOOST_CHECK_EQUAL(
-      Model.getFirstItemIndex("GENERATOR__SCALAR__tests.generator.interp__TU"),
+      Model.getFirstItemIndex("tests.generator.interp.TU.genscalar"),
       0);
   BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.functionB"), 4);
   BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.wrongfunction"), -1);
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   std::vector<std::string> IDs = Model.getOrderedIDs();
 
   BOOST_CHECK_EQUAL(IDs.size(), 5);
-  BOOST_CHECK_EQUAL(IDs.at(0), "GENERATOR__SCALAR__tests.generator.interp__TU");
+  BOOST_CHECK_EQUAL(IDs.at(0), "tests.generator.interp.TU.genscalar");
   BOOST_CHECK_EQUAL(IDs.at(4), "tests.functionB");
 }
 
