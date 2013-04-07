@@ -65,9 +65,9 @@ class DLLEXPORT WareSignatureInstance
 {
   public:
     std::string Filename;
-    bool SDKCompatible;
+    bool Verified;
 
-    WareSignatureInstance() : Filename(""),SDKCompatible(false)
+    WareSignatureInstance() : Filename(""),Verified(false)
     { }
 
 };

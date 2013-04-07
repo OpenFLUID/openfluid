@@ -112,14 +112,16 @@ class DLLEXPORT Factory
 
     static std::string buildGeneratorID(const openfluid::core::VariableName_t& VarName,
                                         bool IsVector,
-                                        const openfluid::core::UnitClass_t ClassName)
+                                        const openfluid::core::UnitClass_t& ClassName)
     {
-      std::string GenID("GENERATOR__");
-      if (IsVector) GenID += "VECTOR__";
-      else GenID += "SCALAR__";
-      GenID += VarName;
-      GenID += "__";
+      // <varname>.<unitclass>.gen<type> where <type> can be scalar or vector
+
+      std::string GenID(VarName);
+      GenID += ".";
       GenID += ClassName;
+      GenID += ".gen";
+      if (IsVector) GenID += "vector";
+      else GenID += "scalar";
 
       return GenID;
     }

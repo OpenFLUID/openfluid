@@ -159,7 +159,7 @@ void OpenFLUIDApp::printFunctionsList()
 
   for (unsigned int i=0;i<PlugContainers.size();i++)
   {
-    if (PlugContainers[i]->SDKCompatible && PlugContainers[i]->Signature!=NULL)
+    if (PlugContainers[i]->Verified && PlugContainers[i]->Signature!=NULL)
     {
       std::cout << "  - " << PlugContainers[i]->Signature->ID << std::endl;
       OneAtLeast = true;
@@ -192,7 +192,7 @@ void OpenFLUIDApp::printMonitoring()
 
   for (unsigned int i=0;i<PlugContainers.size();i++)
   {
-    if (PlugContainers[i]->SDKCompatible && PlugContainers[i]->Signature!=NULL)
+    if (PlugContainers[i]->Verified && PlugContainers[i]->Signature!=NULL)
     {
       std::cout << "  - " << PlugContainers[i]->Signature->ID << std::endl;
       OneAtLeast = true;

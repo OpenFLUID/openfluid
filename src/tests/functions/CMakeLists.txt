@@ -314,4 +314,26 @@ ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   SET_TESTS_PROPERTIES(functions-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "TU#")
 ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug") 
 
+
+###########################################################################
+
+
+OPNFLD_ADD_FUNCTION(tests.wrongid tests.wrongid ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-WrongID 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                                  "-f"
+                                  "-p${TEST_OUTPUT_PATH}")
+SET_TESTS_PROPERTIES(functions-WrongID PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongid")
+
+
+###########################################################################
+
+
+OPNFLD_ADD_FUNCTION(tests.wrongversion tests.wrongversion ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME functions-WrongVersion 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                                  "-f"
+                                  "-p${TEST_OUTPUT_PATH}")
+SET_TESTS_PROPERTIES(functions-WrongVersion PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongversion")
+
                             
