@@ -67,7 +67,7 @@ DECLARE_FUNCTION_PLUGIN
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.cmake")
+BEGIN_FUNCTION_SIGNATURE("tests.func.cmake")
 
   DECLARE_SIGNATURE_NAME("test function built using the OpenFLUID cmake module");
   DECLARE_SIGNATURE_DESCRIPTION("");
