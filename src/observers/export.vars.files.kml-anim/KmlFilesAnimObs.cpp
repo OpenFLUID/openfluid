@@ -402,35 +402,39 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       // static layers
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params.get_child("layers.static"))
+      boost::optional<const boost::property_tree::ptree&> StaticLayersTree = Params.get_child_optional( "layers.static" );
+
+      if (StaticLayersTree)
       {
-        std::string LayerID = v.first;
-
-        KmlStaticLayerInfo KSLI;
-
-        KSLI.UnitsClass = Params.get("layers.static."+LayerID+".unitclass","");
-        KSLI.LineWidth = Params.get<int>("layers.static."+LayerID+".linewidth",1);
-        KSLI.Color = Params.get("layers.static."+LayerID+".color","ffffffff");
-
-        KSLI.SourceIsDatastore = (Params.get("layers.static."+LayerID+".source","file") == "datastore");
-        if (KSLI.SourceIsDatastore)
-          return;
-        else
-        {
-          KSLI.SourceFilename = Params.get("layers.static."+LayerID+".sourcefile","");
-          if (KSLI.SourceFilename.empty())
+        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params.get_child("layers.static"))
           {
-            OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
-                                   "wrong sourcefile format");
+          std::string LayerID = v.first;
+
+          KmlStaticLayerInfo KSLI;
+
+          KSLI.UnitsClass = Params.get("layers.static."+LayerID+".unitclass","");
+          KSLI.LineWidth = Params.get<int>("layers.static."+LayerID+".linewidth",1);
+          KSLI.Color = Params.get("layers.static."+LayerID+".color","ffffffff");
+
+          KSLI.SourceIsDatastore = (Params.get("layers.static."+LayerID+".source","file") == "datastore");
+          if (KSLI.SourceIsDatastore)
+            return;
+          else
+          {
+            KSLI.SourceFilename = Params.get("layers.static."+LayerID+".sourcefile","");
+            if (KSLI.SourceFilename.empty())
+            {
+              OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
+                                     "wrong sourcefile format");
+            }
+            KSLI.SourceFilename = m_InputDir + "/" + KSLI.SourceFilename;
           }
-          KSLI.SourceFilename = m_InputDir + "/" + KSLI.SourceFilename;
-        }
 
-        if (transformVectorLayerToKmlGeometry(KSLI))
-        {
-          m_StaticLayersInfo.push_back(KSLI);
+          if (transformVectorLayerToKmlGeometry(KSLI))
+          {
+            m_StaticLayersInfo.push_back(KSLI);
+          }
         }
-
       }
 
       m_OKToGo = true;
