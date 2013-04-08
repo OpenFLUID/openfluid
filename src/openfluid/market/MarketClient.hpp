@@ -70,7 +70,7 @@ namespace openfluid { namespace market {
 
 
 typedef std::map<std::string,std::string> MarketLicensesTexts_t;
-typedef std::map<PackageInfo::PackageType,std::string> CatalogFilesURL_t;
+typedef std::map<PackageInfo::PackageType,std::string> CatalogsFileURL_t;
 typedef std::map<PackageInfo::PackageType,std::string> CatalogsData_t;
 typedef std::map<PackageInfo::PackageType,MetaPackagesCatalog_t> TypesMetaPackagesCatalogs_t;
 
@@ -110,11 +110,11 @@ class DLLEXPORT MarketClient
 
     void parseMarketSiteData(const std::string& SiteData);
 
-    void parseCatalogData(const PackageInfo::PackageType& TypeCatalog, const std::string& CatalogData);
+    void parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogData);
 
     void downloadAssociatedLicenses();
 
-    //std::string selectionTypeToString(MetaPackageInfo::SelectionType Selec) const;
+    //std::string selectionTypeToString(const MetaPackageInfo::SelectionType& Selec) const;
 
   public:
 
@@ -122,9 +122,12 @@ class DLLEXPORT MarketClient
 
     ~MarketClient();
 
+    /**
+     @return type name passed as parameter
+    */
     static std::string getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
 
-    void connect(const std::string URL);
+    void connect(const std::string& URL);
 
     void disconnect();
 
@@ -134,6 +137,9 @@ class DLLEXPORT MarketClient
 
     const TypesMetaPackagesCatalogs_t& getTypesMetaPackagesCatalogs();
 
+    /**
+     Finds the ID package in m_TypesMetaPackagesCatalogs
+    */
     MetaPackagesCatalog_t::iterator findInTypesMetaPackagesCatalogs(const openfluid::ware::WareID_t& ID);
 
     bool setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag);
