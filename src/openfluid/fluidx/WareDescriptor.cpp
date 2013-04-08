@@ -140,6 +140,9 @@ void WareDescriptor::eraseParameter(const openfluid::ware::WareParamKey_t& Key)
 bool WareDescriptor::eraseParamRecurs(boost::property_tree::ptree& pt,
                                       boost::property_tree::path& Path)
 {
+  if (Path.empty())
+    return false;
+
   std::string PathStr = Path.reduce();
 
   if (Path.empty())
@@ -173,6 +176,51 @@ void WareDescriptor::getParamsRecurs(
     else
       Contents[Name + it->first] = it->second.data();
   }
+}
+
+// =====================================================================
+// =====================================================================
+
+bool WareDescriptor::hasParameter(std::string ParameterKey)
+{
+  return getParametersAsMap().count(ParameterKey);
+}
+
+// =====================================================================
+// =====================================================================
+
+bool WareDescriptor::isInsertable(std::string ParameterKey)
+{
+  try
+  {
+    return m_Params.get_child(ParameterKey).empty();
+  }
+  // ParameterKey doesn't exist
+  catch (boost::property_tree::ptree_bad_path& e)
+  {
+    std::string::size_type Found = ParameterKey.find_last_of(".");
+    // No parent
+    if (Found == std::string::npos)
+      return true;
+    std::string ParentPath = ParameterKey.substr(0, Found);
+    try
+    {
+      m_Params.get_child(ParentPath);
+      return false;
+    }
+    // Parent has no data
+    catch (boost::property_tree::ptree_bad_data& e)
+    {
+      return true;
+    }
+    // Parent doesn't exist
+    catch (boost::property_tree::ptree_bad_path& e)
+    {
+      return true;
+    }
+
+  }
+
 }
 
 // =====================================================================
