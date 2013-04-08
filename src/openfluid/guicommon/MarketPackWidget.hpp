@@ -82,15 +82,12 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
     typedef sigc::signal<void> signal_install_modified_t;
 
   private:
-
     Gtk::Image* m_EmptyCartImage;
     Gtk::Image* m_FullCartImage;
 
     Gtk::Label m_VersionLabel;
 
-
     bool onButtonRelease(GdkEventButton* Event);
-
 
   protected:
     openfluid::market::PackageInfo::PackageType m_PackageType;

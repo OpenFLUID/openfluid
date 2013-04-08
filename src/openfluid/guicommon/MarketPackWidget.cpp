@@ -107,7 +107,7 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::Package
 
   if (m_PackageType == openfluid::market::PackageInfo::DATA)
   {
-    // display in the middle
+    // display package id in the middle
     m_DetailsLeftVBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET, 15);
 
     m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
@@ -206,14 +206,17 @@ void MarketPackWidget::updateDisplayedInfos()
   MarkupTooltip += std::string("\n<u>")+_("Version:")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Version);
   MarkupTooltip += std::string("\n<u>")+_("Author(s):")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Authors);
 
+  // datasets
   if (m_MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::FLUIDX) != m_MetaPackInfo.AvailablePackages.end())
   {
     SelType = openfluid::market::MetaPackageInfo::FLUIDX;
     std::string LicenseStr = (*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License;
 
+    // license
     MarkupTooltip += std::string("\n<u>")+_("License:")+std::string("</u> ") + replaceByUnknownIfEmpty(LicenseStr);
     m_LicenseLabel.set_markup(std::string("<u>")+_("License:")+std::string("</u> ")+replaceByUnknownIfEmpty(LicenseStr));
 
+    // description
     if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "\n\n"+m_MetaPackInfo.Description;
 
     // dependencies
