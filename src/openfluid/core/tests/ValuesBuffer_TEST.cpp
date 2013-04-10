@@ -94,6 +94,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(VBuffer.getValuesCount(),0);
 
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyCurrentValue(openfluid::core::DoubleValue(1.1)),false);
+
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(0,openfluid::core::DoubleValue(1.1)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(1,openfluid::core::DoubleValue(2.2)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(2,openfluid::core::DoubleValue(3.3)),true);
@@ -127,6 +129,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(3,openfluid::core::DoubleValue(44.0)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.getValue(3,&Value),true);
   BOOST_REQUIRE_CLOSE(Value.get(),44.0,0.001);
+
+
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(6,openfluid::core::DoubleValue(77.0)),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(6,&Value),true);
+  BOOST_REQUIRE_CLOSE(Value.get(),77.0,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyCurrentValue(openfluid::core::DoubleValue(7.7)),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(6,&Value),true);
+  BOOST_REQUIRE_CLOSE(Value.get(),7.7,0.001);
 
 
 /*  BOOST_REQUIRE_EQUAL(VBuffer.deleteValues(3),true);

@@ -68,43 +68,45 @@ class DLLEXPORT Variables
 
     ~Variables();
 
-    bool createVariable(const VariableName_t aName);
+    bool createVariable(const VariableName_t& aName);
 
-    bool createVariable(const VariableName_t aName, const Value::Type aType);
+    bool createVariable(const VariableName_t& aName, const Value::Type& aType);
 
-    bool modifyValue(const VariableName_t aName, const TimeIndex_t& anIndex,
+    bool modifyValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
         const Value& aValue);
 
-    bool appendValue(const VariableName_t aName, const TimeIndex_t& anIndex, const Value& aValue);
+    bool modifyCurrentValue(const VariableName_t& aName, const Value& aValue);
 
-    bool getValue(const VariableName_t aName, const TimeIndex_t& anIndex,
+    bool appendValue(const VariableName_t& aName, const TimeIndex_t& anIndex, const Value& aValue);
+
+    bool getValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
         Value* aValue) const;
 
-    Value* getValue(const VariableName_t aName, const TimeIndex_t& anIndex) const;
+    Value* getValue(const VariableName_t& aName, const TimeIndex_t& anIndex) const;
 
-    Value* getCurrentValue(const VariableName_t aName) const;
+    Value* getCurrentValue(const VariableName_t& aName) const;
 
-    bool getCurrentValue(const VariableName_t aName, Value* aValue) const;
+    bool getCurrentValue(const VariableName_t& aName, Value* aValue) const;
 
     bool getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index, Value* aValue) const;
 
     Value* getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const;
 
-    bool isVariableExist(const VariableName_t aName) const;
+    bool isVariableExist(const VariableName_t& aName) const;
 
-    bool isVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex) const;
+    bool isVariableExist(const VariableName_t& aName, const TimeIndex_t& anIndex) const;
 
-    bool isVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex,
+    bool isVariableExist(const VariableName_t& aName, const TimeIndex_t& anIndex,
         Value::Type ValueType) const;
 
-    bool isTypedVariableExist(const VariableName_t aName, const Value::Type VarType) const;
+    bool isTypedVariableExist(const VariableName_t& aName, const Value::Type& VarType) const;
 
-    bool isTypedVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex,
-        Value::Type VarType) const;
+    bool isTypedVariableExist(const VariableName_t& aName, const TimeIndex_t& anIndex,
+        const Value::Type& VarType) const;
 
     std::vector<VariableName_t> getVariablesNames() const;
 
-    int getVariableValuesCount(const VariableName_t aName) const;
+    int getVariableValuesCount(const VariableName_t& aName) const;
 
     bool isAllVariablesCount(unsigned int Count) const;
 

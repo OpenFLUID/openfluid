@@ -265,6 +265,23 @@ bool ValuesBuffer::modifyValue(const TimeIndex_t& anIndex, const Value& aValue)
   return false;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool ValuesBuffer::modifyCurrentValue(const Value& aValue)
+{
+  if (m_Data.empty()) return false;
+
+  DataContainer_t::iterator It = m_Data.end();
+  It--;
+  (*It).Data.reset(aValue.clone());
+
+  return true;
+}
+
+
 // =====================================================================
 // =====================================================================
 

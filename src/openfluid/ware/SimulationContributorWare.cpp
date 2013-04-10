@@ -133,7 +133,7 @@ void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *Un
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::Value& Val)
 {
   OPENFLUID_InitializeVariable(*UnitPtr,VarName,Val);
@@ -145,7 +145,7 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Unit& aUnit,
-                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::Value& Val)
 {
   /*if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::INITIALIZERUN)
@@ -167,8 +167,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
-                                        const double Val)
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                            "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage")
@@ -190,8 +190,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
-                                        const long Val)
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                            "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage")
@@ -210,8 +210,8 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
-                                        const bool Val)
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
                            "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage")
@@ -230,7 +230,7 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
 
 
 void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::VariableName_t& VarName,
                                         const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
@@ -250,7 +250,7 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::Value& Val)
 {
   OPENFLUID_AppendVariable(*UnitPtr,VarName,Val);
@@ -262,7 +262,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
-                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
@@ -281,8 +281,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit& 
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
-                                        const double Val)
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot added outside RUNSTEP stage")
@@ -304,8 +304,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
-                                        const long Val)
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot added outside RUNSTEP stage")
@@ -324,8 +324,8 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
-                                        const bool Val)
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
                            "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot added outside RUNSTEP stage")
@@ -344,7 +344,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
 
 
 void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
+                                        const openfluid::core::VariableName_t& VarName,
                                         const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
@@ -364,13 +364,12 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
-                                        const openfluid::core::TimeStep_t Step,
+                                        const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::Value& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,Val))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
@@ -382,16 +381,15 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t VarName,
-                                        const openfluid::core::TimeStep_t Step,
-                                        const double Val)
+                                        const openfluid::core::VariableName_t& VarName,
+                                        const double& Val)
 {
   /* Do not call OPENFLUID_SetVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
    * because of cast operator, THIS function is called (recursively)
    */
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::DoubleValue(Val)))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::DoubleValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting double value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
@@ -403,13 +401,12 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                                       const openfluid::core::VariableName_t VarName,
-                                       const openfluid::core::TimeStep_t Step,
-                                       const long Val)
+                                       const openfluid::core::VariableName_t& VarName,
+                                       const long& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::IntegerValue(Val)))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting long value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
@@ -421,13 +418,12 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                                       const openfluid::core::VariableName_t VarName,
-                                       const openfluid::core::TimeStep_t Step,
-                                       const bool Val)
+                                       const openfluid::core::VariableName_t& VarName,
+                                       const bool& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::BooleanValue(Val)))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting boolean value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");
@@ -439,13 +435,12 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
 
 
 void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                                       const openfluid::core::VariableName_t VarName,
-                                       const openfluid::core::TimeStep_t Step,
-                                       const std::string Val)
+                                       const openfluid::core::VariableName_t& VarName,
+                                       const std::string& Val)
 {
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getVariables()->modifyValue(VarName,Step,openfluid::core::StringValue(Val)))
+    if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Error setting string value for variable "+ VarName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetVariable","Unit is NULL");

@@ -139,6 +139,8 @@ class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 
     bool modifyValue(const TimeIndex_t& anIndex, const Value& aValue);
 
+    bool modifyCurrentValue(const Value& aValue);
+
     bool appendValue(const TimeIndex_t& anIndex, const Value& aValue);
 
     unsigned int getValuesCount() const

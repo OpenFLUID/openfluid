@@ -273,7 +273,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.double",CurrIndex,NewDouble);
+          OPENFLUID_SetVariable(TU,"tests.double",NewDouble);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
@@ -303,7 +303,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarDoubleVal.get() != RefDouble)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.doubleval) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.doubleval",CurrIndex,NewDouble);
+          OPENFLUID_SetVariable(TU,"tests.doubleval",NewDouble);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
@@ -337,7 +337,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarLong != RefLong)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value (tests.integer)");
 
-          OPENFLUID_SetVariable(TU,"tests.integer",CurrIndex,NewLong);
+          OPENFLUID_SetVariable(TU,"tests.integer",NewLong);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
@@ -366,7 +366,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex,VarLongVal);
           if (VarLongVal.get() != RefLong)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value (tests.integerval) get by reference");
-          OPENFLUID_SetVariable(TU,"tests.integerval",CurrIndex,NewLong);
+          OPENFLUID_SetVariable(TU,"tests.integerval",NewLong);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
@@ -396,7 +396,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarBool != RefBool)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value (tests.bool) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.bool",CurrIndex,NewBool);
+          OPENFLUID_SetVariable(TU,"tests.bool",NewBool);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
@@ -426,7 +426,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarBoolVal.get() != RefBool)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value (tests.boolval) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.boolval",CurrIndex,NewBool);
+          OPENFLUID_SetVariable(TU,"tests.boolval",NewBool);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
@@ -456,7 +456,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarString != RefString)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect string value (tests.string) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.string",CurrIndex,NewString);
+          OPENFLUID_SetVariable(TU,"tests.string",NewString);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
@@ -498,7 +498,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector size get by reference");
 
           openfluid::core::VectorValue NewVect(NewVectorSize,NewDouble);
-          OPENFLUID_SetVariable(TU,"tests.vector",CurrIndex,NewVect);
+          OPENFLUID_SetVariable(TU,"tests.vector",NewVect);
 
           OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex,&VarVectorVal);
           if (VarVectorVal.getSize() != NewVectorSize)
@@ -546,7 +546,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix rows nb get by reference");
 
           openfluid::core::MatrixValue NewMatrix(NewMatrixColsNb,NewMatrixRowsNb,NewDouble);
-          OPENFLUID_SetVariable(TU,"tests.matrix",CurrIndex,NewMatrix);
+          OPENFLUID_SetVariable(TU,"tests.matrix",NewMatrix);
 
           OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex,&VarMatrixVal);
           if (VarMatrixVal.getColsNbr() != NewMatrixColsNb)
@@ -595,7 +595,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           NewMap.setString("key1",NewString);
           NewMap.setDouble("key2",NewDouble);
           NewMap.setBoolean("key3",NewBool);
-          OPENFLUID_SetVariable(TU,"tests.map",CurrIndex,NewMap);
+          OPENFLUID_SetVariable(TU,"tests.map",NewMap);
 
           OPENFLUID_GetVariable(TU,"tests.map",CurrIndex,&VarMapVal);
           if (VarMapVal.getSize() != 3)
@@ -692,7 +692,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.typed.double",CurrIndex,NewDouble);
+          OPENFLUID_SetVariable(TU,"tests.typed.double",NewDouble);
 
           OPENFLUID_GetVariable(TU,"tests.typed.double",CurrIndex,VarDouble);
           if (!openfluid::tools::IsCloseEnough(VarDouble,NewDouble,0.00001))
@@ -708,7 +708,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarLong != RefLong)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value (tests.integer) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.typed.integer",CurrIndex,NewLong);
+          OPENFLUID_SetVariable(TU,"tests.typed.integer",NewLong);
 
           OPENFLUID_GetVariable(TU,"tests.typed.integer",CurrIndex,VarLong);
           if (VarLong != NewLong)
@@ -724,7 +724,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarBool != RefBool)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value (tests.bool) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.typed.bool",CurrIndex,NewBool);
+          OPENFLUID_SetVariable(TU,"tests.typed.bool",NewBool);
 
           OPENFLUID_GetVariable(TU,"tests.typed.bool",CurrIndex,VarBool);
           if (VarBool != NewBool)
@@ -740,7 +740,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarString != RefString)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect string value (tests.string) get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.typed.string",CurrIndex,NewString);
+          OPENFLUID_SetVariable(TU,"tests.typed.string",NewString);
 
           OPENFLUID_GetVariable(TU,"tests.typed.string",CurrIndex,VarString);
           if (VarString != NewString)
@@ -757,7 +757,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector size get by reference");
 
           openfluid::core::VectorValue NewVect(NewVectorSize,NewDouble);
-          OPENFLUID_SetVariable(TU,"tests.typed.vector",CurrIndex,NewVect);
+          OPENFLUID_SetVariable(TU,"tests.typed.vector",NewVect);
 
           OPENFLUID_GetVariable(TU,"tests.typed.vector",CurrIndex,VarVectorVal);
           if (VarVectorVal.getSize() != NewVectorSize)
@@ -778,7 +778,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarVectorVal.getSize() != RefVectorSize)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect oldvector size get by reference");
 
-          OPENFLUID_SetVariable(TU,"tests.typed.oldvector",CurrIndex,NewVect);
+          OPENFLUID_SetVariable(TU,"tests.typed.oldvector",NewVect);
 
           OPENFLUID_GetVariable(TU,"tests.typed.oldvector",CurrIndex,VarVectorVal);
           if (VarVectorVal.getSize() != NewVectorSize)
@@ -801,7 +801,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix rows nb get by reference");
 
           openfluid::core::MatrixValue NewMatrix(NewMatrixColsNb,NewMatrixRowsNb,NewDouble);
-          OPENFLUID_SetVariable(TU,"tests.typed.matrix",CurrIndex,NewMatrix);
+          OPENFLUID_SetVariable(TU,"tests.typed.matrix",NewMatrix);
 
           OPENFLUID_GetVariable(TU,"tests.typed.matrix",CurrIndex,VarMatrixVal);
           if (VarMatrixVal.getColsNbr() != NewMatrixColsNb)
@@ -827,7 +827,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           NewMap.setString("key1",NewString);
           NewMap.setDouble("key2",NewDouble);
           NewMap.setBoolean("key3",NewBool);
-          OPENFLUID_SetVariable(TU,"tests.typed.map",CurrIndex,NewMap);
+          OPENFLUID_SetVariable(TU,"tests.typed.map",NewMap);
 
           OPENFLUID_GetVariable(TU,"tests.typed.map",CurrIndex,VarMapVal);
           if (VarMapVal.getSize() != 3)
@@ -858,7 +858,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.none)");
 
 
-          OPENFLUID_SetVariable(TU,"tests.typed.none",CurrIndex,NewLong);
+          OPENFLUID_SetVariable(TU,"tests.typed.none",NewLong);
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.typed.none",CurrIndex,openfluid::core::Value::INTEGER))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.none, INTEGER)");
@@ -869,13 +869,13 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value (tests.none)");
 
 
-          OPENFLUID_SetVariable(TU,"tests.typed.none",CurrIndex,openfluid::core::NullValue());
+          OPENFLUID_SetVariable(TU,"tests.typed.none",openfluid::core::NullValue());
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.typed.none",CurrIndex,openfluid::core::Value::NULLL))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.none, NULL)");
 
 
-          OPENFLUID_SetVariable(TU,"tests.typed.none",CurrIndex,NewBool);
+          OPENFLUID_SetVariable(TU,"tests.typed.none",NewBool);
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.typed.none",CurrIndex,openfluid::core::Value::BOOLEAN))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.none, BOOLEAN)");
@@ -886,7 +886,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect boolean value (tests.none)");
 
 
-          OPENFLUID_SetVariable(TU,"tests.typed.none",CurrIndex,NewString);
+          OPENFLUID_SetVariable(TU,"tests.typed.none",NewString);
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.typed.none",CurrIndex,openfluid::core::Value::STRING))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.none, STRING)");
@@ -897,7 +897,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect string value (tests.none)");
 
 
-          OPENFLUID_SetVariable(TU,"tests.typed.none",CurrIndex,NewVect);
+          OPENFLUID_SetVariable(TU,"tests.typed.none",NewVect);
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.typed.none",CurrIndex,openfluid::core::Value::VECTOR))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.none, VECTOR)");
@@ -910,7 +910,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector value at index 4 (tests.none)");
 
 
-          OPENFLUID_SetVariable(TU,"tests.typed.none",CurrIndex,NewMatrix);
+          OPENFLUID_SetVariable(TU,"tests.typed.none",NewMatrix);
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.typed.none",CurrIndex,openfluid::core::Value::MATRIX))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.none, MATRIX)");
@@ -923,7 +923,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix value at index 4,3 (tests.none)");
 
 
-          OPENFLUID_SetVariable(TU,"tests.typed.none",CurrIndex,NewMap);
+          OPENFLUID_SetVariable(TU,"tests.typed.none",NewMap);
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.typed.none",CurrIndex,openfluid::core::Value::MAP))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.none, MAP)");
