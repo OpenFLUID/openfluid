@@ -124,13 +124,22 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     void onURLComboChanged();
 
+    /**
+     @return MarketPackWidget of id package
+    */
     MarketPackWidget* getAvailPackWidget(const openfluid::ware::WareID_t& ID) const;
 
+    /**
+     @return true if id package passed as parameter has datasets selected which need it
+    */
     bool hasParentSelected(const openfluid::ware::WareID_t& ID,
-        const openfluid::market::PackageInfo::PackageType Type);
+        const openfluid::market::PackageInfo::PackageType& Type);
 
+    /**
+     @return choice of user to apply action of selected dataset to this dependencies
+    */
     bool getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
-        const std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> > PacksToSelect);
+        const std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >& PacksToSelect);
 
     void selectDependencies(const openfluid::ware::WareID_t& ID);
 
@@ -244,6 +253,9 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     virtual ~MarketClientAssistant();
 
+    /**
+     @return type name passed as parameter
+    */
     static std::string getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
 
 
