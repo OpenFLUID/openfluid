@@ -260,7 +260,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
       openfluid::fluidx::GeneratorDescriptor* GenDesc = (openfluid::fluidx::GeneratorDescriptor*)(*it);
 
       IInstance = new ModelItemInstance();
-      IInstance->SDKCompatible = true;
+      IInstance->Verified = true;
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::Generator;
 

@@ -183,17 +183,7 @@ void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
 
 bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID)
 {
-  std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
-      mp_DatastoreDesc->getItems();
-
-  for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it =
-      Items.begin(); it != Items.end(); ++it)
-  {
-    if ((*it)->getID() == ItemID)
-      return true;
-  }
-
-  return false;
+  return mp_DatastoreDesc->isItemIDAlreadyExist(ItemID);
 }
 
 // =====================================================================

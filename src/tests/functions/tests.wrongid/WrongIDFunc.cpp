@@ -47,9 +47,6 @@
 
 
 /**
-  \file CmakeFunc.cpp
-  \brief Implements ...
-
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
@@ -67,9 +64,9 @@ DECLARE_FUNCTION_PLUGIN
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.func.cmake")
+BEGIN_FUNCTION_SIGNATURE("tests.wrongidid")
 
-  DECLARE_SIGNATURE_NAME("test function built using the OpenFLUID cmake module");
+  DECLARE_SIGNATURE_NAME("test function for wrong id handling");
   DECLARE_SIGNATURE_DESCRIPTION("");
 
   DECLARE_SIGNATURE_VERSION("1.0");
@@ -81,19 +78,21 @@ BEGIN_FUNCTION_SIGNATURE("tests.func.cmake")
   DECLARE_SIGNATURE_METHOD("");
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
+
+  DECLARE_SCHEDULING_DEFAULT();
 END_FUNCTION_SIGNATURE
 
 /**
 
 */
-class CMakeFunction : public openfluid::ware::PluggableFunction
+class WrongIDFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
   public:
 
 
-  CMakeFunction() : PluggableFunction()
+  WrongIDFunction() : PluggableFunction()
   {
 
 
@@ -104,7 +103,7 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  ~CMakeFunction()
+  ~WrongIDFunction()
   {
 
 
@@ -116,7 +115,6 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
 
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
-
 
   // =====================================================================
   // =====================================================================
@@ -138,7 +136,6 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    std::cout << "\nCMake module built function" << std::endl;
 
     return DefaultDeltaT();
   }
@@ -168,5 +165,5 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(CMakeFunction)
+DEFINE_FUNCTION_CLASS(WrongIDFunction)
 

@@ -1076,7 +1076,6 @@ BOOST_AUTO_TEST_CASE(test_addUnit)
   mp_Dialog->getFromWidget()->addUnits(UnitsToAdd);
 
   mp_Dialog->createUnit();
-  mp_Domain->addUnit(mp_Dialog->getUnit());
 
   mp_Dialog->clearAllRelations();
   mp_Dialog->createAllRelations();

@@ -47,9 +47,6 @@
 
 
 /**
-  \file CmakeFunc.cpp
-  \brief Implements ...
-
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
@@ -67,33 +64,36 @@ DECLARE_FUNCTION_PLUGIN
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.func.cmake")
+BEGIN_FUNCTION_SIGNATURE("tests.wrongversion")
 
-  DECLARE_SIGNATURE_NAME("test function built using the OpenFLUID cmake module");
+  DECLARE_SIGNATURE_NAME("test function for wrong id handling");
   DECLARE_SIGNATURE_DESCRIPTION("");
 
   DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_SDKVERSION;
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  Signature->setABIVersion("0.0.0");
 
   DECLARE_SIGNATURE_DOMAIN("");
   DECLARE_SIGNATURE_PROCESS("");
   DECLARE_SIGNATURE_METHOD("");
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
+
+  DECLARE_SCHEDULING_DEFAULT();
+
 END_FUNCTION_SIGNATURE
 
 /**
 
 */
-class CMakeFunction : public openfluid::ware::PluggableFunction
+class WrongVersionFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
   public:
 
 
-  CMakeFunction() : PluggableFunction()
+  WrongVersionFunction() : PluggableFunction()
   {
 
 
@@ -104,7 +104,7 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
   // =====================================================================
 
 
-  ~CMakeFunction()
+  ~WrongVersionFunction()
   {
 
 
@@ -116,7 +116,6 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
 
 
   void initParams(const openfluid::ware::WareParams_t& /*Params*/) { }
-
 
   // =====================================================================
   // =====================================================================
@@ -138,7 +137,6 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    std::cout << "\nCMake module built function" << std::endl;
 
     return DefaultDeltaT();
   }
@@ -168,5 +166,15 @@ class CMakeFunction : public openfluid::ware::PluggableFunction
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(CMakeFunction)
+// below replaces DEFINE_FUNCTION_CLASS(WrongVersionFunction)
+
+std::string GetWareABIVersion()
+{
+  return std::string("0.0.0");
+}
+
+openfluid::ware::PluggableFunction* GetWareBody()
+{
+  return new WrongVersionFunction();
+}
 

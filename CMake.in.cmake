@@ -126,7 +126,7 @@ SET(CUSTOM_CMAKE_VERSION "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_
 SET(VERSION_MAJOR 2)
 SET(VERSION_MINOR 0)
 SET(VERSION_PATCH 0)
-SET(VERSION_STATUS "alpha2") # example: SET(VERSION_STATUS "rc1")
+SET(VERSION_STATUS "alpha3") # example: SET(VERSION_STATUS "rc1")
 
 SET(FULL_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
@@ -159,7 +159,7 @@ SET(OPENFLUID_ENABLE_LANDR 1)
 
 ################### applications build ###################
 
-SET(OPENFLUID_ENABLE_GUI 0)
+SET(OPENFLUID_ENABLE_GUI 1)
 
 # set this to 1 to build openfluid command line program
 SET(BUILD_APP_CMD 1)
@@ -168,7 +168,7 @@ SET(BUILD_APP_CMD 1)
 SET(BUILD_APP_MINIMAL 1)
 
 # set this to 1 to build openfluid-builder
-SET(BUILD_APP_BUILDER 0)
+SET(BUILD_APP_BUILDER 1)
 
 # set this to 1 to build openfluid-market-client
 SET(BUILD_APP_MARKETCLIENT 0)
