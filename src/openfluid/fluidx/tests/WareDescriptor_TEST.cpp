@@ -128,6 +128,8 @@ BOOST_AUTO_TEST_CASE(check_setParameters)
 
   //does nothing
   FuncDesc.setParameter("", "AVal");
+  BOOST_CHECK(!FuncDesc.hasParameter(""));
+
   Params = FuncDesc.getParametersAsMap();
 
   BOOST_CHECK_EQUAL(Params.size(), 6);
@@ -396,10 +398,10 @@ BOOST_AUTO_TEST_CASE(check_isInsertable)
   BOOST_CHECK(!FuncDesc.isInsertable("param1.level2B"));
   BOOST_CHECK(!FuncDesc.isInsertable("param1"));
   BOOST_CHECK(!FuncDesc.isInsertable("param3"));
-
   BOOST_CHECK(!FuncDesc.isInsertable("param1.level2A.level3A.new"));
-  BOOST_CHECK(!FuncDesc.isInsertable("param1.level2A.new"));
-  BOOST_CHECK(!FuncDesc.isInsertable("param1.new"));
+
+  BOOST_CHECK(FuncDesc.isInsertable("param1.level2A.new"));
+  BOOST_CHECK(FuncDesc.isInsertable("param1.new"));
   BOOST_CHECK(FuncDesc.isInsertable("new"));
   BOOST_CHECK(FuncDesc.isInsertable("new1.new2"));
 }

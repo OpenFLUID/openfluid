@@ -77,7 +77,8 @@ class BuilderModuleFactory
 
     BuilderModuleFactory(EngineProject& EngProject);
 
-    openfluid::guicommon::BuilderModule* createModelStructureModule();
+//    openfluid::guicommon::BuilderModule* createModelStructureModule();
+    openfluid::guicommon::BuilderModule* createModelModule();
 
     openfluid::guicommon::BuilderModule* createDomainStructureModule();
 

@@ -22,6 +22,7 @@ INCLUDE_DIRECTORIES(${RELDIR_BUILDERMAIN}
                     ${RELDIR_BUILDERMAIN}/common ${RELDIR_BUILDERMAIN}/model 
                     ${RELDIR_BUILDERMAIN}/domain ${RELDIR_BUILDERMAIN}/simulation 
                     ${RELDIR_BUILDERMAIN}/results ${RELDIR_BUILDERMAIN}/mapview
+                    ${RELDIR_BUILDERMAIN}/monitoring
                     "${PROJECT_BINARY_DIR}/src/tests")
 
 

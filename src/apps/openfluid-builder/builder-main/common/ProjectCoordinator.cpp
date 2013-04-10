@@ -182,17 +182,19 @@ void ProjectCoordinator::whenActivationChanged()
         Module = m_ModulesByPageNameMap[PageName];
       else
       {
+//        Module =
+//            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createModelStructureModule());
         Module =
-            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createModelStructureModule());
+                    static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createModelModule());
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenModelChanged));
 
         addModuleToWorkspace(PageName, *Module);
       }
-      if (m_ExplorerModel.getActivatedElement().second != "")
-        (static_cast<ModelStructureModule*>(Module))->setCurrentFunction(
-            m_ExplorerModel.getActivatedElement().second);
+//      if (m_ExplorerModel.getActivatedElement().second != "")
+//        (static_cast<ModelStructureModule*>(Module))->setCurrentFunction(
+//            m_ExplorerModel.getActivatedElement().second);
       break;
 
     case ProjectExplorerCategories::EXPLORER_DOMAIN:
@@ -477,7 +479,7 @@ void ProjectCoordinator::computeModelChanges()
 
 //  removeDeletedSetPages();
 
-  updateWorkspaceModules();
+//  updateWorkspaceModules();
 
   checkProject();
 
@@ -632,17 +634,17 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
 
   // to clear and re-create all FctParamsComponents with right function signatures,
   // and update AddFctDialog with available signatures
-  if (m_Workspace.existsPageName(m_ModelPageName))
-  {
-    (static_cast<ModelStructureModule*>(m_ModulesByPageNameMap[m_ModelPageName]))->updateWithFctParamsComponents();
-  }
-  else
-  {
-    ModelStructureModule * TempModelModule =
-        static_cast<ModelStructureModule*>(mp_ModuleFactory->createModelStructureModule());
-    TempModelModule->updateWithFctParamsComponents();
-    delete TempModelModule;
-  }
+//  if (m_Workspace.existsPageName(m_ModelPageName))
+//  {
+//    (static_cast<ModelStructureModule*>(m_ModulesByPageNameMap[m_ModelPageName]))->updateWithFctParamsComponents();
+//  }
+//  else
+//  {
+//    ModelStructureModule * TempModelModule =
+//        static_cast<ModelStructureModule*>(mp_ModuleFactory->createModelStructureModule());
+//    TempModelModule->updateWithFctParamsComponents();
+//    delete TempModelModule;
+//  }
 
   m_ExplorerModel.updateModelAsked();
 

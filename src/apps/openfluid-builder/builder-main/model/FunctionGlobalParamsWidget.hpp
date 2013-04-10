@@ -46,83 +46,113 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file FunctionGlobalParamsWidget.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
-
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#ifndef FUNCTIONGLOBALPARAMSWIDGET_HPP_
+#define FUNCTIONGLOBALPARAMSWIDGET_HPP_
 
 #include <gtkmm/box.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/button.h>
+#include <gtkmm/table.h>
+#include <gtkmm/combobox.h>
+#include <gtkmm/liststore.h>
+#include "BuilderTableRowWidget.hpp"
 
 namespace openfluid {
-namespace machine {
-class ObserverSignatureInstance;
+namespace fluidx {
+class AdvancedModelDescriptor;
 }
 }
 
-//class MonitoringComponent;
-class WareSetWidget;
-//class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-//class MonitoringEditParamsDialog;
-class ObserverAddParamDialog;
+// =====================================================================
+// =====================================================================
 
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class GlobalParamRow: public BuilderTableRowWidget
 {
   private:
 
-    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monit;
+    openfluid::fluidx::AdvancedModelDescriptor& m_ModelDesc;
 
-    Gtk::Box* mp_MainPanel;
+    std::string m_Name;
 
-    MonitoringAddObserverDialog* mp_AddDialog;
+    Gtk::Entry* mp_ValueEntry;
 
-    ObserverAddParamDialog* mp_AddParamDialog;
+    Gtk::Button* mp_RemoveButton;
 
-    void whenAddObserverAsked();
+    sigc::signal<void> m_signal_removeOccured;
+    sigc::signal<void> m_signal_valueChangeOccured;
 
-    void onMonitoringChanged();
+    void onRemoveButtonClicked();
 
-    std::map<std::string, std::string> extractInfos(
-        const openfluid::machine::ObserverSignatureInstance& Sign);
-
-    Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
-
-    sigc::signal<void> m_signal_MonitoringChanged;
-
-  protected:
-
-    WareSetWidget* mp_MonitoringWidget;
-
-//  protected:
-
-//    MonitoringComponent* mp_MonitoringMVP;
-
-//    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-//    MonitoringCoordinator* mp_Coordinator;
-
-    void whenRemoveObserverAsked(std::string ID);
+    void onValueChanged();
 
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    GlobalParamRow(openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
+                   std::string ParamName, std::string ParamValue,
+                   std::string ParamUnit);
 
-    ~MonitoringModule();
+    sigc::signal<void> signal_removeOccured();
+    sigc::signal<void> signal_valueChangeOccured();
+};
 
-    sigc::signal<void> signal_ModuleChanged();
+// =====================================================================
+// =====================================================================
 
-    void compose();
+class FunctionGlobalParamsWidget: public Gtk::VBox
+{
+  private:
 
-    Gtk::Widget* asWidget();
+    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+
+    Gtk::ComboBox* mp_Combo;
+
+    class ComboColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+
+        ComboColumns()
+        {
+          add(m_Name);
+          add(m_Unit);
+        }
+
+        Gtk::TreeModelColumn<std::string> m_Name;
+        Gtk::TreeModelColumn<std::string> m_Unit;
+    };
+    ComboColumns m_Columns;
+    Glib::RefPtr<Gtk::ListStore> mref_ComboModel;
+
+    Gtk::Button* mp_AddButton;
+
+    Gtk::Table* mp_Table;
+
+    unsigned int m_CurrentTableBottom;
+
+    sigc::signal<void> m_signal_changeOccured;
 
     void update();
 
+    void attachRow(GlobalParamRow* Row);
+
+    void onAddButtonClicked();
+
+    void onValueChangeOccured();
+    void onStructureChangeOccured();
+
+  public:
+
+    FunctionGlobalParamsWidget(
+        openfluid::fluidx::AdvancedModelDescriptor& ModelDesc);
+
+    ~FunctionGlobalParamsWidget();
+
+    sigc::signal<void> signal_changeOccured();
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+#endif /* FUNCTIONGLOBALPARAMSWIDGET_HPP_ */

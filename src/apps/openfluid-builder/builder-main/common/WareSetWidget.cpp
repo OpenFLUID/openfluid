@@ -46,143 +46,148 @@
  */
 
 /**
- \file ModelAvailFctView.cpp
+ \file WareSetWidget.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ModelAvailFctView.hpp"
+#include "WareSetWidget.hpp"
 
 #include <glibmm/i18n.h>
+#include <gtkmm/stock.h>
+#include <gtkmm/label.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/eventbox.h>
 
 // =====================================================================
 // =====================================================================
 
-
-void ModelAvailFctViewImpl::onTreeViewSelectionChanged()
+WareSetWidget::WareSetWidget(std::string AddText)
 {
-  signal_AvailFctSelectionChanged().emit();
+  mp_AddButton = Gtk::manage(new Gtk::Button());
+  mp_AddButton->set_image(
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_BUTTON)));
+  mp_AddButton->set_tooltip_text(AddText);
+  mp_AddButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &WareSetWidget::onAddButtonClicked));
+
+  mp_ExpandAllButton = Gtk::manage(new Gtk::Button(_("Expand all")));
+  mp_ExpandAllButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &WareSetWidget::onExpandAllButtonClicked));
+
+  mp_CollapseAllButton = Gtk::manage(new Gtk::Button(_("Collapse all")));
+  mp_CollapseAllButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &WareSetWidget::onCollapseAllButtonClicked));
+
+  Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
+  TopBox->pack_start(*mp_AddButton, Gtk::PACK_SHRINK);
+  TopBox->pack_end(*mp_CollapseAllButton, Gtk::PACK_SHRINK);
+  TopBox->pack_end(*mp_ExpandAllButton, Gtk::PACK_SHRINK);
+
+  mp_ListBox = Gtk::manage(new Gtk::VBox());
+
+  Gtk::ScrolledWindow* ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ModelWin->add(*mp_ListBox);
+  ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
+  pack_start(*TopBox, Gtk::PACK_SHRINK, 5);
+  pack_start(*ModelWin, Gtk::PACK_EXPAND_WIDGET, 0);
+
+  set_visible(true);
+  show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-ModelAvailFctViewImpl::ModelAvailFctViewImpl(ModelAvailFctColumns& Columns) :
-  m_Columns(Columns)
+WareSetWidget::~WareSetWidget()
 {
-  mp_TreeView = Gtk::manage(new Gtk::TreeView());
 
-  Gtk::TreeView::Column * idColumn = Gtk::manage(new Gtk::TreeView::Column(
-      _("Available functions")));
-
-  idColumn->pack_start(m_Columns.m_Status, false);
-  idColumn->pack_start(m_Columns.m_Id);
-
-  mp_TreeView->append_column(*idColumn);
-  mp_TreeView->append_column(_("Domain"), m_Columns.m_Domain);
-
-  mp_TreeView->get_selection()->signal_changed().connect(sigc::mem_fun(*this,
-      &ModelAvailFctViewImpl::onTreeViewSelectionChanged));
-
-  mp_TreeView->set_visible(true);
-
-  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_MainWin->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
-  mp_MainWin->set_visible(true);
-  mp_MainWin->add(*mp_TreeView);
-
-  mp_MainBox = Gtk::manage(new Gtk::VBox());
-  mp_MainBox->pack_start(*mp_MainWin);
-  mp_MainBox->set_visible(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-sigc::signal<void> ModelAvailFctViewImpl::signal_AvailFctSelectionChanged()
+void WareSetWidget::clearItems()
 {
-  return m_signal_AvailFctSelectionChanged;
+  m_ItemWidgets.clear();
+
+  int ItemsCount = mp_ListBox->children().size();
+
+  for (int i = 0; i < ItemsCount; i++)
+    mp_ListBox->remove(*mp_ListBox->children().begin()->get_widget());
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ModelAvailFctViewImpl::setTreeModel(Glib::RefPtr<Gtk::TreeModel> TreeModel)
+void WareSetWidget::addItem(WareItemWidget* Item, std::string ID)
 {
-  mp_TreeView->set_model(TreeModel);
-  mp_TreeView->expand_all();
-  mp_TreeView->set_search_column(m_Columns.m_Id);
-  mp_TreeView->get_column(0)->set_sort_column(m_Columns.m_Id);
-  mp_TreeView->get_column(1)->set_sort_column(m_Columns.m_Domain);
+  mp_ListBox->pack_start(*Item, Gtk::PACK_SHRINK, 0, 1);
 
-  for (unsigned int i = 0; i < mp_TreeView->get_columns().size(); i++)
-  {
-    mp_TreeView->get_column(i)->set_resizable();
-    mp_TreeView->get_column(i)->set_reorderable();
-  }
+  m_ItemWidgets[ID] = Item;
 }
 
 // =====================================================================
 // =====================================================================
 
-
-Gtk::TreeRow ModelAvailFctViewImpl::getSelectedRow()
+void WareSetWidget::onAddButtonClicked()
 {
-  return *(mp_TreeView->get_selection()->get_selected());
+  m_signal_AddAsked.emit();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-Gtk::Widget* ModelAvailFctViewImpl::asWidget()
+void WareSetWidget::onExpandAllButtonClicked()
 {
-  return mp_MainBox;
+  for (std::map<std::string, WareItemWidget*>::iterator it =
+      m_ItemWidgets.begin(); it != m_ItemWidgets.end(); ++it)
+    it->second->setExpanded(true);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-void ModelAvailFctViewImpl::select(Gtk::TreeRow Row)
+void WareSetWidget::onCollapseAllButtonClicked()
 {
-  if (Row)
-  {
-    mp_TreeView->get_selection()->select(Row);
-    signal_AvailFctSelectionChanged().emit();
-  }
+  for (std::map<std::string, WareItemWidget*>::iterator it =
+      m_ItemWidgets.begin(); it != m_ItemWidgets.end(); ++it)
+    it->second->setExpanded(false);
 }
 
 // =====================================================================
 // =====================================================================
 
-// =====================================================================
-// =====================================================================
-
-
-ModelAvailFctViewSub::ModelAvailFctViewSub(ModelAvailFctColumns& Columns) :
-  ModelAvailFctViewImpl(Columns)
+void WareSetWidget::storeExpanderStates()
 {
+  m_ExpanderStates.clear();
+
+  for (std::map<std::string, WareItemWidget*>::iterator it =
+      m_ItemWidgets.begin(); it != m_ItemWidgets.end(); ++it)
+    m_ExpanderStates[it->first] = it->second->getExpanded();
 }
 
 // =====================================================================
 // =====================================================================
 
-
-int ModelAvailFctViewSub::getPluggableBranchRowsNumber()
+void WareSetWidget::applyExpanderStates()
 {
-  return mp_TreeView->get_model()->children()[0]->children().size();
+  for (std::map<std::string, WareItemWidget*>::iterator it =
+      m_ItemWidgets.begin(); it != m_ItemWidgets.end(); ++it)
+    it->second->setExpanded(m_ExpanderStates[it->first]);
 }
 
 // =====================================================================
 // =====================================================================
 
-
-int ModelAvailFctViewSub::getGeneratorBranchRowsNumber()
+sigc::signal<void> WareSetWidget::signal_AddAsked()
 {
-  return mp_TreeView->get_model()->children()[1]->children().size();
+  return m_signal_AddAsked;
 }
+
+// =====================================================================
+// =====================================================================

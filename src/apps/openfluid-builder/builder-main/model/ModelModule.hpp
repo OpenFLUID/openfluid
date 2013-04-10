@@ -46,74 +46,55 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file ModelModule.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
+#ifndef MODELMODULE_HPP_
+#define MODELMODULE_HPP_
 
 #include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 #include <gtkmm/box.h>
 
-namespace openfluid {
-namespace machine {
-class ObserverSignatureInstance;
-}
-}
-
-//class MonitoringComponent;
 class WareSetWidget;
-//class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-//class MonitoringEditParamsDialog;
-class ObserverAddParamDialog;
+class ModelAddFunctionModule;
+class FunctionParamWidget;
 
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
 
-    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monit;
+    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
     Gtk::Box* mp_MainPanel;
 
-    MonitoringAddObserverDialog* mp_AddDialog;
+//    MonitoringAddObserverDialog* mp_AddDialog;
+    ModelAddFunctionModule* mp_AddModule;
 
-    ObserverAddParamDialog* mp_AddParamDialog;
+    void whenAddFunctionAsked();
 
-    void whenAddObserverAsked();
+    void updateGlobalParams();
 
-    void onMonitoringChanged();
+    void onModelChanged();
 
-    std::map<std::string, std::string> extractInfos(
-        const openfluid::machine::ObserverSignatureInstance& Sign);
-
-    Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
-
-    sigc::signal<void> m_signal_MonitoringChanged;
+    sigc::signal<void> m_signal_ModelChanged;
 
   protected:
 
-    WareSetWidget* mp_MonitoringWidget;
+    WareSetWidget* mp_ModelWidget;
 
-//  protected:
+    std::list<FunctionParamWidget*> m_ParamWidgets;
 
-//    MonitoringComponent* mp_MonitoringMVP;
-
-//    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-//    MonitoringCoordinator* mp_Coordinator;
-
-    void whenRemoveObserverAsked(std::string ID);
+    void whenRemoveFunctionAsked(std::string ID);
 
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    ModelModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
-    ~MonitoringModule();
+    ~ModelModule();
 
     sigc::signal<void> signal_ModuleChanged();
 
@@ -122,7 +103,6 @@ class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
     Gtk::Widget* asWidget();
 
     void update();
-
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+#endif /* MODELMODULE_HPP_ */

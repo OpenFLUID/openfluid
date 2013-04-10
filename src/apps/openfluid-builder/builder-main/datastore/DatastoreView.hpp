@@ -88,11 +88,15 @@ class DatastoreView
           add(m_Type);
           add(m_Class);
           add(m_Source);
+          add(m_Test);
+          add(m_True);
         }
         Gtk::TreeModelColumn<std::string> m_ID;
         Gtk::TreeModelColumn<std::string> m_Type;
         Gtk::TreeModelColumn<std::string> m_Class;
         Gtk::TreeModelColumn<std::string> m_Source;
+        Gtk::TreeModelColumn<bool> m_Test;
+        Gtk::TreeModelColumn<bool> m_True;
     };
 
     DSColumns m_Columns;

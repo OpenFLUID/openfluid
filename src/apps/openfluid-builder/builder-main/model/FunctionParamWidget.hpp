@@ -46,83 +46,96 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file FunctionParamWidget
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
-
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#ifndef FUNCTIONPARAMWIDGET_HPP_
+#define FUNCTIONPARAMWIDGET_HPP_
 
 #include <gtkmm/box.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/table.h>
+#include "BuilderTableRowWidget.hpp"
 
 namespace openfluid {
+namespace fluidx {
+class ModelItemDescriptor;
+}
 namespace machine {
-class ObserverSignatureInstance;
+class ModelItemSignatureInstance;
 }
 }
 
-//class MonitoringComponent;
-class WareSetWidget;
-//class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-//class MonitoringEditParamsDialog;
-class ObserverAddParamDialog;
+// =====================================================================
+// =====================================================================
 
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class FunctionParamRow: public BuilderTableRowWidget
 {
   private:
 
-    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monit;
+    openfluid::fluidx::ModelItemDescriptor& m_FctDesc;
+    std::string m_Name;
 
-    Gtk::Box* mp_MainPanel;
+    Gtk::Entry* mp_ValueEntry;
 
-    MonitoringAddObserverDialog* mp_AddDialog;
+    Gtk::Label* mp_GlobalLabel;
 
-    ObserverAddParamDialog* mp_AddParamDialog;
+    sigc::signal<void> m_signal_removeOccured;
+    sigc::signal<void> m_signal_valueChangeOccured;
 
-    void whenAddObserverAsked();
+    void onRemoveButtonClicked();
 
-    void onMonitoringChanged();
-
-    std::map<std::string, std::string> extractInfos(
-        const openfluid::machine::ObserverSignatureInstance& Sign);
-
-    Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
-
-    sigc::signal<void> m_signal_MonitoringChanged;
-
-  protected:
-
-    WareSetWidget* mp_MonitoringWidget;
-
-//  protected:
-
-//    MonitoringComponent* mp_MonitoringMVP;
-
-//    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-//    MonitoringCoordinator* mp_Coordinator;
-
-    void whenRemoveObserverAsked(std::string ID);
+    void onValueChanged();
 
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    FunctionParamRow(openfluid::fluidx::ModelItemDescriptor& FctDesc,
+                     std::string ParamName, std::string ParamValue,
+                     std::string ParamUnit);
 
-    ~MonitoringModule();
+    void setGlobalValue(std::string GlobalValue);
 
-    sigc::signal<void> signal_ModuleChanged();
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-    void update();
-
+    sigc::signal<void> signal_removeOccured();
+    sigc::signal<void> signal_valueChangeOccured();
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+// =====================================================================
+// =====================================================================
+
+class FunctionParamWidget: public Gtk::VBox
+{
+  private:
+
+    openfluid::fluidx::ModelItemDescriptor& m_FctDesc;
+    openfluid::machine::ModelItemSignatureInstance* mp_Sign;
+
+    Gtk::Table* mp_Table;
+
+    unsigned int m_CurrentTableBottom;
+
+    std::map<std::string, FunctionParamRow*> m_Rows;
+
+    sigc::signal<void> m_signal_changeOccured;
+
+    void updateRows();
+    void attachRow(FunctionParamRow* Row, std::string ParamName);
+
+    void onValueChangeOccured();
+    void onStructureChangeOccured();
+
+  public:
+
+    FunctionParamWidget(openfluid::fluidx::ModelItemDescriptor& FctDesc,
+                        openfluid::machine::ModelItemSignatureInstance* Sign);
+
+    ~FunctionParamWidget();
+
+    void updateGlobals(const std::map<std::string, std::string>& GlobalParams);
+
+    sigc::signal<void> signal_changeOccured();
+};
+
+#endif /* FUNCTIONPARAMWIDGET_HPP_ */

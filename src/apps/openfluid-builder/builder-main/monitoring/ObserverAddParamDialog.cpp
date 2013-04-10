@@ -46,53 +46,63 @@
  */
 
 /**
- \file MonitoringAddObserverDialog.cpp
+ \file ObserverAddParamDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "MonitoringAddObserverDialog.hpp"
+#include "ObserverAddParamDialog.hpp"
 
 #include <glibmm/i18n.h>
+#include <gtkmm/label.h>
+#include <gtkmm/table.h>
 #include <gtkmm/stock.h>
 #include <openfluid/machine/ObserverInstance.hpp>
-#include "WaresHelper.hpp"
+#include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
-MonitoringAddObserverDialog::MonitoringAddObserverDialog(
-    openfluid::fluidx::AdvancedMonitoringDescriptor& Monit) :
-    m_Monit(Monit)
+ObserverAddParamDialog::ObserverAddParamDialog()
 {
-  Gtk::Label* InfoBarLabel = Gtk::manage(
-      new Gtk::Label(_("No observer available")));
+  mp_Dialog = new Gtk::Dialog(_("Add of observer parameter"));
+  mp_Dialog->set_default_size(10, 10);
+
+  mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
 
   mp_InfoBar = Gtk::manage(new Gtk::InfoBar());
   mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
-  ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*InfoBarLabel);
+  ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
 
-  mref_ListStore = Gtk::ListStore::create(m_Columns);
+  Gtk::Label* NameLabel = Gtk::manage(
+      new Gtk::Label(_("Parameter name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* ValueLabel = Gtk::manage(
+      new Gtk::Label(_("Parameter value:"), Gtk::ALIGN_LEFT,
+                     Gtk::ALIGN_CENTER));
 
-  mp_TreeView = Gtk::manage(new Gtk::TreeView());
-  mp_TreeView->append_column(_("Observer ID"), m_Columns.m_Id);
-  mp_TreeView->append_column(_("Observer short description"), m_Columns.m_Name);
-  mp_TreeView->set_model(mref_ListStore);
-  mp_TreeView->get_selection()->set_mode(Gtk::SELECTION_MULTIPLE);
+  mp_NameEntry = Gtk::manage(new Gtk::Entry());
+  mp_NameEntry->signal_changed().connect(
+      sigc::mem_fun(*this, &ObserverAddParamDialog::onChanged));
+  mp_NameEntry->set_activates_default(true);
 
-  Gtk::ScrolledWindow* ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
-  ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  ModelWin->add(*mp_TreeView);
-  ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+  mp_ValueEntry = Gtk::manage(new Gtk::Entry());
+  mp_ValueEntry->set_activates_default(true);
 
-  mp_Dialog = new Gtk::Dialog(_("Add of observers"));
-  mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK);
-  mp_Dialog->get_vbox()->pack_start(*ModelWin);
-  mp_Dialog->set_default_size(700, 200);
+  Gtk::Table* Table = Gtk::manage(new Gtk::Table());
+  Table->set_col_spacings(3);
+  Table->attach(*NameLabel, 0, 1, 0, 1, Gtk::SHRINK | Gtk::FILL);
+  Table->attach(*mp_NameEntry, 1, 2, 0, 1);
+  Table->attach(*ValueLabel, 0, 1, 1, 2, Gtk::SHRINK | Gtk::FILL);
+  Table->attach(*mp_ValueEntry, 1, 2, 1, 2);
+
+  mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK, 5);
+  mp_Dialog->get_vbox()->pack_start(*Table, Gtk::PACK_SHRINK, 5);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+
+  mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
 
   mp_Dialog->show_all_children();
 }
@@ -100,72 +110,67 @@ MonitoringAddObserverDialog::MonitoringAddObserverDialog(
 // =====================================================================
 // =====================================================================
 
-MonitoringAddObserverDialog::~MonitoringAddObserverDialog()
+ObserverAddParamDialog::~ObserverAddParamDialog()
 {
-
 }
 
 // =====================================================================
 // =====================================================================
 
-bool MonitoringAddObserverDialog::show()
+void ObserverAddParamDialog::onChanged()
 {
-  init();
+  std::string Name = mp_NameEntry->get_text();
 
-  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
+  bool IsValid = false;
+
+  if (EngineHelper::isEmptyString(Name))
   {
-    mp_TreeView->get_selection()->selected_foreach_iter(
-        sigc::mem_fun(*this,
-                      &MonitoringAddObserverDialog::selected_row_callback));
+    mp_InfoBarLabel->set_text(_("Parameter name can not be empty"));
   }
-
-  mp_Dialog->hide();
-
-  return mp_TreeView->get_selection()->count_selected_rows();
-}
-
-// =====================================================================
-// =====================================================================
-
-void MonitoringAddObserverDialog::init()
-{
-  mref_ListStore->clear();
-
-  std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
-      WaresHelper::getUnusedAvailableObserverSignatures(m_Monit);
-
-  if (Unused.empty())
+  else if (mp_Obs->hasParameter(Name))
   {
-    mp_InfoBar->set_visible(true);
-    mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, false);
-    mp_Dialog->set_default_response(Gtk::RESPONSE_CANCEL);
+    mp_InfoBarLabel->set_text(_("Parameter name already exists"));
+  }
+  else if (!mp_Obs->isInsertable(Name))
+  {
+    mp_InfoBarLabel->set_text(_("Parameter name doesn't respect xml rules"));
   }
   else
   {
-    mp_InfoBar->set_visible(false);
-    mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, true);
-    mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
-
-    for (unsigned int i = 0; i < Unused.size(); i++)
-    {
-      Gtk::TreeRow Row = *(mref_ListStore->append());
-      Row[m_Columns.m_Id] = Unused[i]->Signature->ID;
-      Row[m_Columns.m_Name] = Unused[i]->Signature->Name;
-    }
-
-    mp_TreeView->get_selection()->select(mref_ListStore->children().begin());
+    IsValid = true;
   }
 
+  mp_InfoBar->set_visible(!IsValid);
+  mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, IsValid);
+  mp_Dialog->resize(10, 10);
 }
 
 // =====================================================================
 // =====================================================================
 
-void MonitoringAddObserverDialog::selected_row_callback(
-    const Gtk::TreeModel::iterator& Iter)
+bool ObserverAddParamDialog::show(openfluid::fluidx::ObserverDescriptor* Obs)
 {
-  Gtk::TreeModel::Row Row = *Iter;
-  m_Monit.addToObserverList(Row[m_Columns.m_Id]);
+  if (!Obs)
+  {
+    mp_Dialog->hide();
+    return false;
+  }
+
+  mp_Obs = Obs;
+
+  mp_NameEntry->set_text("");
+  onChanged();
+
+  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
+  {
+    mp_Obs->setParameter(mp_NameEntry->get_text(), mp_ValueEntry->get_text());
+
+    mp_Dialog->hide();
+    return true;
+  }
+
+  mp_Dialog->hide();
+  return false;
 }
 
 // =====================================================================

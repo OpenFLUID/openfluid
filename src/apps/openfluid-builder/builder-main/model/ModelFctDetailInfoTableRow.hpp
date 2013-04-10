@@ -79,7 +79,8 @@ class ModelFctDetailInfoTableRow: public BuilderTableRowWidget
 
       mp_Value = Gtk::manage(new Gtk::Label(ValueText, Gtk::ALIGN_LEFT,
           Gtk::ALIGN_TOP));
-      mp_Value->set_line_wrap(true);
+//      mp_Value->set_line_wrap(true);
+      mp_Value->set_selectable(true);
       m_RowWidgets.push_back(mp_Value);
 
       if (WithBottomSeparator)

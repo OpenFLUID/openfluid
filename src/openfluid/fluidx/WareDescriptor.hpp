@@ -123,9 +123,9 @@ class WareDescriptor
     bool hasParameter(std::string ParameterKey);
 
     /**
-     * Return true if the parameter with ParameterKey can be inserted, ie :
-     * - doesn't already exist and has no parent with a value
-     * - or exists but has no direct children
+     * Return true if the insertion of the parameter with ParameterKey will respects xml rules, ie :
+     * - it exists *and* has no child (is empty)
+     * - or it doesn't already exist *and* his parent, if has one, has at least a child (parent is not empty)
      * Return false otherwise
      */
     bool isInsertable(std::string ParameterKey);

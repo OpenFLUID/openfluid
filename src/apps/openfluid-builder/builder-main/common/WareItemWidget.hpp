@@ -46,83 +46,60 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file WareItemWidget.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
+#ifndef WAREITEMWIDGET_HPP_
+#define WAREITEMWIDGET_HPP_
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#include <sigc++/sigc++.h>
+#include <gtkmm/frame.h>
+#include <gtkmm/label.h>
+#include <gtkmm/button.h>
+#include <gtkmm/expander.h>
 
-#include <gtkmm/box.h>
-
-namespace openfluid {
-namespace machine {
-class ObserverSignatureInstance;
-}
-}
-
-//class MonitoringComponent;
-class WareSetWidget;
-//class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-//class MonitoringEditParamsDialog;
-class ObserverAddParamDialog;
-
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class WareItemWidget: public Gtk::Frame
 {
   private:
 
-    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monit;
+    Gtk::Button* mp_UpBt;
+    Gtk::Button* mp_DownBt;
 
-    Gtk::Box* mp_MainPanel;
-
-    MonitoringAddObserverDialog* mp_AddDialog;
-
-    ObserverAddParamDialog* mp_AddParamDialog;
-
-    void whenAddObserverAsked();
-
-    void onMonitoringChanged();
-
-    std::map<std::string, std::string> extractInfos(
-        const openfluid::machine::ObserverSignatureInstance& Sign);
-
-    Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
-
-    sigc::signal<void> m_signal_MonitoringChanged;
+    sigc::signal<void, std::string> m_signal_RemoveAsked;
+    sigc::signal<void, std::string> m_signal_UpAsked;
+    sigc::signal<void, std::string> m_signal_DownAsked;
 
   protected:
 
-    WareSetWidget* mp_MonitoringWidget;
+    Gtk::Label* mp_IDLabel;
+    Gtk::Label* mp_DescriptionLabel;
 
-//  protected:
+    Gtk::Expander* mp_Expander;
 
-//    MonitoringComponent* mp_MonitoringMVP;
-
-//    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-//    MonitoringCoordinator* mp_Coordinator;
-
-    void whenRemoveObserverAsked(std::string ID);
+    void onRemoveButtonClicked(std::string ID);
+    void onUpButtonClicked(std::string ID);
+    void onDownButtonClicked(std::string ID);
 
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
+                   Gtk::Widget& InfoWidget, std::string Description = "");
 
-    ~MonitoringModule();
+    ~WareItemWidget();
 
-    sigc::signal<void> signal_ModuleChanged();
+    void setUpButtonSensitive(bool Sensitive = true);
+    void setDownButtonSensitive(bool Sensitive = true);
 
-    void compose();
+    bool getExpanded();
+    void setExpanded(bool Expanded = true);
 
-    Gtk::Widget* asWidget();
-
-    void update();
+    sigc::signal<void, std::string> signal_RemoveAsked();
+    sigc::signal<void, std::string> signal_UpAsked();
+    sigc::signal<void, std::string> signal_DownAsked();
 
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+#endif /* WAREITEMWIDGET_HPP_ */

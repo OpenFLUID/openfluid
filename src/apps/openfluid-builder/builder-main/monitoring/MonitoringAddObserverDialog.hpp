@@ -91,8 +91,6 @@ class MonitoringAddObserverDialog
 
     Gtk::TreeView* mp_TreeView;
 
-    std::set<std::string> m_SelectedIDs;
-
     void init();
 
     void selected_row_callback(const Gtk::TreeModel::iterator& Iter);
@@ -103,7 +101,7 @@ class MonitoringAddObserverDialog
 
     ~MonitoringAddObserverDialog();
 
-    std::set<std::string> show();
+    bool show();
 };
 
 #endif /* MONITORINGADDOBSERVERDIALOG_HPP_ */

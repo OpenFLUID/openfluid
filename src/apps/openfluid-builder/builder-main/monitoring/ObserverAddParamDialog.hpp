@@ -46,83 +46,44 @@
  */
 
 /**
- \file MonitoringModule.hpp
+ \file ObserverAddParamDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MONITORINGMODULE_HPP_
-#define MONITORINGMODULE_HPP_
+#ifndef OBSERVERADDPARAMDIALOG_HPP_
+#define OBSERVERADDPARAMDIALOG_HPP_
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#include <gtkmm/dialog.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/entry.h>
+#include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
-#include <gtkmm/box.h>
-
-namespace openfluid {
-namespace machine {
-class ObserverSignatureInstance;
-}
-}
-
-//class MonitoringComponent;
-class WareSetWidget;
-//class MonitoringCoordinator;
-class MonitoringAddObserverDialog;
-//class MonitoringEditParamsDialog;
-class ObserverAddParamDialog;
-
-class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
+class ObserverAddParamDialog
 {
   private:
 
-    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monit;
+    Gtk::Dialog* mp_Dialog;
 
-    Gtk::Box* mp_MainPanel;
+    Gtk::Entry* mp_NameEntry;
 
-    MonitoringAddObserverDialog* mp_AddDialog;
+    Gtk::Entry* mp_ValueEntry;
 
-    ObserverAddParamDialog* mp_AddParamDialog;
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
 
-    void whenAddObserverAsked();
+    openfluid::fluidx::ObserverDescriptor* mp_Obs;
 
-    void onMonitoringChanged();
-
-    std::map<std::string, std::string> extractInfos(
-        const openfluid::machine::ObserverSignatureInstance& Sign);
-
-    Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
-
-    sigc::signal<void> m_signal_MonitoringChanged;
-
-  protected:
-
-    WareSetWidget* mp_MonitoringWidget;
-
-//  protected:
-
-//    MonitoringComponent* mp_MonitoringMVP;
-
-//    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-//    MonitoringCoordinator* mp_Coordinator;
-
-    void whenRemoveObserverAsked(std::string ID);
+    void onChanged();
 
   public:
 
-    MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    ObserverAddParamDialog();
 
-    ~MonitoringModule();
+    ~ObserverAddParamDialog();
 
-    sigc::signal<void> signal_ModuleChanged();
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-    void update();
-
+    bool show(openfluid::fluidx::ObserverDescriptor* Obs);
 };
 
-#endif /* MONITORINGMODULE_HPP_ */
+#endif /* OBSERVERADDPARAMDIALOG_HPP_ */

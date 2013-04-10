@@ -193,25 +193,21 @@ bool WareDescriptor::isInsertable(std::string ParameterKey)
 {
   try
   {
+    // ParameterKey exists - return true if has not direct child
     return m_Params.get_child(ParameterKey).empty();
   }
   // ParameterKey doesn't exist
   catch (boost::property_tree::ptree_bad_path& e)
   {
     std::string::size_type Found = ParameterKey.find_last_of(".");
-    // No parent
+    // Key is root
     if (Found == std::string::npos)
       return true;
     std::string ParentPath = ParameterKey.substr(0, Found);
     try
     {
-      m_Params.get_child(ParentPath);
-      return false;
-    }
-    // Parent has no data
-    catch (boost::property_tree::ptree_bad_data& e)
-    {
-      return true;
+      // Parent exists - return true if has direct children
+      return !m_Params.get_child(ParentPath).empty();
     }
     // Parent doesn't exist
     catch (boost::property_tree::ptree_bad_path& e)

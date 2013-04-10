@@ -105,13 +105,13 @@ void ModelAddFunctionModule::compose()
   mp_MainPanel = Gtk::manage(new Gtk::HPaned());
 
   mp_MainPanel->set_border_width(5);
-  mp_MainPanel->pack1(*mp_ModelAvailFctMVP->asWidget(), Gtk::EXPAND);
-  mp_MainPanel->pack2(*mp_ModelFctDetailMVP->asWidget(), false, false);
+  mp_MainPanel->pack1(*mp_ModelAvailFctMVP->asWidget(), true, true);
+  mp_MainPanel->pack2(*mp_ModelFctDetailMVP->asWidget(), true, true);
   mp_MainPanel->set_visible(true);
 
   mp_Dialog = new Gtk::Dialog();
   mp_Dialog->set_modal(true);
-  mp_Dialog->set_size_request(800, 500);
+  mp_Dialog->set_size_request(1000, 500);
   mp_Dialog->get_vbox()->add(*mp_MainPanel);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);

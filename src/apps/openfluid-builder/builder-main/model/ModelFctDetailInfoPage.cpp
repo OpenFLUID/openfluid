@@ -159,10 +159,10 @@ ModelFctDetailInfoPage::ModelFctDetailInfoPage() :
 
   mp_InfoTable->set_visible(true);
 
-  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  mp_MainWin->set_visible(true);
-  mp_MainWin->add(*mp_InfoTable);
+//  mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
+//  mp_MainWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+//  mp_MainWin->set_visible(true);
+//  mp_MainWin->add(*mp_InfoTable);
 }
 
 // =====================================================================
@@ -190,7 +190,8 @@ void ModelFctDetailInfoPage::setInfos(std::map<std::string, std::string> Infos)
 
 Gtk::Widget* ModelFctDetailInfoPage::asWidget()
 {
-  return mp_MainWin;
+//  return mp_MainWin;
+  return mp_InfoTable;
 }
 
 // =====================================================================
