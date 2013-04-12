@@ -552,21 +552,18 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
       {
         // For each dependence
         openfluid::ware::WareID_t DependenceID = *DLit;
-        APLiter = mp_AvailPacksWidgets[DMit->first].begin();
-
-        while (APLiter != mp_AvailPacksWidgets[DMit->first].end() && (*APLiter)->getID() != DependenceID)
-          ++APLiter;
+        MarketPackWidget *DependencePack = getAvailPackWidget(DependenceID);
 
         // dependence pack widget found ?
-        if (APLiter != mp_AvailPacksWidgets[DMit->first].end())
+        if (DependencePack != 0)
         {
-          if ((*APLiter)->isInstall() != MPW->isInstall())
+          if (DependencePack->isInstall() != MPW->isInstall())
           {
             // if select or if unselect + no parent selected
             if (MPW->isInstall() ||
-                (!MPW->isInstall() && !hasParentSelected((*APLiter)->getID(), DMit->first)))
+                (!MPW->isInstall() && !hasParentSelected(DependencePack->getID(), DMit->first)))
             {
-              PacksToSelect[DMit->first].push_back(*APLiter);
+              PacksToSelect[DMit->first].push_back(DependencePack);
             }
           }
         }
