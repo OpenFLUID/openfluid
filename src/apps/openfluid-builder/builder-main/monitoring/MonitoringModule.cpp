@@ -58,8 +58,6 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
-//#include "MonitoringComponent.hpp"
-//#include "MonitoringCoordinator.hpp"
 #include "MonitoringAddObserverDialog.hpp"
 #include "WareSetWidget.hpp"
 #include "ObserverParamWidget.hpp"
@@ -75,27 +73,16 @@ MonitoringModule::MonitoringModule(
 {
   mp_MainPanel = 0;
 
-//  mp_MonitoringMVP = new MonitoringComponent(AdvancedDesc.getMonitoring());
   mp_MonitoringWidget = Gtk::manage(new WareSetWidget("Add observer"));
 
   mp_AddDialog = new MonitoringAddObserverDialog(m_Monit);
 
   mp_AddParamDialog = new ObserverAddParamDialog();
 
-//  mp_ParamsDialog = new MonitoringEditParamsDialog(AdvancedDesc.getMonitoring());
-
-//  mp_Coordinator = new MonitoringCoordinator(*mp_MonitoringMVP->getModel(),
-//                                             *mp_AddDialog, *mp_ParamsDialog);
-
-//  mp_Coordinator->signal_MonitoringChanged().connect(
-//      sigc::mem_fun(*this, &MonitoringModule::whenMonitoringChanged));
-
   mp_MonitoringWidget->signal_AddAsked().connect(
       sigc::mem_fun(*this, &MonitoringModule::whenAddObserverAsked));
 
   update();
-
-//  mp_Coordinator->update();
 }
 
 // =====================================================================
@@ -103,9 +90,7 @@ MonitoringModule::MonitoringModule(
 
 MonitoringModule::~MonitoringModule()
 {
-//  delete mp_MonitoringMVP;
   delete mp_AddDialog;
-//  delete mp_Coordinator;
 }
 
 // =====================================================================
@@ -116,7 +101,6 @@ void MonitoringModule::compose()
   mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
   mp_MainPanel->set_border_width(5);
-//  mp_MainPanel->pack_start(*mp_MonitoringMVP->asWidget());
   mp_MainPanel->pack_start(*mp_MonitoringWidget);
 
   mp_MainPanel->set_visible(true);
@@ -168,7 +152,6 @@ sigc::signal<void> MonitoringModule::signal_ModuleChanged()
 
 void MonitoringModule::update()
 {
-//  mp_Coordinator->update();
   mp_MonitoringWidget->storeExpanderStates();
 
   mp_MonitoringWidget->clearItems();

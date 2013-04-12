@@ -97,7 +97,8 @@ class MonitoringAddObserverDialog
 
   public:
 
-    MonitoringAddObserverDialog(openfluid::fluidx::AdvancedMonitoringDescriptor& Monit);
+    MonitoringAddObserverDialog(
+        openfluid::fluidx::AdvancedMonitoringDescriptor& Monit);
 
     ~MonitoringAddObserverDialog();
 

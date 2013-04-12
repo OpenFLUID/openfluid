@@ -65,11 +65,8 @@ class ObserverSignatureInstance;
 }
 }
 
-//class MonitoringComponent;
 class WareSetWidget;
-//class MonitoringCoordinator;
 class MonitoringAddObserverDialog;
-//class MonitoringEditParamsDialog;
 class ObserverAddParamDialog;
 
 class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
@@ -98,14 +95,6 @@ class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
   protected:
 
     WareSetWidget* mp_MonitoringWidget;
-
-//  protected:
-
-//    MonitoringComponent* mp_MonitoringMVP;
-
-//    MonitoringEditParamsDialog* mp_ParamsDialog;
-
-//    MonitoringCoordinator* mp_Coordinator;
 
     void whenRemoveObserverAsked(std::string ID);
 
