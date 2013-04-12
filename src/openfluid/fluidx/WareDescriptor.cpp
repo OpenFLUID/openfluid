@@ -128,6 +128,14 @@ bool WareDescriptor::isType(WareType MIType) const
 // =====================================================================
 // =====================================================================
 
+WareDescriptor::ModelItemType WareDescriptor::getType() const
+{
+  return m_ModelItemType;
+}
+
+// =====================================================================
+// =====================================================================
+
 void WareDescriptor::eraseParameter(const openfluid::ware::WareParamKey_t& Key)
 {
   boost::property_tree::path Path(Key);

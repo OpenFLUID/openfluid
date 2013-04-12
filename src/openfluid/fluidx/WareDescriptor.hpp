@@ -107,6 +107,8 @@ class WareDescriptor
 
     bool isType(WareType MIType) const;
 
+    ModelItemType getType() const;
+
     /**
      * Does nothing if Key is empty or if key doesn't exist
      */

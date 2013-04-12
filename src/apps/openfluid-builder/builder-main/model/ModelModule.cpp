@@ -282,7 +282,8 @@ void ModelModule::update()
     ItemInfo->getModel()->setFctToDisplay(Sign);
 
     WareItemWidget* ItemWidget = Gtk::manage(
-        new WareItemWidget(ID, *ItemParamWidget, *ItemInfo->asWidget(), Name));
+        new WareItemWidget(ID, *ItemParamWidget, *ItemInfo->asWidget(), Name,
+                           (*it)->getType()));
     ItemWidget->signal_RemoveAsked().connect(
         sigc::mem_fun(*this, &ModelModule::whenRemoveFunctionAsked));
     ItemWidget->signal_UpAsked().connect(

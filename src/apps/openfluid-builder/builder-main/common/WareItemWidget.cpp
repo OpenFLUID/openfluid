@@ -65,8 +65,10 @@
 // =====================================================================
 // =====================================================================
 
-WareItemWidget::WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
-                               Gtk::Widget& InfoWidget, std::string Description)
+WareItemWidget::WareItemWidget(
+    std::string ID, Gtk::Widget& ParamWidget, Gtk::Widget& InfoWidget,
+    std::string Description,
+    openfluid::fluidx::WareDescriptor::ModelItemType Type)
 {
   mp_IDLabel = Gtk::manage(new Gtk::Label());
   mp_IDLabel->set_justify(Gtk::JUSTIFY_LEFT);
@@ -100,9 +102,13 @@ WareItemWidget::WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
       sigc::bind<std::string>(
           sigc::mem_fun(*this, &WareItemWidget::onDownButtonClicked), ID));
 
+  // to apply the default background color
+  Gtk::EventBox* ParamEventBox = Gtk::manage(new Gtk::EventBox());
+  ParamEventBox->add(ParamWidget);
+
   Gtk::Frame* ParamFrame = Gtk::manage(new Gtk::Frame());
   ParamFrame->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
-  ParamFrame->add(ParamWidget);
+  ParamFrame->add(*ParamEventBox);
   Gtk::HPaned* ExpanderBox = Gtk::manage(new Gtk::HPaned());
   ExpanderBox->pack1(*ParamFrame, true, true);
   ExpanderBox->pack2(InfoWidget, true, true);
@@ -132,10 +138,26 @@ WareItemWidget::WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
   MainBox->pack_end(*ButtonBoxBox, Gtk::PACK_SHRINK);
   MainBox->set_border_width(10);
 
-  // for background color
+  // for main background color
   Gtk::EventBox* MainEventBox = Gtk::manage(new Gtk::EventBox());
   MainEventBox->add(*MainBox);
-  MainEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#FFFFFF"));
+  switch (Type)
+  {
+    case openfluid::fluidx::WareDescriptor::PluggedFunction:
+      MainEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#ecf9b5"));
+      break;
+    case openfluid::fluidx::WareDescriptor::Generator:
+      MainEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#fdfede"));
+      break;
+
+    case openfluid::fluidx::WareDescriptor::PluggedObserver:
+      MainEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#e9f7fe"));
+      break;
+    case openfluid::fluidx::WareDescriptor::NoModelItemType:
+    default:
+      MainEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#FFFFFF"));
+      break;
+  }
 
   set_shadow_type(Gtk::SHADOW_ETCHED_IN);
   set_border_width(5);

@@ -183,7 +183,8 @@ void MonitoringModule::update()
     ItemInfo->append_page(*ItemInfoPage->asWidget(), _("Information"));
 
     WareItemWidget* ItemWidget = Gtk::manage(
-        new WareItemWidget(ID, *ItemParamWidget, *ItemInfo, Name));
+        new WareItemWidget(ID, *ItemParamWidget, *ItemInfo, Name,
+                           (*it)->getType()));
     ItemWidget->signal_RemoveAsked().connect(
         sigc::mem_fun(*this, &MonitoringModule::whenRemoveObserverAsked));
 

@@ -60,6 +60,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/button.h>
 #include <gtkmm/expander.h>
+#include <openfluid/fluidx/WareDescriptor.hpp>
 
 class WareItemWidget: public Gtk::Frame
 {
@@ -86,7 +87,9 @@ class WareItemWidget: public Gtk::Frame
   public:
 
     WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
-                   Gtk::Widget& InfoWidget, std::string Description = "");
+                   Gtk::Widget& InfoWidget, std::string Description = "",
+                   openfluid::fluidx::WareDescriptor::ModelItemType Type =
+                       openfluid::fluidx::WareDescriptor::NoModelItemType);
 
     ~WareItemWidget();
 
