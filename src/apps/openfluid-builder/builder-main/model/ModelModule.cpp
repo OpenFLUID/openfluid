@@ -173,7 +173,48 @@ void ModelModule::whenAddFunctionAsked()
 
 void ModelModule::whenRemoveFunctionAsked(std::string ID)
 {
-  m_Model.removeItem(m_Model.getFirstItemIndex(ID));
+  int Position = m_Model.getFirstItemIndex(ID);
+
+  if (Position < 0)
+    return;
+
+  m_Model.removeItem(Position);
+  update();
+  onModelChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ModelModule::whenUpAsked(std::string ID)
+{
+  int Position = m_Model.getFirstItemIndex(ID);
+
+  if (Position < 0)
+    return;
+
+  int From = Position;
+  int To = (From == 0) ? m_Model.getItemsCount() - 1 : From - 1;
+
+  m_Model.moveItem(From, To);
+  update();
+  onModelChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
+void ModelModule::whenDownAsked(std::string ID)
+{
+  int Position = m_Model.getFirstItemIndex(ID);
+
+  if (Position < 0)
+    return;
+
+  int From = Position;
+  int To = (From == m_Model.getItemsCount() - 1) ? 0 : From + 1;
+
+  m_Model.moveItem(From, To);
   update();
   onModelChanged();
 }
@@ -244,6 +285,10 @@ void ModelModule::update()
         new WareItemWidget(ID, *ItemParamWidget, *ItemInfo->asWidget(), Name));
     ItemWidget->signal_RemoveAsked().connect(
         sigc::mem_fun(*this, &ModelModule::whenRemoveFunctionAsked));
+    ItemWidget->signal_UpAsked().connect(
+        sigc::mem_fun(*this, &ModelModule::whenUpAsked));
+    ItemWidget->signal_DownAsked().connect(
+        sigc::mem_fun(*this, &ModelModule::whenDownAsked));
 
     mp_ModelWidget->addItem(ItemWidget, ID);
 

@@ -90,6 +90,10 @@ class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     void whenRemoveFunctionAsked(std::string ID);
 
+    void whenUpAsked(std::string ID);
+
+    void whenDownAsked(std::string ID);
+
   public:
 
     ModelModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
