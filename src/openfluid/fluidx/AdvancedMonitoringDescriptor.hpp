@@ -99,6 +99,9 @@ class AdvancedMonitoringDescriptor
     void setItems(
         std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList);
 
+    void moveItemTowardsTheBeginning(std::string ObserverID);
+    void moveItemTowardsTheEnd(std::string ObserverID);
+
 };
 
 }

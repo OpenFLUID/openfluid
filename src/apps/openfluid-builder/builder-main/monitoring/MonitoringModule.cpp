@@ -142,6 +142,26 @@ void MonitoringModule::whenRemoveObserverAsked(std::string ID)
 // =====================================================================
 // =====================================================================
 
+void MonitoringModule::whenUpAsked(std::string ID)
+{
+  m_Monit.moveItemTowardsTheBeginning(ID);
+  update();
+  onMonitoringChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModule::whenDownAsked(std::string ID)
+{
+  m_Monit.moveItemTowardsTheEnd(ID);
+  update();
+  onMonitoringChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
 sigc::signal<void> MonitoringModule::signal_ModuleChanged()
 {
   return m_signal_MonitoringChanged;
@@ -187,6 +207,10 @@ void MonitoringModule::update()
                            (*it)->getType()));
     ItemWidget->signal_RemoveAsked().connect(
         sigc::mem_fun(*this, &MonitoringModule::whenRemoveObserverAsked));
+    ItemWidget->signal_UpAsked().connect(
+        sigc::mem_fun(*this, &MonitoringModule::whenUpAsked));
+    ItemWidget->signal_DownAsked().connect(
+        sigc::mem_fun(*this, &MonitoringModule::whenDownAsked));
 
     mp_MonitoringWidget->addItem(ItemWidget, ID);
   }

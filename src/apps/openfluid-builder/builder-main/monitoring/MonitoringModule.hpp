@@ -98,6 +98,10 @@ class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     void whenRemoveObserverAsked(std::string ID);
 
+    void whenUpAsked(std::string ID);
+
+    void whenDownAsked(std::string ID);
+
   public:
 
     MonitoringModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
