@@ -78,7 +78,7 @@ class ModelGlobalParamsModel;
 class ModelFctParamsComponent;
 class ModelParamsPanel;
 
-class BuilderListToolBox;
+class BuilderButtonBox;
 
 class ModelAddFunctionModule;
 
@@ -100,7 +100,7 @@ class ModelStructureCoordinator: public sigc::trackable
 
     std::map<std::string, ModelFctParamsComponent*> m_ByNameFctParamsComponents;
 
-    BuilderListToolBox& m_StructureListToolBox;
+    BuilderButtonBox& m_StructureListToolBox;
 
     ModelAddFunctionModule* mp_AddFctModule;
 
@@ -136,7 +136,7 @@ class ModelStructureCoordinator: public sigc::trackable
         ModelFctDetailModel& FctDetailModel,
         ModelStructureModel& StructureModel,
         ModelGlobalParamsModel& GlobalParamsModel,
-        ModelParamsPanel& ParamsPanel, BuilderListToolBox& StructureListToolBox,
+        ModelParamsPanel& ParamsPanel, BuilderButtonBox& StructureListToolBox,
         openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     sigc::signal<void> signal_ModelChanged();

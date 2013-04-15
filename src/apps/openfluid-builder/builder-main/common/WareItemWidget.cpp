@@ -78,34 +78,25 @@ WareItemWidget::WareItemWidget(
   mp_DescriptionLabel = Gtk::manage(new Gtk::Label(Description));
   mp_DescriptionLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
 
-  Gtk::Button* RemoveBt = Gtk::manage(new Gtk::Button());
-  RemoveBt->set_image(
-      *Gtk::manage(new Gtk::Image(Gtk::Stock::REMOVE, Gtk::ICON_SIZE_BUTTON)));
-  RemoveBt->set_tooltip_text(Glib::ustring::compose(_("Remove %1"), ID));
-  RemoveBt->signal_clicked().connect(
+  mp_ButtonBox = new BuilderItemButtonBox();
+  mp_ButtonBox->setRemoveCommandTooltipText(
+      Glib::ustring::compose(_("Remove %1"), ID));
+  mp_ButtonBox->setUpCommandTooltipText(Glib::ustring::compose(_("Move up %1"), ID));
+  mp_ButtonBox->setDownCommandTooltipText(
+      Glib::ustring::compose(_("Move down %1"), ID));
+  mp_ButtonBox->signal_RemoveCommandAsked().connect(
       sigc::bind<std::string>(
           sigc::mem_fun(*this, &WareItemWidget::onRemoveButtonClicked), ID));
-
-  mp_UpBt = Gtk::manage(new Gtk::Button());
-  mp_UpBt->set_image(
-      *Gtk::manage(new Gtk::Image(Gtk::Stock::GO_UP, Gtk::ICON_SIZE_BUTTON)));
-  mp_UpBt->set_tooltip_text(Glib::ustring::compose(_("Move up %1"), ID));
-  mp_UpBt->signal_clicked().connect(
+  mp_ButtonBox->signal_UpCommandAsked().connect(
       sigc::bind<std::string>(
           sigc::mem_fun(*this, &WareItemWidget::onUpButtonClicked), ID));
-
-  mp_DownBt = Gtk::manage(new Gtk::Button());
-  mp_DownBt->set_image(
-      *Gtk::manage(new Gtk::Image(Gtk::Stock::GO_DOWN, Gtk::ICON_SIZE_BUTTON)));
-  mp_DownBt->set_tooltip_text(Glib::ustring::compose(_("Move down %1"), ID));
-  mp_DownBt->signal_clicked().connect(
+  mp_ButtonBox->signal_DownCommandAsked().connect(
       sigc::bind<std::string>(
           sigc::mem_fun(*this, &WareItemWidget::onDownButtonClicked), ID));
 
   // to apply the default background color
   Gtk::EventBox* ParamEventBox = Gtk::manage(new Gtk::EventBox());
   ParamEventBox->add(ParamWidget);
-
   Gtk::Frame* ParamFrame = Gtk::manage(new Gtk::Frame());
   ParamFrame->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
   ParamFrame->add(*ParamEventBox);
@@ -116,31 +107,23 @@ WareItemWidget::WareItemWidget(
   mp_Expander = Gtk::manage(new Gtk::Expander(_("Parameters and information")));
   mp_Expander->add(*ExpanderBox);
 
-  Gtk::VBox* InfoBox = Gtk::manage(new Gtk::VBox(true, 10));
-  InfoBox->pack_start(*mp_IDLabel, Gtk::PACK_SHRINK);
-  InfoBox->pack_start(*mp_DescriptionLabel, Gtk::PACK_SHRINK);
+  Gtk::VBox* InfoBox = Gtk::manage(new Gtk::VBox(false, 5));
+  InfoBox->pack_start(*mp_IDLabel);
+  InfoBox->pack_start(*mp_DescriptionLabel);
 
-  Gtk::VBox* ButtonBox = Gtk::manage(new Gtk::VBox(Gtk::BUTTONBOX_START));
-  ButtonBox->pack_start(*mp_UpBt, Gtk::PACK_SHRINK);
-  ButtonBox->pack_start(*RemoveBt, Gtk::PACK_SHRINK);
-  ButtonBox->pack_start(*mp_DownBt, Gtk::PACK_SHRINK);
+  Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox());
+  TopBox->pack_start(*InfoBox, Gtk::PACK_EXPAND_WIDGET);
+  TopBox->pack_end(*mp_ButtonBox->asWidget(), Gtk::PACK_SHRINK);
 
-  // to keep buttons start-pack even when Expander is expanded
-  Gtk::VBox* ButtonBoxBox = Gtk::manage(new Gtk::VBox());
-  ButtonBoxBox->pack_start(*ButtonBox, Gtk::PACK_SHRINK);
-
-  Gtk::VBox* MainInfoBox = Gtk::manage(new Gtk::VBox(false, 10));
-  MainInfoBox->pack_start(*InfoBox, Gtk::PACK_SHRINK);
-  MainInfoBox->pack_end(*mp_Expander, Gtk::PACK_EXPAND_WIDGET);
-
-  Gtk::HBox* MainBox = Gtk::manage(new Gtk::HBox());
-  MainBox->pack_start(*MainInfoBox, Gtk::PACK_EXPAND_WIDGET);
-  MainBox->pack_end(*ButtonBoxBox, Gtk::PACK_SHRINK);
+  Gtk::VBox* MainBox = Gtk::manage(new Gtk::VBox(false, 5));
+  MainBox->pack_start(*TopBox, Gtk::PACK_SHRINK);
+  MainBox->pack_end(*mp_Expander, Gtk::PACK_EXPAND_WIDGET);
   MainBox->set_border_width(10);
 
   // for main background color
   Gtk::EventBox* MainEventBox = Gtk::manage(new Gtk::EventBox());
   MainEventBox->add(*MainBox);
+
   switch (Type)
   {
     case openfluid::fluidx::WareDescriptor::PluggedFunction:
@@ -179,7 +162,7 @@ WareItemWidget::~WareItemWidget()
 
 void WareItemWidget::setUpButtonSensitive(bool Sensitive)
 {
-  mp_UpBt->set_sensitive(Sensitive);
+  mp_ButtonBox->setUpCommandAvailable(Sensitive);
 }
 
 // =====================================================================
@@ -187,7 +170,7 @@ void WareItemWidget::setUpButtonSensitive(bool Sensitive)
 
 void WareItemWidget::setDownButtonSensitive(bool Sensitive)
 {
-  mp_DownBt->set_sensitive(Sensitive);
+  mp_ButtonBox->setDownCommandAvailable(Sensitive);
 }
 
 // =====================================================================

@@ -46,14 +46,14 @@
  */
 
 /**
- \file BuilderListToolBox.hpp
+ \file BuilderButtonBox.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __BUILDERLISTTOOLBOX_HPP__
-#define __BUILDERLISTTOOLBOX_HPP__
+#ifndef __BUILDERBUTTONBOX_HPP__
+#define __BUILDERBUTTONBOX_HPP__
 
 #include <sigc++/sigc++.h>
 
@@ -62,82 +62,55 @@
 #include <gtkmm/alignment.h>
 #include <gtkmm/button.h>
 
-class BuilderListToolBox
+class BuilderButtonBox
 {
-  public:
-    virtual Gtk::Widget* asWidget() = 0;
-    virtual sigc::signal<void> signal_AddCommandAsked() = 0;
-    virtual sigc::signal<void> signal_RemoveCommandAsked() = 0;
-    virtual sigc::signal<void> signal_UpCommandAsked() = 0;
-    virtual sigc::signal<void> signal_DownCommandAsked() = 0;
-    virtual sigc::signal<void> signal_EditCommandAsked() = 0;
-    virtual void setAllCommandVisible(bool Visible = true) = 0;
-    virtual void setAddCommandVisible(bool Visible = true) = 0;
-    virtual void setRemoveCommandVisible(bool Visible = true) = 0;
-    virtual void setUpCommandVisible(bool Visible = true) = 0;
-    virtual void setDownCommandVisible(bool Visible = true) = 0;
-    virtual void setEditCommandVisible(bool Visible = true) = 0;
-    virtual void setAllCommandAvailable(bool Available = true) = 0;
-    virtual void setAddCommandAvailable(bool Available = true) = 0;
-    virtual void setRemoveCommandAvailable(bool Available = true) = 0;
-    virtual void setUpCommandAvailable(bool Available = true) = 0;
-    virtual void setDownCommandAvailable(bool Available = true) = 0;
-    virtual void setEditCommandAvailable(bool Available = true) = 0;
-    virtual void setAddCommandTooltipText(std::string TooltipText) = 0;
-    virtual void setRemoveCommandTooltipText(std::string TooltipText) = 0;
-    virtual void setUpCommandTooltipText(std::string TooltipText) = 0;
-    virtual void setDownCommandTooltipText(std::string TooltipText) = 0;
-    virtual void setEditCommandTooltipText(std::string TooltipText) = 0;
-    virtual bool isAddCommandAvailable() = 0;
-    virtual bool isRemoveCommandAvailable() = 0;
-    virtual bool isUpCommandAvailable() = 0;
-    virtual bool isDownCommandAvailable() = 0;
-    virtual bool isEditCommandAvailable() = 0;
-};
+  protected:
 
-class BuilderListToolBoxImpl: public BuilderListToolBox
-{
-  private:
+    BuilderButtonBox();
+
     sigc::signal<void> m_signal_AddCommandAsked;
     sigc::signal<void> m_signal_RemoveCommandAsked;
     sigc::signal<void> m_signal_UpCommandAsked;
     sigc::signal<void> m_signal_DownCommandAsked;
     sigc::signal<void> m_signal_EditCommandAsked;
-    Gtk::ButtonBox* mp_ButtonBox;
-    Gtk::Frame* mp_Frame;
-    Gtk::Alignment* mp_Alignment;
+
     Gtk::Button* mp_AddButton;
     Gtk::Button* mp_RemoveButton;
     Gtk::Button* mp_UpButton;
     Gtk::Button* mp_DownButton;
     Gtk::Button* mp_EditButton;
+
     void onAddButtonClicked();
     void onRemoveButtonClicked();
     void onUpButtonClicked();
     void onDownButtonClicked();
     void onEditButtonClicked();
+
     Gtk::Button* createImageStockButton(Gtk::StockID StockImage,
-        Glib::ustring TooltipText = "");
+                                        Glib::ustring TooltipText = "");
+
   public:
-    BuilderListToolBoxImpl();
+
+    virtual Gtk::Widget* asWidget() = 0;
+
     sigc::signal<void> signal_AddCommandAsked();
     sigc::signal<void> signal_RemoveCommandAsked();
     sigc::signal<void> signal_UpCommandAsked();
     sigc::signal<void> signal_DownCommandAsked();
     sigc::signal<void> signal_EditCommandAsked();
-    Gtk::Widget* asWidget();
-    void setAllCommandVisible(bool Visible);
-    void setAddCommandVisible(bool Visible);
-    void setRemoveCommandVisible(bool Visible);
-    void setUpCommandVisible(bool Visible);
-    void setDownCommandVisible(bool Visible);
-    void setEditCommandVisible(bool Visible);
-    void setAllCommandAvailable(bool Available);
-    void setAddCommandAvailable(bool Available);
-    void setRemoveCommandAvailable(bool Available);
-    void setUpCommandAvailable(bool Available);
-    void setDownCommandAvailable(bool Available);
-    void setEditCommandAvailable(bool Available);
+
+    void setAllCommandVisible(bool Visible = true);
+    void setAddCommandVisible(bool Visible = true);
+    void setRemoveCommandVisible(bool Visible = true);
+    void setUpCommandVisible(bool Visible = true);
+    void setDownCommandVisible(bool Visible = true);
+    void setEditCommandVisible(bool Visible = true);
+    void setAllCommandAvailable(bool Available = true);
+    void setAddCommandAvailable(bool Available = true);
+    void setRemoveCommandAvailable(bool Available = true);
+    void setUpCommandAvailable(bool Available = true);
+    void setDownCommandAvailable(bool Available = true);
+    void setEditCommandAvailable(bool Available = true);
     void setAddCommandTooltipText(std::string TooltipText);
     void setRemoveCommandTooltipText(std::string TooltipText);
     void setUpCommandTooltipText(std::string TooltipText);
@@ -150,4 +123,38 @@ class BuilderListToolBoxImpl: public BuilderListToolBox
     bool isEditCommandAvailable();
 };
 
-#endif /* __BUILDERLISTTOOLBOX_HPP__ */
+// =====================================================================
+// =====================================================================
+
+class BuilderListButtonBox: public BuilderButtonBox
+{
+  private:
+
+    Gtk::ButtonBox* mp_ButtonBox;
+    Gtk::Frame* mp_Frame;
+    Gtk::Alignment* mp_Alignment;
+
+  public:
+
+    BuilderListButtonBox();
+
+    Gtk::Widget* asWidget();
+};
+
+// =====================================================================
+// =====================================================================
+
+class BuilderItemButtonBox: public BuilderButtonBox
+{
+  private:
+
+    Gtk::VBox* mp_Box;
+
+  public:
+
+    BuilderItemButtonBox();
+
+    Gtk::Widget* asWidget();
+};
+
+#endif /* __BUILDERBUTTONBOX_HPP__ */

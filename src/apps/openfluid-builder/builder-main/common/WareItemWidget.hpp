@@ -61,13 +61,13 @@
 #include <gtkmm/button.h>
 #include <gtkmm/expander.h>
 #include <openfluid/fluidx/WareDescriptor.hpp>
+#include "BuilderButtonBox.hpp"
 
 class WareItemWidget: public Gtk::Frame
 {
   private:
 
-    Gtk::Button* mp_UpBt;
-    Gtk::Button* mp_DownBt;
+    BuilderItemButtonBox* mp_ButtonBox;
 
     sigc::signal<void, std::string> m_signal_RemoveAsked;
     sigc::signal<void, std::string> m_signal_UpAsked;

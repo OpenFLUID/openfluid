@@ -71,7 +71,7 @@
 #include "ModelParamsPanel.hpp"
 #include "ModelFctParamsComponent.hpp"
 #include "ModelFctParamsModel.hpp"
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 #include "ModelAddFunctionModule.hpp"
 #include "ModelItemInstanceFactory.hpp"
 #include "ModelGeneratorCreationDialog.hpp"
@@ -211,7 +211,7 @@ void ModelStructureCoordinator::whenGlobalValueChanged()
 ModelStructureCoordinator::ModelStructureCoordinator(
     ModelFctDetailModel& FctDetailModel, ModelStructureModel& StructureModel,
     ModelGlobalParamsModel& GlobalParamsModel, ModelParamsPanel& ParamsPanel,
-    BuilderListToolBox& StructureListToolBox,
+    BuilderButtonBox& StructureListToolBox,
     openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
     mp_AdvancedDesc(&AdvancedDesc), m_FctDetailModel(FctDetailModel), m_StructureModel(
         StructureModel), m_GlobalParamsModel(GlobalParamsModel), m_ParamsPanel(

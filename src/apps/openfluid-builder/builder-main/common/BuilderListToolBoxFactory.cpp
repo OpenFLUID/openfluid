@@ -61,9 +61,9 @@
 // =====================================================================
 
 
-BuilderListToolBox* BuilderListToolBoxFactory::createModelStructureToolBox()
+BuilderButtonBox* BuilderListToolBoxFactory::createModelStructureToolBox()
 {
-  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setEditCommandVisible(false);
   ToolBox->setAddCommandTooltipText(_("Append a function to the Model"));
@@ -82,9 +82,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createModelStructureToolBox()
 // =====================================================================
 
 
-BuilderListToolBox* BuilderListToolBoxFactory::createDomainStructureToolBox()
+BuilderButtonBox* BuilderListToolBoxFactory::createDomainStructureToolBox()
 {
-  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
@@ -99,10 +99,10 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainStructureToolBox()
 // =====================================================================
 
 
-BuilderListToolBox* BuilderListToolBoxFactory::createDomainUnitRelationToolBox(
+BuilderButtonBox* BuilderListToolBoxFactory::createDomainUnitRelationToolBox(
     std::string RelationName)
 {
-  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
@@ -119,9 +119,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainUnitRelationToolBox(
 // =====================================================================
 
 
-BuilderListToolBox* BuilderListToolBoxFactory::createDomainIDataToolBox()
+BuilderButtonBox* BuilderListToolBoxFactory::createDomainIDataToolBox()
 {
-  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
@@ -138,9 +138,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainIDataToolBox()
 // =====================================================================
 
 
-BuilderListToolBox* BuilderListToolBoxFactory::createDomainEventsToolBox()
+BuilderButtonBox* BuilderListToolBoxFactory::createDomainEventsToolBox()
 {
-  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
@@ -155,9 +155,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDomainEventsToolBox()
 // =====================================================================
 // =====================================================================
 
-BuilderListToolBox* BuilderListToolBoxFactory::createDatastoreToolBox()
+BuilderButtonBox* BuilderListToolBoxFactory::createDatastoreToolBox()
 {
-  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setEditCommandVisible(false);
   ToolBox->setAddCommandTooltipText(_(
@@ -175,9 +175,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createDatastoreToolBox()
 // =====================================================================
 
 
-BuilderListToolBox* BuilderListToolBoxFactory::createSimulOutFilesToolBox()
+BuilderButtonBox* BuilderListToolBoxFactory::createSimulOutFilesToolBox()
 {
-  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
@@ -192,9 +192,9 @@ BuilderListToolBox* BuilderListToolBoxFactory::createSimulOutFilesToolBox()
 // =====================================================================
 
 
-BuilderListToolBox* BuilderListToolBoxFactory::createSimulOutSetsToolBox()
+BuilderButtonBox* BuilderListToolBoxFactory::createSimulOutSetsToolBox()
 {
-  BuilderListToolBox* ToolBox = new BuilderListToolBoxImpl();
+  BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);

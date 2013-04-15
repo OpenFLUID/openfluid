@@ -59,7 +59,7 @@
 #include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include "BuilderListToolBoxFactory.hpp"
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 #include "DatasoreAddItemDialog.hpp"
 
 // =====================================================================

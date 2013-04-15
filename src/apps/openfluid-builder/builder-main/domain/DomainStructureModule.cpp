@@ -60,7 +60,7 @@
 
 #include "DomainStructureCoordinator.hpp"
 #include "BuilderListToolBoxFactory.hpp"
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 
 #include "BuilderFrame.hpp"
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>

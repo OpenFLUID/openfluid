@@ -62,7 +62,7 @@
 #include "ModelStructureCoordinator.hpp"
 #include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include "BuilderListToolBoxFactory.hpp"
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 
 #include "BuilderFrame.hpp"
 

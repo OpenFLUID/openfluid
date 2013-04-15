@@ -60,7 +60,7 @@
 #include <gtkmm/liststore.h>
 #include <gtkmm/treeview.h>
 
-class BuilderListToolBox;
+class BuilderButtonBox;
 class DatasoreAddItemDialog;
 
 namespace openfluid {
@@ -103,7 +103,7 @@ class DatastoreView
 
     Gtk::TreeView* mp_TreeView;
 
-    BuilderListToolBox* mp_DSListToolBox;
+    BuilderButtonBox* mp_DSListToolBox;
 
     sigc::signal<void> m_signal_DatastoreChanged;
 

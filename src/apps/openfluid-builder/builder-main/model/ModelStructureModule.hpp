@@ -68,7 +68,7 @@ class ModelFctDetailModel;
 class ModelStructureModel;
 
 class ModelStructureCoordinator;
-class BuilderListToolBox;
+class BuilderButtonBox;
 
 class ModelStructureModule : public openfluid::guicommon::ProjectWorkspaceModule
 {
@@ -82,7 +82,7 @@ class ModelStructureModule : public openfluid::guicommon::ProjectWorkspaceModule
     ModelStructureComponent* mp_ModelStructureMVP;
     ModelGlobalParamsComponent* mp_ModelGlobalParamsMVP;
     ModelParamsPanel* mp_ModelParamsPanel;
-    BuilderListToolBox* mp_StructureListToolBox;
+    BuilderButtonBox* mp_StructureListToolBox;
     ModelStructureCoordinator* mp_Coordinator;
 
     sigc::signal<void> m_signal_ModelStructureChanged;

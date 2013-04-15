@@ -68,7 +68,7 @@ class AdvancedDomainDescriptor;
 
 class DomainStructureModel;
 class DomainUnitAddEditDialog;
-class BuilderListToolBox;
+class BuilderButtonBox;
 
 class DomainStructureCoordinator: public sigc::trackable
 {
@@ -80,7 +80,7 @@ class DomainStructureCoordinator: public sigc::trackable
 
     DomainUnitAddEditDialog& m_UnitAddEditDialog;
 
-    BuilderListToolBox& m_StructureListToolBox;
+    BuilderButtonBox& m_StructureListToolBox;
 
     void updateStructureListToolBox();
 
@@ -96,7 +96,7 @@ class DomainStructureCoordinator: public sigc::trackable
 
     DomainStructureCoordinator(DomainStructureModel& StructureModel,
         DomainUnitAddEditDialog& UnitAddEditDialog,
-        BuilderListToolBox& StructureListToolBox);
+        BuilderButtonBox& StructureListToolBox);
 
     sigc::signal<void> signal_DomainChanged();
 

@@ -62,6 +62,7 @@
 #include <gtkmm/action.h>
 #include <gtkmm/label.h>
 #include <gtkmm/checkbutton.h>
+#include "BuilderButtonBox.hpp"
 
 #include "WidgetObject.hpp"
 
@@ -77,9 +78,7 @@ class WidgetObjectBase: public WidgetObject
 
     Gtk::CheckButton* mp_DisplayLayerCheckBox;
 
-    Gtk::Button* mp_UpButton;
-    Gtk::Button* mp_DownButton;
-    Gtk::Button* mp_RemoveButton;
+    BuilderItemButtonBox* mp_ButtonBox;
 
     typedef sigc::signal<void> mtype_SignalWidgetObjectBase;
 
