@@ -56,6 +56,7 @@
 #define MODELMODULE_HPP_
 
 #include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
+#include "FunctionGlobalParamsWidget.hpp"
 
 #include <gtkmm/box.h>
 
@@ -70,6 +71,8 @@ class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
     openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
     Gtk::Box* mp_MainPanel;
+
+    FunctionGlobalParamsWidget* mp_GlobalParamsWidget;
 
 //    MonitoringAddObserverDialog* mp_AddDialog;
     ModelAddFunctionModule* mp_AddModule;

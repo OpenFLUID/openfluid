@@ -64,7 +64,6 @@
 #include "ModelAddFunctionModule.hpp"
 #include "WareSetWidget.hpp"
 #include "FunctionParamWidget.hpp"
-#include "FunctionGlobalParamsWidget.hpp"
 #include "ModelFctDetailComponent.hpp"
 #include "ModelFctDetailModel.hpp"
 
@@ -76,6 +75,10 @@ ModelModule::ModelModule(
     ProjectWorkspaceModule(AdvancedDesc), m_Model(AdvancedDesc.getModel())
 {
   mp_MainPanel = 0;
+
+  mp_GlobalParamsWidget = Gtk::manage(new FunctionGlobalParamsWidget(m_Model));
+  mp_GlobalParamsWidget->signal_changeOccured().connect(
+      sigc::mem_fun(*this, &ModelModule::updateGlobalParams));
 
   mp_ModelWidget = Gtk::manage(new WareSetWidget("Add simulation function"));
 
@@ -101,9 +104,10 @@ ModelModule::~ModelModule()
 
 void ModelModule::compose()
 {
-  mp_MainPanel = Gtk::manage(new Gtk::VBox());
+  mp_MainPanel = Gtk::manage(new Gtk::VBox(false, 5));
 
   mp_MainPanel->set_border_width(5);
+  mp_MainPanel->pack_start(*mp_GlobalParamsWidget, Gtk::PACK_SHRINK);
   mp_MainPanel->pack_start(*mp_ModelWidget);
 
   mp_MainPanel->set_visible(true);
@@ -232,26 +236,17 @@ sigc::signal<void> ModelModule::signal_ModuleChanged()
 
 void ModelModule::update()
 {
+  // GlobalParams
+
+  mp_GlobalParamsWidget->update();
+
+  // Simulation functions
+
   mp_ModelWidget->storeExpanderStates();
 
   mp_ModelWidget->clearItems();
 
   m_ParamWidgets.clear();
-
-  // GlobalParams
-
-  FunctionGlobalParamsWidget* GlobalParamsWidget = Gtk::manage(
-      new FunctionGlobalParamsWidget(m_Model));
-  GlobalParamsWidget->signal_changeOccured().connect(
-      sigc::mem_fun(*this, &ModelModule::updateGlobalParams));
-
-  WareItemWidget* ItemGlobalsWidget = Gtk::manage(
-      new WareItemWidget(_("Global parameters"), *GlobalParamsWidget,
-                         *new Gtk::HBox()));
-
-  mp_ModelWidget->addItem(ItemGlobalsWidget, "");
-
-  // Simulation functions
 
   openfluid::machine::FunctionSignatureRegistry* Reg =
       openfluid::machine::FunctionSignatureRegistry::getInstance();

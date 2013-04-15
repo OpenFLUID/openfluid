@@ -58,6 +58,7 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/table.h>
+#include <gtkmm/scrolledwindow.h>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -158,12 +159,25 @@ FunctionGlobalParamsWidget::FunctionGlobalParamsWidget(
   TopBox->pack_start(*mp_Combo, Gtk::PACK_SHRINK);
   TopBox->pack_start(*mp_AddButton, Gtk::PACK_SHRINK);
 
-  mp_Table = Gtk::manage(new Gtk::Table());
-  mp_Table->set_col_spacings(10);
-  mp_Table->set_border_width(5);
+  mp_ContentTable = Gtk::manage(new Gtk::Table());
+  mp_ContentTable->set_col_spacings(10);
+  mp_ContentTable->set_border_width(5);
 
-  pack_start(*TopBox, Gtk::PACK_SHRINK);
-  pack_start(*mp_Table, Gtk::PACK_EXPAND_WIDGET);
+  Gtk::ScrolledWindow* ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
+  ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  ModelWin->set_size_request(-1,200);
+  ModelWin->add(*mp_ContentTable);
+  ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+
+  Gtk::VBox* ContentBox = Gtk::manage(new Gtk::VBox(false, 5));
+
+  ContentBox->pack_start(*TopBox, Gtk::PACK_SHRINK);
+  ContentBox->pack_start(*ModelWin, Gtk::PACK_EXPAND_WIDGET);
+
+  set_use_markup(true);
+  set_label(Glib::ustring::compose("<b>%1</b>",_("Global parameters")));
+
+  add(*ContentBox);
 
   update();
 
@@ -185,9 +199,9 @@ void FunctionGlobalParamsWidget::update()
 {
   mref_ComboModel->clear();
 
-  int TableWidgetCount = mp_Table->children().size();
+  int TableWidgetCount = mp_ContentTable->children().size();
   for (int i = 0; i < TableWidgetCount; i++)
-    mp_Table->remove(*mp_Table->children().begin()->get_widget());
+    mp_ContentTable->remove(*mp_ContentTable->children().begin()->get_widget());
 
   m_CurrentTableBottom = 0;
 
@@ -244,7 +258,7 @@ void FunctionGlobalParamsWidget::update()
 
   mp_AddButton->set_sensitive(!mp_Combo->get_model()->children().empty());
 
-  mp_Table->show_all_children();
+  mp_ContentTable->show_all_children();
 }
 
 // =====================================================================
@@ -254,10 +268,11 @@ void FunctionGlobalParamsWidget::attachRow(GlobalParamRow* Row)
 {
   for (unsigned int i = 0; i < Row->getColumnCount(); i++)
   {
-    mp_Table->attach(*Row->getWidgets()[i], i, i + 1, m_CurrentTableBottom,
-                     m_CurrentTableBottom + 1,
-                     i == 1 ? Gtk::EXPAND | Gtk::FILL : Gtk::SHRINK | Gtk::FILL,
-                     Gtk::FILL, 0, 0);
+    mp_ContentTable->attach(
+        *Row->getWidgets()[i], i, i + 1, m_CurrentTableBottom,
+        m_CurrentTableBottom + 1,
+        i == 1 ? Gtk::EXPAND | Gtk::FILL : Gtk::SHRINK | Gtk::FILL, Gtk::FILL,
+        0, 0);
   }
 
   Row->signal_removeOccured().connect(

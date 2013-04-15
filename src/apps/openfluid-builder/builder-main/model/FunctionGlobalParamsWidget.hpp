@@ -60,6 +60,7 @@
 #include <gtkmm/button.h>
 #include <gtkmm/table.h>
 #include <gtkmm/combobox.h>
+#include <gtkmm/expander.h>
 #include <gtkmm/liststore.h>
 #include "BuilderTableRowWidget.hpp"
 
@@ -104,7 +105,7 @@ class GlobalParamRow: public BuilderTableRowWidget
 // =====================================================================
 // =====================================================================
 
-class FunctionGlobalParamsWidget: public Gtk::VBox
+class FunctionGlobalParamsWidget: public Gtk::Expander
 {
   private:
 
@@ -130,13 +131,11 @@ class FunctionGlobalParamsWidget: public Gtk::VBox
 
     Gtk::Button* mp_AddButton;
 
-    Gtk::Table* mp_Table;
+    Gtk::Table* mp_ContentTable;
 
     unsigned int m_CurrentTableBottom;
 
     sigc::signal<void> m_signal_changeOccured;
-
-    void update();
 
     void attachRow(GlobalParamRow* Row);
 
@@ -153,6 +152,8 @@ class FunctionGlobalParamsWidget: public Gtk::VBox
     ~FunctionGlobalParamsWidget();
 
     sigc::signal<void> signal_changeOccured();
+
+    void update();
 };
 
 #endif /* FUNCTIONGLOBALPARAMSWIDGET_HPP_ */
