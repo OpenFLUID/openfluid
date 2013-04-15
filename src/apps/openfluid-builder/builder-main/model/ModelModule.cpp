@@ -259,6 +259,9 @@ void ModelModule::update()
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       m_Model.getItems();
 
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itLast =
+      Items.end().operator --();
+
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
@@ -294,6 +297,11 @@ void ModelModule::update()
     mp_ModelWidget->addItem(ItemWidget, ID);
 
     m_ParamWidgets.push_back(ItemParamWidget);
+
+    if (it == Items.begin())
+      ItemWidget->setUpButtonSensitive(false);
+    if (it == itLast)
+      ItemWidget->setDownButtonSensitive(false);
   }
 
   mp_ModelWidget->applyExpanderStates();

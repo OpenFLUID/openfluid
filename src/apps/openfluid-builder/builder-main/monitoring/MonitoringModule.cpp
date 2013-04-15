@@ -182,6 +182,9 @@ void MonitoringModule::update()
   const std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
       m_Monit.getItems();
 
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itLast =
+      Items.end().operator --();
+
   for (std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
@@ -213,6 +216,11 @@ void MonitoringModule::update()
         sigc::mem_fun(*this, &MonitoringModule::whenDownAsked));
 
     mp_MonitoringWidget->addItem(ItemWidget, ID);
+
+    if (it == Items.begin())
+      ItemWidget->setUpButtonSensitive(false);
+    if (it == itLast)
+      ItemWidget->setDownButtonSensitive(false);
   }
 
   mp_MonitoringWidget->applyExpanderStates();
