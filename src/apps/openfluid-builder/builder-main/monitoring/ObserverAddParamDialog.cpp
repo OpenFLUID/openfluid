@@ -133,7 +133,7 @@ void ObserverAddParamDialog::onChanged()
   }
   else if (!mp_Obs->isInsertable(Name))
   {
-    mp_InfoBarLabel->set_text(_("Parameter name doesn't respect xml rules"));
+    mp_InfoBarLabel->set_text(_("Parameter name doesn't respect naming rules"));
   }
   else
   {
@@ -159,6 +159,7 @@ bool ObserverAddParamDialog::show(openfluid::fluidx::ObserverDescriptor* Obs)
   mp_Obs = Obs;
 
   mp_NameEntry->set_text("");
+  mp_ValueEntry->set_text("");
   onChanged();
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
