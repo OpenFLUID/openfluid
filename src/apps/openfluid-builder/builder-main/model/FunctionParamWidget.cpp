@@ -55,6 +55,7 @@
 #include "FunctionParamWidget.hpp"
 
 #include <glibmm/i18n.h>
+#include <gtkmm/stock.h>
 #include <gtkmm/table.h>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -66,10 +67,10 @@
 
 FunctionParamRow::FunctionParamRow(
     openfluid::fluidx::ModelItemDescriptor& FctDesc, std::string ParamName,
-    std::string ParamValue, std::string ParamUnit) :
+    std::string ParamValue, std::string ParamUnit, bool WithRemoveBt) :
     m_FctDesc(FctDesc), m_Name(ParamName)
 {
-  m_ColumnCount = 4;
+  m_ColumnCount = 5;
 
   Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(m_Name, 0, 0.5));
   m_RowWidgets.push_back(NameLabel);
@@ -86,6 +87,21 @@ FunctionParamRow::FunctionParamRow(
   mp_GlobalLabel = Gtk::manage(new Gtk::Label("", 0, 0.5));
   mp_GlobalLabel->set_sensitive(EngineHelper::isEmptyString(ParamValue));
   m_RowWidgets.push_back(mp_GlobalLabel);
+
+  if (WithRemoveBt)
+  {
+    mp_RemoveButton = Gtk::manage(new Gtk::Button());
+    mp_RemoveButton->set_image(
+        *Gtk::manage(
+            new Gtk::Image(Gtk::Stock::REMOVE, Gtk::ICON_SIZE_BUTTON)));
+    mp_RemoveButton->set_relief(Gtk::RELIEF_NONE);
+    mp_RemoveButton->set_tooltip_text(_("Remove this parameter"));
+    mp_RemoveButton->signal_clicked().connect(
+        sigc::mem_fun(*this, &FunctionParamRow::onRemoveButtonClicked));
+    m_RowWidgets.push_back(mp_RemoveButton);
+  }
+  else
+    m_RowWidgets.push_back(new Gtk::HBox());
 }
 
 // =====================================================================
@@ -147,13 +163,25 @@ sigc::signal<void> FunctionParamRow::signal_valueChangeOccured()
 
 FunctionParamWidget::FunctionParamWidget(
     openfluid::fluidx::ModelItemDescriptor& FctDesc,
-    openfluid::machine::ModelItemSignatureInstance* Sign) :
-    m_FctDesc(FctDesc), mp_Sign(Sign)
+    openfluid::machine::ModelItemSignatureInstance* Sign,
+    FunctionAddParamDialog& AddParamDialog) :
+    m_FctDesc(FctDesc), mp_Sign(Sign), m_AddParamDialog(AddParamDialog)
 {
+  Gtk::Button* AddButton = Gtk::manage(new Gtk::Button());
+  AddButton->set_image(
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_BUTTON)));
+  AddButton->set_tooltip_text(_("Add a parameter"));
+  AddButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &FunctionParamWidget::onAddButtonClicked));
+
+  Gtk::HBox* ButtonBox = Gtk::manage(new Gtk::HBox());
+  ButtonBox->pack_start(*AddButton, Gtk::PACK_SHRINK, 0);
+
   mp_Table = Gtk::manage(new Gtk::Table());
   mp_Table->set_col_spacings(10);
   mp_Table->set_border_width(5);
 
+  pack_start(*ButtonBox, Gtk::PACK_SHRINK);
   pack_start(*mp_Table, Gtk::PACK_EXPAND_WIDGET);
 
   updateRows();
@@ -194,7 +222,7 @@ void FunctionParamWidget::updateRows()
     {
       attachRow(
           new FunctionParamRow(m_FctDesc, it->DataName, Params[it->DataName],
-                               it->DataUnit),
+                               it->DataUnit, false),
           it->DataName);
 
       Params.erase(it->DataName);
@@ -205,7 +233,7 @@ void FunctionParamWidget::updateRows()
   for (std::map<std::string, std::string>::iterator it = Params.begin();
       it != Params.end(); ++it)
   {
-    attachRow(new FunctionParamRow(m_FctDesc, it->first, it->second, ""),
+    attachRow(new FunctionParamRow(m_FctDesc, it->first, it->second, "", true),
               it->first);
   }
 
@@ -246,19 +274,36 @@ void FunctionParamWidget::attachRow(FunctionParamRow* Row,
 // =====================================================================
 // =====================================================================
 
+void FunctionParamWidget::onAddButtonClicked()
+{
+  if (m_AddParamDialog.show(&m_FctDesc,mp_Sign))
+    onStructureChangeOccured();
+}
+
+// =====================================================================
+// =====================================================================
+
 void FunctionParamWidget::updateGlobals(
     const std::map<std::string, std::string>& GlobalParams)
+{
+  m_Globals = GlobalParams;
+
+  updateGlobals();
+}
+
+// =====================================================================
+// =====================================================================
+
+void FunctionParamWidget::updateGlobals()
 {
   for (std::map<std::string, FunctionParamRow*>::iterator it = m_Rows.begin();
       it != m_Rows.end(); ++it)
   {
-    std::map<std::string, std::string>::const_iterator Found =
-        GlobalParams.find(it->first);
+    std::map<std::string, std::string>::const_iterator Found = m_Globals.find(
+        it->first);
 
-    it->second->setGlobalValue(
-        Found != GlobalParams.end() ? Found->second : "");
+    it->second->setGlobalValue(Found != m_Globals.end() ? Found->second : "");
   }
-
 }
 
 // =====================================================================
@@ -267,6 +312,7 @@ void FunctionParamWidget::updateGlobals(
 void FunctionParamWidget::onStructureChangeOccured()
 {
   updateRows();
+  updateGlobals();
   m_signal_changeOccured.emit();
 }
 

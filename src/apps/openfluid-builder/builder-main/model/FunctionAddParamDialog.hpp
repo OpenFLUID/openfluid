@@ -46,73 +46,45 @@
  */
 
 /**
- \file ModelModule.hpp
+ \file FunctionAddParamDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MODELMODULE_HPP_
-#define MODELMODULE_HPP_
+#ifndef FUNCTIONADDPARAMDIALOG_HPP_
+#define FUNCTIONADDPARAMDIALOG_HPP_
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
-#include "FunctionGlobalParamsWidget.hpp"
-#include "FunctionAddParamDialog.hpp"
+#include <gtkmm/dialog.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/entry.h>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
-#include <gtkmm/box.h>
-
-class WareSetWidget;
-class ModelAddFunctionModule;
-class FunctionParamWidget;
-
-class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
+class FunctionAddParamDialog
 {
   private:
 
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+    Gtk::Dialog* mp_Dialog;
 
-    Gtk::Box* mp_MainPanel;
+    Gtk::Entry* mp_NameEntry;
 
-    FunctionGlobalParamsWidget* mp_GlobalParamsWidget;
+    Gtk::Entry* mp_ValueEntry;
 
-//    MonitoringAddObserverDialog* mp_AddDialog;
-    ModelAddFunctionModule* mp_AddModule;
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
 
-    FunctionAddParamDialog* mp_AddParamDialog;
+    openfluid::fluidx::WareDescriptor* mp_DummyItem;
 
-    void whenAddFunctionAsked();
-
-    void updateGlobalParams();
-
-    void onModelChanged();
-
-    sigc::signal<void> m_signal_ModelChanged;
-
-  protected:
-
-    WareSetWidget* mp_ModelWidget;
-
-    std::list<FunctionParamWidget*> m_ParamWidgets;
-
-    void whenRemoveFunctionAsked(std::string ID);
-
-    void whenUpAsked(std::string ID);
-
-    void whenDownAsked(std::string ID);
+    void onChanged();
 
   public:
+    FunctionAddParamDialog();
 
-    ModelModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    ~FunctionAddParamDialog();
 
-    ~ModelModule();
-
-    sigc::signal<void> signal_ModuleChanged();
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-    void update();
+    bool show(openfluid::fluidx::ModelItemDescriptor* Item,
+              openfluid::machine::ModelItemSignatureInstance* Sign);
 };
 
-#endif /* MODELMODULE_HPP_ */
+#endif /* FUNCTIONADDPARAMDIALOG_HPP_ */

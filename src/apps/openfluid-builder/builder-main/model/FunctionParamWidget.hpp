@@ -59,6 +59,7 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/table.h>
 #include "BuilderTableRowWidget.hpp"
+#include "FunctionAddParamDialog.hpp"
 
 namespace openfluid {
 namespace fluidx {
@@ -83,6 +84,8 @@ class FunctionParamRow: public BuilderTableRowWidget
 
     Gtk::Label* mp_GlobalLabel;
 
+    Gtk::Button* mp_RemoveButton;
+
     sigc::signal<void> m_signal_removeOccured;
     sigc::signal<void> m_signal_valueChangeOccured;
 
@@ -94,7 +97,7 @@ class FunctionParamRow: public BuilderTableRowWidget
 
     FunctionParamRow(openfluid::fluidx::ModelItemDescriptor& FctDesc,
                      std::string ParamName, std::string ParamValue,
-                     std::string ParamUnit);
+                     std::string ParamUnit, bool WithRemoveBt);
 
     void setGlobalValue(std::string GlobalValue);
 
@@ -112,24 +115,33 @@ class FunctionParamWidget: public Gtk::VBox
     openfluid::fluidx::ModelItemDescriptor& m_FctDesc;
     openfluid::machine::ModelItemSignatureInstance* mp_Sign;
 
+    FunctionAddParamDialog& m_AddParamDialog;
+
     Gtk::Table* mp_Table;
 
     unsigned int m_CurrentTableBottom;
 
     std::map<std::string, FunctionParamRow*> m_Rows;
 
+    std::map<std::string, std::string> m_Globals;
+
     sigc::signal<void> m_signal_changeOccured;
 
     void updateRows();
     void attachRow(FunctionParamRow* Row, std::string ParamName);
 
+    void onAddButtonClicked();
+
     void onValueChangeOccured();
     void onStructureChangeOccured();
+
+    void updateGlobals();
 
   public:
 
     FunctionParamWidget(openfluid::fluidx::ModelItemDescriptor& FctDesc,
-                        openfluid::machine::ModelItemSignatureInstance* Sign);
+                        openfluid::machine::ModelItemSignatureInstance* Sign,
+                        FunctionAddParamDialog& AddParamDialog);
 
     ~FunctionParamWidget();
 

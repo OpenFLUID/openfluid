@@ -85,6 +85,8 @@ ModelModule::ModelModule(
 //  mp_AddDialog = new MonitoringAddObserverDialog(m_Monit);
   mp_AddModule = new ModelAddFunctionModule(m_Model);
 
+  mp_AddParamDialog = new FunctionAddParamDialog();
+
   mp_ModelWidget->signal_AddAsked().connect(
       sigc::mem_fun(*this, &ModelModule::whenAddFunctionAsked));
 
@@ -272,7 +274,7 @@ void ModelModule::update()
       Name = Sign->Signature->Name;
 
     FunctionParamWidget* ItemParamWidget = Gtk::manage(
-        new FunctionParamWidget(*(*it), Sign));
+        new FunctionParamWidget(*(*it), Sign, *mp_AddParamDialog));
     ItemParamWidget->signal_changeOccured().connect(
         sigc::mem_fun(*this, &ModelModule::onModelChanged));
 
