@@ -59,10 +59,10 @@
 #include <gtkmm/entry.h>
 #include <gtkmm/button.h>
 #include <gtkmm/table.h>
-#include <gtkmm/combobox.h>
 #include <gtkmm/expander.h>
-#include <gtkmm/liststore.h>
+
 #include "BuilderTableRowWidget.hpp"
+#include "FunctionAddGlobalParamDialog.hpp"
 
 namespace openfluid {
 namespace fluidx {
@@ -95,8 +95,7 @@ class GlobalParamRow: public BuilderTableRowWidget
   public:
 
     GlobalParamRow(openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
-                   std::string ParamName, std::string ParamValue,
-                   std::string ParamUnit);
+                   std::string ParamName, std::string ParamValue);
 
     sigc::signal<void> signal_removeOccured();
     sigc::signal<void> signal_valueChangeOccured();
@@ -111,33 +110,17 @@ class FunctionGlobalParamsWidget: public Gtk::Expander
 
     openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
-    Gtk::ComboBox* mp_Combo;
+    FunctionAddGlobalParamDialog& m_AddGlobalParamDialog;
 
-    class ComboColumns: public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-
-        ComboColumns()
-        {
-          add(m_Name);
-          add(m_Unit);
-        }
-
-        Gtk::TreeModelColumn<std::string> m_Name;
-        Gtk::TreeModelColumn<std::string> m_Unit;
-    };
-    ComboColumns m_Columns;
-    Glib::RefPtr<Gtk::ListStore> mref_ComboModel;
-
-    Gtk::Button* mp_AddButton;
-
-    Gtk::Table* mp_ContentTable;
+    Gtk::Table* mp_Table;
 
     unsigned int m_CurrentTableBottom;
 
     sigc::signal<void> m_signal_changeOccured;
 
     void attachRow(GlobalParamRow* Row);
+
+    void updateRows();
 
     void onAddButtonClicked();
 
@@ -147,13 +130,12 @@ class FunctionGlobalParamsWidget: public Gtk::Expander
   public:
 
     FunctionGlobalParamsWidget(
-        openfluid::fluidx::AdvancedModelDescriptor& ModelDesc);
+        openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
+        FunctionAddGlobalParamDialog& AddGlobalParamDialog);
 
     ~FunctionGlobalParamsWidget();
 
     sigc::signal<void> signal_changeOccured();
-
-    void update();
 };
 
 #endif /* FUNCTIONGLOBALPARAMSWIDGET_HPP_ */

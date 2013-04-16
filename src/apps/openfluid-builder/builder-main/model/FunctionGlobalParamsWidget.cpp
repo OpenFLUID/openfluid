@@ -60,18 +60,16 @@
 #include <gtkmm/table.h>
 #include <gtkmm/scrolledwindow.h>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
 
 // =====================================================================
 // =====================================================================
 
 GlobalParamRow::GlobalParamRow(
     openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
-    std::string ParamName, std::string ParamValue, std::string ParamUnit) :
+    std::string ParamName, std::string ParamValue) :
     m_ModelDesc(ModelDesc), m_Name(ParamName)
 {
-  m_ColumnCount = 4;
+  m_ColumnCount = 3;
 
   Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(m_Name, 0, 0.5));
   m_RowWidgets.push_back(NameLabel);
@@ -81,9 +79,6 @@ GlobalParamRow::GlobalParamRow(
   mp_ValueEntry->signal_changed().connect(
       sigc::mem_fun(*this, &GlobalParamRow::onValueChanged));
   m_RowWidgets.push_back(mp_ValueEntry);
-
-  Gtk::Label* UnitLabel = Gtk::manage(new Gtk::Label(ParamUnit, 0, 0.5));
-  m_RowWidgets.push_back(UnitLabel);
 
   mp_RemoveButton = Gtk::manage(new Gtk::Button());
   mp_RemoveButton->set_image(
@@ -136,50 +131,41 @@ sigc::signal<void> GlobalParamRow::signal_valueChangeOccured()
 // =====================================================================
 
 FunctionGlobalParamsWidget::FunctionGlobalParamsWidget(
-    openfluid::fluidx::AdvancedModelDescriptor& ModelDesc) :
-    m_Model(ModelDesc)
+    openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
+    FunctionAddGlobalParamDialog& AddGlobalParamDialog) :
+    m_Model(ModelDesc), m_AddGlobalParamDialog(AddGlobalParamDialog)
 {
-  Gtk::Label* ParamsLabel = Gtk::manage(
-      new Gtk::Label(_("Available parameters:")));
-
-  mp_Combo = Gtk::manage(new Gtk::ComboBox());
-  mref_ComboModel = Gtk::ListStore::create(m_Columns);
-  mref_ComboModel->set_sort_column(m_Columns.m_Name, Gtk::SORT_ASCENDING);
-  mp_Combo->set_model(mref_ComboModel);
-  mp_Combo->pack_start(m_Columns.m_Name);
-  mp_Combo->pack_start(m_Columns.m_Unit);
-
-  mp_AddButton = Gtk::manage(new Gtk::Button(_("Set global")));
-  mp_AddButton->set_tooltip_text(_("Set this parameter as global"));
-  mp_AddButton->signal_clicked().connect(
+  Gtk::Button* AddButton = Gtk::manage(new Gtk::Button());
+  AddButton->set_image(
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_BUTTON)));
+  AddButton->set_tooltip_text(_("Add a global parameter"));
+  AddButton->signal_clicked().connect(
       sigc::mem_fun(*this, &FunctionGlobalParamsWidget::onAddButtonClicked));
 
-  Gtk::HBox* TopBox = Gtk::manage(new Gtk::HBox(false, 10));
-  TopBox->pack_start(*ParamsLabel, Gtk::PACK_SHRINK);
-  TopBox->pack_start(*mp_Combo, Gtk::PACK_SHRINK);
-  TopBox->pack_start(*mp_AddButton, Gtk::PACK_SHRINK);
+  Gtk::HBox* ButtonBox = Gtk::manage(new Gtk::HBox());
+  ButtonBox->pack_start(*AddButton, Gtk::PACK_SHRINK, 0);
 
-  mp_ContentTable = Gtk::manage(new Gtk::Table());
-  mp_ContentTable->set_col_spacings(10);
-  mp_ContentTable->set_border_width(5);
+  mp_Table = Gtk::manage(new Gtk::Table());
+  mp_Table->set_col_spacings(10);
+  mp_Table->set_border_width(5);
 
   Gtk::ScrolledWindow* ModelWin = Gtk::manage(new Gtk::ScrolledWindow());
   ModelWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  ModelWin->set_size_request(-1,200);
-  ModelWin->add(*mp_ContentTable);
+  ModelWin->set_size_request(-1, 200);
+  ModelWin->add(*mp_Table);
   ModelWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
 
   Gtk::VBox* ContentBox = Gtk::manage(new Gtk::VBox(false, 5));
 
-  ContentBox->pack_start(*TopBox, Gtk::PACK_SHRINK);
+  ContentBox->pack_start(*ButtonBox, Gtk::PACK_SHRINK);
   ContentBox->pack_start(*ModelWin, Gtk::PACK_EXPAND_WIDGET);
 
   set_use_markup(true);
-  set_label(Glib::ustring::compose("<b>%1</b>",_("Global parameters")));
+  set_label(Glib::ustring::compose("<b>%1</b>", _("Global parameters")));
 
   add(*ContentBox);
 
-  update();
+  updateRows();
 
   set_visible(true);
   show_all_children();
@@ -195,70 +181,25 @@ FunctionGlobalParamsWidget::~FunctionGlobalParamsWidget()
 // =====================================================================
 // =====================================================================
 
-void FunctionGlobalParamsWidget::update()
+void FunctionGlobalParamsWidget::updateRows()
 {
-  mref_ComboModel->clear();
-
-  int TableWidgetCount = mp_ContentTable->children().size();
+  int TableWidgetCount = mp_Table->children().size();
   for (int i = 0; i < TableWidgetCount; i++)
-    mp_ContentTable->remove(*mp_ContentTable->children().begin()->get_widget());
+    mp_Table->remove(*mp_Table->children().begin()->get_widget());
 
   m_CurrentTableBottom = 0;
 
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
-
-  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
-      m_Model.getItems();
-
-  std::map<std::string, std::string> ModelGlobalParams =
+  std::map<std::string, std::string> GlobalParams =
       openfluid::fluidx::WareDescriptor::getParamsAsMap(
           m_Model.getGlobalParameters());
 
-  std::set<std::string> TreatedParams;
-
-  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
-      Items.begin(); it != Items.end(); ++it)
+  for (std::map<std::string, std::string>::iterator it = GlobalParams.begin();
+      it != GlobalParams.end(); ++it)
   {
-    openfluid::machine::ModelItemSignatureInstance* Sign =
-        Reg->getSignatureItemInstance(*it);
-
-    if (Sign)
-    {
-      std::vector<openfluid::ware::SignatureHandledDataItem> Items =
-          Sign->Signature->HandledData.FunctionParams;
-
-      for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it =
-          Items.begin(); it != Items.end(); ++it)
-      {
-        if (TreatedParams.count(it->DataName))
-          continue;
-
-        std::map<std::string, std::string>::iterator Found =
-            ModelGlobalParams.find(it->DataName);
-
-        if (Found == ModelGlobalParams.end())
-        {
-          Gtk::TreeModel::Row Row = *(mref_ComboModel->append());
-          Row[m_Columns.m_Name] = it->DataName;
-//          Row[m_Columns.m_Unit] = "(" + it->DataUnit + ")";
-        }
-        else
-          attachRow(
-              new GlobalParamRow(m_Model, it->DataName, Found->second,
-                                 it->DataUnit));
-
-        TreatedParams.insert(it->DataName);
-      }
-    }
-
+    attachRow(new GlobalParamRow(m_Model, it->first, it->second));
   }
 
-  mp_Combo->set_active(0);
-
-  mp_AddButton->set_sensitive(!mp_Combo->get_model()->children().empty());
-
-  mp_ContentTable->show_all_children();
+  mp_Table->show_all_children();
 }
 
 // =====================================================================
@@ -268,11 +209,10 @@ void FunctionGlobalParamsWidget::attachRow(GlobalParamRow* Row)
 {
   for (unsigned int i = 0; i < Row->getColumnCount(); i++)
   {
-    mp_ContentTable->attach(
-        *Row->getWidgets()[i], i, i + 1, m_CurrentTableBottom,
-        m_CurrentTableBottom + 1,
-        i == 1 ? Gtk::EXPAND | Gtk::FILL : Gtk::SHRINK | Gtk::FILL, Gtk::FILL,
-        0, 0);
+    mp_Table->attach(*Row->getWidgets()[i], i, i + 1, m_CurrentTableBottom,
+                     m_CurrentTableBottom + 1,
+                     i == 1 ? Gtk::EXPAND | Gtk::FILL : Gtk::SHRINK | Gtk::FILL,
+                     Gtk::FILL, 0, 0);
   }
 
   Row->signal_removeOccured().connect(
@@ -289,12 +229,8 @@ void FunctionGlobalParamsWidget::attachRow(GlobalParamRow* Row)
 
 void FunctionGlobalParamsWidget::onAddButtonClicked()
 {
-  Gtk::TreeModel::iterator Iter = mp_Combo->get_active();
-  if (Iter)
-  {
-    m_Model.setGlobalParameter(Iter->get_value(m_Columns.m_Name), "");
+  if (m_AddGlobalParamDialog.show())
     onStructureChangeOccured();
-  }
 }
 
 // =====================================================================
@@ -302,7 +238,7 @@ void FunctionGlobalParamsWidget::onAddButtonClicked()
 
 void FunctionGlobalParamsWidget::onStructureChangeOccured()
 {
-  update();
+  updateRows();
   m_signal_changeOccured.emit();
 }
 

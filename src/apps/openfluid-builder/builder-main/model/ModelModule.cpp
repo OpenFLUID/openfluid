@@ -59,7 +59,6 @@
 #include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
-//#include "MonitoringAddObserverDialog.hpp"
 #include "ModelGeneratorCreationDialog.hpp"
 #include "ModelAddFunctionModule.hpp"
 #include "WareSetWidget.hpp"
@@ -76,17 +75,17 @@ ModelModule::ModelModule(
 {
   mp_MainPanel = 0;
 
-  mp_GlobalParamsWidget = Gtk::manage(new FunctionGlobalParamsWidget(m_Model));
+  mp_AddModule = new ModelAddFunctionModule(m_Model);
+
+  mp_AddParamDialog = new FunctionAddParamDialog();
+  mp_AddGlobalParamDialog = new FunctionAddGlobalParamDialog(m_Model);
+
+  mp_GlobalParamsWidget = Gtk::manage(
+      new FunctionGlobalParamsWidget(m_Model, *mp_AddGlobalParamDialog));
   mp_GlobalParamsWidget->signal_changeOccured().connect(
       sigc::mem_fun(*this, &ModelModule::updateGlobalParams));
 
   mp_ModelWidget = Gtk::manage(new WareSetWidget("Add simulation function"));
-
-//  mp_AddDialog = new MonitoringAddObserverDialog(m_Monit);
-  mp_AddModule = new ModelAddFunctionModule(m_Model);
-
-  mp_AddParamDialog = new FunctionAddParamDialog();
-
   mp_ModelWidget->signal_AddAsked().connect(
       sigc::mem_fun(*this, &ModelModule::whenAddFunctionAsked));
 
@@ -167,11 +166,6 @@ void ModelModule::whenAddFunctionAsked()
     onModelChanged();
   }
 
-//  if (mp_AddDialog->show())
-//  {
-//    update();
-//    onMonitoringChanged();
-//  }
 }
 
 // =====================================================================
@@ -238,12 +232,6 @@ sigc::signal<void> ModelModule::signal_ModuleChanged()
 
 void ModelModule::update()
 {
-  // GlobalParams
-
-  mp_GlobalParamsWidget->update();
-
-  // Simulation functions
-
   mp_ModelWidget->storeExpanderStates();
 
   mp_ModelWidget->clearItems();

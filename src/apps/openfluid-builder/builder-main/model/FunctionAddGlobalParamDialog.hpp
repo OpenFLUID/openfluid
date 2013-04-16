@@ -46,74 +46,74 @@
  */
 
 /**
- \file ModelModule.hpp
+ \file FunctionAddGlobalParamDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MODELMODULE_HPP_
-#define MODELMODULE_HPP_
+#ifndef FUNCTIONADDGLOBALPARAMDIALOG_HPP_
+#define FUNCTIONADDGLOBALPARAMDIALOG_HPP_
 
-#include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
-#include "FunctionGlobalParamsWidget.hpp"
-#include "FunctionAddParamDialog.hpp"
-#include "FunctionAddGlobalParamDialog.hpp"
+#include <gtkmm/dialog.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/combobox.h>
+#include <gtkmm/liststore.h>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
-#include <gtkmm/box.h>
-
-class WareSetWidget;
-class ModelAddFunctionModule;
-class FunctionParamWidget;
-
-class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
+class FunctionAddGlobalParamDialog
 {
   private:
 
     openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
-    Gtk::Box* mp_MainPanel;
+    Gtk::Dialog* mp_Dialog;
 
-    FunctionGlobalParamsWidget* mp_GlobalParamsWidget;
+    Gtk::RadioButton* mp_ExistingBt;
+    Gtk::RadioButton* mp_NewBt;
 
-    ModelAddFunctionModule* mp_AddModule;
+    Gtk::ComboBox* mp_Combo;
 
-    FunctionAddParamDialog* mp_AddParamDialog;
-    FunctionAddGlobalParamDialog* mp_AddGlobalParamDialog;
+    class ComboColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
 
-    void whenAddFunctionAsked();
+        ComboColumns()
+        {
+          add(m_Name);
+          add(m_Unit);
+        }
 
-    void updateGlobalParams();
+        Gtk::TreeModelColumn<std::string> m_Name;
+        Gtk::TreeModelColumn<std::string> m_Unit;
+    };
+    ComboColumns m_Columns;
+    Glib::RefPtr<Gtk::ListStore> mref_ComboModel;
 
-    void onModelChanged();
 
-    sigc::signal<void> m_signal_ModelChanged;
+    Gtk::Entry* mp_NameEntry;
 
-  protected:
+    Gtk::Entry* mp_ValueEntry;
 
-    WareSetWidget* mp_ModelWidget;
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
 
-    std::list<FunctionParamWidget*> m_ParamWidgets;
+    openfluid::fluidx::WareDescriptor* mp_DummyItem;
 
-    void whenRemoveFunctionAsked(std::string ID);
+    void onToggled();
 
-    void whenUpAsked(std::string ID);
+    void onChanged();
 
-    void whenDownAsked(std::string ID);
+    void updateCombo();
 
   public:
+    FunctionAddGlobalParamDialog(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
-    ModelModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    ~FunctionAddGlobalParamDialog();
 
-    ~ModelModule();
-
-    sigc::signal<void> signal_ModuleChanged();
-
-    void compose();
-
-    Gtk::Widget* asWidget();
-
-    void update();
+    bool show();
 };
 
-#endif /* MODELMODULE_HPP_ */
+#endif /* FUNCTIONADDGLOBALPARAMDIALOG_HPP_ */
