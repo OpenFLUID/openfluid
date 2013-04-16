@@ -108,22 +108,6 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(test_updateModel)
-{
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 6);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[0].children().size(), 0);
-
-  mp_AdapterModel->updateModel();
-
-  BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 6);
-  BOOST_CHECK_EQUAL(
-      mp_AdapterModel->getTreeModel()->children()[0].children().size(), 2);
-}
-
-// =====================================================================
-// =====================================================================
-
 BOOST_AUTO_TEST_CASE(test_updateDomain)
 {
   BOOST_CHECK_EQUAL(mp_AdapterModel->getTreeModel()->children().size(), 6);

@@ -224,11 +224,6 @@ class ProjectCoordinatorSub: public ProjectCoordinator
       return ProjectCoordinator::constructClassPageName(ClassName);
     }
 
-//    std::string constructSetPageName(std::string SetName)
-//    {
-//      return ProjectCoordinator::constructSetPageName(SetName);
-//    }
-
     std::string getModelPageName()
     {
       return m_ModelPageName;
@@ -244,19 +239,14 @@ class ProjectCoordinatorSub: public ProjectCoordinator
       return m_RunPageName;
     }
 
-//    std::string getOutputsPageName()
-//    {
-//      return m_OutputsPageName;
-//    }
+    std::string getOutputsPageName()
+    {
+      return m_OutputsPageName;
+    }
 
     void whenModelChanged();
 
     void whenDomainChanged();
-
-//    void whenOutChanged()
-//    {
-//      ProjectCoordinator::whenOutChanged();
-//    }
 
     void removeDeletedClassPages()
     {

@@ -66,10 +66,15 @@
 
 WareSetWidget::WareSetWidget(std::string AddText)
 {
+  Gtk::HBox* BtBox = Gtk::manage(new Gtk::HBox());
+  BtBox->pack_start(
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_BUTTON)),
+      Gtk::PACK_SHRINK, 10);
+  Gtk::Label* AddTextLabel = Gtk::manage(new Gtk::Label());
+  AddTextLabel->set_markup(Glib::ustring::compose("<b>%1</b>", AddText));
+  BtBox->pack_start(*AddTextLabel, Gtk::PACK_SHRINK);
   mp_AddButton = Gtk::manage(new Gtk::Button());
-  mp_AddButton->set_image(
-      *Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_BUTTON)));
-  mp_AddButton->set_tooltip_text(AddText);
+  mp_AddButton->add(*BtBox);
   mp_AddButton->signal_clicked().connect(
       sigc::mem_fun(*this, &WareSetWidget::onAddButtonClicked));
 

@@ -54,6 +54,7 @@
 
 #include "ModelModule.hpp"
 
+#include <gtkmm/separator.h>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/machine/FunctionSignatureRegistry.hpp>
@@ -107,8 +108,12 @@ void ModelModule::compose()
 {
   mp_MainPanel = Gtk::manage(new Gtk::VBox(false, 5));
 
+  Gtk::HSeparator* Sep = Gtk::manage(new Gtk::HSeparator());
+  Sep->set_visible(true);
+
   mp_MainPanel->set_border_width(5);
-  mp_MainPanel->pack_start(*mp_GlobalParamsWidget, Gtk::PACK_SHRINK);
+  mp_MainPanel->pack_start(*mp_GlobalParamsWidget, Gtk::PACK_SHRINK,10);
+  mp_MainPanel->pack_start(*Sep, Gtk::PACK_SHRINK);
   mp_MainPanel->pack_start(*mp_ModelWidget);
 
   mp_MainPanel->set_visible(true);

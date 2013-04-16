@@ -103,7 +103,7 @@ sigc::signal<void> ProjectExplorerViewImpl::signal_ActivationChanged()
 void ProjectExplorerViewImpl::setTreeModel(
     Glib::RefPtr<Gtk::TreeModel> TreeModel)
 {
-  Gtk::TreePath RunRowPath = TreeModel->get_path(TreeModel->get_iter("3:0"));
+  Gtk::TreePath RunRowPath = TreeModel->get_path(TreeModel->get_iter("4"));
 
   bool RunRowIsExpanded = mp_TreeView->row_expanded(RunRowPath);
 

@@ -97,7 +97,8 @@ class FunctionParamRow: public BuilderTableRowWidget
 
     FunctionParamRow(openfluid::fluidx::ModelItemDescriptor& FctDesc,
                      std::string ParamName, std::string ParamValue,
-                     std::string ParamUnit, bool WithRemoveBt);
+                     std::string ParamUnit, std::string ParamDescription,
+                     bool WithRemoveBt);
 
     void setGlobalValue(std::string GlobalValue);
 

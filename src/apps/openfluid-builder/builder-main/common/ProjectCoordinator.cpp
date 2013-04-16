@@ -943,12 +943,6 @@ ProjectCoordinatorSub::ProjectCoordinatorSub(
 
 void ProjectCoordinatorSub::whenModelChanged()
 {
-//  Glib::ustring OutputConsistencyMessage =
-//      m_EngineProject.checkOutputsConsistency();
-//
-//  if (!OutputConsistencyMessage.empty())
-//    std::cout << OutputConsistencyMessage << std::endl;
-
   computeModelChanges();
 }
 
@@ -957,12 +951,6 @@ void ProjectCoordinatorSub::whenModelChanged()
 
 void ProjectCoordinatorSub::whenDomainChanged()
 {
-//  Glib::ustring OutputConsistencyMessage =
-//      m_EngineProject.checkOutputsConsistency();
-//
-//  if (!OutputConsistencyMessage.empty())
-//    std::cout << OutputConsistencyMessage << std::endl;
-
   computeDomainChanges();
 }
 

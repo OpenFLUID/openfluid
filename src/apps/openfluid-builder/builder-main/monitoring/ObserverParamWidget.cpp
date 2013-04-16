@@ -83,7 +83,8 @@ ObserverParamRow::ObserverParamRow(
   mp_RemoveButton->set_image(
       *Gtk::manage(new Gtk::Image(Gtk::Stock::REMOVE, Gtk::ICON_SIZE_BUTTON)));
   mp_RemoveButton->set_relief(Gtk::RELIEF_NONE);
-  mp_RemoveButton->set_tooltip_text(_("Remove this parameter"));
+  mp_RemoveButton->set_tooltip_text(
+      Glib::ustring::compose(_("Remove %1"), m_Name));
   mp_RemoveButton->signal_clicked().connect(
       sigc::mem_fun(*this, &ObserverParamRow::onRemoveButtonClicked));
   m_RowWidgets.push_back(mp_RemoveButton);

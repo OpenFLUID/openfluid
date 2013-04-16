@@ -67,16 +67,22 @@
 
 FunctionParamRow::FunctionParamRow(
     openfluid::fluidx::ModelItemDescriptor& FctDesc, std::string ParamName,
-    std::string ParamValue, std::string ParamUnit, bool WithRemoveBt) :
+    std::string ParamValue, std::string ParamUnit, std::string ParamDescription,
+    bool WithRemoveBt) :
     m_FctDesc(FctDesc), m_Name(ParamName)
 {
   m_ColumnCount = 5;
 
+  std::string DescriptionTooltip =
+      ParamDescription.empty() ? _("no description") : ParamDescription;
+
   Gtk::Label* NameLabel = Gtk::manage(new Gtk::Label(m_Name, 0, 0.5));
+  NameLabel->set_tooltip_text(DescriptionTooltip);
   m_RowWidgets.push_back(NameLabel);
 
   mp_ValueEntry = Gtk::manage(new Gtk::Entry());
   mp_ValueEntry->set_text(ParamValue);
+  mp_ValueEntry->set_tooltip_text(DescriptionTooltip);
   mp_ValueEntry->signal_changed().connect(
       sigc::mem_fun(*this, &FunctionParamRow::onValueChanged));
   m_RowWidgets.push_back(mp_ValueEntry);
@@ -95,7 +101,8 @@ FunctionParamRow::FunctionParamRow(
         *Gtk::manage(
             new Gtk::Image(Gtk::Stock::REMOVE, Gtk::ICON_SIZE_BUTTON)));
     mp_RemoveButton->set_relief(Gtk::RELIEF_NONE);
-    mp_RemoveButton->set_tooltip_text(_("Remove this parameter"));
+    mp_RemoveButton->set_tooltip_text(
+        Glib::ustring::compose(_("Remove %1"), m_Name));
     mp_RemoveButton->signal_clicked().connect(
         sigc::mem_fun(*this, &FunctionParamRow::onRemoveButtonClicked));
     m_RowWidgets.push_back(mp_RemoveButton);
@@ -222,7 +229,7 @@ void FunctionParamWidget::updateRows()
     {
       attachRow(
           new FunctionParamRow(m_FctDesc, it->DataName, Params[it->DataName],
-                               it->DataUnit, false),
+                               it->DataUnit, it->Description, false),
           it->DataName);
 
       Params.erase(it->DataName);
@@ -233,8 +240,9 @@ void FunctionParamWidget::updateRows()
   for (std::map<std::string, std::string>::iterator it = Params.begin();
       it != Params.end(); ++it)
   {
-    attachRow(new FunctionParamRow(m_FctDesc, it->first, it->second, "", true),
-              it->first);
+    attachRow(
+        new FunctionParamRow(m_FctDesc, it->first, it->second, "", "", true),
+        it->first);
   }
 
   if (m_Rows.empty())
@@ -276,7 +284,7 @@ void FunctionParamWidget::attachRow(FunctionParamRow* Row,
 
 void FunctionParamWidget::onAddButtonClicked()
 {
-  if (m_AddParamDialog.show(&m_FctDesc,mp_Sign))
+  if (m_AddParamDialog.show(&m_FctDesc, mp_Sign))
     onStructureChangeOccured();
 }
 
