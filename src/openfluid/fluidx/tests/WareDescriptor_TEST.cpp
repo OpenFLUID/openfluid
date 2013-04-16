@@ -404,6 +404,11 @@ BOOST_AUTO_TEST_CASE(check_isInsertable)
   BOOST_CHECK(FuncDesc.isInsertable("param1.new"));
   BOOST_CHECK(FuncDesc.isInsertable("new"));
   BOOST_CHECK(FuncDesc.isInsertable("new1.new2"));
+
+  BOOST_CHECK(!FuncDesc.isInsertable("param3.level2A."));
+  BOOST_CHECK(!FuncDesc.isInsertable("param2."));
+  BOOST_CHECK(!FuncDesc.isInsertable("."));
+  BOOST_CHECK(!FuncDesc.isInsertable("new1."));
 }
 
 // =====================================================================
