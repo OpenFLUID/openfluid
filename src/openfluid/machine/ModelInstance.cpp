@@ -190,10 +190,18 @@ void ModelInstance::appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex
 openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const
 {
   openfluid::ware::WareParams_t MergedParams = m_GlobalParams;
-  openfluid::ware::WareParams_t::const_iterator itParams;
 
-  for(itParams = Params.begin();itParams != Params.end();++itParams)
-    MergedParams.put((*itParams).first,(*itParams).second.data());
+  std::map<std::string,std::string> GlobalsMap = openfluid::fluidx::WareDescriptor::getParamsAsMap(m_GlobalParams);
+  std::map<std::string,std::string> LocalsMap = openfluid::fluidx::WareDescriptor::getParamsAsMap(Params);
+
+  for(std::map<std::string,std::string>::iterator itLocal = LocalsMap.begin();
+      itLocal != LocalsMap.end();++itLocal)
+  {
+    if(!itLocal->second.empty())
+      MergedParams.put(itLocal->first,itLocal->second);
+    else if(!GlobalsMap.count(itLocal->first))
+      MergedParams.put(itLocal->first,itLocal->second);
+  }
 
   return MergedParams;
 }
