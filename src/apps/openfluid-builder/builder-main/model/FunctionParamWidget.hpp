@@ -58,6 +58,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/entry.h>
 #include <gtkmm/table.h>
+#include <giomm/file.h>
 #include "BuilderTableRowWidget.hpp"
 #include "FunctionAddParamDialog.hpp"
 
@@ -109,6 +110,36 @@ class FunctionParamRow: public BuilderTableRowWidget
 // =====================================================================
 // =====================================================================
 
+class FunctionParamFileRow: public BuilderTableRowWidget
+{
+  private:
+
+    std::string m_FileName;
+
+    bool m_IsRequired;
+
+    Glib::RefPtr<Gio::File> m_File;
+
+    Gtk::Label* mp_FileNameLabel;
+
+    Gtk::Button* mp_FileButton;
+
+    sigc::signal<void> m_signal_FileChanged;
+
+    void onFileButtonClicked();
+
+  public:
+
+    FunctionParamFileRow(std::string FileName, bool IsRequired);
+
+    void setFileFound();
+
+    sigc::signal<void> signal_FileChanged();
+};
+
+// =====================================================================
+// =====================================================================
+
 class FunctionParamWidget: public Gtk::VBox
 {
   private:
@@ -118,18 +149,29 @@ class FunctionParamWidget: public Gtk::VBox
 
     FunctionAddParamDialog& m_AddParamDialog;
 
-    Gtk::Table* mp_Table;
+    Gtk::Table* mp_ParamsTable;
+    Gtk::Table* mp_RequiredFilesTable;
+    Gtk::Table* mp_UsedFilesTable;
 
-    unsigned int m_CurrentTableBottom;
+    unsigned int m_CurrentParamsTableBottom;
+    unsigned int m_CurrentReqFilesTableBottom;
+    unsigned int m_CurrentUsedFilesTableBottom;
 
-    std::map<std::string, FunctionParamRow*> m_Rows;
+    std::map<std::string, FunctionParamRow*> m_ParamsRows;
 
     std::map<std::string, std::string> m_Globals;
 
     sigc::signal<void> m_signal_changeOccured;
 
     void updateRows();
-    void attachRow(FunctionParamRow* Row, std::string ParamName);
+
+    void updateParamsRows();
+    void updateRequiredFilesRows();
+    void updateUsedFilesRows();
+
+    void attachParamsRow(FunctionParamRow* Row, std::string ParamName);
+    void attachRequiredFileRow(FunctionParamFileRow* Row);
+    void attachUsedFileRow(FunctionParamFileRow* Row);
 
     void onAddButtonClicked();
 

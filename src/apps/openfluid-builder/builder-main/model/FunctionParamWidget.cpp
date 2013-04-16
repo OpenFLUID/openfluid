@@ -57,9 +57,12 @@
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/table.h>
+#include <gtkmm/filechooserdialog.h>
+#include <gtkmm/separator.h>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
+#include <openfluid/base/ProjectManager.hpp>
 #include "EngineHelper.hpp"
 
 // =====================================================================
@@ -168,10 +171,127 @@ sigc::signal<void> FunctionParamRow::signal_valueChangeOccured()
 // =====================================================================
 // =====================================================================
 
+FunctionParamFileRow::FunctionParamFileRow(std::string FileName,
+                                           bool IsRequired) :
+    m_FileName(FileName), m_IsRequired(IsRequired)
+{
+  m_File = Gio::File::create_for_path(
+      Glib::ustring::compose(
+          "%1/%2",
+          openfluid::base::ProjectManager::getInstance()->getInputDir(),
+          m_FileName));
+
+  m_ColumnCount = 2;
+
+  mp_FileButton = Gtk::manage(new Gtk::Button());
+  mp_FileButton->set_image(
+      *Gtk::manage(new Gtk::Image(Gtk::Stock::OPEN, Gtk::ICON_SIZE_BUTTON)));
+  mp_FileButton->set_visible(true);
+  mp_FileButton->signal_clicked().connect(
+      sigc::mem_fun(*this, &FunctionParamFileRow::onFileButtonClicked));
+  m_RowWidgets.push_back(mp_FileButton);
+
+  mp_FileNameLabel = Gtk::manage(
+      new Gtk::Label("", Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  mp_FileNameLabel->set_visible(true);
+  mp_FileNameLabel->set_padding(10, 0);
+  m_RowWidgets.push_back(mp_FileNameLabel);
+
+  setFileFound();
+}
+
+// =====================================================================
+// =====================================================================
+
+void FunctionParamFileRow::onFileButtonClicked()
+{
+  Gtk::FileChooserDialog Dialog(
+      _("Select a file to copy in the project directory"));
+
+  Dialog.set_file(m_File);
+  Dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  Dialog.add_button(Gtk::Stock::COPY, Gtk::RESPONSE_OK);
+
+  if (Dialog.run() == Gtk::RESPONSE_OK)
+  {
+    Glib::RefPtr<Gio::File> ChoosedFile = Dialog.get_file();
+
+    if (!ChoosedFile)
+      return;
+
+    if (m_File->get_path() == ChoosedFile->get_path())
+      return;
+
+    Gio::FileCopyFlags Flag = Gio::FILE_COPY_NONE;
+
+    if (m_File->query_exists() && m_File->query_file_type()
+        != Gio::FILE_TYPE_DIRECTORY)
+    {
+      if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+          Glib::ustring::compose(
+              _("File %1 already exists.\nDo you really want to overwrite it?"),
+              m_FileName)))
+        return;
+
+      Flag = Gio::FILE_COPY_OVERWRITE;
+    }
+
+    try
+    {
+      ChoosedFile->copy(m_File, Flag);
+    }
+    catch (Gio::Error& e)
+    {
+      openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
+          _("Error while copying file"));
+    }
+
+    setFileFound();
+
+    m_signal_FileChanged.emit();
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+void FunctionParamFileRow::setFileFound()
+{
+  if (m_File->query_exists() && m_File->query_file_type()
+      != Gio::FILE_TYPE_DIRECTORY)
+  {
+    mp_FileNameLabel->set_markup(
+        Glib::ustring::compose("%1  <i>(%2)</i>", m_FileName, _("found")));
+    mp_FileButton->set_tooltip_text(_("Change the file to use"));
+  }
+  else
+  {
+    mp_FileNameLabel->set_markup(
+        Glib::ustring::compose("<span color='%3'>%1  <i>(%2)</i></span>",
+                               m_FileName, _("not found"),
+                               m_IsRequired ? "red" : "orange"));
+    mp_FileButton->set_tooltip_text(_("Choose the file to use"));
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void> FunctionParamFileRow::signal_FileChanged()
+{
+  return m_signal_FileChanged;
+}
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================
+
 FunctionParamWidget::FunctionParamWidget(
-    openfluid::fluidx::ModelItemDescriptor& FctDesc,
-    openfluid::machine::ModelItemSignatureInstance* Sign,
-    FunctionAddParamDialog& AddParamDialog) :
+    openfluid::fluidx::ModelItemDescriptor & FctDesc,
+    openfluid::machine::ModelItemSignatureInstance * Sign,
+    FunctionAddParamDialog & AddParamDialog) :
     m_FctDesc(FctDesc), mp_Sign(Sign), m_AddParamDialog(AddParamDialog)
 {
   Gtk::Button* AddButton = Gtk::manage(new Gtk::Button());
@@ -184,12 +304,22 @@ FunctionParamWidget::FunctionParamWidget(
   Gtk::HBox* ButtonBox = Gtk::manage(new Gtk::HBox());
   ButtonBox->pack_start(*AddButton, Gtk::PACK_SHRINK, 0);
 
-  mp_Table = Gtk::manage(new Gtk::Table());
-  mp_Table->set_col_spacings(10);
-  mp_Table->set_border_width(5);
+  mp_ParamsTable = Gtk::manage(new Gtk::Table());
+  mp_ParamsTable->set_col_spacings(10);
+  mp_ParamsTable->set_border_width(5);
+
+  mp_RequiredFilesTable = Gtk::manage(new Gtk::Table());
+  mp_RequiredFilesTable->set_col_spacings(10);
+  mp_RequiredFilesTable->set_border_width(5);
+
+  mp_UsedFilesTable = Gtk::manage(new Gtk::Table());
+  mp_UsedFilesTable->set_col_spacings(10);
+  mp_UsedFilesTable->set_border_width(5);
 
   pack_start(*ButtonBox, Gtk::PACK_SHRINK);
-  pack_start(*mp_Table, Gtk::PACK_EXPAND_WIDGET);
+  pack_start(*mp_ParamsTable, Gtk::PACK_EXPAND_WIDGET);
+  pack_start(*mp_RequiredFilesTable, Gtk::PACK_SHRINK);
+  pack_start(*mp_UsedFilesTable, Gtk::PACK_SHRINK);
 
   updateRows();
 
@@ -210,13 +340,23 @@ FunctionParamWidget::~FunctionParamWidget()
 
 void FunctionParamWidget::updateRows()
 {
-  int TableWidgetCount = mp_Table->children().size();
+  updateParamsRows();
+  updateRequiredFilesRows();
+  updateUsedFilesRows();
+}
+
+// =====================================================================
+// =====================================================================
+
+void FunctionParamWidget::updateParamsRows()
+{
+  int TableWidgetCount = mp_ParamsTable->children().size();
   for (int i = 0; i < TableWidgetCount; i++)
-    mp_Table->remove(*mp_Table->children().begin()->get_widget());
+    mp_ParamsTable->remove(*mp_ParamsTable->children().begin()->get_widget());
 
-  m_Rows.clear();
+  m_ParamsRows.clear();
 
-  m_CurrentTableBottom = 0;
+  m_CurrentParamsTableBottom = 0;
 
   std::map<std::string, std::string> Params = m_FctDesc.getParametersAsMap();
 
@@ -227,7 +367,7 @@ void FunctionParamWidget::updateRows()
     for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it =
         Items.begin(); it != Items.end(); ++it)
     {
-      attachRow(
+      attachParamsRow(
           new FunctionParamRow(m_FctDesc, it->DataName, Params[it->DataName],
                                it->DataUnit, it->Description, false),
           it->DataName);
@@ -240,33 +380,34 @@ void FunctionParamWidget::updateRows()
   for (std::map<std::string, std::string>::iterator it = Params.begin();
       it != Params.end(); ++it)
   {
-    attachRow(
+    attachParamsRow(
         new FunctionParamRow(m_FctDesc, it->first, it->second, "", "", true),
         it->first);
   }
 
-  if (m_Rows.empty())
+  if (m_ParamsRows.empty())
   {
     Gtk::Label* EmptyLabel = Gtk::manage(new Gtk::Label("", 0.5, 0));
     EmptyLabel->set_markup(_("<i>No parameters</i>"));
-    mp_Table->attach(*EmptyLabel, 0, 1, 0, 1);
+    mp_ParamsTable->attach(*EmptyLabel, 0, 1, 0, 1);
   }
 
-  mp_Table->show_all_children();
+  mp_ParamsTable->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::attachRow(FunctionParamRow* Row,
-                                    std::string ParamName)
+void FunctionParamWidget::attachParamsRow(FunctionParamRow* Row,
+                                          std::string ParamName)
 {
   for (unsigned int i = 0; i < Row->getColumnCount(); i++)
   {
-    mp_Table->attach(*Row->getWidgets()[i], i, i + 1, m_CurrentTableBottom,
-                     m_CurrentTableBottom + 1,
-                     i == 1 ? Gtk::EXPAND | Gtk::FILL : Gtk::SHRINK | Gtk::FILL,
-                     Gtk::FILL, 0, 0);
+    mp_ParamsTable->attach(
+        *Row->getWidgets()[i], i, i + 1, m_CurrentParamsTableBottom,
+        m_CurrentParamsTableBottom + 1,
+        i == 1 ? Gtk::EXPAND | Gtk::FILL : Gtk::SHRINK | Gtk::FILL, Gtk::FILL,
+        0, 0);
   }
 
   Row->signal_removeOccured().connect(
@@ -274,9 +415,121 @@ void FunctionParamWidget::attachRow(FunctionParamRow* Row,
   Row->signal_valueChangeOccured().connect(
       sigc::mem_fun(*this, &FunctionParamWidget::onValueChangeOccured));
 
-  m_CurrentTableBottom++;
+  m_CurrentParamsTableBottom++;
 
-  m_Rows[ParamName] = Row;
+  m_ParamsRows[ParamName] = Row;
+}
+
+// =====================================================================
+// =====================================================================
+
+void FunctionParamWidget::updateRequiredFilesRows()
+{
+  int TableWidgetCount = mp_RequiredFilesTable->children().size();
+  for (int i = 0; i < TableWidgetCount; i++)
+    mp_RequiredFilesTable->remove(
+        *mp_RequiredFilesTable->children().begin()->get_widget());
+
+  if (mp_Sign)
+  {
+    std::vector<std::string> Items =
+        mp_Sign->Signature->HandledData.RequiredExtraFiles;
+
+    if (!Items.empty())
+    {
+      Gtk::HSeparator* HSep = Gtk::manage(new Gtk::HSeparator());
+      Gtk::Label* ReqFilesLabel = Gtk::manage(
+          new Gtk::Label(_("Required files"), 0, 0.5));
+      mp_RequiredFilesTable->attach(*HSep, 0, 2, 0, 1, Gtk::SHRINK | Gtk::FILL,
+                                    Gtk::FILL);
+      mp_RequiredFilesTable->attach(*ReqFilesLabel, 0, 2, 1, 2,
+                                    Gtk::SHRINK | Gtk::FILL, Gtk::FILL);
+    }
+
+    m_CurrentReqFilesTableBottom = 2;
+
+    for (std::vector<std::string>::iterator it = Items.begin();
+        it != Items.end(); ++it)
+      attachRequiredFileRow(new FunctionParamFileRow(*it, true));
+  }
+
+  mp_RequiredFilesTable->show_all_children();
+}
+
+// =====================================================================
+// =====================================================================
+
+void FunctionParamWidget::attachRequiredFileRow(FunctionParamFileRow* Row)
+{
+  for (unsigned int i = 0; i < Row->getColumnCount(); i++)
+  {
+    mp_RequiredFilesTable->attach(
+        *Row->getWidgets()[i], i, i + 1, m_CurrentReqFilesTableBottom,
+        m_CurrentReqFilesTableBottom + 1,
+        i == 1 ? Gtk::EXPAND | Gtk::FILL : Gtk::SHRINK | Gtk::FILL, Gtk::FILL,
+        0, 0);
+  }
+
+  Row->signal_FileChanged().connect(
+      sigc::mem_fun(*this, &FunctionParamWidget::onValueChangeOccured));
+
+  m_CurrentReqFilesTableBottom++;
+}
+
+// =====================================================================
+// =====================================================================
+
+void FunctionParamWidget::updateUsedFilesRows()
+{
+  int TableWidgetCount = mp_UsedFilesTable->children().size();
+  for (int i = 0; i < TableWidgetCount; i++)
+    mp_UsedFilesTable->remove(
+        *mp_UsedFilesTable->children().begin()->get_widget());
+
+  if (mp_Sign)
+  {
+    std::vector<std::string> Items =
+        mp_Sign->Signature->HandledData.UsedExtraFiles;
+
+    if (!Items.empty())
+    {
+      Gtk::HSeparator* HSep = Gtk::manage(new Gtk::HSeparator());
+      Gtk::Label* ReqFilesLabel = Gtk::manage(
+          new Gtk::Label(_("Used files"), 0, 0.5));
+      mp_UsedFilesTable->attach(*HSep, 0, 2, 0, 1, Gtk::SHRINK | Gtk::FILL,
+                                Gtk::FILL);
+      mp_UsedFilesTable->attach(*ReqFilesLabel, 0, 2, 1, 2,
+                                Gtk::SHRINK | Gtk::FILL, Gtk::FILL);
+    }
+
+    m_CurrentUsedFilesTableBottom = 2;
+
+    for (std::vector<std::string>::iterator it = Items.begin();
+        it != Items.end(); ++it)
+      attachUsedFileRow(new FunctionParamFileRow(*it, false));
+  }
+
+  mp_UsedFilesTable->show_all_children();
+}
+
+// =====================================================================
+// =====================================================================
+
+void FunctionParamWidget::attachUsedFileRow(FunctionParamFileRow* Row)
+{
+  for (unsigned int i = 0; i < Row->getColumnCount(); i++)
+  {
+    mp_UsedFilesTable->attach(
+        *Row->getWidgets()[i], i, i + 1, m_CurrentUsedFilesTableBottom,
+        m_CurrentUsedFilesTableBottom + 1,
+        i == 1 ? Gtk::EXPAND | Gtk::FILL : Gtk::SHRINK | Gtk::FILL, Gtk::FILL,
+        0, 0);
+  }
+
+  Row->signal_FileChanged().connect(
+      sigc::mem_fun(*this, &FunctionParamWidget::onValueChangeOccured));
+
+  m_CurrentUsedFilesTableBottom++;
 }
 
 // =====================================================================
@@ -304,8 +557,8 @@ void FunctionParamWidget::updateGlobals(
 
 void FunctionParamWidget::updateGlobals()
 {
-  for (std::map<std::string, FunctionParamRow*>::iterator it = m_Rows.begin();
-      it != m_Rows.end(); ++it)
+  for (std::map<std::string, FunctionParamRow*>::iterator it =
+      m_ParamsRows.begin(); it != m_ParamsRows.end(); ++it)
   {
     std::map<std::string, std::string>::const_iterator Found = m_Globals.find(
         it->first);
