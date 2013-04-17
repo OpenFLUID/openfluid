@@ -100,13 +100,13 @@ ValuesBuffer::DataContainer_t::iterator ValuesBuffer::findAtIndex(const TimeInde
 {
   if (m_Data.empty()) return m_Data.end();
 
-  if (anIndex < m_Data.front().Index || anIndex > m_Data.back().Index)
+  if (anIndex < m_Data.front().m_Index || anIndex > m_Data.back().m_Index)
     return m_Data.end();
 
-  if (anIndex == m_Data.front().Index)
+  if (anIndex == m_Data.front().m_Index)
     return m_Data.begin();
 
-  if (anIndex == m_Data.back().Index)
+  if (anIndex == m_Data.back().m_Index)
   {
     ValuesBuffer::DataContainer_t::iterator TmpIt = m_Data.end();
     --TmpIt;
@@ -120,10 +120,10 @@ ValuesBuffer::DataContainer_t::iterator ValuesBuffer::findAtIndex(const TimeInde
 
   while (It!=Ite)
   {
-    if ((*It).Index == anIndex)
+    if ((*It).m_Index == anIndex)
       return It;
 
-    if ((*It).Index > anIndex)
+    if ((*It).m_Index > anIndex)
       return m_Data.end();
 
     ++It;
@@ -142,13 +142,13 @@ ValuesBuffer::DataContainer_t::const_iterator ValuesBuffer::findAtIndex(const Ti
 {
   if (m_Data.empty()) return m_Data.end();
 
-  if (anIndex < m_Data.front().Index || anIndex > m_Data.back().Index)
+  if (anIndex < m_Data.front().m_Index || anIndex > m_Data.back().m_Index)
     return m_Data.end();
 
-  if (anIndex == m_Data.front().Index)
+  if (anIndex == m_Data.front().m_Index)
     return m_Data.begin();
 
-  if (anIndex == m_Data.back().Index)
+  if (anIndex == m_Data.back().m_Index)
   {
     ValuesBuffer::DataContainer_t::const_iterator TmpIt = m_Data.end();
     --TmpIt;
@@ -161,10 +161,10 @@ ValuesBuffer::DataContainer_t::const_iterator ValuesBuffer::findAtIndex(const Ti
 
   while (It!=Ite)
   {
-    if ((*It).Index == anIndex)
+    if ((*It).m_Index == anIndex)
       return It;
 
-    if ((*It).Index > anIndex)
+    if ((*It).m_Index > anIndex)
       return m_Data.end();
 
     It++;
@@ -182,9 +182,9 @@ bool ValuesBuffer::getValue(const TimeIndex_t& anIndex, Value* aValue) const
 {
   DataContainer_t::const_iterator It = findAtIndex(anIndex);
 
-  if (It != m_Data.end() && aValue->getType() == (*It).Data.get()->getType())
+  if (It != m_Data.end() && aValue->getType() == (*It).m_Value.get()->getType())
   {
-    *aValue = *((*It).Data);
+    *aValue = *((*It).m_Value);
 
     return true;
   }
@@ -203,7 +203,7 @@ Value* ValuesBuffer::getValue(const TimeIndex_t& anIndex) const
 
   if (It != m_Data.end())
   {
-    return (*It).Data.get();
+    return (*It).m_Value.get();
   }
 
   return (Value*)0;
@@ -215,7 +215,7 @@ Value* ValuesBuffer::getValue(const TimeIndex_t& anIndex) const
 
 Value* ValuesBuffer::getCurrentValue() const
 {
-  return m_Data.back().Data.get();
+  return m_Data.back().m_Value.get();
 }
 
 
@@ -225,9 +225,9 @@ Value* ValuesBuffer::getCurrentValue() const
 
 bool ValuesBuffer::getCurrentValue(Value* aValue) const
 {
-  if(aValue->getType() == m_Data.back().Data->getType())
+  if(aValue->getType() == m_Data.back().m_Value->getType())
   {
-    *aValue = *m_Data.back().Data;
+    *aValue = *m_Data.back().m_Value;
 
     return true;
   }
@@ -239,11 +239,80 @@ bool ValuesBuffer::getCurrentValue(Value* aValue) const
 // =====================================================================
 
 
+bool ValuesBuffer::getLatestIndexedValue(IndexedValue& IndValue) const
+{
+  if(!m_Data.empty())
+  {
+    IndValue.m_Index = m_Data.back().m_Index;
+    IndValue.m_Value.reset(m_Data.back().m_Value->clone());
+
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ValuesBuffer::getLatestIndexedValues(const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const
+{
+  IndValueList.clear();
+
+  if(!m_Data.empty())
+  {
+    DataContainer_t::const_reverse_iterator rIt = m_Data.rbegin();
+    DataContainer_t::const_reverse_iterator rIte = m_Data.rend();
+
+    while (rIt != rIte && (*rIt).getIndex() >= anIndex)
+    {
+      IndValueList.push_front(*rIt);
+      ++rIt;
+    }
+
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ValuesBuffer::getIndexedValues(const TimeIndex_t& aBeginIndex, const TimeIndex_t& anEndIndex,
+                                    IndexedValueList& IndValueList) const
+{
+  IndValueList.clear();
+
+  if(!m_Data.empty() && aBeginIndex <= anEndIndex)
+  {
+    DataContainer_t::const_reverse_iterator rIt = m_Data.rbegin();
+    DataContainer_t::const_reverse_iterator rIte = m_Data.rend();
+
+    while (rIt != rIte && (*rIt).getIndex() >= aBeginIndex)
+    {
+      if  ((*rIt).getIndex() <= anEndIndex) IndValueList.push_front(*rIt);
+      ++rIt;
+    }
+
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
 TimeIndex_t ValuesBuffer::getCurrentIndex() const
 {
   if (!m_Data.empty())
   {
-    return m_Data.back().Index;
+    return m_Data.back().m_Index;
   }
   return -1;
 }
@@ -259,11 +328,28 @@ bool ValuesBuffer::modifyValue(const TimeIndex_t& anIndex, const Value& aValue)
 
   if (It != m_Data.end())
   {
-    (*It).Data.reset(aValue.clone());
+    (*It).m_Value.reset(aValue.clone());
     return true;
   }
   return false;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ValuesBuffer::modifyCurrentValue(const Value& aValue)
+{
+  if (m_Data.empty()) return false;
+
+  DataContainer_t::iterator It = m_Data.end();
+  It--;
+  (*It).m_Value.reset(aValue.clone());
+
+  return true;
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -271,7 +357,7 @@ bool ValuesBuffer::modifyValue(const TimeIndex_t& anIndex, const Value& aValue)
 
 bool ValuesBuffer::appendValue(const TimeIndex_t& anIndex, const openfluid::core::Value& aValue)
 {
-  if (!m_Data.empty() && anIndex <= m_Data.back().Index) return false;
+  if (!m_Data.empty() && anIndex <= m_Data.back().m_Index) return false;
 
   m_Data.push_back(IndexedValue(anIndex,aValue));
   runGarbageCollector();
@@ -308,7 +394,7 @@ void ValuesBuffer::displayContent(std::ostream& OStream) const
 
   while (It!=Ite)
   {
-    OStream << "[" << (*It).Index << "|" << (*It).Data.get()->toString() << "]" << std::endl;
+    OStream << "[" << (*It).m_Index << "|" << (*It).m_Value.get()->toString() << "]" << std::endl;
     It++;
   }
 

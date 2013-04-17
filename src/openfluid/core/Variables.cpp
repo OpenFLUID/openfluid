@@ -79,7 +79,7 @@ Variables::~Variables()
 // =====================================================================
 
 
-bool Variables::createVariable(const VariableName_t aName)
+bool Variables::createVariable(const VariableName_t& aName)
 {
   if (!isVariableExist(aName))
   {
@@ -95,7 +95,7 @@ bool Variables::createVariable(const VariableName_t aName)
 // =====================================================================
 
 
-bool Variables::createVariable(const VariableName_t aName, const Value::Type aType)
+bool Variables::createVariable(const VariableName_t& aName, const Value::Type& aType)
 {
   if (!isVariableExist(aName))
   {
@@ -114,15 +114,9 @@ bool Variables::createVariable(const VariableName_t aName, const Value::Type aTy
  * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
  * either a NullValue or the same type than the existing Variable.
  */
-bool Variables::modifyValue(const VariableName_t aName, const TimeIndex_t& anIndex,
+bool Variables::modifyValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
     const Value& aValue)
 {
-
-/*  std::cout << (isVariableExist(aName, anIndex)) << std::endl;
-  std::cout << "  " << (m_Data[aName].second == openfluid::core::Value::NONE) << std::endl;
-  std::cout << "  " << (aValue.getType() == openfluid::core::Value::NULLL) << std::endl;
-  std::cout << "  " << (m_Data[aName].second == aValue.getType()) << std::endl;*/
-
   if (isVariableExist(aName, anIndex)
       && (m_Data[aName].second == openfluid::core::Value::NONE
           || aValue.getType() == openfluid::core::Value::NULLL
@@ -139,7 +133,26 @@ bool Variables::modifyValue(const VariableName_t aName, const TimeIndex_t& anInd
  * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
  * either a NullValue or the same type than the existing Variable.
  */
-bool Variables::appendValue(const VariableName_t aName, const TimeIndex_t& anIndex, const Value& aValue)
+bool Variables::modifyCurrentValue(const VariableName_t& aName, const Value& aValue)
+{
+  if (isVariableExist(aName)
+      && (m_Data[aName].second == openfluid::core::Value::NONE
+          || aValue.getType() == openfluid::core::Value::NULLL
+          || m_Data[aName].second == aValue.getType()))
+    return m_Data[aName].first.modifyCurrentValue(aValue);
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+/**
+ * The existing Variable must be untyped (NONE), otherwise the expecting Value must be
+ * either a NullValue or the same type than the existing Variable.
+ */
+bool Variables::appendValue(const VariableName_t& aName, const TimeIndex_t& anIndex, const Value& aValue)
 {
   if (isVariableExist(aName)
       && (m_Data[aName].second == openfluid::core::Value::NONE
@@ -155,7 +168,7 @@ bool Variables::appendValue(const VariableName_t aName, const TimeIndex_t& anInd
 // =====================================================================
 
 
-bool Variables::getValue(const VariableName_t aName, const TimeIndex_t& anIndex,
+bool Variables::getValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
     Value* aValue) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
@@ -166,7 +179,7 @@ bool Variables::getValue(const VariableName_t aName, const TimeIndex_t& anIndex,
 // =====================================================================
 // =====================================================================
 
-Value* Variables::getValue(const VariableName_t aName, const TimeIndex_t& anIndex) const
+Value* Variables::getValue(const VariableName_t& aName, const TimeIndex_t& anIndex) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -180,7 +193,7 @@ Value* Variables::getValue(const VariableName_t aName, const TimeIndex_t& anInde
 // =====================================================================
 
 
-Value* Variables::getCurrentValue(const VariableName_t aName) const
+Value* Variables::getCurrentValue(const VariableName_t& aName) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -190,15 +203,55 @@ Value* Variables::getCurrentValue(const VariableName_t aName) const
   return (Value*) 0;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool Variables::getCurrentValue(const VariableName_t aName, Value* aValue) const
+bool Variables::getCurrentValue(const VariableName_t& aName, Value* aValue) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   return (it != m_Data.end() && it->second.first.getCurrentValue(aValue));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::getLatestIndexedValue(const VariableName_t& aName, IndexedValue& IndValue) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  return (it != m_Data.end() && it->second.first.getLatestIndexedValue(IndValue));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::getLatestIndexedValues(const VariableName_t& aName, const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  return (it != m_Data.end() && it->second.first.getLatestIndexedValues(anIndex,IndValueList));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::getIndexedValues(const VariableName_t& aName,
+                                 const TimeIndex_t& aBeginIndex, const TimeIndex_t& anEndIndex,
+                                 IndexedValueList& IndValueList) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  return (it != m_Data.end() && it->second.first.getIndexedValues(aBeginIndex,anEndIndex,IndValueList));
+
 }
 
 
@@ -232,7 +285,7 @@ bool Variables::getCurrentValueIfIndex(const VariableName_t& aName, const TimeIn
 // =====================================================================
 
 
-bool Variables::isVariableExist(const VariableName_t aName) const
+bool Variables::isVariableExist(const VariableName_t& aName) const
 {
   return m_Data.find(aName) != m_Data.end();
 }
@@ -241,7 +294,7 @@ bool Variables::isVariableExist(const VariableName_t aName) const
 // =====================================================================
 
 
-bool Variables::isVariableExist(const VariableName_t aName,
+bool Variables::isVariableExist(const VariableName_t& aName,
                                 const TimeIndex_t& anIndex) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
@@ -253,12 +306,11 @@ bool Variables::isVariableExist(const VariableName_t aName,
 // =====================================================================
 
 
-bool Variables::isVariableExist(const VariableName_t aName, const TimeIndex_t& anIndex,
+bool Variables::isVariableExist(const VariableName_t& aName, const TimeIndex_t& anIndex,
     Value::Type ValueType) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  // the variable exist if the required step is strictly lesser than the variable storage next step
   return (it != m_Data.end() && it->second.first.isValueExist(anIndex) && it->second.first.getValue(anIndex)->getType() == ValueType);
 }
 
@@ -266,7 +318,7 @@ bool Variables::isVariableExist(const VariableName_t aName, const TimeIndex_t& a
 // =====================================================================
 
 
-bool Variables::isTypedVariableExist(const VariableName_t aName, const Value::Type VarType) const
+bool Variables::isTypedVariableExist(const VariableName_t& aName, const Value::Type& VarType) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -277,8 +329,8 @@ bool Variables::isTypedVariableExist(const VariableName_t aName, const Value::Ty
 // =====================================================================
 
 
-bool Variables::isTypedVariableExist(const VariableName_t aName,
-                                     const TimeIndex_t& anIndex, Value::Type VarType) const
+bool Variables::isTypedVariableExist(const VariableName_t& aName,
+                                     const TimeIndex_t& anIndex, const Value::Type& VarType) const
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
@@ -303,7 +355,7 @@ std::vector<VariableName_t> Variables::getVariablesNames() const
 // =====================================================================
 
 
-int Variables::getVariableValuesCount(const VariableName_t aName) const
+int Variables::getVariableValuesCount(const VariableName_t& aName) const
 {
 
   VariablesMap_t::const_iterator it = m_Data.find(aName);

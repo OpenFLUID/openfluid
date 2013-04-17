@@ -115,10 +115,12 @@ class VarsPrimitivesProdFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
+    unsigned long int m_ProductionCounter;
+
   public:
 
 
-    VarsPrimitivesProdFunction() : PluggableFunction()
+    VarsPrimitivesProdFunction() : PluggableFunction(), m_ProductionCounter(0)
     {
 
 
@@ -277,6 +279,8 @@ class VarsPrimitivesProdFunction : public openfluid::ware::PluggableFunction
         }
       }
 
+      m_ProductionCounter++;
+
       return DefaultDeltaT();
 
     }
@@ -303,6 +307,9 @@ class VarsPrimitivesProdFunction : public openfluid::ware::PluggableFunction
         long MatrixRowsNb = 3;
         openfluid::core::MatrixValue TheMatrix;
         openfluid::core::MapValue TheMap;
+        openfluid::core::IndexedValue IndValue;
+        openfluid::core::IndexedValueList IndValueList;
+
 
 
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -325,6 +332,30 @@ class VarsPrimitivesProdFunction : public openfluid::ware::PluggableFunction
 
           if (OPENFLUID_IsVariableExist(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex(), openfluid::core::Value::DOUBLE))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.double, timestep, DOUBLE) before append");
+
+          OPENFLUID_GetLatestVariable(TU,"tests.double",IndValue);
+          if (IndValue.getIndex() != OPENFLUID_GetPreviousRunTimeIndex())
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_GetLatestVariable time index (tests.double, DOUBLE) before append");
+
+          if (!IndValue.getValue()->isDoubleValue())
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_GetLatestVariable value (tests.double, DOUBLE) before append");
+
+          OPENFLUID_GetLatestVariables(TU,"tests.double",0,IndValueList);
+          if (IndValueList.size() != m_ProductionCounter)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_GetLatestVariables list size (tests.double, DOUBLE, index=0) before append");
+
+          OPENFLUID_GetLatestVariables(TU,"tests.double",OPENFLUID_GetPreviousRunTimeIndex()+1,IndValueList);
+          if (IndValueList.size() != 0)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_GetLatestVariables list size (tests.double, DOUBLE, index=previous+1) before append");
+
+          OPENFLUID_GetVariables(TU,"tests.double",OPENFLUID_GetPreviousRunTimeIndex(),OPENFLUID_GetPreviousRunTimeIndex()+1,IndValueList);
+          if (IndValueList.size() != 1)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_GetVariables list size (tests.double, DOUBLE, bindex=previous, eindex=previous+1) before append");
+
+          OPENFLUID_GetVariables(TU,"tests.double",0,OPENFLUID_GetCurrentTimeIndex(),IndValueList);
+          if (IndValueList.size() != m_ProductionCounter)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_GetVariables list size (tests.double, DOUBLE, bindex=0, eindex=current) before append");
+
 
           OPENFLUID_AppendVariable(TU,"tests.double",TheDouble);
 
@@ -804,6 +835,8 @@ class VarsPrimitivesProdFunction : public openfluid::ware::PluggableFunction
         }
 
       }
+
+      m_ProductionCounter++;
 
       return DefaultDeltaT();
     }

@@ -276,8 +276,10 @@ std::string RemoveTrailingSlashes(std::string Str)
   return Str;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void OutputToStream(std::vector<std::string> Strings, std::string Sep, std::ostream& OStream)
 {
@@ -285,15 +287,6 @@ void OutputToStream(std::vector<std::string> Strings, std::string Sep, std::ostr
   OStream << std::endl;
 }
 
-// =====================================================================
-// =====================================================================
-
-
-openfluid::core::DateTime GenerateDateTimeFromStep(openfluid::core::DateTime DT0, openfluid::core::TimeStep_t TS, unsigned int CurrentStep)
-{
-  DT0.addSeconds(TS*CurrentStep);
-  return DT0;
-}
 
 // =====================================================================
 // =====================================================================

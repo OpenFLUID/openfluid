@@ -114,7 +114,7 @@ Unit* UnitsCollection::addUnit(Unit aUnit)
     m_Data.push_back(aUnit);
     return &(m_Data.back());
   }
-  else return false;
+  else return NULL;
 }
 
 // =====================================================================
