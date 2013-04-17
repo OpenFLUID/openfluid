@@ -496,7 +496,7 @@ void FunctionParamWidget::attachRequiredFileRow(FunctionParamFileRow* Row)
   }
 
   Row->signal_FileChanged().connect(
-      sigc::mem_fun(*this, &FunctionParamWidget::onValueChangeOccured));
+      sigc::mem_fun(*this, &FunctionParamWidget::onFileChangeOccured));
 
   m_CurrentReqFilesTableBottom++;
 }
@@ -552,7 +552,7 @@ void FunctionParamWidget::attachUsedFileRow(FunctionParamFileRow* Row)
   }
 
   Row->signal_FileChanged().connect(
-      sigc::mem_fun(*this, &FunctionParamWidget::onValueChangeOccured));
+      sigc::mem_fun(*this, &FunctionParamWidget::onFileChangeOccured));
 
   m_CurrentUsedFilesTableBottom++;
 }
@@ -615,11 +615,26 @@ void FunctionParamWidget::onValueChangeOccured()
 // =====================================================================
 // =====================================================================
 
+void FunctionParamWidget::onFileChangeOccured()
+{
+  m_signal_fileChangeOccured.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
 sigc::signal<void> FunctionParamWidget::signal_changeOccured()
 {
   return m_signal_changeOccured;
 }
 
+// =====================================================================
+// =====================================================================
+
+sigc::signal<void> FunctionParamWidget::signal_fileChangeOccured()
+{
+  return m_signal_fileChangeOccured;
+}
 // =====================================================================
 // =====================================================================
 

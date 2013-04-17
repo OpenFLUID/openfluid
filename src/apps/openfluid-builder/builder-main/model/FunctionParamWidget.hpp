@@ -162,11 +162,11 @@ class FunctionParamWidget: public Gtk::VBox
     std::map<std::string, std::string> m_Globals;
 
     sigc::signal<void> m_signal_changeOccured;
+    sigc::signal<void> m_signal_fileChangeOccured;
 
     void updateRows();
 
     void updateParamsRows();
-    void updateRequiredFilesRows();
     void updateUsedFilesRows();
 
     void attachParamsRow(FunctionParamRow* Row, std::string ParamName);
@@ -177,6 +177,7 @@ class FunctionParamWidget: public Gtk::VBox
 
     void onValueChangeOccured();
     void onStructureChangeOccured();
+    void onFileChangeOccured();
 
     void updateGlobals();
 
@@ -189,8 +190,10 @@ class FunctionParamWidget: public Gtk::VBox
     ~FunctionParamWidget();
 
     void updateGlobals(const std::map<std::string, std::string>& GlobalParams);
+    void updateRequiredFilesRows();
 
     sigc::signal<void> signal_changeOccured();
+    sigc::signal<void> signal_fileChangeOccured();
 };
 
 #endif /* FUNCTIONPARAMWIDGET_HPP_ */

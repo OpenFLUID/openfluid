@@ -112,7 +112,7 @@ void ModelModule::compose()
   Sep->set_visible(true);
 
   mp_MainPanel->set_border_width(5);
-  mp_MainPanel->pack_start(*mp_GlobalParamsWidget, Gtk::PACK_SHRINK,10);
+  mp_MainPanel->pack_start(*mp_GlobalParamsWidget, Gtk::PACK_SHRINK, 10);
   mp_MainPanel->pack_start(*Sep, Gtk::PACK_SHRINK);
   mp_MainPanel->pack_start(*mp_ModelWidget);
 
@@ -270,6 +270,8 @@ void ModelModule::update()
         new FunctionParamWidget(*(*it), Sign, *mp_AddParamDialog));
     ItemParamWidget->signal_changeOccured().connect(
         sigc::mem_fun(*this, &ModelModule::onModelChanged));
+    ItemParamWidget->signal_fileChangeOccured().connect(
+        sigc::mem_fun(*this, &ModelModule::onFileChanged));
 
     ModelFctDetailComponent* ItemInfo = new ModelFctDetailComponent();
     ItemInfo->getModel()->setFctToDisplay(Sign);
@@ -332,3 +334,16 @@ void ModelModule::onModelChanged()
 // =====================================================================
 // =====================================================================
 
+void ModelModule::onFileChanged()
+{
+  for (std::list<FunctionParamWidget*>::iterator it = m_ParamWidgets.begin();
+      it != m_ParamWidgets.end(); ++it)
+  {
+    (*it)->updateRequiredFilesRows();
+  }
+
+  onModelChanged();
+}
+
+// =====================================================================
+// =====================================================================

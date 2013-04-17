@@ -87,6 +87,8 @@ class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     void onModelChanged();
 
+    void onFileChanged();
+
     sigc::signal<void> m_signal_ModelChanged;
 
   protected:
