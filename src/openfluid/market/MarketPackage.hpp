@@ -76,30 +76,66 @@ class DLLEXPORT MarketPackage
     static const std::string LOG_FILENAME;
 
 
+    /*
+     * Temporary dir for openfluid-market
+    */
     static std::string m_TempDir;
 
+    /**
+     * Temporary dir for building packages
+    */
     static std::string m_TempBuildsDir;
 
+    /**
+     * Temporary dir for downloaded packages
+    */
     static std::string m_TempDownloadsDir;
 
+    /**
+     * Market-bag dir for functions
+    */
     static std::string m_MarketBagFunctionDir;
 
+    /**
+     * Market-bag dir for observers
+    */
     static std::string m_MarketBagObserverDir;
 
+    /**
+     * Market-bag dir for builder extensions
+    */
     static std::string m_MarketBagBuilderextDir;
 
+    /**
+     * Market-bag dir for datasets
+    */
     static std::string m_MarketBagDatasetDir;
 
+    /**
+     * Market-bag subdir for binary packages of current type
+    */
     static std::string m_MarketBagBinSubDir;
 
+    /**
+     * Market-bag subdir for source packages of current type
+    */
     static std::string m_MarketBagSrcSubDir;
 
     static std::string m_CMakeCommand;
 
+    /**
+     * Common build options for functions
+    */
     static std::string m_FunctionBuildConfigOptions;
 
+    /**
+     * Common build options for observers
+    */
     static std::string m_ObserverBuildConfigOptions;
 
+    /**
+     * Common build options for builder extensions
+    */
     static std::string m_BuilderextBuildConfigOptions;
 
     static std::string m_LogFile;
@@ -138,6 +174,9 @@ class DLLEXPORT MarketPackage
 
     static void initialize(bool EnableLog);
 
+    /**
+     Set directory paths attributes with paths passed as parameter
+    */
     static void setWorksDirs(const std::string& TempDir, const std::string& MarketBagFunctionDir,
         const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
         const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir, const std::string& MarketBagSrcSubDir);
@@ -163,17 +202,23 @@ class DLLEXPORT MarketPackage
     static std::string getLogFile() { return m_LogFile; };
 
     /**
-     @return the build options of package type passed as parameter
+     @return build options of package type passed as parameter
+     @param Type of options
     */
     static std::string getCommonBuildOptions(const PackageInfo::PackageType& Type);
 
     /**
-     * Sets build options of package type passed as parameter to BuildOptions
+     Sets build options of package type passed as parameter with BuildOptions
+     @param Type of options
+     @param Build options to store
     */
     static void setCommonBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 
     /**
-     * Adds BuildOptions to options of package type
+     Adds BuildOptions to options of package type
+     @return Common build options of package type with BuildOptions
+     @param Type of package
+     @param Options to add
     */
     static std::string composeFullBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 

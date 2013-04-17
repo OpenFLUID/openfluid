@@ -105,6 +105,7 @@ MarketPackWidget::MarketPackWidget(const openfluid::market::PackageInfo::Package
   m_DetailsRightVBox.pack_start(m_VersionLabel,Gtk::PACK_EXPAND_WIDGET);
   m_DetailsRightVBox.pack_start(m_LicenseLabel,Gtk::PACK_EXPAND_WIDGET);
 
+  // dataset
   if (m_PackageType == openfluid::market::PackageInfo::DATA)
   {
     // display package id in the middle
@@ -201,12 +202,15 @@ void MarketPackWidget::updateDisplayedInfos()
 
   m_VersionLabel.set_markup(std::string("<u>")+_("Version:")+std::string("</u> ")+ replaceByUnknownIfEmpty(m_MetaPackInfo.Version));
 
+  // Id
   MarkupTooltip += "<b>" + m_MetaPackInfo.ID + "</b>";
 
+  // version
   MarkupTooltip += std::string("\n<u>")+_("Version:")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Version);
+  // author
   MarkupTooltip += std::string("\n<u>")+_("Author(s):")+std::string("</u> ") + replaceByUnknownIfEmpty(m_MetaPackInfo.Authors);
 
-  // datasets
+  // for datasets
   if (m_MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::FLUIDX) != m_MetaPackInfo.AvailablePackages.end())
   {
     SelType = openfluid::market::MetaPackageInfo::FLUIDX;

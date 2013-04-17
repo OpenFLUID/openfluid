@@ -108,49 +108,76 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     URLComboColumns m_URLColumns;
 
 
+    // Tabs
     Gtk::Notebook m_TypesTabs;
 
+    // Main box of tab
     std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*> mp_TabBox;
 
+    // Box and ScrolledWindow for packages list
     std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*> mp_AvailTypesPacksBox;
     std::map<openfluid::market::PackageInfo::PackageType,Gtk::ScrolledWindow*> mp_AvailTypesPacksSWindow;
 
+    // Buttons of tab
     std::map<openfluid::market::PackageInfo::PackageType,Gtk::HBox*> mp_ActionButtonsBox;
     std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_SelectAllButton;
     std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_SelectNoneButton;
     std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_CommonBuildConfigButton;
 
+    // List of MarketPackWidget
     std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> > mp_AvailPacksWidgets;
 
     void onURLComboChanged();
 
     /**
-     @return MarketPackWidget of id package
+     @return MarketPackWidget of ID package
+     @param ID of package
     */
     MarketPackWidget* getAvailPackWidget(const openfluid::ware::WareID_t& ID) const;
 
     /**
-     @return true if id package passed as parameter has datasets selected which need it
+     @return true if ID package passed as parameter has datasets selected which need it
+     @param ID of dependence
+     @param Type Type of dependence
     */
     bool hasParentSelected(const openfluid::ware::WareID_t& ID,
         const openfluid::market::PackageInfo::PackageType& Type);
 
     /**
      @return choice of user to apply action of selected dataset to this dependencies
+     @param ID of package selected
+     @param Select action applied on the package
+     @param List of dependencies to select
     */
     bool getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
         const std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >& PacksToSelect);
 
+    /**
+     Selects dependencies of ID package
+     @param ID of package selected
+    */
     void selectDependencies(const openfluid::ware::WareID_t& ID);
 
     void onPackageInstallModified();
 
+    /**
+     @return Type of current gtk tab
+    */
     openfluid::market::PackageInfo::PackageType getCurrentTypeTab();
 
+    /**
+     * Selects all packages of current tab
+    */
     void onSelectAllClicked();
 
+    /**
+     * Unselects all packages of current tab
+    */
     void onSelectNoneClicked();
 
+    /**
+     * Edit common options of packages of the current tab
+    */
     void onCommonBuildConfigClicked();
 
 
@@ -159,6 +186,7 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
 
     Gtk::Label m_LicensesLabel;
 
+    // Adjustable container for packages treeview and license text view
     Gtk::HPaned m_LicensesReviewPaned;
     Gtk::TreeView m_LicensesTreeView;
 
@@ -238,6 +266,9 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     void onClose();
     void onPrepare(Gtk::Widget* Widget);
 
+    /**
+     * Creates tabs and display all available packages in Market-place selected
+    */
     void updateAvailPacksTreeview();
 
     void updateInstallTreeview();
@@ -254,7 +285,10 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     virtual ~MarketClientAssistant();
 
     /**
-     @return type name passed as parameter
+     @return string name of type passed as parameter
+     @param Type Type of package
+     @param Maj First letter in maj
+     @param Plural Return plural name
     */
     static std::string getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
 

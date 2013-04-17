@@ -99,17 +99,21 @@ void MarketSrcPackage::process()
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
   std::string SrcInstallDir = getInstallPath() + "/" + m_ID;
 
+  // creating installation dir
   if (boost::filesystem::is_directory(boost::filesystem::path(SrcInstallDir)))
     boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
 
   if (!boost::filesystem::create_directories(boost::filesystem::path(SrcInstallDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create source directory for "+m_ID+" package");
 
+  // creating build dir
   if (boost::filesystem::is_directory(boost::filesystem::path(BuildDir)))
     boost::filesystem::remove_all(boost::filesystem::path(BuildDir));
 
   if (!boost::filesystem::create_directories(boost::filesystem::path(BuildDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create build directory for "+m_ID+" package");
+
+  // == Building commands ==
 
   std::string UntarCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + SrcInstallDir+ "\" \"" + m_CMakeCommand + "\" -E tar xfvz \"" + m_PackageDest + "\"";
 

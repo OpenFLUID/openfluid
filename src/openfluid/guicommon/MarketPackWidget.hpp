@@ -123,10 +123,16 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 
     void setInstall(bool Install) { m_InstallToggle.set_active(Install); };
 
+    /**
+     @return selected format in combobox
+    */
     virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
     signal_install_modified_t signal_install_modified();
 
+    /**
+     Creates tooltip for market pack widget
+    */
     virtual void updateDisplayedInfos();
 
 

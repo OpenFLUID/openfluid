@@ -75,6 +75,7 @@ MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageI
 
   Gtk::TreeModel::Row TmpFormatRow;
 
+  // source
   if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != MetaPackInfo.AvailablePackages.end())
   {
     TmpFormatRow = *(m_RefFormatComboBoxModel->append());
@@ -83,6 +84,7 @@ MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageI
     m_EditedBuildOptions = m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].BuildOptions;
   }
 
+  // binary
   if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != MetaPackInfo.AvailablePackages.end())
   {
     TmpFormatRow = *(m_RefFormatComboBoxModel->append());
@@ -166,6 +168,7 @@ void MarketPackWidgetFormat::updateDisplayedInfos()
 {
   MarketPackWidget::updateDisplayedInfos();
 
+  // get tooltip set in MarketPackWidget
   std::string MarkupTooltip = get_tooltip_markup();
   openfluid::market::MetaPackageInfo::SelectionType SelType;
 
@@ -178,9 +181,11 @@ void MarketPackWidgetFormat::updateDisplayedInfos()
       SelType = TmpRow[m_FormatColumns.m_SelType];
       std::string LicenseStr = (*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License;
 
+      // license
       MarkupTooltip += std::string("\n<u>")+_("License:")+std::string("</u> ") + replaceByUnknownIfEmpty(LicenseStr);
       m_LicenseLabel.set_markup(std::string("<u>")+_("License:")+std::string("</u> ")+replaceByUnknownIfEmpty(LicenseStr));
 
+      // build options
       if (SelType == openfluid::market::MetaPackageInfo::SRC)
       {
         MarkupTooltip += std::string("\n<u>")+_("Build options:")+std::string("</u> ") + replaceByNoneIfEmpty(openfluid::market::MarketPackage::composeFullBuildOptions(m_PackageType,m_EditedBuildOptions));
@@ -188,6 +193,7 @@ void MarketPackWidgetFormat::updateDisplayedInfos()
     }
   }
 
+  // description
   if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "\n\n"+m_MetaPackInfo.Description;
 
   m_ConfigButton.set_sensitive(getPackageFormat() == openfluid::market::MetaPackageInfo::SRC);

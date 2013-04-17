@@ -94,6 +94,7 @@ void MarketBinPackage::process()
 
   std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + getInstallPath() + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
 
+  // uncompressing package
   try
   {
     appendToLogFile(m_PackageFilename,getPackageType(),"processing binaries",ProcessCommand);

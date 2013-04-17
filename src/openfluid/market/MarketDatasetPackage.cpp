@@ -125,6 +125,7 @@ void MarketDatasetPackage::process()
 
   std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + DatasetInstallDir + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
 
+  // uncompressing package
   try
   {
     appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand);

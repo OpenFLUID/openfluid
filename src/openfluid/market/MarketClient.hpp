@@ -70,8 +70,11 @@ namespace openfluid { namespace market {
 
 
 typedef std::map<std::string,std::string> MarketLicensesTexts_t;
+// List of catalog urls
 typedef std::map<PackageInfo::PackageType,std::string> CatalogsFileURL_t;
+// List of catalog data
 typedef std::map<PackageInfo::PackageType,std::string> CatalogsData_t;
+// List of MetaPackagesCatalogs
 typedef std::map<PackageInfo::PackageType,MetaPackagesCatalog_t> TypesMetaPackagesCatalogs_t;
 
 // =====================================================================
@@ -110,10 +113,19 @@ class DLLEXPORT MarketClient
 
     void parseMarketSiteData(const std::string& SiteData);
 
+    /**
+     Store all type catalog data in MetaPackageCatalog
+     @param CatalogType Type of catalog read
+     @param CatalogData string with data read
+    */
     void parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogData);
 
     void downloadAssociatedLicenses();
 
+    /**
+     @return string of SelectionType passed as parameter
+     @param SelectionType to convert
+    */
     //std::string selectionTypeToString(const MetaPackageInfo::SelectionType& Selec) const;
 
   public:
@@ -123,7 +135,10 @@ class DLLEXPORT MarketClient
     ~MarketClient();
 
     /**
-     @return type name passed as parameter
+     @return string name of type passed as parameter
+     @param Type Type of package
+     @param Maj First letter in maj
+     @param Plural Return plural name
     */
     static std::string getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
 
@@ -139,13 +154,30 @@ class DLLEXPORT MarketClient
 
     /**
      Finds the ID package in m_TypesMetaPackagesCatalogs
+     @return iterator on ID package
+     @param ID Id of package to find
     */
     MetaPackagesCatalog_t::iterator findInTypesMetaPackagesCatalogs(const openfluid::ware::WareID_t& ID);
 
+    /**
+     Set selected format of ID package with Flag
+     @return true Flag has been set as selected flag
+     @param ID Id of package to modify
+     @param Flag Flag to be set
+    */
     bool setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag);
 
+    /**
+     Set build options of ID package for source format with BuildOpts
+     @param ID Id of package to modify
+     @param BuildOpts Build options to be set
+    */
     void setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const std::string& BuildOpts);
 
+    /**
+     @return selected format of ID package
+     @param ID Id of package to be got
+    */
     MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::ware::WareID_t& ID) const;
 
     void installSelection(const bool IgnoreMissing = true);
@@ -166,6 +198,9 @@ class DLLEXPORT MarketClient
 
     void enableLog(bool Enabled) { m_IsLogEnabled = Enabled; };
 
+    /**
+     Display packages list of market-place in console
+    */
     //void displayPackages() const;
 
 };

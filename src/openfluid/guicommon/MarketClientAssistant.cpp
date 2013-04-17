@@ -205,7 +205,6 @@ void MarketClientAssistant::setupSelectionPage()
 
 void MarketClientAssistant::setupLicensesPage()
 {
-
   m_LicensesLabel.set_text(_("Licenses:"));
   m_LicensesLabel.set_alignment(0,0);
 
@@ -375,10 +374,13 @@ void MarketClientAssistant::onLicensesTreeviewChanged()
     // id package found ?
     if (PCit != m_MarketClient.getTypesMetaPackagesCatalogs().rbegin()->second.end())
     {
+      // Getting license id
       std::string LicenseID = PCit->second.AvailablePackages[PCit->second.Selected].License;
 
+      // Searching license
       std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.getLicensesTexts().find(LicenseID);
 
+      // Displaying license
       if (LIter != m_MarketClient.getLicensesTexts().end())
         m_RefLicenseTextBuffer->set_text(LIter->second);
       else
@@ -440,6 +442,7 @@ MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::war
   std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::const_iterator APMiter;
   std::list<MarketPackWidget*>::const_iterator APLiter;
 
+  // Searching ID package in AvailPacksWidgets
   for (APMiter = mp_AvailPacksWidgets.begin(); APMiter != mp_AvailPacksWidgets.end(); ++APMiter)
   {
     for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
@@ -470,7 +473,7 @@ bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& I
     std::list<openfluid::ware::WareID_t> Dependencies = PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::FLUIDX].Dependencies[Type];
     std::list<openfluid::ware::WareID_t>::iterator Dit = Dependencies.begin();
 
-    // searching if ID package is a dependence of another dataset
+    // searching if ID package is a dependence of this dataset
     while (Dit != Dependencies.end() && !(*Dit == ID && getAvailPackWidget(PCit->second.ID)->isInstall()))
       ++Dit;
 
@@ -557,12 +560,14 @@ void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& 
         // dependence pack widget found ?
         if (DependencePack != 0)
         {
+          // dependence state different to selected package state
           if (DependencePack->isInstall() != MPW->isInstall())
           {
             // if select or if unselect + no parent selected
             if (MPW->isInstall() ||
                 (!MPW->isInstall() && !hasParentSelected(DependencePack->getID(), DMit->first)))
             {
+              // Adding dependence to packs to select
               PacksToSelect[DMit->first].push_back(DependencePack);
             }
           }
@@ -637,10 +642,10 @@ void MarketClientAssistant::onPackageInstallModified()
 
 openfluid::market::PackageInfo::PackageType MarketClientAssistant::getCurrentTypeTab()
 {
-  std::string TabName = m_TypesTabs.get_tab_label_text(*m_TypesTabs.get_nth_page(m_TypesTabs.get_current_page()));
+  std::string CurrentTabName = m_TypesTabs.get_tab_label_text(*m_TypesTabs.get_nth_page(m_TypesTabs.get_current_page()));
   std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*>::const_iterator ATPBiter = mp_AvailTypesPacksBox.begin();
 
-  while (ATPBiter != mp_AvailTypesPacksBox.end() && getGraphicTypeName(ATPBiter->first,true,true) != TabName)
+  while (ATPBiter != mp_AvailTypesPacksBox.end() && getGraphicTypeName(ATPBiter->first,true,true) != CurrentTabName)
     ++ATPBiter;
 
   return ATPBiter->first;
@@ -656,6 +661,7 @@ void MarketClientAssistant::onSelectAllClicked()
   std::list<MarketPackWidget*>::iterator APLiter;
   openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
 
+  // Selecting of all packages of current tab
   for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin(); APLiter != mp_AvailPacksWidgets[CurrentTab].end(); ++APLiter)
   {
     MarketPackWidget* MPW;
@@ -673,6 +679,7 @@ void MarketClientAssistant::onSelectNoneClicked()
   std::list<MarketPackWidget*>::iterator APLiter;
   openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
 
+  // Unselecting of all packages of current tab
   for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin(); APLiter != mp_AvailPacksWidgets[CurrentTab].end(); ++APLiter)
   {
     MarketPackWidget* MPW;
@@ -693,6 +700,7 @@ void MarketClientAssistant::onCommonBuildConfigClicked()
 
   if (OptDialog.run() == Gtk::RESPONSE_OK)
   {
+    // Setting common options of current tab
     openfluid::market::MarketPackage::setCommonBuildOptions(CurrentTab,OptDialog.getEditedOptions());
 
     std::list<MarketPackWidget*>::iterator APLiter;
@@ -782,7 +790,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
   for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
   {
-    // VBox exists ?
+    // Tab VBox exists ?
     if (ATPBiter->second != 0)
     {
       std::vector<Gtk::Widget*> AvailPacksBoxChildren = ATPBiter->second->get_children();
@@ -855,7 +863,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       // Adding packages in VBox
       for (CIter = TCIter->second.begin(); CIter != TCIter->second.end(); ++CIter)
       {
-        // creating MarketPackWidget
+        // Creating MarketPackWidget
         if (TCIter->first == openfluid::market::PackageInfo::DATA)
           mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(TCIter->first,CIter->second));
         else
@@ -874,6 +882,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
         mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets[TCIter->first].back()),Gtk::PACK_SHRINK,0);
       }
 
+      // Creating buttons
       mp_ActionButtonsBox[TCIter->first] = Gtk::manage(new Gtk::HBox());
       mp_SelectAllButton[TCIter->first] = Gtk::manage(new Gtk::Button(_("Select all")));
       mp_SelectNoneButton[TCIter->first] = Gtk::manage(new Gtk::Button(_("Select none")));
@@ -888,7 +897,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       mp_CommonBuildConfigButton[TCIter->first]->add(*Box);
       mp_CommonBuildConfigButton[TCIter->first]->show_all_children(true);
 
-      // disable build options button for datasets
+      // Disable build options button for datasets
       if (TCIter->first == openfluid::market::PackageInfo::DATA)
         mp_CommonBuildConfigButton[TCIter->first]->set_sensitive(false);
 
@@ -921,7 +930,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       // Create tab
       m_TypesTabs.append_page(*mp_TabBox[TCIter->first], getGraphicTypeName(TCIter->first, true,true));
 
-      // load tab content
+      // Load tab content
       int LastPage = m_TypesTabs.get_n_pages() - 1;
       m_TypesTabs.get_nth_page(LastPage)->show_all();
       m_TypesTabs.set_current_page(LastPage);
@@ -970,7 +979,7 @@ void MarketClientAssistant::initializeLicencesTreeView()
           RowCreated[TCIter->first] = true;
         }
 
-        // Creation of sub-tree
+        // Creation of sub-row
         Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append(TypeRow.children()));
         TmpRow[m_LicensesColumns.m_ID] = CIter->first;
       }
