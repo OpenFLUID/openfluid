@@ -289,9 +289,9 @@ sigc::signal<void> FunctionParamFileRow::signal_FileChanged()
 // =====================================================================
 
 FunctionParamWidget::FunctionParamWidget(
-    openfluid::fluidx::ModelItemDescriptor & FctDesc,
-    openfluid::machine::ModelItemSignatureInstance * Sign,
-    FunctionAddParamDialog & AddParamDialog) :
+    openfluid::fluidx::ModelItemDescriptor& FctDesc,
+    openfluid::machine::ModelItemSignatureInstance* Sign,
+    FunctionAddParamDialog& AddParamDialog) :
     m_FctDesc(FctDesc), mp_Sign(Sign), m_AddParamDialog(AddParamDialog)
 {
   Gtk::Button* AddButton = Gtk::manage(new Gtk::Button());
@@ -434,6 +434,27 @@ void FunctionParamWidget::updateRequiredFilesRows()
   {
     std::vector<std::string> Items =
         mp_Sign->Signature->HandledData.RequiredExtraFiles;
+
+    if (m_FctDesc.isType(openfluid::fluidx::WareDescriptor::Generator))
+    {
+      openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
+          (static_cast<openfluid::fluidx::GeneratorDescriptor*>(&m_FctDesc))->getGeneratorMethod();
+
+      if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
+          == openfluid::fluidx::GeneratorDescriptor::Inject)
+      {
+        Items.clear();
+
+        std::string FileNameFromParam = m_FctDesc.getParameters().get("sources",
+                                                                      "");
+        if (!FileNameFromParam.empty())
+          Items.push_back(FileNameFromParam);
+
+        FileNameFromParam = m_FctDesc.getParameters().get("distribution", "");
+        if (!FileNameFromParam.empty())
+          Items.push_back(FileNameFromParam);
+      }
+    }
 
     if (!Items.empty())
     {
@@ -582,6 +603,8 @@ void FunctionParamWidget::onStructureChangeOccured()
 
 void FunctionParamWidget::onValueChangeOccured()
 {
+  // for the required files of generators
+  updateRequiredFilesRows();
   m_signal_changeOccured.emit();
 }
 

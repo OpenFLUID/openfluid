@@ -57,6 +57,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -162,12 +163,36 @@ void ProjectChecker::checkModelRequirements()
 
     // check ExtraFiles
     std::vector<std::string>& ReqFiles = Sign->HandledData.RequiredExtraFiles;
-    for (std::vector<std::string>::iterator itt = ReqFiles.begin();
-        itt != ReqFiles.end(); ++itt)
+    if ((*it)->isType(openfluid::fluidx::WareDescriptor::Generator))
     {
-      if (!boost::filesystem::exists(RunEnv->getInputFullPath(*itt)))
-        ExtraFilesMsg += "- File " + *itt + " required by " + ID
-                         + " not found\n";
+      openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
+          (static_cast<openfluid::fluidx::GeneratorDescriptor*>(*it))->getGeneratorMethod();
+
+      if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
+          == openfluid::fluidx::GeneratorDescriptor::Inject)
+      {
+        std::string FileNameFromParam = (*it)->getParameters().get("sources",
+                                                                   "");
+        if (!FileNameFromParam.empty() && !boost::filesystem::exists(
+            RunEnv->getInputFullPath(FileNameFromParam)))
+          ExtraFilesMsg += "- File " + FileNameFromParam + " required by " + ID
+                           + " not found\n";
+        FileNameFromParam = (*it)->getParameters().get("distribution", "");
+        if (!FileNameFromParam.empty() && !boost::filesystem::exists(
+            RunEnv->getInputFullPath(FileNameFromParam)))
+          ExtraFilesMsg += "- File " + FileNameFromParam + " required by " + ID
+                           + " not found\n";
+      }
+    }
+    else
+    {
+      for (std::vector<std::string>::iterator itt = ReqFiles.begin();
+          itt != ReqFiles.end(); ++itt)
+      {
+        if (!boost::filesystem::exists(RunEnv->getInputFullPath(*itt)))
+          ExtraFilesMsg += "- File " + *itt + " required by " + ID
+                           + " not found\n";
+      }
     }
 
     // check Params

@@ -184,6 +184,8 @@ BOOST_AUTO_TEST_CASE(check_check)
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
+  openfluid::base::RuntimeEnvironment::getInstance()->setInputDir(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
 
   openfluid::fluidx::AdvancedFluidXDescriptor Desc(FXDesc);
 
@@ -260,39 +262,123 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(!PC.IsMonitoringOk);
   BOOST_CHECK_EQUAL(PC.MonitoringMsg, "No observer defined");
 
-  Desc.getModel().appendItem(new openfluid::fluidx::FunctionDescriptor("tests.primitives.inputdata.use"));
+  Desc.getModel().appendItem(
+      new openfluid::fluidx::FunctionDescriptor(
+          "tests.primitives.inputdata.use"));
   PC.check();
   BOOST_CHECK(!PC.IsInputdataOk);
   BOOST_CHECK(!PC.InputdataMsg.empty());
 
-  Desc.getDomain().addInputData("TestUnits","indataDouble","");
-  Desc.getDomain().addInputData("TestUnits","indataLong","");
-  Desc.getDomain().addInputData("TestUnits","indataString","");
-  Desc.getDomain().addInputData("TestUnits","indataMatrix","");
-  Desc.getDomain().addInputData("TestUnits","indataMap","");
-  Desc.getDomain().addInputData("TestUnits","indataBool","");
-  Desc.getDomain().addInputData("TestUnits","indataVector","");
+  Desc.getDomain().addInputData("TestUnits", "indataDouble", "");
+  Desc.getDomain().addInputData("TestUnits", "indataLong", "");
+  Desc.getDomain().addInputData("TestUnits", "indataString", "");
+  Desc.getDomain().addInputData("TestUnits", "indataMatrix", "");
+  Desc.getDomain().addInputData("TestUnits", "indataMap", "");
+  Desc.getDomain().addInputData("TestUnits", "indataBool", "");
+  Desc.getDomain().addInputData("TestUnits", "indataVector", "");
   PC.check();
   BOOST_CHECK(!PC.IsInputdataOk);
   BOOST_CHECK(!PC.InputdataMsg.empty());
 
-  Desc.getModel().appendItem(new openfluid::fluidx::FunctionDescriptor("tests.primitives.inputdata.prod"));
-  Desc.getModel().moveItem(8,7);
+  Desc.getModel().appendItem(
+      new openfluid::fluidx::FunctionDescriptor(
+          "tests.primitives.inputdata.prod"));
+  Desc.getModel().moveItem(8, 7);
   PC.check();
   BOOST_CHECK(PC.IsInputdataOk);
   BOOST_CHECK(PC.InputdataMsg.empty());
 
-  Desc.getDomain().deleteInputData("TestUnits","indataDouble");
-  Desc.getDomain().deleteInputData("TestUnits","indataLong");
-  Desc.getDomain().deleteInputData("TestUnits","indataString");
-  Desc.getDomain().deleteInputData("TestUnits","indataMatrix");
-  Desc.getDomain().deleteInputData("TestUnits","indataMap");
-  Desc.getDomain().deleteInputData("TestUnits","indataBool");
-  Desc.getDomain().deleteInputData("TestUnits","indataVector");
+  Desc.getDomain().deleteInputData("TestUnits", "indataDouble");
+  Desc.getDomain().deleteInputData("TestUnits", "indataLong");
+  Desc.getDomain().deleteInputData("TestUnits", "indataString");
+  Desc.getDomain().deleteInputData("TestUnits", "indataMatrix");
+  Desc.getDomain().deleteInputData("TestUnits", "indataMap");
+  Desc.getDomain().deleteInputData("TestUnits", "indataBool");
+  Desc.getDomain().deleteInputData("TestUnits", "indataVector");
 
   PC.check();
   BOOST_CHECK(!PC.IsInputdataOk);
   BOOST_CHECK(!PC.InputdataMsg.empty());
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_generators_with_files)
+{
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+      CONFIGTESTS_OUTPUT_BINARY_DIR);
+  openfluid::machine::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
+  openfluid::base::RuntimeEnvironment::getInstance()->setInputDir(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
+
+  openfluid::fluidx::AdvancedFluidXDescriptor Desc(FXDesc);
+
+  ProjectChecker PC(Desc);
+
+  bool GlobalState = PC.check();
+
+  BOOST_CHECK(PC.IsParamsOk);
+  BOOST_CHECK(PC.IsExtraFilesOk);
+  BOOST_CHECK(PC.ExtraFilesMsg.empty());
+  BOOST_CHECK(GlobalState);
+
+  openfluid::fluidx::ModelItemDescriptor* InterpGen = Desc.getModel().getItemAt(
+      3);
+
+  openfluid::fluidx::ModelItemDescriptor* InjectpGen =
+      Desc.getModel().getItemAt(4);
+
+  std::string InterpID =
+      static_cast<openfluid::fluidx::GeneratorDescriptor*>(InterpGen)->getGeneratedID();
+  std::string InjectID =
+      static_cast<openfluid::fluidx::GeneratorDescriptor*>(InjectpGen)->getGeneratedID();
+
+  InterpGen->setParameter("sources", "src2.txt");
+  GlobalState = PC.check();
+
+  BOOST_CHECK(PC.IsGeneratorParamsOk);
+  BOOST_CHECK(!PC.IsExtraFilesOk);
+  BOOST_CHECK_EQUAL( PC.ExtraFilesMsg,
+                    "- File src2.txt required by " + InterpID + " not found\n");
+  BOOST_CHECK(!GlobalState);
+
+  InterpGen->setParameter("sources", "");
+  GlobalState = PC.check();
+
+  BOOST_CHECK(!PC.IsGeneratorParamsOk);
+  BOOST_CHECK(PC.IsExtraFilesOk);
+  BOOST_CHECK( PC.ExtraFilesMsg.empty());
+  BOOST_CHECK(!GlobalState);
+
+  InterpGen->eraseParameter("sources");
+  GlobalState = PC.check();
+
+  BOOST_CHECK(!PC.IsGeneratorParamsOk);
+  BOOST_CHECK(PC.IsExtraFilesOk);
+  BOOST_CHECK( PC.ExtraFilesMsg.empty());
+  BOOST_CHECK(!GlobalState);
+
+  InterpGen->setParameter("sources", "src.txt");
+  GlobalState = PC.check();
+
+  BOOST_CHECK(PC.IsParamsOk);
+  BOOST_CHECK(PC.IsExtraFilesOk);
+  BOOST_CHECK(PC.ExtraFilesMsg.empty());
+  BOOST_CHECK(GlobalState);
+
+  InjectpGen->setParameter("distribution", "distrib2.txt");
+  GlobalState = PC.check();
+
+  BOOST_CHECK(PC.IsGeneratorParamsOk);
+  BOOST_CHECK(!PC.IsExtraFilesOk);
+  BOOST_CHECK_EQUAL(
+      PC.ExtraFilesMsg,
+      "- File distrib2.txt required by " + InjectID + " not found\n");
+  BOOST_CHECK(!GlobalState);
 }
 
 // =====================================================================
