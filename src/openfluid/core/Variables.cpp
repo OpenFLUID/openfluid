@@ -203,6 +203,7 @@ Value* Variables::getCurrentValue(const VariableName_t& aName) const
   return (Value*) 0;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -212,6 +213,45 @@ bool Variables::getCurrentValue(const VariableName_t& aName, Value* aValue) cons
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
   return (it != m_Data.end() && it->second.first.getCurrentValue(aValue));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::getLatestIndexedValue(const VariableName_t& aName, IndexedValue& IndValue) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  return (it != m_Data.end() && it->second.first.getLatestIndexedValue(IndValue));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::getLatestIndexedValues(const VariableName_t& aName, const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  return (it != m_Data.end() && it->second.first.getLatestIndexedValues(anIndex,IndValueList));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool Variables::getIndexedValues(const VariableName_t& aName,
+                                 const TimeIndex_t& aBeginIndex, const TimeIndex_t& anEndIndex,
+                                 IndexedValueList& IndValueList) const
+{
+  VariablesMap_t::const_iterator it = m_Data.find(aName);
+
+  return (it != m_Data.end() && it->second.first.getIndexedValues(aBeginIndex,anEndIndex,IndValueList));
+
 }
 
 
@@ -271,7 +311,6 @@ bool Variables::isVariableExist(const VariableName_t& aName, const TimeIndex_t& 
 {
   VariablesMap_t::const_iterator it = m_Data.find(aName);
 
-  // the variable exist if the required step is strictly lesser than the variable storage next step
   return (it != m_Data.end() && it->second.first.isValueExist(anIndex) && it->second.first.getValue(anIndex)->getType() == ValueType);
 }
 

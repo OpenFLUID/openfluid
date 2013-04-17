@@ -234,7 +234,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
 
 
     /**
-      Sets a distributed variable value for a unit at a time step
+      Sets a distributed variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable
@@ -244,7 +244,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
                                const openfluid::core::Value& Val);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (double)
@@ -254,7 +254,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
                                const double& Val);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (long)
@@ -264,7 +264,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
                                const long& Val);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (bool)
@@ -274,7 +274,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
                                const bool& Val);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
       @param[in] Val the added value of the variable (string)

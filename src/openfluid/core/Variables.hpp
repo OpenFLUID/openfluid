@@ -88,6 +88,14 @@ class DLLEXPORT Variables
 
     bool getCurrentValue(const VariableName_t& aName, Value* aValue) const;
 
+    bool getLatestIndexedValue(const VariableName_t& aName, IndexedValue& IndValue) const;
+
+    bool getLatestIndexedValues(const VariableName_t& aName, const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const;
+
+    bool getIndexedValues(const VariableName_t& aName,
+                          const TimeIndex_t& aBeginIndex, const TimeIndex_t& anEndIndex,
+                          IndexedValueList& IndValueList) const;
+
     bool getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index, Value* aValue) const;
 
     Value* getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const;
@@ -116,8 +124,7 @@ class DLLEXPORT Variables
 
 };
 
-}
-} // namespaces
+}  } // namespaces
 
 
 #endif /* __VARIABLES_H_ */

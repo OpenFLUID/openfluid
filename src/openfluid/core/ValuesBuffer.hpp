@@ -72,19 +72,41 @@ namespace core {
 
 class IndexedValue
 {
+  friend class ValuesBuffer;
+
+  private:
+
+    TimeIndex_t m_Index;
+
+    boost::shared_ptr<Value> m_Value;
+
+
   public:
 
-    TimeIndex_t Index;
-
-    boost::shared_ptr<Value> Data;
-
     IndexedValue():
-      Index(0),Data(boost::shared_ptr<Value>(new NullValue())) {};
+      m_Index(0),m_Value(boost::shared_ptr<Value>(new NullValue())) {};
 
     IndexedValue(const TimeIndex_t& Ind, const Value& Val):
-      Index(Ind),Data(boost::shared_ptr<Value>(Val.clone())) {};
+      m_Index(Ind),m_Value(boost::shared_ptr<Value>(Val.clone())) {};
+
+    IndexedValue(const IndexedValue& IndValue):
+          m_Index(IndValue.m_Index),m_Value(boost::shared_ptr<Value>(IndValue.m_Value.get()->clone())) {};
+
+    inline TimeIndex_t getIndex() const { return m_Index; };
+
+    inline Value* getValue() const { return m_Value.get(); };
+
+    inline Value* getValue() { return m_Value.get(); };
+
+    inline void clear() { m_Index = 0; m_Value.reset(new NullValue()); };
 
 };
+
+
+/**
+  Indexed value list, ordered from oldest (front) to more recent (back)
+*/
+typedef std::list<IndexedValue> IndexedValueList;
 
 
 // =====================================================================
@@ -93,6 +115,7 @@ class IndexedValue
 
 class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 {
+
   public:
 
     // TODO Replace by std::list with garbage collector after each insertion?
@@ -136,6 +159,13 @@ class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 
 
     bool getCurrentValue(Value* aValue) const;
+
+    bool getLatestIndexedValue(IndexedValue& IndValue) const;
+
+    bool getLatestIndexedValues(const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const;
+
+    bool getIndexedValues(const TimeIndex_t& aBeginIndex, const TimeIndex_t& anEndIndex,
+                                IndexedValueList& IndValueList) const;
 
     bool modifyValue(const TimeIndex_t& anIndex, const Value& aValue);
 

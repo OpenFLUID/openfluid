@@ -119,17 +119,19 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 {
   private:
 
-    long m_ParamLong;
-
     double m_ParamDouble;
 
+    long m_ParamLong;
+
     std::string m_ParamString;
+
+    unsigned long m_ExpectedValCount;
 
   public:
 
 
     VarsPrimitivesUseFunction() : PluggableFunction(),
-    m_ParamDouble(0.1), m_ParamLong(10), m_ParamString("strvalue")
+    m_ParamDouble(0.1), m_ParamLong(10), m_ParamString("strvalue"), m_ExpectedValCount(0)
     {
 
 
@@ -181,6 +183,8 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
     openfluid::base::SchedulingRequest initializeRun()
     {
 
+      m_ExpectedValCount++;
+
       return DefaultDeltaT();
     }
 
@@ -220,6 +224,9 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
         openfluid::core::MapValue VarMapVal;
         openfluid::core::NullValue VarNullVal;
 
+        openfluid::core::IndexedValue IndValue;
+        openfluid::core::IndexedValueList IndValueList;
+
         double PreDouble;
         long PreLong;
         bool PreBool;
@@ -233,8 +240,11 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
         unsigned long NewMatrixColsNb = RefMatrixColsNb + 1;
         unsigned long NewMatrixRowsNb = RefMatrixRowsNb + 1;
 
-        openfluid::core::EventsCollection TheEvents;
-        openfluid::core::Event Ev;
+/*        openfluid::core::EventsCollection TheEvents;
+        openfluid::core::Event Ev;*/
+
+        m_ExpectedValCount++;
+
 
         OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
         {
@@ -269,9 +279,23 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double)");
 
           VarDouble = 0.0;
-          OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,VarDouble);
+          OPENFLUID_GetVariable(TU,"tests.double",VarDouble);
           if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double) get by reference without index");
+
+          VarDouble = 0.0;
+          OPENFLUID_GetLatestVariable(TU,"tests.double",IndValue);
+          if (IndValue.getIndex() != OPENFLUID_GetCurrentTimeIndex())
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect time index (tests.double) get by latest variable");
+
+          if (!openfluid::tools::IsCloseEnough(IndValue.getValue()->asDoubleValue(),RefDouble,0.00001))
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double) get by latest variable");
+
+          VarDouble = 0.0;
+          OPENFLUID_GetLatestVariables(TU,"tests.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
+          if (!openfluid::tools::IsCloseEnough(IndValueList.back().getValue()->asDoubleValue(),RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double) get by reference");
+
 
           OPENFLUID_SetVariable(TU,"tests.double",NewDouble);
 
@@ -297,6 +321,10 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex,&VarDoubleVal);
           if (VarDoubleVal.get() != RefDouble)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.doubleval)");
+
+          OPENFLUID_GetVariable(TU,"tests.doubleval",VarDoubleVal);
+          if (VarDoubleVal.get() != RefDouble)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.doubleval) get by reference without index");
 
           VarDoubleVal.set(0.0);
           OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex,VarDoubleVal);
@@ -383,6 +411,19 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (!OPENFLUID_IsVariableExist(TU,"tests.integerval"))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsVariableExist (tests.integerval)");
+
+          // values count since beginning of simulation
+          OPENFLUID_GetVariables(TU,"tests.integer",0,CurrIndex-1,IndValueList);
+          if (IndValueList.size() != (m_ExpectedValCount-1))
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value list between t0 and current time index -1 (tests.integer) by variables");
+
+          OPENFLUID_GetLatestVariables(TU,"tests.integer",0,IndValueList);
+          if (IndValueList.size() != m_ExpectedValCount)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value list since t0 (tests.integer) by latest variables");
+
+          OPENFLUID_GetVariables(TU,"tests.integer",0,CurrIndex,IndValueList);
+          if (IndValueList.size() != m_ExpectedValCount)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value list between t0 and current time index (tests.integer) by variables");
 
 
           // bool
@@ -545,6 +586,13 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix rows nb get by reference");
 
+          VarMatrixVal.clear();
+          OPENFLUID_GetVariable(TU,"tests.matrix",VarMatrixVal);
+          if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix cols nb get by reference without index");
+          if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix rows nb get by reference without index");
+
           openfluid::core::MatrixValue NewMatrix(NewMatrixColsNb,NewMatrixRowsNb,NewDouble);
           OPENFLUID_SetVariable(TU,"tests.matrix",NewMatrix);
 
@@ -658,6 +706,9 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
         openfluid::core::MatrixValue VarMatrixVal;
         openfluid::core::MapValue VarMapVal;
 
+        openfluid::core::IndexedValue IndValue;
+        openfluid::core::IndexedValueList IndValueList;
+
         double NewDouble;
         long NewLong;
         bool NewBool;
@@ -692,11 +743,21 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double) get by reference");
 
+          OPENFLUID_GetLatestVariable(TU,"tests.typed.double",IndValue);
+          if (!openfluid::tools::IsCloseEnough(IndValue.getValue()->asDoubleValue(),RefDouble,0.00001))
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double) get by latest variable");
+
+
           OPENFLUID_SetVariable(TU,"tests.typed.double",NewDouble);
 
           OPENFLUID_GetVariable(TU,"tests.typed.double",CurrIndex,VarDouble);
           if (!openfluid::tools::IsCloseEnough(VarDouble,NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value after update (tests.double)");
+
+          OPENFLUID_GetLatestVariables(TU,"tests.typed.double",OPENFLUID_GetCurrentTimeIndex()-1,IndValueList);
+          if (!openfluid::tools::IsCloseEnough(IndValueList.back().getValue()->asDoubleValue(),NewDouble,0.00001))
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double) get by latest variable");
+
 
           if (!OPENFLUID_IsTypedVariableExist(TU,"tests.typed.double",openfluid::core::Value::DOUBLE))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect OPENFLUID_IsTypedVariableExist (tests.double, DOUBLE)");
@@ -755,6 +816,16 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_GetVariable(TU,"tests.typed.vector",CurrIndex,VarVectorVal);
           if (VarVectorVal.getSize() != RefVectorSize)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector size get by reference");
+
+          OPENFLUID_GetVariable(TU,"tests.typed.vector",VarVectorVal);
+          if (VarVectorVal.getSize() != RefVectorSize)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector size get by reference");
+
+
+          OPENFLUID_GetLatestVariable(TU,"tests.typed.vector",IndValue);
+          if (IndValue.getValue()->asVectorValue().getSize() != RefVectorSize)
+            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector size get by latest variable");
+
 
           openfluid::core::VectorValue NewVect(NewVectorSize,NewDouble);
           OPENFLUID_SetVariable(TU,"tests.typed.vector",NewVect);

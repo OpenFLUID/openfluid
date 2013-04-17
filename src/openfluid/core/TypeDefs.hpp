@@ -93,11 +93,6 @@ typedef std::string InputDataName_t;
 */
 typedef std::string VariableName_t;
 
-/**
-  Type definition for a time step value
-*/
-typedef unsigned int TimeStep_t;
-
 
 typedef std::pair<UnitClass_t,UnitID_t> UnitClassID_t;
 
