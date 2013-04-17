@@ -68,6 +68,11 @@ void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *Un
                                 const openfluid::core::InputDataName_t& InputName,
                                 const openfluid::core::Value& Val)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->setValue(InputName,Val))
@@ -85,6 +90,11 @@ void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *Un
                                                const openfluid::core::InputDataName_t& InputName,
                                                const double& Val)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::DoubleValue(Val)))
@@ -102,6 +112,11 @@ void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *Un
                                                const openfluid::core::InputDataName_t& InputName,
                                                const long& Val)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::IntegerValue(Val)))
@@ -119,6 +134,11 @@ void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *Un
                                                const openfluid::core::InputDataName_t& InputName,
                                                const std::string& Val)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getInputData()->setValue(InputName,Val))
@@ -148,18 +168,15 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
                                         const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::Value& Val)
 {
-  /*if (OPENFLUID_GetCurrentStage() != openfluid::base::SimulationStatus::INITIALIZERUN)
-    throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage");*/
-
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage")
+                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables can be initialized during INITIALIZERUN stage only")
 
   if (&aUnit != NULL)
   {
     if (!aUnit.getVariables()->appendValue(VarName,0,Val))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error initializing value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Error initializing value for variable "+ VarName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Unit is NULL");
 }
 
 // =====================================================================
@@ -171,17 +188,17 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
                                         const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage")
+                              "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables can be initialized during INITIALIZERUN stage only")
 
-  /* Do not call OPENFLUID_AppendVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
+  /* Do not call OPENFLUID_InitializeVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
    * because of cast operator, this function is called (recursively)
    */
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->appendValue(VarName,0,openfluid::core::DoubleValue(Val)))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending double value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Error appending double value for variable "+ VarName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Unit is NULL");
 }
 
 
@@ -194,14 +211,14 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
                                         const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage")
+                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables can be initialized during INITIALIZERUN stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->appendValue(VarName,0,openfluid::core::IntegerValue(Val)))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending long value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Error appending long value for variable "+ VarName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Unit is NULL");
 }
 
 
@@ -214,14 +231,14 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
                                         const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage")
+                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables can be initialized during INITIALIZERUN stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->appendValue(VarName,0,openfluid::core::BooleanValue(Val)))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending boolean value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Error appending boolean value for variable "+ VarName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Unit is NULL");
 }
 
 
@@ -234,14 +251,14 @@ void SimulationContributorWare::OPENFLUID_InitializeVariable(openfluid::core::Un
                                         const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::INITIALIZERUN,
-                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables cannot be initialized outside INITIALIZERUN stage")
+                           "SimulationContributorWare::OPENFLUID_InitializeVariable","Variables can be initialized during INITIALIZERUN stage only")
 
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->appendValue(VarName,0,openfluid::core::StringValue(Val)))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Error appending string value for variable "+ VarName);
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Error appending string value for variable "+ VarName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendVariable","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_InitializeVariable","Unit is NULL");
 }
 
 
@@ -266,7 +283,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit& 
                                         const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot added outside RUNSTEP stage")
+                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot be added outside RUNSTEP stage")
 
   if (&aUnit != NULL)
   {
@@ -285,7 +302,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
                                         const double& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot added outside RUNSTEP stage")
+                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot be added outside RUNSTEP stage")
 
   /* Do not call OPENFLUID_AppendVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
    * because of cast operator, this function is called (recursively)
@@ -308,7 +325,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
                                         const long& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot added outside RUNSTEP stage")
+                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot be added outside RUNSTEP stage")
 
   if (UnitPtr != NULL)
   {
@@ -328,7 +345,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
                                         const bool& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot added outside RUNSTEP stage")
+                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot be added outside RUNSTEP stage")
 
   if (UnitPtr != NULL)
   {
@@ -348,7 +365,7 @@ void SimulationContributorWare::OPENFLUID_AppendVariable(openfluid::core::Unit *
                                         const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
-                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot added outside RUNSTEP stage")
+                           "SimulationContributorWare::OPENFLUID_AppendVariable","Variables values cannot be added outside RUNSTEP stage")
 
   if (UnitPtr != NULL)
   {
@@ -367,6 +384,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
                                         const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::Value& Val)
 {
+  REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
+                           "SimulationContributorWare::OPENFLUID_SetVariable","Variables can be modified during RUNSTEP stage only")
+
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),Val))
@@ -384,6 +404,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
                                         const openfluid::core::VariableName_t& VarName,
                                         const double& Val)
 {
+  REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
+                           "SimulationContributorWare::OPENFLUID_SetVariable","Variables can be modified during RUNSTEP stage only")
+
   /* Do not call OPENFLUID_SetVariable(UnitPtr,VarName,openfluid::core::DoubleValue(Value))
    * because of cast operator, THIS function is called (recursively)
    */
@@ -404,6 +427,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
                                        const openfluid::core::VariableName_t& VarName,
                                        const long& Val)
 {
+  REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
+                           "SimulationContributorWare::OPENFLUID_SetVariable","Variables can be modified during RUNSTEP stage only")
+
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::IntegerValue(Val)))
@@ -421,6 +447,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
                                        const openfluid::core::VariableName_t& VarName,
                                        const bool& Val)
 {
+  REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
+                           "SimulationContributorWare::OPENFLUID_SetVariable","Variables can be modified during RUNSTEP stage only")
+
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::BooleanValue(Val)))
@@ -438,6 +467,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
                                        const openfluid::core::VariableName_t& VarName,
                                        const std::string& Val)
 {
+  REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
+                           "SimulationContributorWare::OPENFLUID_SetVariable","Variables can be modified during RUNSTEP stage only")
+
   if (UnitPtr != NULL)
   {
     if (!UnitPtr->getVariables()->modifyValue(VarName,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::StringValue(Val)))
@@ -454,6 +486,9 @@ void SimulationContributorWare::OPENFLUID_SetVariable(openfluid::core::Unit *Uni
 void SimulationContributorWare::OPENFLUID_AppendEvent(openfluid::core::Unit *UnitPtr,
                                               openfluid::core::Event& Ev)
 {
+  REQUIRE_SIMULATION_STAGE(openfluid::base::SimulationStatus::RUNSTEP,
+                           "SimulationContributorWare::OPENFLUID_SetVariable","Variables can be modified during RUNSTEP stage only")
+
   if (UnitPtr != NULL)
   {
     Ev.setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
@@ -471,6 +506,11 @@ void SimulationContributorWare::OPENFLUID_AddUnit(openfluid::core::UnitClass_t C
                                           openfluid::core::UnitID_t ID,
                                           openfluid::core::PcsOrd_t PcsOrder)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_AddUnit","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_Addunit","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder, openfluid::core::InstantiationInfo::SIMULATION)))
    throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AddUnit","Error adding unit");
 
@@ -485,6 +525,10 @@ void SimulationContributorWare::OPENFLUID_AddUnit(openfluid::core::UnitClass_t C
 void SimulationContributorWare::OPENFLUID_DeleteUnit(openfluid::core::UnitClass_t ClassName,
                                              openfluid::core::UnitID_t ID)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_DeleteUnit","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_DeleteUnit","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   openfluid::core::Unit* TheUnit = mp_CoreData->getUnit(ClassName,ID);
 
@@ -505,6 +549,11 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::U
                                                       openfluid::core::UnitClass_t ClassNameTo,
                                                       openfluid::core::UnitID_t IDTo)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   openfluid::core::Unit* FromUnit = mp_CoreData->getUnit(ClassNameFrom, IDFrom);
   openfluid::core::Unit* ToUnit = mp_CoreData->getUnit(ClassNameTo, IDTo);
 
@@ -519,6 +568,11 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::U
 bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::Unit* FromUnit,
                                                       openfluid::core::Unit* ToUnit)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (FromUnit != NULL || ToUnit != NULL)
   {
     return (FromUnit->addToUnit(ToUnit) && ToUnit->addFromUnit(FromUnit));
@@ -537,6 +591,11 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
                                                          openfluid::core::UnitClass_t ClassNameTo,
                                                          openfluid::core::UnitID_t IDTo)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   openfluid::core::Unit* FromUnit = mp_CoreData->getUnit(ClassNameFrom, IDFrom);
   openfluid::core::Unit* ToUnit = mp_CoreData->getUnit(ClassNameTo, IDTo);
 
@@ -551,6 +610,11 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
 bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core::Unit* FromUnit,
                                                          openfluid::core::Unit* ToUnit)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (FromUnit == NULL || ToUnit == NULL)
     throw openfluid::base::OFException("OpenFLUID framework","CoreRepository::removeFromToConnection","Error removing from-to connection");
   else
@@ -567,6 +631,11 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
                                                            openfluid::core::UnitClass_t ClassNameParent,
                                                            openfluid::core::UnitID_t IDParent)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   openfluid::core::Unit* ChildUnit = mp_CoreData->getUnit(ClassNameChild, IDChild);
   openfluid::core::Unit* ParentUnit = mp_CoreData->getUnit(ClassNameParent, IDParent);
 
@@ -581,6 +650,11 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
 bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::core::Unit* ChildUnit,
                                                            openfluid::core::Unit* ParentUnit)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (ChildUnit != NULL || ParentUnit != NULL)
   {
     return (ChildUnit->addParentUnit(ParentUnit) && ParentUnit->addChildUnit(ChildUnit));
@@ -599,6 +673,11 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
                                                            openfluid::core::UnitClass_t ClassNameParent,
                                                            openfluid::core::UnitID_t IDParent)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   openfluid::core::Unit* ChildUnit = mp_CoreData->getUnit(ClassNameChild, IDChild);
   openfluid::core::Unit* ParentUnit = mp_CoreData->getUnit(ClassNameParent, IDParent);
 
@@ -613,6 +692,11 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
 bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid::core::Unit* ChildUnit,
                                                            openfluid::core::Unit* ParentUnit)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   if (ChildUnit == NULL || ParentUnit == NULL)
     throw openfluid::base::OFException("OpenFLUID framework","CoreRepository::removeChildParentConnection","Error removing child-parent connection");
   else
@@ -628,6 +712,11 @@ void SimulationContributorWare::OPENFLUID_BuildUnitsMatrix(const openfluid::core
                                                    const unsigned int& ColsNbr,
                                                    const unsigned int& RowsNbr)
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
+                              "SimulationContributorWare::OPENFLUID_BuildUnitsMatrix","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
+                              "SimulationContributorWare::OPENFLUID_BuildUnitsMatrix","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+
   openfluid::core::UnitID_t CurrID = 0;
   openfluid::core::UnitID_t ToID = 0;
 
