@@ -55,7 +55,6 @@
 #include "BuilderModuleFactory.hpp"
 
 #include "BuilderHomeModule.hpp"
-//#include "ModelStructureModule.hpp"
 #include "ModelModule.hpp"
 #include "DomainStructureModule.hpp"
 #include "DomainClassModule.hpp"
@@ -88,13 +87,6 @@ openfluid::guicommon::BuilderModule* BuilderModuleFactory::createHomeModule(
 
 // =====================================================================
 // =====================================================================
-
-
-//openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelStructureModule()
-//{
-//  ModelStructureModule* Module = new ModelStructureModule(mp_EngineProject.getAdvancedDesc());
-//  return Module;
-//}
 
 openfluid::guicommon::BuilderModule* BuilderModuleFactory::createModelModule()
 {
