@@ -144,9 +144,9 @@ void GeneratorSignature::setInterpInfo()
           "-"));
 
   HandledData.RequiredExtraFiles.push_back(
-      "Data sources filename for the value to produce, from \"sources\" parameter");
+      "Data sources for the value to produce, from \"sources\" parameter");
   HandledData.RequiredExtraFiles.push_back(
-      "Distribution filename for the value to produce, from \"distribution\" parameter");
+      "Distribution for the value to produce, from \"distribution\" parameter");
 }
 
 // =====================================================================
@@ -174,9 +174,9 @@ void GeneratorSignature::setInjectInfo()
           "-"));
 
   HandledData.RequiredExtraFiles.push_back(
-      "Data sources filename for the value to produce, from \"sources\" parameter");
+      "Data sources for the value to produce, from \"sources\" parameter");
   HandledData.RequiredExtraFiles.push_back(
-      "Distribution filename for the value to produce, from \"distribution\" parameter");
+      "Distribution for the value to produce, from \"distribution\" parameter");
 }
 
 // =====================================================================

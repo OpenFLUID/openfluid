@@ -238,6 +238,10 @@ void FunctionParamFileRow::onFileButtonClicked()
 
     try
     {
+      Glib::RefPtr<Gio::File> Parent = m_File->get_parent();
+      if (!Parent->query_exists())
+        Parent->make_directory_with_parents();
+
       ChoosedFile->copy(m_File, Flag);
     }
     catch (Gio::Error& e)
