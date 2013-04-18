@@ -107,35 +107,11 @@ void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit
 
 void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t& InputName,
-                                    openfluid::core::DoubleValue* Val) const
-{
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& InputName,
                                     openfluid::core::DoubleValue& Val) const
 {
   double TmpVal;
   OPENFLUID_GetInputData(UnitPtr,InputName,TmpVal);
   Val.set(TmpVal);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& InputName,
-                                    openfluid::core::VectorValue* Val) const
-{
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
 }
 
 
@@ -173,18 +149,6 @@ void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit
 
 void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t& InputName,
-                                    double *Val) const
-{
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& InputName,
                                     double& Val) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -205,19 +169,6 @@ void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit
 
 void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                     const openfluid::core::InputDataName_t& InputName,
-                                    long *Val) const
-{
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
-}
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& InputName,
                                     long& Val) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -229,18 +180,6 @@ void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit
       throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetInputData","Long integer for input data "+ InputName +" does not exist");
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetInputData","Unit is NULL");
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& InputName,
-                                    std::string *Val) const
-{
-  OPENFLUID_GetInputData(UnitPtr,InputName,*Val);
 }
 
 
@@ -289,19 +228,6 @@ bool SimulationInspectorWare::OPENFLUID_IsInputDataExist(const openfluid::core::
 void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitPtr,
                                         const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::TimeIndex_t Index,
-                                        openfluid::core::Value* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr, VarName,Index,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        const openfluid::core::TimeIndex_t Index,
                                         openfluid::core::Value& Val) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
@@ -327,37 +253,11 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit 
 void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        const openfluid::core::TimeIndex_t Index,
-                                       double* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr,VarName,Index,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       const openfluid::core::TimeIndex_t Index,
                                        double& Val) const
 {
   openfluid::core::DoubleValue TmpVal(Val);
-  OPENFLUID_GetVariable(UnitPtr,VarName,Index,&TmpVal);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Index,TmpVal);
   Val = TmpVal.get();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       const openfluid::core::TimeIndex_t Index,
-                                       long* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr,VarName,Index,*Val);
 }
 
 
@@ -371,21 +271,8 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
                                        long& Val) const
 {
   openfluid::core::IntegerValue TmpVal(Val);
-  OPENFLUID_GetVariable(UnitPtr,VarName,Index,&TmpVal);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Index,TmpVal);
   Val = TmpVal.get();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       const openfluid::core::TimeIndex_t Index,
-                                       bool* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr,VarName,Index,*Val);
 }
 
 
@@ -399,21 +286,8 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
                                        bool& Val) const
 {
   openfluid::core::BooleanValue TmpVal(Val);
-  OPENFLUID_GetVariable(UnitPtr,VarName,Index,&TmpVal);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Index,TmpVal);
   Val = TmpVal.get();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       const openfluid::core::TimeIndex_t Index,
-                                       std::string* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr,VarName,Index,*Val);
 }
 
 
@@ -427,20 +301,8 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
                                        std::string& Val) const
 {
   openfluid::core::StringValue TmpVal(Val);
-  OPENFLUID_GetVariable(UnitPtr,VarName,Index,&TmpVal);
+  OPENFLUID_GetVariable(UnitPtr,VarName,Index,TmpVal);
   Val = TmpVal.get();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitPtr,
-                                        const openfluid::core::VariableName_t& VarName,
-                                        openfluid::core::Value* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr, VarName,*Val);
 }
 
 
@@ -474,35 +336,11 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit 
 
 void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
-                                       double* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr,VarName,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
                                        double& Val) const
 {
   openfluid::core::DoubleValue TmpVal(Val);
-  OPENFLUID_GetVariable(UnitPtr,VarName,&TmpVal);
+  OPENFLUID_GetVariable(UnitPtr,VarName,TmpVal);
   Val = TmpVal.get();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       long* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr,VarName,*Val);
 }
 
 
@@ -515,20 +353,8 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
                                        long& Val) const
 {
   openfluid::core::IntegerValue TmpVal(Val);
-  OPENFLUID_GetVariable(UnitPtr,VarName,&TmpVal);
+  OPENFLUID_GetVariable(UnitPtr,VarName,TmpVal);
   Val = TmpVal.get();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       bool* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr,VarName,*Val);
 }
 
 
@@ -541,20 +367,8 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
                                        bool& Val) const
 {
   openfluid::core::BooleanValue TmpVal(Val);
-  OPENFLUID_GetVariable(UnitPtr,VarName,&TmpVal);
+  OPENFLUID_GetVariable(UnitPtr,VarName,TmpVal);
   Val = TmpVal.get();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                       const openfluid::core::VariableName_t& VarName,
-                                       std::string* Val) const
-{
-  OPENFLUID_GetVariable(UnitPtr,VarName,*Val);
 }
 
 
@@ -567,7 +381,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
                                        std::string& Val) const
 {
   openfluid::core::StringValue TmpVal(Val);
-  OPENFLUID_GetVariable(UnitPtr,VarName,&TmpVal);
+  OPENFLUID_GetVariable(UnitPtr,VarName,TmpVal);
   Val = TmpVal.get();
 }
 
@@ -721,19 +535,6 @@ bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::co
                               "SimulationInspectorWare::OPENFLUID_IsTypedVariableExist","Variables can be accessed using time index only during INITIALIZERUN, RUNSTEP and FINALIZERUN stages")
 
   return (UnitPtr != NULL && UnitPtr->getVariables()->isTypedVariableExist(VarName,Index,VarType));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulationInspectorWare::OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
-                                            const openfluid::core::DateTime BeginDate,
-                                            const openfluid::core::DateTime EndDate,
-                                            openfluid::core::EventsCollection* Events) const
-{
-  OPENFLUID_GetEvents(UnitPtr,BeginDate,EndDate,*Events);
 }
 
 

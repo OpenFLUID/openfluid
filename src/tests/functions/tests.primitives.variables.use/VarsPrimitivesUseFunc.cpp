@@ -155,9 +155,9 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      OPENFLUID_GetFunctionParameter(Params,"strparam",&m_ParamString);
-      OPENFLUID_GetFunctionParameter(Params,"doubleparam",&m_ParamDouble);
-      OPENFLUID_GetFunctionParameter(Params,"longparam",&m_ParamLong);
+      OPENFLUID_GetFunctionParameter(Params,"strparam",m_ParamString);
+      OPENFLUID_GetFunctionParameter(Params,"doubleparam",m_ParamDouble);
+      OPENFLUID_GetFunctionParameter(Params,"longparam",m_ParamLong);
 
     }
 
@@ -274,7 +274,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // double
 
-          OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,&VarDouble);
+          OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,VarDouble);
           if (!openfluid::tools::IsCloseEnough(VarDouble,RefDouble,0.00001))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.double)");
 
@@ -301,12 +301,12 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.double",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarDouble);
+            OPENFLUID_GetVariable(TU,"tests.double",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarDouble);
             if (!openfluid::tools::IsCloseEnough(VarDouble,PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value at t-1 (tests.double)");
           }
 
-          OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,&VarDouble);
+          OPENFLUID_GetVariable(TU,"tests.double",CurrIndex,VarDouble);
 
           if (!openfluid::tools::IsCloseEnough(VarDouble,NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value after update (tests.double)");
@@ -317,10 +317,6 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
 
           // double value
-
-          OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex,&VarDoubleVal);
-          if (VarDoubleVal.get() != RefDouble)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value (tests.doubleval)");
 
           OPENFLUID_GetVariable(TU,"tests.doubleval",VarDoubleVal);
           if (VarDoubleVal.get() != RefDouble)
@@ -335,12 +331,12 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarDoubleVal);
+            OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarDoubleVal);
             if (!openfluid::tools::IsCloseEnough(VarDoubleVal.get(),PreDouble,0.00001))
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value at t-1 (tests.doubleval)");
           }
 
-          OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex,&VarDoubleVal);
+          OPENFLUID_GetVariable(TU,"tests.doubleval",CurrIndex,VarDoubleVal);
 
           if (!openfluid::tools::IsCloseEnough(VarDoubleVal.get(),NewDouble,0.00001))
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect double value after update (tests.doubleval)");
@@ -352,29 +348,21 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // long
 
-          OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex,&VarLong);
-          if (VarLong != RefLong)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value (tests.integer)");
-
           VarLong = 0;
           OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex,VarLong);
           if (VarLong != RefLong)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value (tests.integer) get by reference");
 
-          OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex,&VarLong);
-          if (VarLong != RefLong)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value (tests.integer)");
-
           OPENFLUID_SetVariable(TU,"tests.integer",NewLong);
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarLong);
+            OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarLong);
             if (VarLong != PreLong)
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value at t-1 (tests.integer)");
           }
 
-          OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex,&VarLong);
+          OPENFLUID_GetVariable(TU,"tests.integer",CurrIndex,VarLong);
 
           if (VarLong != NewLong)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value after update (tests.integer)");
@@ -386,10 +374,6 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // long value
 
-          OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex,&VarLongVal);
-          if (VarLongVal.get() != RefLong)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value (tests.integerval)");
-
           VarLongVal.set(0);
           OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex,VarLongVal);
           if (VarLongVal.get() != RefLong)
@@ -398,12 +382,12 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarLongVal);
+            OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarLongVal);
             if (VarLongVal.get() != PreLong)
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value at t-1 (tests.integerval)");
           }
 
-          OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex,&VarLongVal);
+          OPENFLUID_GetVariable(TU,"tests.integerval",CurrIndex,VarLongVal);
 
           if (VarLongVal.get() != NewLong)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect long value after update (tests.integerval)");
@@ -428,10 +412,6 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // bool
 
-          OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex,&VarBool);
-          if (VarBool != RefBool)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value (tests.bool)");
-
           VarBool = false;
           OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex,VarBool);
           if (VarBool != RefBool)
@@ -441,13 +421,12 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarBool);
+            OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarBool);
             if (VarBool != PreBool)
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value at t-1 (tests.bool)");
           }
 
-          OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex,&VarBool);
-
+          OPENFLUID_GetVariable(TU,"tests.bool",CurrIndex,VarBool);
           if (VarBool != NewBool)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value after update (tests.bool)");
 
@@ -458,10 +437,6 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // bool value
 
-          OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex,&VarBoolVal);
-          if (VarBoolVal.get() != RefBool)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value (tests.boolval)");
-
           VarBoolVal.set(false);
           OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex,VarBoolVal);
           if (VarBoolVal.get() != RefBool)
@@ -471,12 +446,12 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarBoolVal);
+            OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarBoolVal);
             if (VarBoolVal.get() != PreBool)
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value at t-1 (tests.boolval)");
           }
 
-          OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex,&VarBoolVal);
+          OPENFLUID_GetVariable(TU,"tests.boolval",CurrIndex,VarBoolVal);
 
           if (VarBoolVal.get() != NewBool)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect bool value after update (tests.boolval)");
@@ -488,10 +463,6 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // string
 
-          OPENFLUID_GetVariable(TU,"tests.string",CurrIndex,&VarString);
-          if (VarString != RefString)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect string value (tests.string)");
-
           VarString = "";
           OPENFLUID_GetVariable(TU,"tests.string",CurrIndex,VarString);
           if (VarString != RefString)
@@ -501,12 +472,12 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.string",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarString);
+            OPENFLUID_GetVariable(TU,"tests.string",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarString);
             if (VarString != PreString)
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect string value at t-1 (tests.string)");
           }
 
-          OPENFLUID_GetVariable(TU,"tests.string",CurrIndex,&VarString);
+          OPENFLUID_GetVariable(TU,"tests.string",CurrIndex,VarString);
 
           if (VarString != NewString)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect string value after update (tests.string)");
@@ -518,20 +489,12 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // null value
 
-          OPENFLUID_GetVariable(TU,"tests.null",CurrIndex,&VarNullVal);
-          if (VarNullVal.getType() != openfluid::core::Value::NULLL)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect null value (tests.null)");
-
           OPENFLUID_GetVariable(TU,"tests.null",CurrIndex,VarNullVal);
           if (VarNullVal.getType() != openfluid::core::Value::NULLL)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect null value (tests.null) get by reference");
 
 
           // vector value
-
-          OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex,&VarVectorVal);
-          if (VarVectorVal.getSize() != RefVectorSize)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector size");
 
           VarVectorVal.clear();
           OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex,VarVectorVal);
@@ -541,7 +504,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           openfluid::core::VectorValue NewVect(NewVectorSize,NewDouble);
           OPENFLUID_SetVariable(TU,"tests.vector",NewVect);
 
-          OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex,&VarVectorVal);
+          OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex,VarVectorVal);
           if (VarVectorVal.getSize() != NewVectorSize)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector size after update");
 
@@ -554,7 +517,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarVectorVal);
+            OPENFLUID_GetVariable(TU,"tests.vector",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarVectorVal);
 
             if (VarVectorVal.getSize() != NewVectorSize)
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect vector size at t-1");
@@ -573,12 +536,6 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // matrix value
 
-          OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex,&VarMatrixVal);
-          if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix cols nb");
-          if (VarMatrixVal.getRowsNbr() != RefMatrixRowsNb)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix rows nb");
-
           VarMatrixVal.clear();
           OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex,VarMatrixVal);
           if (VarMatrixVal.getColsNbr() != RefMatrixColsNb)
@@ -596,7 +553,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           openfluid::core::MatrixValue NewMatrix(NewMatrixColsNb,NewMatrixRowsNb,NewDouble);
           OPENFLUID_SetVariable(TU,"tests.matrix",NewMatrix);
 
-          OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex,&VarMatrixVal);
+          OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex,VarMatrixVal);
           if (VarMatrixVal.getColsNbr() != NewMatrixColsNb)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix cols nb after update");
           if (VarMatrixVal.getRowsNbr() != NewMatrixRowsNb)
@@ -611,7 +568,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarMatrixVal);
+            OPENFLUID_GetVariable(TU,"tests.matrix",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarMatrixVal);
 
             if (VarMatrixVal.getSize() != NewMatrixRowsNb*NewMatrixColsNb)
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect matrix size at t-1");
@@ -630,10 +587,6 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           // map value
 
-          OPENFLUID_GetVariable(TU,"tests.map",CurrIndex,&VarMapVal);
-          if (VarMapVal.getSize() != 2)
-            OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect map size");
-
           VarMapVal.clear();
           OPENFLUID_GetVariable(TU,"tests.map",CurrIndex,VarMapVal);
           if (VarMapVal.getSize() != 2)
@@ -645,7 +598,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           NewMap.setBoolean("key3",NewBool);
           OPENFLUID_SetVariable(TU,"tests.map",NewMap);
 
-          OPENFLUID_GetVariable(TU,"tests.map",CurrIndex,&VarMapVal);
+          OPENFLUID_GetVariable(TU,"tests.map",CurrIndex,VarMapVal);
           if (VarMapVal.getSize() != 3)
             OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect map size after update");
 
@@ -661,7 +614,7 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
           if (CurrIndex > 0 && (OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT()) != 0)
           {
-            OPENFLUID_GetVariable(TU,"tests.map",CurrIndex-OPENFLUID_GetDefaultDeltaT(),&VarMapVal);
+            OPENFLUID_GetVariable(TU,"tests.map",CurrIndex-OPENFLUID_GetDefaultDeltaT(),VarMapVal);
 
             if (VarMapVal.getSize() != 3)
               OPENFLUID_RaiseError(THIS_FUNC_ID,"incorrect map size at t-1");

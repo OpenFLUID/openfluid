@@ -294,11 +294,11 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       OPENFLUID_UNITS_ORDERED_LOOP("TU", TU)
       {
-        OPENFLUID_GetInputData(TU,"indatadbl",&DblValue);
+        OPENFLUID_GetInputData(TU,"indatadbl",DblValue);
         if (!openfluid::tools::IsVeryClose(double(TU->getID())*0.1,DblValue))
           OPENFLUID_RaiseError("tests.primitives.land","inputdata error for indatadbl");
 
-        OPENFLUID_GetInputData(TU,"indatastr",&StrValue);
+        OPENFLUID_GetInputData(TU,"indatastr",StrValue);
         if (StrValue != "C0DE1")
           OPENFLUID_RaiseError("tests.primitives.land","inputdata error for indatastr");
 

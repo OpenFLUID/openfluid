@@ -113,32 +113,10 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the requested property
       @param[out] Val the value of the requested property
-      @deprecated
-    */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
-                                openfluid::core::DoubleValue* Val) const;
-
-    /**
-      Gets input data for a unit, as a DoubleValue
-      @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
     */
     void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                 const openfluid::core::InputDataName_t& InputName,
                                 openfluid::core::DoubleValue& Val) const;
-
-    /**
-      Gets input data for a unit, as a VectorValue
-      @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
-      @deprecated
-    */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
-                                openfluid::core::VectorValue* Val) const;
 
     /**
       Gets input data for a unit, as a VectorValue
@@ -165,17 +143,6 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the requested property
       @param[out] Val the value of the requested property
-      @deprecated
-    */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
-                                double *Val) const;
-
-    /**
-      Gets input data for a unit, as a double
-      @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
     */
     void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                 const openfluid::core::InputDataName_t& InputName,
@@ -186,32 +153,10 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] InputName the name of the requested property
       @param[out] Val the value of the requested property
-      @deprecated
-    */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
-                                long *Val) const;
-
-    /**
-      Gets input data for a unit, as a long integer
-      @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
     */
     void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
                                 const openfluid::core::InputDataName_t& InputName,
                                 long& Val) const;
-
-    /**
-      Gets input data for a unit, as a string
-      @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
-      @deprecated
-    */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
-                                std::string *Val) const;
 
     /**
       Gets input data for a unit, as a string
@@ -284,19 +229,6 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
         @param[in] VarName the name of the requested variable
         @param[in] Index the time index for the value of the requested variable
         @param[out] Val the value of the requested variable
-        @deprecated
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 openfluid::core::Value* Val) const;
-
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
       */
       void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
@@ -309,36 +241,11 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
         @param[in] VarName the name of the requested variable
         @param[in] Index the time index for the value of the requested variable
         @param[out] Val the value of the requested variable
-        @deprecated
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 double* Val) const;
-
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
       */
       void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  const openfluid::core::TimeIndex_t Index,
                                  double& Val) const;
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
-        @deprecated
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 long* Val) const;
 
       /**
         Gets the distributed variable value for a unit at a time index
@@ -358,38 +265,11 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
         @param[in] VarName the name of the requested variable
         @param[in] Index the time index for the value of the requested variable
         @param[out] Val the value of the requested variable
-        @deprecated
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 bool* Val) const;
-
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
       */
       void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  const openfluid::core::TimeIndex_t Index,
                                  bool& Val) const;
-
-
-      /**
-        Gets the distributed variable value for a unit at a time index
-        @param[in] UnitPtr a Unit
-        @param[in] VarName the name of the requested variable
-        @param[in] Index the time index for the value of the requested variable
-        @param[out] Val the value of the requested variable
-        @deprecated
-      */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                                 const openfluid::core::VariableName_t& VarName,
-                                 const openfluid::core::TimeIndex_t Index,
-                                 std::string* Val) const;
 
       /**
         Gets the distributed variable value for a unit at a time index
@@ -408,17 +288,6 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @param[out] Val the value of the requested variable
-      @deprecated
-    */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                               const openfluid::core::VariableName_t& VarName,
-                               openfluid::core::Value* Val) const;
-
-    /**
-      Gets the distributed variable value for a unit at the current time index
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
-      @param[out] Val the value of the requested variable
     */
     void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
@@ -429,31 +298,10 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
       @param[out] Val the value of the requested variable
-      @deprecated
-    */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                               const openfluid::core::VariableName_t& VarName,
-                               double* Val) const;
-
-    /**
-      Gets the distributed variable value for a unit at the current time index
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
-      @param[out] Val the value of the requested variable
     */
     void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                double& Val) const;
-    /**
-      Gets the distributed variable value for a unit at the current time index
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
-      @param[out] Val the value of the requested variable
-      @deprecated
-    */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                               const openfluid::core::VariableName_t& VarName,
-                               long* Val) const;
 
     /**
       Gets the distributed variable value for a unit at the current time index
@@ -469,35 +317,12 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       Gets the distributed variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
-      @param[out] Val the value of the requested variable
-      @deprecated
-    */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                               const openfluid::core::VariableName_t& VarName,
-                               bool* Val) const;
-
-    /**
-      Gets the distributed variable value for a unit at the current time index
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
       @param[in] Index the time index for the value of the requested variable
       @param[out] Val the value of the requested variable
     */
     void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                bool& Val) const;
-
-
-    /**
-      Gets the distributed variable value for a unit at the current time index
-      @param[in] UnitPtr a Unit
-      @param[in] VarName the name of the requested variable
-      @param[out] Val the value of the requested variable
-      @deprecated
-    */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
-                               const openfluid::core::VariableName_t& VarName,
-                               std::string* Val) const;
 
     /**
       Gets the distributed variable value for a unit at the current time index
@@ -545,20 +370,6 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
                                 const openfluid::core::TimeIndex_t BeginIndex,
                                 const openfluid::core::TimeIndex_t EndIndex,
                                 openfluid::core::IndexedValueList& IndValList);
-
-
-      /**
-        Gets discrete events happening on a unit during a time period
-        @param[in] UnitPtr a Unit
-        @param[in] BeginDate the beginning of the time period
-        @param[in] EndDate the ending of the time period
-        @param[out] Events the collection of event corresponding to the request
-        @deprecated
-      */
-      void OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
-                               const openfluid::core::DateTime BeginDate,
-                               const openfluid::core::DateTime EndDate,
-                               openfluid::core::EventsCollection* Events) const;
 
       /**
         Gets discrete events happening on a unit during a time period

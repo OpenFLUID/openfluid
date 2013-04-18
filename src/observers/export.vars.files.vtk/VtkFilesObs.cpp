@@ -199,7 +199,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
           if (UU != NULL)
           {
-            OPENFLUID_GetVariable(UU,VtkSerie.VarName,Index,&Value);
+            OPENFLUID_GetVariable(UU,VtkSerie.VarName,Index,Value);
           }
           else
           {
@@ -610,8 +610,8 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
     {
       std::string InputDir, OutputDir;
 
-      OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
-      OPENFLUID_GetRunEnvironment("dir.output",&OutputDir);
+      OPENFLUID_GetRunEnvironment("dir.input",InputDir);
+      OPENFLUID_GetRunEnvironment("dir.output",OutputDir);
 
       m_DEMFilename = Params.get("DEMfile","");
       if (!m_DEMFilename.empty()) m_DEMFilename = boost::filesystem::path(InputDir+"/"+m_DEMFilename).string();

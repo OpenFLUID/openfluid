@@ -105,8 +105,8 @@ void PluggableFunction::initializeWare(const WareID_t& ID,const unsigned int& Ma
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       openfluid::core::StringValue& Val) const
 {
   try
@@ -125,8 +125,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       openfluid::core::DoubleValue& Val) const
 {
   try
@@ -144,8 +144,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       openfluid::core::VectorValue& Val) const
 {
   try
@@ -164,8 +164,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                    const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                    const openfluid::ware::WareParamKey_t& ParamName,
                                     openfluid::core::MatrixValue& Val) const
 {
   try
@@ -183,20 +183,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
-                                      double *Val) const
-{
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       double& Val) const
 {
   try
@@ -214,20 +202,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
-                                      long *Val) const
-{
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       long& Val) const
 {
   try
@@ -245,20 +221,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
-                                      float *Val) const
-{
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       float& Val) const
 {
   try
@@ -281,21 +245,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
-                                      int *Val) const
-{
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
-}
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       int& Val) const
 {
   try
@@ -318,20 +269,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
-                                      std::string *Val) const
-{
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Val);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       std::string& Value) const
 {
   try
@@ -350,20 +289,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
-                                      std::vector<std::string> *Vals) const
-{
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       std::vector<std::string>& Vals) const
 {
   try
@@ -389,20 +316,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
-                                      std::vector<double> *Vals) const
-{
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       std::vector<double>& Vals) const
 {
   try
@@ -434,20 +349,8 @@ bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::Wa
 // =====================================================================
 
 
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
-                                      std::vector<long> *Vals) const
-{
-  return OPENFLUID_GetFunctionParameter(Params,ParamName,*Vals);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                      const openfluid::ware::WareParamKey_t ParamName,
+bool PluggableFunction::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                      const openfluid::ware::WareParamKey_t& ParamName,
                                       std::vector<long>& Vals) const
 {
   try

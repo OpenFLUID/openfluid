@@ -154,8 +154,8 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         openfluid::core::StringValue& Val) const;
 
     /**
@@ -164,8 +164,8 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         openfluid::core::DoubleValue& Val) const;
 
     /**
@@ -174,8 +174,8 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         openfluid::core::VectorValue& Val) const;
 
     /**
@@ -184,8 +184,8 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         openfluid::core::MatrixValue& Val) const;
 
     /**
@@ -193,20 +193,9 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
-      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
-                                        double *Val) const;
-
-    /**
-      Gets a function parameter from the parameters set, as a double
-      @param[in] Params the parameters set for the simulation function
-      @param[in] ParamName the name of the requested parameter
-      @param[out] Val the value of the requested parameter
-    */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         double& Val) const;
 
     /**
@@ -214,20 +203,9 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
-      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
-                                        long *Val) const;
-
-    /**
-      Gets a function parameter value from the parameters set, as a long int
-      @param[in] Params the parameters set for the simulation function
-      @param[in] ParamName the name of the requested parameter
-      @param[out] Val the value of the requested parameter
-    */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         long& Val) const;
 
     /**
@@ -235,20 +213,9 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
-      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
-                                        float *Val) const;
-
-    /**
-      Gets a function parameter from the parameters set, as a float
-      @param[in] Params the parameters set for the simulation function
-      @param[in] ParamName the name of the requested parameter
-      @param[out] Val the value of the requested parameter
-    */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         float& Val) const;
 
     /**
@@ -256,20 +223,9 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
-      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
-                                        int *Val) const;
-
-    /**
-      Gets a function parameter value from the parameters set, as an int
-      @param[in] Params the parameters set for the simulation function
-      @param[in] ParamName the name of the requested parameter
-      @param[out] Val the value of the requested parameter
-    */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         int& Val) const;
 
     /**
@@ -277,20 +233,9 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
-      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
-                                        std::string *Val) const;
-
-    /**
-      Gets a function parameter value from the parameters set, as a string
-      @param[in] Params the parameters set for the simulation function
-      @param[in] ParamName the name of the requested parameter
-      @param[out] Val the value of the requested parameter
-    */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         std::string& Val) const;
 
     /**
@@ -298,20 +243,9 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
-      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
-                                        std::vector<std::string> *Vals) const;
-
-    /**
-      Gets a function parameter vector of values from the parameters set, as a vector of strings
-      @param[in] Params the parameters set for the simulation function
-      @param[in] ParamName the name of the requested parameter
-      @param[out] Vals the vector of values of the requested parameter
-    */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         std::vector<std::string>& Vals) const;
 
     /**
@@ -319,20 +253,9 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
-      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
-                                        std::vector<double> *Vals) const;
-
-    /**
-      Gets a function parameter vector of values from the parameters set, as a vector of doubles
-      @param[in] Params the parameters set for the simulation function
-      @param[in] ParamName the name of the requested parameter
-      @param[out] Vals the vector of values of the requested parameter
-    */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         std::vector<double>& Vals) const;
 
     /**
@@ -340,20 +263,9 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
       @param[in] Params the parameters set for the simulation function
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
-      @deprecated
     */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
-                                        std::vector<long> *Vals) const;
-
-    /**
-      Gets a function parameter vector of values from the parameters set, as a vector of long ints
-      @param[in] Params the parameters set for the simulation function
-      @param[in] ParamName the name of the requested parameter
-      @param[out] Vals the vector of values of the requested parameter
-    */
-    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t Params,
-                                        const openfluid::ware::WareParamKey_t ParamName,
+    bool OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+                                        const openfluid::ware::WareParamKey_t& ParamName,
                                         std::vector<long>& Vals) const;
 
     /**
