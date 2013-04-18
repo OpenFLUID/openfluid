@@ -46,49 +46,79 @@
  */
 
 /**
- \file ModelAvailFctComponent.hpp
+ \file AvailFunctionsWidget.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __MODELAVAILFCTCOMPONENT_HPP__
-#define __MODELAVAILFCTCOMPONENT_HPP__
+#ifndef AVAILFUNCTIONSWIDGET_HPP_
+#define AVAILFUNCTIONSWIDGET_HPP_
 
+#include <sigc++/sigc++.h>
 
-#include "BuilderMVPComponent.hpp"
+#include <gtkmm/box.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/treestore.h>
+#include <gtkmm/scrolledwindow.h>
+#include <gdkmm/pixbuf.h>
 
-class ModelAvailFctModel;
-class ModelAvailFctView;
-class ModelAvailFctPresenter;
-class ModelAvailFctAdapter;
-class ModelAvailFctAdapterModel;
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
-class ModelAvailFctComponent: public BuilderMVPComponent
+class AvailFunctionsWidget: public Gtk::Box
 {
   private:
 
-    ModelAvailFctModel* mp_Model;
+    const openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
-    ModelAvailFctView* mp_View;
+    Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
 
-    ModelAvailFctPresenter* mp_Presenter;
+    class AvailFctColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        AvailFctColumns()
+        {
+          add(m_Status);
+          add(m_Id);
+          add(m_Domain);
+          add(mp_Sign);
+          add(m_Sensitive);
+        }
+        Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_Status;
+        Gtk::TreeModelColumn<Glib::ustring> m_Id;
+        Gtk::TreeModelColumn<Glib::ustring> m_Domain;
+        Gtk::TreeModelColumn<openfluid::machine::ModelItemSignatureInstance*> mp_Sign;
+        Gtk::TreeModelColumn<bool> m_Sensitive;
+    };
 
-    ModelAvailFctAdapter* mp_Adapter;
+    AvailFctColumns m_Columns;
 
-    ModelAvailFctAdapterModel* mp_AdapterModel;
+    Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
+
+    void onSelectionChanged();
+    void onRowActivated(const Gtk::TreeModel::Path& Path,
+                        Gtk::TreeViewColumn* Column);
+
+    sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> m_signal_SelectionChanged;
+    sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> m_signal_Activated;
+
+  protected:
+
+    Gtk::TreeView* mp_TreeView;
+
+    Gtk::ScrolledWindow* mp_MainWin;
 
   public:
 
-    ModelAvailFctComponent();
+    AvailFunctionsWidget(const openfluid::fluidx::AdvancedModelDescriptor& Model);
 
-    ~ModelAvailFctComponent();
+    sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> signal_SelectionChanged();
+    sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> signal_Activated();
 
-    Gtk::Widget* asWidget();
+    void select(Gtk::TreeRow Row);
 
-    ModelAvailFctModel* getModel();
-
-    ModelAvailFctView* getView();
+    void update();
 };
 
-#endif /* __MODELAVAILFCTCOMPONENT_HPP__ */
+#endif /* AVAILFUNCTIONSWIDGET_HPP_ */

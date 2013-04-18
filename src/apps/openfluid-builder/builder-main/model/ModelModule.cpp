@@ -60,10 +60,14 @@
 #include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
+#include "ModelAddFunctionDialog.hpp"
 #include "ModelGeneratorCreationDialog.hpp"
-#include "ModelAddFunctionModule.hpp"
 #include "WareSetWidget.hpp"
 #include "FunctionParamWidget.hpp"
+#include "FunctionGlobalParamsWidget.hpp"
+#include "FunctionAddParamDialog.hpp"
+#include "FunctionAddGlobalParamDialog.hpp"
+
 #include "ModelFctDetailComponent.hpp"
 #include "ModelFctDetailModel.hpp"
 
@@ -76,10 +80,10 @@ ModelModule::ModelModule(
 {
   mp_MainPanel = 0;
 
-  mp_AddModule = new ModelAddFunctionModule(m_Model);
+  mp_AddFctDialog = new ModelAddFunctionDialog(m_Model);
 
-  mp_AddParamDialog = new FunctionAddParamDialog();
   mp_AddGlobalParamDialog = new FunctionAddGlobalParamDialog(m_Model);
+  mp_AddParamDialog = new FunctionAddParamDialog();
 
   mp_GlobalParamsWidget = Gtk::manage(
       new FunctionGlobalParamsWidget(m_Model, *mp_AddGlobalParamDialog));
@@ -98,7 +102,9 @@ ModelModule::ModelModule(
 
 ModelModule::~ModelModule()
 {
-  delete mp_AddModule;
+  delete mp_AddFctDialog;
+  delete mp_AddGlobalParamDialog;
+  delete mp_AddParamDialog;
 }
 
 // =====================================================================
@@ -136,7 +142,7 @@ Gtk::Widget* ModelModule::asWidget()
 void ModelModule::whenAddFunctionAsked()
 {
   openfluid::machine::ModelItemSignatureInstance* Signature =
-      mp_AddModule->showDialog();
+      mp_AddFctDialog->show();
 
   if (!Signature)
     return;
@@ -157,8 +163,7 @@ void ModelModule::whenAddFunctionAsked()
               (dynamic_cast<openfluid::ware::GeneratorSignature*>(Signature->Signature))->m_GeneratorMethod);
       break;
     default:
-      std::cerr << "ModelModule::whenAddFctAsked : bad ModelItemDescriptor type"
-                << std::endl;
+      return;
       break;
   }
 
@@ -299,8 +304,6 @@ void ModelModule::update()
   mp_ModelWidget->applyExpanderStates();
 
   mp_ModelWidget->show_all_children();
-
-  mp_AddModule->setSignatures(*Reg);
 
   updateGlobalParams();
 }

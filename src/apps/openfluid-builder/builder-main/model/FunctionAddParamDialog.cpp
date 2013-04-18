@@ -112,6 +112,7 @@ FunctionAddParamDialog::FunctionAddParamDialog()
 
 FunctionAddParamDialog::~FunctionAddParamDialog()
 {
+  delete mp_Dialog;
 }
 
 // =====================================================================

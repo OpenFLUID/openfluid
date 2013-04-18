@@ -46,45 +46,54 @@
  */
 
 /**
- \file ModelAvailFctPresenter.cpp
- \brief Implements ...
+ \file ModelAddFunctionDialog.hpp
+ \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ModelAvailFctPresenter.hpp"
+#ifndef MODELADDFUNCTIONDIALOG_HPP_
+#define MODELADDFUNCTIONDIALOG_HPP_
 
-#include "ModelAvailFctModel.hpp"
-#include "ModelAvailFctAdapter.hpp"
+#include <gtkmm/dialog.h>
 
-// =====================================================================
-// =====================================================================
+#include "ModelFctDetailComponent.hpp"
 
-
-void ModelAvailFctPresenter::whenModelFctListChanged()
-{
-  m_Adapter.setSignatures(m_Model.getSignatures());
+namespace openfluid {
+namespace fluidx {
+class AdvancedModelDescriptor;
+}
+namespace machine {
+class ModelItemSignatureInstance;
+}
 }
 
-// =====================================================================
-// =====================================================================
+class AvailFunctionsWidget;
 
-
-void ModelAvailFctPresenter::whenAdapterSelectionChanged()
+class ModelAddFunctionDialog
 {
-  m_Model.setSelectedSignatureByUser(m_Adapter.getSelectedSignature());
-}
+  private:
 
-// =====================================================================
-// =====================================================================
+    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
+    Gtk::Dialog* mp_Dialog;
 
-ModelAvailFctPresenter::ModelAvailFctPresenter(ModelAvailFctModel& Model,
-    ModelAvailFctAdapter& Adapter) :
-  m_Model(Model), m_Adapter(Adapter)
-{
-  m_Model.signal_SignaturesChanged().connect(sigc::mem_fun(*this,
-      &ModelAvailFctPresenter::whenModelFctListChanged));
-  m_Adapter.signal_FctSelectionChanged().connect(sigc::mem_fun(*this,
-      &ModelAvailFctPresenter::whenAdapterSelectionChanged));
-}
+    ModelFctDetailComponent* mp_ModelFctDetailMVP;
+
+    AvailFunctionsWidget* mp_AvailFct;
+
+    openfluid::machine::ModelItemSignatureInstance* mp_SelectedSignature;
+
+    void whenSelectionChanged(openfluid::machine::ModelItemSignatureInstance* Sign);
+    void whenActivated(openfluid::machine::ModelItemSignatureInstance* Sign);
+
+  public:
+
+    ModelAddFunctionDialog(openfluid::fluidx::AdvancedModelDescriptor& Model);
+
+    ~ModelAddFunctionDialog();
+
+    openfluid::machine::ModelItemSignatureInstance* show();
+};
+
+#endif /* MODELADDFUNCTIONDIALOG_HPP_ */

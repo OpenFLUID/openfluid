@@ -56,15 +56,15 @@
 #define MODELMODULE_HPP_
 
 #include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
-#include "FunctionGlobalParamsWidget.hpp"
-#include "FunctionAddParamDialog.hpp"
-#include "FunctionAddGlobalParamDialog.hpp"
 
 #include <gtkmm/box.h>
 
+class ModelAddFunctionDialog;
 class WareSetWidget;
-class ModelAddFunctionModule;
+class FunctionGlobalParamsWidget;
 class FunctionParamWidget;
+class FunctionAddGlobalParamDialog;
+class FunctionAddParamDialog;
 
 class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
@@ -76,7 +76,7 @@ class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     FunctionGlobalParamsWidget* mp_GlobalParamsWidget;
 
-    ModelAddFunctionModule* mp_AddModule;
+    ModelAddFunctionDialog* mp_AddFctDialog;
 
     FunctionAddParamDialog* mp_AddParamDialog;
     FunctionAddGlobalParamDialog* mp_AddGlobalParamDialog;

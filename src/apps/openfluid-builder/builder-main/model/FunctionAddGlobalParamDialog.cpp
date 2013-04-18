@@ -148,6 +148,7 @@ FunctionAddGlobalParamDialog::FunctionAddGlobalParamDialog(
 
 FunctionAddGlobalParamDialog::~FunctionAddGlobalParamDialog()
 {
+  delete mp_Dialog;
 }
 
 // =====================================================================

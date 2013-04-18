@@ -46,134 +46,98 @@
  */
 
 /**
- \file ModelAddFunctionModule.cpp
+ \file ModelAddFunctionDialog.cpp
  \brief Implements ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ModelAddFunctionModule.hpp"
+#include "ModelAddFunctionDialog.hpp"
 
+#include <gtkmm/paned.h>
 #include <gtkmm/stock.h>
-#include <algorithm>
-
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include "AvailFunctionsWidget.hpp"
 
-#include "ModelAvailFctComponent.hpp"
-#include "ModelFctDetailComponent.hpp"
-
-#include "ModelAddFunctionCoordinator.hpp"
+#include "ModelFctDetailModel.hpp"
 
 // =====================================================================
 // =====================================================================
 
-ModelAddFunctionModule::ModelAddFunctionModule(
+ModelAddFunctionDialog::ModelAddFunctionDialog(
     openfluid::fluidx::AdvancedModelDescriptor& Model) :
-    mp_Model(&Model)
+    m_Model(Model), mp_SelectedSignature(0)
 {
-  mp_ModelAvailFctMVP = new ModelAvailFctComponent();
   mp_ModelFctDetailMVP = new ModelFctDetailComponent();
 
-  mp_Coordinator = new ModelAddFunctionCoordinator(
-      *mp_ModelAvailFctMVP->getModel(), *mp_ModelFctDetailMVP->getModel());
+  mp_AvailFct = Gtk::manage(new AvailFunctionsWidget(m_Model));
+  mp_AvailFct->signal_SelectionChanged().connect(
+      sigc::mem_fun(*this, &ModelAddFunctionDialog::whenSelectionChanged));
+  mp_AvailFct->signal_Activated().connect(
+      sigc::mem_fun(*this, &ModelAddFunctionDialog::whenActivated));
 
-  mp_Coordinator->signal_AvailFctSelectionChanged().connect(
-      sigc::mem_fun(*this,
-                    &ModelAddFunctionModule::whenAvailFctSelectionChanged));
+  Gtk::HPaned* Paned = Gtk::manage(new Gtk::HPaned());
 
-  compose();
-}
-
-// =====================================================================
-// =====================================================================
-
-ModelAddFunctionModule::~ModelAddFunctionModule()
-{
-  delete mp_Coordinator;
-  delete mp_ModelAvailFctMVP;
-  delete mp_ModelFctDetailMVP;
-}
-
-// =====================================================================
-// =====================================================================
-
-void ModelAddFunctionModule::compose()
-{
-  mp_MainPanel = Gtk::manage(new Gtk::HPaned());
-
-  mp_MainPanel->set_border_width(5);
-  mp_MainPanel->pack1(*mp_ModelAvailFctMVP->asWidget(), true, true);
-  mp_MainPanel->pack2(*mp_ModelFctDetailMVP->asWidget(), true, true);
-  mp_MainPanel->set_visible(true);
+  Paned->set_border_width(5);
+  Paned->pack1(*mp_AvailFct, true, true);
+  Paned->pack2(*mp_ModelFctDetailMVP->asWidget(), true, true);
+  Paned->set_visible(true);
 
   mp_Dialog = new Gtk::Dialog();
   mp_Dialog->set_modal(true);
   mp_Dialog->set_size_request(1000, 500);
-  mp_Dialog->get_vbox()->add(*mp_MainPanel);
+  mp_Dialog->get_vbox()->add(*Paned);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-
 }
 
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void> ModelAddFunctionModule::signal_ModelFunctionAdded()
+ModelAddFunctionDialog::~ModelAddFunctionDialog()
 {
-  return m_signal_ModelFunctionAdded;
+  delete mp_Dialog;
 }
 
 // =====================================================================
 // =====================================================================
 
-openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionModule::showDialog()
+openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionDialog::show()
 {
-  openfluid::machine::ModelItemSignatureInstance* SelectedSignature = 0;
+  mp_AvailFct->update();
 
-  whenAvailFctSelectionChanged();
+  mp_SelectedSignature = 0;
 
-  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
-    SelectedSignature = mp_Coordinator->getSelectedSignature();
+  mp_Dialog->run();
 
   mp_Dialog->hide();
 
-  return SelectedSignature;
+  return mp_SelectedSignature;
 }
 
 // =====================================================================
 // =====================================================================
 
-void ModelAddFunctionModule::whenAvailFctSelectionChanged()
+void ModelAddFunctionDialog::whenSelectionChanged(
+    openfluid::machine::ModelItemSignatureInstance* Sign)
 {
-  bool SelectedFctAlreadyInModel = false;
+  mp_SelectedSignature = Sign;
 
-  if (mp_Coordinator->getSelectedSignature())
-  {
-    std::string SelectedFctId =
-        mp_Coordinator->getSelectedSignature()->Signature->ID;
+  mp_Dialog->set_response_sensitive(
+      Gtk::RESPONSE_OK,
+      m_Model.getFirstItemIndex(mp_SelectedSignature->Signature->ID) == -1);
 
-    std::vector<std::string> IDs = mp_Model->getOrderedIDs();
-
-    SelectedFctAlreadyInModel = std::count(IDs.begin(), IDs.end(),
-                                           SelectedFctId);
-  }
-
-  mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK,
-                                    !SelectedFctAlreadyInModel);
+  mp_ModelFctDetailMVP->getModel()->setFctToDisplay(Sign);
 }
 
 // =====================================================================
 // =====================================================================
 
-void ModelAddFunctionModule::setSignatures(
-    openfluid::machine::FunctionSignatureRegistry& Signatures)
+void ModelAddFunctionDialog::whenActivated(
+    openfluid::machine::ModelItemSignatureInstance* Sign)
 {
-  mp_Coordinator->setSignatures(Signatures);
-}
+  mp_SelectedSignature = Sign;
 
-// =====================================================================
-// =====================================================================
+  mp_Dialog->response(Gtk::RESPONSE_OK);
+}
