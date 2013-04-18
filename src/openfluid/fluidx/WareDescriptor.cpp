@@ -61,7 +61,7 @@ namespace fluidx {
 // =====================================================================
 
 WareDescriptor::WareDescriptor() :
-    m_ModelItemType(NoModelItemType)
+    m_ModelItemType(NoWareType)
 {
 
 }
@@ -120,7 +120,7 @@ std::map<std::string, std::string> WareDescriptor::getParamsAsMap(
 // =====================================================================
 // =====================================================================
 
-bool WareDescriptor::isType(ModelItemType MIType) const
+bool WareDescriptor::isType(WareType MIType) const
 {
   return (m_ModelItemType == MIType);
 }

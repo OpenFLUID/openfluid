@@ -72,7 +72,7 @@ class DLLEXPORT FunctionSignatureRegistry
 
     typedef std::map<std::string, openfluid::machine::ModelItemSignatureInstance*> FctSignaturesByName_t;
 
-    typedef std::map<openfluid::fluidx::ModelItemDescriptor::ModelItemType,
+    typedef std::map<openfluid::fluidx::ModelItemDescriptor::WareType,
         FctSignaturesByName_t> FctSignaturesByTypeByName_t;
 
   private:
