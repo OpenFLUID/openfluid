@@ -155,25 +155,25 @@ BOOST_AUTO_TEST_CASE(check_operations)
   FuncEnv = openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment();
   BOOST_REQUIRE(FuncEnv != NULL);
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("wrong.fake",&StrValue),false);
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("fake.wrong",&BoolValue),false);
+  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("wrong.fake",StrValue),false);
+  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("fake.wrong",BoolValue),false);
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.input",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.input",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.output",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.output",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.temp",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.temp",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,openfluid::base::RuntimeEnvironment::getInstance()->getTempDir());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.clearoutputdir",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.clearoutputdir",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.saveresults",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.saveresults",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.writereport",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.writereport",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport());
 
 }

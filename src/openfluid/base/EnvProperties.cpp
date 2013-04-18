@@ -78,7 +78,7 @@ EnvironmentProperties::~EnvironmentProperties()
 // =====================================================================
 
 
-bool EnvironmentProperties::setValue(std::string Key, bool Value)
+bool EnvironmentProperties::setValue(std::string Key, const bool Value)
 {
   m_BoolValues[Key] = Value;
   return true;
@@ -88,7 +88,7 @@ bool EnvironmentProperties::setValue(std::string Key, bool Value)
 // =====================================================================
 
 
-bool EnvironmentProperties::setValue(std::string Key, std::string Value)
+bool EnvironmentProperties::setValue(std::string Key, const std::string& Value)
 {
   m_StringValues[Key] = Value;
   return true;
@@ -98,13 +98,13 @@ bool EnvironmentProperties::setValue(std::string Key, std::string Value)
 // =====================================================================
 
 
-bool EnvironmentProperties::getValue(std::string Key, bool *Value) const
+bool EnvironmentProperties::getValue(std::string Key, bool& Value) const
 {
   KeyBoolMap_t::const_iterator it = m_BoolValues.find(Key);
 
   if (it != m_BoolValues.end())
   {
-    *Value = it->second;
+    Value = it->second;
     return true;
   }
   else return false;
@@ -114,13 +114,13 @@ bool EnvironmentProperties::getValue(std::string Key, bool *Value) const
 // =====================================================================
 
 
-bool EnvironmentProperties::getValue(std::string Key, std::string *Value) const
+bool EnvironmentProperties::getValue(std::string Key, std::string& Value) const
 {
   KeyStringMap_t::const_iterator it = m_StringValues.find(Key);
 
   if (it != m_StringValues.end())
   {
-    *Value = it->second;
+    Value = it->second;
     return true;
   }
   else return false;

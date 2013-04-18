@@ -382,7 +382,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       std::string TmpDir;
 
-      OPENFLUID_GetRunEnvironment("dir.temp",&TmpDir);
+      OPENFLUID_GetRunEnvironment("dir.temp",TmpDir);
 
       m_TmpDir = boost::filesystem::path(TmpDir+"/"+m_TmpSubDir).string();
 

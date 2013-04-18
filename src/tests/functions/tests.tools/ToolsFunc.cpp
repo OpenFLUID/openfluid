@@ -191,7 +191,7 @@ openfluid::base::SchedulingRequest ToolsFunction::initializeRun()
   double DoubleValue;
   std::string StrValue;
 
-  OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
+  OPENFLUID_GetRunEnvironment("dir.input",InputDir);
   boost::filesystem::path FileName(InputDir + "/" + "columnfile.txt");
 
   if (boost::filesystem::exists(FileName))

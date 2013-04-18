@@ -243,7 +243,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
   for (it=ModelDesc.getItems().begin();it!=ModelDesc.getItems().end();++it)
   {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoModelItemType))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
       throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
 
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))

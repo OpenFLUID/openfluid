@@ -151,7 +151,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
       openfluid::core::UnitsList_t::const_iterator itUnitsList;
 
-      OPENFLUID_GetRunEnvironment("dir.output",&OutputDir);
+      OPENFLUID_GetRunEnvironment("dir.output",OutputDir);
 
       DotFile.open(std::string(OutputDir+"/"+Filename).c_str());
 

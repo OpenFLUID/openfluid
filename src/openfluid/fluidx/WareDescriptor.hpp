@@ -63,9 +63,10 @@ namespace fluidx {
 class WareDescriptor
 {
   public:
-    enum ModelItemType
+
+    enum WareType
     {
-      NoModelItemType, PluggedFunction, Generator, PluggedObserver
+      NoWareType, PluggedFunction, Generator, PluggedObserver
     };
 
   private:
@@ -76,7 +77,7 @@ class WareDescriptor
 
   protected:
 
-    ModelItemType m_ModelItemType;
+    WareType m_ModelItemType;
     openfluid::ware::WareParams_t m_Params;  // Function parameters set
 
   public:
@@ -101,7 +102,7 @@ class WareDescriptor
     static std::map<std::string, std::string> getParamsAsMap(
         const openfluid::ware::WareParams_t& Params);
 
-    bool isType(ModelItemType MIType) const;
+    bool isType(WareType MIType) const;
 
     void eraseParameter(const openfluid::ware::WareParamKey_t& Key);
 

@@ -273,7 +273,7 @@ class EventsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
         EvColl.clear();
         OPENFLUID_GetEvents(aUnit,openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+OPENFLUID_GetDefaultDeltaT()),
-                                  openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)),&EvColl);
+                                  openfluid::core::DateTime(OPENFLUID_GetCurrentDate()+(OPENFLUID_GetDefaultDeltaT()*2)),EvColl);
 
         OPENFLUID_EVENT_COLLECTION_LOOP(EvColl.getEventsList(),Event)
           if (Event->isInfoEqual("addingstep",TmpStr)) FoundEvent = true;

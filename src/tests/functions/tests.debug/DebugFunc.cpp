@@ -169,7 +169,7 @@ class DebugFunction : public openfluid::ware::PluggableFunction
       OFDBG_MESSAGE(TU->getClass() << "#" << TU->getID());
 
       EvColl.clear();
-      OPENFLUID_GetEvents(TU,BeginDate,EndDate,&EvColl);
+      OPENFLUID_GetEvents(TU,BeginDate,EndDate,EvColl);
 
       OFDBG_EVENTCOLLECTION(EvColl);
 

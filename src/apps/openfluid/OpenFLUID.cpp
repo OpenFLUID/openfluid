@@ -481,9 +481,9 @@ void OpenFLUIDApp::printPaths(bool ShowTemp)
 void OpenFLUIDApp::printEnvInfos()
 {
   bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",IsVerbose);
   bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",IsQuiet);
 
 
   printPaths(false);
@@ -501,9 +501,9 @@ void OpenFLUIDApp::runSimulation()
 {
 
   bool IsVerbose = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",&IsVerbose);
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.verbose",IsVerbose);
   bool IsQuiet = false;
-  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",&IsQuiet);
+  openfluid::base::RuntimeEnvironment::getInstance()->getExtraProperties().getValue("display.quiet",IsQuiet);
 
   m_FullStartTime = boost::posix_time::microsec_clock::local_time();
 

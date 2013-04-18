@@ -347,8 +347,8 @@ class KmlFilesPlotObserver : public KmlObserverBase
     {
       OGRRegisterAll();
 
-      OPENFLUID_GetRunEnvironment("dir.input",&m_InputDir);
-      OPENFLUID_GetRunEnvironment("dir.output",&m_OutputDir);
+      OPENFLUID_GetRunEnvironment("dir.input",m_InputDir);
+      OPENFLUID_GetRunEnvironment("dir.output",m_OutputDir);
 
       // general
 

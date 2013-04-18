@@ -105,7 +105,7 @@ void PluggableWare::OPENFLUID_RaiseError(std::string Sender, std::string Source,
 // =====================================================================
 
 
-bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, std::string *Value)
+bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, std::string& Value)
 {
   return mp_WareEnv->getValue(Key,Value);
 }
@@ -115,7 +115,7 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, std::string *Va
 // =====================================================================
 
 
-bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, bool *Value)
+bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, bool &Value)
 {
   return mp_WareEnv->getValue(Key,Value);
 }
@@ -140,7 +140,7 @@ void PluggableWare::initializeWare(const WareID_t& ID)
   if (m_WareType == FUNCTION) LogFileSuffix = openfluid::config::FUNCTIONS_PLUGINS_SUFFIX;
   if (m_WareType == OBSERVER) LogFileSuffix = openfluid::config::OBSERVERS_PLUGINS_SUFFIX;
 
-  OPENFLUID_GetRunEnvironment("dir.output",&LogDir);
+  OPENFLUID_GetRunEnvironment("dir.output",LogDir);
   LogFile = boost::filesystem::path(LogDir + "/" + m_WareID + LogFileSuffix + ".log").string();
 
   OPENFLUID_Logger.open(LogFile.c_str());

@@ -309,7 +309,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
     void onPrepared()
     {
-      OPENFLUID_GetRunEnvironment("dir.output",&m_OutputDir);
+      OPENFLUID_GetRunEnvironment("dir.output",m_OutputDir);
 
       SetMap_t::iterator SetItE = m_Sets.end();
       SetMap_t::iterator SetItB = m_Sets.begin();
