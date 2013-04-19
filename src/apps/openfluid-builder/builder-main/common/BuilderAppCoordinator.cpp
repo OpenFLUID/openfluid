@@ -392,8 +392,11 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     updateRecentsList();
 
     // to save it if it's a new project
-    if(ProjectFolder.empty())
+    if (ProjectFolder.empty())
       ProjectModule->saveAsked();
+    else
+    // to mark that nothing has to be saved
+      onSaveHappened();
 
     ProjectModule->checkAsked();
   }
@@ -489,7 +492,7 @@ std::string BuilderAppCoordinator::showOpenDemoProjectDialog()
 
 void BuilderAppCoordinator::restoreDemoProjects()
 {
-  if(openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       _("Restoring the default examples projects will overwrite any changes you might have done on them.\n"
           "Are you sure you want to proceed ?")))
   {
