@@ -63,7 +63,7 @@
 #include "DomainIDataRemoveDialog.hpp"
 #include "DomainIDataEditDialog.hpp"
 #include "DomainEventsModel.hpp"
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -148,10 +148,10 @@ void DomainClassCoordinator::whenRemoveEventAsked()
 
 
 DomainClassCoordinator::DomainClassCoordinator(DomainIDataModel& IDataModel,
-    BuilderListToolBox& IDataListToolBox, DomainIDataAddDialog& IDataAddDialog,
+    BuilderButtonBox& IDataListToolBox, DomainIDataAddDialog& IDataAddDialog,
     DomainIDataRemoveDialog& IDataRemoveDialog,
     DomainIDataEditDialog& IDataEditDialog, DomainEventsModel& EventsModel,
-    BuilderListToolBox& EventsListToolBox) :
+    BuilderButtonBox& EventsListToolBox) :
   m_IDataModel(IDataModel), m_IDataListToolBox(IDataListToolBox),
       m_IDataAddDialog(IDataAddDialog), m_IDataRemoveDialog(IDataRemoveDialog),
       m_IDataEditDialog(IDataEditDialog), m_EventsModel(EventsModel),

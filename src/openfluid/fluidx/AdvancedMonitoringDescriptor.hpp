@@ -83,8 +83,7 @@ class AdvancedMonitoringDescriptor
         std::string ObserverID) const;
 
     /**
-     * @brief Adds the Observer with ObserverID to the Monitoring descriptor if it's Signature is available
-     * @throw openfluid::base::OFException if this Observer plugin is not available
+     * @brief Adds the Observer with ObserverID to the Monitoring descriptor
      */
     void addToObserverList(std::string ObserverID);
 
@@ -99,6 +98,9 @@ class AdvancedMonitoringDescriptor
      */
     void setItems(
         std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList);
+
+    void moveItemTowardsTheBeginning(std::string ObserverID);
+    void moveItemTowardsTheEnd(std::string ObserverID);
 
 };
 

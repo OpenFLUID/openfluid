@@ -87,43 +87,25 @@ WidgetObjectBase::WidgetObjectBase(std::string ClassName, std::string DatastoreI
   InfoTable->attach(*Gtk::manage(new Gtk::Label(DatastoreID)), 2, 3, 1, 2, Gtk::SHRINK,
       Gtk::SHRINK);*/
 
-  mp_UpButton = Gtk::manage(new Gtk::Button());
-  mp_UpButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::GO_UP,
-      Gtk::ICON_SIZE_MENU)));
-  mp_UpButton->set_relief(Gtk::RELIEF_NONE);
-  mp_UpButton->set_tooltip_text(_("Move up layer"));
-
-  mp_DownButton = Gtk::manage(new Gtk::Button());
-  mp_DownButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::GO_DOWN,
-      Gtk::ICON_SIZE_MENU)));
-  mp_DownButton->set_relief(Gtk::RELIEF_NONE);
-  mp_DownButton->set_tooltip_text(_("Move down layer"));
-
-  mp_RemoveButton = Gtk::manage(new Gtk::Button());
-  mp_RemoveButton->set_image(*Gtk::manage(new Gtk::Image(Gtk::Stock::REMOVE,
-      Gtk::ICON_SIZE_MENU)));
-  mp_RemoveButton->set_relief(Gtk::RELIEF_NONE);
-  mp_RemoveButton->set_tooltip_text(_("Remove layer"));
-
-  Gtk::Table* ActionTable = Gtk::manage(new Gtk::Table());
-  ActionTable->attach(*mp_RemoveButton, 0, 1, 0, 2, Gtk::SHRINK, Gtk::SHRINK);
-  ActionTable->attach(*mp_UpButton, 1, 2, 0, 1, Gtk::SHRINK, Gtk::SHRINK);
-  ActionTable->attach(*mp_DownButton, 1, 2, 1, 2, Gtk::SHRINK, Gtk::SHRINK);
+  mp_ButtonBox = new BuilderItemButtonBox();
+  mp_ButtonBox->setRemoveCommandTooltipText(_("Remove layer"));
+  mp_ButtonBox->setUpCommandTooltipText(_("Move up layer"));
+  mp_ButtonBox->setDownCommandTooltipText(_("Move down layer"));
 
   mp_MainBox->pack_start(*InfoTable, Gtk::PACK_SHRINK);
-  mp_MainBox->pack_end(*ActionTable, Gtk::PACK_SHRINK);
+  mp_MainBox->pack_end(*mp_ButtonBox->asWidget(), Gtk::PACK_SHRINK);
   mp_MainBox->show_all_children();
 
   //******************Signal connexion*********************
 
   mp_DisplayLayerCheckBox->signal_toggled().connect(sigc::mem_fun(*this,
       &WidgetObjectBase::onIsDisplayButtonChecked));
-  mp_UpButton->signal_clicked().connect(sigc::mem_fun(*this,
-      &WidgetObjectBase::onUpLayerButtonClicked));
-  mp_DownButton->signal_clicked().connect(sigc::mem_fun(*this,
-      &WidgetObjectBase::onDownLayerButtonClicked));
-  mp_RemoveButton->signal_clicked().connect(sigc::mem_fun(*this,
-      &WidgetObjectBase::onRemoveLayerButtonClicked));
+  mp_ButtonBox->signal_RemoveCommandAsked().connect(sigc::mem_fun(*this,
+                                                            &WidgetObjectBase::onRemoveLayerButtonClicked));
+  mp_ButtonBox->signal_UpCommandAsked().connect(sigc::mem_fun(*this,
+                                                        &WidgetObjectBase::onUpLayerButtonClicked));
+  mp_ButtonBox->signal_DownCommandAsked().connect(sigc::mem_fun(*this,
+                                                          &WidgetObjectBase::onDownLayerButtonClicked));
   mp_Eventbox->signal_event().connect(sigc::mem_fun(*this,
       &WidgetObjectBase::onEventHappend));
 }
@@ -226,7 +208,7 @@ WidgetObjectBase::mtype_SignalWidgetObjectBase WidgetObjectBase::signalIsSelecte
 
 void WidgetObjectBase::setUpButtonSensitive(bool Sensitiveness)
 {
-  mp_UpButton->set_sensitive(Sensitiveness);
+  mp_ButtonBox->setUpCommandAvailable(Sensitiveness);
 }
 
 // =====================================================================
@@ -234,7 +216,7 @@ void WidgetObjectBase::setUpButtonSensitive(bool Sensitiveness)
 
 void WidgetObjectBase::setDownButtonSensitive(bool Sensitiveness)
 {
-  mp_DownButton->set_sensitive(Sensitiveness);
+  mp_ButtonBox->setDownCommandAvailable(Sensitiveness);
 }
 
 // =====================================================================

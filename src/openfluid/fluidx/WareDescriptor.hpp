@@ -86,6 +86,9 @@ class WareDescriptor
 
     virtual ~WareDescriptor();
 
+    /**
+     * Setting an empty key parameter does nothing
+     */
     void setParameter(const openfluid::ware::WareParamKey_t& Key,
                       const openfluid::ware::WareParamKey_t& Value);
 
@@ -104,12 +107,30 @@ class WareDescriptor
 
     bool isType(WareType MIType) const;
 
+    WareType getType() const;
+
+    /**
+     * Does nothing if Key is empty or if key doesn't exist
+     */
     void eraseParameter(const openfluid::ware::WareParamKey_t& Key);
 
     static bool eraseParamRecurs(boost::property_tree::ptree& pt,
                                  boost::property_tree::path& Path);
 
     void clearParameters();
+
+    /**
+     * Return true if the parameter with ParameterKey exists as a leaf, false otherwise
+     */
+    bool hasParameter(std::string ParameterKey);
+
+    /**
+     * Return true if the insertion of the parameter with ParameterKey will respects xml rules, ie :
+     * - it exists *and* has no child (is empty) *and* doesn't end with a dot
+     * - or it doesn't already exist *and* doesn't end with a dot *and* his parent, if has one, has at least a child (parent is not empty)
+     * Return false otherwise
+     */
+    bool isInsertable(std::string ParameterKey);
 
 };
 

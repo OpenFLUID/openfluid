@@ -105,7 +105,6 @@ void ProjectExplorerAdapter::whenActivationChanged()
 
 void ProjectExplorerAdapter::updateModel()
 {
-  m_Model.updateModel();
   m_View.setTreeModel(m_Model.getTreeModel());
 }
 

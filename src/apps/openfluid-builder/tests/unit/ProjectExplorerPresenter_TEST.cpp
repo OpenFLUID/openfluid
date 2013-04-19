@@ -174,41 +174,30 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
 
   // Datastore activated
   TreeView->row_activated(
-       TreeView->get_model()->get_path(TreeView->get_model()->children()[2]),
-       *TreeView->get_column(0));
+      TreeView->get_model()->get_path(TreeView->get_model()->children()[2]),
+      *TreeView->get_column(0));
 
-   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
-                     ProjectExplorerCategories::EXPLORER_DATASTORE);
-   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_DATASTORE);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
-  // Simulation activated
+  // Monitoring activated
   TreeView->row_activated(
       TreeView->get_model()->get_path(TreeView->get_model()->children()[3]),
       *TreeView->get_column(0));
 
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
-                    ProjectExplorerCategories::EXPLORER_RUN);
+                    ProjectExplorerCategories::EXPLORER_MONITORING);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
-  // Monitoring activated
+  // Simulation activated
   TreeView->row_activated(
-       TreeView->get_model()->get_path(TreeView->get_model()->children()[4]),
-       *TreeView->get_column(0));
-
-   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
-                     ProjectExplorerCategories::EXPLORER_MONITORING);
-   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
-
-// First Function activated
-  TreeView->row_activated(
-      TreeView->get_model()->get_path(
-          TreeView->get_model()->children()[0]->children()[0]),
+      TreeView->get_model()->get_path(TreeView->get_model()->children()[4]),
       *TreeView->get_column(0));
 
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
-                    ProjectExplorerCategories::EXPLORER_MODEL);
-  BOOST_CHECK_EQUAL(Model->getActivatedElement().second,
-                    "tests.primitives.variables.prod");
+                    ProjectExplorerCategories::EXPLORER_RUN);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   // First Class activated
   TreeView->row_activated(
@@ -223,7 +212,7 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
   // Run activated
   TreeView->row_activated(
       TreeView->get_model()->get_path(
-          TreeView->get_model()->children()[3]->children()[0]),
+          TreeView->get_model()->children()[4]->children()[0]),
       *TreeView->get_column(0));
 
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
@@ -233,7 +222,7 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
   // Run Info activated
   TreeView->row_activated(
       TreeView->get_model()->get_path(
-          TreeView->get_model()->children()[3]->children()[0]->children()[0]),
+          TreeView->get_model()->children()[4]->children()[0]->children()[0]),
       *TreeView->get_column(0));
 
   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
@@ -242,11 +231,11 @@ BOOST_AUTO_TEST_CASE(test_activateRows)
 
   // Output browser activated
   TreeView->row_activated(
-       TreeView->get_model()->get_path(TreeView->get_model()->children()[5]),
-       *TreeView->get_column(0));
+      TreeView->get_model()->get_path(TreeView->get_model()->children()[5]),
+      *TreeView->get_column(0));
 
-   BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
-                     ProjectExplorerCategories::EXPLORER_OUTPUTS);
+  BOOST_CHECK_EQUAL(Model->getActivatedElement().first,
+                    ProjectExplorerCategories::EXPLORER_OUTPUTS);
   BOOST_CHECK_EQUAL(Model->getActivatedElement().second, "");
 
   delete EngProject;

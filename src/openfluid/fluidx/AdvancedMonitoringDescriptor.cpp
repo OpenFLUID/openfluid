@@ -140,5 +140,72 @@ void AdvancedMonitoringDescriptor::setItems(
 // =====================================================================
 // =====================================================================
 
+void AdvancedMonitoringDescriptor::moveItemTowardsTheBeginning(
+    std::string ObserverID)
+{
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
+      mp_MonitoringDesc->getItems();
+
+  if (Observers.size() < 2)
+    return;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator itFrom =
+      Observers.begin();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Observers.begin(); it != Observers.end(); ++it)
+  {
+    if ((*it)->getID() == ObserverID)
+    {
+      itFrom = it;
+      break;
+    }
+  }
+
+  if (itFrom == Observers.begin())
+    return;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator itTo = itFrom;
+  itTo--;
+
+  std::swap(*itFrom, *itTo);
+}
+
+// =====================================================================
+// =====================================================================
+
+void AdvancedMonitoringDescriptor::moveItemTowardsTheEnd(std::string ObserverID)
+{
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
+      mp_MonitoringDesc->getItems();
+
+  if (Observers.size() < 2)
+    return;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator itFrom =
+      Observers.end().operator --();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Observers.begin(); it != Observers.end(); ++it)
+  {
+    if ((*it)->getID() == ObserverID)
+    {
+      itFrom = it;
+      break;
+    }
+  }
+
+  if (itFrom == Observers.end().operator --())
+    return;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator itTo = itFrom;
+  itTo++;
+
+  std::swap(*itFrom, *itTo);
+}
+
+// =====================================================================
+// =====================================================================
+
 }
 } //namespaces

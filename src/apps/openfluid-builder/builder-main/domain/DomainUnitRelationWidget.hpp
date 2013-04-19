@@ -62,7 +62,7 @@
 #include <gtkmm/scrolledwindow.h>
 #include <openfluid/core/TypeDefs.hpp>
 
-class BuilderListToolBox;
+class BuilderButtonBox;
 class DomainUnitRelationAddDialog;
 
 // =====================================================================
@@ -87,7 +87,7 @@ class DomainUnitRelationWidget
 
     DomainUnitRelationColumns m_Columns;
 
-    BuilderListToolBox* mp_ToolBox;
+    BuilderButtonBox* mp_ToolBox;
 
     Gtk::ScrolledWindow* mp_ScrolledWin;
 

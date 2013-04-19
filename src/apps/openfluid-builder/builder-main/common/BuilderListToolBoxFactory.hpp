@@ -55,28 +55,28 @@
 #ifndef __BUILDERLISTTOOLBOXFACTORY_HPP__
 #define __BUILDERLISTTOOLBOXFACTORY_HPP__
 
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 
 class BuilderListToolBoxFactory
 {
   public:
 
-    static BuilderListToolBox* createModelStructureToolBox();
+    static BuilderButtonBox* createModelStructureToolBox();
 
-    static BuilderListToolBox* createDomainStructureToolBox();
+    static BuilderButtonBox* createDomainStructureToolBox();
 
-    static BuilderListToolBox* createDomainUnitRelationToolBox(
+    static BuilderButtonBox* createDomainUnitRelationToolBox(
         std::string RelationName);
 
-    static BuilderListToolBox* createDomainIDataToolBox();
+    static BuilderButtonBox* createDomainIDataToolBox();
 
-    static BuilderListToolBox* createDomainEventsToolBox();
+    static BuilderButtonBox* createDomainEventsToolBox();
 
-    static BuilderListToolBox* createDatastoreToolBox();
+    static BuilderButtonBox* createDatastoreToolBox();
 
-    static BuilderListToolBox* createSimulOutFilesToolBox();
+    static BuilderButtonBox* createSimulOutFilesToolBox();
 
-    static BuilderListToolBox* createSimulOutSetsToolBox();
+    static BuilderButtonBox* createSimulOutSetsToolBox();
 };
 
 #endif /* __BUILDERLISTTOOLBOXFACTORY_HPP__ */

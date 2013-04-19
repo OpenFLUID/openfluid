@@ -64,7 +64,7 @@ class DomainIDataAddDialog;
 class DomainIDataRemoveDialog;
 class DomainIDataEditDialog;
 class DomainEventsComponent;
-class BuilderListToolBox;
+class BuilderButtonBox;
 class DomainClassCoordinator;
 
 class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
@@ -76,13 +76,13 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
   protected:
 
     DomainIDataComponent* mp_DomainIDataMVP;
-    BuilderListToolBox* mp_IDataListToolBox;
+    BuilderButtonBox* mp_IDataListToolBox;
     DomainIDataAddDialog* mp_IDataAddDialog;
     DomainIDataRemoveDialog* mp_IDataRemoveDialog;
     DomainIDataEditDialog* mp_IDataEditDialog;
 
     DomainEventsComponent* mp_DomainEventsMVP;
-    BuilderListToolBox* mp_EventsListToolBox;
+    BuilderButtonBox* mp_EventsListToolBox;
 
     DomainClassCoordinator* mp_Coordinator;
 

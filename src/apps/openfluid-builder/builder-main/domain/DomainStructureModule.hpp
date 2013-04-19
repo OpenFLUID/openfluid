@@ -71,7 +71,7 @@ class DomainUnitRelationAddDialog;
 class DomainUnitAddEditDialog;
 
 class DomainStructureCoordinator;
-class BuilderListToolBox;
+class BuilderButtonBox;
 
 class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
@@ -84,7 +84,7 @@ class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
     DomainUnitRelationAddDialog* mp_DomainUnitRelationAddDialog;
     DomainUnitAddEditDialog* mp_DomainUnitAddEditDialog;
 
-    BuilderListToolBox* mp_StructureListToolBox;
+    BuilderButtonBox* mp_StructureListToolBox;
     DomainStructureCoordinator* mp_Coordinator;
 
     sigc::signal<void> m_signal_DomainStructureChanged;

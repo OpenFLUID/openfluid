@@ -60,7 +60,7 @@
 #include <gtkmm/liststore.h>
 #include <gtkmm/treeview.h>
 
-class BuilderListToolBox;
+class BuilderButtonBox;
 
 class PreferencesPathListWidget
 {
@@ -90,7 +90,7 @@ class PreferencesPathListWidget
 
     Gtk::TreeView* mp_PreDefinedTreeView;
 
-    BuilderListToolBox* mp_ToolBox;
+    BuilderButtonBox* mp_ToolBox;
 
     sigc::signal<void> m_signal_PathListChanged;
 

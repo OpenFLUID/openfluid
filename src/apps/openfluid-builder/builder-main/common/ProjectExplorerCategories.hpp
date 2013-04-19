@@ -65,8 +65,8 @@ class ProjectExplorerCategories
       EXPLORER_DOMAIN,
       EXPLORER_CLASS,
       EXPLORER_DATASTORE,
-      EXPLORER_RUN,
       EXPLORER_MONITORING,
+      EXPLORER_RUN,
       EXPLORER_OUTPUTS,
       EXPLORER_NONE
     };

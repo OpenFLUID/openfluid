@@ -139,8 +139,6 @@ class ProjectCoordinator
 
     void whenRunChanged();
 
-//    void whenOutChanged();
-
     void whenMonitoringChanged();
 
     void whenMapViewChanged();
@@ -151,8 +149,6 @@ class ProjectCoordinator
 
     void computeDomainChanges();
 
-//    void updateResults();
-
     void updateWorkspaceModules();
 
     void onDirMonitorChanged(const Glib::RefPtr<Gio::File>& File,
@@ -161,15 +157,11 @@ class ProjectCoordinator
 
     std::string constructClassPageName(std::string ClassName);
 
-//    std::string constructSetPageName(std::string SetName);
-
     void addModuleToWorkspace(
         std::string PageName,
         openfluid::guicommon::ProjectWorkspaceModule& Module);
 
     void removeDeletedClassPages();
-
-//    void removeDeletedSetPages();
 
     void whenExtensionChanged();
 
@@ -224,11 +216,6 @@ class ProjectCoordinatorSub: public ProjectCoordinator
       return ProjectCoordinator::constructClassPageName(ClassName);
     }
 
-//    std::string constructSetPageName(std::string SetName)
-//    {
-//      return ProjectCoordinator::constructSetPageName(SetName);
-//    }
-
     std::string getModelPageName()
     {
       return m_ModelPageName;
@@ -244,30 +231,19 @@ class ProjectCoordinatorSub: public ProjectCoordinator
       return m_RunPageName;
     }
 
-//    std::string getOutputsPageName()
-//    {
-//      return m_OutputsPageName;
-//    }
+    std::string getOutputsPageName()
+    {
+      return m_OutputsPageName;
+    }
 
     void whenModelChanged();
 
     void whenDomainChanged();
 
-//    void whenOutChanged()
-//    {
-//      ProjectCoordinator::whenOutChanged();
-//    }
-
     void removeDeletedClassPages()
     {
       ProjectCoordinator::removeDeletedClassPages();
     }
-
-//    void removeDeletedSetPages()
-//    {
-//      ProjectCoordinator::removeDeletedSetPages();
-//    }
-
 };
 
 #endif /* __PROJECTCOORDINATOR_HPP__ */

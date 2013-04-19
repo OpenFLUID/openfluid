@@ -54,33 +54,35 @@
 
 #include "MonitoringModule.hpp"
 
+#include <gtkmm/notebook.h>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include "MonitoringComponent.hpp"
-#include "MonitoringCoordinator.hpp"
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
 #include "MonitoringAddObserverDialog.hpp"
+#include "WareSetWidget.hpp"
+#include "ObserverParamWidget.hpp"
+#include "ObserverAddParamDialog.hpp"
+#include "WareItemInfoWidget.hpp"
 
 // =====================================================================
 // =====================================================================
 
 MonitoringModule::MonitoringModule(
     openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc) :
-    ProjectWorkspaceModule(AdvancedDesc)
+    ProjectWorkspaceModule(AdvancedDesc), m_Monit(AdvancedDesc.getMonitoring())
 {
   mp_MainPanel = 0;
 
-  mp_MonitoringMVP = new MonitoringComponent(AdvancedDesc.getMonitoring());
+  mp_MonitoringWidget = Gtk::manage(new WareSetWidget("Add observer"));
 
-  mp_AddDialog = new MonitoringAddObserverDialog(AdvancedDesc.getMonitoring());
+  mp_AddDialog = new MonitoringAddObserverDialog(m_Monit);
 
-  mp_ParamsDialog = new MonitoringEditParamsDialog(AdvancedDesc.getMonitoring());
+  mp_AddParamDialog = new ObserverAddParamDialog();
 
-  mp_Coordinator = new MonitoringCoordinator(*mp_MonitoringMVP->getModel(),
-                                             *mp_AddDialog, *mp_ParamsDialog);
+  mp_MonitoringWidget->signal_AddAsked().connect(
+      sigc::mem_fun(*this, &MonitoringModule::whenAddObserverAsked));
 
-  mp_Coordinator->signal_MonitoringChanged().connect(
-      sigc::mem_fun(*this, &MonitoringModule::whenMonitoringChanged));
-
-  mp_Coordinator->update();
+  update();
 }
 
 // =====================================================================
@@ -88,9 +90,7 @@ MonitoringModule::MonitoringModule(
 
 MonitoringModule::~MonitoringModule()
 {
-  delete mp_MonitoringMVP;
   delete mp_AddDialog;
-  delete mp_Coordinator;
 }
 
 // =====================================================================
@@ -101,7 +101,7 @@ void MonitoringModule::compose()
   mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
   mp_MainPanel->set_border_width(5);
-  mp_MainPanel->pack_start(*mp_MonitoringMVP->asWidget());
+  mp_MainPanel->pack_start(*mp_MonitoringWidget);
 
   mp_MainPanel->set_visible(true);
 }
@@ -120,6 +120,48 @@ Gtk::Widget* MonitoringModule::asWidget()
 // =====================================================================
 // =====================================================================
 
+void MonitoringModule::whenAddObserverAsked()
+{
+  if (mp_AddDialog->show())
+  {
+    update();
+    onMonitoringChanged();
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModule::whenRemoveObserverAsked(std::string ID)
+{
+  m_Monit.removeFromObserverList(ID);
+  update();
+  onMonitoringChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModule::whenUpAsked(std::string ID)
+{
+  m_Monit.moveItemTowardsTheBeginning(ID);
+  update();
+  onMonitoringChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
+void MonitoringModule::whenDownAsked(std::string ID)
+{
+  m_Monit.moveItemTowardsTheEnd(ID);
+  update();
+  onMonitoringChanged();
+}
+
+// =====================================================================
+// =====================================================================
+
 sigc::signal<void> MonitoringModule::signal_ModuleChanged()
 {
   return m_signal_MonitoringChanged;
@@ -128,17 +170,70 @@ sigc::signal<void> MonitoringModule::signal_ModuleChanged()
 // =====================================================================
 // =====================================================================
 
-void MonitoringModule::whenMonitoringChanged()
+void MonitoringModule::update()
 {
-  m_signal_MonitoringChanged.emit();
+  mp_MonitoringWidget->storeExpanderStates();
+
+  mp_MonitoringWidget->clearItems();
+
+  openfluid::machine::ObserverSignatureRegistry* Reg =
+      openfluid::machine::ObserverSignatureRegistry::getInstance();
+
+  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
+      m_Monit.getItems();
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itLast =
+      Items.end().operator --();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    std::string ID = (*it)->getID();
+
+    const openfluid::machine::ObserverSignatureInstance& Sign =
+        Reg->getSignature(ID);
+
+    std::string Name = Sign.Signature->Name;
+
+    ObserverParamWidget* ItemParamWidget = Gtk::manage(
+        new ObserverParamWidget(*(*it), *mp_AddParamDialog));
+    ItemParamWidget->signal_changeOccured().connect(
+        sigc::mem_fun(*this, &MonitoringModule::onMonitoringChanged));
+
+    Gtk::Notebook* ItemInfo = Gtk::manage(new Gtk::Notebook());
+    ItemInfo->append_page(
+        *Gtk::manage(new WareItemInfoWidget(Sign, *Sign.Signature)),
+        _("Information"));
+
+    WareItemWidget* ItemWidget = Gtk::manage(
+        new WareItemWidget(ID, *ItemParamWidget, *ItemInfo, Name,
+                           (*it)->getType()));
+    ItemWidget->signal_RemoveAsked().connect(
+        sigc::mem_fun(*this, &MonitoringModule::whenRemoveObserverAsked));
+    ItemWidget->signal_UpAsked().connect(
+        sigc::mem_fun(*this, &MonitoringModule::whenUpAsked));
+    ItemWidget->signal_DownAsked().connect(
+        sigc::mem_fun(*this, &MonitoringModule::whenDownAsked));
+
+    mp_MonitoringWidget->addItem(ItemWidget, ID);
+
+    if (it == Items.begin())
+      ItemWidget->setUpButtonSensitive(false);
+    if (it == itLast)
+      ItemWidget->setDownButtonSensitive(false);
+  }
+
+  mp_MonitoringWidget->applyExpanderStates();
+
+  mp_MonitoringWidget->show_all_children();
 }
 
 // =====================================================================
 // =====================================================================
 
-void MonitoringModule::update()
+void MonitoringModule::onMonitoringChanged()
 {
-  mp_Coordinator->update();
+  m_signal_MonitoringChanged.emit();
 }
 
 // =====================================================================
