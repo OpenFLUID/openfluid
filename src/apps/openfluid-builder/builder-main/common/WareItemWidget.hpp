@@ -60,6 +60,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/button.h>
 #include <gtkmm/expander.h>
+#include <gtkmm/notebook.h>
 #include <openfluid/fluidx/WareDescriptor.hpp>
 #include "BuilderButtonBox.hpp"
 
@@ -68,6 +69,8 @@ class WareItemWidget: public Gtk::Frame
   private:
 
     BuilderItemButtonBox* mp_ButtonBox;
+
+    Gtk::Notebook* mp_ItemInfoWidgetAsNotebook;
 
     sigc::signal<void, std::string> m_signal_RemoveAsked;
     sigc::signal<void, std::string> m_signal_UpAsked;
@@ -98,6 +101,8 @@ class WareItemWidget: public Gtk::Frame
 
     bool getExpanded();
     void setExpanded(bool Expanded = true);
+
+    Gtk::Notebook* getItemInfoWidgetAsNotebook();
 
     sigc::signal<void, std::string> signal_RemoveAsked();
     sigc::signal<void, std::string> signal_UpAsked();

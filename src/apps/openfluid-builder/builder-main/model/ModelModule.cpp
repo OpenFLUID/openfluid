@@ -241,6 +241,7 @@ sigc::signal<void> ModelModule::signal_ModuleChanged()
 void ModelModule::update()
 {
   mp_ModelWidget->storeExpanderStates();
+  mp_ModelWidget->storeNotebookPages();
 
   mp_ModelWidget->clearItems();
 
@@ -301,6 +302,7 @@ void ModelModule::update()
   }
 
   mp_ModelWidget->applyExpanderStates();
+  mp_ModelWidget->applyNotebookPages();
 
   mp_ModelWidget->show_all_children();
 

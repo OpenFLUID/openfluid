@@ -67,8 +67,13 @@
 
 WareItemWidget::WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
                                Gtk::Widget& InfoWidget, std::string Description,
-                               openfluid::fluidx::WareDescriptor::WareType Type)
+                               openfluid::fluidx::WareDescriptor::WareType Type) :
+    mp_ItemInfoWidgetAsNotebook(0)
 {
+  Gtk::Notebook* NB = dynamic_cast<Gtk::Notebook*>(&InfoWidget);
+  if (NB)
+    mp_ItemInfoWidgetAsNotebook = NB;
+
   mp_IDLabel = Gtk::manage(new Gtk::Label());
   mp_IDLabel->set_justify(Gtk::JUSTIFY_LEFT);
   mp_IDLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
@@ -240,3 +245,7 @@ sigc::signal<void, std::string> WareItemWidget::signal_DownAsked()
 // =====================================================================
 // =====================================================================
 
+Gtk::Notebook* WareItemWidget::getItemInfoWidgetAsNotebook()
+{
+  return mp_ItemInfoWidgetAsNotebook;
+}

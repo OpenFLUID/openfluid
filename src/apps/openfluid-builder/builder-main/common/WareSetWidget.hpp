@@ -71,6 +71,7 @@ class WareSetWidget: public Gtk::VBox
     std::map<std::string, WareItemWidget*> m_ItemWidgets;
 
     std::map<std::string, bool> m_ExpanderStates;
+    std::map<std::string, int> m_NotebookPages;
 
     sigc::signal<void> m_signal_AddAsked;
 
@@ -95,8 +96,10 @@ class WareSetWidget: public Gtk::VBox
     void addItem(WareItemWidget* Item, std::string ID);
 
     void storeExpanderStates();
-
     void applyExpanderStates();
+
+    void storeNotebookPages();
+    void applyNotebookPages();
 };
 
 #endif /* WARESETWIDGET_HPP_ */

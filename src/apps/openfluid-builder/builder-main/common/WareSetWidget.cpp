@@ -60,6 +60,7 @@
 #include <gtkmm/scrolledwindow.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/eventbox.h>
+#include <gtkmm/notebook.h>
 
 // =====================================================================
 // =====================================================================
@@ -184,6 +185,38 @@ void WareSetWidget::applyExpanderStates()
   for (std::map<std::string, WareItemWidget*>::iterator it =
       m_ItemWidgets.begin(); it != m_ItemWidgets.end(); ++it)
     it->second->setExpanded(m_ExpanderStates[it->first]);
+}
+
+// =====================================================================
+// =====================================================================
+
+void WareSetWidget::storeNotebookPages()
+{
+  m_NotebookPages.clear();
+
+  for (std::map<std::string, WareItemWidget*>::iterator it =
+      m_ItemWidgets.begin(); it != m_ItemWidgets.end(); ++it)
+  {
+    Gtk::Notebook* NB = it->second->getItemInfoWidgetAsNotebook();
+
+    if (NB)
+      m_NotebookPages[it->first] = NB->get_current_page();
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+void WareSetWidget::applyNotebookPages()
+{
+  for (std::map<std::string, WareItemWidget*>::iterator it =
+      m_ItemWidgets.begin(); it != m_ItemWidgets.end(); ++it)
+  {
+    Gtk::Notebook* NB = it->second->getItemInfoWidgetAsNotebook();
+
+    if (NB)
+      NB->set_current_page(m_NotebookPages[it->first]);
+  }
 }
 
 // =====================================================================
