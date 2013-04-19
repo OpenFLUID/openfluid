@@ -87,13 +87,13 @@ BOOST_AUTO_TEST_CASE(check_populate)
 
   pUC = new openfluid::core::UnitsCollection();
 
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",1,1,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",2,1,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",5,1,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,2,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,1,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,3,openfluid::core::Unit::UNKNOWN)) == NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,3,openfluid::core::Unit::UNKNOWN)) == NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",1,1)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",2,1)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",5,1)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,2)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,1)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,3)) == NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,3)) == NULL);
 
 
   BOOST_REQUIRE_EQUAL(pUC->getList()->size(),5);
@@ -118,13 +118,13 @@ BOOST_AUTO_TEST_CASE(check_sortbypcsorder)
 
   pUC = new openfluid::core::UnitsCollection();
 
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",1,1,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",2,5,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",5,2,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,7,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,3,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",13,1,openfluid::core::Unit::UNKNOWN)) != NULL);
-  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",15,2,openfluid::core::Unit::UNKNOWN)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",1,1)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",2,5)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",5,2)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",4,7)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",17,3)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",13,1)) != NULL);
+  BOOST_REQUIRE(pUC->addUnit(openfluid::core::Unit("Test",15,2)) != NULL);
 
   pUC->sortByProcessOrder();
 

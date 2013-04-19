@@ -77,23 +77,6 @@ SimulationBlob::~SimulationBlob()
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-void SimulationBlob::clearSimulationGarbage()
-{
-  m_CoreRepos.clearAllVariables();
-
-  m_CoreRepos.clearEvents(openfluid::core::InstantiationInfo::SIMULATION);
-
-  m_CoreRepos.clearUnits(openfluid::core::InstantiationInfo::SIMULATION);
-}
-
-
-// =====================================================================
-// =====================================================================
-
 
 } } //namespaces
 

@@ -29,4 +29,7 @@ STRIP_CODE_COMMENTS    = NO
 
 LATEX_OUTPUT            = latex
 
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_DOC_ERROR      = YES
 

@@ -74,9 +74,11 @@ typedef std::list<Event> EventsList_t;
 class DLLEXPORT EventsCollection
 {
   private:
+
     EventsList_t m_Events;
 
   public:
+
     EventsCollection();
 
     virtual ~EventsCollection();
@@ -123,14 +125,7 @@ class DLLEXPORT EventsCollection
     */
     void clear() { m_Events.clear(); };
 
-    /**
-      Clears the events corresponding to the given instantiation type.
-    */
-    void clear(const InstantiationInfo::Type& InstType);
-
-
     void println() const;
-
 };
 
 
