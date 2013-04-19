@@ -491,7 +491,6 @@ void SimulationContributorWare::OPENFLUID_AppendEvent(openfluid::core::Unit *Uni
 
   if (UnitPtr != NULL)
   {
-    Ev.setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
     UnitPtr->getEvents()->addEvent(Ev);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AppendEvent","Unit is NULL");
@@ -511,7 +510,7 @@ void SimulationContributorWare::OPENFLUID_AddUnit(openfluid::core::UnitClass_t C
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
                               "SimulationContributorWare::OPENFLUID_Addunit","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
-  if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder, openfluid::core::InstantiationInfo::SIMULATION)))
+  if (!mp_CoreData->addUnit(openfluid::core::Unit(ClassName,ID,PcsOrder)))
    throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_AddUnit","Error adding unit");
 
   mp_CoreData->sortUnitsByProcessOrder();

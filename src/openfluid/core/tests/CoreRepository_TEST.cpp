@@ -92,13 +92,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
   for (i=1;i<=250;i++)
   {
     PcsOrder = (i%7)+1;
-    Repos->addUnit(openfluid::core::Unit("UnitClassA",i,PcsOrder,openfluid::core::Unit::UNKNOWN));
+    Repos->addUnit(openfluid::core::Unit("UnitClassA",i,PcsOrder));
   }
 
   for (i=1;i<=7325;i++)
   {
     PcsOrder = (i%31)+1;
-    Repos->addUnit(openfluid::core::Unit("UnitClassB",i,PcsOrder,openfluid::core::Unit::UNKNOWN));
+    Repos->addUnit(openfluid::core::Unit("UnitClassB",i,PcsOrder));
   }
 
   Repos->sortUnitsByProcessOrder();
@@ -155,19 +155,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(Repos->getUnit("WrongClass",1) == NULL);
 
 
-  Repos->clearUnits(openfluid::core::InstantiationInfo::SIMULATION);
-  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),250);
-  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),7325);
-
-  Repos->clearUnits(openfluid::core::InstantiationInfo::DESCRIPTOR);
-  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),250);
-  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),7325);
-
-  Repos->clearUnits(openfluid::core::InstantiationInfo::UNKNOWN);
-  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),0);
-  BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),0);
-
-  Repos->clearUnits(openfluid::core::InstantiationInfo::UNKNOWN);
+  Repos->clearUnits();
   BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassA")->getList()->size(),0);
   BOOST_REQUIRE_EQUAL(Repos->getUnits("UnitClassB")->getList()->size(),0);
 

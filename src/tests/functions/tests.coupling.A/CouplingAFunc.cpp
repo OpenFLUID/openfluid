@@ -82,6 +82,8 @@ BEGIN_FUNCTION_SIGNATURE("tests.coupling.A")
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
+  DECLARE_PRODUCED_VAR("varA","TestUnits","","");
+
   DECLARE_SCHEDULING_RANGE(180,190);
 END_FUNCTION_SIGNATURE
 
@@ -141,6 +143,13 @@ class CouplingAFunction : public openfluid::ware::PluggableFunction
 
   openfluid::base::SchedulingRequest initializeRun()
   {
+    openfluid::core::Unit* TU;
+
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
+      OPENFLUID_InitializeVariable(TU,"varA",(long)0);
+    }
+
 
     openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
     m_DeltaTList.pop_front();
@@ -157,6 +166,14 @@ class CouplingAFunction : public openfluid::ware::PluggableFunction
 
   openfluid::base::SchedulingRequest runStep()
   {
+    openfluid::core::Unit* TU;
+
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
+      OPENFLUID_AppendVariable(TU,"varA",(long)OPENFLUID_GetCurrentTimeIndex());
+    }
+
+
     if (m_DeltaTList.empty())
       return Never();
 
@@ -164,6 +181,7 @@ class CouplingAFunction : public openfluid::ware::PluggableFunction
     m_DeltaTList.pop_front();
 
     if (DT.RequestType == openfluid::base::SchedulingRequest::DURATION) Glib::usleep(10000/DT.Duration);
+
 
     return DT;
   }

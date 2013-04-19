@@ -49,6 +49,18 @@
 
   <monitoring>
 
+    <observer ID="export.vars.files.csv">
+    
+      <param name="format.f1.header" value="colnames-as-comment" />
+      <param name="format.f1.date" value="%Y-%m-%d %H:%M:%S" />
+      <param name="format.f1.precision" value="8" />
+                  
+      <param name="set.fullfull.unitclass" value="TestUnits" />
+      <param name="set.fullfull.unitsIDs" value="*" />
+      <param name="set.fullfull.vars" value="*" />
+      <param name="set.fullfull.format" value="f1" />
+            
+    </observer>
 
   </monitoring>
 

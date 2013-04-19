@@ -151,8 +151,8 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   openfluid::machine::MonitoringInstance Monitoring(SBlob);
 
 
-  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1,openfluid::core::Unit::UNKNOWN));
-  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1,openfluid::core::Unit::UNKNOWN));
+  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1));
+  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1));
 
   openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
@@ -316,8 +316,8 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   openfluid::machine::MonitoringInstance Monitoring(SBlob);
 
 
-  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1,openfluid::core::Unit::UNKNOWN));
-  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1,openfluid::core::Unit::UNKNOWN));
+  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UA",1,1));
+  SBlob.getCoreRepository().addUnit(openfluid::core::Unit("UB",1,1));
 
   openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 

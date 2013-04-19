@@ -111,9 +111,7 @@ class DLLEXPORT CoreRepository
 
     void clearAllData();
 
-    void clearEvents(const InstantiationInfo::Type& InstType);
-
-    void clearUnits(const InstantiationInfo::Type& InstType);
+    void clearUnits();
 
 };
 

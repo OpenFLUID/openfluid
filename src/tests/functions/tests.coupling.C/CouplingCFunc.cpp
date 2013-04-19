@@ -83,7 +83,10 @@ BEGIN_FUNCTION_SIGNATURE("tests.coupling.C")
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
+  DECLARE_PRODUCED_VAR("varC","TestUnits","","");
+
   DECLARE_SCHEDULING_RANGE(34,60);
+
 END_FUNCTION_SIGNATURE
 
 /**
@@ -149,6 +152,14 @@ class CouplingCFunction : public openfluid::ware::PluggableFunction
   openfluid::base::SchedulingRequest initializeRun()
   {
 
+    openfluid::core::Unit* TU;
+
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
+      OPENFLUID_InitializeVariable(TU,"varC",(long)0);
+    }
+
+
     openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
     m_DeltaTList.pop_front();
 
@@ -164,6 +175,15 @@ class CouplingCFunction : public openfluid::ware::PluggableFunction
 
   openfluid::base::SchedulingRequest runStep()
   {
+
+    openfluid::core::Unit* TU;
+
+    OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+    {
+      OPENFLUID_AppendVariable(TU,"varC",(long)OPENFLUID_GetCurrentTimeIndex());
+    }
+
+
     if (m_DeltaTList.empty())
       return Never();
 
