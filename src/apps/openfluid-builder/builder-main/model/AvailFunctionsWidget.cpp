@@ -79,7 +79,8 @@ AvailFunctionsWidget::AvailFunctionsWidget(
   idColumn->pack_start(m_Columns.m_Id);
   mp_TreeView->append_column(*idColumn);
   std::list<Gtk::CellRenderer*> CR = idColumn->get_cell_renderers();
-  for(std::list<Gtk::CellRenderer*>::iterator it = CR.begin(); it != CR.end(); ++it)
+  for (std::list<Gtk::CellRenderer*>::iterator it = CR.begin(); it != CR.end();
+      ++it)
   {
     mp_TreeView->get_column(0)->add_attribute(
         ((Gtk::CellRendererText*) *it)->property_sensitive(),
@@ -223,12 +224,7 @@ void AvailFunctionsWidget::onSelectionChanged()
   Gtk::TreeIter Iter = mp_TreeView->get_selection()->get_selected();
 
   if (Iter)
-  {
-    openfluid::machine::ModelItemSignatureInstance* Sign = Iter->get_value(
-        m_Columns.mp_Sign);
-    if (Sign)
-      m_signal_SelectionChanged.emit(Sign);
-  }
+    m_signal_SelectionChanged.emit(Iter->get_value(m_Columns.mp_Sign));
 }
 
 // =====================================================================
@@ -243,7 +239,7 @@ sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> AvailFunctio
 // =====================================================================
 
 void AvailFunctionsWidget::onRowActivated(const Gtk::TreeModel::Path& Path,
-                                          Gtk::TreeViewColumn* Column)
+                                          Gtk::TreeViewColumn* /*Column*/)
 {
   Gtk::TreeIter Iter = mref_TreeModel->get_iter(Path);
 

@@ -65,10 +65,9 @@
 // =====================================================================
 // =====================================================================
 
-WareItemWidget::WareItemWidget(
-    std::string ID, Gtk::Widget& ParamWidget, Gtk::Widget& InfoWidget,
-    std::string Description,
-    openfluid::fluidx::WareDescriptor::ModelItemType Type)
+WareItemWidget::WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
+                               Gtk::Widget& InfoWidget, std::string Description,
+                               openfluid::fluidx::WareDescriptor::WareType Type)
 {
   mp_IDLabel = Gtk::manage(new Gtk::Label());
   mp_IDLabel->set_justify(Gtk::JUSTIFY_LEFT);
@@ -81,7 +80,8 @@ WareItemWidget::WareItemWidget(
   mp_ButtonBox = new BuilderItemButtonBox();
   mp_ButtonBox->setRemoveCommandTooltipText(
       Glib::ustring::compose(_("Remove %1"), ID));
-  mp_ButtonBox->setUpCommandTooltipText(Glib::ustring::compose(_("Move up %1"), ID));
+  mp_ButtonBox->setUpCommandTooltipText(
+      Glib::ustring::compose(_("Move up %1"), ID));
   mp_ButtonBox->setDownCommandTooltipText(
       Glib::ustring::compose(_("Move down %1"), ID));
   mp_ButtonBox->signal_RemoveCommandAsked().connect(
@@ -102,7 +102,7 @@ WareItemWidget::WareItemWidget(
   ParamFrame->add(*ParamEventBox);
   Gtk::HPaned* ExpanderBox = Gtk::manage(new Gtk::HPaned());
   ExpanderBox->pack1(*ParamFrame, true, true);
-  ExpanderBox->pack2(InfoWidget, true, true);
+  ExpanderBox->pack2(InfoWidget, true, false);
 
   mp_Expander = Gtk::manage(new Gtk::Expander(_("Parameters and information")));
   mp_Expander->add(*ExpanderBox);
@@ -136,7 +136,7 @@ WareItemWidget::WareItemWidget(
     case openfluid::fluidx::WareDescriptor::PluggedObserver:
       MainEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#e9f7fe"));
       break;
-    case openfluid::fluidx::WareDescriptor::NoModelItemType:
+    case openfluid::fluidx::WareDescriptor::NoWareType:
     default:
       MainEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#FFFFFF"));
       break;

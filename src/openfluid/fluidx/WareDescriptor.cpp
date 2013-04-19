@@ -128,7 +128,7 @@ bool WareDescriptor::isType(WareType MIType) const
 // =====================================================================
 // =====================================================================
 
-WareDescriptor::ModelItemType WareDescriptor::getType() const
+WareDescriptor::WareType WareDescriptor::getType() const
 {
   return m_ModelItemType;
 }

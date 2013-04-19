@@ -57,8 +57,6 @@
 
 #include <gtkmm/dialog.h>
 
-#include "ModelFctDetailComponent.hpp"
-
 namespace openfluid {
 namespace fluidx {
 class AdvancedModelDescriptor;
@@ -69,6 +67,7 @@ class ModelItemSignatureInstance;
 }
 
 class AvailFunctionsWidget;
+class SignatureDetailWidget;
 
 class ModelAddFunctionDialog
 {
@@ -78,9 +77,8 @@ class ModelAddFunctionDialog
 
     Gtk::Dialog* mp_Dialog;
 
-    ModelFctDetailComponent* mp_ModelFctDetailMVP;
-
     AvailFunctionsWidget* mp_AvailFct;
+    SignatureDetailWidget* mp_Detail;
 
     openfluid::machine::ModelItemSignatureInstance* mp_SelectedSignature;
 

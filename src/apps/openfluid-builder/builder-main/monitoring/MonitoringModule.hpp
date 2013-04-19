@@ -85,11 +85,6 @@ class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     void onMonitoringChanged();
 
-    std::map<std::string, std::string> extractInfos(
-        const openfluid::machine::ObserverSignatureInstance& Sign);
-
-    Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
-
     sigc::signal<void> m_signal_MonitoringChanged;
 
   protected:

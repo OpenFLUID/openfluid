@@ -62,7 +62,7 @@
 #include "WareSetWidget.hpp"
 #include "ObserverParamWidget.hpp"
 #include "ObserverAddParamDialog.hpp"
-#include "ModelFctDetailInfoPage.hpp"
+#include "WareItemInfoWidget.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -200,10 +200,10 @@ void MonitoringModule::update()
     ItemParamWidget->signal_changeOccured().connect(
         sigc::mem_fun(*this, &MonitoringModule::onMonitoringChanged));
 
-    ModelFctDetailInfoPage* ItemInfoPage = new ModelFctDetailInfoPage();
-    ItemInfoPage->setInfos(extractInfos(Sign));
     Gtk::Notebook* ItemInfo = Gtk::manage(new Gtk::Notebook());
-    ItemInfo->append_page(*ItemInfoPage->asWidget(), _("Information"));
+    ItemInfo->append_page(
+        *Gtk::manage(new WareItemInfoWidget(Sign, *Sign.Signature)),
+        _("Information"));
 
     WareItemWidget* ItemWidget = Gtk::manage(
         new WareItemWidget(ID, *ItemParamWidget, *ItemInfo, Name,
@@ -226,53 +226,6 @@ void MonitoringModule::update()
   mp_MonitoringWidget->applyExpanderStates();
 
   mp_MonitoringWidget->show_all_children();
-}
-
-// =====================================================================
-// =====================================================================
-
-std::map<std::string, std::string> MonitoringModule::extractInfos(
-    const openfluid::machine::ObserverSignatureInstance& Sign)
-{
-  std::map<std::string, std::string> m_Infos;
-
-  m_Infos["id"] = replaceEmpty(Sign.Signature->ID);
-  m_Infos["name"] = replaceEmpty(Sign.Signature->Name);
-  m_Infos["description"] = replaceEmpty(Sign.Signature->Description);
-  m_Infos["version"] = replaceEmpty(Sign.Signature->Version);
-  m_Infos["author"] = replaceEmpty(Sign.Signature->Author);
-  m_Infos["authormail"] = replaceEmpty(Sign.Signature->AuthorEmail);
-
-  m_Infos["path"] =
-      ((boost::filesystem::path) Sign.Filename).parent_path().string();
-
-  switch (Sign.Signature->Status)
-  {
-    case openfluid::ware::EXPERIMENTAL:
-      m_Infos["status"] = "Experimental";
-      break;
-    case openfluid::ware::BETA:
-      m_Infos["status"] = "Beta";
-      break;
-    case openfluid::ware::STABLE:
-      m_Infos["status"] = "Stable";
-      break;
-    default:
-      m_Infos["status"] = replaceEmpty("");
-      break;
-  }
-
-  return m_Infos;
-}
-
-// =====================================================================
-// =====================================================================
-
-Glib::ustring MonitoringModule::replaceEmpty(Glib::ustring TextToCheck)
-{
-  if (TextToCheck.empty())
-    TextToCheck = _("(unknown)");
-  return TextToCheck;
 }
 
 // =====================================================================

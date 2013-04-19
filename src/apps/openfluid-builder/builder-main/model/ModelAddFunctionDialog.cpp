@@ -58,8 +58,7 @@
 #include <gtkmm/stock.h>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include "AvailFunctionsWidget.hpp"
-
-#include "ModelFctDetailModel.hpp"
+#include "SignatureDetailWidget.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -68,19 +67,19 @@ ModelAddFunctionDialog::ModelAddFunctionDialog(
     openfluid::fluidx::AdvancedModelDescriptor& Model) :
     m_Model(Model), mp_SelectedSignature(0)
 {
-  mp_ModelFctDetailMVP = new ModelFctDetailComponent();
-
   mp_AvailFct = Gtk::manage(new AvailFunctionsWidget(m_Model));
   mp_AvailFct->signal_SelectionChanged().connect(
       sigc::mem_fun(*this, &ModelAddFunctionDialog::whenSelectionChanged));
   mp_AvailFct->signal_Activated().connect(
       sigc::mem_fun(*this, &ModelAddFunctionDialog::whenActivated));
 
+  mp_Detail = Gtk::manage(new SignatureDetailWidget());
+
   Gtk::HPaned* Paned = Gtk::manage(new Gtk::HPaned());
 
   Paned->set_border_width(5);
   Paned->pack1(*mp_AvailFct, true, true);
-  Paned->pack2(*mp_ModelFctDetailMVP->asWidget(), true, true);
+  Paned->pack2(*mp_Detail, true, false);
   Paned->set_visible(true);
 
   mp_Dialog = new Gtk::Dialog();
@@ -105,11 +104,13 @@ ModelAddFunctionDialog::~ModelAddFunctionDialog()
 
 openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionDialog::show()
 {
-  mp_AvailFct->update();
-
   mp_SelectedSignature = 0;
 
-  mp_Dialog->run();
+  //selection of first item causes mp_SelectedSignature and mp_Detail to update
+  mp_AvailFct->update();
+
+  if (mp_Dialog->run() != Gtk::RESPONSE_OK)
+    mp_SelectedSignature = 0;
 
   mp_Dialog->hide();
 
@@ -124,11 +125,18 @@ void ModelAddFunctionDialog::whenSelectionChanged(
 {
   mp_SelectedSignature = Sign;
 
-  mp_Dialog->set_response_sensitive(
-      Gtk::RESPONSE_OK,
-      m_Model.getFirstItemIndex(mp_SelectedSignature->Signature->ID) == -1);
+  if (mp_SelectedSignature)
+  {
+    mp_Dialog->set_response_sensitive(
+        Gtk::RESPONSE_OK,
+        m_Model.getFirstItemIndex(mp_SelectedSignature->Signature->ID) == -1);
+  }
+  else
+  {
+    mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, false);
+  }
 
-  mp_ModelFctDetailMVP->getModel()->setFctToDisplay(Sign);
+  mp_Detail->update(mp_SelectedSignature);
 }
 
 // =====================================================================
@@ -141,3 +149,7 @@ void ModelAddFunctionDialog::whenActivated(
 
   mp_Dialog->response(Gtk::RESPONSE_OK);
 }
+
+// =====================================================================
+// =====================================================================
+

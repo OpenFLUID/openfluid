@@ -67,9 +67,7 @@
 #include "FunctionGlobalParamsWidget.hpp"
 #include "FunctionAddParamDialog.hpp"
 #include "FunctionAddGlobalParamDialog.hpp"
-
-#include "ModelFctDetailComponent.hpp"
-#include "ModelFctDetailModel.hpp"
+#include "SignatureDetailWidget.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -278,11 +276,12 @@ void ModelModule::update()
     ItemParamWidget->signal_fileChangeOccured().connect(
         sigc::mem_fun(*this, &ModelModule::onFileChanged));
 
-    ModelFctDetailComponent* ItemInfo = new ModelFctDetailComponent();
-    ItemInfo->getModel()->setFctToDisplay(Sign);
+    SignatureDetailWidget* ItemInfoWidget = Gtk::manage(
+        new SignatureDetailWidget());
+    ItemInfoWidget->update(Sign);
 
     WareItemWidget* ItemWidget = Gtk::manage(
-        new WareItemWidget(ID, *ItemParamWidget, *ItemInfo->asWidget(), Name,
+        new WareItemWidget(ID, *ItemParamWidget, *ItemInfoWidget, Name,
                            (*it)->getType()));
     ItemWidget->signal_RemoveAsked().connect(
         sigc::mem_fun(*this, &ModelModule::whenRemoveFunctionAsked));

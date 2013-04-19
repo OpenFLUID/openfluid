@@ -46,102 +46,50 @@
  */
 
 /**
- \file ModelFctDetailAdapterModel.hpp
+ \file WareItemInfoWidget.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MODELFCTDETAILADAPTERMODEL_HPP_
-#define MODELFCTDETAILADAPTERMODEL_HPP_
+#ifndef WAREITEMINFOWIDGET_HPP_
+#define WAREITEMINFOWIDGET_HPP_
 
+#include <gtkmm/table.h>
+#include <gtkmm/textview.h>
+#include <openfluid/fluidx/WareDescriptor.hpp>
 
 namespace openfluid {
+namespace ware {
+class WareSignature;
+}
 namespace machine {
-class ModelItemSignatureInstance;
+class WareSignatureInstance;
 }
 }
 
-#include "ModelFctDetailColumns.hpp"
-#include "ModelFctDetailTreeStore.hpp"
-
-// =====================================================================
-// =====================================================================
-
-
-class ModelFctDetailAdapterModel
-{
-  public:
-
-    virtual void setFctToDisplay(
-        openfluid::machine::ModelItemSignatureInstance* Signature) = 0;
-
-    virtual bool isAPluggableFct() = 0;
-
-    virtual std::map<std::string, std::string> getInfos() = 0;
-
-    virtual Glib::RefPtr<Gtk::TreeModel> getParamsModel() = 0;
-
-    virtual Glib::RefPtr<Gtk::TreeModel> getVarsModel() = 0;
-
-    virtual Glib::RefPtr<Gtk::TreeModel> getIDataModel() = 0;
-
-    virtual Glib::RefPtr<Gtk::TreeModel> getExtraFilesModel() = 0;
-
-    virtual Glib::RefPtr<Gtk::TreeModel> getEventsModel() = 0;
-};
-
-// =====================================================================
-// =====================================================================
-
-
-class ModelFctDetailAdapterModelImpl: public ModelFctDetailAdapterModel
+class WareItemInfoWidget: public Gtk::Table
 {
   private:
 
-    ModelFctDetailColumns& m_Columns;
+    int m_TableBottom;
 
-    std::map<std::string, std::string> m_Infos;
-
-    Glib::RefPtr<ModelFctDetailTreeStore> mref_ParamsModel;
-
-    Glib::RefPtr<ModelFctDetailTreeStore> mref_VarsModel;
-
-    Glib::RefPtr<ModelFctDetailTreeStore> mref_IDataModel;
-
-    Glib::RefPtr<ModelFctDetailTreeStore> mref_EventsModel;
-
-    Glib::RefPtr<ModelFctDetailTreeStore> mref_XFilesModel;
-
-    openfluid::machine::ModelItemSignatureInstance* mp_Signature;
+    std::list<Gtk::TextView*> TextViews;
 
     Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
 
-    void extractInfos();
+    void attachKey(std::string Text);
+    void attachValue(std::string Text);
 
-    void updateTreeModel(Glib::RefPtr<ModelFctDetailTreeStore> TreeModel);
+    void attachSeparator();
+
+    void updateColorBg();
 
   public:
 
-    ModelFctDetailAdapterModelImpl(ModelFctDetailColumns& Columns);
-
-    ~ModelFctDetailAdapterModelImpl();
-
-    void setFctToDisplay(openfluid::machine::ModelItemSignatureInstance* Signature);
-
-    bool isAPluggableFct();
-
-    std::map<std::string, std::string> getInfos();
-
-    Glib::RefPtr<Gtk::TreeModel> getParamsModel();
-
-    Glib::RefPtr<Gtk::TreeModel> getVarsModel();
-
-    Glib::RefPtr<Gtk::TreeModel> getIDataModel();
-
-    Glib::RefPtr<Gtk::TreeModel> getExtraFilesModel();
-
-    Glib::RefPtr<Gtk::TreeModel> getEventsModel();
+    WareItemInfoWidget(
+        const openfluid::machine::WareSignatureInstance& SignInst,
+        const openfluid::ware::WareSignature& Sign);
 };
 
-#endif /* MODELFCTDETAILADAPTERMODEL_HPP_ */
+#endif /* WAREITEMINFOWIDGET_HPP_ */

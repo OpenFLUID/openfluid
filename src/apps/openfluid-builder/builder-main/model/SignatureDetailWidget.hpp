@@ -46,99 +46,91 @@
  */
 
 /**
- \file ModelFctDetailView.hpp
+ \file SignatureDetailWidget.hpp
  \brief Header of ...
 
- \author Aline LIBRES <libres@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MODELFCTDETAILVIEW_HPP_
-#define MODELFCTDETAILVIEW_HPP_
+#ifndef SIGNATUREDETAILWIDGET_HPP_
+#define SIGNATUREDETAILWIDGET_HPP_
 
 #include <gtkmm/notebook.h>
 #include <gtkmm/treeview.h>
+#include <gtkmm/treestore.h>
+#include <gtkmm/scrolledwindow.h>
+#include <openfluid/ware/FunctionSignature.hpp>
 
-#include "ModelFctDetailColumns.hpp"
+namespace openfluid {
+namespace machine {
+class ModelItemSignatureInstance;
+}
+}
 
 class ModelFctDetailInfoPage;
 
-class ModelFctDetailView
-{
-  public:
-
-    virtual void setPluggableElementsVisible(bool Visible) = 0;
-
-    virtual void setInfos(std::map<std::string, std::string> Infos) = 0;
-
-    virtual void setParamsModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
-
-    virtual void setVarsModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
-
-    virtual void setIDataModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
-
-    virtual void setEventsModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
-
-    virtual void setExtraFilesModel(Glib::RefPtr<Gtk::TreeModel> Model) = 0;
-
-    virtual Gtk::Widget* asWidget() = 0;
-};
-
-class ModelFctDetailViewImpl: public ModelFctDetailView
+class SignatureDetailWidget: public Gtk::Notebook
 {
   private:
 
-    ModelFctDetailColumns& m_Columns;
+    class ModelFctDetailColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        ModelFctDetailColumns()
+        {
+          add(m_Name);
+          add(m_Type);
+          add(m_Unit);
+          add(m_Class);
+          add(m_Description);
+        }
+        Gtk::TreeModelColumn<Glib::ustring> m_Name;
+        Gtk::TreeModelColumn<Glib::ustring> m_Type;
+        Gtk::TreeModelColumn<Glib::ustring> m_Unit;
+        Gtk::TreeModelColumn<Glib::ustring> m_Class;
+        Gtk::TreeModelColumn<Glib::ustring> m_Description;
+    };
+    ModelFctDetailColumns m_Columns;
+
+    void updateParamsModel(
+        const std::vector<openfluid::ware::SignatureHandledDataItem>& Items);
+    void updateVarsModel(
+        const std::vector<openfluid::ware::SignatureHandledTypedDataItem>& Items,
+        std::string SubTitle);
+    void updateIDataModel(
+        const std::vector<openfluid::ware::SignatureHandledDataItem>& Items,
+        std::string SubTitle);
+    void updateEventsModel(const std::vector<std::string>& Items);
+    void updateXFilesModel(const std::vector<std::string>& Items,
+                           std::string SubTitle);
 
   protected:
 
-    Gtk::Notebook* mp_Notebook;
-
-    ModelFctDetailInfoPage* mp_InfoPage;
+    Glib::RefPtr<Gtk::TreeStore> mref_ParamsModel;
+    Glib::RefPtr<Gtk::TreeStore> mref_VarsModel;
+    Glib::RefPtr<Gtk::TreeStore> mref_IDataModel;
+    Glib::RefPtr<Gtk::TreeStore> mref_EventsModel;
+    Glib::RefPtr<Gtk::TreeStore> mref_XFilesModel;
 
     Gtk::TreeView* mp_ParamsTreeView;
-
     Gtk::TreeView* mp_VarsTreeView;
-
     Gtk::TreeView* mp_IDataTreeView;
-
     Gtk::TreeView* mp_EventsTreeView;
-
     Gtk::TreeView* mp_ExtraFilesTreeView;
 
+    Gtk::ScrolledWindow* mp_ParamsWin;
+    Gtk::ScrolledWindow* mp_VarsWin;
+    Gtk::ScrolledWindow* mp_IDataWin;
+    Gtk::ScrolledWindow* mp_EventsWin;
+    Gtk::ScrolledWindow* mp_ExtraFilesWin;
+
   public:
 
-    ModelFctDetailViewImpl(ModelFctDetailColumns& Columns);
+    SignatureDetailWidget();
 
-    void setPluggableElementsVisible(bool Visible);
+    ~SignatureDetailWidget();
 
-    void setInfos(std::map<std::string, std::string> Infos);
-
-    void setParamsModel(Glib::RefPtr<Gtk::TreeModel> Model);
-
-    void setVarsModel(Glib::RefPtr<Gtk::TreeModel> Model);
-
-    void setIDataModel(Glib::RefPtr<Gtk::TreeModel> Model);
-
-    void setEventsModel(Glib::RefPtr<Gtk::TreeModel> Model);
-
-    void setExtraFilesModel(Glib::RefPtr<Gtk::TreeModel> Model);
-
-    Gtk::Widget* asWidget();
+    void update(openfluid::machine::ModelItemSignatureInstance* Signature);
 };
 
-class ModelFctDetailViewSub: public ModelFctDetailViewImpl
-{
-  public:
-
-    ModelFctDetailViewSub(ModelFctDetailColumns& Columns);
-
-    int getNotebookVisiblePageNb();
-
-    std::string getIdValue();
-
-    bool isIdVisible();
-
-    int getParamsRowNb();
-};
-
-#endif /* MODELFCTDETAILVIEW_HPP_ */
+#endif /* SIGNATUREDETAILWIDGET_HPP_ */

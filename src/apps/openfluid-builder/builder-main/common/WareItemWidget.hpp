@@ -88,8 +88,8 @@ class WareItemWidget: public Gtk::Frame
 
     WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
                    Gtk::Widget& InfoWidget, std::string Description = "",
-                   openfluid::fluidx::WareDescriptor::ModelItemType Type =
-                       openfluid::fluidx::WareDescriptor::NoModelItemType);
+                   openfluid::fluidx::WareDescriptor::WareType Type =
+                       openfluid::fluidx::WareDescriptor::NoWareType);
 
     ~WareItemWidget();
 
