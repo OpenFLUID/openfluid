@@ -207,7 +207,9 @@ void ProjectChecker::checkModelRequirements()
     {
       if (!isParamSet(*it, itt->DataName))
       {
-        if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
+        if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator) && itt->DataName
+            != "thresholdmin"
+            && itt->DataName != "thresholdmax")
           IsGeneratorParamsOk = false;
         else
           IsParamsOk = false;
