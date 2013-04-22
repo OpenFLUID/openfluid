@@ -393,6 +393,8 @@ void ProjectCoordinator::whenDatastoreChanged()
 {
   updateModelessWindowsExtensions();
 
+  checkProject();
+
   m_signal_ChangeHappened.emit();
 }
 

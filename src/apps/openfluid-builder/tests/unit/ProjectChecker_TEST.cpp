@@ -123,6 +123,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK(!PC.IsExtraFilesOk);
   BOOST_CHECK(!PC.IsRunConfigOk);
   BOOST_CHECK(!PC.IsMonitoringOk);
+  BOOST_CHECK(!PC.IsDatastoreOk);
 
   BOOST_CHECK(PC.ProjectMsg.empty());
   BOOST_CHECK(PC.ModelMsg.empty());
@@ -132,6 +133,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(PC.RunConfigMsg.empty());
   BOOST_CHECK(PC.MonitoringMsg.empty());
+  BOOST_CHECK(PC.DatastoreMsg.empty());
 }
 
 // =====================================================================
@@ -203,6 +205,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(PC.IsExtraFilesOk);
   BOOST_CHECK(PC.IsRunConfigOk);
   BOOST_CHECK(PC.IsMonitoringOk);
+  BOOST_CHECK(PC.IsDatastoreOk);
 
   BOOST_CHECK(PC.ProjectMsg.empty());
   BOOST_CHECK(PC.ModelMsg.empty());
@@ -211,6 +214,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(PC.InputdataMsg.empty());
   BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(PC.RunConfigMsg.empty());
+  BOOST_CHECK(PC.MonitoringMsg.empty());
   BOOST_CHECK(PC.MonitoringMsg.empty());
 
   BOOST_CHECK(GlobalState);
@@ -301,6 +305,15 @@ BOOST_AUTO_TEST_CASE(check_check)
   PC.check();
   BOOST_CHECK(!PC.IsInputdataOk);
   BOOST_CHECK(!PC.InputdataMsg.empty());
+
+  openfluid::fluidx::DatastoreItemDescriptor DSItem(
+      "ID", "", "", openfluid::core::UnstructuredValue::GeoVectorValue);
+  DSItem.setUnitClass("wrongClass");
+  Desc.getDatastore().appendItem(&DSItem);
+
+  PC.check();
+  BOOST_CHECK(!PC.IsDatastoreOk);
+  BOOST_CHECK(!PC.DatastoreMsg.empty());
 }
 
 // =====================================================================

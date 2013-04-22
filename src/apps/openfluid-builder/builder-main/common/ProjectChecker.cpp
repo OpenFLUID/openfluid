@@ -89,6 +89,7 @@ void ProjectChecker::clearAll()
   IsExtraFilesOk = false;
   IsRunConfigOk = false;
   IsMonitoringOk = false;
+  IsDatastoreOk = false;
 
   ProjectMsg = "";
   ModelMsg = "";
@@ -98,6 +99,7 @@ void ProjectChecker::clearAll()
   ExtraFilesMsg = "";
   RunConfigMsg = "";
   MonitoringMsg = "";
+  DatastoreMsg = "";
 }
 
 // =====================================================================
@@ -132,6 +134,8 @@ bool ProjectChecker::check()
   if (mp_Desc->getMonitoring().getItems().empty())
     MonitoringMsg = _("No observer defined");
 
+  checkDatastore();
+
   IsExtraFilesOk = ExtraFilesMsg.empty();
   IsInputdataOk = InputdataMsg.empty();
   IsModelOk = ModelMsg.empty();
@@ -139,6 +143,7 @@ bool ProjectChecker::check()
   IsRunConfigOk = RunConfigMsg.empty();
   IsProjectOk = ProjectMsg.empty();
   IsMonitoringOk = MonitoringMsg.empty();
+  IsDatastoreOk = DatastoreMsg.empty();
 
   return getGlobalCheckState();
 }
@@ -545,6 +550,26 @@ void ProjectChecker::checkModelVars()
     }
   }
 
+}
+
+// =====================================================================
+// =====================================================================
+
+void ProjectChecker::checkDatastore()
+{
+  std::set<std::string> Classes = mp_Desc->getDomain().getClassNames();
+
+  const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items =
+      mp_Desc->getDatastore().getItems();
+  for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    std::string Class = (*it)->getUnitClass();
+    if (!Class.empty() && !Classes.count(Class))
+      DatastoreMsg += Glib::ustring::compose(
+          _("Unit class %1 doesn't exist for datastore item %2"), Class,
+          (*it)->getID());
+  }
 }
 
 // =====================================================================
