@@ -54,6 +54,8 @@
 
 #include "ProjectChecker.hpp"
 
+#include <glibmm/i18n.h>
+#include <glibmm/ustring.h>
 #include <boost/filesystem/operations.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
@@ -113,7 +115,7 @@ bool ProjectChecker::check()
   clearAll();
 
   if (mp_Desc->getModel().getItemsCount() == 0)
-    ModelMsg += "Model is empty";
+    ModelMsg += _("Model is empty");
   else
   {
     checkModelRequirements();
@@ -122,13 +124,13 @@ bool ProjectChecker::check()
   }
 
   if (mp_Desc->getDomain().getUnitsByIdByClass().empty())
-    DomainMsg += "Spatial domain is empty";
+    DomainMsg += _("Spatial domain is empty");
 
   if (mp_Desc->getRunDescriptor().getBeginDate() >= mp_Desc->getRunDescriptor().getEndDate())
-    RunConfigMsg = "End date must be after begin date in run period";
+    RunConfigMsg = _("End date must be after begin date in run period");
 
   if (mp_Desc->getMonitoring().getItems().empty())
-    MonitoringMsg = "No observer defined";
+    MonitoringMsg = _("No observer defined");
 
   IsExtraFilesOk = ExtraFilesMsg.empty();
   IsInputdataOk = InputdataMsg.empty();
@@ -175,13 +177,16 @@ void ProjectChecker::checkModelRequirements()
                                                                    "");
         if (!FileNameFromParam.empty() && !boost::filesystem::exists(
             RunEnv->getInputFullPath(FileNameFromParam)))
-          ExtraFilesMsg += "- File " + FileNameFromParam + " required by " + ID
-                           + " not found\n";
+          ExtraFilesMsg += Glib::ustring::compose(
+              _("- File %1 required by %2 not found\n"), FileNameFromParam,
+              ID);
+
         FileNameFromParam = (*it)->getParameters().get("distribution", "");
         if (!FileNameFromParam.empty() && !boost::filesystem::exists(
             RunEnv->getInputFullPath(FileNameFromParam)))
-          ExtraFilesMsg += "- File " + FileNameFromParam + " required by " + ID
-                           + " not found\n";
+          ExtraFilesMsg += Glib::ustring::compose(
+              _("- File %1 required by %2 not found\n"), FileNameFromParam,
+              ID);
       }
     }
     else
@@ -190,8 +195,8 @@ void ProjectChecker::checkModelRequirements()
           itt != ReqFiles.end(); ++itt)
       {
         if (!boost::filesystem::exists(RunEnv->getInputFullPath(*itt)))
-          ExtraFilesMsg += "- File " + *itt + " required by " + ID
-                           + " not found\n";
+          ExtraFilesMsg += Glib::ustring::compose(
+              _("- File %1 required by %2 not found\n"), *itt, ID);
       }
     }
 
@@ -214,7 +219,8 @@ void ProjectChecker::checkModelRequirements()
         else
           IsParamsOk = false;
 
-        ParamsMsg += "- " + itt->DataName + " is missing in " + ID + "\n";
+        ParamsMsg += Glib::ustring::compose(_("- %1 is missing in %2\n"),
+                                            itt->DataName, ID);
       }
 
       // check Generators Params
@@ -261,8 +267,8 @@ void ProjectChecker::checkGeneratorParam(
   else if (!isParamSetAsDouble(Item, MinParamName))
   {
     TestCompare = IsGeneratorParamsOk = false;
-    ParamsMsg += "- " + MinParamName + " has to be a double in " + ItemId
-                 + "\n";
+    ParamsMsg += Glib::ustring::compose(_("- %1 has to be a double in %2\n"),
+                                        MinParamName, ItemId);
   }
 
   if (!isParamSet(Item, MaxParamName))
@@ -270,16 +276,16 @@ void ProjectChecker::checkGeneratorParam(
   else if (!isParamSetAsDouble(Item, MaxParamName))
   {
     TestCompare = IsGeneratorParamsOk = false;
-    ParamsMsg += "- " + MaxParamName + " has to be a double in " + ItemId
-                 + "\n";
+    ParamsMsg += Glib::ustring::compose(_("- %1 has to be a double in %2\n"),
+                                        MaxParamName, ItemId);
   }
 
   if (TestCompare && !(getParamAsDouble(Item, MaxParamName)
       > getParamAsDouble(Item, MinParamName)))
   {
     IsGeneratorParamsOk = false;
-    ParamsMsg += "- " + MinParamName + " >= " + MaxParamName + " in " + ItemId
-                 + "\n";
+    ParamsMsg += Glib::ustring::compose(_("- %1 >= %2 in %3\n"), MinParamName,
+                                        MaxParamName, ItemId);
   }
 
 }
@@ -349,15 +355,16 @@ void ProjectChecker::checkModelInputdata()
     for (itt = ReqData.begin(); itt != ReqData.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
-        InputdataMsg += "- Unit " + itt->UnitClass
-                        + " class does not exist for " + itt->DataName
-                        + " input data required by " + ID + "\n";
+        InputdataMsg +=
+            Glib::ustring::compose(
+                _("- Unit %1 class does not exist for %2 input data required by %3\n"),
+                itt->UnitClass, itt->DataName, ID);
 
       else if (!(Domain.getInputDataNames(itt->UnitClass).count(itt->DataName)
           || IDataUnits.count(std::make_pair(itt->UnitClass, itt->DataName))))
-        InputdataMsg += "- " + itt->DataName + " input data on "
-                        + itt->UnitClass + " required by " + ID
-                        + " is not available\n";
+        InputdataMsg += Glib::ustring::compose(
+            _("- %1 input data on %2 required by %3 is not available\n"),
+            itt->DataName, itt->UnitClass, ID);
     }
 
     // check produced Input data
@@ -366,19 +373,20 @@ void ProjectChecker::checkModelInputdata()
     for (itt = ProdData.begin(); itt != ProdData.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
-        InputdataMsg += "- Unit " + itt->UnitClass
-                        + " class does not exist for " + itt->DataName
-                        + " input data produced by " + ID + "\n";
+        InputdataMsg +=
+            Glib::ustring::compose(
+                _("- Unit %1 class does not exist for %2 input data produced by %3\n"),
+                itt->UnitClass, itt->DataName, ID);
 
       if (!IDataUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
       {
         IDataUnits.insert(std::make_pair(itt->UnitClass, itt->DataName));
       }
       else
-        InputdataMsg += "- "
-            + itt->DataName + " input data on " + itt->UnitClass
-            + " produced by " + ID
-            + " cannot be created because it is previously created\n";
+        InputdataMsg +=
+            Glib::ustring::compose(
+                _("- %1 input data on %2 produced by %3 cannot be created because it is previously created\n"),
+                itt->DataName, itt->UnitClass, ID);
     }
 
   }
@@ -422,16 +430,20 @@ void ProjectChecker::checkModelVars()
     for (itt = ReqVars.begin(); itt != ReqVars.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
-        ProjectMsg += "- Unit class " + itt->UnitClass + " doesn't exist for "
-                      + itt->DataName + " variable required by " + ID + "\n";
+        ProjectMsg +=
+            Glib::ustring::compose(
+                _("- Unit class %1 doesn't exist for %2 variable required by %3\n"),
+                itt->UnitClass, itt->DataName, ID);
 
       if ((itt->DataType == openfluid::core::Value::NONE
           && !VarsUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
           || (itt->DataType != openfluid::core::Value::NONE && !TypedVarsUnits.count(
               std::make_pair(itt->UnitClass,
                              std::make_pair(itt->DataName, itt->DataType)))))
-        ModelMsg += "- " + itt->DataName + " variable on " + itt->UnitClass
-                    + " required by " + ID + " is not previously created\n";
+        ModelMsg +=
+            Glib::ustring::compose(
+                _("- %1 variable on %2 required by %3 is not previously created\n"),
+                itt->DataName, itt->UnitClass, ID);
     }
 
     // check produced Vars
@@ -440,8 +452,10 @@ void ProjectChecker::checkModelVars()
     for (itt = ProdVars.begin(); itt != ProdVars.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
-        ProjectMsg += "- Unit class " + itt->UnitClass + " doesn't exist for "
-                      + itt->DataName + " variable produced by " + ID + "\n";
+        ProjectMsg +=
+            Glib::ustring::compose(
+                _("- Unit class %1 doesn't exist for %2 variable produced by %3\n"),
+                itt->UnitClass, itt->DataName, ID);
 
       if (!VarsUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
       {
@@ -451,9 +465,10 @@ void ProjectChecker::checkModelVars()
                            std::make_pair(itt->DataName, itt->DataType)));
       }
       else
-        ModelMsg += "- " + itt->DataName + " variable on " + itt->UnitClass
-                    + " produced by " + ID
-                    + " cannot be created because it is previously created\n";
+        ModelMsg +=
+            Glib::ustring::compose(
+                _("- %1 variable on %2 produced by %3 cannot be created because it is previously created\n"),
+                itt->DataName, itt->UnitClass, ID);
     }
     if ((*it)->isType(openfluid::fluidx::WareDescriptor::Generator))
     {
@@ -461,9 +476,10 @@ void ProjectChecker::checkModelVars()
           dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
 
       if (!Domain.isClassNameExists(GenDesc->getUnitClass()))
-        ProjectMsg += "- Unit class " + GenDesc->getUnitClass()
-                      + " doesn't exist for " + GenDesc->getVariableName()
-                      + " variable generated by " + ID + "\n";
+        ProjectMsg +=
+            Glib::ustring::compose(
+                _("- Unit class %1 doesn't exist for %2 variable generated by %3\n"),
+                GenDesc->getUnitClass(), GenDesc->getVariableName(), ID);
 
       if (!VarsUnits.count(
           std::make_pair(GenDesc->getUnitClass(), GenDesc->getVariableName())))
@@ -473,9 +489,10 @@ void ProjectChecker::checkModelVars()
                            GenDesc->getVariableName()));
       }
       else
-        ModelMsg += "- " + GenDesc->getVariableName() + " variable on "
-                    + GenDesc->getUnitClass() + " produced by " + ID
-                    + " cannot be generated because it is previously created\n";
+        ModelMsg +=
+            Glib::ustring::compose(
+                _("- %1 variable on %2 produced by %3 cannot be generated because it is previously created\n"),
+                GenDesc->getVariableName(), GenDesc->getUnitClass(), ID);
     }
 
     // check updated Vars
@@ -484,8 +501,10 @@ void ProjectChecker::checkModelVars()
     for (itt = UpVars.begin(); itt != UpVars.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
-        ProjectMsg += "- Unit class " + itt->UnitClass + " doesn't exist for "
-                      + itt->DataName + " variable updated by " + ID + "\n";
+        ProjectMsg +=
+            Glib::ustring::compose(
+                _("- Unit class %1 doesn't exist for %2 variable updated by %3\n"),
+                itt->UnitClass, itt->DataName, ID);
 
       if (!VarsUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
       {
@@ -509,17 +528,20 @@ void ProjectChecker::checkModelVars()
     for (itt = ReqVars.begin(); itt != ReqVars.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
-        ProjectMsg += "- Unit class " + itt->UnitClass + " doesn't exist for "
-                      + itt->DataName + " variable previously required by " + ID
-                      + "\n";
+        ProjectMsg +=
+            Glib::ustring::compose(
+                _("- Unit class %1 doesn't exist for %2 variable previously required by %3\n"),
+                itt->UnitClass, itt->DataName, ID);
 
       if ((itt->DataType == openfluid::core::Value::NONE
           && !VarsUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
           || (itt->DataType != openfluid::core::Value::NONE && !TypedVarsUnits.count(
               std::make_pair(itt->UnitClass,
                              std::make_pair(itt->DataName, itt->DataType)))))
-        ModelMsg += "- " + itt->DataName + " variable on " + itt->UnitClass
-                    + " required by " + ID + " is not previously created\n";
+        ModelMsg +=
+            Glib::ustring::compose(
+                _("- %1 variable on %2 required by %3 is not previously created\n"),
+                itt->DataName, itt->UnitClass, ID);
     }
   }
 

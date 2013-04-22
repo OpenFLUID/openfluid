@@ -99,7 +99,7 @@ PreferencesManager::PreferencesManager()
     {
       boost::filesystem::create_directory(UserDir);
     }
-    catch (boost::filesystem::filesystem_error e)
+    catch (boost::filesystem::filesystem_error& e)
     {
       std::cerr << "PreferencesManager: Problem creating user directory: "
           << e.what() << std::endl;
@@ -152,12 +152,12 @@ void PreferencesManager::loadKeyFile()
       std::cerr << "PreferencesManager: Problem loading key file "
           << m_FileName << std::endl;
   }
-  catch (Glib::FileError e)
+  catch (Glib::FileError& e)
   {
     std::cerr << "PreferencesManager: FileError with file " << m_FileName
         << " : " << e.what() << std::endl;
   }
-  catch (Glib::KeyFileError e)
+  catch (Glib::KeyFileError& e)
   {
     std::cerr << "PreferencesManager: KeyFileError with file " << m_FileName
         << " : " << e.what() << std::endl;

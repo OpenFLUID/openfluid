@@ -102,15 +102,6 @@ class EngineHelper
     static std::string fromRealCharToSubstitute(std::string RealChar);
 
     static std::string fromSubstituteToRealChar(std::string Substitute);
-
-    // TODO to be removed or replaced by monitoring
-    /*
-    static Glib::ustring fromHeaderTypeToHeaderString(
-        openfluid::base::OutputFilesDescriptor::HeaderType Header);
-
-    static openfluid::base::OutputFilesDescriptor::HeaderType
-        fromHeaderStringToHeaderType(Glib::ustring Header);
-     */
 };
 
 #endif /* __ENGINEHELPER_HPP__ */

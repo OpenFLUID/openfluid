@@ -103,7 +103,7 @@ ProjectManager* ProjectManager::getInstance()
 // =====================================================================
 
 
-bool ProjectManager::open(const Glib::ustring& Path)
+bool ProjectManager::open(const std::string& Path)
 {
   try
   {
@@ -125,14 +125,14 @@ bool ProjectManager::open(const Glib::ustring& Path)
 
     return true;
 
-  } catch (Glib::FileError e)
+  } catch (Glib::FileError& e)
   {
     std::cerr << "ProjectManager::open Glib::FileError : " << e.what()
         << std::endl;
 
     return false;
 
-  } catch (Glib::KeyFileError e)
+  } catch (Glib::KeyFileError& e)
   {
     std::cerr << "ProjectManager::open Glib::KeyFileError : " << e.what()
         << std::endl;
@@ -146,10 +146,9 @@ bool ProjectManager::open(const Glib::ustring& Path)
 
 
 std::string ProjectManager::getFilePathFromProjectPath(
-    Glib::ustring ProjectPath)
+    std::string ProjectPath)
 {
-  return Glib::ustring::compose("%1/%2", ProjectPath,
-      openfluid::config::PROJECT_FILE);
+  return ProjectPath.append("/").append(openfluid::config::PROJECT_FILE);
 }
 
 // =====================================================================
@@ -157,10 +156,9 @@ std::string ProjectManager::getFilePathFromProjectPath(
 
 
 std::string ProjectManager::getInputDirFromProjectPath(
-    Glib::ustring ProjectPath)
+    std::string ProjectPath)
 {
-  return Glib::ustring::compose("%1/%2", ProjectPath,
-      openfluid::config::PROJECT_INPUTDIR);
+  return ProjectPath.append("/").append(openfluid::config::PROJECT_INPUTDIR);
 }
 
 // =====================================================================
@@ -168,19 +166,18 @@ std::string ProjectManager::getInputDirFromProjectPath(
 
 
 std::string ProjectManager::getOuputDirFromProjectPath(
-    Glib::ustring ProjectPath)
+    std::string ProjectPath)
 {
-  return Glib::ustring::compose("%1/%2", ProjectPath,
-      openfluid::config::PROJECT_OUTPUTDIRPREFIX);
+  return ProjectPath.append("/").append(openfluid::config::PROJECT_OUTPUTDIRPREFIX);
 }
 
 // =====================================================================
 // =====================================================================
 
 /* throws boost::filesystem::basic_filesystem_error<boost::filesystem::path> */
-bool ProjectManager::create(const Glib::ustring& Path,
-    const Glib::ustring& Name, const Glib::ustring& Description,
-    const Glib::ustring& Authors, const bool Inc)
+bool ProjectManager::create(const std::string& Path,
+    const std::string& Name, const std::string& Description,
+    const std::string& Authors, const bool Inc)
 {
   if (boost::filesystem::create_directories(getInputDirFromProjectPath(Path)))
   {
@@ -206,7 +203,7 @@ bool ProjectManager::create(const Glib::ustring& Path,
 // =====================================================================
 
 
-Glib::ustring ProjectManager::getNow()
+std::string ProjectManager::getNow()
 {
   return boost::posix_time::to_iso_string(
       boost::posix_time::second_clock::local_time());
@@ -241,7 +238,7 @@ bool ProjectManager::save()
 
     PrjFile << KFile.to_data();
 
-  } catch (Glib::KeyFileError e)
+  } catch (Glib::KeyFileError& e)
   {
     std::cerr << "ProjectManager::create Glib::KeyFileError : " << e.what()
         << std::endl;
@@ -275,11 +272,10 @@ void ProjectManager::updateOutputDir()
 {
   if (m_IsOpened && m_IsIncOutputDir)
   {
-    Glib::ustring Now = getNow();
+    std::string Now = getNow();
     Now.replace(8,1,"-");
 
-    m_OutputDir = Glib::ustring::compose("%1_%2", getOuputDirFromProjectPath(
-        m_Path), Now);
+    m_OutputDir = getOuputDirFromProjectPath(m_Path).append("_").append(Now);
   } else
     m_OutputDir = getOuputDirFromProjectPath(m_Path);
 }
@@ -288,7 +284,7 @@ void ProjectManager::updateOutputDir()
 // =====================================================================
 
 
-bool ProjectManager::isProject(const Glib::ustring& Path)
+bool ProjectManager::isProject(const std::string& Path)
 {
   if (boost::filesystem::exists(getFilePathFromProjectPath(Path)))
   {
@@ -297,10 +293,10 @@ bool ProjectManager::isProject(const Glib::ustring& Path)
       Glib::KeyFile KFile;
       KFile.load_from_file(getFilePathFromProjectPath(Path));
       return boost::filesystem::exists(getInputDirFromProjectPath(Path));
-    } catch (Glib::FileError e)
+    } catch (Glib::FileError& e)
     {
       return false;
-    } catch (Glib::KeyFileError e)
+    } catch (Glib::KeyFileError& e)
     {
       return false;
     }

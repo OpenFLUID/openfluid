@@ -244,7 +244,7 @@ Glib::ustring EngineProjectSaveAsDialog::show()
       boost::filesystem::create_directory(Glib::filename_from_utf8(
           NewProjectPathStr));
     }
-    catch (boost::filesystem::filesystem_error e)
+    catch (boost::filesystem::filesystem_error& e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
           Glib::ustring::compose(
@@ -290,7 +290,7 @@ Glib::ustring EngineProjectSaveAsDialog::show()
             boost::filesystem::copy_file(SrcPath, DestPath);
         }
       }
-      catch (boost::filesystem::filesystem_error e)
+      catch (boost::filesystem::filesystem_error& e)
       {
         std::cerr
             << "EngineProjectSaveAsDialog::copy boost::filesystem::basic_filesystem_error: "

@@ -133,7 +133,6 @@ void DatastoreView::update()
   std::list<openfluid::fluidx::DatastoreItemDescriptor*> Items =
       mp_Datastore->getItems();
 
-  bool Test = false;
   for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
   {

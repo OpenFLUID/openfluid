@@ -67,6 +67,7 @@
 
 #include <iostream>
 #include <boost/system/error_code.hpp>
+#include <boost/algorithm/string_regex.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include "EngineProjectOpenDialog.hpp"
 
@@ -396,9 +397,11 @@ void EngineProjectNewDialog::onProjectFolderSelectionChanged()
 
 void EngineProjectNewDialog::checkProject()
 {
-  Glib::ustring ProjectName = mp_NameEntry->get_text();
+  std::string ProjectName = mp_NameEntry->get_text();
 
-  m_ProjectName = replaceInvalidChars(ProjectName);
+  boost::algorithm::replace_all_regex(ProjectName,boost::regex("[^[:alnum:]]"),std::string("_"));
+
+  m_ProjectName = ProjectName;
 
   mp_NameEntry->set_text(m_ProjectName);
 
@@ -424,21 +427,6 @@ void EngineProjectNewDialog::checkProject()
   mp_InfoBar->set_visible(!m_IsValid);
   mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, m_IsValid);
 
-}
-
-// =====================================================================
-// =====================================================================
-
-//TODO: replace with boost::algorithm::replace_all_regex(Str,boost::regex("[^[:alnum:]]"),std::string("_"));
-Glib::ustring EngineProjectNewDialog::replaceInvalidChars(Glib::ustring Str)
-{
-  for (unsigned int i = 0; i < Str.size(); i++)
-  {
-    if (!Glib::Unicode::isalnum(Str[i]))
-      Str.replace(i, 1, "_");
-  }
-
-  return Str;
 }
 
 // =====================================================================
@@ -511,12 +499,12 @@ void EngineProjectNewDialog::appendDirectoryContent(
           } else
           {
             // add a dummy row to display expander
-            Gtk::TreeRow DummyRow = *mref_TreeModel->append(Row->children());
+            mref_TreeModel->append(Row->children());
           }
         }
       }
     }
-  } catch (boost::filesystem::filesystem_error e)
+  } catch (boost::filesystem::filesystem_error& e)
   {
     std::cerr << "EngineProjectNewDialog::appendDirectoryContent " << e.what()
         << std::endl;
@@ -619,7 +607,7 @@ Glib::ustring EngineProjectNewDialog::show()
     {
       boost::filesystem::create_directory(Glib::filename_from_utf8(
           ProjectFolder));
-    } catch (boost::filesystem::filesystem_error  e)
+    } catch (boost::filesystem::filesystem_error&  e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
           Glib::ustring::compose(
@@ -675,7 +663,7 @@ Glib::ustring EngineProjectNewDialog::show()
             copyFilePathAndChildren(*mref_TreeModel->children()[i]);
         }
       }
-    } catch (boost::filesystem::filesystem_error e)
+    } catch (boost::filesystem::filesystem_error& e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
           Glib::ustring::compose(_(
@@ -751,7 +739,7 @@ void EngineProjectNewDialog::copyOnDisk(std::string SrcPath)
       } else
         boost::filesystem::copy_file(SrcPath, DestPath);
     }
-  } catch (boost::filesystem::filesystem_error e)
+  } catch (boost::filesystem::filesystem_error& e)
   {
     std::cerr
         << "EngineProjectNewDialog::copy boost::filesystem::basic_filesystem_error: "

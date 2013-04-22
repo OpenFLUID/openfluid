@@ -415,6 +415,8 @@ void ProjectCoordinator::whenRunChanged()
 
 void ProjectCoordinator::whenMonitoringChanged()
 {
+  checkProject();
+
   m_signal_ChangeHappened.emit();
 }
 

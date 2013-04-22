@@ -538,7 +538,7 @@ void BuilderAppCoordinator::openProject(std::string ProjectPath)
 
     setState(*getProjectState());
   }
-  catch (openfluid::base::OFException e)
+  catch (openfluid::base::OFException& e)
   {
     openfluid::base::ProjectManager::getInstance()->close();
     return;
@@ -570,7 +570,7 @@ void BuilderAppCoordinator::createProject()
 
     setState(*getProjectState());
   }
-  catch (openfluid::base::OFException e)
+  catch (openfluid::base::OFException& e)
   {
     openfluid::base::ProjectManager::getInstance()->close();
     return;

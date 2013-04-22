@@ -134,7 +134,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     {
       mp_FXDesc->loadFromDirectory(
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir() :
-                               FolderIn);
+                               std::string(FolderIn));
     }
     catch (openfluid::base::OFException& e)
     {
@@ -352,25 +352,22 @@ void EngineProject::run()
   if (m_WithProjectManager)
     openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
 
-  openfluid::machine::SimulationBlob* SimBlob =
-      new openfluid::machine::SimulationBlob();
+  openfluid::machine::SimulationBlob SimBlob;
 
-  openfluid::guicommon::RunDialogMachineListener* Listener =
-      new openfluid::guicommon::RunDialogMachineListener();
+  openfluid::guicommon::RunDialogMachineListener Listener;
 
-  openfluid::machine::ModelInstance* ModelInstance =
-      new openfluid::machine::ModelInstance(*SimBlob, Listener);
+  openfluid::machine::ModelInstance ModelInstance(SimBlob, &Listener);
 
-  openfluid::machine::MonitoringInstance MonitInstance(*SimBlob);
+  openfluid::machine::MonitoringInstance MonitInstance(SimBlob);
 
-  openfluid::machine::Engine Engine(*SimBlob, *ModelInstance, MonitInstance,
-                                    Listener);
+  openfluid::machine::Engine Engine(SimBlob, ModelInstance, MonitInstance,
+                                    &Listener);
 
   openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc,
-                                                                  *SimBlob);
+                                                                  SimBlob);
 
   openfluid::machine::Factory::buildModelInstanceFromDescriptor(
-      mp_FXDesc->getModelDescriptor(), *ModelInstance);
+      mp_FXDesc->getModelDescriptor(), ModelInstance);
 
   openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(
       mp_FXDesc->getMonitoringDescriptor(), MonitInstance);
@@ -378,7 +375,7 @@ void EngineProject::run()
   openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
       mp_FXDesc->getRunDescriptor());
 
-  SimBlob->getCoreRepository().sortUnitsByProcessOrder();
+  SimBlob.getCoreRepository().sortUnitsByProcessOrder();
 
   openfluid::guicommon::SimulationRunDialog RunDialog(&Engine);
 

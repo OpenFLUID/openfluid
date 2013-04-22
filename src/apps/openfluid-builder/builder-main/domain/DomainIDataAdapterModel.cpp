@@ -54,8 +54,6 @@
 
 #include "DomainIDataAdapterModel.hpp"
 
-#include <boost/foreach.hpp>
-
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include "DomainIDataColumns.hpp"

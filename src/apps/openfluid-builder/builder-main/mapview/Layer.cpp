@@ -106,7 +106,7 @@ Layer::Layer(LayerType::LayerTypes LayerType,
     {
       loadShapefile();
     }
-    catch (openfluid::base::OFException e)
+    catch (openfluid::base::OFException& e)
     {
       delete mp_WidgetLayerObject;
       delete mp_ICLayer;
