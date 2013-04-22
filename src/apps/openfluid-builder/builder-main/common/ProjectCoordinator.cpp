@@ -60,18 +60,21 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/builderext/WorkspaceTab.hpp>
 #include <openfluid/builderext/ModelessWindow.hpp>
-
+#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include "ProjectExplorerModel.hpp"
 #include "ProjectWorkspace.hpp"
 #include "EngineProject.hpp"
-#include "BuilderModuleFactory.hpp"
 #include "ProjectDashboard.hpp"
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
-
+#include "ModelModule.hpp"
+#include "DomainStructureModule.hpp"
 #include "DomainClassModule.hpp"
-
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include "DatastoreModule.hpp"
+#include "SimulationRunModule.hpp"
+#include "MonitoringModule.hpp"
+#include "OutputsModule.hpp"
+#include "MapViewModule.hpp"
 #include "WaresHelper.hpp"
 
 // =====================================================================
@@ -89,8 +92,6 @@ ProjectCoordinator::ProjectCoordinator(ProjectExplorerModel& ExplorerModel,
         _("Output browser")), m_FileMonitorHasChanged(false), m_FileMonitorHasToDisplay(
         true)
 {
-  mp_ModuleFactory = new BuilderModuleFactory(m_EngineProject);
-
   m_ExplorerModel.signal_ActivationChanged().connect(
       sigc::mem_fun(*this, &ProjectCoordinator::whenActivationChanged));
   m_Workspace.signal_PageRemoved().connect(
@@ -180,8 +181,7 @@ void ProjectCoordinator::whenActivationChanged()
         Module = m_ModulesByPageNameMap[PageName];
       else
       {
-        Module =
-            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createModelModule());
+        Module = new ModelModule(m_EngineProject.getAdvancedDesc());
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenModelChanged));
@@ -194,8 +194,7 @@ void ProjectCoordinator::whenActivationChanged()
       PageName = m_DomainPageName;
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module =
-            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createDomainStructureModule());
+        Module = new DomainStructureModule(m_EngineProject.getAdvancedDesc());
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenDomainChanged));
@@ -209,8 +208,7 @@ void ProjectCoordinator::whenActivationChanged()
           m_ExplorerModel.getActivatedElement().second);
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module =
-            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createDomainClassModule());
+        Module = new DomainClassModule(m_EngineProject.getAdvancedDesc());
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenClassChanged));
@@ -228,8 +226,7 @@ void ProjectCoordinator::whenActivationChanged()
       PageName = m_DatastorePageName;
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module =
-            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createDatastoreModule());
+        Module = new DatastoreModule(m_EngineProject.getAdvancedDesc());
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenDatastoreChanged));
@@ -242,8 +239,7 @@ void ProjectCoordinator::whenActivationChanged()
       PageName = m_RunPageName;
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module =
-            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createSimulationRunModule());
+        Module = new SimulationRunModule(m_EngineProject.getAdvancedDesc());
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenRunChanged));
@@ -256,8 +252,7 @@ void ProjectCoordinator::whenActivationChanged()
       PageName = m_MonitoringPageName;
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module =
-            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMonitoringModule());
+        Module = new MonitoringModule(m_EngineProject.getAdvancedDesc());
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenMonitoringChanged));
@@ -270,8 +265,7 @@ void ProjectCoordinator::whenActivationChanged()
       PageName = m_OutputsPageName;
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module =
-            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createOutputsModule());
+        Module = new OutputsModule(m_EngineProject.getAdvancedDesc());
 
         addModuleToWorkspace(PageName, *Module);
       }
@@ -531,8 +525,7 @@ void ProjectCoordinator::whenMapViewAsked()
     Module = m_ModulesByPageNameMap[PageName];
   else
   {
-    Module =
-        static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createMapViewModule());
+    Module = new MapViewModule(m_EngineProject.getAdvancedDesc());
 
     Module->signal_ModuleChanged().connect(
         sigc::mem_fun(*this, &ProjectCoordinator::whenMapViewChanged));

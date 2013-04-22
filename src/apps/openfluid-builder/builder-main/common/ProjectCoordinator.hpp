@@ -75,7 +75,6 @@ class ModelessWindow;
 class ProjectExplorerModel;
 class ProjectWorkspace;
 class EngineProject;
-class BuilderModuleFactory;
 class ProjectDashboard;
 
 class ProjectCoordinator
@@ -93,8 +92,6 @@ class ProjectCoordinator
     EngineProject& m_EngineProject;
 
     ProjectDashboard& m_ProjectDashboard;
-
-    BuilderModuleFactory* mp_ModuleFactory;
 
     std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*> m_ModulesByPageNameMap;
 

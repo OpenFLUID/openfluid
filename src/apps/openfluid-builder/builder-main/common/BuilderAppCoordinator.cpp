@@ -62,7 +62,6 @@
 
 #include "builderconfig.hpp"
 #include "BuilderAppWindow.hpp"
-#include "BuilderModuleFactory.hpp"
 #include "BuilderAppHomeState.hpp"
 #include "BuilderAppProjectState.hpp"
 #include "BuilderHomeModule.hpp"
@@ -351,8 +350,8 @@ BuilderAppState* BuilderAppCoordinator::getProjectState()
 
 void BuilderAppCoordinator::setHomeModule()
 {
-  openfluid::guicommon::BuilderModule* HomeModule =
-      BuilderModuleFactory::createHomeModule(m_Actions);
+  openfluid::guicommon::BuilderModule* HomeModule = new BuilderHomeModule(
+      m_Actions);
   setCurrentModule(HomeModule);
   ((BuilderHomeModule*) HomeModule)->signal_OpenProjectAsked().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::openProject));
@@ -395,7 +394,7 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     if (ProjectFolder.empty())
       ProjectModule->saveAsked();
     else
-    // to mark that nothing has to be saved
+      // to mark that nothing has to be saved
       onSaveHappened();
 
     ProjectModule->checkAsked();
