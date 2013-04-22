@@ -83,6 +83,20 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_duplicates)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
+
+  BOOST_CHECK_THROW(
+      openfluid::fluidx::AdvancedMonitoringDescriptor(FXDesc.getMonitoringDescriptor()),
+      openfluid::base::OFException);
+}
+
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);

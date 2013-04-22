@@ -79,11 +79,6 @@ DatastoreView::DatastoreView(
   mp_TreeView->append_column(_("Type"), m_Columns.m_Type);
   mp_TreeView->append_column(_("Unit Class"), m_Columns.m_Class);
   mp_TreeView->append_column(_("Source"), m_Columns.m_Source);
-  mp_TreeView->append_column(_("Test"), m_Columns.m_Test);
-
-  mp_TreeView->get_column(4)->add_attribute(
-      ((Gtk::CellRendererText*) mp_TreeView->get_column_cell_renderer(4))->property_mode(),
-      m_Columns.m_True);
 
   mp_TreeView->set_visible(true);
 
@@ -138,7 +133,6 @@ void DatastoreView::update()
   std::list<openfluid::fluidx::DatastoreItemDescriptor*> Items =
       mp_Datastore->getItems();
 
-  bool Test = false;
   for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
@@ -152,9 +146,6 @@ void DatastoreView::update()
             (*it)->getType());
     Row[m_Columns.m_Class] = (*it)->getUnitClass();
     Row[m_Columns.m_Source] = (*it)->getRelativePath();
-    Row[m_Columns.m_Test] = Test;
-    Test = !Test;
-    Row[m_Columns.m_True] = true;
   }
 
   updateListToolBox();

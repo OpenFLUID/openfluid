@@ -93,11 +93,11 @@ class ModelGeneratorCreationDialog
     Gtk::InfoBar* mp_InfoBar;
     Gtk::Label* mp_InfoBarLabel;
 
-    std::set<std::string> m_ExistingVars;
+    std::set<std::string> m_ExistingIDs;
 
     void init();
 
-    void onVarNameEntryChanged();
+    void onChanged();
 
   public:
 

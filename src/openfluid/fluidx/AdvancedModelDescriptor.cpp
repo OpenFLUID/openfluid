@@ -54,6 +54,7 @@
 
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
+#include <set>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
@@ -68,7 +69,7 @@ AdvancedModelDescriptor::AdvancedModelDescriptor(
     openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
     mp_ModelDesc(&ModelDesc)
 {
-
+  checkModel();
 }
 
 // =====================================================================
@@ -76,6 +77,27 @@ AdvancedModelDescriptor::AdvancedModelDescriptor(
 
 AdvancedModelDescriptor::~AdvancedModelDescriptor()
 {
+}
+
+// =====================================================================
+// =====================================================================
+
+void AdvancedModelDescriptor::checkModel() const
+{
+  std::set<std::string> UniqueIDs;
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      mp_ModelDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    std::string ID = getID(*it);
+    if (!UniqueIDs.insert(ID).second)
+      throw openfluid::base::OFException(
+          "OpenFLUID-Framework", "AdvancedModelDescriptor::checkModel",
+          "The simulation function with ID \"" + ID + "\" is duplicate");
+  }
 }
 
 // =====================================================================
@@ -173,6 +195,10 @@ std::string AdvancedModelDescriptor::getID(
 
   if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
     return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();
+
+  throw openfluid::base::OFException("OpenFLUID framework",
+                                         "AdvancedModelDescriptor::getID()",
+                                         "Unknown ware type");
 }
 
 // =====================================================================

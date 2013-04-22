@@ -75,7 +75,6 @@ class ModelessWindow;
 class ProjectExplorerModel;
 class ProjectWorkspace;
 class EngineProject;
-class BuilderModuleFactory;
 class ProjectDashboard;
 
 class ProjectCoordinator
@@ -93,8 +92,6 @@ class ProjectCoordinator
     EngineProject& m_EngineProject;
 
     ProjectDashboard& m_ProjectDashboard;
-
-    BuilderModuleFactory* mp_ModuleFactory;
 
     std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*> m_ModulesByPageNameMap;
 
@@ -118,7 +115,7 @@ class ProjectCoordinator
 
     std::string m_OutputsPageName;
 
-// only to keep ref to FileMonitors (otherwise they're lost)
+    // only to keep ref to FileMonitors (otherwise they're lost)
     std::vector<Glib::RefPtr<Gio::FileMonitor> > m_DirMonitors;
 
     Gtk::MessageDialog* mp_FileMonitorDialog;
@@ -128,6 +125,14 @@ class ProjectCoordinator
     bool m_FileMonitorHasToDisplay;
 
     void whenActivationChanged();
+
+    std::string constructClassPageName(std::string ClassName);
+
+    void addModuleToWorkspace(
+        std::string PageName,
+        openfluid::guicommon::ProjectWorkspaceModule& Module);
+
+    void whenPageRemoved(std::string RemovedPageName);
 
     void whenModelChanged();
 
@@ -143,23 +148,11 @@ class ProjectCoordinator
 
     void whenMapViewChanged();
 
-    void whenPageRemoved(std::string RemovedPageName);
-
-    void computeModelChanges();
-
-    void computeDomainChanges();
-
     void updateWorkspaceModules();
 
     void onDirMonitorChanged(const Glib::RefPtr<Gio::File>& File,
                              const Glib::RefPtr<Gio::File>& OtherFile,
                              Gio::FileMonitorEvent EventType);
-
-    std::string constructClassPageName(std::string ClassName);
-
-    void addModuleToWorkspace(
-        std::string PageName,
-        openfluid::guicommon::ProjectWorkspaceModule& Module);
 
     void removeDeletedClassPages();
 

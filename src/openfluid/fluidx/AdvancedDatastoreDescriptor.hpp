@@ -107,7 +107,7 @@ class AdvancedDatastoreDescriptor
      */
     void removeItem(unsigned int Position);
 
-    bool isItemAlreadyExist(std::string ItemID);
+    bool isItemAlreadyExist(std::string ItemID) const;
 };
 
 }

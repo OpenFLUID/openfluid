@@ -68,9 +68,6 @@ AdvancedDatastoreDescriptor::AdvancedDatastoreDescriptor(
     openfluid::fluidx::DatastoreDescriptor& DatastoreDesc) :
     mp_DatastoreDesc(&DatastoreDesc)
 {
-
-  // TODO check if DataStore Items are unique
-
 }
 
 // =====================================================================
@@ -181,7 +178,7 @@ void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
 // =====================================================================
 // =====================================================================
 
-bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID)
+bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID) const
 {
   return mp_DatastoreDesc->isItemIDAlreadyExist(ItemID);
 }

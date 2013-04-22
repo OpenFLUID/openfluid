@@ -146,29 +146,5 @@ class EngineProject
     ~EngineProject();
 };
 
-class EngineProjectSub: public EngineProject
-{
-  public:
-    EngineProjectSub(std::string FolderIn = "", bool WithProjectManager = false) :
-        EngineProject(FolderIn, WithProjectManager)
-    {
-    }
-
-    openfluid::core::DateTime getDefaultBeginDT()
-    {
-      return m_DefaultBeginDT;
-    }
-
-    int getDefaultDeltaT()
-    {
-      return m_DefaultDeltaT;
-    }
-
-    openfluid::fluidx::FluidXDescriptor* getFXDescriptor()
-    {
-      return mp_FXDesc;
-    }
-};
-
 #endif /* __ENGINEPROJECT_HPP__ */
 

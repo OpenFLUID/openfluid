@@ -66,8 +66,34 @@
 #include "tests-config.hpp"
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-//#include <openfluid/base/OutputDescriptor.hpp>
 
+
+// =====================================================================
+// =====================================================================
+
+class EngineProjectSub: public EngineProject
+{
+  public:
+    EngineProjectSub(std::string FolderIn = "", bool WithProjectManager = false) :
+        EngineProject(FolderIn, WithProjectManager)
+    {
+    }
+
+    openfluid::core::DateTime getDefaultBeginDT()
+    {
+      return m_DefaultBeginDT;
+    }
+
+    int getDefaultDeltaT()
+    {
+      return m_DefaultDeltaT;
+    }
+
+    openfluid::fluidx::FluidXDescriptor* getFXDescriptor()
+    {
+      return mp_FXDesc;
+    }
+};
 
 // =====================================================================
 // =====================================================================
@@ -85,7 +111,6 @@ BOOST_FIXTURE_TEST_SUITE(EngineProjectTest, init_Engine)
 // =====================================================================
 // =====================================================================
 
-
 BOOST_AUTO_TEST_CASE(test_constructor_Empty)
 {
   EngineProjectSub* EngProject = new EngineProjectSub();
@@ -93,13 +118,6 @@ BOOST_AUTO_TEST_CASE(test_constructor_Empty)
   BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getBeginDate().getAsISOString(), EngProject->getDefaultBeginDT().getAsISOString());
   BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getEndDate().getAsISOString(), (EngProject->getDefaultBeginDT() + openfluid::core::DateTime::Day()).getAsISOString());
   BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getDeltaT(), EngProject->getDefaultDeltaT());
-
-//  openfluid::base::OutputFilesDescriptor DefaultFileDesc;
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets().size(),1);
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getColSeparator(),DefaultFileDesc.getColSeparator());
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getCommentChar(),DefaultFileDesc.getCommentChar());
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getDateFormat(),DefaultFileDesc.getDateFormat());
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getSets().size(),0);
 
   delete EngProject;
 }
@@ -118,12 +136,6 @@ BOOST_AUTO_TEST_CASE(test_constructor_FromFolder)
   BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getBeginDate().getAsISOString(),"2000-01-01 00:00:00");
   BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getEndDate().getAsISOString(),"2000-01-01 06:00:00");
   BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getDeltaT(), 3600);
-
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets().size(),1);
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getColSeparator()," ");
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getCommentChar(),"%");
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getDateFormat(),"%Y %m %d %H %M %S");
-//  BOOST_CHECK_EQUAL(EngProject->getOutputDescriptor().getFileSets()[0].getSets().size(),2);
 
   delete EngProject;
 }

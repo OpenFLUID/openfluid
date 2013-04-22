@@ -87,7 +87,7 @@ void ICLayerMultiPolygon::drawPoly(Cairo::RefPtr<Cairo::Context> cr,
 // =====================================================================
 
 void ICLayerMultiPolygon::draw(Cairo::RefPtr<Cairo::Context> cr, double scale,
-    std::set<int> /*select*/, bool DisplayID, double Alpha)
+    std::set<int> /*select*/, bool /*DisplayID*/, double /*Alpha*/)
 {
   std::map<int, ICLayerObject*>::iterator it;
   for (it = m_ICLayerObject.begin(); it != m_ICLayerObject.end(); it++)

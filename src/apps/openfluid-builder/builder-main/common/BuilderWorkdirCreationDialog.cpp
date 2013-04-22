@@ -124,7 +124,7 @@ bool BuilderWorkdirCreationDialog::show()
       {
         boost::filesystem::create_directory(Workdir);
 
-      } catch (boost::filesystem::filesystem_error e)
+      } catch (boost::filesystem::filesystem_error& e)
       {
         openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
 

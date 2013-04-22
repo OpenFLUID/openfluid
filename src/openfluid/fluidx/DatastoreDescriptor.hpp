@@ -61,10 +61,8 @@
 
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 
-
 namespace openfluid {
 namespace fluidx {
-
 
 class DLLEXPORT DatastoreDescriptor
 {
@@ -74,7 +72,7 @@ class DLLEXPORT DatastoreDescriptor
 
   private:
 
-     DatastoreDescription_t m_DatastoreDescription;
+    DatastoreDescription_t m_DatastoreDescription;
 
   public:
 
@@ -84,7 +82,7 @@ class DLLEXPORT DatastoreDescriptor
 
     bool appendItem(DatastoreItemDescriptor* Item);
 
-    bool isItemIDAlreadyExist(std::string ItemID);
+    bool isItemIDAlreadyExist(std::string ItemID) const;
 
 };
 

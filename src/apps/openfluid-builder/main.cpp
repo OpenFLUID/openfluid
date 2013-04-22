@@ -76,10 +76,6 @@ int main(int argc, char** argv)
       return -1;
 
   }
-  /* catch (openfluid::base::OFException & E) // TODO pass it in Project Coordinator
-   {
-   std::cerr << "ERROR: " << E.what() << std::endl;
-   } */
   catch (std::bad_alloc & E)
   {
     std::cerr << "bad_alloc ERROR: " << E.what()

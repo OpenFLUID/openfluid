@@ -54,19 +54,14 @@
 
 #include "ModelGeneratorCreationDialog.hpp"
 
+#include <glibmm/i18n.h>
 #include <gtkmm/radiobuttongroup.h>
 #include <gtkmm/table.h>
 #include <gtkmm/box.h>
 #include <gtkmm/stock.h>
-
-#include <glibmm/i18n.h>
-
-#include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
-#include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/Factory.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -78,10 +73,11 @@ ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
   mp_VarNameEntry = Gtk::manage(new Gtk::Entry());
   mp_VarNameEntry->set_activates_default(true);
   mp_VarNameEntry->signal_changed().connect(
-      sigc::mem_fun(*this,
-                    &ModelGeneratorCreationDialog::onVarNameEntryChanged));
+      sigc::mem_fun(*this, &ModelGeneratorCreationDialog::onChanged));
 
   mp_ClassCombo = Gtk::manage(new Gtk::ComboBoxText());
+  mp_ClassCombo->signal_changed().connect(
+      sigc::mem_fun(*this, &ModelGeneratorCreationDialog::onChanged));
 
   Gtk::RadioButton::Group RadioGrp;
 
@@ -89,6 +85,8 @@ ModelGeneratorCreationDialog::ModelGeneratorCreationDialog(
       new Gtk::RadioButton(RadioGrp, _("Double Value")));
   mp_VectorRadio = Gtk::manage(
       new Gtk::RadioButton(RadioGrp, _("Vector Value:") + std::string(" ")));
+  mp_VectorRadio->signal_toggled().connect(
+      sigc::mem_fun(*this, &ModelGeneratorCreationDialog::onChanged));
 
   mp_VarSizeSpin = Gtk::manage(new Gtk::SpinButton());
   mp_VarSizeSpin->set_numeric(true);
@@ -197,31 +195,17 @@ void ModelGeneratorCreationDialog::init()
   mp_VarNameEntry->set_text("");
   mp_VarSizeSpin->set_value(2);
 
-  m_ExistingVars.clear();
+  std::vector<std::string> IDs = mp_AdvancedDesc->getModel().getOrderedIDs();
+  m_ExistingIDs.clear();
+  m_ExistingIDs.insert(IDs.begin(), IDs.end());
 
-  const std::list<openfluid::fluidx::ModelItemDescriptor*> Items =
-      mp_AdvancedDesc->getModel().getItems();
-
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
-
-  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
-      Items.begin(); it != Items.end(); ++it)
-  {
-    std::vector<openfluid::ware::SignatureHandledTypedDataItem> Vars =
-        Reg->getSignatureItemInstance(*it)->Signature->HandledData.ProducedVars;
-
-    for (unsigned int i = 0; i < Vars.size(); i++)
-      m_ExistingVars.insert(Vars[i].DataName);
-  }
-
-  onVarNameEntryChanged();
+  onChanged();
 }
 
 // =====================================================================
 // =====================================================================
 
-void ModelGeneratorCreationDialog::onVarNameEntryChanged()
+void ModelGeneratorCreationDialog::onChanged()
 {
   if (mp_VarNameEntry->get_text().empty())
   {
@@ -231,11 +215,14 @@ void ModelGeneratorCreationDialog::onVarNameEntryChanged()
     return;
   }
 
-  if (m_ExistingVars.find(mp_VarNameEntry->get_text()) != m_ExistingVars.end())
+  std::string ID = openfluid::machine::Factory::buildGeneratorID(
+      mp_VarNameEntry->get_text(), mp_VectorRadio->get_active(),
+      mp_ClassCombo->get_active_text());
+
+  if (m_ExistingIDs.find(ID) != m_ExistingIDs.end())
   {
     mp_InfoBarLabel->set_text(
-        Glib::ustring::compose(_("Variable %1 already exists"),
-                               mp_VarNameEntry->get_text()));
+        Glib::ustring::compose(_("ID %1 already exists"), ID));
     mp_InfoBar->set_visible(true);
     mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, false);
     return;

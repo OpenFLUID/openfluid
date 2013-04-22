@@ -54,7 +54,6 @@
 
 #include "ProjectExplorerAdapterModel.hpp"
 
-#include <boost/foreach.hpp>
 #include <glibmm/i18n.h>
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>

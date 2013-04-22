@@ -77,6 +77,8 @@ class AdvancedModelDescriptor
 
     ~AdvancedModelDescriptor();
 
+    void checkModel() const;
+
     const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems() const;
 
     /**

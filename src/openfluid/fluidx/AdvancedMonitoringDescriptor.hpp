@@ -73,6 +73,8 @@ class AdvancedMonitoringDescriptor
 
     ~AdvancedMonitoringDescriptor();
 
+    void checkMonitoring() const;
+
     const std::list<openfluid::fluidx::ObserverDescriptor*>& getItems() const;
 
     /**

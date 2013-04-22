@@ -67,7 +67,6 @@ DatastoreDescriptor::DatastoreDescriptor()
 // =====================================================================
 // =====================================================================
 
-
 DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems()
 {
   return m_DatastoreDescription;
@@ -78,7 +77,7 @@ DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems()
 
 bool DatastoreDescriptor::appendItem(DatastoreItemDescriptor* Item)
 {
-  if(isItemIDAlreadyExist(Item->getID()))
+  if (isItemIDAlreadyExist(Item->getID()))
     return false;
 
   m_DatastoreDescription.push_back(Item);
@@ -88,9 +87,9 @@ bool DatastoreDescriptor::appendItem(DatastoreItemDescriptor* Item)
 // =====================================================================
 // =====================================================================
 
-bool DatastoreDescriptor::isItemIDAlreadyExist(std::string ItemID)
+bool DatastoreDescriptor::isItemIDAlreadyExist(std::string ItemID) const
 {
-  for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it =
+  for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it =
       m_DatastoreDescription.begin(); it != m_DatastoreDescription.end(); ++it)
   {
     if ((*it)->getID() == ItemID)

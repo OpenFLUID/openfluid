@@ -201,8 +201,8 @@ void ModelModule::whenUpAsked(std::string ID)
   if (Position < 0)
     return;
 
-  int From = Position;
-  int To = (From == 0) ? m_Model.getItemsCount() - 1 : From - 1;
+  unsigned int From = Position;
+  unsigned int To = (From == 0) ? m_Model.getItemsCount() - 1 : From - 1;
 
   m_Model.moveItem(From, To);
   update();
@@ -219,8 +219,8 @@ void ModelModule::whenDownAsked(std::string ID)
   if (Position < 0)
     return;
 
-  int From = Position;
-  int To = (From == m_Model.getItemsCount() - 1) ? 0 : From + 1;
+  unsigned int From = Position;
+  unsigned int To = (From == m_Model.getItemsCount() - 1) ? 0 : From + 1;
 
   m_Model.moveItem(From, To);
   update();

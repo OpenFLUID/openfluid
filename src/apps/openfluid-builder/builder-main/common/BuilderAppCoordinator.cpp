@@ -62,7 +62,6 @@
 
 #include "builderconfig.hpp"
 #include "BuilderAppWindow.hpp"
-#include "BuilderModuleFactory.hpp"
 #include "BuilderAppHomeState.hpp"
 #include "BuilderAppProjectState.hpp"
 #include "BuilderHomeModule.hpp"
@@ -351,8 +350,8 @@ BuilderAppState* BuilderAppCoordinator::getProjectState()
 
 void BuilderAppCoordinator::setHomeModule()
 {
-  openfluid::guicommon::BuilderModule* HomeModule =
-      BuilderModuleFactory::createHomeModule(m_Actions);
+  openfluid::guicommon::BuilderModule* HomeModule = new BuilderHomeModule(
+      m_Actions);
   setCurrentModule(HomeModule);
   ((BuilderHomeModule*) HomeModule)->signal_OpenProjectAsked().connect(
       sigc::mem_fun(*this, &BuilderAppCoordinator::openProject));
@@ -392,8 +391,11 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     updateRecentsList();
 
     // to save it if it's a new project
-    if(ProjectFolder.empty())
+    if (ProjectFolder.empty())
       ProjectModule->saveAsked();
+    else
+      // to mark that nothing has to be saved
+      onSaveHappened();
 
     ProjectModule->checkAsked();
   }
@@ -489,7 +491,7 @@ std::string BuilderAppCoordinator::showOpenDemoProjectDialog()
 
 void BuilderAppCoordinator::restoreDemoProjects()
 {
-  if(openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
+  if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       _("Restoring the default examples projects will overwrite any changes you might have done on them.\n"
           "Are you sure you want to proceed ?")))
   {
@@ -536,7 +538,7 @@ void BuilderAppCoordinator::openProject(std::string ProjectPath)
 
     setState(*getProjectState());
   }
-  catch (openfluid::base::OFException e)
+  catch (openfluid::base::OFException& e)
   {
     openfluid::base::ProjectManager::getInstance()->close();
     return;
@@ -568,7 +570,7 @@ void BuilderAppCoordinator::createProject()
 
     setState(*getProjectState());
   }
-  catch (openfluid::base::OFException e)
+  catch (openfluid::base::OFException& e)
   {
     openfluid::base::ProjectManager::getInstance()->close();
     return;
