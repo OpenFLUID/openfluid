@@ -181,7 +181,7 @@ void ProjectCoordinator::whenActivationChanged()
       else
       {
         Module =
-                    static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createModelModule());
+            static_cast<openfluid::guicommon::ProjectWorkspaceModule*>(mp_ModuleFactory->createModelModule());
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenModelChanged));
@@ -307,33 +307,34 @@ void ProjectCoordinator::addModuleToWorkspace(
 // =====================================================================
 // =====================================================================
 
+void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
+{
+  openfluid::guicommon::ProjectWorkspaceModule* ModuleToDelete =
+      m_ModulesByPageNameMap[RemovedPageName];
+
+  if (m_TabExtensionIdByNameMap.count(RemovedPageName))
+    BuilderExtensionsManager::getInstance()->deletePluggableExtension(
+        m_TabExtensionIdByNameMap[RemovedPageName]);
+  else
+    delete ModuleToDelete;
+
+  m_ModulesByPageNameMap.erase(RemovedPageName);
+
+  // update Class Pages
+  if (m_ClassPageNames.count(RemovedPageName))
+    m_ClassPageNames.erase(RemovedPageName);
+}
+
+// =====================================================================
+// =====================================================================
+
 void ProjectCoordinator::whenModelChanged()
 {
-  computeModelChanges();
-}
+  updateModelessWindowsExtensions();
 
-// =====================================================================
-// =====================================================================
+  checkProject();
 
-void ProjectCoordinator::updateWorkspaceModules()
-{
-  for (std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator it =
-      m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
-  {
-    it->second->update();
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-void ProjectCoordinator::checkProject()
-{
-  bool GlobalState;
-
-  m_ProjectDashboard.setCheckInfo(m_EngineProject.check(GlobalState));
-
-  m_signal_CheckHappened.emit(GlobalState);
+  m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================
@@ -341,7 +342,19 @@ void ProjectCoordinator::checkProject()
 
 void ProjectCoordinator::whenDomainChanged()
 {
-  computeDomainChanges();
+  updateModelessWindowsExtensions();
+
+  m_ExplorerModel.updateDomainAsked();
+
+  removeDeletedClassPages();
+
+  for (std::set<std::string>::iterator it = m_ClassPageNames.begin();
+      it != m_ClassPageNames.end(); ++it)
+    m_ModulesByPageNameMap[*it]->update();
+
+  checkProject();
+
+  m_signal_ChangeHappened.emit();
 }
 
 // =====================================================================
@@ -384,6 +397,8 @@ void ProjectCoordinator::whenClassChanged()
 
 void ProjectCoordinator::whenDatastoreChanged()
 {
+  updateModelessWindowsExtensions();
+
   m_signal_ChangeHappened.emit();
 }
 
@@ -395,40 +410,6 @@ void ProjectCoordinator::whenRunChanged()
   updateModelessWindowsExtensions();
 
   m_ExplorerModel.updateSimulationAsked();
-
-  updateWorkspaceModules();
-
-  checkProject();
-
-  m_signal_ChangeHappened.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ProjectCoordinator::computeModelChanges()
-{
-  updateModelessWindowsExtensions();
-
-  m_ExplorerModel.updateModelAsked();
-
-  checkProject();
-
-  m_signal_ChangeHappened.emit();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ProjectCoordinator::computeDomainChanges()
-{
-  updateModelessWindowsExtensions();
-
-  m_ExplorerModel.updateDomainAsked();
-
-  removeDeletedClassPages();
-
-  updateWorkspaceModules();
 
   checkProject();
 
@@ -448,31 +429,31 @@ void ProjectCoordinator::whenMonitoringChanged()
 
 void ProjectCoordinator::whenMapViewChanged()
 {
-//  std::cout << "MapView has changed" << std::endl;
-  // check if update of Domain is sufficient
-  //  updateWorkspaceModules();
-  //  updateResults();
+  // TODO check if update of Domain is sufficient
 }
 
 // =====================================================================
 // =====================================================================
 
-void ProjectCoordinator::whenPageRemoved(std::string RemovedPageName)
+void ProjectCoordinator::checkProject()
 {
-  openfluid::guicommon::ProjectWorkspaceModule* ModuleToDelete =
-      m_ModulesByPageNameMap[RemovedPageName];
+  bool GlobalState;
 
-  if (m_TabExtensionIdByNameMap.count(RemovedPageName))
-    BuilderExtensionsManager::getInstance()->deletePluggableExtension(
-        m_TabExtensionIdByNameMap[RemovedPageName]);
-  else
-    delete ModuleToDelete;
+  m_ProjectDashboard.setCheckInfo(m_EngineProject.check(GlobalState));
 
-  m_ModulesByPageNameMap.erase(RemovedPageName);
+  m_signal_CheckHappened.emit(GlobalState);
+}
 
-  // update Class Pages
-  if (m_ClassPageNames.count(RemovedPageName))
-    m_ClassPageNames.erase(RemovedPageName);
+// =====================================================================
+// =====================================================================
+
+void ProjectCoordinator::updateWorkspaceModules()
+{
+  for (std::map<std::string, openfluid::guicommon::ProjectWorkspaceModule*>::iterator it =
+      m_ModulesByPageNameMap.begin(); it != m_ModulesByPageNameMap.end(); ++it)
+  {
+    it->second->update();
+  }
 }
 
 // =====================================================================
@@ -719,8 +700,6 @@ void ProjectCoordinator::whenExtensionChanged()
 
   m_ExplorerModel.updateDomainAsked();
 
-  m_ExplorerModel.updateModelAsked();
-
   m_ExplorerModel.updateSimulationAsked();
 
   removeDeletedClassPages();
@@ -811,7 +790,7 @@ ProjectCoordinatorSub::ProjectCoordinatorSub(
 
 void ProjectCoordinatorSub::whenModelChanged()
 {
-  computeModelChanges();
+  ProjectCoordinator::whenModelChanged();
 }
 
 // =====================================================================
@@ -819,7 +798,7 @@ void ProjectCoordinatorSub::whenModelChanged()
 
 void ProjectCoordinatorSub::whenDomainChanged()
 {
-  computeDomainChanges();
+  ProjectCoordinator::whenDomainChanged();
 }
 
 // =====================================================================
