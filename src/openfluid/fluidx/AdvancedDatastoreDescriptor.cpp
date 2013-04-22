@@ -181,7 +181,7 @@ void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
 // =====================================================================
 // =====================================================================
 
-bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID)
+bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID) const
 {
   return mp_DatastoreDesc->isItemIDAlreadyExist(ItemID);
 }

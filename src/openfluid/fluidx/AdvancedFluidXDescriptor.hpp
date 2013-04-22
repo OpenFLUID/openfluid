@@ -74,7 +74,6 @@ class AdvancedFluidXDescriptor
 
     openfluid::fluidx::RunDescriptor* mp_RunDesc;
 
-    // TODO check if still useful
     openfluid::fluidx::DatastoreDescriptor* mp_DatastoreDesc;
 
     AdvancedDatastoreDescriptor* mp_Datastore;
