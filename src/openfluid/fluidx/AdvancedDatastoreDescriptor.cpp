@@ -68,9 +68,6 @@ AdvancedDatastoreDescriptor::AdvancedDatastoreDescriptor(
     openfluid::fluidx::DatastoreDescriptor& DatastoreDesc) :
     mp_DatastoreDesc(&DatastoreDesc)
 {
-
-  // TODO check if DataStore Items are unique
-
 }
 
 // =====================================================================

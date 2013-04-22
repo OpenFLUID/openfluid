@@ -54,6 +54,7 @@
 
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
+#include <set>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
 
 namespace openfluid {
@@ -66,6 +67,7 @@ AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(
     openfluid::fluidx::MonitoringDescriptor& MonitoringDesc) :
     mp_MonitoringDesc(&MonitoringDesc)
 {
+  checkMonitoring();
 }
 
 // =====================================================================
@@ -74,6 +76,28 @@ AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(
 AdvancedMonitoringDescriptor::~AdvancedMonitoringDescriptor()
 {
 
+}
+
+// =====================================================================
+// =====================================================================
+
+void AdvancedMonitoringDescriptor::checkMonitoring() const
+{
+  std::set<std::string> UniqueIDs;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
+      mp_MonitoringDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    std::string ID = (*it)->getID();
+    if (!UniqueIDs.insert(ID).second)
+      throw openfluid::base::OFException(
+          "OpenFLUID-Framework",
+          "AdvancedMonitoringDescriptor::checkMonitoring",
+          "The observer with ID \"" + ID + "\" is duplicate");
+  }
 }
 
 // =====================================================================
