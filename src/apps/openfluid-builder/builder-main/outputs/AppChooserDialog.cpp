@@ -83,13 +83,22 @@ AppChooserDialog::AppChooserDialog()
     Glib::RefPtr<Gio::Icon> Icon = (*it)->get_icon();
     if (Icon)
     {
-      Gtk::IconInfo IconInfo = Theme->lookup_icon(
-          Icon, 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
-      Row[m_AppColumns.m_Icon] = IconInfo.load_icon();
+      try
+      {
+        Gtk::IconInfo IconInfo = Theme->lookup_icon(
+            Icon, 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
+        Row[m_AppColumns.m_Icon] = IconInfo.load_icon();
+
+      }
+      catch (...)
+      {
+        Row[m_AppColumns.m_Icon] = Theme->load_icon(
+            "image-missing", 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
+      }
     }
     else
       Row[m_AppColumns.m_Icon] = Theme->load_icon(
-          "application-x-executable", 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
+          "image-missing", 16, Gtk::ICON_LOOKUP_GENERIC_FALLBACK);
   }
 
   mp_AppTreeView = Gtk::manage(new Gtk::TreeView());
