@@ -157,17 +157,6 @@
   Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 
-
-/**
-  Macro for declaration of a required variable, using a value produced on a previous time step
-  @param[in] name name of the variable
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the variable
-  @param[in] unit unit of the variable. Could be an empty string if there is no unit
-*/
-#define DECLARE_REQUIRED_PREVVAR(name,uclass,description,unit) \
-  Signature->HandledData.RequiredPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
-
 /**
   Macro for declaration of an used variable
   @param[in] name name of the variable
@@ -178,16 +167,6 @@
 #define DECLARE_USED_VAR(name,uclass,description,unit) \
   Signature->HandledData.UsedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
-
-/**
-  Macro for declaration of an used variable, using a value produced on a previous time step
-  @param[in] name name of the variable
-  @param[in] uclass class of the concerned units
-  @param[in] description description of the variable
-  @param[in] unit unit of the variable. Could be an empty string if there is no unit
-*/
-#define DECLARE_USED_PREVVAR(name,uclass,description,unit) \
-  Signature->HandledData.UsedPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a produced input data
@@ -416,10 +395,6 @@ class SignatureHandledData
     std::vector<SignatureHandledTypedDataItem> RequiredVars;
 
     std::vector<SignatureHandledTypedDataItem> UsedVars;
-
-    std::vector<SignatureHandledTypedDataItem> RequiredPrevVars;
-
-    std::vector<SignatureHandledTypedDataItem> UsedPrevVars;
 
     std::vector<SignatureHandledDataItem> FunctionParams;
 

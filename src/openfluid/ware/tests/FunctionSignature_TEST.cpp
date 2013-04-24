@@ -117,10 +117,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   DECLARE_USED_VAR("uvar1","UnitClassA","this is uvar1","s");
   DECLARE_USED_VAR("uvar2","UnitClassA","this is uvar2","s-1");
 
-  DECLARE_REQUIRED_PREVVAR("rvar1prev","UnitClassA","this is rvar1prev","mm/h");
-
-  DECLARE_USED_PREVVAR("uvar1prev","UnitClassA","this is uvar1prev","mm/h");
-
   DECLARE_USED_EVENTS("UnitClassA");
   DECLARE_USED_EVENTS("UnitClassB");
 
@@ -166,10 +162,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->HandledData.UpdatedVars.size(),1);
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedVars.size(),2);
-
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredPrevVars.size(),1);
-
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedPrevVars.size(),1);
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedEventsOnUnits.size(),2);
 

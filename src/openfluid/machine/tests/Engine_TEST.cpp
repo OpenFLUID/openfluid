@@ -109,18 +109,6 @@ void displayModel(openfluid::machine::ModelInstance& MI)
 // =====================================================================
 
 
-void displayPretestsMsgs(const openfluid::machine::Engine::PretestInfos_t& PInfos)
-{
-  if (!PInfos.ExtraFilesMsg.empty()) std::cout << PInfos.ExtraFilesMsg << std::endl;
-  if (!PInfos.InputdataMsg.empty()) std::cout << PInfos.InputdataMsg << std::endl;
-  if (!PInfos.ModelMsg.empty()) std::cout << PInfos.ModelMsg << std::endl;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::machine::SimulationBlob SBlob;
@@ -156,18 +144,7 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
   openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
-  openfluid::machine::Engine::PretestInfos_t PInfos;
-
-  PInfos.ExtraFiles = true;
-  PInfos.Inputdata = true;
-  PInfos.Model = true;
-
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
 
   // =====================================================================
 
@@ -185,12 +162,6 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,false);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
   // =====================================================================
 
@@ -206,12 +177,6 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   Model.insertItem(MIInstance,0);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
   // =====================================================================
 
@@ -226,12 +191,6 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
 
   // =====================================================================
@@ -242,18 +201,11 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc0.5";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1","UA","",""));
-  MIInstance->Signature->HandledData.RequiredPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var5[]","UB","",""));
 
   Model.resetInitialized();
   Model.insertItem(MIInstance,1);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
 
   // =====================================================================
@@ -263,18 +215,11 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc3";
-  MIInstance->Signature->HandledData.RequiredPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var7","UC","",""));
 
   Model.resetInitialized();
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,false);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
   // =====================================================================
 
@@ -291,13 +236,6 @@ BOOST_AUTO_TEST_CASE(check_pretests)
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
-
 
 
   delete MachineListen;
@@ -321,18 +259,8 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
 
   openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
-  openfluid::machine::Engine::PretestInfos_t PInfos;
-
-  PInfos.ExtraFiles = true;
-  PInfos.Inputdata = true;
-  PInfos.Model = true;
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
 
   // =====================================================================
 
@@ -350,12 +278,6 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,false);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
   // =====================================================================
 
@@ -371,12 +293,6 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   Model.insertItem(MIInstance,0);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
   // =====================================================================
 
@@ -391,12 +307,6 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
 
   // =====================================================================
@@ -407,18 +317,11 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc0.5";
   MIInstance->Signature->HandledData.RequiredVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var1","UA","",""));
-  MIInstance->Signature->HandledData.RequiredPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var5[]","UB","",""));
 
   Model.resetInitialized();
   Model.insertItem(MIInstance,1);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,true);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
 
   // =====================================================================
@@ -428,18 +331,11 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   MIInstance->Verified = true;
   MIInstance->Signature = new openfluid::ware::FunctionSignature();
   MIInstance->Signature->ID = "MyFunc3";
-  MIInstance->Signature->HandledData.RequiredPrevVars.push_back(openfluid::ware::SignatureHandledTypedDataItem("var7[double]","UC","",""));
 
   Model.resetInitialized();
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,false);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
   // =====================================================================
 
@@ -456,12 +352,6 @@ BOOST_AUTO_TEST_CASE(check_typed_pretests)
   Model.appendItem(MIInstance);
 
   displayModel(Model);
-  Eng.pretestConsistency(PInfos);
-  displayPretestsMsgs(PInfos);
-  BOOST_REQUIRE_EQUAL(PInfos.ExtraFiles,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Inputdata,true);
-  BOOST_REQUIRE_EQUAL(PInfos.Model,false);
-  PInfos = openfluid::machine::Engine::PretestInfos_t();
 
 
 
