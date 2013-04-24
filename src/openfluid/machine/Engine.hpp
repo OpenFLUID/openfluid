@@ -90,24 +90,6 @@ class SimulationBlob;
 */
 class DLLEXPORT Engine
 {
-  public:
-
-    struct PretestInfos_t
-    {
-      bool Model;
-      std::string ModelMsg;
-
-      bool Inputdata;
-      std::string InputdataMsg;
-
-      bool ExtraFiles;
-      std::string ExtraFilesMsg;
-
-      PretestInfos_t() : Model(true), ModelMsg(""),
-          Inputdata(true), InputdataMsg(""),
-          ExtraFiles(true), ExtraFilesMsg("")
-        { };
-    };
 
   private:
 
@@ -170,8 +152,6 @@ class DLLEXPORT Engine
     */
     ~Engine();
 
-
-    void pretestConsistency(PretestInfos_t& PretestInfos);
 
     void initialize();
 

@@ -170,10 +170,7 @@ void SignatureDetailWidget::update(
   updateVarsModel(Signature->Signature->HandledData.RequiredVars,
                   _("Required"));
   updateVarsModel(Signature->Signature->HandledData.UsedVars, _("Used"));
-  updateVarsModel(Signature->Signature->HandledData.RequiredPrevVars,
-                  _("Required t-1"));
-  updateVarsModel(Signature->Signature->HandledData.UsedPrevVars,
-                  _("Used t-1"));
+
   if (!mref_VarsModel->children().empty())
     append_page(*mp_VarsWin, _("Variables"));
   mp_VarsTreeView->expand_all();

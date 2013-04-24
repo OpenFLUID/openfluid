@@ -32,7 +32,7 @@ BEGIN_FUNCTION_SIGNATURE("examples.primitives.unitsA.prod")
   DECLARE_SIGNATURE_AUTHORNAME("Jean-Christophe Fabre");
   DECLARE_SIGNATURE_AUTHOREMAIL("fabrejc@supagro.inra.fr");
 
-  DECLARE_REQUIRED_PREVVAR("var3","unitsA","the variable 3","");
+  DECLARE_REQUIRED_VAR("var3","unitsA","the variable 3","");
   
   DECLARE_PRODUCED_VAR("var1","unitsA","the variable 1","");
   DECLARE_PRODUCED_VAR("var2","unitsA","the variable 2","");

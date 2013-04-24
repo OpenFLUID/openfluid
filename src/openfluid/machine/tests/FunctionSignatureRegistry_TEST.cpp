@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
   BOOST_CHECK_EQUAL(
       Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
-      3);
+      5);
   BOOST_CHECK_EQUAL(
       Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
       4);

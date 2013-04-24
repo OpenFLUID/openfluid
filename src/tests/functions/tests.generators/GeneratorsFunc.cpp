@@ -86,7 +86,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.generators")
   DECLARE_REQUIRED_VAR("tests.random[double]","TestUnits","random value from generators for tests","");
   DECLARE_REQUIRED_VAR("tests.interp[double]","TestUnits","interpolated value from generators for tests","");
 
-  DECLARE_REQUIRED_PREVVAR("tests.fixedprev[vector]","TestUnits","fixed value from generators at a previous time step for tests","");
+  DECLARE_REQUIRED_VAR("tests.fixedprev[vector]","TestUnits","fixed value from generators at a previous time step for tests","");
 
 END_FUNCTION_SIGNATURE
 

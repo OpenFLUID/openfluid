@@ -404,11 +404,15 @@ void ProjectChecker::checkModelInputdata()
 void ProjectChecker::checkModelVars()
 {
   openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
+
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_Desc->getModel().getItems();
+
   openfluid::machine::FunctionSignatureRegistry* Reg =
       openfluid::machine::FunctionSignatureRegistry::getInstance();
+
   openfluid::ware::FunctionSignature* Sign;
+
   std::vector<openfluid::ware::SignatureHandledTypedDataItem>::iterator itt;
 
   std::set<std::pair<std::string, std::string> > VarsUnits;
@@ -416,46 +420,29 @@ void ProjectChecker::checkModelVars()
       std::pair<std::string,
           std::pair<std::string, openfluid::core::Value::Type> > > TypedVarsUnits;
 
-  // A) first pass
-  // // 1) required vars
-  // // 2) produced vars
-  // // 3) updated vars
-  // B) second pass
-  // // 4) required vars at t-1+
 
+  /* Variables processing order is important
+     A) first pass
+        1) produced vars
+        2) updated vars
+     B) second pass
+        3) required vars
+  */
+
+
+  // pass 1
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
     Sign = Reg->getSignatureItemInstance(*it)->Signature;
     std::string ID = mp_Desc->getModel().getID(*it);
 
-    // check required Vars
-    std::vector<openfluid::ware::SignatureHandledTypedDataItem>& ReqVars =
-        Sign->HandledData.RequiredVars;
-    for (itt = ReqVars.begin(); itt != ReqVars.end(); ++itt)
-    {
-      if (!Domain.isClassNameExists(itt->UnitClass))
-        ProjectMsg +=
-            Glib::ustring::compose(
-                _("- Unit class %1 doesn't exist for %2 variable required by %3\n"),
-                itt->UnitClass, itt->DataName, ID);
-
-      if ((itt->DataType == openfluid::core::Value::NONE
-          && !VarsUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
-          || (itt->DataType != openfluid::core::Value::NONE && !TypedVarsUnits.count(
-              std::make_pair(itt->UnitClass,
-                             std::make_pair(itt->DataName, itt->DataType)))))
-        ModelMsg +=
-            Glib::ustring::compose(
-                _("- %1 variable on %2 required by %3 is not previously created\n"),
-                itt->DataName, itt->UnitClass, ID);
-    }
 
     // check produced Vars
-    std::vector<openfluid::ware::SignatureHandledTypedDataItem>& ProdVars =
-        Sign->HandledData.ProducedVars;
+    std::vector<openfluid::ware::SignatureHandledTypedDataItem>& ProdVars = Sign->HandledData.ProducedVars;
     for (itt = ProdVars.begin(); itt != ProdVars.end(); ++itt)
     {
+
       if (!Domain.isClassNameExists(itt->UnitClass))
         ProjectMsg +=
             Glib::ustring::compose(
@@ -500,6 +487,7 @@ void ProjectChecker::checkModelVars()
                 GenDesc->getVariableName(), GenDesc->getUnitClass(), ID);
     }
 
+
     // check updated Vars
     std::vector<openfluid::ware::SignatureHandledTypedDataItem>& UpVars =
         Sign->HandledData.UpdatedVars;
@@ -521,21 +509,23 @@ void ProjectChecker::checkModelVars()
     }
   }
 
+
+  // pass 2
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
     Sign = Reg->getSignatureItemInstance(*it)->Signature;
     std::string ID = mp_Desc->getModel().getID(*it);
 
-    // checking required Vars at t-1
+    // check required Vars
     std::vector<openfluid::ware::SignatureHandledTypedDataItem>& ReqVars =
-        Sign->HandledData.RequiredPrevVars;
+        Sign->HandledData.RequiredVars;
     for (itt = ReqVars.begin(); itt != ReqVars.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
         ProjectMsg +=
             Glib::ustring::compose(
-                _("- Unit class %1 doesn't exist for %2 variable previously required by %3\n"),
+                _("- Unit class %1 doesn't exist for %2 variable required by %3\n"),
                 itt->UnitClass, itt->DataName, ID);
 
       if ((itt->DataType == openfluid::core::Value::NONE
@@ -545,11 +535,11 @@ void ProjectChecker::checkModelVars()
                              std::make_pair(itt->DataName, itt->DataType)))))
         ModelMsg +=
             Glib::ustring::compose(
-                _("- %1 variable on %2 required by %3 is not previously created\n"),
+                _("- %1 variable on %2 required by %3 is not produced\n"),
                 itt->DataName, itt->UnitClass, ID);
     }
-  }
 
+  }
 }
 
 // =====================================================================
