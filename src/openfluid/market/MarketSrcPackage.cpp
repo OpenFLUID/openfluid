@@ -67,7 +67,7 @@
 namespace openfluid { namespace market {
 
 
-MarketSrcPackage::MarketSrcPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+MarketSrcPackage::MarketSrcPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
                 : MarketPackage(ID,PackageURL),
                   m_KeepSources(true)
 {
@@ -94,22 +94,26 @@ void MarketSrcPackage::process()
   std::string StrErr;
   int RetValue;
 
-  std::string BuildConfigOptions = composeFullBuildOptions(m_BuildConfigOptions);
+  std::string BuildConfigOptions = composeFullBuildOptions(getPackageType(), m_BuildConfigOptions);
 
   std::string BuildDir = m_TempBuildsDir + "/" + m_ID;
-  std::string SrcInstallDir = m_MarketBagSrcDir + "/" + m_ID;
+  std::string SrcInstallDir = getInstallPath() + "/" + m_ID;
 
+  // creating installation dir
   if (boost::filesystem::is_directory(boost::filesystem::path(SrcInstallDir)))
     boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
 
   if (!boost::filesystem::create_directories(boost::filesystem::path(SrcInstallDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create source directory for "+m_ID+" package");
 
+  // creating build dir
   if (boost::filesystem::is_directory(boost::filesystem::path(BuildDir)))
     boost::filesystem::remove_all(boost::filesystem::path(BuildDir));
 
   if (!boost::filesystem::create_directories(boost::filesystem::path(BuildDir)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","unable to create build directory for "+m_ID+" package");
+
+  // == Building commands ==
 
   std::string UntarCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + SrcInstallDir+ "\" \"" + m_CMakeCommand + "\" -E tar xfvz \"" + m_PackageDest + "\"";
 
@@ -121,7 +125,7 @@ void MarketSrcPackage::process()
   // uncompressing package
   try
   {
-    appendToLogFile(m_PackageFilename,"uncompressing sources",UntarCommand);
+    appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing sources",UntarCommand);
 
     StrOut.clear();
     StrErr.clear();
@@ -145,7 +149,7 @@ void MarketSrcPackage::process()
   // configuring build
   try
   {
-    appendToLogFile(m_PackageFilename,"configuring sources build",BuildConfigCommand);
+    appendToLogFile(m_PackageFilename,getPackageType(),"configuring sources build",BuildConfigCommand);
 
     StrOut.clear();
     StrErr.clear();
@@ -170,7 +174,7 @@ void MarketSrcPackage::process()
   // building
   try
   {
-    appendToLogFile(m_PackageFilename,"building sources",BuildCommand);
+    appendToLogFile(m_PackageFilename,getPackageType(),"building sources",BuildCommand);
 
     StrOut.clear();
     StrErr.clear();
@@ -195,11 +199,12 @@ void MarketSrcPackage::process()
   if (!boost::filesystem::exists(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error finding built package");
 
-  if (boost::filesystem::exists(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX +openfluid::config::PLUGINS_EXT)))
-    boost::filesystem::remove(boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
+  std::string BinInstallDir = getInstallPath() + "/../" + m_MarketBagBinSubDir;
+  if (boost::filesystem::exists(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX +openfluid::config::PLUGINS_EXT)))
+    boost::filesystem::remove(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
   boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT),
-                               boost::filesystem::path(m_MarketBagBinDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
+                               boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
   if (!m_KeepSources) boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
 

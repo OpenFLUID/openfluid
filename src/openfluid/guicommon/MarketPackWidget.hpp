@@ -82,59 +82,38 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
     typedef sigc::signal<void> signal_install_modified_t;
 
   private:
-
-    openfluid::market::MetaPackageInfo m_MetaPackInfo;
-
-    std::string m_EditedBuildOptions;
-
     Gtk::Image* m_EmptyCartImage;
     Gtk::Image* m_FullCartImage;
 
-    Gtk::Label m_IDLabel;
-    Gtk::HBox m_FormatHBox;
-    Gtk::Label m_FormatLabel;
-    Gtk::ComboBox m_FormatCombo;
-    Gtk::Button m_ConfigButton;
-    Gtk::VBox m_DetailsLeftVBox;
-    Gtk::HBox m_MainHBox;
-    Gtk::ToggleButton m_InstallToggle;
-
-    Gtk::VBox m_DetailsRightVBox;
-    Gtk::Label m_LicenseLabel;
     Gtk::Label m_VersionLabel;
 
+    bool onButtonRelease(GdkEventButton* Event);
 
-    Glib::RefPtr<Gtk::ListStore> m_RefFormatComboBoxModel;
+  protected:
+    openfluid::market::PackageInfo::PackageType m_PackageType;
+    openfluid::market::MetaPackageInfo m_MetaPackInfo;
 
-    class FormatComboColumns : public Gtk::TreeModel::ColumnRecord
-    {
-      public:
+    Gtk::Label m_IDLabel;
+    Gtk::Label m_LicenseLabel;
 
-        Gtk::TreeModelColumn<Glib::ustring> m_FormatName;
-        Gtk::TreeModelColumn<openfluid::market::MetaPackageInfo::SelectionType> m_SelType;
+    Gtk::HBox m_MainHBox;
 
-        FormatComboColumns() { add(m_FormatName); add(m_SelType); }
-    };
+    Gtk::ToggleButton m_InstallToggle;
 
-    FormatComboColumns m_FormatColumns;
+    Gtk::VBox m_DetailsLeftVBox;
+    Gtk::VBox m_DetailsRightVBox;
+
+    signal_install_modified_t m_signal_install_modified;
 
     void onInstallModified();
-
-    void onConfigClicked();
-
-    bool onButtonRelease(GdkEventButton* Event);
 
     static std::string replaceByUnknownIfEmpty(const std::string& Str);
 
     static std::string replaceByNoneIfEmpty(const std::string& Str);
 
 
-  protected:
-    signal_install_modified_t m_signal_install_modified;
-
-
   public:
-    MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo);
+    MarketPackWidget(const openfluid::market::PackageInfo::PackageType& Type,const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     ~MarketPackWidget();
 
@@ -144,13 +123,17 @@ class DLLEXPORT MarketPackWidget : public Gtk::EventBox
 
     void setInstall(bool Install) { m_InstallToggle.set_active(Install); };
 
-    openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
+    /**
+     @return selected format in combobox
+    */
+    virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
     signal_install_modified_t signal_install_modified();
 
-    std::string getEditedBuildOptions() const { return m_EditedBuildOptions; };
-
-    void updateDisplayedInfos();
+    /**
+     Creates tooltip for market pack widget
+    */
+    virtual void updateDisplayedInfos();
 
 
 };

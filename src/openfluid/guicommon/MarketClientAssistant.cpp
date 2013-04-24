@@ -72,7 +72,7 @@
 #include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/guicommon/MarketPackWidget.hpp>
+#include <openfluid/guicommon/MarketPackWidgetFormat.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
 
@@ -187,51 +187,14 @@ void MarketClientAssistant::setupSelectionPage()
   m_URLBox.pack_start(m_URLCombo,Gtk::PACK_EXPAND_WIDGET);
 
 
-  m_AvailPacksSWindow.add(m_AvailPacksBox);
-  m_AvailPacksSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
-
-
-  m_SelectAllButton.set_label(_("Select all"));
-  m_SelectAllButton.set_sensitive(false);
-  m_SelectNoneButton.set_label(_("Select none"));
-  m_SelectNoneButton.set_sensitive(false);
-
-  //m_CommonBuildConfigButton.set_label(_("Configure source builds"));
-  Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
-  Gtk::Label* Lbl = Gtk::manage(new Gtk::Label(_("Edit build options")));
-  Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());
-  Box->pack_start(*Img,Gtk::PACK_SHRINK,3);
-  Box->pack_end(*Lbl,Gtk::PACK_SHRINK,3);
-  m_CommonBuildConfigButton.add(*Box);
-  m_CommonBuildConfigButton.show_all_children(true);
-
-
-  m_ActionButtonsBox.pack_start(m_SelectAllButton,Gtk::PACK_SHRINK,0);
-  m_ActionButtonsBox.pack_start(m_SelectNoneButton,Gtk::PACK_SHRINK,12);
-  m_ActionButtonsBox.pack_start(*Gtk::manage(new Gtk::EventBox()),Gtk::PACK_EXPAND_WIDGET,0);
-  m_ActionButtonsBox.pack_start(m_CommonBuildConfigButton,Gtk::PACK_SHRINK,0);
-
   m_SelectionPageBox.set_border_width(12);
   m_SelectionPageBox.pack_start(m_URLBox,Gtk::PACK_SHRINK,12);
-  m_SelectionPageBox.pack_start(m_AvailPacksSWindow,Gtk::PACK_EXPAND_WIDGET,6);
-  m_SelectionPageBox.pack_start(m_ActionButtonsBox,Gtk::PACK_SHRINK);
+  m_SelectionPageBox.pack_start(m_TypesTabs,Gtk::PACK_EXPAND_WIDGET,6);
 
 
   m_URLCombo.signal_changed().connect(
     sigc::mem_fun(*this, &MarketClientAssistant::onURLComboChanged)
   );
-
-  m_SelectAllButton.signal_clicked().connect(
-      sigc::mem_fun(*this, &MarketClientAssistant::onSelectAllClicked)
-    );
-
-  m_SelectNoneButton.signal_clicked().connect(
-      sigc::mem_fun(*this, &MarketClientAssistant::onSelectNoneClicked)
-    );
-
-  m_CommonBuildConfigButton.signal_clicked().connect(
-      sigc::mem_fun(*this, &MarketClientAssistant::onCommonBuildConfigClicked)
-    );
 
 }
 
@@ -242,7 +205,6 @@ void MarketClientAssistant::setupSelectionPage()
 
 void MarketClientAssistant::setupLicensesPage()
 {
-
   m_LicensesLabel.set_text(_("Licenses:"));
   m_LicensesLabel.set_alignment(0,0);
 
@@ -255,19 +217,19 @@ void MarketClientAssistant::setupLicensesPage()
   m_LicensesReviewSWindow.add(m_LicensesTextView);
   m_LicensesReviewSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
 
-  m_RefLicenseTreeViewModel = Gtk::ListStore::create(m_LicensesColumns);
+  m_RefLicenseTreeViewModel = Gtk::TreeStore::create(m_LicensesColumns);
   m_LicensesTreeView.set_model(m_RefLicenseTreeViewModel);
   m_LicensesTreeView.set_headers_visible(false);
 
   m_LicensesListSWindow.add(m_LicensesTreeView);
   m_LicensesListSWindow.set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
-
+  m_LicensesListSWindow.set_size_request(180);
 
   m_RefLicensesTreeSelection = m_LicensesTreeView.get_selection();
 
-  m_LicensesReviewBox.set_spacing(12);
-  m_LicensesReviewBox.pack_start(m_LicensesListSWindow,Gtk::PACK_SHRINK);
-  m_LicensesReviewBox.pack_start(m_LicensesReviewSWindow,Gtk::PACK_EXPAND_WIDGET);
+  // adding widgets in hpaned
+  m_LicensesReviewPaned.pack1(m_LicensesListSWindow,false,false);
+  m_LicensesReviewPaned.pack2(m_LicensesReviewSWindow,true,false);
 
 
   m_LicensesAcceptRadio.set_label(_("I accept the terms of the license(s) agreement(s)"));
@@ -278,7 +240,7 @@ void MarketClientAssistant::setupLicensesPage()
 
   m_LicensesPageBox.set_border_width(12);
   m_LicensesPageBox.pack_start(m_LicensesLabel,Gtk::PACK_SHRINK);
-  m_LicensesPageBox.pack_start(m_LicensesReviewBox,Gtk::PACK_EXPAND_WIDGET);
+  m_LicensesPageBox.pack_start(m_LicensesReviewPaned,Gtk::PACK_EXPAND_WIDGET);
   m_LicensesPageBox.pack_start(m_LicensesAcceptRadio,Gtk::PACK_SHRINK);
   m_LicensesPageBox.pack_start(m_LicensesDoNotRadio,Gtk::PACK_SHRINK);
 
@@ -305,6 +267,7 @@ void MarketClientAssistant::setupDownloadPage()
 
 
   m_InstallTreeView.append_column(_("Package ID"),m_InstallColumns.m_ID);
+  m_InstallTreeView.append_column(_("Type"),m_InstallColumns.m_Type);
   m_InstallTreeView.append_column(_("Format"),m_InstallColumns.m_Format);
   m_InstallTreeView.append_column(_("Status"),m_InstallColumns.m_Status);
   m_InstallSWindow.add(m_InstallTreeView);
@@ -405,15 +368,24 @@ void MarketClientAssistant::onLicensesTreeviewChanged()
   {
     Gtk::TreeModel::Row Row = *Iter;
     std::string PackageID = Row.get_value(m_LicensesColumns.m_ID);
-    openfluid::market::MetaPackagesCatalog_t Catalog = m_MarketClient.getMetaPackagesCatalog();
-    std::string LicenseID = Catalog[PackageID].AvailablePackages[Catalog[PackageID].Selected].License;
 
-    std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.getLicensesTexts().find(LicenseID);
+    openfluid::market::MetaPackagesCatalog_t::iterator PCit = m_MarketClient.findInTypesMetaPackagesCatalogs(PackageID);
 
-    if (LIter != m_MarketClient.getLicensesTexts().end())
-      m_RefLicenseTextBuffer->set_text(LIter->second);
-    else
-      m_RefLicenseTextBuffer->set_text(_("(License content not available)"));
+    // id package found ?
+    if (PCit != m_MarketClient.getTypesMetaPackagesCatalogs().rbegin()->second.end())
+    {
+      // Getting license id
+      std::string LicenseID = PCit->second.AvailablePackages[PCit->second.Selected].License;
+
+      // Searching license
+      std::map<std::string,std::string>::const_iterator LIter = m_MarketClient.getLicensesTexts().find(LicenseID);
+
+      // Displaying license
+      if (LIter != m_MarketClient.getLicensesTexts().end())
+        m_RefLicenseTextBuffer->set_text(LIter->second);
+      else
+        m_RefLicenseTextBuffer->set_text(_("(License content not available)"));
+    }
   }
 
 
@@ -451,15 +423,8 @@ void MarketClientAssistant::onURLComboChanged()
       {
         Glib::ustring TmpURL = TmpRow[m_URLColumns.m_URL];
         m_MarketClient.connect(TmpURL);
-        m_SelectAllButton.set_sensitive(!m_MarketClient.getMetaPackagesCatalog().empty());
-        m_SelectNoneButton.set_sensitive(!m_MarketClient.getMetaPackagesCatalog().empty());
       }
     }
-  }
-  else
-  {
-    m_SelectAllButton.set_sensitive(false);
-    m_SelectNoneButton.set_sensitive(false);
   }
 
   set_page_complete(m_SelectionPageBox,false);
@@ -472,26 +437,197 @@ void MarketClientAssistant::onURLComboChanged()
 // =====================================================================
 
 
+MarketPackWidget* MarketClientAssistant::getAvailPackWidget(const openfluid::ware::WareID_t& ID) const
+{
+  std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::const_iterator APMiter;
+  std::list<MarketPackWidget*>::const_iterator APLiter;
+
+  // Searching ID package in AvailPacksWidgets
+  for (APMiter = mp_AvailPacksWidgets.begin(); APMiter != mp_AvailPacksWidgets.end(); ++APMiter)
+  {
+    for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
+    {
+      // package found
+      if ((*APLiter)->getID() == ID)
+        return *APLiter;
+    }
+  }
+
+  return 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& ID,
+    const openfluid::market::PackageInfo::PackageType& Type)
+{
+  openfluid::market::MetaPackagesCatalog_t DataCatalog = m_MarketClient.getTypesMetaPackagesCatalogs().at(openfluid::market::PackageInfo::DATA);
+  openfluid::market::MetaPackagesCatalog_t::iterator PCit;
+
+  // for each dataset package
+  for (PCit = DataCatalog.begin(); PCit != DataCatalog.end(); ++PCit)
+  {
+    std::list<openfluid::ware::WareID_t> Dependencies = PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::FLUIDX].Dependencies[Type];
+    std::list<openfluid::ware::WareID_t>::iterator Dit = Dependencies.begin();
+
+    // searching if ID package is a dependence of this dataset
+    while (Dit != Dependencies.end() && !(*Dit == ID && getAvailPackWidget(PCit->second.ID)->isInstall()))
+      ++Dit;
+
+    if (Dit != Dependencies.end())
+      return true;
+  }
+
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
+    const std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >& PacksToSelect)
+{
+  std::string Message = "<b>" + ID + "</b>";
+  if (Select)
+  {
+    Message += _(" needs some dependencies to run.\nDo you want to select this packages ?\n");
+  }
+  else
+  {
+    Message += _(" has dependencies selected.\nDo you want to unselect this packages ?\n");
+  }
+
+  std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::const_iterator APMiter;
+  std::list<MarketPackWidget*>::const_iterator APLiter;
+
+  // display list of packs to select/unselect
+  for (APMiter = PacksToSelect.begin(); APMiter != PacksToSelect.end(); ++APMiter)
+  {
+    Message += "\n<u>"+getGraphicTypeName(APMiter->first, true, true)+":</u> ";
+    for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
+    {
+      Message += "\n - " + (*APLiter)->getID();
+    }
+  }
+
+  // creating message window
+  Gtk::MessageDialog Dialog(*this, Message, true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
+  Dialog.set_title(_("Dependencies"));
+  if (Select)
+    Dialog.set_secondary_text(_("Warning, the selected package cannot be used without them."), true);
+  int Answer = Dialog.run();
+
+  return Answer == Gtk::RESPONSE_YES;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::selectDependencies(const openfluid::ware::WareID_t& ID)
+{
+  openfluid::market::MetaPackagesCatalog_t::iterator PCit = m_MarketClient.findInTypesMetaPackagesCatalogs(ID);
+
+  // package found
+  if (PCit != m_MarketClient.getTypesMetaPackagesCatalogs().rbegin()->second.end())
+  {
+    MarketPackWidget* MPW = getAvailPackWidget(ID);
+
+    // dependencies of id package
+    openfluid::market::PackageInfo::Dependencies_t Dependencies = PCit->second.AvailablePackages[MPW->getPackageFormat()].Dependencies;
+    openfluid::market::PackageInfo::Dependencies_t::const_iterator DMit;
+    std::list<openfluid::ware::WareID_t>::const_iterator DLit;
+
+    // list of dependencies to select/unselect
+    std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> > PacksToSelect;
+    std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::iterator APMiter;
+    std::list<MarketPackWidget*>::iterator APLiter;
+
+    for (DMit = Dependencies.begin(); DMit != Dependencies.end(); ++DMit)
+    {
+      for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
+      {
+        // For each dependence
+        openfluid::ware::WareID_t DependenceID = *DLit;
+        MarketPackWidget *DependencePack = getAvailPackWidget(DependenceID);
+
+        // dependence pack widget found ?
+        if (DependencePack != 0)
+        {
+          // dependence state different to selected package state
+          if (DependencePack->isInstall() != MPW->isInstall())
+          {
+            // if select or if unselect + no parent selected
+            if (MPW->isInstall() ||
+                (!MPW->isInstall() && !hasParentSelected(DependencePack->getID(), DMit->first)))
+            {
+              // Adding dependence to packs to select
+              PacksToSelect[DMit->first].push_back(DependencePack);
+            }
+          }
+        }
+
+      }
+    }
+
+    // selected dependencies
+    if (!PacksToSelect.empty())
+    {
+      if (getUserChoice(ID, MPW->isInstall(), PacksToSelect))
+      {
+        for (APMiter = PacksToSelect.begin(); APMiter != PacksToSelect.end(); ++APMiter)
+        {
+          for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
+          {
+            MarketPackWidget* Dependence = *APLiter;
+            Dependence->setInstall(MPW->isInstall());
+          }
+        }
+
+      }
+    }
+
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketClientAssistant::onPackageInstallModified()
 {
   bool Selection = false;
 
+  std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
-  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
-  {
-    MarketPackWidget* MPW;
-    MPW = *APLiter;
-    Selection = Selection || MPW->isInstall();
 
-    if (MPW->isInstall())
+  for (APMiter=mp_AvailPacksWidgets.begin();APMiter!=mp_AvailPacksWidgets.end();++APMiter)
+  {
+    for (APLiter=APMiter->second.begin();APLiter!=APMiter->second.end();++APLiter)
     {
-      m_MarketClient.setSelectionFlag(MPW->getID(),MPW->getPackageFormat());
+      MarketPackWidget* MPW;
+      MPW = *APLiter;
+      Selection = Selection || MPW->isInstall();
+
+      if (MPW->isInstall())
+      {
+        m_MarketClient.setSelectionFlag(MPW->getID(),MPW->getPackageFormat());
+      }
+      else
+      {
+        m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
+      }
+
+      if (APMiter->first != openfluid::market::PackageInfo::DATA)
+        m_MarketClient.setSRCBuildOptions(MPW->getID(),((MarketPackWidgetFormat*)MPW)->getEditedBuildOptions());
     }
-    else
-    {
-      m_MarketClient.setSelectionFlag(MPW->getID(),openfluid::market::MetaPackageInfo::NONE);
-    }
-    m_MarketClient.setSRCBuildOptions(MPW->getID(),MPW->getEditedBuildOptions());
   }
 
   set_page_complete(m_SelectionPageBox,Selection);
@@ -504,17 +640,34 @@ void MarketClientAssistant::onPackageInstallModified()
 // =====================================================================
 
 
+openfluid::market::PackageInfo::PackageType MarketClientAssistant::getCurrentTypeTab()
+{
+  std::string CurrentTabName = m_TypesTabs.get_tab_label_text(*m_TypesTabs.get_nth_page(m_TypesTabs.get_current_page()));
+  std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*>::const_iterator ATPBiter = mp_AvailTypesPacksBox.begin();
+
+  while (ATPBiter != mp_AvailTypesPacksBox.end() && getGraphicTypeName(ATPBiter->first,true,true) != CurrentTabName)
+    ++ATPBiter;
+
+  return ATPBiter->first;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketClientAssistant::onSelectAllClicked()
 {
   std::list<MarketPackWidget*>::iterator APLiter;
+  openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
 
-  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  // Selecting of all packages of current tab
+  for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin(); APLiter != mp_AvailPacksWidgets[CurrentTab].end(); ++APLiter)
   {
     MarketPackWidget* MPW;
     MPW = *APLiter;
     MPW->setInstall(true);
   }
-
 }
 
 
@@ -524,8 +677,10 @@ void MarketClientAssistant::onSelectAllClicked()
 void MarketClientAssistant::onSelectNoneClicked()
 {
   std::list<MarketPackWidget*>::iterator APLiter;
+  openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
 
-  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  // Unselecting of all packages of current tab
+  for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin(); APLiter != mp_AvailPacksWidgets[CurrentTab].end(); ++APLiter)
   {
     MarketPackWidget* MPW;
     MPW = *APLiter;
@@ -540,15 +695,17 @@ void MarketClientAssistant::onSelectNoneClicked()
 
 void MarketClientAssistant::onCommonBuildConfigClicked()
 {
-  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(),"");
+  openfluid::market::PackageInfo::PackageType CurrentTab = getCurrentTypeTab();
+  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(CurrentTab),"");
 
   if (OptDialog.run() == Gtk::RESPONSE_OK)
   {
-    openfluid::market::MarketPackage::setCommonBuildOptions(OptDialog.getEditedOptions());
+    // Setting common options of current tab
+    openfluid::market::MarketPackage::setCommonBuildOptions(CurrentTab,OptDialog.getEditedOptions());
 
     std::list<MarketPackWidget*>::iterator APLiter;
 
-    for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+    for (APLiter = mp_AvailPacksWidgets[CurrentTab].begin(); APLiter != mp_AvailPacksWidgets[CurrentTab].end(); ++APLiter)
       ((MarketPackWidget*)(*APLiter))->updateDisplayedInfos();
   }
 }
@@ -625,47 +782,162 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   get_window()->set_cursor(Gdk::Cursor(Gdk::WATCH));
   while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
 
-  openfluid::market::MetaPackagesCatalog_t Catalog;
+  openfluid::market::TypesMetaPackagesCatalogs_t Catalogs;
+  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
-  std::vector<Gtk::Widget*> AvailPacksBoxChildren = m_AvailPacksBox.get_children();
-  std::vector<Gtk::Widget*>::iterator APBCiter;
+  std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*>::iterator ATPBiter;
 
-  // removing widgets from available packages display
-  for (APBCiter=AvailPacksBoxChildren.begin();APBCiter!=AvailPacksBoxChildren.end();++APBCiter)
-    m_AvailPacksBox.remove(**APBCiter);
+  for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
+  {
+    // Tab VBox exists ?
+    if (ATPBiter->second != 0)
+    {
+      std::vector<Gtk::Widget*> AvailPacksBoxChildren = ATPBiter->second->get_children();
+      std::vector<Gtk::Widget*>::iterator APBCiter;
+
+      // removing widgets from available packages display
+      for (APBCiter=AvailPacksBoxChildren.begin();APBCiter!=AvailPacksBoxChildren.end();++APBCiter)
+        ATPBiter->second->remove(**APBCiter);
+    }
+  }
 
 
+  std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::iterator APMiter;
   std::list<MarketPackWidget*>::iterator APLiter;
 
   // destroying widgets from available packages list
-  for (APLiter=mp_AvailPacksWidgets.begin();APLiter!=mp_AvailPacksWidgets.end();++APLiter)
+  for (APMiter = mp_AvailPacksWidgets.begin(); APMiter != mp_AvailPacksWidgets.end(); ++APMiter)
   {
-    MarketPackWidget* MPW;
-    MPW = *APLiter;
-    delete MPW;
+    for (APLiter = APMiter->second.begin(); APLiter != APMiter->second.end(); ++APLiter)
+    {
+      MarketPackWidget* MPW;
+      MPW = *APLiter;
+      delete MPW;
+    }
   }
 
   mp_AvailPacksWidgets.clear();
 
 
-
-  Catalog = m_MarketClient.getMetaPackagesCatalog();
-
-  for (CIter=Catalog.begin();CIter!=Catalog.end();++CIter)
+  // removing tabs
+  while (m_TypesTabs.get_n_pages() > 0)
   {
-
-    mp_AvailPacksWidgets.push_back(new MarketPackWidget(CIter->second));
-    mp_AvailPacksWidgets.back()->signal_install_modified().connect(
-        sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
-    );
-
-    if (CIter != Catalog.begin()) m_AvailPacksBox.pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
-    m_AvailPacksBox.pack_start(*(mp_AvailPacksWidgets.back()),Gtk::PACK_SHRINK,0);
-
-
-    m_AvailPacksBox.show_all_children();
+    m_TypesTabs.remove_page();
   }
+
+
+  // initializing pointers
+  for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
+  {
+    ATPBiter->second = 0;
+    mp_AvailTypesPacksSWindow[ATPBiter->first] = 0;
+    mp_TabBox[ATPBiter->first] = 0;
+
+    mp_ActionButtonsBox[ATPBiter->first] = 0;
+    mp_SelectAllButton[ATPBiter->first] = 0;
+    mp_SelectNoneButton[ATPBiter->first] = 0;
+    mp_CommonBuildConfigButton[ATPBiter->first] = 0;
+  }
+
+
+  Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
+
+  for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
+  {
+    // New tab
+    if (!TCIter->second.empty())
+    {
+      // Creating ScrolledWindow and VBox containers
+      mp_AvailTypesPacksSWindow[TCIter->first] = Gtk::manage(new Gtk::ScrolledWindow());
+      mp_AvailTypesPacksBox[TCIter->first] = Gtk::manage(new Gtk::VBox());
+
+      mp_AvailTypesPacksSWindow[TCIter->first]->add(*mp_AvailTypesPacksBox[TCIter->first]);
+      mp_AvailTypesPacksSWindow[TCIter->first]->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_ALWAYS);
+
+      // removing ScrolledWindow border
+      Gtk::Viewport* pViewport=(Gtk::Viewport*) mp_AvailTypesPacksSWindow[TCIter->first]->get_child();
+      pViewport->set_shadow_type(Gtk::SHADOW_NONE);
+
+
+      // Adding packages in VBox
+      for (CIter = TCIter->second.begin(); CIter != TCIter->second.end(); ++CIter)
+      {
+        // Creating MarketPackWidget
+        if (TCIter->first == openfluid::market::PackageInfo::DATA)
+          mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidget(TCIter->first,CIter->second));
+        else
+          mp_AvailPacksWidgets[TCIter->first].push_back(new MarketPackWidgetFormat(TCIter->first,CIter->second));
+
+
+        mp_AvailPacksWidgets[TCIter->first].back()->signal_install_modified().connect(
+          sigc::bind<openfluid::ware::WareID_t>(sigc::mem_fun(*this,&MarketClientAssistant::selectDependencies),CIter->first)
+        );
+
+        mp_AvailPacksWidgets[TCIter->first].back()->signal_install_modified().connect(
+            sigc::mem_fun(*this,&MarketClientAssistant::onPackageInstallModified)
+        );
+
+        mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(new Gtk::HSeparator()),Gtk::PACK_SHRINK,0);
+        mp_AvailTypesPacksBox[TCIter->first]->pack_start(*(mp_AvailPacksWidgets[TCIter->first].back()),Gtk::PACK_SHRINK,0);
+      }
+
+      // Creating buttons
+      mp_ActionButtonsBox[TCIter->first] = Gtk::manage(new Gtk::HBox());
+      mp_SelectAllButton[TCIter->first] = Gtk::manage(new Gtk::Button(_("Select all")));
+      mp_SelectNoneButton[TCIter->first] = Gtk::manage(new Gtk::Button(_("Select none")));
+      mp_CommonBuildConfigButton[TCIter->first] = Gtk::manage(new Gtk::Button());
+
+      //m_CommonBuildConfigButton.set_label(_("Configure source builds"));
+      Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
+      Gtk::Label* Lbl = Gtk::manage(new Gtk::Label(_("Edit build options")));
+      Gtk::HBox* Box = Gtk::manage(new Gtk::HBox());
+      Box->pack_start(*Img,Gtk::PACK_SHRINK,3);
+      Box->pack_end(*Lbl,Gtk::PACK_SHRINK,3);
+      mp_CommonBuildConfigButton[TCIter->first]->add(*Box);
+      mp_CommonBuildConfigButton[TCIter->first]->show_all_children(true);
+
+      // Disable build options button for datasets
+      if (TCIter->first == openfluid::market::PackageInfo::DATA)
+        mp_CommonBuildConfigButton[TCIter->first]->set_sensitive(false);
+
+
+      mp_ActionButtonsBox[TCIter->first]->pack_start(*mp_SelectAllButton[TCIter->first],Gtk::PACK_SHRINK,0);
+      mp_ActionButtonsBox[TCIter->first]->pack_start(*mp_SelectNoneButton[TCIter->first],Gtk::PACK_SHRINK,12);
+      mp_ActionButtonsBox[TCIter->first]->pack_start(*Gtk::manage(new Gtk::EventBox()),Gtk::PACK_EXPAND_WIDGET,0);
+      mp_ActionButtonsBox[TCIter->first]->pack_start(*mp_CommonBuildConfigButton[TCIter->first],Gtk::PACK_SHRINK,0);
+
+
+      mp_TabBox[TCIter->first] = Gtk::manage(new Gtk::VBox());
+      mp_TabBox[TCIter->first]->pack_start(*mp_AvailTypesPacksSWindow[TCIter->first],Gtk::PACK_EXPAND_WIDGET,6);
+      mp_TabBox[TCIter->first]->pack_start(*(Gtk::manage(new Gtk::HSeparator())),Gtk::PACK_SHRINK,5);
+      mp_TabBox[TCIter->first]->pack_start(*mp_ActionButtonsBox[TCIter->first],Gtk::PACK_SHRINK,4);
+
+
+      mp_SelectAllButton[TCIter->first]->signal_clicked().connect(
+          sigc::mem_fun(*this, &MarketClientAssistant::onSelectAllClicked)
+        );
+
+      mp_SelectNoneButton[TCIter->first]->signal_clicked().connect(
+          sigc::mem_fun(*this, &MarketClientAssistant::onSelectNoneClicked)
+        );
+
+      mp_CommonBuildConfigButton[TCIter->first]->signal_clicked().connect(
+          sigc::mem_fun(*this, &MarketClientAssistant::onCommonBuildConfigClicked)
+        );
+
+
+      // Create tab
+      m_TypesTabs.append_page(*mp_TabBox[TCIter->first], getGraphicTypeName(TCIter->first, true,true));
+
+      // Load tab content
+      int LastPage = m_TypesTabs.get_n_pages() - 1;
+      m_TypesTabs.get_nth_page(LastPage)->show_all();
+      m_TypesTabs.set_current_page(LastPage);
+      m_TypesTabs.set_current_page(0);
+    }
+  }
+
 
   // change mouse cursor to default
   get_window()->set_cursor();
@@ -679,32 +951,51 @@ void MarketClientAssistant::updateAvailPacksTreeview()
 
 void MarketClientAssistant::initializeLicencesTreeView()
 {
-  openfluid::market::MetaPackagesCatalog_t Catalog;
+  openfluid::market::TypesMetaPackagesCatalogs_t Catalogs;
+  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
   openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
-
 
   m_LicensesTreeView.remove_all_columns();
   m_RefLicenseTreeViewModel->clear();
 
-  Catalog = m_MarketClient.getMetaPackagesCatalog();
+  std::map<openfluid::market::PackageInfo::PackageType,bool> RowCreated;
+  Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
 
-  for (CIter=Catalog.begin();CIter!=Catalog.end();++CIter)
+  for (TCIter = Catalogs.begin(); TCIter != Catalogs.end(); ++TCIter)
   {
+    Gtk::TreeModel::Row TypeRow;
 
-    if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
+    for (CIter = TCIter->second.begin(); CIter != TCIter->second.end(); ++CIter)
     {
-      Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append());
-      TmpRow[m_LicensesColumns.m_ID] = CIter->first;
+      // If package is selected
+      if (CIter->second.Selected != openfluid::market::MetaPackageInfo::NONE)
+      {
+        // If TypeRow not created
+        if (!RowCreated[TCIter->first])
+        {
+          TypeRow = *(m_RefLicenseTreeViewModel->append());
+          TypeRow[m_LicensesColumns.m_ID] = getGraphicTypeName(TCIter->first,true,true);
+
+          RowCreated[TCIter->first] = true;
+        }
+
+        // Creation of sub-row
+        Gtk::TreeModel::Row TmpRow = *(m_RefLicenseTreeViewModel->append(TypeRow.children()));
+        TmpRow[m_LicensesColumns.m_ID] = CIter->first;
+      }
     }
   }
 
   m_LicensesTreeView.append_column("", m_LicensesColumns.m_ID);
 
 
-  // select first package
-  Gtk::TreeModel::Row TmpSelRow = m_RefLicenseTreeViewModel->children()[0];
-  m_RefLicensesTreeSelection->select(TmpSelRow);
+  // open first type row
+  Gtk::TreeModel::Path RowPath = m_RefLicenseTreeViewModel->get_path(m_RefLicenseTreeViewModel->children().begin());
+  m_LicensesTreeView.expand_row(RowPath, false);
 
+  // select first package
+  Gtk::TreeModel::Row TmpSelRow = m_RefLicenseTreeViewModel->children()[0]->children()[0];
+  m_RefLicensesTreeSelection->select(TmpSelRow);
 }
 
 
@@ -721,8 +1012,10 @@ void MarketClientAssistant::updateInstallTreeview()
   {
     Gtk::TreeModel::Row TmpRow = *(m_RefInstallTreeViewModel->append());
     TmpRow[m_InstallColumns.m_ID] = (*PLiter)->getID();
+    TmpRow[m_InstallColumns.m_Type] = getGraphicTypeName((*PLiter)->getPackageType(),true,false);
     if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::BIN) TmpRow[m_InstallColumns.m_Format] = _("binary");
-    else TmpRow[m_InstallColumns.m_Format] = _("source");
+    else if ((*PLiter)->getFormat() == openfluid::market::MetaPackageInfo::SRC) TmpRow[m_InstallColumns.m_Format] = _("source");
+    else TmpRow[m_InstallColumns.m_Format] = _("dataset");
     TmpRow[m_InstallColumns.m_Status] = _("Pending");
   }
 }
@@ -738,6 +1031,28 @@ void MarketClientAssistant::onViewLogClicked()
   ViewLogFileWindow LogWindow(openfluid::market::MarketPackage::getLogFile());
 
   Gtk::Main::run(LogWindow);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketClientAssistant::getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural)
+{
+  std::string TypeNames[] = { _("function"), _("observer"), _("builder extension"), _("dataset")};
+  std::string PluralTypeNames[] = { _("functions"), _("observers"), _("builder extensions"), _("datasets")};
+  std::string Name;
+
+  if (Plural)
+    Name = PluralTypeNames[Type];
+  else
+    Name = TypeNames[Type];
+
+  if (Maj)
+    Name[0] = toupper(Name[0]);
+
+  return Name;
 }
 
 

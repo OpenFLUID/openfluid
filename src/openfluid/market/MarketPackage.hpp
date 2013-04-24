@@ -76,19 +76,67 @@ class DLLEXPORT MarketPackage
     static const std::string LOG_FILENAME;
 
 
+    /*
+     * Temporary dir for openfluid-market
+    */
     static std::string m_TempDir;
 
+    /**
+     * Temporary dir for building packages
+    */
     static std::string m_TempBuildsDir;
 
+    /**
+     * Temporary dir for downloaded packages
+    */
     static std::string m_TempDownloadsDir;
 
-    static std::string m_MarketBagBinDir;
+    /**
+     * Market-bag dir for functions
+    */
+    static std::string m_MarketBagFunctionDir;
 
-    static std::string m_MarketBagSrcDir;
+    /**
+     * Market-bag dir for observers
+    */
+    static std::string m_MarketBagObserverDir;
+
+    /**
+     * Market-bag dir for builder extensions
+    */
+    static std::string m_MarketBagBuilderextDir;
+
+    /**
+     * Market-bag dir for datasets
+    */
+    static std::string m_MarketBagDatasetDir;
+
+    /**
+     * Market-bag subdir for binary packages of current type
+    */
+    static std::string m_MarketBagBinSubDir;
+
+    /**
+     * Market-bag subdir for source packages of current type
+    */
+    static std::string m_MarketBagSrcSubDir;
 
     static std::string m_CMakeCommand;
 
-    static std::string m_CommonBuildConfigOptions;
+    /**
+     * Common build options for functions
+    */
+    static std::string m_FunctionBuildConfigOptions;
+
+    /**
+     * Common build options for observers
+    */
+    static std::string m_ObserverBuildConfigOptions;
+
+    /**
+     * Common build options for builder extensions
+    */
+    static std::string m_BuilderextBuildConfigOptions;
 
     static std::string m_LogFile;
 
@@ -111,6 +159,7 @@ class DLLEXPORT MarketPackage
     static void resetLogFile();
 
     static void appendToLogFile(const std::string& PackageName,
+        const PackageInfo::PackageType& Type,
         const std::string& Action,
         const std::string& Str);
 
@@ -119,17 +168,30 @@ class DLLEXPORT MarketPackage
 
   public:
 
-    MarketPackage(openfluid::ware::WareID_t ID, std::string PackageURL);
+    MarketPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL);
 
     virtual ~MarketPackage();
 
     static void initialize(bool EnableLog);
 
-    static void setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir);
+    /**
+     Set directory paths attributes with paths passed as parameter
+    */
+    static void setWorksDirs(const std::string& TempDir, const std::string& MarketBagFunctionDir,
+        const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
+        const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir, const std::string& MarketBagSrcSubDir);
 
-    static std::string getMarketBagBinDir() { return m_MarketBagBinDir; };
+    static std::string getMarketBagFunctionDir() { return m_MarketBagFunctionDir; };
 
-    static std::string getMarketBagSrcDir() { return m_MarketBagSrcDir; };
+    static std::string getMarketBagObserverDir() { return m_MarketBagObserverDir; };
+
+    static std::string getMarketBagBuilderextDir() { return m_MarketBagBuilderextDir; };
+
+    static std::string getMarketBagDatasetDir() { return m_MarketBagDatasetDir; };
+
+    static std::string getMarketBagBinSubDir() { return m_MarketBagBinSubDir; };
+
+    static std::string getMarketBagSrcSubDir() { return m_MarketBagSrcSubDir; };
 
     static std::string getTempDir() { return m_TempDir; };
 
@@ -139,15 +201,41 @@ class DLLEXPORT MarketPackage
 
     static std::string getLogFile() { return m_LogFile; };
 
-    static std::string getCommonBuildOptions() { return m_CommonBuildConfigOptions; };
+    /**
+     @return build options of package type passed as parameter
+     @param Type of options
+    */
+    static std::string getCommonBuildOptions(const PackageInfo::PackageType& Type);
 
-    static void setCommonBuildOptions(std::string BuildOptions) { m_CommonBuildConfigOptions = BuildOptions; };
+    /**
+     Sets build options of package type passed as parameter with BuildOptions
+     @param Type of options
+     @param Build options to store
+    */
+    static void setCommonBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 
-    static std::string composeFullBuildOptions(std::string BuildOptions);
+    /**
+     Adds BuildOptions to options of package type
+     @return Common build options of package type with BuildOptions
+     @param Type of package
+     @param Options to add
+    */
+    static std::string composeFullBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 
     openfluid::ware::WareID_t getID() const { return m_ID; };
 
     virtual MetaPackageInfo::SelectionType getFormat() const = 0;
+
+
+    /**
+     @return the market-bag path directory for the package type class
+    */
+    virtual std::string getInstallPath() const = 0;
+
+    /**
+     @return type of current package
+    */
+    virtual PackageInfo::PackageType getPackageType() const = 0;
 
     virtual void process() = 0;
 

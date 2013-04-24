@@ -105,11 +105,17 @@ class DLLEXPORT PackageInfo
 {
   public:
 
+    // Package type
+    enum PackageType { FUNC, OBS, BUILD, DATA};
+
+    typedef std::map<PackageType,std::list<openfluid::ware::WareID_t> > Dependencies_t;
+
     std::string URL;
 
     std::string License;
 
-    std::string Dependencies;
+    // List of dependencies
+    Dependencies_t Dependencies;
 
     std::string BuildOptions;
 
@@ -134,12 +140,15 @@ class DLLEXPORT MetaPackageInfo
 {
   public:
 
-    enum SelectionType { NONE, BIN, SRC};
+    // Package format
+    enum SelectionType { NONE, BIN, SRC, FLUIDX};
 
     openfluid::ware::WareID_t ID;
 
+    // List of PackageInfo for each format
     std::map<SelectionType,PackageInfo> AvailablePackages;
 
+    // Selected format
     SelectionType Selected;
 
     std::string Name;

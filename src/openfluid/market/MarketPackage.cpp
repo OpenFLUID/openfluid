@@ -72,18 +72,24 @@ const std::string MarketPackage::LOG_FILENAME = "packages_install.log";
 std::string MarketPackage::m_TempDir = "";
 std::string MarketPackage::m_TempBuildsDir = "";
 std::string MarketPackage::m_TempDownloadsDir = "";
-std::string MarketPackage::m_MarketBagBinDir = "";
-std::string MarketPackage::m_MarketBagSrcDir = "";
+std::string MarketPackage::m_MarketBagFunctionDir = "";
+std::string MarketPackage::m_MarketBagObserverDir = "";
+std::string MarketPackage::m_MarketBagBuilderextDir = "";
+std::string MarketPackage::m_MarketBagDatasetDir = "";
+std::string MarketPackage::m_MarketBagBinSubDir = "";
+std::string MarketPackage::m_MarketBagSrcSubDir = "";
 std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
 
 std::string MarketPackage::m_CMakeCommand = "";
-std::string MarketPackage::m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_FunctionBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_ObserverBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_BuilderextBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 
 bool MarketPackage::m_Initialized = false;
 
 
-MarketPackage::MarketPackage(openfluid::ware::WareID_t ID, std::string PackageURL)
+MarketPackage::MarketPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
               : m_ID(ID), m_PackageURL(PackageURL), m_Downloaded(false)
 {
   m_PackageFilename = boost::filesystem::path(PackageURL).filename().string();
@@ -144,13 +150,22 @@ void MarketPackage::initialize(bool EnableLog = false)
 // =====================================================================
 
 
-void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir)
+void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& MarketBagFunctionDir, const std::string& MarketBagObserverDir,
+    const std::string& MarketBagBuilderextDir, const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir, const std::string& MarketBagSrcSubDir)
 {
+  // Temporary directories
   m_TempDir = boost::filesystem::path(TempDir).string();
   m_TempBuildsDir = boost::filesystem::path(TempDir+"/"+BUILDS_SUBDIR).string();
   m_TempDownloadsDir = boost::filesystem::path(TempDir+"/"+DLOADS_SUBDIR).string();
-  m_MarketBagBinDir = boost::filesystem::path(MarketBagBinDir).string();
-  m_MarketBagSrcDir = boost::filesystem::path(MarketBagSrcDir).string();
+
+  // Installation directories
+  m_MarketBagFunctionDir = boost::filesystem::path(MarketBagFunctionDir).string();
+  m_MarketBagObserverDir = boost::filesystem::path(MarketBagObserverDir).string();
+  m_MarketBagBuilderextDir = boost::filesystem::path(MarketBagBuilderextDir).string();
+  m_MarketBagDatasetDir = boost::filesystem::path(MarketBagDatasetDir).string();
+  m_MarketBagBinSubDir = boost::filesystem::path(MarketBagBinSubDir).string();
+  m_MarketBagSrcSubDir = boost::filesystem::path(MarketBagSrcSubDir).string();
+
   m_LogFile = boost::filesystem::path(TempDir+"/"+LOG_FILENAME).string();
 
   m_Initialized = false;
@@ -161,13 +176,56 @@ void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDi
 // =====================================================================
 
 
-std::string MarketPackage::composeFullBuildOptions(std::string BuildOptions)
+std::string MarketPackage::getCommonBuildOptions(const PackageInfo::PackageType& Type)
+{
+  if (Type == PackageInfo::FUNC)
+  {
+    return m_FunctionBuildConfigOptions;
+  }
+  else if (Type == PackageInfo::OBS)
+  {
+    return m_ObserverBuildConfigOptions;
+  }
+  else if (Type == PackageInfo::BUILD)
+  {
+    return m_BuilderextBuildConfigOptions;
+  }
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketPackage::setCommonBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions)
+{
+  if (Type == PackageInfo::FUNC)
+  {
+    m_FunctionBuildConfigOptions = BuildOptions;
+  }
+  else if (Type == PackageInfo::OBS)
+  {
+    m_ObserverBuildConfigOptions = BuildOptions;
+  }
+  else if (Type == PackageInfo::BUILD)
+  {
+    m_BuilderextBuildConfigOptions = BuildOptions;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketPackage::composeFullBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions)
 {
   std::string FullOptions = "";
 
   if (!BuildOptions.empty()) FullOptions = " " + BuildOptions;
 
-  if (!m_CommonBuildConfigOptions.empty()) FullOptions = " " + m_CommonBuildConfigOptions + FullOptions;
+  if (!getCommonBuildOptions(Type).empty()) FullOptions = " " + getCommonBuildOptions(Type) + FullOptions;
 
   return FullOptions;
 }
@@ -178,15 +236,22 @@ std::string MarketPackage::composeFullBuildOptions(std::string BuildOptions)
 
 
 void MarketPackage::appendToLogFile(const std::string& PackageName,
+                                    const PackageInfo::PackageType& Type,
                                     const std::string& Action,
                                     const std::string& Str)
 {
   if (m_IsLogEnabled)
   {
+    std::string StrType;
+    if (Type == PackageInfo::FUNC) StrType = "FUNC";
+    else if (Type == PackageInfo::OBS) StrType = "OBS";
+    else if (Type == PackageInfo::BUILD) StrType = "BEXT";
+    else StrType = "DATA";
+
     std::ofstream LogFileStream;
     LogFileStream.open(boost::filesystem::path(m_LogFile).string().c_str(),std::ios_base::app);
     LogFileStream << "\n================================================================================\n";
-    LogFileStream << "  " << PackageName << " : " << Action << "\n";
+    LogFileStream << "  [" << StrType << "] " << PackageName << " : " << Action << "\n";
     LogFileStream << "================================================================================\n";
     LogFileStream << Str << "\n";
     LogFileStream.close();
@@ -238,7 +303,7 @@ void MarketPackage::download()
 
   m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
 
-  appendToLogFile(m_PackageFilename,"downloading","");
+  appendToLogFile(m_PackageFilename,getPackageType(),"downloading","");
 
   if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
   {

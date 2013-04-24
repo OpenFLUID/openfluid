@@ -47,8 +47,13 @@
 
 
 #include <openfluid/market/MarketClient.hpp>
-#include <openfluid/market/MarketBinPackage.hpp>
-#include <openfluid/market/MarketSrcPackage.hpp>
+#include <openfluid/market/MarketBinFunctionPackage.hpp>
+#include <openfluid/market/MarketSrcFunctionPackage.hpp>
+#include <openfluid/market/MarketBinObserverPackage.hpp>
+#include <openfluid/market/MarketSrcObserverPackage.hpp>
+#include <openfluid/market/MarketSrcBuilderextPackage.hpp>
+#include <openfluid/market/MarketBinBuilderextPackage.hpp>
+#include <openfluid/market/MarketDatasetPackage.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/config.hpp>
 
@@ -76,8 +81,12 @@ MarketClient::MarketClient() :
 
   std::string m_TempDir = openfluid::base::RuntimeEnvironment::getInstance()->getTempDir()+"/market";
   MarketPackage::setWorksDirs(boost::filesystem::path(m_TempDir).string(),
-                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinVersionDir(),
-                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSrcVersionDir());
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagFuncVersionDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagObsVersionDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBuildVersionDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagDataVersionDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinSubDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSrcSubDir());
 
   m_URL.clear();
   m_MarketInfo.clear();
@@ -100,17 +109,78 @@ MarketClient::~MarketClient()
 
 void MarketClient::initMarketBag()
 {
+  // ===== Creation of function directories =====
 
-  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBinDir()));
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()));
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBinDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag binary directory");
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag functions directory");
 
-  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSrcDir()));
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir()));
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSrcDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag source directory");
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag functions binary subdirectory");
 
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag functions source subdirectory");
+
+
+  // ===== Creation of observer directories =====
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observers directory");
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observers binary subdirectory");
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observers source subdirectory");
+
+
+  // ===== Creation of builder extension directories =====
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag builderexts directory");
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()
+    + "/" + MarketPackage::getMarketBagBinSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag builderexts binary subdirectory");
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()
+    + "/" + MarketPackage::getMarketBagSrcSubDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag builderexts source subdirectory");
+
+
+  // ===== Creation of dataset directory =====
+
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagDatasetDir()));
+
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagDatasetDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag datasets directory");
 }
 
 
@@ -184,14 +254,34 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 // =====================================================================
 
 
-void MarketClient::parseCatalogData(const std::string& CatalogData)
+std::string MarketClient::getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural)
 {
+  std::string TypesNames[] = { "function", "observer", "builderext", "dataset"};
+  std::string Name = TypesNames[Type];
 
+  if (Maj)
+    Name[0] = toupper(Name[0]);
+
+  if (Plural)
+    Name += "s";
+
+  return Name;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogData)
+{
   std::string TmpVersion, TmpArch, TmpID;
   std::vector<std::string> PackagesIDs;
   Glib::KeyFile KFile;
 
-  m_MetaPackagesCatalog.clear();
+  // Catalog of type passed as parameter
+  MetaPackagesCatalog_t& MetaPackagesCatalog = m_TypesMetaPackagesCatalogs[CatalogType];
+  MetaPackagesCatalog.clear();
 
   std::string BinaryArchKey= "arch." + openfluid::base::RuntimeEnvironment::getInstance()->getArch();
 
@@ -208,64 +298,89 @@ void MarketClient::parseCatalogData(const std::string& CatalogData)
          std::string TmpID = PackagesIDs[i];
 
 
-         if (KFile.has_key(TmpID,BinaryArchKey+".file") || KFile.has_key(TmpID,"arch.src.file"))
+         // searching for key for TmpID group
+         if (KFile.has_key(TmpID,BinaryArchKey+".file") || KFile.has_key(TmpID,"arch.src.file") || KFile.has_key(TmpID,"file"))
          {
 
-           m_MetaPackagesCatalog[TmpID].ID = TmpID;
+           MetaPackagesCatalog[TmpID].ID = TmpID;
 
            // name
            if (KFile.has_key(TmpID,"name"))
-             m_MetaPackagesCatalog[TmpID].Name = KFile.get_string(TmpID,"name");
+             MetaPackagesCatalog[TmpID].Name = KFile.get_string(TmpID,"name");
 
            // description
            if (KFile.has_key(TmpID,"description"))
-             m_MetaPackagesCatalog[TmpID].Description = KFile.get_string(TmpID,"description");
+             MetaPackagesCatalog[TmpID].Description = KFile.get_string(TmpID,"description");
 
            // version
            if (KFile.has_key(TmpID,"version"))
-             m_MetaPackagesCatalog[TmpID].Version = KFile.get_string(TmpID,"version");
+             MetaPackagesCatalog[TmpID].Version = KFile.get_string(TmpID,"version");
 
            // authors
            if (KFile.has_key(TmpID,"authors"))
-             m_MetaPackagesCatalog[TmpID].Authors = KFile.get_string(TmpID,"authors");
+             MetaPackagesCatalog[TmpID].Authors = KFile.get_string(TmpID,"authors");
 
-           // binary ?
-           if (KFile.has_key(TmpID,BinaryArchKey+".file"))
+
+           // dataset ?
+           if (CatalogType == PackageInfo::DATA)
            {
-             m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN] = PackageInfo();
-             m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
+             if (!KFile.has_key(TmpID,"file"))
+             {
+               MetaPackagesCatalog.erase(TmpID);
+             }
+             else
+             {
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX] = PackageInfo();
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/"+KFile.get_string(TmpID,"file");
 
-             // license
-             if (KFile.has_key(TmpID,BinaryArchKey+".license"))
-              m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].License = KFile.get_string(TmpID,BinaryArchKey+".license");
+               // license
+               if (KFile.has_key(TmpID,"license"))
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].License = KFile.get_string(TmpID,"license");
 
-             // dependencies
-             if (KFile.has_key(TmpID,BinaryArchKey+".depends"))
-              m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].Dependencies = KFile.get_string(TmpID,BinaryArchKey+".depends");
+               // dependencies
+               if (KFile.has_key(TmpID,"dependencies.func"))
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string_list(TmpID,"dependencies.func");
 
+               if (KFile.has_key(TmpID,"dependencies.obs"))
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::OBS] = KFile.get_string_list(TmpID,"dependencies.obs");
+             }
+           }
+           else
+           {
+             if (!KFile.has_key(TmpID,BinaryArchKey+".file") && !KFile.has_key(TmpID,"arch.src.file"))
+             {
+               MetaPackagesCatalog.erase(TmpID);
+             }
+             else
+             {
+               // binary ?
+               if (KFile.has_key(TmpID,BinaryArchKey+".file"))
+               {
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN] = PackageInfo();
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
 
+                 // license
+                 if (KFile.has_key(TmpID,BinaryArchKey+".license"))
+                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].License = KFile.get_string(TmpID,BinaryArchKey+".license");
+               }
+
+               // source ?
+               if (KFile.has_key(TmpID,"arch.src.file"))
+               {
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/src/"+KFile.get_string(TmpID,"arch.src.file");
+
+                 // license
+                 if (KFile.has_key(TmpID,"arch.src.license"))
+                   MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].License = KFile.get_string(TmpID,"arch.src.license");
+
+                 // build options
+                 if (KFile.has_key(TmpID,"arch.src.buildoptions"))
+                   MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].BuildOptions = KFile.get_string(TmpID,"arch.src.buildoptions");
+               }
+             }
            }
 
-           // source ?
-           if (KFile.has_key(TmpID,"arch.src.file"))
-           {
-             m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
-             m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/src/"+KFile.get_string(TmpID,"arch.src.file");
-
-             // license
-             if (KFile.has_key(TmpID,"arch.src.license"))
-               m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].License = KFile.get_string(TmpID,"arch.src.license");
-
-             // dependencies
-             if (KFile.has_key(TmpID,"arch.src.depends"))
-               m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].Dependencies = KFile.get_string(TmpID,"arch.src.depends");
-
-             // build options
-             if (KFile.has_key(TmpID,"arch.src.buildoptions"))
-               m_MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].BuildOptions = KFile.get_string(TmpID,"arch.src.buildoptions");
-
-
-           }
          }
       }
     }
@@ -283,20 +398,24 @@ void MarketClient::parseCatalogData(const std::string& CatalogData)
 
 void MarketClient::downloadAssociatedLicenses()
 {
-
+  TypesMetaPackagesCatalogs_t::iterator TPCit;
   MetaPackagesCatalog_t::iterator PCit;
   std::map<MetaPackageInfo::SelectionType,PackageInfo>::iterator PIit;
   MarketLicensesTexts_t::iterator Licit;
 
-  for (PCit = m_MetaPackagesCatalog.begin(); PCit != m_MetaPackagesCatalog.end();++PCit)
+  for (TPCit = m_TypesMetaPackagesCatalogs.begin(); TPCit != m_TypesMetaPackagesCatalogs.end(); ++TPCit)
   {
-    for (PIit = PCit->second.AvailablePackages.begin();PIit != PCit->second.AvailablePackages.end();++PIit)
+    for (PCit = TPCit->second.begin(); PCit != TPCit->second.end(); ++PCit)
     {
-      if (PIit->second.License != "") m_LicensesTexts[PIit->second.License] = "";
+      // download licenses of all formats for each package
+      for (PIit = PCit->second.AvailablePackages.begin(); PIit != PCit->second.AvailablePackages.end(); ++PIit)
+      {
+        if (PIit->second.License != "") m_LicensesTexts[PIit->second.License] = "";
+      }
     }
   }
 
-  for (Licit = m_LicensesTexts.begin(); Licit != m_LicensesTexts.end();++Licit)
+  for (Licit = m_LicensesTexts.begin(); Licit != m_LicensesTexts.end(); ++Licit)
   {
     if (openfluid::tools::CURLDownloader::downloadToString(m_URL+"/licenses/"+Licit->first+".txt",Licit->second) != openfluid::tools::CURLDownloader::NO_ERROR)
       Licit->second = "(license text not available)";
@@ -308,14 +427,19 @@ void MarketClient::downloadAssociatedLicenses()
 // =====================================================================
 
 
-void MarketClient::connect(const std::string URL)
+void MarketClient::connect(const std::string& URL)
 {
   std::string MarketData;
-  std::string CatalogData;
+
+  // List of catalog urls
+  CatalogsFileURL_t CatalogsFileURL;
+  // List of catalog data
+  CatalogsData_t CatalogsData;
+
 
   m_URL = URL;
   m_MarketInfo.clear();
-  m_MetaPackagesCatalog.clear();
+  m_TypesMetaPackagesCatalogs.clear();
 
   initMarketBag();
   initMarketTemp();
@@ -323,9 +447,14 @@ void MarketClient::connect(const std::string URL)
   MarketPackage::initialize(m_IsLogEnabled);
 
   std::string MarketFileURL = m_URL+"/"+openfluid::config::MARKETPLACE_SITEFILE;
-  std::string CatalogFileURL = m_URL + "/"+openfluid::config::MARKETPLACE_CATALOGFILE+"_"+openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
 
+  // Creating type keys
+  CatalogsFileURL[PackageInfo::FUNC] = "";
+  CatalogsFileURL[PackageInfo::OBS] = "";
+  CatalogsFileURL[PackageInfo::BUILD] = "";
+  CatalogsFileURL[PackageInfo::DATA] = "";
 
+  // Downloading OpenFLUID-Marketplace file
   if (!m_IsConnected && openfluid::tools::CURLDownloader::downloadToString(MarketFileURL, MarketData) == openfluid::tools::CURLDownloader::NO_ERROR)
   {
     lockMarketTemp();
@@ -335,17 +464,26 @@ void MarketClient::connect(const std::string URL)
 
   if (m_IsConnected)
   {
+    CatalogsFileURL_t::iterator CUit;
 
-    if (openfluid::tools::CURLDownloader::downloadToString(CatalogFileURL, CatalogData)  != openfluid::tools::CURLDownloader::NO_ERROR)
-      CatalogData.clear();
+    // for each catalog
+    for (CUit = CatalogsFileURL.begin(); CUit != CatalogsFileURL.end(); ++CUit)
+    {
+      // building url
+      CUit->second = m_URL+"/"+openfluid::config::MARKETPLACE_CATALOGFILE+getTypeName(CUit->first,true,true)+"_"+openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
 
-    parseCatalogData(CatalogData);
+      // downloading catalog
+      if (openfluid::tools::CURLDownloader::downloadToString(CUit->second, CatalogsData[CUit->first])  != openfluid::tools::CURLDownloader::NO_ERROR)
+        CatalogsData[CUit->first].clear();
+
+      // storage of packages list
+      parseCatalogData(CUit->first, CatalogsData[CUit->first]);
+    }
 
     downloadAssociatedLicenses();
   }
-
-
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -357,7 +495,7 @@ void MarketClient::disconnect()
 
   m_URL.clear();
   m_MarketInfo.clear();
-  m_MetaPackagesCatalog.clear();
+  m_TypesMetaPackagesCatalogs.clear();
   m_LicensesTexts.clear();
   m_IsConnected = false;
 }
@@ -377,9 +515,9 @@ void MarketClient::getMarketInfo(MarketInfo& Info)
 // =====================================================================
 
 
-const MetaPackagesCatalog_t& MarketClient::getMetaPackagesCatalog()
+const TypesMetaPackagesCatalogs_t& MarketClient::getTypesMetaPackagesCatalogs()
 {
-  return m_MetaPackagesCatalog;
+  return m_TypesMetaPackagesCatalogs;
 }
 
 
@@ -397,11 +535,29 @@ const MarketLicensesTexts_t& MarketClient::getLicensesTexts()
 // =====================================================================
 
 
+MetaPackagesCatalog_t::iterator MarketClient::findInTypesMetaPackagesCatalogs(const openfluid::ware::WareID_t& ID)
+{
+  TypesMetaPackagesCatalogs_t::iterator TPCit = m_TypesMetaPackagesCatalogs.begin();
+  MetaPackagesCatalog_t::iterator PCit;
+
+  // searching for ID package in each MetaPackages catalog
+  while (TPCit != m_TypesMetaPackagesCatalogs.end() && (PCit = TPCit->second.find(ID)) == TPCit->second.end())
+    TPCit++;
+
+  return PCit;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag)
 {
-  MetaPackagesCatalog_t::iterator PCit = m_MetaPackagesCatalog.find(ID);
+  MetaPackagesCatalog_t::iterator PCit = findInTypesMetaPackagesCatalogs(ID);
 
-  if (PCit != m_MetaPackagesCatalog.end())
+  // if package found
+  if (PCit != m_TypesMetaPackagesCatalogs.rbegin()->second.end())
   {
     if (Flag == MetaPackageInfo::BIN
         && PCit->second.AvailablePackages.find(MetaPackageInfo::BIN) ==  PCit->second.AvailablePackages.end())
@@ -411,6 +567,11 @@ bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const M
         && PCit->second.AvailablePackages.find(MetaPackageInfo::SRC) ==  PCit->second.AvailablePackages.end())
       return false;
 
+    if (Flag == MetaPackageInfo::FLUIDX
+        && PCit->second.AvailablePackages.find(MetaPackageInfo::FLUIDX) == PCit->second.AvailablePackages.end())
+      return false;
+
+    // Setting Flag as selected flag
     PCit->second.Selected = Flag;
     return true;
   }
@@ -425,12 +586,15 @@ bool MarketClient::setSelectionFlag(const openfluid::ware::WareID_t& ID, const M
 
 void MarketClient::setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const std::string& BuildOpts)
 {
-  MetaPackagesCatalog_t::iterator PCit = m_MetaPackagesCatalog.find(ID);
+  MetaPackagesCatalog_t::iterator PCit = findInTypesMetaPackagesCatalogs(ID);
 
-  if (PCit != m_MetaPackagesCatalog.end())
+  // if package found
+  if (PCit != m_TypesMetaPackagesCatalogs.rbegin()->second.end())
   {
+    // if src format is available
     if (PCit->second.AvailablePackages.find(MetaPackageInfo::SRC) !=  PCit->second.AvailablePackages.end())
     {
+      // Setting build options
       PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions = BuildOpts;
     }
   }
@@ -442,9 +606,15 @@ void MarketClient::setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const
 
 MetaPackageInfo::SelectionType MarketClient::getSelectionFlag(const openfluid::ware::WareID_t& ID) const
 {
-  MetaPackagesCatalog_t::const_iterator PCit = m_MetaPackagesCatalog.find(ID);
+  TypesMetaPackagesCatalogs_t::const_iterator TPCit = m_TypesMetaPackagesCatalogs.begin();
+  MetaPackagesCatalog_t::const_iterator PCit;
 
-  if (PCit != m_MetaPackagesCatalog.end())
+  // searching for ID package in each MetaPackages catalog
+  while (TPCit != m_TypesMetaPackagesCatalogs.end() && (PCit = TPCit->second.find(ID)) == TPCit->second.end())
+    TPCit++;
+
+  // if ID package found
+  if (TPCit != m_TypesMetaPackagesCatalogs.end())
   {
     return PCit->second.Selected;
   }
@@ -459,6 +629,7 @@ MetaPackageInfo::SelectionType MarketClient::getSelectionFlag(const openfluid::w
 
 void MarketClient::preparePackagesInstallation()
 {
+  TypesMetaPackagesCatalogs_t::iterator TPCit;
   MetaPackagesCatalog_t::iterator PCit;
 
   // clearing list of packages to install
@@ -468,22 +639,57 @@ void MarketClient::preparePackagesInstallation()
     m_PacksToInstall.pop_front();
   }
 
-  // creating the list of packages to install
-  for (PCit = m_MetaPackagesCatalog.begin(); PCit != m_MetaPackagesCatalog.end();++PCit)
+  // creating list of packages to install
+  for (TPCit = m_TypesMetaPackagesCatalogs.begin(); TPCit != m_TypesMetaPackagesCatalogs.end(); ++TPCit)
   {
-    if (PCit->second.Selected == MetaPackageInfo::BIN)
+    for (PCit = TPCit->second.begin(); PCit != TPCit->second.end(); ++PCit)
     {
-      m_PacksToInstall.push_back(new MarketBinPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
-    }
-    if (PCit->second.Selected == MetaPackageInfo::SRC)
-    {
-      m_PacksToInstall.push_back(new MarketSrcPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+      // Binary
+      if (PCit->second.Selected == MetaPackageInfo::BIN)
+      {
+        if (TPCit->first == PackageInfo::FUNC)
+        {
+          m_PacksToInstall.push_back(new MarketBinFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+        }
+        else if (TPCit->first == PackageInfo::OBS)
+        {
+          m_PacksToInstall.push_back(new MarketBinObserverPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+        }
+        else if (TPCit->first == PackageInfo::BUILD)
+        {
+          m_PacksToInstall.push_back(new MarketBinBuilderextPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+        }
+      }
 
-      std::string BuildOptsStr = PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions;
+
+      // Source
+      if (PCit->second.Selected == MetaPackageInfo::SRC)
+      {
+        if (TPCit->first == PackageInfo::FUNC)
+        {
+          m_PacksToInstall.push_back(new MarketSrcFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+        }
+        else if (TPCit->first == PackageInfo::OBS)
+        {
+          m_PacksToInstall.push_back(new MarketSrcObserverPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+        }
+        else if (TPCit->first == PackageInfo::BUILD)
+        {
+          m_PacksToInstall.push_back(new MarketSrcBuilderextPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+        }
+
+        std::string BuildOptsStr = PCit->second.AvailablePackages[MetaPackageInfo::SRC].BuildOptions;
+
+        if (!BuildOptsStr.empty())
+          ((MarketSrcPackage*)m_PacksToInstall.back())->setBuildConfigOptions(BuildOptsStr);
+      }
 
 
-      if (!BuildOptsStr.empty())
-        ((MarketSrcPackage*)m_PacksToInstall.back())->setBuildConfigOptions(BuildOptsStr);
+      // Dataset
+      if (PCit->second.Selected == MetaPackageInfo::FLUIDX)
+      {
+        m_PacksToInstall.push_back(new MarketDatasetPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::FLUIDX].URL));
+      }
     }
   }
 }
@@ -539,5 +745,85 @@ void MarketClient::installNextSelectedPackage()
     delete MP;
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+/*
+std::string MarketClient::selectionTypeToString(const MetaPackageInfo::SelectionType& Selec) const
+{
+  const bool WithArch = true;
+
+  if (Selec == MetaPackageInfo::BIN)
+  {
+    if(WithArch)
+      return openfluid::base::RuntimeEnvironment::getInstance()->getArch();
+    else
+      return "BIN";
+  }
+  else if (Selec == MetaPackageInfo::SRC)
+  {
+    return "SRC";
+  }
+  else if (Selec == MetaPackageInfo::FLUIDX)
+  {
+    return "FLUIDX";
+  }
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClient::displayPackages() const
+{
+  TypesMetaPackagesCatalogs_t::const_iterator TPCit;
+  MetaPackagesCatalog_t::const_iterator PCit;
+  std::map<MetaPackageInfo::SelectionType,PackageInfo>::const_iterator APit;
+
+  std::cout << "\n#####################\n";
+
+  for (TPCit = m_TypesMetaPackagesCatalogs.begin(); TPCit != m_TypesMetaPackagesCatalogs.end(); ++TPCit)
+  {
+    std::cout << "List of " << getTypeName(TPCit->first,false,true) << std::endl;
+
+    for (PCit = TPCit->second.begin(); PCit != TPCit->second.end(); ++PCit)
+    {
+      std::cout << "Package " << PCit->second.ID << std::endl;
+
+      for (APit = PCit->second.AvailablePackages.begin(); APit != PCit->second.AvailablePackages.end(); ++APit)
+      {
+        std::cout << "\t" << selectionTypeToString(APit->first) << std::endl;
+
+        // dependencies
+        if (APit->first == MetaPackageInfo::FLUIDX)
+        {
+          PackageInfo::Dependencies_t::const_iterator DMit;
+          std::list<openfluid::ware::WareID_t>::const_iterator DLit;
+          std::cout << "\tDependencies : " << std::endl;
+
+          for (DMit = APit->second.Dependencies.begin(); DMit != APit->second.Dependencies.end(); ++DMit)
+          {
+            std::cout << "\t\t" << getTypeName(DMit->first,true,false) << std::endl;
+            for (DLit = DMit->second.begin(); DLit != DMit->second.end(); ++DLit)
+            {
+              std::cout << "\t\t\t" << *DLit << std::endl;
+            }
+          }
+
+        }
+      }
+
+      std::cout << std::endl;
+    }
+
+    std::cout << "\n#####################\n";
+  }
+}
+*/
 
 } } // namespaces
