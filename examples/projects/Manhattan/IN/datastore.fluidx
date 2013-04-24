@@ -1,0 +1,9 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <datastore>
+    <dataitem id="Manhattan_RU" type="geovector" source="manhattan.shp" unitclass="RU" />
+  </datastore>
+
+
+</openfluid>
+

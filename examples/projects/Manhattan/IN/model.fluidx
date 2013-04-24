@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <model>
+  <function ID="examples.trafficlight.state">
+  </function>
+  <function ID="examples.road.traffic">
+  </function>
+ </model>
+
+
+</openfluid>
+
