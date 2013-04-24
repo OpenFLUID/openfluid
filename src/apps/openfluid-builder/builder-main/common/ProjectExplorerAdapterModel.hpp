@@ -81,13 +81,9 @@ class ProjectExplorerAdapterModel
 
     virtual void updateAll() = 0;
 
-    virtual void updateModel() = 0;
-
     virtual void updateDomain() = 0;
 
     virtual void updateRunInfo() = 0;
-
-    virtual void updateMonitoringInfo() = 0;
 
     virtual void setActivated(Gtk::TreePath Path) = 0;
 
@@ -142,13 +138,9 @@ class ProjectExplorerAdapterModelImpl: public ProjectExplorerAdapterModel
 
     void updateAll();
 
-    void updateModel();
-
     void updateDomain();
 
     void updateRunInfo();
-
-    void updateMonitoringInfo();
 
     Glib::RefPtr<Gtk::TreeModel> getTreeModel();
 

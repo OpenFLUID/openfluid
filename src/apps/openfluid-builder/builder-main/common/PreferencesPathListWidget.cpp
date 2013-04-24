@@ -60,7 +60,7 @@
 #include <gtkmm/filechooserdialog.h>
 #include <gtkmm/stock.h>
 
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 
 #include <iostream>
 
@@ -96,7 +96,7 @@ PreferencesPathListWidget::PreferencesPathListWidget()
   mp_PreDefinedTreeView->set_headers_visible(false);
   mp_PreDefinedTreeView->set_visible(true);
 
-  mp_ToolBox = new BuilderListToolBoxImpl();
+  mp_ToolBox = new BuilderListButtonBox();
   mp_ToolBox->setAllCommandVisible();
   mp_ToolBox->setEditCommandVisible(false);
 

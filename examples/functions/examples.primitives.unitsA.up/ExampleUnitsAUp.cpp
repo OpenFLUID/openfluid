@@ -86,7 +86,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
       m_Mult = 1.0;
-      OPENFLUID_GetFunctionParameter(Params,"gmult",&m_Mult);
+      OPENFLUID_GetFunctionParameter(Params,"gmult",m_Mult);
     }
 
 
@@ -152,7 +152,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableFunction
         {
           OPENFLUID_GetVariable(A,"var2",CurrentTimeIndex,Value2);
           Value2 = Value2 * m_Mult;
-          OPENFLUID_SetVariable(A,"var2",CurrentTimeIndex,Value2);
+          OPENFLUID_SetVariable(A,"var2",Value2);
         }
         else
         {

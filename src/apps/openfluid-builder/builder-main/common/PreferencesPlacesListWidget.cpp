@@ -59,7 +59,7 @@
 #include <gtkmm/label.h>
 #include <gtkmm/stock.h>
 
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
 // =====================================================================
@@ -75,7 +75,7 @@ PreferencesPlacesListWidget::PreferencesPlacesListWidget()
   mp_PlacesTreeView->append_column("URL", m_PlacesColumns.m_Path);
   mp_PlacesTreeView->set_visible(true);
 
-  mp_ToolBox = new BuilderListToolBoxImpl();
+  mp_ToolBox = new BuilderListButtonBox();
   mp_ToolBox->setAddCommandVisible();
   mp_ToolBox->setRemoveCommandVisible();
 

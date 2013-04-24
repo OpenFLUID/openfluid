@@ -108,7 +108,7 @@ MonitoringAddObserverDialog::~MonitoringAddObserverDialog()
 // =====================================================================
 // =====================================================================
 
-std::set<std::string> MonitoringAddObserverDialog::show()
+bool MonitoringAddObserverDialog::show()
 {
   init();
 
@@ -121,7 +121,7 @@ std::set<std::string> MonitoringAddObserverDialog::show()
 
   mp_Dialog->hide();
 
-  return m_SelectedIDs;
+  return mp_TreeView->get_selection()->count_selected_rows();
 }
 
 // =====================================================================
@@ -129,8 +129,6 @@ std::set<std::string> MonitoringAddObserverDialog::show()
 
 void MonitoringAddObserverDialog::init()
 {
-  m_SelectedIDs.clear();
-
   mref_ListStore->clear();
 
   std::vector<openfluid::machine::ObserverSignatureInstance*> Unused =
@@ -167,7 +165,7 @@ void MonitoringAddObserverDialog::selected_row_callback(
     const Gtk::TreeModel::iterator& Iter)
 {
   Gtk::TreeModel::Row Row = *Iter;
-  m_SelectedIDs.insert(Row[m_Columns.m_Id]);
+  m_Monit.addToObserverList(Row[m_Columns.m_Id]);
 }
 
 // =====================================================================

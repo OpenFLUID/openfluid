@@ -102,7 +102,7 @@ class DLLEXPORT OFException : public std::exception
               std::stringstream StrStream;
               StrStream << m_TimeStep;
 
-              m_FullMsg = m_FullMsg + ", at time step #" + StrStream.str();
+              m_FullMsg = m_FullMsg + ", at time index #" + StrStream.str();
             }
 
             m_FullMsg = m_FullMsg + ")";

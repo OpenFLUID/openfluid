@@ -63,7 +63,7 @@
 #include <gtkmm/dialog.h>
 #include <gtkmm/table.h>
 
-class BuilderListToolBox;
+class BuilderButtonBox;
 
 class PreferencesPlacesListWidget
 {
@@ -91,7 +91,7 @@ class PreferencesPlacesListWidget
 
     Gtk::TreeView* mp_PlacesTreeView;
 
-    BuilderListToolBox* mp_ToolBox;
+    BuilderButtonBox* mp_ToolBox;
 
     Gtk::Dialog* mp_AddPlaceDialog;
     Gtk::Label* mp_InfoBarLabel;

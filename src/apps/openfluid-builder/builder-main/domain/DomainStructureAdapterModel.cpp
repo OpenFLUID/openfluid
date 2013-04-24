@@ -54,8 +54,6 @@
 
 #include "DomainStructureAdapterModel.hpp"
 
-#include <boost/foreach.hpp>
-
 #include <openfluid/fluidx/UnitDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 

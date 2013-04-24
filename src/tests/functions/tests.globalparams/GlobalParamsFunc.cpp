@@ -127,28 +127,28 @@ class GlobalParamsFunction : public openfluid::ware::PluggableFunction
     for (itParams=Params.begin();itParams!=Params.end();++itParams)
       std::cout << (*itParams).first << " -> " << (*itParams).second.data() << std::endl;
 
-    if (!OPENFLUID_GetFunctionParameter(Params,"gparam1",&LongParam))
+    if (!OPENFLUID_GetFunctionParameter(Params,"gparam1",LongParam))
       OPENFLUID_RaiseError("tests.globalparams","gparam1 not found");
 
     if (LongParam != 1)
       OPENFLUID_RaiseError("tests.globalparams","wrong value for gparam1");
 
 
-    if (!OPENFLUID_GetFunctionParameter(Params,"lparam1",&LongParam))
+    if (!OPENFLUID_GetFunctionParameter(Params,"lparam1",LongParam))
       OPENFLUID_RaiseError("tests.globalparams","lparam1 not found");
 
     if (LongParam != 100)
       OPENFLUID_RaiseError("tests.globalparams","wrong value for lparam1");
 
 
-    if (!OPENFLUID_GetFunctionParameter(Params,"gparam2",&StrParam))
+    if (!OPENFLUID_GetFunctionParameter(Params,"gparam2",StrParam))
       OPENFLUID_RaiseError("tests.globalparams","gparam2 not found");
 
     if (StrParam != "nineteen")
       OPENFLUID_RaiseError("tests.globalparams","wrong value for gparam2");
 
 
-    if (!OPENFLUID_GetFunctionParameter(Params,"gparam3",&DoubleParam))
+    if (!OPENFLUID_GetFunctionParameter(Params,"gparam3",DoubleParam))
       OPENFLUID_RaiseError("tests.globalparams","gparam3 not found");
 
     if (!openfluid::tools::IsCloseEnough(DoubleParam,0.1,0.00001))

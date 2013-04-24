@@ -64,7 +64,7 @@
 
 #include "DomainClassCoordinator.hpp"
 #include "BuilderListToolBoxFactory.hpp"
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 
 #include "BuilderFrame.hpp"
 

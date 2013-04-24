@@ -231,3 +231,110 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 // =====================================================================
 // =====================================================================
+
+// =====================================================================
+// =====================================================================
+
+class ModelInstanceSub: public openfluid::machine::ModelInstance
+{
+  public:
+
+    ModelInstanceSub(openfluid::machine::SimulationBlob& SimulationBlob,
+                     openfluid::machine::MachineListener* Listener) :
+                       ModelInstance(SimulationBlob, Listener)
+  {
+  }
+
+    openfluid::ware::WareParams_t mergeParamsWithGlobalParams(
+        const openfluid::ware::WareParams_t& Params)
+    {
+      return ModelInstance::mergeParamsWithGlobalParams(Params);
+    }
+
+};
+
+BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
+{
+  openfluid::machine::SimulationBlob SB;
+
+  ModelInstanceSub MI(SB, NULL);
+
+  openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();
+  MII->Body = (openfluid::ware::PluggableFunction*) (new FuncA());
+  MII->Signature = new openfluid::ware::FunctionSignature();
+  MII->Signature->HandledData.FunctionParams.push_back(
+      *new openfluid::ware::SignatureHandledDataItem("A1", "unitsA", "", ""));
+  MII->Signature->HandledData.FunctionParams.push_back(
+      *new openfluid::ware::SignatureHandledDataItem("B1.C1", "unitsA", "", ""));
+  MII->Signature->HandledData.FunctionParams.push_back(
+      *new openfluid::ware::SignatureHandledDataItem("D1.E1.F1", "unitsA", "", ""));
+
+  MI.appendItem(MII);
+
+  openfluid::ware::WareParams_t InParams;
+
+  std::map<std::string, std::string> OutParams = openfluid::fluidx::WareDescriptor::getParamsAsMap(MI.mergeParamsWithGlobalParams(InParams));
+  BOOST_CHECK(OutParams.empty());
+
+  // local doesn't exist - global set -> take global
+  MI.setGlobalParameter("A1","A1global");
+  MI.setGlobalParameter("B1.C1","B1.C1global");
+  MI.setGlobalParameter("D1.E1.F1","D1.E1.F1global");
+  OutParams = openfluid::fluidx::WareDescriptor::getParamsAsMap(MI.mergeParamsWithGlobalParams(InParams));
+  BOOST_CHECK_EQUAL(OutParams.size(),3);
+  BOOST_CHECK_EQUAL(OutParams["A1"],"A1global");
+  BOOST_CHECK_EQUAL(OutParams["B1.C1"],"B1.C1global");
+  BOOST_CHECK_EQUAL(OutParams["D1.E1.F1"],"D1.E1.F1global");
+
+  // local set - global set -> take local
+  InParams.put("A1","A1local");
+  InParams.put("B1.C1","B1.C1local");
+  InParams.put("D1.E1.F1","D1.E1.F1local");
+  OutParams = openfluid::fluidx::WareDescriptor::getParamsAsMap(MI.mergeParamsWithGlobalParams(InParams));
+  BOOST_CHECK_EQUAL(OutParams.size(),3);
+  BOOST_CHECK_EQUAL(OutParams["A1"],"A1local");
+  BOOST_CHECK_EQUAL(OutParams["B1.C1"],"B1.C1local");
+  BOOST_CHECK_EQUAL(OutParams["D1.E1.F1"],"D1.E1.F1local");
+
+  // local set empty - global set -> take global
+  InParams.put("A1","");
+  InParams.put("B1.C1","");
+  InParams.put("D1.E1.F1","");
+  OutParams = openfluid::fluidx::WareDescriptor::getParamsAsMap(MI.mergeParamsWithGlobalParams(InParams));
+  BOOST_CHECK_EQUAL(OutParams.size(),3);
+  BOOST_CHECK_EQUAL(OutParams["A1"],"A1global");
+  BOOST_CHECK_EQUAL(OutParams["B1.C1"],"B1.C1global");
+  BOOST_CHECK_EQUAL(OutParams["D1.E1.F1"],"D1.E1.F1global");
+
+  openfluid::ware::WareParams_t EmptyParams;
+
+  // local set empty - global doesn't exist -> take local (empty)
+  MI.setGlobalParameters(EmptyParams);
+  OutParams = openfluid::fluidx::WareDescriptor::getParamsAsMap(MI.mergeParamsWithGlobalParams(InParams));
+  BOOST_CHECK_EQUAL(OutParams.size(),3);
+  BOOST_CHECK_EQUAL(OutParams["A1"],"");
+  BOOST_CHECK_EQUAL(OutParams["B1.C1"],"");
+  BOOST_CHECK_EQUAL(OutParams["D1.E1.F1"],"");
+
+  // local set - global doesn't exist -> take local
+  InParams.put("A1","A1local");
+  InParams.put("B1.C1","B1.C1local");
+  InParams.put("D1.E1.F1","D1.E1.F1local");
+  OutParams = openfluid::fluidx::WareDescriptor::getParamsAsMap(MI.mergeParamsWithGlobalParams(InParams));
+  BOOST_CHECK_EQUAL(OutParams.size(),3);
+  BOOST_CHECK_EQUAL(OutParams["A1"],"A1local");
+  BOOST_CHECK_EQUAL(OutParams["B1.C1"],"B1.C1local");
+  BOOST_CHECK_EQUAL(OutParams["D1.E1.F1"],"D1.E1.F1local");
+
+  // local set - global set -> take local
+  MI.setGlobalParameter("A1","A1global");
+  MI.setGlobalParameter("B1.C1","B1.C1global");
+  MI.setGlobalParameter("D1.E1.F1","D1.E1.F1global");
+  BOOST_CHECK_EQUAL(OutParams.size(),3);
+  BOOST_CHECK_EQUAL(OutParams["A1"],"A1local");
+  BOOST_CHECK_EQUAL(OutParams["B1.C1"],"B1.C1local");
+  BOOST_CHECK_EQUAL(OutParams["D1.E1.F1"],"D1.E1.F1local");
+}
+
+// =====================================================================
+// =====================================================================

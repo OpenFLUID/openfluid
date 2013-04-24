@@ -117,11 +117,11 @@ class AdvancedDomainDescriptor
 
     void dispatchIData();
 
-    void checkUnitRelations();
+    void checkUnitRelations() const;
 
-    void checkUnitRelations(openfluid::fluidx::UnitDescriptor& Unit);
+    void checkUnitRelations(openfluid::fluidx::UnitDescriptor& Unit) const;
 
-    void checkIDataConsistency();
+    void checkIDataConsistency() const;
 
     void dispatchEvents();
 
@@ -135,7 +135,7 @@ class AdvancedDomainDescriptor
      *
      * @return May return an empty map. Never throws.
      */
-    const std::map<std::string, std::map<int, BuilderUnit> >& getUnitsByIdByClass();
+    const std::map<std::string, std::map<int, BuilderUnit> >& getUnitsByIdByClass() const;
 
     /**
      * @throw openfluid::base::OFException if Unit doesn't exist
@@ -143,7 +143,7 @@ class AdvancedDomainDescriptor
      * @param ID
      * @return
      */
-    const BuilderUnit& getUnit(std::string ClassName, int ID);
+    const BuilderUnit& getUnit(std::string ClassName, int ID) const;
 
     /**
      * @throw openfluid::base::OFException if Unit doesn't exist
@@ -152,22 +152,22 @@ class AdvancedDomainDescriptor
      * @return
      */
     const openfluid::fluidx::UnitDescriptor& getUnitDescriptor(
-        std::string ClassName, int ID);
+        std::string ClassName, int ID) const;
 
     /**
      *
      * @param ClassName
      * @return An empty set if ClassName doesn't exist. Never throws.
      */
-    std::set<int> getIDsOfClass(std::string ClassName);
+    std::set<int> getIDsOfClass(std::string ClassName) const;
 
-    bool isClassNameExists(std::string ClassName);
+    bool isClassNameExists(std::string ClassName) const;
 
     /**
      *
      * @return May return an empty set. Never throws.
      */
-    std::set<std::string> getClassNames();
+    std::set<std::string> getClassNames() const;
 
     /**
      * @details Add this UnitDesc ID to the IData descriptor for all input data of this UnitDesc class,
@@ -201,7 +201,7 @@ class AdvancedDomainDescriptor
      * @param ClassName
      * @return An empty set if ClassName doesn't exist or has no InputData. Never throws.
      */
-    std::set<std::string> getInputDataNames(std::string ClassName);
+    std::set<std::string> getInputDataNames(std::string ClassName) const;
 
     /**
      * @throw openfluid::base::OFException if ClassName doesn't exist
@@ -233,13 +233,13 @@ class AdvancedDomainDescriptor
                          std::string NewIDataName);
 
     const std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(
-        const openfluid::core::UnitClassID_t Unit);
+        const openfluid::core::UnitClassID_t Unit) const;
     const std::list<openfluid::core::UnitClassID_t>& getUnitsParentsOf(
-        const openfluid::core::UnitClassID_t Unit);
+        const openfluid::core::UnitClassID_t Unit) const;
     std::list<openfluid::core::UnitClassID_t> getUnitsFromOf(
-        const openfluid::core::UnitClassID_t Unit);
+        const openfluid::core::UnitClassID_t Unit) const;
     std::list<openfluid::core::UnitClassID_t> getUnitsChildrenOf(
-        const openfluid::core::UnitClassID_t Unit);
+        const openfluid::core::UnitClassID_t Unit) const;
 
     /**
      * @brief Add ToUnit to the list of "Tos" of FromUnit

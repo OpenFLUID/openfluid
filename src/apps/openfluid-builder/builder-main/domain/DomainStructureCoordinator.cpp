@@ -59,7 +59,7 @@
 #include "DomainStructureModel.hpp"
 #include "DomainUnitAddEditDialog.hpp"
 
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -138,7 +138,7 @@ void DomainStructureCoordinator::whenStructureSelectionChanged()
 DomainStructureCoordinator::DomainStructureCoordinator(
     DomainStructureModel& StructureModel,
     DomainUnitAddEditDialog& UnitAddEditDialog,
-    BuilderListToolBox& StructureListToolBox) :
+    BuilderButtonBox& StructureListToolBox) :
     m_StructureModel(StructureModel), m_UnitAddEditDialog(UnitAddEditDialog), m_StructureListToolBox(
         StructureListToolBox)
 {

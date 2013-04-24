@@ -73,8 +73,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
   bool BoolValue;
   std::string StrValue;
 
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakebool",&BoolValue),false);
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakestring",&StrValue),false);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakebool",BoolValue),false);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakestring",StrValue),false);
 
 }
 
@@ -90,34 +90,34 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
   BOOST_REQUIRE_EQUAL(FuncEnv.setValue("bool1",true),true);
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool1",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool1",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,true);
 
   BOOST_REQUIRE_EQUAL(FuncEnv.setValue("bool1",false),true);
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool1",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool1",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,false);
 
   BOOST_REQUIRE_EQUAL(FuncEnv.setValue("bool2",false),true);
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool2",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("bool2",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,false);
 
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakebool",&BoolValue),false);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakebool",BoolValue),false);
 
 
 
   BOOST_REQUIRE_EQUAL(FuncEnv.setValue("str1",std::string("first string")),true);
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str1",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str1",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,"first string");
 
   BOOST_REQUIRE_EQUAL(FuncEnv.setValue("str1",std::string("string one")),true);
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str1",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str1",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,"string one");
 
   BOOST_REQUIRE_EQUAL(FuncEnv.setValue("str2",std::string("string 2")),true);
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str2",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("str2",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,"string 2");
 
-  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakestring",&StrValue),false);
+  BOOST_REQUIRE_EQUAL(FuncEnv.getValue("fakestring",StrValue),false);
 
 }
 

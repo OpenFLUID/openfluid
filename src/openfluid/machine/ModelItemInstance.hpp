@@ -88,7 +88,6 @@ class DLLEXPORT ModelItemSignatureInstance : public WareSignatureInstance
 {
   public:
     openfluid::ware::FunctionSignature* Signature;
-    openfluid::fluidx::ModelItemDescriptor::ModelItemType ItemType;
     GeneratorExtraInfo* GeneratorInfo;
 
     ModelItemSignatureInstance();

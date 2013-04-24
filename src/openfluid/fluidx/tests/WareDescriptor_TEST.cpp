@@ -66,7 +66,106 @@
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_parameters)
+BOOST_AUTO_TEST_CASE(check_setParameters)
+{
+  //  <param1>
+  //    <level2A>
+  //      <level3A> var12A3A </level3A>
+  //      <level3B> var12A3B </level3B>
+  //    </level2A>
+  //    <level2B>
+  //      <level3> var12B3 </level3>
+  //    </level2B>
+  //  </param1>
+  //  <param2> var2 </param2>
+  //  <param3>
+  //    <level2A> var32A </level2A>
+  //    <level2B> var32B </level2B>
+  //  </param3>
+  openfluid::fluidx::FunctionDescriptor FuncDesc("test1.id");
+  FuncDesc.setParameter("param1.level2A.level3A", "var12A3A");
+  FuncDesc.setParameter("param2", "var2");
+  FuncDesc.setParameter("param3.level2A", "var32A");
+  FuncDesc.setParameter("param3.level2B", "var32B");
+  FuncDesc.setParameter("param1.level2B.level3", "var12B3");
+  FuncDesc.setParameter("param1.level2A.level3B", "var12A3B");
+
+  BOOST_CHECK_EQUAL(FuncDesc.getParameters().size(), 3);
+
+  std::map<std::string, std::string> Params = FuncDesc.getParametersAsMap();
+
+  BOOST_CHECK_EQUAL(Params.size(), 6);
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3A"], "var12A3A");
+  BOOST_CHECK_EQUAL(Params["param2"], "var2");
+  BOOST_CHECK_EQUAL(Params["param3.level2A"], "var32A");
+  BOOST_CHECK_EQUAL(Params["param3.level2B"], "var32B");
+  BOOST_CHECK_EQUAL(Params["param1.level2B.level3"], "var12B3");
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
+
+  FuncDesc.setParameter("param2", "NewVal2");
+
+  Params = FuncDesc.getParametersAsMap();
+
+  BOOST_CHECK_EQUAL(Params.size(), 6);
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3A"], "var12A3A");
+  BOOST_CHECK_EQUAL(Params["param2"], "NewVal2");
+  BOOST_CHECK_EQUAL(Params["param3.level2A"], "var32A");
+  BOOST_CHECK_EQUAL(Params["param3.level2B"], "var32B");
+  BOOST_CHECK_EQUAL(Params["param1.level2B.level3"], "var12B3");
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
+
+  FuncDesc.setParameter("param1.level2B.level3", "NewVal123");
+
+  Params = FuncDesc.getParametersAsMap();
+
+  BOOST_CHECK_EQUAL(Params.size(), 6);
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3A"], "var12A3A");
+  BOOST_CHECK_EQUAL(Params["param2"], "NewVal2");
+  BOOST_CHECK_EQUAL(Params["param3.level2A"], "var32A");
+  BOOST_CHECK_EQUAL(Params["param3.level2B"], "var32B");
+  BOOST_CHECK_EQUAL(Params["param1.level2B.level3"], "NewVal123");
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
+
+  //does nothing
+  FuncDesc.setParameter("", "AVal");
+  BOOST_CHECK(!FuncDesc.hasParameter(""));
+
+  Params = FuncDesc.getParametersAsMap();
+
+  BOOST_CHECK_EQUAL(Params.size(), 6);
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3A"], "var12A3A");
+  BOOST_CHECK_EQUAL(Params["param2"], "NewVal2");
+  BOOST_CHECK_EQUAL(Params["param3.level2A"], "var32A");
+  BOOST_CHECK_EQUAL(Params["param3.level2B"], "var32B");
+  BOOST_CHECK_EQUAL(Params["param1.level2B.level3"], "NewVal123");
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
+
+  // set a param name of a level that has already a value -> doesn't respect xml rules
+  BOOST_CHECK(!FuncDesc.isInsertable("param2.level2"));
+  FuncDesc.setParameter("param2.level2", "AVal");
+
+  BOOST_CHECK_EQUAL(FuncDesc.getParameters().get<std::string>("param2.level2"),
+                    "AVal");
+  BOOST_CHECK_EQUAL(FuncDesc.getParameters().get<std::string>("param2"),
+                    "NewVal2");
+
+  Params = FuncDesc.getParametersAsMap();
+
+  BOOST_CHECK_EQUAL(Params.size(), 6);
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3A"], "var12A3A");
+  BOOST_CHECK(!Params.count("param2"));
+  // cannot be retrieve with getParametersAsMap because doesn't match xml rules
+  BOOST_CHECK_EQUAL(Params["param2.level2"], "AVal");
+  BOOST_CHECK_EQUAL(Params["param3.level2A"], "var32A");
+  BOOST_CHECK_EQUAL(Params["param3.level2B"], "var32B");
+  BOOST_CHECK_EQUAL(Params["param1.level2B.level3"], "NewVal123");
+  BOOST_CHECK_EQUAL(Params["param1.level2A.level3B"], "var12A3B");
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_eraseParameters)
 {
   //  <param1>
   //    <level2A>
@@ -183,9 +282,135 @@ BOOST_AUTO_TEST_CASE(check_parameters)
   BOOST_CHECK(!Params.count("param1.level2B"));
   BOOST_CHECK(!Params.count("param1.level2A.level3B"));
 
+  // does nothing
+  FuncDesc.eraseParameter("");
+  Params = FuncDesc.getParametersAsMap();
+
+  BOOST_CHECK_EQUAL(Params.size(), 1);
+  BOOST_CHECK(!Params.count("param1.level2A.level3A"));
+  BOOST_CHECK(!Params.count("param2"));
+  BOOST_CHECK_EQUAL(Params["param3.level2A"], "var32A");
+  BOOST_CHECK(!Params.count("param3.level2B"));
+  BOOST_CHECK(!Params.count("param1.level2B.level3"));
+  BOOST_CHECK(!Params.count("param1.level2B"));
+  BOOST_CHECK(!Params.count("param1.level2A.level3B"));
+
+  // does nothing
+  FuncDesc.eraseParameter("wrongId");
+  Params = FuncDesc.getParametersAsMap();
+
+  BOOST_CHECK_EQUAL(Params.size(), 1);
+  BOOST_CHECK(!Params.count("param1.level2A.level3A"));
+  BOOST_CHECK(!Params.count("param2"));
+  BOOST_CHECK_EQUAL(Params["param3.level2A"], "var32A");
+  BOOST_CHECK(!Params.count("param3.level2B"));
+  BOOST_CHECK(!Params.count("param1.level2B.level3"));
+  BOOST_CHECK(!Params.count("param1.level2B"));
+  BOOST_CHECK(!Params.count("param1.level2A.level3B"));
+
   //  empty
   FuncDesc.eraseParameter("param3.level2A");
   Params = FuncDesc.getParametersAsMap();
 
   BOOST_CHECK(Params.empty());
 }
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_hasParameter)
+{
+  //  <param1>
+  //    <level2A>
+  //      <level3A> var12A3A </level3A>
+  //      <level3B> var12A3B </level3B>
+  //    </level2A>
+  //    <level2B>
+  //      <level3> var12B3 </level3>
+  //    </level2B>
+  //  </param1>
+  //  <param2> var2 </param2>
+  //  <param3>
+  //    <level2A> var32A </level2A>
+  //    <level2B> var32B </level2B>
+  //  </param3>
+  openfluid::fluidx::FunctionDescriptor FuncDesc("test1.id");
+
+  FuncDesc.setParameter("param1.level2A.level3A", "var12A3A");
+  FuncDesc.setParameter("param2", "var2");
+  FuncDesc.setParameter("param3.level2A", "var32A");
+  FuncDesc.setParameter("param3.level2B", "var32B");
+  FuncDesc.setParameter("param1.level2B.level3", "var12B3");
+  FuncDesc.setParameter("param1.level2A.level3B", "var12A3B");
+
+  BOOST_CHECK(FuncDesc.hasParameter("param1.level2A.level3A"));
+  BOOST_CHECK(FuncDesc.hasParameter("param2"));
+  BOOST_CHECK(FuncDesc.hasParameter("param3.level2A"));
+  BOOST_CHECK(FuncDesc.hasParameter("param3.level2B"));
+  BOOST_CHECK(FuncDesc.hasParameter("param1.level2B.level3"));
+  BOOST_CHECK(FuncDesc.hasParameter("param1.level2A.level3B"));
+
+  BOOST_CHECK(!FuncDesc.hasParameter("param1.level2A.level3A.wrong"));
+  BOOST_CHECK(!FuncDesc.hasParameter("param1.level2A.wrong"));
+  BOOST_CHECK(!FuncDesc.hasParameter("param1.level2A"));
+  BOOST_CHECK(!FuncDesc.hasParameter("param1.wrong"));
+  BOOST_CHECK(!FuncDesc.hasParameter("param1"));
+  BOOST_CHECK(!FuncDesc.hasParameter("wrong"));
+  BOOST_CHECK(!FuncDesc.hasParameter("wrong1.wrong2"));
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_isInsertable)
+{
+  //  <param1>
+  //    <level2A>
+  //      <level3A> var12A3A </level3A>
+  //      <level3B> var12A3B </level3B>
+  //    </level2A>
+  //    <level2B>
+  //      <level3> var12B3 </level3>
+  //    </level2B>
+  //  </param1>
+  //  <param2> var2 </param2>
+  //  <param3>
+  //    <level2A> var32A </level2A>
+  //    <level2B> var32B </level2B>
+  //  </param3>
+  openfluid::fluidx::FunctionDescriptor FuncDesc("test1.id");
+
+  FuncDesc.setParameter("param1.level2A.level3A", "var12A3A");
+  FuncDesc.setParameter("param2", "var2");
+  FuncDesc.setParameter("param3.level2A", "var32A");
+  FuncDesc.setParameter("param3.level2B", "var32B");
+  FuncDesc.setParameter("param1.level2B.level3", "var12B3");
+  FuncDesc.setParameter("param1.level2A.level3B", "var12A3B");
+
+  BOOST_CHECK(FuncDesc.isInsertable("param1.level2A.level3A"));
+  BOOST_CHECK(FuncDesc.isInsertable("param2"));
+  BOOST_CHECK(FuncDesc.isInsertable("param3.level2A"));
+  BOOST_CHECK(FuncDesc.isInsertable("param3.level2B"));
+  BOOST_CHECK(FuncDesc.isInsertable("param1.level2B.level3"));
+  BOOST_CHECK(FuncDesc.isInsertable("param1.level2A.level3B"));
+
+  BOOST_CHECK(!FuncDesc.isInsertable("param1.level2A"));
+  BOOST_CHECK(!FuncDesc.isInsertable("param1.level2B"));
+  BOOST_CHECK(!FuncDesc.isInsertable("param1"));
+  BOOST_CHECK(!FuncDesc.isInsertable("param3"));
+  BOOST_CHECK(!FuncDesc.isInsertable("param1.level2A.level3A.new"));
+
+  BOOST_CHECK(FuncDesc.isInsertable("param1.level2A.new"));
+  BOOST_CHECK(FuncDesc.isInsertable("param1.new"));
+  BOOST_CHECK(FuncDesc.isInsertable("new"));
+  BOOST_CHECK(FuncDesc.isInsertable("new1.new2"));
+
+  BOOST_CHECK(!FuncDesc.isInsertable("param3.level2A."));
+  BOOST_CHECK(!FuncDesc.isInsertable("param2."));
+  BOOST_CHECK(!FuncDesc.isInsertable("."));
+  BOOST_CHECK(!FuncDesc.isInsertable("new1."));
+}
+
+// =====================================================================
+// =====================================================================
+

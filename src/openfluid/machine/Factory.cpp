@@ -99,8 +99,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
   {
     CoreRepos.addUnit(openfluid::core::Unit((*itUnits).getUnitClass(),
                                                (*itUnits).getUnitID(),
-                                               (*itUnits).getProcessOrder(),
-                                               openfluid::core::InstantiationInfo::DESCRIPTOR));
+                                               (*itUnits).getProcessOrder()));
   }
 
   // linking to units
@@ -194,7 +193,6 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
 
     if (EventUnit != NULL)
     {
-      ((*itEvent).getEvent()).setInstantiationType(openfluid::core::InstantiationInfo::DESCRIPTOR);
       EventUnit->getEvents()->addEvent((*itEvent).getEvent());
     }
 
@@ -243,7 +241,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
   for (it=ModelDesc.getItems().begin();it!=ModelDesc.getItems().end();++it)
   {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoModelItemType))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
       throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
 
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))

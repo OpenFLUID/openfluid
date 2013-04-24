@@ -77,9 +77,20 @@
 BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::core::ValuesBuffer VBuffer;
+  openfluid::core::IndexedValue IValue;
+  openfluid::core::IndexedValueList IValueList;
+
+  BOOST_REQUIRE_EQUAL(IValue.getIndex(),0);
+  BOOST_REQUIRE(IValue.getValue()->isNullValue());
 
   BOOST_REQUIRE_EQUAL(VBuffer.getValuesCount(),0);
   BOOST_REQUIRE_EQUAL(VBuffer.getCurrentIndex(),-1);
+  BOOST_REQUIRE_EQUAL(VBuffer.getLatestIndexedValue(IValue),false);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getLatestIndexedValues(0,IValueList),false);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getIndexedValues(1,2,IValueList),false);
+
 }
 
 // =====================================================================
@@ -91,8 +102,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::core::ValuesBufferProperties::setBufferSize(5);
   openfluid::core::ValuesBuffer VBuffer;
   openfluid::core::DoubleValue Value;
+  openfluid::core::IndexedValue IValue;
+  openfluid::core::IndexedValueList IValueList;
 
   BOOST_REQUIRE_EQUAL(VBuffer.getValuesCount(),0);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyCurrentValue(openfluid::core::DoubleValue(1.1)),false);
 
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(0,openfluid::core::DoubleValue(1.1)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(1,openfluid::core::DoubleValue(2.2)),true);
@@ -102,6 +117,44 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   BOOST_REQUIRE_EQUAL(VBuffer.getValue(2,&Value),true);
   BOOST_REQUIRE_CLOSE(Value.get(),3.3,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getLatestIndexedValue(IValue),true);
+  BOOST_REQUIRE_EQUAL(IValue.getIndex(),2);
+  BOOST_REQUIRE_CLOSE(IValue.getValue()->asDoubleValue().get(),3.3,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getLatestIndexedValues(1,IValueList),true);
+  BOOST_REQUIRE_EQUAL(IValueList.size(),2);
+  BOOST_REQUIRE_CLOSE(IValueList.front().getValue()->asDoubleValue().get(),2.2,0.001);
+  BOOST_REQUIRE_CLOSE(IValueList.back().getValue()->asDoubleValue().get(),3.3,0.001);
+
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getLatestIndexedValues(2,IValueList),true);
+  BOOST_REQUIRE_EQUAL(IValueList.size(),1);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getLatestIndexedValues(3,IValueList),true);
+  BOOST_REQUIRE_EQUAL(IValueList.size(),0);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getLatestIndexedValues(0,IValueList),true);
+  BOOST_REQUIRE_EQUAL(IValueList.size(),3);
+
+
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getIndexedValues(1,2,IValueList),true);
+  BOOST_REQUIRE_EQUAL(IValueList.size(),2);
+  BOOST_REQUIRE_CLOSE(IValueList.front().getValue()->asDoubleValue().get(),2.2,0.001);
+  BOOST_REQUIRE_CLOSE(IValueList.back().getValue()->asDoubleValue().get(),3.3,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getIndexedValues(2,1,IValueList),false);
+  BOOST_REQUIRE_EQUAL(IValueList.size(),0);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getIndexedValues(0,2,IValueList),true);
+  BOOST_REQUIRE_EQUAL(IValueList.size(),3);
+  BOOST_REQUIRE_CLOSE(IValueList.front().getValue()->asDoubleValue().get(),1.1,0.001);
+  BOOST_REQUIRE_CLOSE(IValueList.back().getValue()->asDoubleValue().get(),3.3,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.getIndexedValues(5,18,IValueList),true);
+  BOOST_REQUIRE_EQUAL(IValueList.size(),0);
+
 
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(3,openfluid::core::DoubleValue(4.4)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.appendValue(4,openfluid::core::DoubleValue(5.5)),true);
@@ -127,6 +180,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(3,openfluid::core::DoubleValue(44.0)),true);
   BOOST_REQUIRE_EQUAL(VBuffer.getValue(3,&Value),true);
   BOOST_REQUIRE_CLOSE(Value.get(),44.0,0.001);
+
+
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyValue(6,openfluid::core::DoubleValue(77.0)),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(6,&Value),true);
+  BOOST_REQUIRE_CLOSE(Value.get(),77.0,0.001);
+
+  BOOST_REQUIRE_EQUAL(VBuffer.modifyCurrentValue(openfluid::core::DoubleValue(7.7)),true);
+  BOOST_REQUIRE_EQUAL(VBuffer.getValue(6,&Value),true);
+  BOOST_REQUIRE_CLOSE(Value.get(),7.7,0.001);
 
 
 /*  BOOST_REQUIRE_EQUAL(VBuffer.deleteValues(3),true);

@@ -56,3 +56,7 @@ HTML_OUTPUT            = html
 SEARCHENGINE		   = YES
 SERVER_BASED_SEARCH    = NO
 
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_DOC_ERROR      = YES
+

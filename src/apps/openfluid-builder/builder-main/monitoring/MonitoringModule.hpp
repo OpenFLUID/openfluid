@@ -59,30 +59,43 @@
 
 #include <gtkmm/box.h>
 
-class MonitoringComponent;
-class MonitoringCoordinator;
+namespace openfluid {
+namespace machine {
+class ObserverSignatureInstance;
+}
+}
+
+class WareSetWidget;
 class MonitoringAddObserverDialog;
-class MonitoringEditParamsDialog;
+class ObserverAddParamDialog;
 
 class MonitoringModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
 
+    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monit;
+
     Gtk::Box* mp_MainPanel;
-
-  protected:
-
-    MonitoringComponent* mp_MonitoringMVP;
 
     MonitoringAddObserverDialog* mp_AddDialog;
 
-    MonitoringEditParamsDialog* mp_ParamsDialog;
+    ObserverAddParamDialog* mp_AddParamDialog;
 
-    MonitoringCoordinator* mp_Coordinator;
+    void whenAddObserverAsked();
+
+    void onMonitoringChanged();
 
     sigc::signal<void> m_signal_MonitoringChanged;
 
-    void whenMonitoringChanged();
+  protected:
+
+    WareSetWidget* mp_MonitoringWidget;
+
+    void whenRemoveObserverAsked(std::string ID);
+
+    void whenUpAsked(std::string ID);
+
+    void whenDownAsked(std::string ID);
 
   public:
 

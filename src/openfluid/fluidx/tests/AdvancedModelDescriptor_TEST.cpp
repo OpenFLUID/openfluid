@@ -69,14 +69,32 @@
 // =====================================================================
 // =====================================================================
 
-class AdvancedModelDescriptorSub : public openfluid::fluidx::AdvancedModelDescriptor
+class AdvancedModelDescriptorSub: public openfluid::fluidx::AdvancedModelDescriptor
 {
   public:
 
-  AdvancedModelDescriptorSub(openfluid::fluidx::CoupledModelDescriptor& ModelDesc):
-    openfluid::fluidx::AdvancedModelDescriptor()
-  {mp_ModelDesc = &ModelDesc;};
+    AdvancedModelDescriptorSub(
+        openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
+        openfluid::fluidx::AdvancedModelDescriptor()
+    {
+      mp_ModelDesc = &ModelDesc;
+    }
+    ;
 };
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_duplicates)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
+
+  BOOST_CHECK_THROW(
+      openfluid::fluidx::AdvancedModelDescriptor(FXDesc.getModelDescriptor()),
+      openfluid::base::OFException);
+}
 
 // =====================================================================
 // =====================================================================
@@ -126,8 +144,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_THROW(Model.getItemAt(5), openfluid::base::OFException);
 
   BOOST_CHECK_EQUAL(
-      Model.getFirstItemIndex("tests.generator.interp.TU.genscalar"),
-      0);
+      Model.getFirstItemIndex("tests.generator.interp.TU.genscalar"), 0);
   BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.functionB"), 4);
   BOOST_CHECK_EQUAL(Model.getFirstItemIndex("tests.wrongfunction"), -1);
 

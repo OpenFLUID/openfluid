@@ -54,7 +54,6 @@
 
 #include "ProjectExplorerAdapterModel.hpp"
 
-#include <boost/foreach.hpp>
 #include <glibmm/i18n.h>
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
@@ -99,6 +98,14 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
   Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
   mp_DatastoreRowRef = mref_TreeModel->createRowRefFromIter(*Row);
 
+  // Monitoring
+  Row = *(mref_TreeModel->append());
+  Row[m_Columns.m_Id] = "";
+  Row[m_Columns.m_Display] = _("Monitoring");
+  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_MONITORING;
+  Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
+  mp_MonitoringRowRef = mref_TreeModel->createRowRefFromIter(*Row);
+
   // Simulation
   Row = *(mref_TreeModel->append());
   Row[m_Columns.m_Id] = "";
@@ -113,14 +120,6 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
   SubRow1[m_Columns.m_Display] = generateRunInfoStr("", "", 1);
   SubRow1[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_RUN;
   mp_RunInfoRowRef = mref_TreeModel->createRowRefFromIter(*SubRow1);
-
-  // Monitoring
-  Row = *(mref_TreeModel->append());
-  Row[m_Columns.m_Id] = "";
-  Row[m_Columns.m_Display] = _("Monitoring");
-  Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_MONITORING;
-  Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
-  mp_MonitoringRowRef = mref_TreeModel->createRowRefFromIter(*Row);
 
   // Output browser
   Row = *(mref_TreeModel->append());
@@ -162,34 +161,8 @@ void ProjectExplorerAdapterModelImpl::initialize()
 
 void ProjectExplorerAdapterModelImpl::updateAll()
 {
-  updateModel();
-
   updateDomain();
-
   updateRunInfo();
-
-  updateMonitoringInfo();
-}
-
-// =====================================================================
-// =====================================================================
-
-void ProjectExplorerAdapterModelImpl::updateModel()
-{
-  mref_TreeModel->clearChildrenOfRowRef(*mp_ModelRowRef);
-
-  std::vector<std::string> IDs = mp_AdvancedDesc->getModel().getOrderedIDs();
-
-  for (unsigned int i = 0; i < IDs.size(); i++)
-  {
-    Gtk::TreeRow Row = *(mref_TreeModel->appendToRowRef(*mp_ModelRowRef));
-
-    std::string ID = IDs[i];
-
-    Row[m_Columns.m_Id] = ID;
-    Row[m_Columns.m_Display] = ID;
-    Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_MODEL;
-  }
 }
 
 // =====================================================================
@@ -237,14 +210,6 @@ void ProjectExplorerAdapterModelImpl::updateRunInfo()
       mp_AdvancedDesc->getRunDescriptor().getBeginDate().getAsISOString(),
       mp_AdvancedDesc->getRunDescriptor().getEndDate().getAsISOString(),
       mp_AdvancedDesc->getRunDescriptor().getDeltaT());
-}
-
-// =====================================================================
-// =====================================================================
-
-void ProjectExplorerAdapterModelImpl::updateMonitoringInfo()
-{
-
 }
 
 // =====================================================================

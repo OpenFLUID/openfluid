@@ -74,11 +74,9 @@ GeneratorExtraInfo::GeneratorExtraInfo():
 
 
 ModelItemSignatureInstance::ModelItemSignatureInstance():
-  WareSignatureInstance(), Signature(NULL),
-  ItemType(openfluid::fluidx::ModelItemDescriptor::NoModelItemType),
-  GeneratorInfo(NULL)
+  WareSignatureInstance(), Signature(NULL), GeneratorInfo(NULL)
 {
-
+  ItemType = openfluid::fluidx::WareDescriptor::NoWareType;
 }
 
 

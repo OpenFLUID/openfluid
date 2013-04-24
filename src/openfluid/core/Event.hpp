@@ -60,7 +60,6 @@
 #include <openfluid/deprecation.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/InstantiationInfo.hpp>
 
 
 namespace openfluid { namespace core {
@@ -74,7 +73,7 @@ namespace openfluid { namespace core {
   @li Key is the name given to the information
   @li Value is the value of the information and can be numeric or text information
 */
-class DLLEXPORT Event : public InstantiationInfo
+class DLLEXPORT Event
 {
   public:
     typedef std::map<std::string, openfluid::core::StringValue> EventInfosMap_t;

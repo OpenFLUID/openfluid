@@ -87,8 +87,7 @@ class DLLEXPORT SimulationBlob
 
     inline openfluid::base::SimulationStatus& getSimulationStatus() {return  m_Status; };
 
-    // TODO check why not inline
-    openfluid::core::Datastore& getDatastore() { return m_Datastore; };
+    inline openfluid::core::Datastore& getDatastore() { return m_Datastore; };
 
     inline const openfluid::core::CoreRepository& getCoreRepository() const { return m_CoreRepos; };
 
@@ -96,8 +95,7 @@ class DLLEXPORT SimulationBlob
 
     inline const openfluid::base::SimulationStatus& getSimulationStatus() const {return  m_Status; };
 
-    // TODO check why not inline
-    const openfluid::core::Datastore& getDatastore() const { return m_Datastore; };
+    inline const openfluid::core::Datastore& getDatastore() const { return m_Datastore; };
 
     void clearSimulationGarbage();
 

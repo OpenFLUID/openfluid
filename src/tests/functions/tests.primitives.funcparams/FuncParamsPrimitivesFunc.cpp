@@ -146,18 +146,13 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       // ====== String param ======
 
-      if (!OPENFLUID_GetFunctionParameter(Params,"strparam",&m_ParamString))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strparam)");
-      if(m_ParamString != "strvalue")
-         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strparam, value)");
-
       m_ParamString = "";
       if (!OPENFLUID_GetFunctionParameter(Params,"strparam",m_ParamString))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strparam) get by reference");
       if(m_ParamString != "strvalue")
          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strparam, value) get by reference");
 
-      if (OPENFLUID_GetFunctionParameter(Params,"wrongstrparam",&m_ParamString))
+      if (OPENFLUID_GetFunctionParameter(Params,"wrongstrparam",m_ParamString))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (wrongstrparam)");
 
       if (OPENFLUID_GetFunctionParameter(Params,"strparam",ParamDoubleVal))
@@ -177,18 +172,13 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       // ====== Double param ======
 
-      if (!OPENFLUID_GetFunctionParameter(Params,"doubleparam",&m_ParamDouble))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doubleparam)");
-      if(!openfluid::tools::IsCloseEnough(m_ParamDouble,0.1,0.00001))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doubleparam, value)");
-
       m_ParamDouble = 0.0;
       if (!OPENFLUID_GetFunctionParameter(Params,"doubleparam",m_ParamDouble))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doubleparam) get by reference");
       if(!openfluid::tools::IsCloseEnough(m_ParamDouble,0.1,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doubleparam, value) get by reference");
 
-      if (OPENFLUID_GetFunctionParameter(Params,"wrongdoubleparam",&m_ParamDouble))
+      if (OPENFLUID_GetFunctionParameter(Params,"wrongdoubleparam",m_ParamDouble))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (wrongdoubleparam)");
 
       if (!OPENFLUID_GetFunctionParameter(Params,"doubleparam",ParamDoubleVal))
@@ -215,18 +205,13 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       // ====== Long param ======
 
-      if (!OPENFLUID_GetFunctionParameter(Params,"longparam",&m_ParamLong))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longparam)");
-      if(m_ParamLong != 10)
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longparam, value)");
-
       m_ParamLong = 0;
       if (!OPENFLUID_GetFunctionParameter(Params,"longparam",m_ParamLong))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longparam) get by reference");
       if(m_ParamLong != 10)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longparam, value) get by reference");
 
-      if (OPENFLUID_GetFunctionParameter(Params,"wronglongparam",&m_ParamLong))
+      if (OPENFLUID_GetFunctionParameter(Params,"wronglongparam",m_ParamLong))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (wronglongparam)");
 
       if (!OPENFLUID_GetFunctionParameter(Params,"longparam",ParamDoubleVal))
@@ -260,13 +245,6 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       // ====== String array param ======
 
-      if (!OPENFLUID_GetFunctionParameter(Params,"strarrayparam",&ParamStrArray))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strarrayparam)");
-      if (ParamStrArray.size() != 3)
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strarrayparam, size)");
-      if (ParamStrArray[1] != "strvalue2")
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strarrayparam, value)");
-
       ParamStrArray.clear();
       if (!OPENFLUID_GetFunctionParameter(Params,"strarrayparam",ParamStrArray))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strarrayparam) get by reference");
@@ -275,7 +253,7 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
       if (ParamStrArray[1] != "strvalue2")
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (strarrayparam, value) get by reference");
 
-      if (OPENFLUID_GetFunctionParameter(Params,"wrongstrarrayparam",&ParamStrArray))
+      if (OPENFLUID_GetFunctionParameter(Params,"wrongstrarrayparam",ParamStrArray))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (wrongstrarrayparam)");
 
       if (OPENFLUID_GetFunctionParameter(Params,"strarrayparam",ParamDoubleVal))
@@ -292,15 +270,6 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       // ====== Double array param ======
 
-      if (!OPENFLUID_GetFunctionParameter(Params,"doublearrayparam",&ParamDoubleArray))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam)");
-      if (ParamDoubleArray.size() != 4)
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, size)");
-      if (!openfluid::tools::IsCloseEnough(ParamDoubleArray[2],1.3,0.00001))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, value)");
-      if (openfluid::tools::IsCloseEnough(ParamDoubleArray[3],1.3,0.00001))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, wrongvalue)");
-
       ParamDoubleArray.clear();
       if (!OPENFLUID_GetFunctionParameter(Params,"doublearrayparam",ParamDoubleArray))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam) get by reference");
@@ -311,7 +280,7 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
       if (openfluid::tools::IsCloseEnough(ParamDoubleArray[3],1.3,0.00001))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (doublearrayparam, wrongvalue) get by reference");
 
-      if (OPENFLUID_GetFunctionParameter(Params,"wrongdoublearrayparam",&ParamDoubleArray))
+      if (OPENFLUID_GetFunctionParameter(Params,"wrongdoublearrayparam",ParamDoubleArray))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (wrongdoublearrayparam)");
 
       if (OPENFLUID_GetFunctionParameter(Params,"doublearrayparam",ParamDoubleVal))
@@ -332,15 +301,6 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
 
       // ====== Long array param ======
 
-      if (!OPENFLUID_GetFunctionParameter(Params,"longarrayparam",&ParamLongArray))
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam)");
-      if (ParamLongArray.size() != 5)
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam, size)");
-      if (ParamLongArray[3] != 14)
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam, value)");
-      if (ParamLongArray[4] == 14)
-        OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam, wrongvalue)");
-
       ParamLongArray.clear();
       if (!OPENFLUID_GetFunctionParameter(Params,"longarrayparam",ParamLongArray))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam) get by reference");
@@ -351,7 +311,7 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
       if (ParamLongArray[4] == 14)
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (longarrayparam, wrongvalue) get by reference");
 
-      if (OPENFLUID_GetFunctionParameter(Params,"wronglongarrayparam",&ParamLongArray))
+      if (OPENFLUID_GetFunctionParameter(Params,"wronglongarrayparam",ParamLongArray))
         OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetFunctionParameter (wronglongarrayparam)");
 
       if (OPENFLUID_GetFunctionParameter(Params,"longarrayparam",ParamDoubleVal))

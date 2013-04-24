@@ -118,7 +118,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @deprecated
      */
      void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                   const openfluid::core::VariableName_t VarName,
+                                   const openfluid::core::VariableName_t& VarName,
                                    const openfluid::core::Value& Val);
 
      /**
@@ -128,7 +128,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable
      */
      void OPENFLUID_InitializeVariable(openfluid::core::Unit& aUnit,
-                                       const openfluid::core::VariableName_t VarName,
+                                       const openfluid::core::VariableName_t& VarName,
                                        const openfluid::core::Value& Val);
 
      /**
@@ -138,8 +138,8 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable (double)
      */
      void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                   const openfluid::core::VariableName_t VarName,
-                                   const double Val);
+                                   const openfluid::core::VariableName_t& VarName,
+                                   const double& Val);
 
      /**
        Initializes a distributed long variable value for a unit
@@ -148,8 +148,8 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable (long)
      */
      void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                   const openfluid::core::VariableName_t VarName,
-                                   const long Val);
+                                   const openfluid::core::VariableName_t& VarName,
+                                   const long& Val);
 
      /**
        Initializes a distributed boolean variable value for a unit
@@ -158,8 +158,8 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable (bool)
      */
      void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                   const openfluid::core::VariableName_t VarName,
-                                   const bool Val);
+                                   const openfluid::core::VariableName_t& VarName,
+                                   const bool& Val);
 
      /**
        Initializes a distributed string variable value for a unit
@@ -168,7 +168,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the added value of the variable (string)
      */
      void OPENFLUID_InitializeVariable(openfluid::core::Unit *UnitPtr,
-                                   const openfluid::core::VariableName_t VarName,
+                                   const openfluid::core::VariableName_t& VarName,
                                    const std::string& Val);
 
     /**
@@ -179,7 +179,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
       @deprecated
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                  const openfluid::core::VariableName_t VarName,
+                                  const openfluid::core::VariableName_t& VarName,
                                   const openfluid::core::Value& Val);
 
     /**
@@ -189,7 +189,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
       @param[in] Val the added value of the variable
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit& aUnit,
-                                  const openfluid::core::VariableName_t VarName,
+                                  const openfluid::core::VariableName_t& VarName,
                                   const openfluid::core::Value& Val);
 
     /**
@@ -199,8 +199,8 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
       @param[in] Val the added value of the variable (double)
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                  const openfluid::core::VariableName_t VarName,
-                                  const double Val);
+                                  const openfluid::core::VariableName_t& VarName,
+                                  const double& Val);
 
     /**
       Appends a distributed long variable value for a unit at the end of the previously added values for this variable
@@ -209,8 +209,8 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
       @param[in] Val the added value of the variable (long)
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                  const openfluid::core::VariableName_t VarName,
-                                  const long Val);
+                                  const openfluid::core::VariableName_t& VarName,
+                                  const long& Val);
 
     /**
       Appends a distributed boolean variable value for a unit at the end of the previously added values for this variable
@@ -219,8 +219,8 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
       @param[in] Val the added value of the variable (bool)
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                  const openfluid::core::VariableName_t VarName,
-                                  const bool Val);
+                                  const openfluid::core::VariableName_t& VarName,
+                                  const bool& Val);
 
     /**
       Appends a distributed string variable value for a unit at the end of the previously added values for this variable
@@ -229,69 +229,59 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
       @param[in] Val the added value of the variable (string)
     */
     void OPENFLUID_AppendVariable(openfluid::core::Unit *UnitPtr,
-                                  const openfluid::core::VariableName_t VarName,
+                                  const openfluid::core::VariableName_t& VarName,
                                   const std::string& Val);
 
 
     /**
-      Sets a distributed variable value for a unit at a time step
+      Sets a distributed variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
       @param[in] Val the added value of the variable
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               const openfluid::core::VariableName_t VarName,
-                               const openfluid::core::TimeStep_t Step,
+                               const openfluid::core::VariableName_t& VarName,
                                const openfluid::core::Value& Val);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
       @param[in] Val the added value of the variable (double)
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               const openfluid::core::VariableName_t VarName,
-                               const openfluid::core::TimeStep_t Step,
-                               const double Val);
+                               const openfluid::core::VariableName_t& VarName,
+                               const double& Val);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
       @param[in] Val the added value of the variable (long)
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               const openfluid::core::VariableName_t VarName,
-                               const openfluid::core::TimeStep_t Step,
-                               const long Val);
+                               const openfluid::core::VariableName_t& VarName,
+                               const long& Val);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
       @param[in] Val the added value of the variable (bool)
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               const openfluid::core::VariableName_t VarName,
-                               const openfluid::core::TimeStep_t Step,
-                               const bool Val);
+                               const openfluid::core::VariableName_t& VarName,
+                               const bool& Val);
 
     /**
-      Sets a distributed double variable value for a unit at a time step
+      Sets a distributed double variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the variable
-      @param[in] Step the time step for the value of the variable
       @param[in] Val the added value of the variable (string)
     */
     void OPENFLUID_SetVariable(openfluid::core::Unit *UnitPtr,
-                               const openfluid::core::VariableName_t VarName,
-                               const openfluid::core::TimeStep_t Step,
-                               const std::string Val);
+                               const openfluid::core::VariableName_t& VarName,
+                               const std::string& Val);
 
     /**
       Appends an event on a unit

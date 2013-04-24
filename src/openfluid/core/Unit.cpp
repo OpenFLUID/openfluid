@@ -56,8 +56,8 @@ namespace openfluid { namespace core {
 
 
 Unit::Unit(const UnitClass_t aClass, const UnitID_t anID,
-           const PcsOrd_t aPcsOrder, const InstantiationInfo::Type InstType) :
-  InstantiationInfo(InstType), m_ID(anID), m_Class(aClass), m_PcsOrder(aPcsOrder)
+           const PcsOrd_t aPcsOrder) :
+  m_ID(anID), m_Class(aClass), m_PcsOrder(aPcsOrder)
 {
 
 }

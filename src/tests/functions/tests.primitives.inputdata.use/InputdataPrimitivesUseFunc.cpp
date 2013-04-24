@@ -287,19 +287,9 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
         // double
 
         VarDouble = 0.0;
-        OPENFLUID_GetInputData(TU,"indataDouble",&VarDouble);
-        if (!openfluid::tools::IsVeryClose(VarDouble,1.1))
-          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue)");
-
-        VarDouble = 0.0;
         OPENFLUID_GetInputData(TU,"indataDouble",VarDouble);
         if (!openfluid::tools::IsVeryClose(VarDouble,1.1))
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get by reference");
-
-        VarDoubleVal.set(0.0);
-        OPENFLUID_GetInputData(TU,"indataDouble",&VarDoubleVal);
-        if (!openfluid::tools::IsVeryClose(VarDoubleVal.get(),1.1))
-          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with DoubleValue");
 
         VarDoubleVal.set(0.0);
         OPENFLUID_GetInputData(TU,"indataDouble",VarDoubleVal);
@@ -307,7 +297,7 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with DoubleValue by reference");
 
         VarVectorVal.clear();
-        OPENFLUID_GetInputData(TU,"indataDouble",&VarVectorVal);
+        OPENFLUID_GetInputData(TU,"indataDouble",VarVectorVal);
         if (VarVectorVal.size() != 1)
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrong size) get with VectorValue");
         if (!openfluid::tools::IsVeryClose(VarVectorVal[0],1.1))
@@ -342,7 +332,7 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble2 wrongvalue) get with StringValue by reference");
 
         VarDouble = 0.0;
-        OPENFLUID_GetInputData(TU,"indataDouble3",&VarDouble);
+        OPENFLUID_GetInputData(TU,"indataDouble3",VarDouble);
         if (!openfluid::tools::IsVeryClose(VarDouble,RefDouble))
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble3 wrongvalue)");
 
@@ -358,11 +348,6 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
         // long
 
         VarLong = 0;
-        OPENFLUID_GetInputData(TU,"indataLong",&VarLong);
-        if (VarLong != 1)
-          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong wrongvalue)");
-
-        VarLong = 0;
         OPENFLUID_GetInputData(TU,"indataLong",VarLong);
         if (VarLong != 1)
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong wrongvalue) get by reference");
@@ -376,7 +361,7 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong wrongvalue) get with StringValue by reference");
 
         VarLong = 0;
-        OPENFLUID_GetInputData(TU,"indataLong2",&VarLong);
+        OPENFLUID_GetInputData(TU,"indataLong2",VarLong);
         if (VarLong != RefLong)
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong2 wrongvalue)");
 
@@ -389,7 +374,7 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong2 wrongvalue) get with StringValue by reference");
 
         VarLong = 0;
-        OPENFLUID_GetInputData(TU,"indataLong3",&VarLong);
+        OPENFLUID_GetInputData(TU,"indataLong3",VarLong);
         if (VarLong != RefLong)
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataLong3 wrongvalue)");
 
@@ -430,15 +415,9 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
 
 
         //string
-
-        VarString = "";
-        OPENFLUID_GetInputData(TU,"indataString",&VarString);
         std::string RefStr;
         openfluid::tools::ConvertValue(TU->getID(),&RefStr);
         RefStr = "CODE"+RefStr;
-        if (VarString != RefStr)
-          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString wrongvalue)");
-
         VarString = "";
         OPENFLUID_GetInputData(TU,"indataString",VarString);
         if (VarString != RefStr)
@@ -451,7 +430,7 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString wrongvalue) get with StringValue by reference");
 
         VarString = "";
-        OPENFLUID_GetInputData(TU,"indataString2",&VarString);
+        OPENFLUID_GetInputData(TU,"indataString2",VarString);
         if (VarString != RefString)
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString2 wrongvalue)");
 
@@ -462,7 +441,7 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString2 wrongvalue) get with StringValue by reference");
 
         VarString = "";
-        OPENFLUID_GetInputData(TU,"indataString3",&VarString);
+        OPENFLUID_GetInputData(TU,"indataString3",VarString);
         if (VarString != RefString)
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataString3 wrongvalue)");
 
@@ -521,15 +500,6 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrongvalue) get with MatrixValue by reference");
         if (!openfluid::tools::IsVeryClose(VarMatrixVal.at(2,0),1.3))
           OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrongvalue) get with MatrixValue by reference");
-
-        VarVectorVal.clear();
-        OPENFLUID_GetInputData(TU,"indataVector2",&VarVectorVal);
-        if(VarVectorVal.size() != 3)
-          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong size) get with VectorValue");
-        if(!openfluid::tools::IsVeryClose(VarVectorVal[0], 1.1))
-          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong value) get with VectorValue");
-        if(!openfluid::tools::IsVeryClose(VarVectorVal[2], 1.3))
-          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataVector2 wrong value) get with VectorValue");
 
         VarVectorVal.clear();
         OPENFLUID_GetInputData(TU,"indataVector2",VarVectorVal);

@@ -182,27 +182,6 @@ void EventsCollection::println() const
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-void EventsCollection::clear(const InstantiationInfo::Type& InstType)
-{
-  EventsList_t::iterator EventIt = m_Events.begin();
-
-  while (EventIt != m_Events.end())
-  {
-    if ((*EventIt).isInstantiationType(InstType))
-    {
-      m_Events.erase(EventIt++);
-    }
-    else
-    {
-      ++EventIt;
-    }
-  }
-}
-
 
 
 } }  // namespaces

@@ -116,7 +116,7 @@ void MessagesFunction::initParams(const openfluid::ware::WareParams_t& Params)
 
   m_RepeatMessages = 1;
 
-  OPENFLUID_GetFunctionParameter(Params,"rptmsgs",&m_RepeatMessages);
+  OPENFLUID_GetFunctionParameter(Params,"rptmsgs",m_RepeatMessages);
 }
 
 // =====================================================================

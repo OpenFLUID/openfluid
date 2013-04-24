@@ -60,9 +60,9 @@ namespace openfluid { namespace machine {
 
 
 ObserverSignatureInstance::ObserverSignatureInstance()
-: WareSignatureInstance(),Signature(NULL)
+: WareSignatureInstance(), Signature(NULL)
 {
-
+  ItemType = openfluid::fluidx::WareDescriptor::PluggedObserver;
 }
 
 

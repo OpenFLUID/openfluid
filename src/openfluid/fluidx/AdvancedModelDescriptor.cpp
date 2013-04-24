@@ -54,6 +54,7 @@
 
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
+#include <set>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/FunctionDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
@@ -68,7 +69,7 @@ AdvancedModelDescriptor::AdvancedModelDescriptor(
     openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
     mp_ModelDesc(&ModelDesc)
 {
-
+  checkModel();
 }
 
 // =====================================================================
@@ -76,6 +77,27 @@ AdvancedModelDescriptor::AdvancedModelDescriptor(
 
 AdvancedModelDescriptor::~AdvancedModelDescriptor()
 {
+}
+
+// =====================================================================
+// =====================================================================
+
+void AdvancedModelDescriptor::checkModel() const
+{
+  std::set<std::string> UniqueIDs;
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      mp_ModelDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    std::string ID = getID(*it);
+    if (!UniqueIDs.insert(ID).second)
+      throw openfluid::base::OFException(
+          "OpenFLUID-Framework", "AdvancedModelDescriptor::checkModel",
+          "The simulation function with ID \"" + ID + "\" is duplicate");
+  }
 }
 
 // =====================================================================
@@ -90,7 +112,7 @@ const std::list<openfluid::fluidx::ModelItemDescriptor*>& AdvancedModelDescripto
 // =====================================================================
 
 openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::getItemAt(
-    unsigned int Index)
+    unsigned int Index) const
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_ModelDesc->getItems();
@@ -112,7 +134,7 @@ openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::getItemAt(
 // =====================================================================
 // =====================================================================
 
-int AdvancedModelDescriptor::getFirstItemIndex(std::string ItemID)
+int AdvancedModelDescriptor::getFirstItemIndex(std::string ItemID) const
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_ModelDesc->getItems();
@@ -131,7 +153,7 @@ int AdvancedModelDescriptor::getFirstItemIndex(std::string ItemID)
 // =====================================================================
 
 int AdvancedModelDescriptor::getFirstItemIndex(
-    openfluid::fluidx::ModelItemDescriptor* Item)
+    openfluid::fluidx::ModelItemDescriptor* Item) const
 {
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_ModelDesc->getItems();
@@ -148,7 +170,7 @@ int AdvancedModelDescriptor::getFirstItemIndex(
 // =====================================================================
 // =====================================================================
 
-std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs()
+std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs() const
 {
   std::vector<std::string> IDs;
 
@@ -166,13 +188,17 @@ std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs()
 // =====================================================================
 
 std::string AdvancedModelDescriptor::getID(
-    openfluid::fluidx::ModelItemDescriptor* Item)
+    openfluid::fluidx::ModelItemDescriptor* Item) const
 {
   if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
     return (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(Item))->getFileID();
 
   if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
     return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();
+
+  throw openfluid::base::OFException("OpenFLUID framework",
+                                         "AdvancedModelDescriptor::getID()",
+                                         "Unknown ware type");
 }
 
 // =====================================================================
@@ -303,7 +329,7 @@ void AdvancedModelDescriptor::setGlobalParameters(
 // =====================================================================
 // =====================================================================
 
-openfluid::ware::WareParams_t AdvancedModelDescriptor::getGlobalParameters()
+openfluid::ware::WareParams_t AdvancedModelDescriptor::getGlobalParameters() const
 {
   return mp_ModelDesc->getGlobalParameters();
 }

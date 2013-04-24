@@ -54,6 +54,7 @@
 
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 
+#include <set>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
 
 namespace openfluid {
@@ -66,6 +67,7 @@ AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(
     openfluid::fluidx::MonitoringDescriptor& MonitoringDesc) :
     mp_MonitoringDesc(&MonitoringDesc)
 {
+  checkMonitoring();
 }
 
 // =====================================================================
@@ -74,6 +76,28 @@ AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(
 AdvancedMonitoringDescriptor::~AdvancedMonitoringDescriptor()
 {
 
+}
+
+// =====================================================================
+// =====================================================================
+
+void AdvancedMonitoringDescriptor::checkMonitoring() const
+{
+  std::set<std::string> UniqueIDs;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
+      mp_MonitoringDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    std::string ID = (*it)->getID();
+    if (!UniqueIDs.insert(ID).second)
+      throw openfluid::base::OFException(
+          "OpenFLUID-Framework",
+          "AdvancedMonitoringDescriptor::checkMonitoring",
+          "The observer with ID \"" + ID + "\" is duplicate");
+  }
 }
 
 // =====================================================================
@@ -135,6 +159,73 @@ void AdvancedMonitoringDescriptor::setItems(
     std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList)
 {
   mp_MonitoringDesc->getItems() = ObserversList;
+}
+
+// =====================================================================
+// =====================================================================
+
+void AdvancedMonitoringDescriptor::moveItemTowardsTheBeginning(
+    std::string ObserverID)
+{
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
+      mp_MonitoringDesc->getItems();
+
+  if (Observers.size() < 2)
+    return;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator itFrom =
+      Observers.begin();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Observers.begin(); it != Observers.end(); ++it)
+  {
+    if ((*it)->getID() == ObserverID)
+    {
+      itFrom = it;
+      break;
+    }
+  }
+
+  if (itFrom == Observers.begin())
+    return;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator itTo = itFrom;
+  itTo--;
+
+  std::swap(*itFrom, *itTo);
+}
+
+// =====================================================================
+// =====================================================================
+
+void AdvancedMonitoringDescriptor::moveItemTowardsTheEnd(std::string ObserverID)
+{
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Observers =
+      mp_MonitoringDesc->getItems();
+
+  if (Observers.size() < 2)
+    return;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator itFrom =
+      Observers.end().operator --();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Observers.begin(); it != Observers.end(); ++it)
+  {
+    if ((*it)->getID() == ObserverID)
+    {
+      itFrom = it;
+      break;
+    }
+  }
+
+  if (itFrom == Observers.end().operator --())
+    return;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::iterator itTo = itFrom;
+  itTo++;
+
+  std::swap(*itFrom, *itTo);
 }
 
 // =====================================================================

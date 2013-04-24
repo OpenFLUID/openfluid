@@ -140,6 +140,10 @@ openfluid::core::Duration_t SimulationDrivenWare::OPENFLUID_GetDefaultDeltaT() c
 
 openfluid::core::TimeIndex_t SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex() const
 {
+  REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
+                           "SimulationDrivenWare::OPENFLUID_GetCurrentRunTimeIndex",
+                           "Current run time index cannot be accessed before INITIALIZERUN");
+
   if (mp_SimStatus == NULL)
     throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetCurrentTimeIndex()","Simulation status is not set");
 

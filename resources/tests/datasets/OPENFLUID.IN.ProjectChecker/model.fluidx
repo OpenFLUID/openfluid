@@ -25,7 +25,7 @@
       <generator varname="tests.interp" unitclass="TestUnits" method="interp">
          <param name="thresholdmax" value="12.8" />
          <param name="sources" value="src.txt" />
-         <param name="distribution" value="distrib.txt" />
+         <param name="distribution" value="sub/distrib.txt" />
       </generator>
 
 	  <generator varname="tests.inject" unitclass="TestUnits" method="inject">

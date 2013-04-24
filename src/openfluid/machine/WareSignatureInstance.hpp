@@ -58,16 +58,22 @@
 
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/fluidx/WareDescriptor.hpp>
+
 
 namespace openfluid { namespace machine {
 
 class DLLEXPORT WareSignatureInstance
 {
   public:
+
+    openfluid::fluidx::WareDescriptor::WareType ItemType;
+
     std::string Filename;
+
     bool Verified;
 
-    WareSignatureInstance() : Filename(""),Verified(false)
+    WareSignatureInstance() : ItemType(openfluid::fluidx::WareDescriptor::NoWareType), Filename(""),Verified(false)
     { }
 
 };

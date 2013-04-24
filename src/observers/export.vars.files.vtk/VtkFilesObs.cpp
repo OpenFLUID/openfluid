@@ -137,8 +137,6 @@ class VtkSerieInfo
 
     std::string OutputDir;
 
-    openfluid::core::TimeStep_t Step;
-
     std::string CellsNbrStr;
 
     std::string PointsNbrStr;
@@ -163,7 +161,7 @@ class VtkSerieInfo
 
     VtkSerieInfo() : UnitsClass(""),
                      VectorSourceFilename (""), DEMSourceFilename (""), VarName(""),
-                     OutputFileBaseName(""), OutputDir(""), Step(1),
+                     OutputFileBaseName(""), OutputDir(""),
                      CellsNbrStr("0"), PointsNbrStr("0"),
                      PointsStr(""), CellsCntyStr(""), CellsTypesStr(""), CellsOffsetsStr(""),
                      MaxValue(0.0),MinValue(0.0),IsMinMaxInitialized(false)
@@ -185,7 +183,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
     SimpleRasterManager m_RasterMan;
 
-    void writeVtkFile(VtkSerieInfo& VtkSerie, const openfluid::core::TimeStep_t& TimeStep)
+    void writeVtkFile(VtkSerieInfo& VtkSerie, const openfluid::core::TimeIndex_t& Index)
     {
       std::ostringstream oss;
         std::string CellDataStr;
@@ -201,7 +199,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
           if (UU != NULL)
           {
-            OPENFLUID_GetVariable(UU,VtkSerie.VarName,TimeStep,&Value);
+            OPENFLUID_GetVariable(UU,VtkSerie.VarName,Index,Value);
           }
           else
           {
@@ -229,10 +227,10 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
 
         // writing file
-        std::string TimeStepStr;
-        openfluid::tools::ConvertValue(TimeStep,&TimeStepStr);
+        std::string TimeIndexStr;
+        openfluid::tools::ConvertValue(Index,&TimeIndexStr);
 
-        std::string FilenameStr = boost::filesystem::path(VtkSerie.OutputDir+"/"+VtkSerie.OutputFileBaseName+TimeStepStr+".vtu").string();
+        std::string FilenameStr = boost::filesystem::path(VtkSerie.OutputDir+"/"+VtkSerie.OutputFileBaseName+TimeIndexStr+".vtu").string();
 
         std::ofstream VtkFile(FilenameStr.c_str());
 
@@ -612,8 +610,8 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
     {
       std::string InputDir, OutputDir;
 
-      OPENFLUID_GetRunEnvironment("dir.input",&InputDir);
-      OPENFLUID_GetRunEnvironment("dir.output",&OutputDir);
+      OPENFLUID_GetRunEnvironment("dir.input",InputDir);
+      OPENFLUID_GetRunEnvironment("dir.output",OutputDir);
 
       m_DEMFilename = Params.get("DEMfile","");
       if (!m_DEMFilename.empty()) m_DEMFilename = boost::filesystem::path(InputDir+"/"+m_DEMFilename).string();

@@ -56,7 +56,7 @@
 
 #include <glibmm/i18n.h>
 
-#include "BuilderListToolBox.hpp"
+#include "BuilderButtonBox.hpp"
 #include "DomainUnitRelationAddDialog.hpp"
 #include "BuilderListToolBoxFactory.hpp"
 

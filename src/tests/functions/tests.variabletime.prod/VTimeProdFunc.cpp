@@ -128,7 +128,7 @@ class VariableTimeProdFunction : public openfluid::ware::PluggableFunction
   void initParams(const openfluid::ware::WareParams_t& Params)
   {
     long TmpLong = 0;
-    OPENFLUID_GetFunctionParameter(Params,"usedefaultdeltat",&TmpLong);
+    OPENFLUID_GetFunctionParameter(Params,"usedefaultdeltat",TmpLong);
 
     m_DefaultDT = TmpLong > 0;
 

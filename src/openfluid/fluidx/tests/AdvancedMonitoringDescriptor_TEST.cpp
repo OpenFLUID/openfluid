@@ -83,6 +83,20 @@ BOOST_AUTO_TEST_CASE(check_construction)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_duplicates)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
+
+  BOOST_CHECK_THROW(
+      openfluid::fluidx::AdvancedMonitoringDescriptor(FXDesc.getMonitoringDescriptor()),
+      openfluid::base::OFException);
+}
+
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
@@ -118,6 +132,92 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK_EQUAL(
       Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
       "export.spatial-graph.files.dot");
+
+  Monit.addToObserverList("export.vars.files.vtk");
+
+  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
+      Monit.getItems();
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it =
+      Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.vtk");
+
+  Monit.moveItemTowardsTheBeginning("export.vars.files.vtk");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.vtk");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+
+  Monit.moveItemTowardsTheBeginning("export.vars.files.vtk");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.vars.files.vtk");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+
+  // does nothing
+  Monit.moveItemTowardsTheBeginning("export.vars.files.vtk");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.vars.files.vtk");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+
+  // does nothing
+  Monit.moveItemTowardsTheBeginning("wrong.ID");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.vars.files.vtk");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+
+  Monit.moveItemTowardsTheEnd("export.vars.files.vtk");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.vtk");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+
+  Monit.moveItemTowardsTheEnd("export.vars.files.vtk");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.vtk");
+
+  //does nothing
+  Monit.moveItemTowardsTheEnd("export.vars.files.vtk");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.vtk");
+
+  //does nothing
+  Monit.moveItemTowardsTheEnd("wrong.ID");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.csv");
+  BOOST_CHECK_EQUAL((*++it)->getID(), "export.vars.files.vtk");
+
+  Monit.removeFromObserverList("export.spatial-graph.files.dot");
+  Monit.removeFromObserverList("export.vars.files.csv");
+
+  // does nothing
+  Monit.moveItemTowardsTheBeginning("export.vars.files.vtk");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.vars.files.vtk");
+
+  // does nothing
+  Monit.moveItemTowardsTheEnd("export.vars.files.vtk");
+  it = Items.begin();
+
+  BOOST_CHECK_EQUAL((*it)->getID(), "export.vars.files.vtk");
 }
 
 // =====================================================================

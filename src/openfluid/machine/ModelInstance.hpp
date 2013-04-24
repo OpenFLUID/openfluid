@@ -102,6 +102,7 @@ class DLLEXPORT ModelInstance
 
     void appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex, openfluid::machine::ModelItemInstance* Item);
 
+  protected:
 
     openfluid::ware::WareParams_t mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const;
 

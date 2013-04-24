@@ -375,7 +375,7 @@ void Info::onEntryInputDataChanged(std::string InputDataName)
 {
   if (m_SelectedUnitId.size() == 1)
   {
-    Gtk::Label* TempLabel;
+//    Gtk::Label* TempLabel;
     std::set<int>::iterator it;
     for (it = m_SelectedUnitId.begin(); it != m_SelectedUnitId.end(); ++it)
     {
@@ -386,7 +386,7 @@ void Info::onEntryInputDataChanged(std::string InputDataName)
       {
         if ((*iter).first->get_label() == InputDataName)
         {
-          TempLabel = (*iter).first;
+//          TempLabel = (*iter).first;
           if (!m_ChangeValue.empty())
           {
             bool addInputDataNameValue = true;

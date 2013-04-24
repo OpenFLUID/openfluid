@@ -155,9 +155,6 @@ void PreferencesDialog::show(EngineProject* Project)
   m_RecentsHaveChanged = false;
   m_ObsPathsHaveChanged = false;
 
-  int OldRecentMax = PrefMgr->getRecentMax();
-  int OldRecentCount = PrefMgr->getRecentProjects().size();
-
   BuilderExtensionsManager* BEM = BuilderExtensionsManager::getInstance();
 
   if (!BEM->isPreferencesInstantiationDone())

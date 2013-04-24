@@ -108,7 +108,7 @@ void AdvancedDomainDescriptor::dispatchUnits()
 // =====================================================================
 // =====================================================================
 
-void AdvancedDomainDescriptor::checkUnitRelations()
+void AdvancedDomainDescriptor::checkUnitRelations() const
 {
   std::list<openfluid::fluidx::UnitDescriptor>* Units =
       &(mp_DomainDesc->getUnits());
@@ -125,7 +125,7 @@ void AdvancedDomainDescriptor::checkUnitRelations()
 // =====================================================================
 
 void AdvancedDomainDescriptor::checkUnitRelations(
-    openfluid::fluidx::UnitDescriptor& Unit)
+    openfluid::fluidx::UnitDescriptor& Unit) const
 {
   std::list<openfluid::core::UnitClassID_t>::iterator it;
 
@@ -225,9 +225,9 @@ void AdvancedDomainDescriptor::dispatchIData()
 // =====================================================================
 // =====================================================================
 
-void AdvancedDomainDescriptor::checkIDataConsistency()
+void AdvancedDomainDescriptor::checkIDataConsistency() const
 {
-  for (std::map<std::string, std::set<std::string> >::iterator it =
+  for (std::map<std::string, std::set<std::string> >::const_iterator it =
       m_IDataNames.begin(); it != m_IDataNames.end(); ++it)
   {
     std::string ClassName = it->first;
@@ -239,14 +239,14 @@ void AdvancedDomainDescriptor::checkIDataConsistency()
           "AdvancedDomainDescriptor::checkIDataConsistency",
           "class " + ClassName + " doesn't exist");
 
-    std::map<int, BuilderUnit>* Units = &(m_Units.at(ClassName));
+    const std::map<int, BuilderUnit>* Units = &(m_Units.at(ClassName));
 
     for (std::set<std::string>::iterator itName = Names.begin();
         itName != Names.end(); ++itName)
     {
       std::string IDataName = *itName;
 
-      for (std::map<int, BuilderUnit>::iterator itU = Units->begin();
+      for (std::map<int, BuilderUnit>::const_iterator itU = Units->begin();
           itU != Units->end(); ++itU)
       {
         int ID = itU->first;
@@ -296,7 +296,7 @@ void AdvancedDomainDescriptor::dispatchEvents()
 // =====================================================================
 // =====================================================================
 
-const std::map<std::string, std::map<int, BuilderUnit> >& AdvancedDomainDescriptor::getUnitsByIdByClass()
+const std::map<std::string, std::map<int, BuilderUnit> >& AdvancedDomainDescriptor::getUnitsByIdByClass() const
 {
   return m_Units;
 }
@@ -305,7 +305,7 @@ const std::map<std::string, std::map<int, BuilderUnit> >& AdvancedDomainDescript
 // =====================================================================
 
 const BuilderUnit& AdvancedDomainDescriptor::getUnit(std::string ClassName,
-                                                     int ID)
+                                                     int ID) const
 {
   try
   {
@@ -326,7 +326,7 @@ const BuilderUnit& AdvancedDomainDescriptor::getUnit(std::string ClassName,
 // =====================================================================
 
 const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescriptor(
-    std::string ClassName, int ID)
+    std::string ClassName, int ID) const
 {
   return *(getUnit(ClassName, ID).mp_UnitDesc);
 }
@@ -334,13 +334,14 @@ const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescri
 // =====================================================================
 // =====================================================================
 
-std::set<int> AdvancedDomainDescriptor::getIDsOfClass(std::string ClassName)
+std::set<int> AdvancedDomainDescriptor::getIDsOfClass(
+    std::string ClassName) const
 {
   std::set<int> IDs;
 
   if (isClassNameExists(ClassName))
   {
-    for (std::map<int, BuilderUnit>::iterator it =
+    for (std::map<int, BuilderUnit>::const_iterator it =
         m_Units.at(ClassName).begin(); it != m_Units.at(ClassName).end(); ++it)
       IDs.insert(it->first);
   }
@@ -351,7 +352,7 @@ std::set<int> AdvancedDomainDescriptor::getIDsOfClass(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-bool AdvancedDomainDescriptor::isClassNameExists(std::string ClassName)
+bool AdvancedDomainDescriptor::isClassNameExists(std::string ClassName) const
 {
   return m_Units.count(ClassName);
 }
@@ -359,11 +360,11 @@ bool AdvancedDomainDescriptor::isClassNameExists(std::string ClassName)
 // =====================================================================
 // =====================================================================
 
-std::set<std::string> AdvancedDomainDescriptor::getClassNames()
+std::set<std::string> AdvancedDomainDescriptor::getClassNames() const
 {
   std::set<std::string> Classes;
 
-  for (std::map<std::string, std::map<int, BuilderUnit> >::iterator it =
+  for (std::map<std::string, std::map<int, BuilderUnit> >::const_iterator it =
       m_Units.begin(); it != m_Units.end(); ++it)
     Classes.insert(it->first);
 
@@ -534,7 +535,7 @@ std::string& AdvancedDomainDescriptor::getInputData(std::string ClassName,
 // =====================================================================
 
 std::set<std::string> AdvancedDomainDescriptor::getInputDataNames(
-    std::string ClassName)
+    std::string ClassName) const
 {
   std::set<std::string> Names;
 
@@ -716,7 +717,7 @@ void AdvancedDomainDescriptor::renameInputData(std::string ClassName,
 // =====================================================================
 
 const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUnitsToOf(
-    const openfluid::core::UnitClassID_t Unit)
+    const openfluid::core::UnitClassID_t Unit) const
 {
   try
   {
@@ -734,7 +735,7 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
 // =====================================================================
 
 const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUnitsParentsOf(
-    const openfluid::core::UnitClassID_t Unit)
+    const openfluid::core::UnitClassID_t Unit) const
 {
   try
   {
@@ -752,7 +753,7 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
 // =====================================================================
 
 std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsFromOf(
-    const openfluid::core::UnitClassID_t Unit)
+    const openfluid::core::UnitClassID_t Unit) const
 {
   std::list<openfluid::core::UnitClassID_t> Froms;
 
@@ -780,7 +781,7 @@ std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsFrom
 // =====================================================================
 
 std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsChildrenOf(
-    const openfluid::core::UnitClassID_t Unit)
+    const openfluid::core::UnitClassID_t Unit) const
 {
   std::list<openfluid::core::UnitClassID_t> Children;
 

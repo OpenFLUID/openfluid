@@ -66,13 +66,18 @@ class AdvancedModelDescriptor
 
     openfluid::fluidx::CoupledModelDescriptor* mp_ModelDesc;
 
-    AdvancedModelDescriptor(){};
+    AdvancedModelDescriptor()
+    {
+    }
 
   public:
 
-    AdvancedModelDescriptor(openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
+    AdvancedModelDescriptor(
+        openfluid::fluidx::CoupledModelDescriptor& ModelDesc);
 
     ~AdvancedModelDescriptor();
+
+    void checkModel() const;
 
     const std::list<openfluid::fluidx::ModelItemDescriptor*>& getItems() const;
 
@@ -81,20 +86,20 @@ class AdvancedModelDescriptor
      * @param Index
      * @return
      */
-    openfluid::fluidx::ModelItemDescriptor* getItemAt(unsigned int Index);
+    openfluid::fluidx::ModelItemDescriptor* getItemAt(unsigned int Index) const;
 
     /**
      * Return the position of the firts Item with ItemID found in the list, or -1 if not found
      * @param ItemID
      * @return
      */
-    int getFirstItemIndex(std::string ItemID);
+    int getFirstItemIndex(std::string ItemID) const;
 
-    int getFirstItemIndex(openfluid::fluidx::ModelItemDescriptor* Item);
+    int getFirstItemIndex(openfluid::fluidx::ModelItemDescriptor* Item) const;
 
-    std::vector<std::string> getOrderedIDs();
+    std::vector<std::string> getOrderedIDs() const;
 
-    std::string getID(openfluid::fluidx::ModelItemDescriptor* Item);
+    std::string getID(openfluid::fluidx::ModelItemDescriptor* Item) const;
 
     void appendItem(openfluid::fluidx::ModelItemDescriptor* Item);
 
@@ -137,7 +142,7 @@ class AdvancedModelDescriptor
 
     void setGlobalParameters(const openfluid::ware::WareParams_t& Params);
 
-    openfluid::ware::WareParams_t getGlobalParameters();
+    openfluid::ware::WareParams_t getGlobalParameters() const;
 
     void eraseGlobalParameter(const openfluid::ware::WareParamKey_t& Key);
 };

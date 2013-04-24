@@ -67,7 +67,6 @@
 #include <openfluid/core/InputData.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InstantiationInfo.hpp>
 
 
 
@@ -122,7 +121,7 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   aUnitListPtr = aUnit.getFromUnits("bar");
   @endcode
 */
-class DLLEXPORT Unit : public InstantiationInfo
+class DLLEXPORT Unit
 {
   private:
     UnitID_t m_ID;
@@ -149,7 +148,7 @@ class DLLEXPORT Unit : public InstantiationInfo
       @param[in] aPcsOrder the process order of the unit
         */
     Unit(const UnitClass_t aClass, const UnitID_t anID,
-         const PcsOrd_t aPcsOrder, const InstantiationInfo::Type InstType);
+         const PcsOrd_t aPcsOrder);
 
     /*
           Destructor

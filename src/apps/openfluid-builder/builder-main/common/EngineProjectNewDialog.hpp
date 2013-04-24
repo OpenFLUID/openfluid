@@ -178,8 +178,6 @@ class EngineProjectNewDialog
 
     void checkProject();
 
-    Glib::ustring replaceInvalidChars(Glib::ustring Str);
-
     void reset();
 
   public:

@@ -47,11 +47,11 @@ IF(DOXYGEN)
       COMMAND "${DOXYGEN}"
       ARGS "${CMAKE_CURRENT_BINARY_DIR}/LaTeX-Doxyfile"
       COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR}/latex ${PDFLATEX_COMPILER}
-      ARGS "main.tex"       
+      ARGS "-interaction=nonstopmode" "main.tex"       
       COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR}/latex ${PDFLATEX_COMPILER}
-      ARGS "main.tex"
+      ARGS "-interaction=nonstopmode" "main.tex"
       COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR}/latex ${PDFLATEX_COMPILER}
-      ARGS "main.tex")
+      ARGS "-interaction=nonstopmode" "main.tex")
 
   ADD_CUSTOM_COMMAND(    
     OUTPUT  "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf"

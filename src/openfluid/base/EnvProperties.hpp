@@ -92,28 +92,28 @@ class DLLEXPORT EnvironmentProperties
 
       @return true if the assignment is correct
     */
-    bool setValue(std::string Key, bool Value);
+    bool setValue(std::string Key, const bool Value);
 
     /**
       Assigns a string value to the corresponding key
 
       @return true if the assignment is correct
     */
-    bool setValue(std::string Key, std::string Value);
+    bool setValue(std::string Key, const std::string& Value);
 
     /**
       Gets the boolean value assigned to the key
 
       @return true if the value exists as a boolean
     */
-    bool getValue(std::string Key, bool *Value) const;
+    bool getValue(std::string Key, bool& Value) const;
 
     /**
       Gets the string value assigned to the key
 
       @return true if the value exists as a string
     */
-    bool getValue(std::string Key, std::string *Value) const;
+    bool getValue(std::string Key, std::string& Value) const;
 
 
 };

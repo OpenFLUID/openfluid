@@ -60,12 +60,12 @@ namespace ware {
 // =====================================================================
 // =====================================================================
 
-
 GeneratorSignature::GeneratorSignature(
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod)
 {
   m_GeneratorMethod = GeneratorMethod;
-  ID = openfluid::fluidx::GeneratorDescriptor::getGeneratorName(m_GeneratorMethod);
+  ID = openfluid::fluidx::GeneratorDescriptor::getGeneratorName(
+      m_GeneratorMethod);
 
   switch (m_GeneratorMethod)
   {
@@ -92,7 +92,6 @@ GeneratorSignature::GeneratorSignature(
 // =====================================================================
 // =====================================================================
 
-
 void GeneratorSignature::setFixedInfo()
 {
   Name = "Fixed Generator";
@@ -100,12 +99,11 @@ void GeneratorSignature::setFixedInfo()
 
   HandledData.FunctionParams.push_back(
       openfluid::ware::SignatureHandledDataItem("fixedvalue", "",
-          "Value to produce", "-"));
+                                                "Value to produce", "-"));
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void GeneratorSignature::setRandomInfo()
 {
@@ -113,16 +111,17 @@ void GeneratorSignature::setRandomInfo()
   Description = "Generates a random value in a range";
 
   HandledData.FunctionParams.push_back(
-      openfluid::ware::SignatureHandledDataItem("min", "",
-          "Lower bound of the random range for the value to produce", "-"));
+      openfluid::ware::SignatureHandledDataItem(
+          "min", "", "Lower bound of the random range for the value to produce",
+          "-"));
   HandledData.FunctionParams.push_back(
-      openfluid::ware::SignatureHandledDataItem("max", "",
-          "Upper bound of the random range for the value to produce", "-"));
+      openfluid::ware::SignatureHandledDataItem(
+          "max", "", "Upper bound of the random range for the value to produce",
+          "-"));
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void GeneratorSignature::setInterpInfo()
 {
@@ -131,42 +130,57 @@ void GeneratorSignature::setInterpInfo()
 
   HandledData.FunctionParams.push_back(
       openfluid::ware::SignatureHandledDataItem("thresholdmin", "",
-          "Threshold min value", "-"));
+                                                "Threshold min value", "-"));
   HandledData.FunctionParams.push_back(
       openfluid::ware::SignatureHandledDataItem("thresholdmax", "",
-          "Threshold max value", "-"));
+                                                "Threshold max value", "-"));
   HandledData.FunctionParams.push_back(
-      openfluid::ware::SignatureHandledDataItem("sources", "",
-          "Data sources filename for the value to produce", "-"));
+      openfluid::ware::SignatureHandledDataItem(
+          "sources", "", "Data sources filename for the value to produce",
+          "-"));
   HandledData.FunctionParams.push_back(
-      openfluid::ware::SignatureHandledDataItem("distribution", "",
-          "Distribution filename for the value to produce", "-"));
+      openfluid::ware::SignatureHandledDataItem(
+          "distribution", "", "Distribution filename for the value to produce",
+          "-"));
+
+  HandledData.RequiredExtraFiles.push_back(
+      "Data sources for the value to produce, from \"sources\" parameter");
+  HandledData.RequiredExtraFiles.push_back(
+      "Distribution for the value to produce, from \"distribution\" parameter");
 }
 
 // =====================================================================
 // =====================================================================
-
 
 void GeneratorSignature::setInjectInfo()
 {
   Name = "Injection Generator";
-  Description = "Generates an injected value -no time interpolation- from given data series";
+  Description =
+      "Generates an injected value -no time interpolation- from given data series";
 
   HandledData.FunctionParams.push_back(
       openfluid::ware::SignatureHandledDataItem("thresholdmin", "",
-          "Threshold min value", "-"));
+                                                "Threshold min value", "-"));
   HandledData.FunctionParams.push_back(
       openfluid::ware::SignatureHandledDataItem("thresholdmax", "",
-          "Threshold max value", "-"));
+                                                "Threshold max value", "-"));
   HandledData.FunctionParams.push_back(
-      openfluid::ware::SignatureHandledDataItem("sources", "",
-          "Data sources filename for the value to produce", "-"));
+      openfluid::ware::SignatureHandledDataItem(
+          "sources", "", "Data sources filename for the value to produce",
+          "-"));
   HandledData.FunctionParams.push_back(
-      openfluid::ware::SignatureHandledDataItem("distribution", "",
-          "Distribution filename for the value to produce", "-"));
+      openfluid::ware::SignatureHandledDataItem(
+          "distribution", "", "Distribution filename for the value to produce",
+          "-"));
+
+  HandledData.RequiredExtraFiles.push_back(
+      "Data sources for the value to produce, from \"sources\" parameter");
+  HandledData.RequiredExtraFiles.push_back(
+      "Distribution for the value to produce, from \"distribution\" parameter");
 }
 
 // =====================================================================
 // =====================================================================
 
-}} //namespaces
+}
+} //namespaces

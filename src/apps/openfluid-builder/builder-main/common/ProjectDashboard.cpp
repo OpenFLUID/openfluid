@@ -142,16 +142,24 @@ void ProjectDashboard::setCheckInfo(const ProjectChecker& Checker)
   Row[m_Columns.m_StateInfo] = Checker.IsProjectOk ? "ok" : Checker.ProjectMsg;
 
   Row = *mref_TreeModel->append();
+  Row[m_Columns.m_Title] = _("Datastore");
+  Row[m_Columns.m_StateIcon] =
+      Checker.IsDatastoreOk ? m_GreenIcon : m_OrangeIcon;
+  Row[m_Columns.m_StateInfo] =
+      Checker.IsDatastoreOk ? "ok" : Checker.DatastoreMsg;
+
+  Row = *mref_TreeModel->append();
+  Row[m_Columns.m_Title] = _("Monitoring");
+  Row[m_Columns.m_StateIcon] =
+      Checker.IsMonitoringOk ? m_GreenIcon : m_OrangeIcon;
+  Row[m_Columns.m_StateInfo] =
+      Checker.IsMonitoringOk ? "ok" : Checker.MonitoringMsg;
+
+  Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Run configuration");
   Row[m_Columns.m_StateIcon] = Checker.IsRunConfigOk ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] =
       Checker.IsRunConfigOk ? "ok" : Checker.RunConfigMsg;
-
-  Row = *mref_TreeModel->append();
-  Row[m_Columns.m_Title] = _("Monitoring");
-  Row[m_Columns.m_StateIcon] = Checker.IsMonitoringOk ? m_GreenIcon : m_OrangeIcon;
-  Row[m_Columns.m_StateInfo] =
-      Checker.IsMonitoringOk ? "ok" : Checker.MonitoringMsg;
 }
 
 // =====================================================================

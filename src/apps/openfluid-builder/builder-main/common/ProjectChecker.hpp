@@ -88,6 +88,8 @@ class ProjectChecker
                              openfluid::fluidx::ModelItemDescriptor* Item,
                              std::string ItemId);
 
+    void checkDatastore();
+
   protected:
 
     bool isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
@@ -110,6 +112,7 @@ class ProjectChecker
     bool IsExtraFilesOk;
     bool IsRunConfigOk;
     bool IsMonitoringOk;
+    bool IsDatastoreOk;
 
     std::string ProjectMsg;
     std::string ModelMsg;
@@ -119,6 +122,7 @@ class ProjectChecker
     std::string ExtraFilesMsg;
     std::string RunConfigMsg;
     std::string MonitoringMsg;
+    std::string DatastoreMsg;
 
     ProjectChecker(openfluid::fluidx::AdvancedFluidXDescriptor& Desc);
 
