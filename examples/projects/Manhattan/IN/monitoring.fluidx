@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <monitoring>
+  <observer ID="export.vars.files.csv">
+   <param name="format.Format1.commentchar" value="#"/>
+   <param name="format.Format1.date" value="%Y %m %d %H %M %S"/>
+   <param name="set.RU.format" value="Format1"/>
+   <param name="set.RU.unitclass" value="RU"/>
+   <param name="set.RU.vars" value="*"/>
+   <param name="set.TLU.format" value="Format1"/>
+   <param name="set.TLU.unitclass" value="TLU"/>
+   <param name="set.TLU.vars" value="*"/>
+  </observer>
+  <observer ID="export.vars.files.kml-anim">
+  <param name="layers.anim.colorscale" value="FFFFFF;100;00BFFF;250;9ACD32;500;FFFF00;750;FF7F50;1000;FF0000"/>
+   <param name="layers.anim.linewidth" value="4"/>
+   <param name="layers.anim.sourcefile" value="manhattan.shp"/>
+   <param name="layers.anim.sourcetype" value="file"/>
+   <param name="layers.anim.unitclass" value="RU"/>
+   <param name="layers.anim.varname" value="examples.RU.S.stock"/>
+   <param name="title" value="kml anim export"/>
+   <param name="tryopengearth" value="0"/>
+  </observer>
+ </monitoring>
+
+
+</openfluid>
+
