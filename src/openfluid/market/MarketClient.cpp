@@ -320,52 +320,67 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
            if (KFile.has_key(TmpID,"authors"))
              MetaPackagesCatalog[TmpID].Authors = KFile.get_string(TmpID,"authors");
 
-           // binary ?
-           if (KFile.has_key(TmpID,BinaryArchKey+".file"))
-           {
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
-
-             // license
-             if (KFile.has_key(TmpID,BinaryArchKey+".license"))
-              MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].License = KFile.get_string(TmpID,BinaryArchKey+".license");
-
-           }
-
-           // source ?
-           if (KFile.has_key(TmpID,"arch.src.file"))
-           {
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/src/"+KFile.get_string(TmpID,"arch.src.file");
-
-             // license
-             if (KFile.has_key(TmpID,"arch.src.license"))
-               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].License = KFile.get_string(TmpID,"arch.src.license");
-
-
-             // build options
-             if (KFile.has_key(TmpID,"arch.src.buildoptions"))
-               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].BuildOptions = KFile.get_string(TmpID,"arch.src.buildoptions");
-
-           }
 
            // dataset ?
-           if (KFile.has_key(TmpID,"file"))
+           if (CatalogType == PackageInfo::DATA)
            {
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX] = PackageInfo();
-             MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/"+KFile.get_string(TmpID,"file");
+             if (!KFile.has_key(TmpID,"file"))
+             {
+               MetaPackagesCatalog.erase(TmpID);
+             }
+             else
+             {
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX] = PackageInfo();
+               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/"+KFile.get_string(TmpID,"file");
 
-             // license
-             if (KFile.has_key(TmpID,"license"))
-               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].License = KFile.get_string(TmpID,"license");
+               // license
+               if (KFile.has_key(TmpID,"license"))
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].License = KFile.get_string(TmpID,"license");
 
-             // dependencies
-             if (KFile.has_key(TmpID,"dependencies.func"))
-               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string_list(TmpID,"dependencies.func");
+               // dependencies
+               if (KFile.has_key(TmpID,"dependencies.func"))
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string_list(TmpID,"dependencies.func");
 
-             if (KFile.has_key(TmpID,"dependencies.obs"))
-               MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::OBS] = KFile.get_string_list(TmpID,"dependencies.obs");
+               if (KFile.has_key(TmpID,"dependencies.obs"))
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::OBS] = KFile.get_string_list(TmpID,"dependencies.obs");
+             }
            }
+           else
+           {
+             if (!KFile.has_key(TmpID,BinaryArchKey+".file") && !KFile.has_key(TmpID,"arch.src.file"))
+             {
+               MetaPackagesCatalog.erase(TmpID);
+             }
+             else
+             {
+               // binary ?
+               if (KFile.has_key(TmpID,BinaryArchKey+".file"))
+               {
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN] = PackageInfo();
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/"+openfluid::base::RuntimeEnvironment::getInstance()->getArch()+"/"+KFile.get_string(TmpID,BinaryArchKey+".file");
+
+                 // license
+                 if (KFile.has_key(TmpID,BinaryArchKey+".license"))
+                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::BIN].License = KFile.get_string(TmpID,BinaryArchKey+".license");
+               }
+
+               // source ?
+               if (KFile.has_key(TmpID,"arch.src.file"))
+               {
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC] = PackageInfo();
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].URL = m_URL + "/"+getTypeName(CatalogType,false,true)+"/src/"+KFile.get_string(TmpID,"arch.src.file");
+
+                 // license
+                 if (KFile.has_key(TmpID,"arch.src.license"))
+                   MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].License = KFile.get_string(TmpID,"arch.src.license");
+
+                 // build options
+                 if (KFile.has_key(TmpID,"arch.src.buildoptions"))
+                   MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::SRC].BuildOptions = KFile.get_string(TmpID,"arch.src.buildoptions");
+               }
+             }
+           }
+
          }
       }
     }
