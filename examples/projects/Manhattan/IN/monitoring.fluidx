@@ -12,7 +12,7 @@
    <param name="set.TLU.vars" value="*"/>
   </observer>
   <observer ID="export.vars.files.kml-anim">
-  <param name="layers.anim.colorscale" value="FFFFFF;100;00BFFF;250;9ACD32;500;FFFF00;750;FF7F50;1000;FF0000"/>
+  <param name="layers.anim.colorscale" value="FFFFFFFF;100;FF00BFFF;250;FF9ACD32;500;FFFFFF00;750;FFFF7F50;1000;FFFF0000"/>
    <param name="layers.anim.linewidth" value="4"/>
    <param name="layers.anim.sourcefile" value="manhattan.shp"/>
    <param name="layers.anim.sourcetype" value="file"/>

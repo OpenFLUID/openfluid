@@ -18,6 +18,16 @@ OPENFLUID_ADD_TEST(NAME examples-Primitives
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives/fullA_unitsA1_var1.csv"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives/fullB_unitsB2_var5.csv"
                    )
+                   
+OPENFLUID_ADD_TEST(NAME examples-Manahattan 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                              "-i" "${CMAKE_CURRENT_SOURCE_DIR}/projects/Manhattan/IN"
+                              "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan" 
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Manhattan"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/kmlanim.kmz"
+                   )                   
+                   
 
 INSTALL(DIRECTORY "projects/" 
         DESTINATION "${EXAMPLES_PROJECTS_INSTALL_PATH}" PATTERN ".svn" EXCLUDE)
