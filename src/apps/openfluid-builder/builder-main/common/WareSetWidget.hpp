@@ -75,13 +75,13 @@ class WareSetWidget: public Gtk::VBox
 
     sigc::signal<void> m_signal_AddAsked;
 
-  protected:
-
-    Gtk::VBox* mp_ListBox;
-
     void onAddButtonClicked();
     void onExpandAllButtonClicked();
     void onCollapseAllButtonClicked();
+
+  protected:
+
+    Gtk::VBox* mp_ListBox;
 
   public:
 

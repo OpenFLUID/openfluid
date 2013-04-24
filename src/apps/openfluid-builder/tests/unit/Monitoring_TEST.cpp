@@ -89,6 +89,9 @@ class MonitoringModuleSub: public MonitoringModule
     }
 };
 
+// =====================================================================
+// =====================================================================
+
 class WareSetWidgetSub: public WareSetWidget
 {
   public:
@@ -101,9 +104,10 @@ class WareSetWidgetSub: public WareSetWidget
     {
       return mp_ListBox;
     }
-
-  private:
 };
+
+// =====================================================================
+// =====================================================================
 
 class WareItemWidgetSub: public WareItemWidget
 {
@@ -112,6 +116,11 @@ class WareItemWidgetSub: public WareItemWidget
                       Gtk::Widget& InfoWidget, std::string Description) :
         WareItemWidget(ID, ParamWidget, InfoWidget, Description)
     {
+    }
+
+    std::string getID()
+    {
+      return m_ID;
     }
 
     std::string getIDLabelText()
@@ -124,9 +133,24 @@ class WareItemWidgetSub: public WareItemWidget
       return mp_DescriptionLabel->get_text();
     }
 
+    BuilderItemButtonBox* getButtonBox()
+    {
+      return mp_ButtonBox;
+    }
+
     void onRemoveButtonClicked(std::string ID)
     {
       WareItemWidget::onRemoveButtonClicked(ID);
+    }
+
+    void onUpButtonClicked(std::string ID)
+    {
+      WareItemWidget::onUpButtonClicked(ID);
+    }
+
+    void onDownButtonClicked(std::string ID)
+    {
+      WareItemWidget::onDownButtonClicked(ID);
     }
 };
 
@@ -178,12 +202,17 @@ struct init_FromFile
 {
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
     openfluid::fluidx::AdvancedMonitoringDescriptor* mp_Monit;
+
     MonitoringModuleSub* mp_Module;
     WareSetWidgetSub* mp_WareSet;
+
+    openfluid::machine::ObserverSignatureRegistry* mp_Reg;
 
     init_FromFile()
     {
       BuilderTestHelper::getInstance()->initGtk();
+
+      mp_Reg = openfluid::machine::ObserverSignatureRegistry::getInstance();
 
       mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(0);
       mp_FXDesc->loadFromDirectory(
@@ -214,8 +243,11 @@ struct init_FromFile
 
 BOOST_FIXTURE_TEST_SUITE(MonitoringEmpty, init_Empty)
 
-BOOST_AUTO_TEST_CASE(check_wareset_operations)
+BOOST_AUTO_TEST_CASE(check_wareset_updateAfterAdd)
 {
+  std::vector<Gtk::Widget*> Children;
+  WareItemWidgetSub* WareItem;
+
   BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 0);
 
   mp_Monit->addToObserverList("export.vars.files.kml-plot");
@@ -223,47 +255,208 @@ BOOST_AUTO_TEST_CASE(check_wareset_operations)
 
   BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 1);
 
+  Children = mp_WareSet->getListBox()->get_children();
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK_EQUAL(WareItem->getIDLabelText(), "export.vars.files.kml-plot");
+  BOOST_CHECK_EQUAL(
+      WareItem->getDescriptionLabelText(),
+      mp_Reg->getSignature("export.vars.files.kml-plot").Signature->Name);
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+
   mp_Monit->addToObserverList("export.vars.files.csv");
   mp_Monit->addToObserverList("export.spatial-graph.files.dot");
   mp_Module->update();
 
   BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 3);
 
-  std::vector<Gtk::Widget*> Children = mp_WareSet->getListBox()->get_children();
+  Children = mp_WareSet->getListBox()->get_children();
 
-  WareItemWidgetSub* WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
-
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
   BOOST_CHECK_EQUAL(WareItem->getIDLabelText(), "export.vars.files.kml-plot");
   BOOST_CHECK_EQUAL(
       WareItem->getDescriptionLabelText(),
       mp_Reg->getSignature("export.vars.files.kml-plot").Signature->Name);
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
 
   WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
-
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.csv");
   BOOST_CHECK_EQUAL(WareItem->getIDLabelText(), "export.vars.files.csv");
   BOOST_CHECK_EQUAL(
       WareItem->getDescriptionLabelText(),
       mp_Reg->getSignature("export.vars.files.csv").Signature->Name);
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
 
   WareItem = static_cast<WareItemWidgetSub*>(Children[2]);
-
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
   BOOST_CHECK_EQUAL(WareItem->getIDLabelText(),
                     "export.spatial-graph.files.dot");
   BOOST_CHECK_EQUAL(
       WareItem->getDescriptionLabelText(),
       mp_Reg->getSignature("export.spatial-graph.files.dot").Signature->Name);
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+}
 
-  /////////////
-  mp_Module->whenRemoveObserverAsked("export.vars.files.csv");
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_wareset_remove)
+{
+  std::vector<Gtk::Widget*> Children;
+  WareItemWidgetSub* WareItem;
+  WareItemWidgetSub* ItemToRemove;
+
+  mp_Monit->addToObserverList("export.vars.files.kml-plot");
+  mp_Monit->addToObserverList("export.vars.files.csv");
+  mp_Monit->addToObserverList("export.spatial-graph.files.dot");
+  mp_Module->update();
+
+  BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 3);
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.csv");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[2]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+
+  ItemToRemove = static_cast<WareItemWidgetSub*>(Children[1]);
+  ItemToRemove->onRemoveButtonClicked(ItemToRemove->getID());
 
   BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 2);
 
-  mp_Module->whenRemoveObserverAsked("export.vars.files.kml-plot");
-  mp_Module->whenRemoveObserverAsked("export.spatial-graph.files.dot");
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+
+  ItemToRemove = static_cast<WareItemWidgetSub*>(Children[0]);
+  ItemToRemove->onRemoveButtonClicked(ItemToRemove->getID());
+  ItemToRemove = static_cast<WareItemWidgetSub*>(Children[1]);
+  ItemToRemove->onRemoveButtonClicked(ItemToRemove->getID());
 
   BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 0);
 }
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_wareset_move)
+{
+  std::vector<Gtk::Widget*> Children;
+  WareItemWidgetSub* WareItem;
+  WareItemWidgetSub* ItemToMove;
+
+  mp_Monit->addToObserverList("export.vars.files.kml-plot");
+  mp_Monit->addToObserverList("export.vars.files.csv");
+  mp_Monit->addToObserverList("export.spatial-graph.files.dot");
+  mp_Module->update();
+
+  BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 3);
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.csv");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[2]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+
+  ItemToMove = static_cast<WareItemWidgetSub*>(Children[1]);
+  ItemToMove->onUpButtonClicked(ItemToMove->getID());
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.csv");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[2]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+
+  ItemToMove = static_cast<WareItemWidgetSub*>(Children[0]);
+  ItemToMove->onDownButtonClicked(ItemToMove->getID());
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.csv");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[2]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+
+  ItemToMove = static_cast<WareItemWidgetSub*>(Children[2]);
+  ItemToMove->onUpButtonClicked(ItemToMove->getID());
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[2]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.csv");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+}
 BOOST_AUTO_TEST_SUITE_END();
+
+// =====================================================================
+// =====================================================================
 
 // =====================================================================
 // =====================================================================
@@ -272,12 +465,79 @@ BOOST_FIXTURE_TEST_SUITE(MonitoringFromFile, init_FromFile)
 
 BOOST_AUTO_TEST_CASE(check_wareset_operations)
 {
+  std::vector<Gtk::Widget*> Children;
+  WareItemWidgetSub* WareItem;
 
   BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 2);
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.csv");
+  BOOST_CHECK_EQUAL(WareItem->getIDLabelText(), "export.vars.files.csv");
+  BOOST_CHECK_EQUAL(
+      WareItem->getDescriptionLabelText(),
+      mp_Reg->getSignature("export.vars.files.csv").Signature->Name);
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL(WareItem->getIDLabelText(),
+                    "export.spatial-graph.files.dot");
+  BOOST_CHECK_EQUAL(
+      WareItem->getDescriptionLabelText(),
+      mp_Reg->getSignature("export.spatial-graph.files.dot").Signature->Name);
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  WareItem->onRemoveButtonClicked(WareItem->getID());
+
+  BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 1);
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
 
   mp_Monit->addToObserverList("export.vars.files.kml-plot");
   mp_Module->update();
 
-  BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 3);
+  BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 2);
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem->onUpButtonClicked(WareItem->getID());
+
+  Children = mp_WareSet->getListBox()->get_children();
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[0]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.vars.files.kml-plot");
+  BOOST_CHECK(!WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(WareItem->getButtonBox()->isDownCommandAvailable());
+
+  WareItem = static_cast<WareItemWidgetSub*>(Children[1]);
+  BOOST_CHECK_EQUAL(WareItem->getID(), "export.spatial-graph.files.dot");
+  BOOST_CHECK(WareItem->getButtonBox()->isUpCommandAvailable());
+  BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
 }
 BOOST_AUTO_TEST_SUITE_END();
+
+// =====================================================================
+// =====================================================================
+
+// =====================================================================
+// =====================================================================

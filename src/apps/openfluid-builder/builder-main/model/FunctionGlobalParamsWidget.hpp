@@ -79,18 +79,20 @@ class GlobalParamRow: public BuilderTableRowWidget
 
     openfluid::fluidx::AdvancedModelDescriptor& m_ModelDesc;
 
-    std::string m_Name;
-
-    Gtk::Entry* mp_ValueEntry;
-
     Gtk::Button* mp_RemoveButton;
 
     sigc::signal<void> m_signal_removeOccured;
     sigc::signal<void> m_signal_valueChangeOccured;
 
-    void onRemoveButtonClicked();
-
     void onValueChanged();
+
+  protected:
+
+    std::string m_Name;
+
+    Gtk::Entry* mp_ValueEntry;
+
+    void onRemoveButtonClicked();
 
   public:
 
@@ -125,6 +127,11 @@ class FunctionGlobalParamsWidget: public Gtk::Expander
     void onAddButtonClicked();
 
     void onValueChangeOccured();
+
+  protected:
+
+    std::map<std::string, GlobalParamRow*> m_Rows;
+
     void onStructureChangeOccured();
 
   public:

@@ -68,7 +68,7 @@ class WareItemWidget: public Gtk::Frame
 {
   private:
 
-    BuilderItemButtonBox* mp_ButtonBox;
+    Gtk::Expander* mp_Expander;
 
     Gtk::Notebook* mp_ItemInfoWidgetAsNotebook;
 
@@ -78,10 +78,12 @@ class WareItemWidget: public Gtk::Frame
 
   protected:
 
+    std::string m_ID;
+
     Gtk::Label* mp_IDLabel;
     Gtk::Label* mp_DescriptionLabel;
 
-    Gtk::Expander* mp_Expander;
+    BuilderItemButtonBox* mp_ButtonBox;
 
     void onRemoveButtonClicked(std::string ID);
     void onUpButtonClicked(std::string ID);

@@ -188,6 +188,8 @@ void FunctionGlobalParamsWidget::updateRows()
   for (int i = 0; i < TableWidgetCount; i++)
     mp_Table->remove(*mp_Table->children().begin()->get_widget());
 
+  m_Rows.clear();
+
   m_CurrentTableBottom = 0;
 
   std::map<std::string, std::string> GlobalParams =
@@ -197,7 +199,9 @@ void FunctionGlobalParamsWidget::updateRows()
   for (std::map<std::string, std::string>::iterator it = GlobalParams.begin();
       it != GlobalParams.end(); ++it)
   {
-    attachRow(new GlobalParamRow(m_Model, it->first, it->second));
+    GlobalParamRow* Row = new GlobalParamRow(m_Model, it->first, it->second);
+    attachRow(Row);
+    m_Rows[it->first] = Row;
   }
 
   mp_Table->show_all_children();
