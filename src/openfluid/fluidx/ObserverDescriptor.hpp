@@ -70,7 +70,7 @@ class ObserverDescriptor : public WareDescriptor
   public:
 
     ObserverDescriptor(std::string ID) : WareDescriptor(), m_ID(ID)
-    { m_ModelItemType = PluggedObserver; }
+    { m_WareType = PluggedObserver; }
 
     std::string getID() const
     { return m_ID; }

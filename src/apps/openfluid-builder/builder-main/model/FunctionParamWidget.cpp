@@ -362,7 +362,7 @@ void FunctionParamWidget::updateParamsRows()
 
   m_CurrentParamsTableBottom = 0;
 
-  std::map<std::string, std::string> Params = m_FctDesc.getParametersAsMap();
+  openfluid::ware::WareParams_t Params = m_FctDesc.getParameters();
 
   if (mp_Sign)
   {
@@ -381,7 +381,7 @@ void FunctionParamWidget::updateParamsRows()
   }
 
   // add any parameter that was set but not present in signature
-  for (std::map<std::string, std::string>::iterator it = Params.begin();
+  for (openfluid::ware::WareParams_t::iterator it = Params.begin();
       it != Params.end(); ++it)
   {
     attachParamsRow(
@@ -449,12 +449,11 @@ void FunctionParamWidget::updateRequiredFilesRows()
       {
         Items.clear();
 
-        std::string FileNameFromParam = m_FctDesc.getParameters().get("sources",
-                                                                      "");
+        std::string FileNameFromParam = m_FctDesc.getParameters()["sources"];
         if (!FileNameFromParam.empty())
           Items.push_back(FileNameFromParam);
 
-        FileNameFromParam = m_FctDesc.getParameters().get("distribution", "");
+        FileNameFromParam = m_FctDesc.getParameters()["distribution"];
         if (!FileNameFromParam.empty())
           Items.push_back(FileNameFromParam);
       }
@@ -570,7 +569,7 @@ void FunctionParamWidget::onAddButtonClicked()
 // =====================================================================
 
 void FunctionParamWidget::updateGlobals(
-    const std::map<std::string, std::string>& GlobalParams)
+    const openfluid::ware::WareParams_t& GlobalParams)
 {
   m_Globals = GlobalParams;
 
@@ -585,10 +584,11 @@ void FunctionParamWidget::updateGlobals()
   for (std::map<std::string, FunctionParamRow*>::iterator it =
       m_ParamsRows.begin(); it != m_ParamsRows.end(); ++it)
   {
-    std::map<std::string, std::string>::const_iterator Found = m_Globals.find(
+    openfluid::ware::WareParams_t::const_iterator Found = m_Globals.find(
         it->first);
 
-    it->second->setGlobalValue(Found != m_Globals.end() ? Found->second : "");
+    it->second->setGlobalValue(
+        Found != m_Globals.end() ? Found->second.get() : "");
   }
 }
 

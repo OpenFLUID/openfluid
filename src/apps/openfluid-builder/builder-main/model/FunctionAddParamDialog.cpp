@@ -132,7 +132,7 @@ void FunctionAddParamDialog::onChanged()
   {
     mp_InfoBarLabel->set_text(_("Parameter name already exists"));
   }
-  else if (!mp_DummyItem->isInsertable(Name))
+  else if (!openfluid::ware::PluggableWare::isWellFormated(Name))
   {
     mp_InfoBarLabel->set_text(_("Parameter name doesn't respect naming rules"));
   }
@@ -169,10 +169,7 @@ bool FunctionAddParamDialog::show(
       SignParams.begin(); it != SignParams.end(); ++it)
     mp_DummyItem->setParameter(it->DataName, "");
 
-  std::map<std::string, std::string> SetParams = Item->getParametersAsMap();
-  for (std::map<std::string, std::string>::iterator it = SetParams.begin();
-      it != SetParams.end(); ++it)
-    mp_DummyItem->setParameter(it->first, it->second);
+  mp_DummyItem->setParameters(Item->getParameters());
 
   mp_NameEntry->set_text("");
   mp_ValueEntry->set_text("");

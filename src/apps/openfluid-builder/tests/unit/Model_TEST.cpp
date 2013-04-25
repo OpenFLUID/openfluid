@@ -614,7 +614,7 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   // change a Param value
 
   ParamUp->getValueEntry()->set_text("123");
-  BOOST_CHECK_EQUAL(mp_Model->getItemAt(1)->getParametersAsMap()["gmult"],
+  BOOST_CHECK_EQUAL(mp_Model->getItemAt(1)->getParameters()["gmult"].get(),
                     "123");
 
   it++;
@@ -633,18 +633,14 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   BOOST_CHECK_EQUAL(GlobalRow->getName(), "gmult");
   BOOST_CHECK_EQUAL(GlobalRow->getValueEntry()->get_text(), "");
 
-  BOOST_CHECK_EQUAL(
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(mp_Model->getGlobalParameters())["gmult"],
-      "");
+  BOOST_CHECK_EQUAL(mp_Model->getGlobalParameters()["gmult"].get(), "");
   BOOST_CHECK_EQUAL(ParamUp->getValueEntry()->get_text(), "123");
   BOOST_CHECK_EQUAL(ParamUp->getGlobalLabel(), "");
 
   // change global Param value
 
   GlobalRow->getValueEntry()->set_text("456");
-  BOOST_CHECK_EQUAL(
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(mp_Model->getGlobalParameters())["gmult"],
-      "456");
+  BOOST_CHECK_EQUAL(mp_Model->getGlobalParameters()["gmult"].get(), "456");
   BOOST_CHECK_EQUAL(ParamUp->getValueEntry()->get_text(), "123");
   BOOST_CHECK_EQUAL(
       ParamUp->getGlobalLabel(),
@@ -653,9 +649,7 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   // remove Global param
 
   GlobalRow->onRemoveButtonClicked();
-  BOOST_CHECK_EQUAL(
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(mp_Model->getGlobalParameters()).size(),
-      0);
+  BOOST_CHECK_EQUAL(mp_Model->getGlobalParameters().size(), 0);
   BOOST_CHECK_EQUAL(ParamUp->getValueEntry()->get_text(), "123");
   BOOST_CHECK_EQUAL(ParamUp->getGlobalLabel(), "");
 }

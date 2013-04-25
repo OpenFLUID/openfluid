@@ -101,10 +101,10 @@ void TestDataset(std::string DatasetPath)
 
   BOOST_REQUIRE_EQUAL(FXDesc.getModelDescriptor().getGlobalParameters().size(), 2);
   BOOST_REQUIRE_EQUAL(
-      FXDesc.getModelDescriptor().getGlobalParameters().get<std::string>("gparam1"),
+      FXDesc.getModelDescriptor().getGlobalParameters()["gparam1"].get(),
       "100");
   BOOST_REQUIRE_EQUAL(
-      FXDesc.getModelDescriptor().getGlobalParameters().get<std::string>("gparam2"),
+      FXDesc.getModelDescriptor().getGlobalParameters()["gparam2"].get(),
       "0.1");
 
   openfluid::fluidx::CoupledModelDescriptor::SetDescription_t ModelItems;
@@ -132,10 +132,10 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),
       2);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("sources"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["sources"].get(),
       "sources.xml");
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("distribution"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["distribution"].get(),
       "distri.dat");
 
   it++;
@@ -166,7 +166,7 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),
       1);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("fixedvalue"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["fixedvalue"].get(),
       "20");
 
   it++;
@@ -186,10 +186,10 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),
       2);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("min"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["min"].get(),
       "20.53");
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("max"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["max"].get(),
       "50");
 
   it++;
@@ -203,16 +203,16 @@ void TestDataset(std::string DatasetPath)
       ((openfluid::fluidx::FunctionDescriptor*)(*it))->getParameters().size(),
       4);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("gparam1"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["gparam1"].get(),
       "50");
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("strparam"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["strparam"].get(),
       "strvalue");
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("doubleparam"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["doubleparam"].get(),
       "1.1");
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().get<std::string>("longparam"),
+      ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["longparam"].get(),
       "11");
 
 
@@ -418,14 +418,13 @@ void TestDataset(std::string DatasetPath)
 
    BOOST_CHECK(
        (*ObsIt)->isType(openfluid::fluidx::WareDescriptor::PluggedObserver));
-
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.csv");
 
-   openfluid::ware::WareParams_t Params = (*ObsIt)->getParameters();
-
-   BOOST_CHECK_EQUAL(Params.size(), 2);
+   boost::property_tree::ptree Params = openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
 
    BOOST_CHECK_EQUAL(Params.get_child("format").size(), 4);
+
+   BOOST_CHECK_EQUAL(Params.size(), 2);
 
    std::vector<std::string> FormatNames;
    BOOST_FOREACH(boost::property_tree::ptree::value_type &v,Params.get_child("format"))FormatNames.push_back(v.first);
@@ -512,7 +511,7 @@ void TestDataset(std::string DatasetPath)
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.kml");
 
-   Params = (*ObsIt)->getParameters();
+   Params = openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
 
    BOOST_CHECK_EQUAL(Params.size(), 0);
 
@@ -522,7 +521,7 @@ void TestDataset(std::string DatasetPath)
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.kml-dynamic");
 
-   Params = (*ObsIt)->getParameters();
+   Params = openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
 
    BOOST_CHECK_EQUAL(Params.size(), 1);
 
@@ -534,7 +533,7 @@ void TestDataset(std::string DatasetPath)
 
    BOOST_CHECK_EQUAL((*ObsIt)->getID(), "output.files.vtk");
 
-   Params = (*ObsIt)->getParameters();
+   Params = openfluid::ware::PluggableWare::getParamsAsPropertyTree((*ObsIt)->getParameters());
 
    BOOST_CHECK_EQUAL(Params.size(), 3);
 

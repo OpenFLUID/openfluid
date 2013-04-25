@@ -57,6 +57,7 @@
 #define __PLUGGABLEWARE_HPP__
 
 #include <boost/filesystem/path.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <string>
 
 #include <openfluid/dllexport.hpp>
@@ -64,8 +65,6 @@
 #include <openfluid/base/EnvProperties.hpp>
 #include <openfluid/ware/FunctionSignature.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/exceptions.hpp>
 
 namespace openfluid { namespace ware {
 
@@ -89,9 +88,9 @@ namespace openfluid { namespace ware {
 // =====================================================================
 
 typedef std::string WareParamKey_t;
-typedef std::string WareParamValue_t;
+typedef openfluid::core::StringValue WareParamValue_t;
 
-typedef boost::property_tree::ptree WareParams_t;
+typedef std::map<WareParamKey_t, WareParamValue_t> WareParams_t;
 
 
 // =====================================================================
@@ -202,6 +201,14 @@ class DLLEXPORT PluggableWare
     virtual void initializeWare(const WareID_t& ID);
 
     void finalizeWare();
+
+    /**
+     * Return false if ParameterKey starts nor ends with a dot, true otherwise
+     */
+    static bool isWellFormated(std::string ParameterKey);
+
+    static boost::property_tree::ptree getParamsAsPropertyTree(
+        const WareParams_t& Params);
 
 };
 

@@ -187,7 +187,7 @@ void FunctionAddGlobalParamDialog::onChanged()
   {
     mp_InfoBarLabel->set_text(_("Parameter name already exists"));
   }
-  else if (!mp_DummyItem->isInsertable(Name))
+  else if (!openfluid::ware::PluggableWare::isWellFormated(Name))
   {
     mp_InfoBarLabel->set_text(_("Parameter name doesn't respect naming rules"));
   }
@@ -208,13 +208,7 @@ bool FunctionAddGlobalParamDialog::show()
 {
   // create a dummy item to store global parameters (only for "onChange" tests)
   mp_DummyItem = new openfluid::fluidx::WareDescriptor();
-
-  std::map<std::string, std::string> GlobalParams =
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(
-          m_Model.getGlobalParameters());
-  for (std::map<std::string, std::string>::iterator it = GlobalParams.begin();
-      it != GlobalParams.end(); ++it)
-    mp_DummyItem->setParameter(it->first, it->second);
+  mp_DummyItem->setParameters(m_Model.getGlobalParameters());
 
   updateCombo();
   mp_NameEntry->set_text("");
@@ -262,9 +256,8 @@ void FunctionAddGlobalParamDialog::updateCombo()
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       m_Model.getItems();
 
-  std::map<std::string, std::string> ModelGlobalParams =
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(
-          m_Model.getGlobalParameters());
+  openfluid::ware::WareParams_t ModelGlobalParams =
+      m_Model.getGlobalParameters();
 
   std::set<std::string> TreatedParams;
 
@@ -285,8 +278,8 @@ void FunctionAddGlobalParamDialog::updateCombo()
         if (TreatedParams.count(it->DataName))
           continue;
 
-        std::map<std::string, std::string>::iterator Found =
-            ModelGlobalParams.find(it->DataName);
+        openfluid::ware::WareParams_t::iterator Found = ModelGlobalParams.find(
+            it->DataName);
 
         if (Found == ModelGlobalParams.end())
         {

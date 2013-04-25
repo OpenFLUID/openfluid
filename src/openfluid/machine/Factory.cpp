@@ -285,15 +285,15 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
       if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Interp)
       {
         IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Interp;
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("sources"));
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("distribution"));
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
       }
 
       if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Inject)
       {
         IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Inject;
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("sources"));
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters().get<std::string>("distribution"));
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
+        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
       }
 
       if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)

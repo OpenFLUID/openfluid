@@ -125,7 +125,7 @@ class GlobalParamsFunction : public openfluid::ware::PluggableFunction
     openfluid::ware::WareParams_t::const_iterator itParams;
 
     for (itParams=Params.begin();itParams!=Params.end();++itParams)
-      std::cout << (*itParams).first << " -> " << (*itParams).second.data() << std::endl;
+      std::cout << (*itParams).first << " -> " << (*itParams).second << std::endl;
 
     if (!OPENFLUID_GetFunctionParameter(Params,"gparam1",LongParam))
       OPENFLUID_RaiseError("tests.globalparams","gparam1 not found");

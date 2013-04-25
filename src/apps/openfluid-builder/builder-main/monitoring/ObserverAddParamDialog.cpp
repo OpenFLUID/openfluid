@@ -131,7 +131,7 @@ void ObserverAddParamDialog::onChanged()
   {
     mp_InfoBarLabel->set_text(_("Parameter name already exists"));
   }
-  else if (!mp_Obs->isInsertable(Name))
+  else if (!openfluid::ware::PluggableWare::isWellFormated(Name))
   {
     mp_InfoBarLabel->set_text(_("Parameter name doesn't respect naming rules"));
   }

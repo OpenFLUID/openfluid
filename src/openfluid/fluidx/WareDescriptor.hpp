@@ -69,15 +69,9 @@ class WareDescriptor
       NoWareType, PluggedFunction, Generator, PluggedObserver
     };
 
-  private:
-
-    static void getParamsRecurs(const boost::property_tree::ptree& Parent,
-                                const std::string& Name,
-                                std::map<std::string, std::string>& Contents);
-
   protected:
 
-    WareType m_ModelItemType;
+    WareType m_WareType;
     openfluid::ware::WareParams_t m_Params;  // Function parameters set
 
   public:
@@ -86,9 +80,6 @@ class WareDescriptor
 
     virtual ~WareDescriptor();
 
-    /**
-     * Setting an empty key parameter does nothing
-     */
     void setParameter(const openfluid::ware::WareParamKey_t& Key,
                       const openfluid::ware::WareParamKey_t& Value);
 
@@ -96,41 +87,15 @@ class WareDescriptor
 
     openfluid::ware::WareParams_t getParameters();
 
-    std::map<std::string, std::string> getParametersAsMap();
-
-    /**
-     * @warning be careful with Params structure, that must match a real xml structure
-     * (see. http://www.boost.org/doc/libs/1_41_0/doc/html/boost/property_tree/basic_ptree.html#id973373-bb)
-     */
-    static std::map<std::string, std::string> getParamsAsMap(
-        const openfluid::ware::WareParams_t& Params);
-
     bool isType(WareType MIType) const;
 
     WareType getType() const;
 
-    /**
-     * Does nothing if Key is empty or if key doesn't exist
-     */
     void eraseParameter(const openfluid::ware::WareParamKey_t& Key);
-
-    static bool eraseParamRecurs(boost::property_tree::ptree& pt,
-                                 boost::property_tree::path& Path);
 
     void clearParameters();
 
-    /**
-     * Return true if the parameter with ParameterKey exists as a leaf, false otherwise
-     */
     bool hasParameter(std::string ParameterKey);
-
-    /**
-     * Return true if the insertion of the parameter with ParameterKey will respects xml rules, ie :
-     * - it exists *and* has no child (is empty) *and* doesn't end with a dot
-     * - or it doesn't already exist *and* doesn't end with a dot *and* his parent, if has one, has at least a child (parent is not empty)
-     * Return false otherwise
-     */
-    bool isInsertable(std::string ParameterKey);
 
 };
 

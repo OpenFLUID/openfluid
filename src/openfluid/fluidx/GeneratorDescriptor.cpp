@@ -66,7 +66,7 @@ GeneratorDescriptor::GeneratorDescriptor() :
     ModelItemDescriptor(), m_VarName(""), m_UnitClass(""), m_GenMethod(
         NoGenMethod), m_VarSize(1), m_GeneratedID("")
 {
-  m_ModelItemType = Generator;
+  m_WareType = Generator;
 }
 
 // =====================================================================
@@ -78,7 +78,7 @@ GeneratorDescriptor::GeneratorDescriptor(
     unsigned int VarSize) :
     ModelItemDescriptor()
 {
-  m_ModelItemType = Generator;
+  m_WareType = Generator;
   m_VarName = VarName;
   m_UnitClass = UnitClass;
   m_GenMethod = GenMethod;

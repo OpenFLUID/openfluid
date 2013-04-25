@@ -60,7 +60,6 @@
 #include <iomanip>
 
 #include <boost/foreach.hpp>
-#include <boost/property_tree/ptree.hpp>
 #include <boost/filesystem.hpp>
 
 #include <ogrsf_frmts.h>
@@ -608,26 +607,28 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
+      boost::property_tree::ptree Params_pt = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+
       std::string InputDir, OutputDir;
 
       OPENFLUID_GetRunEnvironment("dir.input",InputDir);
       OPENFLUID_GetRunEnvironment("dir.output",OutputDir);
 
-      m_DEMFilename = Params.get("DEMfile","");
+      m_DEMFilename = Params_pt.get("DEMfile","");
       if (!m_DEMFilename.empty()) m_DEMFilename = boost::filesystem::path(InputDir+"/"+m_DEMFilename).string();
 
       // vtk series
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params.get_child("vtkserie"))
+      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params_pt.get_child("vtkserie"))
       {
         std::string SerieID = v.first;
 
         VtkSerieInfo VtkSerie;
 
-        VtkSerie.UnitsClass = Params.get("vtkserie."+SerieID+".unitclass","");
-        VtkSerie.VarName = Params.get("vtkserie."+SerieID+".varname","");
-        VtkSerie.VectorSourceFilename = Params.get("vtkserie."+SerieID+".sourcefile","");
-        VtkSerie.DEMSourceFilename = Params.get("vtkserie."+SerieID+".DEMfile","");
+        VtkSerie.UnitsClass = Params_pt.get("vtkserie."+SerieID+".unitclass","");
+        VtkSerie.VarName = Params_pt.get("vtkserie."+SerieID+".varname","");
+        VtkSerie.VectorSourceFilename = Params_pt.get("vtkserie."+SerieID+".sourcefile","");
+        VtkSerie.DEMSourceFilename = Params_pt.get("vtkserie."+SerieID+".DEMfile","");
 
         if (!(VtkSerie.UnitsClass.empty() || VtkSerie.VarName.empty() || VtkSerie.VectorSourceFilename.empty()))
         {

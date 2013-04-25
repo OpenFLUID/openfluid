@@ -314,9 +314,7 @@ void ModelModule::update()
 
 void ModelModule::updateGlobalParams()
 {
-  std::map<std::string, std::string> GlobalParams =
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(
-          m_Model.getGlobalParameters());
+  openfluid::ware::WareParams_t GlobalParams = m_Model.getGlobalParameters();
 
   for (std::list<FunctionParamWidget*>::iterator it = m_ParamWidgets.begin();
       it != m_ParamWidgets.end(); ++it)

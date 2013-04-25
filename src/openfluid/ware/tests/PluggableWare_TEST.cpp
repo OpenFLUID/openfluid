@@ -46,103 +46,57 @@
  */
 
 /**
- \file WareDescriptor.cpp
+ \file WareDescriptor_TEST.cpp
  \brief Implements ...
 
- \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/fluidx/WareDescriptor.hpp>
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_pluggableware
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
 
-namespace openfluid {
-namespace fluidx {
+#include <openfluid/ware/PluggableWare.hpp>
 
 // =====================================================================
 // =====================================================================
 
-WareDescriptor::WareDescriptor() :
-    m_WareType(NoWareType)
+BOOST_AUTO_TEST_CASE(check_isWellFormated)
 {
+  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormated("param1"));
+  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormated("param1.level2"));
+  BOOST_CHECK(openfluid::ware::PluggableWare::isWellFormated("param1.level2.level3"));
 
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("."));
+
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2.level3."));
+
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1.level2"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1.level2.level3"));
+
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".."));
+
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1.level2."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated(".param1.level2.level3."));
+
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("..."));
+
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("..param1"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("..param1.level2"));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("..param1.level2.level3"));
+
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2.."));
+  BOOST_CHECK(!openfluid::ware::PluggableWare::isWellFormated("param1.level2.level3.."));
 }
 
 // =====================================================================
 // =====================================================================
 
-WareDescriptor::~WareDescriptor()
-{
-}
-
-// =====================================================================
-// =====================================================================
-
-void WareDescriptor::setParameter(const openfluid::ware::WareParamKey_t& Key,
-                                  const openfluid::ware::WareParamKey_t& Value)
-{
-  m_Params[Key] = Value;
-}
-
-// =====================================================================
-// =====================================================================
-
-void WareDescriptor::setParameters(const openfluid::ware::WareParams_t& Params)
-{
-  openfluid::ware::WareParams_t::const_iterator it;
-
-  for (it=Params.begin();it!=Params.end();++it)
-    m_Params[it->first] = it->second;
-}
-
-// =====================================================================
-// =====================================================================
-
-openfluid::ware::WareParams_t WareDescriptor::getParameters()
-{
-  return m_Params;
-}
-
-// =====================================================================
-// =====================================================================
-
-bool WareDescriptor::isType(WareType MIType) const
-{
-  return (m_WareType == MIType);
-}
-
-// =====================================================================
-// =====================================================================
-
-WareDescriptor::WareType WareDescriptor::getType() const
-{
-  return m_WareType;
-}
-
-// =====================================================================
-// =====================================================================
-
-void WareDescriptor::eraseParameter(const openfluid::ware::WareParamKey_t& Key)
-{
-  m_Params.erase(Key);
-}
-
-// =====================================================================
-// =====================================================================
-
-void WareDescriptor::clearParameters()
-{
-  m_Params.clear();
-}
-
-// =====================================================================
-// =====================================================================
-
-bool WareDescriptor::hasParameter(std::string ParameterKey)
-{
-  return m_Params.count(ParameterKey);
-}
-
-// =====================================================================
-// =====================================================================
-
-}
-} // namespaces

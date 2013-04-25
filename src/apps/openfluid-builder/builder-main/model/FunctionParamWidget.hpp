@@ -160,7 +160,7 @@ class FunctionParamWidget: public Gtk::VBox
     unsigned int m_CurrentReqFilesTableBottom;
     unsigned int m_CurrentUsedFilesTableBottom;
 
-    std::map<std::string, std::string> m_Globals;
+    openfluid::ware::WareParams_t m_Globals;
 
     sigc::signal<void> m_signal_changeOccured;
     sigc::signal<void> m_signal_fileChangeOccured;
@@ -194,7 +194,7 @@ class FunctionParamWidget: public Gtk::VBox
 
     ~FunctionParamWidget();
 
-    void updateGlobals(const std::map<std::string, std::string>& GlobalParams);
+    void updateGlobals(const openfluid::ware::WareParams_t& GlobalParams);
     void updateRequiredFilesRows();
 
     sigc::signal<void> signal_changeOccured();

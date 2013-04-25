@@ -59,7 +59,6 @@
 #include <iostream>
 #include <iomanip>
 #include <boost/foreach.hpp>
-#include <boost/property_tree/ptree.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 
@@ -270,35 +269,37 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params.get_child("format"))
+      boost::property_tree::ptree Params_pt = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+
+      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params_pt.get_child("format"))
       {
         std::string FormatName = v.first;
-        m_Formats[FormatName].ColSeparator = Params.get("format."+FormatName+".colsep","\t");
-        m_Formats[FormatName].Precision = Params.get<unsigned int>("format."+FormatName+".precision",5);
-        m_Formats[FormatName].DateFormat = StrToDateFormat(Params.get("format."+FormatName+".date","ISO"));
-        m_Formats[FormatName].CommentChar = Params.get("format."+FormatName+".commentchar","#");
-        m_Formats[FormatName].Header = StrToHeaderType(Params.get("format."+FormatName+".header",""));
+        m_Formats[FormatName].ColSeparator = Params_pt.get("format."+FormatName+".colsep","\t");
+        m_Formats[FormatName].Precision = Params_pt.get<unsigned int>("format."+FormatName+".precision",5);
+        m_Formats[FormatName].DateFormat = StrToDateFormat(Params_pt.get("format."+FormatName+".date","ISO"));
+        m_Formats[FormatName].CommentChar = Params_pt.get("format."+FormatName+".commentchar","#");
+        m_Formats[FormatName].Header = StrToHeaderType(Params_pt.get("format."+FormatName+".header",""));
       }
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params.get_child("set"))
+      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params_pt.get_child("set"))
       {
         std::string SetName = v.first;
-        m_Sets[SetName].UnitClass = Params.get("set."+SetName+".unitclass","");
+        m_Sets[SetName].UnitClass = Params_pt.get("set."+SetName+".unitclass","");
         if (m_Sets[SetName].UnitClass == "")
           OPENFLUID_RaiseError("export.vars.files.csv","initParams()","Unit class of set "+SetName+" is undefined");
 
 
-        m_Sets[SetName].UnitsIDsStr = Params.get("set."+SetName+".unitsIDs","*");
-        m_Sets[SetName].VariablesStr = Params.get("set."+SetName+".vars","*");
+        m_Sets[SetName].UnitsIDsStr = Params_pt.get("set."+SetName+".unitsIDs","*");
+        m_Sets[SetName].VariablesStr = Params_pt.get("set."+SetName+".vars","*");
 
-        std::string FormatName = Params.get("set."+SetName+".format","");
+        std::string FormatName = Params_pt.get("set."+SetName+".format","");
         if (m_Formats.find(FormatName) == m_Formats.end())
           OPENFLUID_RaiseError("export.vars.files.csv","initParams()","Format "+FormatName+" used by "+ SetName+" is undefined");
         else
           m_Sets[SetName].Format = &(m_Formats[FormatName]);
       }
 
-      m_BufferSize = Params.get<unsigned int>("general.buffersize",2) * 1024;
+      m_BufferSize = Params_pt.get<unsigned int>("general.buffersize",2) * 1024;
 
     }
 

@@ -127,8 +127,8 @@ openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(
 
         if (xmlKey != NULL && xmlValue != NULL)
         {
-          Params.put((const char*) xmlKey,
-                     openfluid::ware::WareParamValue_t((const char*) xmlValue));
+          Params[(const char*) xmlKey] = openfluid::ware::WareParamValue_t(
+              (const char*) xmlValue);
           xmlFree(xmlKey);
           xmlFree(xmlValue);
         }
@@ -155,14 +155,9 @@ openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
 {
   openfluid::ware::WareParams_t FinalParams = Params;
 
-  std::map<std::string, std::string> OverloadParamsMap =
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(OverloadParams);
-  std::map<std::string, std::string>::iterator it;
-
-  for (it = OverloadParamsMap.begin(); it != OverloadParamsMap.end(); ++it)
-  {
-    FinalParams.put(it->first, it->second);
-  }
+  for (openfluid::ware::WareParams_t::const_iterator it =
+      OverloadParams.begin(); it != OverloadParams.end(); ++it)
+    FinalParams[it->first] = it->second;
 
   return FinalParams;
 }
@@ -807,7 +802,7 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
         if (xmlDataClass != NULL)
           Item->setUnitClass(std::string((char*) xmlDataClass));
 
-        if(!m_DatastoreDescriptor.appendItem(Item))
+        if (!m_DatastoreDescriptor.appendItem(Item))
           throw openfluid::base::OFException(
               "OpenFLUID framework",
               "FluidXDescriptor::extractDatastoreFromNode",
@@ -1031,13 +1026,10 @@ std::string FluidXDescriptor::getParamsAsStr(
 {
   std::string ParamsStr = "";
 
-  std::map<std::string, std::string> ParamsMap = WareDescriptor::getParamsAsMap(
-      Params);
-
-  for (std::map<std::string, std::string>::iterator itt = ParamsMap.begin();
-      itt != ParamsMap.end(); ++itt)
-    ParamsStr += (m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
-                  + itt->first + "\" value=\"" + itt->second + "\"/>\n");
+  for (openfluid::ware::WareParams_t::const_iterator it = Params.begin();
+      it != Params.end(); ++it)
+  ParamsStr += (m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
+      + it->first + "\" value=\"" + it->second.get() + "\"/>\n");
 
   return ParamsStr;
 }
@@ -1159,8 +1151,8 @@ void FluidXDescriptor::appendDomainInputdata(std::ostringstream& Contents)
       openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t& DataVals =
           itData->second;
 
-      unsigned int i=0;
-      for(; i<Cols.size()-1;i++)
+      unsigned int i = 0;
+      for (; i < Cols.size() - 1; i++)
       {
         Contents << DataVals[Cols[i]] << "\t";
       }
