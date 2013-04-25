@@ -79,11 +79,6 @@ class FunctionParamRow: public BuilderTableRowWidget
   private:
 
     openfluid::fluidx::ModelItemDescriptor& m_FctDesc;
-    std::string m_Name;
-
-    Gtk::Entry* mp_ValueEntry;
-
-    Gtk::Label* mp_GlobalLabel;
 
     Gtk::Button* mp_RemoveButton;
 
@@ -93,6 +88,14 @@ class FunctionParamRow: public BuilderTableRowWidget
     void onRemoveButtonClicked();
 
     void onValueChanged();
+
+  protected:
+
+    std::string m_Name;
+
+    Gtk::Entry* mp_ValueEntry;
+
+    Gtk::Label* mp_GlobalLabel;
 
   public:
 
@@ -157,8 +160,6 @@ class FunctionParamWidget: public Gtk::VBox
     unsigned int m_CurrentReqFilesTableBottom;
     unsigned int m_CurrentUsedFilesTableBottom;
 
-    std::map<std::string, FunctionParamRow*> m_ParamsRows;
-
     std::map<std::string, std::string> m_Globals;
 
     sigc::signal<void> m_signal_changeOccured;
@@ -180,6 +181,10 @@ class FunctionParamWidget: public Gtk::VBox
     void onFileChangeOccured();
 
     void updateGlobals();
+
+  protected:
+
+    std::map<std::string, FunctionParamRow*> m_ParamsRows;
 
   public:
 

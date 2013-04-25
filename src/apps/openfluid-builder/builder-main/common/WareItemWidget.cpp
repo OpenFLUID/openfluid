@@ -68,7 +68,7 @@
 WareItemWidget::WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
                                Gtk::Widget& InfoWidget, std::string Description,
                                openfluid::fluidx::WareDescriptor::WareType Type) :
-    mp_ItemInfoWidgetAsNotebook(0)
+    mp_ItemInfoWidgetAsNotebook(0), m_ID(ID)
 {
   Gtk::Notebook* NB = dynamic_cast<Gtk::Notebook*>(&InfoWidget);
   if (NB)
@@ -77,27 +77,27 @@ WareItemWidget::WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
   mp_IDLabel = Gtk::manage(new Gtk::Label());
   mp_IDLabel->set_justify(Gtk::JUSTIFY_LEFT);
   mp_IDLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
-  mp_IDLabel->set_markup("<b>" + ID + "</b>");
+  mp_IDLabel->set_markup("<b>" + m_ID + "</b>");
 
   mp_DescriptionLabel = Gtk::manage(new Gtk::Label(Description));
   mp_DescriptionLabel->set_alignment(Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER);
 
   mp_ButtonBox = new BuilderItemButtonBox();
   mp_ButtonBox->setRemoveCommandTooltipText(
-      Glib::ustring::compose(_("Remove %1"), ID));
+      Glib::ustring::compose(_("Remove %1"), m_ID));
   mp_ButtonBox->setUpCommandTooltipText(
-      Glib::ustring::compose(_("Move up %1"), ID));
+      Glib::ustring::compose(_("Move up %1"), m_ID));
   mp_ButtonBox->setDownCommandTooltipText(
-      Glib::ustring::compose(_("Move down %1"), ID));
+      Glib::ustring::compose(_("Move down %1"), m_ID));
   mp_ButtonBox->signal_RemoveCommandAsked().connect(
       sigc::bind<std::string>(
-          sigc::mem_fun(*this, &WareItemWidget::onRemoveButtonClicked), ID));
+          sigc::mem_fun(*this, &WareItemWidget::onRemoveButtonClicked), m_ID));
   mp_ButtonBox->signal_UpCommandAsked().connect(
       sigc::bind<std::string>(
-          sigc::mem_fun(*this, &WareItemWidget::onUpButtonClicked), ID));
+          sigc::mem_fun(*this, &WareItemWidget::onUpButtonClicked), m_ID));
   mp_ButtonBox->signal_DownCommandAsked().connect(
       sigc::bind<std::string>(
-          sigc::mem_fun(*this, &WareItemWidget::onDownButtonClicked), ID));
+          sigc::mem_fun(*this, &WareItemWidget::onDownButtonClicked), m_ID));
 
   // to apply the default background color
   Gtk::EventBox* ParamEventBox = Gtk::manage(new Gtk::EventBox());

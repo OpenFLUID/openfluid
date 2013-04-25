@@ -74,8 +74,6 @@ class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     Gtk::Box* mp_MainPanel;
 
-    FunctionGlobalParamsWidget* mp_GlobalParamsWidget;
-
     ModelAddFunctionDialog* mp_AddFctDialog;
 
     FunctionAddParamDialog* mp_AddParamDialog;
@@ -96,6 +94,8 @@ class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
     WareSetWidget* mp_ModelWidget;
 
     std::list<FunctionParamWidget*> m_ParamWidgets;
+
+    FunctionGlobalParamsWidget* mp_GlobalParamsWidget;
 
     void whenRemoveFunctionAsked(std::string ID);
 
