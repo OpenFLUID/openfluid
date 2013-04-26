@@ -64,6 +64,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -178,15 +179,14 @@ void ProjectChecker::checkModelRequirements()
       if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
           == openfluid::fluidx::GeneratorDescriptor::Inject)
       {
-        std::string FileNameFromParam = (*it)->getParameters().get("sources",
-                                                                   "");
+        std::string FileNameFromParam = (*it)->getParameters()["sources"];
         if (!FileNameFromParam.empty() && !boost::filesystem::exists(
             RunEnv->getInputFullPath(FileNameFromParam)))
           ExtraFilesMsg += Glib::ustring::compose(
               _("- File %1 required by %2 not found\n"), FileNameFromParam,
               ID);
 
-        FileNameFromParam = (*it)->getParameters().get("distribution", "");
+        FileNameFromParam = (*it)->getParameters()["distribution"];
         if (!FileNameFromParam.empty() && !boost::filesystem::exists(
             RunEnv->getInputFullPath(FileNameFromParam)))
           ExtraFilesMsg += Glib::ustring::compose(
@@ -301,8 +301,8 @@ void ProjectChecker::checkGeneratorParam(
 bool ProjectChecker::isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
                                 std::string ParamName)
 {
-  return (!Item->getParameters().get(ParamName, "").empty()
-      || !mp_Desc->getModel().getGlobalParameters().get(ParamName, "").empty());
+  return (!Item->getParameters()[ParamName].get().empty()
+      || !mp_Desc->getModel().getGlobalParameters()[ParamName].get().empty());
 }
 
 // =====================================================================
@@ -311,9 +311,13 @@ bool ProjectChecker::isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
 bool ProjectChecker::isParamSetAsDouble(
     openfluid::fluidx::ModelItemDescriptor* Item, std::string ParamName)
 {
-  return (Item->getParameters().get_optional<double>(ParamName)
-      || mp_Desc->getModel().getGlobalParameters().get_optional<double>(
-          ParamName));
+  if (!isParamSet(Item, ParamName))
+    return false;
+
+  double d;
+
+  return (Item->getParameters()[ParamName].toDouble(d)
+      || mp_Desc->getModel().getGlobalParameters()[ParamName].toDouble(d));
 }
 
 // =====================================================================
@@ -322,15 +326,18 @@ bool ProjectChecker::isParamSetAsDouble(
 double ProjectChecker::getParamAsDouble(
     openfluid::fluidx::ModelItemDescriptor* Item, std::string ParamName)
 {
-  if (Item->getParameters().get_optional<double>(ParamName))
-    return Item->getParameters().get<double>(ParamName);
-  else if (mp_Desc->getModel().getGlobalParameters().get_optional<double>(
-      ParamName))
-    return mp_Desc->getModel().getGlobalParameters().get<double>(ParamName);
-  else
+  if (!isParamSetAsDouble(Item, ParamName))
     throw openfluid::base::OFException(
-        "OpenFLUID Framwework", "ProjectChecker::getParamAsDouble",
+        "OpenFLUID Framework", "ProjectChecker::getParamAsDouble",
         "Parameter " + ParamName + " is not set as a double");
+
+  double d;
+
+  if (Item->getParameters()[ParamName].toDouble(d))
+    return d;
+
+  mp_Desc->getModel().getGlobalParameters()[ParamName].toDouble(d);
+  return d;
 }
 
 // =====================================================================
@@ -420,15 +427,13 @@ void ProjectChecker::checkModelVars()
       std::pair<std::string,
           std::pair<std::string, openfluid::core::Value::Type> > > TypedVarsUnits;
 
-
   /* Variables processing order is important
-     A) first pass
-        1) produced vars
-        2) updated vars
-     B) second pass
-        3) required vars
-  */
-
+   A) first pass
+   1) produced vars
+   2) updated vars
+   B) second pass
+   3) required vars
+   */
 
   // pass 1
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
@@ -437,9 +442,9 @@ void ProjectChecker::checkModelVars()
     Sign = Reg->getSignatureItemInstance(*it)->Signature;
     std::string ID = mp_Desc->getModel().getID(*it);
 
-
     // check produced Vars
-    std::vector<openfluid::ware::SignatureHandledTypedDataItem>& ProdVars = Sign->HandledData.ProducedVars;
+    std::vector<openfluid::ware::SignatureHandledTypedDataItem>& ProdVars =
+        Sign->HandledData.ProducedVars;
     for (itt = ProdVars.begin(); itt != ProdVars.end(); ++itt)
     {
 
@@ -487,7 +492,6 @@ void ProjectChecker::checkModelVars()
                 GenDesc->getVariableName(), GenDesc->getUnitClass(), ID);
     }
 
-
     // check updated Vars
     std::vector<openfluid::ware::SignatureHandledTypedDataItem>& UpVars =
         Sign->HandledData.UpdatedVars;
@@ -508,7 +512,6 @@ void ProjectChecker::checkModelVars()
       }
     }
   }
-
 
   // pass 2
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
@@ -533,10 +536,9 @@ void ProjectChecker::checkModelVars()
           || (itt->DataType != openfluid::core::Value::NONE && !TypedVarsUnits.count(
               std::make_pair(itt->UnitClass,
                              std::make_pair(itt->DataName, itt->DataType)))))
-        ModelMsg +=
-            Glib::ustring::compose(
-                _("- %1 variable on %2 required by %3 is not produced\n"),
-                itt->DataName, itt->UnitClass, ID);
+        ModelMsg += Glib::ustring::compose(
+            _("- %1 variable on %2 required by %3 is not produced\n"),
+            itt->DataName, itt->UnitClass, ID);
     }
 
   }

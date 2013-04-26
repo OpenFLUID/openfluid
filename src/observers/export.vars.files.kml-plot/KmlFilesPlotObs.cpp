@@ -60,8 +60,6 @@
 #include <iomanip>
 
 #include <boost/foreach.hpp>
-#include <boost/property_tree/ptree.hpp>
-
 
 #include "../KmlObserverBase.hpp"
 
@@ -345,6 +343,8 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
+      boost::property_tree::ptree Params_pt = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+
       OGRRegisterAll();
 
       OPENFLUID_GetRunEnvironment("dir.input",m_InputDir);
@@ -352,34 +352,34 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       // general
 
-      m_Title = Params.get("title",m_Title);
-      m_OutputFileName = Params.get("kmzfilename",m_OutputFileName);
-      m_TryOpenGEarth = Params.get<bool>("tryopengearth",m_TryOpenGEarth);
+      m_Title = Params_pt.get("title",m_Title);
+      m_OutputFileName = Params_pt.get("kmzfilename",m_OutputFileName);
+      m_TryOpenGEarth = Params_pt.get<bool>("tryopengearth",m_TryOpenGEarth);
 
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params.get_child("layers"))
+      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params_pt.get_child("layers"))
       {
         std::string LayerID = v.first;
 
         KmlSerieInfo KSI;
 
-        KSI.UnitsClass = Params.get("layers."+LayerID+".unitclass","");
+        KSI.UnitsClass = Params_pt.get("layers."+LayerID+".unitclass","");
 
 
-        KSI.VarNamesStr = Params.get("layers."+LayerID+".varnames","*");
+        KSI.VarNamesStr = Params_pt.get("layers."+LayerID+".varnames","*");
 
         // TODO Manage selection of plotted spatial units
 
-        KSI.LineWidth = Params.get<int>("layers."+LayerID+".linewidth",1);
-        KSI.DefaultColor = Params.get("layers."+LayerID+".defaultcolor","ffffffff");
-        KSI.PlottedColor = Params.get("layers."+LayerID+".plottedcolor","ff0000ff");
+        KSI.LineWidth = Params_pt.get<int>("layers."+LayerID+".linewidth",1);
+        KSI.DefaultColor = Params_pt.get("layers."+LayerID+".defaultcolor","ffffffff");
+        KSI.PlottedColor = Params_pt.get("layers."+LayerID+".plottedcolor","ff0000ff");
 
-        KSI.SourceIsDatastore = (Params.get("layers."+LayerID+".source","file") == "datastore");
+        KSI.SourceIsDatastore = (Params_pt.get("layers."+LayerID+".source","file") == "datastore");
         if (KSI.SourceIsDatastore)
           return;
         else
         {
-          KSI.SourceFilename = Params.get("layers."+LayerID+".sourcefile","");
+          KSI.SourceFilename = Params_pt.get("layers."+LayerID+".sourcefile","");
           if (KSI.SourceFilename.empty())
           {
             OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlFilesPlotObserver::initParams()",

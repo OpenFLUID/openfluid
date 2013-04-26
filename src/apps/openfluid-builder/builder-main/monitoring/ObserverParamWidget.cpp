@@ -171,7 +171,7 @@ ObserverParamWidget::~ObserverParamWidget()
 
 void ObserverParamWidget::updateRows()
 {
-  std::map<std::string, std::string> Params = m_ObsDesc.getParametersAsMap();
+  openfluid::ware::WareParams_t Params = m_ObsDesc.getParameters();
 
   int TableWidgetCount = mp_Table->children().size();
   for (int i = 0; i < TableWidgetCount; i++)
@@ -179,7 +179,7 @@ void ObserverParamWidget::updateRows()
 
   m_CurrentTableBottom = 0;
 
-  for (std::map<std::string, std::string>::iterator it = Params.begin();
+  for (openfluid::ware::WareParams_t::iterator it = Params.begin();
       it != Params.end(); ++it)
   {
     ObserverParamRow* Row = new ObserverParamRow(m_ObsDesc, it->first,

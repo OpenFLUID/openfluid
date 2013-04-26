@@ -367,7 +367,7 @@ BOOST_AUTO_TEST_CASE(check_generators_with_files)
 
   BOOST_CHECK(!PC.IsGeneratorParamsOk);
   BOOST_CHECK(PC.IsExtraFilesOk);
-  BOOST_CHECK( PC.ExtraFilesMsg.empty());
+  BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(!GlobalState);
 
   InterpGen->eraseParameter("sources");

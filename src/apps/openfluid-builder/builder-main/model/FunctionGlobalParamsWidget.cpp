@@ -192,11 +192,9 @@ void FunctionGlobalParamsWidget::updateRows()
 
   m_CurrentTableBottom = 0;
 
-  std::map<std::string, std::string> GlobalParams =
-      openfluid::fluidx::WareDescriptor::getParamsAsMap(
-          m_Model.getGlobalParameters());
+  openfluid::ware::WareParams_t GlobalParams = m_Model.getGlobalParameters();
 
-  for (std::map<std::string, std::string>::iterator it = GlobalParams.begin();
+  for (openfluid::ware::WareParams_t::iterator it = GlobalParams.begin();
       it != GlobalParams.end(); ++it)
   {
     GlobalParamRow* Row = new GlobalParamRow(m_Model, it->first, it->second);

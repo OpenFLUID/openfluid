@@ -66,7 +66,7 @@ namespace openfluid { namespace fluidx {
 FunctionDescriptor::FunctionDescriptor(std::string FileID) : ModelItemDescriptor(),
   m_FileID(FileID)
 {
-  m_ModelItemType = PluggedFunction;
+  m_WareType = PluggedFunction;
 }
 
 

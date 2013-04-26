@@ -59,7 +59,6 @@
 #include <iostream>
 #include <iomanip>
 #include <boost/foreach.hpp>
-#include <boost/property_tree/ptree.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 
 
@@ -286,19 +285,21 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      m_Title = Params.get("title",m_Title);
+      boost::property_tree::ptree Params_pt = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
 
-      m_Init = Params.get<bool>("when.init",false);
-      m_EveryTime = Params.get<bool>("when.everytime",false);
-      m_Final = Params.get<bool>("when.final",false);
+      m_Title = Params_pt.get("title",m_Title);
+
+      m_Init = Params_pt.get<bool>("when.init",false);
+      m_EveryTime = Params_pt.get<bool>("when.everytime",false);
+      m_Final = Params_pt.get<bool>("when.final",false);
 
       try
       {
-        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params.get_child("style"))
+        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params_pt.get_child("style"))
         {
-          BOOST_FOREACH(const boost::property_tree::ptree::value_type &w,Params.get_child("style."+v.first))
+          BOOST_FOREACH(const boost::property_tree::ptree::value_type &w,Params_pt.get_child("style."+v.first))
           {
-            m_UnitClassStyles[v.first][w.first] = Params.get("style."+v.first+"."+w.first,"");
+            m_UnitClassStyles[v.first][w.first] = Params_pt.get("style."+v.first+"."+w.first,"");
           }
         }
       }

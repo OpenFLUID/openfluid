@@ -191,16 +191,12 @@ openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const o
 {
   openfluid::ware::WareParams_t MergedParams = m_GlobalParams;
 
-  std::map<std::string,std::string> GlobalsMap = openfluid::fluidx::WareDescriptor::getParamsAsMap(m_GlobalParams);
-  std::map<std::string,std::string> LocalsMap = openfluid::fluidx::WareDescriptor::getParamsAsMap(Params);
-
-  for(std::map<std::string,std::string>::iterator itLocal = LocalsMap.begin();
-      itLocal != LocalsMap.end();++itLocal)
+  for(openfluid::ware::WareParams_t::const_iterator it = Params.begin();it != Params.end();++it)
   {
-    if(!itLocal->second.empty())
-      MergedParams.put(itLocal->first,itLocal->second);
-    else if(!GlobalsMap.count(itLocal->first))
-      MergedParams.put(itLocal->first,itLocal->second);
+    if(!it->second.get().empty())
+      MergedParams[it->first] = it->second;
+    else if(!m_GlobalParams.count(it->first))
+      MergedParams[it->first] = it->second;
   }
 
   return MergedParams;
@@ -213,7 +209,7 @@ openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const o
 
 void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value)
 {
-  m_GlobalParams.put(Key,Value);
+  m_GlobalParams[Key] = Value;
 }
 
 
