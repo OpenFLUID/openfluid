@@ -331,6 +331,80 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_deleteUnit_manyIDataDesc)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/many_idata_desc");
+
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
+
+  std::set<std::string> DataNames = Domain.getInputDataNames("unitsA");
+  BOOST_CHECK_EQUAL(DataNames.size(), 3);
+  BOOST_CHECK(DataNames.count("indataA"));
+  BOOST_CHECK(DataNames.count("indataB"));
+  BOOST_CHECK(DataNames.count("indataC"));
+
+  Domain.deleteUnit("unitsA", 2);
+  DataNames = Domain.getInputDataNames("unitsA");
+  BOOST_CHECK_EQUAL(DataNames.size(), 3);
+  BOOST_CHECK(DataNames.count("indataA"));
+  BOOST_CHECK(DataNames.count("indataB"));
+  BOOST_CHECK(DataNames.count("indataC"));
+
+  Domain.deleteUnit("unitsA", 3);
+  DataNames = Domain.getInputDataNames("unitsA");
+  BOOST_CHECK_EQUAL(DataNames.size(), 3);
+  BOOST_CHECK(DataNames.count("indataA"));
+  BOOST_CHECK(DataNames.count("indataB"));
+  BOOST_CHECK(DataNames.count("indataC"));
+
+  Domain.deleteUnit("unitsA", 1);
+  DataNames = Domain.getInputDataNames("unitsA");
+  BOOST_CHECK_EQUAL(DataNames.size(), 0);
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_deleteIData_manyIDataDesc)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+  FXDesc.loadFromDirectory(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/many_idata_desc");
+
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
+
+  std::set<std::string> DataNames = Domain.getInputDataNames("unitsA");
+  BOOST_CHECK_EQUAL(DataNames.size(), 3);
+  BOOST_CHECK(DataNames.count("indataA"));
+  BOOST_CHECK(DataNames.count("indataB"));
+  BOOST_CHECK(DataNames.count("indataC"));
+
+  Domain.deleteInputData("unitsA", "indataB");
+  DataNames = Domain.getInputDataNames("unitsA");
+  BOOST_CHECK_EQUAL(DataNames.size(), 2);
+  BOOST_CHECK(DataNames.count("indataA"));
+  BOOST_CHECK(DataNames.count("indataC"));
+
+  Domain.deleteInputData("unitsA", "indataA");
+  DataNames = Domain.getInputDataNames("unitsA");
+  BOOST_CHECK_EQUAL(DataNames.size(), 1);
+  BOOST_CHECK(DataNames.count("indataC"));
+
+  Domain.deleteInputData("unitsA", "indataC");
+  DataNames = Domain.getInputDataNames("unitsA");
+  BOOST_CHECK_EQUAL(DataNames.size(), 0);
+
+  std::string OutputDirMany = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXDescriptorMany";
+  FXDesc.writeToManyFiles(OutputDirMany);
+}
+
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(check_add_replace_getIData)
 {
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
