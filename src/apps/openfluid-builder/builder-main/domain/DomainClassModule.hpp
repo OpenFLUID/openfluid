@@ -58,64 +58,120 @@
 #include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 #include <gtkmm/box.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/scrolledwindow.h>
 
-class DomainIDataComponent;
 class DomainIDataAddDialog;
 class DomainIDataRemoveDialog;
 class DomainIDataEditDialog;
+
 class DomainEventsComponent;
 class BuilderButtonBox;
-class DomainClassCoordinator;
 
 class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
 
+    openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+
+    std::string m_ClassName;
+
     Gtk::Box* mp_MainPanel;
+
+    Gtk::TreeView* mp_IDataTreeView;
+
+    Gtk::ScrolledWindow* mp_IDataWin;
+
+    class IDataColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      private:
+
+        std::map<std::string, Gtk::TreeModelColumn<std::string> > m_Columns;
+
+      public:
+
+        Gtk::TreeModelColumn<int> m_Id;
+
+        IDataColumns() :
+            Gtk::TreeModel::ColumnRecord()
+        {
+          add(m_Id);
+        }
+        IDataColumns(std::set<std::string>& Names) :
+            Gtk::TreeModel::ColumnRecord()
+        {
+          add(m_Id);
+          for (std::set<std::string>::iterator it = Names.begin();
+              it != Names.end(); ++it)
+            addColumn(*it);
+        }
+        void addColumn(std::string Name)
+        {
+          Gtk::TreeModelColumn<std::string> Col;
+          add(Col);
+          m_Columns[Name] = Col;
+        }
+        Gtk::TreeModelColumn<std::string>& getColumn(std::string Name)
+        {
+          return m_Columns[Name];
+        }
+        void removeColumn(std::string Name)
+        {
+          m_Columns.erase(Name);
+        }
+        void renameColumn(std::string OldName, std::string NewName)
+        {
+          Gtk::TreeModelColumn<std::string> Col = m_Columns[OldName];
+          m_Columns.erase(OldName);
+          add(Col);
+          m_Columns[NewName] = Col;
+        }
+    };
+    IDataColumns* mp_Columns;
+
+    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
+
+    static std::string escapeUnderscores(std::string Str);
+
+    void whenAddIDataAsked();
+
+    void whenRemoveIDataAsked();
+
+    void whenEditIDataAsked();
+
+    void onDataEdited(const Glib::ustring& Path, const Glib::ustring& NewText,
+                      std::string DataName);
 
   protected:
 
-    DomainIDataComponent* mp_DomainIDataMVP;
-    BuilderButtonBox* mp_IDataListToolBox;
     DomainIDataAddDialog* mp_IDataAddDialog;
     DomainIDataRemoveDialog* mp_IDataRemoveDialog;
     DomainIDataEditDialog* mp_IDataEditDialog;
 
+    BuilderButtonBox* mp_IDataListToolBox;
+
     DomainEventsComponent* mp_DomainEventsMVP;
     BuilderButtonBox* mp_EventsListToolBox;
 
-    DomainClassCoordinator* mp_Coordinator;
-
     sigc::signal<void> m_signal_DomainClassChanged;
-
-    openfluid::machine::ModelInstance* mp_ModelInstance;
-
-    openfluid::machine::SimulationBlob* mp_SimBlob;
 
     void compose();
 
     Gtk::Widget* asWidget();
 
-    void whenClassChanged();
+    void updateIData();
 
   public:
 
-    DomainClassModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    DomainClassModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc,
+                      std::string ClassName);
 
     ~DomainClassModule();
 
     sigc::signal<void> signal_ModuleChanged();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/,
-        openfluid::fluidx::AdvancedFluidXDescriptor& /*AdvancedDesc*/)
-    {}
-
-    void setSelectedClassFromApp(std::string ClassName);
-
     void update();
-
 };
 
 #endif /* __DOMAINCLASSMODULE_HPP__ */

@@ -66,8 +66,8 @@
 // =====================================================================
 
 DomainIDataEditDialog::DomainIDataEditDialog(
-    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
-    mp_Domain(&Domain), m_ClassName(""), m_IsValid(false)
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain, std::string ClassName) :
+    mp_Domain(&Domain), m_ClassName(ClassName), m_IsValid(false)
 {
   mp_Dialog = new Gtk::Dialog(_("Changing Inputdata name"));
   mp_Dialog->set_default_size(10, 10);
@@ -141,45 +141,29 @@ void DomainIDataEditDialog::onChanged()
 // =====================================================================
 // =====================================================================
 
-void DomainIDataEditDialog::setClass(std::string ClassName)
+bool DomainIDataEditDialog::show()
 {
-  m_ClassName = ClassName;
+  m_IDataNames = mp_Domain->getInputDataNames(m_ClassName);
 
-  update();
-}
-
-// =====================================================================
-// =====================================================================
-
-void DomainIDataEditDialog::update()
-{
   mp_Combo->clear_items();
 
-  std::set<std::string> IDataNames = mp_Domain->getInputDataNames(m_ClassName);
-
-  for (std::set<std::string>::iterator it = IDataNames.begin();
-      it != IDataNames.end(); ++it)
+  for (std::set<std::string>::iterator it = m_IDataNames.begin();
+      it != m_IDataNames.end(); ++it)
     mp_Combo->append_text(*it);
 
   mp_Combo->set_active(0);
-}
 
-// =====================================================================
-// =====================================================================
-
-std::pair<std::string, std::string> DomainIDataEditDialog::show()
-{
   mp_NewNameEntry->set_text("");
-
-  std::pair<std::string, std::string> Data = std::make_pair("", "");
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    Data = std::make_pair(mp_Combo->get_active_text(),
-                          mp_NewNameEntry->get_text());
+    mp_Domain->renameInputData(m_ClassName, mp_Combo->get_active_text(),
+                               mp_NewNameEntry->get_text());
+
+    mp_Dialog->hide();
+    return true;
   }
 
   mp_Dialog->hide();
-
-  return Data;
+  return false;
 }

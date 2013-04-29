@@ -92,13 +92,10 @@ class DomainIDataAddDialog
 
   public:
 
-    DomainIDataAddDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
+    DomainIDataAddDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain,
+                         std::string ClassName);
 
-    void setClass(std::string ClassName);
-
-    void update();
-
-    std::pair<std::string, std::string> show();
+    bool show();
 };
 
 #endif /* __DOMAINIDATAADDDIALOG_HPP__ */

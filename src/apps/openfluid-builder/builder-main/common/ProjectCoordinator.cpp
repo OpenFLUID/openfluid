@@ -208,13 +208,12 @@ void ProjectCoordinator::whenActivationChanged()
           m_ExplorerModel.getActivatedElement().second);
       if (!m_Workspace.existsPageName(PageName))
       {
-        Module = new DomainClassModule(m_EngineProject.getAdvancedDesc());
+        Module = new DomainClassModule(
+            m_EngineProject.getAdvancedDesc(),
+            m_ExplorerModel.getActivatedElement().second);
 
         Module->signal_ModuleChanged().connect(
             sigc::mem_fun(*this, &ProjectCoordinator::whenClassChanged));
-
-        (static_cast<DomainClassModule*>(Module))->setSelectedClassFromApp(
-            m_ExplorerModel.getActivatedElement().second);
 
         m_ClassPageNames.insert(PageName);
 
