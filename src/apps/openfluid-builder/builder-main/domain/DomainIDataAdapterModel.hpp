@@ -57,7 +57,7 @@
 
 
 #include <sigc++/sigc++.h>
-#include <gtkmm/treemodel.h>
+#include <gtkmm/liststore.h>
 
 namespace openfluid {
 namespace fluidx {
@@ -66,7 +66,6 @@ class AdvancedDomainDescriptor;
 }
 
 class DomainIDataColumns;
-class BuilderListStore;
 
 class DomainIDataAdapterModel
 {
@@ -99,7 +98,7 @@ class DomainIDataAdapterModelImpl: public DomainIDataAdapterModel
 
     DomainIDataColumns* mp_Columns;
 
-    Glib::RefPtr<BuilderListStore> mref_ListStore;
+    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
 
     int m_SelectedUnit;
 

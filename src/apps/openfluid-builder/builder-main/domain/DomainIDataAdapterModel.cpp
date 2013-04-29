@@ -57,7 +57,6 @@
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
 #include "DomainIDataColumns.hpp"
-#include "BuilderListStore.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -65,7 +64,7 @@
 DomainIDataAdapterModelImpl::DomainIDataAdapterModelImpl(
     openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
     mp_Domain(&Domain), mp_Columns(new DomainIDataColumns()), mref_ListStore(
-        BuilderListStore::create(*mp_Columns)), m_SelectedUnit(-1), m_ClassName(
+        Gtk::ListStore::create(*mp_Columns)), m_SelectedUnit(-1), m_ClassName(
         "")
 {
 }
@@ -100,7 +99,7 @@ void DomainIDataAdapterModelImpl::dataInit(std::string ClassName)
     mp_Columns->addWithTitle(*it, *DataColumn);
   }
 
-  mref_ListStore = BuilderListStore::create(*mp_Columns);
+  mref_ListStore = Gtk::ListStore::create(*mp_Columns);
 
   // populate liststore
   std::set<int> IDs = mp_Domain->getIDsOfClass(m_ClassName);

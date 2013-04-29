@@ -78,7 +78,6 @@ class DomainUnitRelationAddDialog;
 // =====================================================================
 // =====================================================================
 
-
 class DomainUnitAddEditDialog
 {
   private:
@@ -134,19 +133,18 @@ class DomainUnitAddEditDialog
 
   public:
 
-    DomainUnitAddEditDialog(DomainUnitRelationAddDialog& UnitRelationAddDialog,
-                            openfluid::fluidx::AdvancedDomainDescriptor& Domain);
+    DomainUnitAddEditDialog(
+        DomainUnitRelationAddDialog& UnitRelationAddDialog,
+        openfluid::fluidx::AdvancedDomainDescriptor& Domain);
 
     void update();
 
-    openfluid::fluidx::UnitDescriptor* show(std::string SelectedClass = "",
-        openfluid::fluidx::UnitDescriptor* Unit = 0);
+    openfluid::fluidx::UnitDescriptor* show(std::string Class, int ID = 0);
 
 };
 
 // =====================================================================
 // =====================================================================
-
 
 class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
 {
@@ -155,7 +153,7 @@ class DomainUnitAddEditDialogSub: DomainUnitAddEditDialog
     DomainUnitAddEditDialogSub(
         DomainUnitRelationAddDialog& UnitRelationAddDialog,
         openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
-      DomainUnitAddEditDialog(UnitRelationAddDialog, Domain)
+        DomainUnitAddEditDialog(UnitRelationAddDialog, Domain)
     {
     }
 
