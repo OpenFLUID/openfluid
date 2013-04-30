@@ -93,7 +93,7 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_MarketBagDir;
     std::string m_MarketBagVersionDir;
 
-    std::string m_MarketBagFuncVersionDir;
+    std::string m_MarketBagSimVersionDir;
     std::string m_MarketBagObsVersionDir;
     std::string m_MarketBagBuildVersionDir;
     std::string m_MarketBagDataVersionDir;
@@ -102,8 +102,8 @@ class DLLEXPORT RuntimeEnvironment
 
     std::string m_InstallPrefix;
 
-    std::vector<std::string> m_DefaultFunctionsPlugsDirs;
-    std::vector<std::string> m_ExtraFunctionsPlugsDirs;
+    std::vector<std::string> m_DefaultSimulatorsPlugsDirs;
+    std::vector<std::string> m_ExtraSimulatorsPlugsDirs;
 
     std::vector<std::string> m_DefaultObserversPlugsDirs;
     std::vector<std::string> m_ExtraObserversPlugsDirs;
@@ -116,7 +116,7 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_HostName;
     std::string m_Arch;
 
-    unsigned int m_FunctionsMaxNumThreads;
+    unsigned int m_SimulatorsMaxNumThreads;
 
     std::string m_DefaultConfigFilePath;
 
@@ -234,7 +234,7 @@ class DLLEXPORT RuntimeEnvironment
     /**
       @return the market bag directory for functions of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/functions)
      */
-    inline std::string getMarketBagFuncVersionDir() const { return m_MarketBagFuncVersionDir; };
+    inline std::string getMarketBagSimVersionDir() const { return m_MarketBagSimVersionDir; };
 
     /**
       @return the market bag directory for observers of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/observers)
@@ -312,29 +312,29 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] Filename The given function plugin file name
       @return the first path found for a given function plugin file
     */
-    std::string getFunctionPluginFullPath(std::string Filename);
+    std::string getSimulatorPluginFullPath(std::string Filename);
 
     /**
       Adds search paths for plugins, separated by semicolon characters (i.e. /path/to/plugs:another/path/to/plugs).
       These paths are added at the top of the search paths list.
       @param[in] SemicolonSeparatedPaths a collection of paths separated by semicolons, as a std::string
     */
-    void addExtraFunctionsPluginsPaths(std::string SemicolonSeparatedPaths);
+    void addExtraSimulatorsPluginsPaths(std::string SemicolonSeparatedPaths);
 
-    inline void resetExtraFunctionsPluginsPaths() { m_ExtraFunctionsPlugsDirs.clear(); };
+    inline void resetExtraSimulatorsPluginsPaths() { m_ExtraSimulatorsPlugsDirs.clear(); };
 
-    inline std::vector<std::string> getDefaultFunctionsPluginsPaths() const  { return m_DefaultFunctionsPlugsDirs;  };
+    inline std::vector<std::string> getDefaultSimulatorsPluginsPaths() const  { return m_DefaultSimulatorsPlugsDirs;  };
 
-    inline std::vector<std::string> getExtraFunctionsPluginsPaths() const  { return m_ExtraFunctionsPlugsDirs;  };
+    inline std::vector<std::string> getExtraSimulatorsPluginsPaths() const  { return m_ExtraSimulatorsPlugsDirs;  };
 
     /**
       Returns the ordered list of paths used to search for function plugins
       @return the ordered list of paths
     */
-    inline std::vector<std::string> getFunctionsPluginsPaths() const
+    inline std::vector<std::string> getSimulatorsPluginsPaths() const
     {
-      std::vector<std::string> ComposedPaths(m_ExtraFunctionsPlugsDirs);
-      ComposedPaths.insert(ComposedPaths.end(), m_DefaultFunctionsPlugsDirs.begin(), m_DefaultFunctionsPlugsDirs.end());
+      std::vector<std::string> ComposedPaths(m_ExtraSimulatorsPlugsDirs);
+      ComposedPaths.insert(ComposedPaths.end(), m_DefaultSimulatorsPlugsDirs.begin(), m_DefaultSimulatorsPlugsDirs.end());
       return ComposedPaths;
     };
 
@@ -519,10 +519,10 @@ class DLLEXPORT RuntimeEnvironment
     */
     std::string getArch() const {return m_Arch; };
 
-    unsigned int getFunctionsMaxNumThreads() const { return m_FunctionsMaxNumThreads; };
+    unsigned int getSimulatorsMaxNumThreads() const { return m_SimulatorsMaxNumThreads; };
 
-    void setFunctionsMaxNumThreads(const unsigned int& MaxNumThreads)
-      { if (MaxNumThreads > 0) m_FunctionsMaxNumThreads = MaxNumThreads; };
+    void setSimulatorsMaxNumThreads(const unsigned int& MaxNumThreads)
+      { if (MaxNumThreads > 0) m_SimulatorsMaxNumThreads = MaxNumThreads; };
 
 
     void setSimulationTimeInformation(openfluid::core::DateTime StartTime,

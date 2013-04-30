@@ -47,7 +47,7 @@
 
 
 /**
-  \file FuncSignature_TEST.cpp
+  \file SimulatorSignature_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -141,9 +141,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,10);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,30);
 
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.FunctionParams[1].DataName,"param2");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.FunctionParams[1].Description,"this is param2");
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.FunctionParams[1].DataUnit,"m3");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.SimulatorParams[1].DataName,"param2");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.SimulatorParams[1].Description,"this is param2");
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.SimulatorParams[1].DataUnit,"m3");
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredInputdata.size(),2);
 

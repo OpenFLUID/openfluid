@@ -70,10 +70,10 @@ class DLLEXPORT SimulatorSignatureRegistry
 {
   public:
 
-    typedef std::map<std::string, openfluid::machine::ModelItemSignatureInstance*> FctSignaturesByName_t;
+    typedef std::map<std::string, openfluid::machine::ModelItemSignatureInstance*> SimSignaturesByName_t;
 
     typedef std::map<openfluid::fluidx::ModelItemDescriptor::WareType,
-        FctSignaturesByName_t> FctSignaturesByTypeByName_t;
+        SimSignaturesByName_t> SimSignaturesByTypeByName_t;
 
   private:
 
@@ -81,7 +81,7 @@ class DLLEXPORT SimulatorSignatureRegistry
 
   protected:
 
-    FctSignaturesByTypeByName_t m_Signatures;
+    SimSignaturesByTypeByName_t m_Signatures;
 
     SimulatorSignatureRegistry();
 
@@ -95,20 +95,20 @@ class DLLEXPORT SimulatorSignatureRegistry
 
     static SimulatorSignatureRegistry* getInstance();
 
-    FctSignaturesByTypeByName_t getFctSignatures();
+    SimSignaturesByTypeByName_t getSimSignatures();
 
-    FctSignaturesByName_t getGeneratorSignatures();
+    SimSignaturesByName_t getGeneratorSignatures();
 
-    FctSignaturesByName_t getPluggableSignatures();
+    SimSignaturesByName_t getPluggableSignatures();
 
     void updatePluggableSignatures();
 
     static ModelItemSignatureInstance* getEmptyPluggableSignature();
 
-    bool isPluggableFunctionAvailable(std::string FunctionID);
+    bool isPluggableSimulatorAvailable(std::string SimulatorID);
 
     ModelItemSignatureInstance* getSignatureItemInstance(
-        std::string FunctionID);
+        std::string SimulatorID);
 
     ModelItemSignatureInstance* getSignatureItemInstance(
         openfluid::fluidx::ModelItemDescriptor* Item);

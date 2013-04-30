@@ -270,7 +270,7 @@ void FunctionAddGlobalParamDialog::updateCombo()
     if (Sign)
     {
       std::vector<openfluid::ware::SignatureHandledDataItem> Items =
-          Sign->Signature->HandledData.FunctionParams;
+          Sign->Signature->HandledData.SimulatorParams;
 
       for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it =
           Items.begin(); it != Items.end(); ++it)

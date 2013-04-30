@@ -328,7 +328,7 @@ void PreferencesPathsPanel::init()
       openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
 
   mp_FunctionsPathListWidget->setPreDefinedPaths(
-      openfluid::base::RuntimeEnvironment::getInstance()->getDefaultFunctionsPluginsPaths());
+      openfluid::base::RuntimeEnvironment::getInstance()->getDefaultSimulatorsPluginsPaths());
 
   mp_FunctionsPathListWidget->setUserDefinedPaths(
       openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths());

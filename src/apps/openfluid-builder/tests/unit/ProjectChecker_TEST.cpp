@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_isParamSet)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
   openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(check_isParamSet)
 
 BOOST_AUTO_TEST_CASE(check_check)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
   openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
@@ -321,7 +321,7 @@ BOOST_AUTO_TEST_CASE(check_check)
 
 BOOST_AUTO_TEST_CASE(check_generators_with_files)
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
   openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);

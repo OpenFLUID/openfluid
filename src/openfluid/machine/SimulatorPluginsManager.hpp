@@ -72,8 +72,8 @@ class ModelItemInstance;
 // =====================================================================
 
 class DLLEXPORT SimulatorPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
-                                                         openfluid::ware::GetPluggableFunctionSignatureProc,
-                                                         openfluid::ware::GetPluggableFunctionBodyProc>
+                                                         openfluid::ware::GetPluggableSimulatorSignatureProc,
+                                                         openfluid::ware::GetPluggableSimulatorBodyProc>
 {
 
   private:
@@ -99,7 +99,7 @@ class DLLEXPORT SimulatorPluginsManager : public WarePluginsManager<ModelItemSig
 
     std::string getPluginFullPath(const std::string& Filename)
     {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getFunctionPluginFullPath(Filename);
+      return openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorPluginFullPath(Filename);
     }
 
 
@@ -109,7 +109,7 @@ class DLLEXPORT SimulatorPluginsManager : public WarePluginsManager<ModelItemSig
 
     std::vector<std::string> getPluginsSearchPaths()
     {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths();
+      return openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths();
     }
 
 

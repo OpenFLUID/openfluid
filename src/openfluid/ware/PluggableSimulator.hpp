@@ -311,7 +311,7 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
     /**
       Internally called by the framework.
     */
-    void initializeWare(const WareID_t& FuncID,const unsigned int& MaxThreads);
+    void initializeWare(const WareID_t& SimID,const unsigned int& MaxThreads);
 
     /**
       Initializes function parameters of the function, given as a hash map. Internally called by the framework.
@@ -345,9 +345,9 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
 
 };
 
-typedef PluggableSimulator* (*GetPluggableFunctionBodyProc)();
+typedef PluggableSimulator* (*GetPluggableSimulatorBodyProc)();
 
-typedef SimulatorSignature* (*GetPluggableFunctionSignatureProc)();
+typedef SimulatorSignature* (*GetPluggableSimulatorSignatureProc)();
 
 } } // namespaces
 

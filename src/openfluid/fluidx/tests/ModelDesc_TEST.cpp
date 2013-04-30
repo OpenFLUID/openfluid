@@ -70,11 +70,11 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::SimulatorDescriptor FuncDesc("test.id");
+  openfluid::fluidx::SimulatorDescriptor SimDesc("test.id");
 
-  BOOST_REQUIRE_EQUAL(FuncDesc.getFileID(),"test.id");
-  BOOST_REQUIRE_EQUAL(FuncDesc.isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction),true);
-  BOOST_REQUIRE_EQUAL(FuncDesc.getParameters().size(),0);
+  BOOST_REQUIRE_EQUAL(SimDesc.getFileID(),"test.id");
+  BOOST_REQUIRE_EQUAL(SimDesc.isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),true);
+  BOOST_REQUIRE_EQUAL(SimDesc.getParameters().size(),0);
 
   openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",openfluid::fluidx::GeneratorDescriptor::Fixed);
 
@@ -103,11 +103,11 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::fluidx::SimulatorDescriptor FuncDesc("test.id");
-  FuncDesc.setParameter("param1","var1");
-  FuncDesc.setParameter("param2","var2");
-  FuncDesc.setParameter("param3","var3");
-  FuncDesc.setParameter("param2","var22");
+  openfluid::fluidx::SimulatorDescriptor SimDesc("test.id");
+  SimDesc.setParameter("param1","var1");
+  SimDesc.setParameter("param2","var2");
+  SimDesc.setParameter("param3","var3");
+  SimDesc.setParameter("param2","var22");
 
   openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",openfluid::fluidx::GeneratorDescriptor::Fixed,7);
   GenDesc1.setParameter("fixedvalue","20.5");
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::fluidx::CoupledModelDescriptor ModelDesc;
 
   ModelDesc.appendItem(&GenDesc1);
-  ModelDesc.appendItem(&FuncDesc);
+  ModelDesc.appendItem(&SimDesc);
   ModelDesc.appendItem(&GenDesc2);
 
   BOOST_REQUIRE_EQUAL(ModelDesc.getItems().size(),3);
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters().size(),1);
 
   it++;
-  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction),true);
+  BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),true);
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID(),"test.id");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),3);
 

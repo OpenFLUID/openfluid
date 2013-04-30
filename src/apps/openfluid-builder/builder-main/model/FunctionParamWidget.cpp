@@ -367,7 +367,7 @@ void FunctionParamWidget::updateParamsRows()
   if (mp_Sign)
   {
     std::vector<openfluid::ware::SignatureHandledDataItem> Items =
-        mp_Sign->Signature->HandledData.FunctionParams;
+        mp_Sign->Signature->HandledData.SimulatorParams;
     for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it =
         Items.begin(); it != Items.end(); ++it)
     {

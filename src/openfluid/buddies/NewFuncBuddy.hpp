@@ -66,7 +66,7 @@ namespace openfluid { namespace buddies {
 class DLLEXPORT NewFunctionBuddy : public OpenFLUIDBuddy
 {
   private:
-    void writeFunctionCPP();
+    void writeSimulatorCPP();
 
   public:
 

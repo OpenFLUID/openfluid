@@ -72,7 +72,7 @@ const std::string MarketPackage::LOG_FILENAME = "packages_install.log";
 std::string MarketPackage::m_TempDir = "";
 std::string MarketPackage::m_TempBuildsDir = "";
 std::string MarketPackage::m_TempDownloadsDir = "";
-std::string MarketPackage::m_MarketBagFunctionDir = "";
+std::string MarketPackage::m_MarketBagSimulatorDir = "";
 std::string MarketPackage::m_MarketBagObserverDir = "";
 std::string MarketPackage::m_MarketBagBuilderextDir = "";
 std::string MarketPackage::m_MarketBagDatasetDir = "";
@@ -82,7 +82,7 @@ std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
 
 std::string MarketPackage::m_CMakeCommand = "";
-std::string MarketPackage::m_FunctionBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_SimulatorBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 std::string MarketPackage::m_ObserverBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 std::string MarketPackage::m_BuilderextBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 
@@ -150,7 +150,7 @@ void MarketPackage::initialize(bool EnableLog = false)
 // =====================================================================
 
 
-void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& MarketBagFunctionDir, const std::string& MarketBagObserverDir,
+void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& MarketBagSimulatorDir, const std::string& MarketBagObserverDir,
     const std::string& MarketBagBuilderextDir, const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir, const std::string& MarketBagSrcSubDir)
 {
   // Temporary directories
@@ -159,7 +159,7 @@ void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& 
   m_TempDownloadsDir = boost::filesystem::path(TempDir+"/"+DLOADS_SUBDIR).string();
 
   // Installation directories
-  m_MarketBagFunctionDir = boost::filesystem::path(MarketBagFunctionDir).string();
+  m_MarketBagSimulatorDir = boost::filesystem::path(MarketBagSimulatorDir).string();
   m_MarketBagObserverDir = boost::filesystem::path(MarketBagObserverDir).string();
   m_MarketBagBuilderextDir = boost::filesystem::path(MarketBagBuilderextDir).string();
   m_MarketBagDatasetDir = boost::filesystem::path(MarketBagDatasetDir).string();
@@ -180,7 +180,7 @@ std::string MarketPackage::getCommonBuildOptions(const PackageInfo::PackageType&
 {
   if (Type == PackageInfo::FUNC)
   {
-    return m_FunctionBuildConfigOptions;
+    return m_SimulatorBuildConfigOptions;
   }
   else if (Type == PackageInfo::OBS)
   {
@@ -202,7 +202,7 @@ void MarketPackage::setCommonBuildOptions(const PackageInfo::PackageType& Type, 
 {
   if (Type == PackageInfo::FUNC)
   {
-    m_FunctionBuildConfigOptions = BuildOptions;
+    m_SimulatorBuildConfigOptions = BuildOptions;
   }
   else if (Type == PackageInfo::OBS)
   {

@@ -316,7 +316,7 @@ bool PreferencesDialog::checkFunctionsPaths()
       openfluid::guicommon::PreferencesManager::getInstance();
 
   std::vector<std::string> ExistingFctPaths =
-      RunEnv->getExtraFunctionsPluginsPaths();
+      RunEnv->getExtraSimulatorsPluginsPaths();
   std::vector<std::string> PrefFctPaths = PrefMgr->getExtraPlugPaths();
 
   if (ExistingFctPaths.size() == PrefFctPaths.size() && std::equal(
@@ -326,9 +326,9 @@ bool PreferencesDialog::checkFunctionsPaths()
   }
 
   // RunEnv <- Pref
-  RunEnv->resetExtraFunctionsPluginsPaths();
+  RunEnv->resetExtraSimulatorsPluginsPaths();
   for (int i = PrefFctPaths.size() - 1; i >= 0; i--)
-    RunEnv->addExtraFunctionsPluginsPaths(PrefFctPaths[i]);
+    RunEnv->addExtraSimulatorsPluginsPaths(PrefFctPaths[i]);
 
   if (!mp_Project)
   {
@@ -371,9 +371,9 @@ bool PreferencesDialog::checkFunctionsPaths()
   }
 
   // reset RunEnv
-  RunEnv->resetExtraFunctionsPluginsPaths();
+  RunEnv->resetExtraSimulatorsPluginsPaths();
   for (int i = ExistingFctPaths.size() - 1; i >= 0; i--)
-    RunEnv->addExtraFunctionsPluginsPaths(ExistingFctPaths[i]);
+    RunEnv->addExtraSimulatorsPluginsPaths(ExistingFctPaths[i]);
 
   // reset Model
   openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();

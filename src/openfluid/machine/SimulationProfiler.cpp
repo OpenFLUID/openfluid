@@ -198,7 +198,7 @@ void SimulationProfiler::flushCurrentProfileToFiles()
 // =====================================================================
 
 
-void SimulationProfiler::addDuration(const openfluid::ware::WareID_t& FuncID,
+void SimulationProfiler::addDuration(const openfluid::ware::WareID_t& SimID,
                                      openfluid::base::SimulationStatus::SimulationStage ProfilePart,
                                      const boost::posix_time::time_duration& Duration)
 {
@@ -211,11 +211,11 @@ void SimulationProfiler::addDuration(const openfluid::ware::WareID_t& FuncID,
       m_CurrentTimeIndex = mp_SimStatus->getCurrentTimeIndex();
     }
 
-    m_CurrentTimeIndexModelSequence.push_back(FuncID);
-    m_CurrentTimeIndexModelProfile[FuncID] = Duration;
+    m_CurrentTimeIndexModelSequence.push_back(SimID);
+    m_CurrentTimeIndexModelProfile[SimID] = Duration;
   }
 
-  m_CumulativeModelProfile[FuncID][ProfilePart] = m_CumulativeModelProfile[FuncID][ProfilePart] + Duration;
+  m_CumulativeModelProfile[SimID][ProfilePart] = m_CumulativeModelProfile[SimID][ProfilePart] + Duration;
 
 }
 

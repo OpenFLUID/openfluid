@@ -94,7 +94,7 @@ class DLLEXPORT MarketPackage
     /**
      * Market-bag dir for functions
     */
-    static std::string m_MarketBagFunctionDir;
+    static std::string m_MarketBagSimulatorDir;
 
     /**
      * Market-bag dir for observers
@@ -126,7 +126,7 @@ class DLLEXPORT MarketPackage
     /**
      * Common build options for functions
     */
-    static std::string m_FunctionBuildConfigOptions;
+    static std::string m_SimulatorBuildConfigOptions;
 
     /**
      * Common build options for observers
@@ -177,11 +177,11 @@ class DLLEXPORT MarketPackage
     /**
      Set directory paths attributes with paths passed as parameter
     */
-    static void setWorksDirs(const std::string& TempDir, const std::string& MarketBagFunctionDir,
+    static void setWorksDirs(const std::string& TempDir, const std::string& MarketBagSimulatorDir,
         const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
         const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir, const std::string& MarketBagSrcSubDir);
 
-    static std::string getMarketBagFunctionDir() { return m_MarketBagFunctionDir; };
+    static std::string getMarketBagSimulatorDir() { return m_MarketBagSimulatorDir; };
 
     static std::string getMarketBagObserverDir() { return m_MarketBagObserverDir; };
 

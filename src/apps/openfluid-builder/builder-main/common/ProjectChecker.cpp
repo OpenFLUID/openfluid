@@ -211,7 +211,7 @@ void ProjectChecker::checkModelRequirements()
     m_InjectMinMaxChecked = false;
 
     std::vector<openfluid::ware::SignatureHandledDataItem>& Params =
-        Sign->HandledData.FunctionParams;
+        Sign->HandledData.SimulatorParams;
     for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt =
         Params.begin(); itt != Params.end(); ++itt)
     {

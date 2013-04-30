@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
     RunEnv->setInputDir(InputDir);
     RunEnv->setOutputDir(OutputDir);
-    RunEnv->addExtraFunctionsPluginsPaths(PlugsDir);
+    RunEnv->addExtraSimulatorsPluginsPaths(PlugsDir);
     RunEnv->addExtraObserversPluginsPaths(PlugsDir);
 
 

@@ -124,16 +124,16 @@ void SimulatorSignatureRegistry::addAPluggableSignature(
   if (Signature->Signature)
   {
     Signature->ItemType =
-        openfluid::fluidx::ModelItemDescriptor::PluggedFunction;
+        openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
 
-    m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction][Signature->Signature->ID] =
+    m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator][Signature->Signature->ID] =
         Signature;
   }
   else
     throw openfluid::base::OFException(
         "OpenFLUID Builder",
         "SimulatorSignatureRegistry::addAPluggableSignature",
-        "trying to register a PluggableSignature with no FunctionSignature instancied");
+        "trying to register a PluggableSignature with no SimulatorSignature instancied");
 }
 
 // =====================================================================
@@ -153,7 +153,7 @@ void SimulatorSignatureRegistry::addAGeneratorSignature(
     throw openfluid::base::OFException(
         "OpenFLUID Builder",
         "SimulatorSignatureRegistry::addAGeneratorSignature",
-        "trying to register a GeneratorSignature with no FunctionSignature instancied");
+        "trying to register a GeneratorSignature with no SimulatorSignature instancied");
 }
 
 // =====================================================================
@@ -161,7 +161,7 @@ void SimulatorSignatureRegistry::addAGeneratorSignature(
 
 void SimulatorSignatureRegistry::updatePluggableSignatures()
 {
-  m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].clear();
+  m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].clear();
 
   openfluid::machine::SimulatorPluginsManager::getInstance()->unloadAllWares();
 
@@ -178,7 +178,7 @@ void SimulatorSignatureRegistry::updatePluggableSignatures()
 // =====================================================================
 // =====================================================================
 
-SimulatorSignatureRegistry::FctSignaturesByTypeByName_t SimulatorSignatureRegistry::getFctSignatures()
+SimulatorSignatureRegistry::SimSignaturesByTypeByName_t SimulatorSignatureRegistry::getSimSignatures()
 {
   return m_Signatures;
 }
@@ -186,7 +186,7 @@ SimulatorSignatureRegistry::FctSignaturesByTypeByName_t SimulatorSignatureRegist
 // =====================================================================
 // =====================================================================
 
-SimulatorSignatureRegistry::FctSignaturesByName_t SimulatorSignatureRegistry::getGeneratorSignatures()
+SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::getGeneratorSignatures()
 {
   return m_Signatures[openfluid::fluidx::ModelItemDescriptor::Generator];
 }
@@ -194,9 +194,9 @@ SimulatorSignatureRegistry::FctSignaturesByName_t SimulatorSignatureRegistry::ge
 // =====================================================================
 // =====================================================================
 
-SimulatorSignatureRegistry::FctSignaturesByName_t SimulatorSignatureRegistry::getPluggableSignatures()
+SimulatorSignatureRegistry::SimSignaturesByName_t SimulatorSignatureRegistry::getPluggableSignatures()
 {
-  return m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction];
+  return m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator];
 }
 
 // =====================================================================
@@ -214,25 +214,25 @@ ModelItemSignatureInstance * SimulatorSignatureRegistry::getEmptyPluggableSignat
 // =====================================================================
 // =====================================================================
 
-bool SimulatorSignatureRegistry::isPluggableFunctionAvailable(
-    std::string FunctionID)
+bool SimulatorSignatureRegistry::isPluggableSimulatorAvailable(
+    std::string SimulatorID)
 {
-  return m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].count(
-      FunctionID);
+  return m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].count(
+      SimulatorID);
 }
 
 // =====================================================================
 // =====================================================================
 
 openfluid::machine::ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance(
-    std::string FunctionID)
+    std::string SimulatorID)
 {
-  if (isPluggableFunctionAvailable(FunctionID))
-    return m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedFunction][FunctionID];
+  if (isPluggableSimulatorAvailable(SimulatorID))
+    return m_Signatures[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator][SimulatorID];
 
   if (m_Signatures[openfluid::fluidx::ModelItemDescriptor::Generator].count(
-      FunctionID))
-    return m_Signatures[openfluid::fluidx::ModelItemDescriptor::Generator][FunctionID];
+      SimulatorID))
+    return m_Signatures[openfluid::fluidx::ModelItemDescriptor::Generator][SimulatorID];
 
   return (openfluid::machine::ModelItemSignatureInstance*) 0;
 }
@@ -245,7 +245,7 @@ ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance
 {
   std::string ItemID = "";
 
-  if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
+  if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedSimulator))
     ItemID =
         (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getFileID();
   else if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))

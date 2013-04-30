@@ -73,7 +73,7 @@ class BuilderTestHelper
 
     BuilderTestHelper()
     {
-      openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(
           CONFIGTESTS_OUTPUT_BINARY_DIR);
     }
 

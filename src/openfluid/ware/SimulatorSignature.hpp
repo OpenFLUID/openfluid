@@ -118,7 +118,7 @@
   @param[in] unit unit of the parameter. Could be an empty string if there is no unit
 */
 #define DECLARE_SIMULATOR_PARAM(name,description,unit) \
-  Signature->HandledData.FunctionParams.push_back(openfluid::ware::SignatureHandledDataItem((name),(""),description,unit));
+  Signature->HandledData.SimulatorParams.push_back(openfluid::ware::SignatureHandledDataItem((name),(""),description,unit));
 
 
 
@@ -273,11 +273,11 @@
 namespace openfluid { namespace ware {
 
 
-typedef std::string FuncMethod_t;
+typedef std::string SimMethod_t;
 
-typedef std::string FuncProcess_t;
+typedef std::string SimProcess_t;
 
-typedef std::string FuncDomain_t;
+typedef std::string SimDomain_t;
 
 
 // =====================================================================
@@ -396,7 +396,7 @@ class SignatureHandledData
 
     std::vector<SignatureHandledTypedDataItem> UsedVars;
 
-    std::vector<SignatureHandledDataItem> FunctionParams;
+    std::vector<SignatureHandledDataItem> SimulatorParams;
 
     std::vector<SignatureHandledDataItem> ProducedInputdata;
 
@@ -494,17 +494,17 @@ class DLLEXPORT SimulatorSignature : public WareSignature
     /**
     Plugin domain (i.e. hydrology, pop, erosion, ...)
     */
-    FuncDomain_t Domain;
+    SimDomain_t Domain;
 
     /**
     Plugin simulated process (i.e. surface rainfall-runoff production, ditch infiltration, ...)
     */
-    FuncProcess_t Process;
+    SimProcess_t Process;
 
     /**
     Plugin involved method (i.e. morel-seytoux, hayami, ...)
     */
-    FuncMethod_t Method;
+    SimMethod_t Method;
 
     /**
     Handled data

@@ -102,7 +102,7 @@ bool BuilderAppModule::initialize()
   std::vector<std::string> PrefXPaths = PrefMgr->getExtraPlugPaths();
 
   for (int i = PrefXPaths.size() - 1; i > -1; i--)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(PrefXPaths[i]);
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(PrefXPaths[i]);
 
   // Setting observers
 

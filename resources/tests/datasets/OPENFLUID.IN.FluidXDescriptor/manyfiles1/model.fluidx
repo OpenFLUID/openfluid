@@ -13,7 +13,7 @@
 			<param name="distribution" value="distri.dat" />
 		</generator>
 
-		<function ID="tests.functionA" />
+		<function ID="tests.simulatorA" />
 
 		<generator varname="tests.generator.fixed" varsize="11" unitclass="TU"
 			method="fixed">
@@ -29,7 +29,7 @@
 
 
 
-		<function ID="tests.functionB">
+		<function ID="tests.simulatorB">
 			<param name="strparam" value="strvalue" />
 			<param name="doubleparam" value="1.1" />
 			<param name="longparam" value="11" />

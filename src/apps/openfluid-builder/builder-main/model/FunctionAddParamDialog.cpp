@@ -164,7 +164,7 @@ bool FunctionAddParamDialog::show(
   mp_DummyItem = new openfluid::fluidx::WareDescriptor();
 
   std::vector<openfluid::ware::SignatureHandledDataItem> SignParams =
-      Sign->Signature->HandledData.FunctionParams;
+      Sign->Signature->HandledData.SimulatorParams;
   for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it =
       SignParams.begin(); it != SignParams.end(); ++it)
     mp_DummyItem->setParameter(it->DataName, "");

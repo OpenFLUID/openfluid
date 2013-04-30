@@ -131,7 +131,7 @@ WareItemWidget::WareItemWidget(std::string ID, Gtk::Widget& ParamWidget,
 
   switch (Type)
   {
-    case openfluid::fluidx::WareDescriptor::PluggedFunction:
+    case openfluid::fluidx::WareDescriptor::PluggedSimulator:
       MainEventBox->modify_bg(Gtk::STATE_NORMAL, Gdk::Color("#ecf9b5"));
       break;
     case openfluid::fluidx::WareDescriptor::Generator:

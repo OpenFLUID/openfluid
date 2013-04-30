@@ -144,7 +144,7 @@ void NewDataBuddy::generateModelXML()
   Content << getXMLHeader() << std::endl;
   Content << "  <model>" << std::endl;
   Content << std::endl;
-  Content << "    <!-- fake function example -->" << std::endl;
+  Content << "    <!-- fake simulator example -->" << std::endl;
   Content << "    <function ID=\"tests.fakefunction\" />" << std::endl;
   Content << std::endl;
   Content << "  </model>" << std::endl;

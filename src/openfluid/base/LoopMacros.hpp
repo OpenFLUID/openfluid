@@ -97,7 +97,7 @@
 
 
 
-#define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitclass,funcptr,...) \
+#define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitclass,simptr,...) \
   openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_CoreData->getUnits(unitclass)->getList(); \
   if (_UNITSLISTID(id) != NULL) \
   { \
@@ -110,7 +110,7 @@
         Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetSimulatorMaxThreads(),true); \
         while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end() && _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id)) \
         { \
-          _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&funcptr),&(*_UNITSLISTITERID(id)), ## __VA_ARGS__)); \
+          _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&simptr),&(*_UNITSLISTITERID(id)), ## __VA_ARGS__)); \
           ++_UNITSLISTITERID(id); \
         } \
         _THREADPOOLID(id).shutdown(); \
@@ -125,8 +125,8 @@
   @param[in] funcptr member function name
   @param[in] ... extra parameters to pass to the member function
 */
-#define APPLY_UNITS_ORDERED_LOOP_THREADED(unitclass,funcptr,...) \
-    _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitclass,funcptr,## __VA_ARGS__)
+#define APPLY_UNITS_ORDERED_LOOP_THREADED(unitclass,simptr,...) \
+    _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitclass,simptr,## __VA_ARGS__)
 
 
 
@@ -145,7 +145,7 @@
 
 
 
-#define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,funcptr,...) \
+#define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,simptr,...) \
   openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_CoreData->getUnitsGlobally(); \
   if (_UNITSPTRLISTID(id) != NULL) \
   { \
@@ -158,7 +158,7 @@
         Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetSimulatorMaxThreads(),true); \
         while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end() && (*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id)) \
         { \
-          _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&funcptr),(*_UNITSPTRLISTITERID(id)), ## __VA_ARGS__)); \
+          _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&simptr),(*_UNITSPTRLISTITERID(id)), ## __VA_ARGS__)); \
           ++_UNITSPTRLISTITERID(id); \
         } \
         _THREADPOOLID(id).shutdown(); \
@@ -172,8 +172,8 @@
   @param[in] funcptr member function name
   @param[in] ... extra parameters to pass to the member function
 */
-#define APPLY_ALLUNITS_ORDERED_LOOP_THREADED(funcptr,...) \
-    _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,funcptr,## __VA_ARGS__)
+#define APPLY_ALLUNITS_ORDERED_LOOP_THREADED(simptr,...) \
+    _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,simptr,## __VA_ARGS__)
 
 
 

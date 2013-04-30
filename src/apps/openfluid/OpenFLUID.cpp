@@ -319,7 +319,7 @@ void OpenFLUIDApp::printFunctionsHandledDataReport(openfluid::ware::SignatureHan
 
   unsigned int i;
 
-  for (i=0;i<HandledData.FunctionParams.size();i++) printFunctionsHandledDataItemReport(HandledData.FunctionParams[i],Suffix,("fpar"));
+  for (i=0;i<HandledData.SimulatorParams.size();i++) printFunctionsHandledDataItemReport(HandledData.SimulatorParams[i],Suffix,("fpar"));
   for (i=0;i<HandledData.ProducedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
   for (i=0;i<HandledData.RequiredVars.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
   for (i=0;i<HandledData.UpdatedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
@@ -454,7 +454,7 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
-  std::vector<std::string> FunctionsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths();
+  std::vector<std::string> FunctionsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths();
   std::vector<std::string> ObserversPaths = openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths();
   unsigned int i;
 
@@ -730,7 +730,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("functions-paths"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
   }
 
   if (OptionsVars.count("observers-paths"))
@@ -812,7 +812,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
   if (OptionsVars.count("max-threads"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->setFunctionsMaxNumThreads(OptionsVars["max-threads"].as<unsigned int>());
+    openfluid::base::RuntimeEnvironment::getInstance()->setSimulatorsMaxNumThreads(OptionsVars["max-threads"].as<unsigned int>());
   }
 
   if (OptionsVars.count("clean-output-dir"))

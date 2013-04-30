@@ -983,14 +983,14 @@ std::string FluidXDescriptor::getModelToWrite()
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
     {
-      openfluid::fluidx::SimulatorDescriptor* FuncDesc =
+      openfluid::fluidx::SimulatorDescriptor* SimDesc =
           dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it);
 
       Contents << m_IndentStr << m_IndentStr << "<function ID=\""
-               << FuncDesc->getFileID() << "\">\n";
-      Contents << getParamsAsStr(FuncDesc->getParameters());
+               << SimDesc->getFileID() << "\">\n";
+      Contents << getParamsAsStr(SimDesc->getParameters());
       Contents << m_IndentStr << m_IndentStr << "</function>\n";
     }
     else if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))

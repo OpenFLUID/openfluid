@@ -119,7 +119,7 @@ class DLLEXPORT PluggableObserver : public SimulationInspectorWare
     /**
        Internally called by the framework.
      */
-    void initializeWare(const WareID_t& FuncID);
+    void initializeWare(const WareID_t& SimID);
 
     /**
        Initializes function parameters of the function, given as a hash map. Internally called by the framework.

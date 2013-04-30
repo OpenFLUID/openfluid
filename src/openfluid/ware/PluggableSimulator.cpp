@@ -70,7 +70,7 @@ namespace openfluid { namespace ware {
 
 
 PluggableSimulator::PluggableSimulator()
-  : SimulationContributorWare(FUNCTION),
+  : SimulationContributorWare(SIMULATOR),
     m_MaxThreads(openfluid::config::SIMULATORS_MAXNUMTHREADS)
 {
 

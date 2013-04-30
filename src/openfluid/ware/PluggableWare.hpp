@@ -101,7 +101,7 @@ class DLLEXPORT PluggableWare
 {
   public:
 
-    enum WareType { UNDEFINED, OBSERVER, FUNCTION };
+    enum WareType { UNDEFINED, OBSERVER, SIMULATOR };
 
 
   private:

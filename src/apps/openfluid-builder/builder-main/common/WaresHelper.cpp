@@ -79,12 +79,12 @@ std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModif
 
   while (it != Items.end())
   {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
     {
       std::string ID =
           (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it))->getFileID();
 
-      if (!Reg->isPluggableFunctionAvailable(ID))
+      if (!Reg->isPluggableSimulatorAvailable(ID))
       {
         MissingFunctions.push_back(ID);
 

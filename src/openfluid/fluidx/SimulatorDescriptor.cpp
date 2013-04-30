@@ -66,7 +66,7 @@ namespace openfluid { namespace fluidx {
 SimulatorDescriptor::SimulatorDescriptor(std::string FileID) : ModelItemDescriptor(),
   m_FileID(FileID)
 {
-  m_WareType = PluggedFunction;
+  m_WareType = PluggedSimulator;
 }
 
 

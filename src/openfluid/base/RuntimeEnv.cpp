@@ -87,7 +87,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_UserID = "(unknown)";
   m_Arch = "unknown";
 
-  m_FunctionsMaxNumThreads = openfluid::config::SIMULATORS_MAXNUMTHREADS;
+  m_SimulatorsMaxNumThreads = openfluid::config::SIMULATORS_MAXNUMTHREADS;
 
   // ====== System architecture ======
 
@@ -173,7 +173,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
       + openfluid::config::MARKETBAG_SUBDIR).string();
   m_MarketBagVersionDir = boost::filesystem::path(m_MarketBagDir + "/" + m_Version).string();
 
-  m_MarketBagFuncVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "functions").string();
+  m_MarketBagSimVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "functions").string();
   m_MarketBagObsVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "observers").string();
   m_MarketBagBuildVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "builderexts").string();
   m_MarketBagDataVersionDir = boost::filesystem::path(m_MarketBagVersionDir + "/" + "datasets").string();
@@ -228,26 +228,26 @@ RuntimeEnvironment::RuntimeEnvironment() :
   //  5) install directory
 
   // env var
-  char *FUNCSPATHEnvVar;
-  FUNCSPATHEnvVar = std::getenv("OPENFLUID_SIMS_PATH");
+  char *SIMSPATHEnvVar;
+  SIMSPATHEnvVar = std::getenv("OPENFLUID_SIMS_PATH");
 
-  if (FUNCSPATHEnvVar != NULL)
+  if (SIMSPATHEnvVar != NULL)
   {
-    addExtraFunctionsPluginsPaths(std::string(FUNCSPATHEnvVar));
+    addExtraSimulatorsPluginsPaths(std::string(SIMSPATHEnvVar));
   }
 
   // user dir
-  m_DefaultFunctionsPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
+  m_DefaultSimulatorsPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::SIMULATORS_PLUGINS_SUBDIR).string());
 
   // market-bag dir (for current version)
-  m_DefaultFunctionsPlugsDirs.push_back(boost::filesystem::path(m_MarketBagFuncVersionDir
+  m_DefaultSimulatorsPlugsDirs.push_back(boost::filesystem::path(m_MarketBagSimVersionDir
       + "/" + m_MarketBagBinSubDir).string());
 
   // install directory
-  std::string FunctionsPluginsInstallPath = boost::filesystem::path(m_InstallPrefix
+  std::string SimulatorsPluginsInstallPath = boost::filesystem::path(m_InstallPrefix
       + "/" + openfluid::config::SIMULATORS_PLUGINS_STDDIR).string();
-  m_DefaultFunctionsPlugsDirs.push_back(FunctionsPluginsInstallPath);
+  m_DefaultSimulatorsPlugsDirs.push_back(SimulatorsPluginsInstallPath);
 
 
 
@@ -327,7 +327,7 @@ void RuntimeEnvironment::setDateTimeOutputDir()
 // =====================================================================
 
 
-void RuntimeEnvironment::addExtraFunctionsPluginsPaths(
+void RuntimeEnvironment::addExtraSimulatorsPluginsPaths(
     std::string SemicolonSeparatedPaths)
 {
   std::vector<std::string> ExtraPaths;
@@ -341,7 +341,7 @@ void RuntimeEnvironment::addExtraFunctionsPluginsPaths(
 #endif
 
   for (int i = ExtraPaths.size() - 1; i >= 0; i--)
-    m_ExtraFunctionsPlugsDirs.insert(m_ExtraFunctionsPlugsDirs.begin(), 1,
+    m_ExtraSimulatorsPlugsDirs.insert(m_ExtraSimulatorsPlugsDirs.begin(), 1,
         openfluid::tools::RemoveTrailingSlashes(ExtraPaths[i]));
 }
 
@@ -350,10 +350,10 @@ void RuntimeEnvironment::addExtraFunctionsPluginsPaths(
 // =====================================================================
 
 
-std::string RuntimeEnvironment::getFunctionPluginFullPath(std::string Filename)
+std::string RuntimeEnvironment::getSimulatorPluginFullPath(std::string Filename)
 {
 
-  std::vector<std::string> PluginsPaths = getFunctionsPluginsPaths();
+  std::vector<std::string> PluginsPaths = getSimulatorsPluginsPaths();
   std::string PlugFullPath = "";
   boost::filesystem::path TmpPath;
 

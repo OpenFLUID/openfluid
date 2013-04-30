@@ -117,7 +117,7 @@ class AdvancedModelDescriptor
      * @brief Replace existing functions with FunctionsList
      */
     void setItems(
-        std::list<openfluid::fluidx::ModelItemDescriptor*> FunctionsList);
+        std::list<openfluid::fluidx::ModelItemDescriptor*> SimulatorsList);
 
     /**
      Remove from the list the Item located at the given Position (positions starts at index 0).

@@ -66,7 +66,7 @@ class WareDescriptor
 
     enum WareType
     {
-      NoWareType, PluggedFunction, Generator, PluggedObserver
+      NoWareType, PluggedSimulator, Generator, PluggedObserver
     };
 
   protected:

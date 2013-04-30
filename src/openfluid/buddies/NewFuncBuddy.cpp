@@ -70,12 +70,12 @@ namespace openfluid { namespace buddies {
 NewFunctionBuddy::NewFunctionBuddy(openfluid::buddies::BuddiesListener* Listener) :
                   OpenFLUIDBuddy(Listener)
 {
-  m_RequiredOptionsHelp["funcid"] = "ID of the function";
-  m_RequiredOptionsHelp["cppclass"] = "C++ class name of the function";
+  m_RequiredOptionsHelp["funcid"] = "ID of the simulator";
+  m_RequiredOptionsHelp["cppclass"] = "C++ class name of the simulator";
 
   m_OtherOptionsHelp["outputdir"] = "path for generated files";
-  m_OtherOptionsHelp["authoremail"] = "email(s) of the author(s) of the function";
-  m_OtherOptionsHelp["authorname"] = "name(s) of the author(s) of the function";
+  m_OtherOptionsHelp["authoremail"] = "email(s) of the author(s) of the simulator";
+  m_OtherOptionsHelp["authorname"] = "name(s) of the author(s) of the simulator";
 }
 
 
@@ -92,19 +92,19 @@ NewFunctionBuddy::~NewFunctionBuddy()
 // =====================================================================
 // =====================================================================
 
-void NewFunctionBuddy::writeFunctionCPP()
+void NewFunctionBuddy::writeSimulatorCPP()
 {
   std::ostringstream CPPContent;
-  std::ostringstream FuncVersionStr;
+  std::ostringstream SimVersionStr;
 
 
   unsigned short Year = (boost::posix_time::second_clock::local_time().date().year() % 100);
   unsigned short Month = (unsigned short)(boost::posix_time::second_clock::local_time().date().month());
 
 
-  FuncVersionStr << Year << ".";
-  if (Month < 10) FuncVersionStr << "0";
-  FuncVersionStr << Month;
+  SimVersionStr << Year << ".";
+  if (Month < 10) SimVersionStr << "0";
+  SimVersionStr << Month;
 
 
   CPPContent << "/**" << std::endl;
@@ -135,7 +135,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "  DECLARE_SIGNATURE_NAME(\"\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_DESCRIPTION(\"\");" << std::endl;
   CPPContent << "" << std::endl;
-  CPPContent << "  DECLARE_SIGNATURE_VERSION(\""+FuncVersionStr.str()+"\");" << std::endl;
+  CPPContent << "  DECLARE_SIGNATURE_VERSION(\""+SimVersionStr.str()+"\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_SDKVERSION;" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);" << std::endl;
   CPPContent << "" << std::endl;
@@ -262,20 +262,20 @@ bool NewFunctionBuddy::run()
 
   setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
 
-  mp_Listener->onInfo("Function ID: " + m_Options["funcid"]);
-  mp_Listener->onInfo("Function C++ class: " + m_Options["cppclass"]);
+  mp_Listener->onInfo("Simulator ID: " + m_Options["funcid"]);
+  mp_Listener->onInfo("Simulator  C++ class: " + m_Options["cppclass"]);
   mp_Listener->onInfo("Output directory: " + m_Options["outputdir"]);
-  mp_Listener->onInfo("Function filename: " + m_Options["funcid"] + ".cpp");
+  mp_Listener->onInfo("Simulator  filename: " + m_Options["funcid"] + ".cpp");
   mp_Listener->onInfo("Author name: " + m_Options["authorname"]);
   mp_Listener->onInfo("Author email: " + m_Options["authoremail"]);
 
   boost::filesystem::path OutputDirPath(m_Options["outputdir"]);
 
   if (m_Options["funcid"] == "")
-      throw openfluid::base::OFException("OpenFLUID framework","NewFuncBuddy::run()","No function ID");
+      throw openfluid::base::OFException("OpenFLUID framework","NewFuncBuddy::run()","No simulator ID");
 
   if (m_Options["cppclass"] == "")
-      throw openfluid::base::OFException("OpenFLUID framework","NewFuncBuddy::run()","No function C++ class");
+      throw openfluid::base::OFException("OpenFLUID framework","NewFuncBuddy::run()","No simulator C++ class");
 
 
   if (!boost::filesystem::exists(OutputDirPath))
@@ -283,7 +283,7 @@ bool NewFunctionBuddy::run()
 
 
 
-  writeFunctionCPP();
+  writeSimulatorCPP();
 
   return true;
 }

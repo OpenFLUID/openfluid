@@ -73,7 +73,7 @@ MarketSrcFunctionPackage::MarketSrcFunctionPackage(const openfluid::ware::WareID
 
 std::string MarketSrcFunctionPackage::getInstallPath() const
 {
-  return m_MarketBagFunctionDir + "/" + m_MarketBagSrcSubDir;
+  return m_MarketBagSimulatorDir + "/" + m_MarketBagSrcSubDir;
 }
 
 

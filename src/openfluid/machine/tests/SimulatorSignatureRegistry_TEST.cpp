@@ -73,10 +73,10 @@ BOOST_AUTO_TEST_CASE(test_constructor)
       openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
   BOOST_CHECK_EQUAL(
-      Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
+      Signatures->getSimSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].size(),
       5);
   BOOST_CHECK_EQUAL(
-      Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
+      Signatures->getSimSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
       4);
 }
 

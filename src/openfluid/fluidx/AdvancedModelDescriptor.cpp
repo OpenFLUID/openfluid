@@ -96,7 +96,7 @@ void AdvancedModelDescriptor::checkModel() const
     if (!UniqueIDs.insert(ID).second)
       throw openfluid::base::OFException(
           "OpenFLUID-Framework", "AdvancedModelDescriptor::checkModel",
-          "The simulation function with ID \"" + ID + "\" is duplicate");
+          "The simulator with ID \"" + ID + "\" is duplicate");
   }
 }
 
@@ -190,7 +190,7 @@ std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs() const
 std::string AdvancedModelDescriptor::getID(
     openfluid::fluidx::ModelItemDescriptor* Item) const
 {
-  if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
+  if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedSimulator))
     return (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getFileID();
 
   if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
@@ -240,9 +240,9 @@ void AdvancedModelDescriptor::insertItem(
 // =====================================================================
 
 void AdvancedModelDescriptor::setItems(
-    std::list<openfluid::fluidx::ModelItemDescriptor*> FunctionsList)
+    std::list<openfluid::fluidx::ModelItemDescriptor*> SimulatorsList)
 {
-  mp_ModelDesc->getItems() = FunctionsList;
+  mp_ModelDesc->getItems() = SimulatorsList;
 }
 
 // =====================================================================

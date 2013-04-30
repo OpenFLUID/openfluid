@@ -236,7 +236,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
 
   if (ModelDesc.getItems().empty())
-    throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","No simulation function in model");
+    throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","No simulator in model");
 
 
   for (it=ModelDesc.getItems().begin();it!=ModelDesc.getItems().end();++it)
@@ -244,12 +244,12 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
       throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
 
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
     {
       // instanciation of a plugged simulation function using the plugin manager
       IInstance = SimulatorPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID());
       IInstance->Params = (*it)->getParameters();
-      IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedFunction;
+      IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
     }
 
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))

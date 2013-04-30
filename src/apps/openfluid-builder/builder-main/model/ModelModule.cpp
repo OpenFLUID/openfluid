@@ -151,7 +151,7 @@ void ModelModule::whenAddFunctionAsked()
 
   switch (Signature->ItemType)
   {
-    case openfluid::fluidx::ModelItemDescriptor::PluggedFunction:
+    case openfluid::fluidx::ModelItemDescriptor::PluggedSimulator:
       Item = new openfluid::fluidx::SimulatorDescriptor(
           Signature->Signature->ID);
       break;

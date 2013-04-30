@@ -91,7 +91,7 @@ WareItemInfoWidget::WareItemInfoWidget(
 
   attachSeparator();
 
-  if (Type == openfluid::fluidx::WareDescriptor::PluggedFunction || Type
+  if (Type == openfluid::fluidx::WareDescriptor::PluggedSimulator || Type
       == openfluid::fluidx::WareDescriptor::PluggedObserver)
   {
     attachKey(_("Path:"));
@@ -134,7 +134,7 @@ WareItemInfoWidget::WareItemInfoWidget(
 
   attachSeparator();
 
-  if (Type == openfluid::fluidx::WareDescriptor::PluggedFunction)
+  if (Type == openfluid::fluidx::WareDescriptor::PluggedSimulator)
   {
     openfluid::ware::SimulatorSignature* FSign =
         dynamic_cast<openfluid::ware::SimulatorSignature*>(const_cast<openfluid::ware::WareSignature*>(&Sign));

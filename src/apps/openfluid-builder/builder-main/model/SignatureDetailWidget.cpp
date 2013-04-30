@@ -159,7 +159,7 @@ void SignatureDetailWidget::update(
       _("Information"));
 
   mref_ParamsModel->clear();
-  updateParamsModel(Signature->Signature->HandledData.FunctionParams);
+  updateParamsModel(Signature->Signature->HandledData.SimulatorParams);
   if (!mref_ParamsModel->children().empty())
     append_page(*mp_ParamsWin, _("Parameters"));
 
