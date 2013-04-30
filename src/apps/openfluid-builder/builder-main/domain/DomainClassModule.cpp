@@ -56,16 +56,12 @@
 
 #include <boost/algorithm/string.hpp>
 #include <gtkmm/notebook.h>
-
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include "DomainIDataAddDialog.hpp"
 #include "DomainIDataRemoveDialog.hpp"
 #include "DomainIDataEditDialog.hpp"
-#include "DomainEventsComponent.hpp"
-
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderButtonBox.hpp"
-
 #include "BuilderFrame.hpp"
 #include "EngineHelper.hpp"
 
@@ -76,7 +72,7 @@ DomainClassModule::DomainClassModule(
     openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc,
     std::string ClassName) :
     ProjectWorkspaceModule(AdvancedDesc), m_Domain(AdvancedDesc.getDomain()), m_ClassName(
-        ClassName), mp_Columns(0)
+        ClassName), mp_IDataColumns(0)
 {
   mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
@@ -105,12 +101,28 @@ DomainClassModule::DomainClassModule(
   mp_IDataListToolBox->signal_EditCommandAsked().connect(
       sigc::mem_fun(*this, &DomainClassModule::whenEditIDataAsked));
 
-  updateIData();
-
   // Events
 
-  mp_DomainEventsMVP = new DomainEventsComponent(AdvancedDesc.getDomain());
+  mref_EventsTreeStore = Gtk::TreeStore::create(m_EventsColumns);
+
+  mp_EventsTreeView = Gtk::manage(new Gtk::TreeView(mref_EventsTreeStore));
+  mp_EventsTreeView->append_column(_("ID - Date - Information"),
+                                   m_EventsColumns.m_Id_Date_Info);
+
+  mp_EventsWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_EventsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_EventsWin->set_shadow_type(Gtk::SHADOW_ETCHED_IN);
+  mp_EventsWin->add(*mp_EventsTreeView);
+  mp_EventsWin->set_visible(true);
+  mp_EventsWin->show_all_children();
+
   mp_EventsListToolBox = BuilderListToolBoxFactory::createDomainEventsToolBox();
+  mp_EventsListToolBox->signal_AddCommandAsked().connect(
+      sigc::mem_fun(*this, &DomainClassModule::whenAddEventAsked));
+  mp_EventsListToolBox->signal_RemoveCommandAsked().connect(
+      sigc::mem_fun(*this, &DomainClassModule::whenRemoveEventAsked));
+
+  update();
 }
 
 // =====================================================================
@@ -122,6 +134,7 @@ DomainClassModule::~DomainClassModule()
   delete mp_IDataRemoveDialog;
   delete mp_IDataEditDialog;
   delete mp_IDataListToolBox;
+  delete mp_EventsListToolBox;
 }
 
 // =====================================================================
@@ -141,32 +154,32 @@ void DomainClassModule::updateIData()
   std::string SortColumnName = "";
   int SelectedID = -1;
 
-  if (mref_ListStore)
+  if (mref_IDataListStore)
   {
-    mref_ListStore->get_sort_column_id(SortColumnId, SortType);
+    mref_IDataListStore->get_sort_column_id(SortColumnId, SortType);
     SortColumnName = mp_IDataTreeView->get_column(SortColumnId)->get_title();
 
     Gtk::TreeIter Selected = mp_IDataTreeView->get_selection()->get_selected();
     if (Selected)
-      SelectedID = Selected->get_value(mp_Columns->m_Id);
+      SelectedID = Selected->get_value(mp_IDataColumns->m_Id);
   }
 
 // create liststore
 
-  delete mp_Columns;
-  mp_Columns = new IDataColumns(IDataNames);
+  delete mp_IDataColumns;
+  mp_IDataColumns = new IDataColumns(IDataNames);
 
-  mref_ListStore.clear();
-  mref_ListStore = Gtk::ListStore::create(*mp_Columns);
+  mref_IDataListStore.clear();
+  mref_IDataListStore = Gtk::ListStore::create(*mp_IDataColumns);
 
-  mp_IDataTreeView->set_model(mref_ListStore);
+  mp_IDataTreeView->set_model(mref_IDataListStore);
 
   std::set<int> IDs = m_Domain.getIDsOfClass(m_ClassName);
   for (std::set<int>::iterator it = IDs.begin(); it != IDs.end(); ++it)
   {
-    Gtk::TreeRow Row = *(mref_ListStore->append());
+    Gtk::TreeRow Row = *(mref_IDataListStore->append());
 
-    Row[mp_Columns->m_Id] = *it;
+    Row[mp_IDataColumns->m_Id] = *it;
 
     for (std::set<std::string>::iterator itData = IDataNames.begin();
         itData != IDataNames.end(); ++itData)
@@ -175,7 +188,7 @@ void DomainClassModule::updateIData()
       std::string IDataValue = m_Domain.getInputData(m_ClassName, *it,
                                                      IDataName);
 
-      Row.set_value(mp_Columns->getColumn(IDataName), IDataValue);
+      Row.set_value(mp_IDataColumns->getColumn(IDataName), IDataValue);
 
       if (*it == SelectedID)
         mp_IDataTreeView->get_selection()->select(Row);
@@ -186,18 +199,18 @@ void DomainClassModule::updateIData()
 
   mp_IDataTreeView->remove_all_columns();
 
-  mp_IDataTreeView->append_column("ID", mp_Columns->m_Id);
-  mp_IDataTreeView->get_column(0)->set_sort_column(mp_Columns->m_Id);
+  mp_IDataTreeView->append_column("ID", mp_IDataColumns->m_Id);
+  mp_IDataTreeView->get_column(0)->set_sort_column(mp_IDataColumns->m_Id);
   if (SortColumnId == 0)
   {
-    mref_ListStore->set_sort_column(SortColumnId, SortType);
+    mref_IDataListStore->set_sort_column(SortColumnId, SortType);
     SortColumnId = -1;
   }
 
   for (std::set<std::string>::iterator it = IDataNames.begin();
       it != IDataNames.end(); ++it)
   {
-    Gtk::TreeModelColumn<std::string>& Col = mp_Columns->getColumn(*it);
+    Gtk::TreeModelColumn<std::string>& Col = mp_IDataColumns->getColumn(*it);
     int Index = mp_IDataTreeView->append_column_editable(escapeUnderscores(*it),
                                                          Col)
                 - 1;
@@ -208,7 +221,7 @@ void DomainClassModule::updateIData()
 
     if (SortColumnId != -1 && escapeUnderscores(*it) == SortColumnName)
     {
-      mref_ListStore->set_sort_column(Col, SortType);
+      mref_IDataListStore->set_sort_column(Col, SortType);
       SortColumnId = -1;
     }
   }
@@ -216,10 +229,11 @@ void DomainClassModule::updateIData()
   // apply default sort and selection if needed
 
   if (SortColumnId != -1)
-    mref_ListStore->set_sort_column(0, Gtk::SORT_ASCENDING);
+    mref_IDataListStore->set_sort_column(0, Gtk::SORT_ASCENDING);
 
-  if (!mp_IDataTreeView->get_selection()->get_selected() && !mref_ListStore->children().empty())
-    mp_IDataTreeView->get_selection()->select(mref_ListStore->children()[0]);
+  if (!mp_IDataTreeView->get_selection()->get_selected() && !mref_IDataListStore->children().empty())
+    mp_IDataTreeView->get_selection()->select(
+        mref_IDataListStore->children()[0]);
 }
 
 // =====================================================================
@@ -274,7 +288,7 @@ void DomainClassModule::onDataEdited(const Glib::ustring& Path,
                                      const Glib::ustring& NewText,
                                      std::string DataName)
 {
-  Gtk::TreeIter Iter = mref_ListStore->get_iter(Path);
+  Gtk::TreeIter Iter = mref_IDataListStore->get_iter(Path);
 
   if (!Iter)
     return;
@@ -285,13 +299,82 @@ void DomainClassModule::onDataEdited(const Glib::ustring& Path,
           "Do you want to set this input data value as the default one (\"-\") instead?")))
   {
     DataVal = "-";
-    Iter->set_value(mp_Columns->getColumn(DataName), DataVal);
+    Iter->set_value(mp_IDataColumns->getColumn(DataName), DataVal);
   }
 
-  m_Domain.getInputData(m_ClassName, Iter->get_value(mp_Columns->m_Id),
+  m_Domain.getInputData(m_ClassName, Iter->get_value(mp_IDataColumns->m_Id),
                         DataName) = DataVal;
 
   m_signal_DomainClassChanged.emit();
+}
+
+// =====================================================================
+// =====================================================================
+
+void DomainClassModule::updateEvents()
+{
+  const std::map<int, openfluid::fluidx::BuilderUnit>& Units =
+      m_Domain.getUnitsByIdByClass().at(m_ClassName);
+
+  mref_EventsTreeStore->clear();
+
+  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it =
+      Units.begin(); it != Units.end(); ++it)
+  {
+    std::list<openfluid::core::Event*> Events = it->second.m_Events;
+
+    if (Events.empty())
+      continue;
+
+    Gtk::TreeRow UnitRow = *mref_EventsTreeStore->append();
+    UnitRow[m_EventsColumns.m_Id_Date_Info] = Glib::ustring::compose("%1",
+                                                                     it->first);
+
+    EngineHelper::sortEventsListByDateTime(Events);
+
+    for (std::list<openfluid::core::Event*>::iterator itEvents = Events.begin();
+        itEvents != Events.end(); ++itEvents)
+    {
+      Gtk::TreeRow EventRow = *mref_EventsTreeStore->append(
+          UnitRow->children());
+
+      EventRow[m_EventsColumns.m_Id_Date_Info] =
+          (*itEvents)->getDateTime().getAsISOString();
+
+      openfluid::core::Event::EventInfosMap_t Infos = (*itEvents)->getInfos();
+
+      for (openfluid::core::Event::EventInfosMap_t::iterator itInfos =
+          Infos.begin(); itInfos != Infos.end(); ++itInfos)
+      {
+        Gtk::TreeRow InfoRow = *mref_EventsTreeStore->append(
+            EventRow->children());
+
+        InfoRow[m_EventsColumns.m_Id_Date_Info] = Glib::ustring::compose(
+            "%1 : %2", itInfos->first, itInfos->second.get());
+      }
+    }
+
+  }
+
+  for (unsigned int i = 0; i < mref_EventsTreeStore->children().size(); i++)
+    mp_EventsTreeView->expand_row(
+        Gtk::TreePath(Glib::ustring::compose("%1", i)), false);
+}
+
+// =====================================================================
+// =====================================================================
+
+void DomainClassModule::whenAddEventAsked()
+{
+  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
+}
+
+// =====================================================================
+// =====================================================================
+
+void DomainClassModule::whenRemoveEventAsked()
+{
+  openfluid::guicommon::DialogBoxFactory::showDisabledFeatureMessage();
 }
 
 // =====================================================================
@@ -321,7 +404,7 @@ void DomainClassModule::compose()
 
   Gtk::HBox* SecondPanel = Gtk::manage(new Gtk::HBox());
   SecondPanel->set_border_width(5);
-  SecondPanel->pack_start(*mp_DomainEventsMVP->asWidget());
+  SecondPanel->pack_start(*mp_EventsWin);
   SecondPanel->pack_start(*EventsButtonsPanel, Gtk::PACK_SHRINK, 5);
   SecondPanel->set_visible(true);
 
@@ -361,8 +444,7 @@ sigc::signal<void> DomainClassModule::signal_ModuleChanged()
 void DomainClassModule::update()
 {
   updateIData();
-
-  // TODO update Events
+  updateEvents();
 }
 
 // =====================================================================

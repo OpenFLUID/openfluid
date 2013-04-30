@@ -60,13 +60,13 @@
 #include <gtkmm/box.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
 
 class DomainIDataAddDialog;
 class DomainIDataRemoveDialog;
 class DomainIDataEditDialog;
 
-class DomainEventsComponent;
 class BuilderButtonBox;
 
 class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
@@ -80,8 +80,10 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
     Gtk::Box* mp_MainPanel;
 
     Gtk::TreeView* mp_IDataTreeView;
+    Gtk::TreeView* mp_EventsTreeView;
 
     Gtk::ScrolledWindow* mp_IDataWin;
+    Gtk::ScrolledWindow* mp_EventsWin;
 
     class IDataColumns: public Gtk::TreeModel::ColumnRecord
     {
@@ -128,20 +130,33 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
           m_Columns[NewName] = Col;
         }
     };
-    IDataColumns* mp_Columns;
+    IDataColumns* mp_IDataColumns;
 
-    Glib::RefPtr<Gtk::ListStore> mref_ListStore;
+    class EventsColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+      EventsColumns()
+        {
+          add(m_Id_Date_Info);
+        }
+
+        Gtk::TreeModelColumn<std::string> m_Id_Date_Info;
+    };
+    EventsColumns m_EventsColumns;
+
+    Glib::RefPtr<Gtk::ListStore> mref_IDataListStore;
+    Glib::RefPtr<Gtk::TreeStore> mref_EventsTreeStore;
 
     static std::string escapeUnderscores(std::string Str);
 
     void whenAddIDataAsked();
-
     void whenRemoveIDataAsked();
-
     void whenEditIDataAsked();
-
     void onDataEdited(const Glib::ustring& Path, const Glib::ustring& NewText,
                       std::string DataName);
+
+    void whenAddEventAsked();
+    void whenRemoveEventAsked();
 
   protected:
 
@@ -151,7 +166,6 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     BuilderButtonBox* mp_IDataListToolBox;
 
-    DomainEventsComponent* mp_DomainEventsMVP;
     BuilderButtonBox* mp_EventsListToolBox;
 
     sigc::signal<void> m_signal_DomainClassChanged;
@@ -161,6 +175,7 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
     Gtk::Widget* asWidget();
 
     void updateIData();
+    void updateEvents();
 
   public:
 
