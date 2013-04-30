@@ -64,8 +64,8 @@
 // =====================================================================
 
 DomainIDataRemoveDialog::DomainIDataRemoveDialog(
-    openfluid::fluidx::AdvancedDomainDescriptor& Domain) :
-    mp_Domain(&Domain), m_ClassName("")
+    openfluid::fluidx::AdvancedDomainDescriptor& Domain, std::string ClassName) :
+    mp_Domain(&Domain), m_ClassName(ClassName)
 {
   mp_Dialog = new Gtk::Dialog(_("Removing Inputdata"));
 
@@ -94,17 +94,7 @@ DomainIDataRemoveDialog::DomainIDataRemoveDialog(
 // =====================================================================
 // =====================================================================
 
-void DomainIDataRemoveDialog::setClass(std::string ClassName)
-{
-  m_ClassName = ClassName;
-
-  update();
-}
-
-// =====================================================================
-// =====================================================================
-
-void DomainIDataRemoveDialog::update()
+bool DomainIDataRemoveDialog::show()
 {
   mp_Combo->clear_items();
 
@@ -115,21 +105,15 @@ void DomainIDataRemoveDialog::update()
     mp_Combo->append_text(*it);
 
   mp_Combo->set_active(0);
-}
-
-// =====================================================================
-// =====================================================================
-
-std::string DomainIDataRemoveDialog::show()
-{
-  std::string IDataName = "";
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    IDataName = mp_Combo->get_active_text();
+    mp_Domain->deleteInputData(m_ClassName, mp_Combo->get_active_text());
+
+    mp_Dialog->hide();
+    return true;
   }
 
   mp_Dialog->hide();
-
-  return IDataName;
+  return false;
 }

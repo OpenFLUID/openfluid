@@ -429,10 +429,19 @@ void AdvancedDomainDescriptor::addUnit(
   {
     IDataDesc.getColumnsOrder().push_back(*it);
     IDataDesc.getData()[ID][*it] = "-";
-    BUnit.m_IData[*it] = new std::string("-");
   }
 
   mp_DomainDesc->getInputData().push_back(IDataDesc);
+
+  // to do after pushing back descriptor (which is *not* a pointer!), to get the right address
+  openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t& Data =
+      mp_DomainDesc->getInputData().end().operator --()->getData().at(ID);
+  for (std::set<std::string>::iterator it = IDataNames.begin();
+      it != IDataNames.end(); ++it)
+  {
+    BUnit.m_IData[*it] = &Data.at(*it);
+  }
+
 }
 
 // =====================================================================
@@ -440,10 +449,13 @@ void AdvancedDomainDescriptor::addUnit(
 
 void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
 {
-  // delete in m_Units
+  // delete in m_Units and in IDataNames
   m_Units[ClassName].erase(ID);
   if (m_Units.at(ClassName).empty())
+  {
     m_Units.erase(ClassName);
+    m_IDataNames.erase(ClassName);
+  }
 
   // delete in UnitDesc list and in other units relations
   std::list<openfluid::fluidx::UnitDescriptor>& Units =
@@ -474,7 +486,7 @@ void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
     }
   }
 
-  // delete in IDataDesc list and in IDataNames
+  // delete in IDataDesc list
   std::list<openfluid::fluidx::InputDataDescriptor>* IData =
       &(mp_DomainDesc->getInputData());
   std::list<openfluid::fluidx::InputDataDescriptor>::iterator itData =
@@ -486,10 +498,7 @@ void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
       itData->getData().erase(ID);
 
       if (itData->getData().empty())
-      {
         itData = IData->erase(itData);
-        m_IDataNames.erase(ClassName);
-      }
       else
         itData++;
     }
@@ -616,9 +625,9 @@ void AdvancedDomainDescriptor::deleteInputData(std::string ClassName,
   // delete in DomainDesc
   std::list<openfluid::fluidx::InputDataDescriptor>* IData =
       &(mp_DomainDesc->getInputData());
-
-  for (std::list<openfluid::fluidx::InputDataDescriptor>::iterator it =
-      IData->begin(); it != IData->end(); ++it)
+  std::list<openfluid::fluidx::InputDataDescriptor>::iterator it =
+      IData->begin();
+  while (it != IData->end())
   {
     if (it->getUnitsClass() == ClassName)
     {
@@ -629,18 +638,29 @@ void AdvancedDomainDescriptor::deleteInputData(std::string ClassName,
       if (Found != ColOrd.end())
         ColOrd.erase((Found));
 
-      std::map<openfluid::core::UnitID_t,
-          openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* DataById =
-          &(it->getData());
-
-      for (std::map<openfluid::core::UnitID_t,
-          openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>::iterator it2 =
-          DataById->begin(); it2 != DataById->end(); ++it2)
+      if (ColOrd.empty())
       {
-        if (it2->second.count(IDataName))
-          it2->second.erase(IDataName);
+        it = IData->erase(it);
+      }
+      else
+      {
+        std::map<openfluid::core::UnitID_t,
+            openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* DataById =
+            &(it->getData());
+
+        for (std::map<openfluid::core::UnitID_t,
+            openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>::iterator it2 =
+            DataById->begin(); it2 != DataById->end(); ++it2)
+        {
+          if (it2->second.count(IDataName))
+            it2->second.erase(IDataName);
+        }
+
+        ++it;
       }
     }
+    else
+      ++it;
   }
 
   // delete in IDataNames

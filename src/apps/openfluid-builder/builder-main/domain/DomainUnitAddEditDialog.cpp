@@ -149,8 +149,6 @@ DomainUnitAddEditDialog::DomainUnitAddEditDialog(
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-
-  update();
 }
 
 // =====================================================================
@@ -222,14 +220,23 @@ void DomainUnitAddEditDialog::update()
 // =====================================================================
 
 openfluid::fluidx::UnitDescriptor* DomainUnitAddEditDialog::show(
-    std::string SelectedClass, openfluid::fluidx::UnitDescriptor* Unit)
+    std::string Class, int ID)
 {
-  mp_Unit = Unit;
+  mp_Unit = 0;
 
-  if (mp_Unit)
+  update();
+
+  if (ID != 0)
+  {
+    mp_Unit =
+        &const_cast<openfluid::fluidx::UnitDescriptor&>(mp_Domain->getUnitDescriptor(
+            Class, ID));
     initEditionMode();
+  }
   else
-    initCreationMode(SelectedClass);
+  {
+    initCreationMode(Class);
+  }
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
@@ -247,15 +254,11 @@ openfluid::fluidx::UnitDescriptor* DomainUnitAddEditDialog::show(
     clearAllRelations();
 
     createAllRelationsFromRelationWidgets();
-
-    mp_Dialog->hide();
-
-    return mp_Unit;
   }
 
   mp_Dialog->hide();
 
-  return (openfluid::fluidx::UnitDescriptor*) 0;
+  return mp_Unit;
 }
 
 // =====================================================================

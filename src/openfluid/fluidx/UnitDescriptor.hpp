@@ -82,9 +82,13 @@ class DLLEXPORT UnitDescriptor
 
     inline openfluid::core::UnitID_t& getUnitID() { return m_UnitID; };
 
+    inline const openfluid::core::UnitID_t& getUnitID() const { return m_UnitID; };
+
     inline openfluid::core::UnitClass_t& getUnitClass() { return m_UnitClass; };
 
     inline openfluid::core::PcsOrd_t& getProcessOrder() { return m_PcsOrder; };
+
+    inline const openfluid::core::PcsOrd_t& getProcessOrder() const { return m_PcsOrder; };
 
     inline std::list<openfluid::core::UnitClassID_t>& getUnitsTos() { return m_UnitsTos; };
 

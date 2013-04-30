@@ -64,7 +64,6 @@ class AdvancedDomainDescriptor;
 }
 }
 
-
 class DomainIDataRemoveDialog
 {
   private:
@@ -79,17 +78,12 @@ class DomainIDataRemoveDialog
 
     std::string m_ClassName;
 
-
   public:
 
-    DomainIDataRemoveDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain);
+    DomainIDataRemoveDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain,
+                            std::string ClassName);
 
-    void setClass(std::string ClassName);
-
-    void update();
-
-    std::string show();
-
+    bool show();
 
 };
 

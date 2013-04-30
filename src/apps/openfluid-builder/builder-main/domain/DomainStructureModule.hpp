@@ -58,6 +58,9 @@
 #include <openfluid/guicommon/ProjectWorkspaceModule.hpp>
 
 #include <gtkmm/box.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
+#include <gtkmm/scrolledwindow.h>
 
 namespace openfluid {
 namespace fluidx {
@@ -65,27 +68,80 @@ class AdvancedFluidXDescriptor;
 }
 }
 
-class DomainStructureComponent;
-
 class DomainUnitRelationAddDialog;
 class DomainUnitAddEditDialog;
-
-class DomainStructureCoordinator;
 class BuilderButtonBox;
 
 class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
   private:
+
+    openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+
     Gtk::Box* mp_MainPanel;
+
+    class ClassColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        ClassColumns()
+        {
+          add(m_Class);
+          add(m_UnitSortColumnId);
+          add(m_UnitSortType);
+        }
+        Gtk::TreeModelColumn<Glib::ustring> m_Class;
+        Gtk::TreeModelColumn<int> m_UnitSortColumnId;
+        Gtk::TreeModelColumn<Gtk::SortType> m_UnitSortType;
+    };
+    ClassColumns m_ClassColumns;
+
+    class UnitColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+        UnitColumns()
+        {
+          add(m_Id);
+          add(m_PcsOrder);
+        }
+        Gtk::TreeModelColumn<int> m_Id;
+        Gtk::TreeModelColumn<int> m_PcsOrder;
+    };
+    UnitColumns m_UnitColumns;
+
+    Glib::RefPtr<Gtk::ListStore> mref_ClassesStore;
+    Glib::RefPtr<Gtk::ListStore> mref_UnitsStore;
+
+    Gtk::TreeView* mp_ClassesView;
+    Gtk::TreeView* mp_UnitsView;
+
+    Gtk::ScrolledWindow* mp_ClassesWin;
+    Gtk::ScrolledWindow* mp_UnitsWin;
+
+    Gtk::Box* mp_MainBox;
+
+    void onClassSelectionChanged();
+
+    void onUnitRowActivated(const Gtk::TreeModel::Path& Path,
+                            Gtk::TreeViewColumn* Column);
+
+    void onUnitsSortChanged();
+
+    void onEditAsked();
+
+    void onAddAsked();
+
+    void onRemoveAsked();
+
+    void updateUnits(Gtk::TreeIter& ClassIter);
+
+    void updateClasses(std::string ClassToForceSelection = "");
 
   protected:
 
-    DomainStructureComponent* mp_DomainStructureMVP;
-    DomainUnitRelationAddDialog* mp_DomainUnitRelationAddDialog;
-    DomainUnitAddEditDialog* mp_DomainUnitAddEditDialog;
+    DomainUnitRelationAddDialog* mp_RelationAddDialog;
+    DomainUnitAddEditDialog* mp_AddEditDialog;
 
-    BuilderButtonBox* mp_StructureListToolBox;
-    DomainStructureCoordinator* mp_Coordinator;
+    BuilderButtonBox* mp_ToolBox;
 
     sigc::signal<void> m_signal_DomainStructureChanged;
 
@@ -97,20 +153,14 @@ class DomainStructureModule: public openfluid::guicommon::ProjectWorkspaceModule
 
   public:
 
-    DomainStructureModule(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
+    DomainStructureModule(
+        openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc);
 
     ~DomainStructureModule();
 
     sigc::signal<void> signal_ModuleChanged();
 
-    void setEngineRequirements(
-        openfluid::machine::ModelInstance& /*ModelInstance*/,
-        openfluid::machine::SimulationBlob& /*SimBlob*/,
-        openfluid::fluidx::AdvancedFluidXDescriptor& /*AdvancedDesc*/)
-    {};
-
     void update();
-
 };
 
 #endif /* __DOMAINSTRUCTUREMODULE_HPP__ */
