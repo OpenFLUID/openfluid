@@ -53,7 +53,7 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 
 // =====================================================================
@@ -62,7 +62,7 @@ DECLARE_FUNCTION_PLUGIN
 
 #define THIS_SIM_ID "tests.primitives.events"
 
-BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
+BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
 
   DECLARE_SIGNATURE_NAME("test function for events primitives");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -79,7 +79,7 @@ BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
 
   DECLARE_USED_EVENTS("TestUnits");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -300,5 +300,5 @@ class EventsPrimitivesUseFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(EventsPrimitivesUseFunction)
+DEFINE_SIMULATOR_CLASS(EventsPrimitivesUseFunction)
 

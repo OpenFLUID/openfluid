@@ -11,14 +11,14 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN;
+DECLARE_SIMULATOR_PLUGIN;
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("examples.primitives.unitsA.up")
+BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.up")
 
   DECLARE_SIGNATURE_NAME("Example of data update on units of class A");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -33,7 +33,7 @@ BEGIN_FUNCTION_SIGNATURE("examples.primitives.unitsA.up")
   DECLARE_SIGNATURE_AUTHORNAME("Jean-Christophe Fabre");
   DECLARE_SIGNATURE_AUTHOREMAIL("fabrejc@supagro.inra.fr");
 
-  DECLARE_FUNCTION_PARAM("gmult","multiply coefficient","");
+  DECLARE_SIMULATOR_PARAM("gmult","multiply coefficient","");
 
   DECLARE_REQUIRED_VAR("var1","unitsA","the variable 1","");
   DECLARE_REQUIRED_VAR("var10","unitsA","the variable 1","");
@@ -43,7 +43,7 @@ BEGIN_FUNCTION_SIGNATURE("examples.primitives.unitsA.up")
   
   DECLARE_UPDATED_VAR("var2","unitsA","the variable 2","");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -86,7 +86,7 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableSimulator
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
       m_Mult = 1.0;
-      OPENFLUID_GetFunctionParameter(Params,"gmult",m_Mult);
+      OPENFLUID_GetSimulatorParameter(Params,"gmult",m_Mult);
     }
 
 
@@ -184,5 +184,5 @@ class ExampleUnitsAUpdate : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(ExampleUnitsAUpdate);
+DEFINE_SIMULATOR_CLASS(ExampleUnitsAUpdate);
 

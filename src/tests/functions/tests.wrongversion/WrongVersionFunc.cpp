@@ -58,13 +58,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.wrongversion")
+BEGIN_SIMULATOR_SIGNATURE("tests.wrongversion")
 
   DECLARE_SIGNATURE_NAME("test function for wrong id handling");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -81,7 +81,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.wrongversion")
 
   DECLARE_SCHEDULING_DEFAULT();
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -166,7 +166,7 @@ class WrongVersionFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-// below replaces DEFINE_FUNCTION_CLASS(WrongVersionFunction)
+// below replaces DEFINE_SIMULATOR_CLASS(WrongVersionFunction)
 
 std::string GetWareABIVersion()
 {

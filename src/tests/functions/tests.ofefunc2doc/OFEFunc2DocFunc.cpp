@@ -83,14 +83,14 @@ This is the \LaTeX -style documentation of the \funcID\ function (\funcNAME, ver
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(OFEFunc2DocFunction)
+DEFINE_SIMULATOR_CLASS(OFEFunc2DocFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.ofefunc2doc")
+BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
 
   DECLARE_SIGNATURE_NAME("test function for ofefunc2doc");
   DECLARE_SIGNATURE_DESCRIPTION("This function is a test for the ofefunc2doc doc extraction tool. Do not use it in a model.");
@@ -105,8 +105,8 @@ BEGIN_FUNCTION_SIGNATURE("tests.ofefunc2doc")
   DECLARE_SIGNATURE_AUTHORNAME("JC Fabre");
   DECLARE_SIGNATURE_AUTHOREMAIL("fabrejc@supagro.inra.fr");
 
-  DECLARE_FUNCTION_PARAM("testparam","a param just for test","kg/m3")
-  DECLARE_FUNCTION_PARAM("dummy_param","a dummy param just for test","snail/m2")
+  DECLARE_SIMULATOR_PARAM("testparam","a param just for test","kg/m3")
+  DECLARE_SIMULATOR_PARAM("dummy_param","a dummy param just for test","snail/m2")
 
   DECLARE_PRODUCED_VAR("tests.prodvector[]","TestUnits","produced vector on TestUnits","");
   DECLARE_PRODUCED_VAR("tests.prodscalar","TestUnits","produced scalar on TestUnits","joker/batman");
@@ -129,7 +129,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.ofefunc2doc")
   DECLARE_USED_EXTRAFILE("test02.txt");
   DECLARE_REQUIRED_EXTRAFILE("test03req.txt");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================

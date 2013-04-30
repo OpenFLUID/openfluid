@@ -105,7 +105,7 @@ void PluggableSimulator::initializeWare(const WareID_t& ID,const unsigned int& M
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        openfluid::core::StringValue& Val) const
 {
@@ -125,7 +125,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        openfluid::core::DoubleValue& Val) const
 {
@@ -142,7 +142,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        openfluid::core::VectorValue& Val) const
 {
@@ -160,7 +160,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        openfluid::core::MatrixValue& Val) const
 {
@@ -177,7 +177,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        double& Val) const
 {
@@ -194,7 +194,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        long& Val) const
 {
@@ -211,7 +211,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        float& Val) const
 {
@@ -236,7 +236,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        int& Val) const
 {
@@ -261,7 +261,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                                        const openfluid::ware::WareParamKey_t& ParamName,
                                                        std::string& Value) const
 {
@@ -282,7 +282,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                       const openfluid::ware::WareParamKey_t& ParamName,
                                       std::vector<std::string>& Vals) const
 {
@@ -310,7 +310,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                       const openfluid::ware::WareParamKey_t& ParamName,
                                       std::vector<double>& Vals) const
 {
@@ -341,7 +341,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::WareParams_t& Params,
+bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::WareParams_t& Params,
                                       const openfluid::ware::WareParamKey_t& ParamName,
                                       std::vector<long>& Vals) const
 {
@@ -372,7 +372,7 @@ bool PluggableSimulator::OPENFLUID_GetFunctionParameter(const openfluid::ware::W
 // =====================================================================
 
 
-void PluggableSimulator::OPENFLUID_SetFunctionMaxThreads(const unsigned int& MaxNumThreads)
+void PluggableSimulator::OPENFLUID_SetSimulatorMaxThreads(const unsigned int& MaxNumThreads)
 {
   if (MaxNumThreads > 0) m_MaxThreads = MaxNumThreads;
 }

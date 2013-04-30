@@ -65,13 +65,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.threadedloops")
+BEGIN_SIMULATOR_SIGNATURE("tests.threadedloops")
 
   DECLARE_SIGNATURE_NAME("test function for threaded loops");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -91,7 +91,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.threadedloops")
 
 
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -138,7 +138,7 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableSimulator
   void prepareData()
   {
 
-    std::cout << std::endl << "Max threads: " << OPENFLUID_GetFunctionMaxThreads() << std::endl;
+    std::cout << std::endl << "Max threads: " << OPENFLUID_GetSimulatorMaxThreads() << std::endl;
 
   }
 
@@ -333,5 +333,5 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(ThreadedLoopsFunction)
+DEFINE_SIMULATOR_CLASS(ThreadedLoopsFunction)
 

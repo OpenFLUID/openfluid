@@ -56,7 +56,7 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 
 // =====================================================================
@@ -65,7 +65,7 @@ DECLARE_FUNCTION_PLUGIN
 
 #define THIS_SIM_ID "tests.primitives.variables.prod"
 
-BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
+BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
 
   DECLARE_SIGNATURE_NAME("test function for variables primitives");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -104,7 +104,7 @@ BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
   DECLARE_PRODUCED_VAR("tests.typed.matrix[matrix]","TestUnits","matrix for tests","");
   DECLARE_PRODUCED_VAR("tests.typed.map[map]","TestUnits","map for tests","");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -856,5 +856,5 @@ class VarsPrimitivesProdFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(VarsPrimitivesProdFunction)
+DEFINE_SIMULATOR_CLASS(VarsPrimitivesProdFunction)
 

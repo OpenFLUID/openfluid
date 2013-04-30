@@ -107,7 +107,7 @@
       openfluid::core::PcsOrd_t _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
       while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
       { \
-        Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetFunctionMaxThreads(),true); \
+        Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetSimulatorMaxThreads(),true); \
         while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end() && _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id)) \
         { \
           _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&funcptr),&(*_UNITSLISTITERID(id)), ## __VA_ARGS__)); \
@@ -155,7 +155,7 @@
       openfluid::core::PcsOrd_t _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
       while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
       { \
-        Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetFunctionMaxThreads(),true); \
+        Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetSimulatorMaxThreads(),true); \
         while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end() && (*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id)) \
         { \
           _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&funcptr),(*_UNITSPTRLISTITERID(id)), ## __VA_ARGS__)); \

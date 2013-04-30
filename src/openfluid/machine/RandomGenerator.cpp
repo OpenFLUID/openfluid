@@ -85,10 +85,10 @@ RandomGenerator::~RandomGenerator()
 
 void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
-  if (!OPENFLUID_GetFunctionParameter(Params,"min",m_Min))
+  if (!OPENFLUID_GetSimulatorParameter(Params,"min",m_Min))
     throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing min value for generator");
 
-  if (!OPENFLUID_GetFunctionParameter(Params,"max",m_Max))
+  if (!OPENFLUID_GetSimulatorParameter(Params,"max",m_Max))
     throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing max value for generator");
 
 };

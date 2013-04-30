@@ -58,13 +58,13 @@
 // =====================================================================
 // =====================================================================
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.loops")
+BEGIN_SIMULATOR_SIGNATURE("tests.loops")
 
   DECLARE_SIGNATURE_NAME("test function for units loops");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -79,7 +79,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.loops")
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -148,7 +148,7 @@ TU.1         TU.2
 */
 
 
-DECLARE_FUNCTION_PLUGIN;
+DECLARE_SIMULATOR_PLUGIN;
 
 
 // =====================================================================
@@ -521,6 +521,6 @@ class LoopsFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(LoopsFunction);
+DEFINE_SIMULATOR_CLASS(LoopsFunction);
 
 

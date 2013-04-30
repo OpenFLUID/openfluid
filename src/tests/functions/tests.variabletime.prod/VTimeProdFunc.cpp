@@ -62,13 +62,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.variabletime.prod")
+BEGIN_SIMULATOR_SIGNATURE("tests.variabletime.prod")
 
   DECLARE_SIGNATURE_NAME("test function for variable time production");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -89,7 +89,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.variabletime.prod")
   DECLARE_PRODUCED_VAR("tests.vector","TestUnits","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.matrix","TestUnits","matrix for tests","");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -128,7 +128,7 @@ class VariableTimeProdFunction : public openfluid::ware::PluggableSimulator
   void initParams(const openfluid::ware::WareParams_t& Params)
   {
     long TmpLong = 0;
-    OPENFLUID_GetFunctionParameter(Params,"usedefaultdeltat",TmpLong);
+    OPENFLUID_GetSimulatorParameter(Params,"usedefaultdeltat",TmpLong);
 
     m_DefaultDT = TmpLong > 0;
 
@@ -236,5 +236,5 @@ class VariableTimeProdFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(VariableTimeProdFunction)
+DEFINE_SIMULATOR_CLASS(VariableTimeProdFunction)
 

@@ -61,13 +61,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.globalparams")
+BEGIN_SIMULATOR_SIGNATURE("tests.globalparams")
 
   DECLARE_SIGNATURE_NAME("test function for global parameters of models");
   DECLARE_SIGNATURE_DESCRIPTION("tttt");
@@ -82,7 +82,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.globalparams")
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -127,28 +127,28 @@ class GlobalParamsFunction : public openfluid::ware::PluggableSimulator
     for (itParams=Params.begin();itParams!=Params.end();++itParams)
       std::cout << (*itParams).first << " -> " << (*itParams).second << std::endl;
 
-    if (!OPENFLUID_GetFunctionParameter(Params,"gparam1",LongParam))
+    if (!OPENFLUID_GetSimulatorParameter(Params,"gparam1",LongParam))
       OPENFLUID_RaiseError("tests.globalparams","gparam1 not found");
 
     if (LongParam != 1)
       OPENFLUID_RaiseError("tests.globalparams","wrong value for gparam1");
 
 
-    if (!OPENFLUID_GetFunctionParameter(Params,"lparam1",LongParam))
+    if (!OPENFLUID_GetSimulatorParameter(Params,"lparam1",LongParam))
       OPENFLUID_RaiseError("tests.globalparams","lparam1 not found");
 
     if (LongParam != 100)
       OPENFLUID_RaiseError("tests.globalparams","wrong value for lparam1");
 
 
-    if (!OPENFLUID_GetFunctionParameter(Params,"gparam2",StrParam))
+    if (!OPENFLUID_GetSimulatorParameter(Params,"gparam2",StrParam))
       OPENFLUID_RaiseError("tests.globalparams","gparam2 not found");
 
     if (StrParam != "nineteen")
       OPENFLUID_RaiseError("tests.globalparams","wrong value for gparam2");
 
 
-    if (!OPENFLUID_GetFunctionParameter(Params,"gparam3",DoubleParam))
+    if (!OPENFLUID_GetSimulatorParameter(Params,"gparam3",DoubleParam))
       OPENFLUID_RaiseError("tests.globalparams","gparam3 not found");
 
     if (!openfluid::tools::IsCloseEnough(DoubleParam,0.1,0.00001))
@@ -201,5 +201,5 @@ class GlobalParamsFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(GlobalParamsFunction)
+DEFINE_SIMULATOR_CLASS(GlobalParamsFunction)
 

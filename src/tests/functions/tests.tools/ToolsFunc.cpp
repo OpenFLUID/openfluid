@@ -60,7 +60,7 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 
 // =====================================================================
@@ -106,14 +106,14 @@ class ToolsFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(ToolsFunction)
+DEFINE_SIMULATOR_CLASS(ToolsFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.tools")
+BEGIN_SIMULATOR_SIGNATURE("tests.tools")
 
   DECLARE_SIGNATURE_NAME("test function for openfluid::tools");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -128,7 +128,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.tools")
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================

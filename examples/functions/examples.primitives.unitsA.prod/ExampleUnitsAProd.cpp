@@ -10,14 +10,14 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN;
+DECLARE_SIMULATOR_PLUGIN;
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("examples.primitives.unitsA.prod")
+BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.prod")
 
   DECLARE_SIGNATURE_NAME("Example of data production on units of class A");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -39,7 +39,7 @@ BEGIN_FUNCTION_SIGNATURE("examples.primitives.unitsA.prod")
   
   DECLARE_REQUIRED_INPUTDATA("inivar1","unitsA","the input data inivar1","");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -165,5 +165,5 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(ExampleUnitsAProduction);
+DEFINE_SIMULATOR_CLASS(ExampleUnitsAProduction);
 

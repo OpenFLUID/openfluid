@@ -62,13 +62,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.coupling.B")
+BEGIN_SIMULATOR_SIGNATURE("tests.coupling.B")
 
   DECLARE_SIGNATURE_NAME("test function for coupling");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -85,7 +85,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.coupling.B")
 
   DECLARE_PRODUCED_VAR("varB","TestUnits","","");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -207,5 +207,5 @@ class CouplingBFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(CouplingBFunction)
+DEFINE_SIMULATOR_CLASS(CouplingBFunction)
 

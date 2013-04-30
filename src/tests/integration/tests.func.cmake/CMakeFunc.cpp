@@ -61,13 +61,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.func.cmake")
+BEGIN_SIMULATOR_SIGNATURE("tests.func.cmake")
 
   DECLARE_SIGNATURE_NAME("test function built using the OpenFLUID cmake module");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -81,7 +81,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.func.cmake")
   DECLARE_SIGNATURE_METHOD("");
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -168,5 +168,5 @@ class CMakeFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(CMakeFunction)
+DEFINE_SIMULATOR_CLASS(CMakeFunction)
 

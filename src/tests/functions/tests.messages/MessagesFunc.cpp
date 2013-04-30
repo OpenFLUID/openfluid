@@ -59,14 +59,14 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(MessagesFunction)
+DEFINE_SIMULATOR_CLASS(MessagesFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.messages")
+BEGIN_SIMULATOR_SIGNATURE("tests.messages")
 
   DECLARE_SIGNATURE_NAME("test function for messages");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -81,7 +81,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.messages")
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -116,7 +116,7 @@ void MessagesFunction::initParams(const openfluid::ware::WareParams_t& Params)
 
   m_RepeatMessages = 1;
 
-  OPENFLUID_GetFunctionParameter(Params,"rptmsgs",m_RepeatMessages);
+  OPENFLUID_GetSimulatorParameter(Params,"rptmsgs",m_RepeatMessages);
 }
 
 // =====================================================================

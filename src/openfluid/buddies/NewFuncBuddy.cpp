@@ -127,10 +127,10 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "DECLARE_FUNCTION_PLUGIN" << std::endl;
+  CPPContent << "DECLARE_SIMULATOR_PLUGIN" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "BEGIN_FUNCTION_SIGNATURE(\"" << m_Options["funcid"] << "\")" << std::endl;
+  CPPContent << "BEGIN_SIMULATOR_SIGNATURE(\"" << m_Options["funcid"] << "\")" << std::endl;
   CPPContent << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_NAME(\"\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_DESCRIPTION(\"\");" << std::endl;
@@ -145,7 +145,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "  DECLARE_SIGNATURE_AUTHORNAME(\"" << m_Options["authorname"] << "\");" << std::endl;
   CPPContent << "  DECLARE_SIGNATURE_AUTHOREMAIL(\"" << m_Options["authoremail"] << "\");" << std::endl;
   CPPContent << "" << std::endl;
-  CPPContent << "END_FUNCTION_SIGNATURE" << std::endl;
+  CPPContent << "END_SIMULATOR_SIGNATURE" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
@@ -240,7 +240,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << std::endl;
-  CPPContent << "DEFINE_FUNCTION_CLASS(" << m_Options["cppclass"] << ")" << std::endl;
+  CPPContent << "DEFINE_SIMULATOR_CLASS(" << m_Options["cppclass"] << ")" << std::endl;
   CPPContent << std::endl;
 
   std::ofstream OutFile;

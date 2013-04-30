@@ -61,13 +61,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.market.srconly.dummy")
+BEGIN_SIMULATOR_SIGNATURE("tests.market.srconly.dummy")
 
   DECLARE_SIGNATURE_NAME("test function built using the OpenFLUID cmake module");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -81,7 +81,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.market.srconly.dummy")
   DECLARE_SIGNATURE_METHOD((""));
   DECLARE_SIGNATURE_AUTHORNAME((""));
   DECLARE_SIGNATURE_AUTHOREMAIL((""));
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -167,7 +167,7 @@ class MarketSrcOnlyFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(MarketSrcOnlyFunction)
+DEFINE_SIMULATOR_CLASS(MarketSrcOnlyFunction)
 
 
 

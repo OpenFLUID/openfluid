@@ -62,13 +62,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.deltaTtime.prod")
+BEGIN_SIMULATOR_SIGNATURE("tests.deltaTtime.prod")
 
   DECLARE_SIGNATURE_NAME("test function for deltaT time production");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -91,7 +91,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.deltaTtime.prod")
 
   DECLARE_SCHEDULING_DEFAULT();
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -217,5 +217,5 @@ class DeltaTTimeProdFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(DeltaTTimeProdFunction)
+DEFINE_SIMULATOR_CLASS(DeltaTTimeProdFunction)
 

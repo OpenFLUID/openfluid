@@ -10,14 +10,14 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN;
+DECLARE_SIMULATOR_PLUGIN;
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("examples.road.traffic")
+BEGIN_SIMULATOR_SIGNATURE("examples.road.traffic")
 
 DECLARE_SIGNATURE_NAME("Road Unit (RU) function transfert and stockage for cars");
 DECLARE_SIGNATURE_DESCRIPTION("");
@@ -36,7 +36,7 @@ DECLARE_USED_VAR("examples.TLU.S.state","TLU","traffic light unit state","");
 DECLARE_PRODUCED_VAR("examples.RU.S.stock","RU","number of cars stocked on RU","");
 DECLARE_USED_INPUTDATA("stockini","RU","","-");
 DECLARE_USED_INPUTDATA("capacity","RU","","-");
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -218,7 +218,7 @@ class RUFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(RUFunction);
+DEFINE_SIMULATOR_CLASS(RUFunction);
 
 
 

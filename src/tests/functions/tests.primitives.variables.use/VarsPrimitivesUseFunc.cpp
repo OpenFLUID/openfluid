@@ -57,7 +57,7 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 
 // =====================================================================
@@ -66,7 +66,7 @@ DECLARE_FUNCTION_PLUGIN
 
 #define THIS_SIM_ID "tests.primitives.variables.use"
 
-BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
+BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
 
   DECLARE_SIGNATURE_NAME("test function for variables primitives");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -81,9 +81,9 @@ BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
-  DECLARE_FUNCTION_PARAM("strparam","=strvalue","-");
-  DECLARE_FUNCTION_PARAM("doubleparam","=0.1","-");
-  DECLARE_FUNCTION_PARAM("longparam","=10","-");
+  DECLARE_SIMULATOR_PARAM("strparam","=strvalue","-");
+  DECLARE_SIMULATOR_PARAM("doubleparam","=0.1","-");
+  DECLARE_SIMULATOR_PARAM("longparam","=10","-");
 
   DECLARE_REQUIRED_VAR("tests.double","TestUnits","double for tests","");
   DECLARE_REQUIRED_VAR("tests.integer","TestUnits","integer for tests","");
@@ -108,7 +108,7 @@ BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
   DECLARE_REQUIRED_VAR("tests.typed.matrix[matrix]","TestUnits","matrix for tests","");
   DECLARE_REQUIRED_VAR("tests.typed.map[map]","TestUnits","map for tests","");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -155,9 +155,9 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableSimulator
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      OPENFLUID_GetFunctionParameter(Params,"strparam",m_ParamString);
-      OPENFLUID_GetFunctionParameter(Params,"doubleparam",m_ParamDouble);
-      OPENFLUID_GetFunctionParameter(Params,"longparam",m_ParamLong);
+      OPENFLUID_GetSimulatorParameter(Params,"strparam",m_ParamString);
+      OPENFLUID_GetSimulatorParameter(Params,"doubleparam",m_ParamDouble);
+      OPENFLUID_GetSimulatorParameter(Params,"longparam",m_ParamLong);
 
     }
 
@@ -980,5 +980,5 @@ class VarsPrimitivesUseFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(VarsPrimitivesUseFunction)
+DEFINE_SIMULATOR_CLASS(VarsPrimitivesUseFunction)
 

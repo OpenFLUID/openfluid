@@ -63,14 +63,14 @@
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(FortranFunction)
+DEFINE_SIMULATOR_CLASS(FortranFunction)
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.fortran")
+BEGIN_SIMULATOR_SIGNATURE("tests.fortran")
 
   DECLARE_SIGNATURE_NAME("test function for fortran code wrapping");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -86,7 +86,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.fortran")
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
   DECLARE_SCHEDULING_DEFAULT();
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 // =====================================================================
 // =====================================================================

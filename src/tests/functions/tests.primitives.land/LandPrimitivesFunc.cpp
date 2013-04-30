@@ -13,10 +13,10 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.primitives.land")
+BEGIN_SIMULATOR_SIGNATURE("tests.primitives.land")
 
   DECLARE_SIGNATURE_NAME("");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -36,7 +36,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.primitives.land")
   DECLARE_UPDATED_UNITSCLASS("TU","Test Units class");
   DECLARE_UPDATED_UNITSCLASS("OU","Other Units class");
   DECLARE_UPDATED_UNITSCLASS("MU","Matrix Units class");
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -331,5 +331,5 @@ class LandPrimitivesFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(LandPrimitivesFunction)
+DEFINE_SIMULATOR_CLASS(LandPrimitivesFunction)
 

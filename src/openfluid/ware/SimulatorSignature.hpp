@@ -71,7 +71,7 @@
 /**
   Macro for the beginning of definition of signature hook
 */
-#define BEGIN_FUNCTION_SIGNATURE(id) \
+#define BEGIN_SIMULATOR_SIGNATURE(id) \
   openfluid::ware::SimulatorSignature* GetWareSignature() \
   { \
     openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
@@ -82,7 +82,7 @@
 /**
   Macro for the end of definition of signature hook
 */
-#define END_FUNCTION_SIGNATURE \
+#define END_SIMULATOR_SIGNATURE \
     return Signature; \
   }
 
@@ -117,7 +117,7 @@
   @param[in] description description of the parameter
   @param[in] unit unit of the parameter. Could be an empty string if there is no unit
 */
-#define DECLARE_FUNCTION_PARAM(name,description,unit) \
+#define DECLARE_SIMULATOR_PARAM(name,description,unit) \
   Signature->HandledData.FunctionParams.push_back(openfluid::ware::SignatureHandledDataItem((name),(""),description,unit));
 
 

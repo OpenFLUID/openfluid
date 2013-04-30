@@ -61,13 +61,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.wrongprod")
+BEGIN_SIMULATOR_SIGNATURE("tests.wrongprod")
 
   DECLARE_SIGNATURE_NAME("test function for wrong production");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -88,7 +88,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.wrongprod")
 
   DECLARE_SCHEDULING_DEFAULT();
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -180,5 +180,5 @@ class WrongProductionFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(WrongProductionFunction)
+DEFINE_SIMULATOR_CLASS(WrongProductionFunction)
 

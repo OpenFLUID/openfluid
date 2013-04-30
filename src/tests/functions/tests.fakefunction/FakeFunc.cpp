@@ -59,10 +59,10 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.fakefunction")
+BEGIN_SIMULATOR_SIGNATURE("tests.fakefunction")
 
   DECLARE_SIGNATURE_NAME("");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -79,7 +79,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.fakefunction")
 
   DECLARE_SCHEDULING_DEFAULT();
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -166,5 +166,5 @@ class FakeFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(FakeFunction)
+DEFINE_SIMULATOR_CLASS(FakeFunction)
 

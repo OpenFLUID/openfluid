@@ -56,7 +56,7 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 
 // =====================================================================
@@ -65,7 +65,7 @@ DECLARE_FUNCTION_PLUGIN
 
 #define THIS_SIM_ID "tests.primitives.inputdata.use"
 
-BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
+BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
 
   DECLARE_SIGNATURE_NAME("test function for inputdata primitives");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -111,7 +111,7 @@ BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
   DECLARE_REQUIRED_INPUTDATA("indataNull2","TestUnits","","")
   DECLARE_REQUIRED_INPUTDATA("indataNull3","TestUnits","","")
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -711,5 +711,5 @@ class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableSimulato
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(InputdataPrimitivesUseFunction)
+DEFINE_SIMULATOR_CLASS(InputdataPrimitivesUseFunction)
 

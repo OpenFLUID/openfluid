@@ -62,13 +62,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.debug")
+BEGIN_SIMULATOR_SIGNATURE("tests.debug")
 
   DECLARE_SIGNATURE_NAME("test function for debugging macros");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -85,7 +85,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.debug")
 
   DECLARE_SCHEDULING_DEFAULT();
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -197,5 +197,5 @@ class DebugFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(DebugFunction)
+DEFINE_SIMULATOR_CLASS(DebugFunction)
 

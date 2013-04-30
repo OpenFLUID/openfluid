@@ -10,14 +10,14 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN;
+DECLARE_SIMULATOR_PLUGIN;
 
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("examples.trafficlight.state")
+BEGIN_SIMULATOR_SIGNATURE("examples.trafficlight.state")
 
 DECLARE_SIGNATURE_NAME("Traffic Light Unit (TLU) function state");
 DECLARE_SIGNATURE_DESCRIPTION("");
@@ -39,7 +39,7 @@ DECLARE_PRODUCED_VAR("examples.TLU.T.changeTime","TLU","traffic light unit state
 DECLARE_REQUIRED_INPUTDATA("state","TLU","","-");
 DECLARE_REQUIRED_INPUTDATA("duration","TLU","","-");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -189,7 +189,7 @@ class TLUFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 
 
-DEFINE_FUNCTION_CLASS(TLUFunction);
+DEFINE_SIMULATOR_CLASS(TLUFunction);
 
 
 

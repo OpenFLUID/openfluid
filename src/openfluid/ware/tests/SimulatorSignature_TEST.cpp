@@ -96,8 +96,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   DECLARE_SIGNATURE_VERSION("4.7");
   DECLARE_SIGNATURE_STATUS(openfluid::ware::BETA);
 
-  DECLARE_FUNCTION_PARAM("param1","this is param1","m/s");
-  DECLARE_FUNCTION_PARAM("param2","this is param2","m3");
+  DECLARE_SIMULATOR_PARAM("param1","this is param1","m/s");
+  DECLARE_SIMULATOR_PARAM("param2","this is param2","m3");
 
   DECLARE_REQUIRED_INPUTDATA("idata1","UnitClassA","this is idata1","goals/period");
   DECLARE_REQUIRED_INPUTDATA("idata2","UnitClassB","this is idata2","");

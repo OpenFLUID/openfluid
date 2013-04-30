@@ -54,7 +54,7 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 
 // =====================================================================
@@ -63,7 +63,7 @@ DECLARE_FUNCTION_PLUGIN
 
 #define THIS_SIM_ID "tests.primitives.runenv"
 
-BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
+BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
 
   DECLARE_SIGNATURE_NAME("test function for run env primitives");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -78,7 +78,7 @@ BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================
@@ -198,5 +198,5 @@ class RunEnvPrimitivesFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(RunEnvPrimitivesFunction)
+DEFINE_SIMULATOR_CLASS(RunEnvPrimitivesFunction)
 

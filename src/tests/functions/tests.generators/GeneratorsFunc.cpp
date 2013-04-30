@@ -61,13 +61,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.generators")
+BEGIN_SIMULATOR_SIGNATURE("tests.generators")
 
   DECLARE_SIGNATURE_NAME("test function for generators");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -88,7 +88,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.generators")
 
   DECLARE_REQUIRED_VAR("tests.fixedprev[vector]","TestUnits","fixed value from generators at a previous time step for tests","");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -248,5 +248,5 @@ class GeneratorsFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(GeneratorsFunction)
+DEFINE_SIMULATOR_CLASS(GeneratorsFunction)
 

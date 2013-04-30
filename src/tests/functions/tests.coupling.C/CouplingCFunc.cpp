@@ -62,13 +62,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.coupling.C")
+BEGIN_SIMULATOR_SIGNATURE("tests.coupling.C")
 
   DECLARE_SIGNATURE_NAME("test function for coupling");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -87,7 +87,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.coupling.C")
 
   DECLARE_SCHEDULING_RANGE(34,60);
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -209,5 +209,5 @@ class CouplingCFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(CouplingCFunction)
+DEFINE_SIMULATOR_CLASS(CouplingCFunction)
 

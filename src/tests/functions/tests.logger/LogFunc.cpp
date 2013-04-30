@@ -61,13 +61,13 @@
 // =====================================================================
 
 
-DECLARE_FUNCTION_PLUGIN
+DECLARE_SIMULATOR_PLUGIN
 
 // =====================================================================
 // =====================================================================
 
 
-BEGIN_FUNCTION_SIGNATURE("tests.logger")
+BEGIN_SIMULATOR_SIGNATURE("tests.logger")
 
   DECLARE_SIGNATURE_NAME("test function for logger");
   DECLARE_SIGNATURE_DESCRIPTION("");
@@ -82,7 +82,7 @@ BEGIN_FUNCTION_SIGNATURE("tests.logger")
   DECLARE_SIGNATURE_AUTHORNAME("");
   DECLARE_SIGNATURE_AUTHOREMAIL("");
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 /**
 
@@ -182,5 +182,5 @@ class LoggerFunction : public openfluid::ware::PluggableSimulator
 // =====================================================================
 // =====================================================================
 
-DEFINE_FUNCTION_CLASS(LoggerFunction)
+DEFINE_SIMULATOR_CLASS(LoggerFunction)
 
