@@ -45,86 +45,39 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-/**
-  \file FunctionPluginsManager.hpp
-  \brief Header of ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+/**
+  @file
+
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __FUNCTIONPLUGINSMANAGER_HPP__
-#define __FUNCTIONPLUGINSMANAGER_HPP__
+#ifndef __SIMULATORDESCRIPTOR_HPP__
+#define __SIMULATORDESCRIPTOR_HPP__
 
-#include <openfluid/ware/PluggableFunction.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/machine/WarePluginsManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/dllexport.hpp>
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
 
-
-namespace openfluid { namespace machine {
-
-class ModelItemSignatureInstance;
-class ModelItemInstance;
+namespace openfluid { namespace fluidx {
 
 
-// =====================================================================
-// =====================================================================
-
-class DLLEXPORT FunctionPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
-                                                         openfluid::ware::GetPluggableFunctionSignatureProc,
-                                                         openfluid::ware::GetPluggableFunctionBodyProc>
+class DLLEXPORT SimulatorDescriptor : public ModelItemDescriptor
 {
 
   private:
 
-    static FunctionPluginsManager* mp_Singleton;
-
-    FunctionPluginsManager() : WarePluginsManager()
-    { };
-
+    std::string m_FileID;  // (filename without ext)
 
   public:
 
-    static FunctionPluginsManager* getInstance()
-    {
-      if (mp_Singleton == NULL) mp_Singleton = new FunctionPluginsManager();
-       return mp_Singleton;
-    }
+    SimulatorDescriptor(std::string FileID);
 
-
-    // =====================================================================
-    // =====================================================================
-
-
-    std::string getPluginFullPath(const std::string& Filename)
-    {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getFunctionPluginFullPath(Filename);
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    std::vector<std::string> getPluginsSearchPaths()
-    {
-      return openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsPluginsPaths();
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    std::string getPluginFilenameSuffix()
-    {
-      return openfluid::config::SIMULATORS_PLUGINS_SUFFIX;
-    }
+    std::string getFileID() const;
 
 };
 
 
-} }  // namespaces
+} } // namespaces
 
-#endif /* __FUNCTIONPLUGINSMANAGER_HPP__ */
+#endif /* __SIMULATORDESCRIPTOR_HPP__ */

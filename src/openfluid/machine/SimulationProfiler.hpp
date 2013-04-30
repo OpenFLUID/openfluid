@@ -57,7 +57,7 @@
 #ifndef __SIMULATIONPROFILER_HPP___
 #define __SIMULATIONPROFILER_HPP___
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/dllexport.hpp>
 

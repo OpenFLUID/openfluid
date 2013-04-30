@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -88,7 +88,7 @@ END_FUNCTION_SIGNATURE
 // =====================================================================
 
 
-class TimePrimitivesFunction : public openfluid::ware::PluggableFunction
+class TimePrimitivesFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -97,7 +97,7 @@ class TimePrimitivesFunction : public openfluid::ware::PluggableFunction
   public:
 
 
-    TimePrimitivesFunction() : PluggableFunction(), m_IsFirstRunStep(true)
+    TimePrimitivesFunction() : PluggableSimulator(), m_IsFirstRunStep(true)
     {
 
 

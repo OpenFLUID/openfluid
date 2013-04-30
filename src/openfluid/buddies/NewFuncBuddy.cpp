@@ -120,7 +120,7 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "</func2doc>" << std::endl;
   CPPContent << "*/" << std::endl;
   CPPContent << std::endl;
-  CPPContent << "#include <openfluid/ware/PluggableFunction.hpp>" << std::endl;
+  CPPContent << "#include <openfluid/ware/PluggableSimulator.hpp>" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
   CPPContent << "// =====================================================================" << std::endl;
@@ -152,14 +152,14 @@ void NewFunctionBuddy::writeFunctionCPP()
   CPPContent << "// =====================================================================" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "class " << m_Options["cppclass"] << " : public openfluid::ware::PluggableFunction" << std::endl;
+  CPPContent << "class " << m_Options["cppclass"] << " : public openfluid::ware::PluggableSimulator" << std::endl;
   CPPContent << "{" << std::endl;
   CPPContent << "  private:" << std::endl;
   CPPContent << std::endl;
   CPPContent << "  public:" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "    " << m_Options["cppclass"] << "() : PluggableFunction()" << std::endl;
+  CPPContent << "    " << m_Options["cppclass"] << "() : PluggableSimulator()" << std::endl;
   CPPContent << "    {" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;

@@ -54,7 +54,7 @@
 #ifndef __MESSAGESFUNC_H__
 #define __MESSAGESFUNC_H__
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -71,7 +71,7 @@ DECLARE_FUNCTION_PLUGIN
 /**
 
 */
-class MessagesFunction : public openfluid::ware::PluggableFunction
+class MessagesFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 

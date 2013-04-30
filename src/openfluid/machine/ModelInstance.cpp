@@ -59,7 +59,7 @@
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
@@ -305,7 +305,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 
   openfluid::machine::SimulationProfiler::WareIDSequence_t FuncSequence;
 
-  openfluid::machine::FunctionPluginsManager* FPlugsMgr = openfluid::machine::FunctionPluginsManager::getInstance();
+  openfluid::machine::SimulatorPluginsManager* FPlugsMgr = openfluid::machine::SimulatorPluginsManager::getInstance();
 
   std::list<ModelItemInstance*>::const_iterator FuncIter;
   ModelItemInstance* CurrentFunction;

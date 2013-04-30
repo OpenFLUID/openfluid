@@ -55,7 +55,7 @@
 
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -94,7 +94,7 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class VariableTimeProdFunction : public openfluid::ware::PluggableFunction
+class VariableTimeProdFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -103,7 +103,7 @@ class VariableTimeProdFunction : public openfluid::ware::PluggableFunction
   public:
 
 
-  VariableTimeProdFunction() : PluggableFunction(), m_DefaultDT(false)
+  VariableTimeProdFunction() : PluggableSimulator(), m_DefaultDT(false)
   {
 
 

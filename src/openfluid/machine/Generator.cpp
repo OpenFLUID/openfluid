@@ -59,7 +59,7 @@
 namespace openfluid { namespace machine {
 
 
-Generator::Generator() : PluggableFunction()
+Generator::Generator() : PluggableSimulator()
 {
 
 }

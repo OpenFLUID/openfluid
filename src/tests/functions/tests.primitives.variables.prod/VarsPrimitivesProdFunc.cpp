@@ -46,7 +46,7 @@
 */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
 
 #include <glibmm/ustring.h>
@@ -111,7 +111,7 @@ END_FUNCTION_SIGNATURE
 // =====================================================================
 
 
-class VarsPrimitivesProdFunction : public openfluid::ware::PluggableFunction
+class VarsPrimitivesProdFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -120,7 +120,7 @@ class VarsPrimitivesProdFunction : public openfluid::ware::PluggableFunction
   public:
 
 
-    VarsPrimitivesProdFunction() : PluggableFunction(), m_ProductionCounter(0)
+    VarsPrimitivesProdFunction() : PluggableSimulator(), m_ProductionCounter(0)
     {
 
 

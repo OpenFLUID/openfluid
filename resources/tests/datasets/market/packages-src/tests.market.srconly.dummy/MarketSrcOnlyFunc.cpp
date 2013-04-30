@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -86,14 +86,14 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class MarketSrcOnlyFunction : public openfluid::ware::PluggableFunction
+class MarketSrcOnlyFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  MarketSrcOnlyFunction() : PluggableFunction()
+  MarketSrcOnlyFunction() : PluggableSimulator()
   {
 
 

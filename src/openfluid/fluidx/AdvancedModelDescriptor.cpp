@@ -56,7 +56,7 @@
 
 #include <set>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
 namespace openfluid {
@@ -191,7 +191,7 @@ std::string AdvancedModelDescriptor::getID(
     openfluid::fluidx::ModelItemDescriptor* Item) const
 {
   if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedFunction))
-    return (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(Item))->getFileID();
+    return (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getFileID();
 
   if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
     return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();

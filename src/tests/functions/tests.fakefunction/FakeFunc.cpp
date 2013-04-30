@@ -52,7 +52,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -86,14 +86,14 @@ END_FUNCTION_SIGNATURE
 // =====================================================================
 
 
-class FakeFunction : public openfluid::ware::PluggableFunction
+class FakeFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-    FakeFunction() : PluggableFunction()
+    FakeFunction() : PluggableSimulator()
     {
 
 

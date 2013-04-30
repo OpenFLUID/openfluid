@@ -60,7 +60,7 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
@@ -79,7 +79,7 @@
 
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include "EngineHelper.hpp"
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include "WaresHelper.hpp"
 

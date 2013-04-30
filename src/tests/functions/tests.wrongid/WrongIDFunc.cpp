@@ -51,7 +51,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -85,14 +85,14 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class WrongIDFunction : public openfluid::ware::PluggableFunction
+class WrongIDFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  WrongIDFunction() : PluggableFunction()
+  WrongIDFunction() : PluggableSimulator()
   {
 
 

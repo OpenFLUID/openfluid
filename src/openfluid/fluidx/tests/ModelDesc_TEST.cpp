@@ -60,7 +60,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 
@@ -70,7 +70,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::fluidx::FunctionDescriptor FuncDesc("test.id");
+  openfluid::fluidx::SimulatorDescriptor FuncDesc("test.id");
 
   BOOST_REQUIRE_EQUAL(FuncDesc.getFileID(),"test.id");
   BOOST_REQUIRE_EQUAL(FuncDesc.isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction),true);
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::fluidx::FunctionDescriptor FuncDesc("test.id");
+  openfluid::fluidx::SimulatorDescriptor FuncDesc("test.id");
   FuncDesc.setParameter("param1","var1");
   FuncDesc.setParameter("param2","var2");
   FuncDesc.setParameter("param3","var3");
@@ -146,8 +146,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction),true);
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::FunctionDescriptor*)(*it))->getFileID(),"test.id");
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::FunctionDescriptor*)(*it))->getParameters().size(),3);
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID(),"test.id");
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),3);
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator),true);

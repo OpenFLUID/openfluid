@@ -89,7 +89,7 @@ END_FUNCTION_SIGNATURE
 
 
 MessagesFunction::MessagesFunction()
-                : PluggableFunction()
+                : PluggableSimulator()
 {
 
 

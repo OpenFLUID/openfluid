@@ -66,10 +66,10 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/base/OFException.hpp>
-#include <openfluid/machine/FunctionPluginsManager.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 
 // =====================================================================
@@ -143,7 +143,7 @@ BOOST_AUTO_TEST_CASE(check_isParamSet)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
-  openfluid::machine::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
@@ -184,7 +184,7 @@ BOOST_AUTO_TEST_CASE(check_check)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
-  openfluid::machine::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");
@@ -269,7 +269,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK_EQUAL(PC.MonitoringMsg, _("No observer defined"));
 
   Desc.getModel().appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "tests.primitives.inputdata.use"));
   PC.check();
   BOOST_CHECK(!PC.IsInputdataOk);
@@ -287,7 +287,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(!PC.InputdataMsg.empty());
 
   Desc.getModel().appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "tests.primitives.inputdata.prod"));
   Desc.getModel().moveItem(8, 7);
   PC.check();
@@ -323,7 +323,7 @@ BOOST_AUTO_TEST_CASE(check_generators_with_files)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
-  openfluid::machine::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
   openfluid::fluidx::FluidXDescriptor FXDesc(0);
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.ProjectChecker");

@@ -48,36 +48,37 @@
 
 /**
   @file
+  @brief Implements ...
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 
-#ifndef __FUNCTIONDESCRIPTOR_HPP__
-#define __FUNCTIONDESCRIPTOR_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/fluidx/ModelItemDescriptor.hpp>
 
 namespace openfluid { namespace fluidx {
 
 
-class DLLEXPORT FunctionDescriptor : public ModelItemDescriptor
+// =====================================================================
+// =====================================================================
+
+
+SimulatorDescriptor::SimulatorDescriptor(std::string FileID) : ModelItemDescriptor(),
+  m_FileID(FileID)
 {
+  m_WareType = PluggedFunction;
+}
 
-  private:
 
-    std::string m_FileID;  // (filename without ext)
+// =====================================================================
+// =====================================================================
 
-  public:
 
-    FunctionDescriptor(std::string FileID);
-
-    std::string getFileID() const;
-
-};
+std::string SimulatorDescriptor::getFileID() const
+{
+  return m_FileID;
+}
 
 
 } } // namespaces
 
-#endif /* __FUNCTIONDESCRIPTOR_HPP__ */

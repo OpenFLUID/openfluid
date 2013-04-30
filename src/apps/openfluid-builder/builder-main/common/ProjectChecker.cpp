@@ -60,7 +60,7 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
@@ -157,11 +157,11 @@ void ProjectChecker::checkModelRequirements()
   openfluid::fluidx::AdvancedModelDescriptor& Model = mp_Desc->getModel();
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       Model.getItems();
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
   openfluid::base::RuntimeEnvironment* RunEnv =
       openfluid::base::RuntimeEnvironment::getInstance();
-  openfluid::ware::FunctionSignature* Sign;
+  openfluid::ware::SimulatorSignature* Sign;
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -348,9 +348,9 @@ void ProjectChecker::checkModelInputdata()
   openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_Desc->getModel().getItems();
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
-  openfluid::ware::FunctionSignature* Sign;
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
+  openfluid::ware::SimulatorSignature* Sign;
   std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt;
 
   std::set<std::pair<std::string, std::string> > IDataUnits;
@@ -415,10 +415,10 @@ void ProjectChecker::checkModelVars()
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       mp_Desc->getModel().getItems();
 
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
-  openfluid::ware::FunctionSignature* Sign;
+  openfluid::ware::SimulatorSignature* Sign;
 
   std::vector<openfluid::ware::SignatureHandledTypedDataItem>::iterator itt;
 

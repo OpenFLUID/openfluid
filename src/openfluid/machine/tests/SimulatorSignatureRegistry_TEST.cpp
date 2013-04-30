@@ -46,7 +46,7 @@
  */
 
 /**
- \file FunctionSignatureRegistry_TEST.cpp
+ \file SimulatorSignatureRegistry_TEST.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
@@ -55,22 +55,22 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_FunctionSignatureRegistry
+#define BOOST_TEST_MODULE unittest_SimulatorSignatureRegistry
 #include <boost/test/unit_test.hpp>
 
 #include "tests-config.hpp"
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/FunctionPluginsManager.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 
 // =====================================================================
 // =====================================================================
 
 BOOST_AUTO_TEST_CASE(test_constructor)
 {
-  openfluid::machine::FunctionSignatureRegistry* Signatures =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Signatures =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
   BOOST_CHECK_EQUAL(
       Signatures->getFctSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedFunction].size(),
@@ -85,15 +85,15 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
 BOOST_AUTO_TEST_CASE(test_getSignatureItemInstance)
 {
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
   openfluid::machine::ModelItemSignatureInstance* Sign =
       Reg->getSignatureItemInstance("examples.primitives.unitsA.prod");
 
   BOOST_CHECK_EQUAL(Sign->Signature->ID, "examples.primitives.unitsA.prod");
 
-  openfluid::fluidx::FunctionDescriptor ItemDesc(
+  openfluid::fluidx::SimulatorDescriptor ItemDesc(
       "examples.primitives.unitsB.prod");
 
   openfluid::machine::ModelItemSignatureInstance* Sign2 =

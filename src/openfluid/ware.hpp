@@ -57,9 +57,9 @@
 #define __WARE_HPP__
 
 
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
 
 

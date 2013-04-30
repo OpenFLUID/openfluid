@@ -46,14 +46,14 @@
  */
 
 /**
- \file FunctionSignatureRegistry.hpp
+ \file SimulatorSignatureRegistry.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __FUNCTIONSIGNATUREREGISTRY_HPP__
-#define __FUNCTIONSIGNATUREREGISTRY_HPP__
+#ifndef __SIMULATORSIGNATUREREGISTRY_HPP__
+#define __SIMULATORSIGNATUREREGISTRY_HPP__
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 
@@ -66,7 +66,7 @@ class GeneratorSignature;
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT FunctionSignatureRegistry
+class DLLEXPORT SimulatorSignatureRegistry
 {
   public:
 
@@ -77,13 +77,13 @@ class DLLEXPORT FunctionSignatureRegistry
 
   private:
 
-    static FunctionSignatureRegistry* mp_Instance;
+    static SimulatorSignatureRegistry* mp_Instance;
 
   protected:
 
     FctSignaturesByTypeByName_t m_Signatures;
 
-    FunctionSignatureRegistry();
+    SimulatorSignatureRegistry();
 
     void addAPluggableSignature(
         openfluid::machine::ModelItemSignatureInstance* Signature);
@@ -93,7 +93,7 @@ class DLLEXPORT FunctionSignatureRegistry
 
   public:
 
-    static FunctionSignatureRegistry* getInstance();
+    static SimulatorSignatureRegistry* getInstance();
 
     FctSignaturesByTypeByName_t getFctSignatures();
 
@@ -121,4 +121,4 @@ class DLLEXPORT FunctionSignatureRegistry
 }
 } //namespaces
 
-#endif /* __FUNCTIONSIGNATUREREGISTRY_HPP__ */
+#endif /* __SIMULATORSIGNATUREREGISTRY_HPP__ */

@@ -64,7 +64,7 @@
 
 #include "PreferencesPanelImpl.hpp"
 #include "BuilderExtensionsManager.hpp"
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include "EngineProject.hpp"
 #include "WaresHelper.hpp"
@@ -376,7 +376,7 @@ bool PreferencesDialog::checkFunctionsPaths()
     RunEnv->addExtraFunctionsPluginsPaths(ExistingFctPaths[i]);
 
   // reset Model
-  openfluid::machine::FunctionSignatureRegistry::getInstance()->updatePluggableSignatures();
+  openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
 
   return false;
 }

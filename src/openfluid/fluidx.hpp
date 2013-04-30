@@ -61,7 +61,7 @@
 #include <openfluid/fluidx/FluidXWriter.hpp>
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/EventDescriptor.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/IDataDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>

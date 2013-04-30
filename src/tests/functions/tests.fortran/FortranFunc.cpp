@@ -105,7 +105,7 @@ END_EXTERN_FORTRAN
 
 
 FortranFunction::FortranFunction()
-                : PluggableFunction()
+                : PluggableSimulator()
 {
 
 

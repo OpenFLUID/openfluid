@@ -53,7 +53,7 @@
 
 #include <boost/filesystem/operations.hpp>
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/tools/ColTextParser.hpp>
 
 // =====================================================================
@@ -70,7 +70,7 @@ DECLARE_FUNCTION_PLUGIN
 /**
 
 */
-class ToolsFunction : public openfluid::ware::PluggableFunction
+class ToolsFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -136,7 +136,7 @@ END_FUNCTION_SIGNATURE
 
 
 ToolsFunction::ToolsFunction()
-                : PluggableFunction()
+                : PluggableSimulator()
 {
 
 

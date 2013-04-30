@@ -56,8 +56,8 @@
 
 #include <gtkmm/separator.h>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include "ModelAddFunctionDialog.hpp"
@@ -152,7 +152,7 @@ void ModelModule::whenAddFunctionAsked()
   switch (Signature->ItemType)
   {
     case openfluid::fluidx::ModelItemDescriptor::PluggedFunction:
-      Item = new openfluid::fluidx::FunctionDescriptor(
+      Item = new openfluid::fluidx::SimulatorDescriptor(
           Signature->Signature->ID);
       break;
     case openfluid::fluidx::ModelItemDescriptor::Generator:
@@ -247,8 +247,8 @@ void ModelModule::update()
 
   m_ParamWidgets.clear();
 
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       m_Model.getItems();

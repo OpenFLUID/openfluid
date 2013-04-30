@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <glibmm/timer.h>
 
 
@@ -90,7 +90,7 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class CouplingBFunction : public openfluid::ware::PluggableFunction
+class CouplingBFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -99,7 +99,7 @@ class CouplingBFunction : public openfluid::ware::PluggableFunction
   public:
 
 
-  CouplingBFunction() : PluggableFunction()
+  CouplingBFunction() : PluggableSimulator()
   {
     m_DeltaTList.push_back(Duration(120));
     m_DeltaTList.push_back(Duration(40));

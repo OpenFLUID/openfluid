@@ -46,7 +46,7 @@
 */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
 
 #include <glibmm/ustring.h>
@@ -118,14 +118,14 @@ END_FUNCTION_SIGNATURE
 // =====================================================================
 
 
-class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableFunction
+class InputdataPrimitivesUseFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-    InputdataPrimitivesUseFunction() : PluggableFunction()
+    InputdataPrimitivesUseFunction() : PluggableSimulator()
     {
 
 

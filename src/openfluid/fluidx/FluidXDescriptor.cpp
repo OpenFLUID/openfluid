@@ -57,7 +57,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <openfluid/base/IOListener.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 
 namespace openfluid {
 namespace fluidx {
@@ -172,7 +172,7 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
         "OpenFLUID framework", "FluidXDescriptor::extractModelFromNode",
         "Duplicate model definition (" + m_CurrentFile + ")");
 
-  openfluid::fluidx::FunctionDescriptor* FD;
+  openfluid::fluidx::SimulatorDescriptor* FD;
   openfluid::fluidx::GeneratorDescriptor* GD;
   openfluid::ware::WareParams_t GParams;
 
@@ -191,7 +191,7 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
       if (xmlID != NULL)
       {
 
-        FD = new openfluid::fluidx::FunctionDescriptor((const char*) xmlID);
+        FD = new openfluid::fluidx::SimulatorDescriptor((const char*) xmlID);
         FD->setParameters(extractParamsFromNode(CurrNode));
         m_ModelDescriptor.appendItem(FD);
       }
@@ -985,8 +985,8 @@ std::string FluidXDescriptor::getModelToWrite()
   {
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
     {
-      openfluid::fluidx::FunctionDescriptor* FuncDesc =
-          dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it);
+      openfluid::fluidx::SimulatorDescriptor* FuncDesc =
+          dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it);
 
       Contents << m_IndentStr << m_IndentStr << "<function ID=\""
                << FuncDesc->getFileID() << "\">\n";

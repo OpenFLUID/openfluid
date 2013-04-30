@@ -71,11 +71,11 @@
 // =====================================================================
 
 
-class FuncA : openfluid::ware::PluggableFunction
+class FuncA : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncA() : openfluid::ware::PluggableFunction() {};
+    FuncA() : openfluid::ware::PluggableSimulator() {};
 
     ~FuncA() {};
 
@@ -94,11 +94,11 @@ class FuncA : openfluid::ware::PluggableFunction
 };
 
 
-class FuncB : openfluid::ware::PluggableFunction
+class FuncB : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncB() : openfluid::ware::PluggableFunction() {};
+    FuncB() : openfluid::ware::PluggableSimulator() {};
 
     ~FuncB() {};
 
@@ -117,11 +117,11 @@ class FuncB : openfluid::ware::PluggableFunction
 };
 
 
-class FuncC : openfluid::ware::PluggableFunction
+class FuncC : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncC() : openfluid::ware::PluggableFunction() {};
+    FuncC() : openfluid::ware::PluggableSimulator() {};
 
     ~FuncC() {};
 
@@ -171,22 +171,22 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::machine::ModelItemInstance* MII;
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncA());
-  MII->Signature = new openfluid::ware::FunctionSignature();
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new FuncA());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
   MII->Signature->ID = "func.a";
   MII->OriginalPosition = 1;
   MI.appendItem(MII);
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncB());
-  MII->Signature = new openfluid::ware::FunctionSignature();
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new FuncB());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
   MII->Signature->ID = "func.b";
   MII->OriginalPosition = 2;
   MI.appendItem(MII);
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncC());
-  MII->Signature = new openfluid::ware::FunctionSignature();
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new FuncC());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
   MII->Signature->ID = "func.c";
   MII->OriginalPosition = 3;
   MI.appendItem(MII);
@@ -260,8 +260,8 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
   ModelInstanceSub MI(SB, NULL);
 
   openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*) (new FuncA());
-  MII->Signature = new openfluid::ware::FunctionSignature();
+  MII->Body = (openfluid::ware::PluggableSimulator*) (new FuncA());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
   MII->Signature->HandledData.FunctionParams.push_back(
       *new openfluid::ware::SignatureHandledDataItem("A1", "unitsA", "", ""));
   MII->Signature->HandledData.FunctionParams.push_back(

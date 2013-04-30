@@ -55,7 +55,7 @@
 
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -96,14 +96,14 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class DeltaTTimeProdFunction : public openfluid::ware::PluggableFunction
+class DeltaTTimeProdFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  DeltaTTimeProdFunction() : PluggableFunction()
+  DeltaTTimeProdFunction() : PluggableSimulator()
   {
 
 

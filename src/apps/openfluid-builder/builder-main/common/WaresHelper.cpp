@@ -55,11 +55,11 @@
 #include "WaresHelper.hpp"
 
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -68,8 +68,8 @@ std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModif
     const openfluid::fluidx::AdvancedModelDescriptor& Desc,
     std::list<std::string>& MissingFunctions)
 {
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
   Reg->updatePluggableSignatures();
 
   std::list<openfluid::fluidx::ModelItemDescriptor*> Items = Desc.getItems();
@@ -82,7 +82,7 @@ std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModif
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
     {
       std::string ID =
-          (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID();
+          (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it))->getFileID();
 
       if (!Reg->isPluggableFunctionAvailable(ID))
       {

@@ -73,7 +73,7 @@ typedef boost::onullstream onullstream_type;
 #include <tests-config.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <boost/foreach.hpp>
@@ -143,10 +143,10 @@ void TestDataset(std::string DatasetPath)
       (*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction),
       true);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::FunctionDescriptor*)(*it))->getFileID(),
+      ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID(),
       "tests.functionA");
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::FunctionDescriptor*)(*it))->getParameters().size(),
+      ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),
       0);
 
   it++;
@@ -197,10 +197,10 @@ void TestDataset(std::string DatasetPath)
       (*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction),
       true);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::FunctionDescriptor*)(*it))->getFileID(),
+      ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID(),
       "tests.functionB");
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::FunctionDescriptor*)(*it))->getParameters().size(),
+      ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),
       4);
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::GeneratorDescriptor*)(*it))->getParameters()["gparam1"].get(),

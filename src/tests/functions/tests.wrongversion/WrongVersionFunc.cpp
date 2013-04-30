@@ -51,7 +51,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -86,14 +86,14 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class WrongVersionFunction : public openfluid::ware::PluggableFunction
+class WrongVersionFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  WrongVersionFunction() : PluggableFunction()
+  WrongVersionFunction() : PluggableSimulator()
   {
 
 
@@ -173,7 +173,7 @@ std::string GetWareABIVersion()
   return std::string("0.0.0");
 }
 
-openfluid::ware::PluggableFunction* GetWareBody()
+openfluid::ware::PluggableSimulator* GetWareBody()
 {
   return new WrongVersionFunction();
 }

@@ -51,7 +51,7 @@
   \brief Implements ...
 */
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 
@@ -158,7 +158,7 @@ DECLARE_FUNCTION_PLUGIN;
 /**
 
 */
-class LoopsFunction : public openfluid::ware::PluggableFunction
+class LoopsFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 

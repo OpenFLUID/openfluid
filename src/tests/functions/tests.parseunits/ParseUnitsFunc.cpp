@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -87,14 +87,14 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class ParseUnitsFunction : public openfluid::ware::PluggableFunction
+class ParseUnitsFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  ParseUnitsFunction() : PluggableFunction()
+  ParseUnitsFunction() : PluggableSimulator()
   {
 
 

@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <cmath>
 #include <boost/date_time.hpp>
 
@@ -96,7 +96,7 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
+class ThreadedLoopsFunction : public openfluid::ware::PluggableSimulator
 {
   private:
     Glib::RecMutex m_Mutex;
@@ -106,7 +106,7 @@ class ThreadedLoopsFunction : public openfluid::ware::PluggableFunction
   public:
 
 
-  ThreadedLoopsFunction() : PluggableFunction()
+  ThreadedLoopsFunction() : PluggableSimulator()
   {
 
 

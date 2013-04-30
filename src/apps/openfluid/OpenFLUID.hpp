@@ -57,7 +57,7 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 
 namespace openfluid {
 namespace base {

@@ -56,11 +56,11 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_funcsignature
+#define BOOST_TEST_MODULE unittest_simsignature
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 
 
 // =====================================================================
@@ -69,7 +69,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::ware::FunctionSignature Signature;
+  openfluid::ware::SimulatorSignature Signature;
   openfluid::ware::SignatureHandledData SignatureData;
   openfluid::ware::SignatureHandledDataItem SignatureDataItem;
 
@@ -83,9 +83,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::ware::FunctionSignature* Signature;
+  openfluid::ware::SimulatorSignature* Signature;
 
-  Signature = new openfluid::ware::FunctionSignature();
+  Signature = new openfluid::ware::SimulatorSignature();
 
   DECLARE_SIGNATURE_NAME("name of the test");
   DECLARE_SIGNATURE_AUTHORNAME("John Doe");

@@ -6,7 +6,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -43,14 +43,14 @@ END_FUNCTION_SIGNATURE
 // =====================================================================
 
 
-class LandPrimitivesFunction : public openfluid::ware::PluggableFunction
+class LandPrimitivesFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-    LandPrimitivesFunction() : PluggableFunction()
+    LandPrimitivesFunction() : PluggableSimulator()
     {
 
 

@@ -137,7 +137,7 @@ END_FUNCTION_SIGNATURE
 
 
 OFEFunc2DocFunction::OFEFunc2DocFunction()
-                : PluggableFunction()
+                : PluggableSimulator()
 {
 
 

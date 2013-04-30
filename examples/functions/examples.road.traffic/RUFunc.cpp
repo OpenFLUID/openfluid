@@ -3,7 +3,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -46,7 +46,7 @@ END_FUNCTION_SIGNATURE
 /**
 
  */
-class RUFunction : public openfluid::ware::PluggableFunction
+class RUFunction : public openfluid::ware::PluggableSimulator
 {
 
   private:
@@ -55,7 +55,7 @@ class RUFunction : public openfluid::ware::PluggableFunction
   public:
 
 
-    RUFunction() : PluggableFunction()
+    RUFunction() : PluggableSimulator()
   {
 
 

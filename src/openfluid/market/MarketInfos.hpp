@@ -57,7 +57,7 @@
 #define __MARKETINFOS_HPP__
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 
 
 namespace openfluid { namespace market {

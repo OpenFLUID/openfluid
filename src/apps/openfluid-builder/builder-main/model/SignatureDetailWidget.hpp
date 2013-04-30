@@ -59,7 +59,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 
 namespace openfluid {
 namespace machine {

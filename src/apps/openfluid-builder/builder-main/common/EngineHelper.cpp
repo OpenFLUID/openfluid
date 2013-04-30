@@ -60,7 +60,7 @@
 #include <glibmm/i18n.h>
 
 #include <openfluid/core/CoreRepository.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 

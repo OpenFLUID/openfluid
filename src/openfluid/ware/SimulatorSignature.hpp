@@ -52,8 +52,8 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#ifndef __FUNCTIONSIGNATURE_HPP__
-#define __FUNCTIONSIGNATURE_HPP__
+#ifndef __SIMULATORSIGNATURE_HPP__
+#define __SIMULATORSIGNATURE_HPP__
 
 #include <boost/regex.hpp>
 
@@ -72,9 +72,9 @@
   Macro for the beginning of definition of signature hook
 */
 #define BEGIN_FUNCTION_SIGNATURE(id) \
-  openfluid::ware::FunctionSignature* GetWareSignature() \
+  openfluid::ware::SimulatorSignature* GetWareSignature() \
   { \
-    openfluid::ware::FunctionSignature* Signature = new openfluid::ware::FunctionSignature(); \
+    openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
     Signature->setABIVersion(openfluid::config::FULL_VERSION); \
     Signature->ID = (id);
 
@@ -485,7 +485,7 @@ class SignatureTimeScheduling
   Class encapsulating the plugin signature,
   returned from the plugin to the host app for registering
 */
-class DLLEXPORT FunctionSignature : public WareSignature
+class DLLEXPORT SimulatorSignature : public WareSignature
 {
 
   public:
@@ -521,7 +521,7 @@ class DLLEXPORT FunctionSignature : public WareSignature
     */
     SignatureTimeScheduling TimeScheduling;
 
-    FunctionSignature() : WareSignature(),
+    SimulatorSignature() : WareSignature(),
       Domain(""),Process(""),Method("")
       {}
 

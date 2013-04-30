@@ -55,9 +55,9 @@
 #include "AvailFunctionsWidget.hpp"
 
 #include <glibmm/i18n.h>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include "BuilderGraphicsHelper.hpp"
 
 // =====================================================================
@@ -125,8 +125,8 @@ void AvailFunctionsWidget::update()
 {
   mref_TreeModel->clear();
 
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
   // Pluggable functions
 
@@ -135,7 +135,7 @@ void AvailFunctionsWidget::update()
   PlugRow[m_Columns.mp_Sign] = 0;
   PlugRow[m_Columns.m_Sensitive] = true;
 
-  openfluid::machine::FunctionSignatureRegistry::FctSignaturesByName_t Plugs =
+  openfluid::machine::SimulatorSignatureRegistry::FctSignaturesByName_t Plugs =
       Reg->getPluggableSignatures();
 
   if (Plugs.empty())
@@ -146,7 +146,7 @@ void AvailFunctionsWidget::update()
   }
   else
   {
-    for (openfluid::machine::FunctionSignatureRegistry::FctSignaturesByName_t::iterator it =
+    for (openfluid::machine::SimulatorSignatureRegistry::FctSignaturesByName_t::iterator it =
         Plugs.begin(); it != Plugs.end(); ++it)
     {
       Gtk::TreeRow SubRow = *mref_TreeModel->append(PlugRow.children());
@@ -179,7 +179,7 @@ void AvailFunctionsWidget::update()
 
 // Generators
 
-  openfluid::machine::FunctionSignatureRegistry::FctSignaturesByName_t Gens =
+  openfluid::machine::SimulatorSignatureRegistry::FctSignaturesByName_t Gens =
       Reg->getGeneratorSignatures();
 
   Gtk::TreeRow GenRow = *mref_TreeModel->append();
@@ -187,7 +187,7 @@ void AvailFunctionsWidget::update()
   GenRow[m_Columns.mp_Sign] = 0;
   GenRow[m_Columns.m_Sensitive] = true;
 
-  for (openfluid::machine::FunctionSignatureRegistry::FctSignaturesByName_t::iterator it =
+  for (openfluid::machine::SimulatorSignatureRegistry::FctSignaturesByName_t::iterator it =
       Gens.begin(); it != Gens.end(); ++it)
   {
     Gtk::TreeRow SubRow = *mref_TreeModel->append(GenRow.children());

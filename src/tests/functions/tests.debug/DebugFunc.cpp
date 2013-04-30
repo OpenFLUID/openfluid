@@ -55,7 +55,7 @@
 
 
 #include <openfluid/debug.hpp>
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -90,14 +90,14 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class DebugFunction : public openfluid::ware::PluggableFunction
+class DebugFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  DebugFunction() : PluggableFunction()
+  DebugFunction() : PluggableSimulator()
   {
 
 

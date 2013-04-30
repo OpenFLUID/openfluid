@@ -57,7 +57,7 @@
 #include <boost/filesystem/path.hpp>
 #include <glibmm/i18n.h>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/core/Value.hpp>
 #include "WareItemInfoWidget.hpp"
 

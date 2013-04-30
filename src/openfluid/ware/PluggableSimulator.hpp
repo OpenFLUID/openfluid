@@ -46,22 +46,22 @@
 */
 
 /**
-  \file PluggableFunction.hpp
+  \file PluggableSimulator.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __PLUGGABLEFUNCTION_HPP__
-#define __PLUGGABLEFUNCTION_HPP__
+#ifndef __PLUGGABLESIMULATOR_HPP__
+#define __PLUGGABLESIMULATOR_HPP__
 
 
 #include <string>
 #include <glibmm/threadpool.h>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/base/SchedulingRequest.hpp>
 #include <openfluid/base/LoopMacros.hpp>
@@ -84,8 +84,8 @@
   extern "C" \
   { \
     DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::ware::PluggableFunction* GetWareBody(); \
-    DLLEXPORT openfluid::ware::FunctionSignature* GetWareSignature(); \
+    DLLEXPORT openfluid::ware::PluggableSimulator* GetWareBody(); \
+    DLLEXPORT openfluid::ware::SimulatorSignature* GetWareSignature(); \
   }
 
 
@@ -103,7 +103,7 @@
     return std::string(openfluid::config::FULL_VERSION); \
   } \
   \
-  openfluid::ware::PluggableFunction* GetWareBody() \
+  openfluid::ware::PluggableSimulator* GetWareBody() \
   { \
     return new pluginclassname(); \
   }
@@ -126,7 +126,7 @@ namespace openfluid { namespace ware {
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
-class DLLEXPORT PluggableFunction : public SimulationContributorWare
+class DLLEXPORT PluggableSimulator : public SimulationContributorWare
 {
 
   private:
@@ -301,12 +301,12 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
     /**
       Constructor
     */
-    PluggableFunction();
+    PluggableSimulator();
 
     /**
       Virtual destructor
     */
-    virtual ~PluggableFunction();
+    virtual ~PluggableSimulator();
 
     /**
       Internally called by the framework.
@@ -345,11 +345,11 @@ class DLLEXPORT PluggableFunction : public SimulationContributorWare
 
 };
 
-typedef PluggableFunction* (*GetPluggableFunctionBodyProc)();
+typedef PluggableSimulator* (*GetPluggableFunctionBodyProc)();
 
-typedef FunctionSignature* (*GetPluggableFunctionSignatureProc)();
+typedef SimulatorSignature* (*GetPluggableFunctionSignatureProc)();
 
 } } // namespaces
 
 
-#endif /* __PLUGGABLEFUNCTION_HPP__ */
+#endif /* __PLUGGABLESIMULATOR_HPP__ */

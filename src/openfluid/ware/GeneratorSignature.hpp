@@ -55,13 +55,13 @@
 #ifndef __GENERATORSIGNATURE_HPP__
 #define __GENERATORSIGNATURE_HPP__
 
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
 namespace openfluid {
 namespace ware {
 
-class GeneratorSignature: public openfluid::ware::FunctionSignature
+class GeneratorSignature: public openfluid::ware::SimulatorSignature
 {
   private:
 

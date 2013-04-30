@@ -60,7 +60,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/builderext/WorkspaceTab.hpp>
 #include <openfluid/builderext/ModelessWindow.hpp>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include "ProjectExplorerModel.hpp"
 #include "ProjectWorkspace.hpp"

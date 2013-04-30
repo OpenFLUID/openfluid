@@ -47,20 +47,20 @@
 
 
 /**
-  \file FunctionPluginsManager.cpp
+  \file SimulatorPluginsManager.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
 
 
 namespace openfluid { namespace machine {
 
 
-FunctionPluginsManager* FunctionPluginsManager::mp_Singleton = NULL;
+SimulatorPluginsManager* SimulatorPluginsManager::mp_Singleton = NULL;
 
 
 } }  // namespaces

@@ -62,7 +62,7 @@
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/WareDescriptor.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
       openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionA");
 
   BOOST_CHECK_EQUAL(
@@ -132,14 +132,14 @@ BOOST_AUTO_TEST_CASE(check_construction)
       openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionB");
 
   BOOST_CHECK_EQUAL(
       dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Model.getItemAt(0))->getGeneratedID(),
       "tests.generator.interp.TU.genscalar");
   BOOST_CHECK_EQUAL(
-      dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(Model.getItemAt(4))->getFileID(),
+      dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Model.getItemAt(4))->getFileID(),
       "tests.functionB");
   BOOST_CHECK_THROW(Model.getItemAt(5), openfluid::base::OFException);
 
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       &(Model.getItems());
 
   // appendItem
-  openfluid::fluidx::FunctionDescriptor AppItem("appended.item");
+  openfluid::fluidx::SimulatorDescriptor AppItem("appended.item");
   Model.appendItem(&AppItem);
 
   BOOST_CHECK_EQUAL(Model.getItemsCount(), 6);
@@ -183,11 +183,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::advance(it, 5);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it))->getFileID(),
       "appended.item");
 
   //insertItem
-  openfluid::fluidx::FunctionDescriptor InsItem("inserted.item");
+  openfluid::fluidx::SimulatorDescriptor InsItem("inserted.item");
 
   BOOST_CHECK_THROW(Model.insertItem(&InsItem, 6),
                     openfluid::base::OFException);
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionA");
 
   BOOST_CHECK_EQUAL(
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Fixed);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "inserted.item");
 
   BOOST_CHECK_EQUAL(
@@ -219,11 +219,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionB");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "appended.item");
 
   // moveItem
@@ -240,11 +240,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionA");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionB");
 
   BOOST_CHECK_EQUAL(
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Fixed);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "inserted.item");
 
   BOOST_CHECK_EQUAL(
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "appended.item");
 
   Model.moveItem(3, 0);
@@ -276,15 +276,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionA");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionB");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "inserted.item");
 
   BOOST_CHECK_EQUAL(
@@ -292,7 +292,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "appended.item");
 
   Model.moveItem(5, 6);
@@ -308,19 +308,19 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionA");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionB");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "inserted.item");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "appended.item");
 
   BOOST_CHECK_EQUAL(
@@ -344,15 +344,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
       openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionA");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "tests.functionB");
 
   BOOST_CHECK_EQUAL(
-      (dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*(++it)))->getFileID(),
+      (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*(++it)))->getFileID(),
       "appended.item");
 
   BOOST_CHECK_EQUAL(

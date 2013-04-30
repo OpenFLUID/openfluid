@@ -3,7 +3,7 @@
 */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 
@@ -49,7 +49,7 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
+class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -57,7 +57,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableFunction
   public:
 
   
-    ExampleUnitsBProduction() : PluggableFunction()
+    ExampleUnitsBProduction() : PluggableSimulator()
     {
   
   

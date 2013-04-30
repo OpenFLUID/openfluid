@@ -62,8 +62,8 @@
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/machine/WareSignatureInstance.hpp>
 
 
@@ -87,7 +87,7 @@ class DLLEXPORT GeneratorExtraInfo
 class DLLEXPORT ModelItemSignatureInstance : public WareSignatureInstance
 {
   public:
-    openfluid::ware::FunctionSignature* Signature;
+    openfluid::ware::SimulatorSignature* Signature;
     GeneratorExtraInfo* GeneratorInfo;
 
     ModelItemSignatureInstance();
@@ -104,7 +104,7 @@ class DLLEXPORT ModelItemInstance : public ModelItemSignatureInstance
 {
   public:
     openfluid::ware::WareParams_t Params;
-    openfluid::ware::PluggableFunction* Body;
+    openfluid::ware::PluggableSimulator* Body;
     unsigned int OriginalPosition;
 
     ModelItemInstance();

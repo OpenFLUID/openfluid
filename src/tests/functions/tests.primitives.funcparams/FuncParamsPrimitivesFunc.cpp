@@ -46,7 +46,7 @@
 */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
 
 
@@ -95,7 +95,7 @@ END_FUNCTION_SIGNATURE
 // =====================================================================
 
 
-class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
+class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -109,7 +109,7 @@ class FuncParamsPrimitivesFunction : public openfluid::ware::PluggableFunction
   public:
 
 
-    FuncParamsPrimitivesFunction() : PluggableFunction()
+    FuncParamsPrimitivesFunction() : PluggableSimulator()
     {
 
 

@@ -3,7 +3,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -49,7 +49,7 @@ END_FUNCTION_SIGNATURE
 /**
 
  */
-class TLUFunction : public openfluid::ware::PluggableFunction
+class TLUFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -57,7 +57,7 @@ class TLUFunction : public openfluid::ware::PluggableFunction
   public:
 
 
-    TLUFunction() : PluggableFunction()
+    TLUFunction() : PluggableSimulator()
   {
 
 

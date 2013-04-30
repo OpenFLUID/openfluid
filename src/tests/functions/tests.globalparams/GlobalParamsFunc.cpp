@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -87,14 +87,14 @@ END_FUNCTION_SIGNATURE
 /**
 
 */
-class GlobalParamsFunction : public openfluid::ware::PluggableFunction
+class GlobalParamsFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-  GlobalParamsFunction() : PluggableFunction()
+  GlobalParamsFunction() : PluggableSimulator()
   {
 
 

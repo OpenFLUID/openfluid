@@ -46,7 +46,7 @@
 */
 
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 
 
 // =====================================================================
@@ -86,14 +86,14 @@ END_FUNCTION_SIGNATURE
 // =====================================================================
 
 
-class EventsPrimitivesUseFunction : public openfluid::ware::PluggableFunction
+class EventsPrimitivesUseFunction : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-    EventsPrimitivesUseFunction() : PluggableFunction()
+    EventsPrimitivesUseFunction() : PluggableSimulator()
     {
 
 

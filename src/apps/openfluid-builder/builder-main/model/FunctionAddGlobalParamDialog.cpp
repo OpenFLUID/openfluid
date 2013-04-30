@@ -60,7 +60,7 @@
 #include <gtkmm/stock.h>
 #include <gtkmm/frame.h>
 #include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include "EngineHelper.hpp"
 #include "BuilderFrame.hpp"
@@ -250,8 +250,8 @@ void FunctionAddGlobalParamDialog::updateCombo()
 {
   mref_ComboModel->clear();
 
-  openfluid::machine::FunctionSignatureRegistry* Reg =
-      openfluid::machine::FunctionSignatureRegistry::getInstance();
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
       m_Model.getItems();

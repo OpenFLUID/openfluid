@@ -58,9 +58,9 @@
 #define BOOST_TEST_MODULE builder_unittest_Model
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include "BuilderTestHelper.hpp"
@@ -259,13 +259,13 @@ struct init_Empty
     ModelModuleSub* mp_Module;
     WareSetWidgetSub* mp_WareSet;
 
-    openfluid::machine::FunctionSignatureRegistry* mp_Reg;
+    openfluid::machine::SimulatorSignatureRegistry* mp_Reg;
 
     init_Empty()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Reg = openfluid::machine::FunctionSignatureRegistry::getInstance();
+      mp_Reg = openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
       mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(0);
       openfluid::fluidx::AdvancedFluidXDescriptor Desc(*mp_FXDesc);
@@ -297,13 +297,13 @@ struct init_FromFile
     ModelModuleSub* mp_Module;
     WareSetWidgetSub* mp_WareSet;
 
-    openfluid::machine::FunctionSignatureRegistry* mp_Reg;
+    openfluid::machine::SimulatorSignatureRegistry* mp_Reg;
 
     init_FromFile()
     {
       BuilderTestHelper::getInstance()->initGtk();
 
-      mp_Reg = openfluid::machine::FunctionSignatureRegistry::getInstance();
+      mp_Reg = openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
       mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(0);
       mp_FXDesc->loadFromDirectory(
@@ -342,7 +342,7 @@ BOOST_AUTO_TEST_CASE(check_wareset_updateAfterAdd)
   BOOST_CHECK_EQUAL(mp_WareSet->getListBox()->get_children().size(), 0);
 
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsA.prod"));
   mp_Module->update();
 
@@ -360,10 +360,10 @@ BOOST_AUTO_TEST_CASE(check_wareset_updateAfterAdd)
   BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
 
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsA.up"));
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsB.prod"));
   mp_Module->update();
 
@@ -412,13 +412,13 @@ BOOST_AUTO_TEST_CASE(check_wareset_remove)
   WareItemWidgetSub* ItemToRemove;
 
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsA.prod"));
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsA.up"));
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsB.prod"));
   mp_Module->update();
 
@@ -475,13 +475,13 @@ BOOST_AUTO_TEST_CASE(check_wareset_move)
   WareItemWidgetSub* ItemToMove;
 
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsA.prod"));
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsA.up"));
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsB.prod"));
   mp_Module->update();
 
@@ -582,13 +582,13 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   BOOST_CHECK_EQUAL(GlobalRows.size(), 0);
 
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsA.prod"));
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsA.up"));
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsB.prod"));
   mp_Module->update();
 
@@ -775,7 +775,7 @@ BOOST_AUTO_TEST_CASE(check_wareset_operations)
   BOOST_CHECK(!WareItem->getButtonBox()->isDownCommandAvailable());
 
   mp_Model->appendItem(
-      new openfluid::fluidx::FunctionDescriptor(
+      new openfluid::fluidx::SimulatorDescriptor(
           "examples.primitives.unitsB.prod"));
   mp_Module->update();
 

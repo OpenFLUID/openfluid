@@ -63,7 +63,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
 #include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
 
 namespace openfluid { namespace ware {
