@@ -84,7 +84,7 @@ SET_TESTS_PROPERTIES(integration-ObserversReport PROPERTIES PASS_REGULAR_EXPRESS
   
 IF(CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR CUSTOM_CMAKE_VERSION VERSION_GREATER "2.8.0") 
   ADD_TEST(integration-FunctionsReportEnvVar "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" "-r")
-  SET_TESTS_PROPERTIES(integration-FunctionsReportEnvVar PROPERTIES ENVIRONMENT "OPENFLUID_FUNCS_PATH=${TEST_OUTPUT_PATH}")                           
+  SET_TESTS_PROPERTIES(integration-FunctionsReportEnvVar PROPERTIES ENVIRONMENT "OPENFLUID_SIMS_PATH=${TEST_OUTPUT_PATH}")                           
   SET_TESTS_PROPERTIES(integration-FunctionsReportEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.use")  
   SET_TESTS_PROPERTIES(integration-FunctionsReportEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.prod")    
 ENDIF(CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR CUSTOM_CMAKE_VERSION VERSION_GREATER "2.8.0")
@@ -309,7 +309,7 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleFunctionConfigure
                              "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
                              "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
-                             "-DFUNC_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                             "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
                    PRE_TEST EMPTY_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.func.cmake")                                                                                          
 
 

@@ -61,9 +61,9 @@ DECLARE_FUNCTION_PLUGIN
 // =====================================================================
 
 
-#define THIS_FUNC_ID "tests.primitives.funcparams"
+#define THIS_SIM_ID "tests.primitives.funcparams"
 
-BEGIN_FUNCTION_SIGNATURE(THIS_FUNC_ID)
+BEGIN_FUNCTION_SIGNATURE(THIS_SIM_ID)
 
   DECLARE_SIGNATURE_NAME("test function for function parameters primitives");
   DECLARE_SIGNATURE_DESCRIPTION("");

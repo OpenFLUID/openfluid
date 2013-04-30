@@ -119,7 +119,7 @@ class DLLEXPORT FunctionPluginsManager : public WarePluginsManager<ModelItemSign
 
     std::string getPluginFilenameSuffix()
     {
-      return openfluid::config::FUNCTIONS_PLUGINS_SUFFIX;
+      return openfluid::config::SIMULATORS_PLUGINS_SUFFIX;
     }
 
 };

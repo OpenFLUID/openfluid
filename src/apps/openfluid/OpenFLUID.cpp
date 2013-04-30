@@ -635,7 +635,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 {
 
   std::string DefaultMaxThreadsStr;
-  openfluid::tools::ConvertValue(openfluid::config::FUNCTIONS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
+  openfluid::tools::ConvertValue(openfluid::config::SIMULATORS_MAXNUMTHREADS,&DefaultMaxThreadsStr);
 
   // TODO adapt colon or semicolon separated path to system win32 or unix
   boost::program_options::options_description OptionsDesc("openfluid allowed options");

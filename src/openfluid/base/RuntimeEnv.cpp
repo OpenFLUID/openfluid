@@ -87,7 +87,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   m_UserID = "(unknown)";
   m_Arch = "unknown";
 
-  m_FunctionsMaxNumThreads = openfluid::config::FUNCTIONS_MAXNUMTHREADS;
+  m_FunctionsMaxNumThreads = openfluid::config::SIMULATORS_MAXNUMTHREADS;
 
   // ====== System architecture ======
 
@@ -222,14 +222,14 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // ====== Function plugins search order ======
   //  1) command line paths,
-  //  2) environment var OPENFLUID_FUNCS_PATH
+  //  2) environment var OPENFLUID_SIMS_PATH
   //  3) user directory,
   //  4) market-bag directory
   //  5) install directory
 
   // env var
   char *FUNCSPATHEnvVar;
-  FUNCSPATHEnvVar = std::getenv("OPENFLUID_FUNCS_PATH");
+  FUNCSPATHEnvVar = std::getenv("OPENFLUID_SIMS_PATH");
 
   if (FUNCSPATHEnvVar != NULL)
   {
@@ -238,7 +238,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // user dir
   m_DefaultFunctionsPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::FUNCTIONS_PLUGINS_SUBDIR).string());
+      + openfluid::config::SIMULATORS_PLUGINS_SUBDIR).string());
 
   // market-bag dir (for current version)
   m_DefaultFunctionsPlugsDirs.push_back(boost::filesystem::path(m_MarketBagFuncVersionDir
@@ -246,7 +246,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // install directory
   std::string FunctionsPluginsInstallPath = boost::filesystem::path(m_InstallPrefix
-      + "/" + openfluid::config::FUNCTIONS_PLUGINS_STDDIR).string();
+      + "/" + openfluid::config::SIMULATORS_PLUGINS_STDDIR).string();
   m_DefaultFunctionsPlugsDirs.push_back(FunctionsPluginsInstallPath);
 
 

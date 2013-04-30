@@ -196,15 +196,15 @@ void MarketSrcPackage::process()
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Glib error building package using CMake");
   }
 
-  if (!boost::filesystem::exists(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)))
+  if (!boost::filesystem::exists(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::SIMULATORS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT)))
     throw openfluid::base::OFException("OpenFLUID framework","MarketSrcPackage::process()","Error finding built package");
 
   std::string BinInstallDir = getInstallPath() + "/../" + m_MarketBagBinSubDir;
-  if (boost::filesystem::exists(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX +openfluid::config::PLUGINS_EXT)))
-    boost::filesystem::remove(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
+  if (boost::filesystem::exists(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::SIMULATORS_PLUGINS_SUFFIX +openfluid::config::PLUGINS_EXT)))
+    boost::filesystem::remove(boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::SIMULATORS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
-  boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT),
-                               boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::FUNCTIONS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
+  boost::filesystem::copy_file(boost::filesystem::path(BuildDir+"/"+m_ID+openfluid::config::SIMULATORS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT),
+                               boost::filesystem::path(BinInstallDir+"/"+m_ID+openfluid::config::SIMULATORS_PLUGINS_SUFFIX+openfluid::config::PLUGINS_EXT));
 
   if (!m_KeepSources) boost::filesystem::remove_all(boost::filesystem::path(SrcInstallDir));
 

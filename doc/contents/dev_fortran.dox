@@ -53,6 +53,6 @@ bool MyFunction::initializeRun(const openfluid::base::SimulationInfo* SimInfo)
 \endcode
 
 \n
-The compilation and link of fortran source code is automatically done when adding fortran source files to the FUNC_FORTRAN variable in the CMake.in.config file (See \ref devfuncemptyexample_ssec).
+The compilation and link of fortran source code is automatically done when adding fortran source files to the SIM_FORTRAN variable in the CMake.in.config file (See \ref devfuncemptyexample_ssec).
  
 */

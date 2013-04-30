@@ -3,9 +3,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware)
 
 
-SET(FUNC_ID tests.market.srconly.dummy)
-SET(FUNC_CPP MarketSrcOnlyFunc.cpp)
+SET(SIM_ID tests.market.srconly.dummy)
+SET(SIM_CPP MarketSrcOnlyFunc.cpp)
 
 OPENFLUID_SHOW_CMAKE_VARIABLES()
 
-OPENFLUID_ADD_DEFAULT_FUNCTION()
+OPENFLUID_ADD_DEFAULT_SIMULATOR()
