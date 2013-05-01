@@ -3,7 +3,7 @@
 INCLUDE(OpenFLUIDHelpers)
 
 
-ADD_SUBDIRECTORY(functions)
+ADD_SUBDIRECTORY(simulators)
 
 ADD_SUBDIRECTORY(observers)
 

@@ -124,9 +124,9 @@ ENDFOREACH(currtest ${TESTS_DATASETS})
 # =========================================================================
 
 IF(NOT USER_SIMULATORS_INSTALL_PATH)
- SET(USER_SIMULATORS_INSTALL_PATH "$ENV{HOME}/.openfluid/functions")
+ SET(USER_SIMULATORS_INSTALL_PATH "$ENV{HOME}/.openfluid/simulators")
  IF(WIN32)
-   SET(USER_SIMULATORS_INSTALL_PATH "$ENV{APPDATA}/openfluid/functions") 
+   SET(USER_SIMULATORS_INSTALL_PATH "$ENV{APPDATA}/openfluid/simulators") 
  ENDIF(WIN32)
 ENDIF(NOT USER_SIMULATORS_INSTALL_PATH)
 

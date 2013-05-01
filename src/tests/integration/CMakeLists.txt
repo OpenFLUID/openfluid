@@ -384,7 +384,7 @@ ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
 OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2Doc
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                               "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc"
                               )
   
 
@@ -394,7 +394,7 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2Doc
 OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2DocPDF
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                               "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/func2doc_tpl.tex,pdf=1"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/func2doc_tpl.tex,pdf=1"
                               )
 
 
@@ -404,7 +404,7 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2DocPDF
 OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2DocPDFHTML
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                               "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/functions/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF-HTML,pdf=1,html=1"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.ofefunc2doc/OFEFunc2DocFunc.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF-HTML,pdf=1,html=1"
                               )
 
 

@@ -232,7 +232,7 @@ class DLLEXPORT RuntimeEnvironment
     inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
 
     /**
-      @return the market bag directory for functions of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/functions)
+      @return the market bag directory for functions of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/simulators)
      */
     inline std::string getMarketBagSimVersionDir() const { return m_MarketBagSimVersionDir; };
 

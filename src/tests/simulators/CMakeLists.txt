@@ -36,7 +36,7 @@ ENDIF(BUILD_FORTRAN_SIMULATORS)
 
 
 OPNFLD_ADD_SIMULATOR(tests.primitives.runenv tests.primitives.runenv ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesRunEnv 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesRunEnv 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesRunEnv"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv" 
@@ -52,7 +52,7 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesRunEnv
 
 
 OPNFLD_ADD_SIMULATOR(tests.primitives.time tests.primitives.time ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesTime 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesTime 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesTime"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime" 
@@ -69,7 +69,7 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesTime
 
 
 OPNFLD_ADD_SIMULATOR(tests.primitives.funcparams tests.primitives.funcparams ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesFuncParams 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesFuncParams 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesFuncParams"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams" 
@@ -86,7 +86,7 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesFuncParams
 
 OPNFLD_ADD_SIMULATOR(tests.primitives.inputdata.prod tests.primitives.inputdata.prod ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.primitives.inputdata.use tests.primitives.inputdata.use ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesInputdata 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesInputdata 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesInputdata"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata" 
@@ -103,7 +103,7 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesInputdata
 
 
 OPNFLD_ADD_SIMULATOR(tests.primitives.events tests.primitives.events ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesEvents 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesEvents 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesEvents"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents" 
@@ -120,7 +120,7 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesEvents
 
 OPNFLD_ADD_SIMULATOR(tests.primitives.variables.prod tests.primitives.variables.prod ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.primitives.variables.use tests.primitives.variables.use ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesVariables 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesVariables 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesVariables"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables" 
@@ -137,7 +137,7 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesVariables
 
 
 OPNFLD_ADD_SIMULATOR(tests.primitives.land tests.primitives.land ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesLand 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesLand 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesLand"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand" 
@@ -151,7 +151,7 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesLand
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME functions-PrimitivesAll 
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAll 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesAll"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAll" 
@@ -165,7 +165,7 @@ OPENFLUID_ADD_TEST(NAME functions-PrimitivesAll
 
 OPNFLD_ADD_SIMULATOR(tests.deltaTtime.prod tests.deltaTtime.prod ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.variabletime.prod tests.variabletime.prod ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-VariableTimeProd
+OPENFLUID_ADD_TEST(NAME simulators-VariableTimeProd
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.VariableTimeProd"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VariableTimeProd" 
@@ -177,7 +177,7 @@ OPENFLUID_ADD_TEST(NAME functions-VariableTimeProd
 
 
 OPNFLD_ADD_SIMULATOR(tests.loops tests.loops ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-Loops
+OPENFLUID_ADD_TEST(NAME simulators-Loops
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Loops"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Loops" 
@@ -189,12 +189,12 @@ OPENFLUID_ADD_TEST(NAME functions-Loops
 
 OPNFLD_ADD_SIMULATOR(tests.threadedloops tests.threadedloops ${TEST_OUTPUT_PATH})
 TARGET_LINK_LIBRARIES(tests.threadedloops${OPENFLUID_SIMULATORS_SUFFIX} ${GLIBMM_LIBRARIES})
-OPENFLUID_ADD_TEST(NAME functions-ThreadedLoopsDefault
+OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoopsDefault
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ThreadedLoops"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ThreadedLoops" 
                         "-p${TEST_OUTPUT_PATH}")             
-OPENFLUID_ADD_TEST(NAME functions-ThreadedLoops9
+OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoops9
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ThreadedLoops"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ThreadedLoops" 
@@ -206,12 +206,12 @@ OPENFLUID_ADD_TEST(NAME functions-ThreadedLoops9
 
 
 OPNFLD_ADD_SIMULATOR(tests.messages tests.messages ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-Messages
+OPENFLUID_ADD_TEST(NAME simulators-Messages
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                          "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Messages"
                          "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Messages" 
                          "-p${TEST_OUTPUT_PATH}")
-OPENFLUID_ADD_TEST(NAME functions-ManyMessages
+OPENFLUID_ADD_TEST(NAME simulators-ManyMessages
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ManyMessages"
                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ManyMessages" 
@@ -223,7 +223,7 @@ OPENFLUID_ADD_TEST(NAME functions-ManyMessages
 
 
 OPNFLD_ADD_SIMULATOR(tests.parseunits tests.parseunits ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-ManyUnits
+OPENFLUID_ADD_TEST(NAME simulators-ManyUnits
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ManyUnits"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ManyUnits" 
@@ -240,7 +240,7 @@ OPNFLD_ADD_SIMULATOR(tests.ofefunc2doc tests.ofefunc2doc ${TEST_OUTPUT_PATH})
 
 
 OPNFLD_ADD_SIMULATOR(tests.tools tests.tools ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-Tools
+OPENFLUID_ADD_TEST(NAME simulators-Tools
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Tools"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Tools" 
@@ -257,19 +257,19 @@ OPNFLD_ADD_SIMULATOR(tests.fakefunction tests.fakefunction ${TEST_OUTPUT_PATH})
 
 
 OPNFLD_ADD_SIMULATOR(tests.wrongprod tests.wrongprod ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-WrongProduction
+OPENFLUID_ADD_TEST(NAME simulators-WrongProduction
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.WrongProd"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.WrongProd" 
                         "-p${TEST_OUTPUT_PATH}")                              
-SET_TESTS_PROPERTIES(functions-WrongProduction PROPERTIES WILL_FAIL TRUE)        
+SET_TESTS_PROPERTIES(simulators-WrongProduction PROPERTIES WILL_FAIL TRUE)        
 
 
 ###########################################################################
 
 
 OPNFLD_ADD_SIMULATOR(tests.globalparams tests.globalparams ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-GlobalParams
+OPENFLUID_ADD_TEST(NAME simulators-GlobalParams
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.GlobalParams"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GlobalParams" 
@@ -280,7 +280,7 @@ OPENFLUID_ADD_TEST(NAME functions-GlobalParams
 
         
 OPNFLD_ADD_SIMULATOR(tests.generators tests.generators ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-Generators
+OPENFLUID_ADD_TEST(NAME simulators-Generators
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Generators"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Generators" 
@@ -291,7 +291,7 @@ OPENFLUID_ADD_TEST(NAME functions-Generators
 
 
 OPNFLD_ADD_SIMULATOR(tests.logger tests.logger ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-Logger
+OPENFLUID_ADD_TEST(NAME simulators-Logger
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Logger"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Logger" 
@@ -303,15 +303,15 @@ OPENFLUID_ADD_TEST(NAME functions-Logger
 
 
 OPNFLD_ADD_SIMULATOR(tests.debug tests.debug ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-Debug
+OPENFLUID_ADD_TEST(NAME simulators-Debug
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Debug"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Debug" 
                         "-p${TEST_OUTPUT_PATH}")                              
 IF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-  SET_TESTS_PROPERTIES(functions-Debug PROPERTIES PASS_REGULAR_EXPRESSION "TU#")  
+  SET_TESTS_PROPERTIES(simulators-Debug PROPERTIES PASS_REGULAR_EXPRESSION "TU#")  
 ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-  SET_TESTS_PROPERTIES(functions-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "TU#")
+  SET_TESTS_PROPERTIES(simulators-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "TU#")
 ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug") 
 
 
@@ -319,21 +319,21 @@ ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 
 
 OPNFLD_ADD_SIMULATOR(tests.wrongid tests.wrongid ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-WrongID 
+OPENFLUID_ADD_TEST(NAME simulators-WrongID 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                                   "-f"
                                   "-p${TEST_OUTPUT_PATH}")
-SET_TESTS_PROPERTIES(functions-WrongID PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongid")
+SET_TESTS_PROPERTIES(simulators-WrongID PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongid")
 
 
 ###########################################################################
 
 
 OPNFLD_ADD_SIMULATOR(tests.wrongversion tests.wrongversion ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME functions-WrongVersion 
+OPENFLUID_ADD_TEST(NAME simulators-WrongVersion 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                                   "-f"
                                   "-p${TEST_OUTPUT_PATH}")
-SET_TESTS_PROPERTIES(functions-WrongVersion PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongversion")
+SET_TESTS_PROPERTIES(simulators-WrongVersion PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongversion")
 
                             

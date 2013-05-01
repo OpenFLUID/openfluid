@@ -1,6 +1,6 @@
 
 
-ADD_SUBDIRECTORY(functions)
+ADD_SUBDIRECTORY(simulators)
 
 INCLUDE(OpenFLUIDHelpers)
 
