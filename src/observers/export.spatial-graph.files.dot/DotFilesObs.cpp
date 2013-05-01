@@ -84,7 +84,7 @@ BEGIN_OBSERVER_SIGNATURE("export.spatial-graph.files.dot")
       "  style.<unitclass>.<attribute> : the value of a Dot attribute for all nodes of a unit class\n");
   DECLARE_SIGNATURE_VERSION("1.0");
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================

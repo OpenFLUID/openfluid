@@ -3,7 +3,7 @@
 
     <model>
    
-      <function ID="tests.primitives.time" />                  
+      <simulator ID="tests.primitives.time" />                  
     
     </model>
     

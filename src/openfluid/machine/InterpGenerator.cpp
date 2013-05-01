@@ -88,16 +88,16 @@ InterpGenerator::~InterpGenerator()
 
 void InterpGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
-  if (!OPENFLUID_GetFunctionParameter(Params,"sources",m_SourcesFile))
+  if (!OPENFLUID_GetSimulatorParameter(Params,"sources",m_SourcesFile))
     throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::initParams","missing sources value for generator");
 
-  if (!OPENFLUID_GetFunctionParameter(Params,"distribution",m_DistriFile))
+  if (!OPENFLUID_GetSimulatorParameter(Params,"distribution",m_DistriFile))
     throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::initParams","missing distribution value for generator");
 
 
-  if (OPENFLUID_GetFunctionParameter(Params,"thresholdmin",m_Min)) m_IsMin = true;
+  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmin",m_Min)) m_IsMin = true;
 
-  if (OPENFLUID_GetFunctionParameter(Params,"thresholdmax",m_Max)) m_IsMax = true;
+  if (OPENFLUID_GetSimulatorParameter(Params,"thresholdmax",m_Max)) m_IsMax = true;
 }
 
 

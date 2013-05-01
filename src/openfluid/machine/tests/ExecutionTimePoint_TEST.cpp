@@ -68,13 +68,13 @@
 // =====================================================================
 
 
-class FuncA : openfluid::ware::PluggableFunction
+class SimA : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncA() : openfluid::ware::PluggableFunction() {};
+    SimA() : openfluid::ware::PluggableSimulator() {};
 
-    ~FuncA() {};
+    ~SimA() {};
 
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
 
@@ -84,20 +84,20 @@ class FuncA : openfluid::ware::PluggableFunction
 
     openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "func.a" << std::endl; return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.a" << std::endl; return DefaultDeltaT(); }
 
     void finalizeRun() { }
 
 };
 
 
-class FuncB : openfluid::ware::PluggableFunction
+class SimB : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncB() : openfluid::ware::PluggableFunction() {};
+    SimB() : openfluid::ware::PluggableSimulator() {};
 
-    ~FuncB() {};
+    ~SimB() {};
 
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
 
@@ -107,20 +107,20 @@ class FuncB : openfluid::ware::PluggableFunction
 
     openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "func.b" << std::endl; return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.b" << std::endl; return DefaultDeltaT(); }
 
     void finalizeRun() { }
 
 };
 
 
-class FuncC : openfluid::ware::PluggableFunction
+class SimC : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncC() : openfluid::ware::PluggableFunction() {};
+    SimC() : openfluid::ware::PluggableSimulator() {};
 
-    ~FuncC() {};
+    ~SimC() {};
 
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
 
@@ -130,7 +130,7 @@ class FuncC : openfluid::ware::PluggableFunction
 
     openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "func.c" << std::endl; return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.c" << std::endl; return DefaultDeltaT(); }
 
     void finalizeRun() { }
 
@@ -163,26 +163,26 @@ BOOST_AUTO_TEST_CASE(check_operations)
 	openfluid::machine::ModelItemInstance* MII;
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncA());
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimA());
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature = new openfluid::ware::FunctionSignature();
-  MII->Signature->ID = "func.a";
+  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Signature->ID = "sim.a";
   MII->OriginalPosition = 1;
   TP.appendItem(MII);
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncC());
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimC());
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature = new openfluid::ware::FunctionSignature();
-  MII->Signature->ID = "func.c";
+  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Signature->ID = "sim.c";
   MII->OriginalPosition = 3;
   TP.appendItem(MII);
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncB());
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimB());
   MII->Body->linkToSimulation(&SimStatus);
-  MII->Signature = new openfluid::ware::FunctionSignature();
-  MII->Signature->ID = "func.b";
+  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Signature->ID = "sim.b";
   MII->OriginalPosition = 2;
   TP.appendItem(MII);
 

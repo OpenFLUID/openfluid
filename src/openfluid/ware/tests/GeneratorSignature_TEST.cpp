@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(test_FixedGeneratorConstructor)
   openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Fixed);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Fixed Generator");
-  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),1);
+  BOOST_CHECK_EQUAL(Sign.HandledData.SimulatorParams.size(),1);
 }
 
 // =====================================================================
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(test_RandomGeneratorConstructor)
   openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Random);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Random Generator");
-  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),2);
+  BOOST_CHECK_EQUAL(Sign.HandledData.SimulatorParams.size(),2);
 }
 
 // =====================================================================
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(test_InterpGeneratorConstructor)
   openfluid::ware::GeneratorSignature Sign(openfluid::fluidx::GeneratorDescriptor::Interp);
 
   BOOST_CHECK_EQUAL(Sign.ID,"Interp Generator");
-  BOOST_CHECK_EQUAL(Sign.HandledData.FunctionParams.size(),4);
+  BOOST_CHECK_EQUAL(Sign.HandledData.SimulatorParams.size(),4);
 }
 
 // =====================================================================

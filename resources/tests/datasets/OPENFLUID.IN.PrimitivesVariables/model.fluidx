@@ -4,9 +4,9 @@
     <model>
       
     
-     <function ID="tests.primitives.variables.prod" />
+     <simulator ID="tests.primitives.variables.prod" />
      
-     <function ID="tests.primitives.variables.use" />
+     <simulator ID="tests.primitives.variables.use" />
     
     
   </model>

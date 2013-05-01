@@ -59,7 +59,7 @@
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include <openfluid/core/CoreRepository.hpp>
@@ -69,7 +69,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/MonitoringInstance.hpp>
-#include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
 #include <openfluid/machine/Generator.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -236,7 +236,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
 
   if (ModelDesc.getItems().empty())
-    throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","No simulation function in model");
+    throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","No simulator in model");
 
 
   for (it=ModelDesc.getItems().begin();it!=ModelDesc.getItems().end();++it)
@@ -244,12 +244,12 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
       throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
 
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
     {
-      // instanciation of a plugged simulation function using the plugin manager
-      IInstance = FunctionPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::FunctionDescriptor*)(*it))->getFileID());
+      // instanciation of a plugged simulator using the plugin manager
+      IInstance = SimulatorPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID());
       IInstance->Params = (*it)->getParameters();
-      IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedFunction;
+      IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
     }
 
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
@@ -262,7 +262,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
       IInstance->Params = (*it)->getParameters();
       IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::Generator;
 
-      openfluid::ware::FunctionSignature* Signature = new openfluid::ware::FunctionSignature();
+      openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature();
 
       std::string VarName = GenDesc->getVariableName();
       GenDesc->isVectorVariable() ? VarName += "[vector]" : VarName += "[double]";

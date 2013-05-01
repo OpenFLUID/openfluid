@@ -60,7 +60,7 @@
 #include <gtkmm/separator.h>
 #include <gtkmm/textbuffer.h>
 #include <openfluid/ware/WareSignature.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/machine/WareSignatureInstance.hpp>
@@ -91,7 +91,7 @@ WareItemInfoWidget::WareItemInfoWidget(
 
   attachSeparator();
 
-  if (Type == openfluid::fluidx::WareDescriptor::PluggedFunction || Type
+  if (Type == openfluid::fluidx::WareDescriptor::PluggedSimulator || Type
       == openfluid::fluidx::WareDescriptor::PluggedObserver)
   {
     attachKey(_("Path:"));
@@ -134,10 +134,10 @@ WareItemInfoWidget::WareItemInfoWidget(
 
   attachSeparator();
 
-  if (Type == openfluid::fluidx::WareDescriptor::PluggedFunction)
+  if (Type == openfluid::fluidx::WareDescriptor::PluggedSimulator)
   {
-    openfluid::ware::FunctionSignature* FSign =
-        dynamic_cast<openfluid::ware::FunctionSignature*>(const_cast<openfluid::ware::WareSignature*>(&Sign));
+    openfluid::ware::SimulatorSignature* FSign =
+        dynamic_cast<openfluid::ware::SimulatorSignature*>(const_cast<openfluid::ware::WareSignature*>(&Sign));
 
     attachKey(_("Domain:"));
     attachValue(FSign->Domain);

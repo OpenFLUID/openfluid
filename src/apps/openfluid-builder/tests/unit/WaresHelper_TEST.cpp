@@ -62,7 +62,7 @@
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include "tests-config.hpp"
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
@@ -87,8 +87,8 @@ BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedModel)
       WaresHelper::checkAndGetModifiedModel(Model, Missing);
 
   BOOST_CHECK_EQUAL(Missing.size(), 2);
-  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionA"));
-  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionB"));
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.simulatorA"));
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.simulatorB"));
 
   BOOST_CHECK_EQUAL(Modified.size(), 3);
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
@@ -96,10 +96,10 @@ BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedModel)
     BOOST_CHECK(std::count(Existing.begin(), Existing.end(), *it));
 
   FXDesc.getModelDescriptor().appendItem(
-      new openfluid::fluidx::FunctionDescriptor("tests.primitives.variables.prod"));
+      new openfluid::fluidx::SimulatorDescriptor("tests.primitives.variables.prod"));
   Model = openfluid::fluidx::AdvancedModelDescriptor(
       FXDesc.getModelDescriptor());
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(
       CONFIGTESTS_OUTPUT_BINARY_DIR);
   Existing = Model.getItems();
   BOOST_CHECK_EQUAL(Existing.size(), 6);
@@ -108,8 +108,8 @@ BOOST_AUTO_TEST_CASE(check_checkAndGetModifiedModel)
   Modified = WaresHelper::checkAndGetModifiedModel(Model, Missing);
 
   BOOST_CHECK_EQUAL(Missing.size(), 2);
-  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionA"));
-  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.functionB"));
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.simulatorA"));
+  BOOST_CHECK(std::count(Missing.begin(),Missing.end(),"tests.simulatorB"));
 
   BOOST_CHECK_EQUAL(Modified.size(), 4);
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =

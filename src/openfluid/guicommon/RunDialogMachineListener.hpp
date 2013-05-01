@@ -79,10 +79,10 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
   private:
     unsigned int m_CurrentIndex;
     std::string m_CurrentIndexStr;
-    unsigned int m_CurrentFunction;
+    unsigned int m_CurrentSimulator;
 
     unsigned int m_TotalTime;
-    unsigned int m_TotalFunctions;
+    unsigned int m_TotalSimulators;
 
     RunStatusWidget* mp_RunStatusWidget;
 
@@ -153,13 +153,13 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
     };
 
 
-    void setInfos(const unsigned int& TotalFunctions, const unsigned int& TotalTime)
+    void setInfos(const unsigned int& TotalSimulators, const unsigned int& TotalTime)
     {
-      m_TotalFunctions = TotalFunctions;
+      m_TotalSimulators = TotalSimulators;
 
       m_TotalTime = TotalTime;
 
-      m_TotalTotal = 3 + m_TotalFunctions + m_TotalTime + m_TotalFunctions;
+      m_TotalTotal = 3 + m_TotalSimulators + m_TotalTime + m_TotalSimulators;
       m_CurrentPreSim = 0;
       m_CurrentInit = 0;
       m_CurrentIndex = 0;
@@ -172,13 +172,13 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
       mp_RunStatusWidget->setPresimRunning();
     };
 
-    virtual void onFunctionInitParams(const std::string& FunctionID)
+    virtual void onSimulatorInitParams(const std::string& SimulatorID)
     {
-      appendToTextBuffer("(initParams) " + FunctionID);
+      appendToTextBuffer("(initParams) " + SimulatorID);
     };
 
-    void onFunctionInitParamsDone(const openfluid::base::Listener::Status& Status,
-                                  const std::string& /*FunctionID*/)
+    void onSimulatorInitParamsDone(const openfluid::base::Listener::Status& Status,
+                                  const std::string& /*SimulatorID*/)
     {
       appendToTextBuffer("  " + getStatusStr(Status) + "\n");
     };
@@ -192,14 +192,14 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
 
 
-    void onFunctionPrepareData(const std::string& FunctionID)
+    void onSimulatorPrepareData(const std::string& SimulatorID)
     {
-      appendToTextBuffer("(prepareData) " + FunctionID);
+      appendToTextBuffer("(prepareData) " + SimulatorID);
 
     };
 
-    void onFunctionPrepareDataDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+    void onSimulatorPrepareDataDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*SimulatorID*/)
     {
       appendToTextBuffer("  " + getStatusStr(Status) +"\n");
     };
@@ -213,13 +213,13 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
     };
 
 
-    virtual void onFunctionCheckConsistency(const std::string& FunctionID)
+    virtual void onSimulatorCheckConsistency(const std::string& SimulatorID)
     {
-      appendToTextBuffer("(checkConsistency) " + FunctionID);
+      appendToTextBuffer("(checkConsistency) " + SimulatorID);
     };
 
-    void onFunctionCheckConsistencyDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+    void onSimulatorCheckConsistencyDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*SimulatorID*/)
     {
       appendToTextBuffer("  " + getStatusStr(Status) +"\n");
     };
@@ -240,13 +240,13 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
       refreshWidgets();
     };
 
-    void onFunctionInitializeRun(const std::string& FunctionID)
+    void onSimulatorInitializeRun(const std::string& SimulatorID)
     {
-      appendToTextBuffer("(initializeRun) " + FunctionID);
+      appendToTextBuffer("(initializeRun) " + SimulatorID);
     }
 
-    void onFunctionInitializeRunDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+    void onSimulatorInitializeRunDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*SimulatorID*/)
     {
       m_CurrentInit++;
       appendToTextBuffer("  " + getStatusStr(Status) +"\n");
@@ -276,14 +276,14 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
       updateProgressBar();
     };
 
-    void onFunctionRunStep(const std::string& FunctionID)
+    void onSimulatorRunStep(const std::string& SimulatorID)
     {
-      appendToTextBuffer("(runStep "+m_CurrentIndexStr+") " + FunctionID);
+      appendToTextBuffer("(runStep "+m_CurrentIndexStr+") " + SimulatorID);
     };
 
 
-    void onFunctionRunStepDone(const openfluid::base::Listener::Status& Status,
-                               const std::string& /*FunctionID*/)
+    void onSimulatorRunStepDone(const openfluid::base::Listener::Status& Status,
+                               const std::string& /*SimulatorID*/)
     {
       appendToTextBuffer("  " + getStatusStr(Status) +"\n");
     };
@@ -308,14 +308,14 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
       updateProgressBar();
     };
 
-    void onFunctionFinalizeRun(const std::string& FunctionID)
+    void onSimulatorFinalizeRun(const std::string& SimulatorID)
     {
-      appendToTextBuffer("(finalizeRun) " + FunctionID);
+      appendToTextBuffer("(finalizeRun) " + SimulatorID);
     }
 
 
-    virtual void onFunctionFinalizeRunDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+    virtual void onSimulatorFinalizeRunDone(const openfluid::base::Listener::Status& Status,
+                                          const std::string& /*SimulatorID*/)
     {
       m_CurrentFinal++;
       appendToTextBuffer("  " + getStatusStr(Status) +"\n");

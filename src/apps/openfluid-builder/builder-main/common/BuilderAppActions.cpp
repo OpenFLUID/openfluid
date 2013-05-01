@@ -258,8 +258,8 @@ void BuilderAppActions::createProjectActionGroup()
       Gtk::Action::create("SimulationMenu", _("_Simulation")));
   mref_ProjectActionGroup->add(
       Gtk::Action::create("Refresh", Gtk::Stock::REFRESH,
-                          _("Reload sim. funcs."),
-                          _("Reload simulation functions")));
+                          _("Reload simulators"),
+                          _("Reload simulators")));
   mref_ProjectActionGroup->add(
       Gtk::Action::create("SimulationRun", Gtk::Stock::MEDIA_PLAY,
                           _("Run...")));

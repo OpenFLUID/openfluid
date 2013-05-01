@@ -74,13 +74,13 @@ class MarketBuildOptionsDialog : public Gtk::Dialog
     std::string m_CommonBuildOptions;
     std::string m_BuildOptions;
 
-    std::string m_FuncID;
+    std::string m_SimID;
     Gtk::Entry m_OptionsEntry;
 
   public:
 
     MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions,
-                             const std::string FuncID = "");
+                             const std::string SimID = "");
 
     ~MarketBuildOptionsDialog() {};
 

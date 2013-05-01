@@ -50,7 +50,7 @@ Read data must have rules associated when they are declared. These rules are:
 
 Function parameters are attached to functions. The declaration macro takes 3 arguments: the name of the parameter, the description of the parameter, and the SI unit of the parameter.
 <ul>
-<li>#DECLARE_FUNCTION_PARAM
+<li>#DECLARE_SIMULATOR_PARAM
 </ul>
 
 \subsection signdatadistri_ssec Input data
@@ -150,7 +150,7 @@ BEGIN_SIGNATURE_HOOK
 
   DECLARE_REQUIRED_INPUTDATA("thetaisurf","SU","","m3/m3")
 
-  DECLARE_FUNCTION_PARAM("resstep","numerical resolution step for ponding time","")
+  DECLARE_SIMULATOR_PARAM("resstep","numerical resolution step for ponding time","")
 
 END_SIGNATURE_HOOK
 

@@ -71,8 +71,8 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 
 
-MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions, const std::string FuncID)
-: Gtk::Dialog(), m_CommonBuildOptions(CommonBuildOptions),m_BuildOptions(BuildOptions),m_FuncID(FuncID)
+MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions, const std::string SimID)
+: Gtk::Dialog(), m_CommonBuildOptions(CommonBuildOptions),m_BuildOptions(BuildOptions),m_SimID(SimID)
 {
 
   set_size_request(450,-1);
@@ -86,7 +86,7 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuil
 
   Gtk::Label* CommonOptsLabel = Gtk::manage(new Gtk::Label());
 
-  if (!FuncID.empty())
+  if (!SimID.empty())
     CommonOptsLabel->set_markup(_("<u>Common source build options:</u>\n")
                                 +openfluid::tools::ReplaceEmptyString(CommonBuildOptions,_("<i>none</i>")));
   else
@@ -97,9 +97,9 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuil
 
 
   Gtk::Label* EditLabel = Gtk::manage(new Gtk::Label());
-  if (!FuncID.empty())
+  if (!SimID.empty())
   {
-    EditLabel->set_label(_("Specific build options for ")+FuncID+_(":"));
+    EditLabel->set_label(_("Specific build options for ")+SimID+_(":"));
   }
   else
   {
@@ -108,17 +108,17 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuil
   EditLabel->set_alignment(0,0.5);
   get_vbox()->pack_start(*EditLabel);
 
-  if (FuncID.empty()) m_OptionsEntry.set_text(CommonBuildOptions);
+  if (SimID.empty()) m_OptionsEntry.set_text(CommonBuildOptions);
   else m_OptionsEntry.set_text(BuildOptions);
   get_vbox()->pack_start(m_OptionsEntry);
 
   add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
-  if(m_FuncID.empty())
+  if(m_SimID.empty())
     set_title(_("Common build options for all source packages"));
   else
-    set_title(_("Build options for ") + m_FuncID);
+    set_title(_("Build options for ") + m_SimID);
 
 
   show_all_children();

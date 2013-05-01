@@ -48,7 +48,7 @@
 
 /**
   @file
-  @brief implementation file for function environment
+  @brief implementation file for simulator environment
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */

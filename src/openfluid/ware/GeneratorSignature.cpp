@@ -97,7 +97,7 @@ void GeneratorSignature::setFixedInfo()
   Name = "Fixed Generator";
   Description = "Generates a constant value";
 
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem("fixedvalue", "",
                                                 "Value to produce", "-"));
 }
@@ -110,11 +110,11 @@ void GeneratorSignature::setRandomInfo()
   Name = "Random Generator";
   Description = "Generates a random value in a range";
 
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem(
           "min", "", "Lower bound of the random range for the value to produce",
           "-"));
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem(
           "max", "", "Upper bound of the random range for the value to produce",
           "-"));
@@ -128,17 +128,17 @@ void GeneratorSignature::setInterpInfo()
   Name = "Interpolation Generator";
   Description = "Generates a time-interpolated value from given data series";
 
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem("thresholdmin", "",
                                                 "Threshold min value", "-"));
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem("thresholdmax", "",
                                                 "Threshold max value", "-"));
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem(
           "sources", "", "Data sources filename for the value to produce",
           "-"));
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem(
           "distribution", "", "Distribution filename for the value to produce",
           "-"));
@@ -158,17 +158,17 @@ void GeneratorSignature::setInjectInfo()
   Description =
       "Generates an injected value -no time interpolation- from given data series";
 
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem("thresholdmin", "",
                                                 "Threshold min value", "-"));
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem("thresholdmax", "",
                                                 "Threshold max value", "-"));
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem(
           "sources", "", "Data sources filename for the value to produce",
           "-"));
-  HandledData.FunctionParams.push_back(
+  HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem(
           "distribution", "", "Distribution filename for the value to produce",
           "-"));

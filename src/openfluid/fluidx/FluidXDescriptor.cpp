@@ -57,7 +57,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <openfluid/base/IOListener.hpp>
-#include <openfluid/fluidx/FunctionDescriptor.hpp>
+#include <openfluid/fluidx/SimulatorDescriptor.hpp>
 
 namespace openfluid {
 namespace fluidx {
@@ -172,7 +172,7 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
         "OpenFLUID framework", "FluidXDescriptor::extractModelFromNode",
         "Duplicate model definition (" + m_CurrentFile + ")");
 
-  openfluid::fluidx::FunctionDescriptor* FD;
+  openfluid::fluidx::SimulatorDescriptor* FD;
   openfluid::fluidx::GeneratorDescriptor* GD;
   openfluid::ware::WareParams_t GParams;
 
@@ -184,14 +184,14 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
       GParams = mergeParams(GParams, extractParamsFromNode(CurrNode));
     }
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "function") == 0)
+    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "simulator") == 0)
     {
       xmlChar* xmlID = xmlGetProp(CurrNode, (const xmlChar*) "ID");
 
       if (xmlID != NULL)
       {
 
-        FD = new openfluid::fluidx::FunctionDescriptor((const char*) xmlID);
+        FD = new openfluid::fluidx::SimulatorDescriptor((const char*) xmlID);
         FD->setParameters(extractParamsFromNode(CurrNode));
         m_ModelDescriptor.appendItem(FD);
       }
@@ -983,15 +983,15 @@ std::string FluidXDescriptor::getModelToWrite()
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
   {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedFunction))
+    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
     {
-      openfluid::fluidx::FunctionDescriptor* FuncDesc =
-          dynamic_cast<openfluid::fluidx::FunctionDescriptor*>(*it);
+      openfluid::fluidx::SimulatorDescriptor* SimDesc =
+          dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it);
 
-      Contents << m_IndentStr << m_IndentStr << "<function ID=\""
-               << FuncDesc->getFileID() << "\">\n";
-      Contents << getParamsAsStr(FuncDesc->getParameters());
-      Contents << m_IndentStr << m_IndentStr << "</function>\n";
+      Contents << m_IndentStr << m_IndentStr << "<simulator ID=\""
+               << SimDesc->getFileID() << "\">\n";
+      Contents << getParamsAsStr(SimDesc->getParameters());
+      Contents << m_IndentStr << m_IndentStr << "</simulator>\n";
     }
     else if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
     {

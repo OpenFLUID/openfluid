@@ -68,7 +68,7 @@
 
 namespace openfluid { namespace ware {
 
-class PluggableFunction;
+class PluggableSimulator;
 
 }  }
 

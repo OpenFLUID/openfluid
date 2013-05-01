@@ -63,7 +63,7 @@
 #include "BuilderAppWindow.hpp"
 #include "BuilderAppActions.hpp"
 #include "BuilderWorkdirCreationDialog.hpp"
-#include <openfluid/machine/FunctionSignatureRegistry.hpp>
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include "BuilderExtensionsManager.hpp"
 
 // =====================================================================
@@ -97,12 +97,12 @@ bool BuilderAppModule::initialize()
   }
 
 
-  // Setting pluggable functions
+  // Setting pluggable simulators
 
   std::vector<std::string> PrefXPaths = PrefMgr->getExtraPlugPaths();
 
   for (int i = PrefXPaths.size() - 1; i > -1; i--)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraFunctionsPluginsPaths(PrefXPaths[i]);
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(PrefXPaths[i]);
 
   // Setting observers
 

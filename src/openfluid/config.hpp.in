@@ -79,13 +79,13 @@ const std::string INSTALL_PREFIX = "@CMAKE_INSTALL_PREFIX@";
 const std::string PLUGINS_EXT = "@PLUGINS_BINARY_EXTENSION@";
 
 // Plugins suffixes
-const std::string FUNCTIONS_PLUGINS_SUFFIX = "@OPENFLUID_FUNCTIONS_SUFFIX@";
+const std::string SIMULATORS_PLUGINS_SUFFIX = "@OPENFLUID_SIMULATORS_SUFFIX@";
 const std::string OBSERVERS_PLUGINS_SUFFIX = "@OPENFLUID_OBSERVERS_SUFFIX@";
 
 
-// Functions plugins dirs
-const std::string FUNCTIONS_PLUGINS_SUBDIR = "@OPENFLUID_FUNCPLUGSDIR@";
-const std::string FUNCTIONS_PLUGINS_STDDIR = "@LIB_INSTALL_PATH@/@OPENFLUID_MAIN_NAME@/@OPENFLUID_FUNCPLUGSDIR@";
+// Simulators plugins dirs
+const std::string SIMULATORS_PLUGINS_SUBDIR = "@OPENFLUID_SIMPLUGSDIR@";
+const std::string SIMULATORS_PLUGINS_STDDIR = "@LIB_INSTALL_PATH@/@OPENFLUID_MAIN_NAME@/@OPENFLUID_SIMPLUGSDIR@";
 
 // Observers plugins dirs
 const std::string OBSERVERS_PLUGINS_SUBDIR = "@OPENFLUID_OBSPLUGSDIR@";
@@ -141,8 +141,8 @@ const std::string FULL_VERSION = "@FULL_VERSION@";
 // debug information
 const std::string DEBUG_PREFIX = "@DEBUG_PREFIX@";
 
-// Functions threads
-const unsigned int FUNCTIONS_MAXNUMTHREADS = @OPENFLUID_FUNCSMAXNUMTHREADS@;
+// Simulators threads
+const unsigned int SIMULATORS_MAXNUMTHREADS = @OPENFLUID_SIMSMAXNUMTHREADS@;
 
 // i18n
 const bool NLS_ENABLE = @OPENFLUID_NLS_ENABLE@;

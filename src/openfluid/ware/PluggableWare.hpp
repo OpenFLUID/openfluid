@@ -63,7 +63,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/SimulationLogger.hpp>
 #include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/base/StdoutFileOStream.hpp>
 
 namespace openfluid { namespace ware {
@@ -101,7 +101,7 @@ class DLLEXPORT PluggableWare
 {
   public:
 
-    enum WareType { UNDEFINED, OBSERVER, FUNCTION };
+    enum WareType { UNDEFINED, OBSERVER, SIMULATOR };
 
 
   private:
@@ -112,7 +112,7 @@ class DLLEXPORT PluggableWare
     const openfluid::base::EnvironmentProperties* mp_WareEnv;
 
     /**
-      Function ID
+      Simulator ID
     */
     WareID_t m_WareID;
 

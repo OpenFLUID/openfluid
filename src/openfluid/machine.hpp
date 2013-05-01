@@ -67,7 +67,7 @@
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/WarePluginsManager.hpp>
-#include <openfluid/machine/FunctionPluginsManager.hpp>
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>

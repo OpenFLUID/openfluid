@@ -120,21 +120,21 @@ class DLLEXPORT Engine
      void checkExistingVariable(const openfluid::core::VariableName_t& VarName,
                                 const openfluid::core::Value::Type& VarType,
                                 const openfluid::core::UnitClass_t& ClassName,
-                                const std::string& FunctionID);
+                                const std::string& SimulatorID);
 
      void createVariable(const openfluid::core::VariableName_t& VarName,
                          const openfluid::core::Value::Type& VarType,
                          const openfluid::core::UnitClass_t& ClassName,
                          bool UpdateMode,
-                         const std::string& FunctionID);
+                         const std::string& SimulatorID);
 
      void checkExistingInputdata(openfluid::core::InputDataName_t DataName,
                                  openfluid::core::UnitClass_t ClassName,
-                                 const std::string& FunctionID);
+                                 const std::string& SimulatorID);
 
      void createInputdata(openfluid::core::InputDataName_t DataName,
                           openfluid::core::UnitClass_t ClassName,
-                          const std::string& FunctionID);
+                          const std::string& SimulatorID);
 
      void prepareOutputDir();
 

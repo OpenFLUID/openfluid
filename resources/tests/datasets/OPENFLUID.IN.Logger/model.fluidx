@@ -4,7 +4,7 @@
     <model>
 
    
-      <function ID="tests.logger" />       
+      <simulator ID="tests.logger" />       
       
   </model>
 </openfluid>

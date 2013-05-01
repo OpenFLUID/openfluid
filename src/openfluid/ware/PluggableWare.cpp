@@ -137,7 +137,7 @@ void PluggableWare::initializeWare(const WareID_t& ID)
   std::string LogDir;
   std::string LogFileSuffix = "_undefined";
 
-  if (m_WareType == FUNCTION) LogFileSuffix = openfluid::config::FUNCTIONS_PLUGINS_SUFFIX;
+  if (m_WareType == SIMULATOR) LogFileSuffix = openfluid::config::SIMULATORS_PLUGINS_SUFFIX;
   if (m_WareType == OBSERVER) LogFileSuffix = openfluid::config::OBSERVERS_PLUGINS_SUFFIX;
 
   OPENFLUID_GetRunEnvironment("dir.output",LogDir);

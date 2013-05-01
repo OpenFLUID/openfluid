@@ -3,9 +3,9 @@
 
     <model>
 
-       <function ID="tests.coupling.A" />       
-       <function ID="tests.coupling.B" />       
-       <function ID="tests.coupling.C" />       
+       <simulator ID="tests.coupling.A" />       
+       <simulator ID="tests.coupling.B" />       
+       <simulator ID="tests.coupling.C" />       
     
   </model>
 </openfluid>

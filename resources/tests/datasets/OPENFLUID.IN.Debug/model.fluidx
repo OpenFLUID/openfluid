@@ -4,7 +4,7 @@
     <model>
 
    
-      <function ID="tests.debug" />       
+      <simulator ID="tests.debug" />       
                 
     
   </model>

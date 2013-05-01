@@ -58,7 +58,7 @@
   @see http://arnholm.org/software/cppf77/cppf77.htm
   @see http://www.aei.mpg.de/~jthorn/c2f.html
 
-  Below are examples of C++ simulation function calling Fortran subroutines.
+  Below are examples of C++ simulators calling Fortran subroutines.
 
 
   fortran source code:

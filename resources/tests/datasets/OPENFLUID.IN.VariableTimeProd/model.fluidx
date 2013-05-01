@@ -3,11 +3,11 @@
 
     <model>
 
-      <function ID="tests.deltaTtime.prod" />
+      <simulator ID="tests.deltaTtime.prod" />
    
-      <function ID="tests.variabletime.prod">
+      <simulator ID="tests.variabletime.prod">
         <param name="usedefaultdeltat" value="0" />
-      </function>       
+      </simulator>       
           
     
   </model>

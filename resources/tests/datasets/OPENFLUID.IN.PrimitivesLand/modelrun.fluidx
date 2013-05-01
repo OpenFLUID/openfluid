@@ -3,7 +3,7 @@
 
     <model>
    
-      <function ID="tests.primitives.land" />                  
+      <simulator ID="tests.primitives.land" />                  
     
   </model>
   

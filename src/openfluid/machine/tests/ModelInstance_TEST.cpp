@@ -71,13 +71,13 @@
 // =====================================================================
 
 
-class FuncA : openfluid::ware::PluggableFunction
+class SimA : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncA() : openfluid::ware::PluggableFunction() {};
+    SimA() : openfluid::ware::PluggableSimulator() {};
 
-    ~FuncA() {};
+    ~SimA() {};
 
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
 
@@ -87,20 +87,20 @@ class FuncA : openfluid::ware::PluggableFunction
 
     openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "func.a " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return DefaultDeltaT(); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.a " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return DefaultDeltaT(); }
 
     void finalizeRun() { }
 
 };
 
 
-class FuncB : openfluid::ware::PluggableFunction
+class SimB : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncB() : openfluid::ware::PluggableFunction() {};
+    SimB() : openfluid::ware::PluggableSimulator() {};
 
-    ~FuncB() {};
+    ~SimB() {};
 
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
 
@@ -110,20 +110,20 @@ class FuncB : openfluid::ware::PluggableFunction
 
     openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "func.b " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(2); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.b " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(2); }
 
     void finalizeRun() { }
 
 };
 
 
-class FuncC : openfluid::ware::PluggableFunction
+class SimC : openfluid::ware::PluggableSimulator
 {
   public:
 
-    FuncC() : openfluid::ware::PluggableFunction() {};
+    SimC() : openfluid::ware::PluggableSimulator() {};
 
-    ~FuncC() {};
+    ~SimC() {};
 
     void initParams(const openfluid::ware::WareParams_t& /*Params*/)  { }
 
@@ -133,7 +133,7 @@ class FuncC : openfluid::ware::PluggableFunction
 
     openfluid::base::SchedulingRequest initializeRun() { return DefaultDeltaT(); }
 
-    openfluid::base::SchedulingRequest runStep() { std::cout << "func.c " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(0.5); }
+    openfluid::base::SchedulingRequest runStep() { std::cout << "sim.c " << OPENFLUID_GetCurrentTimeIndex() << std::endl; return MultipliedDefaultDeltaT(0.5); }
 
     void finalizeRun() { }
 
@@ -171,23 +171,23 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::machine::ModelItemInstance* MII;
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncA());
-  MII->Signature = new openfluid::ware::FunctionSignature();
-  MII->Signature->ID = "func.a";
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimA());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Signature->ID = "sim.a";
   MII->OriginalPosition = 1;
   MI.appendItem(MII);
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncB());
-  MII->Signature = new openfluid::ware::FunctionSignature();
-  MII->Signature->ID = "func.b";
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimB());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Signature->ID = "sim.b";
   MII->OriginalPosition = 2;
   MI.appendItem(MII);
 
   MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*)(new FuncC());
-  MII->Signature = new openfluid::ware::FunctionSignature();
-  MII->Signature->ID = "func.c";
+  MII->Body = (openfluid::ware::PluggableSimulator*)(new SimC());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Signature->ID = "sim.c";
   MII->OriginalPosition = 3;
   MI.appendItem(MII);
 
@@ -260,13 +260,13 @@ BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
   ModelInstanceSub MI(SB, NULL);
 
   openfluid::machine::ModelItemInstance* MII = new openfluid::machine::ModelItemInstance();
-  MII->Body = (openfluid::ware::PluggableFunction*) (new FuncA());
-  MII->Signature = new openfluid::ware::FunctionSignature();
-  MII->Signature->HandledData.FunctionParams.push_back(
+  MII->Body = (openfluid::ware::PluggableSimulator*) (new SimA());
+  MII->Signature = new openfluid::ware::SimulatorSignature();
+  MII->Signature->HandledData.SimulatorParams.push_back(
       *new openfluid::ware::SignatureHandledDataItem("A1", "unitsA", "", ""));
-  MII->Signature->HandledData.FunctionParams.push_back(
+  MII->Signature->HandledData.SimulatorParams.push_back(
       *new openfluid::ware::SignatureHandledDataItem("B1.C1", "unitsA", "", ""));
-  MII->Signature->HandledData.FunctionParams.push_back(
+  MII->Signature->HandledData.SimulatorParams.push_back(
       *new openfluid::ware::SignatureHandledDataItem("D1.E1.F1", "unitsA", "", ""));
 
   MI.appendItem(MII);

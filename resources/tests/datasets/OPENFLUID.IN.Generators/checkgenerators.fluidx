@@ -36,7 +36,7 @@
     </generator>
 
 
-    <function ID="tests.generators" />
+    <simulator ID="tests.generators" />
 
     <generator varname="tests.fixedprev" unitclass="TestUnits" varsize="11" method="fixed">
       <param name="fixedvalue" value="5.3" />

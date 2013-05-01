@@ -47,8 +47,8 @@
 
 
 #include <openfluid/market/MarketClient.hpp>
-#include <openfluid/market/MarketBinFunctionPackage.hpp>
-#include <openfluid/market/MarketSrcFunctionPackage.hpp>
+#include <openfluid/market/MarketBinSimulatorPackage.hpp>
+#include <openfluid/market/MarketSrcSimulatorPackage.hpp>
 #include <openfluid/market/MarketBinObserverPackage.hpp>
 #include <openfluid/market/MarketSrcObserverPackage.hpp>
 #include <openfluid/market/MarketSrcBuilderextPackage.hpp>
@@ -81,7 +81,7 @@ MarketClient::MarketClient() :
 
   std::string m_TempDir = openfluid::base::RuntimeEnvironment::getInstance()->getTempDir()+"/market";
   MarketPackage::setWorksDirs(boost::filesystem::path(m_TempDir).string(),
-                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagFuncVersionDir(),
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSimVersionDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagObsVersionDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBuildVersionDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagDataVersionDir(),
@@ -109,26 +109,26 @@ MarketClient::~MarketClient()
 
 void MarketClient::initMarketBag()
 {
-  // ===== Creation of function directories =====
+  // ===== Creation of simulator directories =====
 
-  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()));
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()));
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag functions directory");
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir())))
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag simulators directory");
 
-  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagBinSubDir()));
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagBinSubDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag functions binary subdirectory");
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag simulators binary subdirectory");
 
-  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+  boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir()));
 
-  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagFunctionDir()
+  if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag functions source subdirectory");
+    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag simulators source subdirectory");
 
 
   // ===== Creation of observer directories =====
@@ -256,7 +256,7 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 
 std::string MarketClient::getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural)
 {
-  std::string TypesNames[] = { "function", "observer", "builderext", "dataset"};
+  std::string TypesNames[] = { "simulator", "observer", "builderext", "dataset"};
   std::string Name = TypesNames[Type];
 
   if (Maj)
@@ -338,8 +338,8 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].License = KFile.get_string(TmpID,"license");
 
                // dependencies
-               if (KFile.has_key(TmpID,"dependencies.func"))
-                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string_list(TmpID,"dependencies.func");
+               if (KFile.has_key(TmpID,"dependencies.sim"))
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::SIM] = KFile.get_string_list(TmpID,"dependencies.sim");
 
                if (KFile.has_key(TmpID,"dependencies.obs"))
                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::OBS] = KFile.get_string_list(TmpID,"dependencies.obs");
@@ -449,7 +449,7 @@ void MarketClient::connect(const std::string& URL)
   std::string MarketFileURL = m_URL+"/"+openfluid::config::MARKETPLACE_SITEFILE;
 
   // Creating type keys
-  CatalogsFileURL[PackageInfo::FUNC] = "";
+  CatalogsFileURL[PackageInfo::SIM] = "";
   CatalogsFileURL[PackageInfo::OBS] = "";
   CatalogsFileURL[PackageInfo::BUILD] = "";
   CatalogsFileURL[PackageInfo::DATA] = "";
@@ -647,9 +647,9 @@ void MarketClient::preparePackagesInstallation()
       // Binary
       if (PCit->second.Selected == MetaPackageInfo::BIN)
       {
-        if (TPCit->first == PackageInfo::FUNC)
+        if (TPCit->first == PackageInfo::SIM)
         {
-          m_PacksToInstall.push_back(new MarketBinFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+          m_PacksToInstall.push_back(new MarketBinSimulatorPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
         }
         else if (TPCit->first == PackageInfo::OBS)
         {
@@ -665,9 +665,9 @@ void MarketClient::preparePackagesInstallation()
       // Source
       if (PCit->second.Selected == MetaPackageInfo::SRC)
       {
-        if (TPCit->first == PackageInfo::FUNC)
+        if (TPCit->first == PackageInfo::SIM)
         {
-          m_PacksToInstall.push_back(new MarketSrcFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+          m_PacksToInstall.push_back(new MarketSrcSimulatorPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
         }
         else if (TPCit->first == PackageInfo::OBS)
         {

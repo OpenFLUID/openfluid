@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
  <model>
-  <function ID="examples.trafficlight.state">
-  </function>
-  <function ID="examples.road.traffic">
-  </function>
+  <simulator ID="examples.trafficlight.state">
+  </simulator>
+  <simulator ID="examples.road.traffic">
+  </simulator>
  </model>
 
 

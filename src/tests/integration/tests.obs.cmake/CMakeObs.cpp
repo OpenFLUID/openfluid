@@ -78,7 +78,7 @@ BEGIN_OBSERVER_SIGNATURE("tests.obs.cmake")
   DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
 
 
-END_FUNCTION_SIGNATURE
+END_SIMULATOR_SIGNATURE
 
 
 // =====================================================================

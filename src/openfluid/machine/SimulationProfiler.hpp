@@ -57,7 +57,7 @@
 #ifndef __SIMULATIONPROFILER_HPP___
 #define __SIMULATIONPROFILER_HPP___
 
-#include <openfluid/ware/PluggableFunction.hpp>
+#include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/dllexport.hpp>
 
@@ -83,9 +83,9 @@ class DLLEXPORT SimulationProfiler
 
   private:
 
-    typedef std::map<openfluid::base::SimulationStatus::SimulationStage,boost::posix_time::time_duration> CumulativeFunctionProfile_t;
+    typedef std::map<openfluid::base::SimulationStatus::SimulationStage,boost::posix_time::time_duration> CumulativeSimulatorProfile_t;
 
-    typedef std::map<openfluid::ware::WareID_t,CumulativeFunctionProfile_t> CumulativeModelProfile_t;
+    typedef std::map<openfluid::ware::WareID_t,CumulativeSimulatorProfile_t> CumulativeModelProfile_t;
 
     typedef std::map<openfluid::ware::WareID_t,boost::posix_time::time_duration> CurrentTimeIndexModelProfile_t;
 
@@ -117,7 +117,7 @@ class DLLEXPORT SimulationProfiler
 
     ~SimulationProfiler();
 
-    void addDuration(const openfluid::ware::WareID_t& FuncID,
+    void addDuration(const openfluid::ware::WareID_t& SimID,
                      openfluid::base::SimulationStatus::SimulationStage ProfilePart,
                      const boost::posix_time::time_duration& Duration);
 

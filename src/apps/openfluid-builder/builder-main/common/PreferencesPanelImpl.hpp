@@ -123,7 +123,7 @@ class PreferencesPathsPanel : public openfluid::guicommon::PreferencesPanel
 
     Gtk::Button* mp_WorkdirFileButton;
 
-    PreferencesPathListWidget* mp_FunctionsPathListWidget;
+    PreferencesPathListWidget* mp_SimulatorsPathListWidget;
 
     PreferencesPathListWidget* mp_ExtensionsPathListWidget;
 
@@ -133,7 +133,7 @@ class PreferencesPathsPanel : public openfluid::guicommon::PreferencesPanel
 
     void onWorkdirFileButtonClicked();
 
-    void onFunctionsPathListChanged();
+    void onSimulatorsPathListChanged();
 
     void onExtensionsPathListChanged();
 

@@ -4,7 +4,7 @@
     <model>
 
    
-      <function ID="tests.wrongprod" />       
+      <simulator ID="tests.wrongprod" />       
       
   </model>
 </openfluid>

@@ -3,7 +3,7 @@
 
     <model>
       
-     <function ID="tests.primitives.events" />
+     <simulator ID="tests.primitives.events" />
   
   </model>
 </openfluid>

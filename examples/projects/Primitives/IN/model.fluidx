@@ -2,7 +2,7 @@
 <openfluid>
   <model>
 
-    <function ID="examples.primitives.unitsA.prod" />
+    <simulator ID="examples.primitives.unitsA.prod" />
 
      <generator varname="var10" unitclass="unitsA" method="fixed">
       <param name="fixedvalue" value="5.3" />
@@ -13,11 +13,11 @@
       <param name="max" value="6.0" />
     </generator>
     
-    <function ID="examples.primitives.unitsA.up">
+    <simulator ID="examples.primitives.unitsA.up">
        <param name="gmult" value="3" />
-    </function>
+    </simulator>
           
-    <function ID="examples.primitives.unitsB.prod" />
+    <simulator ID="examples.primitives.unitsB.prod" />
 
   </model>
 </openfluid>

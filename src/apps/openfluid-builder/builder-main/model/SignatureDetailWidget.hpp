@@ -59,7 +59,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
-#include <openfluid/ware/FunctionSignature.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 
 namespace openfluid {
 namespace machine {
@@ -67,16 +67,14 @@ class ModelItemSignatureInstance;
 }
 }
 
-class ModelFctDetailInfoPage;
-
 class SignatureDetailWidget: public Gtk::Notebook
 {
   private:
 
-    class ModelFctDetailColumns: public Gtk::TreeModel::ColumnRecord
+    class ModelSimDetailColumns: public Gtk::TreeModel::ColumnRecord
     {
       public:
-        ModelFctDetailColumns()
+        ModelSimDetailColumns()
         {
           add(m_Name);
           add(m_Type);
@@ -90,7 +88,7 @@ class SignatureDetailWidget: public Gtk::Notebook
         Gtk::TreeModelColumn<Glib::ustring> m_Class;
         Gtk::TreeModelColumn<Glib::ustring> m_Description;
     };
-    ModelFctDetailColumns m_Columns;
+    ModelSimDetailColumns m_Columns;
 
     void updateParamsModel(
         const std::vector<openfluid::ware::SignatureHandledDataItem>& Items);
