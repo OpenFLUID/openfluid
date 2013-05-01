@@ -106,7 +106,7 @@ class DLLEXPORT PackageInfo
   public:
 
     // Package type
-    enum PackageType { FUNC, OBS, BUILD, DATA};
+    enum PackageType { SIM, OBS, BUILD, DATA};
 
     typedef std::map<PackageType,std::list<openfluid::ware::WareID_t> > Dependencies_t;
 

@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   //MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
-  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::FUNC, CONFIGTESTS_OPTIONS_FOR_CMAKE);
+  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::SIM, CONFIGTESTS_OPTIONS_FOR_CMAKE);
   openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::OBS, CONFIGTESTS_OPTIONS_FOR_CMAKE);
   openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::BUILD, CONFIGTESTS_OPTIONS_FOR_CMAKE);
 

@@ -178,7 +178,7 @@ void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& 
 
 std::string MarketPackage::getCommonBuildOptions(const PackageInfo::PackageType& Type)
 {
-  if (Type == PackageInfo::FUNC)
+  if (Type == PackageInfo::SIM)
   {
     return m_SimulatorBuildConfigOptions;
   }
@@ -200,7 +200,7 @@ std::string MarketPackage::getCommonBuildOptions(const PackageInfo::PackageType&
 
 void MarketPackage::setCommonBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions)
 {
-  if (Type == PackageInfo::FUNC)
+  if (Type == PackageInfo::SIM)
   {
     m_SimulatorBuildConfigOptions = BuildOptions;
   }
@@ -243,7 +243,7 @@ void MarketPackage::appendToLogFile(const std::string& PackageName,
   if (m_IsLogEnabled)
   {
     std::string StrType;
-    if (Type == PackageInfo::FUNC) StrType = "FUNC";
+    if (Type == PackageInfo::SIM) StrType = "SIM";
     else if (Type == PackageInfo::OBS) StrType = "OBS";
     else if (Type == PackageInfo::BUILD) StrType = "BEXT";
     else StrType = "DATA";

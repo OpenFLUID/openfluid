@@ -256,7 +256,7 @@ void MarketClient::parseMarketSiteData(const std::string& SiteData)
 
 std::string MarketClient::getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural)
 {
-  std::string TypesNames[] = { "function", "observer", "builderext", "dataset"};
+  std::string TypesNames[] = { "simulator", "observer", "builderext", "dataset"};
   std::string Name = TypesNames[Type];
 
   if (Maj)
@@ -339,7 +339,7 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
 
                // dependencies
                if (KFile.has_key(TmpID,"dependencies.sim"))
-                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string_list(TmpID,"dependencies.func");
+                 MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::SIM] = KFile.get_string_list(TmpID,"dependencies.sim");
 
                if (KFile.has_key(TmpID,"dependencies.obs"))
                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::OBS] = KFile.get_string_list(TmpID,"dependencies.obs");
@@ -449,7 +449,7 @@ void MarketClient::connect(const std::string& URL)
   std::string MarketFileURL = m_URL+"/"+openfluid::config::MARKETPLACE_SITEFILE;
 
   // Creating type keys
-  CatalogsFileURL[PackageInfo::FUNC] = "";
+  CatalogsFileURL[PackageInfo::SIM] = "";
   CatalogsFileURL[PackageInfo::OBS] = "";
   CatalogsFileURL[PackageInfo::BUILD] = "";
   CatalogsFileURL[PackageInfo::DATA] = "";
@@ -647,7 +647,7 @@ void MarketClient::preparePackagesInstallation()
       // Binary
       if (PCit->second.Selected == MetaPackageInfo::BIN)
       {
-        if (TPCit->first == PackageInfo::FUNC)
+        if (TPCit->first == PackageInfo::SIM)
         {
           m_PacksToInstall.push_back(new MarketBinSimulatorPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
         }
@@ -665,7 +665,7 @@ void MarketClient::preparePackagesInstallation()
       // Source
       if (PCit->second.Selected == MetaPackageInfo::SRC)
       {
-        if (TPCit->first == PackageInfo::FUNC)
+        if (TPCit->first == PackageInfo::SIM)
         {
           m_PacksToInstall.push_back(new MarketSrcSimulatorPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
         }

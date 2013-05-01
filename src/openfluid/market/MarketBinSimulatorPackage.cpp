@@ -82,7 +82,7 @@ std::string MarketBinSimulatorPackage::getInstallPath() const
 
 PackageInfo::PackageType MarketBinSimulatorPackage::getPackageType() const
 {
-  return PackageInfo::FUNC;
+  return PackageInfo::SIM;
 }
 
 
