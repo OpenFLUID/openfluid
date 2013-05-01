@@ -120,10 +120,10 @@
   }
 
 /**
-  Macro for applying a threaded function to each unit of a class, following their process order
+  Macro for applying a threaded simulator to each unit of a class, following their process order
   @param[in] unitclass name of the unit class
-  @param[in] funcptr member function name
-  @param[in] ... extra parameters to pass to the member function
+  @param[in] simptr member simulator name
+  @param[in] ... extra parameters to pass to the member simulator
 */
 #define APPLY_UNITS_ORDERED_LOOP_THREADED(unitclass,simptr,...) \
     _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitclass,simptr,## __VA_ARGS__)
@@ -168,9 +168,9 @@
   }
 
 /**
-  Macro for applying a threaded function to each unit of the domain, following their process order
-  @param[in] funcptr member function name
-  @param[in] ... extra parameters to pass to the member function
+  Macro for applying a threaded simulator to each unit of the domain, following their process order
+  @param[in] simptr member simulator name
+  @param[in] ... extra parameters to pass to the member simulator
 */
 #define APPLY_ALLUNITS_ORDERED_LOOP_THREADED(simptr,...) \
     _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,simptr,## __VA_ARGS__)

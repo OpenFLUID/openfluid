@@ -147,13 +147,13 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
 // =====================================================================
 
 
-void OpenFLUIDApp::printFunctionsList()
+void OpenFLUIDApp::printSimulatorsList()
 {
 
   std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
     openfluid::machine::SimulatorPluginsManager::getInstance()->getAvailableWaresSignatures();
 
-  std::cout << "Available simulation functions:" << std::endl;
+  std::cout << "Available simulators:" << std::endl;
 
   bool OneAtLeast = false;
 
@@ -234,7 +234,7 @@ void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Si
 // =====================================================================
 
 
-void OpenFLUIDApp::printFunctionsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type)
+void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::SignatureHandledDataItem HandledItem, std::string Suffix, std::string Type)
 {
   std::string TypeStr = ("");
 
@@ -254,7 +254,7 @@ void OpenFLUIDApp::printFunctionsHandledDataItemReport(openfluid::ware::Signatur
   if (Type == ("rvar")) TypeStr = ("required variable");
   if (Type == ("svar")) TypeStr = ("used variable (only if available)");
 
-  if (Type == ("fpar")) TypeStr = ("function parameter");
+  if (Type == ("fpar")) TypeStr = ("simulator parameter");
 
   if (Type == ("pinput")) TypeStr = ("produced input data");
   if (Type == ("rinput")) TypeStr = ("required input data");
@@ -272,7 +272,7 @@ void OpenFLUIDApp::printFunctionsHandledDataItemReport(openfluid::ware::Signatur
 // =====================================================================
 
 
-void OpenFLUIDApp::printFunctionsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix)
+void OpenFLUIDApp::printSimulatorsHandledUnitsGraphReport(openfluid::ware::SignatureHandledUnitsGraph HandledUnitsGraph, std::string Suffix)
 {
   unsigned int i;
   if (!HandledUnitsGraph.UpdatedUnitsGraph.empty())
@@ -289,7 +289,7 @@ void OpenFLUIDApp::printFunctionsHandledUnitsGraphReport(openfluid::ware::Signat
 // =====================================================================
 
 
-void OpenFLUIDApp::printFunctionsTimeSchedulingReport(openfluid::ware::SignatureTimeScheduling TScheduling)
+void OpenFLUIDApp::printSimulatorsTimeSchedulingReport(openfluid::ware::SignatureTimeScheduling TScheduling)
 {
   if (TScheduling.Type == openfluid::ware::SignatureTimeScheduling::DEFAULT)
   {
@@ -314,19 +314,19 @@ void OpenFLUIDApp::printFunctionsTimeSchedulingReport(openfluid::ware::Signature
 // =====================================================================
 
 
-void OpenFLUIDApp::printFunctionsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix)
+void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHandledData HandledData, std::string Suffix)
 {
 
   unsigned int i;
 
-  for (i=0;i<HandledData.SimulatorParams.size();i++) printFunctionsHandledDataItemReport(HandledData.SimulatorParams[i],Suffix,("fpar"));
-  for (i=0;i<HandledData.ProducedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
-  for (i=0;i<HandledData.RequiredVars.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
-  for (i=0;i<HandledData.UpdatedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
-  for (i=0;i<HandledData.UsedVars.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
-  for (i=0;i<HandledData.ProducedInputdata.size();i++) printFunctionsHandledDataItemReport(HandledData.ProducedInputdata[i],Suffix,("pinput"));
-  for (i=0;i<HandledData.RequiredInputdata.size();i++) printFunctionsHandledDataItemReport(HandledData.RequiredInputdata[i],Suffix,("rinput"));
-  for (i=0;i<HandledData.UsedInputdata.size();i++) printFunctionsHandledDataItemReport(HandledData.UsedInputdata[i],Suffix,("sinput"));
+  for (i=0;i<HandledData.SimulatorParams.size();i++) printSimulatorsHandledDataItemReport(HandledData.SimulatorParams[i],Suffix,("fpar"));
+  for (i=0;i<HandledData.ProducedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.ProducedVars[i],Suffix,("pvar"));
+  for (i=0;i<HandledData.RequiredVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
+  for (i=0;i<HandledData.UpdatedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
+  for (i=0;i<HandledData.UsedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
+  for (i=0;i<HandledData.ProducedInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.ProducedInputdata[i],Suffix,("pinput"));
+  for (i=0;i<HandledData.RequiredInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredInputdata[i],Suffix,("rinput"));
+  for (i=0;i<HandledData.UsedInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedInputdata[i],Suffix,("sinput"));
 
   if (HandledData.UsedEventsOnUnits.size() > 0)
   {
@@ -350,7 +350,7 @@ void OpenFLUIDApp::printFunctionsHandledDataReport(openfluid::ware::SignatureHan
 // =====================================================================
 
 
-void OpenFLUIDApp::printFunctionsReport(const std::string Pattern)
+void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 {
 
   std::vector<openfluid::machine::ModelItemSignatureInstance*> PlugContainers =
@@ -382,11 +382,11 @@ void OpenFLUIDApp::printFunctionsReport(const std::string Pattern)
       std::cout << "   - Author(s): " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)")) << std::endl;
       std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;
       std::cout << "   - Time scheduling : ";
-      printFunctionsTimeSchedulingReport(PlugContainers[i]->Signature->TimeScheduling);
+      printSimulatorsTimeSchedulingReport(PlugContainers[i]->Signature->TimeScheduling);
       std::cout << "   - Handled data" << std::endl;
-      printFunctionsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "));
+      printSimulatorsHandledDataReport(PlugContainers[i]->Signature->HandledData,("     . "));
       std::cout << "   - Handled units graph" << std::endl;
-      printFunctionsHandledUnitsGraphReport(PlugContainers[i]->Signature->HandledUnitsGraph,("     . "));
+      printSimulatorsHandledUnitsGraphReport(PlugContainers[i]->Signature->HandledUnitsGraph,("     . "));
 
 
       if (i != PlugContainers.size()-1)
@@ -454,15 +454,15 @@ int OpenFLUIDApp::stopAppReturn(std::string Msg)
 
 void OpenFLUIDApp::printPaths(bool ShowTemp)
 {
-  std::vector<std::string> FunctionsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths();
+  std::vector<std::string> SimulatorsPaths = openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths();
   std::vector<std::string> ObserversPaths = openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths();
   unsigned int i;
 
   std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
   if (openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults() || openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport()) std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
 
-  std::cout << "Functions search path(s):" << std::endl;
-  for (i=0;i<FunctionsPaths.size();i++) std::cout << " #" << (i+1) << " " << FunctionsPaths[i] << std::endl;
+  std::cout << "Simulators search path(s):" << std::endl;
+  for (i=0;i<SimulatorsPaths.size();i++) std::cout << " #" << (i+1) << " " << SimulatorsPaths[i] << std::endl;
 
   std::cout << "Observers search path(s):" << std::endl;
   for (i=0;i<ObserversPaths.size();i++) std::cout << " #" << (i+1) << " " << ObserversPaths[i] << std::endl;
@@ -646,20 +646,20 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("buddyopts",boost::program_options::value< std::string >(),"set options for specified OpenFLUID buddy")
       ("clean-output-dir,c","clean results output directory by removing existing files")
       ("observers-list,e","list available observers (do not run the simulation)")
-      ("functions-list,f","list available functions (do not run the simulation)")
+      ("functions-list,f","list available simulators (do not run the simulation)")
       ("help,h", "display help message")
       ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
-      ("enable-simulation-profiling,k","enable time profiling for functions")
+      ("enable-simulation-profiling,k","enable time profiling for simulators")
       ("observers-report,l","print a report of available observers, with details (do not run the simulation)")
       ("observers-paths,n",boost::program_options::value< std::string >(),"add extra observers search paths (colon separated)")
       ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
-      ("functions-paths,p",boost::program_options::value< std::string >(),"add extra functions search paths (colon separated)")
+      ("functions-paths,p",boost::program_options::value< std::string >(),"add extra simulators search paths (colon separated)")
       ("quiet,q","quiet display during simulation run")
-      ("functions-report,r","print a report of available functions, with details (do not run the simulation)")
+      ("functions-report,r","print a report of available simulators, with details (do not run the simulation)")
       ("no-simreport,s","do not generate simulation report")
       ("show-paths","print the used paths (do not run the simulation)")
       ("max-threads,t",boost::program_options::value< unsigned int >(),std::string("change maximum number of threads for threaded spatial loops (default is "+DefaultMaxThreadsStr+")").c_str())
-      ("matching-functions-report,u",boost::program_options::value< std::string >(),"print a report of functions matching the given wildcard-based pattern (do not run the simulation)")
+      ("matching-functions-report,u",boost::program_options::value< std::string >(),"print a report of simulators matching the given wildcard-based pattern (do not run the simulation)")
       ("verbose,v","verbose display during simulation")
       ("project,w",boost::program_options::value< std::string >(),"set project directory")
       ("version","get version (do not run the simulation)")
@@ -751,14 +751,14 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   {
     m_RunType = InfoRequest;
     printOpenFLUIDInfos();
-    printFunctionsList();
+    printSimulatorsList();
     return;
   }
 
   if (OptionsVars.count("functions-report"))
   {
     m_RunType = InfoRequest;
-    printFunctionsReport("");
+    printSimulatorsReport("");
     return;
   }
 
@@ -772,7 +772,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
   if (OptionsVars.count("matching-functions-report"))
   {
     m_RunType = InfoRequest;
-    printFunctionsReport(OptionsVars["matching-functions-report"].as<std::string>());
+    printSimulatorsReport(OptionsVars["matching-functions-report"].as<std::string>());
     return;
   }
 

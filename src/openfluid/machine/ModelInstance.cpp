@@ -74,8 +74,8 @@ namespace openfluid { namespace machine {
     std::list<ModelItemInstance*>::const_iterator _M_SimIter; \
 
 /**
-  Macro for parsing the functions list and calling the given method of each function of the list
-  @param[in] calledmethod the method to call on each function
+  Macro for parsing the simulators list and calling the given method of each simulator of the list
+  @param[in] calledmethod the method to call on each simulator
   @param[out] statevar the globalized return of the method calls
  */
 #define PARSE_SIMULATOR_LIST(calledmethod,listenermethod,timeprofilepart) \
@@ -370,7 +370,7 @@ void ModelInstance::finalize()
   std::list<ModelItemInstance*>::const_iterator SimIter;
 
 
-  // call of finalizeFunction method on each function
+  // call of finalizeWare method on each simulator
   SimIter = m_ModelItems.begin();
   while (SimIter != m_ModelItems.end())
   {
@@ -379,7 +379,7 @@ void ModelInstance::finalize()
   }
 
 
-  // destroy of each function
+  // destroy of each simulator
   SimIter = m_ModelItems.begin();
   while (SimIter != m_ModelItems.end())
   {

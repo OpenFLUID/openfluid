@@ -63,7 +63,7 @@ namespace openfluid { namespace base {
 
 /**
   Description of a scheduling request, mainly used during simulations
-  for simulation functions scheduling after every execution
+  for simulators scheduling after every execution
 */
 class SchedulingRequest
 {

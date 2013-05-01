@@ -83,7 +83,7 @@ const std::string SIMULATORS_PLUGINS_SUFFIX = "@OPENFLUID_SIMULATORS_SUFFIX@";
 const std::string OBSERVERS_PLUGINS_SUFFIX = "@OPENFLUID_OBSERVERS_SUFFIX@";
 
 
-// Functions plugins dirs
+// Simulators plugins dirs
 const std::string SIMULATORS_PLUGINS_SUBDIR = "@OPENFLUID_SIMPLUGSDIR@";
 const std::string SIMULATORS_PLUGINS_STDDIR = "@LIB_INSTALL_PATH@/@OPENFLUID_MAIN_NAME@/@OPENFLUID_SIMPLUGSDIR@";
 
@@ -141,7 +141,7 @@ const std::string FULL_VERSION = "@FULL_VERSION@";
 // debug information
 const std::string DEBUG_PREFIX = "@DEBUG_PREFIX@";
 
-// Functions threads
+// Simulators threads
 const unsigned int SIMULATORS_MAXNUMTHREADS = @OPENFLUID_SIMSMAXNUMTHREADS@;
 
 // i18n

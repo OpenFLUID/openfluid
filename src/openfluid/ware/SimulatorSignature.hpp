@@ -92,17 +92,17 @@
 
 
 /**
-  Macro for declaration of the function application domain
+  Macro for declaration of the simulator application domain
 */
 #define DECLARE_SIGNATURE_DOMAIN(domain) Signature->Domain = domain;
 
 /**
-  Macro for declaration of the function application processes
+  Macro for declaration of the simulator application processes
 */
 #define DECLARE_SIGNATURE_PROCESS(process) Signature->Process = process;
 
 /**
-  Macro for declaration of the function application numerical method
+  Macro for declaration of the simulator application numerical method
 */
 #define DECLARE_SIGNATURE_METHOD(method) Signature->Method = method;
 
@@ -112,7 +112,7 @@
 
 
 /**
-  Macro for declaration of a function parameter
+  Macro for declaration of a simulator parameter
   @param[in] name name of the parameter
   @param[in] description description of the parameter
   @param[in] unit unit of the parameter. Could be an empty string if there is no unit
@@ -285,7 +285,7 @@ typedef std::string SimDomain_t;
 
 
 /**
-Class for storage of the definition of data handled by the function.
+Class for storage of the definition of data handled by the simulator.
 */
 class SignatureHandledDataItem
 {
@@ -306,7 +306,7 @@ class SignatureHandledDataItem
 };
 
 /**
-Class for storage of the definition of typed data handled by the function.
+Class for storage of the definition of typed data handled by the simulator.
 */
 class SignatureHandledTypedDataItem : public SignatureHandledDataItem
 {
@@ -363,7 +363,7 @@ class SignatureHandledTypedDataItem : public SignatureHandledDataItem
 
 
 /**
-  Class for storage of the definition of spatial units handled by the function.
+  Class for storage of the definition of spatial units handled by the simulator.
 */
 class SignatureHandledUnitsClassItem
 {
@@ -382,7 +382,7 @@ class SignatureHandledUnitsClassItem
 
 
 /**
-  Class for storage of the definition of the data handled by the function. This is part of the signature.
+  Class for storage of the definition of the data handled by the simulator. This is part of the signature.
 */
 class SignatureHandledData
 {

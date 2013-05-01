@@ -122,7 +122,7 @@ class DLLEXPORT PluggableObserver : public SimulationInspectorWare
     void initializeWare(const WareID_t& SimID);
 
     /**
-       Initializes function parameters of the function, given as a hash map. Internally called by the framework.
+       Initializes simulator parameters of the simulator, given as a hash map. Internally called by the framework.
      */
     virtual void initParams(const openfluid::ware::WareParams_t& Params)=0;
 

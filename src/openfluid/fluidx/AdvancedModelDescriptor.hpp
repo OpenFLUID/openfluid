@@ -114,7 +114,7 @@ class AdvancedModelDescriptor
                     unsigned int Position);
 
     /**
-     * @brief Replace existing functions with FunctionsList
+     * @brief Replace existing simulators with SimulatorsList
      */
     void setItems(
         std::list<openfluid::fluidx::ModelItemDescriptor*> SimulatorsList);

@@ -112,7 +112,7 @@ class DLLEXPORT PluggableWare
     const openfluid::base::EnvironmentProperties* mp_WareEnv;
 
     /**
-      Function ID
+      Simulator ID
     */
     WareID_t m_WareID;
 

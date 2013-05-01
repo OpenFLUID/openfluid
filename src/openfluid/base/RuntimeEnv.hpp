@@ -232,7 +232,7 @@ class DLLEXPORT RuntimeEnvironment
     inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
 
     /**
-      @return the market bag directory for functions of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/simulators)
+      @return the market bag directory for simulators of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/simulators)
      */
     inline std::string getMarketBagSimVersionDir() const { return m_MarketBagSimVersionDir; };
 
@@ -308,9 +308,9 @@ class DLLEXPORT RuntimeEnvironment
       { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
 
     /**
-      Returns the path for a given function plugin file, taking into account the function plugins path search order
-      @param[in] Filename The given function plugin file name
-      @return the first path found for a given function plugin file
+      Returns the path for a given simulator plugin file, taking into account the simulator plugins path search order
+      @param[in] Filename The given simulator plugin file name
+      @return the first path found for a given simulator plugin file
     */
     std::string getSimulatorPluginFullPath(std::string Filename);
 
@@ -328,7 +328,7 @@ class DLLEXPORT RuntimeEnvironment
     inline std::vector<std::string> getExtraSimulatorsPluginsPaths() const  { return m_ExtraSimulatorsPlugsDirs;  };
 
     /**
-      Returns the ordered list of paths used to search for function plugins
+      Returns the ordered list of paths used to search for simulator plugins
       @return the ordered list of paths
     */
     inline std::vector<std::string> getSimulatorsPluginsPaths() const

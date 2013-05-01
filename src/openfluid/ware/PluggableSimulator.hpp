@@ -78,7 +78,7 @@
 
 
 /**
-  Macro for declaration of function and signature hooks
+  Macro for declaration of simulator and signature hooks
 */
 #define DECLARE_SIMULATOR_PLUGIN \
   extern "C" \
@@ -94,7 +94,7 @@
 
 
 /**
-  Macro for definition of function hook
+  Macro for definition of simulator hook
   @param[in] pluginclassname The name of the class to instantiate
 */
 #define DEFINE_SIMULATOR_CLASS(pluginclassname) \
@@ -118,11 +118,11 @@ namespace openfluid { namespace ware {
 
 
 /**
-  @brief Abstract class for simulation function plugin
+  @brief Abstract class for simulator plugin
 
-  Abstract class for simulation function plugin interface,
-  defining the minimal structure for a simulation function. \n
-  All simulation functions must inherit from this class.
+  Abstract class for simulator plugin interface,
+  defining the minimal structure for a simulator. \n
+  All simulators must inherit from this class.
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
@@ -139,7 +139,7 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
 
 
     /**
-      Function parameters
+      Simulator parameters
     */
     //openfluid::ware::WareParams_t m_ParamsMap;
 
@@ -149,8 +149,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
   protected:
 
     /**
-      Gets a function parameter from the parameters set, as a StringValue
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter from the parameters set, as a StringValue
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -159,8 +159,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         openfluid::core::StringValue& Val) const;
 
     /**
-      Gets a function parameter from the parameters set, as a DoubleValue
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter from the parameters set, as a DoubleValue
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -169,8 +169,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         openfluid::core::DoubleValue& Val) const;
 
     /**
-      Gets a function parameter from the parameters set, as a VectorValue
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter from the parameters set, as a VectorValue
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -179,8 +179,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         openfluid::core::VectorValue& Val) const;
 
     /**
-      Gets a function parameter from the parameters set, as a MatrixValue
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter from the parameters set, as a MatrixValue
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -189,8 +189,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         openfluid::core::MatrixValue& Val) const;
 
     /**
-      Gets a function parameter from the parameters set, as a double
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter from the parameters set, as a double
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -199,8 +199,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         double& Val) const;
 
     /**
-      Gets a function parameter value from the parameters set, as a long int
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter value from the parameters set, as a long int
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -209,8 +209,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         long& Val) const;
 
     /**
-      Gets a function parameter from the parameters set, as a float
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter from the parameters set, as a float
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -219,8 +219,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         float& Val) const;
 
     /**
-      Gets a function parameter value from the parameters set, as an int
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter value from the parameters set, as an int
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -229,8 +229,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         int& Val) const;
 
     /**
-      Gets a function parameter value from the parameters set, as a string
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter value from the parameters set, as a string
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Val the value of the requested parameter
     */
@@ -239,8 +239,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         std::string& Val) const;
 
     /**
-      Gets a function parameter vector of values from the parameters set, as a vector of strings
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter vector of values from the parameters set, as a vector of strings
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
     */
@@ -249,8 +249,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         std::vector<std::string>& Vals) const;
 
     /**
-      Gets a function parameter vector of values from the parameters set, as a vector of doubles
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter vector of values from the parameters set, as a vector of doubles
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
     */
@@ -259,8 +259,8 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
                                         std::vector<double>& Vals) const;
 
     /**
-      Gets a function parameter vector of values from the parameters set, as a vector of long ints
-      @param[in] Params the parameters set for the simulation function
+      Gets a simulator parameter vector of values from the parameters set, as a vector of long ints
+      @param[in] Params the parameters set for the simulator
       @param[in] ParamName the name of the requested parameter
       @param[out] Vals the vector of values of the requested parameter
     */
@@ -314,7 +314,7 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
     void initializeWare(const WareID_t& SimID,const unsigned int& MaxThreads);
 
     /**
-      Initializes function parameters of the function, given as a hash map. Internally called by the framework.
+      Initializes simulator parameters of the simulator, given as a hash map. Internally called by the framework.
     */
     virtual void initParams(const openfluid::ware::WareParams_t& Params)=0;
 
@@ -324,7 +324,7 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
     virtual void prepareData()=0;
 
     /**
-      Checks the function consistency. Internally called by the framework.
+      Checks the simulator consistency. Internally called by the framework.
     */
     virtual void checkConsistency()=0;
 

@@ -72,7 +72,7 @@ class WareDescriptor
   protected:
 
     WareType m_WareType;
-    openfluid::ware::WareParams_t m_Params;  // Function parameters set
+    openfluid::ware::WareParams_t m_Params;  // Simulator parameters set
 
   public:
 

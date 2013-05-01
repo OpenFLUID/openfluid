@@ -208,7 +208,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   m_TimeStep = 0;
 
-  // ====== Function environnement ======
+  // ====== Simulator environnement ======
 
   mp_WareEnv = new openfluid::base::EnvironmentProperties();
 
@@ -220,7 +220,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
   mp_WareEnv->setValue("mode.saveresults", m_WriteResults);
   mp_WareEnv->setValue("mode.writereport", m_WriteSimReport);
 
-  // ====== Function plugins search order ======
+  // ====== Simulator plugins search order ======
   //  1) command line paths,
   //  2) environment var OPENFLUID_SIMS_PATH
   //  3) user directory,

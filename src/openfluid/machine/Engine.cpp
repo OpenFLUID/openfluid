@@ -386,7 +386,7 @@ void Engine::checkExtraFilesConsistency()
   ModelItemInstance* CurrentSimulator;
 
 
-  // on each function
+  // on each simulator
   for (SimIter = m_ModelInstance.getItems().begin(); SimIter != m_ModelInstance.getItems().end(); ++SimIter)
   {
     CurrentSimulator = *SimIter;
@@ -510,7 +510,7 @@ void Engine::checkConsistency()
   }
 
 
-  // check simulation functions count
+  // check simulators count
 
   try
   {

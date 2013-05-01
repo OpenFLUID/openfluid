@@ -68,7 +68,7 @@ class VerboseMachineListener : public DefaultMachineListener
 {
   private:
 
-    void displayFunctionStatus(const openfluid::base::Listener::Status& Status)
+    void displaySimulatorStatus(const openfluid::base::Listener::Status& Status)
     {
       switch (Status)
       {
@@ -95,91 +95,91 @@ class VerboseMachineListener : public DefaultMachineListener
     ~VerboseMachineListener() {};
 
 
-    virtual void onSimulatorInitParams(const std::string& FunctionID)
+    virtual void onSimulatorInitParams(const std::string& SimulatorID)
     {
-      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout << std::endl << std::setw(50) << SimulatorID;
       std::cout.flush();
     };
 
     virtual void onSimulatorInitParamsDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+                                          const std::string& /*SimulatorID*/)
     {
-      displayFunctionStatus(Status);
+      displaySimulatorStatus(Status);
     };
 
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onSimulatorPrepareData(const std::string& FunctionID)
+    virtual void onSimulatorPrepareData(const std::string& SimulatorID)
     {
-      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout << std::endl << std::setw(50) << SimulatorID;
       std::cout.flush();
     };
 
 
     virtual void onSimulatorPrepareDataDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+                                          const std::string& /*SimulatorID*/)
     {
-      displayFunctionStatus(Status);
+      displaySimulatorStatus(Status);
     };
 
     virtual void onPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onSimulatorCheckConsistency(const std::string& FunctionID)
+    virtual void onSimulatorCheckConsistency(const std::string& SimulatorID)
     {
-      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout << std::endl << std::setw(50) << SimulatorID;
       std::cout.flush();
     };
 
 
     virtual void onSimulatorCheckConsistencyDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+                                          const std::string& /*SimulatorID*/)
     {
-      displayFunctionStatus(Status);
+      displaySimulatorStatus(Status);
     };
 
     virtual void onCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onSimulatorInitializeRun(const std::string& FunctionID)
+    virtual void onSimulatorInitializeRun(const std::string& SimulatorID)
     {
-      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout << std::endl << std::setw(50) << SimulatorID;
       std::cout.flush();
     };
 
 
     virtual void onSimulatorInitializeRunDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+                                          const std::string& /*SimulatorID*/)
     {
-      displayFunctionStatus(Status);
+      displaySimulatorStatus(Status);
     };
 
     virtual void onInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onSimulatorRunStep(const std::string& FunctionID)
+    virtual void onSimulatorRunStep(const std::string& SimulatorID)
     {
-      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout << std::endl << std::setw(50) << SimulatorID;
       std::cout.flush();
     };
 
 
     virtual void onSimulatorRunStepDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+                                          const std::string& /*SimulatorID*/)
     {
-      displayFunctionStatus(Status);
+      displaySimulatorStatus(Status);
     };
 
     virtual void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onSimulatorFinalizeRun(const std::string& FunctionID)
+    virtual void onSimulatorFinalizeRun(const std::string& SimulatorID)
     {
-      std::cout << std::endl << std::setw(50) << FunctionID;
+      std::cout << std::endl << std::setw(50) << SimulatorID;
       std::cout.flush();
     };
 
 
     virtual void onSimulatorFinalizeRunDone(const openfluid::base::Listener::Status& Status,
-                                          const std::string& /*FunctionID*/)
+                                          const std::string& /*SimulatorID*/)
     {
-      displayFunctionStatus(Status);
+      displaySimulatorStatus(Status);
     };
 
     virtual void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/) {};

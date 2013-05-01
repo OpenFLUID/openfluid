@@ -84,7 +84,7 @@ SimulationProfiler::SimulationProfiler(const openfluid::base::SimulationStatus* 
   m_CurrentSequenceFile.open(openfluid::base::RuntimeEnvironment::getInstance()->getOutputFullPath(openfluid::config::SCHEDULE_PROFILE_FILE).c_str(),std::ios::out);
   m_CurrentProfileFile.open(openfluid::base::RuntimeEnvironment::getInstance()->getOutputFullPath(openfluid::config::TIMEINDEX_PROFILE_FILE).c_str(),std::ios::out);
 
-  m_CurrentSequenceFile << "TIMEINDEX;<functions call sequence>\n";
+  m_CurrentSequenceFile << "TIMEINDEX;<simulators call sequence>\n";
 
 
   m_CurrentProfileFile << std::fixed << std::setprecision(9);
