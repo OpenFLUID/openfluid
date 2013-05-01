@@ -7,5 +7,5 @@ authors =
 
 file = tests.market.data.dummy_2.0.0_data.ofpk
 license = GPLv3-OF
-dependencies.func=tests.market.func.dummy_2.0.0_bin.ofpk
+dependencies.sim=tests.market.sim.dummy_2.0.0_bin.ofpk
 dependencies.obs=tests.market.obs.dummy_2.0.0_src.ofpk

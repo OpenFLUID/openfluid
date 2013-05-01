@@ -3,7 +3,7 @@
 
     <model>
 
-      <simulator ID="tests.func.cmake" />
+      <simulator ID="tests.sim.cmake" />
     
   </model>
 </openfluid>

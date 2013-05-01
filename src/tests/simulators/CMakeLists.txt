@@ -68,16 +68,16 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesTime
 ###########################################################################
 
 
-OPNFLD_ADD_SIMULATOR(tests.primitives.funcparams tests.primitives.funcparams ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME simulators-PrimitivesFuncParams 
+OPNFLD_ADD_SIMULATOR(tests.primitives.simparams tests.primitives.simparams ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesSimParams 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesFuncParams"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesSimParams"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams" 
                            "-p${TEST_OUTPUT_PATH}"
                            "-n${TEST_OUTPUT_PATH}"
-                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesFuncParams/tests.primitives.funcparams_ofware-sim.log"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams/tests.primitives.simparams_ofware-sim.log"
                    )
 
 
@@ -250,7 +250,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Tools
 ###########################################################################
 
                                      
-OPNFLD_ADD_SIMULATOR(tests.fakefunction tests.fakefunction ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_SIMULATOR(tests.fakesimulator tests.fakesimulator ${TEST_OUTPUT_PATH})
 
 
 ###########################################################################

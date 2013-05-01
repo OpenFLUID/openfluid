@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="yes"?>
 <openfluid>
     <model>
-      <simulator fileID="tests.fakefunction" />
+      <simulator fileID="tests.fakesimulator" />
     
   </model>
 </openfluid>

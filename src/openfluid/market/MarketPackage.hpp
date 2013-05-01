@@ -92,7 +92,7 @@ class DLLEXPORT MarketPackage
     static std::string m_TempDownloadsDir;
 
     /**
-     * Market-bag dir for functions
+     * Market-bag dir for simulators
     */
     static std::string m_MarketBagSimulatorDir;
 
@@ -124,7 +124,7 @@ class DLLEXPORT MarketPackage
     static std::string m_CMakeCommand;
 
     /**
-     * Common build options for functions
+     * Common build options for simulators
     */
     static std::string m_SimulatorBuildConfigOptions;
 

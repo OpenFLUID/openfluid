@@ -7,7 +7,7 @@
 
       <simulator ID="tests.primitives.runenv" />                  
             
-      <simulator ID="tests.primitives.funcparams"> 
+      <simulator ID="tests.primitives.simparams"> 
         <param name="strparam" value="strvalue" />
         <param name="doubleparam" value="0.1" />
         <param name="longparam" value="10" />

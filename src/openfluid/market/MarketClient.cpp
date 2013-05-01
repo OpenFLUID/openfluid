@@ -47,8 +47,8 @@
 
 
 #include <openfluid/market/MarketClient.hpp>
-#include <openfluid/market/MarketBinFunctionPackage.hpp>
-#include <openfluid/market/MarketSrcFunctionPackage.hpp>
+#include <openfluid/market/MarketBinSimulatorPackage.hpp>
+#include <openfluid/market/MarketSrcSimulatorPackage.hpp>
 #include <openfluid/market/MarketBinObserverPackage.hpp>
 #include <openfluid/market/MarketSrcObserverPackage.hpp>
 #include <openfluid/market/MarketSrcBuilderextPackage.hpp>
@@ -109,7 +109,7 @@ MarketClient::~MarketClient()
 
 void MarketClient::initMarketBag()
 {
-  // ===== Creation of function directories =====
+  // ===== Creation of simulator directories =====
 
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()));
 
@@ -338,7 +338,7 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].License = KFile.get_string(TmpID,"license");
 
                // dependencies
-               if (KFile.has_key(TmpID,"dependencies.func"))
+               if (KFile.has_key(TmpID,"dependencies.sim"))
                  MetaPackagesCatalog[TmpID].AvailablePackages[MetaPackageInfo::FLUIDX].Dependencies[PackageInfo::FUNC] = KFile.get_string_list(TmpID,"dependencies.func");
 
                if (KFile.has_key(TmpID,"dependencies.obs"))
@@ -649,7 +649,7 @@ void MarketClient::preparePackagesInstallation()
       {
         if (TPCit->first == PackageInfo::FUNC)
         {
-          m_PacksToInstall.push_back(new MarketBinFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
+          m_PacksToInstall.push_back(new MarketBinSimulatorPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::BIN].URL));
         }
         else if (TPCit->first == PackageInfo::OBS)
         {
@@ -667,7 +667,7 @@ void MarketClient::preparePackagesInstallation()
       {
         if (TPCit->first == PackageInfo::FUNC)
         {
-          m_PacksToInstall.push_back(new MarketSrcFunctionPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
+          m_PacksToInstall.push_back(new MarketSrcSimulatorPackage(PCit->second.ID,PCit->second.AvailablePackages[MetaPackageInfo::SRC].URL));
         }
         else if (TPCit->first == PackageInfo::OBS)
         {

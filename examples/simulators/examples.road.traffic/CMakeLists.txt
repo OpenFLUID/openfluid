@@ -54,7 +54,7 @@ ADD_DEFINITIONS(${SIM_DEFINITIONS})
 
 
 # =========================================================================
-#   function build
+#   simulator build
 # =========================================================================
 
 ADD_LIBRARY(${SIM_ID} MODULE ${SIM_CPP} ${SIM_FORTRAN})
@@ -64,7 +64,7 @@ TARGET_LINK_LIBRARIES(${SIM_ID} ${openfluid_LIBRARIES} ${Boost_LIBRARIES} ${FORT
 
 
 # =========================================================================
-#   function documentation
+#   simulator documentation
 # =========================================================================
 
 IF(REPOS_NOFUNC2DOC)
@@ -97,7 +97,7 @@ ENDIF(PDFLATEX_COMPILER AND NOT NOFUNC2DOC)
 
 
 # =========================================================================
-#   function tests
+#   simulator tests
 # =========================================================================  
 
 IF(REPOS_BUILD)

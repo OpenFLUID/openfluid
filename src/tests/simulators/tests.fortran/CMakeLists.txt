@@ -4,7 +4,7 @@ IF(BUILD_FORTRAN_SIMULATORS)
 
   SET(CMAKE_Fortran_FLAGS_RELEASE "-funroll-all-loops -fno-f2c -O3")
 
-  ADD_LIBRARY(tests.fortran${OPENFLUID_SIMULATORS_SUFFIX} MODULE FortranFunc.cpp SbrFortran.f90)
+  ADD_LIBRARY(tests.fortran${OPENFLUID_SIMULATORS_SUFFIX} MODULE FortranSim.cpp SbrFortran.f90)
   SET_TARGET_PROPERTIES(tests.fortran${OPENFLUID_SIMULATORS_SUFFIX} 
                         PROPERTIES PREFIX "" SUFFIX "${PLUGINS_BINARY_EXTENSION}" 
                         LIBRARY_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")

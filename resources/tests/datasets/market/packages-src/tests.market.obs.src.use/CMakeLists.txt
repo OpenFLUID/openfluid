@@ -4,7 +4,7 @@ FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware)
 
 
 SET(SIM_ID tests.market.obs.src.use)
-SET(SIM_CPP MarketUseFunc.cpp)
+SET(SIM_CPP MarketUseSim.cpp)
 
 OPENFLUID_SHOW_CMAKE_VARIABLES()
 

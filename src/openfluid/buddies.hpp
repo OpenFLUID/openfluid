@@ -60,7 +60,7 @@
 #include <openfluid/buddies/ConvertBuddy.hpp>
 #include <openfluid/buddies/Func2DocBuddy.hpp>
 #include <openfluid/buddies/NewDataBuddy.hpp>
-#include <openfluid/buddies/NewFuncBuddy.hpp>
+#include <openfluid/buddies/NewSimBuddy.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>

@@ -1,5 +1,5 @@
 /**
-  \file ExampleFuncProd.cpp
+  \file ExampleUnitsAProd.cpp
 */
 
 
