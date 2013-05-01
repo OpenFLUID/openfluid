@@ -362,7 +362,7 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleRun
                            "-p${TESTS_OUTPUTDATA_PATH}/tests.func.cmake"
                            "-n${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.cmake_ofware-func.log"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.cmake_ofware-sim.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.cmake_ofware-obs.log")
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleFunctionBuild)
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
@@ -434,8 +434,8 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesRunPrimitives
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                               "-w" "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives"                                                   
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/examples.primitives.unitsA.prod_ofware-func.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/examples.primitives.unitsB.prod_ofware-func.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/examples.primitives.unitsA.prod_ofware-sim.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/examples.primitives.unitsB.prod_ofware-sim.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/fullA_unitsA1_var1.csv"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/fullB_unitsB2_var5.csv"
                    )
