@@ -4,7 +4,7 @@
     <model>
 
    
-      <function ID="tests.fortran" />       
+      <simulator ID="tests.fortran" />       
                 
     
   </model>

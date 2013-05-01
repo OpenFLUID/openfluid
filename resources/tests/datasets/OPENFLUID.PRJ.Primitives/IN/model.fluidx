@@ -4,11 +4,11 @@
     <model>
 
    
-      <function ID="tests.primitives.time" />       
+      <simulator ID="tests.primitives.time" />       
      
-      <function ID="tests.primitives.variables.prod" />       
+      <simulator ID="tests.primitives.variables.prod" />       
            
-      <function ID="tests.primitives.variables.use" />       
+      <simulator ID="tests.primitives.variables.use" />       
     
   </model>
 </openfluid>

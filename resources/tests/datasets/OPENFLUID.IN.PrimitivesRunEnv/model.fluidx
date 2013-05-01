@@ -3,7 +3,7 @@
 
     <model>
    
-      <function ID="tests.primitives.runenv" />                  
+      <simulator ID="tests.primitives.runenv" />                  
     
     </model>
     

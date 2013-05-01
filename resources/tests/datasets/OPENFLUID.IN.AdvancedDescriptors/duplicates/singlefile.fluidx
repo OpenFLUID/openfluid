@@ -14,7 +14,7 @@
       <param name="distribution" value="distri.dat" />
     </generator>
 
-    <function ID="tests.simulatorA" />
+    <simulator ID="tests.simulatorA" />
 
     <generator varname="tests.generator.fixed" unitclass="TU" method="fixed" varsize="11">
       <param name="fixedvalue" value="20" />
@@ -27,15 +27,15 @@
     </generator>
 
 
-	<function ID="tests.simulatorA" />
+	<simulator ID="tests.simulatorA" />
 
 
-    <function ID="tests.simulatorB">
+    <simulator ID="tests.simulatorB">
       <param name="strparam" value="strvalue" />
       <param name="doubleparam" value="1.1" />
       <param name="longparam" value="11" />
       <param name="gparam1" value="50" />
-    </function>
+    </simulator>
 
 
   </model>

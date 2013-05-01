@@ -184,7 +184,7 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
       GParams = mergeParams(GParams, extractParamsFromNode(CurrNode));
     }
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "function") == 0)
+    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "simulator") == 0)
     {
       xmlChar* xmlID = xmlGetProp(CurrNode, (const xmlChar*) "ID");
 
@@ -988,10 +988,10 @@ std::string FluidXDescriptor::getModelToWrite()
       openfluid::fluidx::SimulatorDescriptor* SimDesc =
           dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it);
 
-      Contents << m_IndentStr << m_IndentStr << "<function ID=\""
+      Contents << m_IndentStr << m_IndentStr << "<simulator ID=\""
                << SimDesc->getFileID() << "\">\n";
       Contents << getParamsAsStr(SimDesc->getParameters());
-      Contents << m_IndentStr << m_IndentStr << "</function>\n";
+      Contents << m_IndentStr << m_IndentStr << "</simulator>\n";
     }
     else if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
     {
