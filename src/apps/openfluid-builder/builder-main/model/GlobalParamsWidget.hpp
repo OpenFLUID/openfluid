@@ -46,46 +46,43 @@
  */
 
 /**
- \file FunctionParamWidget
+ \file GlobalParamsWidget.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef FUNCTIONPARAMWIDGET_HPP_
-#define FUNCTIONPARAMWIDGET_HPP_
+#ifndef GLOBALPARAMSWIDGET_HPP_
+#define GLOBALPARAMSWIDGET_HPP_
 
 #include <gtkmm/box.h>
 #include <gtkmm/entry.h>
+#include <gtkmm/button.h>
 #include <gtkmm/table.h>
-#include <giomm/file.h>
+#include <gtkmm/expander.h>
+
 #include "BuilderTableRowWidget.hpp"
-#include "FunctionAddParamDialog.hpp"
+#include "AddGlobalParamDialog.hpp"
 
 namespace openfluid {
 namespace fluidx {
-class ModelItemDescriptor;
-}
-namespace machine {
-class ModelItemSignatureInstance;
+class AdvancedModelDescriptor;
 }
 }
 
 // =====================================================================
 // =====================================================================
 
-class FunctionParamRow: public BuilderTableRowWidget
+class GlobalParamRow: public BuilderTableRowWidget
 {
   private:
 
-    openfluid::fluidx::ModelItemDescriptor& m_FctDesc;
+    openfluid::fluidx::AdvancedModelDescriptor& m_ModelDesc;
 
     Gtk::Button* mp_RemoveButton;
 
     sigc::signal<void> m_signal_removeOccured;
     sigc::signal<void> m_signal_valueChangeOccured;
-
-    void onRemoveButtonClicked();
 
     void onValueChanged();
 
@@ -95,16 +92,12 @@ class FunctionParamRow: public BuilderTableRowWidget
 
     Gtk::Entry* mp_ValueEntry;
 
-    Gtk::Label* mp_GlobalLabel;
+    void onRemoveButtonClicked();
 
   public:
 
-    FunctionParamRow(openfluid::fluidx::ModelItemDescriptor& FctDesc,
-                     std::string ParamName, std::string ParamValue,
-                     std::string ParamUnit, std::string ParamDescription,
-                     bool WithRemoveBt);
-
-    void setGlobalValue(std::string GlobalValue);
+    GlobalParamRow(openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
+                   std::string ParamName, std::string ParamValue);
 
     sigc::signal<void> signal_removeOccured();
     sigc::signal<void> signal_valueChangeOccured();
@@ -113,92 +106,43 @@ class FunctionParamRow: public BuilderTableRowWidget
 // =====================================================================
 // =====================================================================
 
-class FunctionParamFileRow: public BuilderTableRowWidget
+class GlobalParamsWidget: public Gtk::Expander
 {
   private:
 
-    std::string m_FileName;
+    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
-    bool m_IsRequired;
+    AddGlobalParamDialog& m_AddGlobalParamDialog;
 
-    Glib::RefPtr<Gio::File> m_File;
+    Gtk::Table* mp_Table;
 
-    Gtk::Label* mp_FileNameLabel;
-
-    Gtk::Button* mp_FileButton;
-
-    sigc::signal<void> m_signal_FileChanged;
-
-    void onFileButtonClicked();
-
-  public:
-
-    FunctionParamFileRow(std::string FileName, bool IsRequired);
-
-    void setFileFound();
-
-    sigc::signal<void> signal_FileChanged();
-};
-
-// =====================================================================
-// =====================================================================
-
-class FunctionParamWidget: public Gtk::VBox
-{
-  private:
-
-    openfluid::fluidx::ModelItemDescriptor& m_FctDesc;
-    openfluid::machine::ModelItemSignatureInstance* mp_Sign;
-
-    FunctionAddParamDialog& m_AddParamDialog;
-
-    Gtk::Table* mp_ParamsTable;
-    Gtk::Table* mp_RequiredFilesTable;
-    Gtk::Table* mp_UsedFilesTable;
-
-    unsigned int m_CurrentParamsTableBottom;
-    unsigned int m_CurrentReqFilesTableBottom;
-    unsigned int m_CurrentUsedFilesTableBottom;
-
-    openfluid::ware::WareParams_t m_Globals;
+    unsigned int m_CurrentTableBottom;
 
     sigc::signal<void> m_signal_changeOccured;
-    sigc::signal<void> m_signal_fileChangeOccured;
+
+    void attachRow(GlobalParamRow* Row);
 
     void updateRows();
-
-    void updateParamsRows();
-    void updateUsedFilesRows();
-
-    void attachParamsRow(FunctionParamRow* Row, std::string ParamName);
-    void attachRequiredFileRow(FunctionParamFileRow* Row);
-    void attachUsedFileRow(FunctionParamFileRow* Row);
 
     void onAddButtonClicked();
 
     void onValueChangeOccured();
-    void onStructureChangeOccured();
-    void onFileChangeOccured();
-
-    void updateGlobals();
 
   protected:
 
-    std::map<std::string, FunctionParamRow*> m_ParamsRows;
+    std::map<std::string, GlobalParamRow*> m_Rows;
+
+    void onStructureChangeOccured();
 
   public:
 
-    FunctionParamWidget(openfluid::fluidx::ModelItemDescriptor& FctDesc,
-                        openfluid::machine::ModelItemSignatureInstance* Sign,
-                        FunctionAddParamDialog& AddParamDialog);
+    GlobalParamsWidget(
+        openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
+        AddGlobalParamDialog& AddGlobalParamDialog);
 
-    ~FunctionParamWidget();
-
-    void updateGlobals(const openfluid::ware::WareParams_t& GlobalParams);
-    void updateRequiredFilesRows();
+    ~GlobalParamsWidget();
 
     sigc::signal<void> signal_changeOccured();
-    sigc::signal<void> signal_fileChangeOccured();
 };
 
-#endif /* FUNCTIONPARAMWIDGET_HPP_ */
+#endif /* GLOBALPARAMSWIDGET_HPP_ */

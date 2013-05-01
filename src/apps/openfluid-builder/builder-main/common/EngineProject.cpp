@@ -177,25 +177,25 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
 
 void EngineProject::checkAndAdaptModel()
 {
-  std::list<std::string> MissingFunctions;
+  std::list<std::string> MissingSimulators;
 
-  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
+  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedSimulators =
       WaresHelper::checkAndGetModifiedModel(mp_AdvancedDesc->getModel(),
-                                            MissingFunctions);
+                                            MissingSimulators);
 
-  if (!MissingFunctions.empty())
+  if (!MissingSimulators.empty())
   {
-    std::string MissingFunctionsStr = "";
-    for (std::list<std::string>::iterator it = MissingFunctions.begin();
-        it != MissingFunctions.end(); ++it)
-      MissingFunctionsStr += "- " + *it + "\n";
+    std::string MissingSimulatorsStr = "";
+    for (std::list<std::string>::iterator it = MissingSimulators.begin();
+        it != MissingSimulators.end(); ++it)
+      MissingSimulatorsStr += "- " + *it + "\n";
 
     Glib::ustring Msg =
         Glib::ustring::compose(
             _("Unable to find plugin file(s):\n%1\n\n"
-                "Corresponding simulation functions will be removed from the model.\n"
+                "Corresponding simulator(s) will be removed from the model.\n"
                 "Do you want to continue?"),
-            MissingFunctionsStr);
+            MissingSimulatorsStr);
 
     if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
         Msg))
@@ -205,7 +205,7 @@ void EngineProject::checkAndAdaptModel()
       throw openfluid::base::OFException("");
     }
     else
-      mp_AdvancedDesc->getModel().setItems(ModifiedFunctions);
+      mp_AdvancedDesc->getModel().setItems(ModifiedSimulators);
   }
 
 }

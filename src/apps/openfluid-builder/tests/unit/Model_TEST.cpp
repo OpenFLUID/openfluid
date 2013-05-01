@@ -67,8 +67,8 @@
 #include "tests-config.hpp"
 #include "ModelModule.hpp"
 #include "WareSetWidget.hpp"
-#include "FunctionParamWidget.hpp"
-#include "FunctionGlobalParamsWidget.hpp"
+#include "SimulatorParamWidget.hpp"
+#include "GlobalParamsWidget.hpp"
 
 // =====================================================================
 // =====================================================================
@@ -87,19 +87,19 @@ class ModelModuleSub: public ModelModule
       return mp_ModelWidget;
     }
 
-    FunctionGlobalParamsWidget* getGlobalParamsWidget()
+    GlobalParamsWidget* getGlobalParamsWidget()
     {
       return mp_GlobalParamsWidget;
     }
 
-    std::list<FunctionParamWidget*> getParamWidgets()
+    std::list<SimulatorParamWidget*> getParamWidgets()
     {
       return m_ParamWidgets;
     }
 
-    void whenRemoveFunctionAsked(std::string ID)
+    void whenRemoveSimulatorAsked(std::string ID)
     {
-      ModelModule::whenRemoveFunctionAsked(ID);
+      ModelModule::whenRemoveSimulatorAsked(ID);
     }
 };
 
@@ -171,7 +171,7 @@ class WareItemWidgetSub: public WareItemWidget
 // =====================================================================
 // =====================================================================
 
-class FunctionGlobalParamsWidgetSub: public FunctionGlobalParamsWidget
+class GlobalParamsWidgetSub: public GlobalParamsWidget
 {
   public:
 
@@ -182,7 +182,7 @@ class FunctionGlobalParamsWidgetSub: public FunctionGlobalParamsWidget
 
     void onStructureChangeOccured()
     {
-      FunctionGlobalParamsWidget::onStructureChangeOccured();
+      GlobalParamsWidget::onStructureChangeOccured();
     }
 };
 
@@ -212,11 +212,11 @@ class GlobalParamRowSub: public GlobalParamRow
 // =====================================================================
 // =====================================================================
 
-class FunctionParamWidgetSub: public FunctionParamWidget
+class SimulatorParamWidgetSub: public SimulatorParamWidget
 {
   public:
 
-    std::map<std::string, FunctionParamRow*> getParamsRows()
+    std::map<std::string, SimulatorParamRow*> getParamsRows()
     {
       return m_ParamsRows;
     }
@@ -225,7 +225,7 @@ class FunctionParamWidgetSub: public FunctionParamWidget
 // =====================================================================
 // =====================================================================
 
-class FunctionParamRowSub: public FunctionParamRow
+class SimulatorParamRowSub: public SimulatorParamRow
 {
   public:
 
@@ -572,11 +572,11 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
 {
   std::map<std::string, GlobalParamRow*> GlobalRows;
 
-  FunctionGlobalParamsWidgetSub* GlobalWidget =
-      static_cast<FunctionGlobalParamsWidgetSub*>(mp_Module->getGlobalParamsWidget());
+  GlobalParamsWidgetSub* GlobalWidget =
+      static_cast<GlobalParamsWidgetSub*>(mp_Module->getGlobalParamsWidget());
 
-  std::list<FunctionParamWidget*> ParamWidgets;
-  std::list<FunctionParamWidget*>::iterator it;
+  std::list<SimulatorParamWidget*> ParamWidgets;
+  std::list<SimulatorParamWidget*>::iterator it;
 
   GlobalRows = GlobalWidget->getRows();
   BOOST_CHECK_EQUAL(GlobalRows.size(), 0);
@@ -593,7 +593,7 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   mp_Module->update();
 
   GlobalRows =
-      static_cast<FunctionGlobalParamsWidgetSub*>(mp_Module->getGlobalParamsWidget())->getRows();
+      static_cast<GlobalParamsWidgetSub*>(mp_Module->getGlobalParamsWidget())->getRows();
   BOOST_CHECK_EQUAL(GlobalRows.size(), 0);
 
   ParamWidgets = mp_Module->getParamWidgets();
@@ -601,12 +601,12 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
 
   it = ParamWidgets.begin();
   BOOST_CHECK_EQUAL(
-      (static_cast<FunctionParamWidgetSub*>(*it))->getParamsRows().size(), 0);
+      (static_cast<SimulatorParamWidgetSub*>(*it))->getParamsRows().size(), 0);
   it++;
-  FunctionParamWidgetSub* ParamsUp = static_cast<FunctionParamWidgetSub*>(*it);
+  SimulatorParamWidgetSub* ParamsUp = static_cast<SimulatorParamWidgetSub*>(*it);
   BOOST_CHECK_EQUAL(ParamsUp->getParamsRows().size(), 1);
-  FunctionParamRowSub* ParamUp =
-      static_cast<FunctionParamRowSub*>(ParamsUp->getParamsRows().begin()->second);
+  SimulatorParamRowSub* ParamUp =
+      static_cast<SimulatorParamRowSub*>(ParamsUp->getParamsRows().begin()->second);
   BOOST_CHECK_EQUAL(ParamUp->getName(), "gmult");
   BOOST_CHECK_EQUAL(ParamUp->getValueEntry()->get_text(), "");
   BOOST_CHECK_EQUAL(ParamUp->getGlobalLabel(), "");
@@ -619,7 +619,7 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
 
   it++;
   BOOST_CHECK_EQUAL(
-      (static_cast<FunctionParamWidgetSub*>(*it))->getParamsRows().size(), 0);
+      (static_cast<SimulatorParamWidgetSub*>(*it))->getParamsRows().size(), 0);
 
   // add a Global param
 
@@ -834,8 +834,8 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
 {
   // globals
 
-  FunctionGlobalParamsWidgetSub* GlobalWidget =
-      static_cast<FunctionGlobalParamsWidgetSub*>(mp_Module->getGlobalParamsWidget());
+  GlobalParamsWidgetSub* GlobalWidget =
+      static_cast<GlobalParamsWidgetSub*>(mp_Module->getGlobalParamsWidget());
 
   std::map<std::string, GlobalParamRow*> GlobalRows = GlobalWidget->getRows();
   BOOST_CHECK_EQUAL(GlobalRows.size(), 2);
@@ -850,35 +850,35 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
 
   // params
 
-  std::list<FunctionParamWidget*> ParamWidgets = mp_Module->getParamWidgets();
+  std::list<SimulatorParamWidget*> ParamWidgets = mp_Module->getParamWidgets();
 
   BOOST_CHECK_EQUAL(ParamWidgets.size(), 5);
 
-  std::list<FunctionParamWidget*>::iterator it;
-  FunctionParamWidgetSub* ParamWidget;
+  std::list<SimulatorParamWidget*>::iterator it;
+  SimulatorParamWidgetSub* ParamWidget;
 
-  std::map<std::string, FunctionParamRow*> ParamRows;
-  FunctionParamRowSub* ParamRow;
+  std::map<std::string, SimulatorParamRow*> ParamRows;
+  SimulatorParamRowSub* ParamRow;
 
   // // interp
 
   it = ParamWidgets.begin();
-  ParamWidget = static_cast<FunctionParamWidgetSub*>(*it);
+  ParamWidget = static_cast<SimulatorParamWidgetSub*>(*it);
   ParamRows = ParamWidget->getParamsRows();
   BOOST_CHECK_EQUAL(ParamRows.size(), 4);
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["distribution"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["distribution"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "distribution");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "distri.dat");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["sources"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["sources"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "sources");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "sources.xml");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["thresholdmax"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["thresholdmax"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "thresholdmax");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["thresholdmin"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["thresholdmin"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "thresholdmin");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
@@ -886,17 +886,17 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   // // A.prod
 
   it++;
-  ParamWidget = static_cast<FunctionParamWidgetSub*>(*it);
+  ParamWidget = static_cast<SimulatorParamWidgetSub*>(*it);
   ParamRows = ParamWidget->getParamsRows();
   BOOST_CHECK_EQUAL(ParamRows.size(), 0);
 
   // // fixed
 
   it++;
-  ParamWidget = static_cast<FunctionParamWidgetSub*>(*it);
+  ParamWidget = static_cast<SimulatorParamWidgetSub*>(*it);
   ParamRows = ParamWidget->getParamsRows();
   BOOST_CHECK_EQUAL(ParamRows.size(), 1);
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["fixedvalue"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["fixedvalue"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "fixedvalue");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "20");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
@@ -904,14 +904,14 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   // // random
 
   it++;
-  ParamWidget = static_cast<FunctionParamWidgetSub*>(*it);
+  ParamWidget = static_cast<SimulatorParamWidgetSub*>(*it);
   ParamRows = ParamWidget->getParamsRows();
   BOOST_CHECK_EQUAL(ParamRows.size(), 2);
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["max"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["max"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "max");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "50");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["min"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["min"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "min");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "20.53");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
@@ -919,26 +919,26 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   // // A.up
 
   it++;
-  ParamWidget = static_cast<FunctionParamWidgetSub*>(*it);
+  ParamWidget = static_cast<SimulatorParamWidgetSub*>(*it);
   ParamRows = ParamWidget->getParamsRows();
   BOOST_CHECK_EQUAL(ParamRows.size(), 5);
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["gmult"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["gmult"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "gmult");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["strparam"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["strparam"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "strparam");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "strvalue");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["doubleparam"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["doubleparam"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "doubleparam");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "1.1");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["longparam"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["longparam"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "longparam");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "11");
   BOOST_CHECK_EQUAL(ParamRow->getGlobalLabel(), "");
-  ParamRow = static_cast<FunctionParamRowSub*>(ParamRows["gparam1"]);
+  ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["gparam1"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "gparam1");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "50");
   BOOST_CHECK_EQUAL(

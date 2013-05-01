@@ -46,13 +46,13 @@
  */
 
 /**
- \file AvailFunctionsWidget.cpp
+ \file AvailSimulatorsWidget.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "AvailFunctionsWidget.hpp"
+#include "AvailSimulatorsWidget.hpp"
 
 #include <glibmm/i18n.h>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
@@ -63,7 +63,7 @@
 // =====================================================================
 // =====================================================================
 
-AvailFunctionsWidget::AvailFunctionsWidget(
+AvailSimulatorsWidget::AvailSimulatorsWidget(
     const openfluid::fluidx::AdvancedModelDescriptor& Model) :
     m_Model(Model)
 {
@@ -73,7 +73,7 @@ AvailFunctionsWidget::AvailFunctionsWidget(
   mp_TreeView->set_model(mref_TreeModel);
 
   Gtk::TreeView::Column * idColumn = Gtk::manage(
-      new Gtk::TreeView::Column(_("Available functions")));
+      new Gtk::TreeView::Column(_("Available simulators")));
 
   idColumn->pack_start(m_Columns.m_Status, false);
   idColumn->pack_start(m_Columns.m_Id);
@@ -104,9 +104,9 @@ AvailFunctionsWidget::AvailFunctionsWidget(
   }
 
   mp_TreeView->get_selection()->signal_changed().connect(
-      sigc::mem_fun(*this, &AvailFunctionsWidget::onSelectionChanged));
+      sigc::mem_fun(*this, &AvailSimulatorsWidget::onSelectionChanged));
   mp_TreeView->signal_row_activated().connect(
-      sigc::mem_fun(*this, &AvailFunctionsWidget::onRowActivated));
+      sigc::mem_fun(*this, &AvailSimulatorsWidget::onRowActivated));
 
   mp_MainWin = Gtk::manage(new Gtk::ScrolledWindow());
   mp_MainWin->set_policy(Gtk::POLICY_NEVER, Gtk::POLICY_AUTOMATIC);
@@ -121,17 +121,17 @@ AvailFunctionsWidget::AvailFunctionsWidget(
 // =====================================================================
 // =====================================================================
 
-void AvailFunctionsWidget::update()
+void AvailSimulatorsWidget::update()
 {
   mref_TreeModel->clear();
 
   openfluid::machine::SimulatorSignatureRegistry* Reg =
       openfluid::machine::SimulatorSignatureRegistry::getInstance();
 
-  // Pluggable functions
+  // Pluggable simulators
 
   Gtk::TreeRow PlugRow = *mref_TreeModel->append();
-  PlugRow[m_Columns.m_Id] = _("Simulation functions");
+  PlugRow[m_Columns.m_Id] = _("Simulators");
   PlugRow[m_Columns.mp_Sign] = 0;
   PlugRow[m_Columns.m_Sensitive] = true;
 
@@ -141,7 +141,7 @@ void AvailFunctionsWidget::update()
   if (Plugs.empty())
   {
     Gtk::TreeRow SubRow = *mref_TreeModel->append(PlugRow.children());
-    SubRow[m_Columns.m_Id] = _("no function signature available");
+    SubRow[m_Columns.m_Id] = _("no simulator signature available");
     SubRow[m_Columns.mp_Sign] = 0;
   }
   else
@@ -159,13 +159,13 @@ void AvailFunctionsWidget::update()
       switch (it->second->Signature->Status)
       {
         case openfluid::ware::EXPERIMENTAL:
-          ImageFile = "fct_status_experimental.png";
+          ImageFile = "sim_status_experimental.png";
           break;
         case openfluid::ware::BETA:
-          ImageFile = "fct_status_beta.png";
+          ImageFile = "sim_status_beta.png";
           break;
         case openfluid::ware::STABLE:
-          ImageFile = "fct_status_stable.png";
+          ImageFile = "sim_status_stable.png";
           break;
       }
       SubRow[m_Columns.m_Status] = BuilderGraphicsHelper::createPixbufFromFile(
@@ -209,7 +209,7 @@ void AvailFunctionsWidget::update()
 // =====================================================================
 // =====================================================================
 
-Glib::ustring AvailFunctionsWidget::replaceEmpty(Glib::ustring TextToCheck)
+Glib::ustring AvailSimulatorsWidget::replaceEmpty(Glib::ustring TextToCheck)
 {
   if (TextToCheck.empty())
     TextToCheck = _("(unknown)");
@@ -219,7 +219,7 @@ Glib::ustring AvailFunctionsWidget::replaceEmpty(Glib::ustring TextToCheck)
 // =====================================================================
 // =====================================================================
 
-void AvailFunctionsWidget::onSelectionChanged()
+void AvailSimulatorsWidget::onSelectionChanged()
 {
   Gtk::TreeIter Iter = mp_TreeView->get_selection()->get_selected();
 
@@ -230,7 +230,7 @@ void AvailFunctionsWidget::onSelectionChanged()
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> AvailFunctionsWidget::signal_SelectionChanged()
+sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> AvailSimulatorsWidget::signal_SelectionChanged()
 {
   return m_signal_SelectionChanged;
 }
@@ -238,7 +238,7 @@ sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> AvailFunctio
 // =====================================================================
 // =====================================================================
 
-void AvailFunctionsWidget::onRowActivated(const Gtk::TreeModel::Path& Path,
+void AvailSimulatorsWidget::onRowActivated(const Gtk::TreeModel::Path& Path,
                                           Gtk::TreeViewColumn* /*Column*/)
 {
   Gtk::TreeIter Iter = mref_TreeModel->get_iter(Path);
@@ -255,7 +255,7 @@ void AvailFunctionsWidget::onRowActivated(const Gtk::TreeModel::Path& Path,
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> AvailFunctionsWidget::signal_Activated()
+sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> AvailSimulatorsWidget::signal_Activated()
 {
   return m_signal_Activated;
 }

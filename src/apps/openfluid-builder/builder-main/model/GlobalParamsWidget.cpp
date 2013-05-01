@@ -46,13 +46,13 @@
  */
 
 /**
- \file FunctionGlobalParamsWidget.cpp
+ \file GlobalParamsWidget.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "FunctionGlobalParamsWidget.hpp"
+#include "GlobalParamsWidget.hpp"
 
 #include <set>
 #include <glibmm/i18n.h>
@@ -131,9 +131,9 @@ sigc::signal<void> GlobalParamRow::signal_valueChangeOccured()
 // =====================================================================
 // =====================================================================
 
-FunctionGlobalParamsWidget::FunctionGlobalParamsWidget(
+GlobalParamsWidget::GlobalParamsWidget(
     openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
-    FunctionAddGlobalParamDialog& AddGlobalParamDialog) :
+    AddGlobalParamDialog& AddGlobalParamDialog) :
     m_Model(ModelDesc), m_AddGlobalParamDialog(AddGlobalParamDialog)
 {
   Gtk::Button* AddButton = Gtk::manage(new Gtk::Button());
@@ -141,7 +141,7 @@ FunctionGlobalParamsWidget::FunctionGlobalParamsWidget(
       *Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_BUTTON)));
   AddButton->set_tooltip_text(_("Add a global parameter"));
   AddButton->signal_clicked().connect(
-      sigc::mem_fun(*this, &FunctionGlobalParamsWidget::onAddButtonClicked));
+      sigc::mem_fun(*this, &GlobalParamsWidget::onAddButtonClicked));
 
   Gtk::HBox* ButtonBox = Gtk::manage(new Gtk::HBox());
   ButtonBox->pack_start(*AddButton, Gtk::PACK_SHRINK, 0);
@@ -175,14 +175,14 @@ FunctionGlobalParamsWidget::FunctionGlobalParamsWidget(
 // =====================================================================
 // =====================================================================
 
-FunctionGlobalParamsWidget::~FunctionGlobalParamsWidget()
+GlobalParamsWidget::~GlobalParamsWidget()
 {
 }
 
 // =====================================================================
 // =====================================================================
 
-void FunctionGlobalParamsWidget::updateRows()
+void GlobalParamsWidget::updateRows()
 {
   int TableWidgetCount = mp_Table->children().size();
   for (int i = 0; i < TableWidgetCount; i++)
@@ -208,7 +208,7 @@ void FunctionGlobalParamsWidget::updateRows()
 // =====================================================================
 // =====================================================================
 
-void FunctionGlobalParamsWidget::attachRow(GlobalParamRow* Row)
+void GlobalParamsWidget::attachRow(GlobalParamRow* Row)
 {
   for (unsigned int i = 0; i < Row->getColumnCount(); i++)
   {
@@ -220,9 +220,9 @@ void FunctionGlobalParamsWidget::attachRow(GlobalParamRow* Row)
 
   Row->signal_removeOccured().connect(
       sigc::mem_fun(*this,
-                    &FunctionGlobalParamsWidget::onStructureChangeOccured));
+                    &GlobalParamsWidget::onStructureChangeOccured));
   Row->signal_valueChangeOccured().connect(
-      sigc::mem_fun(*this, &FunctionGlobalParamsWidget::onValueChangeOccured));
+      sigc::mem_fun(*this, &GlobalParamsWidget::onValueChangeOccured));
 
   m_CurrentTableBottom++;
 }
@@ -230,7 +230,7 @@ void FunctionGlobalParamsWidget::attachRow(GlobalParamRow* Row)
 // =====================================================================
 // =====================================================================
 
-void FunctionGlobalParamsWidget::onAddButtonClicked()
+void GlobalParamsWidget::onAddButtonClicked()
 {
   if (m_AddGlobalParamDialog.show())
     onStructureChangeOccured();
@@ -239,7 +239,7 @@ void FunctionGlobalParamsWidget::onAddButtonClicked()
 // =====================================================================
 // =====================================================================
 
-void FunctionGlobalParamsWidget::onStructureChangeOccured()
+void GlobalParamsWidget::onStructureChangeOccured()
 {
   updateRows();
   m_signal_changeOccured.emit();
@@ -248,7 +248,7 @@ void FunctionGlobalParamsWidget::onStructureChangeOccured()
 // =====================================================================
 // =====================================================================
 
-void FunctionGlobalParamsWidget::onValueChangeOccured()
+void GlobalParamsWidget::onValueChangeOccured()
 {
   m_signal_changeOccured.emit();
 }
@@ -256,7 +256,7 @@ void FunctionGlobalParamsWidget::onValueChangeOccured()
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void> FunctionGlobalParamsWidget::signal_changeOccured()
+sigc::signal<void> GlobalParamsWidget::signal_changeOccured()
 {
   return m_signal_changeOccured;
 }

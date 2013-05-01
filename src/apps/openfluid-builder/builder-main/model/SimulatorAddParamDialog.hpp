@@ -46,79 +46,45 @@
  */
 
 /**
- \file AvailFunctionsWidget.hpp
+ \file SimulatorAddParamDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef AVAILFUNCTIONSWIDGET_HPP_
-#define AVAILFUNCTIONSWIDGET_HPP_
+#ifndef SIMULATORADDPARAMDIALOG_HPP_
+#define SIMULATORADDPARAMDIALOG_HPP_
 
-#include <sigc++/sigc++.h>
-
-#include <gtkmm/box.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/treestore.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gdkmm/pixbuf.h>
-
-#include <openfluid/machine/ModelItemInstance.hpp>
+#include <gtkmm/dialog.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/entry.h>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
-class AvailFunctionsWidget: public Gtk::Box
+class SimulatorAddParamDialog
 {
   private:
 
-    const openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+    Gtk::Dialog* mp_Dialog;
 
-    Glib::RefPtr<Gtk::TreeStore> mref_TreeModel;
+    Gtk::Entry* mp_NameEntry;
 
-    class AvailFctColumns: public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-        AvailFctColumns()
-        {
-          add(m_Status);
-          add(m_Id);
-          add(m_Domain);
-          add(mp_Sign);
-          add(m_Sensitive);
-        }
-        Gtk::TreeModelColumn<Glib::RefPtr<Gdk::Pixbuf> > m_Status;
-        Gtk::TreeModelColumn<Glib::ustring> m_Id;
-        Gtk::TreeModelColumn<Glib::ustring> m_Domain;
-        Gtk::TreeModelColumn<openfluid::machine::ModelItemSignatureInstance*> mp_Sign;
-        Gtk::TreeModelColumn<bool> m_Sensitive;
-    };
+    Gtk::Entry* mp_ValueEntry;
 
-    AvailFctColumns m_Columns;
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
 
-    Glib::ustring replaceEmpty(Glib::ustring TextToCheck);
+    openfluid::fluidx::WareDescriptor* mp_DummyItem;
 
-    void onSelectionChanged();
-    void onRowActivated(const Gtk::TreeModel::Path& Path,
-                        Gtk::TreeViewColumn* Column);
-
-    sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> m_signal_SelectionChanged;
-    sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> m_signal_Activated;
-
-  protected:
-
-    Gtk::TreeView* mp_TreeView;
-
-    Gtk::ScrolledWindow* mp_MainWin;
+    void onChanged();
 
   public:
+    SimulatorAddParamDialog();
 
-    AvailFunctionsWidget(const openfluid::fluidx::AdvancedModelDescriptor& Model);
+    ~SimulatorAddParamDialog();
 
-    sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> signal_SelectionChanged();
-    sigc::signal<void, openfluid::machine::ModelItemSignatureInstance*> signal_Activated();
-
-    void select(Gtk::TreeRow Row);
-
-    void update();
+    bool show(openfluid::fluidx::ModelItemDescriptor* Item,
+              openfluid::machine::ModelItemSignatureInstance* Sign);
 };
 
-#endif /* AVAILFUNCTIONSWIDGET_HPP_ */
+#endif /* SIMULATORADDPARAMDIALOG_HPP_ */

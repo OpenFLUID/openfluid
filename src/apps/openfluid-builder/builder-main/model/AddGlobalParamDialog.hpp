@@ -46,103 +46,74 @@
  */
 
 /**
- \file FunctionGlobalParamsWidget.hpp
+ \file AddGlobalParamDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef FUNCTIONGLOBALPARAMSWIDGET_HPP_
-#define FUNCTIONGLOBALPARAMSWIDGET_HPP_
+#ifndef ADDGLOBALPARAMDIALOG_HPP_
+#define ADDGLOBALPARAMDIALOG_HPP_
 
-#include <gtkmm/box.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/infobar.h>
 #include <gtkmm/entry.h>
-#include <gtkmm/button.h>
-#include <gtkmm/table.h>
-#include <gtkmm/expander.h>
+#include <gtkmm/radiobutton.h>
+#include <gtkmm/combobox.h>
+#include <gtkmm/liststore.h>
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 
-#include "BuilderTableRowWidget.hpp"
-#include "FunctionAddGlobalParamDialog.hpp"
-
-namespace openfluid {
-namespace fluidx {
-class AdvancedModelDescriptor;
-}
-}
-
-// =====================================================================
-// =====================================================================
-
-class GlobalParamRow: public BuilderTableRowWidget
-{
-  private:
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_ModelDesc;
-
-    Gtk::Button* mp_RemoveButton;
-
-    sigc::signal<void> m_signal_removeOccured;
-    sigc::signal<void> m_signal_valueChangeOccured;
-
-    void onValueChanged();
-
-  protected:
-
-    std::string m_Name;
-
-    Gtk::Entry* mp_ValueEntry;
-
-    void onRemoveButtonClicked();
-
-  public:
-
-    GlobalParamRow(openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
-                   std::string ParamName, std::string ParamValue);
-
-    sigc::signal<void> signal_removeOccured();
-    sigc::signal<void> signal_valueChangeOccured();
-};
-
-// =====================================================================
-// =====================================================================
-
-class FunctionGlobalParamsWidget: public Gtk::Expander
+class AddGlobalParamDialog
 {
   private:
 
     openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
-    FunctionAddGlobalParamDialog& m_AddGlobalParamDialog;
+    Gtk::Dialog* mp_Dialog;
 
-    Gtk::Table* mp_Table;
+    Gtk::RadioButton* mp_ExistingBt;
+    Gtk::RadioButton* mp_NewBt;
 
-    unsigned int m_CurrentTableBottom;
+    Gtk::ComboBox* mp_Combo;
 
-    sigc::signal<void> m_signal_changeOccured;
+    class ComboColumns: public Gtk::TreeModel::ColumnRecord
+    {
+      public:
 
-    void attachRow(GlobalParamRow* Row);
+        ComboColumns()
+        {
+          add(m_Name);
+          add(m_Unit);
+        }
 
-    void updateRows();
+        Gtk::TreeModelColumn<std::string> m_Name;
+        Gtk::TreeModelColumn<std::string> m_Unit;
+    };
+    ComboColumns m_Columns;
+    Glib::RefPtr<Gtk::ListStore> mref_ComboModel;
 
-    void onAddButtonClicked();
 
-    void onValueChangeOccured();
+    Gtk::Entry* mp_NameEntry;
 
-  protected:
+    Gtk::Entry* mp_ValueEntry;
 
-    std::map<std::string, GlobalParamRow*> m_Rows;
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
 
-    void onStructureChangeOccured();
+    openfluid::fluidx::WareDescriptor* mp_DummyItem;
+
+    void onToggled();
+
+    void onChanged();
+
+    void updateCombo();
 
   public:
+    AddGlobalParamDialog(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
-    FunctionGlobalParamsWidget(
-        openfluid::fluidx::AdvancedModelDescriptor& ModelDesc,
-        FunctionAddGlobalParamDialog& AddGlobalParamDialog);
+    ~AddGlobalParamDialog();
 
-    ~FunctionGlobalParamsWidget();
-
-    sigc::signal<void> signal_changeOccured();
+    bool show();
 };
 
-#endif /* FUNCTIONGLOBALPARAMSWIDGET_HPP_ */
+#endif /* ADDGLOBALPARAMDIALOG_HPP_ */

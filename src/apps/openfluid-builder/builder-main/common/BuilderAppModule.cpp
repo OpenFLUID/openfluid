@@ -97,7 +97,7 @@ bool BuilderAppModule::initialize()
   }
 
 
-  // Setting pluggable functions
+  // Setting pluggable simulators
 
   std::vector<std::string> PrefXPaths = PrefMgr->getExtraPlugPaths();
 

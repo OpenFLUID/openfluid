@@ -60,13 +60,13 @@
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
-#include "ModelAddFunctionDialog.hpp"
+#include "ModelAddSimulatorDialog.hpp"
 #include "ModelGeneratorCreationDialog.hpp"
 #include "WareSetWidget.hpp"
-#include "FunctionParamWidget.hpp"
-#include "FunctionGlobalParamsWidget.hpp"
-#include "FunctionAddParamDialog.hpp"
-#include "FunctionAddGlobalParamDialog.hpp"
+#include "SimulatorParamWidget.hpp"
+#include "GlobalParamsWidget.hpp"
+#include "SimulatorAddParamDialog.hpp"
+#include "AddGlobalParamDialog.hpp"
 #include "SignatureDetailWidget.hpp"
 
 // =====================================================================
@@ -78,19 +78,19 @@ ModelModule::ModelModule(
 {
   mp_MainPanel = 0;
 
-  mp_AddFctDialog = new ModelAddFunctionDialog(m_Model);
+  mp_AddSimDialog = new ModelAddSimulatorDialog(m_Model);
 
-  mp_AddGlobalParamDialog = new FunctionAddGlobalParamDialog(m_Model);
-  mp_AddParamDialog = new FunctionAddParamDialog();
+  mp_AddGlobalParamDialog = new AddGlobalParamDialog(m_Model);
+  mp_AddParamDialog = new SimulatorAddParamDialog();
 
   mp_GlobalParamsWidget = Gtk::manage(
-      new FunctionGlobalParamsWidget(m_Model, *mp_AddGlobalParamDialog));
+      new GlobalParamsWidget(m_Model, *mp_AddGlobalParamDialog));
   mp_GlobalParamsWidget->signal_changeOccured().connect(
       sigc::mem_fun(*this, &ModelModule::updateGlobalParams));
 
-  mp_ModelWidget = Gtk::manage(new WareSetWidget("Add simulation function"));
+  mp_ModelWidget = Gtk::manage(new WareSetWidget("Add simulator"));
   mp_ModelWidget->signal_AddAsked().connect(
-      sigc::mem_fun(*this, &ModelModule::whenAddFunctionAsked));
+      sigc::mem_fun(*this, &ModelModule::whenAddSimulatorAsked));
 
   update();
 }
@@ -100,7 +100,7 @@ ModelModule::ModelModule(
 
 ModelModule::~ModelModule()
 {
-  delete mp_AddFctDialog;
+  delete mp_AddSimDialog;
   delete mp_AddGlobalParamDialog;
   delete mp_AddParamDialog;
 }
@@ -137,10 +137,10 @@ Gtk::Widget* ModelModule::asWidget()
 // =====================================================================
 // =====================================================================
 
-void ModelModule::whenAddFunctionAsked()
+void ModelModule::whenAddSimulatorAsked()
 {
   openfluid::machine::ModelItemSignatureInstance* Signature =
-      mp_AddFctDialog->show();
+      mp_AddSimDialog->show();
 
   if (!Signature)
     return;
@@ -179,7 +179,7 @@ void ModelModule::whenAddFunctionAsked()
 // =====================================================================
 // =====================================================================
 
-void ModelModule::whenRemoveFunctionAsked(std::string ID)
+void ModelModule::whenRemoveSimulatorAsked(std::string ID)
 {
   int Position = m_Model.getFirstItemIndex(ID);
 
@@ -270,8 +270,8 @@ void ModelModule::update()
     else
       Name = Sign->Signature->Name;
 
-    FunctionParamWidget* ItemParamWidget = Gtk::manage(
-        new FunctionParamWidget(*(*it), Sign, *mp_AddParamDialog));
+    SimulatorParamWidget* ItemParamWidget = Gtk::manage(
+        new SimulatorParamWidget(*(*it), Sign, *mp_AddParamDialog));
     ItemParamWidget->signal_changeOccured().connect(
         sigc::mem_fun(*this, &ModelModule::onModelChanged));
     ItemParamWidget->signal_fileChangeOccured().connect(
@@ -285,7 +285,7 @@ void ModelModule::update()
         new WareItemWidget(ID, *ItemParamWidget, *ItemInfoWidget, Name,
                            (*it)->getType()));
     ItemWidget->signal_RemoveAsked().connect(
-        sigc::mem_fun(*this, &ModelModule::whenRemoveFunctionAsked));
+        sigc::mem_fun(*this, &ModelModule::whenRemoveSimulatorAsked));
     ItemWidget->signal_UpAsked().connect(
         sigc::mem_fun(*this, &ModelModule::whenUpAsked));
     ItemWidget->signal_DownAsked().connect(
@@ -316,7 +316,7 @@ void ModelModule::updateGlobalParams()
 {
   openfluid::ware::WareParams_t GlobalParams = m_Model.getGlobalParameters();
 
-  for (std::list<FunctionParamWidget*>::iterator it = m_ParamWidgets.begin();
+  for (std::list<SimulatorParamWidget*>::iterator it = m_ParamWidgets.begin();
       it != m_ParamWidgets.end(); ++it)
   {
     (*it)->updateGlobals(GlobalParams);
@@ -338,7 +338,7 @@ void ModelModule::onModelChanged()
 
 void ModelModule::onFileChanged()
 {
-  for (std::list<FunctionParamWidget*>::iterator it = m_ParamWidgets.begin();
+  for (std::list<SimulatorParamWidget*>::iterator it = m_ParamWidgets.begin();
       it != m_ParamWidgets.end(); ++it)
   {
     (*it)->updateRequiredFilesRows();

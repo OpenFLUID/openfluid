@@ -466,8 +466,8 @@ void ProjectCoordinator::onDirMonitorChanged(
   else if (!mp_FileMonitorDialog->is_popup())
   {
     std::string Msg =
-        _( "Changes occur in the functions list.") + std::string(
-            _("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulation functions list)"));
+        _( "Changes occur in the simulators list.") + std::string(
+            _("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulators list)"));
     mp_FileMonitorDialog->set_message(Msg);
     mp_FileMonitorDialog->show_all();
   }
@@ -483,26 +483,26 @@ void ProjectCoordinator::whenUpdatePluginsAsked(int ResponseId)
   if (ResponseId != Gtk::RESPONSE_OK)
     return;
 
-  std::list<std::string> MissingFunctions;
+  std::list<std::string> MissingSimulators;
 
-  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
+  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedSimulators =
       WaresHelper::checkAndGetModifiedModel(
-          m_EngineProject.getAdvancedDesc().getModel(), MissingFunctions);
+          m_EngineProject.getAdvancedDesc().getModel(), MissingSimulators);
 
-  if (!MissingFunctions.empty())
+  if (!MissingSimulators.empty())
   {
-    m_EngineProject.getAdvancedDesc().getModel().setItems(ModifiedFunctions);
+    m_EngineProject.getAdvancedDesc().getModel().setItems(ModifiedSimulators);
 
-    std::string MissingFunctionsStr = "";
-    for (std::list<std::string>::iterator it = MissingFunctions.begin();
-        it != MissingFunctions.end(); ++it)
-      MissingFunctionsStr += "- " + *it + "\n";
+    std::string MissingSimulatorsStr = "";
+    for (std::list<std::string>::iterator it = MissingSimulators.begin();
+        it != MissingSimulators.end(); ++it)
+      MissingSimulatorsStr += "- " + *it + "\n";
 
     Glib::ustring Msg =
         Glib::ustring::compose(
             _("These plugin file(s) are no more available:\n%1\n\n"
-                "Corresponding simulation functions have been removed from the model.\n"),
-            MissingFunctionsStr);
+                "Corresponding simulators have been removed from the model.\n"),
+            MissingSimulatorsStr);
 
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(Msg);
   }
@@ -551,8 +551,8 @@ void ProjectCoordinator::setFileMonitorDisplayState(bool HasToDisplay)
     if (m_FileMonitorHasChanged && !mp_FileMonitorDialog->is_popup())
     {
       std::string Msg =
-          _( "Changes occur in the functions list while simulation was running.") + std::string(
-              _("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulation functions)"));
+          _( "Changes occur in the simulators list while simulation was running.") + std::string(
+              _("\nDo you want to reload it?\n(if not, it's at your own risk, you have to manually reload the simulators)"));
       mp_FileMonitorDialog->set_message(Msg);
       mp_FileMonitorDialog->show_all();
     }
@@ -745,7 +745,7 @@ void ProjectCoordinator::whenRunStopped()
 {
   m_HasRun = true;
 
-  whenDomainChanged(); // for functions that create units
+  whenDomainChanged(); // for simulators that create units
 
   for (std::map<std::string, openfluid::builderext::ModelessWindow*>::iterator it =
       m_ModelessWindowsExtensionsMap.begin();

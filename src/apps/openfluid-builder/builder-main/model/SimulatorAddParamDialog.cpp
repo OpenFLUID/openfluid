@@ -46,13 +46,13 @@
  */
 
 /**
- \file FunctionAddParamDialog.cpp
+ \file SimulatorAddParamDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "FunctionAddParamDialog.hpp"
+#include "SimulatorAddParamDialog.hpp"
 
 #include <glibmm/i18n.h>
 #include <gtkmm/label.h>
@@ -64,9 +64,9 @@
 // =====================================================================
 // =====================================================================
 
-FunctionAddParamDialog::FunctionAddParamDialog()
+SimulatorAddParamDialog::SimulatorAddParamDialog()
 {
-  mp_Dialog = new Gtk::Dialog(_("Add of simulation function parameter"));
+  mp_Dialog = new Gtk::Dialog(_("Add of simulator parameter"));
   mp_Dialog->set_default_size(10, 10);
 
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
@@ -83,7 +83,7 @@ FunctionAddParamDialog::FunctionAddParamDialog()
 
   mp_NameEntry = Gtk::manage(new Gtk::Entry());
   mp_NameEntry->signal_changed().connect(
-      sigc::mem_fun(*this, &FunctionAddParamDialog::onChanged));
+      sigc::mem_fun(*this, &SimulatorAddParamDialog::onChanged));
   mp_NameEntry->set_activates_default(true);
 
   mp_ValueEntry = Gtk::manage(new Gtk::Entry());
@@ -110,7 +110,7 @@ FunctionAddParamDialog::FunctionAddParamDialog()
 // =====================================================================
 // =====================================================================
 
-FunctionAddParamDialog::~FunctionAddParamDialog()
+SimulatorAddParamDialog::~SimulatorAddParamDialog()
 {
   delete mp_Dialog;
 }
@@ -118,7 +118,7 @@ FunctionAddParamDialog::~FunctionAddParamDialog()
 // =====================================================================
 // =====================================================================
 
-void FunctionAddParamDialog::onChanged()
+void SimulatorAddParamDialog::onChanged()
 {
   std::string Name = mp_NameEntry->get_text();
 
@@ -149,7 +149,7 @@ void FunctionAddParamDialog::onChanged()
 // =====================================================================
 // =====================================================================
 
-bool FunctionAddParamDialog::show(
+bool SimulatorAddParamDialog::show(
     openfluid::fluidx::ModelItemDescriptor* Item,
     openfluid::machine::ModelItemSignatureInstance* Sign)
 {

@@ -46,39 +46,39 @@
  */
 
 /**
- \file ModelAddFunctionDialog.cpp
+ \file ModelAddSimulatorDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "ModelAddFunctionDialog.hpp"
+#include "ModelAddSimulatorDialog.hpp"
 
 #include <gtkmm/paned.h>
 #include <gtkmm/stock.h>
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include "AvailFunctionsWidget.hpp"
+#include "AvailSimulatorsWidget.hpp"
 #include "SignatureDetailWidget.hpp"
 
 // =====================================================================
 // =====================================================================
 
-ModelAddFunctionDialog::ModelAddFunctionDialog(
+ModelAddSimulatorDialog::ModelAddSimulatorDialog(
     openfluid::fluidx::AdvancedModelDescriptor& Model) :
     m_Model(Model), mp_SelectedSignature(0)
 {
-  mp_AvailFct = Gtk::manage(new AvailFunctionsWidget(m_Model));
-  mp_AvailFct->signal_SelectionChanged().connect(
-      sigc::mem_fun(*this, &ModelAddFunctionDialog::whenSelectionChanged));
-  mp_AvailFct->signal_Activated().connect(
-      sigc::mem_fun(*this, &ModelAddFunctionDialog::whenActivated));
+  mp_AvailSim = Gtk::manage(new AvailSimulatorsWidget(m_Model));
+  mp_AvailSim->signal_SelectionChanged().connect(
+      sigc::mem_fun(*this, &ModelAddSimulatorDialog::whenSelectionChanged));
+  mp_AvailSim->signal_Activated().connect(
+      sigc::mem_fun(*this, &ModelAddSimulatorDialog::whenActivated));
 
   mp_Detail = Gtk::manage(new SignatureDetailWidget());
 
   Gtk::HPaned* Paned = Gtk::manage(new Gtk::HPaned());
 
   Paned->set_border_width(5);
-  Paned->pack1(*mp_AvailFct, true, true);
+  Paned->pack1(*mp_AvailSim, true, true);
   Paned->pack2(*mp_Detail, true, false);
   Paned->set_visible(true);
 
@@ -94,7 +94,7 @@ ModelAddFunctionDialog::ModelAddFunctionDialog(
 // =====================================================================
 // =====================================================================
 
-ModelAddFunctionDialog::~ModelAddFunctionDialog()
+ModelAddSimulatorDialog::~ModelAddSimulatorDialog()
 {
   delete mp_Dialog;
 }
@@ -102,12 +102,12 @@ ModelAddFunctionDialog::~ModelAddFunctionDialog()
 // =====================================================================
 // =====================================================================
 
-openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionDialog::show()
+openfluid::machine::ModelItemSignatureInstance* ModelAddSimulatorDialog::show()
 {
   mp_SelectedSignature = 0;
 
   //selection of first item causes mp_SelectedSignature and mp_Detail to update
-  mp_AvailFct->update();
+  mp_AvailSim->update();
 
   if (mp_Dialog->run() != Gtk::RESPONSE_OK)
     mp_SelectedSignature = 0;
@@ -120,7 +120,7 @@ openfluid::machine::ModelItemSignatureInstance* ModelAddFunctionDialog::show()
 // =====================================================================
 // =====================================================================
 
-void ModelAddFunctionDialog::whenSelectionChanged(
+void ModelAddSimulatorDialog::whenSelectionChanged(
     openfluid::machine::ModelItemSignatureInstance* Sign)
 {
   mp_SelectedSignature = Sign;
@@ -142,7 +142,7 @@ void ModelAddFunctionDialog::whenSelectionChanged(
 // =====================================================================
 // =====================================================================
 
-void ModelAddFunctionDialog::whenActivated(
+void ModelAddSimulatorDialog::whenActivated(
     openfluid::machine::ModelItemSignatureInstance* Sign)
 {
   mp_SelectedSignature = Sign;

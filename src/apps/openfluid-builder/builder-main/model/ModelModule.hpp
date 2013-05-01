@@ -59,12 +59,12 @@
 
 #include <gtkmm/box.h>
 
-class ModelAddFunctionDialog;
+class ModelAddSimulatorDialog;
 class WareSetWidget;
-class FunctionGlobalParamsWidget;
-class FunctionParamWidget;
-class FunctionAddGlobalParamDialog;
-class FunctionAddParamDialog;
+class GlobalParamsWidget;
+class SimulatorParamWidget;
+class AddGlobalParamDialog;
+class SimulatorAddParamDialog;
 
 class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 {
@@ -74,12 +74,12 @@ class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     Gtk::Box* mp_MainPanel;
 
-    ModelAddFunctionDialog* mp_AddFctDialog;
+    ModelAddSimulatorDialog* mp_AddSimDialog;
 
-    FunctionAddParamDialog* mp_AddParamDialog;
-    FunctionAddGlobalParamDialog* mp_AddGlobalParamDialog;
+    SimulatorAddParamDialog* mp_AddParamDialog;
+    AddGlobalParamDialog* mp_AddGlobalParamDialog;
 
-    void whenAddFunctionAsked();
+    void whenAddSimulatorAsked();
 
     void updateGlobalParams();
 
@@ -93,11 +93,11 @@ class ModelModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     WareSetWidget* mp_ModelWidget;
 
-    std::list<FunctionParamWidget*> m_ParamWidgets;
+    std::list<SimulatorParamWidget*> m_ParamWidgets;
 
-    FunctionGlobalParamsWidget* mp_GlobalParamsWidget;
+    GlobalParamsWidget* mp_GlobalParamsWidget;
 
-    void whenRemoveFunctionAsked(std::string ID);
+    void whenRemoveSimulatorAsked(std::string ID);
 
     void whenUpAsked(std::string ID);
 

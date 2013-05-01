@@ -66,13 +66,13 @@ BuilderButtonBox* BuilderListToolBoxFactory::createModelStructureToolBox()
   BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setEditCommandVisible(false);
-  ToolBox->setAddCommandTooltipText(_("Append a function to the Model"));
+  ToolBox->setAddCommandTooltipText(_("Append a simulator to the Model"));
   ToolBox->setRemoveCommandTooltipText(_(
-      "Remove the selected function from the Model"));
+      "Remove the selected simulator from the Model"));
   ToolBox->setUpCommandTooltipText(_(
-      "Move the selected function toward the begin of the Model"));
+      "Move the selected simulator toward the begin of the Model"));
   ToolBox->setDownCommandTooltipText(_(
-      "Move the selected function toward the end of the Model"));
+      "Move the selected simulator toward the end of the Model"));
   ToolBox->setAllCommandAvailable(false);
   return ToolBox;
 }

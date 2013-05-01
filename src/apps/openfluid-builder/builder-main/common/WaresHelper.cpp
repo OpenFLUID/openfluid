@@ -66,7 +66,7 @@
 
 std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModifiedModel(
     const openfluid::fluidx::AdvancedModelDescriptor& Desc,
-    std::list<std::string>& MissingFunctions)
+    std::list<std::string>& MissingSimulators)
 {
   openfluid::machine::SimulatorSignatureRegistry* Reg =
       openfluid::machine::SimulatorSignatureRegistry::getInstance();
@@ -86,7 +86,7 @@ std::list<openfluid::fluidx::ModelItemDescriptor*> WaresHelper::checkAndGetModif
 
       if (!Reg->isPluggableSimulatorAvailable(ID))
       {
-        MissingFunctions.push_back(ID);
+        MissingSimulators.push_back(ID);
 
         it = Items.erase(it);
       }

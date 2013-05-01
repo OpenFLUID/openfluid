@@ -46,13 +46,13 @@
  */
 
 /**
- \file FunctionParamWidget
+ \file SimulatorParamWidget
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "FunctionParamWidget.hpp"
+#include "SimulatorParamWidget.hpp"
 
 #include <glibmm/i18n.h>
 #include <gtkmm/stock.h>
@@ -68,11 +68,11 @@
 // =====================================================================
 // =====================================================================
 
-FunctionParamRow::FunctionParamRow(
-    openfluid::fluidx::ModelItemDescriptor& FctDesc, std::string ParamName,
+SimulatorParamRow::SimulatorParamRow(
+    openfluid::fluidx::ModelItemDescriptor& SimDesc, std::string ParamName,
     std::string ParamValue, std::string ParamUnit, std::string ParamDescription,
     bool WithRemoveBt) :
-    m_FctDesc(FctDesc), m_Name(ParamName)
+    m_SimDesc(SimDesc), m_Name(ParamName)
 {
   m_ColumnCount = 5;
 
@@ -87,7 +87,7 @@ FunctionParamRow::FunctionParamRow(
   mp_ValueEntry->set_text(ParamValue);
   mp_ValueEntry->set_tooltip_text(DescriptionTooltip);
   mp_ValueEntry->signal_changed().connect(
-      sigc::mem_fun(*this, &FunctionParamRow::onValueChanged));
+      sigc::mem_fun(*this, &SimulatorParamRow::onValueChanged));
   m_RowWidgets.push_back(mp_ValueEntry);
 
   Gtk::Label* UnitLabel = Gtk::manage(new Gtk::Label(ParamUnit, 0, 0.5));
@@ -107,7 +107,7 @@ FunctionParamRow::FunctionParamRow(
     mp_RemoveButton->set_tooltip_text(
         Glib::ustring::compose(_("Remove %1"), m_Name));
     mp_RemoveButton->signal_clicked().connect(
-        sigc::mem_fun(*this, &FunctionParamRow::onRemoveButtonClicked));
+        sigc::mem_fun(*this, &SimulatorParamRow::onRemoveButtonClicked));
     m_RowWidgets.push_back(mp_RemoveButton);
   }
   else
@@ -117,7 +117,7 @@ FunctionParamRow::FunctionParamRow(
 // =====================================================================
 // =====================================================================
 
-void FunctionParamRow::setGlobalValue(std::string GlobalValue)
+void SimulatorParamRow::setGlobalValue(std::string GlobalValue)
 {
   if (GlobalValue.empty())
     mp_GlobalLabel->set_text("");
@@ -129,11 +129,11 @@ void FunctionParamRow::setGlobalValue(std::string GlobalValue)
 // =====================================================================
 // =====================================================================
 
-void FunctionParamRow::onValueChanged()
+void SimulatorParamRow::onValueChanged()
 {
   std::string NewValue = mp_ValueEntry->get_text();
 
-  m_FctDesc.setParameter(m_Name, NewValue);
+  m_SimDesc.setParameter(m_Name, NewValue);
 
   mp_GlobalLabel->set_sensitive(EngineHelper::isEmptyString(NewValue));
 
@@ -143,16 +143,16 @@ void FunctionParamRow::onValueChanged()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamRow::onRemoveButtonClicked()
+void SimulatorParamRow::onRemoveButtonClicked()
 {
-  m_FctDesc.eraseParameter(m_Name);
+  m_SimDesc.eraseParameter(m_Name);
   m_signal_removeOccured.emit();
 }
 
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void> FunctionParamRow::signal_removeOccured()
+sigc::signal<void> SimulatorParamRow::signal_removeOccured()
 {
   return m_signal_removeOccured;
 }
@@ -160,7 +160,7 @@ sigc::signal<void> FunctionParamRow::signal_removeOccured()
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void> FunctionParamRow::signal_valueChangeOccured()
+sigc::signal<void> SimulatorParamRow::signal_valueChangeOccured()
 {
   return m_signal_valueChangeOccured;
 }
@@ -171,7 +171,7 @@ sigc::signal<void> FunctionParamRow::signal_valueChangeOccured()
 // =====================================================================
 // =====================================================================
 
-FunctionParamFileRow::FunctionParamFileRow(std::string FileName,
+SimulatorParamFileRow::SimulatorParamFileRow(std::string FileName,
                                            bool IsRequired) :
     m_FileName(FileName), m_IsRequired(IsRequired)
 {
@@ -188,7 +188,7 @@ FunctionParamFileRow::FunctionParamFileRow(std::string FileName,
       *Gtk::manage(new Gtk::Image(Gtk::Stock::OPEN, Gtk::ICON_SIZE_BUTTON)));
   mp_FileButton->set_visible(true);
   mp_FileButton->signal_clicked().connect(
-      sigc::mem_fun(*this, &FunctionParamFileRow::onFileButtonClicked));
+      sigc::mem_fun(*this, &SimulatorParamFileRow::onFileButtonClicked));
   m_RowWidgets.push_back(mp_FileButton);
 
   mp_FileNameLabel = Gtk::manage(
@@ -203,7 +203,7 @@ FunctionParamFileRow::FunctionParamFileRow(std::string FileName,
 // =====================================================================
 // =====================================================================
 
-void FunctionParamFileRow::onFileButtonClicked()
+void SimulatorParamFileRow::onFileButtonClicked()
 {
   Gtk::FileChooserDialog Dialog(
       _("Select a file to copy in the project directory"));
@@ -259,7 +259,7 @@ void FunctionParamFileRow::onFileButtonClicked()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamFileRow::setFileFound()
+void SimulatorParamFileRow::setFileFound()
 {
   if (m_File->query_exists() && m_File->query_file_type()
       != Gio::FILE_TYPE_DIRECTORY)
@@ -281,7 +281,7 @@ void FunctionParamFileRow::setFileFound()
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void> FunctionParamFileRow::signal_FileChanged()
+sigc::signal<void> SimulatorParamFileRow::signal_FileChanged()
 {
   return m_signal_FileChanged;
 }
@@ -292,18 +292,18 @@ sigc::signal<void> FunctionParamFileRow::signal_FileChanged()
 // =====================================================================
 // =====================================================================
 
-FunctionParamWidget::FunctionParamWidget(
-    openfluid::fluidx::ModelItemDescriptor& FctDesc,
+SimulatorParamWidget::SimulatorParamWidget(
+    openfluid::fluidx::ModelItemDescriptor& SimDesc,
     openfluid::machine::ModelItemSignatureInstance* Sign,
-    FunctionAddParamDialog& AddParamDialog) :
-    m_FctDesc(FctDesc), mp_Sign(Sign), m_AddParamDialog(AddParamDialog)
+    SimulatorAddParamDialog& AddParamDialog) :
+    m_SimDesc(SimDesc), mp_Sign(Sign), m_AddParamDialog(AddParamDialog)
 {
   Gtk::Button* AddButton = Gtk::manage(new Gtk::Button());
   AddButton->set_image(
       *Gtk::manage(new Gtk::Image(Gtk::Stock::ADD, Gtk::ICON_SIZE_BUTTON)));
   AddButton->set_tooltip_text(_("Add a parameter"));
   AddButton->signal_clicked().connect(
-      sigc::mem_fun(*this, &FunctionParamWidget::onAddButtonClicked));
+      sigc::mem_fun(*this, &SimulatorParamWidget::onAddButtonClicked));
 
   Gtk::HBox* ButtonBox = Gtk::manage(new Gtk::HBox());
   ButtonBox->pack_start(*AddButton, Gtk::PACK_SHRINK, 0);
@@ -334,7 +334,7 @@ FunctionParamWidget::FunctionParamWidget(
 // =====================================================================
 // =====================================================================
 
-FunctionParamWidget::~FunctionParamWidget()
+SimulatorParamWidget::~SimulatorParamWidget()
 {
 
 }
@@ -342,7 +342,7 @@ FunctionParamWidget::~FunctionParamWidget()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::updateRows()
+void SimulatorParamWidget::updateRows()
 {
   updateParamsRows();
   updateRequiredFilesRows();
@@ -352,7 +352,7 @@ void FunctionParamWidget::updateRows()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::updateParamsRows()
+void SimulatorParamWidget::updateParamsRows()
 {
   int TableWidgetCount = mp_ParamsTable->children().size();
   for (int i = 0; i < TableWidgetCount; i++)
@@ -362,7 +362,7 @@ void FunctionParamWidget::updateParamsRows()
 
   m_CurrentParamsTableBottom = 0;
 
-  openfluid::ware::WareParams_t Params = m_FctDesc.getParameters();
+  openfluid::ware::WareParams_t Params = m_SimDesc.getParameters();
 
   if (mp_Sign)
   {
@@ -372,7 +372,7 @@ void FunctionParamWidget::updateParamsRows()
         Items.begin(); it != Items.end(); ++it)
     {
       attachParamsRow(
-          new FunctionParamRow(m_FctDesc, it->DataName, Params[it->DataName],
+          new SimulatorParamRow(m_SimDesc, it->DataName, Params[it->DataName],
                                it->DataUnit, it->Description, false),
           it->DataName);
 
@@ -385,7 +385,7 @@ void FunctionParamWidget::updateParamsRows()
       it != Params.end(); ++it)
   {
     attachParamsRow(
-        new FunctionParamRow(m_FctDesc, it->first, it->second, "", "", true),
+        new SimulatorParamRow(m_SimDesc, it->first, it->second, "", "", true),
         it->first);
   }
 
@@ -402,7 +402,7 @@ void FunctionParamWidget::updateParamsRows()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::attachParamsRow(FunctionParamRow* Row,
+void SimulatorParamWidget::attachParamsRow(SimulatorParamRow* Row,
                                           std::string ParamName)
 {
   for (unsigned int i = 0; i < Row->getColumnCount(); i++)
@@ -415,9 +415,9 @@ void FunctionParamWidget::attachParamsRow(FunctionParamRow* Row,
   }
 
   Row->signal_removeOccured().connect(
-      sigc::mem_fun(*this, &FunctionParamWidget::onStructureChangeOccured));
+      sigc::mem_fun(*this, &SimulatorParamWidget::onStructureChangeOccured));
   Row->signal_valueChangeOccured().connect(
-      sigc::mem_fun(*this, &FunctionParamWidget::onValueChangeOccured));
+      sigc::mem_fun(*this, &SimulatorParamWidget::onValueChangeOccured));
 
   m_CurrentParamsTableBottom++;
 
@@ -427,7 +427,7 @@ void FunctionParamWidget::attachParamsRow(FunctionParamRow* Row,
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::updateRequiredFilesRows()
+void SimulatorParamWidget::updateRequiredFilesRows()
 {
   int TableWidgetCount = mp_RequiredFilesTable->children().size();
   for (int i = 0; i < TableWidgetCount; i++)
@@ -439,21 +439,21 @@ void FunctionParamWidget::updateRequiredFilesRows()
     std::vector<std::string> Items =
         mp_Sign->Signature->HandledData.RequiredExtraFiles;
 
-    if (m_FctDesc.isType(openfluid::fluidx::WareDescriptor::Generator))
+    if (m_SimDesc.isType(openfluid::fluidx::WareDescriptor::Generator))
     {
       openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method =
-          (static_cast<openfluid::fluidx::GeneratorDescriptor*>(&m_FctDesc))->getGeneratorMethod();
+          (static_cast<openfluid::fluidx::GeneratorDescriptor*>(&m_SimDesc))->getGeneratorMethod();
 
       if (Method == openfluid::fluidx::GeneratorDescriptor::Interp || Method
           == openfluid::fluidx::GeneratorDescriptor::Inject)
       {
         Items.clear();
 
-        std::string FileNameFromParam = m_FctDesc.getParameters()["sources"];
+        std::string FileNameFromParam = m_SimDesc.getParameters()["sources"];
         if (!FileNameFromParam.empty())
           Items.push_back(FileNameFromParam);
 
-        FileNameFromParam = m_FctDesc.getParameters()["distribution"];
+        FileNameFromParam = m_SimDesc.getParameters()["distribution"];
         if (!FileNameFromParam.empty())
           Items.push_back(FileNameFromParam);
       }
@@ -474,7 +474,7 @@ void FunctionParamWidget::updateRequiredFilesRows()
 
     for (std::vector<std::string>::iterator it = Items.begin();
         it != Items.end(); ++it)
-      attachRequiredFileRow(new FunctionParamFileRow(*it, true));
+      attachRequiredFileRow(new SimulatorParamFileRow(*it, true));
   }
 
   mp_RequiredFilesTable->show_all_children();
@@ -483,7 +483,7 @@ void FunctionParamWidget::updateRequiredFilesRows()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::attachRequiredFileRow(FunctionParamFileRow* Row)
+void SimulatorParamWidget::attachRequiredFileRow(SimulatorParamFileRow* Row)
 {
   for (unsigned int i = 0; i < Row->getColumnCount(); i++)
   {
@@ -495,7 +495,7 @@ void FunctionParamWidget::attachRequiredFileRow(FunctionParamFileRow* Row)
   }
 
   Row->signal_FileChanged().connect(
-      sigc::mem_fun(*this, &FunctionParamWidget::onFileChangeOccured));
+      sigc::mem_fun(*this, &SimulatorParamWidget::onFileChangeOccured));
 
   m_CurrentReqFilesTableBottom++;
 }
@@ -503,7 +503,7 @@ void FunctionParamWidget::attachRequiredFileRow(FunctionParamFileRow* Row)
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::updateUsedFilesRows()
+void SimulatorParamWidget::updateUsedFilesRows()
 {
   int TableWidgetCount = mp_UsedFilesTable->children().size();
   for (int i = 0; i < TableWidgetCount; i++)
@@ -530,7 +530,7 @@ void FunctionParamWidget::updateUsedFilesRows()
 
     for (std::vector<std::string>::iterator it = Items.begin();
         it != Items.end(); ++it)
-      attachUsedFileRow(new FunctionParamFileRow(*it, false));
+      attachUsedFileRow(new SimulatorParamFileRow(*it, false));
   }
 
   mp_UsedFilesTable->show_all_children();
@@ -539,7 +539,7 @@ void FunctionParamWidget::updateUsedFilesRows()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::attachUsedFileRow(FunctionParamFileRow* Row)
+void SimulatorParamWidget::attachUsedFileRow(SimulatorParamFileRow* Row)
 {
   for (unsigned int i = 0; i < Row->getColumnCount(); i++)
   {
@@ -551,7 +551,7 @@ void FunctionParamWidget::attachUsedFileRow(FunctionParamFileRow* Row)
   }
 
   Row->signal_FileChanged().connect(
-      sigc::mem_fun(*this, &FunctionParamWidget::onFileChangeOccured));
+      sigc::mem_fun(*this, &SimulatorParamWidget::onFileChangeOccured));
 
   m_CurrentUsedFilesTableBottom++;
 }
@@ -559,16 +559,16 @@ void FunctionParamWidget::attachUsedFileRow(FunctionParamFileRow* Row)
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::onAddButtonClicked()
+void SimulatorParamWidget::onAddButtonClicked()
 {
-  if (m_AddParamDialog.show(&m_FctDesc, mp_Sign))
+  if (m_AddParamDialog.show(&m_SimDesc, mp_Sign))
     onStructureChangeOccured();
 }
 
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::updateGlobals(
+void SimulatorParamWidget::updateGlobals(
     const openfluid::ware::WareParams_t& GlobalParams)
 {
   m_Globals = GlobalParams;
@@ -579,9 +579,9 @@ void FunctionParamWidget::updateGlobals(
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::updateGlobals()
+void SimulatorParamWidget::updateGlobals()
 {
-  for (std::map<std::string, FunctionParamRow*>::iterator it =
+  for (std::map<std::string, SimulatorParamRow*>::iterator it =
       m_ParamsRows.begin(); it != m_ParamsRows.end(); ++it)
   {
     openfluid::ware::WareParams_t::const_iterator Found = m_Globals.find(
@@ -595,7 +595,7 @@ void FunctionParamWidget::updateGlobals()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::onStructureChangeOccured()
+void SimulatorParamWidget::onStructureChangeOccured()
 {
   updateRows();
   updateGlobals();
@@ -605,7 +605,7 @@ void FunctionParamWidget::onStructureChangeOccured()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::onValueChangeOccured()
+void SimulatorParamWidget::onValueChangeOccured()
 {
   // for the required files of generators
   updateRequiredFilesRows();
@@ -615,7 +615,7 @@ void FunctionParamWidget::onValueChangeOccured()
 // =====================================================================
 // =====================================================================
 
-void FunctionParamWidget::onFileChangeOccured()
+void SimulatorParamWidget::onFileChangeOccured()
 {
   m_signal_fileChangeOccured.emit();
 }
@@ -623,7 +623,7 @@ void FunctionParamWidget::onFileChangeOccured()
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void> FunctionParamWidget::signal_changeOccured()
+sigc::signal<void> SimulatorParamWidget::signal_changeOccured()
 {
   return m_signal_changeOccured;
 }
@@ -631,7 +631,7 @@ sigc::signal<void> FunctionParamWidget::signal_changeOccured()
 // =====================================================================
 // =====================================================================
 
-sigc::signal<void> FunctionParamWidget::signal_fileChangeOccured()
+sigc::signal<void> SimulatorParamWidget::signal_fileChangeOccured()
 {
   return m_signal_fileChangeOccured;
 }

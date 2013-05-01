@@ -126,7 +126,7 @@ class PreferencesDialog
 
     bool checkObserversPaths();
 
-    bool checkFunctionsPaths();
+    bool checkSimulatorsPaths();
 
   public:
 

@@ -46,13 +46,13 @@
  */
 
 /**
- \file FunctionAddGlobalParamDialog.cpp
+ \file AddGlobalParamDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "FunctionAddGlobalParamDialog.hpp"
+#include "AddGlobalParamDialog.hpp"
 
 #include <glibmm/i18n.h>
 #include <gtkmm/label.h>
@@ -68,7 +68,7 @@
 // =====================================================================
 // =====================================================================
 
-FunctionAddGlobalParamDialog::FunctionAddGlobalParamDialog(
+AddGlobalParamDialog::AddGlobalParamDialog(
     openfluid::fluidx::AdvancedModelDescriptor& Model) :
     m_Model(Model)
 {
@@ -84,13 +84,13 @@ FunctionAddGlobalParamDialog::FunctionAddGlobalParamDialog(
   Gtk::RadioButtonGroup BtGroup;
 
   mp_ExistingBt = Gtk::manage(
-      new Gtk::RadioButton(BtGroup, _("Function available parameters name: ")));
+      new Gtk::RadioButton(BtGroup, _("Simulator available parameters name: ")));
   mp_ExistingBt->signal_toggled().connect(
-      sigc::mem_fun(*this, &FunctionAddGlobalParamDialog::onToggled));
+      sigc::mem_fun(*this, &AddGlobalParamDialog::onToggled));
   mp_NewBt = Gtk::manage(
       new Gtk::RadioButton(BtGroup, _("New parameter name: ")));
   mp_NewBt->signal_toggled().connect(
-      sigc::mem_fun(*this, &FunctionAddGlobalParamDialog::onToggled));
+      sigc::mem_fun(*this, &AddGlobalParamDialog::onToggled));
 
   mp_Combo = Gtk::manage(new Gtk::ComboBox());
   mref_ComboModel = Gtk::ListStore::create(m_Columns);
@@ -99,11 +99,11 @@ FunctionAddGlobalParamDialog::FunctionAddGlobalParamDialog(
   mp_Combo->pack_start(m_Columns.m_Name);
   mp_Combo->pack_start(m_Columns.m_Unit);
   mp_Combo->signal_changed().connect(
-      sigc::mem_fun(*this, &FunctionAddGlobalParamDialog::onChanged));
+      sigc::mem_fun(*this, &AddGlobalParamDialog::onChanged));
 
   mp_NameEntry = Gtk::manage(new Gtk::Entry());
   mp_NameEntry->signal_changed().connect(
-      sigc::mem_fun(*this, &FunctionAddGlobalParamDialog::onChanged));
+      sigc::mem_fun(*this, &AddGlobalParamDialog::onChanged));
   mp_NameEntry->set_activates_default(true);
 
   Gtk::Table* Table = Gtk::manage(new Gtk::Table());
@@ -146,7 +146,7 @@ FunctionAddGlobalParamDialog::FunctionAddGlobalParamDialog(
 // =====================================================================
 // =====================================================================
 
-FunctionAddGlobalParamDialog::~FunctionAddGlobalParamDialog()
+AddGlobalParamDialog::~AddGlobalParamDialog()
 {
   delete mp_Dialog;
 }
@@ -154,7 +154,7 @@ FunctionAddGlobalParamDialog::~FunctionAddGlobalParamDialog()
 // =====================================================================
 // =====================================================================
 
-void FunctionAddGlobalParamDialog::onToggled()
+void AddGlobalParamDialog::onToggled()
 {
   mp_Combo->set_sensitive(mp_ExistingBt->get_active());
   mp_NameEntry->set_sensitive(mp_NewBt->get_active());
@@ -164,7 +164,7 @@ void FunctionAddGlobalParamDialog::onToggled()
 // =====================================================================
 // =====================================================================
 
-void FunctionAddGlobalParamDialog::onChanged()
+void AddGlobalParamDialog::onChanged()
 {
   std::string Name;
 
@@ -204,7 +204,7 @@ void FunctionAddGlobalParamDialog::onChanged()
 // =====================================================================
 // =====================================================================
 
-bool FunctionAddGlobalParamDialog::show()
+bool AddGlobalParamDialog::show()
 {
   // create a dummy item to store global parameters (only for "onChange" tests)
   mp_DummyItem = new openfluid::fluidx::WareDescriptor();
@@ -246,7 +246,7 @@ bool FunctionAddGlobalParamDialog::show()
 // =====================================================================
 // =====================================================================
 
-void FunctionAddGlobalParamDialog::updateCombo()
+void AddGlobalParamDialog::updateCombo()
 {
   mref_ComboModel->clear();
 

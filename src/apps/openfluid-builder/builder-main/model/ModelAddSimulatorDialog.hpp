@@ -46,14 +46,14 @@
  */
 
 /**
- \file ModelAddFunctionDialog.hpp
+ \file ModelAddSimulatorDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef MODELADDFUNCTIONDIALOG_HPP_
-#define MODELADDFUNCTIONDIALOG_HPP_
+#ifndef MODELADDSIMULATORDIALOG_HPP_
+#define MODELADDSIMULATORDIALOG_HPP_
 
 #include <gtkmm/dialog.h>
 
@@ -66,10 +66,10 @@ class ModelItemSignatureInstance;
 }
 }
 
-class AvailFunctionsWidget;
+class AvailSimulatorsWidget;
 class SignatureDetailWidget;
 
-class ModelAddFunctionDialog
+class ModelAddSimulatorDialog
 {
   private:
 
@@ -77,7 +77,7 @@ class ModelAddFunctionDialog
 
     Gtk::Dialog* mp_Dialog;
 
-    AvailFunctionsWidget* mp_AvailFct;
+    AvailSimulatorsWidget* mp_AvailSim;
     SignatureDetailWidget* mp_Detail;
 
     openfluid::machine::ModelItemSignatureInstance* mp_SelectedSignature;
@@ -87,11 +87,11 @@ class ModelAddFunctionDialog
 
   public:
 
-    ModelAddFunctionDialog(openfluid::fluidx::AdvancedModelDescriptor& Model);
+    ModelAddSimulatorDialog(openfluid::fluidx::AdvancedModelDescriptor& Model);
 
-    ~ModelAddFunctionDialog();
+    ~ModelAddSimulatorDialog();
 
     openfluid::machine::ModelItemSignatureInstance* show();
 };
 
-#endif /* MODELADDFUNCTIONDIALOG_HPP_ */
+#endif /* MODELADDSIMULATORDIALOG_HPP_ */

@@ -76,15 +76,15 @@ class WaresHelper
   public:
 
     /**
-     * @brief Checks that each Function of the Model descriptor is available
-     * @details Update the list of all available Functions before checking
+     * @brief Checks that each Simulator of the Model descriptor is available
+     * @details Update the list of all available Simulator before checking
      * @param Desc the Model descriptor to check
-     * @param MissingFunctions a list of IDs of Functions that are in the Model but whose plugin files are not available
-     * @return A copy of the list of Functions that are in the Model, whithout that are not available
+     * @param MissingSimulators a list of IDs of Simulators that are in the Model but whose plugin files are not available
+     * @return A copy of the list of Simulators that are in the Model, whithout that are not available
      */
     static std::list<openfluid::fluidx::ModelItemDescriptor*> checkAndGetModifiedModel(
         const openfluid::fluidx::AdvancedModelDescriptor& Desc,
-        std::list<std::string>& MissingFunctions);
+        std::list<std::string>& MissingSimulators);
 
     /**
      * @brief Checks that each Observer of the Monitoring descriptor is available

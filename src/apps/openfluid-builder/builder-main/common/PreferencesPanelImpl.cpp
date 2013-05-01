@@ -257,15 +257,15 @@ PreferencesPathsPanel::PreferencesPathsPanel() :
   WorkdirBox->show_all_children();
 
   /*
-   * Functions
+   * Simulators
    */
 
-  mp_FunctionsPathListWidget = new PreferencesPathListWidget();
-  mp_FunctionsPathListWidget->signal_PathListChanged().connect(sigc::mem_fun(
-      *this, &PreferencesPathsPanel::onFunctionsPathListChanged));
+  mp_SimulatorsPathListWidget = new PreferencesPathListWidget();
+  mp_SimulatorsPathListWidget->signal_PathListChanged().connect(sigc::mem_fun(
+      *this, &PreferencesPathsPanel::onSimulatorsPathListChanged));
 
-  Gtk::Widget* FunctionPaths = mp_FunctionsPathListWidget->asWidget();
-  FunctionPaths->set_visible(true);
+  Gtk::Widget* SimulatorPaths = mp_SimulatorsPathListWidget->asWidget();
+  SimulatorPaths->set_visible(true);
 
   /*
    * Extensions
@@ -299,8 +299,8 @@ PreferencesPathsPanel::PreferencesPathsPanel() :
   PanelBox->pack_start(*createSubBoxAlignement(WorkdirBox), Gtk::PACK_SHRINK);
 
   Gtk::Expander* PlugExpander = Gtk::manage(new Gtk::Expander());
-  PlugExpander->set_label_widget(*createSubTitle(_("Search paths for simulation functions")));
-  PlugExpander->add(*createSubBoxAlignement(FunctionPaths));
+  PlugExpander->set_label_widget(*createSubTitle(_("Search paths for simulators")));
+  PlugExpander->add(*createSubBoxAlignement(SimulatorPaths));
   PlugExpander->set_visible(true);
   PanelBox->pack_start(*PlugExpander, Gtk::PACK_SHRINK);
 
@@ -327,10 +327,10 @@ void PreferencesPathsPanel::init()
   mp_WorkdirEntry->set_text(
       openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
 
-  mp_FunctionsPathListWidget->setPreDefinedPaths(
+  mp_SimulatorsPathListWidget->setPreDefinedPaths(
       openfluid::base::RuntimeEnvironment::getInstance()->getDefaultSimulatorsPluginsPaths());
 
-  mp_FunctionsPathListWidget->setUserDefinedPaths(
+  mp_SimulatorsPathListWidget->setUserDefinedPaths(
       openfluid::guicommon::PreferencesManager::getInstance()->getExtraPlugPaths());
 
   mp_ExtensionsPathListWidget->setPreDefinedPaths(
@@ -382,10 +382,10 @@ void PreferencesPathsPanel::onWorkdirFileButtonClicked()
 // =====================================================================
 // =====================================================================
 
-void PreferencesPathsPanel::onFunctionsPathListChanged()
+void PreferencesPathsPanel::onSimulatorsPathListChanged()
 {
   openfluid::guicommon::PreferencesManager::getInstance()->setExtraPlugPaths(
-      mp_FunctionsPathListWidget->getUserDefinedPaths());
+      mp_SimulatorsPathListWidget->getUserDefinedPaths());
 }
 
 // =====================================================================

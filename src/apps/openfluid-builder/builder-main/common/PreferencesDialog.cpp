@@ -223,7 +223,7 @@ void PreferencesDialog::onGroupSelectionChanged()
 
 void PreferencesDialog::onCloseClicked()
 {
-  if (checkFunctionsPaths() && checkObserversPaths())
+  if (checkSimulatorsPaths() && checkObserversPaths())
     mp_Dialog->response(Gtk::RESPONSE_CLOSE);
 }
 
@@ -307,7 +307,7 @@ bool PreferencesDialog::checkObserversPaths()
 // =====================================================================
 // =====================================================================
 
-bool PreferencesDialog::checkFunctionsPaths()
+bool PreferencesDialog::checkSimulatorsPaths()
 {
   openfluid::base::RuntimeEnvironment* RunEnv =
       openfluid::base::RuntimeEnvironment::getInstance();
@@ -315,20 +315,20 @@ bool PreferencesDialog::checkFunctionsPaths()
   openfluid::guicommon::PreferencesManager* PrefMgr =
       openfluid::guicommon::PreferencesManager::getInstance();
 
-  std::vector<std::string> ExistingFctPaths =
+  std::vector<std::string> ExistingSimPaths =
       RunEnv->getExtraSimulatorsPluginsPaths();
-  std::vector<std::string> PrefFctPaths = PrefMgr->getExtraPlugPaths();
+  std::vector<std::string> PrefSimPaths = PrefMgr->getExtraPlugPaths();
 
-  if (ExistingFctPaths.size() == PrefFctPaths.size() && std::equal(
-      ExistingFctPaths.begin(), ExistingFctPaths.end(), PrefFctPaths.begin()))
+  if (ExistingSimPaths.size() == PrefSimPaths.size() && std::equal(
+      ExistingSimPaths.begin(), ExistingSimPaths.end(), PrefSimPaths.begin()))
   {
     return true;
   }
 
   // RunEnv <- Pref
   RunEnv->resetExtraSimulatorsPluginsPaths();
-  for (int i = PrefFctPaths.size() - 1; i >= 0; i--)
-    RunEnv->addExtraSimulatorsPluginsPaths(PrefFctPaths[i]);
+  for (int i = PrefSimPaths.size() - 1; i >= 0; i--)
+    RunEnv->addExtraSimulatorsPluginsPaths(PrefSimPaths[i]);
 
   if (!mp_Project)
   {
@@ -339,32 +339,32 @@ bool PreferencesDialog::checkFunctionsPaths()
   openfluid::fluidx::AdvancedModelDescriptor& Model =
       mp_Project->getAdvancedDesc().getModel();
 
-  std::list<std::string> MissingFunctions;
+  std::list<std::string> MissingSimulators;
 
-  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedFunctions =
-      WaresHelper::checkAndGetModifiedModel(Model, MissingFunctions);
+  std::list<openfluid::fluidx::ModelItemDescriptor*> ModifiedSimulators =
+      WaresHelper::checkAndGetModifiedModel(Model, MissingSimulators);
 
-  if (MissingFunctions.empty())
+  if (MissingSimulators.empty())
   {
     m_PlugPathsHaveChanged = true;
     return true;
   }
 
-  std::string MissingFunctionsStr = "";
-  for (std::list<std::string>::iterator it = MissingFunctions.begin();
-      it != MissingFunctions.end(); ++it)
-    MissingFunctionsStr += "- " + *it + "\n";
+  std::string MissingSimulatorsStr = "";
+  for (std::list<std::string>::iterator it = MissingSimulators.begin();
+      it != MissingSimulators.end(); ++it)
+    MissingSimulatorsStr += "- " + *it + "\n";
 
   Glib::ustring Msg = Glib::ustring::compose(
       _("These plugin file(s) are no more available:\n%1\n\n"
-          "Corresponding simulation functions will be removed from the model.\n"
+          "Corresponding simulator(s) will be removed from the model.\n"
           "Do you want to continue?"),
-      MissingFunctionsStr);
+      MissingSimulatorsStr);
 
   if (openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
       Msg))
   {
-    Model.setItems(ModifiedFunctions);
+    Model.setItems(ModifiedSimulators);
 
     m_PlugPathsHaveChanged = true;
     return true;
@@ -372,8 +372,8 @@ bool PreferencesDialog::checkFunctionsPaths()
 
   // reset RunEnv
   RunEnv->resetExtraSimulatorsPluginsPaths();
-  for (int i = ExistingFctPaths.size() - 1; i >= 0; i--)
-    RunEnv->addExtraSimulatorsPluginsPaths(ExistingFctPaths[i]);
+  for (int i = ExistingSimPaths.size() - 1; i >= 0; i--)
+    RunEnv->addExtraSimulatorsPluginsPaths(ExistingSimPaths[i]);
 
   // reset Model
   openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
