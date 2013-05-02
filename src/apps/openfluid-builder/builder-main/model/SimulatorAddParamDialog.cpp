@@ -167,7 +167,7 @@ bool SimulatorAddParamDialog::show(
       Sign->Signature->HandledData.SimulatorParams;
   for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it =
       SignParams.begin(); it != SignParams.end(); ++it)
-    mp_DummyItem->setParameter(it->DataName, "");
+    mp_DummyItem->setParameter(it->DataName, std::string(""));
 
   mp_DummyItem->setParameters(Item->getParameters());
 
@@ -177,7 +177,7 @@ bool SimulatorAddParamDialog::show(
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    Item->setParameter(mp_NameEntry->get_text(), mp_ValueEntry->get_text());
+    Item->setParameter(mp_NameEntry->get_text(), std::string(mp_ValueEntry->get_text()));
 
     mp_Dialog->hide();
     return true;

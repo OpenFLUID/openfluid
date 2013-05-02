@@ -207,7 +207,7 @@ openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const o
 // =====================================================================
 
 
-void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value)
+void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamValue_t& Value)
 {
   m_GlobalParams[Key] = Value;
 }

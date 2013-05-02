@@ -312,7 +312,7 @@ unsigned int AdvancedModelDescriptor::getItemsCount() const
 
 void AdvancedModelDescriptor::setGlobalParameter(
     const openfluid::ware::WareParamKey_t& Key,
-    const openfluid::ware::WareParamKey_t& Value)
+    const openfluid::ware::WareParamValue_t& Value)
 {
   mp_ModelDesc->setGlobalParameter(Key, Value);
 }

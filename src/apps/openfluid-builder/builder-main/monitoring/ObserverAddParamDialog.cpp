@@ -164,7 +164,7 @@ bool ObserverAddParamDialog::show(openfluid::fluidx::ObserverDescriptor* Obs)
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    mp_Obs->setParameter(mp_NameEntry->get_text(), mp_ValueEntry->get_text());
+    mp_Obs->setParameter(mp_NameEntry->get_text(), std::string(mp_ValueEntry->get_text()));
 
     mp_Dialog->hide();
     return true;

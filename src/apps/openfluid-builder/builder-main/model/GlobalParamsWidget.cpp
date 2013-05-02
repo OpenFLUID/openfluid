@@ -96,7 +96,7 @@ GlobalParamRow::GlobalParamRow(
 
 void GlobalParamRow::onValueChanged()
 {
-  m_ModelDesc.setGlobalParameter(m_Name, mp_ValueEntry->get_text());
+  m_ModelDesc.setGlobalParameter(m_Name, std::string(mp_ValueEntry->get_text()));
   m_signal_valueChangeOccured.emit();
 }
 

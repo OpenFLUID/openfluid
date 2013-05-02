@@ -222,24 +222,24 @@ BOOST_AUTO_TEST_CASE(check_check)
   openfluid::fluidx::ModelItemDescriptor* RandomGen = Desc.getModel().getItemAt(
       2);
 
-  RandomGen->setParameter("min", "12.8");
+  RandomGen->setParameter("min", std::string("12.8"));
   PC.check();
   BOOST_CHECK(!PC.IsGeneratorParamsOk);
   BOOST_CHECK_EQUAL(
       PC.ParamsMsg,
       Glib::ustring::compose(_("- %1 >= %2 in %3\n"),"min","max",static_cast<openfluid::fluidx::GeneratorDescriptor*>(RandomGen)->getGeneratedID()));
 
-  RandomGen->setParameter("min", "12.7");
+  RandomGen->setParameter("min", std::string("12.7"));
   PC.check();
   BOOST_CHECK(PC.IsGeneratorParamsOk);
   BOOST_CHECK(PC.ParamsMsg.empty());
 
-  Desc.getModel().setGlobalParameter("min", "12.8");
+  Desc.getModel().setGlobalParameter("min", std::string("12.8"));
   PC.check();
   BOOST_CHECK(PC.IsGeneratorParamsOk);
   BOOST_CHECK(PC.ParamsMsg.empty());
 
-  RandomGen->setParameter("min", "");
+  RandomGen->setParameter("min", std::string(""));
   PC.check();
   BOOST_CHECK(!PC.IsGeneratorParamsOk);
   BOOST_CHECK_EQUAL(
@@ -352,7 +352,7 @@ BOOST_AUTO_TEST_CASE(check_generators_with_files)
   std::string InjectID =
       static_cast<openfluid::fluidx::GeneratorDescriptor*>(InjectpGen)->getGeneratedID();
 
-  InterpGen->setParameter("sources", "src2.txt");
+  InterpGen->setParameter("sources", std::string("src2.txt"));
   GlobalState = PC.check();
 
   BOOST_CHECK(PC.IsGeneratorParamsOk);
@@ -362,7 +362,7 @@ BOOST_AUTO_TEST_CASE(check_generators_with_files)
       Glib::ustring::compose(_("- File %1 required by %2 not found\n"),"src2.txt",InterpID));
   BOOST_CHECK(!GlobalState);
 
-  InterpGen->setParameter("sources", "");
+  InterpGen->setParameter("sources", std::string(""));
   GlobalState = PC.check();
 
   BOOST_CHECK(!PC.IsGeneratorParamsOk);
@@ -378,7 +378,7 @@ BOOST_AUTO_TEST_CASE(check_generators_with_files)
   BOOST_CHECK( PC.ExtraFilesMsg.empty());
   BOOST_CHECK(!GlobalState);
 
-  InterpGen->setParameter("sources", "src.txt");
+  InterpGen->setParameter("sources", std::string("src.txt"));
   GlobalState = PC.check();
 
   BOOST_CHECK(PC.IsParamsOk);
@@ -386,7 +386,7 @@ BOOST_AUTO_TEST_CASE(check_generators_with_files)
   BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(GlobalState);
 
-  InjectpGen->setParameter("distribution", "distrib2.txt");
+  InjectpGen->setParameter("distribution", std::string("distrib2.txt"));
   GlobalState = PC.check();
 
   BOOST_CHECK(PC.IsGeneratorParamsOk);

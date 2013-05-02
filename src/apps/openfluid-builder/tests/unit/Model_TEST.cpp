@@ -623,7 +623,7 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
 
   // add a Global param
 
-  mp_Model->setGlobalParameter("gmult", "");
+  mp_Model->setGlobalParameter("gmult", std::string(""));
   GlobalWidget->onStructureChangeOccured();
 
   GlobalRows = GlobalWidget->getRows();

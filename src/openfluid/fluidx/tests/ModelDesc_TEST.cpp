@@ -104,17 +104,17 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::fluidx::SimulatorDescriptor SimDesc("test.id");
-  SimDesc.setParameter("param1","var1");
-  SimDesc.setParameter("param2","var2");
-  SimDesc.setParameter("param3","var3");
-  SimDesc.setParameter("param2","var22");
+  SimDesc.setParameter("param1",std::string("var1"));
+  SimDesc.setParameter("param2",std::string("var2"));
+  SimDesc.setParameter("param3",std::string("var3"));
+  SimDesc.setParameter("param2",std::string("var22"));
 
   openfluid::fluidx::GeneratorDescriptor GenDesc1("test.var","test.unitclass",openfluid::fluidx::GeneratorDescriptor::Fixed,7);
-  GenDesc1.setParameter("fixedvalue","20.5");
+  GenDesc1.setParameter("fixedvalue",std::string("20.5"));
 
   openfluid::fluidx::GeneratorDescriptor GenDesc2("test.var2","test.unitclass2",openfluid::fluidx::GeneratorDescriptor::Interp);
-  GenDesc2.setParameter("sources","datasources.xml");
-  GenDesc2.setParameter("distribution","distribution.dat");
+  GenDesc2.setParameter("sources",std::string("datasources.xml"));
+  GenDesc2.setParameter("distribution",std::string("distribution.dat"));
 
   openfluid::fluidx::CoupledModelDescriptor ModelDesc;
 
