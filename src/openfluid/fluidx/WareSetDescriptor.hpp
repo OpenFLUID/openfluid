@@ -98,7 +98,7 @@ class DLLEXPORT WareSetDescriptor
     // =====================================================================
 
     void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key,
-                            const openfluid::ware::WareParamKey_t& Value)
+                            const openfluid::ware::WareParamValue_t& Value)
     {
       m_Params[Key] = Value;
     }

@@ -95,7 +95,7 @@ ObserverParamRow::ObserverParamRow(
 
 void ObserverParamRow::onValueChanged()
 {
-  m_ObsDesc.setParameter(m_Name, mp_ValueEntry->get_text());
+  m_ObsDesc.setParameter(m_Name, std::string(mp_ValueEntry->get_text()));
   m_signal_valueChangeOccured.emit();
 }
 

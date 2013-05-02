@@ -233,7 +233,7 @@ bool AddGlobalParamDialog::show()
     else
       Name = mp_NameEntry->get_text();
 
-    m_Model.setGlobalParameter(Name, mp_ValueEntry->get_text());
+    m_Model.setGlobalParameter(Name, std::string(mp_ValueEntry->get_text()));
 
     mp_Dialog->hide();
     return true;

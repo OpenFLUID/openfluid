@@ -81,7 +81,7 @@ class WareDescriptor
     virtual ~WareDescriptor();
 
     void setParameter(const openfluid::ware::WareParamKey_t& Key,
-                      const openfluid::ware::WareParamKey_t& Value);
+                      const openfluid::ware::WareParamValue_t& Value);
 
     void setParameters(const openfluid::ware::WareParams_t& Params);
 

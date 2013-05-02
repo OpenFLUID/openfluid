@@ -135,7 +135,7 @@ class DLLEXPORT ModelInstance
 
     openfluid::ware::WareParams_t& getGlobalParameters() { return m_GlobalParams; };
 
-    void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamKey_t& Value);
+    void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamValue_t& Value);
 
     void setGlobalParameters(const openfluid::ware::WareParams_t& Params) { m_GlobalParams = Params; };
 
