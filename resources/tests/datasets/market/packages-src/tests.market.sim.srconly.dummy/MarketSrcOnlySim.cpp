@@ -67,7 +67,7 @@ DECLARE_SIMULATOR_PLUGIN
 // =====================================================================
 
 
-BEGIN_SIMULATOR_SIGNATURE("tests.market.srconly.dummy")
+BEGIN_SIMULATOR_SIGNATURE("tests.market.sim.srconly.dummy")
 
   DECLARE_SIGNATURE_NAME("test simulator built using the OpenFLUID cmake module");
   DECLARE_SIGNATURE_DESCRIPTION("");

@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware)
 
 
-SET(SIM_ID tests.market.srconly.dummy)
+SET(SIM_ID tests.market.sim.srconly.dummy)
 SET(SIM_CPP MarketSrcOnlySim.cpp)
 
 OPENFLUID_SHOW_CMAKE_VARIABLES()
