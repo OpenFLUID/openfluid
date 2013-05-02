@@ -72,6 +72,8 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
 {
   mp_EngineProject = new EngineProject(ProjectFolder, true);
 
+  m_HasChangesAtStart = mp_EngineProject->hasChangesAtStart();
+
   mp_ProjectExplorerMVP = new ProjectExplorerComponent(mp_EngineProject->getAdvancedDesc());
 
   mp_Workspace = new ProjectWorkspace();
@@ -91,6 +93,14 @@ BuilderProjectWithExplorer::BuilderProjectWithExplorer(
 
   mp_EngineProject->signal_SaveHappened().connect(sigc::mem_fun(*this,
       &BuilderProjectWithExplorer::whenSaveHappened));
+}
+
+// =====================================================================
+// =====================================================================
+
+bool BuilderProjectWithExplorer::hasChangesAtStart()
+{
+  return m_HasChangesAtStart;
 }
 
 // =====================================================================

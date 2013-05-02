@@ -208,7 +208,7 @@ void DatastoreView::whenRemoveAsked()
   else if (Position == Size)
     requestSelectionAt(Position - 1);
 
-  signal_DatastoreChanged().emit();
+  m_signal_DatastoreChanged.emit();
 }
 
 // =====================================================================
@@ -229,7 +229,7 @@ void DatastoreView::whenUpAsked()
   update();
   requestSelectionAt(To);
 
-  signal_DatastoreChanged().emit();
+  m_signal_DatastoreChanged.emit();
 }
 
 // =====================================================================
@@ -250,7 +250,7 @@ void DatastoreView::whenDownAsked()
   update();
   requestSelectionAt(To);
 
-  signal_DatastoreChanged().emit();
+  m_signal_DatastoreChanged.emit();
 }
 
 // =====================================================================

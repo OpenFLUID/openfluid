@@ -394,8 +394,13 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
     if (ProjectFolder.empty())
       ProjectModule->saveAsked();
     else
+    {
+      if(ProjectModule->hasChangesAtStart())
+        onChangeHappened();
       // to mark that nothing has to be saved
-      onSaveHappened();
+      else
+        onSaveHappened();
+    }
 
     ProjectModule->checkAsked();
   }
