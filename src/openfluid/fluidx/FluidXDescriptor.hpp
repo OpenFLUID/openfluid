@@ -125,12 +125,6 @@ class FluidXDescriptor
 
     void parseFile(std::string Filename);
 
-    /**
-     * Used for compatibility only
-     * @deprecated
-     */
-    void clearOldVectorNamedVar(std::string& VarName);
-
     // =====================================================================
     // =====================================================================
 

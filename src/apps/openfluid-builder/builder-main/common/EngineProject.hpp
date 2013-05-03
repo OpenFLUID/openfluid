@@ -118,6 +118,8 @@ class EngineProject
 
     void checkAndAdaptMonitoring();
 
+    bool m_HasChangesAtStart;
+
   protected:
 
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
@@ -134,6 +136,8 @@ class EngineProject
     sigc::signal<void> signal_RunStopped();
 
     sigc::signal<void> signal_SaveHappened();
+
+    bool hasChangesAtStart();
 
     void run();
 

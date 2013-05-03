@@ -94,6 +94,8 @@ class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, pu
 
     Gtk::Paned* mp_MainPaned;
 
+    bool m_HasChangesAtStart;
+
     void whenCheckHappened(bool IsCheckOk);
 
     void whenChangeHappened();
@@ -117,6 +119,8 @@ class BuilderProjectWithExplorer: public openfluid::guicommon::BuilderModule, pu
     sigc::signal<void> signal_SaveHappened();
 
     ~BuilderProjectWithExplorer();
+
+    bool hasChangesAtStart();
 
     void runAsked();
 

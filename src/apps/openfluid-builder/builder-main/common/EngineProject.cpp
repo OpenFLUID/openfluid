@@ -103,7 +103,8 @@ void MyErrorHandler(void* /*userData*/, xmlErrorPtr error)
 // =====================================================================
 
 EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
-    m_WithProjectManager(WithProjectManager), mp_IOListener(0), mp_FXDesc(0)
+    m_WithProjectManager(WithProjectManager), mp_IOListener(0), m_HasChangesAtStart(
+        false), mp_FXDesc(0)
 {
   std::string Now = boost::posix_time::to_iso_extended_string(
       boost::posix_time::microsec_clock::local_time());
@@ -190,12 +191,11 @@ void EngineProject::checkAndAdaptModel()
         it != MissingSimulators.end(); ++it)
       MissingSimulatorsStr += "- " + *it + "\n";
 
-    Glib::ustring Msg =
-        Glib::ustring::compose(
-            _("Unable to find plugin file(s):\n%1\n\n"
-                "Corresponding simulator(s) will be removed from the model.\n"
-                "Do you want to continue?"),
-            MissingSimulatorsStr);
+    Glib::ustring Msg = Glib::ustring::compose(
+        _("Unable to find plugin file(s):\n%1\n\n"
+            "Corresponding simulator(s) will be removed from the model.\n"
+            "Do you want to continue?"),
+        MissingSimulatorsStr);
 
     if (!openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
         Msg))
@@ -205,7 +205,10 @@ void EngineProject::checkAndAdaptModel()
       throw openfluid::base::OFException("");
     }
     else
+    {
       mp_AdvancedDesc->getModel().setItems(ModifiedSimulators);
+      m_HasChangesAtStart = true;
+    }
   }
 
 }
@@ -242,7 +245,10 @@ void EngineProject::checkAndAdaptMonitoring()
       throw openfluid::base::OFException("");
     }
     else
+    {
       mp_AdvancedDesc->getMonitoring().setItems(ModifiedObservers);
+      m_HasChangesAtStart = true;
+    }
   }
 
 }
@@ -340,6 +346,14 @@ void EngineProject::checkAndSetDefaultRunValues()
     RunDesc.setDeltaT(m_DefaultDeltaT);
 
   RunDesc.setFilled(true);
+}
+
+// =====================================================================
+// =====================================================================
+
+bool EngineProject::hasChangesAtStart()
+{
+  return m_HasChangesAtStart;
 }
 
 // =====================================================================
