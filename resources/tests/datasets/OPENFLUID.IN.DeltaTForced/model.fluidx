@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+    <model>
+
+       <simulator ID="tests.coupling.A" />       
+       <simulator ID="tests.coupling.B" />       
+       <simulator ID="tests.coupling.C" />
+       <simulator ID="tests.coupling.D" />       
+       <simulator ID="tests.coupling.E" />              
+    
+  </model>
+</openfluid>

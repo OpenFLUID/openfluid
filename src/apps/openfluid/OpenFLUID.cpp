@@ -583,8 +583,15 @@ void OpenFLUIDApp::runSimulation()
   std::cout << std::endl;
 
   std::cout << "Simulation from " << mp_Engine->getSimulationStatus()->getBeginDate().getAsISOString()
-            << " to " << mp_Engine->getSimulationStatus()->getEndDate().getAsISOString() << std::endl
-            << "Default DeltaT is " << mp_Engine->getSimulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
+            << " to " << mp_Engine->getSimulationStatus()->getEndDate().getAsISOString() << std::endl;
+
+  if (mp_Engine->getSimulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+    std::cout << "Checked";
+  else if (mp_Engine->getSimulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+    std::cout << "Forced";
+  else
+    std::cout << "Default";
+  std::cout << " DeltaT is " << mp_Engine->getSimulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
 
   std::cout << std::endl;
 

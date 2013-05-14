@@ -58,13 +58,18 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
+
 
 namespace openfluid { namespace fluidx {
 
 class DLLEXPORT RunDescriptor
 {
   private:
+
     int m_DeltaT;
+
+    openfluid::base::SimulationStatus::SchedulingConstraint m_SchedConstraint;
 
     openfluid::core::DateTime m_BeginDate;
     openfluid::core::DateTime m_EndDate;
@@ -117,6 +122,10 @@ class DLLEXPORT RunDescriptor
     inline void setFilesBufferSizeInKB(const unsigned int KBytes) {m_FilesBufferSizeInKB = KBytes; };
 
     inline unsigned int getFilesBufferSizeInKB() const { return m_FilesBufferSizeInKB; };
+
+    inline openfluid::base::SimulationStatus::SchedulingConstraint getSchedulingConstraint() const { return m_SchedConstraint; };
+
+    inline void setSchedulingConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst) { m_SchedConstraint = SConst; };
 
     inline bool isFilled() const { return m_Filled; };
 

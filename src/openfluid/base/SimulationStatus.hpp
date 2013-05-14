@@ -74,6 +74,7 @@ class DLLEXPORT SimulationStatus
 
     enum SimulationStage { PRE, INITPARAMS, PREPAREDATA, CHECKCONSISTENCY, INITIALIZERUN, RUNSTEP, FINALIZERUN, POST, UNKNOWN };
 
+    enum SchedulingConstraint { SCHED_NONE, SCHED_DTCHECKED, SCHED_DTFORCED };
 
   private:
 
@@ -89,13 +90,16 @@ class DLLEXPORT SimulationStatus
 
     openfluid::core::Duration_t m_DefaultDeltaT;
 
+    SchedulingConstraint m_SchedConstraint;
+
     SimulationStage m_CurrentStage;
 
   public:
 
     SimulationStatus(const openfluid::core::DateTime& Begin,
                      const openfluid::core::DateTime& End,
-                     const openfluid::core::Duration_t DeltaT);
+                     const openfluid::core::Duration_t DeltaT,
+                     const SchedulingConstraint& SConst = SCHED_NONE);
 
     ~SimulationStatus() {}
 
@@ -110,6 +114,8 @@ class DLLEXPORT SimulationStatus
     inline openfluid::core::Duration_t getSimulationDuration() const { return m_Duration; }
 
     inline openfluid::core::TimeIndex_t getCurrentTimeIndex() const { return m_CurrentTimeIndex; }
+
+    inline SchedulingConstraint getSchedulingConstraint() const { return m_SchedConstraint; }
 
     inline bool isFirstTimeIndex() const { return m_CurrentTimeIndex == 0; }
 

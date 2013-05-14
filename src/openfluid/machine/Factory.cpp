@@ -378,7 +378,8 @@ void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescri
 
   SimBlob.getSimulationStatus() = openfluid::base::SimulationStatus(FluidXDesc.getRunDescriptor().getBeginDate(),
                                                                     FluidXDesc.getRunDescriptor().getEndDate(),
-                                                                    FluidXDesc.getRunDescriptor().getDeltaT());
+                                                                    FluidXDesc.getRunDescriptor().getDeltaT(),
+                                                                    FluidXDesc.getRunDescriptor().getSchedulingConstraint());
 
   SimBlob.getRunDescriptor() = FluidXDesc.getRunDescriptor();
 

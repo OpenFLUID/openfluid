@@ -71,6 +71,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::fluidx::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),openfluid::core::DateTime(2010,1,9,12,0,0));
 
   BOOST_REQUIRE_EQUAL(RunDesc.getDeltaT(),57);
+  BOOST_REQUIRE_EQUAL(RunDesc.getSchedulingConstraint(),openfluid::base::SimulationStatus::SCHED_NONE);
 
   BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getDay(),7);
   BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getHour(),16);
@@ -92,10 +93,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::fluidx::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),openfluid::core::DateTime(2010,1,9,12,0,0));
 
   RunDesc.setSimulationID("testID");
+  RunDesc.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTCHECKED);
   RunDesc.setValuesBufferSize(20);
   RunDesc.setFilesBufferSizeInKB(5);
 
   BOOST_REQUIRE_EQUAL(RunDesc.getDeltaT(),57);
+  BOOST_REQUIRE_EQUAL(RunDesc.getSchedulingConstraint(),openfluid::base::SimulationStatus::SCHED_DTCHECKED);
   BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getDay(),7);
   BOOST_REQUIRE_EQUAL(RunDesc.getBeginDate().getHour(),16);
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getDay(),9);
