@@ -95,7 +95,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
   RunDesc.setSimulationID("testID");
   RunDesc.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTCHECKED);
   RunDesc.setValuesBufferSize(20);
-  RunDesc.setFilesBufferSizeInKB(5);
 
   BOOST_REQUIRE_EQUAL(RunDesc.getDeltaT(),57);
   BOOST_REQUIRE_EQUAL(RunDesc.getSchedulingConstraint(),openfluid::base::SimulationStatus::SCHED_DTCHECKED);
@@ -107,17 +106,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getSecond(),0);
   BOOST_REQUIRE_EQUAL(RunDesc.isUserValuesBufferSize(),true);
   BOOST_REQUIRE_EQUAL(RunDesc.getValuesBufferSize(),20);
-  BOOST_REQUIRE_EQUAL(RunDesc.getFilesBufferSizeInKB(),5);
   BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),true);
   BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"testID");
 
   RunDesc.setSimulationID("gotcha");
   RunDesc.setValuesBufferSize(1179);
-  RunDesc.setFilesBufferSizeInKB(53);
 
   BOOST_REQUIRE_EQUAL(RunDesc.isUserValuesBufferSize(),true);
   BOOST_REQUIRE_EQUAL(RunDesc.getValuesBufferSize(),1179);
-  BOOST_REQUIRE_EQUAL(RunDesc.getFilesBufferSizeInKB(),53);
   BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),true);
   BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"gotcha");
 

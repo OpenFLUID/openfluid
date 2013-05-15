@@ -235,13 +235,6 @@ SimulRunViewImpl::SimulRunViewImpl()
    * Memory frame
    */
 
-  mp_FilesBuffSpin = Gtk::manage(new Gtk::SpinButton());
-  mp_FilesBuffSpin->set_range(1.0, 999.0);
-  mp_FilesBuffSpin->set_increments(1, 10);
-  mp_FilesBuffSpin->set_numeric(true);
-  mp_FilesBuffSpin->signal_changed().connect(sigc::mem_fun(*this,
-      &SimulRunViewImpl::onFilesBuffChanged));
-
   mp_ValuesBuffCB = Gtk::manage(new Gtk::CheckButton(_("Values buffer")));
   mp_ValuesBuffCB->set_alignment(0, 0.5);
   mp_ValuesBuffCB->signal_clicked().connect(sigc::mem_fun(*this,
@@ -254,11 +247,6 @@ SimulRunViewImpl::SimulRunViewImpl()
   mp_ValuesBuffSpin->signal_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onValuesBuffChanged));
 
-  Gtk::HBox* FilesBufferBox = Gtk::manage(new Gtk::HBox());
-  FilesBufferBox->pack_start(*mp_FilesBuffSpin, Gtk::PACK_SHRINK, 5);
-  FilesBufferBox->pack_start(*Gtk::manage(new Gtk::Label(_("KB"))),
-      Gtk::PACK_SHRINK);
-
   Gtk::HBox* ValuesBufferBox = Gtk::manage(new Gtk::HBox());
   ValuesBufferBox->pack_start(*mp_ValuesBuffSpin, Gtk::PACK_SHRINK, 5);
   ValuesBufferBox->pack_start(*Gtk::manage(new Gtk::Label(_("steps"))),
@@ -267,14 +255,8 @@ SimulRunViewImpl::SimulRunViewImpl()
   Gtk::Table* MemoryTable = Gtk::manage(new Gtk::Table());
   MemoryTable->set_border_width(15);
   MemoryTable->set_spacings(15);
-  MemoryTable->attach(*Gtk::manage(new Gtk::Label(_("Output files buffer"), 0,
-      0.5)), 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK);
-  MemoryTable->attach(*FilesBufferBox, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
-      Gtk::SHRINK);
-  MemoryTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2,
-      Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  MemoryTable->attach(*mp_ValuesBuffCB, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK);
-  MemoryTable->attach(*ValuesBufferBox, 1, 2, 2, 3, Gtk::FILL | Gtk::EXPAND,
+  MemoryTable->attach(*mp_ValuesBuffCB, 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK);
+  MemoryTable->attach(*ValuesBufferBox, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK);
 
 
@@ -517,15 +499,6 @@ void SimulRunViewImpl::onValuesBuffChanged()
   m_signal_ValuesBuffChanged.emit();
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void SimulRunViewImpl::onFilesBuffChanged()
-{
-  mp_FilesBuffSpin->update();
-  m_signal_FilesBuffChanged.emit();
-}
 
 // =====================================================================
 // =====================================================================
@@ -581,15 +554,6 @@ sigc::signal<void> SimulRunViewImpl::signal_ValuesBuffToggle()
 sigc::signal<void> SimulRunViewImpl::signal_ValuesBuffChanged()
 {
   return m_signal_ValuesBuffChanged;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-sigc::signal<void> SimulRunViewImpl::signal_FilesBuffChanged()
-{
-  return m_signal_FilesBuffChanged;
 }
 
 // =====================================================================
@@ -656,15 +620,6 @@ void SimulRunViewImpl::setValuesBuffIsSet(bool IsSet)
 void SimulRunViewImpl::setValuesBuff(int Value)
 {
   mp_ValuesBuffSpin->set_value(Value);
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulRunViewImpl::setFilesBuff(int Value)
-{
-  mp_FilesBuffSpin->set_value(Value);
 }
 
 // =====================================================================
@@ -748,15 +703,6 @@ bool SimulRunViewImpl::isValuesBuffSet()
 int SimulRunViewImpl::getValuesBuff()
 {
   return mp_ValuesBuffSpin->get_value_as_int();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-int SimulRunViewImpl::getFilesBuff()
-{
-  return mp_FilesBuffSpin->get_value_as_int();
 }
 
 // =====================================================================

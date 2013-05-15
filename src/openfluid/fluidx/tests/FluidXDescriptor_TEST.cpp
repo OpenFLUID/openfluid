@@ -228,7 +228,6 @@ void TestDataset(std::string DatasetPath)
   BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getSimulationID(), "testrun");
   BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().isUserValuesBufferSize(), true);
   BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getValuesBufferSize(), 100);
-  BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getFilesBufferSizeInKB(), 2);
 
 
   // Domain definition

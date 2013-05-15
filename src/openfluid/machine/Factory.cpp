@@ -355,8 +355,6 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor&
     openfluid::base::RuntimeEnvironment::getInstance()->unsetUserValuesBufferSize();
   }
 
-  openfluid::base::RuntimeEnvironment::getInstance()->setFilesBufferSize(RunDesc.getFilesBufferSizeInKB()*1024);
-
   if (RunDesc.isSimulationID())
   {
     openfluid::base::RuntimeEnvironment::getInstance()->setSimulationID(RunDesc.getSimulationID());

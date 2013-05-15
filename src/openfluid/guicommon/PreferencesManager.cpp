@@ -136,7 +136,6 @@ void PreferencesManager::setDefaultValues()
 {
   setRecentMax(5);
   setDeltaT(300);
-  setOutFilesBufferInKB(openfluid::config::DEFAULT_OUTFILES_BUFFER_KB);
 }
 
 // =====================================================================
@@ -595,28 +594,10 @@ std::string PreferencesManager::getEnd()
       : "";
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesManager::setOutFilesBufferInKB(unsigned int Buffer)
-{
-  mp_KFile->set_integer("openfluid.builder.runconfig", "outfilesbuffer", Buffer);
-}
 
 // =====================================================================
 // =====================================================================
 
-
-int PreferencesManager::getOutFilesBufferInKB()
-{
-  return isValidKey("openfluid.builder.runconfig", "outfilesbuffer") ? mp_KFile->get_integer(
-      "openfluid.builder.runconfig", "outfilesbuffer")
-      : -1;
-}
-
-// =====================================================================
-// =====================================================================
 
 bool PreferencesManager::addMarketplace(Glib::ustring PlaceName,
     Glib::ustring PlaceUrl)
@@ -627,6 +608,7 @@ bool PreferencesManager::addMarketplace(Glib::ustring PlaceName,
   mp_KFile->set_string("openfluid.market.marketplaces", PlaceName, PlaceUrl);
   return true;
 }
+
 
 // =====================================================================
 // =====================================================================

@@ -79,8 +79,6 @@ SimulRunPresenter::SimulRunPresenter(SimulRunModel& Model, SimulRunView& View) :
       &SimulRunPresenter::whenFromUserDeltaTChanged));
   m_View.signal_ConstraintChanged().connect(sigc::mem_fun(*this,
         &SimulRunPresenter::whenFromUserConstraintChanged));
-  m_View.signal_FilesBuffChanged().connect(sigc::mem_fun(*this,
-      &SimulRunPresenter::whenFromUserFilesBuffChanged));
   m_View.signal_ValuesBuffChanged().connect(sigc::mem_fun(*this,
       &SimulRunPresenter::whenFromUserValuesBuffChanged));
 }
@@ -100,8 +98,6 @@ void SimulRunPresenter::whenFromAppDescriptorChanged()
 
   m_View.setValuesBuff(m_Model.getValuesBuff());
   m_View.setValuesBuffIsSet(m_Model.isValuesBuffSet());
-
-  m_View.setFilesBuff(m_Model.getFilesBuff());
 
   m_HaveValuesToBeStore = true;
 
@@ -167,16 +163,6 @@ void SimulRunPresenter::whenFromUserDeltaTChanged()
 void SimulRunPresenter::whenFromUserConstraintChanged()
 {
   m_Model.setConstraint(m_View.getConstraint());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulRunPresenter::whenFromUserFilesBuffChanged()
-{
-  m_Model.setFilesBuff(m_View.getFilesBuff());
 }
 
 

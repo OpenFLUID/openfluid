@@ -194,15 +194,6 @@ bool SimulRunModelImpl::isValuesBuffSet()
 // =====================================================================
 
 
-int SimulRunModelImpl::getFilesBuff()
-{
-  return mp_RunDesc->getFilesBufferSizeInKB();
-}
-
-// =====================================================================
-// =====================================================================
-
-
 void SimulRunModelImpl::setDeltaT(int Value)
 {
   mp_RunDesc->setDeltaT(Value);
@@ -319,14 +310,4 @@ void SimulRunModelImpl::setValuesBuff(int Value)
   m_signal_SimulRunChanged.emit();
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void SimulRunModelImpl::setFilesBuff(int Value)
-{
-  mp_RunDesc->setFilesBufferSizeInKB(Value);
-
-  m_signal_SimulRunChanged.emit();
-}
 

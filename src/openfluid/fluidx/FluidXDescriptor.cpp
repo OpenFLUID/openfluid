@@ -388,33 +388,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
     }
 
 
-    // TODO to remove
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "filesbuffer") == 0)
-    {
-      xmlChar* xmlKBytes = xmlGetProp(CurrNode, (const xmlChar*) "kbytes");
-
-      if (xmlKBytes != NULL)
-      {
-        unsigned int ReadKBytes;
-
-        if (!openfluid::tools::ConvertString(std::string((char*) xmlKBytes),
-                                             &ReadKBytes))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
-              "FluidXDescriptor::extractRunFromNode",
-              "wrong format for kbytes attribute for filesbuffer tag (" + m_CurrentFile
-              + ")");
-
-        m_RunDescriptor.setFilesBufferSizeInKB(ReadKBytes);
-      }
-      else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
-            "FluidXDescriptor::extractRunFromNode",
-            "missing kbytes attribute for filesbuffer tag (" + m_CurrentFile
-            + ")");
-    }
-
+    // TODO to remove -->
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "simid") == 0)
     {
       xmlChar *xmlSimID = xmlNodeGetContent(CurrNode);
@@ -424,7 +398,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
         m_RunDescriptor.setSimulationID(std::string((char*) xmlSimID));
       }
 
-    }
+    } // <--
 
     CurrNode = CurrNode->next;
   }
@@ -1252,9 +1226,6 @@ std::string FluidXDescriptor::getRunConfigurationToWrite()
       Contents << m_IndentStr << m_IndentStr << "<valuesbuffer steps=\""
                << m_RunDescriptor.getValuesBufferSize() << "\" />\n";
 
-    // TODO to remove
-    Contents << m_IndentStr << m_IndentStr << "<filesbuffer kbytes=\""
-             << m_RunDescriptor.getFilesBufferSizeInKB() << "\" />\n";
   }
 
   Contents << m_IndentStr << "</run>\n";

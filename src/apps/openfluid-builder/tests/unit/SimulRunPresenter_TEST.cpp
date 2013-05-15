@@ -119,7 +119,6 @@ BOOST_AUTO_TEST_CASE(test_SetRunDescriptor)
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSpinSensitive(), false);
   BOOST_CHECK_EQUAL(mp_View->getValuesBuff(), 1);
-  BOOST_CHECK_EQUAL(mp_View->getFilesBuff(), 2);
 
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 0);

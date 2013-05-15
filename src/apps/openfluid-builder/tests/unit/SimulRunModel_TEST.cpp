@@ -115,7 +115,6 @@ BOOST_AUTO_TEST_CASE(test_setRunDescriptor)
   BOOST_CHECK_EQUAL(mp_Model->getEnd(), "2000-01-01 06:00:00");
   BOOST_CHECK_EQUAL(mp_Model->isValuesBuffSet(), false);
   BOOST_CHECK_EQUAL(mp_Model->getValuesBuff(), 0);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesBuff(), 2);
 }
 
 // =====================================================================
@@ -202,15 +201,11 @@ BOOST_AUTO_TEST_CASE(test_setValuesBuff)
 BOOST_AUTO_TEST_CASE(test_setOtherValues)
 {
   mp_Model->setDeltaT(360);
-  mp_Model->setFilesBuff(4);
 
   BOOST_CHECK_EQUAL(mp_Model->getDeltaT(), 360);
-  BOOST_CHECK_EQUAL(mp_Model->getFilesBuff(), 4);
   BOOST_CHECK_EQUAL(
       mp_EngProject->getAdvancedDesc().getRunDescriptor().getDeltaT(), 360);
-  BOOST_CHECK_EQUAL(
-      mp_EngProject->getAdvancedDesc().getRunDescriptor().getFilesBufferSizeInKB(),
-      4);
+
 }
 // =====================================================================
 // =====================================================================

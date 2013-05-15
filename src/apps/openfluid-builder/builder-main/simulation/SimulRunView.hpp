@@ -84,8 +84,6 @@ class SimulRunView
 
     virtual sigc::signal<void> signal_ValuesBuffChanged() = 0;
 
-    virtual sigc::signal<void> signal_FilesBuffChanged() = 0;
-
     virtual void setDeltaT(int Value) = 0;
 
     virtual void setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst) = 0;
@@ -97,8 +95,6 @@ class SimulRunView
     virtual void setValuesBuffIsSet(bool IsSet) = 0;
 
     virtual void setValuesBuff(int Value) = 0;
-
-    virtual void setFilesBuff(int Value) = 0;
 
     virtual void setBeginBG(std::string ColorString) = 0;
 
@@ -115,8 +111,6 @@ class SimulRunView
     virtual bool isValuesBuffSet() = 0;
 
     virtual int getValuesBuff() = 0;
-
-    virtual int getFilesBuff() = 0;
 
     virtual Gtk::Widget* asWidget() = 0;
 };
@@ -141,8 +135,6 @@ class SimulRunViewImpl: public SimulRunView
     sigc::signal<void> m_signal_ValuesBuffToggle;
     sigc::signal<void> m_signal_ValuesBuffChanged;
 
-    sigc::signal<void> m_signal_FilesBuffChanged;
-
     Gtk::Table* mp_Table;
 
     Gtk::Dialog* mp_CalendarDialog;
@@ -165,8 +157,6 @@ class SimulRunViewImpl: public SimulRunView
 
     void onValuesBuffToggle();
     void onValuesBuffChanged();
-
-    void onFilesBuffChanged();
 
   protected:
 
@@ -202,7 +192,6 @@ class SimulRunViewImpl: public SimulRunView
     Gtk::CheckButton* mp_ValuesBuffCB;
     Gtk::SpinButton* mp_ValuesBuffSpin;
 
-    Gtk::SpinButton* mp_FilesBuffSpin;
 
   public:
 
@@ -220,8 +209,6 @@ class SimulRunViewImpl: public SimulRunView
 
     sigc::signal<void> signal_ValuesBuffChanged();
 
-    sigc::signal<void> signal_FilesBuffChanged();
-
     void setDeltaT(int Value);
 
     void setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst);
@@ -233,8 +220,6 @@ class SimulRunViewImpl: public SimulRunView
     void setValuesBuffIsSet(bool IsSet);
 
     void setValuesBuff(int Value);
-
-    void setFilesBuff(int Value);
 
     void setBeginBG(std::string ColorString);
 
@@ -251,8 +236,6 @@ class SimulRunViewImpl: public SimulRunView
     bool isValuesBuffSet();
 
     int getValuesBuff();
-
-    int getFilesBuff();
 
     Gtk::Widget* asWidget();
 

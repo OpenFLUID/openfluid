@@ -542,31 +542,6 @@ PreferencesSimPanel::PreferencesSimPanel() :
   TimeTable->set_visible(true);
   TimeTable->show_all_children();
 
-  /*
-   * Outputs
-   */
-
-  Gtk::Label* FilesBuffLabel = Gtk::manage(new Gtk::Label(
-      _("Output files buffer")));
-
-  mp_FilesBuffSpin = Gtk::manage(new Gtk::SpinButton());
-  mp_FilesBuffSpin->set_range(1.0, 999.0);
-  mp_FilesBuffSpin->set_increments(1, 10);
-  mp_FilesBuffSpin->set_numeric(true);
-  mp_FilesBuffSpin->signal_changed().connect(sigc::mem_fun(*this,
-      &PreferencesSimPanel::onFilesBuffChanged));
-
-  Gtk::Label* FilesBuffUnit = Gtk::manage(new Gtk::Label(_("KB")));
-
-  Gtk::HBox* FilesBufferBox = Gtk::manage(new Gtk::HBox(false, 5));
-  FilesBufferBox->pack_start(*FilesBuffLabel, Gtk::PACK_SHRINK);
-  FilesBufferBox->pack_start(*mp_FilesBuffSpin, Gtk::PACK_SHRINK);
-  FilesBufferBox->pack_start(*FilesBuffUnit, Gtk::PACK_SHRINK);
-
-  Gtk::VBox* OutputsBox = Gtk::manage(new Gtk::VBox(false, 5));
-  OutputsBox->pack_start(*FilesBufferBox, Gtk::PACK_SHRINK);
-  OutputsBox->set_visible(true);
-  OutputsBox->show_all_children();
 
   /*
    * Main panel
@@ -575,8 +550,7 @@ PreferencesSimPanel::PreferencesSimPanel() :
   Gtk::Box* PanelBox = createPanelBox();
   PanelBox->pack_start(*createSubTitle(_("Default Time settings")), Gtk::PACK_SHRINK);
   PanelBox->pack_start(*createSubBoxAlignement(TimeTable), Gtk::PACK_SHRINK);
-  PanelBox->pack_start(*createSubTitle(_("Default Outputs settings")), Gtk::PACK_SHRINK);
-  PanelBox->pack_start(*createSubBoxAlignement(OutputsBox), Gtk::PACK_SHRINK);
+
 
   mp_ContentWindow->add(*PanelBox);
 
@@ -617,7 +591,6 @@ void PreferencesSimPanel::init()
   mp_DeltaSpin->set_value(PrefMgr->getDeltaT());
   mp_BeginEntry->set_text(PrefMgr->getBegin());
   mp_EndEntry->set_text(PrefMgr->getEnd());
-  mp_FilesBuffSpin->set_value(PrefMgr->getOutFilesBufferInKB());
 }
 
 // =====================================================================
@@ -815,22 +788,9 @@ void PreferencesSimPanel::onEndValueChanged()
 
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesSimPanel::onFilesBuffChanged()
-{
-  mp_FilesBuffSpin->update();
-  openfluid::guicommon::PreferencesManager::getInstance()->setOutFilesBufferInKB(
-      mp_FilesBuffSpin->get_value_as_int());
-}
-
-
 
 // =====================================================================
 // =====================================================================
-
 // =====================================================================
 // =====================================================================
 

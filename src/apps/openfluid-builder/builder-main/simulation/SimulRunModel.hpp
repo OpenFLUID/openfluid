@@ -101,8 +101,6 @@ class SimulRunModel
 
     virtual int getValuesBuff() = 0;
 
-    virtual int getFilesBuff() = 0;
-
     virtual void setDeltaT(int Value) = 0;
 
     virtual void setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst) = 0;
@@ -114,8 +112,6 @@ class SimulRunModel
     virtual void setValuesBuffIsSet(bool IsSet) = 0;
 
     virtual void setValuesBuff(int Value) = 0;
-
-    virtual void setFilesBuff(int Value) = 0;
 };
 
 
@@ -174,7 +170,6 @@ class SimulRunModelImpl: public SimulRunModel
     int getValuesBuff();
     bool isValuesBuffSet();
 
-    int getFilesBuff();
 
     void setDeltaT(int Value);
 
@@ -186,7 +181,6 @@ class SimulRunModelImpl: public SimulRunModel
     void setValuesBuffIsSet(bool IsSet);
     void setValuesBuff(int Value);
 
-    void setFilesBuff(int Value);
 };
 
 #endif /* __SIMULRUNMODEL_HPP__ */

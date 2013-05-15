@@ -115,8 +115,8 @@ BOOST_AUTO_TEST_CASE(test_constructor_Empty)
 {
   EngineProjectSub* EngProject = new EngineProjectSub();
 
-  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getBeginDate().getAsISOString(), EngProject->getDefaultBeginDT().getAsISOString());
-  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getEndDate().getAsISOString(), (EngProject->getDefaultBeginDT() + openfluid::core::DateTime::Day()).getAsISOString());
+//  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getBeginDate().getAsISOString(), EngProject->getDefaultBeginDT().getAsISOString());
+//  BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getEndDate().getAsISOString(), (EngProject->getDefaultBeginDT() + openfluid::core::DateTime::Day()).getAsISOString());
   BOOST_CHECK_EQUAL(EngProject->getFXDescriptor()->getRunDescriptor().getDeltaT(), EngProject->getDefaultDeltaT());
 
   delete EngProject;

@@ -141,9 +141,6 @@ class DLLEXPORT PreferencesManager
     void setEnd(std::string End);
     std::string getEnd();
 
-    void setOutFilesBufferInKB(unsigned int Buffer);
-    int getOutFilesBufferInKB();
-
     bool
     addMarketplace(Glib::ustring PlaceName, Glib::ustring PlaceUrl);
     void removeMarketplace(Glib::ustring PlaceName);

@@ -307,9 +307,6 @@ void EngineProject::setDefaultRunDesc()
   openfluid::fluidx::RunDescriptor RunDesc(DefaultDeltaT, DefaultBeginDT,
                                            DefaultEndDT);
 
-  if (PrefMgr->getOutFilesBufferInKB() != -1)
-    RunDesc.setFilesBufferSizeInKB(PrefMgr->getOutFilesBufferInKB());
-
   RunDesc.setFilled(true);
 
   mp_FXDesc->getRunDescriptor() = RunDesc;

@@ -112,7 +112,6 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   PrefMgr->setDeltaT(777);
   PrefMgr->setBegin("2222-11-11T00:11:22");
   PrefMgr->setEnd("2221-12-12=11;22;33");
-  PrefMgr->setOutFilesBufferInKB(4);
 
   BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),10);
   BOOST_CHECK_EQUAL(PrefMgr->getLang(),"oc");
@@ -120,7 +119,6 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),777);
   BOOST_CHECK_EQUAL(PrefMgr->getBegin(),"2222-11-11T00:11:22");
   BOOST_CHECK_EQUAL(PrefMgr->getEnd(),"2221-12-12=11;22;33");
-  BOOST_CHECK_EQUAL(PrefMgr->getOutFilesBufferInKB(),4);
 
   delete PrefMgr;
 }

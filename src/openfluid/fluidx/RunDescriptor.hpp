@@ -76,8 +76,6 @@ class DLLEXPORT RunDescriptor
 
     std::string m_SimID;
 
-    unsigned int m_FilesBufferSizeInKB;
-
     bool m_IsUserValuesBufferSize;
     unsigned int m_ValuesBufferSize;
 
@@ -118,10 +116,6 @@ class DLLEXPORT RunDescriptor
     inline bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
 
     inline unsigned int getValuesBufferSize() const { return m_ValuesBufferSize; };
-
-    inline void setFilesBufferSizeInKB(const unsigned int KBytes) {m_FilesBufferSizeInKB = KBytes; };
-
-    inline unsigned int getFilesBufferSizeInKB() const { return m_FilesBufferSizeInKB; };
 
     inline openfluid::base::SimulationStatus::SchedulingConstraint getSchedulingConstraint() const { return m_SchedConstraint; };
 

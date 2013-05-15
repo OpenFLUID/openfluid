@@ -84,8 +84,6 @@ class SimulRunPresenter
 
     void whenFromUserConstraintChanged();
 
-    void whenFromUserFilesBuffChanged();
-
     void whenFromUserValuesBuffChanged();
 
   public:

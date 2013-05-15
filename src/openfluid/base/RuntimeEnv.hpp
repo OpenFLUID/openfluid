@@ -132,8 +132,6 @@ class DLLEXPORT RuntimeEnvironment
 
     bool m_IsUserValuesBufferSize;
 
-    unsigned int m_FilesBufferSize;
-
     openfluid::base::EnvironmentProperties* mp_WareEnv;
 
     openfluid::base::EnvironmentProperties m_ExtraProperties;
@@ -546,12 +544,6 @@ class DLLEXPORT RuntimeEnvironment
       { return m_ValuesBufferSize; };
 
     bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
-
-    void setFilesBufferSize(const unsigned int Bytes)
-      { m_FilesBufferSize = Bytes; };
-
-    inline unsigned int getFilesBufferSize() const
-      { return m_FilesBufferSize; };
 
     inline void unsetUserValuesBufferSize()
       { m_IsUserValuesBufferSize = false; }

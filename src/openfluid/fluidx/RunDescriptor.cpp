@@ -69,7 +69,6 @@ RunDescriptor::RunDescriptor():
   m_DeltaT(-1), m_SchedConstraint(openfluid::base::SimulationStatus::SCHED_NONE),
   m_BeginDate(openfluid::core::DateTime()),
   m_EndDate(openfluid::core::DateTime()), m_SimID(""),
-  m_FilesBufferSizeInKB(openfluid::config::DEFAULT_OUTFILES_BUFFER_KB),
   m_IsUserValuesBufferSize(false), m_ValuesBufferSize(0), m_Filled(false)
 {
 
@@ -86,7 +85,6 @@ RunDescriptor::RunDescriptor(int DeltaT,
   m_DeltaT(DeltaT), m_SchedConstraint(openfluid::base::SimulationStatus::SCHED_NONE),
   m_BeginDate(BeginDate),
   m_EndDate(EndDate), m_SimID(""),
-  m_FilesBufferSizeInKB(openfluid::config::DEFAULT_OUTFILES_BUFFER_KB),
   m_IsUserValuesBufferSize(false), m_ValuesBufferSize(0), m_Filled(false)
 {
 
