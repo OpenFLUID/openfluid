@@ -392,7 +392,7 @@ void SimulatorParamWidget::updateParamsRows()
   if (m_ParamsRows.empty())
   {
     Gtk::Label* EmptyLabel = Gtk::manage(new Gtk::Label("", 0.5, 0));
-    EmptyLabel->set_markup(_("<i>No parameters</i>"));
+    EmptyLabel->set_markup(_("<i>No parameter</i>"));
     mp_ParamsTable->attach(*EmptyLabel, 0, 1, 0, 1);
   }
 
