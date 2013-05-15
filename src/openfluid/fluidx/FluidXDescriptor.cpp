@@ -317,9 +317,14 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
             + ")");
     }
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "deltat") == 0)
+
+    // scheduling
+
+    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "scheduling") == 0)
     {
-      xmlChar *xmlDeltaT = xmlNodeGetContent(CurrNode);
+      xmlChar* xmlDeltaT = xmlGetProp(CurrNode, (const xmlChar*) "deltat");
+      xmlChar* xmlConstraint = xmlGetProp(CurrNode, (const xmlChar*) "constraint");
+
 
       if (xmlDeltaT != NULL)
       {
@@ -334,15 +339,31 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
         m_RunDescriptor.setDeltaT(DeltaT);
         FoundDeltaT = true;
       }
+
+      if (xmlConstraint != NULL)
+      {
+        std::string ReadConstraintStr = std::string((const char*) xmlConstraint);
+        if (ReadConstraintStr == "dt-checked")
+          m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTCHECKED);
+        else if (ReadConstraintStr == "dt-forced")
+          m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTFORCED);
+        else if (ReadConstraintStr == "none")
+          m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_NONE);
+        else
+          throw openfluid::base::OFException(
+              "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
+              "wrong value for scheduling constraint (" + m_CurrentFile + ")");
+      }
       else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
-            "deltat tag is empty (" + m_CurrentFile + ")");
+        m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_NONE);
     }
+
+
+    // valuesbuffer
 
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "valuesbuffer") == 0)
     {
-      xmlChar* xmlSteps = xmlGetProp(CurrNode, (const xmlChar*) "steps");
+      xmlChar* xmlSteps = xmlGetProp(CurrNode, (const xmlChar*) "size");
 
       if (xmlSteps != NULL)
       {
@@ -353,7 +374,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
           throw openfluid::base::OFException(
               "OpenFLUID framework",
               "FluidXDescriptor::extractRunFromNode",
-              "wrong format for steps attribute for valuesbuffer tag (" + m_CurrentFile
+              "wrong format for size attribute for valuesbuffer tag (" + m_CurrentFile
               + ")");
 
         m_RunDescriptor.setValuesBufferSize(ReadSteps);
@@ -362,45 +383,8 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
         throw openfluid::base::OFException(
             "OpenFLUID framework",
             "FluidXDescriptor::extractRunFromNode",
-            "missing steps attribute for valuesbuffer tag (" + m_CurrentFile
+            "missing size attribute for valuesbuffer tag (" + m_CurrentFile
             + ")");
-    }
-
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "filesbuffer") == 0)
-    {
-      xmlChar* xmlKBytes = xmlGetProp(CurrNode, (const xmlChar*) "kbytes");
-
-      if (xmlKBytes != NULL)
-      {
-        unsigned int ReadKBytes;
-
-        if (!openfluid::tools::ConvertString(std::string((char*) xmlKBytes),
-                                             &ReadKBytes))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
-              "FluidXDescriptor::extractRunFromNode",
-              "wrong format for kbytes attribute for filesbuffer tag (" + m_CurrentFile
-              + ")");
-
-        m_RunDescriptor.setFilesBufferSizeInKB(ReadKBytes);
-      }
-      else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
-            "FluidXDescriptor::extractRunFromNode",
-            "missing kbytes attribute for filesbuffer tag (" + m_CurrentFile
-            + ")");
-    }
-
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "simid") == 0)
-    {
-      xmlChar *xmlSimID = xmlNodeGetContent(CurrNode);
-
-      if (xmlSimID != NULL)
-      {
-        m_RunDescriptor.setSimulationID(std::string((char*) xmlSimID));
-      }
-
     }
 
     CurrNode = CurrNode->next;
@@ -1202,22 +1186,28 @@ std::string FluidXDescriptor::getRunConfigurationToWrite()
 
   if (m_RunDescriptor.isFilled())
   {
-    Contents << m_IndentStr << m_IndentStr << "<deltat>"
-             << m_RunDescriptor.getDeltaT() << "</deltat>\n";
+
+   // scheduling
+    std::string ConstraintStr = "none";
+    if (m_RunDescriptor.getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+      ConstraintStr = "dt-forced";
+    else if (m_RunDescriptor.getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+      ConstraintStr = "dt-checked";
+
+    Contents << m_IndentStr << m_IndentStr << "<scheduling deltat=\""
+             << m_RunDescriptor.getDeltaT() << "\" constraint=\""
+             << ConstraintStr << "\" />\n";
+
+    // period
     Contents << m_IndentStr << m_IndentStr << "<period begin=\""
              << m_RunDescriptor.getBeginDate().getAsISOString() << "\" end=\""
              << m_RunDescriptor.getEndDate().getAsISOString() << "\" />\n";
 
-    if (m_RunDescriptor.isSimulationID())
-      Contents << m_IndentStr << m_IndentStr << "<simid>"
-               << m_RunDescriptor.getSimulationID() << "</simid>\n";
-
+    // values buffer
     if (m_RunDescriptor.isUserValuesBufferSize())
-      Contents << m_IndentStr << m_IndentStr << "<valuesbuffer steps=\""
+      Contents << m_IndentStr << m_IndentStr << "<valuesbuffer size=\""
                << m_RunDescriptor.getValuesBufferSize() << "\" />\n";
 
-    Contents << m_IndentStr << m_IndentStr << "<filesbuffer kbytes=\""
-             << m_RunDescriptor.getFilesBufferSizeInKB() << "\" />\n";
   }
 
   Contents << m_IndentStr << "</run>\n";

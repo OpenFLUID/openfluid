@@ -114,12 +114,11 @@ void NewDataBuddy::generateRunXML()
   Content << "    <!-- period example -->" << std::endl;
   Content << "    <period begin=\"2001-01-01 00:00:00\" end=\"2001-01-31 23:59:59\" />" << std::endl;
   Content << std::endl;
-  Content << "    <!-- time step example -->" << std::endl;
-  Content << "    <deltat>3600</deltat>" << std::endl;
+  Content << "    <!-- scheduling example -->" << std::endl;
+  Content << "    <scheduling deltat=\"3600\" constraint=\"none\" />" << std::endl;
   Content << std::endl;
-  Content << "    <!-- buffers example -->" << std::endl;
-  Content << "    <valuesbuffer steps=\"50\" />" << std::endl;
-  Content << "    <filesbuffer kbytes=\"8\" />" << std::endl;
+  Content << "    <!-- values buffer example -->" << std::endl;
+  Content << "    <valuesbuffer size=\"50\" />" << std::endl;
   Content << std::endl;
   Content << "  </run>" << std::endl;
   Content << getXMLFooter() << std::endl;

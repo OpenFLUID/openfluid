@@ -78,7 +78,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize(),false);
-  BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID(),"");
 
   std::cout << "InputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
   std::cout << "OutputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
@@ -136,15 +135,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::RuntimeEnvironment::getInstance()->setWriteSimReport(false);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport(),false);
 
-  openfluid::base::RuntimeEnvironment::getInstance()->setFilesBufferSize(2300);
   openfluid::base::RuntimeEnvironment::getInstance()->setValuesBufferSize(2345);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getValuesBufferSize(),2345);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getFilesBufferSize(),2300);
-
-  openfluid::base::RuntimeEnvironment::getInstance()->setSimulationID("THESIMID-2");
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID(),"THESIMID-2");
-
 
 
 

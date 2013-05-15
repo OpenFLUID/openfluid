@@ -71,20 +71,30 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
-                                    openfluid::core::DateTime(2001,1,1,0,0,0),
-                                    60);
+  {
+    openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
+                                                openfluid::core::DateTime(2001,1,1,0,0,0),
+                                                60);
 
-  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStage(),openfluid::base::SimulationStatus::PRE);
-  BOOST_REQUIRE_EQUAL(SimStatus.getCurrentTimeIndex(),0);
-  BOOST_REQUIRE_EQUAL(SimStatus.isFirstTimeIndex(),true);
+    BOOST_REQUIRE_EQUAL(SimStatus.getCurrentStage(),openfluid::base::SimulationStatus::PRE);
+    BOOST_REQUIRE_EQUAL(SimStatus.getCurrentTimeIndex(),0);
+    BOOST_REQUIRE_EQUAL(SimStatus.isFirstTimeIndex(),true);
+    BOOST_REQUIRE_EQUAL(SimStatus.getSchedulingConstraint(),openfluid::base::SimulationStatus::SCHED_NONE);
 
-  BOOST_REQUIRE(SimStatus.getBeginDate() == openfluid::core::DateTime(2000,1,1,0,0,0));
-  BOOST_REQUIRE(SimStatus.getEndDate() == openfluid::core::DateTime(2001,1,1,0,0,0));
-  BOOST_REQUIRE_EQUAL(SimStatus.getDefaultDeltaT(),60);
+    BOOST_REQUIRE(SimStatus.getBeginDate() == openfluid::core::DateTime(2000,1,1,0,0,0));
+    BOOST_REQUIRE(SimStatus.getEndDate() == openfluid::core::DateTime(2001,1,1,0,0,0));
+    BOOST_REQUIRE_EQUAL(SimStatus.getDefaultDeltaT(),60);
 
-  BOOST_REQUIRE(SimStatus.getCurrentDate() == openfluid::core::DateTime(2000,1,1,0,0,0));
+    BOOST_REQUIRE(SimStatus.getCurrentDate() == openfluid::core::DateTime(2000,1,1,0,0,0));
+  }
 
+  {
+    openfluid::base::SimulationStatus SimStatus(openfluid::core::DateTime(2000,1,1,0,0,0),
+                                                openfluid::core::DateTime(2001,1,1,0,0,0),
+                                                60,openfluid::base::SimulationStatus::SCHED_DTCHECKED);
+
+    BOOST_REQUIRE_EQUAL(SimStatus.getSchedulingConstraint(),openfluid::base::SimulationStatus::SCHED_DTCHECKED);
+  }
 }
 
 // =====================================================================

@@ -109,7 +109,7 @@ ProjectExplorerAdapterModelImpl::ProjectExplorerAdapterModelImpl(
   // Simulation
   Row = *(mref_TreeModel->append());
   Row[m_Columns.m_Id] = "";
-  Row[m_Columns.m_Display] = _("Simulation");
+  Row[m_Columns.m_Display] = _("Run configuration");
   Row[m_Columns.m_Category] = ProjectExplorerCategories::EXPLORER_RUN;
   Row[m_Columns.m_Weight] = Pango::WEIGHT_BOLD;
 

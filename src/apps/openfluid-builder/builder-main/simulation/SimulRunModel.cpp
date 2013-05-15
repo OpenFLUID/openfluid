@@ -102,10 +102,21 @@ sigc::signal<void> SimulRunModelImpl::signal_SimulRunChanged()
 // =====================================================================
 
 
-int SimulRunModelImpl::getDelta()
+int SimulRunModelImpl::getDeltaT()
 {
   return mp_RunDesc->getDeltaT();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::SimulationStatus::SchedulingConstraint SimulRunModelImpl::getConstraint()
+{
+  return mp_RunDesc->getSchedulingConstraint();
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -183,21 +194,25 @@ bool SimulRunModelImpl::isValuesBuffSet()
 // =====================================================================
 
 
-int SimulRunModelImpl::getFilesBuff()
-{
-  return mp_RunDesc->getFilesBufferSizeInKB();
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void SimulRunModelImpl::setDelta(int Value)
+void SimulRunModelImpl::setDeltaT(int Value)
 {
   mp_RunDesc->setDeltaT(Value);
 
   m_signal_SimulRunChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunModelImpl::setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst)
+{
+  mp_RunDesc->setSchedulingConstraint(SConst);
+
+  m_signal_SimulRunChanged.emit();
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -295,14 +310,4 @@ void SimulRunModelImpl::setValuesBuff(int Value)
   m_signal_SimulRunChanged.emit();
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void SimulRunModelImpl::setFilesBuff(int Value)
-{
-  mp_RunDesc->setFilesBufferSizeInKB(Value);
-
-  m_signal_SimulRunChanged.emit();
-}
 

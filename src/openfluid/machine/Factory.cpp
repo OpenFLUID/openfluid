@@ -354,14 +354,6 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor&
   {
     openfluid::base::RuntimeEnvironment::getInstance()->unsetUserValuesBufferSize();
   }
-
-  openfluid::base::RuntimeEnvironment::getInstance()->setFilesBufferSize(RunDesc.getFilesBufferSizeInKB()*1024);
-
-  if (RunDesc.isSimulationID())
-  {
-    openfluid::base::RuntimeEnvironment::getInstance()->setSimulationID(RunDesc.getSimulationID());
-  }
-
 }
 
 
@@ -378,7 +370,8 @@ void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescri
 
   SimBlob.getSimulationStatus() = openfluid::base::SimulationStatus(FluidXDesc.getRunDescriptor().getBeginDate(),
                                                                     FluidXDesc.getRunDescriptor().getEndDate(),
-                                                                    FluidXDesc.getRunDescriptor().getDeltaT());
+                                                                    FluidXDesc.getRunDescriptor().getDeltaT(),
+                                                                    FluidXDesc.getRunDescriptor().getSchedulingConstraint());
 
   SimBlob.getRunDescriptor() = FluidXDesc.getRunDescriptor();
 

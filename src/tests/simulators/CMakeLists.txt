@@ -14,6 +14,8 @@ LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 OPNFLD_ADD_SIMULATOR(tests.coupling.A tests.coupling.A ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.coupling.B tests.coupling.B ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.coupling.C tests.coupling.C ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_SIMULATOR(tests.coupling.D tests.coupling.D ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_SIMULATOR(tests.coupling.E tests.coupling.E ${TEST_OUTPUT_PATH})
 
 
 ###########################################################################
@@ -200,6 +202,63 @@ OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoops9
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ThreadedLoops" 
                         "-p${TEST_OUTPUT_PATH}"
                         "-t" "9")             
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME simulators-DeltaTChecked
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.DeltaTChecked"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DeltaTChecked" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME simulators-DeltaTCheckedFails
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.DeltaTCheckedFails"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DeltaTCheckedFails" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           )
+SET_TESTS_PROPERTIES(simulators-DeltaTCheckedFails PROPERTIES WILL_FAIL TRUE)
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME simulators-DeltaTForced
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.DeltaTForced"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DeltaTForced" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           )
+
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME simulators-WithBuffer
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CouplingWithBuffer"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CouplingWithBuffer" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           )
+  
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME simulators-WithSmallBuffer
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CouplingWithSmallBuffer"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CouplingWithSmallBuffer" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           )
+SET_TESTS_PROPERTIES(simulators-WithSmallBuffer PROPERTIES PASS_REGULAR_EXPRESSION "buffers for variables is set to 2")
 
 
 ###########################################################################

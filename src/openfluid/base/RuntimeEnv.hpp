@@ -132,15 +132,11 @@ class DLLEXPORT RuntimeEnvironment
 
     bool m_IsUserValuesBufferSize;
 
-    unsigned int m_FilesBufferSize;
-
     openfluid::base::EnvironmentProperties* mp_WareEnv;
 
     openfluid::base::EnvironmentProperties m_ExtraProperties;
 
     boost::posix_time::ptime m_IgnitionDateTime;
-
-    std::string m_SimulationID;
 
     boost::posix_time::time_duration m_EffectiveSimulationDuration;
 
@@ -482,16 +478,7 @@ class DLLEXPORT RuntimeEnvironment
       { return m_IgnitionDateTime; };
 
 
-    void resetSimulationID();
-
-
     void resetIgnitionDateTime();
-
-
-    inline std::string getSimulationID() const {return m_SimulationID; };
-
-
-    void setSimulationID(const std::string SimID) { m_SimulationID = SimID; };
 
 
     boost::posix_time::time_duration getEffectiveSimulationDuration() const
@@ -546,12 +533,6 @@ class DLLEXPORT RuntimeEnvironment
       { return m_ValuesBufferSize; };
 
     bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
-
-    void setFilesBufferSize(const unsigned int Bytes)
-      { m_FilesBufferSize = Bytes; };
-
-    inline unsigned int getFilesBufferSize() const
-      { return m_FilesBufferSize; };
 
     inline void unsetUserValuesBufferSize()
       { m_IsUserValuesBufferSize = false; }

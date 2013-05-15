@@ -58,20 +58,21 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
+
 
 namespace openfluid { namespace fluidx {
 
 class DLLEXPORT RunDescriptor
 {
   private:
+
     int m_DeltaT;
+
+    openfluid::base::SimulationStatus::SchedulingConstraint m_SchedConstraint;
 
     openfluid::core::DateTime m_BeginDate;
     openfluid::core::DateTime m_EndDate;
-
-    std::string m_SimID;
-
-    unsigned int m_FilesBufferSizeInKB;
 
     bool m_IsUserValuesBufferSize;
     unsigned int m_ValuesBufferSize;
@@ -99,12 +100,6 @@ class DLLEXPORT RunDescriptor
 
     inline void setDeltaT(const int DeltaT) { m_DeltaT = DeltaT; };
 
-    inline void setSimulationID(const std::string SimID) { m_SimID = SimID; };
-
-    inline std::string getSimulationID() const { return m_SimID; };
-
-    inline bool isSimulationID() const { return (m_SimID != ""); };
-
     inline void setValuesBufferSize(const unsigned int StepsNbr)
     {
       m_ValuesBufferSize = StepsNbr;  m_IsUserValuesBufferSize = true;
@@ -114,9 +109,9 @@ class DLLEXPORT RunDescriptor
 
     inline unsigned int getValuesBufferSize() const { return m_ValuesBufferSize; };
 
-    inline void setFilesBufferSizeInKB(const unsigned int KBytes) {m_FilesBufferSizeInKB = KBytes; };
+    inline openfluid::base::SimulationStatus::SchedulingConstraint getSchedulingConstraint() const { return m_SchedConstraint; };
 
-    inline unsigned int getFilesBufferSizeInKB() const { return m_FilesBufferSizeInKB; };
+    inline void setSchedulingConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst) { m_SchedConstraint = SConst; };
 
     inline bool isFilled() const { return m_Filled; };
 

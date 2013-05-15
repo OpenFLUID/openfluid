@@ -443,6 +443,32 @@ void ModelInstance::call_checkConsistency() const
 // =====================================================================
 
 
+void ModelInstance::checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, const openfluid::ware::WareID_t& ID)
+{
+  // check if "checked" DeltaT mode is respected
+  if (m_SimulationBlob.getSimulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+  {
+     if (!(SReq.RequestType == openfluid::base::SchedulingRequest::DURATION &&
+           SReq.Duration ==  m_SimulationBlob.getSimulationStatus().getDefaultDeltaT()))
+     {
+       std::string TIStr;
+       openfluid::tools::ConvertValue(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex(),&TIStr);
+       throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::checkDeltaTMode",
+                                          "DeltaT checked mode not respected by simulator " + ID + " at time index " + TIStr);
+     }
+  }
+
+  // check if "forced" DeltaT mode is respected
+  if (m_SimulationBlob.getSimulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+    SReq =  openfluid::base::SchedulingRequest(m_SimulationBlob.getSimulationStatus().getDefaultDeltaT());
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelInstance::call_initializeRun()
 {
   if (!m_Initialized)
@@ -468,9 +494,11 @@ void ModelInstance::call_initializeRun()
 
       if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::WARNING,CurrentSimulator->Signature->ID);
       else  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::OK,CurrentSimulator->Signature->ID);
-
       mp_SimLogger->resetWarningFlag();
 
+      checkDeltaTMode(SchedReq,CurrentSimulator->Signature->ID);
+
+      // TODO optimize by testing DURATION before ATTHEEND
       if (SchedReq.RequestType == openfluid::base::SchedulingRequest::ATTHEEND) // AtTheEnd();
       {
         appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getSimulationDuration(),
@@ -484,7 +512,7 @@ void ModelInstance::call_initializeRun()
 
     }
     else
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationScheduler::call_initializeRun","NULL model item instance!");
+      throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_initializeRun","NULL model item instance!");
 
     SimIter++;
   }
@@ -524,6 +552,7 @@ void ModelInstance::processNextTimePoint()
     else  mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::OK,NextItem->Signature->ID);
     mp_SimLogger->resetWarningFlag();
 
+    checkDeltaTMode(SchedReq,NextItem->Signature->ID);
 
     if (SchedReq.RequestType == openfluid::base::SchedulingRequest::ATTHEEND) // AtTheEnd();
     {

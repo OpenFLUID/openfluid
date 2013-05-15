@@ -566,8 +566,6 @@ void OpenFLUIDApp::runSimulation()
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
   std::cout << std::endl;
-  std::cout << "Simulation ID: " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID() << std::endl;
-  std::cout << std::endl;
 
   unsigned int UnitsCount = 0;
   for (UnitsIt = m_SimBlob.getCoreRepository().getUnitsByClass()->begin(); UnitsIt != m_SimBlob.getCoreRepository().getUnitsByClass()->end();++UnitsIt )
@@ -583,15 +581,26 @@ void OpenFLUIDApp::runSimulation()
   std::cout << std::endl;
 
   std::cout << "Simulation from " << mp_Engine->getSimulationStatus()->getBeginDate().getAsISOString()
-            << " to " << mp_Engine->getSimulationStatus()->getEndDate().getAsISOString() << std::endl
-            << "Default DeltaT is " << mp_Engine->getSimulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
+            << " to " << mp_Engine->getSimulationStatus()->getEndDate().getAsISOString() << std::endl;
+
+  if (mp_Engine->getSimulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+    std::cout << "Checked";
+  else if (mp_Engine->getSimulationStatus()->getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+    std::cout << "Forced";
+  else
+    std::cout << "Default";
+  std::cout << " DeltaT is " << mp_Engine->getSimulationStatus()->getDefaultDeltaT() << " seconds" << std::endl;
 
   std::cout << std::endl;
 
+  std::cout << "Size of buffers for variables is set to "
+            << openfluid::core::ValuesBufferProperties::getBufferSize();
+
   if (openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize())
-    std::cout << "Buffers for variables set to " << openfluid::base::RuntimeEnvironment::getInstance()->getValuesBufferSize() << " time steps" <<  std::endl;
-  else std::cout << "Buffers for variables set to full simulation" << std::endl;
-  std::cout << "Buffers for output files set to " << openfluid::base::RuntimeEnvironment::getInstance()->getFilesBufferSize() << " bytes" << std::endl;
+    std::cout << " (using dataset run configuration)";
+  else
+    std::cout << " (automatically computed)";
+  std::cout << std::endl;
 
   std::cout << std::endl;
 

@@ -171,8 +171,6 @@ class PreferencesSimPanel : public openfluid::guicommon::PreferencesPanel
     Gtk::Dialog* mp_CalendarDialog;
     Gtk::Calendar* mp_Calendar;
 
-    Gtk::SpinButton* mp_FilesBuffSpin;
-
     bool m_IsMonthChanged;
 
     void onDeltaChanged();
@@ -188,7 +186,6 @@ class PreferencesSimPanel : public openfluid::guicommon::PreferencesPanel
     void onEndEntryChanged();
     void onEndValueChanged();
 
-    void onFilesBuffChanged();
 
   public:
 

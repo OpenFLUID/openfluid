@@ -75,10 +75,10 @@ SimulRunPresenter::SimulRunPresenter(SimulRunModel& Model, SimulRunView& View) :
       &SimulRunPresenter::whenFromUserBeginChanged));
   m_View.signal_EndChanged().connect(sigc::mem_fun(*this,
       &SimulRunPresenter::whenFromUserEndChanged));
-  m_View.signal_DeltaChanged().connect(sigc::mem_fun(*this,
-      &SimulRunPresenter::whenFromUserDeltaChanged));
-  m_View.signal_FilesBuffChanged().connect(sigc::mem_fun(*this,
-      &SimulRunPresenter::whenFromUserFilesBuffChanged));
+  m_View.signal_DeltaTChanged().connect(sigc::mem_fun(*this,
+      &SimulRunPresenter::whenFromUserDeltaTChanged));
+  m_View.signal_ConstraintChanged().connect(sigc::mem_fun(*this,
+        &SimulRunPresenter::whenFromUserConstraintChanged));
   m_View.signal_ValuesBuffChanged().connect(sigc::mem_fun(*this,
       &SimulRunPresenter::whenFromUserValuesBuffChanged));
 }
@@ -91,14 +91,13 @@ void SimulRunPresenter::whenFromAppDescriptorChanged()
 {
   m_HaveValuesToBeStore = false;
 
-  m_View.setDelta(m_Model.getDelta());
+  m_View.setDeltaT(m_Model.getDeltaT());
+  m_View.setConstraint(m_Model.getConstraint());
   m_View.setBegin(m_Model.getBegin());
   m_View.setEnd(m_Model.getEnd());
 
   m_View.setValuesBuff(m_Model.getValuesBuff());
   m_View.setValuesBuffIsSet(m_Model.isValuesBuffSet());
-
-  m_View.setFilesBuff(m_Model.getFilesBuff());
 
   m_HaveValuesToBeStore = true;
 
@@ -146,23 +145,26 @@ void SimulRunPresenter::whenFromUserEndChanged()
   m_Model.setEnd(m_View.getEnd());
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void SimulRunPresenter::whenFromUserDeltaChanged()
+void SimulRunPresenter::whenFromUserDeltaTChanged()
 {
-  m_Model.setDelta(m_View.getDelta());
+  m_Model.setDeltaT(m_View.getDeltaT());
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void SimulRunPresenter::whenFromUserFilesBuffChanged()
+void SimulRunPresenter::whenFromUserConstraintChanged()
 {
-  m_Model.setFilesBuff(m_View.getFilesBuff());
+  m_Model.setConstraint(m_View.getConstraint());
 }
+
 
 // =====================================================================
 // =====================================================================
