@@ -440,6 +440,18 @@ void Engine::initialize()
   openfluid::base::RuntimeEnvironment::getInstance()->resetIgnitionDateTime();
   m_ModelInstance.initialize(mp_SimLogger);
   m_MonitoringInstance.initialize(mp_SimLogger);
+
+  if (mp_RunEnv->isUserValuesBufferSize())
+  {
+    openfluid::core::ValuesBufferProperties::setBufferSize(mp_RunEnv->getValuesBufferSize());
+  }
+  else
+  {
+    openfluid::core::ValuesBufferProperties::setBufferSize((mp_SimStatus->getSimulationDuration()/mp_SimStatus->getDefaultDeltaT())+2);
+  }
+
+
+
 }
 
 
@@ -497,16 +509,16 @@ void Engine::prepareData()
 void Engine::checkConsistency()
 {
 
-  // inits the simulation infos and status
+  // inits the buffers sizes for variables
 
-  if (mp_RunEnv->isUserValuesBufferSize())
+  /*if (mp_RunEnv->isUserValuesBufferSize())
   {
     openfluid::core::ValuesBufferProperties::setBufferSize(mp_RunEnv->getValuesBufferSize());
   }
   else
   {
     openfluid::core::ValuesBufferProperties::setBufferSize((mp_SimStatus->getSimulationDuration()/mp_SimStatus->getDefaultDeltaT())+1);
-  }
+  }*/
 
 
   // check simulators count

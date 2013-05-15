@@ -363,7 +363,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "valuesbuffer") == 0)
     {
-      xmlChar* xmlSteps = xmlGetProp(CurrNode, (const xmlChar*) "steps");
+      xmlChar* xmlSteps = xmlGetProp(CurrNode, (const xmlChar*) "size");
 
       if (xmlSteps != NULL)
       {
@@ -374,7 +374,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
           throw openfluid::base::OFException(
               "OpenFLUID framework",
               "FluidXDescriptor::extractRunFromNode",
-              "wrong format for steps attribute for valuesbuffer tag (" + m_CurrentFile
+              "wrong format for size attribute for valuesbuffer tag (" + m_CurrentFile
               + ")");
 
         m_RunDescriptor.setValuesBufferSize(ReadSteps);
@@ -383,7 +383,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
         throw openfluid::base::OFException(
             "OpenFLUID framework",
             "FluidXDescriptor::extractRunFromNode",
-            "missing steps attribute for valuesbuffer tag (" + m_CurrentFile
+            "missing size attribute for valuesbuffer tag (" + m_CurrentFile
             + ")");
     }
 
@@ -1205,7 +1205,7 @@ std::string FluidXDescriptor::getRunConfigurationToWrite()
 
     // values buffer
     if (m_RunDescriptor.isUserValuesBufferSize())
-      Contents << m_IndentStr << m_IndentStr << "<valuesbuffer steps=\""
+      Contents << m_IndentStr << m_IndentStr << "<valuesbuffer size=\""
                << m_RunDescriptor.getValuesBufferSize() << "\" />\n";
 
   }

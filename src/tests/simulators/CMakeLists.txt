@@ -241,6 +241,29 @@ OPENFLUID_ADD_TEST(NAME simulators-DeltaTForced
 ###########################################################################
 
 
+OPENFLUID_ADD_TEST(NAME simulators-WithBuffer
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CouplingWithBuffer"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CouplingWithBuffer" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           )
+  
+
+###########################################################################
+
+
+OPENFLUID_ADD_TEST(NAME simulators-WithSmallBuffer
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CouplingWithSmallBuffer"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CouplingWithSmallBuffer" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           )
+SET_TESTS_PROPERTIES(simulators-WithSmallBuffer PROPERTIES PASS_REGULAR_EXPRESSION "buffers for variables is set to 2")
+
+
+###########################################################################
+
+
 OPNFLD_ADD_SIMULATOR(tests.messages tests.messages ${TEST_OUTPUT_PATH})
 OPENFLUID_ADD_TEST(NAME simulators-Messages
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 

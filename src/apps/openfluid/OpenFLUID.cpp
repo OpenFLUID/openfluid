@@ -593,9 +593,14 @@ void OpenFLUIDApp::runSimulation()
 
   std::cout << std::endl;
 
+  std::cout << "Size of buffers for variables is set to "
+            << openfluid::core::ValuesBufferProperties::getBufferSize();
+
   if (openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize())
-    std::cout << "Buffers for variables set to " << openfluid::base::RuntimeEnvironment::getInstance()->getValuesBufferSize() << " time steps" <<  std::endl;
-  else std::cout << "Buffers for variables set to full simulation" << std::endl;
+    std::cout << " (using dataset run configuration)";
+  else
+    std::cout << " (automatically computed)";
+  std::cout << std::endl;
 
   std::cout << std::endl;
 

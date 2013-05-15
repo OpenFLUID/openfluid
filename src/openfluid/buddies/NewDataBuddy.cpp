@@ -118,7 +118,7 @@ void NewDataBuddy::generateRunXML()
   Content << "    <scheduling deltat=\"3600\" constraint=\"none\" />" << std::endl;
   Content << std::endl;
   Content << "    <!-- values buffer example -->" << std::endl;
-  Content << "    <valuesbuffer steps=\"50\" />" << std::endl;
+  Content << "    <valuesbuffer size=\"50\" />" << std::endl;
   Content << std::endl;
   Content << "  </run>" << std::endl;
   Content << getXMLFooter() << std::endl;

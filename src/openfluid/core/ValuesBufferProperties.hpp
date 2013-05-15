@@ -68,7 +68,11 @@ class DLLEXPORT ValuesBufferProperties
   public:
     static unsigned int getBufferSize() { return BufferSize; };
 
-    static void setBufferSize(const unsigned int aBufferSize) { BufferSize = aBufferSize; };
+    static void setBufferSize(const unsigned int aBufferSize)
+    {
+      BufferSize = aBufferSize;
+      if (BufferSize < 2) BufferSize = 2;
+    };
 
 };
 

@@ -2,7 +2,7 @@
 <openfluid>
   <run>
     <scheduling deltat="3600" constraint="none" />
-    <period begin="2000-01-01 00:00:00" end="2000-01-31 06:00:00" />
-    <valuesbuffer size="10" />
+    <period begin="2000-01-01 00:00:00" end="2000-01-01 01:00:00" />
+    <valuesbuffer size="47" />
   </run>
 </openfluid>

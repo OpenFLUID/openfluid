@@ -47,7 +47,7 @@
     <scheduling deltat="4753" constraint="none" />
     <period begin="1997-01-02 11:15:48" end="2005-11-30 06:53:07" />
     <simid>testrun</simid>
-    <valuesbuffer steps="100" />
+    <valuesbuffer size="100" />
   </run>
 
 
