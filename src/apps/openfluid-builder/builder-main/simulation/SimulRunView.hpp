@@ -63,12 +63,18 @@
 #include <gtkmm/calendar.h>
 #include <gtkmm/table.h>
 #include <gtkmm/dialog.h>
+#include <gtkmm/comboboxtext.h>
+#include <gtkmm/liststore.h>
+
+#include <openfluid/base/SimulationStatus.hpp>
 
 class SimulRunView
 {
   public:
 
-    virtual sigc::signal<void> signal_DeltaChanged() = 0;
+    virtual sigc::signal<void> signal_DeltaTChanged() = 0;
+
+    virtual sigc::signal<void> signal_ConstraintChanged() = 0;
 
     virtual sigc::signal<void> signal_BeginChanged() = 0;
 
@@ -80,7 +86,9 @@ class SimulRunView
 
     virtual sigc::signal<void> signal_FilesBuffChanged() = 0;
 
-    virtual void setDelta(int Value) = 0;
+    virtual void setDeltaT(int Value) = 0;
+
+    virtual void setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst) = 0;
 
     virtual void setBegin(std::string Value) = 0;
 
@@ -96,7 +104,9 @@ class SimulRunView
 
     virtual void setEndBG(std::string ColorString) = 0;
 
-    virtual int getDelta() = 0;
+    virtual int getDeltaT() = 0;
+
+    virtual openfluid::base::SimulationStatus::SchedulingConstraint getConstraint() = 0;
 
     virtual std::string getBegin() = 0;
 
@@ -111,11 +121,18 @@ class SimulRunView
     virtual Gtk::Widget* asWidget() = 0;
 };
 
+
+// =====================================================================
+// =====================================================================
+
+
 class SimulRunViewImpl: public SimulRunView
 {
   private:
 
-    sigc::signal<void> m_signal_DeltaChanged;
+    sigc::signal<void> m_signal_DeltaTChanged;
+
+    sigc::signal<void> m_signal_ConstraintChanged;
 
     sigc::signal<void> m_signal_BeginChanged;
 
@@ -132,7 +149,8 @@ class SimulRunViewImpl: public SimulRunView
     Gtk::Calendar* mp_Calendar;
     bool m_IsMonthChanged;
 
-    void onDeltaChanged();
+    void onDeltaTChanged();
+    void onConstraintChanged();
 
     void onBeginEntryChanged();
     void onDateBeginButtonClicked();
@@ -152,9 +170,24 @@ class SimulRunViewImpl: public SimulRunView
 
   protected:
 
+    class ConstraintComboModelColumns : public Gtk::TreeModel::ColumnRecord
+    {
+      public:
+
+      ConstraintComboModelColumns()
+      { add(m_SchedConstraint); add(m_Label); }
+
+      Gtk::TreeModelColumn<openfluid::base::SimulationStatus::SchedulingConstraint> m_SchedConstraint;
+      Gtk::TreeModelColumn<std::string> m_Label;
+    };
+
+    ConstraintComboModelColumns m_ConstraintColumns;
+    Glib::RefPtr<Gtk::ListStore> mref_ConstraintTreeModel;
+
     Gtk::Box* mp_MainBox;
 
-    Gtk::SpinButton* mp_DeltaSpin;
+    Gtk::SpinButton* mp_DeltaTSpin;
+    Gtk::ComboBox* mp_ConstraintCombo;
 
     Gtk::Entry* mp_BeginEntry;
     Gtk::SpinButton* mp_BeginHSpin;
@@ -175,7 +208,9 @@ class SimulRunViewImpl: public SimulRunView
 
     SimulRunViewImpl();
 
-    sigc::signal<void> signal_DeltaChanged();
+    sigc::signal<void> signal_DeltaTChanged();
+
+    sigc::signal<void> signal_ConstraintChanged();
 
     sigc::signal<void> signal_BeginChanged();
 
@@ -187,7 +222,9 @@ class SimulRunViewImpl: public SimulRunView
 
     sigc::signal<void> signal_FilesBuffChanged();
 
-    void setDelta(int Value);
+    void setDeltaT(int Value);
+
+    void setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst);
 
     void setBegin(std::string Value);
 
@@ -203,7 +240,9 @@ class SimulRunViewImpl: public SimulRunView
 
     void setEndBG(std::string ColorString);
 
-    int getDelta();
+    int getDeltaT();
+
+    openfluid::base::SimulationStatus::SchedulingConstraint getConstraint();
 
     std::string getBegin();
 
@@ -218,6 +257,11 @@ class SimulRunViewImpl: public SimulRunView
     Gtk::Widget* asWidget();
 
 };
+
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulRunViewSub: public SimulRunViewImpl
 {

@@ -58,11 +58,18 @@
 #include <sigc++/sigc++.h>
 #include <string>
 
+#include <openfluid/base/SimulationStatus.hpp>
+
 namespace openfluid {
 namespace fluidx {
 class RunDescriptor;
 }
 }
+
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulRunModel
 {
@@ -74,7 +81,9 @@ class SimulRunModel
 
     virtual sigc::signal<void> signal_SimulRunChanged() = 0;
 
-    virtual int getDelta() = 0;
+    virtual int getDeltaT() = 0;
+
+    virtual openfluid::base::SimulationStatus::SchedulingConstraint getConstraint() = 0;
 
     virtual std::string getBeginColor() = 0;
 
@@ -94,7 +103,9 @@ class SimulRunModel
 
     virtual int getFilesBuff() = 0;
 
-    virtual void setDelta(int Value) = 0;
+    virtual void setDeltaT(int Value) = 0;
+
+    virtual void setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst) = 0;
 
     virtual void setBegin(std::string Begin) = 0;
 
@@ -106,6 +117,11 @@ class SimulRunModel
 
     virtual void setFilesBuff(int Value) = 0;
 };
+
+
+// =====================================================================
+// =====================================================================
+
 
 class SimulRunModelImpl: public SimulRunModel
 {
@@ -141,7 +157,9 @@ class SimulRunModelImpl: public SimulRunModel
 
     sigc::signal<void> signal_SimulRunChanged();
 
-    int getDelta();
+    int getDeltaT();
+
+    openfluid::base::SimulationStatus::SchedulingConstraint getConstraint();
 
     std::string getBeginColor();
     std::string getEndColor();
@@ -158,7 +176,9 @@ class SimulRunModelImpl: public SimulRunModel
 
     int getFilesBuff();
 
-    void setDelta(int Value);
+    void setDeltaT(int Value);
+
+    void setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst);
 
     void setBegin(std::string Begin);
     void setEnd(std::string End);

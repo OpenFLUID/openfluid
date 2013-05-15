@@ -58,8 +58,10 @@
 
 #include <gtkmm/separator.h>
 
-#include "BuilderFrame.hpp"
 #include <openfluid/core/DateTime.hpp>
+
+#include "BuilderFrame.hpp"
+
 
 // =====================================================================
 // =====================================================================
@@ -68,15 +70,8 @@
 SimulRunViewImpl::SimulRunViewImpl()
 {
   /*
-   * Time frame
+   * Period frame
    */
-
-  mp_DeltaSpin = Gtk::manage(new Gtk::SpinButton());
-  mp_DeltaSpin->set_range(1.0, 86400.0); //->24h
-  mp_DeltaSpin->set_increments(1, 3600);
-  mp_DeltaSpin->set_numeric(true);
-  mp_DeltaSpin->signal_changed().connect(sigc::mem_fun(*this,
-      &SimulRunViewImpl::onDeltaChanged));
 
   mp_BeginEntry = Gtk::manage(new Gtk::Entry());
   mp_BeginEntry->signal_changed().connect(sigc::mem_fun(*this,
@@ -136,10 +131,6 @@ SimulRunViewImpl::SimulRunViewImpl()
   mp_EndSSpin->signal_changed().connect(sigc::mem_fun(*this,
       &SimulRunViewImpl::onEndValueChanged));
 
-  Gtk::HBox* DeltaBox = Gtk::manage(new Gtk::HBox());
-  DeltaBox->pack_start(*mp_DeltaSpin, Gtk::PACK_SHRINK, 5);
-  DeltaBox->pack_start(*Gtk::manage(new Gtk::Label(_("seconds"))),
-      Gtk::PACK_SHRINK);
 
   Gtk::HBox* DateBeginBox = Gtk::manage(new Gtk::HBox());
   DateBeginBox->pack_start(*mp_BeginEntry, Gtk::PACK_SHRINK, 5);
@@ -168,36 +159,77 @@ SimulRunViewImpl::SimulRunViewImpl()
   TimeEndBox->pack_start(*mp_EndSSpin, Gtk::PACK_SHRINK, 5);
   TimeEndBox->pack_start(*Gtk::manage(new Gtk::Label(_("s"))), Gtk::PACK_SHRINK);
 
-  Gtk::Table* TopTable = Gtk::manage(new Gtk::Table());
-  TopTable->set_border_width(15);
-  TopTable->set_spacings(15);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Delta T"), 1, 0.5)), 0, 1, 0,
-      1, Gtk::FILL, Gtk::SHRINK);
-  TopTable->attach(*DeltaBox, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  TopTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2, Gtk::FILL
-      | Gtk::EXPAND, Gtk::SHRINK);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Period begin"), 0, 0.5)), 0,
-      1, 2, 3, Gtk::FILL, Gtk::SHRINK);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Date"), 1, 0.5)), 0, 1, 3, 4,
-      Gtk::FILL, Gtk::SHRINK);
-  TopTable->attach(*DateBeginBox, 1, 2, 3, 4, Gtk::FILL | Gtk::EXPAND,
-      Gtk::SHRINK);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Time"), 1, 0.5)), 0, 1, 4, 5,
-      Gtk::FILL, Gtk::SHRINK);
-  TopTable->attach(*TimeBeginBox, 1, 2, 4, 5, Gtk::FILL | Gtk::EXPAND,
-      Gtk::SHRINK);
-  TopTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 5, 6, Gtk::FILL
-      | Gtk::EXPAND, Gtk::SHRINK);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Period end"), 0, 0.5)), 0, 1,
-      6, 7, Gtk::FILL, Gtk::SHRINK);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Date"), 1, 0.5)), 0, 1, 7, 8,
-      Gtk::FILL, Gtk::SHRINK);
-  TopTable->attach(*DateEndBox, 1, 2, 7, 8, Gtk::FILL | Gtk::EXPAND,
-      Gtk::SHRINK);
-  TopTable->attach(*Gtk::manage(new Gtk::Label(_("Time"), 1, 0.5)), 0, 1, 8, 9,
-      Gtk::FILL, Gtk::SHRINK);
-  TopTable->attach(*TimeEndBox, 1, 2, 8, 9, Gtk::FILL | Gtk::EXPAND,
-      Gtk::SHRINK);
+  Gtk::Table* PeriodTable = Gtk::manage(new Gtk::Table());
+  PeriodTable->set_border_width(15);
+  PeriodTable->set_spacings(15);
+
+  PeriodTable->attach(*Gtk::manage(new Gtk::Label(_("Period begin"), 0, 0.5)), 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK);
+  PeriodTable->attach(*Gtk::manage(new Gtk::Label(_("Date"), 1, 0.5)), 0, 1, 1, 2, Gtk::FILL, Gtk::SHRINK);
+  PeriodTable->attach(*DateBeginBox, 1, 2, 1, 2, Gtk::FILL /*| Gtk::EXPAND*/, Gtk::SHRINK);
+  PeriodTable->attach(*Gtk::manage(new Gtk::Label(_("Time"), 1, 0.5)), 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK);
+  PeriodTable->attach(*TimeBeginBox, 1, 2, 2, 3, Gtk::FILL /*| Gtk::EXPAND*/, Gtk::SHRINK);
+
+  PeriodTable->attach(*Gtk::manage(new Gtk::VSeparator()), 3, 4, 0, 3, Gtk::FILL, Gtk::FILL,30);
+
+  PeriodTable->attach(*Gtk::manage(new Gtk::Label(_("Period end"), 0, 0.5)), 4, 5, 0, 1, Gtk::FILL, Gtk::SHRINK);
+  PeriodTable->attach(*Gtk::manage(new Gtk::Label(_("Date"), 1, 0.5)), 4, 5, 1, 2, Gtk::FILL, Gtk::SHRINK);
+  PeriodTable->attach(*DateEndBox, 5, 6, 1, 2, Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+  PeriodTable->attach(*Gtk::manage(new Gtk::Label(_("Time"), 1, 0.5)), 4, 5, 2, 3, Gtk::FILL, Gtk::SHRINK);
+  PeriodTable->attach(*TimeEndBox, 5, 6, 2, 3, Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+
+
+  /*
+   * scheduling frame
+   */
+
+  mp_DeltaTSpin = Gtk::manage(new Gtk::SpinButton());
+  mp_DeltaTSpin->set_range(1.0, 3155760000.0); // set to 100 years max (only for easy checking in GUI, not an OpenFLUID limitation)
+  mp_DeltaTSpin->set_increments(1, 3600);
+  mp_DeltaTSpin->set_numeric(true);
+  mp_DeltaTSpin->signal_changed().connect(sigc::mem_fun(*this,
+      &SimulRunViewImpl::onDeltaTChanged));
+
+  mp_ConstraintCombo = Gtk::manage(new Gtk::ComboBox());
+  mref_ConstraintTreeModel = Gtk::ListStore::create(m_ConstraintColumns);
+  mp_ConstraintCombo->set_model(mref_ConstraintTreeModel);
+  mp_ConstraintCombo->signal_changed().connect(sigc::mem_fun(*this,
+        &SimulRunViewImpl::onConstraintChanged));
+
+  Gtk::TreeModel::Row DeltaTModeRow;
+  DeltaTModeRow = *(mref_ConstraintTreeModel->append());
+  DeltaTModeRow[m_ConstraintColumns.m_SchedConstraint] = openfluid::base::SimulationStatus::SCHED_NONE;
+  DeltaTModeRow[m_ConstraintColumns.m_Label] = _("None");
+  mp_ConstraintCombo->set_active(DeltaTModeRow);
+
+  DeltaTModeRow = *(mref_ConstraintTreeModel->append());
+  DeltaTModeRow[m_ConstraintColumns.m_SchedConstraint] = openfluid::base::SimulationStatus::SCHED_DTCHECKED;
+  DeltaTModeRow[m_ConstraintColumns.m_Label] = _("Checked - Simulators scheduling requests are checked to be equal to DeltaT");
+
+  DeltaTModeRow = *(mref_ConstraintTreeModel->append());
+  DeltaTModeRow[m_ConstraintColumns.m_SchedConstraint] = openfluid::base::SimulationStatus::SCHED_DTFORCED;
+  DeltaTModeRow[m_ConstraintColumns.m_Label] = _("Forced - Simulators scheduling requests are forced to DeltaT");
+
+  mp_ConstraintCombo->pack_start(m_ConstraintColumns.m_Label);
+
+  Gtk::HBox* DeltaTBox = Gtk::manage(new Gtk::HBox());
+  DeltaTBox->pack_start(*mp_DeltaTSpin, Gtk::PACK_SHRINK, 5);
+  DeltaTBox->pack_start(*Gtk::manage(new Gtk::Label(_("seconds"))),
+                       Gtk::PACK_SHRINK);
+
+
+  Gtk::Table* SchedulingTable = Gtk::manage(new Gtk::Table());
+  SchedulingTable->set_border_width(15);
+  SchedulingTable->set_spacings(15);
+
+  SchedulingTable->attach(*Gtk::manage(new Gtk::Label(_("Delta T"), 1, 0.5)), 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK);
+  SchedulingTable->attach(*DeltaTBox, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+
+  SchedulingTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2, Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+
+  SchedulingTable->attach(*Gtk::manage(new Gtk::Label(_("Constraint"), 1, 0.5)), 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK);
+  SchedulingTable->attach(*mp_ConstraintCombo, 1, 2, 2, 3, Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
+
+
 
   /*
    * Memory frame
@@ -232,35 +264,44 @@ SimulRunViewImpl::SimulRunViewImpl()
   ValuesBufferBox->pack_start(*Gtk::manage(new Gtk::Label(_("steps"))),
       Gtk::PACK_SHRINK);
 
-  Gtk::Table* BottomTable = Gtk::manage(new Gtk::Table());
-  BottomTable->set_border_width(15);
-  BottomTable->set_spacings(15);
-  BottomTable->attach(*Gtk::manage(new Gtk::Label(_("Output files buffer"), 0,
+  Gtk::Table* MemoryTable = Gtk::manage(new Gtk::Table());
+  MemoryTable->set_border_width(15);
+  MemoryTable->set_spacings(15);
+  MemoryTable->attach(*Gtk::manage(new Gtk::Label(_("Output files buffer"), 0,
       0.5)), 0, 1, 0, 1, Gtk::FILL, Gtk::SHRINK);
-  BottomTable->attach(*FilesBufferBox, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
+  MemoryTable->attach(*FilesBufferBox, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK);
-  BottomTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2,
+  MemoryTable->attach(*Gtk::manage(new Gtk::HSeparator()), 0, 2, 1, 2,
       Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-  BottomTable->attach(*mp_ValuesBuffCB, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK);
-  BottomTable->attach(*ValuesBufferBox, 1, 2, 2, 3, Gtk::FILL | Gtk::EXPAND,
+  MemoryTable->attach(*mp_ValuesBuffCB, 0, 1, 2, 3, Gtk::FILL, Gtk::SHRINK);
+  MemoryTable->attach(*ValuesBufferBox, 1, 2, 2, 3, Gtk::FILL | Gtk::EXPAND,
       Gtk::SHRINK);
 
-  BuilderFrame* TopFrame = Gtk::manage(new BuilderFrame());
-  TopFrame->setLabelText(_("Time"));
-  TopFrame->add(*TopTable);
 
-  BuilderFrame* BottomFrame = Gtk::manage(new BuilderFrame());
-  BottomFrame->setLabelText(_("Memory management"));
-  BottomFrame->add(*BottomTable);
+
+  // complete layout
+
+  BuilderFrame* PeriodFrame = Gtk::manage(new BuilderFrame());
+  PeriodFrame->setLabelText(_("Simulation period"));
+  PeriodFrame->add(*PeriodTable);
+
+  BuilderFrame* SchedulingFrame = Gtk::manage(new BuilderFrame());
+  SchedulingFrame->setLabelText(_("Simulation scheduling"));
+  SchedulingFrame->add(*SchedulingTable);
+
+  BuilderFrame* MemoryFrame = Gtk::manage(new BuilderFrame());
+  MemoryFrame->setLabelText(_("Memory management"));
+  MemoryFrame->add(*MemoryTable);
 
   mp_MainBox = Gtk::manage(new Gtk::VBox());
-  mp_MainBox->pack_start(*TopFrame, Gtk::PACK_SHRINK, 15);
-  mp_MainBox->pack_start(*BottomFrame, Gtk::PACK_SHRINK);
+  mp_MainBox->pack_start(*PeriodFrame, Gtk::PACK_SHRINK, 15);
+  mp_MainBox->pack_start(*SchedulingFrame, Gtk::PACK_SHRINK, 15);
+  mp_MainBox->pack_start(*MemoryFrame, Gtk::PACK_SHRINK, 15);
   mp_MainBox->set_visible(true);
   mp_MainBox->show_all_children();
 
   /*
-   * cf. http://www.kksou.com/php-gtk2/articles/let-user-enter-date-with-a-popup-calendar---Part-2.php
+   * see: http://www.kksou.com/php-gtk2/articles/let-user-enter-date-with-a-popup-calendar---Part-2.php
    */
   mp_Calendar = Gtk::manage(new Gtk::Calendar());
   mp_Calendar->signal_day_selected().connect(sigc::bind<bool>(sigc::mem_fun(
@@ -280,11 +321,22 @@ SimulRunViewImpl::SimulRunViewImpl()
 // =====================================================================
 
 
-void SimulRunViewImpl::onDeltaChanged()
+void SimulRunViewImpl::onDeltaTChanged()
 {
-  mp_DeltaSpin->update();
-  m_signal_DeltaChanged.emit();
+  mp_DeltaTSpin->update();
+  m_signal_DeltaTChanged.emit();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::onConstraintChanged()
+{
+  m_signal_ConstraintChanged.emit();
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -479,10 +531,21 @@ void SimulRunViewImpl::onFilesBuffChanged()
 // =====================================================================
 
 
-sigc::signal<void> SimulRunViewImpl::signal_DeltaChanged()
+sigc::signal<void> SimulRunViewImpl::signal_DeltaTChanged()
 {
-  return m_signal_DeltaChanged;
+  return m_signal_DeltaTChanged;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+sigc::signal<void> SimulRunViewImpl::signal_ConstraintChanged()
+{
+  return m_signal_ConstraintChanged;
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -533,10 +596,29 @@ sigc::signal<void> SimulRunViewImpl::signal_FilesBuffChanged()
 // =====================================================================
 
 
-void SimulRunViewImpl::setDelta(int Value)
+void SimulRunViewImpl::setDeltaT(int Value)
 {
-  mp_DeltaSpin->set_value(Value);
+  mp_DeltaTSpin->set_value(Value);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulRunViewImpl::setConstraint(const openfluid::base::SimulationStatus::SchedulingConstraint& SConst)
+{
+  Gtk::TreeModel::Children Cstraints = mref_ConstraintTreeModel->children();
+  for (Gtk::TreeIter it = Cstraints.begin(); it != Cstraints.end(); ++it)
+  {
+    if (it->get_value(m_ConstraintColumns.m_SchedConstraint) == SConst)
+    {
+      mp_ConstraintCombo->set_active(it);
+      break;
+    }
+  }
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -546,6 +628,7 @@ void SimulRunViewImpl::setBegin(std::string Value)
 {
   mp_BeginEntry->set_text(Value);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -607,10 +690,29 @@ void SimulRunViewImpl::setEndBG(std::string ColorString)
 // =====================================================================
 
 
-int SimulRunViewImpl::getDelta()
+int SimulRunViewImpl::getDeltaT()
 {
-  return mp_DeltaSpin->get_value_as_int();
+  return mp_DeltaTSpin->get_value_as_int();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::base::SimulationStatus::SchedulingConstraint SimulRunViewImpl::getConstraint()
+{
+  Gtk::TreeModel::iterator It = mp_ConstraintCombo->get_active();
+
+  if(It)
+  {
+    Gtk::TreeModel::Row TmpRow = *It;
+    if(TmpRow)
+      return TmpRow[m_ConstraintColumns.m_SchedConstraint];
+  }
+
+  return openfluid::base::SimulationStatus::SCHED_NONE; // should never happen
+}
+
 
 // =====================================================================
 // =====================================================================

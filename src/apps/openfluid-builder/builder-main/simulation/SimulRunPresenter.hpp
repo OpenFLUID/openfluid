@@ -80,7 +80,9 @@ class SimulRunPresenter
 
     void whenFromUserEndChanged();
 
-    void whenFromUserDeltaChanged();
+    void whenFromUserDeltaTChanged();
+
+    void whenFromUserConstraintChanged();
 
     void whenFromUserFilesBuffChanged();
 

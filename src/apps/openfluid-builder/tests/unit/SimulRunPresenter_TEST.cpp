@@ -113,7 +113,7 @@ BOOST_FIXTURE_TEST_SUITE(SimulRunPresenterTest, init_Presenter)
 
 BOOST_AUTO_TEST_CASE(test_SetRunDescriptor)
 {
-  BOOST_CHECK_EQUAL(mp_View->getDelta(), 3600);
+  BOOST_CHECK_EQUAL(mp_View->getDeltaT(), 3600);
   BOOST_CHECK_EQUAL(mp_View->getBegin(), "2000-01-01 00:00:00");
   BOOST_CHECK_EQUAL(mp_View->getEnd(), "2000-01-01 06:00:00");
   BOOST_CHECK_EQUAL(mp_View->isValuesBuffSet(), false);
