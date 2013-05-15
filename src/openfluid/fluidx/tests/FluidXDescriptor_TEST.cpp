@@ -224,8 +224,6 @@ void TestDataset(std::string DatasetPath)
       FXDesc.getRunDescriptor().getBeginDate() == openfluid::core::DateTime(1997,1,2,11,15,48));
   BOOST_REQUIRE(
       FXDesc.getRunDescriptor().getEndDate() == openfluid::core::DateTime(2005,11,30,6,53,7));
-  BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().isSimulationID(), true);
-  BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getSimulationID(), "testrun");
   BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().isUserValuesBufferSize(), true);
   BOOST_REQUIRE_EQUAL(FXDesc.getRunDescriptor().getValuesBufferSize(), 100);
 

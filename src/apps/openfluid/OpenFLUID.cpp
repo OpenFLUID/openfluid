@@ -566,8 +566,6 @@ void OpenFLUIDApp::runSimulation()
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
   std::cout << std::endl;
-  std::cout << "Simulation ID: " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID() << std::endl;
-  std::cout << std::endl;
 
   unsigned int UnitsCount = 0;
   for (UnitsIt = m_SimBlob.getCoreRepository().getUnitsByClass()->begin(); UnitsIt != m_SimBlob.getCoreRepository().getUnitsByClass()->end();++UnitsIt )

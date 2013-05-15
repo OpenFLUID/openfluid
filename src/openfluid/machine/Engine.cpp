@@ -437,7 +437,6 @@ void Engine::prepareOutputDir()
 
 void Engine::initialize()
 {
-  openfluid::base::RuntimeEnvironment::getInstance()->resetSimulationID();
   openfluid::base::RuntimeEnvironment::getInstance()->resetIgnitionDateTime();
   m_ModelInstance.initialize(mp_SimLogger);
   m_MonitoringInstance.initialize(mp_SimLogger);

@@ -138,8 +138,6 @@ class DLLEXPORT RuntimeEnvironment
 
     boost::posix_time::ptime m_IgnitionDateTime;
 
-    std::string m_SimulationID;
-
     boost::posix_time::time_duration m_EffectiveSimulationDuration;
 
     openfluid::core::DateTime m_StartTime;
@@ -480,16 +478,7 @@ class DLLEXPORT RuntimeEnvironment
       { return m_IgnitionDateTime; };
 
 
-    void resetSimulationID();
-
-
     void resetIgnitionDateTime();
-
-
-    inline std::string getSimulationID() const {return m_SimulationID; };
-
-
-    void setSimulationID(const std::string SimID) { m_SimulationID = SimID; };
 
 
     boost::posix_time::time_duration getEffectiveSimulationDuration() const

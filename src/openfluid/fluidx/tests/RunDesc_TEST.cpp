@@ -80,9 +80,6 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getMinute(),0);
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getSecond(),0);
   BOOST_REQUIRE_EQUAL(RunDesc.isUserValuesBufferSize(),false);
-  BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),false);
-  BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"");
-
 }
 
 // =====================================================================
@@ -92,7 +89,6 @@ BOOST_AUTO_TEST_CASE(check_operations)
 {
   openfluid::fluidx::RunDescriptor RunDesc(57,openfluid::core::DateTime(2010,1,7,16,24,13),openfluid::core::DateTime(2010,1,9,12,0,0));
 
-  RunDesc.setSimulationID("testID");
   RunDesc.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTCHECKED);
   RunDesc.setValuesBufferSize(20);
 
@@ -106,20 +102,11 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(RunDesc.getEndDate().getSecond(),0);
   BOOST_REQUIRE_EQUAL(RunDesc.isUserValuesBufferSize(),true);
   BOOST_REQUIRE_EQUAL(RunDesc.getValuesBufferSize(),20);
-  BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),true);
-  BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"testID");
 
-  RunDesc.setSimulationID("gotcha");
   RunDesc.setValuesBufferSize(1179);
 
   BOOST_REQUIRE_EQUAL(RunDesc.isUserValuesBufferSize(),true);
   BOOST_REQUIRE_EQUAL(RunDesc.getValuesBufferSize(),1179);
-  BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),true);
-  BOOST_REQUIRE_EQUAL(RunDesc.getSimulationID(),"gotcha");
-
-  RunDesc.setSimulationID("");
-  BOOST_REQUIRE_EQUAL(RunDesc.isSimulationID(),false);
-
 }
 
 // =====================================================================

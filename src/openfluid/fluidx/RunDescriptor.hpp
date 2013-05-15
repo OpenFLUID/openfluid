@@ -74,8 +74,6 @@ class DLLEXPORT RunDescriptor
     openfluid::core::DateTime m_BeginDate;
     openfluid::core::DateTime m_EndDate;
 
-    std::string m_SimID;
-
     bool m_IsUserValuesBufferSize;
     unsigned int m_ValuesBufferSize;
 
@@ -101,12 +99,6 @@ class DLLEXPORT RunDescriptor
     inline int getDeltaT() const {return m_DeltaT; };
 
     inline void setDeltaT(const int DeltaT) { m_DeltaT = DeltaT; };
-
-    inline void setSimulationID(const std::string SimID) { m_SimID = SimID; };
-
-    inline std::string getSimulationID() const { return m_SimID; };
-
-    inline bool isSimulationID() const { return (m_SimID != ""); };
 
     inline void setValuesBufferSize(const unsigned int StepsNbr)
     {

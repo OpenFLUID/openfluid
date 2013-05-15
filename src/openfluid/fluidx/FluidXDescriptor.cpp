@@ -387,19 +387,6 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
             + ")");
     }
 
-
-    // TODO to remove -->
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "simid") == 0)
-    {
-      xmlChar *xmlSimID = xmlNodeGetContent(CurrNode);
-
-      if (xmlSimID != NULL)
-      {
-        m_RunDescriptor.setSimulationID(std::string((char*) xmlSimID));
-      }
-
-    } // <--
-
     CurrNode = CurrNode->next;
   }
 
@@ -1215,11 +1202,6 @@ std::string FluidXDescriptor::getRunConfigurationToWrite()
     Contents << m_IndentStr << m_IndentStr << "<period begin=\""
              << m_RunDescriptor.getBeginDate().getAsISOString() << "\" end=\""
              << m_RunDescriptor.getEndDate().getAsISOString() << "\" />\n";
-
-    // TODO to remove
-    if (m_RunDescriptor.isSimulationID())
-      Contents << m_IndentStr << m_IndentStr << "<simid>"
-               << m_RunDescriptor.getSimulationID() << "</simid>\n";
 
     // values buffer
     if (m_RunDescriptor.isUserValuesBufferSize())
