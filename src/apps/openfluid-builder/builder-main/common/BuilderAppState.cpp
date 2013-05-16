@@ -82,7 +82,7 @@ void BuilderAppState::whenAboutAsked()
   About.set_program_name(openfluid::config::FULL_VERSION);
   About.set_comments("OpenFLUID-Builder application");
   About.set_copyright("LISAH - INRA/SupAgro - Montpellier - France");
-  About.set_website(BUILDER_URL);
+  About.set_website(BUILDER_URL_WEBSITE);
 
   About.set_license(BUILDER_LICENSE_TEXT);
   About.set_authors(openfluid::tools::SplitString(BUILDER_AUTHORS_TEXT,"\n",true));

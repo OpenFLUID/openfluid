@@ -53,6 +53,7 @@
  */
 
 #include "HomeModel.hpp"
+#include "builderconfig.hpp"
 
 #include <glibmm/i18n.h>
 #include <openfluid/config.hpp>
@@ -66,7 +67,7 @@ HomeModelImpl::HomeModelImpl()
 {
   m_OFVersionTxt
       = "OpenFLUID v" + openfluid::config::FULL_VERSION;
-  m_OFWebSite = "http://www.umr-lisah.fr/openfluid/";
+  m_OFWebSite = BUILDER_URL_WEBSITE;
 }
 
 // =====================================================================
