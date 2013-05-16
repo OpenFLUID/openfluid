@@ -60,7 +60,6 @@
 
 
 const std::string BUILDER_LICENSE_TEXT = "@BUILDER_LICENSE_TEXT@";
-const std::string BUILDER_URL = "@BUILDER_URL_TEXT@";
 const std::string BUILDER_AUTHORS_TEXT = "@BUILDER_AUTHORS_TEXT@";
 
 const std::string BUILDER_EXTSDIR = "@BUILDER_EXTSDIR@";
@@ -68,9 +67,9 @@ const std::string BUILDEREXT_INSTALL_PATH = "@BUILDEREXT_INSTALL_PATH@";
 
 const std::string BUILDEREXTENSION_BINARY_EXTENSION = "@BUILDEREXTENSION_BINARY_EXTENSION@";
 
-const std::string BUILDER_URL_WEBSITE = "http://www.umr-lisah.fr/openfluid/";
-const std::string BUILDER_URL_COMMUNITY = "http://www.umr-lisah.fr/openfluid/community/";
-const std::string BUILDER_URL_DEV = "http://sourceforge.net/projects/openfluid/";
-const std::string BUILDER_URL_BUG = "http://sourceforge.net/apps/trac/openfluid/";
+const std::string BUILDER_URL_WEBSITE = "http://www.openfluid-project.org";
+const std::string BUILDER_URL_COMMUNITY = "http://www.openfluid-project.org/community";
+const std::string BUILDER_URL_DEV = "https://github.com/OpenFLUID/";
+const std::string BUILDER_URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
 
 #endif /* __BUILDERCONFIG_HPP__ */

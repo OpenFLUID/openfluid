@@ -85,6 +85,19 @@ ENDMACRO()
 
 ###########################################################################
 
+# This macro uses the following variables
+# _SIMNAME_ID : simulator ID
+# _SIMNAME_CPP : list of C++ files. The sim2doc tag must be contained in the first one
+# _SIMNAME_FORTRAN : list of Fortran files, if any
+# _SIMNAME_DEFINITIONS : definitions to add at compile time
+# _SIMNAME_INCLUDE_DIRS : directories to include for simulator compilation
+# _SIMNAME_LIBRARY_DIRS : directories to link for simulator compilation
+# _SIMNAME_LINK_LIBS : libraries to link for function build
+# _SIMNAME_INSTALL_PATH : install path, replacing the default one
+# _SIMNAME_SIM2DOC_DISABLED : set to 1 to disable sim2doc pdf build
+# _SIMNAME_SIM2DOC_INSTALL_DISABLED : set to 1 to disable installation of sim2doc built pdf
+# _SIMNAME_SIM2DOC_TPL : user-defined template for documentation
+# _SIMNAME_TEST_DATASETS : list of datasets for tests
 
 MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
 
@@ -93,18 +106,119 @@ MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
   PKG_CHECK_MODULES(GLIBMM REQUIRED glibmm-2.4)
   PKG_CHECK_MODULES(GTHREAD REQUIRED gthread-2.0)
   
+  IF (NOT ${_SIMNAME}_SOURCE_DIR)
+    SET(${_SIMNAME}_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+  ENDIF()  
+  
   SET(${_SIMNAME}_TARGET ${${_SIMNAME}_ID}${OpenFLUID_SIMULATOR_FILENAME_SUFFIX})
 
-  _OPENFLUID_ADD_WARE_MESSAGES(${${_SIMNAME}_ID} "Simulator" ${${_SIMNAME}_CPP} ${${_SIMNAME}_TARGET})
+  _OPENFLUID_ADD_WARE_MESSAGES(${${_SIMNAME}_ID} "Simulator" "${${_SIMNAME}_CPP}" ${${_SIMNAME}_TARGET})
 
-  INCLUDE_DIRECTORIES(${OpenFLUID_INCLUDE_DIRS} ${${_SIMNAME}_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS})
-  LINK_DIRECTORIES(${OpenFLUID_LIBRARY_DIRS} ${GLIBMM_LIBRARY_DIRS}) 
+  IF(${_SIMNAME}_FORTRAN)
+    ENABLE_LANGUAGE(Fortran)
+    SET(CMAKE_Fortran_FLAGS_RELEASE "-funroll-all-loops -fno-f2c -O3")
+    SET(_FORTRAN_LINK_LIBS "gfortran")
+  ENDIF()
 
-
-  ADD_LIBRARY(${${_SIMNAME}_TARGET} MODULE ${${_SIMNAME}_CPP})
+  ADD_DEFINITIONS(${${_SIMNAME}_DEFINITIONS})
+  INCLUDE_DIRECTORIES(${OpenFLUID_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS} ${${_SIMNAME}_INCLUDE_DIRS})
+  LINK_DIRECTORIES(${OpenFLUID_LIBRARY_DIRS} ${GLIBMM_LIBRARY_DIRS} ${${_SIMNAME}_LIBRARY_DIRS}) 
+    
+  
+  # ====== build ======
+    
+  IF(MINGW)
+    # workaround for CMake bug with MinGW
+    ADD_LIBRARY(${${_SIMNAME}_TARGET} SHARED ${${_SIMNAME}_CPP} ${${_SIMNAME}_FORTRAN})
+  ELSE()
+    ADD_LIBRARY(${${_SIMNAME}_TARGET} MODULE ${${_SIMNAME}_CPP} ${${_SIMNAME}_FORTRAN})
+  ENDIF()
+  
   SET_TARGET_PROPERTIES(${${_SIMNAME}_TARGET} PROPERTIES PREFIX "" SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
 
-  TARGET_LINK_LIBRARIES(${${_SIMNAME}_TARGET} ${OpenFLUID_LIBRARIES} ${GLIBMM_LIBRARIES} ${GTHREAD_LIBRARIES})
+  TARGET_LINK_LIBRARIES(${${_SIMNAME}_TARGET} ${OpenFLUID_LIBRARIES} ${GLIBMM_LIBRARIES} ${GTHREAD_LIBRARIES} ${${_SIMNAME}_LINK_LIBS})
+  
+    
+  # ====== doc ======  
+  
+  IF(NOT ${_SIMNAME}_SIM2DOC_DISABLED)
+    FIND_PACKAGE(LATEX)
+ 
+    IF(PDFLATEX_COMPILER)
+  
+      LIST(GET ${_SIMNAME}_CPP 0 _CPP_FOR_DOC)
+    
+      IF(NOT ${_SIMNAME}_SIM2DOC_OUTPUT_PATH)
+        SET(_DOCS_OUTPUT_PATH "${PROJECT_BINARY_DIR}")
+      ELSE()
+        SET(_DOCS_OUTPUT_PATH "${_SIMNAME}_SIM2DOC_OUTPUT_PATH")
+      ENDIF()
+    
+      IF(${_SIMNAME}_SIM2DOC_TPL)
+        SET (_TPL_OPTION ",tplfile=${${_SIMNAME}_SIM2DOC_TPL}")
+      ENDIF()
+    
+      ADD_CUSTOM_COMMAND(
+        OUTPUT "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf"
+        DEPENDS "${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC}"
+        COMMAND "${OpenFLUID_CMD_PROGRAM}"
+        ARGS "--buddy" "func2doc" "--buddyopts" "inputcpp=${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC},outputdir=${_DOCS_OUTPUT_PATH},pdf=1${_TPL_OPTION}"     
+      )
+    
+      ADD_CUSTOM_TARGET(${${_SIMNAME}_ID}-doc ALL DEPENDS "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf")
+      
+      MESSAGE(STATUS "  sim2doc : enabled")      
+    ELSE()
+      MESSAGE(STATUS "  sim2doc : pdflatex not found")
+    ENDIF()
+  ELSE()
+    MESSAGE(STATUS "  sim2doc : disabled")
+  ENDIF()
+
+
+  # ====== tests ======  
+
+  IF(${_SIMNAME}_TESTS_DATASETS)
+  
+    ENABLE_TESTING()
+  
+    SET(_TESTS_SIM_SEARCHPATHS "${PROJECT_BINARY_DIR}")
+  
+    IF (${_SIMNAME}_TESTS_SIM_SEARCHPATHS)
+      SET(_TESTS_SIM_SEARCHPATHS "${PROJECT_BINARY_DIR}")
+    ENDIF()
+    
+    SET(_TESTS_OUTPUT_DIR ${PROJECT_BINARY_DIR}/tests-output)  
+    FILE(MAKE_DIRECTORY "${_TESTS_OUTPUT_DIR}")
+  
+    FOREACH(_CURRTEST ${${_SIMNAME}_TESTS_DATASETS})
+      ADD_TEST(${${_SIMNAME}_ID}-${_CURRTEST} "${OpenFLUID_CMD_PROGRAM}"
+                                "-i" "${${_SIMNAME}_SOURCE_DIR}/tests/${_CURRTEST}.IN"
+                                "-o" "${_TESTS_OUTPUT_DIR}/${_CURRTEST}.OUT"
+                                "-p" "${_TESTS_SIM_SEARCHPATHS}")
+      MESSAGE(STATUS "  Added test ${${_SIMNAME}_ID}-${_CURRTEST}")                            
+    ENDFOREACH()
+  ENDIF()  
+
+
+  # ====== install ======
+  
+  IF(NOT ${_SIMNAME}_INSTALL_PATH)
+    SET(_INSTALL_PATH "$ENV{HOME}/.openfluid/simulators")
+    IF(WIN32)
+      SET(_INSTALL_PATH "$ENV{USERPROFILE}/openfluid/simulators") 
+    ENDIF()
+  ELSE()
+    SET(_INSTALL_PATH "${${_SIMNAME}_INSTALL_PATH}")   
+  ENDIF()
+  
+  INSTALL(TARGETS ${${_SIMNAME}_TARGET} DESTINATION "${_INSTALL_PATH}")
+  
+  IF(PDFLATEX_COMPILER AND NOT ${_SIMNAME}_SIM2DOC_DISABLED AND NOT ${_SIMNAME}_SIM2DOC_INSTALL_DISABLED)
+    INSTALL(FILES "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf" DESTINATION "${_INSTALL_PATH}")
+  ENDIF()
+  
+  MESSAGE(STATUS "  Install path : ${_INSTALL_PATH}")
   
 ENDMACRO()
 
