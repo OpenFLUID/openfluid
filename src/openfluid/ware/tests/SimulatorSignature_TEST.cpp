@@ -87,14 +87,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   Signature = new openfluid::ware::SimulatorSignature();
 
-  DECLARE_SIGNATURE_NAME("name of the test");
-  DECLARE_SIGNATURE_AUTHORNAME("John Doe");
-  DECLARE_SIGNATURE_AUTHOREMAIL("john.doe@foo.bar.org");
-  DECLARE_SIGNATURE_DESCRIPTION("this is the description");
-  DECLARE_SIGNATURE_METHOD("method");
-  DECLARE_SIGNATURE_DOMAIN("domain");
-  DECLARE_SIGNATURE_VERSION("4.7");
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::BETA);
+  DECLARE_NAME("name of the test");
+  DECLARE_AUTHOR("John Doe","john.doe@foo.bar.org");
+  DECLARE_DESCRIPTION("this is the description");
+  DECLARE_METHOD("method");
+  DECLARE_DOMAIN("domain");
+  DECLARE_VERSION("4.7");
+  DECLARE_STATUS(openfluid::ware::BETA);
 
   DECLARE_SIMULATOR_PARAM("param1","this is param1","m/s");
   DECLARE_SIMULATOR_PARAM("param2","this is param2","m3");
@@ -128,8 +127,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   // ----------------------------------------------------------
 
   BOOST_REQUIRE_EQUAL(Signature->Name,"name of the test");
-  BOOST_REQUIRE_EQUAL(Signature->AuthorEmail,"john.doe@foo.bar.org");
-  BOOST_REQUIRE_EQUAL(Signature->Author,"John Doe");
+  BOOST_REQUIRE_EQUAL(Signature->Authors.front().first,"John Doe");
+  BOOST_REQUIRE_EQUAL(Signature->Authors.front().second,"john.doe@foo.bar.org");
   BOOST_REQUIRE_EQUAL(Signature->Domain,"domain");
   BOOST_REQUIRE_EQUAL(Signature->Method,"method");
   BOOST_REQUIRE_EQUAL(Signature->Description,"this is the description");

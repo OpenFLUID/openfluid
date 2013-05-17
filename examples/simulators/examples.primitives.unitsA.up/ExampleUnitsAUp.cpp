@@ -20,18 +20,17 @@ DECLARE_SIMULATOR_PLUGIN;
 
 BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.up")
 
-  DECLARE_SIGNATURE_NAME("Example of data update on units of class A");
-  DECLARE_SIGNATURE_DESCRIPTION("");
+  DECLARE_NAME("Example of data update on units of class A");
+  DECLARE_DESCRIPTION("");
 
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_VERSION("1.0");
+  DECLARE_SDKVERSION;
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN("examples");
-  DECLARE_SIGNATURE_PROCESS("");
-  DECLARE_SIGNATURE_METHOD("");
-  DECLARE_SIGNATURE_AUTHORNAME("Jean-Christophe Fabre");
-  DECLARE_SIGNATURE_AUTHOREMAIL("fabrejc@supagro.inra.fr");
+  DECLARE_DOMAIN("examples");
+  DECLARE_PROCESS("");
+  DECLARE_METHOD("");
+  DECLARE_AUTHOR("Jean-Christophe Fabre","fabrejc@supagro.inra.fr");
 
   DECLARE_SIMULATOR_PARAM("gmult","multiply coefficient","");
 

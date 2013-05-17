@@ -151,10 +151,7 @@ WareItemInfoWidget::WareItemInfoWidget(
     attachSeparator();
 
     attachKey(_("Author(s):"));
-    attachValue(FSign->Author);
-
-    attachKey(_("Email(s):"));
-    attachValue(FSign->AuthorEmail);
+    attachValue(FSign->getAuthorsAsString());
 
     attachSeparator();
   }

@@ -53,6 +53,7 @@
  */
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 #ifndef __WARESIGNATURE_HPP__
@@ -62,37 +63,32 @@
 /**
   Macro for declaration of the ware name
 */
-#define DECLARE_SIGNATURE_NAME(name) Signature->Name = name;
+#define DECLARE_NAME(name) Signature->Name = name;
 
 /**
   Macro for declaration of the ware description
 */
-#define DECLARE_SIGNATURE_DESCRIPTION(desc) Signature->Description = desc;
+#define DECLARE_DESCRIPTION(desc) Signature->Description = desc;
 
 /**
-  Macro for declaration of the ware author name
+  Macro for declaration of the ware author name and email
 */
-#define DECLARE_SIGNATURE_AUTHORNAME(name) Signature->Author = name;
-
-/**
-  Macro for declaration of the ware author email
-*/
-#define DECLARE_SIGNATURE_AUTHOREMAIL(email) Signature->AuthorEmail = email;
+#define DECLARE_AUTHOR(name,email) Signature->Authors.push_back(std::make_pair((name),(email)));
 
 /**
   Macro for declaration of the ware version
 */
-#define DECLARE_SIGNATURE_VERSION(version) Signature->Version = version;
+#define DECLARE_VERSION(version) Signature->Version = version;
 
 /**
   Macro for declaration of the ware status
 */
-#define DECLARE_SIGNATURE_STATUS(status) Signature->Status = status;
+#define DECLARE_STATUS(status) Signature->Status = status;
 
 /**
   Macro for declaration of ABI version used to build the ware
 */
-#define DECLARE_SIGNATURE_SDKVERSION Signature->setABIVersion(openfluid::config::FULL_VERSION);
+#define DECLARE_SDKVERSION Signature->setABIVersion(openfluid::config::FULL_VERSION);
 
 
 // =====================================================================
@@ -139,6 +135,8 @@ class DLLEXPORT WareSignature
 {
   public:
 
+    typedef std::list<std::pair<std::string,std::string> > AuthorsList_t;
+
     WareID_t ID;
 
     WareName_t Name;
@@ -161,20 +159,17 @@ class DLLEXPORT WareSignature
     WareVersion_t ABIVersion;
 
     /**
-    Author name
+    Authors as a list of pairs [name,email]
     */
-    std::string Author;
-
-    /**
-    Author email
-    */
-    std::string AuthorEmail;
+    AuthorsList_t Authors;
 
 
     WareSignature() :
       ID(""),Name(""),Description(""),Version(""),
-      Status(EXPERIMENTAL),ABIVersion(""),Author(""),AuthorEmail("")
-      {}
+      Status(EXPERIMENTAL),ABIVersion("")
+      {
+        Authors.clear();
+      }
 
 
     virtual ~WareSignature()
@@ -185,6 +180,25 @@ class DLLEXPORT WareSignature
     {
       ABIVersion = Version;
     }
+
+
+    std::string getAuthorsAsString() const
+    {
+      std::string Str = "";
+
+      for (openfluid::ware::WareSignature::AuthorsList_t::const_iterator it = Authors.begin(); it != Authors.end();++it)
+      {
+        if (it != Authors.begin())
+          Str+= ", ";
+
+        Str += openfluid::tools::ReplaceEmptyString((*it).first,("(unknown author)"));
+        Str += " <";
+        Str += openfluid::tools::ReplaceEmptyString((*it).second,("(unknown author email)"));
+        Str += ">";
+      }
+      return Str;
+    }
+
 
 };
 

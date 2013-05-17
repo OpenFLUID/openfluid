@@ -92,18 +92,17 @@ DEFINE_SIMULATOR_CLASS(OFEFunc2DocSimulator)
 
 BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
 
-  DECLARE_SIGNATURE_NAME("test simulator for ofefunc2doc");
-  DECLARE_SIGNATURE_DESCRIPTION("This function is a test for the ofefunc2doc doc extraction tool. Do not use it in a model.");
+  DECLARE_NAME("test simulator for ofefunc2doc");
+  DECLARE_DESCRIPTION("This function is a test for the ofefunc2doc doc extraction tool. Do not use it in a model.");
 
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::BETA);
+  DECLARE_VERSION("1.0");
+  DECLARE_SDKVERSION;
+  DECLARE_STATUS(openfluid::ware::BETA);
 
-  DECLARE_SIGNATURE_DOMAIN("Test");
-  DECLARE_SIGNATURE_PROCESS("No process");
-  DECLARE_SIGNATURE_METHOD("No method");
-  DECLARE_SIGNATURE_AUTHORNAME("JC Fabre");
-  DECLARE_SIGNATURE_AUTHOREMAIL("fabrejc@supagro.inra.fr");
+  DECLARE_DOMAIN("Test");
+  DECLARE_PROCESS("No process");
+  DECLARE_METHOD("No method");
+  DECLARE_AUTHOR("JC Fabre","fabrejc@supagro.inra.fr");
 
   DECLARE_SIMULATOR_PARAM("testparam","a param just for test","kg/m3")
   DECLARE_SIMULATOR_PARAM("dummy_param","a dummy param just for test","snail/m2")

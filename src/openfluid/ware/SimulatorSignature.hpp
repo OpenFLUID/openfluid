@@ -94,17 +94,17 @@
 /**
   Macro for declaration of the simulator application domain
 */
-#define DECLARE_SIGNATURE_DOMAIN(domain) Signature->Domain = domain;
+#define DECLARE_DOMAIN(domain) Signature->Domain = domain;
 
 /**
   Macro for declaration of the simulator application processes
 */
-#define DECLARE_SIGNATURE_PROCESS(process) Signature->Process = process;
+#define DECLARE_PROCESS(process) Signature->Process = process;
 
 /**
   Macro for declaration of the simulator application numerical method
 */
-#define DECLARE_SIGNATURE_METHOD(method) Signature->Method = method;
+#define DECLARE_METHOD(method) Signature->Method = method;
 
 
 // =====================================================================

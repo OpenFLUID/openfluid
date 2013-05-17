@@ -70,11 +70,11 @@ DECLARE_OBSERVER_PLUGIN
 
 BEGIN_OBSERVER_SIGNATURE("tests.empty")
 
-  DECLARE_SIGNATURE_NAME("empty observer for tests");
-  DECLARE_SIGNATURE_DESCRIPTION("This observer is empty and do nothing at all.");
+  DECLARE_NAME("empty observer for tests");
+  DECLARE_DESCRIPTION("This observer is empty and do nothing at all.");
 
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_VERSION("1.0");
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
 END_SIMULATOR_SIGNATURE
 

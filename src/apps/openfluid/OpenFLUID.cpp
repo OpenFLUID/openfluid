@@ -225,8 +225,7 @@ void OpenFLUIDApp::printWareInfosReport(const openfluid::ware::WareSignature* Si
   std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(Signature->Version,("(unknown)")) << std::endl;
   std::cout << "   - SDK version used at build time: " << Signature->ABIVersion <<  std::endl;
   std::cout << "   - Development status: " << StatusStr <<  std::endl;
-  std::cout << "   - Author(s): " << openfluid::tools::ReplaceEmptyString(Signature->Author,("(unknown)")) << std::endl;
-  std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(Signature->AuthorEmail,("(unknown)")) << std::endl;
+  std::cout << "   - Author(s): " << Signature->getAuthorsAsString() << std::endl;
 }
 
 
@@ -379,8 +378,7 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
       std::cout << "   - Version: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Version,("(unknown)")) << std::endl;
       std::cout << "   - SDK version used at build time: " << PlugContainers[i]->Signature->ABIVersion <<  std::endl;
       std::cout << "   - Development status: " << StatusStr <<  std::endl;
-      std::cout << "   - Author(s): " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Author,("(unknown)")) << std::endl;
-      std::cout << "   - Author(s) email(s) : " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->AuthorEmail,("(unknown)")) << std::endl;
+      std::cout << "   - Author(s): " << PlugContainers[i]->Signature->getAuthorsAsString() << std::endl;
       std::cout << "   - Time scheduling : ";
       printSimulatorsTimeSchedulingReport(PlugContainers[i]->Signature->TimeScheduling);
       std::cout << "   - Handled data" << std::endl;
