@@ -79,11 +79,11 @@ DECLARE_OBSERVER_PLUGIN
 
 BEGIN_OBSERVER_SIGNATURE("export.vars.files.kml-anim")
 
-  DECLARE_SIGNATURE_NAME("Exports simulation variables to time indexed kml files for animation");
+  DECLARE_NAME("Exports simulation variables to time indexed kml files for animation");
   // TODO complete description with parameters usage
-  DECLARE_SIGNATURE_DESCRIPTION("");
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_DESCRIPTION("");
+  DECLARE_VERSION("1.0");
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
 END_SIMULATOR_SIGNATURE
 

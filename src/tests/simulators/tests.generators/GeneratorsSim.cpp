@@ -69,18 +69,18 @@ DECLARE_SIMULATOR_PLUGIN
 
 BEGIN_SIMULATOR_SIGNATURE("tests.generators")
 
-  DECLARE_SIGNATURE_NAME("test simulator for generators");
-  DECLARE_SIGNATURE_DESCRIPTION("");
+  DECLARE_NAME("test simulator for generators");
+  DECLARE_DESCRIPTION("");
 
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_VERSION("1.0");
+  DECLARE_SDKVERSION;
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN("");
-  DECLARE_SIGNATURE_PROCESS("");
-  DECLARE_SIGNATURE_METHOD("");
-  DECLARE_SIGNATURE_AUTHORNAME("");
-  DECLARE_SIGNATURE_AUTHOREMAIL("");
+  DECLARE_DOMAIN("");
+  DECLARE_PROCESS("");
+  DECLARE_METHOD("");
+  DECLARE_AUTHOR("","");
+
 
   DECLARE_REQUIRED_VAR("tests.fixed[double]","TestUnits","fixed value from generators for tests","");
   DECLARE_REQUIRED_VAR("tests.random[double]","TestUnits","random value from generators for tests","");

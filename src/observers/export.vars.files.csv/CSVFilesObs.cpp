@@ -163,8 +163,8 @@ DECLARE_OBSERVER_PLUGIN
 
 
 BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
-  DECLARE_SIGNATURE_NAME("Exports simulation variables to CSV files");
-  DECLARE_SIGNATURE_DESCRIPTION("This observer exports variables to CSV files\n"
+  DECLARE_NAME("Exports simulation variables to CSV files");
+  DECLARE_DESCRIPTION("This observer exports variables to CSV files\n"
       "Parameters can be\n"
       "  format.<formatname>.date : the date format using the standard C date format\n"
       "  format.<formatname>.commentchar : the character for comment lines\n"
@@ -175,8 +175,8 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
       "  set.<setname>.vars : the variable included in the set, separated by semicolons. Use * to include all variables\n"
       "  set.<setname>.format : the <formatname> used, must be defined by a format parameter");
 
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_VERSION("1.0");
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
 END_SIMULATOR_SIGNATURE
 

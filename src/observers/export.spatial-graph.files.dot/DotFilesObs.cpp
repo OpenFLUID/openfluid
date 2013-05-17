@@ -74,16 +74,16 @@ DECLARE_OBSERVER_PLUGIN
 
 
 BEGIN_OBSERVER_SIGNATURE("export.spatial-graph.files.dot")
-  DECLARE_SIGNATURE_NAME("Exports spatial graph to Dot files");
-  DECLARE_SIGNATURE_DESCRIPTION("This observer exports spatial domain graph to Dot files and can be post-processed with GraphViz\n"
+  DECLARE_NAME("Exports spatial graph to Dot files");
+  DECLARE_DESCRIPTION("This observer exports spatial domain graph to Dot files and can be post-processed with GraphViz\n"
       "Parameters can be\n"
       "  title : the main title of the graph\n"
       "  when.init : set to 1 to export the graph at initialization time\n"
       "  when.everytime : set to 1 to export the graph at every simulation time point\n"
       "  when.final : set to 1 to export the graph at finalization time\n"
       "  style.<unitclass>.<attribute> : the value of a Dot attribute for all nodes of a unit class\n");
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_VERSION("1.0");
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 END_SIMULATOR_SIGNATURE
 
 

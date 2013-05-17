@@ -69,18 +69,18 @@ DECLARE_SIMULATOR_PLUGIN
 
 BEGIN_SIMULATOR_SIGNATURE("tests.wrongprod")
 
-  DECLARE_SIGNATURE_NAME("test simulator for wrong production");
-  DECLARE_SIGNATURE_DESCRIPTION("");
+  DECLARE_NAME("test simulator for wrong production");
+  DECLARE_DESCRIPTION("");
 
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_VERSION("1.0");
+  DECLARE_SDKVERSION;
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN("");
-  DECLARE_SIGNATURE_PROCESS("");
-  DECLARE_SIGNATURE_METHOD("");
-  DECLARE_SIGNATURE_AUTHORNAME("");
-  DECLARE_SIGNATURE_AUTHOREMAIL("");
+  DECLARE_DOMAIN("");
+  DECLARE_PROCESS("");
+  DECLARE_METHOD("");
+  DECLARE_AUTHOR("","");
+
 
   DECLARE_PRODUCED_VAR("tests.wrongvector[vector]","TestUnits","wrong vector for tests","");
   DECLARE_PRODUCED_VAR("tests.wrongscalar[double]","TestUnits","wrong scalar for tests","");

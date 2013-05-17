@@ -66,18 +66,18 @@ DECLARE_SIMULATOR_PLUGIN
 
 BEGIN_SIMULATOR_SIGNATURE("tests.primitives.time")
 
-  DECLARE_SIGNATURE_NAME("");
-  DECLARE_SIGNATURE_DESCRIPTION("");
+  DECLARE_NAME("");
+  DECLARE_DESCRIPTION("");
 
-  DECLARE_SIGNATURE_VERSION("1.0");
-  DECLARE_SIGNATURE_SDKVERSION;
-  DECLARE_SIGNATURE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_VERSION("1.0");
+  DECLARE_SDKVERSION;
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_SIGNATURE_DOMAIN("");
-  DECLARE_SIGNATURE_PROCESS("");
-  DECLARE_SIGNATURE_METHOD("");
-  DECLARE_SIGNATURE_AUTHORNAME("");
-  DECLARE_SIGNATURE_AUTHOREMAIL("");
+  DECLARE_DOMAIN("");
+  DECLARE_PROCESS("");
+  DECLARE_METHOD("");
+  DECLARE_AUTHOR("","");
+
 
   DECLARE_SCHEDULING_DEFAULT();
 
@@ -146,6 +146,9 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
       if (OPENFLUID_GetDefaultDeltaT() != 3600)
         OPENFLUID_RaiseError("tests.primitives.time","prepareData()","wrong default deltaT");
 
+      if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+        OPENFLUID_RaiseError("tests.primitives.time","prepareData()","scheduling constraint");
+
     }
 
 
@@ -171,6 +174,9 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       if (OPENFLUID_GetCurrentDate() != OPENFLUID_GetBeginDate())
         OPENFLUID_RaiseError("tests.primitives.time","initializeRun()","wrong current date");
+
+      if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+        OPENFLUID_RaiseError("tests.primitives.time","initializeRun()","scheduling constraint");
 
       return DefaultDeltaT();
     }
@@ -209,6 +215,8 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
       if (OPENFLUID_GetCurrentDate() != (OPENFLUID_GetBeginDate()+OPENFLUID_GetCurrentTimeIndex()))
         OPENFLUID_RaiseError("tests.primitives.time","runStep()","wrong current date");
 
+      if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+        OPENFLUID_RaiseError("tests.primitives.time","runStep()","scheduling constraint");
 
       return Duration(47);
     }
