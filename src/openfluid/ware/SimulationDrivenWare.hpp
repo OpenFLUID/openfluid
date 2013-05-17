@@ -108,6 +108,8 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
     openfluid::base::SimulationStatus::SimulationStage OPENFLUID_GetCurrentStage() const;
 
+    openfluid::base::SimulationStatus::SchedulingConstraint OPENFLUID_GetSchedulingConstraint() const;
+
 
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation

@@ -185,6 +185,19 @@ openfluid::base::SimulationStatus::SimulationStage SimulationDrivenWare::OPENFLU
 // =====================================================================
 
 
+openfluid::base::SimulationStatus::SchedulingConstraint SimulationDrivenWare::OPENFLUID_GetSchedulingConstraint() const
+{
+  if (mp_SimStatus == NULL)
+    throw openfluid::base::OFException("OpenFLUID framework","SimulationDrivenWare::OPENFLUID_GetSchedulingConstraint()","Simulation status is not set");
+
+  return mp_SimStatus->getSchedulingConstraint();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulationDrivenWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Msg)
 {
   if (mp_SimStatus == NULL || mp_SimLogger == NULL)

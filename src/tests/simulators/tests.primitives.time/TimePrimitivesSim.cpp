@@ -146,6 +146,9 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
       if (OPENFLUID_GetDefaultDeltaT() != 3600)
         OPENFLUID_RaiseError("tests.primitives.time","prepareData()","wrong default deltaT");
 
+      if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+        OPENFLUID_RaiseError("tests.primitives.time","prepareData()","scheduling constraint");
+
     }
 
 
@@ -171,6 +174,9 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       if (OPENFLUID_GetCurrentDate() != OPENFLUID_GetBeginDate())
         OPENFLUID_RaiseError("tests.primitives.time","initializeRun()","wrong current date");
+
+      if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+        OPENFLUID_RaiseError("tests.primitives.time","initializeRun()","scheduling constraint");
 
       return DefaultDeltaT();
     }
@@ -209,6 +215,8 @@ class TimePrimitivesSimulator : public openfluid::ware::PluggableSimulator
       if (OPENFLUID_GetCurrentDate() != (OPENFLUID_GetBeginDate()+OPENFLUID_GetCurrentTimeIndex()))
         OPENFLUID_RaiseError("tests.primitives.time","runStep()","wrong current date");
 
+      if (OPENFLUID_GetSchedulingConstraint() != openfluid::base::SimulationStatus::SCHED_NONE)
+        OPENFLUID_RaiseError("tests.primitives.time","runStep()","scheduling constraint");
 
       return Duration(47);
     }
