@@ -240,13 +240,13 @@
 /**
   Macro for declaration of time scheduling as undefined
 */
-#define DECLARE_SCHEDULING_UNDEFINED() \
+#define DECLARE_SCHEDULING_UNDEFINED \
   Signature->TimeScheduling.setAsUndefined();
 
 /**
   Macro for declaration of time scheduling as default delta T
 */
-#define DECLARE_SCHEDULING_DEFAULT() \
+#define DECLARE_SCHEDULING_DEFAULT \
   Signature->TimeScheduling.setAsDefaultDeltaT();
 
 /**

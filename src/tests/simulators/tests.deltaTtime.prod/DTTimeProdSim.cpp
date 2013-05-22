@@ -89,7 +89,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.deltaTtime.prod")
   DECLARE_PRODUCED_VAR("tests.vector.dt","TestUnits","vector for tests","");
   DECLARE_PRODUCED_VAR("tests.matrix.dt","TestUnits","matrix for tests","");
 
-  DECLARE_SCHEDULING_DEFAULT();
+  DECLARE_SCHEDULING_DEFAULT;
 
 END_SIMULATOR_SIGNATURE
 
