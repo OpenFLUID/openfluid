@@ -86,7 +86,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.wrongprod")
   DECLARE_PRODUCED_VAR("tests.wrongscalar[double]","TestUnits","wrong scalar for tests","");
   DECLARE_PRODUCED_VAR("tests.scalarok[double]","TestUnits","scalar OK for tests","");
 
-  DECLARE_SCHEDULING_DEFAULT();
+  DECLARE_SCHEDULING_DEFAULT;
 
 END_SIMULATOR_SIGNATURE
 

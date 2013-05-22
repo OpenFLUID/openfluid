@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // ----------------------------------------------------------
 
-  DECLARE_SCHEDULING_DEFAULT();
+  DECLARE_SCHEDULING_DEFAULT;
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::DEFAULT);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,0);
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,51);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,51);
 
-  DECLARE_SCHEDULING_UNDEFINED();
+  DECLARE_SCHEDULING_UNDEFINED;
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Type,openfluid::ware::SignatureTimeScheduling::UNDEFINED);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Min,0);
   BOOST_REQUIRE_EQUAL(Signature->TimeScheduling.Max,0);
