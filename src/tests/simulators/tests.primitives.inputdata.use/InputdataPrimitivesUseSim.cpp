@@ -157,7 +157,35 @@ class InputdataPrimitivesUseSimulator : public openfluid::ware::PluggableSimulat
     // =====================================================================
 
 
-    void prepareData() { }
+    void prepareData()
+    {
+      openfluid::core::Unit* TU;
+
+      openfluid::core::DoubleValue VarDoubleVal;
+      openfluid::core::VectorValue VarVectorVal;
+
+      OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
+      {
+        if (!OPENFLUID_IsInputDataExist(TU,"indataDouble"))
+          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataDouble)");
+
+        if (!OPENFLUID_IsInputDataExist(TU,"indataVector"))
+          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_IsInputDataExist (indataDouble)");
+
+        VarDoubleVal.set(0.0);
+        OPENFLUID_GetInputData(TU,"indataDouble",VarDoubleVal);
+        if (!openfluid::tools::IsVeryClose(VarDoubleVal.get(),1.1))
+          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with DoubleValue by reference");
+
+        VarVectorVal.clear();
+        OPENFLUID_GetInputData(TU,"indataDouble",VarVectorVal);
+        if (VarVectorVal.size() != 1)
+          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrong size) get with VectorValue");
+        if (!openfluid::tools::IsVeryClose(VarVectorVal[0],1.1))
+          OPENFLUID_RaiseError("tests.primitivesvalues.use","incorrect OPENFLUID_GetInputData (indataDouble wrongvalue) get with VectorValue");
+      }
+
+    }
 
 
     // =====================================================================

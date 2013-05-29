@@ -138,11 +138,6 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
    // openfluid::core::CoreRepository* mp_InternalCoreData;
 
 
-    /**
-      Simulator parameters
-    */
-    //openfluid::ware::WareParams_t m_ParamsMap;
-
     unsigned int m_MaxThreads;
 
 

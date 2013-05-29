@@ -173,6 +173,10 @@ class DLLEXPORT PluggableWare
     */
     bool OPENFLUID_GetRunEnvironment(std::string Key, bool& Val);
 
+    /**
+      Returns the ID of the ware (itself)
+      @return the ID
+    */
     WareID_t OPENFLUID_GetWareID() const { return m_WareID; };
 
     openfluid::base::StdoutAndFileOutputStream OPENFLUID_Logger;
