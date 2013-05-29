@@ -1,0 +1,61 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <monitoring>
+    
+    <observer ID="export.vars.plot.gnuplot">
+      <param name="serie.s1.var" value="tests.double.dt" />
+      <param name="serie.s1.unitclass" value="TestUnits" />
+      <param name="serie.s1.unitID" value="1" />
+      <param name="serie.s1.label" value="a double" />
+      <param name="serie.s1.style" value="line" />
+            
+      <param name="serie.s2.var" value="tests.double" />
+      <param name="serie.s2.style" value="dot" />
+      <param name="serie.s2.unitclass" value="TestUnits" />
+      <param name="serie.s2.unitID" value="1" />
+      
+      
+      <param name="serie.s3.sourcefile" value="measured.dat" />
+      <param name="serie.s3.label" value="measured values" /> 
+      <param name="serie.s3.style" value="linespoints" />
+   
+      <param name="serie.s4.var" value="tests.random" />
+      <param name="serie.s4.label" value="random (TU#4)" />
+      <param name="serie.s4.unitclass" value="TestUnits" />
+      <param name="serie.s4.unitID" value="4" />
+      
+      <param name="serie.s5.var" value="tests.random" />
+      <param name="serie.s5.label" value="random (TU#5)" />
+      <param name="serie.s5.unitclass" value="TestUnits" />
+      <param name="serie.s5.unitID" value="5" />
+
+                    
+      <param name="graph.g1.series" value="s1;s2;s3" />  
+      <param name="graph.g1.key" value="default" />
+      <param name="graph.g1.ylabel" value="values (xx.yy-1)" />
+      
+      <param name="graph.g2.title" value="another graph" />
+      <param name="graph.g2.key" value="outside" />
+      <param name="graph.g2.series" value="s3;s4" />
+      
+      <param name="graph.g3.title" value="another another graph" />  
+      <param name="graph.g3.series" value="s1;s4" />
+      <!--<param name="graph.g3.key" value="off" />-->
+      
+      
+      <param name="graph.g4.title" value="4 vs 5" />  
+      <param name="graph.g4.series" value="s4;s5" />
+            
+
+      <!-- <param name="terminal" value="wxt size 1280,1024" />--> 
+      <param name="terminal" value="pdfcairo size 11.7,8.3" />
+      <param name="output" value="test.pdf" />
+      
+      <param name="persistent" value="0" />      
+      <param name="tryopengnuplot" value="1" />
+      
+    </observer>
+    
+    
+  </monitoring>
+</openfluid>
