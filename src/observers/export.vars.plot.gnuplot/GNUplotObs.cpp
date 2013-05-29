@@ -1,0 +1,498 @@
+/*
+  This file is part of OpenFLUID software
+  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+
+
+ == GNU General Public License Usage ==
+
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
+
+  In addition, as a special exception, INRA gives You the additional right
+  to dynamically link the code of OpenFLUID with code not covered
+  under the GNU General Public License ("Non-GPL Code") and to distribute
+  linked combinations including the two, subject to the limitations in this
+  paragraph. Non-GPL Code permitted under this exception must only link to
+  the code of OpenFLUID dynamically through the OpenFLUID libraries
+  interfaces, and only for building OpenFLUID plugins. The files of
+  Non-GPL Code may be link to the OpenFLUID libraries without causing the
+  resulting work to be covered by the GNU General Public License. You must
+  obey the GNU General Public License in all respects for all of the
+  OpenFLUID code and other code used in conjunction with OpenFLUID
+  except the Non-GPL Code covered by this exception. If you modify
+  this OpenFLUID, you may extend this exception to your version of the file,
+  but you are not obligated to do so. If you do not wish to provide this
+  exception without modification, you must delete this exception statement
+  from your version and license this OpenFLUID solely under the GPL without
+  exception.
+
+
+ == Other Usage ==
+
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
+*/
+
+
+/**
+  \file GNUplotGraphObs.cpp
+  \brief Implements ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
+
+
+#include <boost/foreach.hpp>
+#include <glibmm/fileutils.h>
+#include <glibmm/spawn.h>
+
+
+#include <openfluid/ware/PluggableObserver.hpp>
+#include <openfluid/tools/SwissTools.hpp>
+
+// =====================================================================
+// =====================================================================
+
+
+DECLARE_OBSERVER_PLUGIN
+
+
+// =====================================================================
+// =====================================================================
+
+
+BEGIN_OBSERVER_SIGNATURE("export.vars.plot.gnuplot")
+
+  DECLARE_NAME("");
+  DECLARE_DESCRIPTION("");
+
+  DECLARE_VERSION("1.0");
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
+
+END_SIMULATOR_SIGNATURE
+
+
+// =====================================================================
+// =====================================================================
+
+class SerieInfo
+{
+  public:
+
+    enum SerieType {SERIE_UNKNOWN, SERIE_VAR, SERIE_FILE};
+
+    SerieType Type;
+
+    std::string SourceFile;
+
+    std::ofstream* FileHandle;
+
+    openfluid::core::VariableName_t VarName;
+
+    openfluid::core::UnitClass_t UnitClass;
+
+    openfluid::core::UnitID_t UnitID;
+
+    openfluid::core::Unit* Unit;
+
+    std::string Label;
+
+    std::string Style;
+
+    std::string Color;
+
+    SerieInfo() : Type(SERIE_UNKNOWN),
+        SourceFile(""), VarName(""), UnitClass(""), UnitID(1), Unit(NULL),
+        Label(""), Style("line"), Color("")
+    { }
+
+};
+
+
+class GraphInfo
+{
+  public:
+
+    std::string Title;
+
+    std::string Key;
+
+    std::string YLabel;
+
+    std::list<SerieInfo*> Series;
+
+    GraphInfo() : Title(""), Key("default"), YLabel("")
+    { }
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class GNUplotObserver : public openfluid::ware::PluggableObserver
+{
+  private:
+
+    std::map<std::string, SerieInfo> m_Series;
+
+    std::map<std::string,GraphInfo> m_Graphs;
+
+    std::string m_OutputDir;
+    std::string m_InputDir;
+
+    bool m_TryOpenGNUplot;
+
+    bool m_Persistent;
+
+    std::string m_Terminal;
+    std::string m_Output;
+
+
+  public:
+
+    GNUplotObserver() : PluggableObserver(), m_OutputDir(""),
+      m_TryOpenGNUplot(false), m_Persistent(false), m_Terminal(""), m_Output("")
+    {
+
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+
+    ~GNUplotObserver()
+    {
+      CloseFiles();
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void initParams(const openfluid::ware::WareParams_t& Params)
+    {
+      boost::property_tree::ptree ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+
+      m_TryOpenGNUplot = ParamsPT.get<bool>("tryopengnuplot",m_TryOpenGNUplot);
+      m_Persistent = ParamsPT.get<bool>("persistent",m_Persistent);
+      m_Terminal = ParamsPT.get("terminal",m_Terminal);
+      m_Output = ParamsPT.get("output",m_Output);
+
+      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("serie"))
+      {
+        std::string SerieID = v.first;
+
+        SerieInfo SInfo;
+        SInfo.VarName = ParamsPT.get("serie."+SerieID+".var","");
+        SInfo.UnitClass = ParamsPT.get("serie."+SerieID+".unitclass","");
+        std::string UnitIDStr = ParamsPT.get("serie."+SerieID+".unitID","");
+        SInfo.SourceFile = ParamsPT.get("serie."+SerieID+".sourcefile","");
+        SInfo.Label = ParamsPT.get("serie."+SerieID+".label","");
+        SInfo.Style = ParamsPT.get("serie."+SerieID+".style","line");
+        SInfo.Color = ParamsPT.get("serie."+SerieID+".color","");
+
+        if (!SInfo.VarName.empty() && !SInfo.UnitClass.empty() && openfluid::tools::ConvertString(UnitIDStr,&SInfo.UnitID))
+        {
+          openfluid::core::Unit* TmpU;
+          TmpU = mp_CoreData->getUnit(SInfo.UnitClass,SInfo.UnitID);
+          if (TmpU != NULL)
+          {
+            SInfo.Type = SerieInfo::SERIE_VAR;
+            SInfo.Unit = TmpU;
+            SInfo.SourceFile = SerieID + "_data.gnuplot";
+          }
+        }
+        else if (!SInfo.SourceFile.empty())
+          SInfo.Type = SerieInfo::SERIE_FILE;
+
+        if (SInfo.Type!=SerieInfo::SERIE_UNKNOWN) m_Series[SerieID] = SInfo;
+        else OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"GNUplotObserver::initParams()","Serie " + SerieID + "ignored");
+
+      }
+
+
+      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("graph"))
+      {
+        std::string GraphID = v.first;
+
+         GraphInfo GInfo;
+
+         GInfo.Title = ParamsPT.get("graph."+GraphID+".title",v.first);
+         GInfo.Key = ParamsPT.get("graph."+GraphID+".key","default");
+         GInfo.YLabel = ParamsPT.get("graph."+GraphID+".ylabel","");
+
+         std::vector<std::string> SeriesStr = openfluid::tools::SplitString(ParamsPT.get("graph."+GraphID+".series",""),";",false);
+
+         for (std::vector<std::string>::const_iterator it = SeriesStr.begin();it != SeriesStr.end();++it)
+         {
+           if (m_Series.find(*it) != m_Series.end())
+             GInfo.Series.push_back(&(m_Series[*it]));
+         }
+
+         if (!GInfo.Series.empty())
+           m_Graphs[v.first] = GInfo;
+         else
+           OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"GNUplotObserver::initParams()","Graph " + v.first + "ignored");
+      }
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void WriteDataToFiles()
+    {
+      std::map<std::string, SerieInfo>::iterator Sit;
+      std::map<std::string, SerieInfo>::iterator Sitb = m_Series.begin();
+      std::map<std::string, SerieInfo>::iterator Site = m_Series.end();
+
+      for (Sit = Sitb; Sit != Site; ++Sit)
+      {
+        if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
+        {
+          openfluid::core::Value* Val = (*Sit).second.Unit->getVariables()->getCurrentValueIfIndex((*Sit).second.VarName,OPENFLUID_GetCurrentTimeIndex());
+
+          if (Val!= NULL)
+          {
+            *((*Sit).second.FileHandle) << OPENFLUID_GetCurrentDate().getAsString("%Y-%m-%dT%H:%M:%S");
+            *((*Sit).second.FileHandle) << " ";
+            if (Val->isSimple() && !Val->isStringValue())
+              Val->writeToStream(*((*Sit).second.FileHandle));
+            else
+              *((*Sit).second.FileHandle) << "NaN";
+            *((*Sit).second.FileHandle) << "\n";
+          }
+        }
+      }
+    }
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void CloseFiles()
+    {
+      std::map<std::string, SerieInfo>::iterator Sit;
+      std::map<std::string, SerieInfo>::iterator Sitb = m_Series.begin();
+      std::map<std::string, SerieInfo>::iterator Site = m_Series.end();
+
+      for (Sit = Sitb; Sit != Site; ++Sit)
+      {
+        if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
+        {
+          (*Sit).second.FileHandle->close();
+        }
+      }
+
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void onPrepared()
+    {
+      OPENFLUID_GetRunEnvironment("dir.output",m_OutputDir);
+      OPENFLUID_GetRunEnvironment("dir.input",m_InputDir);
+
+      std::map<std::string, SerieInfo>::iterator Sit;
+      std::map<std::string, SerieInfo>::iterator Sitb = m_Series.begin();
+      std::map<std::string, SerieInfo>::iterator Site = m_Series.end();
+
+      for (Sit = Sitb; Sit != Site; ++Sit)
+      {
+        if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
+        {
+          (*Sit).second.FileHandle = new std::ofstream(std::string(m_OutputDir+"/"+(*Sit).second.SourceFile).c_str());
+        }
+      }
+
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void onInitializedRun()
+    {
+      WriteDataToFiles();
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void onStepCompleted()
+    {
+      WriteDataToFiles();
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void tryOpenGNUplot()
+    {
+      if (m_TryOpenGNUplot)
+      {
+        // search for Google Earth (google-earth)
+        std::string GNUplotProgram = "";
+
+#if defined __unix__ || defined __APPLE__
+        GNUplotProgram = "gnuplot";
+#endif
+
+#if WIN32
+        // TODO check for win32
+        GNUplotProgram = "wgnuplot";
+#endif
+
+
+        std::vector<std::string> GNUplotPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(GNUplotProgram);
+
+        if (!GNUplotPaths.empty())
+        {
+          std::string PersistOption = " ";
+          if (m_Persistent) PersistOption = " -persist ";
+
+          std::string GNUPlotCommand = boost::filesystem::path(GNUplotPaths[0]).string()+PersistOption+boost::filesystem::path(m_OutputDir + "/script.gnuplot").string();
+          Glib::spawn_command_line_async(GNUPlotCommand);
+        }
+        else
+        {
+          OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"GNUplotObserver::tryOpenGNUplot()",
+                                 "Cannot find GNUplot");
+          return;
+        }
+      }
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
+    void onFinalizedRun()
+    {
+      CloseFiles();
+
+      std::ofstream ScriptFile(std::string(m_OutputDir+"/script.gnuplot").c_str());
+
+      if (!m_Terminal.empty())
+      {
+        ScriptFile << "set terminal " << m_Terminal << "\n";
+        if (!m_Output.empty())
+          ScriptFile << "set output \"" << m_OutputDir << "/" << m_Output << "\"\n";
+      }
+
+      ScriptFile << "set xtics rotate font \",5\"\n";
+      ScriptFile << "set ytics font \",7\"\n";
+      ScriptFile << "set xdata time\n";
+      ScriptFile << "set timefmt \"%Y-%m-%dT%H:%M:%S\"\n";
+      ScriptFile << "set datafile separator \" \"\n";
+      ScriptFile << "set datafile commentschars \"#\"\n";
+      ScriptFile << "set format x \"%Y-%m-%d\\n%H:%M:%S\"\n";
+      ScriptFile << "set datafile missing \"NaN\"\n";
+      ScriptFile << "set xlabel \"Time\"\n";
+
+      unsigned int Columns = 1;
+      unsigned int Rows = 1;
+
+      if (m_Graphs.size() > 1)
+      {
+        Columns = (unsigned int)(std::ceil(std::sqrt(m_Graphs.size())));
+        Rows = (unsigned int)(std::ceil(m_Graphs.size() / Columns));
+
+        if (Columns*Rows < m_Graphs.size()) Rows++;
+      }
+
+      ScriptFile << "set multiplot layout " << Rows << "," << Columns << " rowsfirst scale 1,1\n";
+
+      std::map<std::string,GraphInfo>::iterator Git;
+      std::map<std::string,GraphInfo>::iterator Gitb = m_Graphs.begin();
+      std::map<std::string,GraphInfo>::iterator Gite = m_Graphs.end();
+
+
+
+      for (Git = Gitb; Git != Gite; ++Git)
+      {
+
+        ScriptFile << "set title \"" << (*Git).second.Title << "\" font \",10\"\n";
+        ScriptFile << "set key " << (*Git).second.Key << "\n";
+
+        if ((*Git).second.YLabel.empty())
+          ScriptFile << "unset ylabel\n";
+        else
+          ScriptFile << "set ylabel \"" << (*Git).second.YLabel << "\"\n";
+
+        ScriptFile << "plot ";
+
+        std::list<SerieInfo*>::iterator Sit;
+        std::list<SerieInfo*>::iterator Sitb = (*Git).second.Series.begin();
+        std::list<SerieInfo*>::iterator Site = (*Git).second.Series.end();
+
+        for (Sit = Sitb; Sit != Site; ++Sit)
+        {
+          std::string SourceDir = m_OutputDir;
+          if ((*Sit)->Type == SerieInfo::SERIE_FILE) SourceDir = m_InputDir;
+
+          std::string Label = (*Sit)->Label;
+          if (Label.empty())
+          {
+            if ((*Sit)->Type == SerieInfo::SERIE_FILE) Label = (*Sit)->SourceFile;
+            else
+            {
+              std::string UnitIDStr;
+              openfluid::tools::ConvertValue((*Sit)->UnitID,&UnitIDStr);
+              Label= (*Sit)->VarName + " (" + (*Sit)->UnitClass + "#" + UnitIDStr + ")";
+            }
+          }
+
+
+          if (Sit != Sitb) ScriptFile << ", ";
+
+          ScriptFile << "\"" << SourceDir << "/" << (*Sit)->SourceFile
+                     << "\" using 1:2 with " << (*Sit)->Style << " title \"" << Label << "\"";
+        }
+
+        ScriptFile << "\n";
+
+      }
+
+      ScriptFile << "unset multiplot\n";
+
+      ScriptFile.close();
+
+      tryOpenGNUplot();
+    }
+
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+DEFINE_OBSERVER_CLASS(GNUplotObserver)
+

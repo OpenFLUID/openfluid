@@ -18,4 +18,6 @@ ADD_DEFINITIONS(-DTRILIBRARY)
 ENABLE_LANGUAGE(C)
 OPNFLD_ADD_OBSERVER_WITH_INSTALL(export.vars.files.vtk export.vars.files.vtk ${OBSERVERS_OUTPUT_PATH})
 
+OPNFLD_ADD_OBSERVER_WITH_INSTALL(export.vars.plot.gnuplot export.vars.plot.gnuplot ${OBSERVERS_OUTPUT_PATH})
+
                             

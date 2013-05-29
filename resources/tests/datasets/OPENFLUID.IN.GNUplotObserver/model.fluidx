@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+
+      <generator varname="tests.random" unitclass="TestUnits" method="random">
+        <param name="min" value="20.53" />
+        <param name="max" value="50" />
+      </generator>
+ 
+
+      <simulator ID="tests.deltaTtime.prod" />
+   
+      <simulator ID="tests.variabletime.prod">
+        <param name="usedefaultdeltat" value="0" />
+      </simulator>       
+          
+    
+  </model>
+</openfluid>
