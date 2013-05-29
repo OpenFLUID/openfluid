@@ -92,24 +92,60 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
     virtual bool isLinked() const { return (PluggableWare::isLinked() && mp_SimStatus != NULL); };
 
+    /**
+      Returns the real beginning date of the simulated period
+      @return the date
+    */
     openfluid::core::DateTime OPENFLUID_GetBeginDate() const;
 
+    /**
+      Returns the real ending date of the simulated period
+      @return the date
+    */
     openfluid::core::DateTime OPENFLUID_GetEndDate() const;
 
+    /**
+      Returns the current real date corresponding to the current time index
+      @return the date
+    */
     openfluid::core::DateTime OPENFLUID_GetCurrentDate() const;
 
+    /**
+      Returns the simulation duration in seconds
+      @return the duration in seconds
+    */
     openfluid::core::Duration_t OPENFLUID_GetSimulationDuration() const;
 
+    /**
+      Returns the default DeltaT used by the scheduler
+      @return the deltaT in seconds
+    */
     openfluid::core::Duration_t OPENFLUID_GetDefaultDeltaT() const;
 
+    /**
+      Returns the current time index of the simulation, in seconds since the simulation started.
+      When the simulation starts, the time index is equal to zero.
+      @return the current time index in seconds
+    */
     openfluid::core::TimeIndex_t OPENFLUID_GetCurrentTimeIndex() const;
 
+    /**
+      Returns the time index of the simulation when the plugged ware was previously run
+      @return the time index in seconds
+    */
     openfluid::core::TimeIndex_t OPENFLUID_GetPreviousRunTimeIndex() const;
 
+    /**
+      Returns the current stage of the simulation
+      @return the stage
+    */
     openfluid::base::SimulationStatus::SimulationStage OPENFLUID_GetCurrentStage() const;
 
+    /**
+      Returns the scheduling constraint applied to the simulation (may be NONE)
+      @return the constraint type
+    */
     openfluid::base::SimulationStatus::SchedulingConstraint OPENFLUID_GetSchedulingConstraint() const;
-
 
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation
