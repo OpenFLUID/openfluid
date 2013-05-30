@@ -175,7 +175,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.csv")
       "  set.<setname>.vars : the variable included in the set, separated by semicolons. Use * to include all variables\n"
       "  set.<setname>.format : the <formatname> used, must be defined by a format parameter");
 
-  DECLARE_VERSION("1.0");
+  DECLARE_VERSION(openfluid::config::FULL_VERSION);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
 END_SIMULATOR_SIGNATURE
