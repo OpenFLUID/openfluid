@@ -70,7 +70,6 @@ MACRO(OPNFLD_ADD_SIMULATOR SIM_NAME SIM_SRCDIR SIM_BINDIR)
   ENDIF(WIN32)
                                                 
   TARGET_LINK_LIBRARIES("${SIM_NAME}${OPENFLUID_SIMULATORS_SUFFIX}"
-  						${Boost_REGEX_LIBRARY}
                         openfluid-core
                         openfluid-base
                         openfluid-ware
