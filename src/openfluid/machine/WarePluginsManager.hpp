@@ -150,7 +150,7 @@ class DLLEXPORT WarePluginsManager
         }
         else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Compatibility version mismatch for plugin file " + PluginFilename);
       }
-      else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Unable to find plugin file " + PluginFilename);
+      else throw openfluid::base::OFException("OpenFLUID framework","WarePluginsManager::buildWareContainerWithSignatureOnly","Unable to load plugin from file " + PluginFilename);
 
       return Plug;
     }
