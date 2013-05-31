@@ -35,6 +35,10 @@ DECLARE_USED_VAR("examples.TLU.S.state","TLU","traffic light unit state","");
 DECLARE_PRODUCED_VAR("examples.RU.S.stock","RU","number of cars stocked on RU","");
 DECLARE_USED_INPUTDATA("stockini","RU","","-");
 DECLARE_USED_INPUTDATA("capacity","RU","","-");
+
+// Scheduling
+DECLARE_SCHEDULING_DEFAULT;
+
 END_SIMULATOR_SIGNATURE
 
 
@@ -147,7 +151,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
         if (UpTLUsList != NULL)
         {
           UpTLU = *UpTLUsList->begin();
-          OPENFLUID_GetVariable(UpTLU,("examples.TLU.S.state"),OPENFLUID_GetCurrentTimeIndex(),TLUState);
+          OPENFLUID_GetVariable(UpTLU,("examples.TLU.S.state"),TLUState);
         }
 
         if (TLUState!=true)
@@ -166,19 +170,17 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
           {
             OPENFLUID_GetInputData(RU,"capacity",Capacity);
             if(OPENFLUID_IsVariableExist(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()))
-            {
-              OPENFLUID_GetVariable(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex(),StockValue);
+              OPENFLUID_GetVariable(RU,"examples.RU.S.stock",StockValue);
 
-            }
+
             else
               OPENFLUID_GetVariable(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
 
             for(UpRUiter=UpRUsList->begin(); UpRUiter != UpRUsList->end(); UpRUiter++)
             {
 
-
               UpRU = *UpRUiter;
-              OPENFLUID_GetVariable(UpRU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex(),StockValueUp);
+              OPENFLUID_GetVariable(UpRU,"examples.RU.S.stock",StockValueUp);
               if(StockValueUp>Capacity)
               {
                 StockValue=StockValue+Capacity;
