@@ -21,6 +21,21 @@
    <param name="title" value="kml anim export"/>
    <param name="tryopengearth" value="0"/>
   </observer>
+   <observer ID="export.vars.plot.gnuplot">
+   <param name="graph.g1.key" value="default"/>
+   <param name="graph.g1.series" value="s1"/>
+   <param name="graph.g1.ylabel" value="values (xx.yy-1)"/>
+   <param name="output" value="examples.RU.S.stock.pdf"/>
+   <param name="persistent" value="0"/>
+   <param name="serie.s1.label" value="RU#11-cars-stock"/>
+   <param name="serie.s1.style" value="line"/>
+   <param name="serie.s1.unitID" value="11"/>
+   <param name="serie.s1.unitclass" value="RU"/>
+   <param name="serie.s1.var" value="examples.RU.S.stock"/>
+   <param name="terminal" value="pdfcairo size 11.7,8.3"/>
+   <param name="tryopengnuplot" value="1"/>
+  </observer>
+  
  </monitoring>
 
 
