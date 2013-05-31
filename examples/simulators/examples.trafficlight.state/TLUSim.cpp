@@ -22,7 +22,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.trafficlight.state")
   DECLARE_NAME("Traffic Light Unit (TLU) function state");
   DECLARE_DESCRIPTION("");
 
-  DECLARE_VERSION("13.05");
+  DECLARE_VERSION(openfluid::config::FULL_VERSION);
 
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 

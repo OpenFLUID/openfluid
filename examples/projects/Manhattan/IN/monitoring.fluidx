@@ -25,7 +25,7 @@
    <param name="graph.g1.key" value="default"/>
    <param name="graph.g1.series" value="s1"/>
    <param name="graph.g1.ylabel" value="values (xx.yy-1)"/>
-   <param name="output" value="examples.RU.S.stock.pdf"/>
+   <param name="output" value="examples.RU11.stock.pdf"/>
    <param name="persistent" value="0"/>
    <param name="serie.s1.label" value="RU#11-cars-stock"/>
    <param name="serie.s1.style" value="line"/>
