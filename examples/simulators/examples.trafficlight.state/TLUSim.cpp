@@ -19,27 +19,27 @@ DECLARE_SIMULATOR_PLUGIN;
 
 BEGIN_SIMULATOR_SIGNATURE("examples.trafficlight.state")
 
-  DECLARE_NAME("Traffic Light Unit (TLU) function state");
-  DECLARE_DESCRIPTION("");
+DECLARE_NAME("Traffic Light Unit (TLU) function state");
+DECLARE_DESCRIPTION("");
 
-  DECLARE_VERSION(openfluid::config::FULL_VERSION);
+DECLARE_VERSION(openfluid::config::FULL_VERSION);
 
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
+DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-  DECLARE_DOMAIN("examples");
-  DECLARE_PROCESS("");
-  DECLARE_METHOD("");
-  DECLARE_AUTHOR("Michael Rabotin","rabotin@supagro.inra.fr");
+DECLARE_DOMAIN("examples");
+DECLARE_PROCESS("");
+DECLARE_METHOD("");
+DECLARE_AUTHOR("Michael Rabotin","rabotin@supagro.inra.fr");
 
 
 
-  DECLARE_PRODUCED_VAR("examples.TLU.S.state","TLU","traffic light unit state ","");
-  DECLARE_PRODUCED_VAR("examples.TLU.T.changeTime","TLU","traffic light unit state changing time","");
-  DECLARE_REQUIRED_INPUTDATA("state","TLU","","-");
-  DECLARE_REQUIRED_INPUTDATA("duration","TLU","","-");
+DECLARE_PRODUCED_VAR("examples.TLU.S.state","TLU","traffic light unit state ","");
+DECLARE_PRODUCED_VAR("examples.TLU.T.changeTime","TLU","traffic light unit state changing time","");
+DECLARE_REQUIRED_INPUTDATA("state","TLU","","-");
+DECLARE_REQUIRED_INPUTDATA("duration","TLU","","-");
 
-  // Scheduling
-  DECLARE_SCHEDULING_DEFAULT;
+// Scheduling
+DECLARE_SCHEDULING_DEFAULT;
 
 
 END_SIMULATOR_SIGNATURE
@@ -103,7 +103,34 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
 
     void checkConsistency()
     {
+      openfluid::core::Unit * TLU;
+      openfluid::core::StringValue Period;
+      openfluid::core::IntegerValue PeriodInt;
 
+      unsigned int DeltaT;
+      int ID, Modulo;
+
+      DeltaT=OPENFLUID_GetDefaultDeltaT();
+      Modulo=0;
+
+      OPENFLUID_UNITS_ORDERED_LOOP("TLU",TLU)
+      {
+        OPENFLUID_GetInputData(TLU,"duration",Period);
+        Period.toIntegerValue(PeriodInt);
+        if(PeriodInt>DeltaT)
+          Modulo=PeriodInt%DeltaT;
+        else
+          Modulo=DeltaT%PeriodInt;
+
+        if(Modulo!=0)
+        {
+          ID = TLU->getID();
+          std::string IDStr;
+          openfluid::tools::ConvertValue(ID,&IDStr);
+          OPENFLUID_RaiseError("examples.trafficlight.state","The Duration coefficient of TLU " + IDStr + " should be compatible with the Simulation Scheduling.");
+
+        }
+      }
     }
 
 
