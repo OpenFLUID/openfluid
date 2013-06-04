@@ -316,7 +316,8 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       {
         if ((*Sit).second.Type == SerieInfo::SERIE_VAR)
         {
-          (*Sit).second.FileHandle->close();
+          if ((*Sit).second.FileHandle!=NULL && (*Sit).second.FileHandle->is_open())
+            (*Sit).second.FileHandle->close();
         }
       }
 

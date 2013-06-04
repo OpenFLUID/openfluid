@@ -592,7 +592,8 @@ class KmlFilesPlotObserver : public KmlObserverBase
         {
           if ((*it2).second.IsPlotted)
           {
-            (*it2).second.DataFile->close();
+            if ((*it2).second.DataFile!=NULL && (*it2).second.DataFile->is_open())
+              (*it2).second.DataFile->close();
             delete (*it2).second.DataFile;
           }
         }
