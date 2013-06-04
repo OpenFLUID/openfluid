@@ -70,7 +70,7 @@ namespace openfluid { namespace buddies {
 NewSimulatorBuddy::NewSimulatorBuddy(openfluid::buddies::BuddiesListener* Listener) :
                   OpenFLUIDBuddy(Listener)
 {
-  m_RequiredOptionsHelp["funcid"] = "ID of the simulator";
+  m_RequiredOptionsHelp["simid"] = "ID of the simulator";
   m_RequiredOptionsHelp["cppclass"] = "C++ class name of the simulator";
 
   m_OtherOptionsHelp["outputdir"] = "path for generated files";
@@ -115,9 +115,9 @@ void NewSimulatorBuddy::writeSimulatorCPP()
   CPPContent << " */" << std::endl;
   CPPContent << std::endl;
   CPPContent << "/*" << std::endl;
-  CPPContent << "<func2doc>" << std::endl;
+  CPPContent << "<sim2doc>" << std::endl;
   CPPContent << std::endl;
-  CPPContent << "</func2doc>" << std::endl;
+  CPPContent << "</sim2doc>" << std::endl;
   CPPContent << "*/" << std::endl;
   CPPContent << std::endl;
   CPPContent << "#include <openfluid/ware/PluggableSimulator.hpp>" << std::endl;
@@ -130,7 +130,7 @@ void NewSimulatorBuddy::writeSimulatorCPP()
   CPPContent << "DECLARE_SIMULATOR_PLUGIN" << std::endl;
   CPPContent << std::endl;
   CPPContent << std::endl;
-  CPPContent << "BEGIN_SIMULATOR_SIGNATURE(\"" << m_Options["funcid"] << "\")" << std::endl;
+  CPPContent << "BEGIN_SIMULATOR_SIGNATURE(\"" << m_Options["simid"] << "\")" << std::endl;
   CPPContent << std::endl;
   CPPContent << "  DECLARE_NAME(\"\");" << std::endl;
   CPPContent << "  DECLARE_DESCRIPTION(\"\");" << std::endl;
@@ -260,16 +260,16 @@ bool NewSimulatorBuddy::run()
 
   setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
 
-  mp_Listener->onInfo("Simulator ID: " + m_Options["funcid"]);
+  mp_Listener->onInfo("Simulator ID: " + m_Options["simid"]);
   mp_Listener->onInfo("Simulator  C++ class: " + m_Options["cppclass"]);
   mp_Listener->onInfo("Output directory: " + m_Options["outputdir"]);
-  mp_Listener->onInfo("Simulator  filename: " + m_Options["funcid"] + ".cpp");
+  mp_Listener->onInfo("Simulator  filename: " + m_Options["simid"] + ".cpp");
   mp_Listener->onInfo("Author name: " + m_Options["authorname"]);
   mp_Listener->onInfo("Author email: " + m_Options["authoremail"]);
 
   boost::filesystem::path OutputDirPath(m_Options["outputdir"]);
 
-  if (m_Options["funcid"] == "")
+  if (m_Options["simid"] == "")
       throw openfluid::base::OFException("OpenFLUID framework","NewSimulatorBuddy::run()","No simulator ID");
 
   if (m_Options["cppclass"] == "")

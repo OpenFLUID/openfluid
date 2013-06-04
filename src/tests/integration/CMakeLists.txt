@@ -373,28 +373,28 @@ SET_TESTS_PROPERTIES(integration-CMakeModuleRun PROPERTIES PASS_REGULAR_EXPRESSI
 ###########################################################################
 
 
-ADD_TEST(integration-BuddyFunc2DocHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddyhelp" "func2doc"
+ADD_TEST(integration-BuddySim2DocHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
+                              "--buddyhelp" "sim2doc"
                               )
 
 
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2Doc
+OPENFLUID_ADD_TEST(NAME integration-BuddySim2Doc
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.ofefunc2doc/OFEFunc2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc"
+                              "--buddy" "sim2doc"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.sim2doc/Sim2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/sim2doc"
                               )
   
 
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2DocPDF
+OPENFLUID_ADD_TEST(NAME integration-BuddySim2DocPDF
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.ofefunc2doc/OFEFunc2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/func2doc_tpl.tex,pdf=1"
+                              "--buddy" "sim2doc"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.sim2doc/Sim2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/sim2doc_tpl.tex,pdf=1"
                               )
 
 
@@ -403,8 +403,8 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2DocPDF
 
 OPENFLUID_ADD_TEST(NAME integration-BuddyFunc2DocPDFHTML
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "func2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.ofefunc2doc/OFEFunc2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/func2doc-PDF-HTML,pdf=1,html=1"
+                              "--buddy" "sim2doc"
+                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.sim2doc/Sim2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF-HTML,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/sim2doc_tpl.tex,pdf=1,html=1"
                               )
 
 
@@ -446,7 +446,7 @@ SET_PROPERTY(TEST integration-BuddyExamplesRunPrimitives APPEND PROPERTY DEPENDS
 
 
 ADD_TEST(integration-BuddyNewSimHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddyhelp" "newfunc"
+                              "--buddyhelp" "newsim"
                               )
 
 
@@ -459,8 +459,8 @@ CONFIGURE_FILE("${TESTS_DATASETS_PATH}/tests.buddy.newsim/CMakeLists.txt.in" "${
     
 OPENFLUID_ADD_TEST(NAME integration-BuddyNewSim
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "newfunc"
-                              "--buddyopts" "funcid=tests.buddy.newsim,cppclass=NewSimulatorUsingBuddy,outputdir=${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim,authorname=John Doe,authoremail=doe@foo.bar.org"
+                              "--buddy" "newsim"
+                              "--buddyopts" "simid=tests.buddy.newsim,cppclass=NewSimulatorUsingBuddy,outputdir=${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim,authorname=John Doe,authoremail=doe@foo.bar.org"
                              )
 
 

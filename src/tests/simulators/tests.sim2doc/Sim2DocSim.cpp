@@ -54,7 +54,7 @@
 
 
 /*
-<func2doc>
+<sim2doc>
 
 \begin{center}
 \includegraphics[scale=0.4]{doc/images/openfluid_official.png}
@@ -71,19 +71,19 @@ This is the \LaTeX -style documentation of the \funcID\ function (\funcNAME, ver
 \bibliographystyle{plain}
 \bibliography{doc/bibliography/MHYDAS_OpenFLUID}
 
-</func2doc>
+</sim2doc>
 
 */
 
 
-#include "OFEFunc2DocSim.h"
+#include "Sim2DocSim.h"
 
 
 // =====================================================================
 // =====================================================================
 
 
-DEFINE_SIMULATOR_CLASS(OFEFunc2DocSimulator)
+DEFINE_SIMULATOR_CLASS(Sim2DocSimulator)
 
 
 // =====================================================================
@@ -135,7 +135,7 @@ END_SIMULATOR_SIGNATURE
 // =====================================================================
 
 
-OFEFunc2DocSimulator::OFEFunc2DocSimulator()
+Sim2DocSimulator::Sim2DocSimulator()
                 : PluggableSimulator()
 {
 
@@ -147,7 +147,7 @@ OFEFunc2DocSimulator::OFEFunc2DocSimulator()
 // =====================================================================
 
 
-OFEFunc2DocSimulator::~OFEFunc2DocSimulator()
+Sim2DocSimulator::~Sim2DocSimulator()
 {
 
 
@@ -158,7 +158,7 @@ OFEFunc2DocSimulator::~OFEFunc2DocSimulator()
 // =====================================================================
 
 
-void OFEFunc2DocSimulator::initParams(const openfluid::ware::WareParams_t& /*Params*/)
+void Sim2DocSimulator::initParams(const openfluid::ware::WareParams_t& /*Params*/)
 {
 
 }
@@ -168,7 +168,7 @@ void OFEFunc2DocSimulator::initParams(const openfluid::ware::WareParams_t& /*Par
 // =====================================================================
 
 
-void OFEFunc2DocSimulator::prepareData()
+void Sim2DocSimulator::prepareData()
 {
 
 }
@@ -178,7 +178,7 @@ void OFEFunc2DocSimulator::prepareData()
 // =====================================================================
 
 
-void OFEFunc2DocSimulator::checkConsistency()
+void Sim2DocSimulator::checkConsistency()
 {
 
 }
@@ -188,7 +188,7 @@ void OFEFunc2DocSimulator::checkConsistency()
 // =====================================================================
 
 
-openfluid::base::SchedulingRequest OFEFunc2DocSimulator::initializeRun()
+openfluid::base::SchedulingRequest Sim2DocSimulator::initializeRun()
 {
   return DefaultDeltaT();
 }
@@ -198,7 +198,7 @@ openfluid::base::SchedulingRequest OFEFunc2DocSimulator::initializeRun()
 // =====================================================================
 
 
-openfluid::base::SchedulingRequest OFEFunc2DocSimulator::runStep()
+openfluid::base::SchedulingRequest Sim2DocSimulator::runStep()
 {
 
   return Never();
@@ -209,7 +209,7 @@ openfluid::base::SchedulingRequest OFEFunc2DocSimulator::runStep()
 // =====================================================================
 
 
-void OFEFunc2DocSimulator::finalizeRun()
+void Sim2DocSimulator::finalizeRun()
 {
 
 }

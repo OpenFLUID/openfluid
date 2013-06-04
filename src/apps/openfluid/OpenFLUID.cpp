@@ -653,20 +653,20 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       ("buddyopts",boost::program_options::value< std::string >(),"set options for specified OpenFLUID buddy")
       ("clean-output-dir,c","clean results output directory by removing existing files")
       ("observers-list,e","list available observers (do not run the simulation)")
-      ("functions-list,f","list available simulators (do not run the simulation)")
+      ("simulators-list,f","list available simulators (do not run the simulation)")
       ("help,h", "display help message")
       ("input-dir,i",boost::program_options::value< std::string >(),"set dataset input directory")
       ("enable-simulation-profiling,k","enable time profiling for simulators")
       ("observers-report,l","print a report of available observers, with details (do not run the simulation)")
       ("observers-paths,n",boost::program_options::value< std::string >(),"add extra observers search paths (colon separated)")
       ("output-dir,o",boost::program_options::value< std::string >(),"set results output directory")
-      ("functions-paths,p",boost::program_options::value< std::string >(),"add extra simulators search paths (colon separated)")
+      ("simulators-paths,p",boost::program_options::value< std::string >(),"add extra simulators search paths (colon separated)")
       ("quiet,q","quiet display during simulation run")
-      ("functions-report,r","print a report of available simulators, with details (do not run the simulation)")
+      ("simulators-report,r","print a report of available simulators, with details (do not run the simulation)")
       ("no-simreport,s","do not generate simulation report")
       ("show-paths","print the used paths (do not run the simulation)")
       ("max-threads,t",boost::program_options::value< unsigned int >(),std::string("change maximum number of threads for threaded spatial loops (default is "+DefaultMaxThreadsStr+")").c_str())
-      ("matching-functions-report,u",boost::program_options::value< std::string >(),"print a report of simulators matching the given wildcard-based pattern (do not run the simulation)")
+      ("matching-simulators-report,u",boost::program_options::value< std::string >(),"print a report of simulators matching the given wildcard-based pattern (do not run the simulation)")
       ("verbose,v","verbose display during simulation")
       ("project,w",boost::program_options::value< std::string >(),"set project directory")
       ("version","get version (do not run the simulation)")
@@ -695,8 +695,8 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
 
     openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
     openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
-    if (OptionsVars["buddyhelp"].as<std::string>() == "newfunc" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
-    if (OptionsVars["buddyhelp"].as<std::string>() == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy(BuddyObs);
+    if (OptionsVars["buddyhelp"].as<std::string>() == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
+    if (OptionsVars["buddyhelp"].as<std::string>() == "sim2doc" ) Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
@@ -735,9 +735,9 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     return;
   }
 
-  if (OptionsVars.count("functions-paths"))
+  if (OptionsVars.count("simulators-paths"))
   {
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(OptionsVars["functions-paths"].as<std::string>());
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(OptionsVars["simulators-paths"].as<std::string>());
   }
 
   if (OptionsVars.count("observers-paths"))
@@ -754,7 +754,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     return;
   }
 
-  if (OptionsVars.count("functions-list"))
+  if (OptionsVars.count("simulators-list"))
   {
     m_RunType = InfoRequest;
     printOpenFLUIDInfos();
@@ -762,7 +762,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     return;
   }
 
-  if (OptionsVars.count("functions-report"))
+  if (OptionsVars.count("simulators-report"))
   {
     m_RunType = InfoRequest;
     printSimulatorsReport("");
@@ -776,10 +776,10 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     return;
   }
 
-  if (OptionsVars.count("matching-functions-report"))
+  if (OptionsVars.count("matching-simulators-report"))
   {
     m_RunType = InfoRequest;
-    printSimulatorsReport(OptionsVars["matching-functions-report"].as<std::string>());
+    printSimulatorsReport(OptionsVars["matching-simulators-report"].as<std::string>());
     return;
   }
 
@@ -866,8 +866,8 @@ void OpenFLUIDApp::runBuddy()
 {
   openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
   openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
-  if (m_BuddyToRun.first == "newfunc" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
-  if (m_BuddyToRun.first == "func2doc" ) Buddy = new openfluid::buddies::Func2DocBuddy(BuddyObs);
+  if (m_BuddyToRun.first == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
+  if (m_BuddyToRun.first == "sim2doc" ) Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
   if (m_BuddyToRun.first == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy(BuddyObs);
   if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
   if (m_BuddyToRun.first == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
