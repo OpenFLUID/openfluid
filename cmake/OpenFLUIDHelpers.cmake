@@ -162,7 +162,7 @@ MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
         OUTPUT "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf"
         DEPENDS "${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC}"
         COMMAND "${OpenFLUID_CMD_PROGRAM}"
-        ARGS "--buddy" "func2doc" "--buddyopts" "inputcpp=${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC},outputdir=${_DOCS_OUTPUT_PATH},pdf=1${_TPL_OPTION}"     
+        ARGS "--buddy" "sim2doc" "--buddyopts" "inputcpp=${${_SIMNAME}_SOURCE_DIR}/${_CPP_FOR_DOC},outputdir=${_DOCS_OUTPUT_PATH},pdf=1${_TPL_OPTION}"     
       )
     
       ADD_CUSTOM_TARGET(${${_SIMNAME}_ID}-doc ALL DEPENDS "${_DOCS_OUTPUT_PATH}/${${_SIMNAME}_ID}.pdf")

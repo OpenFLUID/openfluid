@@ -124,8 +124,8 @@ const std::string SHARE_COMMON_INSTALL_PATH = "@SHARE_COMMON_INSTALL_PATH@";
 const std::string SHARE_APPS_INSTALL_PATH = "@SHARE_APPS_INSTALL_PATH@";
 
 
-// func2doc default template file path  
-const std::string FUNC2DOC_TPLFILE_NAME = "func2doc_tpl.tex";
+// sim2doc default template file path  
+const std::string SIM2DOC_TPLFILE_NAME = "sim2doc_tpl.tex";
 
 
 // Version information

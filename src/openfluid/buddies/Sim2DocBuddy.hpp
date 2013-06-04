@@ -53,8 +53,8 @@
  */
 
 
-#ifndef __FUNC2DOCBUDDY_H___
-#define __FUNC2DOCBUDDY_H___
+#ifndef __SIM2DOCBUDDY_H___
+#define __SIM2DOCBUDDY_H___
 
 #include <boost/filesystem/path.hpp>
 #include <map>
@@ -69,7 +69,7 @@ namespace openfluid { namespace buddies {
 class BuddiesListener;
 
 
-class DLLEXPORT Func2DocBuddy : public OpenFLUIDBuddy
+class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
 {
   private:
     typedef std::map< std::string,std::vector<std::string> > SignatureData_t;
@@ -93,19 +93,19 @@ class DLLEXPORT Func2DocBuddy : public OpenFLUIDBuddy
 
     std::string m_Title;
     std::string m_NewCommands;
-    std::string m_FuncID;
-    std::string m_FuncName;
-    std::string m_FuncVersion;
-    std::string m_FuncAuthorName;
-    std::string m_FuncAuthorEmail;
-    std::string m_FuncDomain;
-    std::string m_FuncDescription;
-    std::string m_FuncData;
+    std::string m_SimID;
+    std::string m_SimName;
+    std::string m_SimVersion;
+    std::string m_SimAuthorName;
+    std::string m_SimAuthorEmail;
+    std::string m_SimDomain;
+    std::string m_SimDescription;
+    std::string m_SimData;
 
     std::string m_BeginSignatureTag;
     std::string m_EndSignatureTag;
-    std::string m_BeginFunc2DocTag;
-    std::string m_EndFunc2DocTag;
+    std::string m_BeginSim2DocTag;
+    std::string m_EndSim2DocTag;
 
     std::string m_HTMLPackageLatexCommand;
 
@@ -148,9 +148,9 @@ class DLLEXPORT Func2DocBuddy : public OpenFLUIDBuddy
 
   public:
 
-    Func2DocBuddy(openfluid::buddies::BuddiesListener* Listener);
+    Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener);
 
-    ~Func2DocBuddy();
+    ~Sim2DocBuddy();
 
     bool run();
 
@@ -159,4 +159,4 @@ class DLLEXPORT Func2DocBuddy : public OpenFLUIDBuddy
 
 } } //namespaces
 
-#endif /* __FUNC2DOCBUDDY_HPP__ */
+#endif /* __SIM2DOCBUDDY_HPP__ */

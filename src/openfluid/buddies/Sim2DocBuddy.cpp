@@ -54,7 +54,7 @@
  */
 
 
-#include <openfluid/buddies/Func2DocBuddy.hpp>
+#include <openfluid/buddies/Sim2DocBuddy.hpp>
 
 #include <iosfwd>
 #include <fstream>
@@ -75,7 +75,7 @@
 namespace openfluid { namespace buddies {
 
 
-Func2DocBuddy::Func2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
+Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
                OpenFLUIDBuddy(Listener)
 {
   m_RequiredOptionsHelp["outputdir"] = "path for generated files";
@@ -87,12 +87,12 @@ Func2DocBuddy::Func2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
 
 
   m_Title = "Unknown title";
-  m_FuncID = "unknown.id";
-  m_FuncName = "Unknown Function Name";
-  m_FuncVersion = "Unknown version";
-  m_FuncAuthorName = "Unknown Function Author";
-  m_FuncAuthorEmail = "Unknown Function Author Email";
-  m_FuncDomain = "Unknown Function Domain";
+  m_SimID = "unknown.id";
+  m_SimName = "Unknown simulator Name";
+  m_SimVersion = "Unknown version";
+  m_SimAuthorName = "Unknown simulator Author";
+  m_SimAuthorEmail = "Unknown simulator Author Email";
+  m_SimDomain = "Unknown simulator Domain";
   m_NewCommands = "";
 
   m_HTMLPackageLatexCommand = "";
@@ -100,8 +100,8 @@ Func2DocBuddy::Func2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
 
   m_BeginSignatureTag = "BEGIN_SIGNATURE_HOOK";
   m_EndSignatureTag = "END_SIGNATURE_HOOK";
-  m_BeginFunc2DocTag = "<func2doc>";
-  m_EndFunc2DocTag = "</func2doc>";
+  m_BeginSim2DocTag = "<sim2doc>";
+  m_EndSim2DocTag = "</sim2doc>";
 
 }
 
@@ -110,7 +110,7 @@ Func2DocBuddy::Func2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
 // =====================================================================
 
 
-Func2DocBuddy::~Func2DocBuddy()
+Sim2DocBuddy::~Sim2DocBuddy()
 {
 
 }
@@ -120,7 +120,7 @@ Func2DocBuddy::~Func2DocBuddy()
 // =====================================================================
 
 
-std::string Func2DocBuddy::extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag)
+std::string Sim2DocBuddy::extractBetweenTags(std::string Content, const std::string BeginTag, const std::string EndTag)
 {
   std::string::size_type Index = Content.find(BeginTag);
 
@@ -140,7 +140,7 @@ std::string Func2DocBuddy::extractBetweenTags(std::string Content, const std::st
 // =====================================================================
 
 
-std::string Func2DocBuddy::toLatexFriendly(std::string Content)
+std::string Sim2DocBuddy::toLatexFriendly(std::string Content)
 {
   boost::algorithm::replace_all(Content,"\\","$\backslash$");
   boost::algorithm::replace_all(Content,"$","\\$");
@@ -159,7 +159,7 @@ std::string Func2DocBuddy::toLatexFriendly(std::string Content)
 // =====================================================================
 
 
-void Func2DocBuddy::addLatexDataCatBegin(std::string& Content, const std::string Title, const std::string ColsFormat)
+void Sim2DocBuddy::addLatexDataCatBegin(std::string& Content, const std::string Title, const std::string ColsFormat)
 {
   std::string ColsNbrStr;
   openfluid::tools::ConvertValue(ColsFormat.length(),&ColsNbrStr);
@@ -173,7 +173,7 @@ void Func2DocBuddy::addLatexDataCatBegin(std::string& Content, const std::string
 // =====================================================================
 
 
-void Func2DocBuddy::addLatexDataCatEnd(std::string& Content)
+void Sim2DocBuddy::addLatexDataCatEnd(std::string& Content)
 {
   Content = Content + "\\hline"+"\n"+"\\end{tabularx}"+"\n"+"\\end{small}\\end{center}"+"\n"+"\\smallskip"+"\n\n";
 }
@@ -183,7 +183,7 @@ void Func2DocBuddy::addLatexDataCatEnd(std::string& Content)
 // =====================================================================
 
 
-void Func2DocBuddy::copyDocDirectory()
+void Sim2DocBuddy::copyDocDirectory()
 {
   if (m_InputDirPath != m_OutputDirPath)
   {
@@ -203,7 +203,7 @@ void Func2DocBuddy::copyDocDirectory()
 // =====================================================================
 
 
-void Func2DocBuddy::extractLatexDocFromCPP()
+void Sim2DocBuddy::extractLatexDocFromCPP()
 {
   mp_Listener->onSubstageCompleted("** Extracting documentation from C++ file...");
 
@@ -211,7 +211,7 @@ void Func2DocBuddy::extractLatexDocFromCPP()
 
   // check if file exists and if it is "openable"
   if (!CPPFile)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::extractLatexDocFromCPP()","Could not open input file");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::extractLatexDocFromCPP()","Could not open input file");
 
   std::string StrLine  = "";
   std::string CPPFileContent = "";
@@ -224,7 +224,7 @@ void Func2DocBuddy::extractLatexDocFromCPP()
 
   CPPFile.close();
 
-  m_ExtractedLatexDoc = extractBetweenTags(CPPFileContent,m_BeginFunc2DocTag,m_EndFunc2DocTag);
+  m_ExtractedLatexDoc = extractBetweenTags(CPPFileContent,m_BeginSim2DocTag,m_EndSim2DocTag);
 
   mp_Listener->onStageCompleted(" done");
 
@@ -235,23 +235,23 @@ void Func2DocBuddy::extractLatexDocFromCPP()
 // =====================================================================
 
 
-void Func2DocBuddy::cpreprocessCPP()
+void Sim2DocBuddy::cpreprocessCPP()
 {
 #if defined __unix__ || defined __APPLE__
 
   mp_Listener->onSubstageCompleted("** Preprocessing C++ file (using gcc)...");
 
-  m_CProcessedFilePath = boost::filesystem::path(m_OutputDirPath.string() + "/" + m_InputFilePath.filename().string() + ".func2doc");
+  m_CProcessedFilePath = boost::filesystem::path(m_OutputDirPath.string() + "/" + m_InputFilePath.filename().string() + ".sim2doc");
 
   boost::filesystem::remove(m_CProcessedFilePath);
 
   std::string CommandToRun = m_CPreProcessorPath.string() + " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " + m_InputFilePath.string() + " > " + m_CProcessedFilePath.string() + " 2>/dev/null";
 
   if (system(CommandToRun.c_str()) == 0)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
 
   if (!boost::filesystem::is_regular(m_CProcessedFilePath))
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::cpreprocessCPP()","C preprocessed file not generated");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::cpreprocessCPP()","C preprocessed file not generated");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -262,13 +262,13 @@ void Func2DocBuddy::cpreprocessCPP()
 // =====================================================================
 
 
-std::vector<std::string> Func2DocBuddy::extractSignatureLines()
+std::vector<std::string> Sim2DocBuddy::extractSignatureLines()
 {
   std::ifstream CProcessedFile(m_CProcessedFilePath.string().c_str());
 
   // check if file exists and if it is "openable"
   if (!CProcessedFile)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::extractSignatureLines()","Could not open C preprocessed file");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::extractSignatureLines()","Could not open C preprocessed file");
 
   std::string StrLine  = "";
   std::string FileContent = "";
@@ -301,7 +301,7 @@ std::vector<std::string> Func2DocBuddy::extractSignatureLines()
 // =====================================================================
 // =====================================================================
 
-std::vector<std::string> Func2DocBuddy::searchStringLitterals(std::string StrToParse)
+std::vector<std::string> Sim2DocBuddy::searchStringLitterals(std::string StrToParse)
 {
   std::vector<std::string> FoundStrings;
   std::string::const_iterator StrStart, StrEnd;
@@ -327,13 +327,13 @@ std::vector<std::string> Func2DocBuddy::searchStringLitterals(std::string StrToP
 // =====================================================================
 // =====================================================================
 
-void Func2DocBuddy::processSignature()
+void Sim2DocBuddy::processSignature()
 {
 
   std::vector<std::string> LineParts;
 
 
-  mp_Listener->onSubstageCompleted("** Processing function signature...");
+  mp_Listener->onSubstageCompleted("** Processing simulator signature...");
 
 
   std::vector<std::string> Lines = extractSignatureLines();
@@ -346,57 +346,57 @@ void Func2DocBuddy::processSignature()
       LineParts = searchStringLitterals(Lines[i]);
       if (LineParts.size() == 1)
       {
-        m_FuncID = toLatexFriendly(LineParts[0]);
-        m_Title = m_FuncID;
+        m_SimID = toLatexFriendly(LineParts[0]);
+        m_Title = m_SimID;
       }
-      m_NewCommands = m_NewCommands + "\\newcommand{\\funcID}{"+m_FuncID+"}\n";
+      m_NewCommands = m_NewCommands + "\\newcommand{\\simID}{"+m_SimID+"}\n";
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_VERSION"))
     {
       LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_FuncVersion = toLatexFriendly(LineParts[0]);
-      m_NewCommands = m_NewCommands + "\\newcommand{\\funcVERSION}{"+m_FuncVersion+"}\n";
+      if (LineParts.size() == 1) m_SimVersion = toLatexFriendly(LineParts[0]);
+      m_NewCommands = m_NewCommands + "\\newcommand{\\simVERSION}{"+m_SimVersion+"}\n";
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DOMAIN"))
     {
       LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_FuncDomain = toLatexFriendly(LineParts[0]);
+      if (LineParts.size() == 1) m_SimDomain = toLatexFriendly(LineParts[0]);
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_NAME"))
     {
       LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_FuncName = toLatexFriendly(LineParts[0]);
-      m_NewCommands = m_NewCommands + "\\newcommand{\\funcNAME}{"+m_FuncName+"}\n";
+      if (LineParts.size() == 1) m_SimName = toLatexFriendly(LineParts[0]);
+      m_NewCommands = m_NewCommands + "\\newcommand{\\simNAME}{"+m_SimName+"}\n";
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DOMAIN"))
     {
       LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_FuncDomain = toLatexFriendly(LineParts[0]);
+      if (LineParts.size() == 1) m_SimDomain = toLatexFriendly(LineParts[0]);
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DESCRIPTION"))
     {
       LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_FuncDescription = toLatexFriendly(LineParts[0]);
+      if (LineParts.size() == 1) m_SimDescription = toLatexFriendly(LineParts[0]);
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_AUTHORNAME"))
     {
       LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_FuncAuthorName = toLatexFriendly(LineParts[0]);
+      if (LineParts.size() == 1) m_SimAuthorName = toLatexFriendly(LineParts[0]);
     }
 
     if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_AUTHOREMAIL"))
     {
       LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_FuncAuthorEmail = toLatexFriendly(LineParts[0]);
+      if (LineParts.size() == 1) m_SimAuthorEmail = toLatexFriendly(LineParts[0]);
     }
 
-    if (boost::algorithm::starts_with(Lines[i],"FUNCTION_PARAM"))
+    if (boost::algorithm::starts_with(Lines[i],"SIMULATOR_PARAM"))
     {
       LineParts = searchStringLitterals(Lines[i]);
       if (LineParts.size() == 3)
@@ -545,7 +545,7 @@ void Func2DocBuddy::processSignature()
 // =====================================================================
 
 
-void Func2DocBuddy::generateLatex()
+void Sim2DocBuddy::generateLatex()
 {
   mp_Listener->onSubstageCompleted("** Generating latex file...");
 
@@ -555,7 +555,7 @@ void Func2DocBuddy::generateLatex()
 
   // check if file exists and if it is "openable"
   if (!TPLFile)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::generateLatex()","Could not open template file");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::generateLatex()","Could not open template file");
 
   std::string StrLine  = "";
   m_LatexOutFile = "";
@@ -569,86 +569,86 @@ void Func2DocBuddy::generateLatex()
   TPLFile.close();
 
 
-  // generate Function Data
+  // generate simulator data
 
   SignatureData_t::iterator it;
 
   if (m_ParamsData.size() > 0)
   {
-    addLatexDataCatBegin(m_FuncData,"Function parameter(s)","lXr");
+    addLatexDataCatBegin(m_SimData,"Simulator parameter(s)","lXr");
     for (it = m_ParamsData.begin(); it != m_ParamsData.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&$" + it->second[1] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&$" + it->second[1] + "$\\\\" + "\n";
     }
-    addLatexDataCatEnd(m_FuncData);
+    addLatexDataCatEnd(m_SimData);
   }
 
   if (m_InData.size() > 0)
   {
-    addLatexDataCatBegin(m_FuncData,"Input data","lllXr");
+    addLatexDataCatBegin(m_SimData,"Input data","lllXr");
     for (it = m_InData.begin(); it != m_InData.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
-    addLatexDataCatEnd(m_FuncData);
+    addLatexDataCatEnd(m_SimData);
   }
 
   if (m_InVars.size() > 0)
   {
-    addLatexDataCatBegin(m_FuncData,"Required or used variable(s)","llllXr");
+    addLatexDataCatBegin(m_SimData,"Required or used variable(s)","llllXr");
     for (it = m_InVars.begin(); it != m_InVars.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&" + it->second[3] + "&$" + it->second[4] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&" + it->second[3] + "&$" + it->second[4] + "$\\\\" + "\n";
     }
-    addLatexDataCatEnd(m_FuncData);
+    addLatexDataCatEnd(m_SimData);
   }
 
   if (m_OutVars.size() > 0)
   {
-    addLatexDataCatBegin(m_FuncData,"Produced or updated variable(s)","lllXr");
+    addLatexDataCatBegin(m_SimData,"Produced or updated variable(s)","lllXr");
     for (it = m_OutVars.begin(); it != m_OutVars.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
-    addLatexDataCatEnd(m_FuncData);
+    addLatexDataCatEnd(m_SimData);
   }
 
   if (m_Events.size() > 0)
   {
-    addLatexDataCatBegin(m_FuncData,"Used event(s)","l");
+    addLatexDataCatBegin(m_SimData,"Used event(s)","l");
     for (it = m_Events.begin(); it != m_Events.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}\\\\" + "\n";
     }
-    addLatexDataCatEnd(m_FuncData);
+    addLatexDataCatEnd(m_SimData);
   }
 
   if (m_ExtraFiles.size() > 0)
   {
-    addLatexDataCatBegin(m_FuncData,"Required or used extrafile(s)","lX");
+    addLatexDataCatBegin(m_SimData,"Required or used extrafile(s)","lX");
     for (it = m_ExtraFiles.begin(); it != m_ExtraFiles.end(); ++it)
     {
-      m_FuncData = m_FuncData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "\\\\" + "\n";
     }
-    addLatexDataCatEnd(m_FuncData);
+    addLatexDataCatEnd(m_SimData);
   }
 
   // replacing values
 
   boost::algorithm::replace_all(m_LatexOutFile,"#htmlpackage#",m_HTMLPackageLatexCommand);
   boost::algorithm::replace_all(m_LatexOutFile,"#title#",m_Title);
-  boost::algorithm::replace_all(m_LatexOutFile,"#version#",m_FuncVersion);
-  boost::algorithm::replace_all(m_LatexOutFile,"#author#",m_FuncAuthorName);
+  boost::algorithm::replace_all(m_LatexOutFile,"#version#",m_SimVersion);
+  boost::algorithm::replace_all(m_LatexOutFile,"#author#",m_SimAuthorName);
   boost::algorithm::replace_all(m_LatexOutFile,"#newcommands#",m_NewCommands);
-  boost::algorithm::replace_all(m_LatexOutFile,"#name#",m_FuncName);
-  boost::algorithm::replace_all(m_LatexOutFile,"#domain#",m_FuncDomain);
-  boost::algorithm::replace_all(m_LatexOutFile,"#description#",m_FuncDescription);
-  boost::algorithm::replace_all(m_LatexOutFile,"#handleddata#",m_FuncData);
-  boost::algorithm::replace_all(m_LatexOutFile,"#funcdoc#",m_ExtractedLatexDoc);
+  boost::algorithm::replace_all(m_LatexOutFile,"#name#",m_SimName);
+  boost::algorithm::replace_all(m_LatexOutFile,"#domain#",m_SimDomain);
+  boost::algorithm::replace_all(m_LatexOutFile,"#description#",m_SimDescription);
+  boost::algorithm::replace_all(m_LatexOutFile,"#handleddata#",m_SimData);
+  boost::algorithm::replace_all(m_LatexOutFile,"#simdoc#",m_ExtractedLatexDoc);
 
   // save of latex file content
 
-  m_OutputLatexFilePath = boost::filesystem::path(m_OutputDirPath.string()+"/"+m_FuncID+".tex");
+  m_OutputLatexFilePath = boost::filesystem::path(m_OutputDirPath.string()+"/"+m_SimID+".tex");
 
   std::ofstream OutputFile(m_OutputLatexFilePath.string().c_str(),std::ios::out);
   OutputFile << m_LatexOutFile;
@@ -661,7 +661,7 @@ void Func2DocBuddy::generateLatex()
 // =====================================================================
 // =====================================================================
 
-bool Func2DocBuddy::isErrorInPDFLatexLog()
+bool Sim2DocBuddy::isErrorInPDFLatexLog()
 {
   boost::filesystem::path LogFilePath(m_OutputDirPath.string() + "/" + boost::filesystem::basename(m_OutputLatexFilePath) + ".log");
 
@@ -689,47 +689,47 @@ bool Func2DocBuddy::isErrorInPDFLatexLog()
 // =====================================================================
 
 
-void Func2DocBuddy::buildPDF()
+void Sim2DocBuddy::buildPDF()
 {
 #if defined __unix__ || defined __APPLE__
 
   mp_Listener->onSubstageCompleted("** Building PDF...");
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
 
   std::string PDFCommandToRun = m_PDFLatexPath.string() + " -shell-escape -interaction=nonstopmode -output-directory="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() + " > /dev/null";
-  std::string BibCommandToRun = m_BibtexPath.string() + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_FuncID).string() + " > /dev/null";
+  std::string BibCommandToRun = m_BibtexPath.string() + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_SimID).string() + " > /dev/null";
 
   mp_Listener->onSubstageCompleted(" first pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   mp_Listener->onSubstageCompleted(" bibliography and references...");
 
 
   if (system(BibCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running bibtex command");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running bibtex command");
 
   mp_Listener->onSubstageCompleted(" second pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   mp_Listener->onSubstageCompleted(" third pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -741,19 +741,19 @@ void Func2DocBuddy::buildPDF()
 // =====================================================================
 
 
-void Func2DocBuddy::buildHTML()
+void Sim2DocBuddy::buildHTML()
 {
 #if defined __unix__ || defined __APPLE__
 
   mp_Listener->onSubstageCompleted("** Building HTML...");
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
 
   std::string CommandToRun = m_Latex2HTMLPath.string() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() +" > /dev/null";
 
   if (system(CommandToRun.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::buildHTML()","Error running latex2html command");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildHTML()","Error running latex2html command");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -766,11 +766,11 @@ void Func2DocBuddy::buildHTML()
 
 
 
-bool Func2DocBuddy::run()
+bool Sim2DocBuddy::run()
 {
 #if defined __unix__ || defined __APPLE__
 
-  setOptionIfNotSet("tplfile", openfluid::base::RuntimeEnvironment::getInstance()->getCommonResourceFilePath(openfluid::config::FUNC2DOC_TPLFILE_NAME));
+  setOptionIfNotSet("tplfile", openfluid::base::RuntimeEnvironment::getInstance()->getCommonResourceFilePath(openfluid::config::SIM2DOC_TPLFILE_NAME));
   setOptionIfNotSet("outputdir",boost::filesystem::current_path().string());
   setOptionIfNotSet("pdf","0");
   setOptionIfNotSet("html","0");
@@ -788,7 +788,7 @@ bool Func2DocBuddy::run()
     m_CPreProcessorPath = boost::filesystem::path(GCCPaths[0]);
     mp_Listener->onInfo("Using C preprocessor: " + m_CPreProcessorPath.string());
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::run()","C preprocessor (gcc) not found");
+  else throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::run()","C preprocessor (gcc) not found");
 
 
   if (m_Options["pdf"] == "1")
@@ -832,11 +832,11 @@ bool Func2DocBuddy::run()
   m_OutputDirPath = boost::filesystem::path(m_Options["outputdir"]);
 
   if (!boost::filesystem::exists(m_InputFilePath))
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::run()","Input file does not exist");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::run()","Input file does not exist");
 
   m_TplFilePath = boost::filesystem::path(m_Options["tplfile"]);
   if (!boost::filesystem::exists(m_TplFilePath))
-    throw openfluid::base::OFException("OpenFLUID framework","Func2DocBuddy::run()","Template file does not exist");
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::run()","Template file does not exist");
 
   if (!boost::filesystem::is_directory(m_OutputDirPath)) boost::filesystem::create_directories(m_OutputDirPath);
 
@@ -859,7 +859,7 @@ bool Func2DocBuddy::run()
   if (m_Options["html"] == "1") buildHTML();
 
 #else
-  mp_Listener->onInfo("func2doc buddy only runs on Unix/Linux and MacOSX systems.");
+  mp_Listener->onInfo("sim2doc buddy only runs on Unix/Linux and MacOSX systems.");
   return true;
 #endif
 

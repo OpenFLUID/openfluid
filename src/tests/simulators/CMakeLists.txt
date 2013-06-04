@@ -292,7 +292,7 @@ OPENFLUID_ADD_TEST(NAME simulators-ManyUnits
 ###########################################################################
 
                          
-OPNFLD_ADD_SIMULATOR(tests.ofefunc2doc tests.ofefunc2doc ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_SIMULATOR(tests.sim2doc tests.sim2doc ${TEST_OUTPUT_PATH})
 
 
 ###########################################################################

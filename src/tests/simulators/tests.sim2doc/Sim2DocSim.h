@@ -71,7 +71,7 @@ DECLARE_SIMULATOR_PLUGIN
 /**
 
 */
-class OFEFunc2DocSimulator : public openfluid::ware::PluggableSimulator
+class Sim2DocSimulator : public openfluid::ware::PluggableSimulator
 {
   private:
 
@@ -81,12 +81,12 @@ class OFEFunc2DocSimulator : public openfluid::ware::PluggableSimulator
     /**
       Constructor
     */
-    OFEFunc2DocSimulator();
+    Sim2DocSimulator();
 
     /**
       Destructor
     */
-    ~OFEFunc2DocSimulator();
+    ~Sim2DocSimulator();
 
     void initParams(const openfluid::ware::WareParams_t& Params);
 
