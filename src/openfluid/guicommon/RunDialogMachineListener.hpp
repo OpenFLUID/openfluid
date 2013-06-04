@@ -94,6 +94,8 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
     unsigned int m_CurrentFinal;
     unsigned int m_TotalTotal;
 
+    bool m_Completed;
+
 
     std::string getStatusStr(const openfluid::base::Listener::Status& Status)
     {
@@ -125,6 +127,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
     inline double computeCurrentFraction()
     {
+      if (m_Completed) return (1.0);
       return (double(m_CurrentPreSim + m_CurrentInit + (m_CurrentIndex+1) + m_CurrentFinal)/double(m_TotalTotal));
     }
 
@@ -140,9 +143,11 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
 
   public:
 
-    RunDialogMachineListener() {};
+    RunDialogMachineListener()
+      : m_Completed(false)
+    { };
 
-    ~RunDialogMachineListener() {};
+    ~RunDialogMachineListener() { };
 
     void setWidgets(RunStatusWidget* RStatusWidget,
                     Gtk::TextView* DetailsTextView)
@@ -164,6 +169,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
       m_CurrentInit = 0;
       m_CurrentIndex = 0;
       m_CurrentFinal = 0;
+      m_Completed = false;
     }
 
 
@@ -326,6 +332,7 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
     {
       mp_RunStatusWidget->setProgressFraction(1.0);
       mp_RunStatusWidget->setFinalDone();
+      m_Completed = true;
       updateProgressBar();
     };
 
