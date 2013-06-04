@@ -1,3 +1,35 @@
+2.0.0
+
+  * Updated simulation engine for variable time coupling, 
+    including scheduling system with constraints
+  * Added monitoring system with observers 
+  * Removed deprecated results output system
+  * Added observers for exporting simulation results to csv files, 
+    kml/kmz files (Google Earth), GNUplot charts, dot graphs
+  * Added the openfluid-landr library for spatial data processing
+  * Added raster spatial data as accepted data for the datastore
+  * Renamed openfluid-engine command line program to openfluid
+  * Added CMake OpenFLUID module
+  * Added CMake macros for easier build of simulators and observers
+  * Redesigned and improved simulators signatures macros
+  * Redesigned simulators C++ class for robustness improvement
+  * Provided new examples projects, with easy access from OpenFLUID-Builder  
+  * Redesigned model and monitoring tabs in OpenFLUID-Builder
+  * Updated binary names of OpenFLUID plugins (simulators and observers)
+  * Improved OpenFLUID plugins recognition system
+  * Removed pass-by-pointer values in OPENFLUID_* primitives
+  * Added OPENFLUID_* primitives for accessing variables in many ways
+  * Improved checking of primitives usage regarding the current 
+    simulation stage 
+  * Added observers and datasets as packages for OpenFLUID-market deployment
+    system
+  * Switched to version 3 of the Boost filesystem library  
+  * Deeply refactored OpenFLUID source code, with many internal improvements
+  * Improved internal test system
+  * Fixed bugs
+
+
+
 1.7.2
 
   * Added ROpenFLUID package for using OpenFLUID within the GNU R environment
