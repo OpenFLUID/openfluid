@@ -1040,8 +1040,8 @@ void MarketClientAssistant::onViewLogClicked()
 
 std::string MarketClientAssistant::getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural)
 {
-  std::string TypeNames[] = { _("function"), _("observer"), _("builder extension"), _("dataset")};
-  std::string PluralTypeNames[] = { _("functions"), _("observers"), _("builder extensions"), _("datasets")};
+  std::string TypeNames[] = { _("simulator"), _("observer"), _("builder extension"), _("dataset")};
+  std::string PluralTypeNames[] = { _("simulators"), _("observers"), _("builder extensions"), _("datasets")};
   std::string Name;
 
   if (Plural)
