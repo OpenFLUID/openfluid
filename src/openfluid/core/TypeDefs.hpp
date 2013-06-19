@@ -100,13 +100,13 @@ typedef std::pair<UnitClassID_t,UnitClassID_t> UnitsLink_t;
 
 
 /**
- Type definition for a time serie of double values
+ Type definition for a serie of DoubleValue
  */
 typedef std::vector<DoubleValue> SerieOfDoubleValue;
 
 
 /**
- Type definition for a time serie of vectorvalues
+ Type definition for a serie of VectorValue
  */
 typedef std::vector<VectorValue> SerieOfVectorValue;
 
@@ -114,45 +114,54 @@ typedef std::vector<VectorValue> SerieOfVectorValue;
 // =====================================================================
 // =====================================================================
 
+/**
+  Generic map container associating a unit ID to data
+*/
+template<class T>
+struct IDMap
+{
+  typedef std::map<UnitID_t,T> Type;
+};
+
 
 /**
-  Map associating a float value to a unit, indexed by its ID
+  Map associating a float value to a unit ID
 */
-typedef std::map<UnitID_t,float> IDFloatMap;
+typedef IDMap<float>::Type IDFloatMap;
 
 /**
-  Map associating a double precision value to a unit, indexed by its ID
+  Map associating a double precision value to a unit ID
 */
-typedef std::map<UnitID_t,double> IDDoubleMap;
+typedef IDMap<double>::Type IDDoubleMap;
 
 /**
-  Map associating a DoubleValue value to a unit, indexed by its ID
+  Map associating a DoubleValue value to a unit ID
 */
-typedef std::map<UnitID_t,DoubleValue> IDDoubleValueMap;
+typedef IDMap<DoubleValue>::Type IDDoubleValueMap;
 
 /**
-  Map associating an integer value to a unit, indexed by its ID
+  Map associating an integer value to a unit ID
 */
-typedef std::map<UnitID_t,int> IDIntMap;
+typedef IDMap<int>::Type IDIntMap;
 
 /**
-  Map associating a boolean value to a unit, indexed by its ID
+  Map associating a boolean value to a unit ID
 */
-typedef std::map<UnitID_t,bool> IDBoolMap;
+typedef IDMap<bool>::Type IDBoolMap;
 
 /**
-  Map associating an openfluid::core::VectorValue value to a unit, indexed by its ID
+  Map associating an openfluid::core::VectorValue value to a unit ID
 */
-typedef std::map<UnitID_t,VectorValue> IDVectorValueMap;
+typedef IDMap<VectorValue>::Type IDVectorValueMap;
 
 /**
-  Map associating a pointer to an openfluid::core::VectorValue value to a unit, indexed by its ID
+  Map associating a pointer to an openfluid::core::VectorValue value to a unit ID
 */
-typedef std::map<UnitID_t,VectorValue*> IDVectorValuePtrMap;
+typedef IDMap<VectorValue*>::Type IDVectorValuePtrMap;
 
-typedef std::map<UnitID_t,SerieOfDoubleValue> IDSerieOfDoubleValueMap;
+typedef IDMap<SerieOfDoubleValue>::Type IDSerieOfDoubleValueMap;
 
-typedef std::map<UnitID_t,SerieOfDoubleValue*> IDSerieOfDoubleValuePtrMap;
+typedef IDMap<SerieOfDoubleValue*>::Type IDSerieOfDoubleValuePtrMap;
 
 
 

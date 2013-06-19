@@ -209,7 +209,7 @@ class DLLEXPORT PluggableWare
     /**
      * Return false if ParameterKey starts nor ends with a dot, true otherwise
      */
-    static bool isWellFormated(std::string ParameterKey);
+    static bool isWellFormated(const openfluid::ware::WareParamKey_t& ParameterKey);
 
     static boost::property_tree::ptree getParamsAsPropertyTree(
         const WareParams_t& Params);

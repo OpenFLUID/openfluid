@@ -158,10 +158,12 @@ void PluggableWare::finalizeWare()
   OPENFLUID_Logger.close();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-bool PluggableWare::isWellFormated(std::string ParameterKey)
+
+bool PluggableWare::isWellFormated(const openfluid::ware::WareParamKey_t& ParameterKey)
 {
   if (ParameterKey.find_last_of('.') == ParameterKey.size() - 1)
     return false;
@@ -172,15 +174,19 @@ bool PluggableWare::isWellFormated(std::string ParameterKey)
   return true;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 boost::property_tree::ptree PluggableWare::getParamsAsPropertyTree(
     const WareParams_t& Params)
 {
   boost::property_tree::ptree pt;
+
   for (WareParams_t::const_iterator it = Params.begin() ; it != Params.end() ; ++it)
-    pt.put(it->first, it->second.get());
+    if (isWellFormated(it->first)) pt.put(it->first, it->second.get());
+    else throw openfluid::base::OFException("Wrong format for parameter \""+it->first+"\"");
 
   return pt;
 }
