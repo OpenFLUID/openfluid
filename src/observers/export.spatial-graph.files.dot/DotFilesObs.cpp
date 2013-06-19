@@ -285,21 +285,31 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree Params_pt = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
-
-      m_Title = Params_pt.get("title",m_Title);
-
-      m_Init = Params_pt.get<bool>("when.init",false);
-      m_EveryTime = Params_pt.get<bool>("when.everytime",false);
-      m_Final = Params_pt.get<bool>("when.final",false);
+      boost::property_tree::ptree ParamsPT;
 
       try
       {
-        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params_pt.get_child("style"))
+        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+      }
+      catch (openfluid::base::OFException& E)
+      {
+        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+      }
+
+
+      m_Title = ParamsPT.get("title",m_Title);
+
+      m_Init = ParamsPT.get<bool>("when.init",false);
+      m_EveryTime = ParamsPT.get<bool>("when.everytime",false);
+      m_Final = ParamsPT.get<bool>("when.final",false);
+
+      try
+      {
+        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("style"))
         {
-          BOOST_FOREACH(const boost::property_tree::ptree::value_type &w,Params_pt.get_child("style."+v.first))
+          BOOST_FOREACH(const boost::property_tree::ptree::value_type &w,ParamsPT.get_child("style."+v.first))
           {
-            m_UnitClassStyles[v.first][w.first] = Params_pt.get("style."+v.first+"."+w.first,"");
+            m_UnitClassStyles[v.first][w.first] = ParamsPT.get("style."+v.first+"."+w.first,"");
           }
         }
       }

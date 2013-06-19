@@ -57,7 +57,6 @@ bool SimpleRasterManager::open(const std::string& Filepath)
     MinMax[0] = m_Band->GetMinimum(&GotMin);
     MinMax[1] = m_Band->GetMaximum(&GotMax);
     if (!(GotMin && GotMax)) GDALComputeRasterMinMax((GDALRasterBandH)m_Band,true,MinMax);
-    else std::cout << "not got " << GotMin << " " << GotMax << std::endl;
 
     m_MinValue = MinMax[0];
     m_MaxValue = MinMax[1];

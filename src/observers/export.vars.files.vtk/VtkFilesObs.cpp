@@ -607,28 +607,41 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree Params_pt = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+      boost::property_tree::ptree ParamsPT;
+
+      try
+      {
+        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+      }
+      catch (openfluid::base::OFException& E)
+      {
+        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+      }
+
 
       std::string InputDir, OutputDir;
 
       OPENFLUID_GetRunEnvironment("dir.input",InputDir);
       OPENFLUID_GetRunEnvironment("dir.output",OutputDir);
 
-      m_DEMFilename = Params_pt.get("DEMfile","");
+      m_DEMFilename = ParamsPT.get("DEMfile","");
       if (!m_DEMFilename.empty()) m_DEMFilename = boost::filesystem::path(InputDir+"/"+m_DEMFilename).string();
 
       // vtk series
 
-      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params_pt.get_child("vtkserie"))
+      if (!ParamsPT.get_child_optional("vtkserie"))
+        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No vtkserie defined");
+
+      BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("vtkserie"))
       {
         std::string SerieID = v.first;
 
         VtkSerieInfo VtkSerie;
 
-        VtkSerie.UnitsClass = Params_pt.get("vtkserie."+SerieID+".unitclass","");
-        VtkSerie.VarName = Params_pt.get("vtkserie."+SerieID+".varname","");
-        VtkSerie.VectorSourceFilename = Params_pt.get("vtkserie."+SerieID+".sourcefile","");
-        VtkSerie.DEMSourceFilename = Params_pt.get("vtkserie."+SerieID+".DEMfile","");
+        VtkSerie.UnitsClass = ParamsPT.get("vtkserie."+SerieID+".unitclass","");
+        VtkSerie.VarName = ParamsPT.get("vtkserie."+SerieID+".varname","");
+        VtkSerie.VectorSourceFilename = ParamsPT.get("vtkserie."+SerieID+".sourcefile","");
+        VtkSerie.DEMSourceFilename = ParamsPT.get("vtkserie."+SerieID+".DEMfile","");
 
         if (!(VtkSerie.UnitsClass.empty() || VtkSerie.VarName.empty() || VtkSerie.VectorSourceFilename.empty()))
         {
@@ -661,8 +674,6 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
               "Cannot open DEM "+m_DEMFilename+". Z Values are set to 0.0");
         }
       }
-
-
 
 
       std::list<VtkSerieInfo>::iterator VtkSerieIt;

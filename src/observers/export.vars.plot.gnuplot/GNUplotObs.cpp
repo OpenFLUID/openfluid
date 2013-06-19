@@ -206,12 +206,29 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+      boost::property_tree::ptree ParamsPT;
+
+      try
+      {
+        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+      }
+      catch (openfluid::base::OFException& E)
+      {
+        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+      }
 
       m_TryOpenGNUplot = ParamsPT.get<bool>("tryopengnuplot",m_TryOpenGNUplot);
       m_Persistent = ParamsPT.get<bool>("persistent",m_Persistent);
       m_Terminal = ParamsPT.get("terminal",m_Terminal);
       m_Output = ParamsPT.get("output",m_Output);
+
+
+      if (!ParamsPT.get_child_optional("serie"))
+        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No serie defined");
+
+      if (!ParamsPT.get_child_optional("graph"))
+              OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No graph defined");
+
 
       BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("serie"))
       {

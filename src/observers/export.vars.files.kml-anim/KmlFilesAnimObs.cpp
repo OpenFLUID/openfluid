@@ -288,7 +288,16 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     void initParams(const openfluid::ware::WareParams_t& Params)
     {
-      boost::property_tree::ptree Params_pt = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+      boost::property_tree::ptree ParamsPT;
+
+      try
+      {
+        ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
+      }
+      catch (openfluid::base::OFException& E)
+      {
+        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+      }
 
       OGRRegisterAll();
 
@@ -297,24 +306,24 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       // general
 
-      m_Title = Params_pt.get("title",m_Title);
-      m_OutputFileName = Params_pt.get("kmzfilename",m_OutputFileName);
-      m_TryOpenGEarth = Params_pt.get<bool>("tryopengearth",m_TryOpenGEarth);
+      m_Title = ParamsPT.get("title",m_Title);
+      m_OutputFileName = ParamsPT.get("kmzfilename",m_OutputFileName);
+      m_TryOpenGEarth = ParamsPT.get<bool>("tryopengearth",m_TryOpenGEarth);
 
 
       // anim layer
 
-      m_AnimLayerInfo.UnitsClass = Params_pt.get("layers.anim.unitclass","");
-      m_AnimLayerInfo.VarName = Params_pt.get("layers.anim.varname","");
-      m_AnimLayerInfo.LineWidth = Params_pt.get<int>("layers.anim.linewidth",1);
+      m_AnimLayerInfo.UnitsClass = ParamsPT.get("layers.anim.unitclass","");
+      m_AnimLayerInfo.VarName = ParamsPT.get("layers.anim.varname","");
+      m_AnimLayerInfo.LineWidth = ParamsPT.get<int>("layers.anim.linewidth",1);
 
 
-      m_AnimLayerInfo.SourceIsDatastore = (Params_pt.get("layers.anim.source","file") == "datastore");
+      m_AnimLayerInfo.SourceIsDatastore = (ParamsPT.get("layers.anim.source","file") == "datastore");
       if (m_AnimLayerInfo.SourceIsDatastore)
         return;
       else
       {
-        m_AnimLayerInfo.SourceFilename = Params_pt.get("layers.anim.sourcefile","");
+        m_AnimLayerInfo.SourceFilename = ParamsPT.get("layers.anim.sourcefile","");
         if (m_AnimLayerInfo.SourceFilename.empty())
         {
           OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
@@ -328,7 +337,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
       std::vector<std::string> ColorScaleVector;
       std::string ColorScaleString;
 
-      ColorScaleString = Params_pt.get("layers.anim.colorscale","");
+      ColorScaleString = ParamsPT.get("layers.anim.colorscale","");
       ColorScaleVector = openfluid::tools::SplitString(ColorScaleString,";",false);
 
       if (ColorScaleVector.size() % 2 == 0)
@@ -403,26 +412,26 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       // static layers
 
-      boost::optional<boost::property_tree::ptree&> StaticLayersTree = Params_pt.get_child_optional( "layers.static" );
+      boost::optional<boost::property_tree::ptree&> StaticLayersTree = ParamsPT.get_child_optional( "layers.static" );
 
       if (StaticLayersTree)
       {
-        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,Params_pt.get_child("layers.static"))
+        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("layers.static"))
           {
           std::string LayerID = v.first;
 
           KmlStaticLayerInfo KSLI;
 
-          KSLI.UnitsClass = Params_pt.get("layers.static."+LayerID+".unitclass","");
-          KSLI.LineWidth = Params_pt.get<int>("layers.static."+LayerID+".linewidth",1);
-          KSLI.Color = Params_pt.get("layers.static."+LayerID+".color","ffffffff");
+          KSLI.UnitsClass = ParamsPT.get("layers.static."+LayerID+".unitclass","");
+          KSLI.LineWidth = ParamsPT.get<int>("layers.static."+LayerID+".linewidth",1);
+          KSLI.Color = ParamsPT.get("layers.static."+LayerID+".color","ffffffff");
 
-          KSLI.SourceIsDatastore = (Params_pt.get("layers.static."+LayerID+".source","file") == "datastore");
+          KSLI.SourceIsDatastore = (ParamsPT.get("layers.static."+LayerID+".source","file") == "datastore");
           if (KSLI.SourceIsDatastore)
             return;
           else
           {
-            KSLI.SourceFilename = Params_pt.get("layers.static."+LayerID+".sourcefile","");
+            KSLI.SourceFilename = ParamsPT.get("layers.static."+LayerID+".sourcefile","");
             if (KSLI.SourceFilename.empty())
             {
               OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
