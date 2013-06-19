@@ -643,48 +643,64 @@ void ProjectCoordinator::launchExtension(std::string ExtensionID)
     return;
   }
 
-  if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
+
+  try
   {
-    std::string PageName = ExtCont->Infos.ShortName;
-
-    openfluid::builderext::WorkspaceTab* Tab =
-        static_cast<openfluid::builderext::WorkspaceTab*>(Ext);
-
-    Tab->update();
-
-    addModuleToWorkspace(PageName, *Tab);
-
-    m_TabExtensionIdByNameMap[PageName] = ExtID;
-
-    m_Workspace.setCurrentPage(PageName);
-  }
-  else
-  {
-    if ((ExtCont->Infos.Type
-        == openfluid::builderext::PluggableBuilderExtension::ModelessWindow))
+    if (ExtType == openfluid::builderext::PluggableBuilderExtension::WorkspaceTab)
     {
-      openfluid::builderext::ModelessWindow* ModelessWin =
-          static_cast<openfluid::builderext::ModelessWindow*>(Ext);
+      std::string PageName = ExtCont->Infos.ShortName;
 
-      ModelessWin->signal_Hidden().connect(
-          sigc::bind<std::string>(
-              sigc::mem_fun(
-                  *this,
-                  &ProjectCoordinator::whenModelessWindowExtensionHidden),
-              ExtID));
+      openfluid::builderext::WorkspaceTab* Tab =
+          static_cast<openfluid::builderext::WorkspaceTab*>(Ext);
 
-      m_ModelessWindowsExtensionsMap[ExtID] = ModelessWin;
+      Tab->update();
 
-      Ext->show();
+      addModuleToWorkspace(PageName, *Tab);
+
+      m_TabExtensionIdByNameMap[PageName] = ExtID;
+
+      m_Workspace.setCurrentPage(PageName);
     }
     else
     {
-      Ext->show();
-      ExtCont->deleteExt();
+      if ((ExtCont->Infos.Type
+          == openfluid::builderext::PluggableBuilderExtension::ModelessWindow))
+      {
+        openfluid::builderext::ModelessWindow* ModelessWin =
+            static_cast<openfluid::builderext::ModelessWindow*>(Ext);
+
+        ModelessWin->signal_Hidden().connect(
+            sigc::bind<std::string>(
+                sigc::mem_fun(
+                    *this,
+                    &ProjectCoordinator::whenModelessWindowExtensionHidden),
+                    ExtID));
+
+        m_ModelessWindowsExtensionsMap[ExtID] = ModelessWin;
+
+        Ext->show();
+      }
+      else
+      {
+        Ext->show();
+        ExtCont->deleteExt();
+        // TODO see if change happen only when return of show() is true
+        signal_ChangeHappened().emit();
+      }
     }
-
   }
-
+  catch (openfluid::base::OFException& E)
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("Error from extension: ")+ ExtID + "\n\n" + std::string(E.what()));
+  }
+  catch (std::exception& E)
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("Error from extension: ")+ ExtID + "\n\n" + std::string(E.what()));
+  }
+  catch (...)
+  {
+    openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("Error from extension: ")+ ExtID + "\n\n" + std::string(_("Undetermined error")));
+  }
 }
 
 // =====================================================================
