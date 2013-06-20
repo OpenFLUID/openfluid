@@ -114,6 +114,33 @@ class DummyMixedImporter : public openfluid::builderext::MixedImporter
     void show()
     {
       mp_Dialog->run();
+
+      openfluid::fluidx::UnitDescriptor* UDesc;
+
+
+      UDesc = new openfluid::fluidx::UnitDescriptor();
+      UDesc->getUnitClass() = "TU";
+      UDesc->getUnitID() = 5;
+      UDesc->getProcessOrder() = 1;
+      mp_AdvancedDesc->getDomain().addUnit(UDesc);
+
+      UDesc = new openfluid::fluidx::UnitDescriptor();
+      UDesc->getUnitClass() = "TU";
+      UDesc->getUnitID() = 10;
+      UDesc->getProcessOrder() = 1;
+      mp_AdvancedDesc->getDomain().addUnit(UDesc);
+
+      UDesc = new openfluid::fluidx::UnitDescriptor();
+      UDesc->getUnitClass() = "TU";
+      UDesc->getUnitID() = 15;
+      UDesc->getProcessOrder() = 1;
+      mp_AdvancedDesc->getDomain().addUnit(UDesc);
+
+
+      mp_AdvancedDesc->getDomain().addInputData("TU","tid","1.0");
+      mp_AdvancedDesc->getDomain().getInputData("TU",15,"tid") = "3.0";
+      mp_AdvancedDesc->getDomain().getInputData("TU",10,"tid") = "2.0";
+
       mp_Dialog->hide();
     }
 
