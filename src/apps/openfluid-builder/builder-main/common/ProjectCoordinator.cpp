@@ -684,8 +684,12 @@ void ProjectCoordinator::launchExtension(std::string ExtensionID)
       {
         Ext->show();
         ExtCont->deleteExt();
-        // TODO see if change happen only when return of show() is true
-        signal_ChangeHappened().emit();
+
+        whenDomainChanged();
+        whenModelChanged();
+        whenMonitoringChanged();
+        whenRunChanged();
+
       }
     }
   }
