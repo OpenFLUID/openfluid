@@ -117,7 +117,7 @@ class FluidXDescriptor
 
     void extractDomainDefinitionFromNode(xmlNodePtr NodePtr);
 
-    void extractDomainInputdataFromNode(xmlNodePtr NodePtr);
+    void extractDomainAttributesFromNode(xmlNodePtr NodePtr);
 
     void extractDomainCalendarFromNode(xmlNodePtr NodePtr);
 
@@ -136,21 +136,21 @@ class FluidXDescriptor
     std::string getParamsAsStr(
         const openfluid::ware::WareParams_t& Params) const;
 
-    std::string getModelToWrite();
+    void writeModelToStream(std::ostream& Contents);
 
-    std::string getDomainToWrite();
+    void writeDomainToStream(std::ostream& Contents);
 
-    void appendDomainDefinition(std::ostringstream& Contents);
+    void writeDomainDefinitionToStream(std::ostream& Contents);
 
-    void appendDomainInputdata(std::ostringstream& Contents);
+    void writeDomainAttributesToStream(std::ostream& Contents);
 
-    void appendDomainCalendar(std::ostringstream& Contents);
+    void writeDomainCalendarToStream(std::ostream& Contents);
 
-    std::string getRunConfigurationToWrite();
+    void writeRunConfigurationToStream(std::ostream& Contents);
 
-    std::string getDatastoreToWrite();
+    void writeDatastoreToStream(std::ostream& Contents);
 
-    std::string getMonitoringToWrite();
+    void writeMonitoringToStream(std::ostream& Contents);
 
   public:
 

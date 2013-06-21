@@ -129,15 +129,15 @@
 
 
     </definition>
-    <inputdata unitclass="TLU" colorder="state;duration">
+    <attributes unitclass="TLU" colorder="state;duration">
 1     false	300
 2     true	300
 3     true  300
 4     true  300
 5     false 300
 6     false 300
-    </inputdata>
-    <inputdata unitclass="RU" colorder="capacity;stockini">
+    </attributes>
+    <attributes unitclass="RU" colorder="capacity;stockini">
 1     5	50    
 2     5	50    
 3     4     30
@@ -172,7 +172,7 @@
 32    8     20
 33    9     30
 
-    </inputdata>
+    </attributes>
 
     <calendar>
     </calendar>

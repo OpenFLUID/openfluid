@@ -19,26 +19,26 @@
 			<unit class="unitsA" ID="3" pcsorder="1" />
 		</definition>
 
-		<inputdata unitclass="unitsA" colorder="indataA">
+		<attributes unitclass="unitsA" colorder="indataA">
 			3	AAA
-		</inputdata>
-		<inputdata unitclass="unitsA" colorder="indataA">
+		</attributes>
+		<attributes unitclass="unitsA" colorder="indataA">
 			1	AAA
-		</inputdata>
-		<inputdata unitclass="unitsA" colorder="indataA">
+		</attributes>
+		<attributes unitclass="unitsA" colorder="indataA">
 			2	AAA
-		</inputdata>
-		<inputdata unitclass="unitsA" colorder="indataB">
+		</attributes>
+		<attributes unitclass="unitsA" colorder="indataB">
 			3	BBB
 			1	BBB
-		</inputdata>
-		<inputdata unitclass="unitsA" colorder="indataC">
+		</attributes>
+		<attributes unitclass="unitsA" colorder="indataC">
 			3	CCC
 			1 	CCC
-		</inputdata>
-		<inputdata unitclass="unitsA" colorder="indataB;indataC">
+		</attributes>
+		<attributes unitclass="unitsA" colorder="indataB;indataC">
 			2 BBB CCC
-		</inputdata>
+		</attributes>
 	</domain>
 
 </openfluid>

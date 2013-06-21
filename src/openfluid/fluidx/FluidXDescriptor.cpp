@@ -508,119 +508,48 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
+
+void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
 {
   xmlChar* xmlUnitClass = xmlGetProp(NodePtr, (const xmlChar*) "unitclass");
   xmlChar* xmlColOrder = xmlGetProp(NodePtr, (const xmlChar*) "colorder");
 
-  if (xmlUnitClass != NULL)
+  if (xmlUnitClass != NULL && xmlColOrder != NULL)
   {
-    openfluid::fluidx::InputDataDescriptor IDataDesc;
+    openfluid::fluidx::InputDataDescriptor AttrsDesc;
 
-    IDataDesc.getUnitsClass().assign((char*) xmlUnitClass);
+    AttrsDesc.getUnitsClass().assign((char*) xmlUnitClass);
 
-    if (xmlColOrder != NULL)
-    {
-      // case 1
-      // <inputdata unitclass="someclass" colorder="colA;colB" >
-      //    here is the data
-      // </inputdata>
+    std::vector<std::string> ColOrder;
 
-      std::vector<std::string> ColOrder;
+    ColOrder = openfluid::tools::SplitString(std::string((char*) xmlColOrder),
+                                             ";");
 
-      ColOrder = openfluid::tools::SplitString(std::string((char*) xmlColOrder),
-                                               ";");
+    if (ColOrder.empty())
+      throw openfluid::base::OFException(
+          "OpenFLUID framework",
+          "FluidXDescriptor::extractDomainInputdataFromNode",
+          "wrong or empty colorder attribute in domain attributes (" + m_CurrentFile
+          + ")");
 
-      if (ColOrder.empty())
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
-            "FluidXDescriptor::extractDomainInputdataFromNode",
-            "wrong or empty colorder attribute in domain input data (" + m_CurrentFile
-            + ")");
+    AttrsDesc.getColumnsOrder() = ColOrder;
 
-      IDataDesc.getColumnsOrder() = ColOrder;
+    xmlChar *xmlDataBlob = xmlNodeGetContent(NodePtr);
 
-      xmlChar *xmlDataBlob = xmlNodeGetContent(NodePtr);
-
-      if (xmlDataBlob != NULL)
-        IDataDesc.parseDataBlob(std::string((char*) xmlDataBlob));
-      else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
-            "FluidXDescriptor::extractDomainInputdataFromNode",
-            "wrong or empty data content in domain input data (" + m_CurrentFile
-            + ")");
-    }
+    if (xmlDataBlob != NULL)
+      AttrsDesc.parseDataBlob(std::string((char*) xmlDataBlob));
     else
-    {
-      // case 2 : old deprecated format
-      // <inputdata unitclass="someclass">
-      //   <columns order="colA;colB" />
-      //   <data>
-      //     here is the data
-      //   </data>
-      // </inputdata>
+      throw openfluid::base::OFException(
+          "OpenFLUID framework",
+          "FluidXDescriptor::extractDomainInputdataFromNode",
+          "wrong or empty data content in domain attributes (" + m_CurrentFile
+          + ")");
 
-      bool FoundData = false;
-      bool FoundColOrder = false;
-
-      xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
-
-      while (CurrNode != NULL)
-      {
-        if (xmlStrcmp(CurrNode->name, (const xmlChar*) "columns") == 0 && !FoundColOrder)
-        {
-          FoundColOrder = true;
-
-          xmlChar* xmlOrder = xmlGetProp(CurrNode, (const xmlChar*) "order");
-
-          if (xmlOrder == NULL)
-            throw openfluid::base::OFException(
-                "OpenFLUID framework",
-                "FluidXDescriptor::extractDomainInputdataFromNode",
-                "missing or wrong order attribute for columns tag in domain input data (" + m_CurrentFile
-                + ")");
-
-          std::vector<std::string> Order;
-
-          Order = openfluid::tools::SplitString(std::string((char*) xmlOrder),
-                                                ";");
-
-          if (Order.size() == 0)
-            throw openfluid::base::OFException(
-                "OpenFLUID framework",
-                "FluidXDescriptor::extractDomainInputdataFromNode",
-                "wrong or empty order attribute for columns tag for domain input data (" + m_CurrentFile
-                + ")");
-
-          IDataDesc.getColumnsOrder() = Order;
-        }
-
-        if (xmlStrcmp(CurrNode->name, (const xmlChar*) "data") == 0 && !FoundData)
-        {
-          FoundData = true;
-
-          xmlChar *xmlDataBlob = xmlNodeGetContent(CurrNode);
-
-          if (xmlDataBlob != NULL)
-            IDataDesc.parseDataBlob(std::string((char*) xmlDataBlob));
-        }
-
-        CurrNode = CurrNode->next;
-      }
-
-      if (!(FoundColOrder && FoundData))
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
-            "FluidXDescriptor::extractDomainInputdataFromNode",
-            "missing or wrong domain input data format (" + m_CurrentFile
-            + ")");
-    }
-
-    m_DomainDescriptor.getInputData().push_back(IDataDesc);
+    m_DomainDescriptor.getInputData().push_back(AttrsDesc);
   }
   else
     throw openfluid::base::OFException(
@@ -630,8 +559,10 @@ void FluidXDescriptor::extractDomainInputdataFromNode(xmlNodePtr NodePtr)
         + ")");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
 {
@@ -724,9 +655,9 @@ void FluidXDescriptor::extractDomainFomNode(xmlNodePtr NodePtr)
       extractDomainDefinitionFromNode(CurrNode);
     }
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "inputdata") == 0)
+    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "attributes") == 0)
     {
-      extractDomainInputdataFromNode(CurrNode);
+      extractDomainAttributesFromNode(CurrNode);
     }
 
     if (xmlStrcmp(CurrNode->name, (const xmlChar*) "calendar") == 0)
@@ -933,15 +864,16 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
 
 }
 
-// =====================================================================
-// =====================================================================
 
 // =====================================================================
 // =====================================================================
 
-std::string FluidXDescriptor::getModelToWrite()
+// =====================================================================
+// =====================================================================
+
+
+void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
 {
-  std::ostringstream Contents;
 
   Contents << m_IndentStr << "<model>\n";
 
@@ -989,12 +921,12 @@ std::string FluidXDescriptor::getModelToWrite()
   }
 
   Contents << m_IndentStr << "</model>\n";
-
-  return Contents.str();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string FluidXDescriptor::getParamsAsStr(
     const openfluid::ware::WareParams_t& Params) const
@@ -1009,8 +941,10 @@ std::string FluidXDescriptor::getParamsAsStr(
   return ParamsStr;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string FluidXDescriptor::getGeneratorMethodAsStr(
     openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method) const
@@ -1033,30 +967,32 @@ std::string FluidXDescriptor::getGeneratorMethodAsStr(
   return "";
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::string FluidXDescriptor::getDomainToWrite()
+
+void FluidXDescriptor::writeDomainToStream(std::ostream& Contents)
 {
-  std::ostringstream Contents;
 
   Contents << m_IndentStr << "<domain>\n";
 
-  appendDomainDefinition(Contents);
+  writeDomainDefinitionToStream(Contents);
 
-  appendDomainInputdata(Contents);
+  writeDomainAttributesToStream(Contents);
 
-  appendDomainCalendar(Contents);
+  writeDomainCalendarToStream(Contents);
 
   Contents << m_IndentStr << "</domain>\n";
 
-  return Contents.str();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::appendDomainDefinition(std::ostringstream& Contents)
+
+void FluidXDescriptor::writeDomainDefinitionToStream(std::ostream& Contents)
 {
   Contents << m_IndentStr << m_IndentStr << "<definition>\n";
 
@@ -1090,10 +1026,12 @@ void FluidXDescriptor::appendDomainDefinition(std::ostringstream& Contents)
   Contents << m_IndentStr << m_IndentStr << "</definition>\n";
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::appendDomainInputdata(std::ostringstream& Contents)
+
+void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
 {
   std::list<InputDataDescriptor>& IData = m_DomainDescriptor.getInputData();
 
@@ -1103,7 +1041,7 @@ void FluidXDescriptor::appendDomainInputdata(std::ostringstream& Contents)
   for (std::list<InputDataDescriptor>::iterator it = IData.begin();
       it != IData.end(); ++it)
   {
-    Contents << m_IndentStr << m_IndentStr << "<inputdata unitclass=\""
+    Contents << m_IndentStr << m_IndentStr << "<attributes unitclass=\""
              << it->getUnitsClass() << "\" colorder=\"";
 
     std::vector<std::string> Cols = it->getColumnsOrder();
@@ -1136,15 +1074,17 @@ void FluidXDescriptor::appendDomainInputdata(std::ostringstream& Contents)
       Contents << "\n";
     }
 
-    Contents << m_IndentStr << m_IndentStr << "</inputdata>\n";
+    Contents << m_IndentStr << m_IndentStr << "</attributes>\n";
   }
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::appendDomainCalendar(std::ostringstream& Contents)
+
+void FluidXDescriptor::writeDomainCalendarToStream(std::ostream& Contents)
 {
   std::list<EventDescriptor>& Events = m_DomainDescriptor.getEvents();
 
@@ -1175,13 +1115,13 @@ void FluidXDescriptor::appendDomainCalendar(std::ostringstream& Contents)
   Contents << m_IndentStr << m_IndentStr << "</calendar>\n";
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::string FluidXDescriptor::getRunConfigurationToWrite()
+
+void FluidXDescriptor::writeRunConfigurationToStream(std::ostream& Contents)
 {
-  std::ostringstream Contents;
-
   Contents << m_IndentStr << "<run>\n";
 
   if (m_RunDescriptor.isFilled())
@@ -1211,19 +1151,18 @@ std::string FluidXDescriptor::getRunConfigurationToWrite()
   }
 
   Contents << m_IndentStr << "</run>\n";
-
-  return Contents.str();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::string FluidXDescriptor::getDatastoreToWrite()
+
+void FluidXDescriptor::writeDatastoreToStream(std::ostream& Contents)
 {
   openfluid::fluidx::DatastoreDescriptor::DatastoreDescription_t& Items =
       m_DatastoreDescriptor.getItems();
 
-  std::ostringstream Contents;
 
   Contents << m_IndentStr << "<datastore>\n";
 
@@ -1248,15 +1187,15 @@ std::string FluidXDescriptor::getDatastoreToWrite()
 
   Contents << m_IndentStr << "</datastore>\n";
 
-  return Contents.str();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::string FluidXDescriptor::getMonitoringToWrite()
+
+void FluidXDescriptor::writeMonitoringToStream(std::ostream& Contents)
 {
-  std::ostringstream Contents;
 
   Contents << m_IndentStr << "<monitoring>\n";
 
@@ -1274,12 +1213,12 @@ std::string FluidXDescriptor::getMonitoringToWrite()
   }
 
   Contents << m_IndentStr << "</monitoring>\n";
-
-  return Contents.str();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 {
@@ -1297,7 +1236,8 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << getModelToWrite() << "\n\n";
+  writeModelToStream(OutFile);
+  OutFile << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1311,21 +1251,8 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << getDomainToWrite() << "\n\n";
-  OutFile << "</openfluid>\n";
-  OutFile << "\n";
-
-  OutFile.close();
-  mp_Listener->onFileWritten(openfluid::base::Listener::OK);
-
-  // run
-  OutFilename = boost::filesystem::path(DirPath + "/run.fluidx").string();
-  mp_Listener->onFileWrite(OutFilename);
-  OutFile.open(OutFilename.c_str(), std::ios::out);
-
-  OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
-  OutFile << "<openfluid>\n";
-  OutFile << getRunConfigurationToWrite() << "\n\n";
+  writeDomainToStream(OutFile);
+  OutFile << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1339,7 +1266,8 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << getDatastoreToWrite() << "\n\n";
+  writeDatastoreToStream(OutFile);
+  OutFile << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
@@ -1354,12 +1282,31 @@ void FluidXDescriptor::writeToManyFiles(std::string DirPath)
 
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n";
-  OutFile << getMonitoringToWrite() << "\n\n";
+  writeMonitoringToStream(OutFile);
+  OutFile << "\n\n";
   OutFile << "</openfluid>\n";
   OutFile << "\n";
 
   OutFile.close();
   mp_Listener->onFileWritten(openfluid::base::Listener::OK);
+
+
+  // run
+  OutFilename = boost::filesystem::path(DirPath + "/run.fluidx").string();
+  mp_Listener->onFileWrite(OutFilename);
+  OutFile.open(OutFilename.c_str(), std::ios::out);
+
+  OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
+  OutFile << "<openfluid>\n";
+  writeRunConfigurationToStream(OutFile);
+  OutFile << "\n\n";
+  OutFile << "</openfluid>\n";
+  OutFile << "\n";
+
+  OutFile.close();
+  mp_Listener->onFileWritten(openfluid::base::Listener::OK);
+
+
 
   mp_Listener->onWritten(openfluid::base::Listener::OK);
 }
@@ -1382,11 +1329,16 @@ void FluidXDescriptor::writeToSingleFile(std::string FilePath)
   OutFile << "<?xml version=\"1.0\" standalone=\"yes\"?>\n";
   OutFile << "<openfluid>\n\n\n";
 
-  OutFile << getModelToWrite() << "\n\n";
-  OutFile << getDomainToWrite() << "\n\n";
-  OutFile << getRunConfigurationToWrite() << "\n\n";
-  OutFile << getDatastoreToWrite() << "\n\n";
-  OutFile << getMonitoringToWrite() << "\n\n";
+  writeModelToStream(OutFile);
+  OutFile << "\n\n";
+  writeDomainToStream(OutFile);
+  OutFile << "\n\n";
+  writeDatastoreToStream(OutFile);
+  OutFile << "\n\n";
+  writeMonitoringToStream(OutFile);
+  OutFile << "\n\n";
+  writeRunConfigurationToStream(OutFile);
+  OutFile << "\n\n";
 
   OutFile << "</openfluid>\n";
   OutFile << "\n";
