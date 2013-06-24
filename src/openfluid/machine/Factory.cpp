@@ -154,26 +154,26 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
 
 
 
-  // ============== Input Data ==============
+  // ============== Attributes ==============
 
 
-  std::list<openfluid::fluidx::InputDataDescriptor>::iterator itIData;
+  std::list<openfluid::fluidx::AttributesDescriptor>::iterator itAttrs;
 
-  for (itIData = Descriptor.getInputData().begin();itIData != Descriptor.getInputData().end();++itIData)
+  for (itAttrs = Descriptor.getAttributes().begin();itAttrs != Descriptor.getAttributes().end();++itAttrs)
   {
 
-    openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t Data = (*itIData).getData();
+    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t Data = (*itAttrs).getAttributes();
     openfluid::core::Unit* TheUnit;
 
-    for (openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t::const_iterator itUnit=Data.begin();itUnit!=Data.end();++itUnit)
+    for (openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnit=Data.begin();itUnit!=Data.end();++itUnit)
     {
-      TheUnit = CoreRepos.getUnit((*itIData).getUnitsClass(),itUnit->first);
+      TheUnit = CoreRepos.getUnit((*itAttrs).getUnitsClass(),itUnit->first);
 
       if (TheUnit != NULL)
       {
-        for (openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t::const_iterator itUnitData = itUnit->second.begin();itUnitData!=itUnit->second.end();++itUnitData)
+        for (openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::const_iterator itUnitData = itUnit->second.begin();itUnitData!=itUnit->second.end();++itUnitData)
         {
-          TheUnit->getInputData()->setValue(itUnitData->first,itUnitData->second);
+          TheUnit->getAttributes()->setValue(itUnitData->first,itUnitData->second);
         }
       }
     }

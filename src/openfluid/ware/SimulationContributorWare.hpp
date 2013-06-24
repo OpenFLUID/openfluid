@@ -76,7 +76,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the value of the set attribute
      */
      void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
-                                 const openfluid::core::InputDataName_t& AttrName,
+                                 const openfluid::core::AttributeName_t& AttrName,
                                  const openfluid::core::Value& Val);
 
      /**
@@ -86,7 +86,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the value of the set attribute
      */
      void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
-                                 const openfluid::core::InputDataName_t& AttrName,
+                                 const openfluid::core::AttributeName_t& AttrName,
                                  const double& Val);
 
      /**
@@ -96,7 +96,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[in] Val the value of the set attribute
      */
      void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
-                                 const openfluid::core::InputDataName_t& AttrName,
+                                 const openfluid::core::AttributeName_t& AttrName,
                                  const long& Val);
 
      /**
@@ -106,7 +106,7 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
        @param[out] Val the value of the set attribute
      */
      void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
-                                 const openfluid::core::InputDataName_t& AttrName,
+                                 const openfluid::core::AttributeName_t& AttrName,
                                  const std::string& Val);
 
 

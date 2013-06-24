@@ -84,9 +84,9 @@ typedef int PcsOrd_t;
 typedef std::string UnitClass_t;
 
 /**
-  Type definition for name of input data
+  Type definition for name of an attribute
 */
-typedef std::string InputDataName_t;
+typedef std::string AttributeName_t;
 
 /**
   Type definition for name of a variable

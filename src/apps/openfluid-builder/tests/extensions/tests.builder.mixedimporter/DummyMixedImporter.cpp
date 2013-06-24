@@ -137,9 +137,9 @@ class DummyMixedImporter : public openfluid::builderext::MixedImporter
       mp_AdvancedDesc->getDomain().addUnit(UDesc);
 
 
-      mp_AdvancedDesc->getDomain().addInputData("TU","tid","1.0");
-      mp_AdvancedDesc->getDomain().getInputData("TU",15,"tid") = "3.0";
-      mp_AdvancedDesc->getDomain().getInputData("TU",10,"tid") = "2.0";
+      mp_AdvancedDesc->getDomain().addAttribute("TU","tid","1.0");
+      mp_AdvancedDesc->getDomain().getAttribute("TU",15,"tid") = "3.0";
+      mp_AdvancedDesc->getDomain().getAttribute("TU",10,"tid") = "2.0";
 
       mp_Dialog->hide();
     }

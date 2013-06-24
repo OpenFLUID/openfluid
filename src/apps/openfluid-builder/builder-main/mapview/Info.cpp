@@ -336,7 +336,7 @@ void Info::loadInputData(int ID, int SelectionSize)
     std::map<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >::iterator it;
     for (it = m_InputDataLineTable.begin(); it != m_InputDataLineTable.end(); ++it)
     {
-      std::string Val = mp_Domain->getInputData(mp_NameClassLabel->get_label(), ID, ((*it).first)->get_label());
+      std::string Val = mp_Domain->getAttribute(mp_NameClassLabel->get_label(), ID, ((*it).first)->get_label());
       (*it).second.first->set_text(Val);
     }
   }
@@ -477,7 +477,7 @@ void Info::show(std::string ClassName, std::set<int> UnitIDs)
   mp_NameClassLabel->set_label(ClassName);
   mp_TreeViewIDs->set_name("");
 
-  std::set<std::string> IDataNames = mp_Domain->getInputDataNames(ClassName);
+  std::set<std::string> IDataNames = mp_Domain->getAttributesNames(ClassName);
   m_InputDataNames.insert(m_InputDataNames.begin(),IDataNames.begin(), IDataNames.end());
 
   std::set<int>::iterator it;

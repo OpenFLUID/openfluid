@@ -323,9 +323,9 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
   for (i=0;i<HandledData.RequiredVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
   for (i=0;i<HandledData.UpdatedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
   for (i=0;i<HandledData.UsedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
-  for (i=0;i<HandledData.ProducedInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.ProducedInputdata[i],Suffix,("pinput"));
-  for (i=0;i<HandledData.RequiredInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredInputdata[i],Suffix,("rinput"));
-  for (i=0;i<HandledData.UsedInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedInputdata[i],Suffix,("sinput"));
+  for (i=0;i<HandledData.ProducedAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.ProducedAttribute[i],Suffix,("pinput"));
+  for (i=0;i<HandledData.RequiredAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredAttribute[i],Suffix,("rinput"));
+  for (i=0;i<HandledData.UsedAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedAttribute[i],Suffix,("sinput"));
 
   if (HandledData.UsedEventsOnUnits.size() > 0)
   {

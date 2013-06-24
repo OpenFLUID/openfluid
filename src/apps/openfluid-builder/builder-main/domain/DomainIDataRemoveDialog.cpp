@@ -98,7 +98,7 @@ bool DomainIDataRemoveDialog::show()
 {
   mp_Combo->clear_items();
 
-  std::set<std::string> IDataNames = mp_Domain->getInputDataNames(m_ClassName);
+  std::set<std::string> IDataNames = mp_Domain->getAttributesNames(m_ClassName);
 
   for (std::set<std::string>::iterator it = IDataNames.begin();
       it != IDataNames.end(); ++it)
@@ -108,7 +108,7 @@ bool DomainIDataRemoveDialog::show()
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    mp_Domain->deleteInputData(m_ClassName, mp_Combo->get_active_text());
+    mp_Domain->deleteAttribute(m_ClassName, mp_Combo->get_active_text());
 
     mp_Dialog->hide();
     return true;

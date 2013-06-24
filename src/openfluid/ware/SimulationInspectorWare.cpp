@@ -86,7 +86,7 @@ bool SimulationInspectorWare::IsUnitIDInPtrList(const openfluid::core::UnitsPtrL
 
 
 void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                            const openfluid::core::InputDataName_t& AttrName,
+                            const openfluid::core::AttributeName_t& AttrName,
                             openfluid::core::StringValue& Val) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -94,7 +94,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValue(AttrName,Val))
+    if (!UnitPtr->getAttributes()->getValue(AttrName,Val))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetAttribute","StringValue for attribute "+ AttrName +" does not exist");
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetAttribute","Unit is NULL");
@@ -106,7 +106,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
 
 void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& AttrName,
+                                    const openfluid::core::AttributeName_t& AttrName,
                                     openfluid::core::DoubleValue& Val) const
 {
   double TmpVal;
@@ -120,7 +120,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
 
 void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& AttrName,
+                                    const openfluid::core::AttributeName_t& AttrName,
                                     openfluid::core::VectorValue& Val) const
 {
   openfluid::core::StringValue TmpVal;
@@ -134,7 +134,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
 
 void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                            const openfluid::core::InputDataName_t& AttrName,
+                            const openfluid::core::AttributeName_t& AttrName,
                             openfluid::core::MatrixValue& Val) const
 {
   openfluid::core::StringValue TmpVal;
@@ -148,7 +148,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
 
 void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& AttrName,
+                                    const openfluid::core::AttributeName_t& AttrName,
                                     double& Val) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -156,7 +156,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValueAsDouble(AttrName,Val))
+    if (!UnitPtr->getAttributes()->getValueAsDouble(AttrName,Val))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetAttribute","Double value for attribute "+ AttrName +" does not exist");
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetAttribute","Unit is NULL");
@@ -168,7 +168,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
 
 void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& AttrName,
+                                    const openfluid::core::AttributeName_t& AttrName,
                                     long& Val) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -176,7 +176,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValueAsLong(AttrName,Val))
+    if (!UnitPtr->getAttributes()->getValueAsLong(AttrName,Val))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetAttribute","Long integer for attribute "+ AttrName +" does not exist");
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetAttribute","Unit is NULL");
@@ -188,7 +188,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
 
 void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& AttrName,
+                                    const openfluid::core::AttributeName_t& AttrName,
                                     std::string& Val) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -196,7 +196,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->getValue(AttrName,Val))
+    if (!UnitPtr->getAttributes()->getValue(AttrName,Val))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetAttribute","String value for attribute "+ AttrName +" does not exist");
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_GetAttribute","Unit is NULL");
@@ -208,13 +208,13 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 
 
 bool SimulationInspectorWare::OPENFLUID_IsAttributeExist(const openfluid::core::Unit *UnitPtr,
-                               const openfluid::core::InputDataName_t& AttrName) const
+                               const openfluid::core::AttributeName_t& AttrName) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
                               "SimulationInspectorWare::OPENFLUID_IsAttributeExist","Attributes cannot be accessed during INITPARAMS stage");
 
   if (UnitPtr != NULL)
-    return UnitPtr->getInputData()->isDataExist(AttrName);
+    return UnitPtr->getAttributes()->isAttributeExist(AttrName);
 
   throw openfluid::base::OFException("OpenFLUID framework","SimulationInspectorWare::OPENFLUID_IsAttributeExist","Unit is NULL");
   return false;

@@ -63,7 +63,7 @@
 #include <openfluid/fluidx/EventDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
-#include <openfluid/fluidx/IDataDescriptor.hpp>
+#include <openfluid/fluidx/AttributesDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>

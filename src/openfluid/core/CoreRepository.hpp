@@ -105,7 +105,7 @@ class DLLEXPORT CoreRepository
 
     void clearAllVariables();
 
-    void clearAllInputdata();
+    void clearAllAttributes();
 
     void clearAllEvents();
 

@@ -277,12 +277,12 @@ void NewDataBuddy::generateDDataXML()
   ContentA.clear();
   ContentA << getXMLHeader() << std::endl;
   ContentA << "  <domain>" << std::endl;
-  ContentA << "    <inputdata unitclass=\"unitsA\" colorder=\"foodata\" >" << std::endl;
+  ContentA << "    <attributes unitclass=\"unitsA\" colorder=\"foodata\" >" << std::endl;
   ContentA << std::endl;
   ContentA << "3 1.25" << std::endl;
   ContentA << "8 2.385" << std::endl;
   ContentA << std::endl;
-  ContentA << "    </inputdata>" << std::endl;
+  ContentA << "    </attributes>" << std::endl;
   ContentA << "  </domain>" << std::endl;
   ContentA << getXMLFooter() << std::endl;
 
@@ -297,11 +297,11 @@ void NewDataBuddy::generateDDataXML()
   ContentB.clear();
   ContentB << getXMLHeader() << std::endl;
   ContentB << "  <domain>" << std::endl;
-  ContentB << "    <inputdata unitclass=\"unitsB\" colorder=\"bardata;otherbardata\">" << std::endl;
+  ContentB << "    <attributes unitclass=\"unitsB\" colorder=\"bardata;otherbardata\">" << std::endl;
   ContentB << std::endl;
   ContentB << "1 0.00035 185" << std::endl;
   ContentB << std::endl;
-  ContentB << "    </inputdata>" << std::endl;
+  ContentB << "    </attributes>" << std::endl;
   ContentB << "  </domain>" << std::endl;
   ContentB << getXMLFooter() << std::endl;
 

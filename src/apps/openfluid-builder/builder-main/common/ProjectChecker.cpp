@@ -85,7 +85,7 @@ void ProjectChecker::clearAll()
   IsModelOk = false;
   IsParamsOk = true;
   IsDomainOk = false;
-  IsInputdataOk = false;
+  IsAttributeOk = false;
   IsGeneratorParamsOk = true;
   IsExtraFilesOk = false;
   IsRunConfigOk = false;
@@ -96,7 +96,7 @@ void ProjectChecker::clearAll()
   ModelMsg = "";
   ParamsMsg = "";
   DomainMsg = "";
-  InputdataMsg = "";
+  AttributeMsg = "";
   ExtraFilesMsg = "";
   RunConfigMsg = "";
   MonitoringMsg = "";
@@ -122,7 +122,7 @@ bool ProjectChecker::check()
   else
   {
     checkModelRequirements();
-    checkModelInputdata();
+    checkModelAttributes();
     checkModelVars();
   }
 
@@ -138,7 +138,7 @@ bool ProjectChecker::check()
   checkDatastore();
 
   IsExtraFilesOk = ExtraFilesMsg.empty();
-  IsInputdataOk = InputdataMsg.empty();
+  IsAttributeOk = AttributeMsg.empty();
   IsModelOk = ModelMsg.empty();
   IsDomainOk = DomainMsg.empty();
   IsRunConfigOk = RunConfigMsg.empty();
@@ -343,7 +343,7 @@ double ProjectChecker::getParamAsDouble(
 // =====================================================================
 // =====================================================================
 
-void ProjectChecker::checkModelInputdata()
+void ProjectChecker::checkModelAttributes()
 {
   openfluid::fluidx::AdvancedDomainDescriptor& Domain = mp_Desc->getDomain();
   const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
@@ -363,31 +363,31 @@ void ProjectChecker::checkModelInputdata()
 
     // check required Input data
     std::vector<openfluid::ware::SignatureHandledDataItem>& ReqData =
-        Sign->HandledData.RequiredInputdata;
+        Sign->HandledData.RequiredAttribute;
     for (itt = ReqData.begin(); itt != ReqData.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
-        InputdataMsg +=
+        AttributeMsg +=
             Glib::ustring::compose(
-                _("- Unit %1 class does not exist for %2 input data required by %3\n"),
+                _("- Unit %1 class does not exist for %2 attribute required by %3\n"),
                 itt->UnitClass, itt->DataName, ID);
 
-      else if (!(Domain.getInputDataNames(itt->UnitClass).count(itt->DataName)
+      else if (!(Domain.getAttributesNames(itt->UnitClass).count(itt->DataName)
           || IDataUnits.count(std::make_pair(itt->UnitClass, itt->DataName))))
-        InputdataMsg += Glib::ustring::compose(
-            _("- %1 input data on %2 required by %3 is not available\n"),
+        AttributeMsg += Glib::ustring::compose(
+            _("- %1 attribute on %2 required by %3 is not available\n"),
             itt->DataName, itt->UnitClass, ID);
     }
 
     // check produced Input data
     std::vector<openfluid::ware::SignatureHandledDataItem>& ProdData =
-        Sign->HandledData.ProducedInputdata;
+        Sign->HandledData.ProducedAttribute;
     for (itt = ProdData.begin(); itt != ProdData.end(); ++itt)
     {
       if (!Domain.isClassNameExists(itt->UnitClass))
-        InputdataMsg +=
+        AttributeMsg +=
             Glib::ustring::compose(
-                _("- Unit %1 class does not exist for %2 input data produced by %3\n"),
+                _("- Unit %1 class does not exist for %2 attribute produced by %3\n"),
                 itt->UnitClass, itt->DataName, ID);
 
       if (!IDataUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
@@ -395,9 +395,9 @@ void ProjectChecker::checkModelInputdata()
         IDataUnits.insert(std::make_pair(itt->UnitClass, itt->DataName));
       }
       else
-        InputdataMsg +=
+        AttributeMsg +=
             Glib::ustring::compose(
-                _("- %1 input data on %2 produced by %3 cannot be created because it is previously created\n"),
+                _("- %1 attribute on %2 produced by %3 cannot be created because it is previously created\n"),
                 itt->DataName, itt->UnitClass, ID);
     }
 
@@ -569,7 +569,7 @@ void ProjectChecker::checkDatastore()
 
 bool ProjectChecker::getGlobalCheckState()
 {
-  return (IsExtraFilesOk && IsInputdataOk && IsModelOk && IsGeneratorParamsOk
+  return (IsExtraFilesOk && IsAttributeOk && IsModelOk && IsGeneratorParamsOk
           && IsProjectOk && IsRunConfigOk);
 }
 

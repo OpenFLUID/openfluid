@@ -176,7 +176,7 @@
   @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
 #define DECLARE_PRODUCED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.ProducedInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.ProducedAttribute.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a required attribute
@@ -186,7 +186,7 @@
   @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
 #define DECLARE_REQUIRED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.RequiredInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.RequiredAttribute.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of a used attribute
@@ -196,7 +196,7 @@
   @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
 #define DECLARE_USED_ATTRIBUTE(name,uclass,description,unit) \
-  Signature->HandledData.UsedInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
+  Signature->HandledData.UsedAttribute.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
   Macro for declaration of used events
@@ -370,11 +370,11 @@ class SignatureHandledData
 
     std::vector<SignatureHandledDataItem> SimulatorParams;
 
-    std::vector<SignatureHandledDataItem> ProducedInputdata;
+    std::vector<SignatureHandledDataItem> ProducedAttribute;
 
-    std::vector<SignatureHandledDataItem> RequiredInputdata;
+    std::vector<SignatureHandledDataItem> RequiredAttribute;
 
-    std::vector<SignatureHandledDataItem> UsedInputdata;
+    std::vector<SignatureHandledDataItem> UsedAttribute;
 
     std::vector<std::string> RequiredExtraFiles;
 

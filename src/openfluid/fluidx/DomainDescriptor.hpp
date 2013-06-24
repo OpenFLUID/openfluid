@@ -58,7 +58,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/UnitDescriptor.hpp>
-#include <openfluid/fluidx/IDataDescriptor.hpp>
+#include <openfluid/fluidx/AttributesDescriptor.hpp>
 #include <openfluid/fluidx/EventDescriptor.hpp>
 
 
@@ -71,7 +71,7 @@ class DLLEXPORT DomainDescriptor
 
     std::list<UnitDescriptor> m_DefDescriptor;
 
-    std::list<InputDataDescriptor> m_IDataDescriptor;
+    std::list<AttributesDescriptor> m_AttrsDescriptor;
 
     std::list<EventDescriptor> m_EventsDescriptor;
 
@@ -84,7 +84,7 @@ class DLLEXPORT DomainDescriptor
 
     inline std::list<UnitDescriptor>& getUnits() { return m_DefDescriptor; };
 
-    inline std::list<InputDataDescriptor>& getInputData() { return m_IDataDescriptor; };
+    inline std::list<AttributesDescriptor>& getAttributes() { return m_AttrsDescriptor; };
 
     inline std::list<EventDescriptor>& getEvents() { return m_EventsDescriptor; };
 

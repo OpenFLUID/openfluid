@@ -54,19 +54,19 @@
 */
 
 
-#include <openfluid/builderext/InputdataImporter.hpp>
+#include <openfluid/builderext/AttributesImporter.hpp>
 
 #include <gtkmm/messagedialog.h>
 
 DECLARE_EXTENSION_HOOKS;
 
-DEFINE_EXTENSION_INFOS("tests.builder.inputdataimporter",
-                       "Dummy inputdata importer",
-                       "Dummy inputdata importer for tests",
-                       "This is a inputdata importer for tests",
+DEFINE_EXTENSION_INFOS("tests.builder.attributesimporter",
+                       "Dummy attributes importer",
+                       "Dummy attributes importer for tests",
+                       "This is a attributes importer for tests",
                        "JC.Fabre;A.Libres",
                        "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
-                       openfluid::builderext::PluggableBuilderExtension::InputdataImporter);
+                       openfluid::builderext::PluggableBuilderExtension::AttributesImporter);
 
 DEFINE_EXTENSION_DEFAULT_CONFIG()
 
@@ -74,7 +74,7 @@ DEFINE_EXTENSION_DEFAULT_CONFIG()
 // =====================================================================
 
 
-class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
+class DummyAttributesImporter : public openfluid::builderext::AttributesImporter
 {
   private:
 
@@ -82,9 +82,9 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 
   public:
 
-    DummyInputdataImporter()
+    DummyAttributesImporter()
     {
-      mp_Dialog = new Gtk::MessageDialog("I am DummyInputdataImporter");
+      mp_Dialog = new Gtk::MessageDialog("I am DummyAttributesImporter");
     };
 
 
@@ -92,7 +92,7 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
     // =====================================================================
 
 
-    ~DummyInputdataImporter()
+    ~DummyAttributesImporter()
     {
       delete mp_Dialog;
     };
@@ -124,7 +124,7 @@ class DummyInputdataImporter : public openfluid::builderext::InputdataImporter
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS((DummyInputdataImporter));
+DEFINE_EXTENSION_HOOKS((DummyAttributesImporter));
 
 
 

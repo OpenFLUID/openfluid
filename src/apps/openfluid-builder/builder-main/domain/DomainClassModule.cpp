@@ -142,7 +142,7 @@ DomainClassModule::~DomainClassModule()
 
 void DomainClassModule::updateIData()
 {
-  std::set<std::string> IDataNames = m_Domain.getInputDataNames(m_ClassName);
+  std::set<std::string> IDataNames = m_Domain.getAttributesNames(m_ClassName);
 
   mp_IDataListToolBox->setRemoveCommandAvailable(!IDataNames.empty());
   mp_IDataListToolBox->setEditCommandAvailable(!IDataNames.empty());
@@ -185,7 +185,7 @@ void DomainClassModule::updateIData()
         itData != IDataNames.end(); ++itData)
     {
       std::string IDataName = *itData;
-      std::string IDataValue = m_Domain.getInputData(m_ClassName, *it,
+      std::string IDataValue = m_Domain.getAttribute(m_ClassName, *it,
                                                      IDataName);
 
       Row.set_value(mp_IDataColumns->getColumn(IDataName), IDataValue);
@@ -302,7 +302,7 @@ void DomainClassModule::onDataEdited(const Glib::ustring& Path,
     Iter->set_value(mp_IDataColumns->getColumn(DataName), DataVal);
   }
 
-  m_Domain.getInputData(m_ClassName, Iter->get_value(mp_IDataColumns->m_Id),
+  m_Domain.getAttribute(m_ClassName, Iter->get_value(mp_IDataColumns->m_Id),
                         DataName) = DataVal;
 
   m_signal_DomainClassChanged.emit();
@@ -321,7 +321,7 @@ void DomainClassModule::updateEvents()
   for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it =
       Units.begin(); it != Units.end(); ++it)
   {
-    std::list<openfluid::core::Event*> Events = it->second.m_Events;
+    std::list<openfluid::core::Event*> Events = it->second.Events;
 
     if (Events.empty())
       continue;

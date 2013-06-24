@@ -307,7 +307,7 @@ struct init_FromFile
 
       mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(0);
       mp_FXDesc->loadFromDirectory(
-          CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefileForModel");
+          CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/singlefileformodel");
       openfluid::fluidx::AdvancedFluidXDescriptor Desc(*mp_FXDesc);
 
       mp_Model = &Desc.getModel();

@@ -65,7 +65,7 @@ namespace openfluid { namespace ware {
 
 
 void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& AttrName,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -75,7 +75,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *Un
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(AttrName,Val))
+    if (!UnitPtr->getAttributes()->setValue(AttrName,Val))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unable to set value for attribute "+ AttrName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unit is NULL");
@@ -87,7 +87,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *Un
 
 
 void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
-                                               const openfluid::core::InputDataName_t& AttrName,
+                                               const openfluid::core::AttributeName_t& AttrName,
                                                const double& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -97,7 +97,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *Un
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(AttrName,openfluid::core::DoubleValue(Val)))
+    if (!UnitPtr->getAttributes()->setValue(AttrName,openfluid::core::DoubleValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unable to set double value for attribute "+ AttrName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unit is NULL");
@@ -109,7 +109,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *Un
 
 
 void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
-                                               const openfluid::core::InputDataName_t& AttrName,
+                                               const openfluid::core::AttributeName_t& AttrName,
                                                const long& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -119,7 +119,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *Un
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(AttrName,openfluid::core::IntegerValue(Val)))
+    if (!UnitPtr->getAttributes()->setValue(AttrName,openfluid::core::IntegerValue(Val)))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unable to set long value for attribute "+ AttrName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unit is NULL");
@@ -131,7 +131,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *Un
 
 
 void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
-                                               const openfluid::core::InputDataName_t& AttrName,
+                                               const openfluid::core::AttributeName_t& AttrName,
                                                const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -141,7 +141,7 @@ void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *Un
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(AttrName,Val))
+    if (!UnitPtr->getAttributes()->setValue(AttrName,Val))
       throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unable to set string value for attribute "+ AttrName);
   }
   else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unit is NULL");

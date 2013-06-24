@@ -204,7 +204,7 @@ class PluggableBuilderExtension
   public:
 
     enum ExtensionType { WorkspaceTab, ModelessWindow, ModalWindow,
-                         SpatialgraphImporter, InputdataImporter, EventsImporter, ExtraImporter, MixedImporter,
+                         SpatialgraphImporter, AttributesImporter, EventsImporter, ExtraImporter, MixedImporter,
                          HomeLauncher };
 
 

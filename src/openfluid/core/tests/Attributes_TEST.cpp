@@ -47,7 +47,7 @@
 
 
 /**
-  \file InputData_TEST.cpp
+  \file Attributes_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -56,11 +56,11 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_inputdata
+#define BOOST_TEST_MODULE unittest_attributes
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/test/floating_point_comparison.hpp>
-#include <openfluid/core/InputData.hpp>
+#include <openfluid/core/Attributes.hpp>
 #include <vector>
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/NullValue.hpp>
@@ -72,7 +72,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::InputData IData;
+  openfluid::core::Attributes Attrs;
 }
 
 // =====================================================================
@@ -80,178 +80,178 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::InputData IData;
+  openfluid::core::Attributes Attrs;
   double TheDouble;
   long TheLong;
   std::string TheString;
   openfluid::core::StringValue TheStringVal;
   openfluid::core::VectorValue TheVect;
-  std::vector<openfluid::core::InputDataName_t> Names;
+  std::vector<openfluid::core::AttributeName_t> Names;
 
 
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_dbl",openfluid::core::DoubleValue(2.0)),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_dbl_str","2.0"),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_int",openfluid::core::IntegerValue(3)),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_int_str","3"),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_str1",openfluid::core::StringValue("4.3")),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_strA","CODEA"),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_bool",openfluid::core::BooleanValue(true)),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_bool_str","true"),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_bool_1","1"),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_bool_str1",openfluid::core::StringValue("1")),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_null",openfluid::core::NullValue()),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_null_str","null"),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_vect",openfluid::core::VectorValue(3,1.1)),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_vect_str","1.1;1.1;1.1"),true);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_dbl",openfluid::core::DoubleValue(2.0)),false);
-  BOOST_REQUIRE_EQUAL(IData.setValue("idata_dbl","2.0"),false);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_dbl",openfluid::core::DoubleValue(2.0)),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_dbl_str","2.0"),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_int",openfluid::core::IntegerValue(3)),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_int_str","3"),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_str1",openfluid::core::StringValue("4.3")),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_strA","CODEA"),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_bool",openfluid::core::BooleanValue(true)),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_bool_str","true"),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_bool_1","1"),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_bool_str1",openfluid::core::StringValue("1")),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_null",openfluid::core::NullValue()),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_null_str","null"),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_vect",openfluid::core::VectorValue(3,1.1)),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_vect_str","1.1;1.1;1.1"),true);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_dbl",openfluid::core::DoubleValue(2.0)),false);
+  BOOST_REQUIRE_EQUAL(Attrs.setValue("attr_dbl","2.0"),false);
 
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_dbl",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_dbl",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"2");
   TheString = "";
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_dbl_str",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_dbl_str",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"2.0");
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_dbl",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_dbl",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"2");
   TheStringVal.set("");
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_dbl_str",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_dbl_str",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"2.0");
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_dbl",TheDouble),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_dbl",TheDouble),true);
   BOOST_REQUIRE_CLOSE(TheDouble,2.0,0.001);
   TheDouble = 0.0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_dbl_str",TheDouble),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_dbl_str",TheDouble),true);
   BOOST_REQUIRE_CLOSE(TheDouble,2.0,0.001);
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_dbl",TheLong),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_dbl",TheLong),true);
   BOOST_REQUIRE_EQUAL(TheLong,2);
   TheLong = 0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_dbl_str",TheLong),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_dbl_str",TheLong),false);
 
 
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_int",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_int",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"3");
   TheString = "";
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_int_str",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_int_str",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"3");
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_int",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_int",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"3");
   TheStringVal.set("");
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_int_str",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_int_str",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"3");
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_int",TheDouble),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_int",TheDouble),true);
   BOOST_REQUIRE_CLOSE(TheDouble,3.0,0.001);
   TheDouble = 0.0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_int_str",TheDouble),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_int_str",TheDouble),true);
   BOOST_REQUIRE_CLOSE(TheDouble,3.0,0.001);
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_int",TheLong),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_int",TheLong),true);
   BOOST_REQUIRE_EQUAL(TheLong,3);
   TheLong = 0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_int_str",TheLong),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_int_str",TheLong),true);
   BOOST_REQUIRE_EQUAL(TheLong,3);
 
 
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_str1",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_str1",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"4.3");
   TheString = "";
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_strA",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_strA",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"CODEA");
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_str1",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_str1",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"4.3");
   TheStringVal.set("");
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_strA",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_strA",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"CODEA");
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_str1",TheDouble),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_str1",TheDouble),true);
   BOOST_REQUIRE_CLOSE(TheDouble,4.3,0.001);
   TheDouble = 0.0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_strA",TheDouble),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_strA",TheDouble),false);
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_str1",TheLong),false);
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_strA",TheLong),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_str1",TheLong),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_strA",TheLong),false);
 
 
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_bool",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_bool",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"1");
   TheString = "";
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_bool_str",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_bool_str",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"true");
   TheString = "";
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_bool_1",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_bool_1",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"1");
   TheString = "";
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_bool_str1",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_bool_str1",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"1");
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_bool",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_bool",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"1");
   TheStringVal.set("");
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_bool_str",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_bool_str",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"true");
   TheStringVal.set("");
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_bool_1",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_bool_1",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"1");
   TheStringVal.set("");
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_bool_str1",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_bool_str1",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"1");
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_bool",TheDouble),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_bool",TheDouble),true);
   BOOST_REQUIRE_CLOSE(TheDouble,1.0,0.001);
   TheDouble = 0.0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_bool_str",TheDouble),false);
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_bool_1",TheDouble),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_bool_str",TheDouble),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_bool_1",TheDouble),true);
   BOOST_REQUIRE_CLOSE(TheDouble,1.0,0.001);
   TheDouble = 0.0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_bool_str1",TheDouble),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_bool_str1",TheDouble),true);
   BOOST_REQUIRE_CLOSE(TheDouble,1.0,0.001);
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_bool",TheLong),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_bool",TheLong),true);
   BOOST_REQUIRE_EQUAL(TheLong,1);
   TheLong = 0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_bool_str",TheLong),false);
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_bool_1",TheLong),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_bool_str",TheLong),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_bool_1",TheLong),true);
   BOOST_REQUIRE_EQUAL(TheLong,1);
   TheLong = 0;
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_bool_str1",TheLong),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_bool_str1",TheLong),true);
   BOOST_REQUIRE_EQUAL(TheLong,1);
 
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_null",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_null",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"null");
   TheString = "";
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_null_str",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_null_str",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"null");
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_null",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_null",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"null");
   TheStringVal.set("");
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_null_str",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_null_str",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"null");
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_null",TheDouble),false);
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_null_str",TheDouble),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_null",TheDouble),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_null_str",TheDouble),false);
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_null",TheLong),false);
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_null_str",TheLong),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_null",TheLong),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_null_str",TheLong),false);
 
 
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_vect",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_vect",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"1.1;1.1;1.1");
   TheString = "";
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_vect_str",TheString),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_vect_str",TheString),true);
   BOOST_REQUIRE_EQUAL(TheString,"1.1;1.1;1.1");
 
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_vect",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_vect",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"1.1;1.1;1.1");
   BOOST_REQUIRE_EQUAL(TheStringVal.toVectorValue(";",TheVect), true);
   BOOST_REQUIRE_EQUAL(TheVect.size(),3);
@@ -259,21 +259,21 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(TheVect[2],1.1);
   TheVect.clear();
   TheStringVal.set("");
-  BOOST_REQUIRE_EQUAL(IData.getValue("idata_vect_str",TheStringVal),true);
+  BOOST_REQUIRE_EQUAL(Attrs.getValue("attr_vect_str",TheStringVal),true);
   BOOST_REQUIRE_EQUAL(TheStringVal.get(),"1.1;1.1;1.1");
   BOOST_REQUIRE_EQUAL(TheStringVal.toVectorValue(";",TheVect), true);
   BOOST_REQUIRE_EQUAL(TheVect.size(),3);
   BOOST_REQUIRE_EQUAL(TheVect[0],1.1);
   BOOST_REQUIRE_EQUAL(TheVect[2],1.1);
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_vect",TheDouble),false);
-  BOOST_REQUIRE_EQUAL(IData.getValueAsDouble("idata_vect_str",TheDouble),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_vect",TheDouble),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsDouble("attr_vect_str",TheDouble),false);
 
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_vect",TheLong),false);
-  BOOST_REQUIRE_EQUAL(IData.getValueAsLong("idata_vect_str",TheLong),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_vect",TheLong),false);
+  BOOST_REQUIRE_EQUAL(Attrs.getValueAsLong("attr_vect_str",TheLong),false);
 
 
 
-  Names = IData.getInputDataNames();
+  Names = Attrs.getAttributesNames();
   BOOST_REQUIRE_EQUAL(Names.size(),14);
 }

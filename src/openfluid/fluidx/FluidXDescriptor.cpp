@@ -520,7 +520,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
 
   if (xmlUnitClass != NULL && xmlColOrder != NULL)
   {
-    openfluid::fluidx::InputDataDescriptor AttrsDesc;
+    openfluid::fluidx::AttributesDescriptor AttrsDesc;
 
     AttrsDesc.getUnitsClass().assign((char*) xmlUnitClass);
 
@@ -532,7 +532,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
     if (ColOrder.empty())
       throw openfluid::base::OFException(
           "OpenFLUID framework",
-          "FluidXDescriptor::extractDomainInputdataFromNode",
+          "FluidXDescriptor::extractDomainAttributesFromNode",
           "wrong or empty colorder attribute in domain attributes (" + m_CurrentFile
           + ")");
 
@@ -545,17 +545,17 @@ void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
     else
       throw openfluid::base::OFException(
           "OpenFLUID framework",
-          "FluidXDescriptor::extractDomainInputdataFromNode",
+          "FluidXDescriptor::extractDomainAttributesFromNode",
           "wrong or empty data content in domain attributes (" + m_CurrentFile
           + ")");
 
-    m_DomainDescriptor.getInputData().push_back(AttrsDesc);
+    m_DomainDescriptor.getAttributes().push_back(AttrsDesc);
   }
   else
     throw openfluid::base::OFException(
         "OpenFLUID framework",
-        "FluidXDescriptor::extractDomainInputdataFromNode",
-        "missing or wrong unitclass attribute(s) in domain input data (" + m_CurrentFile
+        "FluidXDescriptor::extractDomainAttributesFromNode",
+        "missing or wrong unitclass attribute(s) in domain attributes (" + m_CurrentFile
         + ")");
 }
 
@@ -1033,13 +1033,13 @@ void FluidXDescriptor::writeDomainDefinitionToStream(std::ostream& Contents)
 
 void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
 {
-  std::list<InputDataDescriptor>& IData = m_DomainDescriptor.getInputData();
+  std::list<AttributesDescriptor>& Attrs = m_DomainDescriptor.getAttributes();
 
-  openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t::iterator itData;
-  openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t::iterator itVal;
+  openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::iterator itData;
+  openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t::iterator itVal;
 
-  for (std::list<InputDataDescriptor>::iterator it = IData.begin();
-      it != IData.end(); ++it)
+  for (std::list<AttributesDescriptor>::iterator it = Attrs.begin();
+      it != Attrs.end(); ++it)
   {
     Contents << m_IndentStr << m_IndentStr << "<attributes unitclass=\""
              << it->getUnitsClass() << "\" colorder=\"";
@@ -1055,13 +1055,13 @@ void FluidXDescriptor::writeDomainAttributesToStream(std::ostream& Contents)
 
     Contents << "\">\n";
 
-    openfluid::fluidx::InputDataDescriptor::UnitIDInputData_t& DataMap =
-        it->getData();
+    openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t& DataMap =
+        it->getAttributes();
     for (itData = DataMap.begin(); itData != DataMap.end(); ++itData)
     {
       Contents << itData->first << "\t";
 
-      openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t& DataVals =
+      openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t& DataVals =
           itData->second;
 
       unsigned int i = 0;

@@ -84,8 +84,8 @@ class DLLEXPORT DialogBoxFactory
 
     static int showCloseProjectDialog(bool HasToBeSaved);
 
-    static std::string showDomainIDataEditDialog(int Id, std::string DataName,
-        std::string Val);
+    static std::string showDomainAttributeEditDialog(int Id, const std::string& AttrName,
+        const std::string& Val);
 };
 
 }

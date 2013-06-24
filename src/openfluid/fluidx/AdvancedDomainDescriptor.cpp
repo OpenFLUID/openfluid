@@ -56,7 +56,7 @@
 
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/UnitDescriptor.hpp>
-#include <openfluid/fluidx/IDataDescriptor.hpp>
+#include <openfluid/fluidx/AttributesDescriptor.hpp>
 #include <stdexcept>
 #include <algorithm>
 
@@ -73,8 +73,8 @@ AdvancedDomainDescriptor::AdvancedDomainDescriptor(
   dispatchUnits();
   checkUnitRelations();
 
-  dispatchIData();
-  checkIDataConsistency();
+  dispatchAttributes();
+  checkAttributesConsistency();
 
   dispatchEvents();
 }
@@ -174,47 +174,47 @@ void AdvancedDomainDescriptor::checkUnitRelations(
 // =====================================================================
 // =====================================================================
 
-void AdvancedDomainDescriptor::dispatchIData()
+void AdvancedDomainDescriptor::dispatchAttributes()
 {
-  std::list<openfluid::fluidx::InputDataDescriptor>* IData =
-      &(mp_DomainDesc->getInputData());
+  std::list<openfluid::fluidx::AttributesDescriptor>* Attrs =
+      &(mp_DomainDesc->getAttributes());
 
-  for (std::list<openfluid::fluidx::InputDataDescriptor>::iterator it =
-      IData->begin(); it != IData->end(); ++it)
+  for (std::list<openfluid::fluidx::AttributesDescriptor>::iterator it =
+      Attrs->begin(); it != Attrs->end(); ++it)
   {
     std::map<openfluid::core::UnitID_t,
-        openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* Data =
-        &(it->getData());
+        openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t>* Data =
+        &(it->getAttributes());
 
     for (std::map<openfluid::core::UnitID_t,
-        openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>::iterator it2 =
+        openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t>::iterator it2 =
         Data->begin(); it2 != Data->end(); ++it2)
     {
-      std::map<openfluid::core::InputDataName_t, std::string>* Data =
+      std::map<openfluid::core::AttributeName_t, std::string>* Data =
           &(it2->second);
-      for (std::map<openfluid::core::InputDataName_t, std::string>::iterator it3 =
+      for (std::map<openfluid::core::AttributeName_t, std::string>::iterator it3 =
           Data->begin(); it3 != Data->end(); ++it3)
       {
-        m_IDataNames[it->getUnitsClass()].insert(it3->first);
+        m_AttrsNames[it->getUnitsClass()].insert(it3->first);
 
         try
         {
-          if (!m_Units.at(it->getUnitsClass()).at(it2->first).m_IData.insert(
+          if (!m_Units.at(it->getUnitsClass()).at(it2->first).Attributes.insert(
               std::make_pair(it3->first, &it3->second)).second)
             throw openfluid::base::OFException(
                 "OpenFLUID-Framework",
-                "AdvancedDomainDescriptor::dispatchIData",
-                "trying to add an input data (" + it3->first
+                "AdvancedDomainDescriptor::dispatchAttributes",
+                "trying to add an attribute (" + it3->first
                 + ") that already exists");
         }
         catch (std::out_of_range& e)
         {
           std::ostringstream ss;
-          ss << "trying to add an input data (" << it3->first
+          ss << "trying to add an attribute (" << it3->first
              << ") to a Unit that doesn't exist (class " << it->getUnitsClass()
              << " - ID " << it2->first << ")";
           throw openfluid::base::OFException(
-              "OpenFLUID-Framework", "AdvancedDomainDescriptor::dispatchIData",
+              "OpenFLUID-Framework", "AdvancedDomainDescriptor::dispatchAttributes",
               ss.str());
         }
       }
@@ -225,10 +225,10 @@ void AdvancedDomainDescriptor::dispatchIData()
 // =====================================================================
 // =====================================================================
 
-void AdvancedDomainDescriptor::checkIDataConsistency() const
+void AdvancedDomainDescriptor::checkAttributesConsistency() const
 {
   for (std::map<std::string, std::set<std::string> >::const_iterator it =
-      m_IDataNames.begin(); it != m_IDataNames.end(); ++it)
+      m_AttrsNames.begin(); it != m_AttrsNames.end(); ++it)
   {
     std::string ClassName = it->first;
     std::set<std::string> Names = it->second;
@@ -236,7 +236,7 @@ void AdvancedDomainDescriptor::checkIDataConsistency() const
     if (!isClassNameExists(ClassName))
       throw openfluid::base::OFException(
           "OpenFLUID-Framework",
-          "AdvancedDomainDescriptor::checkIDataConsistency",
+          "AdvancedDomainDescriptor::checkAttributesConsistency",
           "class " + ClassName + " doesn't exist");
 
     const std::map<int, BuilderUnit>* Units = &(m_Units.at(ClassName));
@@ -244,21 +244,21 @@ void AdvancedDomainDescriptor::checkIDataConsistency() const
     for (std::set<std::string>::iterator itName = Names.begin();
         itName != Names.end(); ++itName)
     {
-      std::string IDataName = *itName;
+      std::string AttrName = *itName;
 
       for (std::map<int, BuilderUnit>::const_iterator itU = Units->begin();
           itU != Units->end(); ++itU)
       {
         int ID = itU->first;
 
-        if (!itU->second.m_IData.count(IDataName))
+        if (!itU->second.Attributes.count(AttrName))
         {
           std::ostringstream ss;
-          ss << "Input data " << IDataName << " doesn't exist for Unit " << ID
+          ss << "Attribute " << AttrName << " doesn't exist for Unit " << ID
              << " of class " << ClassName;
           throw openfluid::base::OFException(
               "OpenFLUID-Framework",
-              "AdvancedDomainDescriptor::checkIDataConsistency", ss.str());
+              "AdvancedDomainDescriptor::checkAttributesConsistency", ss.str());
         }
       }
     }
@@ -279,7 +279,7 @@ void AdvancedDomainDescriptor::dispatchEvents()
   {
     try
     {
-      m_Units.at(it->getUnitClass()).at(it->getUnitID()).m_Events.push_back(
+      m_Units.at(it->getUnitClass()).at(it->getUnitID()).Events.push_back(
           &(it->getEvent()));
     }
     catch (std::out_of_range& e)
@@ -328,7 +328,7 @@ const BuilderUnit& AdvancedDomainDescriptor::getUnit(std::string ClassName,
 const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescriptor(
     std::string ClassName, int ID) const
 {
-  return *(getUnit(ClassName, ID).mp_UnitDesc);
+  return *(getUnit(ClassName, ID).UnitDescriptor);
 }
 
 // =====================================================================
@@ -413,33 +413,33 @@ void AdvancedDomainDescriptor::addUnit(
     throw;
   }
 
-  // add Input Data
-  std::set<std::string> IDataNames = getInputDataNames(ClassName);
+  // add attributes
+  std::set<std::string> AttrsNames = getAttributesNames(ClassName);
 
-  if (IDataNames.empty())
+  if (AttrsNames.empty())
     return;
 
-  openfluid::fluidx::InputDataDescriptor IDataDesc;
+  openfluid::fluidx::AttributesDescriptor AttrsDesc;
 
-  IDataDesc.getUnitsClass() = ClassName;
+  AttrsDesc.getUnitsClass() = ClassName;
   BuilderUnit& BUnit = m_Units.at(ClassName).at(ID);
 
-  for (std::set<std::string>::iterator it = IDataNames.begin();
-      it != IDataNames.end(); ++it)
+  for (std::set<std::string>::iterator it = AttrsNames.begin();
+      it != AttrsNames.end(); ++it)
   {
-    IDataDesc.getColumnsOrder().push_back(*it);
-    IDataDesc.getData()[ID][*it] = "-";
+    AttrsDesc.getColumnsOrder().push_back(*it);
+    AttrsDesc.getAttributes()[ID][*it] = "-";
   }
 
-  mp_DomainDesc->getInputData().push_back(IDataDesc);
+  mp_DomainDesc->getAttributes().push_back(AttrsDesc);
 
   // to do after pushing back descriptor (which is *not* a pointer!), to get the right address
-  openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t& Data =
-      mp_DomainDesc->getInputData().end().operator --()->getData().at(ID);
-  for (std::set<std::string>::iterator it = IDataNames.begin();
-      it != IDataNames.end(); ++it)
+  openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t& Data =
+      mp_DomainDesc->getAttributes().end().operator --()->getAttributes().at(ID);
+  for (std::set<std::string>::iterator it = AttrsNames.begin();
+      it != AttrsNames.end(); ++it)
   {
-    BUnit.m_IData[*it] = &Data.at(*it);
+    BUnit.Attributes[*it] = &Data.at(*it);
   }
 
 }
@@ -449,12 +449,12 @@ void AdvancedDomainDescriptor::addUnit(
 
 void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
 {
-  // delete in m_Units and in IDataNames
+  // delete in m_Units and in m_AttrsNames
   m_Units[ClassName].erase(ID);
   if (m_Units.at(ClassName).empty())
   {
     m_Units.erase(ClassName);
-    m_IDataNames.erase(ClassName);
+    m_AttrsNames.erase(ClassName);
   }
 
   // delete in UnitDesc list and in other units relations
@@ -486,24 +486,24 @@ void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
     }
   }
 
-  // delete in IDataDesc list
-  std::list<openfluid::fluidx::InputDataDescriptor>* IData =
-      &(mp_DomainDesc->getInputData());
-  std::list<openfluid::fluidx::InputDataDescriptor>::iterator itData =
-      IData->begin();
-  while (itData != IData->end())
+  // delete in attributes list
+  std::list<openfluid::fluidx::AttributesDescriptor>* Attrs =
+      &(mp_DomainDesc->getAttributes());
+  std::list<openfluid::fluidx::AttributesDescriptor>::iterator itAttrs =
+      Attrs->begin();
+  while (itAttrs != Attrs->end())
   {
-    if (itData->getUnitsClass() == ClassName)
+    if (itAttrs->getUnitsClass() == ClassName)
     {
-      itData->getData().erase(ID);
+      itAttrs->getAttributes().erase(ID);
 
-      if (itData->getData().empty())
-        itData = IData->erase(itData);
+      if (itAttrs->getAttributes().empty())
+        itAttrs = Attrs->erase(itAttrs);
       else
-        itData++;
+        itAttrs++;
     }
     else
-      itData++;
+      itAttrs++;
   }
 
   // delete in EventDesc list
@@ -524,32 +524,32 @@ void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
 // =====================================================================
 // =====================================================================
 
-std::string& AdvancedDomainDescriptor::getInputData(std::string ClassName,
+std::string& AdvancedDomainDescriptor::getAttribute(std::string ClassName,
                                                     int ID,
-                                                    std::string IDataName)
+                                                    std::string AttrName)
 {
   try
   {
-    return *(m_Units.at(ClassName).at(ID).m_IData.at(IDataName));
+    return *(m_Units.at(ClassName).at(ID).Attributes.at(AttrName));
   }
   catch (std::out_of_range& e)
   {
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getInputData",
-        "trying to get an Input data that doesn't exist");
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::getAttributes",
+        "trying to get an attribute that doesn't exist");
   }
 }
 
 // =====================================================================
 // =====================================================================
 
-std::set<std::string> AdvancedDomainDescriptor::getInputDataNames(
+std::set<std::string> AdvancedDomainDescriptor::getAttributesNames(
     std::string ClassName) const
 {
   std::set<std::string> Names;
 
-  if (m_IDataNames.count(ClassName))
-    Names = m_IDataNames.at(ClassName);
+  if (m_AttrsNames.count(ClassName))
+    Names = m_AttrsNames.at(ClassName);
 
   return Names;
 }
@@ -557,103 +557,103 @@ std::set<std::string> AdvancedDomainDescriptor::getInputDataNames(
 // =====================================================================
 // =====================================================================
 
-void AdvancedDomainDescriptor::addInputData(std::string ClassName,
-                                            std::string IDataName,
+void AdvancedDomainDescriptor::addAttribute(std::string ClassName,
+                                            std::string AttrName,
                                             std::string DefaultValue)
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addInputData",
-        "trying to add an Input data to a Class that doesn't exist");
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addAttribute",
+        "trying to add an attribute to a Class that doesn't exist");
 
-  if (getInputDataNames(ClassName).count(IDataName))
+  if (getAttributesNames(ClassName).count(AttrName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addInputData",
-        "trying to add an Input data that already exists");
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::addAttribute",
+        "trying to add an attribute that already exists");
 
   // add in DomainDesc
-  openfluid::fluidx::InputDataDescriptor IDataDesc;
+  openfluid::fluidx::AttributesDescriptor AttrsDesc;
 
-  IDataDesc.getUnitsClass() = ClassName;
-  IDataDesc.getColumnsOrder().push_back(IDataName);
+  AttrsDesc.getUnitsClass() = ClassName;
+  AttrsDesc.getColumnsOrder().push_back(AttrName);
 
   std::set<int> IDs = getIDsOfClass(ClassName);
   for (std::set<int>::iterator it = IDs.begin(); it != IDs.end(); ++it)
-    IDataDesc.getData()[*it][IDataName] = DefaultValue;
+    AttrsDesc.getAttributes()[*it][AttrName] = DefaultValue;
 
-  mp_DomainDesc->getInputData().push_back(IDataDesc);
+  mp_DomainDesc->getAttributes().push_back(AttrsDesc);
 
   // add in m_Units
   std::map<openfluid::core::UnitID_t,
-      openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* Data =
-      &(mp_DomainDesc->getInputData().back().getData());
+      openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t>* Data =
+      &(mp_DomainDesc->getAttributes().back().getAttributes());
 
   for (std::map<openfluid::core::UnitID_t,
-      openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>::iterator it =
+      openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t>::iterator it =
       Data->begin(); it != Data->end(); ++it)
   {
-    m_Units.at(ClassName).at(it->first).m_IData[IDataName] = &(it->second.at(
-        IDataName));
+    m_Units.at(ClassName).at(it->first).Attributes[AttrName] = &(it->second.at(
+        AttrName));
   }
 
-  // add in IDataNames
-  m_IDataNames[ClassName].insert(IDataName);
+  // add in m_AttrsNames
+  m_AttrsNames[ClassName].insert(AttrName);
 
 }
 
 // =====================================================================
 // =====================================================================
 
-void AdvancedDomainDescriptor::deleteInputData(std::string ClassName,
-                                               std::string IDataName)
+void AdvancedDomainDescriptor::deleteAttribute(std::string ClassName,
+                                               std::string AttrName)
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::deleteInputData",
-        "trying to delete an Input data from a Class that doesn't exist");
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::deleteAttribute",
+        "trying to delete an attribute from a Class that doesn't exist");
 
-  if (!getInputDataNames(ClassName).count(IDataName))
+  if (!getAttributesNames(ClassName).count(AttrName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::deleteInputData",
-        "trying to delete an Input data that doesn't exist");
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::deleteAttribute",
+        "trying to delete an attribute that doesn't exist");
 
   // delete in m_Units
   for (std::map<int, BuilderUnit>::iterator it = m_Units.at(ClassName).begin();
       it != m_Units.at(ClassName).end(); ++it)
-    it->second.m_IData.erase(IDataName);
+    it->second.Attributes.erase(AttrName);
 
   // delete in DomainDesc
-  std::list<openfluid::fluidx::InputDataDescriptor>* IData =
-      &(mp_DomainDesc->getInputData());
-  std::list<openfluid::fluidx::InputDataDescriptor>::iterator it =
-      IData->begin();
-  while (it != IData->end())
+  std::list<openfluid::fluidx::AttributesDescriptor>* Attrs =
+      &(mp_DomainDesc->getAttributes());
+  std::list<openfluid::fluidx::AttributesDescriptor>::iterator it =
+      Attrs->begin();
+  while (it != Attrs->end())
   {
     if (it->getUnitsClass() == ClassName)
     {
       std::vector<std::string>& ColOrd = it->getColumnsOrder();
       std::vector<std::string>::iterator Found = std::find(ColOrd.begin(),
                                                            ColOrd.end(),
-                                                           IDataName);
+                                                           AttrName);
       if (Found != ColOrd.end())
         ColOrd.erase((Found));
 
       if (ColOrd.empty())
       {
-        it = IData->erase(it);
+        it = Attrs->erase(it);
       }
       else
       {
         std::map<openfluid::core::UnitID_t,
-            openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* DataById =
-            &(it->getData());
+            openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t>* DataById =
+            &(it->getAttributes());
 
         for (std::map<openfluid::core::UnitID_t,
-            openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>::iterator it2 =
+            openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t>::iterator it2 =
             DataById->begin(); it2 != DataById->end(); ++it2)
         {
-          if (it2->second.count(IDataName))
-            it2->second.erase(IDataName);
+          if (it2->second.count(AttrName))
+            it2->second.erase(AttrName);
         }
 
         ++it;
@@ -663,58 +663,58 @@ void AdvancedDomainDescriptor::deleteInputData(std::string ClassName,
       ++it;
   }
 
-  // delete in IDataNames
-  m_IDataNames.at(ClassName).erase(IDataName);
+  // delete in m_AttrsNames
+  m_AttrsNames.at(ClassName).erase(AttrName);
 }
 
 // =====================================================================
 // =====================================================================
 
-void AdvancedDomainDescriptor::renameInputData(std::string ClassName,
-                                               std::string OldIDataName,
-                                               std::string NewIDataName)
+void AdvancedDomainDescriptor::renameAttribute(std::string ClassName,
+                                               std::string OldAttrName,
+                                               std::string NewAttrName)
 {
-  if (OldIDataName == NewIDataName)
+  if (OldAttrName == NewAttrName)
     return;
 
   if (!isClassNameExists(ClassName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::renameInputData",
-        "trying to rename an Input data of a Class that doesn't exist");
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::renameAttribute",
+        "trying to rename an attribute of a Class that doesn't exist");
 
-  if (!getInputDataNames(ClassName).count(OldIDataName))
+  if (!getAttributesNames(ClassName).count(OldAttrName))
     throw openfluid::base::OFException(
-        "OpenFLUID-Framework", "AdvancedDomainDescriptor::renameInputData",
-        "trying to rename an Input data that doesn't exist");
+        "OpenFLUID-Framework", "AdvancedDomainDescriptor::renameAttribute",
+        "trying to rename an attribute that doesn't exist");
 
   //rename in DomainDesc
-  std::map<unsigned int, std::string*> DomainDescIData;
+  std::map<unsigned int, std::string*> DomainDescAttrs;
 
-  std::list<openfluid::fluidx::InputDataDescriptor>* IData =
-      &(mp_DomainDesc->getInputData());
+  std::list<openfluid::fluidx::AttributesDescriptor>* Attrs =
+      &(mp_DomainDesc->getAttributes());
 
-  for (std::list<openfluid::fluidx::InputDataDescriptor>::iterator it =
-      IData->begin(); it != IData->end(); ++it)
+  for (std::list<openfluid::fluidx::AttributesDescriptor>::iterator it =
+      Attrs->begin(); it != Attrs->end(); ++it)
   {
     if (it->getUnitsClass() == ClassName)
     {
       std::vector<std::string>& ColOrd = it->getColumnsOrder();
-      std::replace(ColOrd.begin(), ColOrd.end(), OldIDataName, NewIDataName);
+      std::replace(ColOrd.begin(), ColOrd.end(), OldAttrName, NewAttrName);
 
       std::map<openfluid::core::UnitID_t,
-          openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>* DataById =
-          &(it->getData());
+          openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t>* DataById =
+          &(it->getAttributes());
 
       for (std::map<openfluid::core::UnitID_t,
-          openfluid::fluidx::InputDataDescriptor::InputDataNameValue_t>::iterator it2 =
+          openfluid::fluidx::AttributesDescriptor::AttributeNameValue_t>::iterator it2 =
           DataById->begin(); it2 != DataById->end(); ++it2)
       {
-        if (it2->second.count(OldIDataName))
+        if (it2->second.count(OldAttrName))
         {
-          std::string Value = it2->second.at(OldIDataName);
-          it2->second.erase(OldIDataName);
-          it2->second[NewIDataName] = Value;
-          DomainDescIData[it2->first] = &(it2->second[NewIDataName]);
+          std::string Value = it2->second.at(OldAttrName);
+          it2->second.erase(OldAttrName);
+          it2->second[NewAttrName] = Value;
+          DomainDescAttrs[it2->first] = &(it2->second[NewAttrName]);
         }
       }
     }
@@ -724,13 +724,13 @@ void AdvancedDomainDescriptor::renameInputData(std::string ClassName,
   for (std::map<int, BuilderUnit>::iterator it = m_Units.at(ClassName).begin();
       it != m_Units.at(ClassName).end(); ++it)
   {
-    it->second.m_IData.erase(OldIDataName);
-    it->second.m_IData[NewIDataName] = DomainDescIData[it->first];
+    it->second.Attributes.erase(OldAttrName);
+    it->second.Attributes[NewAttrName] = DomainDescAttrs[it->first];
   }
 
-  //rename in IDataNames
-  m_IDataNames.at(ClassName).erase(OldIDataName);
-  m_IDataNames.at(ClassName).insert(NewIDataName);
+  //rename in m_AttrsNames
+  m_AttrsNames.at(ClassName).erase(OldAttrName);
+  m_AttrsNames.at(ClassName).insert(NewAttrName);
 }
 
 // =====================================================================
@@ -741,7 +741,7 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
 {
   try
   {
-    return m_Units.at(Unit.first).at(Unit.second).mp_UnitDesc->getUnitsTos();
+    return m_Units.at(Unit.first).at(Unit.second).UnitDescriptor->getUnitsTos();
   }
   catch (std::out_of_range& e)
   {
@@ -759,7 +759,7 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
 {
   try
   {
-    return m_Units.at(Unit.first).at(Unit.second).mp_UnitDesc->getUnitsParents();
+    return m_Units.at(Unit.first).at(Unit.second).UnitDescriptor->getUnitsParents();
   }
   catch (std::out_of_range& e)
   {
@@ -836,7 +836,7 @@ void AdvancedDomainDescriptor::addFromToRelation(
 
   try
   {
-    UFrom = m_Units.at(FromUnit.first).at(FromUnit.second).mp_UnitDesc;
+    UFrom = m_Units.at(FromUnit.first).at(FromUnit.second).UnitDescriptor;
   }
   catch (std::out_of_range& e)
   {
@@ -878,7 +878,7 @@ void AdvancedDomainDescriptor::removeFromToRelation(
 
   try
   {
-    UFrom = m_Units.at(FromUnit.first).at(FromUnit.second).mp_UnitDesc;
+    UFrom = m_Units.at(FromUnit.first).at(FromUnit.second).UnitDescriptor;
   }
   catch (std::out_of_range& e)
   {
@@ -930,7 +930,7 @@ void AdvancedDomainDescriptor::addParentChildRelation(
 
   try
   {
-    UChild = m_Units.at(ChildUnit.first).at(ChildUnit.second).mp_UnitDesc;
+    UChild = m_Units.at(ChildUnit.first).at(ChildUnit.second).UnitDescriptor;
   }
   catch (std::out_of_range& e)
   {
@@ -973,7 +973,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
 
   try
   {
-    UChild = m_Units.at(ChildUnit.first).at(ChildUnit.second).mp_UnitDesc;
+    UChild = m_Units.at(ChildUnit.first).at(ChildUnit.second).UnitDescriptor;
   }
   catch (std::out_of_range& e)
   {
@@ -1026,7 +1026,7 @@ void AdvancedDomainDescriptor::clearRelations(
 
   try
   {
-    U = m_Units.at(Unit.first).at(Unit.second).mp_UnitDesc;
+    U = m_Units.at(Unit.first).at(Unit.second).UnitDescriptor;
   }
   catch (std::out_of_range& e)
   {
@@ -1062,10 +1062,10 @@ void AdvancedDomainDescriptor::clearRelations(
 void AdvancedDomainDescriptor::clearDomain()
 {
   mp_DomainDesc->getUnits().clear();
-  mp_DomainDesc->getInputData().clear();
+  mp_DomainDesc->getAttributes().clear();
   mp_DomainDesc->getEvents().clear();
   m_Units.clear();
-  m_IDataNames.clear();
+  m_AttrsNames.clear();
 }
 
 // =====================================================================

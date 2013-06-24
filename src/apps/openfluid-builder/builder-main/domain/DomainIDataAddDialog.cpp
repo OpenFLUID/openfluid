@@ -150,14 +150,14 @@ void DomainIDataAddDialog::onChanged()
 
 bool DomainIDataAddDialog::show()
 {
-  m_IDataNames = mp_Domain->getInputDataNames(m_ClassName);
+  m_IDataNames = mp_Domain->getAttributesNames(m_ClassName);
 
   mp_NameEntry->set_text("");
   mp_DefaultValueEntry->set_text("");
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    mp_Domain->addInputData(m_ClassName, mp_NameEntry->get_text(),
+    mp_Domain->addAttribute(m_ClassName, mp_NameEntry->get_text(),
                             mp_DefaultValueEntry->get_text());
 
     mp_Dialog->hide();

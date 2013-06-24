@@ -152,9 +152,9 @@
 #define OFDBG_UNIT_EXTENDED(unitptr) \
   { \
     OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << " Unit class " << (unitptr)->getClass() << ", ID " << (unitptr)->getID() << std::endl; \
-    std::vector<openfluid::core::InputDataName_t> _M_DBG_IDataNames = (unitptr)->getInputData()->getInputDataNames(); \
-    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Input data: "; \
-    for (unsigned int i=0; i<_M_DBG_IDataNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_IDataNames[i] << " , "; \
+    std::vector<openfluid::core::AttributeName_t> _M_DBG_AttrsNames = (unitptr)->getAttributes()->getAttributesNames(); \
+    OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Attributes: "; \
+    for (unsigned int i=0; i<_M_DBG_AttrsNames.size();i++) OFDBG_OUTSTREAM << _M_DBG_AttrsNames[i] << " , "; \
     OFDBG_OUTSTREAM << std::endl; \
     std::vector<openfluid::core::VariableName_t> _M_DBG_VarNames = (unitptr)->getVariables()->getVariablesNames(); \
     OFDBG_OUTSTREAM << openfluid::config::DEBUG_PREFIX << "   - Variables: "; \

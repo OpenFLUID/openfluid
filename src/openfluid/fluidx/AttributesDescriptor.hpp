@@ -45,36 +45,55 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-/**
-  \file InputdataImporter.hpp
-  \brief Header of ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+/**
+  @file
+
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __INPUTDATAIMPORTER_HPP__
-#define __INPUTDATAIMPORTER_HPP__
+#ifndef __ATTRIBUTESDESCRIPTOR_HPP__
+#define __ATTRIBUTESDESCRIPTOR_HPP__
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+
+namespace openfluid { namespace fluidx {
 
 
-#include <openfluid/builderext/DataImporter.hpp>
-
-
-namespace openfluid { namespace builderext {
-
-
-// =====================================================================
-// =====================================================================
-
-
-class InputdataImporter : public DataImporter
+class DLLEXPORT AttributesDescriptor
 {
-  protected:
+  public:
+    typedef std::map<openfluid::core::AttributeName_t,std::string> AttributeNameValue_t;
+
+    typedef std::map<openfluid::core::UnitID_t,AttributeNameValue_t> UnitIDAttribute_t;
+
+
+  private:
+
+    openfluid::core::UnitClass_t m_UnitsClass;
+
+    std::vector<std::string> m_ColumnsOrder;
+
+    UnitIDAttribute_t m_Data;
 
 
   public:
 
-    ExtensionType getType() const { return PluggableBuilderExtension::InputdataImporter; };
+    AttributesDescriptor();
+
+    ~AttributesDescriptor();
+
+    void parseDataBlob(const std::string& Data);
+
+    inline openfluid::core::UnitClass_t& getUnitsClass() { return m_UnitsClass; };
+
+    inline std::vector<std::string>& getColumnsOrder() { return m_ColumnsOrder; };
+
+    inline const UnitIDAttribute_t& getAttributes() const { return m_Data; };
+
+    inline UnitIDAttribute_t& getAttributes() { return m_Data; };
 
 };
 
@@ -82,4 +101,4 @@ class InputdataImporter : public DataImporter
 } } // namespaces
 
 
-#endif /* __INPUTDATAIMPORTER_HPP__ */
+#endif /* __ATTRIBUTESDESCRIPTOR_HPP__ */

@@ -143,7 +143,7 @@ void DomainIDataEditDialog::onChanged()
 
 bool DomainIDataEditDialog::show()
 {
-  m_IDataNames = mp_Domain->getInputDataNames(m_ClassName);
+  m_IDataNames = mp_Domain->getAttributesNames(m_ClassName);
 
   mp_Combo->clear_items();
 
@@ -157,7 +157,7 @@ bool DomainIDataEditDialog::show()
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    mp_Domain->renameInputData(m_ClassName, mp_Combo->get_active_text(),
+    mp_Domain->renameAttribute(m_ClassName, mp_Combo->get_active_text(),
                                mp_NewNameEntry->get_text());
 
     mp_Dialog->hide();

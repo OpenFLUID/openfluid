@@ -98,10 +98,10 @@ BOOST_AUTO_TEST_CASE(check_operations)
   DECLARE_SIMULATOR_PARAM("param1","this is param1","m/s");
   DECLARE_SIMULATOR_PARAM("param2","this is param2","m3");
 
-  DECLARE_REQUIRED_ATTRIBUTE("idata1","UnitClassA","this is idata1","goals/period");
-  DECLARE_REQUIRED_ATTRIBUTE("idata2","UnitClassB","this is idata2","");
+  DECLARE_REQUIRED_ATTRIBUTE("attr1","UnitClassA","this is attr1","goals/period");
+  DECLARE_REQUIRED_ATTRIBUTE("attr2","UnitClassB","this is attr2","");
 
-  DECLARE_USED_ATTRIBUTE("idata3","UnitClassA","this is idata3","?");
+  DECLARE_USED_ATTRIBUTE("attr3","UnitClassA","this is attr3","?");
 
   DECLARE_PRODUCED_VAR("pvar1","UnitClassA","this is pvar1","");
   DECLARE_PRODUCED_VAR("pvar2","UnitClassA","this is pvar2","m");
@@ -144,9 +144,9 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(Signature->HandledData.SimulatorParams[1].Description,"this is param2");
   BOOST_REQUIRE_EQUAL(Signature->HandledData.SimulatorParams[1].DataUnit,"m3");
 
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredInputdata.size(),2);
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.RequiredAttribute.size(),2);
 
-  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedInputdata.size(),1);
+  BOOST_REQUIRE_EQUAL(Signature->HandledData.UsedAttribute.size(),1);
 
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars.size(),3);
   BOOST_REQUIRE_EQUAL(Signature->HandledData.ProducedVars[1].DataName,"pvar2");

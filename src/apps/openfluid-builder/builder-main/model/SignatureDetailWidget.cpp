@@ -176,11 +176,11 @@ void SignatureDetailWidget::update(
   mp_VarsTreeView->expand_all();
 
   mref_IDataModel->clear();
-  updateIDataModel(Signature->Signature->HandledData.ProducedInputdata,
+  updateIDataModel(Signature->Signature->HandledData.ProducedAttribute,
                    _("Produced"));
-  updateIDataModel(Signature->Signature->HandledData.RequiredInputdata,
+  updateIDataModel(Signature->Signature->HandledData.RequiredAttribute,
                    _("Required"));
-  updateIDataModel(Signature->Signature->HandledData.UsedInputdata, _("Used"));
+  updateIDataModel(Signature->Signature->HandledData.UsedAttribute, _("Used"));
   if (!mref_IDataModel->children().empty())
     append_page(*mp_IDataWin, _("Inputdata"));
   mp_IDataTreeView->expand_all();

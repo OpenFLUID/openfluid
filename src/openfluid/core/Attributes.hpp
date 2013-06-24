@@ -45,8 +45,8 @@
  with the terms contained in the written agreement between You and INRA.
  */
 
-#ifndef __INPUTDATA_H__
-#define __INPUTDATA_H__
+#ifndef __ATTRIBUTES_H__
+#define __ATTRIBUTES_H__
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
@@ -58,40 +58,40 @@
 namespace openfluid {
 namespace core {
 
-class DLLEXPORT InputData
+class DLLEXPORT Attributes
 {
   private:
 
-    typedef std::map<InputDataName_t, StringValue> InputDataMap_t;
-    InputDataMap_t m_Data;
+    typedef std::map<AttributeName_t, StringValue> AttributesMap_t;
+    AttributesMap_t m_Data;
 
   public:
 
-    InputData();
+    Attributes();
 
-    ~InputData();
+    ~Attributes();
 
-    bool setValue(const InputDataName_t aName, const Value& aValue);
+    bool setValue(const AttributeName_t aName, const Value& aValue);
 
-    bool setValue(const InputDataName_t aName, const std::string& aValue);
+    bool setValue(const AttributeName_t aName, const std::string& aValue);
 
-    bool getValue(const InputDataName_t aName, openfluid::core::StringValue& aValue) const;
+    bool getValue(const AttributeName_t aName, openfluid::core::StringValue& aValue) const;
 
-    bool getValue(const InputDataName_t aName, std::string& aValue) const;
+    bool getValue(const AttributeName_t aName, std::string& aValue) const;
 
-    bool getValueAsDouble(const InputDataName_t aName, double& aValue) const;
+    bool getValueAsDouble(const AttributeName_t aName, double& aValue) const;
 
-    bool getValueAsLong(const InputDataName_t aName, long& aValue) const;
+    bool getValueAsLong(const AttributeName_t aName, long& aValue) const;
 
-    bool isDataExist(const InputDataName_t aName) const;
+    bool isAttributeExist(const AttributeName_t aName) const;
 
-    std::vector<InputDataName_t> getInputDataNames() const;
+    std::vector<AttributeName_t> getAttributesNames() const;
 
-    bool replaceValue(const InputDataName_t aName, const StringValue& aValue);
+    bool replaceValue(const AttributeName_t aName, const StringValue& aValue);
 
-    bool replaceValue(const InputDataName_t aName, const std::string& aValue);
+    bool replaceValue(const AttributeName_t aName, const std::string& aValue);
 
-    bool removeData(const InputDataName_t aName);
+    bool removeAttribute(const AttributeName_t aName);
 
     void clear();
 
@@ -101,4 +101,4 @@ class DLLEXPORT InputData
 } } // namespaces
 
 
-#endif /* __INPUTDATA_H__ */
+#endif /* __ATTRIBUTES_H__ */

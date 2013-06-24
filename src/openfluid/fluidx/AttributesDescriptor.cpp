@@ -53,7 +53,7 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/fluidx/IDataDescriptor.hpp>
+#include <openfluid/fluidx/AttributesDescriptor.hpp>
 #include <openfluid/tools/ColTextParser.hpp>
 
 namespace openfluid { namespace fluidx {
@@ -63,7 +63,7 @@ namespace openfluid { namespace fluidx {
 // =====================================================================
 
 
-InputDataDescriptor::InputDataDescriptor() :
+AttributesDescriptor::AttributesDescriptor() :
   m_UnitsClass("")
 {
 
@@ -74,7 +74,7 @@ InputDataDescriptor::InputDataDescriptor() :
 // =====================================================================
 
 
-InputDataDescriptor::~InputDataDescriptor()
+AttributesDescriptor::~AttributesDescriptor()
 {
 
 }
@@ -84,7 +84,7 @@ InputDataDescriptor::~InputDataDescriptor()
 // =====================================================================
 
 
-void InputDataDescriptor::parseDataBlob(const std::string& Data)
+void AttributesDescriptor::parseDataBlob(const std::string& Data)
 {
   m_Data.clear();
 
@@ -97,7 +97,7 @@ void InputDataDescriptor::parseDataBlob(const std::string& Data)
     long ID;
     std::string Value;
 
-    // parses data in file and loads it in the input data table for each unit, ordered by columns
+    // parses data in file and loads it in the attribute table for each unit, ordered by columns
     i = 0;
     while (i<DataParser.getLinesCount() && IsOK)
     {
@@ -112,16 +112,16 @@ void InputDataDescriptor::parseDataBlob(const std::string& Data)
             m_Data[ID][m_ColumnsOrder[j-1]] = Value;
           }
           else
-            throw openfluid::base::OFException("OpenFLUID framework","InputDataDescriptor::parseDataBlob","Input data format error");
+            throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
         }
         i++;
       }
       else
-        throw openfluid::base::OFException("OpenFLUID framework","InputDataDescriptor::parseDataBlob","Input data format error");
+        throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
     }
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in input data, cannot be parsed");
+    throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in attributes, cannot be parsed");
 
 }
 

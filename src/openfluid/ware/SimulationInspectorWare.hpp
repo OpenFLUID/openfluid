@@ -96,7 +96,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the queried attribute
     */
     bool OPENFLUID_IsAttributeExist(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& AttrName) const;
+                                    const openfluid::core::AttributeName_t& AttrName) const;
 
     /**
       Gets attribute for a unit, as a StringValue
@@ -105,7 +105,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[out] Val the value of the requested attribute
     */
     void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& AttrName,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::StringValue& Val) const;
 
     /**
@@ -115,7 +115,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[out] Val the value of the requested attribute
     */
     void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& AttrName,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::DoubleValue& Val) const;
 
     /**
@@ -125,7 +125,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[out] Val the value of the requested attribute
     */
     void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& AttrName,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::VectorValue& Val) const;
 
     /**
@@ -135,7 +135,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[out] Val the value of the requested attribute
     */
     void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& AttrName,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::MatrixValue& Val) const;
 
     /**
@@ -145,7 +145,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[out] Val the value of the requested attribute
     */
     void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& AttrName,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 double& Val) const;
 
     /**
@@ -155,7 +155,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[out] Val the value of the requested attribute
     */
     void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& AttrName,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 long& Val) const;
 
     /**
@@ -165,7 +165,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[out] Val the value of the requested attribute
     */
     void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& AttrName,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 std::string& Val) const;
 
     /**

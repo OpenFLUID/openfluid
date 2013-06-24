@@ -190,15 +190,16 @@ int DialogBoxFactory::showCloseProjectDialog(bool HasToBeSaved)
 // =====================================================================
 // =====================================================================
 
-std::string DialogBoxFactory::showDomainIDataEditDialog(int Id,
-    std::string DataName, std::string Val)
+std::string DialogBoxFactory::showDomainAttributeEditDialog(int Id,
+                                                            const std::string& AttrName,
+                                                            const std::string& Val)
 {
-  Gtk::Dialog Dialog(_("Edit Inputdata"), true, false);
+  Gtk::Dialog Dialog(_("Edit attribute"), true, false);
 
   Gtk::Entry Entry;
   Entry.set_text(Val);
 
-  Gtk::Label Label(Glib::ustring::compose(_("%1 for ID %2"), DataName,Id));
+  Gtk::Label Label(Glib::ustring::compose(_("%1 for ID %2"), AttrName,Id));
 
   Dialog.get_vbox()->pack_start(Label);
   Dialog.get_vbox()->pack_start(Entry);
