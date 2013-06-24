@@ -4,9 +4,9 @@
     <model>
       
    
-     <simulator ID="tests.primitives.inputdata.prod" />
+     <simulator ID="tests.primitives.attributes.prod" />
     
-     <simulator ID="tests.primitives.inputdata.use" />
+     <simulator ID="tests.primitives.attributes.use" />
      
     
     

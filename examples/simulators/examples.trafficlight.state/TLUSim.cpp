@@ -35,8 +35,8 @@ DECLARE_AUTHOR("Michael Rabotin","rabotin@supagro.inra.fr");
 
 DECLARE_PRODUCED_VAR("examples.TLU.S.state","TLU","traffic light unit state ","");
 DECLARE_PRODUCED_VAR("examples.TLU.T.changeTime","TLU","traffic light unit state changing time","");
-DECLARE_REQUIRED_INPUTDATA("state","TLU","","-");
-DECLARE_REQUIRED_INPUTDATA("duration","TLU","","-");
+DECLARE_REQUIRED_ATTRIBUTE("state","TLU","","-");
+DECLARE_REQUIRED_ATTRIBUTE("duration","TLU","","-");
 
 // Scheduling
 DECLARE_SCHEDULING_DEFAULT;
@@ -115,7 +115,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("TLU",TLU)
       {
-        OPENFLUID_GetInputData(TLU,"duration",Period);
+        OPENFLUID_GetAttribute(TLU,"duration",Period);
         Period.toIntegerValue(PeriodInt);
         if(PeriodInt>DeltaT)
           Modulo=PeriodInt%DeltaT;
@@ -149,9 +149,9 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("TLU",pTLU)
       {
-        OPENFLUID_GetInputData(pTLU,"duration",PeriodString);
+        OPENFLUID_GetAttribute(pTLU,"duration",PeriodString);
         PeriodString.toIntegerValue(PeriodInt);
-        OPENFLUID_GetInputData(pTLU,"state",State);
+        OPENFLUID_GetAttribute(pTLU,"state",State);
         State.toBoolean(StateBool);
         OPENFLUID_InitializeVariable(pTLU,"examples.TLU.T.changeTime",PeriodInt);
         OPENFLUID_InitializeVariable(pTLU,"examples.TLU.S.state",StateBool);
@@ -178,10 +178,10 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("TLU",pTLU)
       {
-        OPENFLUID_GetInputData(pTLU,"duration",PeriodString);
+        OPENFLUID_GetAttribute(pTLU,"duration",PeriodString);
         PeriodString.toIntegerValue(PeriodInt);
 
-        OPENFLUID_GetInputData(pTLU,"state",State);
+        OPENFLUID_GetAttribute(pTLU,"state",State);
         State.toBoolean(StateBool);
 
         OPENFLUID_GetVariable(pTLU,"examples.TLU.T.changeTime",CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),NextPeriod);

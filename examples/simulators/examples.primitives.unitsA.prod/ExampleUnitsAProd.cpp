@@ -35,7 +35,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.primitives.unitsA.prod")
   DECLARE_PRODUCED_VAR("var1","unitsA","the variable 1","");
   DECLARE_PRODUCED_VAR("var2","unitsA","the variable 2","");
   
-  DECLARE_REQUIRED_INPUTDATA("inivar1","unitsA","the input data inivar1","");
+  DECLARE_REQUIRED_ATTRIBUTE("inivar1","unitsA","the input data inivar1","");
 
 END_SIMULATOR_SIGNATURE
 

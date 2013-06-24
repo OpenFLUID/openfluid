@@ -62,11 +62,11 @@ DECLARE_SIMULATOR_PLUGIN
 // =====================================================================
 
 
-#define THIS_SIM_ID "tests.primitives.inputdata.prod"
+#define THIS_SIM_ID "tests.primitives.attributes.prod"
 
 BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
 
-  DECLARE_NAME("test simulator for inputdata primitives");
+  DECLARE_NAME("test simulator for attributes primitives");
   DECLARE_DESCRIPTION("");
 
   DECLARE_VERSION("1.0");
@@ -79,29 +79,29 @@ BEGIN_SIMULATOR_SIGNATURE(THIS_SIM_ID)
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_PRODUCED_INPUTDATA("indataDouble2","TestUnits","","")
-  DECLARE_PRODUCED_INPUTDATA("indataDouble3","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataDouble2","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataDouble3","TestUnits","","")
 
-  DECLARE_PRODUCED_INPUTDATA("indataLong2","TestUnits","","")
-  DECLARE_PRODUCED_INPUTDATA("indataLong3","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataLong2","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataLong3","TestUnits","","")
 
-  DECLARE_PRODUCED_INPUTDATA("indataBool2","TestUnits","","")
-  DECLARE_PRODUCED_INPUTDATA("indataBool3","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataBool2","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataBool3","TestUnits","","")
 
-  DECLARE_PRODUCED_INPUTDATA("indataString2","TestUnits","","")
-  DECLARE_PRODUCED_INPUTDATA("indataString3","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataString2","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataString3","TestUnits","","")
 
-  DECLARE_PRODUCED_INPUTDATA("indataVector2","TestUnits","","")
-  DECLARE_PRODUCED_INPUTDATA("indataVector3","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataVector2","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataVector3","TestUnits","","")
 
-  DECLARE_PRODUCED_INPUTDATA("indataMatrix2","TestUnits","","")
-  DECLARE_PRODUCED_INPUTDATA("indataMatrix3","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataMatrix2","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataMatrix3","TestUnits","","")
 
-  DECLARE_PRODUCED_INPUTDATA("indataMap2","TestUnits","","")
-  DECLARE_PRODUCED_INPUTDATA("indataMap3","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataMap2","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataMap3","TestUnits","","")
 
-  DECLARE_PRODUCED_INPUTDATA("indataNull2","TestUnits","","")
-  DECLARE_PRODUCED_INPUTDATA("indataNull3","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataNull2","TestUnits","","")
+  DECLARE_PRODUCED_ATTRIBUTE("indataNull3","TestUnits","","")
 
 END_SIMULATOR_SIGNATURE
 
@@ -110,14 +110,14 @@ END_SIMULATOR_SIGNATURE
 // =====================================================================
 
 
-class InputdataPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
+class AttributesPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 {
   private:
 
   public:
 
 
-    InputdataPrimitivesProdSimulator() : PluggableSimulator()
+    AttributesPrimitivesProdSimulator() : PluggableSimulator()
     {
 
 
@@ -128,7 +128,7 @@ class InputdataPrimitivesProdSimulator : public openfluid::ware::PluggableSimula
     // =====================================================================
 
 
-    ~InputdataPrimitivesProdSimulator()
+    ~AttributesPrimitivesProdSimulator()
     {
 
 
@@ -176,29 +176,29 @@ class InputdataPrimitivesProdSimulator : public openfluid::ware::PluggableSimula
         bool Bl = (TU->getID()%2 == 0);
         std::string Str = Glib::ustring::compose("ID %1",TU->getID());
 
-        OPENFLUID_SetInputData(TU,"indataDouble2",Dbl);
-        OPENFLUID_SetInputData(TU,"indataDouble3",openfluid::core::DoubleValue(Dbl));
+        OPENFLUID_SetAttribute(TU,"indataDouble2",Dbl);
+        OPENFLUID_SetAttribute(TU,"indataDouble3",openfluid::core::DoubleValue(Dbl));
 
-        OPENFLUID_SetInputData(TU,"indataLong2",Lg);
-        OPENFLUID_SetInputData(TU,"indataLong3",openfluid::core::IntegerValue(Lg));
+        OPENFLUID_SetAttribute(TU,"indataLong2",Lg);
+        OPENFLUID_SetAttribute(TU,"indataLong3",openfluid::core::IntegerValue(Lg));
 
-        OPENFLUID_SetInputData(TU,"indataString2",Str);
-        OPENFLUID_SetInputData(TU,"indataString3",openfluid::core::StringValue(Str));
+        OPENFLUID_SetAttribute(TU,"indataString2",Str);
+        OPENFLUID_SetAttribute(TU,"indataString3",openfluid::core::StringValue(Str));
 
-        OPENFLUID_SetInputData(TU,"indataBool2",Bl ? "true" : "false");
-        OPENFLUID_SetInputData(TU,"indataBool3",openfluid::core::BooleanValue(Bl));
+        OPENFLUID_SetAttribute(TU,"indataBool2",Bl ? "true" : "false");
+        OPENFLUID_SetAttribute(TU,"indataBool3",openfluid::core::BooleanValue(Bl));
 
-        OPENFLUID_SetInputData(TU,"indataVector2","1.1;1.2;1.3");
-        OPENFLUID_SetInputData(TU,"indataVector3",aVector);
+        OPENFLUID_SetAttribute(TU,"indataVector2","1.1;1.2;1.3");
+        OPENFLUID_SetAttribute(TU,"indataVector3",aVector);
 
-        OPENFLUID_SetInputData(TU,"indataMatrix2","0.0;1.0|0.1;1.1|0.2;1.2");
-        OPENFLUID_SetInputData(TU,"indataMatrix3",aMatrix);
+        OPENFLUID_SetAttribute(TU,"indataMatrix2","0.0;1.0|0.1;1.1|0.2;1.2");
+        OPENFLUID_SetAttribute(TU,"indataMatrix3",aMatrix);
 
-        OPENFLUID_SetInputData(TU,"indataMap2","key1=2.1;key2=a string;key3=true");
-        OPENFLUID_SetInputData(TU,"indataMap3",aMap);
+        OPENFLUID_SetAttribute(TU,"indataMap2","key1=2.1;key2=a string;key3=true");
+        OPENFLUID_SetAttribute(TU,"indataMap3",aMap);
 
-        OPENFLUID_SetInputData(TU,"indataNull2","null");
-        OPENFLUID_SetInputData(TU,"indataNull3",openfluid::core::NullValue());
+        OPENFLUID_SetAttribute(TU,"indataNull2","null");
+        OPENFLUID_SetAttribute(TU,"indataNull3",openfluid::core::NullValue());
       }
 
     }
@@ -247,5 +247,5 @@ class InputdataPrimitivesProdSimulator : public openfluid::ware::PluggableSimula
 // =====================================================================
 // =====================================================================
 
-DEFINE_SIMULATOR_CLASS(InputdataPrimitivesProdSimulator)
+DEFINE_SIMULATOR_CLASS(AttributesPrimitivesProdSimulator)
 

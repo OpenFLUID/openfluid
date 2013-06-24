@@ -86,18 +86,18 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesSimParams
 ###########################################################################
 
 
-OPNFLD_ADD_SIMULATOR(tests.primitives.inputdata.prod tests.primitives.inputdata.prod ${TEST_OUTPUT_PATH})
-OPNFLD_ADD_SIMULATOR(tests.primitives.inputdata.use tests.primitives.inputdata.use ${TEST_OUTPUT_PATH})
-OPENFLUID_ADD_TEST(NAME simulators-PrimitivesInputdata 
+OPNFLD_ADD_SIMULATOR(tests.primitives.attributes.prod tests.primitives.attributes.prod ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_SIMULATOR(tests.primitives.attributes.use tests.primitives.attributes.use ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAttributes 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesInputdata"
-                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesAttributes"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes" 
                            "-p${TEST_OUTPUT_PATH}"
                            "-n${TEST_OUTPUT_PATH}"
-                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata"
-                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata/tests.primitives.inputdata.prod_ofware-sim.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesInputdata/tests.primitives.inputdata.use_ofware-sim.log"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes/tests.primitives.attributes.prod_ofware-sim.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes/tests.primitives.attributes.use_ofware-sim.log"
                    )
 
 

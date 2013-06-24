@@ -169,33 +169,33 @@
 
 
 /**
-  Macro for declaration of a produced input data
-  @param[in] name name of the input data
+  Macro for declaration of a produced attribute
+  @param[in] name name of the attribute
   @param[in] uclass class of the concerned units
-  @param[in] description description of the input data
-  @param[in] unit unit of the input data. Could be an empty string if there is no unit
+  @param[in] description description of the attribute
+  @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
-#define DECLARE_PRODUCED_INPUTDATA(name,uclass,description,unit) \
+#define DECLARE_PRODUCED_ATTRIBUTE(name,uclass,description,unit) \
   Signature->HandledData.ProducedInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
-  Macro for declaration of a required input data
-  @param[in] name name of the input data
+  Macro for declaration of a required attribute
+  @param[in] name name of the attribute
   @param[in] uclass class of the concerned units
-  @param[in] description description of the input data
-  @param[in] unit unit of the input data. Could be an empty string if there is no unit
+  @param[in] description description of the attribute
+  @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
-#define DECLARE_REQUIRED_INPUTDATA(name,uclass,description,unit) \
+#define DECLARE_REQUIRED_ATTRIBUTE(name,uclass,description,unit) \
   Signature->HandledData.RequiredInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**
-  Macro for declaration of a used input data
-  @param[in] name name of the input data
+  Macro for declaration of a used attribute
+  @param[in] name name of the attribute
   @param[in] uclass class of the concerned units
-  @param[in] description description of the input data
-  @param[in] unit unit of the input data. Could be an empty string if there is no unit
+  @param[in] description description of the attribute
+  @param[in] unit unit of the attribute. Could be an empty string if there is no unit
 */
-#define DECLARE_USED_INPUTDATA(name,uclass,description,unit) \
+#define DECLARE_USED_ATTRIBUTE(name,uclass,description,unit) \
   Signature->HandledData.UsedInputdata.push_back(openfluid::ware::SignatureHandledDataItem((name),uclass,description,unit));
 
 /**

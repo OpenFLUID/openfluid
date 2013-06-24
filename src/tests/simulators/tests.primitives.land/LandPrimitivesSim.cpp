@@ -209,8 +209,8 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("TU", TU)
       {
-        OPENFLUID_SetInputData(TU,"indatadbl",double(TU->getID())*0.1);
-        OPENFLUID_SetInputData(TU,"indatastr","C0DE1");
+        OPENFLUID_SetAttribute(TU,"indatadbl",double(TU->getID())*0.1);
+        OPENFLUID_SetAttribute(TU,"indatastr","C0DE1");
       }
 
 
@@ -294,13 +294,13 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("TU", TU)
       {
-        OPENFLUID_GetInputData(TU,"indatadbl",DblValue);
+        OPENFLUID_GetAttribute(TU,"indatadbl",DblValue);
         if (!openfluid::tools::IsVeryClose(double(TU->getID())*0.1,DblValue))
-          OPENFLUID_RaiseError("tests.primitives.land","inputdata error for indatadbl");
+          OPENFLUID_RaiseError("tests.primitives.land","attributes error for indatadbl");
 
-        OPENFLUID_GetInputData(TU,"indatastr",StrValue);
+        OPENFLUID_GetAttribute(TU,"indatastr",StrValue);
         if (StrValue != "C0DE1")
-          OPENFLUID_RaiseError("tests.primitives.land","inputdata error for indatastr");
+          OPENFLUID_RaiseError("tests.primitives.land","attributes error for indatastr");
 
       }
 

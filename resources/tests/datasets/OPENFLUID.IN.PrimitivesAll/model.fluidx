@@ -20,13 +20,13 @@
         <param name="mapparam" value="key1=1.1;key2=a string;key3=true" />
      </simulator>      
     
-     <simulator ID="tests.primitives.inputdata.prod" />
+     <simulator ID="tests.primitives.attributes.prod" />
     
      <simulator ID="tests.primitives.events" />
      
      <simulator ID="tests.primitives.variables.prod" />
      
-     <simulator ID="tests.primitives.inputdata.use" />
+     <simulator ID="tests.primitives.attributes.use" />
     
      <simulator ID="tests.primitives.variables.use" />
     

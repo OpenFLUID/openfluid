@@ -270,7 +270,7 @@ BOOST_AUTO_TEST_CASE(check_check)
 
   Desc.getModel().appendItem(
       new openfluid::fluidx::SimulatorDescriptor(
-          "tests.primitives.inputdata.use"));
+          "tests.primitives.attributes.use"));
   PC.check();
   BOOST_CHECK(!PC.IsInputdataOk);
   BOOST_CHECK(!PC.InputdataMsg.empty());
@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE(check_check)
 
   Desc.getModel().appendItem(
       new openfluid::fluidx::SimulatorDescriptor(
-          "tests.primitives.inputdata.prod"));
+          "tests.primitives.attributes.prod"));
   Desc.getModel().moveItem(8, 7);
   PC.check();
   BOOST_CHECK(PC.IsInputdataOk);
