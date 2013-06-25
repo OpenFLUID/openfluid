@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <domain>
+    <attributes unitclass="unitsB" colorder="indataB2" >
+
+11	codeA
+1	codeD
+2	codeC
+7	codeE
+
+    </attributes>
+  </domain>
+</openfluid>
+
+

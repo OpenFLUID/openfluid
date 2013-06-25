@@ -61,7 +61,7 @@
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/core/Event.hpp>
 #include <openfluid/core/EventsColl.hpp>
-#include <openfluid/core/InputData.hpp>
+#include <openfluid/core/Attributes.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/Unit.hpp>
 #include <openfluid/core/UnitsColl.hpp>

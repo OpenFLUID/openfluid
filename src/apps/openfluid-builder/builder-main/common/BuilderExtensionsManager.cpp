@@ -382,7 +382,7 @@ std::string BuilderExtensionsManager::getExtensionTypeAsString(openfluid::builde
     case openfluid::builderext::PluggableBuilderExtension::ModelessWindow : return "ModelessWindow"; break;
     case openfluid::builderext::PluggableBuilderExtension::ModalWindow : return "ModalWindow"; break;
     case openfluid::builderext::PluggableBuilderExtension::SpatialgraphImporter : return "SpatialgraphImporter"; break;
-    case openfluid::builderext::PluggableBuilderExtension::InputdataImporter : return "InputdataImporter"; break;
+    case openfluid::builderext::PluggableBuilderExtension::AttributesImporter : return "AttributesImporter"; break;
     case openfluid::builderext::PluggableBuilderExtension::EventsImporter : return "EventsImporter"; break;
     case openfluid::builderext::PluggableBuilderExtension::ExtraImporter : return "ExtraImporter"; break;
     case openfluid::builderext::PluggableBuilderExtension::MixedImporter : return "MixedImporter"; break;

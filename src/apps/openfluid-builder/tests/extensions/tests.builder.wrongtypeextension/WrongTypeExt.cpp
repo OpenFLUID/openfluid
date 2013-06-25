@@ -53,7 +53,7 @@
  */
 
 
-#include <openfluid/builderext/InputdataImporter.hpp>
+#include <openfluid/builderext/AttributesImporter.hpp>
 
 #include <gtkmm/messagedialog.h>
 
@@ -74,7 +74,7 @@ DEFINE_EXTENSION_DEFAULT_CONFIG()
 // =====================================================================
 
 
-class WrongTypeImporter : public openfluid::builderext::InputdataImporter
+class WrongTypeImporter : public openfluid::builderext::AttributesImporter
 {
   private:
 

@@ -80,7 +80,7 @@ class ProjectChecker
 
     void checkModelRequirements();
 
-    void checkModelInputdata();
+    void checkModelAttributes();
 
     void checkModelVars();
 
@@ -107,7 +107,7 @@ class ProjectChecker
     bool IsModelOk;
     bool IsParamsOk;
     bool IsDomainOk;
-    bool IsInputdataOk;
+    bool IsAttributeOk;
     bool IsGeneratorParamsOk;
     bool IsExtraFilesOk;
     bool IsRunConfigOk;
@@ -118,7 +118,7 @@ class ProjectChecker
     std::string ModelMsg;
     std::string ParamsMsg;
     std::string DomainMsg;
-    std::string InputdataMsg;
+    std::string AttributeMsg;
     std::string ExtraFilesMsg;
     std::string RunConfigMsg;
     std::string MonitoringMsg;

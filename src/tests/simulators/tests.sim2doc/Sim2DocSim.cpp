@@ -117,9 +117,9 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
 
   DECLARE_USED_VAR("tests.usedscalar","TestUnits","used scalar on TestUnits","");
 
-  DECLARE_REQUIRED_INPUTDATA("indataA","TestUnits","required input data A on TestUnits","m")
-  DECLARE_USED_INPUTDATA("indataB","TestUnits","used input data B on TestUnits","mm/h")
-  DECLARE_USED_INPUTDATA("indata_CC","TestUnits","used input data CC on TestUnits","")
+  DECLARE_REQUIRED_ATTRIBUTE("indataA","TestUnits","required attribute A on TestUnits","m")
+  DECLARE_USED_ATTRIBUTE("indataB","TestUnits","used attribute B on TestUnits","mm/h")
+  DECLARE_USED_ATTRIBUTE("indata_CC","TestUnits","used attribute CC on TestUnits","")
 
   DECLARE_USED_EVENTS("TestUnits");
   DECLARE_USED_EVENTS("FakeTestUnits");

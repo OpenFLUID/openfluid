@@ -91,81 +91,81 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
 
 
     /**
-      Returns true if a distributed input data exists, false otherwise
+      Returns true if a distributed attribute exists, false otherwise
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the queried variable
+      @param[in] AttrName the name of the queried attribute
     */
-    bool OPENFLUID_IsInputDataExist(const openfluid::core::Unit *UnitPtr,
-                                    const openfluid::core::InputDataName_t& InputName) const;
+    bool OPENFLUID_IsAttributeExist(const openfluid::core::Unit *UnitPtr,
+                                    const openfluid::core::AttributeName_t& AttrName) const;
 
     /**
-      Gets input data for a unit, as a StringValue
+      Gets attribute for a unit, as a StringValue
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
+      @param[in] AttrName the name of the requested attribute
+      @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
+    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::StringValue& Val) const;
 
     /**
-      Gets input data for a unit, as a DoubleValue
+      Gets attribute for a unit, as a DoubleValue
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
+      @param[in] AttrName the name of the requested attribute
+      @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
+    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::DoubleValue& Val) const;
 
     /**
-      Gets input data for a unit, as a VectorValue
+      Gets attribute for a unit, as a VectorValue
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
+      @param[in] AttrName the name of the requested attribute
+      @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
+    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::VectorValue& Val) const;
 
     /**
-      Gets input data for a unit, as a MatrixValue
+      Gets attribute for a unit, as a MatrixValue
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
+      @param[in] AttrName the name of the requested attribute
+      @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
+    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::MatrixValue& Val) const;
 
     /**
-      Gets input data for a unit, as a double
+      Gets attribute for a unit, as a double
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
+      @param[in] AttrName the name of the requested attribute
+      @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
+    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 double& Val) const;
 
     /**
-      Gets input data for a unit, as a long integer
+      Gets attribute for a unit, as a long integer
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
+      @param[in] AttrName the name of the requested attribute
+      @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
+    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 long& Val) const;
 
     /**
-      Gets input data for a unit, as a string
+      Gets attribute for a unit, as a string
       @param[in] UnitPtr a Unit
-      @param[in] InputName the name of the requested property
-      @param[out] Val the value of the requested property
+      @param[in] AttrName the name of the requested attribute
+      @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetInputData(const openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
+    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 std::string& Val) const;
 
     /**

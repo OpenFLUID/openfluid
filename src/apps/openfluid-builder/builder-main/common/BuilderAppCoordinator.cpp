@@ -679,10 +679,10 @@ void BuilderAppCoordinator::configExtensionsMenus()
                   ECMit->second.Infos.ID));
         break;
 
-      case openfluid::builderext::PluggableBuilderExtension::InputdataImporter:
+      case openfluid::builderext::PluggableBuilderExtension::AttributesImporter:
         for (ECMit = ExtContainerMap.begin(); ECMit != ExtContainerMap.end();
             ++ECMit)
-          m_Actions.addProjectDataAction(m_Actions.getDataInputdataMenuAction(),
+          m_Actions.addProjectDataAction(m_Actions.getDataAttributesMenuAction(),
                                          ECMit->second.Infos.ID,
                                          ECMit->second.Infos.ShortName,
                                          ECMit->second.Infos.Description)->signal_activate().connect(

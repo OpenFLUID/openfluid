@@ -132,10 +132,10 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   std::cout << "===========================================================" << std::endl;
   std::cout << VersionInfo << std::endl;
   std::cout << std::endl;
-  std::cout << "                          software environment               " << std::endl;
+  std::cout << "                          software environment             " << std::endl;
   std::cout << "            for Modelling Fluxes in Landscapes             " << std::endl;
   std::cout << std::endl;
-  std::cout << "                 LISAH, Montpellier, France                " << std::endl;
+  std::cout << "                 www.openfluid-project.org                 " << std::endl;
   std::cout << "===========================================================" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
@@ -255,9 +255,9 @@ void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::Signatu
 
   if (Type == ("fpar")) TypeStr = ("simulator parameter");
 
-  if (Type == ("pinput")) TypeStr = ("produced input data");
-  if (Type == ("rinput")) TypeStr = ("required input data");
-  if (Type == ("sinput")) TypeStr = ("used input data");
+  if (Type == ("pinput")) TypeStr = ("produced attribute");
+  if (Type == ("rinput")) TypeStr = ("required attribute");
+  if (Type == ("sinput")) TypeStr = ("used attribute");
 
   std::cout << DistribStr << HandledItem.DataName << UnitStr << " : " << TypeStr << ".";
   if (HandledItem.Description.length()!=0) std::cout << " " << HandledItem.Description;
@@ -323,9 +323,9 @@ void OpenFLUIDApp::printSimulatorsHandledDataReport(openfluid::ware::SignatureHa
   for (i=0;i<HandledData.RequiredVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredVars[i],Suffix,("rvar"));
   for (i=0;i<HandledData.UpdatedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.UpdatedVars[i],Suffix,("uvar"));
   for (i=0;i<HandledData.UsedVars.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedVars[i],Suffix,("svar"));
-  for (i=0;i<HandledData.ProducedInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.ProducedInputdata[i],Suffix,("pinput"));
-  for (i=0;i<HandledData.RequiredInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredInputdata[i],Suffix,("rinput"));
-  for (i=0;i<HandledData.UsedInputdata.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedInputdata[i],Suffix,("sinput"));
+  for (i=0;i<HandledData.ProducedAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.ProducedAttribute[i],Suffix,("pinput"));
+  for (i=0;i<HandledData.RequiredAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.RequiredAttribute[i],Suffix,("rinput"));
+  for (i=0;i<HandledData.UsedAttribute.size();i++) printSimulatorsHandledDataItemReport(HandledData.UsedAttribute[i],Suffix,("sinput"));
 
   if (HandledData.UsedEventsOnUnits.size() > 0)
   {

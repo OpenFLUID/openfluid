@@ -69,24 +69,26 @@ namespace fluidx {
 
 class DomainDescriptor;
 class UnitDescriptor;
-class InputDataDescriptor;
+class AttributesDescriptor;
 
 // =====================================================================
 // =====================================================================
 
+
+// TODO what is a BuilderUnit in openfluid::fluidx?
 class BuilderUnit
 {
 
   public:
 
-    openfluid::fluidx::UnitDescriptor* mp_UnitDesc;
+    openfluid::fluidx::UnitDescriptor* UnitDescriptor;
 
-    std::map<openfluid::core::InputDataName_t, std::string*> m_IData;
+    std::map<openfluid::core::AttributeName_t, std::string*> Attributes;
 
-    std::list<openfluid::core::Event*> m_Events;
+    std::list<openfluid::core::Event*> Events;
 
     BuilderUnit(openfluid::fluidx::UnitDescriptor& UnitDesc) :
-        mp_UnitDesc(&UnitDesc)
+        UnitDescriptor(&UnitDesc)
     {
     }
     ;
@@ -111,17 +113,17 @@ class AdvancedDomainDescriptor
      */
     std::map<std::string, std::map<int, BuilderUnit> > m_Units;
 
-    std::map<std::string, std::set<std::string> > m_IDataNames;
+    std::map<std::string, std::set<openfluid::core::AttributeName_t> > m_AttrsNames;
 
     void dispatchUnits();
 
-    void dispatchIData();
+    void dispatchAttributes();
 
     void checkUnitRelations() const;
 
     void checkUnitRelations(openfluid::fluidx::UnitDescriptor& Unit) const;
 
-    void checkIDataConsistency() const;
+    void checkAttributesConsistency() const;
 
     void dispatchEvents();
 
@@ -170,7 +172,7 @@ class AdvancedDomainDescriptor
     std::set<std::string> getClassNames() const;
 
     /**
-     * @details Add this UnitDesc ID to the IData descriptor for all input data of this UnitDesc class,
+     * @details Add this UnitDesc ID to the descriptor for all attributes of this UnitDesc class,
      * with a default value of "-"
      * @warning Invalidate UnitDesc
      * @throw openfluid::base::OFException if Unit already exists or if Unit has a relation with a non-existent Unit
@@ -190,47 +192,47 @@ class AdvancedDomainDescriptor
      * @throw openfluid::base::OFException if Unit or DataName doesn't exist
      * @param ClassName
      * @param ID
-     * @param IDataName
+     * @param AttrName
      * @return
      */
-    std::string& getInputData(std::string ClassName, int ID,
-                              std::string IDataName);
+    std::string& getAttribute(std::string ClassName, int ID,
+                              std::string AttrName);
 
     /**
      *
      * @param ClassName
-     * @return An empty set if ClassName doesn't exist or has no InputData. Never throws.
+     * @return An empty set if ClassName doesn't exist or has no attribute. Never throws.
      */
-    std::set<std::string> getInputDataNames(std::string ClassName) const;
+    std::set<std::string> getAttributesNames(std::string ClassName) const;
 
     /**
      * @throw openfluid::base::OFException if ClassName doesn't exist
-     * or if IDataName already exists for class ClassName
+     * or if AttrName already exists for class ClassName
      * @param ClassName
-     * @param IDataName
+     * @param AttrName
      * @param DefaultValue
      */
-    void addInputData(std::string ClassName, std::string IDataName,
+    void addAttribute(std::string ClassName, std::string AttrName,
                       std::string DefaultValue);
 
     /**
      * @throw openfluid::base::OFException if ClassName doesn't exist
-     * or if IDataName doesn't exist for class ClassName
+     * or if AttrName doesn't exist for class ClassName
      * @param ClassName
-     * @param IDataName
+     * @param AttrName
      */
-    void deleteInputData(std::string ClassName, std::string IDataName);
+    void deleteAttribute(std::string ClassName, std::string AttrName);
 
     /**
      * Does nothing if NewDataName is the same as OldDataName
      * @throw openfluid::base::OFException if ClassName doesn't exist
      * or if OldDataName doesn't exist for the class ClassName
      * @param ClassName
-     * @param OldIDataName
-     * @param NewIDataName
+     * @param OldAttrName
+     * @param NewAttrName
      */
-    void renameInputData(std::string ClassName, std::string OldIDataName,
-                         std::string NewIDataName);
+    void renameAttribute(std::string ClassName, std::string OldAttrName,
+                         std::string NewAttrName);
 
     const std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(
         const openfluid::core::UnitClassID_t Unit) const;

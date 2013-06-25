@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE(TU.getParentUnits("TestParent") == NULL);
   BOOST_REQUIRE(TU.getChildrenUnits("TestChildren") == NULL);
   BOOST_REQUIRE_EQUAL(TU.getEvents()->getCount(),0);
-  BOOST_REQUIRE_EQUAL(TU.getInputData()->isDataExist("testidata"),false);
+  BOOST_REQUIRE_EQUAL(TU.getAttributes()->isAttributeExist("testattr"),false);
   BOOST_REQUIRE_EQUAL(TU.getVariables()->isVariableExist("testvar"),false);
 
 
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE(pTU->getParentUnits("pTestParent") == NULL);
   BOOST_REQUIRE(pTU->getChildrenUnits("pTestChildren") == NULL);
   BOOST_REQUIRE_EQUAL(pTU->getEvents()->getCount(),0);
-  BOOST_REQUIRE_EQUAL(pTU->getInputData()->isDataExist("testidata"),false);
+  BOOST_REQUIRE_EQUAL(pTU->getAttributes()->isAttributeExist("testattr"),false);
   BOOST_REQUIRE_EQUAL(pTU->getVariables()->isVariableExist("testvar"),false);
 
   delete pTU;

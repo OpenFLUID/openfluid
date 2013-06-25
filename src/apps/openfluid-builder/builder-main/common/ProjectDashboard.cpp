@@ -131,10 +131,10 @@ void ProjectDashboard::setCheckInfo(const ProjectChecker& Checker)
   Row[m_Columns.m_StateInfo] = Checker.IsDomainOk ? "ok" : Checker.DomainMsg;
 
   Row = *mref_TreeModel->append();
-  Row[m_Columns.m_Title] = _("Inputdata");
-  Row[m_Columns.m_StateIcon] = Checker.IsInputdataOk ? m_GreenIcon : m_RedIcon;
+  Row[m_Columns.m_Title] = _("Attributes");
+  Row[m_Columns.m_StateIcon] = Checker.IsAttributeOk ? m_GreenIcon : m_RedIcon;
   Row[m_Columns.m_StateInfo] =
-      Checker.IsInputdataOk ? "ok" : Checker.InputdataMsg;
+      Checker.IsAttributeOk ? "ok" : Checker.AttributeMsg;
 
   Row = *mref_TreeModel->append();
   Row[m_Columns.m_Title] = _("Project consistency");

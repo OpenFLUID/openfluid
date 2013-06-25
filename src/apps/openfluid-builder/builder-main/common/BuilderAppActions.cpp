@@ -131,7 +131,7 @@ void BuilderAppActions::createProjectUiXml()
                    "  <placeholder name='ProjectDataPlaceholder'>"
                    "    <menu action='DataMenu'>"
                    "      <menu action='DataDomainMenu'/>"
-                   "      <menu action='DataInputdataMenu'/>"
+                   "      <menu action='DataAttributesMenu'/>"
                    "      <menu action='DataEventsMenu'/>"
                    "      <menu action='DataExtraMenu'/>"
                    "      <menu action='DataMixedMenu'/>"
@@ -245,7 +245,7 @@ void BuilderAppActions::createProjectActionGroup()
   mref_ProjectActionGroup->add(
       Gtk::Action::create("DataDomainMenu", _("Import spatial domain")));
   mref_ProjectActionGroup->add(
-      Gtk::Action::create("DataInputdataMenu", _("Import inputdata")));
+      Gtk::Action::create("DataAttributesMenu", _("Import attributes")));
   mref_ProjectActionGroup->add(
       Gtk::Action::create("DataEventsMenu", _("Import events")));
   mref_ProjectActionGroup->add(
@@ -556,9 +556,9 @@ Glib::RefPtr<Gtk::Action> BuilderAppActions::getDataDomainMenuAction()
 // =====================================================================
 // =====================================================================
 
-Glib::RefPtr<Gtk::Action> BuilderAppActions::getDataInputdataMenuAction()
+Glib::RefPtr<Gtk::Action> BuilderAppActions::getDataAttributesMenuAction()
 {
-  return mref_ProjectActionGroup->get_action("DataInputdataMenu");
+  return mref_ProjectActionGroup->get_action("DataAttributesMenu");
 }
 
 // =====================================================================

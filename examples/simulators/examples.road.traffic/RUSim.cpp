@@ -34,8 +34,8 @@ DECLARE_AUTHOR("Michael Rabotin","rabotin@supagro.inra.fr");
 DECLARE_SIMULATOR_PARAM("MultiCapacity","Multiplying factor for capacity","-");
 DECLARE_USED_VAR("examples.TLU.S.state","TLU","traffic light unit state","");
 DECLARE_PRODUCED_VAR("examples.RU.S.stock","RU","number of cars stocked on RU","");
-DECLARE_USED_INPUTDATA("stockini","RU","","-");
-DECLARE_USED_INPUTDATA("capacity","RU","","car/min");
+DECLARE_USED_ATTRIBUTE("stockini","RU","","-");
+DECLARE_USED_ATTRIBUTE("capacity","RU","","car/min");
 
 // Scheduling
 DECLARE_SCHEDULING_DEFAULT;
@@ -125,7 +125,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("RU",RU)
       {
-        OPENFLUID_GetInputData(RU,"stockini",StockValue);
+        OPENFLUID_GetAttribute(RU,"stockini",StockValue);
         OPENFLUID_InitializeVariable(RU,"examples.RU.S.stock",StockValue);
       }
 
@@ -193,7 +193,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
             OPENFLUID_GetVariable(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
           else
           {
-            OPENFLUID_GetInputData(RU,"capacity",Capacity);
+            OPENFLUID_GetAttribute(RU,"capacity",Capacity);
          //   CapacityByDeltaT=std::ceil(Capacity/60*DeltaT);
             CapacityByDeltaT=(Capacity*m_MultiCapacity)/60*DeltaT;
 

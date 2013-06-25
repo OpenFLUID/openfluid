@@ -89,7 +89,7 @@
     <to class="RS" ID="14" />
    </unit>
   </definition>
-  <inputdata unitclass="RS" colorder="LENGTH;USR_HEIG;USR_SLOP;USR_WID">
+  <attributes unitclass="RS" colorder="LENGTH;USR_HEIG;USR_SLOP;USR_WID">
 10	84.914517	1.12	0.152846	1.75
 9	128.942382	0.86	0.005001	1.08
 7	54.399554	1.5	0.067151	3
@@ -104,8 +104,8 @@
 14	135.497822	0.6	0.143842	1.75
 13	117.311143	1	0.091429	0.6
 1	17.980104	0.7	0.16864	1.6
-  </inputdata>
-  <inputdata unitclass="SU" colorder="AREA;FLOW_DST;USR_SLOP">
+  </attributes>
+  <attributes unitclass="SU" colorder="AREA;FLOW_DST;USR_SLOP">
 14	2235.471466	21.7	0.02281
 12	2558.575302	31.1	0.0651
 11	10598.565178	43.4	0.05499
@@ -121,7 +121,7 @@
 2	16529.924492	49.2	0.0001
 15	5231.501724	40.5	0.06828
 3	3085.65168	26.7	0.01789
-  </inputdata>
+  </attributes>
   <calendar>
   </calendar>
  </domain>

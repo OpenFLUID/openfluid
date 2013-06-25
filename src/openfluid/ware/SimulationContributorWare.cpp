@@ -64,21 +64,21 @@ namespace openfluid { namespace ware {
 // =====================================================================
 
 
-void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                const openfluid::core::InputDataName_t& InputName,
+void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+                                const openfluid::core::AttributeName_t& AttrName,
                                 const openfluid::core::Value& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_SetAttribute","Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_SetAttribute","Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(InputName,Val))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unable to set value for input data "+ InputName);
+    if (!UnitPtr->getAttributes()->setValue(AttrName,Val))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unable to set value for attribute "+ AttrName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unit is NULL");
 }
 
 
@@ -86,21 +86,21 @@ void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *Un
 // =====================================================================
 
 
-void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                               const openfluid::core::InputDataName_t& InputName,
+void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::AttributeName_t& AttrName,
                                                const double& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_SetAttribute","Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_SetAttribute","Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::DoubleValue(Val)))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unable to set double value for input data "+ InputName);
+    if (!UnitPtr->getAttributes()->setValue(AttrName,openfluid::core::DoubleValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unable to set double value for attribute "+ AttrName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unit is NULL");
 }
 
 
@@ -108,21 +108,21 @@ void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *Un
 // =====================================================================
 
 
-void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                               const openfluid::core::InputDataName_t& InputName,
+void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::AttributeName_t& AttrName,
                                                const long& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_SetAttribute","Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_SetAttribute","Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(InputName,openfluid::core::IntegerValue(Val)))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unable to set long value for input data "+ InputName);
+    if (!UnitPtr->getAttributes()->setValue(AttrName,openfluid::core::IntegerValue(Val)))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unable to set long value for attribute "+ AttrName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unit is NULL");
 }
 
 
@@ -130,21 +130,21 @@ void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *Un
 // =====================================================================
 
 
-void SimulationContributorWare::OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                               const openfluid::core::InputDataName_t& InputName,
+void SimulationContributorWare::OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+                                               const openfluid::core::AttributeName_t& AttrName,
                                                const std::string& Val)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_SetAttribute","Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
   REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_SetInputData","Inputdata can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_SetAttribute","Attributes can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
 
   if (UnitPtr != NULL)
   {
-    if (!UnitPtr->getInputData()->setValue(InputName,Val))
-      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unable to set string value for input data "+ InputName);
+    if (!UnitPtr->getAttributes()->setValue(AttrName,Val))
+      throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unable to set string value for attribute "+ AttrName);
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetInputData","Unit is NULL");
+  else throw openfluid::base::OFException("OpenFLUID framework","SimulationContributorWare::OPENFLUID_SetAttribute","Unit is NULL");
 }
 
 

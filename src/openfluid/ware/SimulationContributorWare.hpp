@@ -70,43 +70,43 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
   protected:
 
     /**
-       Sets input data for a unit
+       Sets attribute for a unit
        @param[in] UnitPtr a Unit
-       @param[in] InputName the name of the set property
-       @param[in] Val the value of the set property
+       @param[in] AttrName the name of the set attribute
+       @param[in] Val the value of the set attribute
      */
-     void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                 const openfluid::core::InputDataName_t& InputName,
+     void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+                                 const openfluid::core::AttributeName_t& AttrName,
                                  const openfluid::core::Value& Val);
 
      /**
-       Sets input data for a unit, as a double
+       Sets attribute for a unit, as a double
        @param[in] UnitPtr a Unit
-       @param[in] InputName the name of the set property
-       @param[in] Val the value of the set property
+       @param[in] AttrName the name of the set attribute
+       @param[in] Val the value of the set attribute
      */
-     void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                 const openfluid::core::InputDataName_t& InputName,
+     void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+                                 const openfluid::core::AttributeName_t& AttrName,
                                  const double& Val);
 
      /**
-       Sets input data for a unit, as a long integer
+       Sets attribute for a unit, as a long integer
        @param[in] UnitPtr a Unit
-       @param[in] InputName the name of the set property
-       @param[in] Val the value of the set property
+       @param[in] AttrName the name of the set attribute
+       @param[in] Val the value of the set attribute
      */
-     void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                 const openfluid::core::InputDataName_t& InputName,
+     void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+                                 const openfluid::core::AttributeName_t& AttrName,
                                  const long& Val);
 
      /**
-       Sets input data for a unit, as a string
+       Sets attribute for a unit, as a string
        @param[in] UnitPtr a Unit
-       @param[in] InputName the name of the set property
-       @param[out] Val the value of the set property
+       @param[in] AttrName the name of the set attribute
+       @param[out] Val the value of the set attribute
      */
-     void OPENFLUID_SetInputData(openfluid::core::Unit *UnitPtr,
-                                 const openfluid::core::InputDataName_t& InputName,
+     void OPENFLUID_SetAttribute(openfluid::core::Unit *UnitPtr,
+                                 const openfluid::core::AttributeName_t& AttrName,
                                  const std::string& Val);
 
 

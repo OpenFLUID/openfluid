@@ -74,7 +74,7 @@ struct SortUnitsPtrByProcessOrder
 
 CoreRepository::CoreRepository()
 {
-//  m_LastMemToDiskStep = -1;
+
 }
 
 
@@ -373,11 +373,11 @@ void CoreRepository::clearAllVariables()
 // =====================================================================
 
 
-void CoreRepository::clearAllInputdata()
+void CoreRepository::clearAllAttributes()
 {
   BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
-    CurrentUnit->getInputData()->clear();
+    CurrentUnit->getAttributes()->clear();
   }
 }
 
@@ -404,7 +404,7 @@ void CoreRepository::clearAllData()
   BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
     CurrentUnit->getVariables()->clear();
-    CurrentUnit->getInputData()->clear();
+    CurrentUnit->getAttributes()->clear();
     CurrentUnit->getEvents()->clear();
   }
 }

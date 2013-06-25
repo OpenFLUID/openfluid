@@ -95,7 +95,7 @@ class SignatureDetailWidget: public Gtk::Notebook
     void updateVarsModel(
         const std::vector<openfluid::ware::SignatureHandledTypedDataItem>& Items,
         std::string SubTitle);
-    void updateIDataModel(
+    void updateAttributesModel(
         const std::vector<openfluid::ware::SignatureHandledDataItem>& Items,
         std::string SubTitle);
     void updateEventsModel(const std::vector<std::string>& Items);
@@ -106,19 +106,19 @@ class SignatureDetailWidget: public Gtk::Notebook
 
     Glib::RefPtr<Gtk::TreeStore> mref_ParamsModel;
     Glib::RefPtr<Gtk::TreeStore> mref_VarsModel;
-    Glib::RefPtr<Gtk::TreeStore> mref_IDataModel;
+    Glib::RefPtr<Gtk::TreeStore> mref_AttrsModel;
     Glib::RefPtr<Gtk::TreeStore> mref_EventsModel;
     Glib::RefPtr<Gtk::TreeStore> mref_XFilesModel;
 
     Gtk::TreeView* mp_ParamsTreeView;
     Gtk::TreeView* mp_VarsTreeView;
-    Gtk::TreeView* mp_IDataTreeView;
+    Gtk::TreeView* mp_AttrsTreeView;
     Gtk::TreeView* mp_EventsTreeView;
     Gtk::TreeView* mp_ExtraFilesTreeView;
 
     Gtk::ScrolledWindow* mp_ParamsWin;
     Gtk::ScrolledWindow* mp_VarsWin;
-    Gtk::ScrolledWindow* mp_IDataWin;
+    Gtk::ScrolledWindow* mp_AttrsWin;
     Gtk::ScrolledWindow* mp_EventsWin;
     Gtk::ScrolledWindow* mp_ExtraFilesWin;
 

@@ -113,7 +113,7 @@ class DLLEXPORT Engine
 
      void checkModelConsistency();
 
-     void checkInputdataConsistency();
+     void checkAttributesConsistency();
 
      void checkExtraFilesConsistency();
 
@@ -128,11 +128,11 @@ class DLLEXPORT Engine
                          bool UpdateMode,
                          const std::string& SimulatorID);
 
-     void checkExistingInputdata(openfluid::core::InputDataName_t DataName,
+     void checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
                                  openfluid::core::UnitClass_t ClassName,
                                  const std::string& SimulatorID);
 
-     void createInputdata(openfluid::core::InputDataName_t DataName,
+     void createAttribute(openfluid::core::AttributeName_t AttrName,
                           openfluid::core::UnitClass_t ClassName,
                           const std::string& SimulatorID);
 

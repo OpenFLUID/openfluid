@@ -49,7 +49,7 @@
     </definition>
 
  
-    <inputdata unitclass="unitsA" colorder="inivar1">
+    <attributes unitclass="unitsA" colorder="inivar1">
 3	1.25
 8	2.385
 5	5.1
@@ -58,15 +58,15 @@
 2	1.235
 7	1.0
 1	1.0
-    </inputdata>
+    </attributes>
     
-  <inputdata unitclass="unitsB" colorder="mult">
+  <attributes unitclass="unitsB" colorder="mult">
 1	1
 11	2
 3	5
 2	2
 7	1
-    </inputdata>        
+    </attributes>        
     
   </domain>
 </openfluid>

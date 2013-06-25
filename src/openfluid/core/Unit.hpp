@@ -64,7 +64,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/UnitsColl.hpp>
-#include <openfluid/core/InputData.hpp>
+#include <openfluid/core/Attributes.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/EventsColl.hpp>
 
@@ -133,7 +133,7 @@ class DLLEXPORT Unit
     LinkedUnitsListByClassMap_t m_ParentUnits;
     LinkedUnitsListByClassMap_t m_ChildrenUnits;
 
-    InputData m_InputData;
+    Attributes m_Attributes;
 
     Variables m_Variables;
 
@@ -218,9 +218,9 @@ class DLLEXPORT Unit
 
 
 
-    inline InputData* getInputData()  { return &m_InputData; };
+    inline Attributes* getAttributes()  { return &m_Attributes; };
 
-    inline const InputData* getInputData() const { return &m_InputData; };
+    inline const Attributes* getAttributes() const { return &m_Attributes; };
 
     Variables* getVariables() { return &m_Variables; };
 

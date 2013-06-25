@@ -406,7 +406,7 @@ void Sim2DocBuddy::processSignature()
       }
     }
 
-    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_INPUTDATA"))
+    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_ATTRIBUTE"))
     {
       LineParts = searchStringLitterals(Lines[i]);
       if (LineParts.size() == 4)
@@ -418,7 +418,7 @@ void Sim2DocBuddy::processSignature()
       }
     }
 
-    if (boost::algorithm::starts_with(Lines[i],"USED_INPUTDATA"))
+    if (boost::algorithm::starts_with(Lines[i],"USED_ATTRIBUTE"))
     {
       LineParts = searchStringLitterals(Lines[i]);
       if (LineParts.size() == 4)
@@ -585,7 +585,7 @@ void Sim2DocBuddy::generateLatex()
 
   if (m_InData.size() > 0)
   {
-    addLatexDataCatBegin(m_SimData,"Input data","lllXr");
+    addLatexDataCatBegin(m_SimData,"Attributes","lllXr");
     for (it = m_InData.begin(); it != m_InData.end(); ++it)
     {
       m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";

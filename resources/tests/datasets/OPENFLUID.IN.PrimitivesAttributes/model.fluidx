@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+      
+   
+     <simulator ID="tests.primitives.attributes.prod" />
+    
+     <simulator ID="tests.primitives.attributes.use" />
+     
+    
+    
+  </model>
+</openfluid>

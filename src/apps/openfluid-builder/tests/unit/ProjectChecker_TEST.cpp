@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK(PC.IsParamsOk);
   BOOST_CHECK(PC.IsGeneratorParamsOk);
   BOOST_CHECK(!PC.IsDomainOk);
-  BOOST_CHECK(!PC.IsInputdataOk);
+  BOOST_CHECK(!PC.IsAttributeOk);
   BOOST_CHECK(!PC.IsExtraFilesOk);
   BOOST_CHECK(!PC.IsRunConfigOk);
   BOOST_CHECK(!PC.IsMonitoringOk);
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK(PC.ModelMsg.empty());
   BOOST_CHECK(PC.ParamsMsg.empty());
   BOOST_CHECK(PC.DomainMsg.empty());
-  BOOST_CHECK(PC.InputdataMsg.empty());
+  BOOST_CHECK(PC.AttributeMsg.empty());
   BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(PC.RunConfigMsg.empty());
   BOOST_CHECK(PC.MonitoringMsg.empty());
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(PC.IsParamsOk);
   BOOST_CHECK(PC.IsGeneratorParamsOk);
   BOOST_CHECK(PC.IsDomainOk);
-  BOOST_CHECK(PC.IsInputdataOk);
+  BOOST_CHECK(PC.IsAttributeOk);
   BOOST_CHECK(PC.IsExtraFilesOk);
   BOOST_CHECK(PC.IsRunConfigOk);
   BOOST_CHECK(PC.IsMonitoringOk);
@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(check_check)
   BOOST_CHECK(PC.ModelMsg.empty());
   BOOST_CHECK(PC.ParamsMsg.empty());
   BOOST_CHECK(PC.DomainMsg.empty());
-  BOOST_CHECK(PC.InputdataMsg.empty());
+  BOOST_CHECK(PC.AttributeMsg.empty());
   BOOST_CHECK(PC.ExtraFilesMsg.empty());
   BOOST_CHECK(PC.RunConfigMsg.empty());
   BOOST_CHECK(PC.MonitoringMsg.empty());
@@ -270,41 +270,41 @@ BOOST_AUTO_TEST_CASE(check_check)
 
   Desc.getModel().appendItem(
       new openfluid::fluidx::SimulatorDescriptor(
-          "tests.primitives.inputdata.use"));
+          "tests.primitives.attributes.use"));
   PC.check();
-  BOOST_CHECK(!PC.IsInputdataOk);
-  BOOST_CHECK(!PC.InputdataMsg.empty());
+  BOOST_CHECK(!PC.IsAttributeOk);
+  BOOST_CHECK(!PC.AttributeMsg.empty());
 
-  Desc.getDomain().addInputData("TestUnits", "indataDouble", "");
-  Desc.getDomain().addInputData("TestUnits", "indataLong", "");
-  Desc.getDomain().addInputData("TestUnits", "indataString", "");
-  Desc.getDomain().addInputData("TestUnits", "indataMatrix", "");
-  Desc.getDomain().addInputData("TestUnits", "indataMap", "");
-  Desc.getDomain().addInputData("TestUnits", "indataBool", "");
-  Desc.getDomain().addInputData("TestUnits", "indataVector", "");
+  Desc.getDomain().addAttribute("TestUnits", "indataDouble", "");
+  Desc.getDomain().addAttribute("TestUnits", "indataLong", "");
+  Desc.getDomain().addAttribute("TestUnits", "indataString", "");
+  Desc.getDomain().addAttribute("TestUnits", "indataMatrix", "");
+  Desc.getDomain().addAttribute("TestUnits", "indataMap", "");
+  Desc.getDomain().addAttribute("TestUnits", "indataBool", "");
+  Desc.getDomain().addAttribute("TestUnits", "indataVector", "");
   PC.check();
-  BOOST_CHECK(!PC.IsInputdataOk);
-  BOOST_CHECK(!PC.InputdataMsg.empty());
+  BOOST_CHECK(!PC.IsAttributeOk);
+  BOOST_CHECK(!PC.AttributeMsg.empty());
 
   Desc.getModel().appendItem(
       new openfluid::fluidx::SimulatorDescriptor(
-          "tests.primitives.inputdata.prod"));
+          "tests.primitives.attributes.prod"));
   Desc.getModel().moveItem(8, 7);
   PC.check();
-  BOOST_CHECK(PC.IsInputdataOk);
-  BOOST_CHECK(PC.InputdataMsg.empty());
+  BOOST_CHECK(PC.IsAttributeOk);
+  BOOST_CHECK(PC.AttributeMsg.empty());
 
-  Desc.getDomain().deleteInputData("TestUnits", "indataDouble");
-  Desc.getDomain().deleteInputData("TestUnits", "indataLong");
-  Desc.getDomain().deleteInputData("TestUnits", "indataString");
-  Desc.getDomain().deleteInputData("TestUnits", "indataMatrix");
-  Desc.getDomain().deleteInputData("TestUnits", "indataMap");
-  Desc.getDomain().deleteInputData("TestUnits", "indataBool");
-  Desc.getDomain().deleteInputData("TestUnits", "indataVector");
+  Desc.getDomain().deleteAttribute("TestUnits", "indataDouble");
+  Desc.getDomain().deleteAttribute("TestUnits", "indataLong");
+  Desc.getDomain().deleteAttribute("TestUnits", "indataString");
+  Desc.getDomain().deleteAttribute("TestUnits", "indataMatrix");
+  Desc.getDomain().deleteAttribute("TestUnits", "indataMap");
+  Desc.getDomain().deleteAttribute("TestUnits", "indataBool");
+  Desc.getDomain().deleteAttribute("TestUnits", "indataVector");
 
   PC.check();
-  BOOST_CHECK(!PC.IsInputdataOk);
-  BOOST_CHECK(!PC.InputdataMsg.empty());
+  BOOST_CHECK(!PC.IsAttributeOk);
+  BOOST_CHECK(!PC.AttributeMsg.empty());
 
   openfluid::fluidx::DatastoreItemDescriptor DSItem(
       "ID", "", "", openfluid::core::UnstructuredValue::GeoVectorValue);

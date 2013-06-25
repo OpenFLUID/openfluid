@@ -194,7 +194,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
 // =====================================================================
 
 
-void Engine::checkExistingInputdata(openfluid::core::InputDataName_t DataName,
+void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
                                     openfluid::core::UnitClass_t ClassName,
                                     const std::string& SimulatorID)
 {
@@ -203,16 +203,16 @@ void Engine::checkExistingInputdata(openfluid::core::InputDataName_t DataName,
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData","Unit " + ClassName + " class does not exist for " + DataName + " input data required by " + SimulatorID);
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingAttribute","Unit " + ClassName + " class does not exist for " + AttrName + " attribute required by " + SimulatorID);
 
   bool Status = true;
 
   UnitIter = UnitList->begin();
   while (Status && (UnitIter != UnitList->end()))
   {
-    Status = (*UnitIter).getInputData()->isDataExist(DataName);
+    Status = (*UnitIter).getAttributes()->isAttributeExist(AttrName);
     if (!Status)
-      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingInputData",DataName + " input data on " + ClassName + " required by " + SimulatorID + " is not available");
+      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingAttribute",AttrName + " attribute on " + ClassName + " required by " + SimulatorID + " is not available");
 
     ++UnitIter;
   }
@@ -223,7 +223,7 @@ void Engine::checkExistingInputdata(openfluid::core::InputDataName_t DataName,
 // =====================================================================
 
 
-void Engine::createInputdata(openfluid::core::InputDataName_t DataName,
+void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
                              openfluid::core::UnitClass_t ClassName,
                              const std::string& SimulatorID)
 {
@@ -232,12 +232,12 @@ void Engine::createInputdata(openfluid::core::InputDataName_t DataName,
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::createInputdata","Unit class " + ClassName + " does not exist for " + DataName + " inputdata produced by " + SimulatorID);
+  else throw openfluid::base::OFException("OpenFLUID framework","Engine::createAttribute","Unit class " + ClassName + " does not exist for " + AttrName + " attribute produced by " + SimulatorID);
 
 
   for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
   {
-    (*UnitIter).getInputData()->setValue(DataName,openfluid::core::NullValue());
+    (*UnitIter).getAttributes()->setValue(AttrName,openfluid::core::NullValue());
   }
 }
 
@@ -343,7 +343,7 @@ void Engine::checkModelConsistency()
 
 
 
-void Engine::checkInputdataConsistency()
+void Engine::checkAttributesConsistency()
 {
   std::list<ModelItemInstance*>::const_iterator SimIter;
   openfluid::ware::SignatureHandledData HData;
@@ -358,16 +358,16 @@ void Engine::checkInputdataConsistency()
     CurrentSimulator = (*SimIter);
     HData = CurrentSimulator->Signature->HandledData;
 
-    // checking required input data
-    for(i=0; i < HData.RequiredInputdata.size();i++)
-      checkExistingInputdata(HData.RequiredInputdata[i].DataName,
-          HData.RequiredInputdata[i].UnitClass,
+    // checking required attribute
+    for(i=0; i < HData.RequiredAttribute.size();i++)
+      checkExistingAttribute(HData.RequiredAttribute[i].DataName,
+          HData.RequiredAttribute[i].UnitClass,
           CurrentSimulator->Signature->ID);
 
-    // checking produced input data
-    for(i=0; i < HData.ProducedInputdata.size();i++)
-      createInputdata(HData.ProducedInputdata[i].DataName,
-          HData.ProducedInputdata[i].UnitClass,
+    // checking produced attribute
+    for(i=0; i < HData.ProducedAttribute.size();i++)
+      createAttribute(HData.ProducedAttribute[i].DataName,
+          HData.ProducedAttribute[i].UnitClass,
           CurrentSimulator->Signature->ID);
 
     SimIter++;
@@ -532,7 +532,7 @@ void Engine::checkConsistency()
 
     checkModelConsistency();
 
-    checkInputdataConsistency();
+    checkAttributesConsistency();
   }
   catch (openfluid::base::OFException& E)
   {
