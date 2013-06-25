@@ -142,6 +142,11 @@ class DLLEXPORT MarketClient
     */
     static std::string getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
 
+    /**
+     @return true if MetaPackagesCatalogs contain packages
+    */
+    bool catalogsContainPackages() const;
+
     void connect(const std::string& URL);
 
     void disconnect();

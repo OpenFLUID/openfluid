@@ -277,6 +277,11 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     */
     void updateAvailPacksTreeview();
 
+    /**
+     * Indicates that no marketplace reached and unselects repository
+    */
+    void displayMarketplaceError();
+
     void updateInstallTreeview();
 
     void initializeLicencesTreeView();

@@ -426,11 +426,21 @@ void MarketClientAssistant::onURLComboChanged()
         m_MarketClient.connect(TmpURL);
       }
     }
+
+    // if repository contains packages
+    if (m_MarketClient.catalogsContainPackages())
+      updateAvailPacksTreeview();
+    else
+      displayMarketplaceError();
+  }
+  else
+  {
+    // change mouse cursor to default
+    get_window()->set_cursor();
+    while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
   }
 
   set_page_complete(m_SelectionPageBox,false);
-
-  updateAvailPacksTreeview();
 }
 
 
@@ -952,6 +962,39 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   // change mouse cursor to default
   get_window()->set_cursor();
   while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::displayMarketplaceError()
+{
+  // change mouse cursor to default
+  get_window()->set_cursor();
+  while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
+
+  // get current marketplace name
+  Glib::ustring MarketplaceName;
+  Gtk::TreeModel::iterator TmpIter = m_URLCombo.get_active();
+  if (TmpIter)
+  {
+    Gtk::TreeModel::Row TmpRow = *TmpIter;
+    if (TmpRow)
+    {
+      MarketplaceName = TmpRow[m_URLColumns.m_Name];
+    }
+  }
+
+  // display error message
+  Gtk::MessageDialog Dialog(_("Unable to connect to \"") + MarketplaceName
+      + _("\" marketplace.\nThis marketplace is not available, does not contain any catalog files or catalogs are empty."),
+      false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
+  Dialog.set_transient_for(*this);
+
+  Dialog.run();
+  m_URLCombo.set_active(0);
 }
 
 
