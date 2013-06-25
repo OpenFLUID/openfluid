@@ -211,7 +211,7 @@ BOOST_AUTO_TEST_CASE(check_tofromstring)
   openfluid::core::DateTime DT;
   std::string DTStr;
 
-  DT.setFromISOString("2009-09-09 16:36:25");
+  BOOST_REQUIRE_EQUAL(DT.setFromISOString("2009-09-09 16:36:25"),true);
   BOOST_REQUIRE_EQUAL(DT.getYear(),2009);
   BOOST_REQUIRE_EQUAL(DT.getMonth(),9);
   BOOST_REQUIRE_EQUAL(DT.getDay(),9);
@@ -221,6 +221,33 @@ BOOST_AUTO_TEST_CASE(check_tofromstring)
 
   DTStr = DT.getAsISOString();
   BOOST_REQUIRE_EQUAL(DTStr,"2009-09-09 16:36:25");
+
+
+  BOOST_REQUIRE_EQUAL(DT.setFromString("2013xx06xxx25","%Yxx%mxxx%d"),true);
+  BOOST_REQUIRE_EQUAL(DT.getYear(),2013);
+  BOOST_REQUIRE_EQUAL(DT.getMonth(),6);
+  BOOST_REQUIRE_EQUAL(DT.getDay(),25);
+  BOOST_REQUIRE_EQUAL(DT.getHour(),0);
+  BOOST_REQUIRE_EQUAL(DT.getMinute(),0);
+  BOOST_REQUIRE_EQUAL(DT.getSecond(),0);
+
+  BOOST_REQUIRE_EQUAL(DT.setFromString("2013-08-06T17:37:53","%Y-%m-%dT%H:%M:%S"),true);
+  BOOST_REQUIRE_EQUAL(DT.getYear(),2013);
+  BOOST_REQUIRE_EQUAL(DT.getMonth(),8);
+  BOOST_REQUIRE_EQUAL(DT.getDay(),6);
+  BOOST_REQUIRE_EQUAL(DT.getHour(),17);
+  BOOST_REQUIRE_EQUAL(DT.getMinute(),37);
+  BOOST_REQUIRE_EQUAL(DT.getSecond(),53);
+
+  BOOST_REQUIRE_EQUAL(DT.setFromString("25/06/2012 12h35m06s","%d/%m/%Y %Hh%Mm%Ss"),true);
+  BOOST_REQUIRE_EQUAL(DT.getYear(),2012);
+  BOOST_REQUIRE_EQUAL(DT.getMonth(),6);
+  BOOST_REQUIRE_EQUAL(DT.getDay(),25);
+  BOOST_REQUIRE_EQUAL(DT.getHour(),12);
+  BOOST_REQUIRE_EQUAL(DT.getMinute(),35);
+  BOOST_REQUIRE_EQUAL(DT.getSecond(),6);
+
+  BOOST_REQUIRE_EQUAL(DT.setFromString("2013-06-25","%d %Hh%Mm%Ss"),false);
 }
 // =====================================================================
 // =====================================================================

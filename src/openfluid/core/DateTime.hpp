@@ -216,6 +216,12 @@ class DLLEXPORT DateTime
 
 
     /**
+      Sets the date and time from a string using the given format
+    */
+    bool setFromString(const std::string& DateTimeStr, const std::string& FormatStr);
+
+
+    /**
       Returns Year (4 digits)
       @return an int
     */
