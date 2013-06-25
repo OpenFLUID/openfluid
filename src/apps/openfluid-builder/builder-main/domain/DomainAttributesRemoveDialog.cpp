@@ -46,60 +46,42 @@
  */
 
 /**
- \file DomainIDataEditDialog.cpp
+ \file DomainAttributesRemoveDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "DomainIDataEditDialog.hpp"
+#include "DomainAttributesRemoveDialog.hpp"
 
-#include <gtkmm/table.h>
 #include <gtkmm/stock.h>
 
 #include <glibmm/i18n.h>
 
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include "EngineHelper.hpp"
 
 // =====================================================================
 // =====================================================================
 
-DomainIDataEditDialog::DomainIDataEditDialog(
+DomainAttributesRemoveDialog::DomainAttributesRemoveDialog(
     openfluid::fluidx::AdvancedDomainDescriptor& Domain, std::string ClassName) :
-    mp_Domain(&Domain), m_ClassName(ClassName), m_IsValid(false)
+    mp_Domain(&Domain), m_ClassName(ClassName)
 {
-  mp_Dialog = new Gtk::Dialog(_("Changing Inputdata name"));
-  mp_Dialog->set_default_size(10, 10);
+  mp_Dialog = new Gtk::Dialog(_("Removing attribute"));
 
-  mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
+  //  Gtk::Label* MessageLabel = Gtk::manage(new Gtk::Label(
+  //      _("All values of this data will be destroyed")));
 
-  mp_InfoBar = Gtk::manage(new Gtk::InfoBar());
-  mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
-  ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
-
-  Gtk::Label* OldNameLabel = Gtk::manage(
-      new Gtk::Label(_("Inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
-  Gtk::Label* NewNameLabel = Gtk::manage(
-      new Gtk::Label(_("New Inputdata name:"), Gtk::ALIGN_LEFT,
-                     Gtk::ALIGN_CENTER));
+  Gtk::Label* NameLabel = Gtk::manage(
+      new Gtk::Label(_("Attribute name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
 
   mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
 
-  mp_NewNameEntry = Gtk::manage(new Gtk::Entry());
-  mp_NewNameEntry->signal_changed().connect(
-      sigc::mem_fun(*this, &DomainIDataEditDialog::onChanged));
-  mp_NewNameEntry->set_activates_default(true);
+  Gtk::HBox* HBox = Gtk::manage(new Gtk::HBox());
+  HBox->pack_start(*NameLabel, Gtk::PACK_SHRINK, 3);
+  HBox->pack_start(*mp_Combo);
 
-  Gtk::Table* Table = Gtk::manage(new Gtk::Table());
-  Table->set_col_spacings(3);
-  Table->attach(*OldNameLabel, 0, 1, 0, 1, Gtk::SHRINK | Gtk::FILL);
-  Table->attach(*mp_Combo, 1, 2, 0, 1);
-  Table->attach(*NewNameLabel, 0, 1, 1, 2, Gtk::SHRINK | Gtk::FILL);
-  Table->attach(*mp_NewNameEntry, 1, 2, 1, 2);
-
-  mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK, 5);
-  mp_Dialog->get_vbox()->pack_start(*Table, Gtk::PACK_SHRINK, 5);
+  mp_Dialog->get_vbox()->pack_start(*HBox, Gtk::PACK_SHRINK, 5);
 
   mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
@@ -107,58 +89,26 @@ DomainIDataEditDialog::DomainIDataEditDialog(
   mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
 
   mp_Dialog->show_all_children();
-
-  onChanged();
 }
 
 // =====================================================================
 // =====================================================================
 
-void DomainIDataEditDialog::onChanged()
+bool DomainAttributesRemoveDialog::show()
 {
-  std::string NewName = mp_NewNameEntry->get_text();
-
-  m_IsValid = false;
-
-  if (NewName == "" || EngineHelper::isEmptyString(NewName))
-  {
-    mp_InfoBarLabel->set_text(_("Inputdata name can not be empty"));
-  }
-  else if (m_IDataNames.find(NewName) != m_IDataNames.end())
-  {
-    mp_InfoBarLabel->set_text(_("Inputdata name already exists"));
-  }
-  else
-  {
-    m_IsValid = true;
-  }
-
-  mp_InfoBar->set_visible(!m_IsValid);
-  mp_Dialog->set_response_sensitive(Gtk::RESPONSE_OK, m_IsValid);
-  mp_Dialog->resize(10, 10);
-}
-
-// =====================================================================
-// =====================================================================
-
-bool DomainIDataEditDialog::show()
-{
-  m_IDataNames = mp_Domain->getAttributesNames(m_ClassName);
-
   mp_Combo->clear_items();
 
-  for (std::set<std::string>::iterator it = m_IDataNames.begin();
-      it != m_IDataNames.end(); ++it)
+  std::set<std::string> AttrsNames = mp_Domain->getAttributesNames(m_ClassName);
+
+  for (std::set<std::string>::iterator it = AttrsNames.begin();
+      it != AttrsNames.end(); ++it)
     mp_Combo->append_text(*it);
 
   mp_Combo->set_active(0);
 
-  mp_NewNameEntry->set_text("");
-
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    mp_Domain->renameAttribute(m_ClassName, mp_Combo->get_active_text(),
-                               mp_NewNameEntry->get_text());
+    mp_Domain->deleteAttribute(m_ClassName, mp_Combo->get_active_text());
 
     mp_Dialog->hide();
     return true;

@@ -46,74 +46,57 @@
  */
 
 /**
- \file DomainIDataRemoveDialog.cpp
- \brief Implements ...
+ \file DomainAttributesEditDialog.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "DomainIDataRemoveDialog.hpp"
+#ifndef __DOMAINATTRIBUTESEDITDIALOG_HPP__
+#define __DOMAINATTRIBUTESEDITDIALOG_HPP__
 
-#include <gtkmm/stock.h>
+#include <gtkmm/dialog.h>
+#include <gtkmm/entry.h>
+#include <gtkmm/infobar.h>
+#include <gtkmm/comboboxtext.h>
 
-#include <glibmm/i18n.h>
+#include <set>
 
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-
-// =====================================================================
-// =====================================================================
-
-DomainIDataRemoveDialog::DomainIDataRemoveDialog(
-    openfluid::fluidx::AdvancedDomainDescriptor& Domain, std::string ClassName) :
-    mp_Domain(&Domain), m_ClassName(ClassName)
-{
-  mp_Dialog = new Gtk::Dialog(_("Removing Inputdata"));
-
-  //  Gtk::Label* MessageLabel = Gtk::manage(new Gtk::Label(
-  //      _("All values of this data will be destroyed")));
-
-  Gtk::Label* NameLabel = Gtk::manage(
-      new Gtk::Label(_("Inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
-
-  mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
-
-  Gtk::HBox* HBox = Gtk::manage(new Gtk::HBox());
-  HBox->pack_start(*NameLabel, Gtk::PACK_SHRINK, 3);
-  HBox->pack_start(*mp_Combo);
-
-  mp_Dialog->get_vbox()->pack_start(*HBox, Gtk::PACK_SHRINK, 5);
-
-  mp_Dialog->add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  mp_Dialog->add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-
-  mp_Dialog->set_default_response(Gtk::RESPONSE_OK);
-
-  mp_Dialog->show_all_children();
+namespace openfluid {
+namespace fluidx {
+class AdvancedDomainDescriptor;
+}
 }
 
-// =====================================================================
-// =====================================================================
-
-bool DomainIDataRemoveDialog::show()
+class DomainAttributesEditDialog
 {
-  mp_Combo->clear_items();
+  private:
 
-  std::set<std::string> IDataNames = mp_Domain->getAttributesNames(m_ClassName);
+    Gtk::Dialog* mp_Dialog;
 
-  for (std::set<std::string>::iterator it = IDataNames.begin();
-      it != IDataNames.end(); ++it)
-    mp_Combo->append_text(*it);
+    Gtk::ComboBoxText* mp_Combo;
 
-  mp_Combo->set_active(0);
+    Gtk::Entry* mp_NewNameEntry;
 
-  if (mp_Dialog->run() == Gtk::RESPONSE_OK)
-  {
-    mp_Domain->deleteAttribute(m_ClassName, mp_Combo->get_active_text());
+    Gtk::InfoBar* mp_InfoBar;
+    Gtk::Label* mp_InfoBarLabel;
 
-    mp_Dialog->hide();
-    return true;
-  }
+    openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
-  mp_Dialog->hide();
-  return false;
-}
+    std::string m_ClassName;
+
+    std::set<std::string> m_AttrsNames;
+
+    bool m_IsValid;
+
+    void onChanged();
+
+  public:
+
+    DomainAttributesEditDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain,
+                          std::string ClassName);
+
+    bool show();
+};
+
+#endif /* __DOMAINATTRIBUTESEDITDIALOG_HPP__ */

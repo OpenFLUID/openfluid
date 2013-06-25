@@ -57,9 +57,9 @@
 #include <boost/algorithm/string.hpp>
 #include <gtkmm/notebook.h>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
-#include "DomainIDataAddDialog.hpp"
-#include "DomainIDataRemoveDialog.hpp"
-#include "DomainIDataEditDialog.hpp"
+#include "DomainAttributesAddDialog.hpp"
+#include "DomainAttributesRemoveDialog.hpp"
+#include "DomainAttributesEditDialog.hpp"
 #include "BuilderListToolBoxFactory.hpp"
 #include "BuilderButtonBox.hpp"
 #include "BuilderFrame.hpp"
@@ -72,34 +72,34 @@ DomainClassModule::DomainClassModule(
     openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc,
     std::string ClassName) :
     ProjectWorkspaceModule(AdvancedDesc), m_Domain(AdvancedDesc.getDomain()), m_ClassName(
-        ClassName), mp_IDataColumns(0)
+        ClassName), mp_AttrsColumns(0)
 {
   mp_MainPanel = Gtk::manage(new Gtk::VBox());
 
-  // Input data
+  // attributes
 
-  mp_IDataAddDialog = new DomainIDataAddDialog(AdvancedDesc.getDomain(),
+  mp_AttrAddDialog = new DomainAttributesAddDialog(AdvancedDesc.getDomain(),
                                                m_ClassName);
-  mp_IDataRemoveDialog = new DomainIDataRemoveDialog(AdvancedDesc.getDomain(),
+  mp_AttrRemoveDialog = new DomainAttributesRemoveDialog(AdvancedDesc.getDomain(),
                                                      m_ClassName);
-  mp_IDataEditDialog = new DomainIDataEditDialog(AdvancedDesc.getDomain(),
+  mp_AttrEditDialog = new DomainAttributesEditDialog(AdvancedDesc.getDomain(),
                                                  m_ClassName);
 
-  mp_IDataTreeView = Gtk::manage(new Gtk::TreeView());
+  mp_AttrsTreeView = Gtk::manage(new Gtk::TreeView());
 
-  mp_IDataWin = Gtk::manage(new Gtk::ScrolledWindow());
-  mp_IDataWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  mp_IDataWin->add(*mp_IDataTreeView);
-  mp_IDataWin->set_visible(true);
-  mp_IDataWin->show_all_children();
+  mp_AttrsWin = Gtk::manage(new Gtk::ScrolledWindow());
+  mp_AttrsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_AttrsWin->add(*mp_AttrsTreeView);
+  mp_AttrsWin->set_visible(true);
+  mp_AttrsWin->show_all_children();
 
-  mp_IDataListToolBox = BuilderListToolBoxFactory::createDomainIDataToolBox();
-  mp_IDataListToolBox->signal_AddCommandAsked().connect(
-      sigc::mem_fun(*this, &DomainClassModule::whenAddIDataAsked));
-  mp_IDataListToolBox->signal_RemoveCommandAsked().connect(
-      sigc::mem_fun(*this, &DomainClassModule::whenRemoveIDataAsked));
-  mp_IDataListToolBox->signal_EditCommandAsked().connect(
-      sigc::mem_fun(*this, &DomainClassModule::whenEditIDataAsked));
+  mp_AttrListToolBox = BuilderListToolBoxFactory::createDomainAttributeToolBox();
+  mp_AttrListToolBox->signal_AddCommandAsked().connect(
+      sigc::mem_fun(*this, &DomainClassModule::whenAddAttributeAsked));
+  mp_AttrListToolBox->signal_RemoveCommandAsked().connect(
+      sigc::mem_fun(*this, &DomainClassModule::whenRemoveAttributeAsked));
+  mp_AttrListToolBox->signal_EditCommandAsked().connect(
+      sigc::mem_fun(*this, &DomainClassModule::whenEditAttributeAsked));
 
   // Events
 
@@ -130,22 +130,22 @@ DomainClassModule::DomainClassModule(
 
 DomainClassModule::~DomainClassModule()
 {
-  delete mp_IDataAddDialog;
-  delete mp_IDataRemoveDialog;
-  delete mp_IDataEditDialog;
-  delete mp_IDataListToolBox;
+  delete mp_AttrAddDialog;
+  delete mp_AttrRemoveDialog;
+  delete mp_AttrEditDialog;
+  delete mp_AttrListToolBox;
   delete mp_EventsListToolBox;
 }
 
 // =====================================================================
 // =====================================================================
 
-void DomainClassModule::updateIData()
+void DomainClassModule::updateAttributes()
 {
-  std::set<std::string> IDataNames = m_Domain.getAttributesNames(m_ClassName);
+  std::set<std::string> AttrsNames = m_Domain.getAttributesNames(m_ClassName);
 
-  mp_IDataListToolBox->setRemoveCommandAvailable(!IDataNames.empty());
-  mp_IDataListToolBox->setEditCommandAvailable(!IDataNames.empty());
+  mp_AttrListToolBox->setRemoveCommandAvailable(!AttrsNames.empty());
+  mp_AttrListToolBox->setEditCommandAvailable(!AttrsNames.empty());
 
   // store existing sort and selection
 
@@ -154,74 +154,74 @@ void DomainClassModule::updateIData()
   std::string SortColumnName = "";
   int SelectedID = -1;
 
-  if (mref_IDataListStore)
+  if (mref_AttrsListStore)
   {
-    mref_IDataListStore->get_sort_column_id(SortColumnId, SortType);
-    SortColumnName = mp_IDataTreeView->get_column(SortColumnId)->get_title();
+    mref_AttrsListStore->get_sort_column_id(SortColumnId, SortType);
+    SortColumnName = mp_AttrsTreeView->get_column(SortColumnId)->get_title();
 
-    Gtk::TreeIter Selected = mp_IDataTreeView->get_selection()->get_selected();
+    Gtk::TreeIter Selected = mp_AttrsTreeView->get_selection()->get_selected();
     if (Selected)
-      SelectedID = Selected->get_value(mp_IDataColumns->m_Id);
+      SelectedID = Selected->get_value(mp_AttrsColumns->m_Id);
   }
 
 // create liststore
 
-  delete mp_IDataColumns;
-  mp_IDataColumns = new IDataColumns(IDataNames);
+  delete mp_AttrsColumns;
+  mp_AttrsColumns = new AttrsColumns(AttrsNames);
 
-  mref_IDataListStore.clear();
-  mref_IDataListStore = Gtk::ListStore::create(*mp_IDataColumns);
+  mref_AttrsListStore.clear();
+  mref_AttrsListStore = Gtk::ListStore::create(*mp_AttrsColumns);
 
-  mp_IDataTreeView->set_model(mref_IDataListStore);
+  mp_AttrsTreeView->set_model(mref_AttrsListStore);
 
   std::set<int> IDs = m_Domain.getIDsOfClass(m_ClassName);
   for (std::set<int>::iterator it = IDs.begin(); it != IDs.end(); ++it)
   {
-    Gtk::TreeRow Row = *(mref_IDataListStore->append());
+    Gtk::TreeRow Row = *(mref_AttrsListStore->append());
 
-    Row[mp_IDataColumns->m_Id] = *it;
+    Row[mp_AttrsColumns->m_Id] = *it;
 
-    for (std::set<std::string>::iterator itData = IDataNames.begin();
-        itData != IDataNames.end(); ++itData)
+    for (std::set<std::string>::iterator itData = AttrsNames.begin();
+        itData != AttrsNames.end(); ++itData)
     {
-      std::string IDataName = *itData;
-      std::string IDataValue = m_Domain.getAttribute(m_ClassName, *it,
-                                                     IDataName);
+      std::string AttrName = *itData;
+      std::string AttrValue = m_Domain.getAttribute(m_ClassName, *it,
+                                                     AttrName);
 
-      Row.set_value(mp_IDataColumns->getColumn(IDataName), IDataValue);
+      Row.set_value(mp_AttrsColumns->getColumn(AttrName), AttrValue);
 
       if (*it == SelectedID)
-        mp_IDataTreeView->get_selection()->select(Row);
+        mp_AttrsTreeView->get_selection()->select(Row);
     }
   }
 
   // adapt treeview
 
-  mp_IDataTreeView->remove_all_columns();
+  mp_AttrsTreeView->remove_all_columns();
 
-  mp_IDataTreeView->append_column("ID", mp_IDataColumns->m_Id);
-  mp_IDataTreeView->get_column(0)->set_sort_column(mp_IDataColumns->m_Id);
+  mp_AttrsTreeView->append_column("ID", mp_AttrsColumns->m_Id);
+  mp_AttrsTreeView->get_column(0)->set_sort_column(mp_AttrsColumns->m_Id);
   if (SortColumnId == 0)
   {
-    mref_IDataListStore->set_sort_column(SortColumnId, SortType);
+    mref_AttrsListStore->set_sort_column(SortColumnId, SortType);
     SortColumnId = -1;
   }
 
-  for (std::set<std::string>::iterator it = IDataNames.begin();
-      it != IDataNames.end(); ++it)
+  for (std::set<std::string>::iterator it = AttrsNames.begin();
+      it != AttrsNames.end(); ++it)
   {
-    Gtk::TreeModelColumn<std::string>& Col = mp_IDataColumns->getColumn(*it);
-    int Index = mp_IDataTreeView->append_column_editable(escapeUnderscores(*it),
+    Gtk::TreeModelColumn<std::string>& Col = mp_AttrsColumns->getColumn(*it);
+    int Index = mp_AttrsTreeView->append_column_editable(escapeUnderscores(*it),
                                                          Col)
                 - 1;
-    ((Gtk::CellRendererText *) mp_IDataTreeView->get_column_cell_renderer(Index))->signal_edited().connect(
+    ((Gtk::CellRendererText *) mp_AttrsTreeView->get_column_cell_renderer(Index))->signal_edited().connect(
         sigc::bind<std::string>(
-            sigc::mem_fun(*this, &DomainClassModule::onDataEdited), *it));
-    mp_IDataTreeView->get_column(Index)->set_sort_column(Col);
+            sigc::mem_fun(*this, &DomainClassModule::onAttributeEdited), *it));
+    mp_AttrsTreeView->get_column(Index)->set_sort_column(Col);
 
     if (SortColumnId != -1 && escapeUnderscores(*it) == SortColumnName)
     {
-      mref_IDataListStore->set_sort_column(Col, SortType);
+      mref_AttrsListStore->set_sort_column(Col, SortType);
       SortColumnId = -1;
     }
   }
@@ -229,11 +229,11 @@ void DomainClassModule::updateIData()
   // apply default sort and selection if needed
 
   if (SortColumnId != -1)
-    mref_IDataListStore->set_sort_column(0, Gtk::SORT_ASCENDING);
+    mref_AttrsListStore->set_sort_column(0, Gtk::SORT_ASCENDING);
 
-  if (!mp_IDataTreeView->get_selection()->get_selected() && !mref_IDataListStore->children().empty())
-    mp_IDataTreeView->get_selection()->select(
-        mref_IDataListStore->children()[0]);
+  if (!mp_AttrsTreeView->get_selection()->get_selected() && !mref_AttrsListStore->children().empty())
+    mp_AttrsTreeView->get_selection()->select(
+        mref_AttrsListStore->children()[0]);
 }
 
 // =====================================================================
@@ -248,11 +248,11 @@ std::string DomainClassModule::escapeUnderscores(std::string Str)
 // =====================================================================
 // =====================================================================
 
-void DomainClassModule::whenAddIDataAsked()
+void DomainClassModule::whenAddAttributeAsked()
 {
-  if (mp_IDataAddDialog->show())
+  if (mp_AttrAddDialog->show())
   {
-    updateIData();
+    updateAttributes();
     m_signal_DomainClassChanged.emit();
   }
 }
@@ -260,11 +260,11 @@ void DomainClassModule::whenAddIDataAsked()
 // =====================================================================
 // =====================================================================
 
-void DomainClassModule::whenRemoveIDataAsked()
+void DomainClassModule::whenRemoveAttributeAsked()
 {
-  if (mp_IDataRemoveDialog->show())
+  if (mp_AttrRemoveDialog->show())
   {
-    updateIData();
+    updateAttributes();
     m_signal_DomainClassChanged.emit();
   }
 }
@@ -272,11 +272,11 @@ void DomainClassModule::whenRemoveIDataAsked()
 // =====================================================================
 // =====================================================================
 
-void DomainClassModule::whenEditIDataAsked()
+void DomainClassModule::whenEditAttributeAsked()
 {
-  if (mp_IDataEditDialog->show())
+  if (mp_AttrEditDialog->show())
   {
-    updateIData();
+    updateAttributes();
     m_signal_DomainClassChanged.emit();
   }
 }
@@ -284,25 +284,25 @@ void DomainClassModule::whenEditIDataAsked()
 // =====================================================================
 // =====================================================================
 
-void DomainClassModule::onDataEdited(const Glib::ustring& Path,
+void DomainClassModule::onAttributeEdited(const Glib::ustring& Path,
                                      const Glib::ustring& NewText,
                                      std::string DataName)
 {
-  Gtk::TreeIter Iter = mref_IDataListStore->get_iter(Path);
+  Gtk::TreeIter Iter = mref_AttrsListStore->get_iter(Path);
 
   if (!Iter)
     return;
 
   std::string DataVal = NewText;
   if (EngineHelper::isEmptyString(NewText) && openfluid::guicommon::DialogBoxFactory::showSimpleOkCancelQuestionDialog(
-      _("You can't set an empty input data value.\n\n"
-          "Do you want to set this input data value as the default one (\"-\") instead?")))
+      _("You can't set an empty attribute value.\n\n"
+          "Do you want to set this attribute value as the default one (\"-\") instead?")))
   {
     DataVal = "-";
-    Iter->set_value(mp_IDataColumns->getColumn(DataName), DataVal);
+    Iter->set_value(mp_AttrsColumns->getColumn(DataName), DataVal);
   }
 
-  m_Domain.getAttribute(m_ClassName, Iter->get_value(mp_IDataColumns->m_Id),
+  m_Domain.getAttribute(m_ClassName, Iter->get_value(mp_AttrsColumns->m_Id),
                         DataName) = DataVal;
 
   m_signal_DomainClassChanged.emit();
@@ -382,17 +382,17 @@ void DomainClassModule::whenRemoveEventAsked()
 
 void DomainClassModule::compose()
 {
-// input data
+// attributes
 
-  Gtk::VBox* IDataButtonsPanel = Gtk::manage(new Gtk::VBox());
-  IDataButtonsPanel->pack_start(*mp_IDataListToolBox->asWidget(),
+  Gtk::VBox* AttrsButtonsPanel = Gtk::manage(new Gtk::VBox());
+  AttrsButtonsPanel->pack_start(*mp_AttrListToolBox->asWidget(),
                                 Gtk::PACK_SHRINK);
-  IDataButtonsPanel->set_visible(true);
+  AttrsButtonsPanel->set_visible(true);
 
   Gtk::HBox* FirstPanel = Gtk::manage(new Gtk::HBox());
   FirstPanel->set_border_width(5);
-  FirstPanel->pack_start(*mp_IDataWin);
-  FirstPanel->pack_start(*IDataButtonsPanel, Gtk::PACK_SHRINK, 5);
+  FirstPanel->pack_start(*mp_AttrsWin);
+  FirstPanel->pack_start(*AttrsButtonsPanel, Gtk::PACK_SHRINK, 5);
   FirstPanel->set_visible(true);
 
 // events
@@ -409,7 +409,7 @@ void DomainClassModule::compose()
   SecondPanel->set_visible(true);
 
   Gtk::Notebook* Notebook = Gtk::manage(new Gtk::Notebook());
-  Notebook->append_page(*FirstPanel, _("Inputdata"));
+  Notebook->append_page(*FirstPanel, _("Attributes"));
   Notebook->append_page(*SecondPanel, _("Events"));
   Notebook->set_border_width(6);
   Notebook->set_visible(true);
@@ -443,7 +443,7 @@ sigc::signal<void> DomainClassModule::signal_ModuleChanged()
 
 void DomainClassModule::update()
 {
-  updateIData();
+  updateAttributes();
   updateEvents();
 }
 

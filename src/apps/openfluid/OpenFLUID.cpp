@@ -255,9 +255,9 @@ void OpenFLUIDApp::printSimulatorsHandledDataItemReport(openfluid::ware::Signatu
 
   if (Type == ("fpar")) TypeStr = ("simulator parameter");
 
-  if (Type == ("pinput")) TypeStr = ("produced input data");
-  if (Type == ("rinput")) TypeStr = ("required input data");
-  if (Type == ("sinput")) TypeStr = ("used input data");
+  if (Type == ("pinput")) TypeStr = ("produced attribute");
+  if (Type == ("rinput")) TypeStr = ("required attribute");
+  if (Type == ("sinput")) TypeStr = ("used attribute");
 
   std::cout << DistribStr << HandledItem.DataName << UnitStr << " : " << TypeStr << ".";
   if (HandledItem.Description.length()!=0) std::cout << " " << HandledItem.Description;

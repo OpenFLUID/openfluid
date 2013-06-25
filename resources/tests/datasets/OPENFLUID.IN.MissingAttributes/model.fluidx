@@ -4,9 +4,9 @@
     <model>
 
    
-      <simulator ID="tests.primitives.inputdata.prod" />       
+      <simulator ID="tests.primitives.attributes.prod" />       
       
-      <simulator ID="tests.primitives.inputdata.use"> 
+      <simulator ID="tests.primitives.attributes.use"> 
         <param name="strparam" value="strvalue" />
         <param name="doubleparam" value="1.1" />
         <param name="longparam" value="11" />

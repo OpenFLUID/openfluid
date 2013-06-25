@@ -58,6 +58,9 @@
 #define BOOST_TEST_MODULE builder_unittest_DomainIDataPresenter
 #include <boost/test/unit_test.hpp>
 
+
+// TODO test to remove or adapt
+
 //#include "BuilderTestHelper.hpp"
 //#include "DomainIDataComponent.hpp"
 //#include "DomainIDataModel.hpp"

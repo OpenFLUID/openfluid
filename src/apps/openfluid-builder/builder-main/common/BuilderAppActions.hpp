@@ -137,7 +137,7 @@ class BuilderAppActions
         std::string ActionLabel, std::string ActionTooltip = "");
 
     Glib::RefPtr<Gtk::Action> getDataDomainMenuAction();
-    Glib::RefPtr<Gtk::Action> getDataInputdataMenuAction();
+    Glib::RefPtr<Gtk::Action> getDataAttributesMenuAction();
     Glib::RefPtr<Gtk::Action> getDataEventsMenuAction();
     Glib::RefPtr<Gtk::Action> getDataExtraMenuAction();
     Glib::RefPtr<Gtk::Action> getDataMixedMenuAction();

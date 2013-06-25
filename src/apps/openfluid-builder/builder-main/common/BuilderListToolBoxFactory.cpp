@@ -119,17 +119,17 @@ BuilderButtonBox* BuilderListToolBoxFactory::createDomainUnitRelationToolBox(
 // =====================================================================
 
 
-BuilderButtonBox* BuilderListToolBoxFactory::createDomainIDataToolBox()
+BuilderButtonBox* BuilderListToolBoxFactory::createDomainAttributeToolBox()
 {
   BuilderButtonBox* ToolBox = new BuilderListButtonBox();
   ToolBox->setAllCommandVisible();
   ToolBox->setUpCommandVisible(false);
   ToolBox->setDownCommandVisible(false);
   ToolBox->setAddCommandTooltipText(_(
-      "Add an inputdata for the current unit class"));
+      "Add an attribute for the current unit class"));
   ToolBox->setRemoveCommandTooltipText(_(
-      "Remove an inputdata from the current unit class"));
-  ToolBox->setEditCommandTooltipText(_("Change an inputdata name"));
+      "Remove an attribute from the current unit class"));
+  ToolBox->setEditCommandTooltipText(_("Change an attribute name"));
   return ToolBox;
 }
 

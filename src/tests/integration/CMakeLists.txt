@@ -190,12 +190,12 @@ SET_TESTS_PROPERTIES(integration-MissingVariable PROPERTIES WILL_FAIL TRUE)
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-MissingInputdata
+OPENFLUID_ADD_TEST(NAME integration-MissingAttributes
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                                        "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.MissingData"
-                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MissingData"
+                                        "-i" "${TESTS_DATASETS_PATH}/OPENFLUID.IN.MissingAttributes"
+                                        "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MissingAttributes"
                                         "-p" "${TEST_OUTPUT_PATH}")               
-SET_TESTS_PROPERTIES(integration-MissingInputdata PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(integration-MissingAttributes PROPERTIES WILL_FAIL TRUE)
 
 
 

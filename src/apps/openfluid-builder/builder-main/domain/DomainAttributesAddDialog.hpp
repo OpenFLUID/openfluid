@@ -46,14 +46,14 @@
  */
 
 /**
- \file DomainIDataAddDialog.hpp
+ \file DomainAttributesAddDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DOMAINIDATAADDDIALOG_HPP__
-#define __DOMAINIDATAADDDIALOG_HPP__
+#ifndef __DOMAINATTRIBUTESADDDIALOG_HPP__
+#define __DOMAINATTRIBUTESADDDIALOG_HPP__
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/entry.h>
@@ -66,7 +66,7 @@ class AdvancedDomainDescriptor;
 }
 }
 
-class DomainIDataAddDialog
+class DomainAttributesAddDialog
 {
   private:
 
@@ -84,7 +84,7 @@ class DomainIDataAddDialog
 
     std::string m_ClassName;
 
-    std::set<std::string> m_IDataNames;
+    std::set<std::string> m_AttrsNames;
 
     bool m_IsValid;
 
@@ -92,10 +92,10 @@ class DomainIDataAddDialog
 
   public:
 
-    DomainIDataAddDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain,
+    DomainAttributesAddDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain,
                          std::string ClassName);
 
     bool show();
 };
 
-#endif /* __DOMAINIDATAADDDIALOG_HPP__ */
+#endif /* __DOMAINATTRIBUTESADDDIALOG_HPP__ */

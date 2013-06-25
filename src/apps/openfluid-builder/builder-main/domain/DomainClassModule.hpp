@@ -63,9 +63,9 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/scrolledwindow.h>
 
-class DomainIDataAddDialog;
-class DomainIDataRemoveDialog;
-class DomainIDataEditDialog;
+class DomainAttributesAddDialog;
+class DomainAttributesRemoveDialog;
+class DomainAttributesEditDialog;
 
 class BuilderButtonBox;
 
@@ -79,13 +79,13 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     Gtk::Box* mp_MainPanel;
 
-    Gtk::TreeView* mp_IDataTreeView;
+    Gtk::TreeView* mp_AttrsTreeView;
     Gtk::TreeView* mp_EventsTreeView;
 
-    Gtk::ScrolledWindow* mp_IDataWin;
+    Gtk::ScrolledWindow* mp_AttrsWin;
     Gtk::ScrolledWindow* mp_EventsWin;
 
-    class IDataColumns: public Gtk::TreeModel::ColumnRecord
+    class AttrsColumns: public Gtk::TreeModel::ColumnRecord
     {
       private:
 
@@ -95,12 +95,12 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
 
         Gtk::TreeModelColumn<int> m_Id;
 
-        IDataColumns() :
+        AttrsColumns() :
             Gtk::TreeModel::ColumnRecord()
         {
           add(m_Id);
         }
-        IDataColumns(std::set<std::string>& Names) :
+        AttrsColumns(std::set<std::string>& Names) :
             Gtk::TreeModel::ColumnRecord()
         {
           add(m_Id);
@@ -130,7 +130,7 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
           m_Columns[NewName] = Col;
         }
     };
-    IDataColumns* mp_IDataColumns;
+    AttrsColumns* mp_AttrsColumns;
 
     class EventsColumns: public Gtk::TreeModel::ColumnRecord
     {
@@ -144,27 +144,27 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
     };
     EventsColumns m_EventsColumns;
 
-    Glib::RefPtr<Gtk::ListStore> mref_IDataListStore;
+    Glib::RefPtr<Gtk::ListStore> mref_AttrsListStore;
     Glib::RefPtr<Gtk::TreeStore> mref_EventsTreeStore;
 
     static std::string escapeUnderscores(std::string Str);
 
-    void whenAddIDataAsked();
-    void whenRemoveIDataAsked();
-    void whenEditIDataAsked();
-    void onDataEdited(const Glib::ustring& Path, const Glib::ustring& NewText,
-                      std::string DataName);
+    void whenAddAttributeAsked();
+    void whenRemoveAttributeAsked();
+    void whenEditAttributeAsked();
+    void onAttributeEdited(const Glib::ustring& Path, const Glib::ustring& NewText,
+                      std::string AttrName);
 
     void whenAddEventAsked();
     void whenRemoveEventAsked();
 
   protected:
 
-    DomainIDataAddDialog* mp_IDataAddDialog;
-    DomainIDataRemoveDialog* mp_IDataRemoveDialog;
-    DomainIDataEditDialog* mp_IDataEditDialog;
+    DomainAttributesAddDialog* mp_AttrAddDialog;
+    DomainAttributesRemoveDialog* mp_AttrRemoveDialog;
+    DomainAttributesEditDialog* mp_AttrEditDialog;
 
-    BuilderButtonBox* mp_IDataListToolBox;
+    BuilderButtonBox* mp_AttrListToolBox;
 
     BuilderButtonBox* mp_EventsListToolBox;
 
@@ -174,7 +174,7 @@ class DomainClassModule: public openfluid::guicommon::ProjectWorkspaceModule
 
     Gtk::Widget* asWidget();
 
-    void updateIData();
+    void updateAttributes();
     void updateEvents();
 
   public:

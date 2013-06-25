@@ -68,7 +68,7 @@ class BuilderListToolBoxFactory
     static BuilderButtonBox* createDomainUnitRelationToolBox(
         std::string RelationName);
 
-    static BuilderButtonBox* createDomainIDataToolBox();
+    static BuilderButtonBox* createDomainAttributeToolBox();
 
     static BuilderButtonBox* createDomainEventsToolBox();
 

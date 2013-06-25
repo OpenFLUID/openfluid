@@ -47,7 +47,7 @@
 
 
 /**
-  \file DummyInputdataImporter.cpp
+  \file DummyAttributesImporter.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>

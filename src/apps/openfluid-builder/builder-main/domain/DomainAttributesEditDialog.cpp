@@ -46,13 +46,13 @@
  */
 
 /**
- \file DomainIDataAddDialog.cpp
+ \file DomainAttributesEditDialog.cpp
  \brief Implements ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "DomainIDataAddDialog.hpp"
+#include "DomainAttributesEditDialog.hpp"
 
 #include <gtkmm/table.h>
 #include <gtkmm/stock.h>
@@ -65,11 +65,11 @@
 // =====================================================================
 // =====================================================================
 
-DomainIDataAddDialog::DomainIDataAddDialog(
+DomainAttributesEditDialog::DomainAttributesEditDialog(
     openfluid::fluidx::AdvancedDomainDescriptor& Domain, std::string ClassName) :
     mp_Domain(&Domain), m_ClassName(ClassName), m_IsValid(false)
 {
-  mp_Dialog = new Gtk::Dialog(_("Adding Inputdata field"));
+  mp_Dialog = new Gtk::Dialog(_("Changing attribute name"));
   mp_Dialog->set_default_size(10, 10);
 
   mp_InfoBarLabel = Gtk::manage(new Gtk::Label());
@@ -78,27 +78,25 @@ DomainIDataAddDialog::DomainIDataAddDialog(
   mp_InfoBar->set_message_type(Gtk::MESSAGE_WARNING);
   ((Gtk::Container*) mp_InfoBar->get_content_area())->add(*mp_InfoBarLabel);
 
-  Gtk::Label* NameLabel = Gtk::manage(
-      new Gtk::Label(_("Inputdata name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
-  Gtk::Label* DefaultValueLabel = Gtk::manage(
-      new Gtk::Label(_("Default value:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* OldNameLabel = Gtk::manage(
+      new Gtk::Label(_("Attribute name:"), Gtk::ALIGN_LEFT, Gtk::ALIGN_CENTER));
+  Gtk::Label* NewNameLabel = Gtk::manage(
+      new Gtk::Label(_("New attribute name:"), Gtk::ALIGN_LEFT,
+                     Gtk::ALIGN_CENTER));
 
-  mp_NameEntry = Gtk::manage(new Gtk::Entry());
-  mp_NameEntry->signal_changed().connect(
-      sigc::mem_fun(*this, &DomainIDataAddDialog::onChanged));
-  mp_NameEntry->set_activates_default(true);
+  mp_Combo = Gtk::manage(new Gtk::ComboBoxText());
 
-  mp_DefaultValueEntry = Gtk::manage(new Gtk::Entry());
-  mp_DefaultValueEntry->signal_changed().connect(
-      sigc::mem_fun(*this, &DomainIDataAddDialog::onChanged));
-  mp_DefaultValueEntry->set_activates_default(true);
+  mp_NewNameEntry = Gtk::manage(new Gtk::Entry());
+  mp_NewNameEntry->signal_changed().connect(
+      sigc::mem_fun(*this, &DomainAttributesEditDialog::onChanged));
+  mp_NewNameEntry->set_activates_default(true);
 
   Gtk::Table* Table = Gtk::manage(new Gtk::Table());
   Table->set_col_spacings(3);
-  Table->attach(*NameLabel, 0, 1, 0, 1, Gtk::SHRINK | Gtk::FILL);
-  Table->attach(*mp_NameEntry, 1, 2, 0, 1);
-  Table->attach(*DefaultValueLabel, 0, 1, 1, 2, Gtk::SHRINK | Gtk::FILL);
-  Table->attach(*mp_DefaultValueEntry, 1, 2, 1, 2);
+  Table->attach(*OldNameLabel, 0, 1, 0, 1, Gtk::SHRINK | Gtk::FILL);
+  Table->attach(*mp_Combo, 1, 2, 0, 1);
+  Table->attach(*NewNameLabel, 0, 1, 1, 2, Gtk::SHRINK | Gtk::FILL);
+  Table->attach(*mp_NewNameEntry, 1, 2, 1, 2);
 
   mp_Dialog->get_vbox()->pack_start(*mp_InfoBar, Gtk::PACK_SHRINK, 5);
   mp_Dialog->get_vbox()->pack_start(*Table, Gtk::PACK_SHRINK, 5);
@@ -116,24 +114,19 @@ DomainIDataAddDialog::DomainIDataAddDialog(
 // =====================================================================
 // =====================================================================
 
-void DomainIDataAddDialog::onChanged()
+void DomainAttributesEditDialog::onChanged()
 {
-  std::string Name = mp_NameEntry->get_text();
-  std::string Val = mp_DefaultValueEntry->get_text();
+  std::string NewName = mp_NewNameEntry->get_text();
 
   m_IsValid = false;
 
-  if (Name == "" || EngineHelper::isEmptyString(Name))
+  if (NewName == "" || EngineHelper::isEmptyString(NewName))
   {
-    mp_InfoBarLabel->set_text(_("Inputdata name can not be empty"));
+    mp_InfoBarLabel->set_text(_("Attribute name can not be empty"));
   }
-  else if (m_IDataNames.count(Name))
+  else if (m_AttrsNames.find(NewName) != m_AttrsNames.end())
   {
-    mp_InfoBarLabel->set_text(_("Inputdata name already exists"));
-  }
-  else if (Val == "" || EngineHelper::isEmptyString(Val))
-  {
-    mp_InfoBarLabel->set_text(_("Default value cannot be empty"));
+    mp_InfoBarLabel->set_text(_("Attribute name already exists"));
   }
   else
   {
@@ -148,17 +141,24 @@ void DomainIDataAddDialog::onChanged()
 // =====================================================================
 // =====================================================================
 
-bool DomainIDataAddDialog::show()
+bool DomainAttributesEditDialog::show()
 {
-  m_IDataNames = mp_Domain->getAttributesNames(m_ClassName);
+  m_AttrsNames = mp_Domain->getAttributesNames(m_ClassName);
 
-  mp_NameEntry->set_text("");
-  mp_DefaultValueEntry->set_text("");
+  mp_Combo->clear_items();
+
+  for (std::set<std::string>::iterator it = m_AttrsNames.begin();
+      it != m_AttrsNames.end(); ++it)
+    mp_Combo->append_text(*it);
+
+  mp_Combo->set_active(0);
+
+  mp_NewNameEntry->set_text("");
 
   if (mp_Dialog->run() == Gtk::RESPONSE_OK)
   {
-    mp_Domain->addAttribute(m_ClassName, mp_NameEntry->get_text(),
-                            mp_DefaultValueEntry->get_text());
+    mp_Domain->renameAttribute(m_ClassName, mp_Combo->get_active_text(),
+                               mp_NewNameEntry->get_text());
 
     mp_Dialog->hide();
     return true;

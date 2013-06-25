@@ -68,7 +68,7 @@ SignatureDetailWidget::SignatureDetailWidget()
 {
   mref_ParamsModel = Gtk::TreeStore::create(m_Columns);
   mref_VarsModel = Gtk::TreeStore::create(m_Columns);
-  mref_IDataModel = Gtk::TreeStore::create(m_Columns);
+  mref_AttrsModel = Gtk::TreeStore::create(m_Columns);
   mref_EventsModel = Gtk::TreeStore::create(m_Columns);
   mref_XFilesModel = Gtk::TreeStore::create(m_Columns);
 
@@ -86,10 +86,10 @@ SignatureDetailWidget::SignatureDetailWidget()
   mp_VarsTreeView->append_column(_("Description"), m_Columns.m_Description);
   mp_VarsTreeView->set_model(mref_VarsModel);
 
-  mp_IDataTreeView = new Gtk::TreeView();
-  mp_IDataTreeView->append_column(_("Name"), m_Columns.m_Name);
-  mp_IDataTreeView->append_column(_("Unit class"), m_Columns.m_Class);
-  mp_IDataTreeView->set_model(mref_IDataModel);
+  mp_AttrsTreeView = new Gtk::TreeView();
+  mp_AttrsTreeView->append_column(_("Name"), m_Columns.m_Name);
+  mp_AttrsTreeView->append_column(_("Unit class"), m_Columns.m_Class);
+  mp_AttrsTreeView->set_model(mref_AttrsModel);
 
   mp_EventsTreeView = new Gtk::TreeView();
   mp_EventsTreeView->append_column(_("Unit class"), m_Columns.m_Class);
@@ -107,9 +107,9 @@ SignatureDetailWidget::SignatureDetailWidget()
   mp_VarsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   mp_VarsWin->add(*mp_VarsTreeView);
 
-  mp_IDataWin = new Gtk::ScrolledWindow();
-  mp_IDataWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  mp_IDataWin->add(*mp_IDataTreeView);
+  mp_AttrsWin = new Gtk::ScrolledWindow();
+  mp_AttrsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  mp_AttrsWin->add(*mp_AttrsTreeView);
 
   mp_EventsWin = new Gtk::ScrolledWindow();
   mp_EventsWin->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -130,13 +130,13 @@ SignatureDetailWidget::~SignatureDetailWidget()
   // widgets are not managed but explicitly deleted to avoid their destruction when removing notebook pages
   delete mp_ParamsWin;
   delete mp_VarsWin;
-  delete mp_IDataWin;
+  delete mp_AttrsWin;
   delete mp_EventsWin;
   delete mp_ExtraFilesWin;
 
   delete mp_ParamsTreeView;
   delete mp_VarsTreeView;
-  delete mp_IDataTreeView;
+  delete mp_AttrsTreeView;
   delete mp_EventsTreeView;
   delete mp_ExtraFilesTreeView;
 }
@@ -175,15 +175,15 @@ void SignatureDetailWidget::update(
     append_page(*mp_VarsWin, _("Variables"));
   mp_VarsTreeView->expand_all();
 
-  mref_IDataModel->clear();
-  updateIDataModel(Signature->Signature->HandledData.ProducedAttribute,
+  mref_AttrsModel->clear();
+  updateAttributesModel(Signature->Signature->HandledData.ProducedAttribute,
                    _("Produced"));
-  updateIDataModel(Signature->Signature->HandledData.RequiredAttribute,
+  updateAttributesModel(Signature->Signature->HandledData.RequiredAttribute,
                    _("Required"));
-  updateIDataModel(Signature->Signature->HandledData.UsedAttribute, _("Used"));
-  if (!mref_IDataModel->children().empty())
-    append_page(*mp_IDataWin, _("Inputdata"));
-  mp_IDataTreeView->expand_all();
+  updateAttributesModel(Signature->Signature->HandledData.UsedAttribute, _("Used"));
+  if (!mref_AttrsModel->children().empty())
+    append_page(*mp_AttrsWin, _("Attributes"));
+  mp_AttrsTreeView->expand_all();
 
   mref_EventsModel->clear();
   updateEventsModel(Signature->Signature->HandledData.UsedEventsOnUnits);
@@ -247,18 +247,18 @@ void SignatureDetailWidget::updateVarsModel(
 // =====================================================================
 // =====================================================================
 
-void SignatureDetailWidget::updateIDataModel(
+void SignatureDetailWidget::updateAttributesModel(
     const std::vector<openfluid::ware::SignatureHandledDataItem>& Items,
     std::string SubTitle)
 {
   if (!Items.empty())
   {
-    Gtk::TreeRow Row = *mref_IDataModel->append();
+    Gtk::TreeRow Row = *mref_AttrsModel->append();
     Row[m_Columns.m_Name] = SubTitle;
 
     for (unsigned int i = 0; i < Items.size(); i++)
     {
-      Gtk::TreeRow SubRow = *mref_IDataModel->append(Row->children());
+      Gtk::TreeRow SubRow = *mref_AttrsModel->append(Row->children());
       SubRow[m_Columns.m_Name] = Items[i].DataName;
       SubRow[m_Columns.m_Class] = Items[i].UnitClass;
     }

@@ -46,21 +46,17 @@
  */
 
 /**
- \file DomainIDataEditDialog.hpp
+ \file DomainAttributesRemoveDialog.hpp
  \brief Header of ...
 
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DOMAINIDATAEDITDIALOG_HPP__
-#define __DOMAINIDATAEDITDIALOG_HPP__
+#ifndef __DOMAINATTRIBUTESREMOVEDIALOG_HPP__
+#define __DOMAINATTRIBUTESREMOVEDIALOG_HPP__
 
 #include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/infobar.h>
 #include <gtkmm/comboboxtext.h>
-
-#include <set>
 
 namespace openfluid {
 namespace fluidx {
@@ -68,35 +64,27 @@ class AdvancedDomainDescriptor;
 }
 }
 
-class DomainIDataEditDialog
+class DomainAttributesRemoveDialog
 {
   private:
 
     Gtk::Dialog* mp_Dialog;
 
+    Gtk::Label* mp_NameLabel;
+
     Gtk::ComboBoxText* mp_Combo;
-
-    Gtk::Entry* mp_NewNameEntry;
-
-    Gtk::InfoBar* mp_InfoBar;
-    Gtk::Label* mp_InfoBarLabel;
 
     openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
 
     std::string m_ClassName;
 
-    std::set<std::string> m_IDataNames;
-
-    bool m_IsValid;
-
-    void onChanged();
-
   public:
 
-    DomainIDataEditDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain,
-                          std::string ClassName);
+    DomainAttributesRemoveDialog(openfluid::fluidx::AdvancedDomainDescriptor& Domain,
+                            std::string ClassName);
 
     bool show();
+
 };
 
-#endif /* __DOMAINIDATAEDITDIALOG_HPP__ */
+#endif /* __DOMAINATTRIBUTESREMOVEDIALOG_HPP__ */

@@ -353,7 +353,7 @@ void ProjectChecker::checkModelAttributes()
   openfluid::ware::SimulatorSignature* Sign;
   std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt;
 
-  std::set<std::pair<std::string, std::string> > IDataUnits;
+  std::set<std::pair<std::string, std::string> > AttrsUnits;
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
       Items.begin(); it != Items.end(); ++it)
@@ -361,7 +361,7 @@ void ProjectChecker::checkModelAttributes()
     Sign = Reg->getSignatureItemInstance(*it)->Signature;
     std::string ID = mp_Desc->getModel().getID(*it);
 
-    // check required Input data
+    // check required attribute
     std::vector<openfluid::ware::SignatureHandledDataItem>& ReqData =
         Sign->HandledData.RequiredAttribute;
     for (itt = ReqData.begin(); itt != ReqData.end(); ++itt)
@@ -373,13 +373,13 @@ void ProjectChecker::checkModelAttributes()
                 itt->UnitClass, itt->DataName, ID);
 
       else if (!(Domain.getAttributesNames(itt->UnitClass).count(itt->DataName)
-          || IDataUnits.count(std::make_pair(itt->UnitClass, itt->DataName))))
+          || AttrsUnits.count(std::make_pair(itt->UnitClass, itt->DataName))))
         AttributeMsg += Glib::ustring::compose(
             _("- %1 attribute on %2 required by %3 is not available\n"),
             itt->DataName, itt->UnitClass, ID);
     }
 
-    // check produced Input data
+    // check produced attribute
     std::vector<openfluid::ware::SignatureHandledDataItem>& ProdData =
         Sign->HandledData.ProducedAttribute;
     for (itt = ProdData.begin(); itt != ProdData.end(); ++itt)
@@ -390,9 +390,9 @@ void ProjectChecker::checkModelAttributes()
                 _("- Unit %1 class does not exist for %2 attribute produced by %3\n"),
                 itt->UnitClass, itt->DataName, ID);
 
-      if (!IDataUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
+      if (!AttrsUnits.count(std::make_pair(itt->UnitClass, itt->DataName)))
       {
-        IDataUnits.insert(std::make_pair(itt->UnitClass, itt->DataName));
+        AttrsUnits.insert(std::make_pair(itt->UnitClass, itt->DataName));
       }
       else
         AttributeMsg +=

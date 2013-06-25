@@ -94,11 +94,11 @@ class Info
     Gtk::VBox* mp_ButtonInfoIntputEventsVBox;
 
     Gtk::Table* mp_InfoTable;
-    Gtk::Table* mp_InputDataTable;
+    Gtk::Table* mp_AttributesTable;
     Gtk::Table* mp_EventTable;
 
     Gtk::Expander* mp_InfoExpander;
-    Gtk::Expander* mp_InputDataExpander;
+    Gtk::Expander* mp_AttributesExpander;
     Gtk::Expander* mp_EventExpander;
 
     Gtk::Expander* mp_FromExpander;
@@ -111,8 +111,8 @@ class Info
 
     std::map<int, std::map<std::string, std::string> > m_ChangeValue;
     std::map<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >
-        m_InputDataLineTable;
-    std::vector<std::string> m_InputDataNames;
+        m_AttributesLineTable;
+    std::vector<std::string> m_AttributesNames;
     std::set<int> m_SelectedUnitId;
 
     openfluid::fluidx::AdvancedDomainDescriptor* mp_Domain;
@@ -165,11 +165,11 @@ class Info
     void onIDViewSelectionChanged();
     void loadSelectedID(const Gtk::TreeModel::iterator&);
     void loadInfo(int, int);
-    void loadInputData(int, int);
+    void loadAttribute(int, int);
     void loadEvent(int, int);
     void fillNameClassIDListStore(Glib::RefPtr<Gtk::ListStore>&,
         ModelColumnsNameClassIDs&, const std::list<openfluid::core::UnitClassID_t> UnitsList);
-    void onEntryInputDataChanged(std::string);
+    void onEntryAttributeChanged(std::string);
     bool on_focus_out_event(GdkEventFocus*, std::string);
   public:
 

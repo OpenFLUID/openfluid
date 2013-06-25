@@ -114,11 +114,11 @@ Info::Info(Gtk::Window& ParentWindow, const Glib::ustring& Title,
 
   mp_EventExpander = Gtk::manage(new Gtk::Expander(_("Events"), false));
   mp_InfoExpander = Gtk::manage(new Gtk::Expander(_("Info"), false));
-  mp_InputDataExpander = Gtk::manage(new Gtk::Expander(_("Input Data"), false));
+  mp_AttributesExpander = Gtk::manage(new Gtk::Expander(_("Attributes"), false));
 
   mp_EventTable = Gtk::manage(new Gtk::Table());
   mp_InfoTable = Gtk::manage(new Gtk::Table(11, 2, false));
-  mp_InputDataTable = Gtk::manage(new Gtk::Table());
+  mp_AttributesTable = Gtk::manage(new Gtk::Table());
 
   mp_FromExpander = Gtk::manage(new Gtk::Expander(_("From :"), false));
   mp_ToExpander = Gtk::manage(new Gtk::Expander(_("To :"), false));
@@ -227,10 +227,10 @@ Info::Info(Gtk::Window& ParentWindow, const Glib::ustring& Title,
   mp_ChildrenExpander->add(*mp_ChildrenScrolledWindow);
 
   mp_InfoExpander->add(*mp_InfoTable);
-  mp_InputDataExpander->add(*mp_InputDataTable);
+  mp_AttributesExpander->add(*mp_AttributesTable);
 
   mp_InfoIntputEventsVBox->pack_start(*mp_InfoExpander, Gtk::PACK_SHRINK, 5);
-  mp_InfoIntputEventsVBox->pack_start(*mp_InputDataExpander, Gtk::PACK_SHRINK,
+  mp_InfoIntputEventsVBox->pack_start(*mp_AttributesExpander, Gtk::PACK_SHRINK,
       5);
   mp_InfoIntputEventsVBox->pack_start(*mp_EventExpander, Gtk::PACK_SHRINK, 5);
 
@@ -267,7 +267,7 @@ void Info::onIDViewSelectionChanged()
   for (it = m_SelectedUnitId.begin(); it != m_SelectedUnitId.end(); it++)
   {
     loadInfo(*it, m_SelectedUnitId.size());
-    loadInputData(*it, m_SelectedUnitId.size());
+    loadAttribute(*it, m_SelectedUnitId.size());
     //TODO les evenements à faire
     loadEvent(*it, m_SelectedUnitId.size());
   }
@@ -329,12 +329,12 @@ void Info::loadInfo(int ID, int SelectionSize)
 // =====================================================================
 // =====================================================================
 
-void Info::loadInputData(int ID, int SelectionSize)
+void Info::loadAttribute(int ID, int SelectionSize)
 {
   if (SelectionSize == 1)
   {
     std::map<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >::iterator it;
-    for (it = m_InputDataLineTable.begin(); it != m_InputDataLineTable.end(); ++it)
+    for (it = m_AttributesLineTable.begin(); it != m_AttributesLineTable.end(); ++it)
     {
       std::string Val = mp_Domain->getAttribute(mp_NameClassLabel->get_label(), ID, ((*it).first)->get_label());
       (*it).second.first->set_text(Val);
@@ -371,7 +371,7 @@ void Info::fillNameClassIDListStore(Glib::RefPtr<Gtk::ListStore>& ListStore,
 // =====================================================================
 // =====================================================================
 
-void Info::onEntryInputDataChanged(std::string InputDataName)
+void Info::onEntryAttributeChanged(std::string AttributeName)
 {
   if (m_SelectedUnitId.size() == 1)
   {
@@ -381,15 +381,15 @@ void Info::onEntryInputDataChanged(std::string InputDataName)
     {
       std::map<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >::iterator
           iter;
-      for (iter = m_InputDataLineTable.begin(); iter
-          != m_InputDataLineTable.end(); ++iter)
+      for (iter = m_AttributesLineTable.begin(); iter
+          != m_AttributesLineTable.end(); ++iter)
       {
-        if ((*iter).first->get_label() == InputDataName)
+        if ((*iter).first->get_label() == AttributeName)
         {
 //          TempLabel = (*iter).first;
           if (!m_ChangeValue.empty())
           {
-            bool addInputDataNameValue = true;
+            bool addAttributeNameValue = true;
             std::map<int, std::map<std::string, std::string> >::iterator
                 ChangeMapIt;
             ChangeMapIt = m_ChangeValue.find(*it);
@@ -397,7 +397,7 @@ void Info::onEntryInputDataChanged(std::string InputDataName)
             for (ChangeSubMapIt = (*ChangeMapIt).second.begin(); ChangeSubMapIt
                 != (*ChangeMapIt).second.end(); ++ChangeSubMapIt)
             {
-              if ((*ChangeSubMapIt).first == InputDataName)
+              if ((*ChangeSubMapIt).first == AttributeName)
               {
                 if ((*ChangeSubMapIt).second
                     != (*iter).second.first->get_text())
@@ -405,10 +405,10 @@ void Info::onEntryInputDataChanged(std::string InputDataName)
                   (*ChangeSubMapIt).second = (*iter).second.first->get_text();
                   (*iter).second.second->set_sensitive(true);
                 }
-                addInputDataNameValue = false;
+                addAttributeNameValue = false;
               }
             }
-            if (addInputDataNameValue)
+            if (addAttributeNameValue)
             {
               (*ChangeMapIt).second.insert(
                   std::pair<std::string, std::string>(
@@ -439,9 +439,9 @@ void Info::onEntryInputDataChanged(std::string InputDataName)
 
 
 bool Info::on_focus_out_event(GdkEventFocus* /*event*/,
-    std::string InputDataName)
+    std::string AttributeName)
 {
-  onEntryInputDataChanged(InputDataName);
+  onEntryAttributeChanged(AttributeName);
   return false;
 }
 
@@ -459,12 +459,12 @@ void Info::show(std::string ClassName, std::set<int> UnitIDs)
   mref_ListStoreParent->clear();
   mref_ListStoreChildren->clear();
   mref_ListStoreIDs->clear();
-  m_InputDataNames.clear();
-  if (!m_InputDataLineTable.empty())
+  m_AttributesNames.clear();
+  if (!m_AttributesLineTable.empty())
   {
     std::map<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >::iterator iter;
-    for (iter = m_InputDataLineTable.begin(); iter
-    != m_InputDataLineTable.end(); ++iter)
+    for (iter = m_AttributesLineTable.begin(); iter
+    != m_AttributesLineTable.end(); ++iter)
     {
       delete((*iter).first);
       delete((*iter).second.second);
@@ -472,13 +472,13 @@ void Info::show(std::string ClassName, std::set<int> UnitIDs)
     }
 
   }
-  m_InputDataLineTable.clear();
+  m_AttributesLineTable.clear();
 
   mp_NameClassLabel->set_label(ClassName);
   mp_TreeViewIDs->set_name("");
 
-  std::set<std::string> IDataNames = mp_Domain->getAttributesNames(ClassName);
-  m_InputDataNames.insert(m_InputDataNames.begin(),IDataNames.begin(), IDataNames.end());
+  std::set<std::string> AttrsNames = mp_Domain->getAttributesNames(ClassName);
+  m_AttributesNames.insert(m_AttributesNames.begin(),AttrsNames.begin(), AttrsNames.end());
 
   std::set<int>::iterator it;
   for (it = UnitIDs.begin(); it != UnitIDs.end(); it++)
@@ -486,62 +486,62 @@ void Info::show(std::string ClassName, std::set<int> UnitIDs)
     Gtk::TreeRow Row = *mref_ListStoreIDs->append();
     Row[m_ModelColumnIDs.m_ID] = *it;
 
-    if(m_InputDataNames.empty())
-      mp_InputDataTable->set_visible(false);
+    if(m_AttributesNames.empty())
+      mp_AttributesTable->set_visible(false);
     else
     {
-      mp_InputDataTable->resize((m_InputDataNames.size() * 2) - 1, 3);
-      mp_InputDataTable->set_homogeneous(false);
-      mp_InputDataTable->set_spacings(5);
+      mp_AttributesTable->resize((m_AttributesNames.size() * 2) - 1, 3);
+      mp_AttributesTable->set_homogeneous(false);
+      mp_AttributesTable->set_spacings(5);
 
       int compt = 0;
-      for (unsigned int i = 0; i < (m_InputDataNames.size() * 2) - 1; i++)
+      for (unsigned int i = 0; i < (m_AttributesNames.size() * 2) - 1; i++)
       {
         if ((i % 2) == 0)
         {
-          Gtk::Label* InputDataLabel = Gtk::manage(
-              new Gtk::Label(m_InputDataNames[compt]));
+          Gtk::Label* AttributeLabel = Gtk::manage(
+              new Gtk::Label(m_AttributesNames[compt]));
 
-          mp_InputDataTable->attach(*InputDataLabel, 0, 1, i, i + 1,
+          mp_AttributesTable->attach(*AttributeLabel, 0, 1, i, i + 1,
               Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
 
-          Gtk::Entry* InputDataValueEntry = Gtk::manage(new Gtk::Entry());
-          InputDataValueEntry->set_name(InputDataLabel->get_label());
-          mp_InputDataTable->attach(*InputDataValueEntry, 1, 2, i, i + 1,
+          Gtk::Entry* AttributeValueEntry = Gtk::manage(new Gtk::Entry());
+          AttributeValueEntry->set_name(AttributeLabel->get_label());
+          mp_AttributesTable->attach(*AttributeValueEntry, 1, 2, i, i + 1,
               Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
-          InputDataValueEntry->signal_activate().connect(
+          AttributeValueEntry->signal_activate().connect(
               sigc::bind<std::string>(
-                  sigc::mem_fun(*this, &Info::onEntryInputDataChanged),
-                  InputDataValueEntry->get_name()));
-          InputDataValueEntry->signal_focus_out_event().connect(
+                  sigc::mem_fun(*this, &Info::onEntryAttributeChanged),
+                  AttributeValueEntry->get_name()));
+          AttributeValueEntry->signal_focus_out_event().connect(
               sigc::bind<std::string>(
                   sigc::mem_fun(*this, &Info::on_focus_out_event),
-                  InputDataValueEntry->get_name()));
-          InputDataValueEntry->set_activates_default(true);
+                  AttributeValueEntry->get_name()));
+          AttributeValueEntry->set_activates_default(true);
 
           Gtk::Button* RestoreDefaultButton = Gtk::manage(
               new Gtk::Button(_("Restore"), false));
-          mp_InputDataTable->attach(*RestoreDefaultButton, 2, 3, i, i + 1,
+          mp_AttributesTable->attach(*RestoreDefaultButton, 2, 3, i, i + 1,
               Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
 
           std::pair<Gtk::Entry*, Gtk::Button*> TempPairEntryButton =
-              std::make_pair(InputDataValueEntry, RestoreDefaultButton);
-          m_InputDataLineTable.insert(
+              std::make_pair(AttributeValueEntry, RestoreDefaultButton);
+          m_AttributesLineTable.insert(
               std::pair<Gtk::Label*, std::pair<Gtk::Entry*, Gtk::Button*> >(
-                  InputDataLabel, TempPairEntryButton));
+                  AttributeLabel, TempPairEntryButton));
 
-          InputDataLabel->set_visible(true);
-          InputDataValueEntry->set_visible(true);
+          AttributeLabel->set_visible(true);
+          AttributeValueEntry->set_visible(true);
           RestoreDefaultButton->set_visible(true);
           RestoreDefaultButton->set_sensitive(false);
           compt++;
         } else
         {
-          mp_InputDataTable->attach(*ToolBox::setHSeparator(), 0, 3, i, i + 1,
+          mp_AttributesTable->attach(*ToolBox::setHSeparator(), 0, 3, i, i + 1,
               Gtk::FILL | Gtk::EXPAND, Gtk::SHRINK);
         }
       }
-      mp_InputDataTable->set_visible(true);
+      mp_AttributesTable->set_visible(true);
     }
   }
 
