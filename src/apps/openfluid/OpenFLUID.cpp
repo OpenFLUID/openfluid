@@ -132,10 +132,10 @@ void OpenFLUIDApp::printOpenFLUIDInfos()
   std::cout << "===========================================================" << std::endl;
   std::cout << VersionInfo << std::endl;
   std::cout << std::endl;
-  std::cout << "                          software environment               " << std::endl;
+  std::cout << "                          software environment             " << std::endl;
   std::cout << "            for Modelling Fluxes in Landscapes             " << std::endl;
   std::cout << std::endl;
-  std::cout << "                 LISAH, Montpellier, France                " << std::endl;
+  std::cout << "                 www.openfluid-project.org                 " << std::endl;
   std::cout << "===========================================================" << std::endl;
   std::cout << std::endl;
   std::cout.flush();
