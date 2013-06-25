@@ -412,6 +412,7 @@ void MarketClientAssistant::onLicenseRadioClicked()
 void MarketClientAssistant::onURLComboChanged()
 {
   m_MarketClient.disconnect();
+  clearAvailPacksTreeview();
 
   if (m_URLCombo.get_active_row_number() > 0)
   {
@@ -776,18 +777,16 @@ void MarketClientAssistant::onInstallTimeoutOnce()
 // =====================================================================
 
 
-void MarketClientAssistant::updateAvailPacksTreeview()
+void MarketClientAssistant::clearAvailPacksTreeview()
 {
   // change mouse cursor to watch
   get_window()->set_cursor(Gdk::Cursor(Gdk::WATCH));
   while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
 
-  openfluid::market::TypesMetaPackagesCatalogs_t Catalogs;
-  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
-  openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
   std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*>::iterator ATPBiter;
 
+  // for each tab
   for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
   {
     // Tab VBox exists ?
@@ -826,7 +825,6 @@ void MarketClientAssistant::updateAvailPacksTreeview()
     m_TypesTabs.remove_page();
   }
 
-
   // initializing pointers
   for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
   {
@@ -839,6 +837,18 @@ void MarketClientAssistant::updateAvailPacksTreeview()
     mp_SelectNoneButton[ATPBiter->first] = 0;
     mp_CommonBuildConfigButton[ATPBiter->first] = 0;
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::updateAvailPacksTreeview()
+{
+  openfluid::market::TypesMetaPackagesCatalogs_t Catalogs;
+  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
+  openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
 
   Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();

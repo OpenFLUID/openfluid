@@ -266,6 +266,12 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     void onClose();
     void onPrepare(Gtk::Widget* Widget);
 
+
+    /**
+     * Removes tabs, destroys content and clear screen
+    */
+    void clearAvailPacksTreeview();
+
     /**
      * Creates tabs and display all available packages in Market-place selected
     */
