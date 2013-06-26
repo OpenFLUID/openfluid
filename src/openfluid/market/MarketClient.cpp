@@ -273,6 +273,20 @@ std::string MarketClient::getTypeName(const PackageInfo::PackageType& Type, cons
 // =====================================================================
 
 
+bool MarketClient::catalogsContainPackages() const
+{
+  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TPCit = m_TypesMetaPackagesCatalogs.begin();
+
+  while (TPCit != m_TypesMetaPackagesCatalogs.end() && TPCit->second.empty())
+    ++TPCit;
+  return (TPCit != m_TypesMetaPackagesCatalogs.end());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogData)
 {
   std::string TmpVersion, TmpArch, TmpID;
@@ -475,9 +489,8 @@ void MarketClient::connect(const std::string& URL)
       // downloading catalog
       if (openfluid::tools::CURLDownloader::downloadToString(CUit->second, CatalogsData[CUit->first])  != openfluid::tools::CURLDownloader::NO_ERROR)
         CatalogsData[CUit->first].clear();
-
-      // storage of packages list
-      parseCatalogData(CUit->first, CatalogsData[CUit->first]);
+      else
+        parseCatalogData(CUit->first, CatalogsData[CUit->first]);
     }
 
     downloadAssociatedLicenses();

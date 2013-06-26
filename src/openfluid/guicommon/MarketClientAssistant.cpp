@@ -412,6 +412,7 @@ void MarketClientAssistant::onLicenseRadioClicked()
 void MarketClientAssistant::onURLComboChanged()
 {
   m_MarketClient.disconnect();
+  clearAvailPacksTreeview();
 
   if (m_URLCombo.get_active_row_number() > 0)
   {
@@ -425,11 +426,21 @@ void MarketClientAssistant::onURLComboChanged()
         m_MarketClient.connect(TmpURL);
       }
     }
+
+    // if repository contains packages
+    if (m_MarketClient.catalogsContainPackages())
+      updateAvailPacksTreeview();
+    else
+      displayMarketplaceError();
+  }
+  else
+  {
+    // change mouse cursor to default
+    get_window()->set_cursor();
+    while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
   }
 
   set_page_complete(m_SelectionPageBox,false);
-
-  updateAvailPacksTreeview();
 }
 
 
@@ -776,18 +787,16 @@ void MarketClientAssistant::onInstallTimeoutOnce()
 // =====================================================================
 
 
-void MarketClientAssistant::updateAvailPacksTreeview()
+void MarketClientAssistant::clearAvailPacksTreeview()
 {
   // change mouse cursor to watch
   get_window()->set_cursor(Gdk::Cursor(Gdk::WATCH));
   while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
 
-  openfluid::market::TypesMetaPackagesCatalogs_t Catalogs;
-  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
-  openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
   std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*>::iterator ATPBiter;
 
+  // for each tab
   for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
   {
     // Tab VBox exists ?
@@ -826,7 +835,6 @@ void MarketClientAssistant::updateAvailPacksTreeview()
     m_TypesTabs.remove_page();
   }
 
-
   // initializing pointers
   for (ATPBiter = mp_AvailTypesPacksBox.begin(); ATPBiter != mp_AvailTypesPacksBox.end(); ++ATPBiter)
   {
@@ -839,6 +847,18 @@ void MarketClientAssistant::updateAvailPacksTreeview()
     mp_SelectNoneButton[ATPBiter->first] = 0;
     mp_CommonBuildConfigButton[ATPBiter->first] = 0;
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::updateAvailPacksTreeview()
+{
+  openfluid::market::TypesMetaPackagesCatalogs_t Catalogs;
+  openfluid::market::TypesMetaPackagesCatalogs_t::const_iterator TCIter;
+  openfluid::market::MetaPackagesCatalog_t::const_iterator CIter;
 
 
   Catalogs = m_MarketClient.getTypesMetaPackagesCatalogs();
@@ -942,6 +962,39 @@ void MarketClientAssistant::updateAvailPacksTreeview()
   // change mouse cursor to default
   get_window()->set_cursor();
   while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketClientAssistant::displayMarketplaceError()
+{
+  // change mouse cursor to default
+  get_window()->set_cursor();
+  while (Gtk::Main::events_pending ()) Gtk::Main::iteration ();
+
+  // get current marketplace name
+  Glib::ustring MarketplaceName;
+  Gtk::TreeModel::iterator TmpIter = m_URLCombo.get_active();
+  if (TmpIter)
+  {
+    Gtk::TreeModel::Row TmpRow = *TmpIter;
+    if (TmpRow)
+    {
+      MarketplaceName = TmpRow[m_URLColumns.m_Name];
+    }
+  }
+
+  // display error message
+  Gtk::MessageDialog Dialog(_("Unable to connect to \"") + MarketplaceName
+      + _("\" marketplace.\nThis marketplace is not available, does not contain any catalog files or catalogs are empty."),
+      false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
+  Dialog.set_transient_for(*this);
+
+  Dialog.run();
+  m_URLCombo.set_active(0);
 }
 
 
