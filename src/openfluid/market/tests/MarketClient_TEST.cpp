@@ -111,12 +111,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   MC.enableLog(true);
 
 
-  MC.connect("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/market/repository").string());
+  MC.connect("file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace").string());
 
   BOOST_REQUIRE_EQUAL(MC.isConnected(),true);
 
   MC.getMarketInfo(MI);
-  BOOST_REQUIRE_EQUAL(MI.Name,"OpenFLUID-Market for tests");
+  BOOST_REQUIRE_EQUAL(MI.Name,"OpenFLUID-Market generated automatically");
 
   openfluid::market::TypesMetaPackagesCatalogs_t TPC = MC.getTypesMetaPackagesCatalogs();
 
@@ -157,54 +157,47 @@ BOOST_AUTO_TEST_CASE(check_operations)
     }
   }
 
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim.dummy"),openfluid::market::MetaPackageInfo::BIN);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.dummy",openfluid::market::MetaPackageInfo::SRC));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim.dummy"),openfluid::market::MetaPackageInfo::SRC);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim.dummy"),openfluid::market::MetaPackageInfo::NONE);
+  /** Simulators **/
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim"),openfluid::market::MetaPackageInfo::BIN);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim",openfluid::market::MetaPackageInfo::SRC));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim"),openfluid::market::MetaPackageInfo::SRC);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim"),openfluid::market::MetaPackageInfo::NONE);
 
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.binonly",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.srconly",openfluid::market::MetaPackageInfo::SRC));
 
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.binonly.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
+  /** Observers **/
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs"),openfluid::market::MetaPackageInfo::BIN);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs",openfluid::market::MetaPackageInfo::SRC));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs"),openfluid::market::MetaPackageInfo::SRC);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs"),openfluid::market::MetaPackageInfo::NONE);
 
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.binonly",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.srconly",openfluid::market::MetaPackageInfo::SRC));
 
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs.dummy"),openfluid::market::MetaPackageInfo::BIN);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.dummy",openfluid::market::MetaPackageInfo::SRC));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs.dummy"),openfluid::market::MetaPackageInfo::SRC);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs.dummy"),openfluid::market::MetaPackageInfo::NONE);
+  /** Buildexts **/
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.bext"),openfluid::market::MetaPackageInfo::BIN);
+  //BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext",openfluid::market::MetaPackageInfo::SRC));
+  //BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.bext"),openfluid::market::MetaPackageInfo::SRC);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.bext"),openfluid::market::MetaPackageInfo::NONE);
 
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext.binonly",openfluid::market::MetaPackageInfo::BIN));
+  //BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext.srconly",openfluid::market::MetaPackageInfo::SRC));
 
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.binonly.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
+  /** Datasets **/
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data",openfluid::market::MetaPackageInfo::FLUIDX));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.data"),openfluid::market::MetaPackageInfo::FLUIDX);
 
-
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.build.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.build.dummy"),openfluid::market::MetaPackageInfo::BIN);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.build.dummy",openfluid::market::MetaPackageInfo::SRC));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.build.dummy"),openfluid::market::MetaPackageInfo::SRC);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.build.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.build.dummy"),openfluid::market::MetaPackageInfo::NONE);
-
-
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.build.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.build.binonly.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.build.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
-
-
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data.dummy",openfluid::market::MetaPackageInfo::FLUIDX));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.data.dummy"),openfluid::market::MetaPackageInfo::FLUIDX);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.data.dummy"),openfluid::market::MetaPackageInfo::NONE);
-
-
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data.dummy",openfluid::market::MetaPackageInfo::FLUIDX));
-
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data",openfluid::market::MetaPackageInfo::FLUIDX));
 
   //MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
