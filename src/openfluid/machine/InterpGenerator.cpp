@@ -56,8 +56,10 @@
 
 
 #include <openfluid/machine/InterpGenerator.hpp>
+#include <openfluid/tools/ChronFileLinearInterpolator.hpp>
 
 #include <boost/math/special_functions/fpclassify.hpp>
+#include <boost/filesystem/operations.hpp>
 
 
 
@@ -66,7 +68,7 @@ namespace openfluid { namespace machine {
 
 InterpGenerator::InterpGenerator() : Generator(),
   m_IsMin(false), m_IsMax(false), m_Min(0.0), m_Max(0.0),
-  m_SourcesFile(""),m_DistriFile("")
+  m_SourcesFile(""),m_DistriFile(""),m_DistriBindings(NULL)
 {
 
 }
@@ -78,7 +80,7 @@ InterpGenerator::InterpGenerator() : Generator(),
 
 InterpGenerator::~InterpGenerator()
 {
-
+  if( m_DistriBindings != NULL) delete m_DistriBindings;
 
 }
 
@@ -105,6 +107,54 @@ void InterpGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 // =====================================================================
 
 
+void InterpGenerator::prepareData()
+{
+  openfluid::tools::DistributionTables DistriTables;
+  std::string InputDir, BaseTmpDir, TmpDir;
+
+  OPENFLUID_GetRunEnvironment("dir.input",InputDir);
+  OPENFLUID_GetRunEnvironment("dir.temp",BaseTmpDir);
+
+  unsigned int DirNameIncr = 0;
+  do
+  {
+    std::ostringstream TmpSubDir;
+    TmpSubDir << "interp-generator-" << DirNameIncr;
+    TmpDir = boost::filesystem::path(BaseTmpDir+"/"+TmpSubDir.str()).string();
+    DirNameIncr++;
+  }
+  while (boost::filesystem::is_directory(boost::filesystem::path(TmpDir)));
+
+
+  boost::filesystem::create_directories(boost::filesystem::path(TmpDir));
+
+  DistriTables.build(InputDir,m_SourcesFile,m_DistriFile);
+
+  openfluid::tools::DistributionTables::SourceIDFile_t::iterator itb = DistriTables.SourcesTable.begin();
+  openfluid::tools::DistributionTables::SourceIDFile_t::iterator ite = DistriTables.SourcesTable.end();
+
+  for (openfluid::tools::DistributionTables::SourceIDFile_t::iterator it = itb; it != ite; ++it)
+  {
+
+    std::string InFileName = boost::filesystem::path((*it).second).filename().string();
+    std::string OutFilePath = boost::filesystem::path(TmpDir+"/interp_"+InFileName).string();
+    openfluid::tools::ChronFileLinearInterpolator CFLI((*it).second,
+                                                       boost::filesystem::path(OutFilePath).string(),
+                                                       OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),OPENFLUID_GetDefaultDeltaT());
+
+    CFLI.runInterpolation();
+
+    (*it).second = boost::filesystem::path(OutFilePath).string();
+  }
+
+  m_DistriBindings = new openfluid::tools::DistributionBindings(DistriTables);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void InterpGenerator::checkConsistency()
 {
   if (m_IsMin && m_IsMax && m_Min > m_Max)
@@ -118,29 +168,44 @@ void InterpGenerator::checkConsistency()
 
 openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
 {
+  openfluid::core::DateTime CurrentDT(OPENFLUID_GetCurrentDate());
 
-  std::string InputDir;
+  m_DistriBindings->advanceToTime(CurrentDT);
 
-  OPENFLUID_GetRunEnvironment("dir.input",InputDir);
-
-  m_DataPool.setConfig(InputDir,m_SourcesFile,m_DistriFile,
-                       //openfluid::tools::SERIEPREPCS_CUMULATE,
-                       openfluid::tools::SERIEPREPCS_NONE,
-                       OPENFLUID_GetBeginDate(),OPENFLUID_GetEndDate(),OPENFLUID_GetDefaultDeltaT());
-
-  m_DataPool.loadAndPrepareData();
-
-  m_CurrentStep = 0;
-
-
+  openfluid::core::DoubleValue Value;
   openfluid::core::Unit* LU;
+
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
   {
-    OPENFLUID_InitializeVariable(LU,m_VarName,0.0);
+    if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
+    {
+
+      if (m_IsMax && Value > m_Max) Value = m_Max;
+      if (m_IsMin && Value < m_Min) Value = m_Min;
+    }
+    else
+    {
+      Value = 0.0;
+    }
+
+    if (isVectorVariable())
+    {
+      openfluid::core::VectorValue VV(m_VarSize,Value);
+      OPENFLUID_InitializeVariable(LU,m_VarName,VV);
+    }
+    else
+      OPENFLUID_InitializeVariable(LU,m_VarName,Value);
   }
 
+  openfluid::core::DateTime NextDT;
 
-  return DefaultDeltaT();
+  if (m_DistriBindings->advanceToNextTimeAfter(CurrentDT,NextDT))
+  {
+    return Duration(NextDT.diffInSeconds(CurrentDT));
+  }
+  else
+    return Never();
+
 }
 
 // =====================================================================
@@ -149,40 +214,40 @@ openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
 
 openfluid::base::SchedulingRequest InterpGenerator::runStep()
 {
+  openfluid::core::DateTime CurrentDT(OPENFLUID_GetCurrentDate());
 
+  m_DistriBindings->advanceToTime(CurrentDT);
+
+  openfluid::core::DoubleValue Value;
   openfluid::core::Unit* LU;
-  openfluid::core::DoubleValue CurrentValue;
-  int ID;
-
-
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
   {
-    ID = LU->getID();
-
-    if (m_DataPool.getValue(ID,m_CurrentStep,&CurrentValue))
+    if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
-      if (boost::math::isnan(CurrentValue))
-        throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","interpolated value for variable " + m_VarName + " is NaN");
 
-      if (m_IsMax && CurrentValue > m_IsMax) CurrentValue = m_Max;
-      if (m_IsMin && CurrentValue < m_IsMin) CurrentValue = m_Min;
+      if (m_IsMax && Value > m_Max) Value = m_Max;
+      if (m_IsMin && Value < m_Min) Value = m_Min;
 
       if (isVectorVariable())
       {
-        openfluid::core::VectorValue VV(m_VarSize,CurrentValue);
+        openfluid::core::VectorValue VV(m_VarSize,Value);
         OPENFLUID_AppendVariable(LU,m_VarName,VV);
       }
       else
-        OPENFLUID_AppendVariable(LU,m_VarName,CurrentValue);
+        OPENFLUID_AppendVariable(LU,m_VarName,Value);
+
     }
-    else
-      throw openfluid::base::OFException("OpenFLUID framework","InterpGenerator::runStep","error interpolating value for variable " + m_VarName);
   }
 
-  m_CurrentStep++;
+  openfluid::core::DateTime NextDT;
 
-  return OPENFLUID_GetDefaultDeltaT();
+  if (m_DistriBindings->advanceToNextTimeAfter(CurrentDT,NextDT))
+  {
+    return Duration(NextDT.diffInSeconds(CurrentDT));
+  }
+  else
+    return Never();
 }
 
 

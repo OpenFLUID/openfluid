@@ -77,18 +77,18 @@ class DLLEXPORT ColumnTextParser
     std::string m_Delimiter;
     std::string m_CommentSymbol;
 
-    int m_LinesCount;
-    int m_ColsCount;
+    unsigned int m_LinesCount;
+    unsigned int m_ColsCount;
 
     std::vector<std::vector<std::string> > m_Contents;
 
-    std::vector<std::string> tokenizeLine(std::string Line);
+    std::vector<std::string> tokenizeLine(const std::string& Line);
 
     bool checkContents();
 
-    bool isCommentLineStr(std::string LineStr);
+    bool isCommentLineStr(const std::string& LineStr);
 
-    bool isEmptyLineStr(std::string LineStr);
+    bool isEmptyLineStr(const std::string& LineStr);
 
 
   public:
@@ -96,7 +96,7 @@ class DLLEXPORT ColumnTextParser
     /**
       Constructor
     */
-    ColumnTextParser(std::string CommentLineSymbol = "", std::string Delimiter = " \t\r\n");
+    ColumnTextParser(const std::string& CommentLineSymbol = "", const std::string& Delimiter = " \t\r\n");
 
     /**
       Destructor
@@ -109,7 +109,7 @@ class DLLEXPORT ColumnTextParser
       @param[in] Filename the full path of the file to load
       @return true if everything went fine
     */
-    bool loadFromFile(std::string Filename);
+    bool loadFromFile(const std::string& Filename);
 
     /**
       Parses a one-line delimiter-separated string to set contents
@@ -118,7 +118,7 @@ class DLLEXPORT ColumnTextParser
       @param[in] ColumnsNbr the number of columns (for splitting the sting into lines)
       @return true if everything went fine
     */
-    bool setFromString(std::string Contents, unsigned int ColumnsNbr);
+    bool setFromString(const std::string& Contents, unsigned int ColumnsNbr);
 
     /**
       Returns the value at a specified row-column, as a string
@@ -167,13 +167,13 @@ class DLLEXPORT ColumnTextParser
       Returns the number of lines
       @return the number of lines
     */
-    inline int getLinesCount() const { return m_LinesCount;};
+    inline unsigned int getLinesCount() const { return m_LinesCount;};
 
     /**
       Returns the number of columns
       @return the number of columns
     */
-    inline int getColsCount() const { return m_ColsCount;};
+    inline unsigned int getColsCount() const { return m_ColsCount;};
 
     void streamContents(std::ostream& OStream);
 

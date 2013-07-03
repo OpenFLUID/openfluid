@@ -47,81 +47,73 @@
 
 
 /**
-  @file
+  \file MarketClient_TEST.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
-#ifndef __DTSERIE_HPP__
-#define __DTSERIE_HPP__
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_progressivechronfilereader
+#include <boost/test/unit_test.hpp>
+#include <boost/test/auto_unit_test.hpp>
+#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/convenience.hpp>
+
+#include <openfluid/tools/ProgressiveChronFileReader.hpp>
 
 
-#include <list>
+#include <iostream>
 
-#include <openfluid/dllexport.hpp>
-#include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/core/DateTime.hpp>
+#include <tests-config.hpp>
 
-
-namespace openfluid { namespace tools {
+// =====================================================================
+// =====================================================================
 
 
-struct TimePair
+BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::DateTime DT;
-  openfluid::core::DoubleValue Value;
-};
+  openfluid::tools::ProgressiveColumnFileReader PColumnFR(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/ChronFiles/measured_ticks.dat").string());
+  openfluid::tools::ProgressiveChronFileReader PChronFR(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/ChronFiles/temp.dat").string());
+}
 
+// =====================================================================
+// =====================================================================
 
-
-class IndexedSerie
+BOOST_AUTO_TEST_CASE(check_operations)
 {
-  public:
+  openfluid::tools::ProgressiveColumnFileReader PColumnFR(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/ChronFiles/temp.dat").string());
 
-    int Count;
-    openfluid::core::DoubleValue* Values;
+  std::string TmpStr;
+  std::vector<std::string> TmpVectStr;
 
-    IndexedSerie() : Count(0) {}
-};
+  while (PColumnFR.getNextLine(TmpStr)) std::cout << TmpStr << std::endl;
 
+  PColumnFR.reset();
 
-/**
-  Class for management of a time ordered serie of data (DoubleValue)
-*/
-class DLLEXPORT DateTimeSerie
-{
-  private:
-    std::list<TimePair> m_Data;
-
-    std::list<TimePair>::iterator m_LastAccessed;
-    bool m_IsLastAccessedSet;
-
-  public:
-
-    DateTimeSerie();
-
-    virtual ~DateTimeSerie();
-
-    bool addValue(openfluid::core::DateTime DT, openfluid::core::DoubleValue Value);
-
-    bool getValue(openfluid::core::DateTime DT, openfluid::core::DoubleValue* Value);
-
-    short getNearestValues(openfluid::core::DateTime SearchedDT, TimePair* LowerPair, TimePair* UpperPair);
-
-    bool getInterpolatedValue(openfluid::core::DateTime SearchedDT, openfluid::core::DoubleValue* Value);
-
-    void clear();
-
-    bool createInterpolatedSerie(openfluid::core::DateTime Begin,openfluid::core::DateTime End,int TimeStep,DateTimeSerie *Serie);
-
-    bool createIndexedSerie(IndexedSerie *ISerie);
-
-    inline int getCount();
-
-};
+  while (PColumnFR.getNextLine(TmpVectStr))
+  {
+    std::cout << "[";
+    for (unsigned int i =0; i< TmpVectStr.size();i++)
+      std::cout << TmpVectStr[i] << "|";
+    std::cout << std::endl;
+  }
 
 
-} } // namespace openfluid::tools
+  // ========================================================
 
-#endif /*DTSERIE_H_*/
+  openfluid::tools::ChronItem_t CI;
+
+  openfluid::tools::ProgressiveChronFileReader PChronFR(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/ChronFiles/temp.dat").string());
+
+  while (PChronFR.getNextValue(CI)) std::cout << CI.second << " at " << CI.first.getAsISOString() << std::endl;
+
+
+
+}
+
+
+

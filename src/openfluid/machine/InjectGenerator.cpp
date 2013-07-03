@@ -59,16 +59,13 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-#include <openfluid/tools/DataSrcFile.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
-
 
 namespace openfluid { namespace machine {
 
 
 InjectGenerator::InjectGenerator() : Generator(),
   m_IsMin(false), m_IsMax(false), m_Min(0.0), m_Max(0.0),
-  m_SourcesFile(""),m_DistriFile("")
+  m_SourcesFile(""),m_DistriFile(""), m_DistriBindings(NULL)
 {
 
 }
@@ -80,9 +77,10 @@ InjectGenerator::InjectGenerator() : Generator(),
 
 InjectGenerator::~InjectGenerator()
 {
-
+  if (m_DistriBindings != NULL) delete m_DistriBindings;
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -108,6 +106,22 @@ void InjectGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 // =====================================================================
 
 
+void InjectGenerator::prepareData()
+{
+  openfluid::tools::DistributionTables DistriTables;
+  std::string InputDir;
+
+  OPENFLUID_GetRunEnvironment("dir.input",InputDir);
+
+  DistriTables.build(InputDir,m_SourcesFile,m_DistriFile);
+  m_DistriBindings = new openfluid::tools::DistributionBindings(DistriTables);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void InjectGenerator::checkConsistency()
 {
   if (m_IsMin && m_IsMax && m_Min > m_Max)
@@ -119,180 +133,43 @@ void InjectGenerator::checkConsistency()
 // =====================================================================
 
 
-void InjectGenerator::LoadDistribution(const std::string& FilePath)
-{
-  long UnitID;
-  long DataSrcID;
-
-  int i;
-
-
-  openfluid::tools::ColumnTextParser DistriFileParser("%");
-
-
-  if (boost::filesystem::exists(boost::filesystem::path(FilePath)))
-  {
-
-    if ((DistriFileParser.loadFromFile(FilePath)) && (DistriFileParser.getColsCount() == 2) && (DistriFileParser.getLinesCount() >0))
-    {
-
-      for (i=0;i<DistriFileParser.getLinesCount();i++)
-      {
-
-        if (DistriFileParser.getLongValue(i,0,&UnitID) && DistriFileParser.getLongValue(i,1,&DataSrcID))
-        {
-          m_SerieIDByUnit[UnitID] = DataSrcID;
-        }
-        else
-        {
-          throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::LoadDistribution","Error in distribution file " + FilePath + ", format error");
-        }
-      }
-    }
-    else
-    {
-      throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::LoadDistribution","Error in distribution file " + FilePath + ", file not found or format error");
-    }
-  }
-  else
-  {
-    throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::LoadDistribution","Distribution file " + FilePath + " not found");
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void InjectGenerator::LoadDataAsSerie(const std::string& FilePath, const int& ID)
-{
-  openfluid::tools::ColumnTextParser FileParser("%");
-
-  long int Year, Month, Day, Hour, Min, Sec;
-  double Value;
-  openfluid::core::DateTime ZeDT;
-
-
-
-  if (FileParser.loadFromFile(FilePath) && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == 7))
-  {
-    int i = 0;
-
-    while (i<FileParser.getLinesCount())
-    {
-      if (FileParser.getLongValue(i,0,&Year) && FileParser.getLongValue(i,1,&Month) &&
-          FileParser.getLongValue(i,2,&Day) && FileParser.getLongValue(i,3,&Hour) &&
-          FileParser.getLongValue(i,4,&Min) && FileParser.getLongValue(i,5,&Sec) &&
-          FileParser.getDoubleValue(i,6,&Value))
-      {
-
-        if (!boost::math::isnan(Value) && !boost::math::isinf(Value))
-        {
-
-          ZeDT = openfluid::core::DateTime(Year,Month,Day,Hour,Min,Sec);
-
-          m_Series[ID].push(std::make_pair<openfluid::core::DateTime,double>(ZeDT,Value));
-        }
-      }
-      else
-      {
-        throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::LoadDataAsSerie","Error loading file " + FilePath +", line format error");
-      }
-
-      i++;
-    }
-  }
-  else
-  {
-    throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::LoadDataAsSerie","Error loading file " + FilePath +", file format error");
-  }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
 {
-  openfluid::tools::DataSourcesFile DSFile;
-  std::string InputDir;
-
-  OPENFLUID_GetRunEnvironment("dir.input",InputDir);
-
-  boost::filesystem::path DSFilePath(InputDir + "/" + m_SourcesFile);
-
-  if (!DSFile.load(DSFilePath.string()) && DSFile.getIDs().size() <= 1)
-  {
-    throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::initializeRun","Error loading file " + m_SourcesFile);
-  }
-  else
-  {
-    std::vector<int> IDs = DSFile.getIDs();
-
-    boost::filesystem::path SourcefilePath;
-
-    for (unsigned int i=0;i<IDs.size();i++)
-    {
-      SourcefilePath = boost::filesystem::path(InputDir + "/" + DSFile.getSource(IDs[i]));
-      if (!boost::filesystem::exists(SourcefilePath))
-      {
-        throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::initializeRun","Error loading "+ DSFile.getSource(IDs[i]) + " file as data source");
-      }
-      else
-      {
-        LoadDataAsSerie(SourcefilePath.string(),IDs[i]);
-      }
-    }
-
-    boost::filesystem::path DistriFilePath(InputDir + "/" + m_DistriFile);
-
-    LoadDistribution(DistriFilePath.string());
-  }
-
-  // ============
-
-
+  m_DistriBindings->advanceToTime(OPENFLUID_GetCurrentDate());
+  openfluid::core::DoubleValue Value;
   openfluid::core::Unit* LU;
-  openfluid::core::DoubleValue CurrentValue;
-
-  for (std::map<int,DatedValueSerie_t>::iterator it=m_Series.begin(); it!=m_Series.end();++it)
-  {
-
-    // accessing the next correct value
-    while (!((*it).second.empty()) && !((*it).second.front().first == OPENFLUID_GetCurrentDate()))
-      (*it).second.pop();
-
-    // exit if the next correct value doesn't exist
-    if ((*it).second.empty())
-    {
-      std::string StrID;
-      openfluid::tools::ConvertValue((*it).first,&StrID);
-      throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::runStep","value to inject for variable " + m_VarName + " cannot be found for source ID " + StrID);
-    }
-  }
-
+  openfluid::core::DateTime CurrentDT(OPENFLUID_GetCurrentDate());
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
   {
-    CurrentValue = m_Series[m_SerieIDByUnit[LU->getID()]].front().second;
+    if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
+    {
 
-    if (m_IsMax && CurrentValue > m_Max) CurrentValue = m_Max;
-    if (m_IsMin && CurrentValue < m_Min) CurrentValue = m_Min;
+      if (m_IsMax && Value > m_Max) Value = m_Max;
+      if (m_IsMin && Value < m_Min) Value = m_Min;
+    }
+    else
+    {
+      Value = 0.0;
+    }
 
     if (isVectorVariable())
     {
-      openfluid::core::VectorValue VV(m_VarSize,CurrentValue);
+      openfluid::core::VectorValue VV(m_VarSize,Value);
       OPENFLUID_InitializeVariable(LU,m_VarName,VV);
     }
     else
-      OPENFLUID_InitializeVariable(LU,m_VarName,CurrentValue);
+      OPENFLUID_InitializeVariable(LU,m_VarName,Value);
   }
 
+  openfluid::core::DateTime NextDT;
 
-  return DefaultDeltaT();
+  if (m_DistriBindings->advanceToNextTimeAfter(CurrentDT,NextDT))
+  {
+    return Duration(NextDT.diffInSeconds(CurrentDT));
+  }
+  else
+    return Never();
 }
 
 // =====================================================================
@@ -301,44 +178,39 @@ openfluid::base::SchedulingRequest InjectGenerator::initializeRun()
 
 openfluid::base::SchedulingRequest InjectGenerator::runStep()
 {
+  m_DistriBindings->advanceToTime(OPENFLUID_GetCurrentDate());
 
+  openfluid::core::DoubleValue Value;
   openfluid::core::Unit* LU;
-  openfluid::core::DoubleValue CurrentValue;
-
-  for (std::map<int,DatedValueSerie_t>::iterator it=m_Series.begin(); it!=m_Series.end();++it)
-  {
-
-    // accessing the next correct value
-    while (!((*it).second.empty()) && !((*it).second.front().first == OPENFLUID_GetCurrentDate()))
-      (*it).second.pop();
-
-    // exit if the next correct value doesn't exist
-    if ((*it).second.empty())
-    {
-      std::string StrID;
-      openfluid::tools::ConvertValue((*it).first,&StrID);
-      throw openfluid::base::OFException("OpenFLUID framework","InjectGenerator::runStep","value to inject for variable " + m_VarName + " cannot be found for source ID " + StrID);
-    }
-  }
-
+  openfluid::core::DateTime CurrentDT(OPENFLUID_GetCurrentDate());
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
   {
-    CurrentValue = m_Series[m_SerieIDByUnit[LU->getID()]].front().second;
-
-    if (m_IsMax && CurrentValue > m_Max) CurrentValue = m_Max;
-    if (m_IsMin && CurrentValue < m_Min) CurrentValue = m_Min;
-
-    if (isVectorVariable())
+    if (m_DistriBindings->getValue(LU->getID(),CurrentDT,Value))
     {
-      openfluid::core::VectorValue VV(m_VarSize,CurrentValue);
-      OPENFLUID_AppendVariable(LU,m_VarName,VV);
+
+      if (m_IsMax && Value > m_Max) Value = m_Max;
+      if (m_IsMin && Value < m_Min) Value = m_Min;
+
+      if (isVectorVariable())
+      {
+        openfluid::core::VectorValue VV(m_VarSize,Value);
+        OPENFLUID_InitializeVariable(LU,m_VarName,VV);
+      }
+      else
+        OPENFLUID_AppendVariable(LU,m_VarName,Value);
+
     }
-    else
-      OPENFLUID_AppendVariable(LU,m_VarName,CurrentValue);
   }
 
-  return DefaultDeltaT();
+  openfluid::core::DateTime NextDT;
+
+  if (m_DistriBindings->advanceToNextTimeAfter(CurrentDT,NextDT))
+  {
+    return Duration(NextDT.diffInSeconds(CurrentDT));
+  }
+  else
+    return Never();
 }
 
 

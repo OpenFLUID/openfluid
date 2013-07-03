@@ -70,7 +70,7 @@
 namespace openfluid { namespace tools {
 
 
-ColumnTextParser::ColumnTextParser(std::string CommentLineSymbol, std::string Delimiter):
+ColumnTextParser::ColumnTextParser(const std::string& CommentLineSymbol, const std::string& Delimiter):
   m_Delimiter(Delimiter), m_CommentSymbol(CommentLineSymbol),
   m_LinesCount(0), m_ColsCount(0)
 {
@@ -95,7 +95,7 @@ ColumnTextParser::~ColumnTextParser()
 
 
 
-std::vector<std::string> ColumnTextParser::tokenizeLine(std::string Line)
+std::vector<std::string> ColumnTextParser::tokenizeLine(const std::string& Line)
 {
   std::vector<std::string> NewLine;
 
@@ -138,13 +138,13 @@ bool ColumnTextParser::checkContents()
 // =====================================================================
 
 
-bool ColumnTextParser::isCommentLineStr(std::string LineStr)
+bool ColumnTextParser::isCommentLineStr(const std::string& LineStr)
 {
 
   if (m_CommentSymbol.length() > 0)
   {
-    boost::trim_left(LineStr);
-    return boost::starts_with(LineStr,m_CommentSymbol.c_str());
+    std::string TmpStr = boost::trim_left_copy(LineStr);
+    return boost::starts_with(TmpStr,m_CommentSymbol.c_str());
   }
 
   return false;
@@ -157,12 +157,9 @@ bool ColumnTextParser::isCommentLineStr(std::string LineStr)
 // =====================================================================
 
 
-bool ColumnTextParser::isEmptyLineStr(std::string LineStr)
+bool ColumnTextParser::isEmptyLineStr(const std::string& LineStr)
 {
-
-  boost::trim(LineStr);
-
-  return (LineStr.length() == 0);
+  return (boost::trim_copy(LineStr).empty());
 }
 
 
@@ -172,7 +169,7 @@ bool ColumnTextParser::isEmptyLineStr(std::string LineStr)
 
 
 
-bool ColumnTextParser::loadFromFile(std::string Filename)
+bool ColumnTextParser::loadFromFile(const std::string& Filename)
 {
 
   std::string StrLine;
@@ -207,7 +204,7 @@ bool ColumnTextParser::loadFromFile(std::string Filename)
 // =====================================================================
 // =====================================================================
 
-bool ColumnTextParser::setFromString(std::string Contents, unsigned int ColumnsNbr)
+bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int ColumnsNbr)
 {
   /** @internal
 
@@ -363,7 +360,7 @@ bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, do
 void ColumnTextParser::streamContents(std::ostream& OStream)
 {
   OStream << "" << std::endl;
-  int i,j;
+  unsigned int i,j;
 
   for (i=0;i<m_LinesCount;i++)
   {

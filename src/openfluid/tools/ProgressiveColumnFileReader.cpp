@@ -47,54 +47,75 @@
 
 
 /**
-  @file
+  \file ProgressiveColumnFileReader.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
-
-
-#ifndef __DATASRCFILE_HPP__
-#define __DATASRCFILE_HPP__
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#include <vector>
-#include <map>
-#include <string>
-#include <openfluid/dllexport.hpp>
+
+#include <openfluid/tools/ProgressiveColumnFileReader.hpp>
+#include <openfluid/tools/SwissTools.hpp>
+
 
 namespace openfluid { namespace tools {
 
-typedef std::map<int,std::string> IDDataSourcesMap;
-/**
-  Class for managing data sources files
-*/
-class DLLEXPORT DataSourcesFile
+
+ProgressiveColumnFileReader::ProgressiveColumnFileReader(const std::string& FileName,const std::string& ColSeparators):
+    m_File(FileName.c_str()), m_ColSeparators(ColSeparators), m_FileName(FileName)
 {
-  private:
-    bool m_Loaded;
 
-    std::vector<int> m_IDs;
-
-    IDDataSourcesMap m_Sources;
+}
 
 
-  public:
-
-    DataSourcesFile();
-
-    virtual ~DataSourcesFile();
-
-    bool load(std::string Filename);
-
-    inline std::vector<int> getIDs() const { return m_IDs; };
-
-    std::string getSource(int ID);
-
-};
+// =====================================================================
+// =====================================================================
 
 
-} } // namespace
+bool ProgressiveColumnFileReader::getNextLine(std::string& Line)
+{
+  if (!m_File.eof())
+  {
+    std::getline(m_File,Line);
+    boost::algorithm::trim(Line);
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ProgressiveColumnFileReader::getNextLine(std::vector<std::string>& Values)
+{
+  std::string TmpStr;
+
+
+  if (getNextLine(TmpStr))
+  {
+    Values = openfluid::tools::SplitString(TmpStr,m_ColSeparators,false);
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProgressiveColumnFileReader::reset()
+{
+  if (m_File.is_open())
+  {
+    m_File.clear();
+    m_File.seekg(0,std::ios::beg);
+  }
+}
 
 
 
-#endif /*__DATASRCFILE_H__*/
+} } // namespaces

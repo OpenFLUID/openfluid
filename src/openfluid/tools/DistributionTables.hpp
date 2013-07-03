@@ -45,86 +45,53 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
-  @brief Implements ...
+  \file DistributionTables.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/fluidx/AttributesDescriptor.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
 
-namespace openfluid { namespace fluidx {
+#ifndef __DISTRIBUTIONTABLES_HPP__
+#define __DISTRIBUTIONTABLES_HPP__
+
+#include <map>
+#include <string>
+
+#include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/dllexport.hpp>
+
+namespace openfluid { namespace tools {
 
 
-// =====================================================================
-// =====================================================================
-
-
-AttributesDescriptor::AttributesDescriptor() :
-  m_UnitsClass("")
+class DLLEXPORT DistributionTables
 {
+  public:
 
-}
+    typedef std::map<std::string,std::string> SourceIDFile_t;
 
+    typedef std::map<openfluid::core::UnitID_t,std::string> UnitIDSourceID_t;
 
-// =====================================================================
-// =====================================================================
+    SourceIDFile_t SourcesTable;
 
-
-AttributesDescriptor::~AttributesDescriptor()
-{
-
-}
+    UnitIDSourceID_t UnitsTable;
 
 
-// =====================================================================
-// =====================================================================
+    DistributionTables()
+    { };
+
+    ~DistributionTables()
+    { };
 
 
-void AttributesDescriptor::parseDataBlob(const std::string& Data)
-{
-  m_Data.clear();
+    void build(const std::string& BasePath, const std::string& SourcesFileName, const std::string& DistributionFileName);
 
-  openfluid::tools::ColumnTextParser DataParser("%");
-
-  if (DataParser.setFromString(Data,m_ColumnsOrder.size()+1))
-  {
-    unsigned int i,j;
-    bool IsOK = true;
-    long ID;
-    std::string Value;
-
-    // parses data in file and loads it in the attribute table for each unit, ordered by columns
-    i = 0;
-    while (i<DataParser.getLinesCount() && IsOK)
-    {
-      IsOK = DataParser.getLongValue(i,0,&ID);
-
-      if (IsOK)
-      {
-        for (j=1;j<DataParser.getColsCount();j++)
-        {
-          if (DataParser.getStringValue(i,j,&Value))
-          {
-            m_Data[ID][m_ColumnsOrder[j-1]] = Value;
-          }
-          else
-            throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
-        }
-        i++;
-      }
-      else
-        throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
-    }
-  }
-  else
-    throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in attributes, cannot be parsed");
-
-}
+};
 
 
-} } // namespaces
 
+} }
+
+
+#endif /* __DISTRIBUTIONTABLES_HPP__ */

@@ -45,90 +45,59 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file ProgressiveColumnFileReader.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#ifndef __DISTRIBINTERP_HPP__
-#define __DISTRIBINTERP_HPP__
+#ifndef __PROGRESSIVECOLUMNFILEREADER_HPP__
+#define __PROGRESSIVECOLUMNFILEREADER_HPP__
 
-#include <map>
+
+#include <fstream>
+#include <vector>
+
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core/DateTime.hpp>
 
-namespace openfluid {
-namespace core {
-class DoubleValue;
-}
-}
 
 namespace openfluid { namespace tools {
 
-class DateTimeSerie;
-class IndexedSerie;
 
-typedef std::map<int,DateTimeSerie*> DTSeriesMap;
-typedef std::map<int,DateTimeSerie*> UnitsDTSeriesMap;
-typedef std::map<int,IndexedSerie*> IndexedSeriesMap;
-typedef std::map<int,IndexedSerie*> UnitsIndexedSeriesMap;
-
-
-
-enum SeriePreprocess
+class DLLEXPORT ProgressiveColumnFileReader
 {
-  SERIEPREPCS_NONE,
-  SERIEPREPCS_CUMULATE
-};
-
-/**
-  Class for time interpolation and spatial distribution of data
-*/
-class DLLEXPORT DistributeInterpolate
-{
-
   private:
 
-    DTSeriesMap m_InterpData;
-    IndexedSeriesMap m_InterpIndexedData;
-    UnitsDTSeriesMap m_UnitsData;
-    UnitsIndexedSeriesMap m_UnitsIndexedData;
+    std::ifstream m_File;
 
+    std::string m_ColSeparators;
 
-    std::string m_DataSourcesFilename;
-    std::string m_DataDir;
-    std::string m_DistributionFilename;
-    SeriePreprocess m_SPpcs;
-    openfluid::core::DateTime m_Begin;
-    openfluid::core::DateTime m_End;
-    int m_TimeStep;
+  protected:
 
-    bool m_Configured;
+    std::string m_FileName;
 
-    bool loadDataAsSerie(std::string FilePath, SeriePreprocess SPpcs, DateTimeSerie *Serie);
-
-    bool loadDistributionAndDistribute(std::string FilePath);
 
   public:
-    DistributeInterpolate();
 
-    void setConfig(std::string DataDir, std::string DataSourcesFilename, std::string DistributionFilename, SeriePreprocess SPpcs,
-                   openfluid::core::DateTime Begin,openfluid::core::DateTime End, int TimeStep);
+    ProgressiveColumnFileReader(const std::string& FileName, const std::string& ColSeparators = " \t\r\n");
 
-    bool loadAndPrepareData();
+    virtual ~ProgressiveColumnFileReader()
+    { };
 
-    bool getValue(int ID, openfluid::core::DateTime DT, openfluid::core::DoubleValue *Value);
+    bool getNextLine(std::string& Line);
 
-    bool getValue(int ID, int Index, openfluid::core::DoubleValue *Value);
+    bool getNextLine(std::vector<std::string>& Values);
 
-    virtual ~DistributeInterpolate();
+    void reset();
+
+    std::string getFileName() const { return m_FileName; };
+
 };
 
-} }
+
+} } // namespaces
 
 
-#endif /*__DISTRIBINTERP_H__*/
-
+#endif /* __PROGRESSIVECOLUMNFILEREADER_HPP__ */
