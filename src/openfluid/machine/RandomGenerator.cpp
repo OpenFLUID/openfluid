@@ -62,7 +62,7 @@ namespace openfluid { namespace machine {
 
 
 RandomGenerator::RandomGenerator() :
-  Generator(), m_Min(0.0), m_Max(0.0)
+  Generator(), m_Min(0.0), m_Max(0.0), m_DeltaT(0)
 {
   m_RandomEngine.seed(std::time(0));
 }
@@ -91,6 +91,9 @@ void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
   if (!OPENFLUID_GetSimulatorParameter(Params,"max",m_Max))
     throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing max value for generator");
 
+  std::string DeltaTStr;
+  if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) && !openfluid::tools::ConvertString(DeltaTStr,&m_DeltaT))
+    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","wrong value for deltat");
 };
 
 
@@ -116,13 +119,15 @@ openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
   {
     if (isVectorVariable())
     {
-      openfluid::core::VectorValue VV(m_VarSize,0.0);
+      openfluid::core::VectorValue VV(m_VarSize,openfluid::core::DoubleValue(0.0));
       OPENFLUID_InitializeVariable(LU,m_VarName,VV);
     }
     else
-      OPENFLUID_InitializeVariable(LU,m_VarName,0.0);
+      OPENFLUID_InitializeVariable(LU,m_VarName,openfluid::core::DoubleValue(0.0));
   }
-  return DefaultDeltaT();
+
+  if (m_DeltaT > 0) return Duration(m_DeltaT);
+  else return DefaultDeltaT();
 }
 
 
@@ -134,7 +139,6 @@ openfluid::base::SchedulingRequest RandomGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;
-  openfluid::core::DoubleValue Value;
 
   boost::uniform_real<> Distribution(m_Min, m_Max);
   boost::variate_generator<boost::mt19937&, boost::uniform_real<> > Random (m_RandomEngine, Distribution);
@@ -143,7 +147,7 @@ openfluid::base::SchedulingRequest RandomGenerator::runStep()
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
   {
-    Value = Random();
+    openfluid::core::DoubleValue Value(Random());
 
     if (isVectorVariable())
     {
@@ -155,7 +159,8 @@ openfluid::base::SchedulingRequest RandomGenerator::runStep()
 
   }
 
-  return DefaultDeltaT();
+  if (m_DeltaT > 0) return Duration(m_DeltaT);
+  else return DefaultDeltaT();
 }
 
 

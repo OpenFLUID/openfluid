@@ -118,21 +118,12 @@ class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 
   public:
 
-    // TODO Replace by std::list with garbage collector after each insertion?
-    // TODO choose correct container
-#define bcb
-
-#ifdef bcb
     typedef  boost::circular_buffer<IndexedValue> DataContainer_t;
-#else
-    typedef  std::list<IndexedValue> DataContainer_t;
-#endif
+
 
   private:
 
     DataContainer_t m_Data;
-
-    void runGarbageCollector();
 
     DataContainer_t::iterator findAtIndex(const TimeIndex_t& anIndex);
 

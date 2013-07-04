@@ -264,12 +264,11 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
       openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature();
 
-      std::string VarName = GenDesc->getVariableName();
-      GenDesc->isVectorVariable() ? VarName += "[vector]" : VarName += "[double]";
+      std::string TypedVarName = GenDesc->getVariableName();
+      GenDesc->isVectorVariable() ? TypedVarName += "[vector]" : TypedVarName += "[double]";
 
       Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
-
-      Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem(VarName,GenDesc->getUnitClass(),"",""));
+      Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem(TypedVarName,GenDesc->getUnitClass(),"",""));
 
       IInstance->GeneratorInfo = new GeneratorExtraInfo();
       IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();

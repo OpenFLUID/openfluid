@@ -72,6 +72,8 @@ class DLLEXPORT RandomGenerator : public Generator
     openfluid::core::DoubleValue m_Min;
     openfluid::core::DoubleValue m_Max;
 
+    openfluid::core::Duration_t m_DeltaT;
+
     boost::mt19937 m_RandomEngine;
 
   public:

@@ -895,7 +895,7 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   it++;
   ParamWidget = static_cast<SimulatorParamWidgetSub*>(*it);
   ParamRows = ParamWidget->getParamsRows();
-  BOOST_CHECK_EQUAL(ParamRows.size(), 1);
+  BOOST_CHECK_EQUAL(ParamRows.size(), 2);
   ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["fixedvalue"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "fixedvalue");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "20");
@@ -906,7 +906,7 @@ BOOST_AUTO_TEST_CASE(check_globalParameters)
   it++;
   ParamWidget = static_cast<SimulatorParamWidgetSub*>(*it);
   ParamRows = ParamWidget->getParamsRows();
-  BOOST_CHECK_EQUAL(ParamRows.size(), 2);
+  BOOST_CHECK_EQUAL(ParamRows.size(), 3);
   ParamRow = static_cast<SimulatorParamRowSub*>(ParamRows["max"]);
   BOOST_CHECK_EQUAL(ParamRow->getName(), "max");
   BOOST_CHECK_EQUAL(ParamRow->getValueEntry()->get_text(), "50");

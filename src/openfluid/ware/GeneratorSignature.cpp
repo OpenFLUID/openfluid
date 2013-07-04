@@ -100,6 +100,11 @@ void GeneratorSignature::setFixedInfo()
   HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem("fixedvalue", "",
                                                 "Value to produce", "-"));
+
+  HandledData.SimulatorParams.push_back(
+      openfluid::ware::SignatureHandledDataItem(
+          "deltat", "", "DeltaT to use instead of the default DeltaT",
+          "s"));
 }
 
 // =====================================================================
@@ -114,10 +119,16 @@ void GeneratorSignature::setRandomInfo()
       openfluid::ware::SignatureHandledDataItem(
           "min", "", "Lower bound of the random range for the value to produce",
           "-"));
+
   HandledData.SimulatorParams.push_back(
       openfluid::ware::SignatureHandledDataItem(
           "max", "", "Upper bound of the random range for the value to produce",
           "-"));
+
+  HandledData.SimulatorParams.push_back(
+      openfluid::ware::SignatureHandledDataItem(
+          "deltat", "", "DeltaT to use instead of the default DeltaT",
+          "s"));
 }
 
 // =====================================================================

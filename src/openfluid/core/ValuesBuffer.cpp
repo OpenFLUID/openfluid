@@ -61,15 +61,14 @@
 namespace openfluid {
 namespace core {
 
+
 // =====================================================================
 // =====================================================================
 
 
 ValuesBuffer::ValuesBuffer()
 {
-#ifdef bcb
   m_Data.set_capacity(BufferSize);
-#endif
 }
 
 // =====================================================================
@@ -81,20 +80,10 @@ ValuesBuffer::~ValuesBuffer()
 
 }
 
-// =====================================================================
-// =====================================================================
-
-
-void ValuesBuffer::runGarbageCollector()
-{
-#ifndef bcb
-  while (m_Data.size() > BufferSize) m_Data.pop_front();
-#endif
-}
-
 
 // =====================================================================
 // =====================================================================
+
 
 ValuesBuffer::DataContainer_t::iterator ValuesBuffer::findAtIndex(const TimeIndex_t& anIndex)
 {
@@ -360,7 +349,6 @@ bool ValuesBuffer::appendValue(const TimeIndex_t& anIndex, const openfluid::core
   if (!m_Data.empty() && anIndex <= m_Data.back().m_Index) return false;
 
   m_Data.push_back(IndexedValue(anIndex,aValue));
-  runGarbageCollector();
 
   return true;
 }
@@ -375,8 +363,6 @@ void ValuesBuffer::displayStatus(std::ostream& OStream) const
   OStream << "-- ValuesBuffer status --" << std::endl;
   OStream << "   BufferSize : " << BufferSize << std::endl;
   OStream << "   Size : " << m_Data.size() << std::endl;
-  //  OStream << "   Element size : " << sizeof(T) << std::endl;
-//  OStream << "   Current storage step : " << m_NextStep - 1 << std::endl;
   OStream << "------------------------------" << std::endl;
 }
 
