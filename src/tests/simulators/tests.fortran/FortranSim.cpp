@@ -85,7 +85,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.fortran")
   DECLARE_AUTHOR("","");
 
 
-  DECLARE_SCHEDULING_DEFAULT();
+  DECLARE_SCHEDULING_DEFAULT;
 END_SIMULATOR_SIGNATURE
 
 // =====================================================================

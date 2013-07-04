@@ -61,6 +61,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
+#include <openfluid/tools/DistributionBindings.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -70,8 +71,6 @@ class DLLEXPORT InjectGenerator : public Generator
 {
   private:
 
-    typedef std::pair<openfluid::core::DateTime,double> DatedValue_t;
-    typedef std::queue<DatedValue_t> DatedValueSerie_t;
 
     bool m_IsMin;
     bool m_IsMax;
@@ -82,16 +81,8 @@ class DLLEXPORT InjectGenerator : public Generator
     std::string m_SourcesFile;
     std::string m_DistriFile;
 
+    openfluid::tools::DistributionBindings* m_DistriBindings;
 
-
-    std::map<int,DatedValueSerie_t> m_Series;
-
-    openfluid::core::IDIntMap m_SerieIDByUnit;
-
-
-    void LoadDistribution(const std::string& FilePath);
-
-    void LoadDataAsSerie(const std::string& FilePath,const int& ID);
 
 
   public:
@@ -101,6 +92,8 @@ class DLLEXPORT InjectGenerator : public Generator
     ~InjectGenerator();
 
     void initParams(const openfluid::ware::WareParams_t& Params);
+
+    void prepareData();
 
     void checkConsistency();
 

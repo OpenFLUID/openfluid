@@ -103,7 +103,7 @@ void ConvertBuddy::convert_13_14_defs(std::string UnitClass)
   std::string Str;
   double Surf;
 
-  int ColCount = 0;
+  unsigned int ColCount = 0;
 
   OutputFileContent = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<openfluid>\n  <domain>\n    <definition>\n";
 
@@ -136,7 +136,7 @@ void ConvertBuddy::convert_13_14_defs(std::string UnitClass)
     if (FileParser.loadFromFile(InputFilePath.string()) && (FileParser.getLinesCount() > 0) && (FileParser.getColsCount() == ColCount))
     {
 
-      for (int CurrentLine=0;CurrentLine<FileParser.getLinesCount();CurrentLine++)
+      for (unsigned int CurrentLine=0;CurrentLine<FileParser.getLinesCount();CurrentLine++)
       {
 
         // *********** processing SUs *******************

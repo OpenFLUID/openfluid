@@ -15,11 +15,13 @@
       
       <generator varname="tests.fixed" unitclass="TestUnits" method="fixed">
          <param name="fixedvalue" value="12.7" />
+         <param name="deltat" value="0" />
       </generator>
       
       <generator varname="tests.random" unitclass="TestUnits" method="random">
          <param name="min" value="12.7" />
          <param name="max" value="12.8" />
+         <param name="deltat" value="0" />
       </generator>
       
       <generator varname="tests.interp" unitclass="TestUnits" method="interp">

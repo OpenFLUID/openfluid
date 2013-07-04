@@ -58,9 +58,9 @@
 
 #include <openfluid/tools/ColTextParser.hpp>
 #include <openfluid/tools/CURLDownloader.hpp>
-#include <openfluid/tools/DataSrcFile.hpp>
-#include <openfluid/tools/DistribInterp.hpp>
-#include <openfluid/tools/DTSerie.hpp>
+#include <openfluid/tools/DistributionBindings.hpp>
+#include <openfluid/tools/ChronFileLinearInterpolator.hpp>
+#include <openfluid/tools/ProgressiveChronFileReader.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
 #endif /* __TOOLS_HPP___ */

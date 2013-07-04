@@ -47,127 +47,57 @@
 
 
 /**
-  @file
-  @brief
+  \file ProgressiveChronFileReader.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#include <libxml/parser.h>
 
-#include <openfluid/tools/DataSrcFile.hpp>
+#include <openfluid/tools/ProgressiveChronFileReader.hpp>
 #include <openfluid/tools/SwissTools.hpp>
-
+#include <openfluid/base/OFException.hpp>
 
 
 namespace openfluid { namespace tools {
 
 
-DataSourcesFile::DataSourcesFile():
-  m_Loaded(false)
+ProgressiveChronFileReader::ProgressiveChronFileReader(const std::string& FileName, const std::string& DateFormat, const std::string& ColSeparators):
+  ProgressiveColumnFileReader(FileName,ColSeparators), m_DateFormat(DateFormat)
 {
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-DataSourcesFile::~DataSourcesFile()
+bool ProgressiveChronFileReader::getNextValue(ChronItem_t& Value)
 {
+  std::vector<std::string> Values;
+  openfluid::core::DateTime DT;
+  double Val;
 
-}
-
-// =====================================================================
-// =====================================================================
-
-
-
-bool DataSourcesFile::load(std::string Filename)
-{
-
-  xmlDocPtr Doc = NULL;
-  xmlNodePtr Root = NULL;
-  xmlNodePtr CurrNode = NULL;
-  xmlNodePtr CurrNode2 = NULL;
-
-
-  m_Loaded = true;
-  m_IDs.clear();
-  m_Sources.clear();
-
-  Doc = xmlParseFile(Filename.c_str());
-
-  if (Doc != NULL)
+  while (getNextLine(Values))
   {
-    Root =  xmlDocGetRootElement(Doc);
-
-    if (Root != NULL)
+    if (Values.size() == 2)
     {
-      if (xmlStrcmp(Root->name,(const xmlChar*)"openfluid") == 0)
+      if (DT.setFromString(Values.front(),m_DateFormat) &&
+          openfluid::tools::ConvertString(Values.back(),&Val))
       {
-        CurrNode = Root->xmlChildrenNode;
-        while (CurrNode != NULL)
-        {
-          if (xmlStrcmp(CurrNode->name,(const xmlChar*)"datasources") == 0)
-          {
-            CurrNode2 = CurrNode->xmlChildrenNode;
-            while (CurrNode2 != NULL)
-            {
-
-              if (xmlStrcmp(CurrNode2->name,(const xmlChar*)"filesource") == 0)
-              {
-                xmlChar* xmlID= xmlGetProp(CurrNode2,(const xmlChar*)"ID");
-                xmlChar* xmlFile= xmlGetProp(CurrNode2,(const xmlChar*)"file");
-                int ID;
-
-                if (xmlID != NULL && xmlFile != NULL && openfluid::tools::ConvertString(std::string((char*)xmlID),&ID))
-                {
-                  m_Sources[ID] = std::string((char*)xmlFile);
-                  m_IDs.push_back(ID);
-                }
-
-              }
-              CurrNode2 = CurrNode2->next;
-            }
-          }
-          CurrNode = CurrNode->next;
-        }
+        Value.first = DT;
+        Value.second = Val;
+        return true;
       }
-      else m_Loaded = false;
+      else
+        throw openfluid::base::OFException("OpenFLUID framework","ProgressiveChronFileReader::getNextValue","wrong data in " + m_FileName);
     }
-    else m_Loaded = false;
-  }
-  else m_Loaded = false;
-
-  if (!m_Loaded)
-  {
-    m_IDs.clear();
-    m_Sources.clear();
   }
 
-  return m_Loaded;
-
+  return false;
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-std::string DataSourcesFile::getSource(int ID)
-{
-  IDDataSourcesMap::iterator iter;
-
-  iter = m_Sources.find(ID);
-
-  if (iter != m_Sources.end()) return iter->second;
-  else return "";
-}
-
-
-
-
-} } // namespace
-
+} } // namespaces

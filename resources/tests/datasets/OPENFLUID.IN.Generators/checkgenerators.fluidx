@@ -7,10 +7,21 @@
       <param name="fixedvalue" value="12.7" />
     </generator>
 
+    <generator varname="tests.fixeddt" unitclass="TestUnits" method="fixed">
+      <param name="fixedvalue" value="1.27" />
+      <param name="deltat" value="300" />
+    </generator>
+
     <generator varname="tests.random" unitclass="TestUnits" method="random">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
     </generator>
+    
+    <generator varname="tests.randomdt" unitclass="TestUnits" method="random">
+      <param name="min" value="2.53" />
+      <param name="max" value="5" />
+      <param name="deltat" value="117" />      
+    </generator>    
 
     <generator varname="tests.interp" unitclass="TestUnits" method="interp">
       <param name="sources" value="sourcesinterp.xml" />
@@ -32,6 +43,11 @@
 
     <generator varname="tests.inject" unitclass="TestUnits" method="inject">
       <param name="sources" value="sourcesinject.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
+
+    <generator varname="tests.injectasync" unitclass="TestUnits" method="inject">
+      <param name="sources" value="sourcesinjectasync.xml" />
       <param name="distribution" value="distri.dat" />
     </generator>
 

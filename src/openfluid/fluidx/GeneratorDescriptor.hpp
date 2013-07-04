@@ -98,6 +98,12 @@ class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
 
     inline unsigned int getVariableSize() const { return m_VarSize; };
 
+    inline  openfluid::core::Value::Type getVariableType() const
+    {
+      if (isVectorVariable()) return openfluid::core::Value::VECTOR;
+      else return openfluid::core::Value::DOUBLE;
+    };
+
     inline std::string getGeneratedID() const { return m_GeneratedID; };
 
     static std::string getGeneratorName(GeneratorDescriptor::GeneratorMethod GenMethod);

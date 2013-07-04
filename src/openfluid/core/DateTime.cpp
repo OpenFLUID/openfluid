@@ -57,9 +57,11 @@
 #include <openfluid/core/DateTime.hpp>
 
 #include <iostream>
+#include <sstream>
 #include <cstring>
 #include <cstdio>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 
 namespace openfluid { namespace core {
@@ -137,11 +139,30 @@ bool DateTime::setFromISOString(const std::string& DateTimeStr)
 
 
   // scan of the input string to break it down
-  sscanf(DateTimeStr.c_str(),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec);
-
-  return set(Year, Month, Day, Hour, Min, Sec);
+  return (sscanf(DateTimeStr.c_str(),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec) == 6 &&
+          set(Year, Month, Day, Hour, Min, Sec));
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool DateTime::setFromString(const std::string& DateTimeStr, const std::string& FormatStr)
+{
+  boost::posix_time::time_input_facet* Facet = new  boost::posix_time::time_input_facet(FormatStr);
+
+  std::istringstream StrS(DateTimeStr);
+  StrS.imbue(std::locale(std::locale::classic(),Facet));
+  boost::posix_time::ptime Time(boost::posix_time::not_a_date_time);
+  StrS >> Time;
+
+  return (Time != boost::posix_time::not_a_date_time &&
+          set(Time.date().year(), Time.date().month(),Time.date().day(),Time.time_of_day().hours(),
+              Time.time_of_day().minutes(), Time.time_of_day().seconds()));
+}
+
 
 // =====================================================================
 // =====================================================================

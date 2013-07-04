@@ -68,6 +68,8 @@ class DLLEXPORT FixedGenerator : public Generator
 
     openfluid::core::DoubleValue m_VarValue;
 
+    openfluid::core::Duration_t m_DeltaT;
+
   public:
 
     FixedGenerator();

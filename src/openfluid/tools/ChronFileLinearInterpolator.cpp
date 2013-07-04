@@ -47,24 +47,28 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  \file ChronFileLinearInterpolator.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/fluidx/AttributesDescriptor.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
+#include <fstream>
+#include <iomanip>
 
-namespace openfluid { namespace fluidx {
+#include <boost/filesystem/path.hpp>
+
+#include <openfluid/base/OFException.hpp>
+#include <openfluid/tools/ChronFileLinearInterpolator.hpp>
 
 
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace tools {
 
 
-AttributesDescriptor::AttributesDescriptor() :
-  m_UnitsClass("")
+ChronFileLinearInterpolator::ChronFileLinearInterpolator(const std::string& InFilePath, const std::string& OutFilePath,
+                                                          const openfluid::core::DateTime& BeginDate, const openfluid::core::DateTime& EndDate,
+                                                          const openfluid::core::Duration_t& DeltaT, PreProcess PrePcs)
+: ChronFileInterpolator(InFilePath,OutFilePath,BeginDate,EndDate,DeltaT, PrePcs)
 {
 
 }
@@ -74,7 +78,7 @@ AttributesDescriptor::AttributesDescriptor() :
 // =====================================================================
 
 
-AttributesDescriptor::~AttributesDescriptor()
+ChronFileLinearInterpolator::~ChronFileLinearInterpolator()
 {
 
 }
@@ -84,47 +88,45 @@ AttributesDescriptor::~AttributesDescriptor()
 // =====================================================================
 
 
-void AttributesDescriptor::parseDataBlob(const std::string& Data)
+void ChronFileLinearInterpolator::runInterpolation()
 {
-  m_Data.clear();
+  ChronologicalSerie Data;
 
-  openfluid::tools::ColumnTextParser DataParser("%");
+  loadInFile(Data);
 
-  if (DataParser.setFromString(Data,m_ColumnsOrder.size()+1))
+  openfluid::core::DateTime CurrentDateTime = m_BeginDate;
+  ChronItem_t BeforeCurrentTime, AfterCurrentTime;
+
+  long x,x1;
+  double y,y0,y1;
+
+  std::ofstream OutFile(boost::filesystem::path(m_OutFilePath).string().c_str());
+
+  OutFile << std::setprecision(15);
+
+  while (CurrentDateTime <= m_EndDate && Data.getSurroundingValues(CurrentDateTime,BeforeCurrentTime,AfterCurrentTime))
   {
-    unsigned int i,j;
-    bool IsOK = true;
-    long ID;
-    std::string Value;
 
-    // parses data in file and loads it in the attribute table for each unit, ordered by columns
-    i = 0;
-    while (i<DataParser.getLinesCount() && IsOK)
+    if (BeforeCurrentTime.first == AfterCurrentTime.first)
+      y = BeforeCurrentTime.second;
+    else
     {
-      IsOK = DataParser.getLongValue(i,0,&ID);
+      x = CurrentDateTime.diffInSeconds(BeforeCurrentTime.first);
+      x1 = AfterCurrentTime.first.diffInSeconds(BeforeCurrentTime.first);
+      y0 = BeforeCurrentTime.second;
+      y1 = AfterCurrentTime.second;
 
-      if (IsOK)
-      {
-        for (j=1;j<DataParser.getColsCount();j++)
-        {
-          if (DataParser.getStringValue(i,j,&Value))
-          {
-            m_Data[ID][m_ColumnsOrder[j-1]] = Value;
-          }
-          else
-            throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
-        }
-        i++;
-      }
-      else
-        throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
+      y = y0 + ( x * ( double(y1-y0)/double(x1)));
     }
+
+    OutFile << CurrentDateTime.getAsString(m_OutDateFormat) << m_OutColumnSeparator << y << "\n";
+
+    CurrentDateTime.addSeconds(m_DeltaT);
   }
-  else
-    throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in attributes, cannot be parsed");
+
+  OutFile.close();
 
 }
 
 
 } } // namespaces
-

@@ -45,86 +45,47 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
-  @brief Implements ...
+  \file ProgressiveColumnFileReader.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/fluidx/AttributesDescriptor.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
 
-namespace openfluid { namespace fluidx {
-
-
-// =====================================================================
-// =====================================================================
+#ifndef __PROGRESSIVECHRONFILEREADER_HPP__
+#define __PROGRESSIVECHRONFILEREADER_HPP__
 
 
-AttributesDescriptor::AttributesDescriptor() :
-  m_UnitsClass("")
+#include <openfluid/tools/ProgressiveColumnFileReader.hpp>
+#include <openfluid/tools/ChronologicalSerie.hpp>
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid { namespace tools {
+
+
+class DLLEXPORT ProgressiveChronFileReader : public ProgressiveColumnFileReader
 {
-
-}
-
-
-// =====================================================================
-// =====================================================================
+  private:
 
 
-AttributesDescriptor::~AttributesDescriptor()
-{
+    std::string m_DateFormat;
 
-}
+  public:
+
+    ProgressiveChronFileReader(const std::string& FileName, const std::string& DateFormat = "%Y-%m-%dT%H:%M:%S", const std::string& ColSeparators = " \t\r\n");
+
+    virtual ~ProgressiveChronFileReader()
+    { };
 
 
-// =====================================================================
-// =====================================================================
+    bool getNextValue(ChronItem_t& Value);
 
-
-void AttributesDescriptor::parseDataBlob(const std::string& Data)
-{
-  m_Data.clear();
-
-  openfluid::tools::ColumnTextParser DataParser("%");
-
-  if (DataParser.setFromString(Data,m_ColumnsOrder.size()+1))
-  {
-    unsigned int i,j;
-    bool IsOK = true;
-    long ID;
-    std::string Value;
-
-    // parses data in file and loads it in the attribute table for each unit, ordered by columns
-    i = 0;
-    while (i<DataParser.getLinesCount() && IsOK)
-    {
-      IsOK = DataParser.getLongValue(i,0,&ID);
-
-      if (IsOK)
-      {
-        for (j=1;j<DataParser.getColsCount();j++)
-        {
-          if (DataParser.getStringValue(i,j,&Value))
-          {
-            m_Data[ID][m_ColumnsOrder[j-1]] = Value;
-          }
-          else
-            throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
-        }
-        i++;
-      }
-      else
-        throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
-    }
-  }
-  else
-    throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in attributes, cannot be parsed");
-
-}
+};
 
 
 } } // namespaces
 
+
+#endif /* __PROGRESSIVECHRONFILEREADER_HPP__ */

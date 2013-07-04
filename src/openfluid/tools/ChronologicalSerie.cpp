@@ -47,84 +47,93 @@
 
 
 /**
-  @file
-  @brief Implements ...
+  \file ChronologicalSerie.cpp
+  \brief Implements ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/fluidx/AttributesDescriptor.hpp>
-#include <openfluid/tools/ColTextParser.hpp>
-
-namespace openfluid { namespace fluidx {
+#include <openfluid/tools/ChronologicalSerie.hpp>
 
 
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace tools {
 
 
-AttributesDescriptor::AttributesDescriptor() :
-  m_UnitsClass("")
+void ChronologicalSerie::reset()
 {
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-AttributesDescriptor::~AttributesDescriptor()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AttributesDescriptor::parseDataBlob(const std::string& Data)
-{
-  m_Data.clear();
-
-  openfluid::tools::ColumnTextParser DataParser("%");
-
-  if (DataParser.setFromString(Data,m_ColumnsOrder.size()+1))
+  if (size() >= 2)
   {
-    unsigned int i,j;
-    bool IsOK = true;
-    long ID;
-    std::string Value;
+    m_PreviousInternalIterator = (begin());
+    m_InternalIterator = (++begin());
+  }
+}
 
-    // parses data in file and loads it in the attribute table for each unit, ordered by columns
-    i = 0;
-    while (i<DataParser.getLinesCount() && IsOK)
+
+// =====================================================================
+// =====================================================================
+
+
+bool ChronologicalSerie::getSurroundingValues(const openfluid::core::DateTime& DT, ChronItem_t& Before, ChronItem_t& After)
+{
+
+  if (size() <2) return false;
+
+  //std::list<ChronItem_t>::iterator CurrentPos = m_InternalIterator;
+
+  if ((*m_PreviousInternalIterator).first > DT || m_InternalIterator == end())
+    reset();
+
+
+  while (m_InternalIterator != end() && !((*m_InternalIterator).first >= DT && (*m_PreviousInternalIterator).first <= DT))
+  {
+
+    // found exact time
+    if ((*m_InternalIterator).first == DT)
     {
-      IsOK = DataParser.getLongValue(i,0,&ID);
+      Before = (*m_InternalIterator);
+      After = (*m_InternalIterator);
+      return true;
+    }
+    else if ((*m_PreviousInternalIterator).first == DT)
+    {
+      Before = (*m_PreviousInternalIterator);
+      After = (*m_PreviousInternalIterator);
+      return true;
+    }
 
-      if (IsOK)
-      {
-        for (j=1;j<DataParser.getColsCount();j++)
-        {
-          if (DataParser.getStringValue(i,j,&Value))
-          {
-            m_Data[ID][m_ColumnsOrder[j-1]] = Value;
-          }
-          else
-            throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
-        }
-        i++;
-      }
-      else
-        throw openfluid::base::OFException("OpenFLUID framework","AttributesDescriptor::parseDataBlob","Attributes format error");
+    ++m_PreviousInternalIterator;
+    ++m_InternalIterator;
+  }
+
+
+
+  if (m_InternalIterator != end())
+  {
+    if ((*m_PreviousInternalIterator).first == DT)
+    {
+      Before = (*m_InternalIterator);
+      After = (*m_InternalIterator);
+      return true;
+    }
+    else if ((*m_InternalIterator).first == DT)
+    {
+      Before = (*m_InternalIterator);
+      After = (*m_InternalIterator);
+      return true;
+    }
+    else
+    {
+      Before = (*(m_PreviousInternalIterator));
+      After = (*m_InternalIterator);
+      return true;
     }
   }
-  else
-    throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildDomainFromDescriptor","Error in attributes, cannot be parsed");
 
+
+  return false;
 }
+
+
 
 
 } } // namespaces
-

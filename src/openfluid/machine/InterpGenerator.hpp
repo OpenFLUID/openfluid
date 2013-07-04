@@ -58,7 +58,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
-#include <openfluid/tools/DistribInterp.hpp>
+#include <openfluid/tools/DistributionBindings.hpp>
 
 namespace openfluid { namespace machine {
 
@@ -66,7 +66,6 @@ namespace openfluid { namespace machine {
 class DLLEXPORT InterpGenerator : public Generator
 {
   private:
-    openfluid::tools::DistributeInterpolate m_DataPool;
 
     bool m_IsMin;
     bool m_IsMax;
@@ -77,7 +76,8 @@ class DLLEXPORT InterpGenerator : public Generator
     std::string m_SourcesFile;
     std::string m_DistriFile;
 
-    openfluid::core::TimeIndex_t m_CurrentStep;
+    openfluid::tools::DistributionBindings* m_DistriBindings;
+
 
   public:
 
@@ -86,6 +86,8 @@ class DLLEXPORT InterpGenerator : public Generator
     ~InterpGenerator();
 
     void initParams(const openfluid::ware::WareParams_t& Params);
+
+    void prepareData();
 
     void checkConsistency();
 
