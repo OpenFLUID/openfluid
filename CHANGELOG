@@ -8,7 +8,11 @@
     kml/kmz files (Google Earth), GNUplot charts, dot graphs
   * Added the openfluid-landr library for spatial data processing
   * Added raster spatial data as accepted data for the datastore
+  * Renamed simulation functions into simulators
+  * Renamed spatial inputdata into attributes 
+    (according to the OGC reference model)
   * Renamed openfluid-engine command line program to openfluid
+  * Updated and improved data generators
   * Added CMake OpenFLUID module
   * Added CMake macros for easier build of simulators and observers
   * Redesigned and improved simulators signatures macros
