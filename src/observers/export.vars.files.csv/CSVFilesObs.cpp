@@ -85,7 +85,9 @@ class CSVFormat
 
     unsigned int Precision;
 
-    CSVFormat(): Header(Info), ColSeparator("\t"), DateFormat("%Y%m%dT%H%M%S"), CommentChar("#"), Precision(5)
+    bool IsTimeIndexDateFormat;
+
+    CSVFormat(): Header(Info), ColSeparator("\t"), DateFormat("%Y%m%dT%H%M%S"), CommentChar("#"), Precision(5), IsTimeIndexDateFormat(false)
     { };
 
 
@@ -294,6 +296,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
         m_Formats[FormatName].ColSeparator = ParamsPT.get("format."+FormatName+".colsep","\t");
         m_Formats[FormatName].Precision = ParamsPT.get<unsigned int>("format."+FormatName+".precision",5);
         m_Formats[FormatName].DateFormat = StrToDateFormat(ParamsPT.get("format."+FormatName+".date","ISO"));
+        m_Formats[FormatName].IsTimeIndexDateFormat = (m_Formats[FormatName].DateFormat == "timeindex");
         m_Formats[FormatName].CommentChar = ParamsPT.get("format."+FormatName+".commentchar","#");
         m_Formats[FormatName].Header = StrToHeaderType(ParamsPT.get("format."+FormatName+".header",""));
       }
@@ -456,15 +459,23 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
              (*SetIt).second.Format->Header == CSVFormat::Full)
 
           {
-            (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << "datetime"
-                                << (*SetIt).second.Format->ColSeparator << (*FLIt)->VarName << "\n";
+            if ((*SetIt).second.Format->IsTimeIndexDateFormat)
+              (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << "timeindex";
+            else
+              (*FLIt)->FileHandle << (*SetIt).second.Format->CommentChar << "datetime";
+
+            (*FLIt)->FileHandle << (*SetIt).second.Format->ColSeparator << (*FLIt)->VarName << "\n";
 
           }
 
           if((*SetIt).second.Format->Header == CSVFormat::ColnamesAsData)
           {
-            (*FLIt)->FileHandle << "datetime"
-                                << (*SetIt).second.Format->ColSeparator << (*FLIt)->VarName << "\n";
+            if ((*SetIt).second.Format->IsTimeIndexDateFormat)
+              (*FLIt)->FileHandle << "timeindex";
+            else
+              (*FLIt)->FileHandle << "datetime";
+
+            (*FLIt)->FileHandle << (*SetIt).second.Format->ColSeparator << (*FLIt)->VarName << "\n";
           }
 
           // set precision
@@ -499,8 +510,11 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
           if (Val!=NULL)
           {
-            (*FLIt)->FileHandle << OPENFLUID_GetCurrentDate().getAsString((*SetIt).second.Format->DateFormat)
-                                << (*SetIt).second.Format->ColSeparator;
+            if ((*SetIt).second.Format->IsTimeIndexDateFormat)
+              (*FLIt)->FileHandle << OPENFLUID_GetCurrentTimeIndex();
+            else
+              (*FLIt)->FileHandle << OPENFLUID_GetCurrentDate().getAsString((*SetIt).second.Format->DateFormat);
+            (*FLIt)->FileHandle << (*SetIt).second.Format->ColSeparator;
             Val->writeToStream((*FLIt)->FileHandle);
             (*FLIt)->FileHandle << "\n";
           }
