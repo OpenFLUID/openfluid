@@ -75,8 +75,7 @@ class AttributesDescriptor;
 // =====================================================================
 
 
-// TODO what is a BuilderUnit in openfluid::fluidx?
-class BuilderUnit
+class AdvancedUnitDescriptor
 {
 
   public:
@@ -87,11 +86,10 @@ class BuilderUnit
 
     std::list<openfluid::core::Event*> Events;
 
-    BuilderUnit(openfluid::fluidx::UnitDescriptor& UnitDesc) :
+    AdvancedUnitDescriptor(openfluid::fluidx::UnitDescriptor& UnitDesc) :
         UnitDescriptor(&UnitDesc)
     {
     }
-    ;
 
 };
 
@@ -102,7 +100,7 @@ class AdvancedDomainDescriptor
 {
   public:
 
-    typedef std::map<std::string, std::map<int, BuilderUnit> > UnitsByIdByClass_t;
+    typedef std::map<std::string, std::map<int, AdvancedUnitDescriptor> > UnitsByIdByClass_t;
 
   private:
 
@@ -111,7 +109,7 @@ class AdvancedDomainDescriptor
     /**
      * Units by ID by ClassName
      */
-    std::map<std::string, std::map<int, BuilderUnit> > m_Units;
+    std::map<std::string, std::map<int, AdvancedUnitDescriptor> > m_Units;
 
     std::map<std::string, std::set<openfluid::core::AttributeName_t> > m_AttrsNames;
 
@@ -137,7 +135,7 @@ class AdvancedDomainDescriptor
      *
      * @return May return an empty map. Never throws.
      */
-    const std::map<std::string, std::map<int, BuilderUnit> >& getUnitsByIdByClass() const;
+    const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& getUnitsByIdByClass() const;
 
     /**
      * @throw openfluid::base::OFException if Unit doesn't exist
@@ -145,7 +143,7 @@ class AdvancedDomainDescriptor
      * @param ID
      * @return
      */
-    const BuilderUnit& getUnit(std::string ClassName, int ID) const;
+    const AdvancedUnitDescriptor& getUnit(std::string ClassName, int ID) const;
 
     /**
      * @throw openfluid::base::OFException if Unit doesn't exist

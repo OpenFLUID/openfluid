@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
       Units->begin();
   BOOST_CHECK_EQUAL(it->first, "unitsA");
   BOOST_CHECK_EQUAL(it->second.size(), 8);
-  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it2 =
+  for (std::map<int, openfluid::fluidx::AdvancedUnitDescriptor>::const_iterator it2 =
       it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.UnitDescriptor->getUnitID());
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   it++;
   BOOST_CHECK_EQUAL(it->first, "unitsB");
   BOOST_CHECK_EQUAL(it->second.size(), 5);
-  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it2 =
+  for (std::map<int, openfluid::fluidx::AdvancedUnitDescriptor>::const_iterator it2 =
       it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.UnitDescriptor->getUnitID());
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   it++;
   BOOST_CHECK_EQUAL(it->first, "unitsP");
   BOOST_CHECK_EQUAL(it->second.size(), 1);
-  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it2 =
+  for (std::map<int, openfluid::fluidx::AdvancedUnitDescriptor>::const_iterator it2 =
       it->second.begin(); it2 != it->second.end(); ++it2)
   {
     BOOST_CHECK_EQUAL(it2->first, it2->second.UnitDescriptor->getUnitID());

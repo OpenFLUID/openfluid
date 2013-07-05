@@ -98,7 +98,7 @@ void AdvancedDomainDescriptor::dispatchUnits()
       Units->begin(); it != Units->end(); ++it)
   {
     if (!m_Units[it->getUnitClass()].insert(
-        std::make_pair(it->getUnitID(), BuilderUnit(*it))).second)
+        std::make_pair(it->getUnitID(), AdvancedUnitDescriptor(*it))).second)
       throw openfluid::base::OFException(
           "OpenFLUID-Framework", "AdvancedDomainDescriptor::dispatchUnits",
           "trying to add a Unit that already exists");
@@ -239,14 +239,14 @@ void AdvancedDomainDescriptor::checkAttributesConsistency() const
           "AdvancedDomainDescriptor::checkAttributesConsistency",
           "class " + ClassName + " doesn't exist");
 
-    const std::map<int, BuilderUnit>* Units = &(m_Units.at(ClassName));
+    const std::map<int, AdvancedUnitDescriptor>* Units = &(m_Units.at(ClassName));
 
     for (std::set<std::string>::iterator itName = Names.begin();
         itName != Names.end(); ++itName)
     {
       std::string AttrName = *itName;
 
-      for (std::map<int, BuilderUnit>::const_iterator itU = Units->begin();
+      for (std::map<int, AdvancedUnitDescriptor>::const_iterator itU = Units->begin();
           itU != Units->end(); ++itU)
       {
         int ID = itU->first;
@@ -296,7 +296,7 @@ void AdvancedDomainDescriptor::dispatchEvents()
 // =====================================================================
 // =====================================================================
 
-const std::map<std::string, std::map<int, BuilderUnit> >& AdvancedDomainDescriptor::getUnitsByIdByClass() const
+const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& AdvancedDomainDescriptor::getUnitsByIdByClass() const
 {
   return m_Units;
 }
@@ -304,7 +304,7 @@ const std::map<std::string, std::map<int, BuilderUnit> >& AdvancedDomainDescript
 // =====================================================================
 // =====================================================================
 
-const BuilderUnit& AdvancedDomainDescriptor::getUnit(std::string ClassName,
+const AdvancedUnitDescriptor& AdvancedDomainDescriptor::getUnit(std::string ClassName,
                                                      int ID) const
 {
   try
@@ -341,7 +341,7 @@ std::set<int> AdvancedDomainDescriptor::getIDsOfClass(
 
   if (isClassNameExists(ClassName))
   {
-    for (std::map<int, BuilderUnit>::const_iterator it =
+    for (std::map<int, AdvancedUnitDescriptor>::const_iterator it =
         m_Units.at(ClassName).begin(); it != m_Units.at(ClassName).end(); ++it)
       IDs.insert(it->first);
   }
@@ -364,7 +364,7 @@ std::set<std::string> AdvancedDomainDescriptor::getClassNames() const
 {
   std::set<std::string> Classes;
 
-  for (std::map<std::string, std::map<int, BuilderUnit> >::const_iterator it =
+  for (std::map<std::string, std::map<int, AdvancedUnitDescriptor> >::const_iterator it =
       m_Units.begin(); it != m_Units.end(); ++it)
     Classes.insert(it->first);
 
@@ -386,7 +386,7 @@ void AdvancedDomainDescriptor::addUnit(
       &mp_DomainDesc->getUnits().back();
 
   // add in m_Units
-  if (!m_Units[ClassName].insert(std::make_pair(ID, BuilderUnit(*NewUnitDesc))).second)
+  if (!m_Units[ClassName].insert(std::make_pair(ID, AdvancedUnitDescriptor(*NewUnitDesc))).second)
   {
     // if fails, remove the newly added from DomainDesc
     mp_DomainDesc->getUnits().erase(
@@ -422,7 +422,7 @@ void AdvancedDomainDescriptor::addUnit(
   openfluid::fluidx::AttributesDescriptor AttrsDesc;
 
   AttrsDesc.getUnitsClass() = ClassName;
-  BuilderUnit& BUnit = m_Units.at(ClassName).at(ID);
+  AdvancedUnitDescriptor& BUnit = m_Units.at(ClassName).at(ID);
 
   for (std::set<std::string>::iterator it = AttrsNames.begin();
       it != AttrsNames.end(); ++it)
@@ -618,7 +618,7 @@ void AdvancedDomainDescriptor::deleteAttribute(std::string ClassName,
         "trying to delete an attribute that doesn't exist");
 
   // delete in m_Units
-  for (std::map<int, BuilderUnit>::iterator it = m_Units.at(ClassName).begin();
+  for (std::map<int, AdvancedUnitDescriptor>::iterator it = m_Units.at(ClassName).begin();
       it != m_Units.at(ClassName).end(); ++it)
     it->second.Attributes.erase(AttrName);
 
@@ -721,7 +721,7 @@ void AdvancedDomainDescriptor::renameAttribute(std::string ClassName,
   }
 
 // rename in m_Units
-  for (std::map<int, BuilderUnit>::iterator it = m_Units.at(ClassName).begin();
+  for (std::map<int, AdvancedUnitDescriptor>::iterator it = m_Units.at(ClassName).begin();
       it != m_Units.at(ClassName).end(); ++it)
   {
     it->second.Attributes.erase(OldAttrName);

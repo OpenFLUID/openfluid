@@ -105,19 +105,19 @@ std::list<openfluid::core::UnitClassID_t> DomainUnitRelationAddDialog::show()
 {
   mref_TreeModel->clear();
 
-  const std::map<std::string, std::map<int, openfluid::fluidx::BuilderUnit> >& Units =
+  const std::map<std::string, std::map<int, openfluid::fluidx::AdvancedUnitDescriptor> >& Units =
       mp_Domain->getUnitsByIdByClass();
 
-  for (std::map<std::string, std::map<int, openfluid::fluidx::BuilderUnit> >::const_iterator it =
+  for (std::map<std::string, std::map<int, openfluid::fluidx::AdvancedUnitDescriptor> >::const_iterator it =
       Units.begin(); it != Units.end(); ++it)
   {
     Gtk::TreeRow ClassRow = *mref_TreeModel->append();
     ClassRow[m_Columns.m_Class] = it->first;
     ClassRow[m_Columns.m_Text] = it->first;
 
-    const std::map<int, openfluid::fluidx::BuilderUnit> UnitsOfClass = it->second;
+    const std::map<int, openfluid::fluidx::AdvancedUnitDescriptor> UnitsOfClass = it->second;
 
-    for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator itt = UnitsOfClass.begin();
+    for (std::map<int, openfluid::fluidx::AdvancedUnitDescriptor>::const_iterator itt = UnitsOfClass.begin();
         itt != UnitsOfClass.end(); ++itt)
     {
       Gtk::TreeRow Row = *mref_TreeModel->append(ClassRow->children());
