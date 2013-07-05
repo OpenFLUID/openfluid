@@ -14,6 +14,11 @@
       <param name="format.f3.precision" value="3" />
       
       <param name="format.f4.header" value="none" />
+
+      <param name="format.f5.header" value="colnames-as-comment" />
+      <param name="format.f5.date" value="timeindex" />
+      <param name="format.f5.precision" value="3" />
+
       
       <param name="set.fullfull.unitclass" value="TestUnits" />
       <param name="set.fullfull.unitsIDs" value="*" />
@@ -34,6 +39,12 @@
       <param name="set.someunits.unitsIDs" value="4;6;9" />
       <param name="set.someunits.vars" value="*" />
       <param name="set.someunits.format" value="f4" />      
+
+      <param name="set.someunitsindex.unitclass" value="TestUnits" />
+      <param name="set.someunitsindex.unitsIDs" value="4;6;9" />
+      <param name="set.someunitsindex.vars" value="*" />
+      <param name="set.someunitsindex.format" value="f5" />      
+
       
     </observer>
     

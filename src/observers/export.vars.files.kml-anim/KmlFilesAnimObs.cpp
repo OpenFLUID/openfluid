@@ -186,8 +186,15 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       for (unsigned int i=0; i<m_AnimLayerInfo.ColorScale.size();i++)
       {
-        CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><LineStyle><color>#" << m_AnimLayerInfo.ColorScale[i].first << "</color><width>" << m_AnimLayerInfo.LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
+        if ((*(m_AnimLayerInfo.UnitsInfos.begin())).second.GeometryType == wkbPolygon)
+          CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><PolyStyle><color>#" << m_AnimLayerInfo.ColorScale[i].first << "</color><outline>0</outline></PolyStyle></Style>\n";
+        else if ((*(m_AnimLayerInfo.UnitsInfos.begin())).second.GeometryType == wkbLineString)
+          CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><LineStyle><color>#" << m_AnimLayerInfo.ColorScale[i].first << "</color><width>" << m_AnimLayerInfo.LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
+        else
+          OPENFLUID_RaiseError("export.vars.files.kml-anim","KmlFilesAnimObserver::updateKmlFile()",
+                                                 "Unsupported geometry format in source geometry file");
       }
+
 
       for (std::map<openfluid::core::UnitID_t,KmlUnitInfo>::iterator it2=m_AnimLayerInfo.UnitsInfos.begin();it2!=m_AnimLayerInfo.UnitsInfos.end();++it2)
       {
@@ -232,13 +239,15 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
         if ((*it2).second.GeometryType == wkbPolygon)
         {
-          CurrentKmlFile << "<Polygon><tessellate>1</tessellate><outerBoundaryIs><LinearRing><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LinearRing></outerBoundaryIs></Polygon>\n";
+            CurrentKmlFile << "<Polygon><tessellate>1</tessellate><outerBoundaryIs><LinearRing><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LinearRing></outerBoundaryIs></Polygon>\n";
         }
-
-        if ((*it2).second.GeometryType == wkbLineString)
+        else if ((*it2).second.GeometryType == wkbLineString)
         {
           CurrentKmlFile << "<LineString><tessellate>1</tessellate><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LineString>\n";
         }
+        else
+          OPENFLUID_RaiseError("export.vars.files.kml-anim","KmlFilesAnimObserver::updateKmlFile()",
+                                                 "Unsupported geometry format in source geometry file");
 
 
         CurrentKmlFile << "    </Placemark>\n";
@@ -448,6 +457,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
       }
 
       m_OKToGo = true;
+
+      m_KmzSubDir = m_OutputFileName + "_kmz-dir";
     }
 
 

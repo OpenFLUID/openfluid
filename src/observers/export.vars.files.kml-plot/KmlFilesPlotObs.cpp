@@ -112,9 +112,9 @@ class KmlSerieInfo : public KmlLayerInfo<KmlUnitInfoExtra>
 {
   public:
 
-    std::string VarNamesStr;
+    std::string VarsListStr;
 
-    std::vector<openfluid::core::VariableName_t> VarNames;
+    std::vector<openfluid::core::VariableName_t> VarsList;
 
     std::string OutputFileName;
 
@@ -124,7 +124,7 @@ class KmlSerieInfo : public KmlLayerInfo<KmlUnitInfoExtra>
 
     int LineWidth;
 
-    KmlSerieInfo() : VarNamesStr("*"),OutputFileName(""), DefaultColor("ffffffff"),
+    KmlSerieInfo() : VarsListStr("*"),OutputFileName(""), DefaultColor("ffffffff"),
                      PlottedColor("ffffffff")
     { };
 };
@@ -138,7 +138,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 {
   private:
 
-    const std::string m_GNUPlotSubDir;
+    std::string m_GNUPlotSubDir;
 
     std::string m_PlotCommand;
 
@@ -168,10 +168,10 @@ class KmlFilesPlotObserver : public KmlObserverBase
             unsigned int Columns = 1;
             unsigned int Rows = 1;
 
-            if ((*it).VarNames.size() > 1)
+            if ((*it).VarsList.size() > 1)
             {
-              Columns = (unsigned int)(std::ceil(std::sqrt((*it).VarNames.size())));
-              Rows = (unsigned int)(std::ceil((*it).VarNames.size() / Columns));
+              Columns = (unsigned int)(std::ceil(std::sqrt((*it).VarsList.size())));
+              Rows = (unsigned int)(std::ceil((*it).VarsList.size() / Columns));
             }
 
 
@@ -190,9 +190,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
             ScriptFile << "set origin 0,0\n";
             ScriptFile << "set multiplot layout " << Rows << "," << Columns << " rowsfirst scale 1,1\n";
 
-            for (unsigned int i=0; i< (*it).VarNames.size();i++)
+            for (unsigned int i=0; i< (*it).VarsList.size();i++)
             {
-              ScriptFile << "set title \"" << (*it).VarNames[i] << "\" font \",9\"\n";
+              ScriptFile << "set title \"" << (*it).VarsList[i] << "\" font \",9\"\n";
               ScriptFile << "plot \""<< DataFilename << "\" using 1:"<< (i+2) <<" with lines\n";
             }
 
@@ -238,9 +238,19 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
         std::string TmpStyleID = (*it).UnitsClass +"_style";
 
-        KmlFile << "    <Style id=\"" << TmpStyleID << "\"><LineStyle><color>"<< (*it).DefaultColor << "</color><width>" << (*it).LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
-
-        KmlFile << "    <Style id=\"" << TmpStyleID << "_plotted\"><LineStyle><color>"<< (*it).PlottedColor << "</color><width>" << (*it).LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
+        if ((*((*it).UnitsInfos.begin())).second.GeometryType == wkbPolygon)
+        {
+          KmlFile << "    <Style id=\"" << TmpStyleID << "\"><PolyStyle><color>"<< (*it).DefaultColor << "</color><outline>1</outline></PolyStyle></Style>\n";
+          KmlFile << "    <Style id=\"" << TmpStyleID << "_plotted\"><PolyStyle><color>"<< (*it).PlottedColor << "</color></PolyStyle><outline>1</outline></Style>\n";
+        }
+        else if ((*((*it).UnitsInfos.begin())).second.GeometryType == wkbLineString)
+        {
+          KmlFile << "    <Style id=\"" << TmpStyleID << "\"><LineStyle><color>"<< (*it).DefaultColor << "</color><width>" << (*it).LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
+          KmlFile << "    <Style id=\"" << TmpStyleID << "_plotted\"><LineStyle><color>"<< (*it).PlottedColor << "</color><width>" << (*it).LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
+        }
+        else
+          OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"KmlFilesPlotObserver::writeKmlFile",
+                               "Unsupported geometry format in source geometry file");
 
         KmlFile << "    <Folder>\n";
         KmlFile << "      <name>" << (*it).UnitsClass << "</name>\n";
@@ -281,11 +291,13 @@ class KmlFilesPlotObserver : public KmlObserverBase
           {
             KmlFile << "<Polygon><tessellate>1</tessellate><outerBoundaryIs><LinearRing><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LinearRing></outerBoundaryIs></Polygon>\n";
           }
-
-          if ((*it2).second.GeometryType == wkbLineString)
+          else if ((*it2).second.GeometryType == wkbLineString)
           {
             KmlFile << "<LineString><tessellate>1</tessellate><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LineString>\n";
           }
+          else
+            OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"KmlFilesAnimObserver::writeKmlFile",
+                                 "Unsupported geometry format in source geometry file");
 
 
           KmlFile << "    </Placemark>\n";
@@ -380,7 +392,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
         KSI.UnitsClass = ParamsPT.get("layers."+LayerID+".unitclass","");
 
 
-        KSI.VarNamesStr = ParamsPT.get("layers."+LayerID+".varnames","*");
+        KSI.VarsListStr = ParamsPT.get("layers."+LayerID+".varslist","*");
 
         // TODO Manage selection of plotted spatial units
 
@@ -412,7 +424,8 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       m_OKToGo = true;
 
-
+      m_KmzSubDir = m_OutputFileName + "_kmz-dir";
+      m_GNUPlotSubDir = m_OutputFileName + "_gnuplot-dir";
     }
 
 
@@ -473,6 +486,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
       if (!m_OKToGo) return;
 
 
+      boost::filesystem::remove_all(boost::filesystem::path(m_TmpDir+"/"+m_GNUPlotSubDir));
       boost::filesystem::create_directories(boost::filesystem::path(m_TmpDir+"/"+m_GNUPlotSubDir));
 
       if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir+"/"+m_GNUPlotSubDir)))
@@ -489,15 +503,15 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       for (std::list<KmlSerieInfo>::iterator it=m_KmlSeriesInfos.begin();it!=m_KmlSeriesInfos.end();++it)
       {
-        if ((*it).VarNamesStr == "*")
+        if ((*it).VarsListStr == "*")
         {
-          (*it).VarNames = mp_CoreData->getUnits((*it).UnitsClass)->getList()->front().getVariables()->getVariablesNames();
+          (*it).VarsList = mp_CoreData->getUnits((*it).UnitsClass)->getList()->front().getVariables()->getVariablesNames();
         }
         else
         {
-          openfluid::tools::TokenizeString((*it).VarNamesStr,(*it).VarNames,";");
+          openfluid::tools::TokenizeString((*it).VarsListStr,(*it).VarsList,";");
         }
-        if ((*it).VarNames.empty())
+        if ((*it).VarsList.empty())
         {
           m_OKToGo = false;
           return;
@@ -546,7 +560,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
               (*((*it2).second.DataFile)) << OPENFLUID_GetCurrentDate().getAsString("%Y%m%d-%H%M%S");
 
 
-              for (std::vector<openfluid::core::VariableName_t>::iterator it3 = (*it).VarNames.begin();it3 != (*it).VarNames.end();++it3)
+              for (std::vector<openfluid::core::VariableName_t>::iterator it3 = (*it).VarsList.begin();it3 != (*it).VarsList.end();++it3)
               {
                 if (OPENFLUID_IsVariableExist(UU,*it3,OPENFLUID_GetCurrentTimeIndex(),openfluid::core::Value::DOUBLE))
                 {

@@ -313,12 +313,12 @@ void DomainClassModule::onAttributeEdited(const Glib::ustring& Path,
 
 void DomainClassModule::updateEvents()
 {
-  const std::map<int, openfluid::fluidx::BuilderUnit>& Units =
+  const std::map<int, openfluid::fluidx::AdvancedUnitDescriptor>& Units =
       m_Domain.getUnitsByIdByClass().at(m_ClassName);
 
   mref_EventsTreeStore->clear();
 
-  for (std::map<int, openfluid::fluidx::BuilderUnit>::const_iterator it =
+  for (std::map<int, openfluid::fluidx::AdvancedUnitDescriptor>::const_iterator it =
       Units.begin(); it != Units.end(); ++it)
   {
     std::list<openfluid::core::Event*> Events = it->second.Events;

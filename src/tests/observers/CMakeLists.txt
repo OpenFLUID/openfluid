@@ -70,7 +70,8 @@ OPENFLUID_ADD_TEST(NAME observers-KmlFiles
                         "-n${TEST_OUTPUT_PATH}"
                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers"
                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers/kmlplot.kmz"
-                             CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers/kmlanim.kmz"
+                             CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers/SU.kmz"
+                             CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers/RS.kmz"
                   )
 
 
