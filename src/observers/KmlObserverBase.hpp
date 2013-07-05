@@ -114,7 +114,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
   protected:
 
     std::string m_TmpSubDir;
-    const std::string m_KmzSubDir;
+    std::string m_KmzSubDir;
     const std::string m_KmzDataSubDir;
 
     std::string m_Title;
@@ -193,8 +193,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
           if (Geometry != NULL)
           {
 
-            if (Geometry->getGeometryType() != wkbPolygon && Geometry->getGeometryType() != wkbLineString &&
-                Geometry->getGeometryType() != wkbPoint)
+            if (Geometry->getGeometryType() != wkbPolygon && Geometry->getGeometryType() != wkbLineString)
             {
               OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::transformVectorLayerToKmlGeometry()",
                   "Unsupported geometry type in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
@@ -386,7 +385,6 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       m_TmpDir = boost::filesystem::path(TmpDir+"/"+m_TmpSubDir).string();
 
-      boost::filesystem::remove_all(boost::filesystem::path(m_TmpDir));
       boost::filesystem::create_directories(boost::filesystem::path(m_TmpDir));
 
       if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir)))
@@ -397,7 +395,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         return;
       }
 
-
+      boost::filesystem::remove_all(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir));
       boost::filesystem::create_directories(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir));
 
       if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir)))
