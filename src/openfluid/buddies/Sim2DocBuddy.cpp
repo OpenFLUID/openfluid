@@ -74,6 +74,9 @@
 
 namespace openfluid { namespace buddies {
 
+typedef parse_info<std::string::const_iterator>   Parser_t;
+
+
 
 Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
                OpenFLUIDBuddy(Listener)
@@ -98,11 +101,13 @@ Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
   m_HTMLPackageLatexCommand = "";
 
 
-  m_BeginSignatureTag = "BEGIN_SIGNATURE_HOOK";
-  m_EndSignatureTag = "END_SIGNATURE_HOOK";
+  m_BeginSignatureTag = "BEGIN_SIMULATOR_SIGNATURE";
+  m_EndSignatureTag = "END_SIMULATOR_SIGNATURE";
   m_BeginSim2DocTag = "<sim2doc>";
   m_EndSim2DocTag = "</sim2doc>";
 
+  m_KeyValue = "";
+  m_BuiltParam = "";
 }
 
 
@@ -142,7 +147,7 @@ std::string Sim2DocBuddy::extractBetweenTags(std::string Content, const std::str
 
 std::string Sim2DocBuddy::toLatexFriendly(std::string Content)
 {
-  boost::algorithm::replace_all(Content,"\\","$\backslash$");
+  //boost::algorithm::replace_all(Content,"\\","\\backslash");
   boost::algorithm::replace_all(Content,"$","\\$");
   boost::algorithm::replace_all(Content,"_","\\_");
   boost::algorithm::replace_all(Content,"&","\\&");
@@ -262,7 +267,7 @@ void Sim2DocBuddy::cpreprocessCPP()
 // =====================================================================
 
 
-std::vector<std::string> Sim2DocBuddy::extractSignatureLines()
+std::string Sim2DocBuddy::extractSignatureLines()
 {
   std::ifstream CProcessedFile(m_CProcessedFilePath.string().c_str());
 
@@ -276,25 +281,17 @@ std::vector<std::string> Sim2DocBuddy::extractSignatureLines()
   // parse and loads file contents
   while(std::getline(CProcessedFile,StrLine))
   {
-    FileContent = FileContent + StrLine;
+    FileContent = FileContent + StrLine + "\n";
   }
 
   CProcessedFile.close();
 
   std::string SignatureContent = extractBetweenTags(FileContent,m_BeginSignatureTag,m_EndSignatureTag);
 
-  std::vector<std::string> Lines;
+  // Add of delimiters to start and end parsing
+  SignatureContent = m_BeginSignatureTag + SignatureContent + m_EndSignatureTag;
 
-  boost::algorithm::split_regex(Lines, SignatureContent,boost::regex("DECLARE_"));
-
-  for (unsigned int i = 0; i < Lines.size(); i++)
-  {
-    boost::algorithm::trim(Lines[i]);
-    boost::algorithm::replace_all(Lines[i],"\n","");
-  }
-
-  return Lines;
-
+  return SignatureContent;
 }
 
 
@@ -327,214 +324,215 @@ std::vector<std::string> Sim2DocBuddy::searchStringLitterals(std::string StrToPa
 // =====================================================================
 // =====================================================================
 
+
+void Sim2DocBuddy::addVectorMember(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass)
+{
+  UpdatedUnitsClass->push_back(openfluid::ware::SignatureHandledUnitsClassItem());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeInUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass,
+    int Att)
+{
+  if (!UpdatedUnitsClass->empty())
+  {
+    if (Att == 1)
+      UpdatedUnitsClass->back().UnitsClass = m_BuiltParam;
+    else
+      UpdatedUnitsClass->back().Description = m_BuiltParam;
+  }
+  m_BuiltParam.erase();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeKey(SignatureData_t *SignatureData, std::string State)
+{
+  m_KeyValue = toLatexFriendly(m_BuiltParam);
+  if (!State.empty())
+    (*SignatureData)[m_KeyValue].push_back(State);
+  else
+    (*SignatureData)[m_KeyValue].clear();
+  m_BuiltParam.erase();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeIntoSignatureData(SignatureData_t *SignatureData)
+{
+  (*SignatureData)[m_KeyValue].push_back(m_BuiltParam);
+  m_BuiltParam.erase();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::buildParam(const char* First, const char* Last)
+{
+  std::string Str(First, Last);
+  std::size_t Found;
+
+  while ((Found = Str.find("\\\"")) != std::string::npos)
+    Str.erase(Found, 1);
+
+  m_BuiltParam += Str;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeData(std::string *Param)
+{
+  if (Param != 0)
+    *Param = m_BuiltParam;
+
+  m_BuiltParam.erase();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::setSchedulingFixed(double Val)
+{
+  m_TimeScheduling.setAsFixed((core::Duration_t) Val);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::setSchedulingRange(double Max)
+{
+  m_TimeScheduling.setAsRange(m_TimeScheduling.Min, (core::Duration_t) Max);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::turnIntoLatexSyntax()
+{
+  m_SimID = toLatexFriendly(m_SimID);
+  m_Title = m_SimID;
+  m_NewCommands = m_NewCommands + "\\newcommand{\\simID}{"+m_SimID+"}\n";
+
+  m_SimName = toLatexFriendly(m_SimName);
+  m_NewCommands = m_NewCommands + "\\newcommand{\\simNAME}{"+m_SimName+"}\n";
+
+  m_SimVersion = toLatexFriendly(m_SimVersion);
+  m_NewCommands = m_NewCommands + "\\newcommand{\\simVERSION}{"+m_SimVersion+"}\n";
+
+  m_SimDescription = toLatexFriendly(m_SimDescription);
+  m_SimDomain = toLatexFriendly(m_SimDomain);
+  m_SimAuthorName = toLatexFriendly(m_SimAuthorName);
+  m_SimAuthorEmail = toLatexFriendly(m_SimAuthorEmail);
+
+  SignatureData_t::iterator ParamIt;
+  unsigned int i;
+
+  for (ParamIt = m_ParamsData.begin(); ParamIt != m_ParamsData.end(); ++ParamIt)
+  {
+    for (i = 0; i < ParamIt->second.size(); ++i)
+      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    if (ParamIt->second[1].empty())
+      ParamIt->second[1] = "-";
+  }
+
+  for (ParamIt = m_InVars.begin(); ParamIt != m_InVars.end(); ++ParamIt)
+  {
+    for (i = 2; i < ParamIt->second.size(); ++i)
+      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    if (ParamIt->second[3].empty())
+      ParamIt->second[3] = "-";
+  }
+
+  for (ParamIt = m_OutVars.begin(); ParamIt != m_OutVars.end(); ++ParamIt)
+  {
+    for (i = 2; i < ParamIt->second.size(); ++i)
+      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    if (ParamIt->second[3].empty())
+      ParamIt->second[3] = "-";
+  }
+
+  for (ParamIt = m_InAttrs.begin(); ParamIt != m_InAttrs.end(); ++ParamIt)
+  {
+    for (i = 2; i < ParamIt->second.size(); ++i)
+      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    if (ParamIt->second[3].empty())
+      ParamIt->second[3] = "-";
+  }
+
+  for (ParamIt = m_OutAttrs.begin(); ParamIt != m_OutAttrs.end(); ++ParamIt)
+  {
+    for (i = 2; i < ParamIt->second.size(); ++i)
+      ParamIt->second[i] = toLatexFriendly(ParamIt->second[i]);
+    if (ParamIt->second[3].empty())
+      ParamIt->second[3] = "-";
+  }
+
+
+  std::vector<ware::SignatureHandledUnitsClassItem>::iterator UnitsClassIt;
+
+  m_UnitsGraph.UpdatedUnitsGraph = toLatexFriendly(m_UnitsGraph.UpdatedUnitsGraph);
+
+  for (UnitsClassIt = m_UnitsGraph.UpdatedUnitsClass.begin();
+        UnitsClassIt != m_UnitsGraph.UpdatedUnitsClass.end(); ++UnitsClassIt)
+  {
+    UnitsClassIt->UnitsClass = toLatexFriendly(UnitsClassIt->UnitsClass);
+    UnitsClassIt->Description = toLatexFriendly(UnitsClassIt->UnitsClass);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void Sim2DocBuddy::processSignature()
 {
-
-  std::vector<std::string> LineParts;
-
-
   mp_Listener->onSubstageCompleted("** Processing simulator signature...");
 
+  std::string SignatureContentStr = extractSignatureLines();
+  const char* SignatureContent = SignatureContentStr.c_str();
 
-  std::vector<std::string> Lines = extractSignatureLines();
+  // Creation of grammar for parsing
+  SimSignatureGrammar Grammar(this);
+  // Parse signature
+  Parser_t pInfo = parse(SignatureContent, SignatureContent + strlen(SignatureContent), Grammar);
 
-
-  for (unsigned i=0; i< Lines.size();i++)
+  if (!pInfo.full)
   {
-    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_ID"))
+    std::string Line = "";
+    while (*pInfo.stop != 0 && *pInfo.stop != '\n' && *pInfo.stop != '\r')
     {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1)
-      {
-        m_SimID = toLatexFriendly(LineParts[0]);
-        m_Title = m_SimID;
-      }
-      m_NewCommands = m_NewCommands + "\\newcommand{\\simID}{"+m_SimID+"}\n";
+      Line += *pInfo.stop;
+      ++pInfo.stop;
     }
 
-    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_VERSION"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_SimVersion = toLatexFriendly(LineParts[0]);
-      m_NewCommands = m_NewCommands + "\\newcommand{\\simVERSION}{"+m_SimVersion+"}\n";
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DOMAIN"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_SimDomain = toLatexFriendly(LineParts[0]);
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_NAME"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_SimName = toLatexFriendly(LineParts[0]);
-      m_NewCommands = m_NewCommands + "\\newcommand{\\simNAME}{"+m_SimName+"}\n";
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DOMAIN"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_SimDomain = toLatexFriendly(LineParts[0]);
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_DESCRIPTION"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_SimDescription = toLatexFriendly(LineParts[0]);
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_AUTHORNAME"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_SimAuthorName = toLatexFriendly(LineParts[0]);
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"SIGNATURE_AUTHOREMAIL"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1) m_SimAuthorEmail = toLatexFriendly(LineParts[0]);
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"SIMULATOR_PARAM"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 3)
-      {
-        m_ParamsData[LineParts[0]].push_back(toLatexFriendly(LineParts[1]));
-        m_ParamsData[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_ATTRIBUTE"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 4)
-      {
-        m_InData[LineParts[0]].push_back("required");
-        m_InData[LineParts[0]].push_back(LineParts[1]);
-        m_InData[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-        m_InData[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"USED_ATTRIBUTE"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 4)
-      {
-        m_InData[LineParts[0]].push_back("used");
-        m_InData[LineParts[0]].push_back(LineParts[1]);
-        m_InData[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-        m_InData[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_VAR"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 4)
-      {
-        m_InVars[LineParts[0]].push_back("required");
-        m_InVars[LineParts[0]].push_back("on step");
-        m_InVars[LineParts[0]].push_back(LineParts[1]);
-        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"USED_VAR"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 4)
-      {
-        m_InVars[LineParts[0]].push_back("used");
-        m_InVars[LineParts[0]].push_back("on step");
-        m_InVars[LineParts[0]].push_back(LineParts[1]);
-        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_PREVVAR"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 4)
-      {
-        m_InVars[LineParts[0]].push_back("required");
-        m_InVars[LineParts[0]].push_back("on prev. step");
-        m_InVars[LineParts[0]].push_back(LineParts[1]);
-        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"USED_PREVVAR"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 4)
-      {
-        m_InVars[LineParts[0]].push_back("used");
-        m_InVars[LineParts[0]].push_back("on prev. step");
-        m_InVars[LineParts[0]].push_back(LineParts[1]);
-        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-        m_InVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"PRODUCED_VAR"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 4)
-      {
-        m_OutVars[LineParts[0]].push_back("produced");
-        m_OutVars[LineParts[0]].push_back(LineParts[1]);
-        m_OutVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-        m_OutVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"UPDATED_VAR"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 4)
-      {
-        m_OutVars[LineParts[0]].push_back("updated");
-        m_OutVars[LineParts[0]].push_back(LineParts[1]);
-        m_OutVars[LineParts[0]].push_back(toLatexFriendly(LineParts[2]));
-        m_OutVars[LineParts[0]].push_back(toLatexFriendly(LineParts[3]));
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"USED_EVENTS"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1)
-      {
-        m_Events[LineParts[0]].clear();
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"USED_EXTRAFILE"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1)
-      {
-        m_ExtraFiles[LineParts[0]].push_back("used");
-      }
-    }
-
-    if (boost::algorithm::starts_with(Lines[i],"REQUIRED_EXTRAFILE"))
-    {
-      LineParts = searchStringLitterals(Lines[i]);
-      if (LineParts.size() == 1)
-      {
-        m_ExtraFiles[LineParts[0]].push_back("required");
-      }
-    }
-
-
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::processSignature()","Error parsing simulator signature line \""+Line+"\"");
   }
+
+
+  // Apply Latex syntax to attributes
+  turnIntoLatexSyntax();
 
   mp_Listener->onStageCompleted(" done");
 
@@ -578,17 +576,27 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Simulator parameter(s)","lXr");
     for (it = m_ParamsData.begin(); it != m_ParamsData.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&$" + it->second[1] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&$" + it->second[1] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
 
-  if (m_InData.size() > 0)
+  if (m_InAttrs.size() > 0)
   {
-    addLatexDataCatBegin(m_SimData,"Attributes","lllXr");
-    for (it = m_InData.begin(); it != m_InData.end(); ++it)
+    addLatexDataCatBegin(m_SimData,"Required or used Attribute(s)","lllXr");
+    for (it = m_InAttrs.begin(); it != m_InAttrs.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+    }
+    addLatexDataCatEnd(m_SimData);
+  }
+
+  if (m_OutAttrs.size() > 0)
+  {
+    addLatexDataCatBegin(m_SimData,"Produced Attribute(s)","lllXr");
+    for (it = m_OutAttrs.begin(); it != m_OutAttrs.end(); ++it)
+    {
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
@@ -598,7 +606,7 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Required or used variable(s)","llllXr");
     for (it = m_InVars.begin(); it != m_InVars.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&" + it->second[3] + "&$" + it->second[4] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
@@ -608,7 +616,7 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Produced or updated variable(s)","lllXr");
     for (it = m_OutVars.begin(); it != m_OutVars.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "&" + it->second[1] + "&" + it->second[2] + "&$" + it->second[3] + "$\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
@@ -618,7 +626,7 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Used event(s)","l");
     for (it = m_Events.begin(); it != m_Events.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }
@@ -628,7 +636,7 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatBegin(m_SimData,"Required or used extrafile(s)","lX");
     for (it = m_ExtraFiles.begin(); it != m_ExtraFiles.end(); ++it)
     {
-      m_SimData = m_SimData + "\\texttt{" + toLatexFriendly(it->first) + "}&" + it->second[0] + "\\\\" + "\n";
+      m_SimData = m_SimData + "\\texttt{" + it->first + "}&" + it->second[0] + "\\\\" + "\n";
     }
     addLatexDataCatEnd(m_SimData);
   }

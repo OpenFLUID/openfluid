@@ -61,7 +61,7 @@
 \end{center}
 
 
-This is the \LaTeX -style documentation of the \funcID\ function (\funcNAME, version \funcVERSION).\\
+This is the \LaTeX -style documentation of the \simID\ function (\simNAME, version \simVERSION).\\
 
 \input{doc/part1}
 \input{doc/part2}
@@ -117,6 +117,7 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
 
   DECLARE_USED_VAR("tests.usedscalar","TestUnits","used scalar on TestUnits","");
 
+  DECLARE_PRODUCED_ATTRIBUTE("attr1","TestUnits","a description","")
   DECLARE_REQUIRED_ATTRIBUTE("indataA","TestUnits","required attribute A on TestUnits","m")
   DECLARE_USED_ATTRIBUTE("indataB","TestUnits","used attribute B on TestUnits","mm/h")
   DECLARE_USED_ATTRIBUTE("indata_CC","TestUnits","used attribute CC on TestUnits","")
@@ -127,6 +128,15 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
   DECLARE_USED_EXTRAFILE("test01.txt");
   DECLARE_USED_EXTRAFILE("test02.txt");
   DECLARE_REQUIRED_EXTRAFILE("test03req.txt");
+
+  DECLARE_UPDATED_UNITSGRAPH("a unitsgraph description")
+  DECLARE_UPDATED_UNITSCLASS("TestUnits","a unitsclass description")
+
+  DECLARE_SCHEDULING_UNDEFINED
+  DECLARE_SCHEDULING_DEFAULT
+  DECLARE_SCHEDULING_FIXED(52)
+  DECLARE_SCHEDULING_RANGE(2,3)
+
 
 END_SIMULATOR_SIGNATURE
 
