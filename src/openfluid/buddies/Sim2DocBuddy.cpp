@@ -74,8 +74,7 @@
 
 namespace openfluid { namespace buddies {
 
-typedef file_iterator<char>    iterator_t;
-typedef parse_info<iterator_t>   Parser_t;
+typedef parse_info<std::string::const_iterator>   Parser_t;
 
 
 
@@ -282,7 +281,7 @@ std::string Sim2DocBuddy::extractSignatureLines()
   // parse and loads file contents
   while(std::getline(CProcessedFile,StrLine))
   {
-    FileContent = FileContent + StrLine;
+    FileContent = FileContent + StrLine + "\n";
   }
 
   CProcessedFile.close();
@@ -511,7 +510,8 @@ void Sim2DocBuddy::processSignature()
 {
   mp_Listener->onSubstageCompleted("** Processing simulator signature...");
 
-  const char* SignatureContent = extractSignatureLines().c_str();
+  std::string SignatureContentStr = extractSignatureLines();
+  const char* SignatureContent = SignatureContentStr.c_str();
 
   // Creation of grammar for parsing
   SimSignatureGrammar Grammar(this);
@@ -519,7 +519,17 @@ void Sim2DocBuddy::processSignature()
   Parser_t pInfo = parse(SignatureContent, SignatureContent + strlen(SignatureContent), Grammar);
 
   if (!pInfo.full)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::processSignature()","Error parsing simulator signature");
+  {
+    std::string Line = "";
+    while (*pInfo.stop != 0 && *pInfo.stop != '\n' && *pInfo.stop != '\r')
+    {
+      Line += *pInfo.stop;
+      ++pInfo.stop;
+    }
+
+    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::processSignature()","Error parsing simulator signature line \""+Line+"\"");
+  }
+
 
   // Apply Latex syntax to attributes
   turnIntoLatexSyntax();
