@@ -56,7 +56,7 @@
 
 #include <gtkmm/treerowreference.h>
 
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -151,7 +151,7 @@ Gtk::TreeRowReference* BuilderTreeStore::appendATitleRow(std::string Value)
   if (m_TitleColumnDefined)
     return appendATitleRow(m_TitleColumn, Value);
   else
-    throw openfluid::base::OFException("OpenFLUID Builder",
+    throw openfluid::base::ApplicationException("openfluid-builder",
         "BuilderTreeStore::appendATitleRow", "No title column defined.");
 }
 

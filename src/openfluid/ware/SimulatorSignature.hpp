@@ -328,7 +328,7 @@ class SignatureHandledTypedDataItem : public SignatureHandledDataItem
       DataUnit = DUnit;
 
       if(!getVariableNameAndType(DName,DataName,DataType))
-        throw openfluid::base::OFException("OpenFLUID framework","SignatureHandledTypedDataItem::SignatureHandledTypedDataItem","Variable " + DName + " is not well formated.");
+        throw openfluid::base::FrameworkException("SignatureHandledTypedDataItem::SignatureHandledTypedDataItem","Variable " + DName + " is not well formated.");
     }
 
 };

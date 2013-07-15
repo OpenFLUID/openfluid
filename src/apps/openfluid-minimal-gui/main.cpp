@@ -59,6 +59,7 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/Init.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
@@ -98,7 +99,7 @@ int main(int argc, char *argv[])
       PlugsDir = std::string(argv[3]);
     }
     else
-      throw openfluid::base::OFException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdir>");
+      throw openfluid::base::ApplicationException("openfluid-minimal-gui","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdir>");
 
 
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
@@ -118,9 +119,9 @@ int main(int argc, char *argv[])
     SimEngine = new openfluid::machine::Engine(SBlob, Model, Monitoring, MachineListen);
 
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::Exception& E)
   {
-    std::cerr << "ERROR: " + std::string(E.what()) << std::endl;
+    std::cerr << "OpenFLUID ERROR: " + std::string(E.what()) << std::endl;
   }
   catch (std::bad_alloc& E)
   {

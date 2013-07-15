@@ -60,7 +60,7 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 #include <iostream>
 

@@ -759,7 +759,7 @@ void MarketClientAssistant::onInstallTimeoutOnce()
       TmpRow[m_InstallColumns.m_Status] = _("Success");
       while( Gtk::Main::events_pending()) Gtk::Main::iteration();
     }
-    catch (openfluid::base::OFException& E)
+    catch (openfluid::base::FrameworkException& E)
     {
       std::string ErrorMsg(E.what());
       TmpRow[m_InstallColumns.m_Status] = _("Failed");

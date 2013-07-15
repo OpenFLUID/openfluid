@@ -60,7 +60,7 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 
 
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
   GeoRasterValueSub* Val = new GeoRasterValueSub(
       CONFIGTESTS_INPUT_DATASETS_DIR, "GeoRasterValue/wrongfile.jpeg");
 
-  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 

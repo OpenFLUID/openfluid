@@ -131,33 +131,15 @@ class DLLEXPORT PluggableWare
 
     /**
       Raises a warning message to the kernel. This do not stops the simulation
-      @param[in] Sender the sender of the message
       @param[in] Msg the content of the message
     */
-    virtual void OPENFLUID_RaiseWarning(std::string Sender, std::string Msg);
-
-    /**
-      Raises a warning message to the kernel. This do not stops the simulation
-      @param[in] Sender the sender of the message
-      @param[in] Source the source of the message
-      @param[in] Msg the content of the message
-    */
-    virtual void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg);
+    virtual void OPENFLUID_RaiseWarning(const std::string& Msg);
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
-      @param[in] Sender the sender of the message
       @param[in] Msg the content of the message
     */
-    virtual void OPENFLUID_RaiseError(std::string Sender, std::string Msg);
-
-    /**
-      Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
-      @param[in] Sender the sender of the message
-      @param[in] Source of the message (location in the sender)
-      @param[in] Msg the content of the message
-    */
-    virtual void OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg);
+    virtual void OPENFLUID_RaiseError(const std::string& Msg);
 
     /**
       Gets an environment string value associated to a Key

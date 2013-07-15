@@ -47,85 +47,69 @@
 
 
 /**
-  \file DummyMixedImporter.cpp
-  \brief Implements ...
+  @file
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
-#include <openfluid/builderext/MixedImporter.hpp>
-#include <openfluid/base/OtherException.hpp>
+#ifndef __EXCEPTION_HPP__
+#define __EXCEPTION_HPP__
 
-#include <gtkmm/messagedialog.h>
+#include <exception>
+#include <string>
+#include <sstream>
 
-DECLARE_EXTENSION_HOOKS;
-
-DEFINE_EXTENSION_INFOS("tests.builder.mixedimporterwithexception",
-                       "Dummy mixed importer with exception",
-                       "Dummy mixed importer throwing an exception for tests",
-                       "This is a mixed importer for tests",
-                       "JC.Fabre",
-                       "fabrejc@supagro.inra.fr",
-                       openfluid::builderext::PluggableBuilderExtension::MixedImporter);
-
-DEFINE_EXTENSION_DEFAULT_CONFIG()
-
-// =====================================================================
-// =====================================================================
+#include <openfluid/dllexport.hpp>
 
 
-class DummyMixedImporterWithException : public openfluid::builderext::MixedImporter
+namespace openfluid { namespace base {
+
+
+class DLLEXPORT Exception : public std::exception
 {
-  private:
+  protected:
 
-  Gtk::MessageDialog* mp_Dialog;
+      std::string m_Message;
+      std::string m_Sender;
+      std::string m_Source;
+      std::string m_FullMessage;
+
+
+      virtual void buildFullMessage() = 0;
+
+
+      Exception(const std::string& Msg) :
+        m_Message(Msg), m_Sender(""), m_Source(""), m_FullMessage("")
+      { }
+
+      Exception(const std::string& Sender, const std::string& Msg) :
+        m_Message(Msg), m_Sender(Sender), m_Source(""), m_FullMessage("")
+      { }
+
+      Exception(const std::string& Sender, const std::string& Source, const std::string& Msg) :
+        m_Message(Msg), m_Sender(Sender), m_Source(Source), m_FullMessage("")
+      { }
 
   public:
 
-    DummyMixedImporterWithException()
+
+    virtual ~Exception() throw()
     {
-      mp_Dialog = new Gtk::MessageDialog("I am DummyMixedImporter with exception");
-    };
 
-
-    // =====================================================================
-    // =====================================================================
-
-
-    ~DummyMixedImporterWithException()
-    {
-      delete mp_Dialog;
-    };
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    Gtk::Widget* getExtensionAsWidget()
-    {
-      return mp_Dialog;
     }
 
-
-    // =====================================================================
-    // =====================================================================
-
-    void show()
+    const char * what() const throw()
     {
-      throw openfluid::base::OtherException("exception thrown!");
-
-      mp_Dialog->run();
-      mp_Dialog->hide();
+      return m_FullMessage.c_str();
     }
+
+    const std::string getMessage() const { return m_Message; }
+
 
 };
 
 
-// =====================================================================
-// =====================================================================
+} } // namespace
 
-
-DEFINE_EXTENSION_HOOKS((DummyMixedImporterWithException));
-
+#endif

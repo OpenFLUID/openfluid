@@ -55,7 +55,7 @@
 
 
 #include <openfluid/core/MapValue.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace core {
@@ -148,7 +148,7 @@ void MapValue::set(const std::string& Key, Value* Element)
 Value& MapValue::operator[](const std::string& Key)
 {
   if (!isKeyExist(Key))
-    throw openfluid::base::OFException("OpenFLUID framework","MapValue::operator[]","Requested key " + Key + " does not exist");
+    throw openfluid::base::FrameworkException("MapValue::operator[]","Requested key " + Key + " does not exist");
 
   return (*(m_Value[Key]));
 }
@@ -161,7 +161,7 @@ Value& MapValue::operator[](const std::string& Key)
 Value& MapValue::get(const std::string& Key)
 {
   if (!isKeyExist(Key))
-    throw openfluid::base::OFException("OpenFLUID framework","MapValue::get","Requested key " + Key + " does not exist");
+    throw openfluid::base::FrameworkException("MapValue::get","Requested key " + Key + " does not exist");
 
   return (*(m_Value[Key]));
 }

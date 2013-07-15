@@ -58,7 +58,7 @@
 #include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/MultiLineString.h>
@@ -83,7 +83,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
   {
     delete mp_Centroide;
 
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "PolygonEntity::PolygonEntity",
                                        "Geometry is not a Polygon.");
 
@@ -96,7 +96,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
   {
     delete mp_Centroide;
 
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "PolygonEntity::PolygonEntity",
                                        "Polygon is not valid.");
   }
@@ -156,7 +156,7 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
   if (itEdge != m_PolyEdges.end())
     m_PolyEdges.erase(itEdge);
   else
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "PolygonEntity::removeEdge",
                                        "Edge doesn't exists in Edge vector.");
 

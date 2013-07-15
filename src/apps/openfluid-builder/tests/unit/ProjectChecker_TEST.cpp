@@ -67,7 +67,6 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
-#include <openfluid/base/OFException.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -158,7 +157,7 @@ BOOST_AUTO_TEST_CASE(check_isParamSet)
   BOOST_CHECK(PC.isParamSet(InterpGen,"sources"));
   BOOST_CHECK(!PC.isParamSetAsDouble(InterpGen,"sources"));
   BOOST_CHECK_THROW(PC.getParamAsDouble(InterpGen,"sources"),
-                    openfluid::base::OFException);
+                    openfluid::base::Exception);
 
   BOOST_CHECK(PC.isParamSet(InterpGen,"thresholdmax"));
   BOOST_CHECK(PC.isParamSetAsDouble(InterpGen,"thresholdmax"));

@@ -58,9 +58,9 @@
 #include <glibmm/module.h>
 
 #include <openfluid/config.hpp>
-//#include <openfluid/machine/DynamicLib.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 
 #include "builderconfig.hpp"
 
@@ -106,7 +106,7 @@ bool ExtensionContainer::instantiateExt()
 
     Extension = 0;
 
-    throw openfluid::base::OFException("OpenFLUID Builder","ExtensionContainer::instantiate ",
+    throw openfluid::base::ApplicationException("openfluid-builder","ExtensionContainer::instantiate ",
         Infos.ID + ": Wrong declared extension type ("
         + BuilderExtensionsManager::getExtensionTypeAsString(Infos.Type)
     + " doesn't match Pluggable extension class type "

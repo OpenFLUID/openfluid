@@ -73,7 +73,7 @@ namespace openfluid { namespace core {
 const DoubleValue& Value::asDoubleValue() const
 {
   if (!isDoubleValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asDoubleValue","Value is not a DoubleValue");
+    throw openfluid::base::FrameworkException("Value::asDoubleValue","Value is not a DoubleValue");
 
   return static_cast<const DoubleValue&>(*this);
 }
@@ -86,7 +86,7 @@ const DoubleValue& Value::asDoubleValue() const
 DoubleValue& Value::asDoubleValue()
 {
   if (!isDoubleValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asDoubleValue","Value is not a DoubleValue");
+    throw openfluid::base::FrameworkException("Value::asDoubleValue","Value is not a DoubleValue");
 
   return static_cast<DoubleValue&>(*this);
 }
@@ -99,7 +99,7 @@ DoubleValue& Value::asDoubleValue()
 const IntegerValue& Value::asIntegerValue() const
 {
   if (!isIntegerValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asIntegerValue","Value is not an IntegerValue");
+    throw openfluid::base::FrameworkException("Value::asIntegerValue","Value is not an IntegerValue");
 
   return static_cast<const IntegerValue&>(*this);
 }
@@ -112,7 +112,7 @@ const IntegerValue& Value::asIntegerValue() const
 IntegerValue& Value::asIntegerValue()
 {
   if (!isIntegerValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asIntegerValue","Value is not an IntegerValue");
+    throw openfluid::base::FrameworkException("Value::asIntegerValue","Value is not an IntegerValue");
 
   return static_cast<IntegerValue&>(*this);
 }
@@ -125,7 +125,7 @@ IntegerValue& Value::asIntegerValue()
 const NullValue& Value::asNullValue() const
 {
   if (!isNullValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asNullValue","Value is not a NullValue");
+    throw openfluid::base::FrameworkException("Value::asNullValue","Value is not a NullValue");
 
   return static_cast<const NullValue&>(*this);
 }
@@ -137,7 +137,7 @@ const NullValue& Value::asNullValue() const
 NullValue& Value::asNullValue()
 {
   if (!isNullValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asNullValue","Value is not a NullValue");
+    throw openfluid::base::FrameworkException("Value::asNullValue","Value is not a NullValue");
 
   return static_cast<NullValue&>(*this);
 }
@@ -150,7 +150,7 @@ NullValue& Value::asNullValue()
 const BooleanValue& Value::asBooleanValue() const
 {
   if (!isBooleanValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asBooleanValue","Value is not a BooleanValue");
+    throw openfluid::base::FrameworkException("Value::asBooleanValue","Value is not a BooleanValue");
 
   return static_cast<const BooleanValue&>(*this);
 }
@@ -162,7 +162,7 @@ const BooleanValue& Value::asBooleanValue() const
 BooleanValue& Value::asBooleanValue()
 {
   if (!isBooleanValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asBooleanValue","Value is not a BooleanValue");
+    throw openfluid::base::FrameworkException("Value::asBooleanValue","Value is not a BooleanValue");
 
   return static_cast<BooleanValue&>(*this);
 }
@@ -175,7 +175,7 @@ BooleanValue& Value::asBooleanValue()
 const StringValue& Value::asStringValue() const
 {
   if (!isStringValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asStringValue","Value is not a StringValue");
+    throw openfluid::base::FrameworkException("Value::asStringValue","Value is not a StringValue");
 
   return static_cast<const StringValue&>(*this);
 }
@@ -187,7 +187,7 @@ const StringValue& Value::asStringValue() const
 StringValue& Value::asStringValue()
 {
   if (!isStringValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asStringValue","Value is not a StringValue");
+    throw openfluid::base::FrameworkException("Value::asStringValue","Value is not a StringValue");
 
   return static_cast<StringValue&>(*this);
 }
@@ -200,7 +200,7 @@ StringValue& Value::asStringValue()
 const VectorValue& Value::asVectorValue() const
 {
   if (!isVectorValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asVectorValue","Value is not a VectorValue");
+    throw openfluid::base::FrameworkException("Value::asVectorValue","Value is not a VectorValue");
 
   return static_cast<const VectorValue&>(*this);
 }
@@ -212,7 +212,7 @@ const VectorValue& Value::asVectorValue() const
 VectorValue& Value::asVectorValue()
 {
   if (!isVectorValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asVectorValue","Value is not a VectorValue");
+    throw openfluid::base::FrameworkException("Value::asVectorValue","Value is not a VectorValue");
 
   return static_cast<VectorValue&>(*this);
 }
@@ -225,7 +225,7 @@ VectorValue& Value::asVectorValue()
 const MatrixValue& Value::asMatrixValue() const
 {
   if (!isMatrixValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asMatrixValue","Value is not a MatrixValue");
+    throw openfluid::base::FrameworkException("Value::asMatrixValue","Value is not a MatrixValue");
 
   return static_cast<const MatrixValue&>(*this);
 }
@@ -238,7 +238,7 @@ const MatrixValue& Value::asMatrixValue() const
 MatrixValue& Value::asMatrixValue()
 {
   if (!isMatrixValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asMatrixValue","Value is not a MatrixValue");
+    throw openfluid::base::FrameworkException("Value::asMatrixValue","Value is not a MatrixValue");
 
   return static_cast<MatrixValue&>(*this);
 }
@@ -251,7 +251,7 @@ MatrixValue& Value::asMatrixValue()
 const MapValue& Value::asMapValue() const
 {
   if (!isMapValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asMapValue","Value is not a MapValue");
+    throw openfluid::base::FrameworkException("Value::asMapValue","Value is not a MapValue");
 
   return static_cast<const MapValue&>(*this);
 
@@ -265,7 +265,7 @@ const MapValue& Value::asMapValue() const
 MapValue& Value::asMapValue()
 {
   if (!isMapValue())
-    throw openfluid::base::OFException("OpenFLUID framework","Value::asMapValue","Value is not a MapValue");
+    throw openfluid::base::FrameworkException("Value::asMapValue","Value is not a MapValue");
 
   return static_cast<MapValue&>(*this);
 }

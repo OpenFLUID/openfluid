@@ -56,7 +56,7 @@
 
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/config.hpp>
 
@@ -135,7 +135,7 @@ bool ExamplesBuddy::installAllExamplesProjects(const std::string& ProjectsSource
     }
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework","ExamplesBuddy::installAllExamplesProjects()","Projects source path is not a directory");
+    throw openfluid::base::FrameworkException("ExamplesBuddy::installAllExamplesProjects()","Projects source path is not a directory");
 
   return true;
 }

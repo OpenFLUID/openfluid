@@ -62,7 +62,7 @@
 #include <openfluid/base/Init.hpp>
 #include <openfluid/base/Listener.hpp>
 #include <openfluid/base/IOListener.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/SimulationStatus.hpp>

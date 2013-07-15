@@ -58,7 +58,7 @@
 #include <geos/geom/Point.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid {
 namespace landr {
@@ -75,7 +75,7 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
   {
     delete mp_Centroide;
 
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "LineStringEntity::LineStringEntity",
                                        "Geometry is not a LineString.");
 
@@ -88,7 +88,7 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
   {
     delete mp_Centroide;
 
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "LineStringEntity::LineStringEntity",
                                        "The LineString is empty");
   }

@@ -57,7 +57,7 @@
 
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
 #include <openfluid/tools/SwissTools.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace tools {
@@ -92,7 +92,7 @@ bool ProgressiveChronFileReader::getNextValue(ChronItem_t& Value)
         return true;
       }
       else
-        throw openfluid::base::OFException("OpenFLUID framework","ProgressiveChronFileReader::getNextValue","wrong data in " + m_FileName);
+        throw openfluid::base::FrameworkException("ProgressiveChronFileReader::getNextValue","wrong data in " + m_FileName);
     }
   }
 

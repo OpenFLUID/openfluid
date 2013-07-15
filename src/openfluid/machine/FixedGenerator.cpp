@@ -83,11 +83,11 @@ FixedGenerator::~FixedGenerator()
 void FixedGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetSimulatorParameter(Params,"fixedvalue",m_VarValue))
-    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::initParams","missing fixed value for generator");
+    throw openfluid::base::FrameworkException("FixedGenerator::initParams","missing fixed value for generator");
 
   std::string DeltaTStr;
   if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) && !openfluid::tools::ConvertString(DeltaTStr,&m_DeltaT))
-    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","wrong value for deltat");
+    throw openfluid::base::FrameworkException("RandomGenerator::initParams","wrong value for deltat");
 }
 
 

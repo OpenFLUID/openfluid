@@ -114,21 +114,21 @@ void MarketClient::initMarketBag()
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag simulators directory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag simulators directory");
 
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagBinSubDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagBinSubDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag simulators binary subdirectory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag simulators binary subdirectory");
 
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagSimulatorDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag simulators source subdirectory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag simulators source subdirectory");
 
 
   // ===== Creation of observer directories =====
@@ -136,21 +136,21 @@ void MarketClient::initMarketBag()
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observers directory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag observers directory");
 
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
     + "/" + MarketPackage::getMarketBagBinSubDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
     + "/" + MarketPackage::getMarketBagBinSubDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observers binary subdirectory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag observers binary subdirectory");
 
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagObserverDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag observers source subdirectory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag observers source subdirectory");
 
 
   // ===== Creation of builder extension directories =====
@@ -158,21 +158,21 @@ void MarketClient::initMarketBag()
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag builderexts directory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag builderexts directory");
 
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()
     + "/" + MarketPackage::getMarketBagBinSubDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()
     + "/" + MarketPackage::getMarketBagBinSubDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag builderexts binary subdirectory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag builderexts binary subdirectory");
 
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagBuilderextDir()
     + "/" + MarketPackage::getMarketBagSrcSubDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag builderexts source subdirectory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag builderexts source subdirectory");
 
 
   // ===== Creation of dataset directory =====
@@ -180,7 +180,7 @@ void MarketClient::initMarketBag()
   boost::filesystem::create_directories(boost::filesystem::path(MarketPackage::getMarketBagDatasetDir()));
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getMarketBagDatasetDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketBag()","Unable to initialize market-bag datasets directory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketBag()","Unable to initialize market-bag datasets directory");
 }
 
 
@@ -196,7 +196,7 @@ void MarketClient::initMarketTemp()
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getTempBuildsDir())) ||
       !boost::filesystem::is_directory(boost::filesystem::path(MarketPackage::getTempDownloadsDir())))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::initMarketTemp()","Unable to initialize market temp directory");
+    throw openfluid::base::FrameworkException("MarketClient::initMarketTemp()","Unable to initialize market temp directory");
 }
 
 
@@ -209,12 +209,12 @@ void MarketClient::lockMarketTemp()
   std::string LockFilename = MarketPackage::getTempDir()+"/"+LOCK_FILE;
 
   if (boost::filesystem::exists(boost::filesystem::path(LockFilename)))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::lockMarketTemp()","Unable to lock market temp directory (already locked)");
+    throw openfluid::base::FrameworkException("MarketClient::lockMarketTemp()","Unable to lock market temp directory (already locked)");
 
   std::ofstream(boost::filesystem::path(LockFilename).string().c_str()).close();
 
   if (!boost::filesystem::exists(boost::filesystem::path(LockFilename)))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::lockMarketTemp()","Unable to lock market temp directory (cannot create lock)");
+    throw openfluid::base::FrameworkException("MarketClient::lockMarketTemp()","Unable to lock market temp directory (cannot create lock)");
 }
 
 
@@ -229,7 +229,7 @@ void MarketClient::unlockMarketTemp()
   boost::filesystem::remove(boost::filesystem::path(LockFilename));
 
   if (boost::filesystem::exists(boost::filesystem::path(LockFilename)))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketClient::unlockMarketTemp()","Unable to unlock market temp directory (cannot remove lock)");
+    throw openfluid::base::FrameworkException("MarketClient::unlockMarketTemp()","Unable to unlock market temp directory (cannot remove lock)");
 }
 
 

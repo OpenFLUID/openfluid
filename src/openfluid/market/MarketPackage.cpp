@@ -123,7 +123,7 @@ void MarketPackage::initialize(bool EnableLog = false)
 #endif
 
   if (CMakeProgram.empty())
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Unsupported system platform");
+    throw openfluid::base::FrameworkException("MarketPackage::initialize()","Unsupported system platform");
 
 
   std::vector<std::string> CMakePaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(CMakeProgram);
@@ -133,7 +133,7 @@ void MarketPackage::initialize(bool EnableLog = false)
     m_CMakeCommand = boost::filesystem::path(CMakePaths[0]).string();
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Required CMake program not found");
+    throw openfluid::base::FrameworkException("MarketPackage::initialize()","Required CMake program not found");
 
   // TODO
   //m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
@@ -299,7 +299,7 @@ void MarketPackage::download()
 {
 
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","package "+m_PackageFilename+" not initialized");
+    throw openfluid::base::FrameworkException("MarketPackage::download()","package "+m_PackageFilename+" not initialized");
 
   m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
 
@@ -308,7 +308,7 @@ void MarketPackage::download()
   if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
   {
     appendToLogFile("Error");
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","error while downloading package "+m_PackageFilename);
+    throw openfluid::base::FrameworkException("MarketPackage::download()","error while downloading package "+m_PackageFilename);
   }
 
   appendToLogFile("OK");

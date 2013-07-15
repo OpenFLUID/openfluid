@@ -58,7 +58,7 @@
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/Point.h>
@@ -91,13 +91,13 @@ LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
   mp_Vector = new VectorDataset(Val);
 
   if (!mp_Vector)
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "LandRGraph::LandRGraph",
                                        "No GeoVectorValue.");
 
   if (!mp_Vector->containsField("SELF_ID"))
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "LandRGraph::LandRGraph",
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::LandRGraph",
         "GeoVector file must contain a \"SELF_ID\" field.");
 }
 
@@ -112,13 +112,13 @@ LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
   mp_Vector = new openfluid::landr::VectorDataset(Vect);
 
   if (!mp_Vector)
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "LandRGraph::LandRGraph",
                                        "No GeoVectorValue.");
 
   if (!mp_Vector->containsField("SELF_ID"))
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "LandRGraph::LandRGraph",
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::LandRGraph",
         "GeoVector file must contain a \"SELF_ID\" field.");
 }
 
@@ -155,7 +155,7 @@ LandRGraph::~LandRGraph()
 void LandRGraph::addEntitiesFromGeoVector()
 {
   if (!mp_Vector)
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "LandRGraph::addEntitiesFromGeoVector",
                                        "No GeoVectorValue.");
 
@@ -366,8 +366,8 @@ openfluid::landr::VectorDataset* LandRGraph::getRasterPolygonized()
   if (!mp_RasterPolygonized)
   {
     if (!mp_Raster)
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "PolygonGraph::getRasterPolygonized",
+      throw openfluid::base::FrameworkException(
+          "PolygonGraph::getRasterPolygonized",
           "No raster associated to the PolygonGraph");
 
     std::ostringstream FileName;
@@ -391,8 +391,8 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
     openfluid::landr::VectorDataset* Polygonized = getRasterPolygonized();
 
     if (!Polygonized)
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "PolygonGraph::getRasterPolygonizedMultiPoly",
+      throw openfluid::base::FrameworkException(
+          "PolygonGraph::getRasterPolygonizedMultiPoly",
           "No RasterPolygonized associated to the PolygonGraph");
 
     mp_RasterPolygonizedPolys = new std::vector<geos::geom::Polygon*>();
@@ -441,8 +441,8 @@ float* LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
   float* Val = 0;
 
   if (!mp_Raster)
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "PolygonGraph::getRasterValueForEntityCentroid",
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::getRasterValueForEntityCentroid",
         "No raster associated to the PolygonGraph");
 
   Val = new float(
@@ -470,8 +470,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
       std::ostringstream s;
       s << "No raster value for entity " << (*it)->getSelfId() << " centroid.";
 
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework",
+      throw openfluid::base::FrameworkException(
           "PolygonGraph::setAttributeFromRasterValueAtCentroid", s.str());
     }
 
@@ -508,8 +507,7 @@ void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
       break;
     default:
       delete Out;
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework",
+      throw openfluid::base::FrameworkException(
           "LandRGraph::exportToShp",
           "Unable to export graph as a shapefile : is not POLYGON nor LINESTRING typed");
       break;
@@ -531,8 +529,8 @@ void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
     {
       delete Out;
 
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "LandRGraph::exportToShp",
+      throw openfluid::base::FrameworkException(
+          "LandRGraph::exportToShp",
           "Failed to transform geometry from GEOS to OGR.");
     }
 
@@ -542,8 +540,8 @@ void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
     {
       delete Out;
 
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "LandRGraph::exportToShp",
+      throw openfluid::base::FrameworkException(
+          "LandRGraph::exportToShp",
           "Failed to create feature in shapefile.");
     }
 

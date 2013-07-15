@@ -189,7 +189,7 @@ BOOST_AUTO_TEST_CASE(check_wrong_construction)
   // "Attribute indataB1 doesn't exist for Unit 3 of class unitsB"
   BOOST_CHECK_THROW(
       openfluid::fluidx::AdvancedDomainDescriptor Domain(FXDesc.getDomainDescriptor()),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/wrongrelation");
@@ -197,7 +197,7 @@ BOOST_AUTO_TEST_CASE(check_wrong_construction)
   // "Unit 99 of class unitsB in "To" relation of unit 1 of class unitsA doesn't exist"
   BOOST_CHECK_THROW(
       openfluid::fluidx::AdvancedDomainDescriptor Domain(FXDesc.getDomainDescriptor()),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 }
 
 // =====================================================================
@@ -216,8 +216,8 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   U.getUnitClass() = "unitsA";
   U.getUnitID() = 1;
 
-  BOOST_CHECK_THROW(Domain.addUnit(&U), openfluid::base::OFException);
-  BOOST_CHECK_THROW(Domain.getUnit("unitsZ",1), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.addUnit(&U), openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Domain.getUnit("unitsZ",1), openfluid::base::FrameworkException);
   BOOST_CHECK(!Domain.isClassNameExists("unitsZ"));
   BOOST_CHECK_EQUAL(Domain.getIDsOfClass("unitsZ").size(), 0);
   BOOST_CHECK(Domain.getClassNames().count("unitsA"));
@@ -246,7 +246,7 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   U3.getUnitClass() = "unitsB";
   U3.getUnitID() = 999;
   U3.getUnitsParents().push_back(std::make_pair("unitsB", 555));
-  BOOST_CHECK_THROW(Domain.addUnit(&U3), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.addUnit(&U3), openfluid::base::FrameworkException);
 }
 
 // =====================================================================
@@ -271,8 +271,8 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
 
   BOOST_CHECK_EQUAL(Units->size(), 2);
   BOOST_CHECK_EQUAL(Units->begin()->second.size(), 7);
-  BOOST_CHECK_THROW(Domain.getUnit("unitsA",7), openfluid::base::OFException);
-  BOOST_CHECK_THROW(Domain.getUnit("unitsP",1), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.getUnit("unitsA",7), openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Domain.getUnit("unitsP",1), openfluid::base::FrameworkException);
   BOOST_CHECK_EQUAL(Domain.getIDsOfClass("unitsZ").size(), 0);
   BOOST_CHECK_EQUAL(Domain.getIDsOfClass("unitsA").size(), 7);
   BOOST_CHECK(Domain.isClassNameExists("unitsA"));
@@ -322,7 +322,7 @@ BOOST_AUTO_TEST_CASE(check_deleteUnit)
     Domain.deleteUnit("unitsB", *it);
   for (std::set<int>::iterator it = IDs.begin(); it != IDs.end(); ++it)
     BOOST_CHECK_THROW(Domain.getUnit("unitsB",*it),
-                      openfluid::base::OFException);
+                      openfluid::base::FrameworkException);
   BOOST_CHECK_EQUAL(Domain.getIDsOfClass("unitsB").size(), 0);
   BOOST_CHECK(!Domain.isClassNameExists("unitsB"));
   BOOST_CHECK_EQUAL(Domain.getAttributesNames("unitsB").size(), 0);
@@ -415,7 +415,7 @@ BOOST_AUTO_TEST_CASE(check_add_replace_getAttr)
       FXDesc.getDomainDescriptor());
 
   BOOST_CHECK_THROW(Domain.addAttribute("unitsZ", "IData", "123"),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   BOOST_CHECK_EQUAL(Domain.getAttributesNames("unitsA").size(), 1);
   BOOST_CHECK(!Domain.getAttributesNames("unitsA").count("NewData"));
@@ -461,7 +461,7 @@ BOOST_AUTO_TEST_CASE(check_add_replace_getAttr)
   BOOST_CHECK_EQUAL(*Domain.getUnit("unitsA",7).Attributes.at("NewData"), "456");
 
   BOOST_CHECK_THROW(Domain.getAttribute("unitsZ",1, "NewData"),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Domain.getAttribute("unitsA", 7, "NewData") = "789";
 
@@ -509,7 +509,7 @@ BOOST_AUTO_TEST_CASE(check_renameAttrs)
 
   BOOST_CHECK_EQUAL(Domain.getAttribute("unitsA",7, "indataA"), "1.1");
   BOOST_CHECK_THROW(Domain.getAttribute("unitsA",7, "NewData"),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK(Domain.getAttributesNames("unitsA").count("indataA"));
   BOOST_CHECK(!Domain.getAttributesNames("unitsA").count("NewData"));
 
@@ -517,7 +517,7 @@ BOOST_AUTO_TEST_CASE(check_renameAttrs)
 
   BOOST_CHECK_EQUAL(Domain.getAttribute("unitsA",7, "NewData"), "1.1");
   BOOST_CHECK_THROW(Domain.getAttribute("unitsA",7, "indataA"),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK(!Domain.getAttributesNames("unitsA").count("indataA"));
   BOOST_CHECK(Domain.getAttributesNames("unitsA").count("NewData"));
 
@@ -543,9 +543,9 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   openfluid::core::UnitClassID_t Z2 = std::make_pair("wrongUnit", 2);
 
   BOOST_CHECK_THROW(Domain.addFromToRelation(B11, Z2),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK_THROW(Domain.addFromToRelation(Z2, B11),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Domain.addFromToRelation(B11, A5);
 
@@ -560,9 +560,9 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK_EQUAL(std::count(A5_Froms.begin(), A5_Froms.end(),B11), 1);
 
   BOOST_CHECK_THROW(Domain.addParentChildRelation(B11, Z2),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK_THROW(Domain.addParentChildRelation(Z2, B11),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Domain.addParentChildRelation(A3, B11);
 
@@ -578,11 +578,11 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK_EQUAL(std::count(A3_Children.begin(), A3_Children.end(),B11), 1);
 
   BOOST_CHECK_THROW(Domain.removeFromToRelation(Z2, B11),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK_THROW(Domain.removeFromToRelation(B11, Z2),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK_THROW(Domain.removeFromToRelation(B11, A3),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Domain.removeFromToRelation(A3, B11);
 
@@ -594,11 +594,11 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations)
   BOOST_CHECK(A3_Tos.empty());
 
   BOOST_CHECK_THROW(Domain.removeParentChildRelation(Z2, B11),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK_THROW(Domain.removeParentChildRelation(B11, Z2),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK_THROW(Domain.removeParentChildRelation(A3, P1),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Domain.removeParentChildRelation(P1, A3);
 
@@ -694,9 +694,9 @@ BOOST_AUTO_TEST_CASE(check_clearDomain)
   BOOST_CHECK(Domain.getClassNames().empty());
   BOOST_CHECK(Domain.getIDsOfClass("unitsA").empty());
   BOOST_CHECK(Domain.getAttributesNames("unitsA").empty());
-  BOOST_CHECK_THROW(Domain.getUnit("unitsA",1), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Domain.getUnit("unitsA",1), openfluid::base::FrameworkException);
   BOOST_CHECK_THROW(Domain.getUnitDescriptor("unitsA",1),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK_THROW(Domain.getAttribute("unitsA",1,"indataA"),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 }

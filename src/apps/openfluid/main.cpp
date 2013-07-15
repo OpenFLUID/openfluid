@@ -74,9 +74,9 @@ int main(int argc, char **argv)
     App.processOptions(argc,argv);
     App.run();
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::Exception& E)
   {
-    ReturnValue = App.stopAppReturn("ERROR: " + std::string(E.what()));
+    ReturnValue = App.stopAppReturn("OpenFLUID ERROR: " + std::string(E.what()));
   }
   catch (std::bad_alloc& E)
   {

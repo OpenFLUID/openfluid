@@ -644,11 +644,11 @@ BOOST_AUTO_TEST_CASE(check_error_handling_while_reading)
 
   BOOST_REQUIRE_THROW(
       openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+ "/OPENFLUID.IN.FluidXDescriptor/wrong-unknowndatatype").string()),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 
   BOOST_REQUIRE_THROW(
       openfluid::fluidx::FluidXDescriptor(new openfluid::base::IOListener()).loadFromDirectory( boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+ "/OPENFLUID.IN.FluidXDescriptor/wrong-missingdataid").string()),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 
 }
 

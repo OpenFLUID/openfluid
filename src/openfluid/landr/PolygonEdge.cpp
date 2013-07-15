@@ -55,7 +55,7 @@
 #include "PolygonEdge.hpp"
 
 #include <openfluid/landr/PolygonEntity.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
 #include <geos/planargraph/DirectedEdge.h>
@@ -97,7 +97,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
     s << "Can not add Polygon " << NewFace.getSelfId()
       << " as neighbour of this edge, because it doesn't contain edge line.";
 
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "PolygonEdge::addNeighbour", s.str());
 
     return;
@@ -109,7 +109,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
     s << "Can not add Polygon " << NewFace.getSelfId()
       << " as neighbour of this edge, which has already two neighbours.";
 
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "PolygonEdge::addNeighbour", s.str());
     return;
   }

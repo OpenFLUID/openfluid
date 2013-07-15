@@ -63,7 +63,7 @@
 #include <openfluid/buddies/ExamplesBuddy.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/config.hpp>
 
@@ -142,7 +142,7 @@ std::string BuilderOpenDemosDialog::show()
   {
     mp_Buddy->run();
   }
-  catch (openfluid::base::OFException& e)
+  catch (openfluid::base::FrameworkException& e)
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
         _("No example project to install"));

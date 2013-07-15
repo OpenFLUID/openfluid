@@ -125,7 +125,7 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
   // =====================================================================
 
 
-  void initParams(const openfluid::ware::WareParams_t& Params)
+  void initParams(const openfluid::ware::WareParams_t& /*Params*/)
   {  }
 
   // =====================================================================

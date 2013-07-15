@@ -212,9 +212,9 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
       {
         ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
       }
-      catch (openfluid::base::OFException& E)
+      catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+        OPENFLUID_RaiseError(E.getMessage());
       }
 
       m_TryOpenGNUplot = ParamsPT.get<bool>("tryopengnuplot",m_TryOpenGNUplot);
@@ -224,10 +224,10 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
 
       if (!ParamsPT.get_child_optional("serie"))
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No serie defined");
+        OPENFLUID_RaiseError("No serie defined");
 
       if (!ParamsPT.get_child_optional("graph"))
-              OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No graph defined");
+              OPENFLUID_RaiseError("No graph defined");
 
 
       BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("serie"))
@@ -258,7 +258,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           SInfo.Type = SerieInfo::SERIE_FILE;
 
         if (SInfo.Type!=SerieInfo::SERIE_UNKNOWN) m_Series[SerieID] = SInfo;
-        else OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"GNUplotObserver::initParams()","Serie " + SerieID + "ignored");
+        else OPENFLUID_RaiseWarning("Serie " + SerieID + "ignored");
 
       }
 
@@ -284,7 +284,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
          if (!GInfo.Series.empty())
            m_Graphs[v.first] = GInfo;
          else
-           OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"GNUplotObserver::initParams()","Graph " + v.first + "ignored");
+           OPENFLUID_RaiseWarning("Graph " + v.first + "ignored");
       }
     }
 
@@ -418,8 +418,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
         }
         else
         {
-          OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"GNUplotObserver::tryOpenGNUplot()",
-                                 "Cannot find GNUplot");
+          OPENFLUID_RaiseWarning("Cannot find GNUplot");
           return;
         }
       }

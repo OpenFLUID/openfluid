@@ -60,7 +60,7 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 
 // =====================================================================
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongDir)
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
                                                  "WrongDir");
 
-  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
                                                  "GeoVectorValue/wrongfile");
 
-  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile_NoExtension)
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
                                                  "GeoVectorValue/SU");
 
-  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFileExtension)
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
                                                  "GeoVectorValue/SU.aaa");
 
-  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
@@ -253,7 +253,7 @@ BOOST_AUTO_TEST_CASE(check_get_WrongDir)
   GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
                                                  "WrongDir");
 
-  BOOST_CHECK_THROW(Val->get(), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->get(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 

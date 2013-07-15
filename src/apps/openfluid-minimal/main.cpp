@@ -57,6 +57,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/Init.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
@@ -81,7 +82,7 @@ int main(int argc, char **argv)
       PlugsDir = std::string(argv[3]);
     }
     else
-      throw openfluid::base::OFException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdirs>");
+      throw openfluid::base::ApplicationException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdirs>");
 
 
     openfluid::base::Init();
@@ -130,7 +131,7 @@ int main(int argc, char **argv)
 
     return 0;
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::Exception& E)
   {
     std::cerr << "ERROR: " + std::string(E.what()) << std::endl;
   }

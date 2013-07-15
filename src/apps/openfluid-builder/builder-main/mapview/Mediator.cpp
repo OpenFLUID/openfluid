@@ -197,7 +197,7 @@ Layer* Mediator::tryToCreateALayerFromADatastoreItem(
     ALayer
         = new Layer(Type, Item.getValue(), Item.getID(), Item.getUnitClass());
   }
-  catch (openfluid::base::OFException& e)
+  catch (openfluid::base::Exception& e)
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
         Glib::ustring::compose("%1: %2", Item.getID(), e.what()));
@@ -509,7 +509,7 @@ void Mediator::whenInfoAsked()
     {
       mp_Domain->getUnit(m_SelectedClassName, *it);
     }
-    catch(openfluid::base::OFException& e)
+    catch(openfluid::base::Exception& e)
     {
       UnavailableIds.insert(*it);
       AvailableIds.erase(*it);

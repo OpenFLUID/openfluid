@@ -55,7 +55,7 @@
 
 
 #include <openfluid/base/SimulationStatus.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace base {
@@ -85,13 +85,13 @@ SimulationStatus::SimulationStatus(const openfluid::core::DateTime& Begin,
 void SimulationStatus::setCurrentTimeIndex(const openfluid::core::TimeIndex_t& Index)
 {
   if (m_CurrentStage != RUNSTEP)
-    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index is allowed during RUNSTEP stage only");
+    throw FrameworkException("SimulationStatus::setCurrentTimeIndex()","Setting a time index is allowed during RUNSTEP stage only");
 
   if (Index > m_Duration)
-    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index greater than simulation duration is not allowed");
+    throw FrameworkException("SimulationStatus::setCurrentTimeIndex()","Setting a time index greater than simulation duration is not allowed");
 
   if (Index < m_CurrentTimeIndex)
-    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentTimeIndex()","Setting a time index lesser than current time index is not allowed");
+    throw FrameworkException("SimulationStatus::setCurrentTimeIndex()","Setting a time index lesser than current time index is not allowed");
 
   m_CurrentTimeIndex = Index;
   m_CurrentDate = m_BeginDate+m_CurrentTimeIndex;
@@ -105,7 +105,7 @@ void SimulationStatus::setCurrentTimeIndex(const openfluid::core::TimeIndex_t& I
 void SimulationStatus::setCurrentStage(const SimulationStage& Stage)
 {
   if (Stage < m_CurrentStage)
-    throw OFException("OpenFLUID framework","SimulationStatus::setCurrentStage()","Setting a simulation stage previous to the current stage is not allowed");
+    throw FrameworkException("SimulationStatus::setCurrentStage()","Setting a simulation stage previous to the current stage is not allowed");
 
   m_CurrentStage = Stage;
 }

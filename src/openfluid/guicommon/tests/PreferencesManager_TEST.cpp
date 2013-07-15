@@ -63,7 +63,7 @@
 #include <openfluid/config.hpp>
 #include <boost/filesystem.hpp>
 #include "tests-config.hpp"
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
 // =====================================================================
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(test_SetFileName)
   boost::filesystem::path ConfigPath = boost::filesystem::path(
       CONFIGTESTS_OUTPUT_DATA_DIR) /= openfluid::config::DEFAULT_CONFIGFILE;
 
-  BOOST_CHECK_THROW(openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string()),openfluid::base::OFException);
+  BOOST_CHECK_THROW(openfluid::guicommon::PreferencesManager::setFileName(ConfigPath.string()),openfluid::base::FrameworkException);
 
   BOOST_CHECK_EQUAL(PrefMgr->getFileName(),openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile());
 

@@ -93,8 +93,7 @@ void AdvancedMonitoringDescriptor::checkMonitoring() const
   {
     std::string ID = (*it)->getID();
     if (!UniqueIDs.insert(ID).second)
-      throw openfluid::base::OFException(
-          "OpenFLUID-Framework",
+      throw openfluid::base::FrameworkException(
           "AdvancedMonitoringDescriptor::checkMonitoring",
           "The observer with ID \"" + ID + "\" is duplicate");
   }
@@ -122,8 +121,8 @@ openfluid::fluidx::ObserverDescriptor& AdvancedMonitoringDescriptor::getDescript
       return **it;
   }
 
-  throw openfluid::base::OFException(
-      "OpenFLUID Framework", "AdvancedMonitoringDescriptor::getDescriptor",
+  throw openfluid::base::FrameworkException(
+      "AdvancedMonitoringDescriptor::getDescriptor",
       "Observer " + ObserverID + " is not in Observer list");
 }
 

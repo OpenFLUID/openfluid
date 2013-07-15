@@ -163,7 +163,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
       "inserted.item", "", "inserted.tif",
       openfluid::core::UnstructuredValue::GeoRasterValue);
 
-  BOOST_CHECK_THROW(DS.insertItem(&InsItem, 6), openfluid::base::OFException);
+  BOOST_CHECK_THROW(DS.insertItem(&InsItem, 6), openfluid::base::FrameworkException);
 
   DS.insertItem(&InsItem, 3);
 
@@ -183,8 +183,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_CHECK_EQUAL((*(++it))->getID(), "appended.item");
 
   // moveItem
-  BOOST_CHECK_THROW(DS.moveItem(2, 7), openfluid::base::OFException);
-  BOOST_CHECK_THROW(DS.moveItem(7, 2), openfluid::base::OFException);
+  BOOST_CHECK_THROW(DS.moveItem(2, 7), openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(DS.moveItem(7, 2), openfluid::base::FrameworkException);
 
   DS.moveItem(5, 2);
 
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   //removeItem
 
-  BOOST_CHECK_THROW(DS.removeItem(7), openfluid::base::OFException);
+  BOOST_CHECK_THROW(DS.removeItem(7), openfluid::base::FrameworkException);
 
   DS.removeItem(4);
 

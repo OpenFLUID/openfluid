@@ -45,137 +45,55 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  @file
+  \file FrameworkException.hpp
+  \brief Header of ...
 
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-#ifndef __OFEXCEPTION_HPP__
-#define __OFEXCEPTION_HPP__
+#ifndef __APPLICATIONEXCEPTION_HPP__
+#define __APPLICATIONEXCEPTION_HPP__
 
-#include <exception>
-#include <string>
-#include <sstream>
-
+#include <openfluid/base/Exception.hpp>
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace base {
 
 
-class DLLEXPORT OFException : public std::exception
+class DLLEXPORT ApplicationException : public Exception
 {
-  private:
-      std::string m_FullMsg;
-      int m_TimeStep;
-      std::string m_Sender;
-      std::string m_Source;
-      std::string m_Msg;
+  protected:
 
-      void initValues()
-      {
-        m_Sender = "";
-        m_Source = "";
-        m_Msg = "";
-        m_TimeStep = -1;
-      }
+    void buildFullMessage()
+    {
+      m_FullMessage = m_Message;
+      m_FullMessage += " (sent by " + m_Sender + " application";
+      if (m_Source != "")
+        m_FullMessage += ", from " + m_Source;
+      m_FullMessage += ")";
+    }
 
-      void buildFullMsg()
-      {
-        m_FullMsg = "";
-        if (m_Msg != "")
-        {
-          m_FullMsg = m_Msg;
-          if (m_Sender != "" )
-          {
-            m_FullMsg = m_FullMsg + " (sent by " + m_Sender;
-
-            if (m_Source != "")
-            {
-              m_FullMsg = m_FullMsg + ", from " + m_Source;
-            }
-
-            if (m_TimeStep >= 0)
-            {
-              std::stringstream StrStream;
-              StrStream << m_TimeStep;
-
-              m_FullMsg = m_FullMsg + ", at time index #" + StrStream.str();
-            }
-
-            m_FullMsg = m_FullMsg + ")";
-          }
-        }
-      }
 
   public:
-    OFException(const char * Msg)
+
+    ApplicationException(const std::string& AppName, const std::string& Msg) :
+      Exception(AppName,Msg)
     {
-      initValues();
-      m_Msg = std::string(Msg);
-      buildFullMsg();
+      buildFullMessage();
     }
 
-    OFException(std::string Msg)
+    ApplicationException(const std::string& AppName, const std::string& Source, const std::string& Msg) :
+      Exception(AppName,Source,Msg)
     {
-      initValues();
-      m_Msg = Msg;
-      buildFullMsg();
+      buildFullMessage();
     }
-
-    OFException(std::string Sender, std::string Msg)
-    {
-      initValues();
-      m_Msg = Msg;
-      m_Sender = Sender;
-      buildFullMsg();
-    }
-
-    OFException(std::string Sender, int TimeStep, std::string Msg)
-    {
-      initValues();
-      m_Msg = Msg;
-      m_Sender = Sender;
-      m_TimeStep = TimeStep;
-      buildFullMsg();
-    }
-
-    OFException(std::string Sender, std::string Source, int TimeStep, std::string Msg)
-    {
-      initValues();
-      m_Msg = Msg;
-      m_Sender = Sender;
-      m_Source = Source;
-      m_TimeStep = TimeStep;
-      buildFullMsg();
-    }
-
-    OFException(std::string Sender, std::string Source, std::string Msg)
-    {
-      initValues();
-      m_Msg = Msg;
-      m_Sender = Sender;
-      m_Source = Source;
-      buildFullMsg();
-    }
-
-
-    virtual ~OFException() throw()
-    {
-
-    }
-
-    virtual const char * what() const throw()
-    {
-      return this->m_FullMsg.c_str();
-    }
-
 
 };
 
 
-} } // namespace
+} } // namespaces
 
-#endif
+#endif /* __FRAMEWORKEXCEPTION_HPP__ */

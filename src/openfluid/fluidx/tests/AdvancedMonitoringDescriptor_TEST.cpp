@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
 
   BOOST_CHECK_THROW(
       openfluid::fluidx::AdvancedMonitoringDescriptor(FXDesc.getMonitoringDescriptor()),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 }
 
 // =====================================================================
@@ -114,13 +114,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
       "export.spatial-graph.files.dot");
 
   BOOST_CHECK_THROW(Monit.removeFromObserverList("dummy"),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Monit.removeFromObserverList("export.vars.files.csv");
 
   BOOST_CHECK_EQUAL(Monit.getItems().size(), 1);
   BOOST_CHECK_THROW(Monit.getDescriptor("export.vars.files.csv"),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
   BOOST_CHECK_EQUAL(
       Monit.getDescriptor("export.spatial-graph.files.dot").getID(),
       "export.spatial-graph.files.dot");

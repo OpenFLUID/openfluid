@@ -130,8 +130,7 @@ void SimulatorSignatureRegistry::addAPluggableSignature(
         Signature;
   }
   else
-    throw openfluid::base::OFException(
-        "OpenFLUID Builder",
+    throw openfluid::base::FrameworkException(
         "SimulatorSignatureRegistry::addAPluggableSignature",
         "trying to register a PluggableSignature with no SimulatorSignature instancied");
 }
@@ -150,8 +149,7 @@ void SimulatorSignatureRegistry::addAGeneratorSignature(
         Signature;
   }
   else
-    throw openfluid::base::OFException(
-        "OpenFLUID Builder",
+    throw openfluid::base::FrameworkException(
         "SimulatorSignatureRegistry::addAGeneratorSignature",
         "trying to register a GeneratorSignature with no SimulatorSignature instancied");
 }

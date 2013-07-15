@@ -249,7 +249,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
           KmlFile << "    <Style id=\"" << TmpStyleID << "_plotted\"><LineStyle><color>"<< (*it).PlottedColor << "</color><width>" << (*it).LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
         }
         else
-          OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"KmlFilesPlotObserver::writeKmlFile",
+          OPENFLUID_RaiseError("KmlFilesPlotObserver::writeKmlFile",
                                "Unsupported geometry format in source geometry file");
 
         KmlFile << "    <Folder>\n";
@@ -296,7 +296,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
             KmlFile << "<LineString><tessellate>1</tessellate><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LineString>\n";
           }
           else
-            OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"KmlFilesAnimObserver::writeKmlFile",
+            OPENFLUID_RaiseError("KmlFilesAnimObserver::writeKmlFile",
                                  "Unsupported geometry format in source geometry file");
 
 
@@ -361,9 +361,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
       {
         ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
       }
-      catch (openfluid::base::OFException& E)
+      catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+        OPENFLUID_RaiseError(E.getMessage());
       }
 
 
@@ -380,7 +380,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
 
       if (!ParamsPT.get_child_optional("layers"))
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No layers defined");
+        OPENFLUID_RaiseError("No layers defined");
 
 
       BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("layers"))
@@ -408,8 +408,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
           KSI.SourceFilename = ParamsPT.get("layers."+LayerID+".sourcefile","");
           if (KSI.SourceFilename.empty())
           {
-            OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlFilesPlotObserver::initParams()",
-                                   "wrong sourcefile format");
+            OPENFLUID_RaiseWarning("wrong sourcefile format");
             return;
           }
           KSI.SourceFilename = m_InputDir + "/" + KSI.SourceFilename;
@@ -453,8 +452,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       if (PlotProgram.empty())
       {
-        OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.kml-plot","ExportKmlPlotFunction::initializeRun()",
-                    "Unsupported system platform");
+        OPENFLUID_RaiseWarning("Unsupported system platform");
         m_OKToGo = false;
         return;
       }
@@ -467,8 +465,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
       }
       else
       {
-        OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.kml-plot","ExportKmlPlotFunction::initializeRun()",
-            "Required Plot program ("+ PlotProgram +") not found");
+        OPENFLUID_RaiseWarning("Required Plot program ("+ PlotProgram +") not found");
         m_OKToGo = false;
         return;
       }
@@ -491,8 +488,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir+"/"+m_GNUPlotSubDir)))
       {
-        OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.kml-plot","ExportKmlPlotFunction::initializeRun()",
-            "Cannot initialize gnuplot temporary directory");
+        OPENFLUID_RaiseWarning("Cannot initialize gnuplot temporary directory");
         m_OKToGo = false;
         return;
       }

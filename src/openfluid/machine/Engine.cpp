@@ -127,7 +127,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + SimulatorID);
+  else throw openfluid::base::FrameworkException("Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + SimulatorID);
 
   bool Status = true;
 
@@ -140,7 +140,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
       Status = (*UnitIter).getVariables()->isTypedVariableExist(VarName,VarType);
 
     if (!Status)
-      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + SimulatorID + " does not exist");
+      throw openfluid::base::FrameworkException("Engine::checkExistingVariable",VarName + " variable on " + ClassName + " required by " + SimulatorID + " does not exist");
 
     ++UnitIter;
   }
@@ -163,7 +163,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + SimulatorID);
+  else throw openfluid::base::FrameworkException("Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + SimulatorID);
 
   bool Status = true;
 
@@ -176,7 +176,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
        Status = !((*UnitIter).getVariables()->isVariableExist(VarName));
 
       if (!Status)
-        throw openfluid::base::OFException("OpenFLUID framework","Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + SimulatorID + " cannot be created because it is already created");
+        throw openfluid::base::FrameworkException("Engine::createVariable",VarName + " variable on " + ClassName + " produced by " + SimulatorID + " cannot be created because it is already created");
 
       ++UnitIter;
     }
@@ -203,7 +203,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingAttribute","Unit " + ClassName + " class does not exist for " + AttrName + " attribute required by " + SimulatorID);
+  else throw openfluid::base::FrameworkException("Engine::checkExistingAttribute","Unit " + ClassName + " class does not exist for " + AttrName + " attribute required by " + SimulatorID);
 
   bool Status = true;
 
@@ -212,7 +212,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   {
     Status = (*UnitIter).getAttributes()->isAttributeExist(AttrName);
     if (!Status)
-      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExistingAttribute",AttrName + " attribute on " + ClassName + " required by " + SimulatorID + " is not available");
+      throw openfluid::base::FrameworkException("Engine::checkExistingAttribute",AttrName + " attribute on " + ClassName + " required by " + SimulatorID + " is not available");
 
     ++UnitIter;
   }
@@ -232,7 +232,7 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
 
   UnitList = NULL;
   if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
-  else throw openfluid::base::OFException("OpenFLUID framework","Engine::createAttribute","Unit class " + ClassName + " does not exist for " + AttrName + " attribute produced by " + SimulatorID);
+  else throw openfluid::base::FrameworkException("Engine::createAttribute","Unit class " + ClassName + " does not exist for " + AttrName + " attribute produced by " + SimulatorID);
 
 
   for(UnitIter = UnitList->begin(); UnitIter != UnitList->end(); ++UnitIter )
@@ -265,7 +265,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
     for (UnitsIter = UnitsList->begin();UnitsIter != UnitsList->end();++UnitsIter)
     {
       if (!((*UnitsIter).getVariables()->isAllVariablesCount(ExpectedVarsCount)))
-        throw openfluid::base::OFException("OpenFLUID framework","Engine::checkSimulationVarsProduction","Variable production error");
+        throw openfluid::base::FrameworkException("Engine::checkSimulationVarsProduction","Variable production error");
 
     }
 
@@ -398,7 +398,7 @@ void Engine::checkExtraFilesConsistency()
 
       boost::filesystem::path ReqExtraFilePath(mp_RunEnv->getInputFullPath(HData.RequiredExtraFiles[i]));
       if (!boost::filesystem::exists(ReqExtraFilePath))
-        throw openfluid::base::OFException("OpenFLUID framework","Engine::checkExtraFilesConsistency","File " + HData.RequiredExtraFiles[i] + " required by " + CurrentSimulator->Signature->ID + " not found");
+        throw openfluid::base::FrameworkException("Engine::checkExtraFilesConsistency","File " + HData.RequiredExtraFiles[i] + " required by " + CurrentSimulator->Signature->ID + " not found");
     }
   }
 }
@@ -418,7 +418,7 @@ void Engine::prepareOutputDir()
   {
     boost::filesystem::create_directories(OutputDirPath);
     if (!boost::filesystem::exists(OutputDirPath))
-      throw openfluid::base::OFException("OpenFLUID framework","IOManager::prepareOutputDir","Error creating output directory");
+      throw openfluid::base::FrameworkException("IOManager::prepareOutputDir","Error creating output directory");
 
   }
   else
@@ -469,7 +469,7 @@ void Engine::initParams()
     m_ModelInstance.call_initParams();
     m_MonitoringInstance.call_initParams();
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::FrameworkException& E)
   {
     mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::ERROR);
     throw;
@@ -491,7 +491,7 @@ void Engine::prepareData()
     mp_SimStatus->setCurrentStage(openfluid::base::SimulationStatus::PREPAREDATA);
     m_ModelInstance.call_prepareData();
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::FrameworkException& E)
   {
     mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::ERROR);
     throw;
@@ -509,24 +509,13 @@ void Engine::prepareData()
 void Engine::checkConsistency()
 {
 
-  // inits the buffers sizes for variables
-
-  /*if (mp_RunEnv->isUserValuesBufferSize())
-  {
-    openfluid::core::ValuesBufferProperties::setBufferSize(mp_RunEnv->getValuesBufferSize());
-  }
-  else
-  {
-    openfluid::core::ValuesBufferProperties::setBufferSize((mp_SimStatus->getSimulationDuration()/mp_SimStatus->getDefaultDeltaT())+1);
-  }*/
-
 
   // check simulators count
 
   try
   {
     if (m_ModelInstance.getItemsCount() == 0)
-      throw openfluid::base::OFException("OpenFLUID framework","Engine::checkConsistency","No simulator in model");
+      throw openfluid::base::FrameworkException("Engine::checkConsistency","No simulator in model");
 
     checkExtraFilesConsistency();
 
@@ -534,7 +523,7 @@ void Engine::checkConsistency()
 
     checkAttributesConsistency();
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::FrameworkException& E)
   {
     mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
     throw;
@@ -547,7 +536,7 @@ void Engine::checkConsistency()
     m_ModelInstance.call_checkConsistency();
     m_MonitoringInstance.call_onPrepared();
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::FrameworkException& E)
   {
     mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
     throw;
@@ -566,7 +555,6 @@ void Engine::checkConsistency()
 
 void Engine::run()
 {
-
   std::string ProdMessage;
 
   // Check for simulation vars production before init
@@ -583,7 +571,7 @@ void Engine::run()
     m_ModelInstance.call_initializeRun();
     m_MonitoringInstance.call_onInitializedRun();
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::FrameworkException& E)
   {
     mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::ERROR);
     throw;
@@ -618,7 +606,7 @@ void Engine::run()
       // TODO to remove? check simulation vars production at each time step
       //checkSimulationVarsProduction(mp_SimStatus->getCurrentStep()+1);
     }
-    catch (openfluid::base::OFException& E)
+    catch (openfluid::base::FrameworkException& E)
     {
       mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
       throw;
@@ -640,7 +628,7 @@ void Engine::run()
     m_ModelInstance.call_finalizeRun();
     m_MonitoringInstance.call_onFinalizedRun();
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::FrameworkException& E)
   {
     mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::ERROR);
     throw;

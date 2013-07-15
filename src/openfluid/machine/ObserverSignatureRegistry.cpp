@@ -94,8 +94,8 @@ const ObserverSignatureInstance& ObserverSignatureRegistry::getSignature(
       return **it;
   }
 
-  throw openfluid::base::OFException(
-      "OpenFLUID Framework", "AdvancedMonitoringDescriptor::getSignature",
+  throw openfluid::base::FrameworkException(
+      "AdvancedMonitoringDescriptor::getSignature",
       "Observer " + ObserverID + " is not available");
 }
 

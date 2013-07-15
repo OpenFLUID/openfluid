@@ -56,7 +56,7 @@
 
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid {
 namespace core {
@@ -78,7 +78,7 @@ DatastoreItem::DatastoreItem(std::string ID, std::string PrefixPath, std::string
       m_Value = new openfluid::core::GeoRasterValue(m_PrefixPath,m_RelativePath);
       break;
     default:
-      throw openfluid::base::OFException("OpenFLUID framework",
+      throw openfluid::base::FrameworkException(
           "DatastoreItem::DatastoreItem", "No value to instanciate for item type "
               + UnstructuredValue::getStringFromValueType(Type) + " in " + ID);
       break;

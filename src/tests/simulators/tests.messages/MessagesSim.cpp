@@ -145,7 +145,7 @@ void MessagesSimulator::checkConsistency()
 
 openfluid::base::SchedulingRequest MessagesSimulator::initializeRun()
 {
-  OPENFLUID_RaiseWarning("tests.messages","initializeRun()","Message from tests.messages simulator");
+  OPENFLUID_RaiseWarning("Message from tests.messages simulator");
 
   return DefaultDeltaT();
 }
@@ -172,7 +172,7 @@ openfluid::base::SchedulingRequest MessagesSimulator::runStep()
     for (i = 0; i< m_RepeatMessages; i++)
     {
       openfluid::tools::ConvertValue((i+1),&RptStr);
-      OPENFLUID_RaiseWarning("tests.messages","runStep()","["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages simulator");
+      OPENFLUID_RaiseWarning("["+TSStr+"|"+IDStr+"|"+RptStr+"] Message from tests.messages simulator");
     }
 
   }
@@ -187,6 +187,6 @@ openfluid::base::SchedulingRequest MessagesSimulator::runStep()
 void MessagesSimulator::finalizeRun()
 {
 
-  OPENFLUID_RaiseWarning("tests.messages","finalizeRun()","Message from tests.messages simulator");
+  OPENFLUID_RaiseWarning("Message from tests.messages simulator");
 }
 

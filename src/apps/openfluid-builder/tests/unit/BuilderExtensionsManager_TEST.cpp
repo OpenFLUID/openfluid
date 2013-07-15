@@ -164,8 +164,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   ExtensionContainer* WrongtypeContainer = BEM->getExtensionContainer("tests.builder.wrongtypeextension");
   BOOST_CHECK(WrongtypeContainer);
   BOOST_CHECK(!WrongtypeContainer->Extension);
-  BOOST_CHECK_THROW(WrongtypeContainer->instantiateExt(),openfluid::base::OFException);
-  BOOST_CHECK_THROW(BEM->instantiatePluggableExtension("tests.builder.wrongtypeextension"),openfluid::base::OFException);
+  BOOST_CHECK_THROW(WrongtypeContainer->instantiateExt(),openfluid::base::Exception);
+  BOOST_CHECK_THROW(BEM->instantiatePluggableExtension("tests.builder.wrongtypeextension"),openfluid::base::Exception);
   BOOST_CHECK(!WrongtypeContainer->Extension);
 
   ExtensionContainer* AssistantContainer = BEM->getExtensionContainer("tests.builder.assistant");

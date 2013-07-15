@@ -61,7 +61,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <tests-config.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>

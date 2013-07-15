@@ -59,6 +59,7 @@
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 
 #include "ICLayer.hpp"
 #include "ICLayerPoint.hpp"
@@ -106,7 +107,7 @@ Layer::Layer(LayerType::LayerTypes LayerType,
     {
       loadShapefile();
     }
-    catch (openfluid::base::OFException& e)
+    catch (openfluid::base::Exception& e)
     {
       delete mp_WidgetLayerObject;
       delete mp_ICLayer;
@@ -140,20 +141,20 @@ void Layer::loadShapefile()
   OGRDataSource* DataSource = (static_cast<openfluid::core::GeoVectorValue*>(m_Value))->get();
 
   if(DataSource->GetLayerCount() < 1)
-    throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","No layer");
+    throw openfluid::base::ApplicationException("openfluid-builder","Layer::loadShapefile","No layer");
 
   OGRLayer* Layer = DataSource->GetLayer(0);
   if (!Layer)
-    throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","Problem loading layer");
+    throw openfluid::base::ApplicationException("openfluid-builder","Layer::loadShapefile","Problem loading layer");
 
   if (Layer->GetFeatureCount() < 0)
-    throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","No feature");
+    throw openfluid::base::ApplicationException("openfluid-builder","Layer::loadShapefile","No feature");
 
   OGRFeatureDefn* FeatureDef = Layer->GetLayerDefn();
 
   int SelfIDIndex = FeatureDef->GetFieldIndex("SELF_ID");
   if(SelfIDIndex < 0)
-    throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","No SELF_ID field");
+    throw openfluid::base::ApplicationException("openfluid-builder","Layer::loadShapefile","No SELF_ID field");
 
   OGRwkbGeometryType Type = FeatureDef->GetGeomType();
   switch (Type)
@@ -171,7 +172,7 @@ void Layer::loadShapefile()
       mp_ICLayer = new ICLayerMultiPolygon();
       break;
     default:
-      throw openfluid::base::OFException("OpenFLUID MapView","Layer::loadShapefile","Unknown Geometry type");
+      throw openfluid::base::ApplicationException("openfluid-builder","Layer::loadShapefile","Unknown Geometry type");
       break;
   }
   mp_WidgetLayerObject->getWidgetObjectBase()->setOGRGeometryType(Type);

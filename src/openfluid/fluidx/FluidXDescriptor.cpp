@@ -133,8 +133,7 @@ openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(
           xmlFree(xmlValue);
         }
         else
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractParamsFromNode",
               "missing name and/or param attribute(s) in parameter definition (" + m_CurrentFile
               + ")");
@@ -168,8 +167,8 @@ openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
 void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
 {
   if (m_ModelDefined)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "FluidXDescriptor::extractModelFromNode",
+    throw openfluid::base::FrameworkException(
+        "FluidXDescriptor::extractModelFromNode",
         "Duplicate model definition (" + m_CurrentFile + ")");
 
   openfluid::fluidx::SimulatorDescriptor* FD;
@@ -220,16 +219,15 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Inject;
 
         if (GenMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
-          throw openfluid::base::OFException(
-              "OpenFLUID framework", "FluidXDescriptor::extractModelFromNode",
+          throw openfluid::base::FrameworkException(
+              "FluidXDescriptor::extractModelFromNode",
               "unknown or missing generator method (" + m_CurrentFile + ")");
 
         if (xmlVarSize != NULL)
         {
           if (!openfluid::tools::ConvertString(std::string((char*) xmlVarSize),
                                                &VarSize))
-            throw openfluid::base::OFException(
-                "OpenFLUID framework",
+            throw openfluid::base::FrameworkException(
                 "FluidXDescriptor::extractModelFromNode",
                 "wrong variable size format in generator (" + m_CurrentFile
                 + ")");
@@ -242,8 +240,7 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
         m_ModelDescriptor.appendItem(GD);
       }
       else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
+        throw openfluid::base::FrameworkException(
             "FluidXDescriptor::extractModelFromNode",
             "missing attribute(s) in generator description (" + m_CurrentFile
             + ")");
@@ -262,8 +259,8 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
 void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 {
   if (m_RunConfigDefined)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
+    throw openfluid::base::FrameworkException(
+        "FluidXDescriptor::extractRunFromNode",
         "Duplicate run configuration (" + m_CurrentFile + ")");
 
   bool FoundDeltaT = false;
@@ -287,8 +284,8 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
           m_RunDescriptor.setBeginDate(ReadDate);
         }
         else
-          throw openfluid::base::OFException(
-              "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
+          throw openfluid::base::FrameworkException(
+              "FluidXDescriptor::extractRunFromNode",
               "wrong format for begin date of period (" + m_CurrentFile + ")");
 
         if (ReadDate.setFromISOString(std::string((char*) xmlEnd)))
@@ -296,22 +293,20 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
           m_RunDescriptor.setEndDate(ReadDate);
         }
         else
-          throw openfluid::base::OFException(
-              "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
+          throw openfluid::base::FrameworkException(
+              "FluidXDescriptor::extractRunFromNode",
               "wrong format for end date of period (" + m_CurrentFile + ")");
 
         FoundPeriod = true;
 
         if (!(m_RunDescriptor.getEndDate() > m_RunDescriptor.getBeginDate()))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractRunFromNode",
               "end date must be strictly greater than begin date for period (" + m_CurrentFile
               + ")");
       }
       else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
+        throw openfluid::base::FrameworkException(
             "FluidXDescriptor::extractRunFromNode",
             "missing begin and/or end attributes for period tag (" + m_CurrentFile
             + ")");
@@ -332,8 +327,8 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
         std::string ReadDeltaTStr = std::string((const char*) xmlDeltaT);
 
         if (!openfluid::tools::ConvertString(ReadDeltaTStr, &DeltaT))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
+          throw openfluid::base::FrameworkException(
+              "FluidXDescriptor::extractRunFromNode",
               "empty or wrong value for deltat (" + m_CurrentFile + ")");
 
         m_RunDescriptor.setDeltaT(DeltaT);
@@ -350,8 +345,8 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
         else if (ReadConstraintStr == "none")
           m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_NONE);
         else
-          throw openfluid::base::OFException(
-              "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
+          throw openfluid::base::FrameworkException(
+              "FluidXDescriptor::extractRunFromNode",
               "wrong value for scheduling constraint (" + m_CurrentFile + ")");
       }
       else
@@ -371,8 +366,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 
         if (!openfluid::tools::ConvertString(std::string((char*) xmlSteps),
                                              &ReadSteps))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractRunFromNode",
               "wrong format for size attribute for valuesbuffer tag (" + m_CurrentFile
               + ")");
@@ -380,8 +374,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
         m_RunDescriptor.setValuesBufferSize(ReadSteps);
       }
       else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
+        throw openfluid::base::FrameworkException(
             "FluidXDescriptor::extractRunFromNode",
             "missing size attribute for valuesbuffer tag (" + m_CurrentFile
             + ")");
@@ -391,13 +384,13 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
   }
 
   if (!FoundPeriod)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
+    throw openfluid::base::FrameworkException(
+        "FluidXDescriptor::extractRunFromNode",
         "run period not found (" + m_CurrentFile + ")");
 
   if (!FoundDeltaT)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "FluidXDescriptor::extractRunFromNode",
+    throw openfluid::base::FrameworkException(
+        "FluidXDescriptor::extractRunFromNode",
         "deltat not found (" + m_CurrentFile + ")");
 
   m_RunConfigDefined = true;
@@ -420,15 +413,14 @@ openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
 
     if (!openfluid::tools::ConvertString(std::string((char*) xmlUnitID),
                                          &UnitID))
-      throw openfluid::base::OFException(
-          "OpenFLUID framework", "FluidXDescriptor::extractUnitsLinkFromNode",
+      throw openfluid::base::FrameworkException(
+          "FluidXDescriptor::extractUnitsLinkFromNode",
           "wrong format for ID in unit definition (" + m_CurrentFile + ")");
 
     return std::make_pair(std::string((char*) xmlUnitClass), UnitID);
   }
   else
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "FluidXDescriptor::extractUnitsLinkFromNode",
         "missing or wrong attribute(s) in units link definition (" + m_CurrentFile
         + ")");
@@ -460,15 +452,13 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
 
         if (!openfluid::tools::ConvertString(std::string((char*) xmlUnitID),
                                              &UnitID))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainDefinitionFromNode",
               "wrong format for ID in unit definition (" + m_CurrentFile + ")");
 
         if (!openfluid::tools::ConvertString(std::string((char*) xmlPcsOrd),
                                              &PcsOrder))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainDefinitionFromNode",
               "wrong format for process order in unit definition (" + m_CurrentFile
               + ")");
@@ -498,8 +488,7 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
         m_DomainDescriptor.getUnits().push_back(*UnitDesc);
       }
       else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
+        throw openfluid::base::FrameworkException(
             "FluidXDescriptor::extractDomainDefinitionFromNode",
             "missing or wrong attribute(s) in unit definition (" + m_CurrentFile
             + ")");
@@ -530,8 +519,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
                                              ";");
 
     if (ColOrder.empty())
-      throw openfluid::base::OFException(
-          "OpenFLUID framework",
+      throw openfluid::base::FrameworkException(
           "FluidXDescriptor::extractDomainAttributesFromNode",
           "wrong or empty colorder attribute in domain attributes (" + m_CurrentFile
           + ")");
@@ -543,8 +531,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
     if (xmlDataBlob != NULL)
       AttrsDesc.parseDataBlob(std::string((char*) xmlDataBlob));
     else
-      throw openfluid::base::OFException(
-          "OpenFLUID framework",
+      throw openfluid::base::FrameworkException(
           "FluidXDescriptor::extractDomainAttributesFromNode",
           "wrong or empty data content in domain attributes (" + m_CurrentFile
           + ")");
@@ -552,8 +539,7 @@ void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
     m_DomainDescriptor.getAttributes().push_back(AttrsDesc);
   }
   else
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "FluidXDescriptor::extractDomainAttributesFromNode",
         "missing or wrong unitclass attribute(s) in domain attributes (" + m_CurrentFile
         + ")");
@@ -585,16 +571,14 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
 
         if (!openfluid::tools::ConvertString(std::string((char*) xmlUnitID),
                                              &UnitID))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainCalendarFromNode",
               "wrong format for unit ID in event (" + m_CurrentFile + ")");
 
         openfluid::core::DateTime EventDate;
 
         if (!EventDate.setFromISOString(std::string((char*) xmlDate)))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainCalendarFromNode",
               "wrong format for date in event (" + m_CurrentFile + ")");
 
@@ -618,8 +602,7 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
                                         std::string((char*) xmlValue));
             }
             else
-              throw openfluid::base::OFException(
-                  "OpenFLUID framework",
+              throw openfluid::base::FrameworkException(
                   "FluidXDescriptor::extractDomainCalendarFromNode",
                   "wrong or missing attribute(s) in domain calendar event info (" + m_CurrentFile
                   + ")");
@@ -631,8 +614,7 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
         m_DomainDescriptor.getEvents().push_back(EvDesc);
       }
       else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
+        throw openfluid::base::FrameworkException(
             "FluidXDescriptor::extractDomainCalendarFromNode",
             "wrong or missing attribute(s) in domain calendar event (" + m_CurrentFile
             + ")");
@@ -693,8 +675,7 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
         if (!openfluid::tools::ConvertString(std::string((char*) xmlDataID),
                                              &DataID)
             || DataID.empty())
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDatastoreFromNode",
               "wrong format or missing data ID in datastore (" + m_CurrentFile
               + ")");
@@ -703,8 +684,7 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
 
         if (!openfluid::core::UnstructuredValue::getValueTypeFromString(
             std::string((char*) xmlDataType), DataType))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDatastoreFromNode",
               "unknown or missing datatype in dataitem definition (" + m_CurrentFile
               + ")");
@@ -718,15 +698,13 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
           Item->setUnitClass(std::string((char*) xmlDataClass));
 
         if (!m_DatastoreDescriptor.appendItem(Item))
-          throw openfluid::base::OFException(
-              "OpenFLUID framework",
+          throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDatastoreFromNode",
               "already existing dataitem ID: " + DataID + " (" + m_CurrentFile
               + ")");
       }
       else
-        throw openfluid::base::OFException(
-            "OpenFLUID framework",
+        throw openfluid::base::FrameworkException(
             "FluidXDescriptor::extractDatastoreFromNode",
             "missing or wrong attribute(s) in dataitem definition (" + m_CurrentFile
             + ")");
@@ -792,15 +770,15 @@ void FluidXDescriptor::parseFile(std::string Filename)
     }
     else
     {
-      throw openfluid::base::OFException("OpenFLUID framework",
+      throw openfluid::base::FrameworkException(
                                          "FluidXDescriptor::parseFile",
                                          "file " + m_CurrentFile + " is empty");
     }
   }
   else
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "FluidXDescriptor::parseFile",
+    throw openfluid::base::FrameworkException(
+        "FluidXDescriptor::parseFile",
         "file " + m_CurrentFile + " cannot be parsed");
   }
 
@@ -815,16 +793,16 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
     mp_Listener = new openfluid::base::IOListener();
 
   if (!boost::filesystem::is_directory(boost::filesystem::path(DirPath)))
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "FluidXDescriptor::loadFromDirectory",
+    throw openfluid::base::FrameworkException(
+        "FluidXDescriptor::loadFromDirectory",
         "directory " + DirPath + " does not exist");
 
   std::vector<std::string> FluidXFilesToLoad = openfluid::tools::GetFilesByExt(
       DirPath, "fluidx", true);
 
   if (FluidXFilesToLoad.size() == 0)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "FluidXDescriptor::loadFromDirectory",
+    throw openfluid::base::FrameworkException(
+        "FluidXDescriptor::loadFromDirectory",
         "no fluidx file found in directory " + DirPath);
 
   std::sort(FluidXFilesToLoad.begin(), FluidXFilesToLoad.end());
@@ -1360,7 +1338,7 @@ void FluidXDescriptor::prepareFluidXDir(std::string DirPath)
   {
     boost::filesystem::create_directory(OutputDirPath);
     if (!boost::filesystem::exists(OutputDirPath))
-      throw openfluid::base::OFException("OpenFLUID framework",
+      throw openfluid::base::FrameworkException(
                                          "FluidXDescriptor::prepareOutputDir",
                                          "Error creating output directory");
   }

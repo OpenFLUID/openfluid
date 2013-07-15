@@ -86,14 +86,14 @@ RandomGenerator::~RandomGenerator()
 void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
   if (!OPENFLUID_GetSimulatorParameter(Params,"min",m_Min))
-    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing min value for generator");
+    throw openfluid::base::FrameworkException("RandomGenerator::initParams","missing min value for generator");
 
   if (!OPENFLUID_GetSimulatorParameter(Params,"max",m_Max))
-    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing max value for generator");
+    throw openfluid::base::FrameworkException("RandomGenerator::initParams","missing max value for generator");
 
   std::string DeltaTStr;
   if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) && !openfluid::tools::ConvertString(DeltaTStr,&m_DeltaT))
-    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","wrong value for deltat");
+    throw openfluid::base::FrameworkException("RandomGenerator::initParams","wrong value for deltat");
 };
 
 
@@ -104,7 +104,7 @@ void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 void RandomGenerator::checkConsistency()
 {
   if ( m_Min > m_Max)
-    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
+    throw openfluid::base::FrameworkException("FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
 }
 
 

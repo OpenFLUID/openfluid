@@ -277,17 +277,17 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
       {
         ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
       }
-      catch (openfluid::base::OFException& E)
+      catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+        OPENFLUID_RaiseError(E.getMessage());
       }
 
 
       if (!ParamsPT.get_child_optional("format"))
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No format defined");
+        OPENFLUID_RaiseError("No format defined");
 
       if (!ParamsPT.get_child_optional("set"))
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No set defined");
+        OPENFLUID_RaiseError("No set defined");
 
 
       BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("format"))
@@ -306,7 +306,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
         std::string SetName = v.first;
         m_Sets[SetName].UnitClass = ParamsPT.get("set."+SetName+".unitclass","");
         if (m_Sets[SetName].UnitClass == "")
-          OPENFLUID_RaiseError("export.vars.files.csv","initParams()","Unit class of set "+SetName+" is undefined");
+          OPENFLUID_RaiseError("Unit class of set "+SetName+" is undefined");
 
 
         m_Sets[SetName].UnitsIDsStr = ParamsPT.get("set."+SetName+".unitsIDs","*");
@@ -314,7 +314,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
 
         std::string FormatName = ParamsPT.get("set."+SetName+".format","");
         if (m_Formats.find(FormatName) == m_Formats.end())
-          OPENFLUID_RaiseError("export.vars.files.csv","initParams()","Format "+FormatName+" used by "+ SetName+" is undefined");
+          OPENFLUID_RaiseError("Format "+FormatName+" used by "+ SetName+" is undefined");
         else
           m_Sets[SetName].Format = &(m_Formats[FormatName]);
       }
@@ -366,7 +366,7 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
                  VarArray.push_back(TmpVarArray[i]);
               }
               else
-                OPENFLUID_RaiseWarning("export.vars.files.csv","onPrepared()","Variable "+TmpVarArray[i]+" for unit class "+(*SetIt).second.UnitClass+" does not exist. Ignored.");
+                OPENFLUID_RaiseWarning("Variable "+TmpVarArray[i]+" for unit class "+(*SetIt).second.UnitClass+" does not exist. Ignored.");
             }
 
           }
@@ -413,13 +413,13 @@ class CSVFilesObserver : public openfluid::ware::PluggableObserver
                   }
                 }
                 else
-                  OPENFLUID_RaiseWarning("export.vars.files.csv","onPrepared()","Unit #"+UIDArray[i]+" does not exist in class "+(*SetIt).second.UnitClass+". Ignored.");
+                  OPENFLUID_RaiseWarning("Unit #"+UIDArray[i]+" does not exist in class "+(*SetIt).second.UnitClass+". Ignored.");
               }
             }
           }
         }
         else
-          OPENFLUID_RaiseWarning("export.vars.files.csv","onPrepared()","Unit class "+(*SetIt).second.UnitClass+" does not exist. Ignored.");
+          OPENFLUID_RaiseWarning("Unit class "+(*SetIt).second.UnitClass+" does not exist. Ignored.");
 
       }
 
