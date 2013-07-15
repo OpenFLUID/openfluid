@@ -120,7 +120,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
       {
         std::ostringstream UnitStr;
         UnitStr << FromUnit->getClass() << "#" << FromUnit->getID();
-        throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildGraphFromDescriptor","Target -to- unit referenced by " + UnitStr.str() + " does not exist" );
+        throw openfluid::base::FrameworkException("DomainFactory::buildGraphFromDescriptor","Target -to- unit referenced by " + UnitStr.str() + " does not exist" );
       }
     }
   }
@@ -144,7 +144,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
       {
         std::ostringstream UnitStr;
         UnitStr << ChildUnit->getClass() << "#" << ChildUnit->getID();
-        throw openfluid::base::OFException("OpenFLUID framework","DomainFactory::buildGraphFromDescriptor","Target -parent- unit referenced by " + UnitStr.str() + " does not exist" );
+        throw openfluid::base::FrameworkException("DomainFactory::buildGraphFromDescriptor","Target -parent- unit referenced by " + UnitStr.str() + " does not exist" );
       }
     }
   }
@@ -236,13 +236,13 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
 
   if (ModelDesc.getItems().empty())
-    throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","No simulator in model");
+    throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","No simulator in model");
 
 
   for (it=ModelDesc.getItems().begin();it!=ModelDesc.getItems().end();++it)
   {
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
-      throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown model item type");
+      throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","unknown model item type");
 
     if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
     {
@@ -296,7 +296,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
       }
 
       if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
-        throw openfluid::base::OFException("OpenFLUID framework","ModelFactory::buildInstanceFromDescriptor","unknown generator type");
+        throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","unknown generator type");
 
       IInstance->Body = NULL;
       IInstance->Signature = Signature;
@@ -339,7 +339,7 @@ void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::Monitorin
 void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor& RunDesc)
 {
   if (!RunDesc.isFilled())
-    throw openfluid::base::OFException("OpenFLUID framework","Factory::fillRunEnvironmentFromDescriptor","Wrong or undefined run configuration");
+    throw openfluid::base::FrameworkException("Factory::fillRunEnvironmentFromDescriptor","Wrong or undefined run configuration");
 
 
   openfluid::base::RuntimeEnvironment::getInstance()->setSimulationTimeInformation(RunDesc.getBeginDate(),RunDesc.getEndDate(),

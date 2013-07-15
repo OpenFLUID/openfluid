@@ -77,15 +77,15 @@ MarketBinPackage::MarketBinPackage(const openfluid::ware::WareID_t& ID, const st
 void MarketBinPackage::process()
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::download()","package "+m_PackageFilename+" not initialized");
+    throw openfluid::base::FrameworkException("MarketBinPackage::download()","package "+m_PackageFilename+" not initialized");
 
 
   if (!m_Downloaded)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
+    throw openfluid::base::FrameworkException("MarketBinPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
 
 
   if (m_CMakeCommand.empty())
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","CMake command not defined");
+    throw openfluid::base::FrameworkException("MarketBinPackage::process()","CMake command not defined");
 
 
   std::string StrOut;
@@ -109,14 +109,14 @@ void MarketBinPackage::process()
     if (RetValue != 0)
     {
       appendToLogFile(StrErr);
-      throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Error uncompressing package using CMake");
+      throw openfluid::base::FrameworkException("MarketBinPackage::process()","Error uncompressing package using CMake");
 
     }
 
   }
   catch (Glib::Error& E)
   {
-    throw openfluid::base::OFException("OpenFLUID framework","MarketBinPackage::process()","Glib error uncompressing package using CMake");
+    throw openfluid::base::FrameworkException("MarketBinPackage::process()","Glib error uncompressing package using CMake");
   }
 
 }

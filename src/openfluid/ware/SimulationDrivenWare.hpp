@@ -58,22 +58,23 @@
 
 
 #include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/ware/WareException.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/dllexport.hpp>
 
 
 #define REQUIRE_SIMULATION_STAGE(stage,sender,msg) \
   if (OPENFLUID_GetCurrentStage() != (stage)) \
-    throw openfluid::base::OFException("OpenFLUID framework",sender,msg);
+    throw openfluid::base::FrameworkException(sender,msg);
 
 #define REQUIRE_SIMULATION_STAGE_GE(stage,sender,msg) \
   if (OPENFLUID_GetCurrentStage() < (stage)) \
-    throw openfluid::base::OFException("OpenFLUID framework",sender,msg);
+    throw openfluid::base::FrameworkException(sender,msg);
 
 #define REQUIRE_SIMULATION_STAGE_LE(stage,sender,msg) \
   if (OPENFLUID_GetCurrentStage() > (stage)) \
-    throw openfluid::base::OFException("OpenFLUID framework",sender,msg);
+    throw openfluid::base::FrameworkException(sender,msg);
 
 
 namespace openfluid { namespace ware {
@@ -149,33 +150,29 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation
-      @param[in] Sender the sender of the message
       @param[in] Msg the content of the message
     */
-    virtual void OPENFLUID_RaiseWarning(std::string Sender, std::string Msg);
+    virtual void OPENFLUID_RaiseWarning(const std::string& Msg);
 
     /**
       Raises a time-marked warning message to the kernel. This do not stops the simulation
-      @param[in] Sender the sender of the message
       @param[in] Source the source of the message
       @param[in] Msg the content of the message
     */
-    virtual void OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg);
+    virtual void OPENFLUID_RaiseWarning(const std::string& Source, const std::string& Msg);
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
-      @param[in] Sender the sender of the message
       @param[in] Msg the content of the message
     */
-    virtual void OPENFLUID_RaiseError(std::string Sender, std::string Msg);
+    virtual void OPENFLUID_RaiseError(const std::string& Msg);
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
-      @param[in] Sender the sender of the message
-      @param[in] Source of the message (location in the sender)
+      @param[in] Source the source of the message
       @param[in] Msg the content of the message
     */
-    virtual void OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg);
+    virtual void OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg);
 
 
     SimulationDrivenWare(WareType WType) : PluggableWare(WType),

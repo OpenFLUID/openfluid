@@ -60,7 +60,7 @@
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid {
 namespace guicommon {
@@ -202,7 +202,7 @@ void PreferencesManager::setFileName(Glib::ustring AbsoluteFileName)
   if (!mp_Instance)
     m_FileName = AbsoluteFileName;
   else
-    throw openfluid::base::OFException("OpenFLUID Builder",
+    throw openfluid::base::FrameworkException(
         "PreferencesManager::setFileName",
         "FileName can not be changed after PreferencesManager instanciation");
 }

@@ -295,7 +295,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
       DataSource = OGRSFDriverRegistrar::Open(VtkSerie.VectorSourceFilename.c_str(), FALSE );
       if( DataSource == NULL )
       {
-        OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.vtk","ExportVtkFunction::prepareVtkFile()",
+        OPENFLUID_RaiseWarning("ExportVtkFunction::prepareVtkFile",
             "Cannot open shapefile "+VtkSerie.VectorSourceFilename+". This Vtk output is ignored.");
         return false;
       }
@@ -306,7 +306,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
       if (Layer == NULL)
       {
-        OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.vtk","ExportVtkFunction::prepareVtkFile()",
+        OPENFLUID_RaiseWarning("ExportVtkFunction::prepareVtkFile",
             "Cannot open shapefile layer from "+VtkSerie.VectorSourceFilename+". This Vtk output is ignored.");
         return false;
       }
@@ -316,7 +316,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
       if (SelfIDFieldIndex < 0)
       {
-        OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.vtk","ExportVtkFunction::prepareVtkFile()",
+        OPENFLUID_RaiseWarning("ExportVtkFunction::prepareVtkFile",
             "Cannot find SELF_ID attribute in "+VtkSerie.VectorSourceFilename+". This Vtk output is ignored.");
         return false;
       }
@@ -346,7 +346,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
           if (Geometry->getGeometryType() != wkbPolygon && Geometry->getGeometryType() != wkbLineString)
           {
-            OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.vtk","ExportVtkFunction::prepareVtkFile()",
+            OPENFLUID_RaiseWarning("ExportVtkFunction::prepareVtkFile()",
                   "Unsupported geometry type in "+VtkSerie.VectorSourceFilename+". This Vtk output is ignored.");
             return false;
           }
@@ -538,7 +538,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
         }
         else
         {
-          OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.vtk","ExportVtkFunction::prepareVtkFile()",
+          OPENFLUID_RaiseWarning("ExportVtkFunction::prepareVtkFile()",
                 "Wrong geometry reference in "+VtkSerie.VectorSourceFilename+". This Vtk output is ignored.");
           return false;
         }
@@ -613,9 +613,9 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
       {
         ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
       }
-      catch (openfluid::base::OFException& E)
+      catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+        OPENFLUID_RaiseError(E.getMessage());
       }
 
 
@@ -630,7 +630,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
       // vtk series
 
       if (!ParamsPT.get_child_optional("vtkserie"))
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()","No vtkserie defined");
+        OPENFLUID_RaiseError("No vtkserie defined");
 
       BOOST_FOREACH(const boost::property_tree::ptree::value_type &v,ParamsPT.get_child("vtkserie"))
       {
@@ -670,7 +670,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
 
         if (!m_RasterMan.open(m_DEMFilename))
         {
-            OPENFLUID_RaiseWarning("utils.export.spatialdomain-vars.vtk","ExportVtkFunction::initializeRun()",
+            OPENFLUID_RaiseWarning("ExportVtkFunction::initializeRun",
               "Cannot open DEM "+m_DEMFilename+". Z Values are set to 0.0");
         }
       }

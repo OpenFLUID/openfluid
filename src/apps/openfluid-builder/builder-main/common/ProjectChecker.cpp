@@ -62,6 +62,7 @@
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/tools/SwissTools.hpp>
@@ -342,8 +343,8 @@ double ProjectChecker::getParamAsDouble(
     openfluid::fluidx::ModelItemDescriptor* Item, std::string ParamName)
 {
   if (!isParamSetAsDouble(Item, ParamName))
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "ProjectChecker::getParamAsDouble",
+    throw openfluid::base::ApplicationException(
+        "openfluid-builder", "ProjectChecker::getParamAsDouble",
         "Parameter " + ParamName + " is not set as a double");
 
   double d;

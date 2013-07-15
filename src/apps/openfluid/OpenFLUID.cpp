@@ -61,6 +61,7 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/ObserverPluginsManager.hpp>
@@ -708,7 +709,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       Buddy->invokeHelp();
       delete Buddy;
     }
-    else throw openfluid::base::OFException("openfluid","Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
+    else throw openfluid::base::ApplicationException("openfluid","Buddy " + OptionsVars["buddyhelp"].as<std::string>() + " does not exists");
     m_RunType = None;
     return;
   }
@@ -791,7 +792,7 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
       openfluid::base::ProjectManager::getInstance()->updateOutputDir();
     }
     else
-      throw openfluid::base::OFException("openfluid",OptionsVars["project"].as<std::string>() + " is not a correct project path");
+      throw openfluid::base::ApplicationException("openfluid",OptionsVars["project"].as<std::string>() + " is not a correct project path");
   }
 
 
@@ -878,7 +879,7 @@ void OpenFLUIDApp::runBuddy()
     Buddy->run();
     delete Buddy;
   }
-  else throw openfluid::base::OFException("openfluid","Buddy " + m_BuddyToRun.first + " does not exists");
+  else throw openfluid::base::ApplicationException("openfluid","Buddy " + m_BuddyToRun.first + " does not exists");
 
 }
 

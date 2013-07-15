@@ -56,7 +56,7 @@
 
 #include <openfluid/landr/GeosCompat.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
@@ -134,8 +134,8 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(
     openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isPolygonType())
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "LandRTools::getVectorOfExteriorRings",
+    throw openfluid::base::FrameworkException(
+        "LandRTools::getVectorOfExteriorRings",
         " The GeoVectorValue is not polygon-typed.");
 
   std::vector<geos::geom::LineString*> Lines;
@@ -157,8 +157,8 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(
     openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isLineType())
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "LandRTools::getVectorOfLines",
+    throw openfluid::base::FrameworkException(
+        "LandRTools::getVectorOfLines",
         " The GeoVectorValue is not linestring-typed.");
 
   std::vector<geos::geom::LineString*> Lines;
@@ -209,8 +209,7 @@ std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
   }
   catch (geos::util::GEOSException& e)
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "LandRTools::getNodedLines",
         "Error while noding lines, you can try again with a greater snap tolerance value.\n"
         "(Details: "

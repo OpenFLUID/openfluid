@@ -79,7 +79,7 @@ MonitoringInstance::~MonitoringInstance()
     finalize();
 
   if (m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","MonitoringInstance::~MonitoringInstance()","Destroyed initialized Monitoring");
+    throw openfluid::base::FrameworkException("MonitoringInstance::~MonitoringInstance()","Destroyed initialized Monitoring");
 }
 
 
@@ -90,7 +90,7 @@ MonitoringInstance::~MonitoringInstance()
 void MonitoringInstance::appendObserver(ObserverInstance* ObsInstance)
 {
   if (m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ObserverInstance::appendItem()","Trying to append observer after observers list initialization");
+    throw openfluid::base::FrameworkException("ObserverInstance::appendItem()","Trying to append observer after observers list initialization");
 
   m_Observers.push_back(ObsInstance);
 }
@@ -134,7 +134,7 @@ void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger
 void MonitoringInstance::finalize()
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","MonitoringInstance::finalize()","Trying to finalize an uninitialized observers list");
+    throw openfluid::base::FrameworkException("MonitoringInstance::finalize()","Trying to finalize an uninitialized observers list");
 
   std::list<ObserverInstance*>::const_iterator ObsIter;
 

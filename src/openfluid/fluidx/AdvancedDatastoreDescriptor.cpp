@@ -56,7 +56,7 @@
 
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid {
 namespace fluidx {
@@ -100,9 +100,8 @@ void AdvancedDatastoreDescriptor::moveItem(unsigned int From, unsigned int To)
   unsigned int Last = Items.size() - 1;
 
   if (From > Last || To > Last)
-    throw openfluid::base::OFException("OpenFLUID Builder",
-                                       "AdvancedDatastoreDescriptor::moveItem",
-                                       "Bad indexes of items to move");
+    throw openfluid::base::FrameworkException("AdvancedDatastoreDescriptor::moveItem",
+                                              "Bad indexes of items to move");
 
   std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator itFrom =
       Items.begin();
@@ -148,9 +147,8 @@ void AdvancedDatastoreDescriptor::insertItem(
     Items.insert(it, Item);
   }
   else
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "AdvancedDatastoreDescriptor::insertItem()",
-        "Bad index of item to insert");
+    throw openfluid::base::FrameworkException("AdvancedDatastoreDescriptor::insertItem()",
+                                              "Bad index of item to insert");
 }
 
 // =====================================================================
@@ -170,9 +168,8 @@ void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
     Items.erase(it);
   }
   else
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "AdvancedDatastoreDescriptor::deleteItem()",
-        "Bad index of item to delete");
+    throw openfluid::base::FrameworkException("AdvancedDatastoreDescriptor::deleteItem()",
+                                              "Bad index of item to delete");
 }
 
 // =====================================================================

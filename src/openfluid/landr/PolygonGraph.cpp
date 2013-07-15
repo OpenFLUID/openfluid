@@ -58,7 +58,7 @@
 #include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -217,7 +217,7 @@ void PolygonGraph::addEntity(LandREntity* Entity)
     m_Entities.push_back(NewEntity);
 
   }
-  catch (openfluid::base::OFException& e)
+  catch (openfluid::base::FrameworkException& e)
   {
     std::cerr << e.what() << std::endl;
     throw;
@@ -290,7 +290,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
       << ") from Polygon " << Entity->getSelfId()
       << ": doesn't find edge intersection.";
 
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "PolygonGraph::removeSegment", s.str());
   }
 
@@ -308,7 +308,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
         << ") from Polygon " << Entity->getSelfId()
         << ": difference geometry is not \"Line\" typed.";
 
-      throw openfluid::base::OFException("OpenFLUID Framework",
+      throw openfluid::base::FrameworkException(
                                          "PolygonGraph::removeSegment",
                                          s.str());
     }
@@ -366,8 +366,8 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
   std::vector<geos::geom::Polygon*>* RasterPolys = getRasterPolygonizedPolys();
 
   if (!RasterPolys)
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "PolygonGraph::getRasterPolyOverlaying",
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::getRasterPolyOverlaying",
         "No RasterPolygonizedMultiPolygon associated to the PolygonGraph");
 
   for (std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();
@@ -426,8 +426,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
         s << "No raster value for a raster pixel overlapping entity "
           << (*it)->getSelfId() << " .";
 
-        throw openfluid::base::OFException(
-            "OpenFLUID Framework",
+        throw openfluid::base::FrameworkException(
             "PolygonGraph::setAttributeFromMeanRasterValues", s.str());
       }
 
@@ -458,8 +457,8 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
   {
     delete OutVector;
 
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::createVectorRepresentation",
         "No edges for this graph.");
   }
 
@@ -477,8 +476,8 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
     {
       delete OutVector;
 
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+      throw openfluid::base::FrameworkException(
+          "PolygonGraph::createVectorRepresentation",
           "Failed to transform geometry from GEOS to OGR.");
     }
 
@@ -488,8 +487,8 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
     {
       delete OutVector;
 
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework", "PolygonGraph::createVectorRepresentation",
+      throw openfluid::base::FrameworkException(
+          "PolygonGraph::createVectorRepresentation",
           "Failed to create feature in shapefile.");
     }
 

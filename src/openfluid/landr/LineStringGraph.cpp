@@ -61,7 +61,7 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/CoordinateSequence.h>
@@ -217,7 +217,7 @@ void LineStringGraph::removeEntity(int SelfId)
   {
     std::ostringstream s;
     s << "No entity with id " << SelfId;
-    throw openfluid::base::OFException("OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
                                        "LineStringGraph::removeEntity",
                                        s.str());
     return;
@@ -307,8 +307,7 @@ float* LineStringGraph::getRasterValueForEntityStartNode(
   float* Val = 0;
 
   if (!mp_Raster)
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
         "LineStringGraph::getRasterValueForEntityStartNode",
         "No raster associated to the LineStringGraph");
   else
@@ -329,8 +328,7 @@ float* LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
   float* Val = 0;
 
   if (!mp_Raster)
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
         "LineStringGraph::getRasterValueForEntityEndNode",
         "No raster associated to the LineStringGraph");
   else
@@ -360,8 +358,7 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(
       std::ostringstream s;
       s << "No raster value for entity " << (*it)->getSelfId() << " StartNode.";
 
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework",
+      throw openfluid::base::FrameworkException(
           "LineStringGraph::setAttributeFromRasterValueAtStartNode", s.str());
       return;
     }
@@ -389,8 +386,7 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(
       std::ostringstream s;
       s << "No raster value for entity " << (*it)->getSelfId() << " EndNode.";
 
-      throw openfluid::base::OFException(
-          "OpenFLUID Framework",
+      throw openfluid::base::FrameworkException(
           "LineStringGraph::setAttributeFromRasterValueAtEndNode", s.str());
       return;
     }
@@ -414,11 +410,10 @@ void LineStringGraph::reverseLineStringEntity(
   removeEntity(selfId);
   try {
     addEntity(new LineStringEntity(ReverseEnt,selfId));
-  } catch (openfluid::base::OFException& e) {
+  } catch (openfluid::base::FrameworkException& e) {
     std::ostringstream s;
     s << "Reverse orientation impossible for entity" << selfId<<" : "<<e.what() ;
-    throw openfluid::base::OFException(
-        "OpenFLUID Framework",
+    throw openfluid::base::FrameworkException(
         "LineStringGraph::reverseLineStringEntity",s.str());
   }
 

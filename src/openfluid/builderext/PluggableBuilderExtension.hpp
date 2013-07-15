@@ -230,7 +230,7 @@ class PluggableBuilderExtension
         std::vector<std::string> Splitted = openfluid::tools::SplitString(*it,"=");
 
         if(Splitted.size() != 2)
-          throw openfluid::base::OFException("OpenFLUID framework","PluggableBuilderExtension::setDefaultConfig",
+          throw openfluid::base::FrameworkException("PluggableBuilderExtension::setDefaultConfig",
               "Configuration element \"" + Splitted[0] + "\" is not well formatted.");
 
         m_Config[Splitted[0]] = Splitted[1];

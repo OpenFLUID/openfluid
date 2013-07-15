@@ -100,15 +100,15 @@ PackageInfo::PackageType MarketDatasetPackage::getPackageType() const
 void MarketDatasetPackage::process()
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::download()","package "+m_PackageFilename+" not initialized");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::download()","package "+m_PackageFilename+" not initialized");
 
 
   if (!m_Downloaded)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
 
 
   if (m_CMakeCommand.empty())
-    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","CMake command not defined");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","CMake command not defined");
 
 
   std::string StrOut;
@@ -121,7 +121,7 @@ void MarketDatasetPackage::process()
     boost::filesystem::remove_all(boost::filesystem::path(DatasetInstallDir));
 
   if (!boost::filesystem::create_directories(boost::filesystem::path(DatasetInstallDir)))
-    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","unable to create dataset directory for "+m_ID+" package");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","unable to create dataset directory for "+m_ID+" package");
 
   std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + DatasetInstallDir + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
 
@@ -140,14 +140,14 @@ void MarketDatasetPackage::process()
     if (RetValue != 0)
     {
       appendToLogFile(StrErr);
-      throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","Error uncompressing package using CMake");
+      throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","Error uncompressing package using CMake");
 
     }
 
   }
   catch (Glib::Error& E)
   {
-    throw openfluid::base::OFException("OpenFLUID framework","MarketDatasetPackage::process()","Glib error uncompressing package using CMake");
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","Glib error uncompressing package using CMake");
   }
 }
 

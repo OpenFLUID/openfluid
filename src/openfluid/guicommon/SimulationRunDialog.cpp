@@ -237,7 +237,7 @@ void SimulationRunDialog::runSimulation()
     m_SimulationCompleted = true;
 
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::Exception& E)
   {
     signal_SimulationStopped().emit();
     DialogBoxFactory::showSimpleErrorMessage(_("OpenFLUID error: ") + std::string(E.what()));

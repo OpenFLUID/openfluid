@@ -60,7 +60,7 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/IntegerValue.hpp>
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromPolygonGraph)
   openfluid::landr::LandREntity* U20 = Graph->LandRGraph::getEntity(20);
 
   BOOST_CHECK_THROW(Graph->getRasterValueForEntityCentroid(*U1),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -181,7 +181,7 @@ BOOST_AUTO_TEST_CASE(check_getARasterValue_fromLineStringGraph)
   openfluid::landr::LandREntity* U3 = Graph->LandRGraph::getEntity(3);
 
   BOOST_CHECK_THROW(Graph->getRasterValueForEntityCentroid(*U1),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -208,7 +208,7 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolygonized)
       openfluid::landr::PolygonGraph::create(*Vector);
 
   BOOST_CHECK_THROW(Graph->getRasterPolygonized(),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Graph->addAGeoRasterValue(*Raster);
 
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolygonizedMultiPoly)
       openfluid::landr::PolygonGraph::create(*Vector);
 
   BOOST_CHECK_THROW(Graph->getRasterPolygonizedPolys(),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Graph->addAGeoRasterValue(*Raster);
 

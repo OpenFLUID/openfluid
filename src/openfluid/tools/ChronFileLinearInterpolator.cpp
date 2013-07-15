@@ -58,7 +58,7 @@
 
 #include <boost/filesystem/path.hpp>
 
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
 
 

@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(test_constructor_GeoVectorValue_wrong_file)
   openfluid::core::UnstructuredValue* Val =
   new openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/wrong.shp");
 
-  BOOST_CHECK_THROW(new Layer(LayerType::LAYER_BASE,Val,"mymap","SU"),openfluid::base::OFException);
+  BOOST_CHECK_THROW(new Layer(LayerType::LAYER_BASE,Val,"mymap","SU"),openfluid::base::Exception);
 }
 
 // =====================================================================
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(test_constructor_GeoVectorValue_wrong_noSelfID)
   openfluid::core::UnstructuredValue* Val =
   new openfluid::core::GeoVectorValue(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/SU_wrong_noSelfID.shp");
 
-  BOOST_CHECK_THROW(new Layer(LayerType::LAYER_BASE,Val,"mymap","SU"),openfluid::base::OFException);
+  BOOST_CHECK_THROW(new Layer(LayerType::LAYER_BASE,Val,"mymap","SU"),openfluid::base::Exception);
 }
 
 // =====================================================================

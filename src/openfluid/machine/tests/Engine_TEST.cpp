@@ -70,6 +70,9 @@
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+
+
 
 
 class EmptySimulator : public openfluid::ware::PluggableSimulator
@@ -111,6 +114,8 @@ void displayModel(openfluid::machine::ModelInstance& MI)
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+
   openfluid::machine::SimulationBlob SBlob;
   openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
   openfluid::machine::ModelInstance Model(SBlob,MachineListen);
@@ -119,9 +124,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   openfluid::machine::Engine Eng(SBlob,Model,Monitoring,MachineListen);
 
-  BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1[toto]","UA","",""),openfluid::base::OFException);
-  BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1(double)","UA","",""),openfluid::base::OFException);
-  BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1[double","UA","",""),openfluid::base::OFException);
+  BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1[toto]","UA","",""),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1(double)","UA","",""),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(openfluid::ware::SignatureHandledTypedDataItem("var1[double","UA","",""),openfluid::base::FrameworkException);
 
   delete MachineListen;
 }
@@ -131,6 +136,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_pretests)
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+
   openfluid::machine::ModelItemInstance* MIInstance;
 
   openfluid::machine::SimulationBlob SBlob;
@@ -246,6 +253,8 @@ BOOST_AUTO_TEST_CASE(check_pretests)
 
 BOOST_AUTO_TEST_CASE(check_typed_pretests)
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.Engine");
+
   openfluid::machine::ModelItemInstance* MIInstance;
 
   openfluid::machine::SimulationBlob SBlob;

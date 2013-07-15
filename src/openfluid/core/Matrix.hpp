@@ -61,7 +61,7 @@
 
 #include <iostream>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <boost/multi_array.hpp>
 
 namespace openfluid { namespace core {
@@ -258,7 +258,7 @@ void Matrix<T>::setData(T* Data)
 template <class T>
 T Matrix<T>::getElement(unsigned long ColIndex, unsigned long RowIndex) const
 {
-  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr) throw openfluid::base::OFException("OpenFLUID framework","Matrix::getElement","element access range error");
+  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr) throw openfluid::base::FrameworkException("Matrix::getElement","element access range error");
   return m_Data[ColIndex][RowIndex];
 }
 
@@ -270,7 +270,7 @@ T Matrix<T>::getElement(unsigned long ColIndex, unsigned long RowIndex) const
 template <class T>
 void Matrix<T>::setElement(unsigned long ColIndex, unsigned long RowIndex, T Element)
 {
-  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr) throw openfluid::base::OFException("OpenFLUID framework","Matrix::setElement","element access range error");
+  if (ColIndex >= m_ColsNbr || RowIndex >= m_RowsNbr) throw openfluid::base::FrameworkException("Matrix::setElement","element access range error");
   m_Data[ColIndex][RowIndex] = Element;
 }
 

@@ -63,7 +63,7 @@
 #include <geos/geom/LineString.h>
 #include <geos/geom/GeometryCollection.h>
 #include <geos/operation/valid/IsValidOp.h>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
@@ -78,8 +78,8 @@ VectorDataset::VectorDataset(std::string FileName, std::string DriverName)
       DriverName.c_str());
 
   if (!Driver)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "VectorDataset::VectorDataset",
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::VectorDataset",
         "\"" + DriverName + "\" driver not available.");
 
   std::string Path = getTimestampedPath(FileName);
@@ -87,8 +87,7 @@ VectorDataset::VectorDataset(std::string FileName, std::string DriverName)
   mp_DataSource = Driver->CreateDataSource(Path.c_str(), NULL);
 
   if (!mp_DataSource)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::VectorDataset",
         "Error while creating " + Path + " : "
         + "Creation of OGRDataSource failed.");
@@ -112,8 +111,7 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
   mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), NULL);
 
   if (!mp_DataSource)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::VectorDataset",
         "Error while creating " + Path + " : "
         + "Creation of OGRDataSource failed.");
@@ -126,8 +124,7 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
   mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
 
   if (!mp_DataSource)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::VectorDataset",
         "Error while opening " + Path + " : "
         + "Creation of OGRDataSource failed.");
@@ -149,8 +146,7 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
   mp_DataSource = Driver->CopyDataSource(DS, Path.c_str(), NULL);
 
   if (!mp_DataSource)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::VectorDataset",
         "Error while creating " + Path + " : "
         + "Creation of OGRDataSource failed.");
@@ -163,8 +159,7 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
   mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
 
   if (!mp_DataSource)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::VectorDataset",
         "Error while opening " + Path + " : "
         + "Creation of OGRDataSource failed.");
@@ -277,8 +272,7 @@ void VectorDataset::copyToDisk(std::string FilePath, std::string FileName,
     else
     {
       OGRDataSource::DestroyDataSource(DS);
-      throw openfluid::base::OFException(
-          "OpenFLUID framework",
+      throw openfluid::base::FrameworkException(
           "VectorDataset::copyToDisk",
           "Error while creating " + Path + " : "
           + "This VectorDataset already exists.");
@@ -289,8 +283,7 @@ void VectorDataset::copyToDisk(std::string FilePath, std::string FileName,
                                                 NULL);
 
   if (!NewDS)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::copyToDisk",
         "Error while creating " + Path + " : "
         + "Copying of OGRDataSource failed.");
@@ -307,8 +300,7 @@ void VectorDataset::addALayer(std::string LayerName,
                               OGRSpatialReference* SpatialRef)
 {
   if (mp_DataSource->GetLayerByName(LayerName.c_str()) != NULL)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::createLayer",
         "Error while adding a layer to " + std::string(mp_DataSource->GetName())
         + ": a layer named " + LayerName + " already exists.");
@@ -317,8 +309,7 @@ void VectorDataset::addALayer(std::string LayerName,
                                                LayerType, NULL);
 
   if (!Layer)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::createLayer",
         "Error while adding a layer to " + std::string(mp_DataSource->GetName())
         + ": creation of layer " + LayerName + " failed.");
@@ -331,8 +322,7 @@ void VectorDataset::addALayer(std::string LayerName,
   mp_DataSource = OGRSFDriverRegistrar::Open(Path.c_str(), true);
 
   if (!mp_DataSource)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::createLayer",
         "Error while opening " + Path + " : "
         + "Opening of OGRDataSource failed.");
@@ -363,8 +353,8 @@ void VectorDataset::addAField(std::string FieldName, OGRFieldType FieldType,
   OGRFieldDefn Field(FieldName.c_str(), FieldType);
 
   if (getLayer(LayerIndex)->CreateField(&Field) != OGRERR_NONE)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "VectorDataset::addAField",
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::addAField",
         "Creating field \"" + FieldName + "\" failed.");
 }
 
@@ -408,8 +398,8 @@ bool VectorDataset::isFieldOfType(std::string FieldName, OGRFieldType FieldType,
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "VectorDataset::isFieldOfType",
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::isFieldOfType",
         "Field \"" + FieldName + "\" is not set.");
 
   return getLayerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()
@@ -423,8 +413,8 @@ bool VectorDataset::isIntValueSet(std::string FieldName, int Value,
                                   unsigned int LayerIndex)
 {
   if (!isFieldOfType(FieldName, OFTInteger, LayerIndex))
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "VectorDataset::isIntValueSet",
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::isIntValueSet",
         "Field \"" + FieldName + "\" is not set or is not of type Int.");
 
   int CatIndex = getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
@@ -502,8 +492,7 @@ void VectorDataset::parse(unsigned int LayerIndex)
     geos::operation::valid::IsValidOp ValidOp(GeosGeom);
 
     if (!ValidOp.isValid())
-      throw openfluid::base::OFException(
-          "OpenFLUID framework",
+      throw openfluid::base::FrameworkException(
           "VectorDataset::parse",
           ValidOp.getValidationError()->toString() + " \nwhile parsing "
           + GeosGeom->toString());
@@ -532,8 +521,7 @@ void VectorDataset::parse(unsigned int LayerIndex)
   geos::operation::valid::IsValidOp ValidOpColl(m_Geometries.at(LayerIndex));
 
   if (!ValidOpColl.isValid())
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "VectorDataset::parse",
         ValidOpColl.getValidationError()->toString() + " \nwhile creating "
         + m_Geometries.at(LayerIndex)->toString());

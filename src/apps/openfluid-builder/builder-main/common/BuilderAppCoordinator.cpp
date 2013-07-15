@@ -56,6 +56,7 @@
 
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/guicommon/DialogBoxFactory.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
@@ -406,8 +407,7 @@ void BuilderAppCoordinator::setProjectModule(std::string ProjectFolder)
   }
   else
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID Builder", "BuilderAppCoordinator::setProjectModule",
+    throw openfluid::base::ApplicationException("openfluid-builder","BuilderAppCoordinator::setProjectModule",
         "ProjectModule needs an opened Project Manager");
   }
 
@@ -506,7 +506,7 @@ void BuilderAppCoordinator::restoreDemoProjects()
     {
       Buddy.run();
     }
-    catch (openfluid::base::OFException& e)
+    catch (openfluid::base::Exception& e)
     {
       openfluid::guicommon::DialogBoxFactory::showSimpleWarningMessage(
           _("No example project to install"));
@@ -543,7 +543,7 @@ void BuilderAppCoordinator::openProject(std::string ProjectPath)
 
     setState(*getProjectState());
   }
-  catch (openfluid::base::OFException& e)
+  catch (openfluid::base::Exception& e)
   {
     openfluid::base::ProjectManager::getInstance()->close();
     return;
@@ -575,7 +575,7 @@ void BuilderAppCoordinator::createProject()
 
     setState(*getProjectState());
   }
-  catch (openfluid::base::OFException& e)
+  catch (openfluid::base::Exception& e)
   {
     openfluid::base::ProjectManager::getInstance()->close();
     return;

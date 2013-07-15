@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
 
   BOOST_CHECK_THROW(
       openfluid::fluidx::AdvancedModelDescriptor(FXDesc.getModelDescriptor()),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 }
 
 // =====================================================================
@@ -141,7 +141,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_CHECK_EQUAL(
       dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Model.getItemAt(4))->getFileID(),
       "tests.simulatorB");
-  BOOST_CHECK_THROW(Model.getItemAt(5), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Model.getItemAt(5), openfluid::base::FrameworkException);
 
   BOOST_CHECK_EQUAL(
       Model.getFirstItemIndex("tests.generator.interp.TU.genscalar"), 0);
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::fluidx::SimulatorDescriptor InsItem("inserted.item");
 
   BOOST_CHECK_THROW(Model.insertItem(&InsItem, 6),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   Model.insertItem(&InsItem, 3);
 
@@ -228,8 +228,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   // moveItem
 
-  BOOST_CHECK_THROW(Model.moveItem(2, 7), openfluid::base::OFException);
-  BOOST_CHECK_THROW(Model.moveItem(7, 2), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Model.moveItem(2, 7), openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Model.moveItem(7, 2), openfluid::base::FrameworkException);
 
   Model.moveItem(5, 2);
 
@@ -329,7 +329,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   //removeItem
 
-  BOOST_CHECK_THROW(Model.removeItem(7), openfluid::base::OFException);
+  BOOST_CHECK_THROW(Model.removeItem(7), openfluid::base::FrameworkException);
 
   Model.removeItem(4);
 

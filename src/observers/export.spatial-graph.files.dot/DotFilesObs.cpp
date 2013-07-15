@@ -291,9 +291,9 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
       {
         ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
       }
-      catch (openfluid::base::OFException& E)
+      catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+        OPENFLUID_RaiseError(E.getMessage());
       }
 
 

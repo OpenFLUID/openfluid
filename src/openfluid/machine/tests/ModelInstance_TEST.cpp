@@ -146,6 +146,8 @@ class SimC : openfluid::ware::PluggableSimulator
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+
   openfluid::machine::SimulationBlob SB;
 
   SB.getSimulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,14,46,39),60);
@@ -160,6 +162,8 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+
   openfluid::machine::SimulationBlob SB;
 
   //SB.getSimulationStatus() = openfluid::base::SimulationStatus(openfluid::core::DateTime(2012,1,1,0,0,0),openfluid::core::DateTime(2012,1,1,14,46,39),60);
@@ -255,6 +259,8 @@ class ModelInstanceSub: public openfluid::machine::ModelInstance
 
 BOOST_AUTO_TEST_CASE(check_mergeParamsWithGlobalParams)
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->setOutputDir(CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.ModelInstance");
+
   openfluid::machine::SimulationBlob SB;
 
   ModelInstanceSub MI(SB, NULL);

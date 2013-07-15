@@ -116,7 +116,7 @@
 #include <tests-config.hpp>
 #include <openfluid/landr/GeosCompat.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <geos/geom/Geometry.h>
@@ -261,7 +261,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
 
   BOOST_CHECK_THROW(
       openfluid::landr::LandRTools::getVectorOfExteriorRings(*Vect),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 
   delete Vect;
 
@@ -290,7 +290,7 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
       Val);
 
   BOOST_CHECK_THROW(openfluid::landr::LandRTools::getVectorOfLines(*Vect),
-                    openfluid::base::OFException);
+                    openfluid::base::FrameworkException);
 
   delete Vect;
 
@@ -462,7 +462,7 @@ BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
 #if !GEOS_VERSION_GREATER_OR_EQUAL_3_3_2
   BOOST_CHECK_THROW(
       openfluid::landr::LandRTools::getNodedLines(SU_coll, RS_coll),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 #endif
 
   std::vector<geos::geom::LineString*>* Noded_lines =
@@ -602,7 +602,7 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
 #if !GEOS_VERSION_GREATER_OR_EQUAL_3_3_2
   BOOST_CHECK_THROW(
       openfluid::landr::LandRTools::getNodedLines(Poly_coll, Vect3->getGeometries()),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 #endif
 
   std::vector<geos::geom::LineString*>* All_lines =

@@ -61,7 +61,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <tests-config.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
 {
   BOOST_CHECK_THROW(
       new openfluid::landr::VectorDataset("test.shp","wrong_driver_name"),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       "test.shp");
@@ -168,7 +168,7 @@ BOOST_AUTO_TEST_CASE(check_copyToDisk)
 
   BOOST_CHECK_THROW(
       Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR, "OPENFLUID.OUT.VectorDataset/new_test.shp", false),
-      openfluid::base::OFException);
+      openfluid::base::FrameworkException);
 
   Vect->copyToDisk(CONFIGTESTS_OUTPUT_DATA_DIR,
                    "OPENFLUID.OUT.VectorDataset/new_test.shp", true);

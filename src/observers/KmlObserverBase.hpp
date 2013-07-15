@@ -143,7 +143,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       DataSource = OGRSFDriverRegistrar::Open(LayerInfo.SourceFilename.c_str(), FALSE );
       if( DataSource == NULL )
       {
-        OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::transformVectorLayerToKmlGeometry()",
+        OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
             "Cannot open shapefile "+LayerInfo.SourceFilename+". This Kml output is ignored.");
         return false;
       }
@@ -154,7 +154,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (Layer == NULL)
       {
-        OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::transformVectorLayerToKmlGeometry()",
+        OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
             "Cannot open shapefile layer from "+LayerInfo.SourceFilename+". This Kml output is ignored.");
         return false;
       }
@@ -164,7 +164,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (SelfIDFieldIndex < 0)
       {
-        OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::transformVectorLayerToKmlGeometry()",
+        OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
             "Cannot find SELF_ID attribute in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
         return false;
       }
@@ -195,7 +195,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
             if (Geometry->getGeometryType() != wkbPolygon && Geometry->getGeometryType() != wkbLineString)
             {
-              OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::transformVectorLayerToKmlGeometry()",
+              OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
                   "Unsupported geometry type in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
               return false;
             }
@@ -256,7 +256,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
           }
           else
           {
-            OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::transformVectorLayerToKmlGeometry()",
+            OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
                 "Wrong geometry reference in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
             return false;
           }
@@ -323,7 +323,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         }
         else
         {
-          OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::tryOpenGEarth()",
+          OPENFLUID_RaiseWarning("KmlObserverBase::tryOpenGEarth()",
                                  "Cannot find Google Earth");
           return;
         }
@@ -350,7 +350,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (ZipProgram.empty())
       {
-        OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::searchForZipTool()",
+        OPENFLUID_RaiseWarning("KmlObserverBase::searchForZipTool()",
                     "Unsupported system platform");
         m_OKToGo = false;
         return;
@@ -364,7 +364,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       }
       else
       {
-        OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::searchForZipTool()",
+        OPENFLUID_RaiseWarning("KmlObserverBase::searchForZipTool()",
             "Required Zip program ("+ ZipProgram +") not found");
         m_OKToGo = false;
         return;
@@ -389,7 +389,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir)))
       {
-        OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::prepareTempDirectory()",
+        OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
                   "Cannot initialize temporary directory");
         m_OKToGo = false;
         return;
@@ -400,7 +400,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir)))
       {
-        OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::prepareTempDirectory()",
+        OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
                   "Cannot initialize kmz temporary directory");
         m_OKToGo = false;
         return;
@@ -411,7 +411,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       if (!boost::filesystem::is_directory(boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/"+m_KmzDataSubDir)))
       {
-        OPENFLUID_RaiseWarning(OPENFLUID_GetWareID(),"KmlObserverBase::prepareTempDirectory()",
+        OPENFLUID_RaiseWarning("KmlObserverBase::prepareTempDirectory()",
                   "Cannot initialize kmz data temporary directory");
         m_OKToGo = false;
         return;

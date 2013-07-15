@@ -176,7 +176,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   void processUnit(openfluid::core::Unit* aUnit)
   {
     if (m_LastOrd > aUnit->getProcessOrder())
-      OPENFLUID_RaiseError("tests.threadedloops","processUnit()","wrong process order");
+      OPENFLUID_RaiseError("wrong process order");
     m_LastOrd = aUnit->getProcessOrder();
 
     Glib::usleep(100);

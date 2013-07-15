@@ -284,7 +284,7 @@ BOOST_AUTO_TEST_CASE(check_matrix)
   BOOST_REQUIRE_CLOSE( Val1.at(16,17), 1.35,0.000001 );
   BOOST_REQUIRE_CLOSE( Val1.get(19,29), 1.35,0.000001 );
 
-  BOOST_REQUIRE_THROW(Val1.get(45,5),openfluid::base::OFException);
+  BOOST_REQUIRE_THROW(Val1.get(45,5),openfluid::base::FrameworkException);
 
   std::cout << Val1 << std::endl;
 
@@ -394,9 +394,9 @@ BOOST_AUTO_TEST_CASE(check_map)
   BOOST_REQUIRE_EQUAL(Val2["foofoobar"].asMatrixValue().getColsNbr(),5);
   BOOST_REQUIRE_EQUAL(Val2.getMatrixValue("foofoobar").getRowsNbr(),9);
 
-  BOOST_REQUIRE_THROW(Val2.getMatrixValue("foo"),openfluid::base::OFException);
-  BOOST_REQUIRE_THROW(Val2.get("foo").asIntegerValue(),openfluid::base::OFException);
-  BOOST_REQUIRE_THROW(Val2.get("wrongfoo"),openfluid::base::OFException);
+  BOOST_REQUIRE_THROW(Val2.getMatrixValue("foo"),openfluid::base::FrameworkException);
+  BOOST_REQUIRE_THROW(Val2.get("foo").asIntegerValue(),openfluid::base::FrameworkException);
+  BOOST_REQUIRE_THROW(Val2.get("wrongfoo"),openfluid::base::FrameworkException);
 }
 
 

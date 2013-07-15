@@ -61,7 +61,7 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace buddies {
@@ -270,14 +270,14 @@ bool NewSimulatorBuddy::run()
   boost::filesystem::path OutputDirPath(m_Options["outputdir"]);
 
   if (m_Options["simid"] == "")
-      throw openfluid::base::OFException("OpenFLUID framework","NewSimulatorBuddy::run()","No simulator ID");
+      throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","No simulator ID");
 
   if (m_Options["cppclass"] == "")
-      throw openfluid::base::OFException("OpenFLUID framework","NewSimulatorBuddy::run()","No simulator C++ class");
+      throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","No simulator C++ class");
 
 
   if (!boost::filesystem::exists(OutputDirPath))
-    throw openfluid::base::OFException("OpenFLUID framework","NewSimulatorBuddy::run()","Output directory does not exist");
+    throw openfluid::base::FrameworkException("NewSimulatorBuddy::run()","Output directory does not exist");
 
 
 

@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
   SimStatus.setCurrentStage(openfluid::base::SimulationStatus::PREPAREDATA);
 
   BOOST_REQUIRE_THROW(SimStatus.setCurrentTimeIndex(SimStatus.getCurrentTimeIndex()+SimStatus.getDefaultDeltaT()),
-                      openfluid::base::OFException);
+                      openfluid::base::FrameworkException);
 
   SimStatus.setCurrentStage(openfluid::base::SimulationStatus::RUNSTEP);
 

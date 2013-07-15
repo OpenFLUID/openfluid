@@ -65,7 +65,7 @@
 #include <boost/progress.hpp>
 
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 #include <iostream>
@@ -76,7 +76,7 @@
 // =====================================================================
 // =====================================================================
 
-bool validateException(const openfluid::base::OFException& /*E*/) { return true; }
+bool validateException(const openfluid::base::FrameworkException& /*E*/) { return true; }
 
 // =====================================================================
 // =====================================================================
@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
                                                        boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Interpolators/measured_ticks_interp227.dat").string(),
                                                        openfluid::core::DateTime(1997,1,1,11,0,0),openfluid::core::DateTime(1998,1,1,15,30,17),227,
                                                        openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
-    BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::OFException,validateException);
+    BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::FrameworkException,validateException);
   }
 
   // wrong begin date
@@ -138,7 +138,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
                                                        openfluid::core::DateTime(1997,1,1,1,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),227,
                                                        openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
 
-    BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::OFException,validateException);
+    BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::FrameworkException,validateException);
   }
 
 
@@ -149,7 +149,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
                                                        openfluid::core::DateTime(1998,1,1,11,0,0),openfluid::core::DateTime(1997,1,1,15,30,17),227,
                                                        openfluid::tools::ChronFileInterpolator::PREPROCESS_CUMULATE);
 
-    BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::OFException,validateException);
+    BOOST_REQUIRE_EXCEPTION(CFLI.runInterpolation(),openfluid::base::FrameworkException,validateException);
   }
 
 

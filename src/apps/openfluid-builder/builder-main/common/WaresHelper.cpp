@@ -124,7 +124,7 @@ std::list<openfluid::fluidx::ObserverDescriptor*> WaresHelper::checkAndGetModifi
       Reg->getSignature((*it)->getID());
       ++it;
     }
-    catch (openfluid::base::OFException& e)
+    catch (openfluid::base::FrameworkException& e)
     {
       MissingObservers.push_back((*it)->getID());
 
@@ -153,7 +153,7 @@ std::vector<openfluid::machine::ObserverSignatureInstance*> WaresHelper::getUnus
     {
       Desc.getDescriptor((*it)->Signature->ID);
     }
-    catch (openfluid::base::OFException& e)
+    catch (openfluid::base::FrameworkException& e)
     {
       Signs.push_back(*it);
     }

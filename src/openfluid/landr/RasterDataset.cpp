@@ -59,7 +59,7 @@
 #include <boost/filesystem/path.hpp>
 #include <geos/geom/Coordinate.h>
 #include <openfluid/core/GeoRasterValue.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 
 namespace openfluid {
@@ -82,8 +82,7 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
 
   if (!mp_Dataset)
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "RasterDataset::RasterDataset",
         "Error while creating a virtual copy of " + Value.getAbsolutePath()
         + " (" + CPLGetLastErrorMsg() + ")");
@@ -107,8 +106,7 @@ RasterDataset::RasterDataset(const RasterDataset& Other) :
 
   if (!mp_Dataset)
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "RasterDataset::RasterDataset",
         "Error while creating a virtual copy (" + std::string(
             CPLGetLastErrorMsg())
@@ -180,8 +178,8 @@ void RasterDataset::computeGeoTransform()
   mp_GeoTransform = new double[6];
 
   if (GDALGetGeoTransform(mp_Dataset, mp_GeoTransform) != CE_None)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "RasterDataset::computeGeoTransform",
+    throw openfluid::base::FrameworkException(
+        "RasterDataset::computeGeoTransform",
         "Error while getting GeoTransform information");
 }
 
@@ -270,8 +268,8 @@ float RasterDataset::getValueOfPixel(int ColIndex, int LineIndex,
                                                1, ScanLine, 1, 1, GDT_Float32,
                                                0, 0)
       != CE_None)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "RasterDataset::getValueOfPixel",
+    throw openfluid::base::FrameworkException(
+        "RasterDataset::getValueOfPixel",
         "Error while getting value from raster.");
 
   Val = ScanLine[0];
@@ -322,7 +320,7 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(
                        NULL, NULL, NULL)
         != CE_None)
     {
-      throw openfluid::base::OFException("OpenFLUID framework",
+      throw openfluid::base::FrameworkException(
                                          "RasterDataset::polygonize",
                                          "Error while polygonizing raster.");
       delete mp_PolygonizedByRasterBandIndex.at(RasterBandIndex);

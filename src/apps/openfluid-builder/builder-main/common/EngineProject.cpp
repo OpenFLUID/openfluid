@@ -60,6 +60,7 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
@@ -137,7 +138,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
           WithProjectManager ? openfluid::base::ProjectManager::getInstance()->getInputDir() :
                                std::string(FolderIn));
     }
-    catch (openfluid::base::OFException& e)
+    catch (openfluid::base::Exception& e)
     {
       if (Msg.empty())
         Msg = EngineHelper::minimiseInfoString(e.what());
@@ -157,7 +158,7 @@ EngineProject::EngineProject(Glib::ustring FolderIn, bool WithProjectManager) :
     mp_AdvancedDesc = new openfluid::fluidx::AdvancedFluidXDescriptor(
         *mp_FXDesc);
   }
-  catch (openfluid::base::OFException& e)
+  catch (openfluid::base::Exception& e)
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(
         EngineHelper::minimiseInfoString(e.what()));
@@ -202,7 +203,7 @@ void EngineProject::checkAndAdaptModel()
     {
       deleteEngineObjects();
       delete mp_AdvancedDesc;
-      throw openfluid::base::OFException("");
+      throw openfluid::base::ApplicationException("openfluid-builder","unknown error");
     }
     else
     {
@@ -242,7 +243,7 @@ void EngineProject::checkAndAdaptMonitoring()
     {
       deleteEngineObjects();
       delete mp_AdvancedDesc;
-      throw openfluid::base::OFException("");
+      throw openfluid::base::ApplicationException("openfluid-builder","unknown error");
     }
     else
     {

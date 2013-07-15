@@ -94,8 +94,8 @@ void AdvancedModelDescriptor::checkModel() const
   {
     std::string ID = getID(*it);
     if (!UniqueIDs.insert(ID).second)
-      throw openfluid::base::OFException(
-          "OpenFLUID-Framework", "AdvancedModelDescriptor::checkModel",
+      throw openfluid::base::FrameworkException(
+          "AdvancedModelDescriptor::checkModel",
           "The simulator with ID \"" + ID + "\" is duplicate");
   }
 }
@@ -126,7 +126,7 @@ openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::getItemAt(
     return *it;
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
                                        "AdvancedModelDescriptor::getItemAt()",
                                        "Bad index of item to get");
 }
@@ -196,7 +196,7 @@ std::string AdvancedModelDescriptor::getID(
   if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
     return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();
 
-  throw openfluid::base::OFException("OpenFLUID framework",
+  throw openfluid::base::FrameworkException(
                                          "AdvancedModelDescriptor::getID()",
                                          "Unknown ware type");
 }
@@ -231,7 +231,7 @@ void AdvancedModelDescriptor::insertItem(
     Items.insert(it, Item);
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
                                        "AdvancedModelDescriptor::insertItem()",
                                        "Bad index of item to insert");
 }
@@ -262,7 +262,7 @@ void AdvancedModelDescriptor::removeItem(unsigned int Position)
     Items.erase(it);
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
                                        "AdvancedModelDescriptor::deleteItem()",
                                        "Bad index of item to delete");
 }
@@ -281,7 +281,7 @@ void AdvancedModelDescriptor::moveItem(unsigned int From, unsigned int To)
   unsigned int Last = Items.size() - 1;
 
   if (From > Last || To > Last)
-    throw openfluid::base::OFException("OpenFLUID Builder",
+    throw openfluid::base::FrameworkException(
                                        "AdvancedModelDescriptor::moveItem",
                                        "Bad indexes of items to move");
 

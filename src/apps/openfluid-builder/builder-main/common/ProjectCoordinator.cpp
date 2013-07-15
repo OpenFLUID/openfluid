@@ -622,7 +622,7 @@ void ProjectCoordinator::launchExtension(std::string ExtensionID)
     if (!ExtCont->instantiateExt())
       return;
   }
-  catch (openfluid::base::OFException& e)
+  catch (openfluid::base::Exception& e)
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(e.what());
     return;
@@ -693,7 +693,7 @@ void ProjectCoordinator::launchExtension(std::string ExtensionID)
       }
     }
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::Exception& E)
   {
     openfluid::guicommon::DialogBoxFactory::showSimpleErrorMessage(_("Error from extension: ")+ ExtID + "\n\n" + std::string(E.what()));
   }

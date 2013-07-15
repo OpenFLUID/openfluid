@@ -52,11 +52,11 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "GeoRasterValue.hpp"
+#include <openfluid/core/GeoRasterValue.hpp>
 
 #include <boost/filesystem/path.hpp>
 
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid {
 namespace core {
@@ -109,8 +109,7 @@ void GeoRasterValue::tryToOpenSource()
 
   if (!mp_Data)
   {
-    throw openfluid::base::OFException(
-        "OpenFLUID framework",
+    throw openfluid::base::FrameworkException(
         "GeoRasterValue::tryToOpenSource",
         "Error while trying to open file " + m_AbsolutePath + " ("
         + CPLGetLastErrorMsg() + ")");

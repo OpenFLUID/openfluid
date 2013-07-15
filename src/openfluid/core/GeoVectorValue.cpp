@@ -52,9 +52,9 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "GeoVectorValue.hpp"
+#include <openfluid/core/GeoVectorValue.hpp>
 
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid {
 namespace core {
@@ -115,8 +115,8 @@ void GeoVectorValue::tryToOpenSource()
   mp_Data = OGRSFDriverRegistrar::Open(m_AbsolutePath.c_str(), false);
 
   if (!mp_Data)
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "GeoVectorValue::tryToOpenSource",
+    throw openfluid::base::FrameworkException(
+        "GeoVectorValue::tryToOpenSource",
         "Error while trying to open file " + m_AbsolutePath);
 }
 
@@ -176,8 +176,8 @@ bool GeoVectorValue::isFieldOfType(std::string FieldName, OGRFieldType FieldType
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))
-    throw openfluid::base::OFException(
-        "OpenFLUID framework", "VectorDataset::isFieldOfType",
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::isFieldOfType",
         "Field \"" + FieldName + "\" is not set.");
 
   return getLayerDef(LayerIndex)->GetFieldDefn(getFieldIndex(FieldName))->GetType()

@@ -191,8 +191,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
         else if ((*(m_AnimLayerInfo.UnitsInfos.begin())).second.GeometryType == wkbLineString)
           CurrentKmlFile << "    <Style id=\"" << TmpStyleID << "_" << i << "\"><LineStyle><color>#" << m_AnimLayerInfo.ColorScale[i].first << "</color><width>" << m_AnimLayerInfo.LineWidth << "</width></LineStyle><PolyStyle><fill>0</fill></PolyStyle></Style>\n";
         else
-          OPENFLUID_RaiseError("export.vars.files.kml-anim","KmlFilesAnimObserver::updateKmlFile()",
-                                                 "Unsupported geometry format in source geometry file");
+          OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
       }
 
 
@@ -246,8 +245,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
           CurrentKmlFile << "<LineString><tessellate>1</tessellate><coordinates>" << (*it2).second.CoordsStr << "</coordinates></LineString>\n";
         }
         else
-          OPENFLUID_RaiseError("export.vars.files.kml-anim","KmlFilesAnimObserver::updateKmlFile()",
-                                                 "Unsupported geometry format in source geometry file");
+          OPENFLUID_RaiseError("Unsupported geometry format in source geometry file");
 
 
         CurrentKmlFile << "    </Placemark>\n";
@@ -303,9 +301,9 @@ class KmlFilesAnimObserver : public KmlObserverBase
       {
         ParamsPT = openfluid::ware::PluggableWare::getParamsAsPropertyTree(Params);
       }
-      catch (openfluid::base::OFException& E)
+      catch (openfluid::base::FrameworkException& E)
       {
-        OPENFLUID_RaiseError(OPENFLUID_GetWareID(),"initParams()",E.what());
+        OPENFLUID_RaiseError(E.getMessage());
       }
 
       OGRRegisterAll();
@@ -335,8 +333,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
         m_AnimLayerInfo.SourceFilename = ParamsPT.get("layers.anim.sourcefile","");
         if (m_AnimLayerInfo.SourceFilename.empty())
         {
-          OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
-                                         "wrong sourcefile format");
+          OPENFLUID_RaiseWarning("wrong sourcefile format");
           return;
         }
         m_AnimLayerInfo.SourceFilename = m_InputDir + "/" + m_AnimLayerInfo.SourceFilename;
@@ -351,8 +348,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
       if (ColorScaleVector.size() % 2 == 0)
       {
-        OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
-                               "wrong colorscale format");
+        OPENFLUID_RaiseWarning("wrong colorscale format");
         return;
       }
       else
@@ -367,8 +363,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
           {
             if (ColorScaleVector[i].size() != 8)
             {
-              OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
-                                     "Wrong color scale color format on last item");
+              OPENFLUID_RaiseWarning("Wrong color scale color format on last item");
               return;
             }
             TmpColorValue = std::make_pair("",0.0);
@@ -383,8 +378,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
               // color item
               if (ColorScaleVector[i].size() != 8)
               {
-                OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
-                                       "Wrong color scale color format");
+                OPENFLUID_RaiseWarning("Wrong color scale color format");
                 return;
               }
 
@@ -400,8 +394,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
               }
               else
               {
-                OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
-                                       "Wrong color scale value format");
+                OPENFLUID_RaiseWarning("Wrong color scale value format");
                 return;
               }
 
@@ -443,8 +436,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
             KSLI.SourceFilename = ParamsPT.get("layers.static."+LayerID+".sourcefile","");
             if (KSLI.SourceFilename.empty())
             {
-              OPENFLUID_RaiseWarning("export.vars.files.kml-anim","KmlFilesAnimObserver::initParams()",
-                                     "wrong sourcefile format");
+              OPENFLUID_RaiseWarning("wrong sourcefile format");
             }
             KSLI.SourceFilename = m_InputDir + "/" + KSLI.SourceFilename;
           }

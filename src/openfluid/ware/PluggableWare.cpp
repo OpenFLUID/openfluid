@@ -55,7 +55,7 @@
 
 
 #include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/ware/WareException.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -65,39 +65,18 @@ namespace openfluid { namespace ware {
 // =====================================================================
 
 
-void PluggableWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Msg)
+void PluggableWare::OPENFLUID_RaiseWarning(const std::string& Msg)
 {
-  mp_SimLogger->addWarning(Sender,Msg);
+  mp_SimLogger->addWarning(OPENFLUID_GetWareID(),Msg);
 }
 
-
 // =====================================================================
 // =====================================================================
 
 
-void PluggableWare::OPENFLUID_RaiseWarning(std::string Sender, std::string Source, std::string Msg)
+void PluggableWare::OPENFLUID_RaiseError(const std::string& Msg)
 {
-  mp_SimLogger->addWarning(Sender,Source, Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableWare::OPENFLUID_RaiseError(std::string Sender, std::string Msg)
-{
-  throw openfluid::base::OFException(Sender,Msg);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableWare::OPENFLUID_RaiseError(std::string Sender, std::string Source, std::string Msg)
-{
-  throw openfluid::base::OFException(Sender,Source,Msg);
+  throw WareException(OPENFLUID_GetWareID(),m_WareType,"",Msg);
 }
 
 
@@ -128,7 +107,7 @@ bool PluggableWare::OPENFLUID_GetRunEnvironment(std::string Key, bool &Value)
 void PluggableWare::initializeWare(const WareID_t& ID)
 {
   if(!isLinked())
-    throw openfluid::base::OFException("initialized ware that is not fully linked ("+ID+")");
+    throw openfluid::base::FrameworkException("PluggableWare::initializeWare","initialized ware that is not fully linked ("+ID+")");
 
   m_WareID = ID;
 
@@ -186,7 +165,7 @@ boost::property_tree::ptree PluggableWare::getParamsAsPropertyTree(
 
   for (WareParams_t::const_iterator it = Params.begin() ; it != Params.end() ; ++it)
     if (isWellFormated(it->first)) pt.put(it->first, it->second.get());
-    else throw openfluid::base::OFException("Wrong format for parameter \""+it->first+"\"");
+    else throw openfluid::base::FrameworkException("PluggableWare::getParamsAsPropertyTree","Wrong format for parameter \""+it->first+"\"");
 
   return pt;
 }

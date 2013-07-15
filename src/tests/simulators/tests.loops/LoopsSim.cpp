@@ -346,7 +346,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       }
 
       if (CountInside != 25)
-        OPENFLUID_RaiseError("tests.loops","runStep()","wrong units for while loop inside loop");
+        OPENFLUID_RaiseError("wrong units for while loop inside loop");
 
 
       // ===== unit class =====
@@ -356,10 +356,10 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       {
         LoopIsOK = true;
         if (TU->getClass() != "TestUnits")
-          OPENFLUID_RaiseError("tests.loops","runStep()","wrong units class");
+          OPENFLUID_RaiseError("wrong units class");
       }
       if (!LoopIsOK)
-        OPENFLUID_RaiseError("tests.loops","runStep()","Loop is not OK #1");
+        OPENFLUID_RaiseError("Loop is not OK #1");
 
 
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
@@ -368,10 +368,10 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
         if (TU->getID() == 22)
         {
           if (TU->getFromUnits("TestUnits") == NULL || TU->getFromUnits("TestUnits")->size() != 2)
-            OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(TestUnits) count for TestUnit 22");
+            OPENFLUID_RaiseError("wrong from-units(TestUnits) count for TestUnit 22");
 
           if (TU->getToUnits("TestUnits") == NULL || TU->getToUnits("TestUnits")->size() != 1)
-            OPENFLUID_RaiseError("tests.loops","runStep()","wrong to-units(TestUnits) count for TestUnit 22");
+            OPENFLUID_RaiseError("wrong to-units(TestUnits) count for TestUnit 22");
 
         }
 
@@ -385,20 +385,20 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
         {
 
           if (OU->getFromUnits("TestUnits") == NULL || OU->getFromUnits("TestUnits")->size() != 2)
-            OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(TestUnits) count for OtherUnit 5");
+            OPENFLUID_RaiseError("wrong from-units(TestUnits) count for OtherUnit 5");
 
           if (OU->getFromUnits("OtherUnits") == NULL || OU->getFromUnits("OtherUnits")->size() != 1)
-            OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(OtherUnits) count for OtherUnit 5");
+            OPENFLUID_RaiseError("wrong from-units(OtherUnits) count for OtherUnit 5");
 
           if (OU->getToUnits("OtherUnits") == NULL || OU->getToUnits("OtherUnits")->size() != 1)
-            OPENFLUID_RaiseError("tests.loops","runStep()","wrong To-units(OtherUnits) count for OtherUnit 5");
+            OPENFLUID_RaiseError("wrong To-units(OtherUnits) count for OtherUnit 5");
 
           FromList = OU->getFromUnits("TestUnits");
           OPENFLUID_UNITSLIST_LOOP(FromList,FromUnit)
           {
 
             if (FromUnit->getID() != 18 && FromUnit->getID() != 52)
-              OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(TestUnits) content for OtherUnit 5");
+              OPENFLUID_RaiseError("wrong from-units(TestUnits) content for OtherUnit 5");
 
           }
 
@@ -407,7 +407,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           {
 
             if (FromUnit->getID() != 13)
-              OPENFLUID_RaiseError("tests.loops","runStep()","wrong from-units(OtherUnits) content for OtherUnit 5");
+              OPENFLUID_RaiseError("wrong from-units(OtherUnits) content for OtherUnit 5");
 
           }
 
@@ -417,7 +417,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           {
 
             if (ToUnit->getID() != 25)
-              OPENFLUID_RaiseError("tests.loops","runStep()","wrong to-units(OtherUnits) content for OtherUnit 5");
+              OPENFLUID_RaiseError("wrong to-units(OtherUnits) content for OtherUnit 5");
 
           }
 
@@ -440,7 +440,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           openfluid::tools::ConvertValue(LastPcsOrd,&LastStr);
           openfluid::tools::ConvertValue(TU->getProcessOrder(),&CurrentStr);
           openfluid::tools::ConvertValue(TU->getID(),&IDStr);
-          OPENFLUID_RaiseError("tests.loops","runStep()","wrong process order at unit TestUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
+          OPENFLUID_RaiseError("wrong process order at unit TestUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
         }
 
         LastPcsOrd = TU->getProcessOrder();
@@ -454,7 +454,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           openfluid::tools::ConvertValue(LastPcsOrd,&LastStr);
           openfluid::tools::ConvertValue(OU->getProcessOrder(),&CurrentStr);
           openfluid::tools::ConvertValue(OU->getID(),&IDStr);
-          OPENFLUID_RaiseError("tests.loops","runStep()","wrong process order at unit OtherUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
+          OPENFLUID_RaiseError("wrong process order at unit OtherUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
         }
 
         LastPcsOrd = OU->getProcessOrder();
@@ -478,11 +478,11 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("FakeUnits",FU)
       {
-        OPENFLUID_RaiseError("tests.loops","runStep()","error in ordered loop on fake units");
+        OPENFLUID_RaiseError("error in ordered loop on fake units");
       }
 
       OPENFLUID_UNITSLIST_LOOP(FakeList,FU)
-        OPENFLUID_RaiseError("tests.loops","runStep()","error in list loop on fake units");
+        OPENFLUID_RaiseError("error in list loop on fake units");
 
 
 
@@ -496,7 +496,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
           openfluid::tools::ConvertValue(LastPcsOrd,&LastStr);
           openfluid::tools::ConvertValue(ZU->getProcessOrder(),&CurrentStr);
           openfluid::tools::ConvertValue(ZU->getID(),&IDStr);
-          OPENFLUID_RaiseError("tests.loops","runStep()","wrong process order at unit PerfUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
+          OPENFLUID_RaiseError("wrong process order at unit PerfUnits#"+ IDStr + " (last ord: "+LastStr+", current ord: "+CurrentStr+")");
         }
 
         LastPcsOrd = ZU->getProcessOrder();

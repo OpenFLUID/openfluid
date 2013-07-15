@@ -52,7 +52,7 @@
 
 #include <iostream>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace core {
@@ -196,7 +196,7 @@ Vector<T>::Vector(const Vector &A)
 {
   init();
 
-  if (!allocate(A.m_Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::Vector(const Vector)","Cannot allocate memory");
+  if (!allocate(A.m_Size)) throw openfluid::base::FrameworkException("Vector::Vector(const Vector)","Cannot allocate memory");
 
   std::copy(A.m_Data, A.m_Data + A.m_Size, m_Data);
 
@@ -211,7 +211,7 @@ Vector<T>::Vector(unsigned long Size)
 {
   init();
 
-  if (!allocate(Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::Vector(Size)","Cannot allocate memory");
+  if (!allocate(Size)) throw openfluid::base::FrameworkException("Vector::Vector(Size)","Cannot allocate memory");
 }
 
 
@@ -224,7 +224,7 @@ Vector<T>::Vector(unsigned long Size, T InitValue)
   init();
 
 
-  if (!allocate(Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::Vector(Size,T)","Cannot allocate memory");
+  if (!allocate(Size)) throw openfluid::base::FrameworkException("Vector::Vector(Size,T)","Cannot allocate memory");
 
 
   if (m_Data != NULL)
@@ -245,7 +245,7 @@ Vector<T>::Vector(T* Data, unsigned long Size)
 {
   init();
 
-  if (!allocate(Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::Vector(T*,Size)","Cannot allocate memory");
+  if (!allocate(Size)) throw openfluid::base::FrameworkException("Vector::Vector(T*,Size)","Cannot allocate memory");
 
   std::copy(Data, Data + Size, m_Data);
 
@@ -292,7 +292,7 @@ void Vector<T>::setData(T* Data, unsigned long Size)
 {
   clear();
 
-  if (!allocate(Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::setData","Cannot allocate memory");
+  if (!allocate(Size)) throw openfluid::base::FrameworkException("Vector::setData","Cannot allocate memory");
 
   if (m_Data != NULL) std::copy(Data, Data + Size, m_Data);
 
@@ -305,7 +305,7 @@ void Vector<T>::setData(T* Data, unsigned long Size)
 template <class T>
 T Vector<T>::getElement(unsigned long Index) const
 {
-  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::getElement","element access range error");
+  if (Index >= m_Size) throw openfluid::base::FrameworkException("Vector::getElement","element access range error");
   return m_Data[Index];
 }
 
@@ -316,7 +316,7 @@ T Vector<T>::getElement(unsigned long Index) const
 template <class T>
 void Vector<T>::setElement(unsigned long Index, T Element)
 {
-  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::setElement","element access range error");
+  if (Index >= m_Size) throw openfluid::base::FrameworkException("Vector::setElement","element access range error");
   m_Data[Index] = Element;
 }
 
@@ -328,7 +328,7 @@ void Vector<T>::setElement(unsigned long Index, T Element)
 template <class T>
 T& Vector<T>::operator[](unsigned long Index)
 {
-  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::operator[]","element access range error");
+  if (Index >= m_Size) throw openfluid::base::FrameworkException("Vector::operator[]","element access range error");
   return m_Data[Index];
 }
 

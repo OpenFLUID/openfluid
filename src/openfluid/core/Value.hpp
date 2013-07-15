@@ -60,7 +60,7 @@
 #include <iostream>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace core {
@@ -101,7 +101,7 @@ class DLLEXPORT Value
 
     virtual Type getType() const = 0;
 
-    virtual Value* clone() const { throw openfluid::base::OFException("OpenFLUID framework","Value::clone","Value is not cloneable"); };
+    virtual Value* clone() const { throw openfluid::base::FrameworkException("Value::clone","Value is not cloneable"); };
 
     inline virtual bool isSimple() const = 0;
 

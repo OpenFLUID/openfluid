@@ -216,7 +216,7 @@ void Sim2DocBuddy::extractLatexDocFromCPP()
 
   // check if file exists and if it is "openable"
   if (!CPPFile)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::extractLatexDocFromCPP()","Could not open input file");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::extractLatexDocFromCPP()","Could not open input file");
 
   std::string StrLine  = "";
   std::string CPPFileContent = "";
@@ -253,10 +253,10 @@ void Sim2DocBuddy::cpreprocessCPP()
   std::string CommandToRun = m_CPreProcessorPath.string() + " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " + m_InputFilePath.string() + " > " + m_CProcessedFilePath.string() + " 2>/dev/null";
 
   if (system(CommandToRun.c_str()) == 0)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
 
   if (!boost::filesystem::is_regular(m_CProcessedFilePath))
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::cpreprocessCPP()","C preprocessed file not generated");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::cpreprocessCPP()","C preprocessed file not generated");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -273,7 +273,7 @@ std::string Sim2DocBuddy::extractSignatureLines()
 
   // check if file exists and if it is "openable"
   if (!CProcessedFile)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::extractSignatureLines()","Could not open C preprocessed file");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::extractSignatureLines()","Could not open C preprocessed file");
 
   std::string StrLine  = "";
   std::string FileContent = "";
@@ -527,7 +527,7 @@ void Sim2DocBuddy::processSignature()
       ++pInfo.stop;
     }
 
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::processSignature()","Error parsing simulator signature line \""+Line+"\"");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::processSignature()","Error parsing simulator signature line \""+Line+"\"");
   }
 
 
@@ -553,7 +553,7 @@ void Sim2DocBuddy::generateLatex()
 
   // check if file exists and if it is "openable"
   if (!TPLFile)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::generateLatex()","Could not open template file");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::generateLatex()","Could not open template file");
 
   std::string StrLine  = "";
   m_LatexOutFile = "";
@@ -704,7 +704,7 @@ void Sim2DocBuddy::buildPDF()
   mp_Listener->onSubstageCompleted("** Building PDF...");
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
 
   std::string PDFCommandToRun = m_PDFLatexPath.string() + " -shell-escape -interaction=nonstopmode -output-directory="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() + " > /dev/null";
   std::string BibCommandToRun = m_BibtexPath.string() + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_SimID).string() + " > /dev/null";
@@ -712,32 +712,32 @@ void Sim2DocBuddy::buildPDF()
   mp_Listener->onSubstageCompleted(" first pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   mp_Listener->onSubstageCompleted(" bibliography and references...");
 
 
   if (system(BibCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running bibtex command");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running bibtex command");
 
   mp_Listener->onSubstageCompleted(" second pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   mp_Listener->onSubstageCompleted(" third pass...");
 
   if (system(PDFCommandToRun.c_str()) == -1)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command");
 
   if (isErrorInPDFLatexLog())
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error running pdflatex command (catched in log file)");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -756,12 +756,12 @@ void Sim2DocBuddy::buildHTML()
   mp_Listener->onSubstageCompleted("** Building HTML...");
 
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
 
   std::string CommandToRun = m_Latex2HTMLPath.string() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() +" > /dev/null";
 
   if (system(CommandToRun.c_str()) != 0)
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::buildHTML()","Error running latex2html command");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()","Error running latex2html command");
 
   mp_Listener->onStageCompleted(" done");
 
@@ -796,7 +796,7 @@ bool Sim2DocBuddy::run()
     m_CPreProcessorPath = boost::filesystem::path(GCCPaths[0]);
     mp_Listener->onInfo("Using C preprocessor: " + m_CPreProcessorPath.string());
   }
-  else throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::run()","C preprocessor (gcc) not found");
+  else throw openfluid::base::FrameworkException("Sim2DocBuddy::run()","C preprocessor (gcc) not found");
 
 
   if (m_Options["pdf"] == "1")
@@ -840,11 +840,11 @@ bool Sim2DocBuddy::run()
   m_OutputDirPath = boost::filesystem::path(m_Options["outputdir"]);
 
   if (!boost::filesystem::exists(m_InputFilePath))
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::run()","Input file does not exist");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::run()","Input file does not exist");
 
   m_TplFilePath = boost::filesystem::path(m_Options["tplfile"]);
   if (!boost::filesystem::exists(m_TplFilePath))
-    throw openfluid::base::OFException("OpenFLUID framework","Sim2DocBuddy::run()","Template file does not exist");
+    throw openfluid::base::FrameworkException("Sim2DocBuddy::run()","Template file does not exist");
 
   if (!boost::filesystem::is_directory(m_OutputDirPath)) boost::filesystem::create_directories(m_OutputDirPath);
 

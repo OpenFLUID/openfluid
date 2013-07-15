@@ -45,87 +45,43 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file DummyMixedImporter.cpp
-  \brief Implements ...
+  \file OtherException.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
 
-#include <openfluid/builderext/MixedImporter.hpp>
-#include <openfluid/base/OtherException.hpp>
+#ifndef __OTHEREXCEPTION_HPP__
+#define __OTHEREXCEPTION_HPP__
 
-#include <gtkmm/messagedialog.h>
+#include <openfluid/base/Exception.hpp>
+#include <openfluid/dllexport.hpp>
 
-DECLARE_EXTENSION_HOOKS;
-
-DEFINE_EXTENSION_INFOS("tests.builder.mixedimporterwithexception",
-                       "Dummy mixed importer with exception",
-                       "Dummy mixed importer throwing an exception for tests",
-                       "This is a mixed importer for tests",
-                       "JC.Fabre",
-                       "fabrejc@supagro.inra.fr",
-                       openfluid::builderext::PluggableBuilderExtension::MixedImporter);
-
-DEFINE_EXTENSION_DEFAULT_CONFIG()
-
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace base {
 
 
-class DummyMixedImporterWithException : public openfluid::builderext::MixedImporter
+class DLLEXPORT OtherException : public Exception
 {
-  private:
+  protected:
 
-  Gtk::MessageDialog* mp_Dialog;
+    void buildFullMessage()
+    {
+      m_FullMessage = m_Message;
+    }
+
 
   public:
 
-    DummyMixedImporterWithException()
+    OtherException(const std::string& Msg) :
+      Exception(Msg)
     {
-      mp_Dialog = new Gtk::MessageDialog("I am DummyMixedImporter with exception");
-    };
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    ~DummyMixedImporterWithException()
-    {
-      delete mp_Dialog;
-    };
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    Gtk::Widget* getExtensionAsWidget()
-    {
-      return mp_Dialog;
+      buildFullMessage();
     }
-
-
-    // =====================================================================
-    // =====================================================================
-
-    void show()
-    {
-      throw openfluid::base::OtherException("exception thrown!");
-
-      mp_Dialog->run();
-      mp_Dialog->hide();
-    }
-
 };
 
 
-// =====================================================================
-// =====================================================================
+} } // namespaces
 
-
-DEFINE_EXTENSION_HOOKS((DummyMixedImporterWithException));
-
+#endif /* __FRAMEWORKEXCEPTION_HPP__ */
