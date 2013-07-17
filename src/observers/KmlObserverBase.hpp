@@ -67,6 +67,7 @@
 #include <ogrsf_frmts.h>
 
 #include <openfluid/ware/PluggableObserver.hpp>
+#include <openfluid/tools/Archiver.hpp>
 
 
 class KmlUnitInfo
@@ -122,8 +123,6 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
     std::string m_InputDir;
     std::string m_OutputDir;
     std::string m_TmpDir;
-
-    std::string m_ZipCommand;
 
     bool m_TryOpenGEarth;
 
@@ -279,17 +278,12 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
     void buildKmzFile()
     {
-
+      std::string InputDir = boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/").string();
       std::string KmzFilePath = boost::filesystem::path(m_OutputDir + "/"+ m_OutputFileName).string();
 
       boost::filesystem::remove_all(boost::filesystem::path(KmzFilePath));
 
-      std::string FullZipCommand = "\"" + m_ZipCommand +"\" a -tzip \"" + KmzFilePath +"\"  \"" + boost::filesystem::path(m_TmpDir+"/"+m_KmzSubDir+"/").string() + "*\"";
-
-      std::string StrOut = "";
-      std::string StrErr = "";
-      int RetValue = 0;
-      Glib::spawn_command_line_sync(FullZipCommand,&StrOut,&StrErr,&RetValue);
+      openfluid::tools::Archiver::compressDirectoryAsZip(InputDir, KmzFilePath);
     }
 
 
@@ -327,47 +321,6 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
                                  "Cannot find Google Earth");
           return;
         }
-      }
-    }
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    void searchForZipTool()
-    {
-      // search for zip tool (7zip)
-      std::string ZipProgram = "";
-
-      #if defined __unix__ || defined __APPLE__
-        ZipProgram = "7z";
-      #endif
-
-      #if WIN32
-        ZipProgram = "7";
-      #endif
-
-      if (ZipProgram.empty())
-      {
-        OPENFLUID_RaiseWarning("KmlObserverBase::searchForZipTool()",
-                    "Unsupported system platform");
-        m_OKToGo = false;
-        return;
-      }
-
-      std::vector<std::string> ZipPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(ZipProgram);
-
-      if (!ZipPaths.empty())
-      {
-        m_ZipCommand = boost::filesystem::path(ZipPaths[0]).string();
-      }
-      else
-      {
-        OPENFLUID_RaiseWarning("KmlObserverBase::searchForZipTool()",
-            "Required Zip program ("+ ZipProgram +") not found");
-        m_OKToGo = false;
-        return;
       }
     }
 
@@ -426,7 +379,6 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       m_Title("OpenFLUID simulation with time animation"),
       m_OutputFileName(""),
       m_InputDir(""), m_OutputDir(""), m_TmpDir(""),
-      m_ZipCommand(""),
       m_TryOpenGEarth(false),
       m_OKToGo(false)
     {
