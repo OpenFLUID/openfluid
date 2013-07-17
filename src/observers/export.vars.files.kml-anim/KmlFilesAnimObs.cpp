@@ -463,7 +463,6 @@ class KmlFilesAnimObserver : public KmlObserverBase
       if(!m_OKToGo) return;
 
 
-      searchForZipTool();
 
       if(!m_OKToGo) return;
 

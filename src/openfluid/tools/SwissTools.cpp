@@ -245,6 +245,38 @@ bool EmptyDirectoryRecursively(const std::string DirPath)
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> getFilesRecursively(const std::string& DirPath)
+{
+  std::vector<std::string> FileNames;
+
+  boost::filesystem::directory_iterator It;
+
+  for (It = boost::filesystem::directory_iterator(DirPath); It != boost::filesystem::directory_iterator(); ++It)
+  {
+    // Regular file
+    if (boost::filesystem::is_regular(It->status()))
+      FileNames.push_back(DirPath + "/" + It->path().filename().string());
+
+    // Directory
+    if (boost::filesystem::is_directory(It->status()))
+    {
+      std::vector<std::string> SubDirFiles = getFilesRecursively(It->path().string());
+      std::vector<std::string>::const_iterator It;
+
+      for (It = SubDirFiles.begin(); It != SubDirFiles.end(); ++It)
+        FileNames.push_back(*It);
+    }
+  }
+
+  return FileNames;
+}
+
+
 // =====================================================================
 // =====================================================================
 

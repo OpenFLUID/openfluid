@@ -231,6 +231,11 @@ inline std::vector<std::string> /*DLLEXPORT*/ SplitString(const std::string StrT
 
 bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
 
+/**
+  @action Store all the paths of the files existing in dir passed as parameter
+*/
+std::vector<std::string> DLLEXPORT getFilesRecursively(const std::string& DirPath);
+
 std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr, const std::string& ReplaceStr);
 
 std::string DLLEXPORT RemoveTrailingSlashes(std::string Str);
