@@ -149,47 +149,52 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
     void cpreprocessCPP();
 
     /**
-     * @action Create a new member of UnitsClass vector
+      @action Create a new member of UnitsClass vector
     */
     void addVectorMember(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass);
 
     /**
-     * @action Store data parsed in correct attribute of UnitsClass
+      @action Store data parsed in correct attribute of UnitsClass
     */
     void storeInUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass, int Att);
 
     /**
-     * @action Store the new key value parsed for SignatureData attribute
+      @action Store the new key value parsed for SignatureData attribute
     */
     void storeKey(SignatureData_t *SignatureData, std::string State);
 
     /**
-     * @action Add data parsed in SignatureData attribute received as parameter
+      @action Add data parsed in SignatureData attribute received as parameter
     */
     void storeIntoSignatureData(SignatureData_t *SignatureData);
 
     /**
-     * @action Build a signature parameter with elements parsed
+      @action Build a signature parameter with parsed elements
     */
     void buildParam(const char* First, const char* Last);
 
     /**
-     * @action Store data built with parsing in attribute parameter
+      @action Store data built with parsing in attribute parameter
     */
     void storeData(std::string *Param);
 
     /**
-     * @action Set fixed scheduling of TimeScheduling attribute
+      @action Check parsed status
+    */
+    void storeStatus();
+
+    /**
+      @action Set fixed scheduling of TimeScheduling attribute
     */
     void setSchedulingFixed(double Val);
 
     /**
-     * @action Set range scheduling of TimeScheduling attribute
+      @action Set range scheduling of TimeScheduling attribute
     */
     void setSchedulingRange(double Max);
 
     /**
-     * @action Apply latex syntax to the attributes
+      @action Apply latex syntax to the attributes
     */
     void turnIntoLatexSyntax();
 
@@ -225,8 +230,8 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
       struct definition
       {
         // List of parsing rules
-        rule<ScannerT> blank, endLine, escapedChar, string, element, parameters, signature,
-                        IDRule, NameRule, DescriptionRule, VersionRule, DomainRule, AuthorRule,
+        rule<ScannerT> blank, endLine, escapedQuote, string, varName, element, parameters, signature,
+                        IDRule, NameRule, DescriptionRule, VersionRule, StatusRule, DomainRule, AuthorRule,
                         SimulatorParamRule, ProducedVarRule, UpdatedVarRule, RequiredVarRule, UsedVarRule,
                         ProducedAttributeRule, RequiredAttributeRule, UsedAttributeRule,
                         UsedEventsRule, UsedExtraFilesRule, RequiredExtraFilesRule,
@@ -243,7 +248,7 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
                     | str_p("DECLARE_DESCRIPTION(") >> DescriptionRule >> ')' >> endLine
                     | str_p("DECLARE_VERSION(") >> VersionRule >> ')' >> endLine
                     | str_p("DECLARE_SDKVERSION") >> endLine
-                    | str_p("DECLARE_STATUS(") >> string >> ')' >> endLine
+                    | str_p("DECLARE_STATUS(") >> StatusRule >> ')' >> endLine
                     | str_p("DECLARE_DOMAIN(") >> DomainRule >> ')' >> endLine
                     | str_p("DECLARE_PROCESS(") >> parameters >> ')' >> endLine
                     | str_p("DECLARE_METHOD(") >> parameters >> ')' >> endLine
@@ -279,14 +284,16 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
 
           blank = blank_p | eol_p;    // Parse all spaces, tabs or end of line
           endLine = *(blank | ';');
-          escapedChar = '\\' >> (alnum_p | '"');
+          escapedQuote = str_p("\\\"");
 
-          // String content composed to alphanumeric and specified characters
-          string = *(alnum_p | '.' | ' ' | '@' | '/' | ':' | '_' | '[' | ']' | '-' | escapedChar | '\\');
+          // String content composed to all characters
+          string = *(escapedQuote | (anychar_p - '"'));
 
-          // Parameter of a method surrounded by quotes or not
+          varName = *(print_p - ')');
+
+          // Parameter of a method surrounded by quotes (string) or not (var name)
           element = (+(*blank >> '"' >> string[boost::bind(&Sim2DocBuddy::buildParam, self.m_Owner, _1, _2)] >> '"' >> *blank))
-                      | (*blank >> string[boost::bind(&Sim2DocBuddy::buildParam, self.m_Owner, _1, _2)] >> *blank);
+                      | (*blank >> varName[boost::bind(&Sim2DocBuddy::buildParam, self.m_Owner, _1, _2)] >> *blank);
 
           // List of parameters of a method stored in a temp variable
           parameters = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, Tmp)]
@@ -300,6 +307,7 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
           NameRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimName)];
           DescriptionRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimDescription)];
           VersionRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimVersion)];
+          StatusRule = element[boost::bind(&Sim2DocBuddy::storeStatus, self.m_Owner)];
           DomainRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimDomain)];
           AuthorRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimAuthorName)]
              >> ',' >> element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimAuthorEmail)];
