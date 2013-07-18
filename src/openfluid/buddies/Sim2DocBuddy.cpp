@@ -408,6 +408,31 @@ void Sim2DocBuddy::storeData(std::string *Param)
 // =====================================================================
 
 
+void Sim2DocBuddy::storeStatus()
+{
+  std::string ParsedStatus = "";
+  std::string DataToStore = "";
+  std::size_t Found = m_BuiltParam.rfind(':');
+
+  // Get ware status
+  if (Found != std::string::npos)
+    ParsedStatus = m_BuiltParam.substr(Found+1, m_BuiltParam.length()-Found);
+
+  if (ParsedStatus == "EXPERIMENTAL")
+    DataToStore = "Experimental";
+  else if (ParsedStatus == "BETA")
+    DataToStore = "Beta";
+  else if (ParsedStatus == "STABLE")
+    DataToStore = "Stable";
+
+  m_BuiltParam.erase();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void Sim2DocBuddy::setSchedulingFixed(double Val)
 {
   m_TimeScheduling.setAsFixed((core::Duration_t) Val);
@@ -497,7 +522,7 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
         UnitsClassIt != m_UnitsGraph.UpdatedUnitsClass.end(); ++UnitsClassIt)
   {
     UnitsClassIt->UnitsClass = toLatexFriendly(UnitsClassIt->UnitsClass);
-    UnitsClassIt->Description = toLatexFriendly(UnitsClassIt->UnitsClass);
+    UnitsClassIt->Description = toLatexFriendly(UnitsClassIt->Description);
   }
 }
 
