@@ -149,6 +149,13 @@ class PolygonGraph: public LandRGraph
     bool isComplete();
 
     /**
+     * @brief Check if PolygonGraph has island
+     *
+     * @return True if one or more islands are present, false otherwise.
+     */
+    bool hasIsland();
+
+    /**
      * Get a map of polygonized Raster polygons and its area intersecting Entity.
      *
      * @param Entity The Entity to compare with the associated Raster.
