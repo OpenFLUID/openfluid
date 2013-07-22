@@ -55,6 +55,8 @@
 #ifndef AVAILSIMULATORSWIDGET_HPP_
 #define AVAILSIMULATORSWIDGET_HPP_
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 #include <gtkmm/box.h>

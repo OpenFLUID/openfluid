@@ -59,6 +59,7 @@
 
 // for covariant return type of getEntity
 #include <openfluid/landr/PolygonEntity.hpp>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 namespace landr {
@@ -68,7 +69,7 @@ class VectorDataset;
 /**
  * @brief A LandRGraph composed of PolygonEntities.
  */
-class PolygonGraph: public LandRGraph
+class DLLEXPORT PolygonGraph: public LandRGraph
 {
   public:
 

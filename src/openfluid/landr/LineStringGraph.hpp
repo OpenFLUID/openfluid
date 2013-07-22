@@ -56,6 +56,7 @@
 #define LINESTRINGGRAPH_HPP_
 
 #include <openfluid/landr/LandRGraph.hpp>
+#include <openfluid/dllexport.hpp>
 
 // for covariant return type of getEntity
 #include <openfluid/landr/LineStringEntity.hpp>
@@ -120,7 +121,7 @@ class VectorDataset;
 /**
  * @brief A LandRGraph composed of LineStringEntities.
  */
-class LineStringGraph: public LandRGraph
+class DLLEXPORT LineStringGraph: public LandRGraph
 {
 private:
 

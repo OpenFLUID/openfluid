@@ -57,11 +57,12 @@
 
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 namespace ware {
 
-class GeneratorSignature: public openfluid::ware::SimulatorSignature
+class DLLEXPORT GeneratorSignature: public openfluid::ware::SimulatorSignature
 {
   private:
 

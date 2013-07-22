@@ -56,6 +56,7 @@
 #define POLYGONEDGE_HPP_
 
 #include <geos/planargraph/Edge.h>
+#include <openfluid/dllexport.hpp>
 
 namespace geos {
 namespace geom {
@@ -76,7 +77,7 @@ class PolygonEntity;
  * @brief A part of a PolygonEntity exterior ring, that may be share between to adjacent PolygoneEntities.
  * @details A PolygonEdge  has one or two Faces. The Faces are the PolygonEntities that share this PolygonEdge.
  */
-class PolygonEdge: public geos::planargraph::Edge
+class DLLEXPORT PolygonEdge: public geos::planargraph::Edge
 {
   private:
 

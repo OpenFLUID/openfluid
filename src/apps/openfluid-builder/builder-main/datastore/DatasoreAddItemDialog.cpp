@@ -95,13 +95,21 @@ DatasoreAddItemDialog::DatasoreAddItemDialog(
       sigc::mem_fun(*this, &DatasoreAddItemDialog::checkIsValid));
 
   mp_TypeCombo = Gtk::manage(new Gtk::ComboBoxText());
+#ifdef G_OS_WIN32
+  mp_TypeCombo->append_text(
+      openfluid::core::UnstructuredValue::getStringFromValueType(
+          openfluid::core::UnstructuredValue::GeoVectorValue));
+  mp_TypeCombo->append_text(
+      openfluid::core::UnstructuredValue::getStringFromValueType(
+          openfluid::core::UnstructuredValue::GeoRasterValue));
+#else
   mp_TypeCombo->append(
       openfluid::core::UnstructuredValue::getStringFromValueType(
           openfluid::core::UnstructuredValue::GeoVectorValue));
   mp_TypeCombo->append(
       openfluid::core::UnstructuredValue::getStringFromValueType(
           openfluid::core::UnstructuredValue::GeoRasterValue));
-
+#endif
   Gtk::Table* IDTypeTable = Gtk::manage(new Gtk::Table(2, 2));
   IDTypeTable->set_col_spacings(5);
   IDTypeTable->set_row_spacings(10);

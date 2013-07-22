@@ -81,13 +81,13 @@ class DefaultIOListener : public openfluid::base::IOListener
 
     void onFileLoaded(openfluid::base::Listener::Status Status)
     {
-      if (Status == openfluid::base::Listener::OK)
+      if (Status == openfluid::base::Listener::LISTEN_OK)
         std::cout << "[OK]" << std::endl;
 
-      if (Status == openfluid::base::Listener::WARNING)
+      if (Status == openfluid::base::Listener::LISTEN_WARNING)
         std::cout << "[Warning]" << std::endl;
 
-      if (Status == openfluid::base::Listener::ERROR)
+      if (Status == openfluid::base::Listener::LISTEN_ERROR)
         std::cout << "[Error]" << std::endl;
     };
 

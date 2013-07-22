@@ -57,12 +57,11 @@
 #define __FRAMEWORKEXCEPTION_HPP__
 
 #include <openfluid/base/Exception.hpp>
-#include <openfluid/dllexport.hpp>
 
 namespace openfluid { namespace base {
 
 
-class DLLEXPORT FrameworkException : public Exception
+class FrameworkException : public Exception
 {
   protected:
 

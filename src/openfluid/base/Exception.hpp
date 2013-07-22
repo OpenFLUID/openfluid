@@ -60,13 +60,11 @@
 #include <string>
 #include <sstream>
 
-#include <openfluid/dllexport.hpp>
-
 
 namespace openfluid { namespace base {
 
 
-class DLLEXPORT Exception : public std::exception
+class Exception : public std::exception
 {
   protected:
 

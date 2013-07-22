@@ -55,6 +55,8 @@
 #ifndef __PROJECTEXPLORERADAPTERMODEL_HPP__
 #define __PROJECTEXPLORERADAPTERMODEL_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 #include <gtkmm/treemodel.h>
 

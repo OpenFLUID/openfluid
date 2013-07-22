@@ -56,6 +56,7 @@
 #define __GEOVECTORVALUE_HPP__
 
 #include <openfluid/core/GeoValue.hpp>
+#include <openfluid/dllexport.hpp>
 
 #include <ogrsf_frmts.h>
 
@@ -66,7 +67,7 @@ namespace core {
  * @brief Container class for geospatial vector data,
  * represented by an OGR datasource.
  */
-class GeoVectorValue: public openfluid::core::GeoValue
+class DLLEXPORT GeoVectorValue: public openfluid::core::GeoValue
 {
   protected:
 

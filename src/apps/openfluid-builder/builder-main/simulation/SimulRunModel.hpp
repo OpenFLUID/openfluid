@@ -55,6 +55,8 @@
 #ifndef __SIMULRUNMODEL_HPP__
 #define __SIMULRUNMODEL_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 #include <string>
 

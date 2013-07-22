@@ -57,6 +57,7 @@
 
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/landr/LandRTools.hpp>
+#include <openfluid/dllexport.hpp>
 #include <vector>
 
 namespace geos {
@@ -77,7 +78,7 @@ class LineStringEntity;
  * @brief A LandREntity representing a geos::geom::Polygon.
  * @details A PolygonEntity has at least a PolygonEdge, all edges representing the Polygon exterior ring.
  */
-class PolygonEntity: public LandREntity
+class DLLEXPORT PolygonEntity: public LandREntity
 {
   private:
 

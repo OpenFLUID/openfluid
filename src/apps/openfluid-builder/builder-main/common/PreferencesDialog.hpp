@@ -66,6 +66,9 @@
 #include <gtkmm/scrolledwindow.h>
 
 #include <glibmm/i18n.h>
+
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 namespace openfluid {

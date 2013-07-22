@@ -63,7 +63,7 @@
 namespace openfluid { namespace buddies {
 
 
-class ExamplesBuddy : public OpenFLUIDBuddy
+class DLLEXPORT ExamplesBuddy : public OpenFLUIDBuddy
 {
   public:
 

@@ -471,11 +471,11 @@ void Engine::initParams()
   }
   catch (openfluid::base::FrameworkException& E)
   {
-    mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_ERROR);
     throw;
   }
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::WARNING);
-  else mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::OK);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else mp_MachineListener->onInitParamsDone(openfluid::machine::MachineListener::LISTEN_OK);
   mp_SimLogger->resetWarningFlag();
 
 }
@@ -493,12 +493,12 @@ void Engine::prepareData()
   }
   catch (openfluid::base::FrameworkException& E)
   {
-    mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_ERROR);
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::WARNING);
-  else  mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::OK);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else  mp_MachineListener->onPrepareDataDone(openfluid::machine::MachineListener::LISTEN_OK);
   mp_SimLogger->resetWarningFlag();
 
 }
@@ -525,7 +525,7 @@ void Engine::checkConsistency()
   }
   catch (openfluid::base::FrameworkException& E)
   {
-    mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_ERROR);
     throw;
   }
 
@@ -538,12 +538,12 @@ void Engine::checkConsistency()
   }
   catch (openfluid::base::FrameworkException& E)
   {
-    mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_ERROR);
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::WARNING);
-  else  mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::OK);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else  mp_MachineListener->onCheckConsistencyDone(openfluid::machine::MachineListener::LISTEN_OK);
   mp_SimLogger->resetWarningFlag();
 
 }
@@ -573,12 +573,12 @@ void Engine::run()
   }
   catch (openfluid::base::FrameworkException& E)
   {
-    mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_ERROR);
     throw;
   }
 
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::WARNING);
-  else mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::OK);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else mp_MachineListener->onInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
   mp_SimLogger->resetWarningFlag();
 
   // check simulation vars production after init
@@ -608,7 +608,7 @@ void Engine::run()
     }
     catch (openfluid::base::FrameworkException& E)
     {
-      mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::ERROR);
+      mp_MachineListener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_ERROR);
       throw;
     }
   }
@@ -630,13 +630,13 @@ void Engine::run()
   }
   catch (openfluid::base::FrameworkException& E)
   {
-    mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::ERROR);
+    mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_ERROR);
     throw;
   }
 
 
-  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::WARNING);
-  else mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::OK);
+  if (mp_SimLogger->isWarningFlag()) mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+  else mp_MachineListener->onFinalizeRunDone(openfluid::machine::MachineListener::LISTEN_OK);
   mp_SimLogger->resetWarningFlag();
 
   // check simulation vars production after finalize

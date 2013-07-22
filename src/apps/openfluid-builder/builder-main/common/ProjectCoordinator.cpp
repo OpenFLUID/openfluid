@@ -173,6 +173,13 @@ void ProjectCoordinator::whenActivationChanged()
   std::string PageName = "";
   openfluid::guicommon::ProjectWorkspaceModule* Module;
 
+#ifdef G_OS_WIN32
+   std::string OutputsCommand, OutputsDir;
+   OutputsDir = boost::filesystem::path(openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir()).string();
+   std::replace(OutputsDir.begin(),OutputsDir.end(), L'/', L'\\');
+   OutputsCommand = "explorer.exe \"" + OutputsDir + "\"";
+#endif
+
   switch (m_ExplorerModel.getActivatedElement().first)
   {
     case ProjectExplorerCategories::EXPLORER_MODEL:
@@ -261,6 +268,9 @@ void ProjectCoordinator::whenActivationChanged()
       break;
 
     case ProjectExplorerCategories::EXPLORER_OUTPUTS:
+#ifdef G_OS_WIN32
+      std::system(OutputsCommand.c_str());
+#else
       PageName = m_OutputsPageName;
       if (!m_Workspace.existsPageName(PageName))
       {
@@ -268,6 +278,7 @@ void ProjectCoordinator::whenActivationChanged()
 
         addModuleToWorkspace(PageName, *Module);
       }
+#endif
       break;
 
     case ProjectExplorerCategories::EXPLORER_NONE:
@@ -275,7 +286,9 @@ void ProjectCoordinator::whenActivationChanged()
       break;
   }
 
+#ifndef G_OS_WIN32
   m_Workspace.setCurrentPage(PageName);
+#endif
 
 }
 

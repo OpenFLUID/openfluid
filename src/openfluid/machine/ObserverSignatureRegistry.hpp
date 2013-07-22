@@ -57,13 +57,14 @@
 
 #include <vector>
 #include <string>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 namespace machine {
 
 class ObserverSignatureInstance;
 
-class ObserverSignatureRegistry
+class DLLEXPORT ObserverSignatureRegistry
 {
   private:
 

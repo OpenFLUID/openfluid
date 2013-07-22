@@ -58,6 +58,8 @@
 #include <vector>
 #include <list>
 #include <openfluid/landr/LineStringGraph.hpp>
+#include <openfluid/dllexport.hpp>
+
 namespace geos {
 namespace geom {
 class Geometry;
@@ -74,7 +76,7 @@ class VectorDataset;
 /**
  * @brief Set of tools to manage LandR elements.
  */
-class LandRTools
+class DLLEXPORT LandRTools
 {
   public:
 

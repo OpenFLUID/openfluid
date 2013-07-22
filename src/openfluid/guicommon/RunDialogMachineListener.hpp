@@ -101,9 +101,9 @@ class DLLEXPORT RunDialogMachineListener : public openfluid::machine::MachineLis
     {
       switch (Status)
       {
-        case openfluid::machine::MachineListener::OK :
+        case openfluid::machine::MachineListener::LISTEN_OK :
           return _("[OK]"); break;
-        case openfluid::machine::MachineListener::WARNING :
+        case openfluid::machine::MachineListener::LISTEN_WARNING :
           return _("[Warning]");break;
         default : return _("[Error]"); break;
 

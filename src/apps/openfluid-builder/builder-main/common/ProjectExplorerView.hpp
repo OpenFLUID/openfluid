@@ -55,6 +55,8 @@
 #ifndef __PROJECTEXPLORERVIEW_HPP__
 #define __PROJECTEXPLORERVIEW_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 #include <gtkmm/treeview.h>

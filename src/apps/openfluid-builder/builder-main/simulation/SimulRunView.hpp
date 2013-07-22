@@ -55,6 +55,8 @@
 #ifndef __SIMULRUNVIEW_HPP__
 #define __SIMULRUNVIEW_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 #include <gtkmm/box.h>

@@ -55,6 +55,8 @@
 #ifndef __PROJECTCOORDINATOR_HPP__
 #define __PROJECTCOORDINATOR_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 #include <map>
 #include <string>

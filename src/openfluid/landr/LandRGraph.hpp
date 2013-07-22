@@ -56,7 +56,7 @@
 #define LANDRGRAPH_HPP_
 
 #include <geos/planargraph/PlanarGraph.h>
-
+#include <openfluid/dllexport.hpp>
 #include <ogrsf_frmts.h>
 #include <list>
 
@@ -93,7 +93,7 @@ class RasterDataset;
 /**
  * @brief Interface for a graph composed of LandREntities.
  */
-class LandRGraph: public geos::planargraph::PlanarGraph
+class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
 {
   public:
 

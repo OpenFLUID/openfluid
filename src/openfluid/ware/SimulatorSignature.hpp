@@ -287,7 +287,7 @@ typedef std::string SimDomain_t;
 /**
 Class for storage of the definition of data handled by the simulator.
 */
-class SignatureHandledDataItem
+class DLLEXPORT SignatureHandledDataItem
 {
   public:
 
@@ -308,7 +308,7 @@ class SignatureHandledDataItem
 /**
 Class for storage of the definition of typed data handled by the simulator.
 */
-class SignatureHandledTypedDataItem : public SignatureHandledDataItem
+class DLLEXPORT SignatureHandledTypedDataItem : public SignatureHandledDataItem
 {
 
   public:
@@ -321,16 +321,7 @@ class SignatureHandledTypedDataItem : public SignatureHandledDataItem
       DataType(openfluid::core::Value::NONE) {}
 
     SignatureHandledTypedDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
-        std::string DDescription, std::string DUnit)
-    {
-      UnitClass = UClass;
-      Description = DDescription;
-      DataUnit = DUnit;
-
-      if(!getVariableNameAndType(DName,DataName,DataType))
-        throw openfluid::base::FrameworkException("SignatureHandledTypedDataItem::SignatureHandledTypedDataItem","Variable " + DName + " is not well formated.");
-    }
-
+        std::string DDescription, std::string DUnit);
 };
 
 
@@ -356,7 +347,7 @@ class SignatureHandledUnitsClassItem
 /**
   Class for storage of the definition of the data handled by the simulator. This is part of the signature.
 */
-class SignatureHandledData
+class DLLEXPORT SignatureHandledData
 {
   public:
 
@@ -391,7 +382,7 @@ class SignatureHandledData
 };
 
 
-class SignatureHandledUnitsGraph
+class DLLEXPORT SignatureHandledUnitsGraph
 {
   public:
 
@@ -406,7 +397,7 @@ class SignatureHandledUnitsGraph
 };
 
 
-class SignatureTimeScheduling
+class DLLEXPORT SignatureTimeScheduling
 {
   public:
 

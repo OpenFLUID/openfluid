@@ -59,6 +59,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <openfluid/dllexport.hpp>
 
 namespace geos {
 namespace geom {
@@ -78,7 +79,7 @@ namespace landr {
 /**
  * @brief Interface for a landscape representation element.
  */
-class LandREntity: public geos::planargraph::GraphComponent
+class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
 {
   private:
 

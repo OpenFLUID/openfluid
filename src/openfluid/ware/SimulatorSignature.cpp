@@ -56,7 +56,6 @@
 
 #include <openfluid/ware/SimulatorSignature.hpp>
 
-
 namespace openfluid { namespace ware {
 
 
@@ -89,6 +88,23 @@ bool SignatureHandledTypedDataItem::getVariableNameAndType(const std::string Sou
 
   return false;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+SignatureHandledTypedDataItem::SignatureHandledTypedDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
+    std::string DDescription, std::string DUnit)
+{
+  UnitClass = UClass;
+  Description = DDescription;
+  DataUnit = DUnit;
+
+  if(!getVariableNameAndType(DName,DataName,DataType))
+    throw openfluid::base::FrameworkException("SignatureHandledTypedDataItem::SignatureHandledTypedDataItem","Variable " + DName + " is not well formated.");
+}
+
 
 
 } } //namespaces

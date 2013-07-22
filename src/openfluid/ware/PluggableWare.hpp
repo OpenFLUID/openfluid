@@ -166,13 +166,11 @@ class DLLEXPORT PluggableWare
     WareType m_WareType;
 
 
-    PluggableWare(WareType WType)
-    : mp_WareEnv(NULL),m_WareID(""),m_Initialized(false),mp_SimLogger(NULL), m_WareType(WType)
-    { };
+    PluggableWare(WareType WType);
 
   public:
 
-    virtual ~PluggableWare() {};
+    virtual ~PluggableWare();
 
     void linkToSimulationLogger(openfluid::base::SimulationLogger* SimLogger)
     {

@@ -59,7 +59,6 @@
 #include <string>
 #include <iostream>
 
-#include <openfluid/dllexport.hpp>
 #include <openfluid/base/Listener.hpp>
 
 namespace openfluid { namespace base {
@@ -68,7 +67,7 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-class DLLEXPORT IOListener : public openfluid::base::Listener
+class IOListener : public openfluid::base::Listener
 {
   private:
 

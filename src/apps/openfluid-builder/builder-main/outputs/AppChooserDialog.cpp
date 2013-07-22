@@ -152,8 +152,10 @@ void AppChooserDialog::show(Glib::RefPtr<Gio::File> Asked)
   {
     Gtk::TreeIter it = mp_AppTreeView->get_selection()->get_selected();
 
+#ifndef G_OS_WIN32
     if (it)
       it->get_value(m_AppColumns.m_AppInfo)->launch(Asked);
+#endif
   }
 
   mp_AppChooserDialog->hide();

@@ -55,6 +55,8 @@
 #ifndef __PROJECTEXPLORERPRESENTER_HPP__
 #define __PROJECTEXPLORERPRESENTER_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 class ProjectExplorerModel;
