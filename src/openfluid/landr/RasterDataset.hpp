@@ -58,6 +58,7 @@
 #include <map>
 #include "gdal_priv.h"
 #include "cpl_conv.h" // for CPLMalloc()
+#include <openfluid/dllexport.hpp>
 
 namespace geos {
 namespace geom {
@@ -74,7 +75,7 @@ namespace landr {
 
 class VectorDataset;
 
-class RasterDataset
+class DLLEXPORT RasterDataset
 {
   private:
 

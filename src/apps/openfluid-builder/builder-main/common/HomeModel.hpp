@@ -55,6 +55,8 @@
 #ifndef __HOMEMODEL_HPP__
 #define __HOMEMODEL_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 #include <iostream>

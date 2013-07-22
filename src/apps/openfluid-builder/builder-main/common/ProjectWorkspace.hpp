@@ -55,6 +55,8 @@
 #ifndef __PROJECTWORKSPACE_HPP__
 #define __PROJECTWORKSPACE_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <glibmm/i18n.h>
 #include <sigc++/sigc++.h>
 

@@ -60,11 +60,13 @@
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedMonitoringDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
+
 
 namespace openfluid {
 namespace fluidx {
 
-class AdvancedFluidXDescriptor
+class DLLEXPORT AdvancedFluidXDescriptor
 {
   private:
 

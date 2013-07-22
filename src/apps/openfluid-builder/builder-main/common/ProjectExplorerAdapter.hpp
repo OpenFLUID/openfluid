@@ -55,6 +55,8 @@
 #ifndef __PROJECTEXPLORERADAPTER_HPP__
 #define __PROJECTEXPLORERADAPTER_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 #include <string>
 

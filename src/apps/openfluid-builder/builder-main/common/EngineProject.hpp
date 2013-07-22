@@ -55,6 +55,8 @@
 #ifndef __ENGINEPROJECT_HPP__
 #define __ENGINEPROJECT_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 #include <glibmm/ustring.h>

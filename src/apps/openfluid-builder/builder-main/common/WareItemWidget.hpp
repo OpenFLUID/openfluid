@@ -55,6 +55,8 @@
 #ifndef WAREITEMWIDGET_HPP_
 #define WAREITEMWIDGET_HPP_
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/label.h>

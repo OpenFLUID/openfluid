@@ -56,6 +56,7 @@
 #define __GEORASTERVALUE_HPP__
 
 #include <openfluid/core/GeoValue.hpp>
+#include <openfluid/dllexport.hpp>
 
 #include "gdal_priv.h"
 #include "cpl_conv.h" // for CPLMalloc()
@@ -67,7 +68,7 @@ namespace core {
  * @brief Container class for geospatial raster data,
  * represented by a GDAL dataset.
  */
-class GeoRasterValue: public openfluid::core::GeoValue
+class DLLEXPORT GeoRasterValue: public openfluid::core::GeoValue
 {
 
   protected:

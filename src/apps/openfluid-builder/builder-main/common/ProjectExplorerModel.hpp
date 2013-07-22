@@ -55,6 +55,8 @@
 #ifndef __PROJECTEXPLORERMODEL_HPP__
 #define __PROJECTEXPLORERMODEL_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 #include <string>
 

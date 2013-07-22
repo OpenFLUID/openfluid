@@ -56,7 +56,9 @@
 #define LINESTRINGENTITY_HPP_
 
 #include <openfluid/landr/LandREntity.hpp>
+#include <openfluid/dllexport.hpp>
 #include <geos/planargraph/Edge.h>
+
 
 namespace geos {
 namespace geom {
@@ -71,7 +73,7 @@ namespace landr {
  * @brief A LandREntity representing a geos::geom::LineString.
  * @details A LineStringEntity has a StartNode and an EndNode, relatives to its LineString orientation.
  */
-class LineStringEntity: public LandREntity, public geos::planargraph::Edge
+class DLLEXPORT LineStringEntity: public LandREntity, public geos::planargraph::Edge
 {
   private:
 

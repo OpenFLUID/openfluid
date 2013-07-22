@@ -59,6 +59,8 @@
 
 #include <gtkmm/paned.h>
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 #include <openfluid/guicommon/BuilderModule.hpp>

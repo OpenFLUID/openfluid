@@ -60,7 +60,6 @@
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
 
-//#include <sigc++/sigc++.h>
 
 class BuilderHomeButton;
 class BuilderAppActions;

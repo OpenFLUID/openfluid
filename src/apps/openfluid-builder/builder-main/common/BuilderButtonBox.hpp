@@ -55,6 +55,8 @@
 #ifndef __BUILDERBUTTONBOX_HPP__
 #define __BUILDERBUTTONBOX_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 #include <gtkmm/buttonbox.h>

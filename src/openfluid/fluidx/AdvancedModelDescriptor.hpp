@@ -56,11 +56,13 @@
 #define ADVANCEDMODELDESCRIPTOR_HPP_
 
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
+
 
 namespace openfluid {
 namespace fluidx {
 
-class AdvancedModelDescriptor
+class DLLEXPORT AdvancedModelDescriptor
 {
   protected:
 

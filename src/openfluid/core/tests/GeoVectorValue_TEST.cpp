@@ -105,7 +105,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   BOOST_CHECK_EQUAL(
       Val->getAbsolutePath(),
-      (boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR) / "GeoVectorValue").string());
+      boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/GeoVectorValue").string());
 
   BOOST_CHECK(!Val->getData());
 

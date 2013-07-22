@@ -63,6 +63,7 @@
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 
@@ -72,7 +73,7 @@ class IOListener;
 
 namespace fluidx {
 
-class FluidXDescriptor
+class DLLEXPORT FluidXDescriptor
 {
   private:
 

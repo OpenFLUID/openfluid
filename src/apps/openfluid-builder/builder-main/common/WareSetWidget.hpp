@@ -55,6 +55,8 @@
 #ifndef WARESETWIDGET_HPP_
 #define WARESETWIDGET_HPP_
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>

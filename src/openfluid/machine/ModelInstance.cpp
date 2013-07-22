@@ -89,8 +89,8 @@ namespace openfluid { namespace machine {
         boost::posix_time::ptime _M_TimeProfileStart = boost::posix_time::microsec_clock::universal_time(); \
         _M_CurrentSimulator->Body->calledmethod; \
         if (mp_SimProfiler != NULL) mp_SimProfiler->addDuration(_M_CurrentSimulator->Signature->ID,timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length()); \
-        if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentSimulator->Signature->ID); \
-        else  mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentSimulator->Signature->ID); \
+        if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_WARNING,_M_CurrentSimulator->Signature->ID); \
+        else  mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_OK,_M_CurrentSimulator->Signature->ID); \
         mp_SimLogger->resetWarningFlag(); \
       } \
       _M_SimIter++; \
@@ -492,8 +492,8 @@ void ModelInstance::call_initializeRun()
                                                               boost::posix_time::time_period(TimeProfileStart,
                                                                                              boost::posix_time::microsec_clock::universal_time()).length());
 
-      if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::WARNING,CurrentSimulator->Signature->ID);
-      else  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::OK,CurrentSimulator->Signature->ID);
+      if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING,CurrentSimulator->Signature->ID);
+      else  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK,CurrentSimulator->Signature->ID);
       mp_SimLogger->resetWarningFlag();
 
       checkDeltaTMode(SchedReq,CurrentSimulator->Signature->ID);
@@ -548,8 +548,8 @@ void ModelInstance::processNextTimePoint()
                                                             openfluid::base::SimulationStatus::RUNSTEP,
                                                             boost::posix_time::time_period(TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length());
     if (mp_SimLogger->isWarningFlag())
-      mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::WARNING,NextItem->Signature->ID);
-    else  mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::OK,NextItem->Signature->ID);
+      mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING,NextItem->Signature->ID);
+    else  mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_OK,NextItem->Signature->ID);
     mp_SimLogger->resetWarningFlag();
 
     checkDeltaTMode(SchedReq,NextItem->Signature->ID);
@@ -566,8 +566,8 @@ void ModelInstance::processNextTimePoint()
     }
   }
 
-  if (mp_SimLogger->isWarningFlag()) mp_Listener->onRunStepDone(openfluid::machine::MachineListener::WARNING);
-      mp_Listener->onRunStepDone(openfluid::machine::MachineListener::OK);
+  if (mp_SimLogger->isWarningFlag()) mp_Listener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+      mp_Listener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_OK);
 
   m_TimePointList.pop_front();
 }

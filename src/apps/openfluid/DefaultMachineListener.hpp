@@ -72,13 +72,13 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     {
       switch (Status)
       {
-        case openfluid::machine::MachineListener::ERROR :
+        case openfluid::machine::MachineListener::LISTEN_ERROR :
           std::cout << " [Error]";
           break;
-        case openfluid::machine::MachineListener::OK :
+        case openfluid::machine::MachineListener::LISTEN_OK :
           std::cout << " [OK]";
           break;
-        case openfluid::machine::MachineListener::WARNING :
+        case openfluid::machine::MachineListener::LISTEN_WARNING :
           std::cout << " [Warning]";
           break;
       }
@@ -92,13 +92,13 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
     {
       switch (Status)
       {
-        case openfluid::machine::MachineListener::ERROR :
+        case openfluid::machine::MachineListener::LISTEN_ERROR :
           std::cout << std::setw(12) << "[Error]";
           break;
-        case openfluid::machine::MachineListener::OK :
+        case openfluid::machine::MachineListener::LISTEN_OK :
           std::cout << std::setw(12) << "[OK]";
           break;
-        case openfluid::machine::MachineListener::WARNING :
+        case openfluid::machine::MachineListener::LISTEN_WARNING :
           std::cout << std::setw(12) << "[Warning]";
           break;
       }

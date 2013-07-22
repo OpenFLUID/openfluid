@@ -56,11 +56,12 @@
 #define __WAREDESCRIPTOR_HPP__
 
 #include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 namespace fluidx {
 
-class WareDescriptor
+class DLLEXPORT WareDescriptor
 {
   public:
 

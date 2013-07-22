@@ -56,6 +56,8 @@
 #define ADVANCEDDOMAINDESCRIPTOR_HPP_
 
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/dllexport.hpp>
+
 #include <map>
 #include <set>
 
@@ -75,7 +77,7 @@ class AttributesDescriptor;
 // =====================================================================
 
 
-class AdvancedUnitDescriptor
+class DLLEXPORT AdvancedUnitDescriptor
 {
 
   public:
@@ -96,7 +98,7 @@ class AdvancedUnitDescriptor
 // =====================================================================
 // =====================================================================
 
-class AdvancedDomainDescriptor
+class DLLEXPORT AdvancedDomainDescriptor
 {
   public:
 

@@ -57,6 +57,8 @@
 
 #include <list>
 #include <string>
+#include <openfluid/dllexport.hpp>
+
 
 namespace openfluid {
 namespace fluidx {
@@ -64,7 +66,7 @@ namespace fluidx {
 class DatastoreDescriptor;
 class DatastoreItemDescriptor;
 
-class AdvancedDatastoreDescriptor
+class DLLEXPORT AdvancedDatastoreDescriptor
 {
   private:
 

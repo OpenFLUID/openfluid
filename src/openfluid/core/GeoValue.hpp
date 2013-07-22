@@ -56,6 +56,7 @@
 #define GEOVALUE_HPP_
 
 #include <openfluid/core/UnstructuredValue.hpp>
+#include <openfluid/dllexport.hpp>
 
 namespace openfluid {
 namespace core {
@@ -63,7 +64,7 @@ namespace core {
 /**
  * @brief Abstract class for geospatial data.
  */
-class GeoValue: public openfluid::core::UnstructuredValue
+class DLLEXPORT GeoValue: public openfluid::core::UnstructuredValue
 {
   protected:
 

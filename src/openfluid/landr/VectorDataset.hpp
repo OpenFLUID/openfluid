@@ -59,6 +59,8 @@
 #include <map>
 #include <list>
 #include <ogrsf_frmts.h>
+#include <openfluid/dllexport.hpp>
+
 
 namespace geos {
 namespace geom {
@@ -74,7 +76,7 @@ class GeoVectorValue;
 
 namespace landr {
 
-class VectorDataset
+class DLLEXPORT VectorDataset
 {
   public:
 

@@ -56,11 +56,13 @@
 #define ADVANCEDMONITORINGDESCRIPTOR_HPP_
 
 #include  <openfluid/fluidx/MonitoringDescriptor.hpp>
+#include <openfluid/dllexport.hpp>
+
 
 namespace openfluid {
 namespace fluidx {
 
-class AdvancedMonitoringDescriptor
+class DLLEXPORT AdvancedMonitoringDescriptor
 {
   private:
 

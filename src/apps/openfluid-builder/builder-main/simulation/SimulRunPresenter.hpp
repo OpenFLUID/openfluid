@@ -55,6 +55,8 @@
 #ifndef __SIMULRUNPRESENTER_HPP__
 #define __SIMULRUNPRESENTER_HPP__
 
+#include <cstddef>
+#include <cstdlib>
 #include <sigc++/sigc++.h>
 
 class SimulRunModel;
