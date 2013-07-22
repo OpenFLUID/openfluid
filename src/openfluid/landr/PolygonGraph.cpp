@@ -75,7 +75,7 @@ namespace landr {
 // =====================================================================
 
 PolygonGraph::PolygonGraph() :
-    LandRGraph()
+        LandRGraph()
 {
 
 }
@@ -84,7 +84,7 @@ PolygonGraph::PolygonGraph() :
 // =====================================================================
 
 PolygonGraph::PolygonGraph(openfluid::core::GeoVectorValue& Val) :
-    LandRGraph(Val)
+        LandRGraph(Val)
 {
 
 }
@@ -93,7 +93,7 @@ PolygonGraph::PolygonGraph(openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 
 PolygonGraph::PolygonGraph(openfluid::landr::VectorDataset& Vect) :
-    LandRGraph(Vect)
+        LandRGraph(Vect)
 {
 
 }
@@ -287,11 +287,11 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
     std::ostringstream s;
     s << "Error when removing segment (" << Segment->toString()
-      << ") from Polygon " << Entity->getSelfId()
-      << ": doesn't find edge intersection.";
+          << ") from Polygon " << Entity->getSelfId()
+          << ": doesn't find edge intersection.";
 
     throw openfluid::base::FrameworkException(
-                                       "PolygonGraph::removeSegment", s.str());
+        "PolygonGraph::removeSegment", s.str());
   }
 
   geos::geom::Geometry* DiffGeom = OldEdge->getLine()->difference(Segment);
@@ -305,12 +305,12 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
       std::ostringstream s;
       s << "Error when removing segment (" << Segment->toString()
-        << ") from Polygon " << Entity->getSelfId()
-        << ": difference geometry is not \"Line\" typed.";
+            << ") from Polygon " << Entity->getSelfId()
+            << ": difference geometry is not \"Line\" typed.";
 
       throw openfluid::base::FrameworkException(
-                                         "PolygonGraph::removeSegment",
-                                         s.str());
+          "PolygonGraph::removeSegment",
+          s.str());
     }
 
     std::vector<geos::geom::LineString*>* DiffGeoms =
@@ -353,6 +353,43 @@ bool PolygonGraph::isComplete()
   return true;
 }
 
+// =====================================================================
+// =====================================================================
+
+bool PolygonGraph::hasIsland()
+{
+
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
+  {
+    PolygonEntity*  Entity=dynamic_cast<PolygonEntity*>(*it);
+    const geos::geom::Polygon* RefPoly = Entity->getPolygon();
+
+    if (RefPoly->getNumInteriorRing ()!=0)
+    {
+      int NumInteriorRing=RefPoly->getNumInteriorRing ();
+
+      for (int i=0;i<NumInteriorRing;i++)
+      {
+        const geos::geom::LineString *InnerRing=RefPoly->getInteriorRingN(i);
+        for (LandRGraph::Entities_t::iterator it2 = m_Entities.begin();
+            it2 != m_Entities.end(); ++it2)
+        {
+          PolygonEntity*  IslandEntity=dynamic_cast<PolygonEntity*>(*it2);
+          if(Entity->getSelfId()!=IslandEntity->getSelfId())
+          {
+            const geos::geom::Polygon* IslandPoly = IslandEntity->getPolygon();
+            const geos::geom::LineString *OuterRing=IslandPoly->getExteriorRing();
+            if(InnerRing->within(OuterRing))
+              return true;
+          }
+        }
+      }
+
+    }
+  }
+  return false;
+}
 // =====================================================================
 // =====================================================================
 
@@ -424,7 +461,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
       {
         std::ostringstream s;
         s << "No raster value for a raster pixel overlapping entity "
-          << (*it)->getSelfId() << " .";
+            << (*it)->getSelfId() << " .";
 
         throw openfluid::base::FrameworkException(
             "PolygonGraph::setAttributeFromMeanRasterValues", s.str());

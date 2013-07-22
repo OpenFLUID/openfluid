@@ -1096,3 +1096,38 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersect)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_polygon_has_islands)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+    openfluid::landr::PolygonGraph* Graph =
+        openfluid::landr::PolygonGraph::create(*Val);
+
+  openfluid::core::GeoVectorValue* PolHole = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU-has-hole.shp");
+
+  openfluid::landr::PolygonGraph* GraphHole =
+      openfluid::landr::PolygonGraph::create(*PolHole);
+
+  openfluid::core::GeoVectorValue* PolIsland = new openfluid::core::GeoVectorValue(
+        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU-has-islands.shp");
+
+    openfluid::landr::PolygonGraph* GraphIsland =
+        openfluid::landr::PolygonGraph::create(*PolIsland);
+
+
+  BOOST_CHECK_EQUAL(Graph->hasIsland(), false);
+  BOOST_CHECK_EQUAL(GraphHole->hasIsland(), false);
+  BOOST_CHECK_EQUAL(GraphIsland->hasIsland(), true);
+
+  delete Graph;
+  delete Val;
+  delete GraphIsland;
+  delete PolIsland;
+  delete GraphHole;
+  delete PolHole;
+}
+
+// =====================================================================
+// =====================================================================
