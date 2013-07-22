@@ -65,7 +65,8 @@ namespace openfluid { namespace tools {
 ProgressiveColumnFileReader::ProgressiveColumnFileReader(const std::string& FileName,const std::string& ColSeparators):
     m_File(FileName.c_str()), m_ColSeparators(ColSeparators), m_FileName(FileName)
 {
-
+  if (!m_File.is_open())
+    throw openfluid::base::FrameworkException("ProgressiveColumnFileReader::ProgressiveColumnFileReader","Can not open file " + FileName);
 }
 
 
