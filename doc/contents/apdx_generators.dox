@@ -1,0 +1,62 @@
+/**
+
+\page apdx_generators File formats for "interp" or "inject" generators
+
+
+\section apdx_generators_sources Sources file
+
+The sources file format is an XML based format which defines a list of sources
+files associated to an unique ID.\\
+\noindent The sources must be defined in a section delimited by the
+\texttt{<datasources>} tag, inside an \texttt{<openfluid>} tag and must be
+structured following these rules:
+\begin{itemize}
+  \item Inside the \texttt{<datasources>} tag, there must be a set of
+  \texttt{<filesource>} tags
+  \item Each \texttt{<filesource>} tag must bring an \texttt{ID}
+  attribute giving the identifier of source, and an \texttt{file}
+  attribute giving the name of the file containing the source of data. The files
+  must be placed in the input directory of the simulation.
+\end{itemize}
+
+\code
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ 
+ <datasources>
+    <filesource ID="1" file="source1.dat" />
+    <filesource ID="2" file="source2.dat" />    
+  </datasources>
+  
+</openfluid>
+\endcode
+
+\n
+An associated source data file is a seven columns text file, containing a serie
+of values in time. The six first columns are the date using the following format
+\texttt{YYYY MM DD HH MM SS}. The 7$^{th}$ column is the value itself.
+
+\code
+1999 12 31 12 00 00 -1.0
+1999 12 31 23 00 00 -5.0
+2000 01 01 00 30 00 -15.0
+2000 01 01 00 40 00 -5.0
+2000 01 01 01 30 00 -15.0
+\endcode
+
+
+\section apdx_generators_distri Distribution file
+
+A distribution file is a two column file associating a unit ID
+(1$^{st}$column) to a source ID (2$^{nd}$column).
+\code
+1 1
+2 2
+3 1
+4 2
+5 1
+\endcode
+
+
+
+*/

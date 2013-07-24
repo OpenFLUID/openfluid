@@ -1,7 +1,6 @@
 /**
 
-\page dev_emptyfunc Creating an empty simulation function
-
+\page dev_createsim Creation of an empty simulator
 
 A simulation function must contain two parts :
 <ul>
@@ -14,7 +13,7 @@ A rough simulation function source code can be automatically generated through t
 \n
 \n
 
-\section emptysignature_sec Writing the signature
+\section dev_createsim_sign Writing the signature
 
 The function signature is a set of information about the content and behaviour of the simulation function.
 With this information, the OpenFLUID framework can evaluate the simulation function, have information on what it does,
@@ -32,11 +31,11 @@ The signature is declared and implemented in the .h file, and begin with the #BE
 
 \section emptyclass_sec Writing the derivative class from openfluid::base::PluggableFunction 
 
-See \ref devfuncemptyexample_ssec below
+See \ref dev_createsim_exmpl below
 
 \n
 
-\section emptycompile_ssec Compiling the function
+\section dev_createsim_compile Compiling the function
 
 The OpenFLUID simulation functions must be compiled using the gcc C++ compiler (g++) and must be linked to the OpenFLUID libraries.\n
 The "pkg-config openfluid" command gives the correct option to pass to the compiler:
@@ -55,7 +54,7 @@ The best way to compile and build your simulation function is to use the CMake b
 
 \n
   
-\section devfuncemptyexample_ssec Complete example 
+\section dev_createsim_exmpl Complete example 
 
 
 Example of an empty function (CPP file and CMake files)
@@ -357,5 +356,6 @@ SET(SIM_FORTRAN )
 # set this if you do want to include tests
 #SET(TESTS_DATASETS test01 test02)
 \endverbatim
+
 
 */

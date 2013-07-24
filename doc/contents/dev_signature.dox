@@ -8,7 +8,7 @@ The signature can be automatically generated through the OpenFLUID plugin for Ec
 
 The signature has to be defined between the #BEGIN_SIGNATURE_HOOK and #END_SIGNATURE_HOOK macros.  
 
-\section signid_ssec Identification
+\section dev_signature_id Identification
 
 The identification part of the signature must contain at least the ID of the simulation function. 
 This ID will be used by the framework to load functions. It is declared in 
@@ -23,7 +23,7 @@ The others information that can be included for identification are:
 <li>the software status of the function, declared through the #DECLARE_SIGNATURE_STATUS macro (can be openfluid::base::EXPERIMENTAL, openfluid::base::BETA or openfluid::base::STABLE)
 </ul>
 
-\section signapp_ssec Applications range
+\section dev_signature_range Applications range
 
 The informations about applications range is just indicative. It has no effects on coherence or computation. These information are :
 <ul>
@@ -32,7 +32,7 @@ The informations about applications range is just indicative. It has no effects 
 <li> the numerical methods used by the function, declared through the #DECLARE_SIGNATURE_METHOD macro
 </ul>
 
-\section signdata_ssec Handled data and units graph
+\section dev_signature_data Handled data and units graph
 
 The data handled by the simulation functions are function data or spatially distributed data, can be read by the function, appended by the function, and/or modified by the function.\n
 The function data are parameters passed to the simulation function, they usually are computation parameters. The distributed input data are attached to spatial units, and can be simulation variables or units properties.\n
@@ -46,21 +46,21 @@ Read data must have rules associated when they are declared. These rules are:
 <li>USED_PREV,  this means that data are used only if they are available or produced on a previous time step
 </ul> 
 
-\subsection signdatafunc_ssec Function parameters
+\subsection dev_signature_data_simparams Function parameters
 
 Function parameters are attached to functions. The declaration macro takes 3 arguments: the name of the parameter, the description of the parameter, and the SI unit of the parameter.
 <ul>
 <li>#DECLARE_SIMULATOR_PARAM
 </ul>
 
-\subsection signdatadistri_ssec Input data
+\subsection dev_signature_data_attrs Input data
 
 Input data are invariant information attached to units. Simulation functions declares handling input data on each unit class. The declaration macros take 4 arguments: the name of the data, the concerned unit class, the description of the data (not required), and the SI unit of the data (not required).
 <ul>
 <li>#DECLARE_REQUIRED_INPUTDATA, #DECLARE_USED_INPUTDATA
 </ul>
 
-\subsection signdatavars_ssec Simulation variables
+\subsection dev_signature_data_vars Simulation variables
 
 Simulation variables are produced, read and modified by functions, and attached to distributed units.
 The declaration macros take 4 arguments: the name of the variable, the concerned unit class, the description of the variable, and the SI unit of the variable.
@@ -90,7 +90,7 @@ Examples:
 <li> simulation function A produced a \e typed variable var1 of type \e double, simulation function B requires/uses/updates a \e typed variable var1 of type \e matrix : Fails! 
 </ul>
 
-\subsection signdataevts_ssec Distributed discrete events
+\subsection dev_signature_data_events Discrete events
 
 If the simulation function uses distributed discrete events, they must be declared in the signature. The declaration macro takes 1 argument: the concerned unit class.
 
@@ -99,7 +99,7 @@ To declare the use of discrete events:
 <li>#DECLARE_USED_EVENTS
 </ul>
 
-\subsection signdatafiles_ssec Extra files
+\subsection dev_signature_data_extrafiles Extra files
 
 The simulation function can declare files that it loads.
 This can help users to furnish the files needed by the function, and also  
@@ -111,7 +111,7 @@ To declare extra files:
 <li>#DECLARE_REQUIRED_EXTRAFILE for files that must be present. The presence is checked by the framework.
 </ul>
 
-\subsection signdatalandgraph_ssec Spatial units graph
+\subsection dev_signature_data_spatial Spatial units graph
 
 The spatial units graph representing the landscape can be modified by simulations functions. These modifications must be declared in the signature function using the following macros: 
 <ul>
@@ -119,7 +119,7 @@ The spatial units graph representing the landscape can be modified by simulation
 <li>#DECLARE_UPDATED_UNITSCLASS for declaration of which units classes will be affected, and how. 
 </ul>
 
-\section signexample_ssec Example
+\section dev_signature_exmpl Example
 
 \code
 

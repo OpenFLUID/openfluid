@@ -1,9 +1,33 @@
 /**
 
-\page user_fluidx FluidX file format
+\page use_fluidx Formats of input datasets
 
 This part of the manual describes the FluidX file(s) format. Refer to the "Usage"
 part of this manual to run the simulation.
+
+Before running the simulation, the input dataset must be built.
+An OpenFLUID-Engine input dataset includes different informations, defined in one or
+many files:
+  \li the spatial domain definition
+  \li the flux model definition
+  \li the spatial domain input data 
+  \li the discrete events
+  \li the run configuration
+  \li the outputs configuration
+
+All files must be placed into any directory that can be reached by the
+engine. The default searched directory is a directory named
+<tt>.openfluid/OPENFLUID.IN</tt> and located into the user home
+directory (the user home directory may vary, depending on the used operating
+system). This directory is not automatically created, it should be created by hand.
+If you prefer to place your dataset in another directory, you can
+specify it using command line options passed to the engine (\c -i or <tt>--input-dir</tt>).
+
+In order to build these files, we encouraged you to use a good text
+editor or, better, an XML editor. You can also use custom scripts or macros in
+specialized sotware, such as spreadsheets or Geographic Information Systems
+(GIS), to generate automatically the input dataset.
+
 
 \section user_fluidx_overview Overview
 
@@ -423,5 +447,100 @@ the \c <output>} tag, and must be structured following these rules:
   </output>
 </openfluid>
 \endcode
+
+
+\section use_fluidx_exmpl Example of an input dataset as a single FluidX file
+
+\code
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+  <model>
+    <gparams>
+      <param name="gparam1" value="100" />
+      <param name="gparam2" value="0.1" />
+    </gparams>
+    <function fileID="example.functionA" />
+    <generator varname="example.generator.fixed" unitclass="EU1"
+               method="fixed" varsize="11">
+      <param name="fixedvalue" value="20" />
+    </generator>
+    <generator varname="example.generator.random" unitclass="EU2" 
+               method="random">
+      <param name="min" value="20.53" />
+      <param name="max" value="50" />
+    </generator>
+    <function fileID="example.functionB">
+      <param name="param1" value="strvalue" />
+      <param name="param2" value="1.1" />
+      <param name="gparam1" value="50" />
+    </function>
+  </model>
+
+
+  <domain>
+
+    <definition>
+      <unit class="PU" ID="1" pcsorder="1" />
+      <unit class="EU1" ID="3" pcsorder="1">
+        <to class="EU1" ID="11" />
+        <childof class="PU" ID="1" />
+      </unit>
+      <unit class="EU1" ID="11" pcsorder="3">
+        <to class="EU2" ID="2" />
+      </unit>
+      <unit class="EU2" ID="2" pcsorder="1" />
+    </definition>
+
+    <inputdata unitclass="EU1" colorder="indataA">
+      3 1.1
+      11 7.5
+    </inputdata>
+    
+    <inputdata unitclass="EU2" colorder="indataB1;indataB3">
+      2 18 STRVALX
+    </inputdata>
+    
+    <calendar>
+      <event unitclass="EU1" unitID="11" date="1999-12-31 23:59:59">
+        <info key="when" value="before" />
+        <info key="where" value="1" />
+        <info key="var1" value="1.13" />
+        <info key="var2" value="EADGBE" />
+      </event>
+      <event unitclass="EU2" unitID="3" date="2000-02-05 12:37:51">
+        <info key="var3" value="152.27" />
+        <info key="var4" value="XYZ" />
+      </event>
+      <event unitclass="EU1" unitID="11" date="2000-02-25 12:00:00">
+        <info key="var1" value="1.15" />
+        <info key="var2" value="EADG" />
+      </event>
+    </calendar>
+    
+  </domain>
+
+
+  <run>
+    <deltat>3600</deltat>
+    <period begin="2000-01-01 00:00:00" end="2000-03-27 01:12:37" />
+    <valuesbuffer steps="50" />
+    <filesbuffer kbytes="8" />
+  </run>
+
+
+  <output>
+    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">
+      <set name="testRS" unitsclass="RS" unitsIDs="51;232" vars="*" />
+      <set name="full" unitsclass="SU" unitsIDs="*" vars="*" precision="7" />
+    </files>
+  </output>
+
+</openfluid>
+\endcode
+
+\n 
+
+
 
 */

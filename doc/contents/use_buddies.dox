@@ -1,7 +1,6 @@
 /**
 
-\page user_buddies Using buddies
-
+\page use_buddies OpenFLUID buddies
 
 Buddies are small tools that help scientific developers in order to complete
 the modelling and/or development works. They are usable from the command line,
@@ -19,7 +18,7 @@ Options are given to buddies through a comma-separated list of \c key=value argu
 General usage is:\n
 <tt>openfluid-engine --buddy buddyname --buddyopts abuddyopt=avalue,anotherbuddyopt=anothervalue</tt>
 
-\section user_buddies_func2doc func2doc
+\section use_buddies_sim2doc func2doc
 
 The \c func2doc buddy extracts scientific information from the source code
 of simulation functions. It uses the function signature and LaTeX-formatted text
@@ -54,7 +53,7 @@ Usage example:\n
 inputcpp=/path/to/cppfile.cpp, outputdir=/path/to/outputdir,pdf=1</tt>
 
 
-\section user_buddies_newfunc newfunc
+\section use_buddies_newfunc newfunc
 
 The \c newfunc buddy generate a skeleton source code of a simulation
 function, using given options.
@@ -80,7 +79,7 @@ Usage example:\n
 funcid=domain.subdomain.process.method, outputdir=/path/to/outputdir</tt>
 
 
-\section user_buddies_newdata newdata
+\section use_buddies_newdata newdata
 
 The \c newdata buddy generate a skeleton dataset. 
 
@@ -97,7 +96,7 @@ Usage example:\n
 <tt>openfluid-engine --buddy newdata --buddyopts
 outputdir=/path/to/outputdir</tt>
 
-\section user_buddies_convert convert
+\section use_buddies_convert convert
 
 The \c convert buddy converts a dataset from a specific version format to another one.
 Currently, conversion is possible from 1.3.x format to 1.4.x format, and from 1.4.x format to 1.5.x format 
@@ -116,5 +115,6 @@ Required options:
 Usage example:\n
 <tt>openfluid-engine --buddy convert --buddyopts convmode=13_14,
 inputdir=/path/to/inputdir,outputdir=/path/to/outputdir</tt>
+
 
 */

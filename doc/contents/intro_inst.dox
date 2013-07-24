@@ -1,0 +1,33 @@
+/**
+
+\page intro_inst Installation and resources
+
+
+The OpenFLUID software is available on Linux, Windows and MacOSX platforms.
+It is made of the OpenFLUID framework and OpenFLUID applications. 
+We encourage you to use the OpenFLUID software on Linux platform as it is the
+development and usually used platform.
+
+This usage information is for a command-line use of OpenFLUID. For usage through
+the graphical user interface, you have to run the \c openfluid-builder software 
+which is not presented in this document.
+
+
+\section intro_inst_install Getting and installing OpenFLUID
+
+On linux platforms, the OpenFLUID software is available as distribution
+packages (deb, rpm) or archive files (tar.gz, tar.bz2). The recommanded way to
+install it is to use packages for your Linux distribution. If you want to use
+archive files, you have to unarchive the software according to the directory tree.
+
+Once installed, the \c openfluid-engine command should be available.
+You can check it by running the command <tt>openfluid-engine --help</tt> or
+<tt>openfluid-engine --version</tt>
+in your favorite terminal. You are now ready to run your first simulation.
+
+
+
+\section intro_inst_resources OpenFLUID resources
+
+
+*/

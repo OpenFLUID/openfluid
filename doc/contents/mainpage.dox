@@ -3,59 +3,52 @@
  
 \n 
  
-This manual is made of two parts...
+This manual is made of different parts.
+\n
+\n
 
-
-
-\section mainpage_userman User's manual
-
+<h3>Introduction to OpenFLUID</h3>
 <ul>
-  <li> \subpage user_runsims
-  <li> \subpage user_fluidx
-  <li> \subpage user_examples
-  <li> \subpage user_buddies
-  <li> \subpage user_otherinfos
+  <li> \subpage intro_oview
+  <li> \subpage intro_soft
+  <li> \subpage intro_inst
 </ul>
-
 \n
 \n
 
-
-\section mainpage_devman Scientific developer's manual  
-
-The OpenFLUID API includes all available features provided by the OpenFLUID libraries that can be used
-to build OpenFLUID software applications and to develop simulation functions.  
-
-
-Along with the technical information, this API documentation contains specific parts about simulation function development: 
+<h3>Running simulations with OpenFLUID</h3>
 <ul>
-  <li> the \subpage dev_howitworks part giving the general organization and features of the library     
-  <li> the \subpage dev_emptyfunc part explaining how to create and build a simulation function
-  <li> the parts for integration of your own code and how to access to simulation data and information
-  <ul>
-  <li>\subpage dev_values
-  <li>\subpage dev_signature
-  <li>\subpage dev_classoview
-  <li>\subpage dev_space
-  <li>\subpage dev_time
-  <li>\subpage dev_simdatavar
-  <li>\subpage dev_internaldata  
-  <li>\subpage dev_warnerrorlog
-  <li>\subpage dev_runenv
-  <li>\subpage dev_fortran
-  <li>\subpage dev_debug
-  <li>\subpage dev_misc 
-  </ul> 
-</ul>   
-
-\n
-
-Have fun!   
-
-\n
+  <li> \subpage use_apps
+  <li> \subpage use_fluidx
+  <li> \subpage use_buddies
+  <li> \subpage use_examples
+</ul>
 \n
 \n
 
+<h3>Development of OpenFLUID simulators</h3>
+<ul>
+  <li> \subpage dev_oviewsim
+  <li> \subpage dev_createsim
+  <li> \subpage dev_signature
+  <li> \subpage dev_srccode
+  <li> \subpage dev_sim2doc
+</ul>
+\n
+\n
+
+<h3>Appendix</h3>
+<ul>
+  <li> \subpage apdx_optenv
+  <li> \subpage apdx_prj
+  <li> \subpage apdx_datetime
+  <li> \subpage apdx_generators
+  <li> \subpage apdx_obsparams
+</ul>
+\n
+\n
+
+\n
 
 
 */

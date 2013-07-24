@@ -1,0 +1,48 @@
+/**
+
+\page intro_soft OpenFLUID software framework
+
+
+
+kernel/plugin architecture
+
+
+applications
+
+ 
+The OpenFLUID libraries features are gathered together into the \ref openfluid "openfluid namespace", which is made of several parts. The three main parts are: 
+<ul>
+  <li>openfluid::core, defined in openfluid/core.hpp, gathers all the classes for the shared data between the OpenFLUID framework and the functions, and between the functions themselves
+  <li>openfluid::base, defined in openfluid/base.hpp, gathers all the classes for the dynamic linking between the OpenFLUID framework  and the functions, and in particular the openfluid::base::PluggableFunction class
+  <li>openfluid::tools, defined in openfluid/tools.hpp, gathers tools available for data processing, files reading, ...
+</ul>
+
+\n
+
+These libraries mainly rely on external libraries:
+<ul> 
+  <li>The boost libraries : http://www.boost.org/   
+  <li>The libXML2 library for XML file handling : http://xmlsoft.org/
+  <li>The C++ Standard Type Library (STL) for common data structures : http://www.sgi.com/tech/stl/ 
+  <li>The Glibmm/Gtkmm library for GUI development and convenience features: http://www.gtkmm.org/
+  <li>The libCURL library for networking capabilities : http://curl.haxx.se/
+</ul>
+\n
+\image html API_stack.png
+\image latex API_stack.png "API stack" width=14cm
+\n
+\n
+
+
+
+spatio temporal architecture
+ 
+development environment 
+ 
+The FortranCPP.h header file make Fortran code encapsulation (into simulation functions) easier.
+
+
+
+
+
+*/

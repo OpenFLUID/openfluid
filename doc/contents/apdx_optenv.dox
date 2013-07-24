@@ -1,0 +1,46 @@
+/**
+
+\page apdx_optenv Command line options and environment variables
+
+\section apdx_optenv_cmdopt Command line options
+
+\begin{center}
+\begin{tabularx}{\linewidth}{lX}
+\texttt{-a}, \verb?---?\texttt{auto-output-dir}&generate automatic results output directory\\
+\texttt{-b}, \verb?---?\texttt{buddy <arg>}&run specified OpenFLUID buddy\\
+\verb?---?\texttt{buddyhelp <arg>}&display help message for specified OpenFLUID buddy\\
+\verb?---?\texttt{buddyopts <arg>}&set options for specified OpenFLUID buddy\\
+\texttt{-c}, \verb?---?\texttt{clean-output-dir}&clean results output directory by removing existing files\\
+\texttt{-f}, \verb?---?\texttt{functions-list}&list available functions (do not run the simulation)\\
+\texttt{-h}, \verb?---?\texttt{help}&display help message\\
+\texttt{-i}, \verb?---?\texttt{input-dir <arg>}&set dataset input directory\\
+\texttt{-k}, \verb?---?\texttt{enable-simulation-profiling}&enable time profiling for functions\\
+\texttt{-o}, \verb?---?\texttt{output-dir <arg>}&set results output directory\\
+\texttt{-p}, \verb?---?\texttt{functions-paths <arg>}&add extra functions research paths\\
+\texttt{-q}, \verb?---?\texttt{quiet}&quiet display during simulation run\\
+\texttt{-r}, \verb?---?\texttt{functions-report}&print a report of available functions, with details (do not run the simulation)\\
+\texttt{-s}, \verb?---?\texttt{no-simreport}&do not generate simulation report\\
+\verb?---?\texttt{show-paths}&print the used paths (do not run the simulation)\\
+\texttt{-u}, \verb?---?\texttt{matching-functions-report <arg>}&print a report of functions matching the given wildcard-based pattern (do not run the simulation)\\
+\texttt{-v}, \verb?---?\texttt{verbose}&verbose display during simulation\\
+\verb?---?\texttt{version}&get version (do not run the simulation)\\
+\texttt{-w}, \verb?---?\texttt{project <arg>}&set project directory\\
+\texttt{-x}, \verb?---?\texttt{xml-functions-report}&print a report of available functions in xml format, with details (do not run the simulation)\\
+\texttt{-z}, \verb?---?\texttt{no-result}&do not write results files\\
+\end{tabularx}
+\end{center}
+
+
+\section apdx_optenv_envvar Environment variables
+
+
+The OpenFLUID \ framework takes into account the following environment
+variables (if they are set):
+\begin{itemize}
+\item \texttt{OPENFLUID\_FUNCS\_PATH}: extra search paths for \OFname \ simulation functions. The path are separated by colon on UNIX systems, and by semicolon on Windows systems. 
+\item \texttt{OPENFLUID\_INSTALL\_PREFIX}: overrides automatic detection of install path, useful on Windows systems.
+\end{itemize}
+
+
+
+*/
