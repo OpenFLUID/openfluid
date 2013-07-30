@@ -320,7 +320,47 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
 
 }
 
+// =====================================================================
+// =====================================================================
 
+std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(
+    geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2)
+{
+  try
+  {
+    std::vector<geos::geom::Polygon*> Polygons;
+
+    for (unsigned int i = 0; i < Geom1->getNumGeometries(); i++)
+    {
+      if(Geom1->getGeometryN(i)->getGeometryTypeId()!=geos::geom::GEOS_POLYGON)
+        throw openfluid::base::FrameworkException(
+            "LandRTools::computeIntersectPolygons",
+            " The Geometry is not Polygon-typed.");
+      for (unsigned int j = 0; j < Geom2->getNumGeometries(); j++)
+      {
+        if(Geom2->getGeometryN(j)->getGeometryTypeId()!=geos::geom::GEOS_POLYGON)
+          throw openfluid::base::FrameworkException(
+              "LandRTools::computeIntersectPolygons",
+              " The Geometry is not Polygon-typed.");
+        if((Geom1->getGeometryN(i))->intersects(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j))))
+        {
+          geos::geom::Geometry *Intersect=(Geom1->getGeometryN(i))->intersection(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j)));
+          Polygons.push_back(dynamic_cast<geos::geom::Polygon*>(Intersect));
+
+        }
+      }
+    }
+    return Polygons;
+  }
+  catch (geos::util::GEOSException& e)
+  {
+    throw openfluid::base::FrameworkException(
+        "LandRTools::computeIntersectPolygons",
+        "Error while Intersecting Polygons.\n"
+        "(Details: "
+        + std::string(e.what()) + ")");
+  }
+}
 
 
 // =====================================================================

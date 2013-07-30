@@ -808,3 +808,49 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
+{
+  openfluid::core::GeoVectorValue Val(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+  openfluid::core::GeoVectorValue ValLine(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+  openfluid::landr::VectorDataset* VectLine = new openfluid::landr::VectorDataset(
+      ValLine);
+
+  geos::geom::Geometry *Geom1=Vect->getGeometries();
+  geos::geom::Geometry *GeomLine=VectLine->getGeometries();
+
+  BOOST_CHECK_THROW(
+       openfluid::landr::LandRTools::computeIntersectPolygons(GeomLine, Geom1),
+       openfluid::base::FrameworkException);
+
+  BOOST_CHECK_THROW(
+      openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, GeomLine),
+      openfluid::base::FrameworkException);
+
+  delete VectLine;
+
+  openfluid::core::GeoVectorValue Val2(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST2.shp");
+
+  openfluid::landr::VectorDataset* Vect2 = new openfluid::landr::VectorDataset(
+      Val2);
+
+  geos::geom::Geometry *Geom2=Vect2->getGeometries();
+
+  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
+//  for (unsigned int i = 0; i < IntersectPolys.size(); i++)
+//    std::cout << IntersectPolys.at(i)->toString() << std::endl;
+  BOOST_CHECK_EQUAL(IntersectPolys.size(), 6);
+
+  delete Vect;
+  delete Vect2;
+
+
+}
+// =====================================================================
+// =====================================================================
+
