@@ -177,6 +177,17 @@ class DLLEXPORT LandRTools
      * @param Node the begin Node of LineStringGraph
      */
     static void markVisitedNodesUsingDFS(geos::planargraph::Node* Node);
+
+    /**
+     * @brief Intersection of two GeometryCollection of Polygons.
+     *
+     * @param Geom1 The Geometry to join with Geom2.
+     * @param Geom2 The other Geometry.
+     * @return A vector of Polygons representing the intersection of Geom1 and Geom2.
+     */
+    static std::vector<geos::geom::Polygon*> computeIntersectPolygons(
+        geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2);
+
 };
 
 }
