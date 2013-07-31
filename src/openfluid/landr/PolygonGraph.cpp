@@ -404,7 +404,7 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
 
   if (!RasterPolys)
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::getRasterPolyOverlaying",
+        "PolygonGraph::getRasterPolyOverlapping",
         "No RasterPolygonizedMultiPolygon associated to the PolygonGraph");
 
   for (std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();
@@ -454,8 +454,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
     for (PolygonGraph::RastValByRastPoly_t::iterator itPix = RastPolys.begin();
         itPix != RastPolys.end(); ++itPix)
     {
-      // get as integer because GeoRasterValue::polygonize function currently only deal with integer values
-      int* PixelVal = ((int*) itPix->first->getUserData());
+      double* PixelVal = ((double*) itPix->first->getUserData());
 
       if (!PixelVal)
       {

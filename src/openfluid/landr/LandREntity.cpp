@@ -68,7 +68,7 @@ namespace landr {
 LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int SelfId) :
     mp_Geom(Geom), m_SelfId(SelfId), mp_Neighbours(0)
 {
-  mp_Centroide = mp_Geom->getCentroid();
+  mp_Centroid = mp_Geom->getCentroid();
   m_Area = mp_Geom->getArea();
   m_Lenght = mp_Geom->getLength();
 }
@@ -78,7 +78,7 @@ LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int SelfId) 
 
 LandREntity::~LandREntity()
 {
-  delete mp_Centroide;
+  delete mp_Centroid;
   delete mp_Geom;
   delete mp_Neighbours;
 
@@ -106,9 +106,9 @@ unsigned int LandREntity::getSelfId() const
 // =====================================================================
 // =====================================================================
 
-geos::geom::Point* LandREntity::getCentroide() const
+geos::geom::Point* LandREntity::getCentroid() const
 {
-  return mp_Centroide;
+  return mp_Centroid;
 }
 
 // =====================================================================
@@ -181,7 +181,7 @@ bool LandREntity::setAttributeValue(std::string AttributeName,
 
 double LandREntity::getDistCentroCentro(LandREntity& Other)
 {
-  return mp_Centroide->distance(Other.getCentroide());
+  return mp_Centroid->distance(Other.getCentroid());
 }
 
 // =====================================================================

@@ -367,7 +367,7 @@ openfluid::landr::VectorDataset* LandRGraph::getRasterPolygonized()
   {
     if (!mp_Raster)
       throw openfluid::base::FrameworkException(
-          "PolygonGraph::getRasterPolygonized",
+          "LandRGraph::getRasterPolygonized",
           "No raster associated to the PolygonGraph");
 
     std::ostringstream FileName;
@@ -392,7 +392,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
 
     if (!Polygonized)
       throw openfluid::base::FrameworkException(
-          "PolygonGraph::getRasterPolygonizedMultiPoly",
+          "LandRGraph::getRasterPolygonizedMultiPoly",
           "No RasterPolygonized associated to the PolygonGraph");
 
     mp_RasterPolygonizedPolys = new std::vector<geos::geom::Polygon*>();
@@ -419,7 +419,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
       geos::geom::Polygon* Clone =
           dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone());
 
-      Clone->setUserData(new int(Feat->GetFieldAsInteger(PixelValFieldIndex)));
+      Clone->setUserData(new double(Feat->GetFieldAsDouble(PixelValFieldIndex)));
 
       mp_RasterPolygonizedPolys->push_back(Clone);
 
@@ -442,11 +442,11 @@ float* LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
 
   if (!mp_Raster)
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::getRasterValueForEntityCentroid",
+        "LandRGraph::getRasterValueForEntityCentroid",
         "No raster associated to the PolygonGraph");
 
   Val = new float(
-      mp_Raster->getValueOfCoordinate(*Entity.getCentroide()->getCoordinate()));
+      mp_Raster->getValueOfCoordinate(*Entity.getCentroid()->getCoordinate()));
 
   return Val;
 }
@@ -471,7 +471,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
       s << "No raster value for entity " << (*it)->getSelfId() << " centroid.";
 
       throw openfluid::base::FrameworkException(
-          "PolygonGraph::setAttributeFromRasterValueAtCentroid", s.str());
+          "LandRGraph::setAttributeFromRasterValueAtCentroid", s.str());
     }
 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
