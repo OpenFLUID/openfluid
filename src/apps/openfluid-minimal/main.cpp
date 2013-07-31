@@ -69,6 +69,8 @@
 
 int main(int argc, char **argv)
 {
+  INIT_OPENFLUID_APPLICATION(argc,argv);
+
   try
   {
     std::string InputDir = "";
@@ -83,10 +85,6 @@ int main(int argc, char **argv)
     }
     else
       throw openfluid::base::ApplicationException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdirs>");
-
-
-    openfluid::base::Init();
-
 
     openfluid::machine::Engine* Engine;
     openfluid::machine::SimulationBlob SBlob;

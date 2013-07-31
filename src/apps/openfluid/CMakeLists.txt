@@ -21,6 +21,7 @@ TARGET_LINK_LIBRARIES(${OPENFLUID_CMD_APP}
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
                       ${LibXML2_LIBRARIES}
+                      ${QT_QTCORE_LIBRARIES}
                       openfluid-base
                       openfluid-buddies
                       openfluid-core

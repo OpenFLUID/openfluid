@@ -13,8 +13,10 @@ ADD_SUBDIRECTORY(buddies)
 
 IF(OPENFLUID_ENABLE_GUI)
   ADD_SUBDIRECTORY(guicommon)
+  ADD_SUBDIRECTORY(guicommon-gtk)  
   IF (BUILD_APP_BUILDER)
     ADD_SUBDIRECTORY(builderext)
+    ADD_SUBDIRECTORY(builderext-gtk)
   ENDIF()
 ENDIF()
 
