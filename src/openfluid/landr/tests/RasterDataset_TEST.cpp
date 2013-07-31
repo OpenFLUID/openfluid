@@ -273,7 +273,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
   delete Rast;
   delete VectorVal;
 
-  // float values, rounded to integer values (GDALFPolygonize for floats available since GDAL 1.9.0 only)
+  // float values keeped (GDALFPolygonize for floats available since GDAL 1.9.0 )
   RasterVal = openfluid::core::GeoRasterValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
 
@@ -283,13 +283,19 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
 
   VectorLayer = VectorVal->getLayer(0);
 
-  BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 151);
-  BOOST_CHECK_EQUAL(
-      VectorLayer->GetFeature(0)->GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
-      99);
-  BOOST_CHECK_EQUAL(
-      VectorLayer->GetFeature(42)->GetFieldAsInteger(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str()),
-      85);
+  BOOST_CHECK_EQUAL(VectorLayer->GetFeatureCount(), 400);
+
+  openfluid::core::DoubleValue Val=VectorLayer->GetFeature(0)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 98.9708));
+
+  Val=VectorLayer->GetFeature(1)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 99.201));
+
+  Val=VectorLayer->GetFeature(331)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 42.327));
+
+  Val=VectorLayer->GetFeature(399)->GetFieldAsDouble(openfluid::landr::RasterDataset::getDefaultPolygonizedFieldName().c_str());
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 21.0336));
 
   delete Rast;
   delete VectorVal;
