@@ -1,0 +1,15 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource>
+    <file>images/openfluid_official.png</file>
+    <file>icons/file-new.png</file>
+    <file>icons/file-open.png</file>
+    <file>icons/file-open-example.png</file>
+    <file>icons/file-close.png</file>
+    <file>icons/file-save.png</file>
+    <file>icons/file-save-as.png</file>
+    <file>icons/start.png</file>
+    <file>icons/refresh.png</file>
+    <file>icons/market.png</file>
+  </qresource>
+</RCC>

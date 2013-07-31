@@ -15,6 +15,7 @@ SET_TARGET_PROPERTIES(openfluid-minimal PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${B
 TARGET_LINK_LIBRARIES(openfluid-minimal
                       ${Boost_REGEX_LIBRARY}
                       ${LibXML2_LIBRARIES}
+                      ${QT_QTCORE_LIBRARIES}
                       openfluid-base
                       openfluid-core
                       openfluid-machine

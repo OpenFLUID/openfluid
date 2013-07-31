@@ -1,46 +1,52 @@
-## OpenFLUID/src/apps/openfluid-builder/CMakeLists.txt
-
-
-FILE(MAKE_DIRECTORY "${BUILDEREXT_OUTPUT_PATH}")
-
-PKG_CHECK_MODULES(GTKMM REQUIRED gtkmm-2.4)
-FIND_PACKAGE(GDAL REQUIRED)
-
-
-FILE(READ "${PROJECT_SOURCE_DIR}/COPYING" BUILDER_LICENSE_TEXT)
-STRING(REGEX REPLACE "\n" "\\\\n" BUILDER_LICENSE_TEXT "${BUILDER_LICENSE_TEXT}")
-STRING(REGEX REPLACE "\"" "''" BUILDER_LICENSE_TEXT "${BUILDER_LICENSE_TEXT}")
-
-FILE(READ "${PROJECT_SOURCE_DIR}/AUTHORS" BUILDER_AUTHORS_TEXT)
-STRING(REGEX REPLACE "\n" "\\\\n" BUILDER_AUTHORS_TEXT "${BUILDER_AUTHORS_TEXT}")
-STRING(REGEX REPLACE "\"" "''" BUILDER_AUTHORS_TEXT "${BUILDER_AUTHORS_TEXT}")
-
 
 CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 
+INCLUDE_DIRECTORIES(base)
 
-INCLUDE_DIRECTORIES(${GTKMM_INCLUDE_DIRS})
-LINK_DIRECTORIES(${GTKMM_LIBRARY_DIRS})
-
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
-
-INCLUDE_DIRECTORIES(${GDAL_INCLUDE_DIRS})
-LINK_DIRECTORIES(${GDAL_LIBRARY_DIRS})
-
-ADD_SUBDIRECTORY(builder-main)
-
-IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
-  ADD_SUBDIRECTORY(tests)
-ENDIF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
+SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp 
+                     base/HomeModule.cpp base/ProjectModule.cpp
+                     base/HomeWidget.cpp base/ProjectWidget.cpp
+                     base/BuilderApp.cpp base/MainWindow.cpp                      
+                     )
+SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp 
+                     base/HomeModule.hpp base/ProjectModule.hpp
+                     base/HomeWidget.hpp base/ProjectWidget.hpp
+                     base/BuilderApp.hpp base/MainWindow.hpp
+                     base/AbstractModule.hpp
+                     )
 
 
-INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS})
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
+QT4_ADD_RESOURCES(RCFILES resources/openfluidbuilder.qrc)
 
-INCLUDE_DIRECTORIES(builder-main builder-main/common)
+ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP}
+                                          ${RCFILES})
+
+
+TARGET_LINK_LIBRARIES(openfluid-builder-main 
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
+                      ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
+                      ${Boost_REGEX_LIBRARY}
+                      ${LibXML2_LIBRARIES}
+                      ${GTKMM_LIBRARIES}
+                      ${GDAL_LIBRARIES}
+                      ${QT_QTCORE_LIBRARIES}
+                      ${QT_QTGUI_LIBRARIES}                      
+                      openfluid-base
+                      openfluid-buddies
+                      openfluid-core
+                      openfluid-machine
+                      openfluid-tools
+                      openfluid-market
+                      openfluid-guicommon
+                      openfluid-fluidx)
+                      
+SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
+                                        SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
+                                        LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
 
 ADD_EXECUTABLE(openfluid-builder main.cpp)
 
@@ -61,14 +67,4 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-guicommon
                       openfluid-builder-main
                       openfluid-fluidx)
-
-
-ADD_SUBDIRECTORY(extensions)
-
-ADD_DEPENDENCIES(openfluid-builder i18n)
-
-INSTALL(TARGETS openfluid-builder
-        RUNTIME DESTINATION ${BIN_INSTALL_PATH})
-
-
-
+                                            

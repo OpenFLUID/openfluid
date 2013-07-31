@@ -56,18 +56,35 @@
 #ifndef __INIT_HPP__
 #define __INIT_HPP__
 
-#include <openfluid/dllexport.hpp>
-
-// =====================================================================
-// =====================================================================
 
 
-namespace openfluid { namespace base {
+#include <glibmm/thread.h>
+#include <QApplication>
 
-void DLLEXPORT Init();
+
+#include <openfluid/debug.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
 
 
-} } // namespaces
+
+#define INIT_OPENFLUID_APPLICATION(ac,av) \
+  OFDBG_BANNER; \
+  QCoreApplication _M_qapp(ac,av); \
+  if(!Glib::thread_supported()) Glib::thread_init(); \
+  openfluid::base::RuntimeEnvironment::getInstance();
+
+
+#define INIT_OPENFLUID_APPLICATION_WITH_GUI(ac,av) \
+  OFDBG_BANNER; \
+  QApplication _M_qapp(ac,av); \
+  if(!Glib::thread_supported()) Glib::thread_init(); \
+  openfluid::base::RuntimeEnvironment::getInstance();
+
+
+#define CLOSE_OPENFLUID_APPLICATION_WITH_GUI \
+ _M_qapp.exec();
+
+
 
 
 
