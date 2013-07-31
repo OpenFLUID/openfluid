@@ -454,8 +454,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
     for (PolygonGraph::RastValByRastPoly_t::iterator itPix = RastPolys.begin();
         itPix != RastPolys.end(); ++itPix)
     {
-      // get as integer because GeoRasterValue::polygonize function currently only deal with integer values
-      int* PixelVal = ((int*) itPix->first->getUserData());
+      double* PixelVal = ((double*) itPix->first->getUserData());
 
       if (!PixelVal)
       {

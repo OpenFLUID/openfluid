@@ -419,7 +419,7 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
       geos::geom::Polygon* Clone =
           dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone());
 
-      Clone->setUserData(new int(Feat->GetFieldAsInteger(PixelValFieldIndex)));
+      Clone->setUserData(new double(Feat->GetFieldAsDouble(PixelValFieldIndex)));
 
       mp_RasterPolygonizedPolys->push_back(Clone);
 

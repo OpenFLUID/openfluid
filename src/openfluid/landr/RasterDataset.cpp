@@ -308,7 +308,7 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(
     mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->addALayer("",
                                                                    wkbPolygon);
     mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->addAField(FieldName,
-                                                                   OFTInteger);
+                                                                   OFTReal);
     int FieldIndex =
         mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->getFieldIndex(
             FieldName);
@@ -316,13 +316,13 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(
     OGRLayer* Layer =
         mp_PolygonizedByRasterBandIndex.at(RasterBandIndex)->getLayer(0);
 
-    if (GDALPolygonize(getRasterBand(RasterBandIndex), NULL, Layer, FieldIndex,
-                       NULL, NULL, NULL)
+    if (GDALFPolygonize(getRasterBand(RasterBandIndex), NULL, Layer, FieldIndex,
+                        NULL, NULL, NULL)
         != CE_None)
     {
       throw openfluid::base::FrameworkException(
-                                         "RasterDataset::polygonize",
-                                         "Error while polygonizing raster.");
+          "RasterDataset::polygonize",
+          "Error while polygonizing raster.");
       delete mp_PolygonizedByRasterBandIndex.at(RasterBandIndex);
       mp_PolygonizedByRasterBandIndex.erase(RasterBandIndex);
     }

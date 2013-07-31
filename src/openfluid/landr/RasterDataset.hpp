@@ -145,7 +145,7 @@ class DLLEXPORT RasterDataset
      *
      * @param FileName The name of the new VectorDataset.
      * @param FieldName The name of the field to be created for storing the pixel value, limited to 10 characters (or will be truncated).
-     * Default is set to "PixelVal". Type of field is OFTInteger (float pixel values are rounded).
+     * Default is set to "PixelVal". Type of field is OFTReal .
      *
      * @return The newly created VectorDataset.
      */
