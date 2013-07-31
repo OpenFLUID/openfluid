@@ -57,6 +57,7 @@
 #include <QLayout>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QMessageBox>
 
 #include "MainWindow.hpp"
 
@@ -85,6 +86,18 @@ MainWindow::~MainWindow()
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
+void MainWindow::closeEvent(QCloseEvent* Event)
+{
+  Event->ignore();
+  if (QMessageBox::question(this,tr("Quit"),
+                            tr("Are you sure you want to quit OpenFLUID-Builder?"),
+                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+     Event->accept();
+  else
+    Event->ignore();
+}

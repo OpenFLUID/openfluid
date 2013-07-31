@@ -78,6 +78,8 @@ class MainWindow : public QMainWindow
 
     void unsetToolbar();
 
+    void closeEvent(QCloseEvent* Event);
+
 };
 
 

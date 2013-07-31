@@ -94,12 +94,9 @@ QWidget* HomeModule::getWidget(QWidget* Parent)
 // =====================================================================
 
 
-
 bool HomeModule::whenQuitAsked()
 {
-  return (QMessageBox::question(mp_Widget,tr("Quit"),
-                                tr("Are you sure you want to quit OpenFLUID-Builder?"),
-                                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes);
+  return true;
 }
 
 
