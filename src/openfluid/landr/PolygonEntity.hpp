@@ -89,18 +89,18 @@ class DLLEXPORT PolygonEntity: public LandREntity
 
   public:
 
-    typedef std::map<PolygonEntity*, std::vector<PolygonEdge*> > NeigboursMap_t;
-    typedef std::map<LineStringEntity*, PolygonEdge*> LineStringNeigboursMap_t;
+    typedef std::map<PolygonEntity*, std::vector<PolygonEdge*> > NeighboursMap_t;
+    typedef std::map<LineStringEntity*, PolygonEdge*> LineStringNeighboursMap_t;
 
     /**
      * @brief Map of neighbours of PolygonEntity type and the related vector of edges that are between this Polygon and the neighbour.
      */
-    NeigboursMap_t* mp_NeighboursMap;
+    NeighboursMap_t* mp_NeighboursMap;
 
     /**
      * @brief Map of neighbours of LineStringEntity type and the related edge that is between this Polygon and the neighbour, if exists.
      */
-    LineStringNeigboursMap_t* mp_LineStringNeighboursMap;
+    LineStringNeighboursMap_t* mp_LineStringNeighboursMap;
 
     /**
      * @brief PolygonEdges of this PolygonEntity.
@@ -153,7 +153,7 @@ class DLLEXPORT PolygonEntity: public LandREntity
      * @brief Return a map of this PolygonEntity neighbours with for each a vector of the shared PolygoneEdges.
      * @return
      */
-    const NeigboursMap_t* getNeighboursAndEdges();
+    const NeighboursMap_t* getNeighboursAndEdges();
 
     /**
      * @brief Return the SELF_IDs of this PolygonEntity neighbours, ascending ordered.
@@ -199,7 +199,7 @@ class DLLEXPORT PolygonEntity: public LandREntity
     /**
      * @brief Return the LineStringEntities neighbours of this PolygonEntity.
      */
-    LineStringNeigboursMap_t* getLineStringNeighbours();
+    LineStringNeighboursMap_t* getLineStringNeighbours();
 
 };
 

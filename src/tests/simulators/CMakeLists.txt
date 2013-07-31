@@ -6,8 +6,6 @@ ADD_DEFINITIONS(-DBUILDINGDLL)
 
 INCLUDE_DIRECTORIES("${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
 
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
-
 
 ###########################################################################
 

@@ -93,7 +93,7 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
 
     unsigned int m_SelfId;
 
-    geos::geom::Point* mp_Centroide;
+    geos::geom::Point* mp_Centroid;
 
     double m_Area;
 
@@ -120,7 +120,7 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
 
     unsigned int getSelfId() const;
 
-    geos::geom::Point* getCentroide() const;
+    geos::geom::Point* getCentroid() const;
 
     double getArea() const;
 

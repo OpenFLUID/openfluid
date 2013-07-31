@@ -47,24 +47,24 @@
 
 
 /**
-  \file CURLDownloader_TEST.cpp
+  \file FileDownloader_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_CURLdownloader
+#define BOOST_TEST_MODULE unittest_filedownloader
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-#include <openfluid/tools/CURLDownloader.hpp>
+#include <openfluid/tools/FileDownloader.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <QCoreApplication>
 
 #include <iostream>
 
@@ -87,31 +87,37 @@ BOOST_AUTO_TEST_CASE(check_operations)
   std::string LoremIpsum = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
   std::string LoremIpsumDLoaded;
 
-
-  BOOST_REQUIRE_EQUAL(openfluid::tools::CURLDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),LoremIpsumDLoaded),
-                      openfluid::tools::CURLDownloader::NO_ERROR);
+  BOOST_REQUIRE_EQUAL(openfluid::tools::FileDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/FileDownloader/lorem_ipsum.txt").string(),LoremIpsumDLoaded),
+                      true);
 
   BOOST_REQUIRE_EQUAL(LoremIpsum,LoremIpsumDLoaded);
 
-  std::cout << LoremIpsumDLoaded<< std::endl;
+  boost::filesystem::remove(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader/lorem_ipsum_dload.txt"));
+  boost::filesystem::create_directories(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader"));
 
 
-  boost::filesystem::remove(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader/lorem_ipsum_dload.txt"));
-  boost::filesystem::create_directories(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader"));
-
-  BOOST_REQUIRE_EQUAL(openfluid::tools::CURLDownloader::downloadToFile("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),
-                                            boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader/lorem_ipsum_dload.txt").string()),
-                      openfluid::tools::CURLDownloader::NO_ERROR);
-
+  BOOST_REQUIRE_EQUAL(openfluid::tools::FileDownloader::downloadToFile("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/FileDownloader/lorem_ipsum.txt").string(),
+          boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader/lorem_ipsum_dload.txt").string()),
+                      true);
 
   std::string LI1, LI2;
 
-  openfluid::tools::CURLDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/CURLDownloader/lorem_ipsum.txt").string(),LI1);
-  openfluid::tools::CURLDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/CURLDownloader/lorem_ipsum_dload.txt").string(),LI2);
+  openfluid::tools::FileDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/FileDownloader/lorem_ipsum.txt").string(),LI1);
+  openfluid::tools::FileDownloader::downloadToString("file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/FileDownloader/lorem_ipsum_dload.txt").string(),LI2);
 
   BOOST_REQUIRE_EQUAL(LI1,LI2);
-
 }
 
+// =====================================================================
+// =====================================================================
+
+int main(int argc, char *argv[])
+{
+  QCoreApplication app(argc, argv);
+
+  ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+
+  return 0;
+}
 
 
