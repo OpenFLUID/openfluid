@@ -55,7 +55,6 @@
 #ifndef FLUIDXDESCRIPTOR_HPP_
 #define FLUIDXDESCRIPTOR_HPP_
 
-#include <libxml/tree.h>
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
@@ -64,6 +63,10 @@
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
+
+#define QT_NO_KEYWORDS
+#include <QDomElement>
+
 
 namespace openfluid {
 
@@ -99,30 +102,30 @@ class DLLEXPORT FluidXDescriptor
 
     std::string m_IndentStr;
 
-    void extractMonitoringFromNode(xmlNodePtr NodePtr);
+    void extractMonitoringFromNode(QDomElement& Node);
 
-    openfluid::ware::WareParams_t extractParamsFromNode(xmlNodePtr NodePtr);
+    openfluid::ware::WareParams_t extractParamsFromNode(QDomElement& Node);
 
     openfluid::ware::WareParams_t mergeParams(
         const openfluid::ware::WareParams_t& Params,
         const openfluid::ware::WareParams_t& OverloadParams);
 
-    void extractModelFromNode(xmlNodePtr NodePtr);
+    void extractModelFromNode(QDomElement& Node);
 
-    void extractRunFromNode(xmlNodePtr NodePtr);
+    void extractRunFromNode(QDomElement& Node);
 
-    void extractDomainFomNode(xmlNodePtr NodePtr);
+    void extractDomainFomNode(QDomElement& Node);
 
     openfluid::core::UnitClassID_t extractUnitClassIDFromNode(
-        xmlNodePtr NodePtr);
+        QDomElement& Node);
 
-    void extractDomainDefinitionFromNode(xmlNodePtr NodePtr);
+    void extractDomainDefinitionFromNode(QDomElement& Node);
 
-    void extractDomainAttributesFromNode(xmlNodePtr NodePtr);
+    void extractDomainAttributesFromNode(QDomElement& Node);
 
-    void extractDomainCalendarFromNode(xmlNodePtr NodePtr);
+    void extractDomainCalendarFromNode(QDomElement& Node);
 
-    void extractDatastoreFromNode(xmlNodePtr NodePtr);
+    void extractDatastoreFromNode(QDomElement& Node);
 
     void parseFile(std::string Filename);
 

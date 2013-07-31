@@ -9,10 +9,7 @@ IF(WIN32)
 
 ENDIF()
 
-ADD_DEFINITIONS(${LibXML2_CFLAGS})
-
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS})
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS})
 
 FILE(GLOB OPENFLUID_TOOLS_CPP *.cpp)
 FILE(GLOB OPENFLUID_TOOLS_HPP *.hpp)
@@ -28,11 +25,11 @@ SET_TARGET_PROPERTIES(openfluid-tools PROPERTIES VERSION "${VERSION_MAJOR}.${VER
 
 TARGET_LINK_LIBRARIES(openfluid-tools 
                       openfluid-core
-                      ${LibXML2_LIBRARIES} 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
                       ${GLIBMM_LIBRARIES}
                       ${LibArchive_LIBRARIES}
-                      ${QT_QTNETWORK_LIBRARY})
+                      ${QT_QTNETWORK_LIBRARY}
+                      ${QT_QTXML_LIBRARY})
 
 
 
