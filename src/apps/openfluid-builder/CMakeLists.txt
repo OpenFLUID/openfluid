@@ -28,7 +28,6 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
-                      ${LibXML2_LIBRARIES}
                       ${GTKMM_LIBRARIES}
                       ${GDAL_LIBRARIES}
                       ${QT_QTCORE_LIBRARIES}
@@ -56,7 +55,6 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
-                      ${LibXML2_LIBRARIES}
                       ${GTKMM_LIBRARIES}
                       ${GDAL_LIBRARIES}
                       openfluid-base

@@ -1,7 +1,4 @@
-ADD_DEFINITIONS(${LibXML2_CFLAGS})
-
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS})
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 FILE(GLOB OPENFLUID_FLUIDX_CPP *.cpp)
 FILE(GLOB OPENFLUID_FLUIDX_HPP *.hpp)
@@ -18,8 +15,8 @@ SET_TARGET_PROPERTIES(openfluid-fluidx PROPERTIES VERSION "${VERSION_MAJOR}.${VE
 TARGET_LINK_LIBRARIES(openfluid-fluidx
                       openfluid-base
                       openfluid-core
-                      ${LibXML2_LIBRARIES}  
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
+                      ${QT_QTXML_LIBRARY})
 
 INSTALL(TARGETS openfluid-fluidx
         RUNTIME DESTINATION ${BIN_INSTALL_PATH}

@@ -46,7 +46,7 @@
 */
 
 /**
-  \file CURLDownloader.hpp
+  \file FileDownloader.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -54,12 +54,14 @@
 
 
 
-#ifndef __CURLDOWNLOADER_HPP__
-#define __CURLDOWNLOADER_HPP__
+#ifndef __FILEDOWNLOADER_HPP__
+#define __FILEDOWNLOADER_HPP__
 
 #include <string>
-
 #include <openfluid/dllexport.hpp>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 
 // =====================================================================
@@ -68,23 +70,63 @@
 namespace openfluid { namespace tools {
 
 
-class DLLEXPORT CURLDownloader
+class DLLEXPORT FileDownloader : public QObject
 {
-  public:
-
-    enum ErrorCode { NO_ERROR, CURL_ERROR, UNKNOWN_ERROR };
+  Q_OBJECT
 
   private:
-    static int CURLWriterToBuffer(char *Data, size_t Size, size_t NMemb, std::string *BufferIn);
 
-    static int CURLWriterToFile(void *Ptr, size_t Size, size_t NMemb, FILE *FileStream);
+    QNetworkAccessManager m_Manager;
+    QByteArray m_FileContent;
+    bool m_ContentDownloaded;
 
+
+    FileDownloader();
+    ~FileDownloader();
+
+    /**
+      @action Send request to get content of URL file
+    */
+    void downloadContent(const std::string& URL);
+
+    /**
+      @return content stored in attribute
+    */
+    QByteArray getContent() const;
+
+    /**
+      @return true if file content is downloaded and stored
+    */
+    bool contentIsDownloaded() const;
+
+    /**
+      @action Write content stored in a file
+      @param File path
+    */
+    void writeToFile(const std::string& FilePath) const;
+
+  // List of created Qt signals
+  signals:
+
+    /**
+     * Signal emitted when store of downloaded file content is finished
+    */
+    void processFinished();
+
+  // List of created Qt slots
+  public slots:
+
+    /**
+      @action Store file content downloaded in attribute
+      @param Reply of sent request
+    */
+    void downloadFinished(QNetworkReply *Reply);
 
   public:
 
-    static ErrorCode downloadToFile(const std::string URL, const std::string FilePath);
+    static bool downloadToString(const std::string& URL, std::string& Contents);
 
-    static ErrorCode downloadToString(const std::string URL, std::string& Contents);
+    static bool downloadToFile(const std::string& URL, const std::string& FilePath);
 
 };
 
@@ -92,4 +134,6 @@ class DLLEXPORT CURLDownloader
 } } // namespaces
 
 
-#endif /* __CURLDOWNLOADER_HPP__ */
+
+#endif /* __FILEDOWNLOADER_HPP__ */
+

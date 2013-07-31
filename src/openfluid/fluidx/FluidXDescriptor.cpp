@@ -59,6 +59,9 @@
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 
+#include <QDomDocument>
+#include <QFile>
+
 namespace openfluid {
 namespace fluidx {
 
@@ -82,26 +85,23 @@ FluidXDescriptor::~FluidXDescriptor()
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::extractMonitoringFromNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractMonitoringFromNode(QDomElement& Node)
 {
-  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
-
   openfluid::fluidx::ObserverDescriptor* OD;
 
-  while (CurrNode != NULL)
+  for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "observer") == 0)
+    if (CurrNode.tagName() == QString("observer"))
     {
-      xmlChar* xmlID = xmlGetProp(CurrNode, (const xmlChar*) "ID");
+      QString xmlID = CurrNode.attributeNode(QString("ID")).value();
 
-      if (xmlID != NULL)
+      if (!xmlID.isNull())
       {
-        OD = new openfluid::fluidx::ObserverDescriptor((const char*) xmlID);
+        OD = new openfluid::fluidx::ObserverDescriptor(xmlID.toStdString());
         OD->setParameters(extractParamsFromNode(CurrNode));
         m_MonitoringDescriptor.appendItem(OD);
       }
     }
-    CurrNode = CurrNode->next;
   }
 }
 
@@ -109,28 +109,24 @@ void FluidXDescriptor::extractMonitoringFromNode(xmlNodePtr NodePtr)
 // =====================================================================
 
 openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(
-    xmlNodePtr NodePtr)
+    QDomElement& Node)
 {
   openfluid::ware::WareParams_t Params;
 
-  if (NodePtr != NULL)
+  if (!Node.isNull())
   {
-    xmlNodePtr Curr = NULL;
-
-    Curr = NodePtr->xmlChildrenNode;
-    while (Curr != NULL)
+    for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
     {
-      if (xmlStrcmp(Curr->name, (const xmlChar*) "param") == 0)
+      if (CurrNode.tagName() == QString("param"))
       {
-        xmlChar* xmlKey = xmlGetProp(Curr, (const xmlChar*) "name");
-        xmlChar* xmlValue = xmlGetProp(Curr, (const xmlChar*) "value");
 
-        if (xmlKey != NULL && xmlValue != NULL)
+        QString xmlKey = CurrNode.attributeNode(QString("name")).value();
+        QString xmlValue = CurrNode.attributeNode(QString("value")).value();
+
+        if (!xmlKey.isNull() && !xmlValue.isNull())
         {
-          Params[(const char*) xmlKey] = openfluid::ware::WareParamValue_t(
-              (const char*) xmlValue);
-          xmlFree(xmlKey);
-          xmlFree(xmlValue);
+          Params[xmlKey.toStdString()] = openfluid::ware::WareParamValue_t(
+              xmlValue.toStdString());
         }
         else
           throw openfluid::base::FrameworkException(
@@ -138,7 +134,6 @@ openfluid::ware::WareParams_t FluidXDescriptor::extractParamsFromNode(
               "missing name and/or param attribute(s) in parameter definition (" + m_CurrentFile
               + ")");
       }
-      Curr = Curr->next;
     }
   }
 
@@ -164,7 +159,7 @@ openfluid::ware::WareParams_t FluidXDescriptor::mergeParams(
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
 {
   if (m_ModelDefined)
     throw openfluid::base::FrameworkException(
@@ -175,47 +170,45 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
   openfluid::fluidx::GeneratorDescriptor* GD;
   openfluid::ware::WareParams_t GParams;
 
-  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
-  while (CurrNode != NULL)
+  for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "gparams") == 0)
+    if (CurrNode.tagName() == QString("gparams"))
     {
       GParams = mergeParams(GParams, extractParamsFromNode(CurrNode));
     }
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "simulator") == 0)
+    if (CurrNode.tagName() == QString("simulator"))
     {
-      xmlChar* xmlID = xmlGetProp(CurrNode, (const xmlChar*) "ID");
+      QString xmlID = CurrNode.attributeNode(QString("ID")).value();
 
-      if (xmlID != NULL)
+      if (!xmlID.isNull())
       {
 
-        FD = new openfluid::fluidx::SimulatorDescriptor((const char*) xmlID);
+        FD = new openfluid::fluidx::SimulatorDescriptor(xmlID.toStdString());
         FD->setParameters(extractParamsFromNode(CurrNode));
         m_ModelDescriptor.appendItem(FD);
       }
     }
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "generator") == 0)
+    if (CurrNode.tagName() == QString("generator"))
     {
-      xmlChar* xmlVarName = xmlGetProp(CurrNode, (const xmlChar*) "varname");
-      xmlChar* xmlUnitClass = xmlGetProp(CurrNode,
-                                         (const xmlChar*) "unitclass");
-      xmlChar* xmlMethod = xmlGetProp(CurrNode, (const xmlChar*) "method");
-      xmlChar* xmlVarSize = xmlGetProp(CurrNode, (const xmlChar*) "varsize");
+      QString xmlVarName = CurrNode.attributeNode(QString("varname")).value();
+      QString xmlUnitClass = CurrNode.attributeNode(QString("unitclass")).value();
+      QString xmlMethod = CurrNode.attributeNode(QString("method")).value();
+      QString xmlVarSize = CurrNode.attributeNode(QString("varsize")).value();
       unsigned int VarSize = 1;
 
-      if (xmlVarName != NULL && xmlUnitClass != NULL && xmlMethod != NULL)
+      if (!xmlVarName.isNull() && !xmlUnitClass.isNull() && !xmlMethod.isNull())
       {
         openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GenMethod =
             openfluid::fluidx::GeneratorDescriptor::NoGenMethod;
-        if (xmlStrcmp(xmlMethod, (const xmlChar*) "fixed") == 0)
+        if (xmlMethod == QString("fixed"))
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Fixed;
-        if (xmlStrcmp(xmlMethod, (const xmlChar*) "random") == 0)
+        if (xmlMethod == QString("random"))
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Random;
-        if (xmlStrcmp(xmlMethod, (const xmlChar*) "interp") == 0)
+        if (xmlMethod == QString("interp"))
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Interp;
-        if (xmlStrcmp(xmlMethod, (const xmlChar*) "inject") == 0)
+        if (xmlMethod == QString("inject"))
           GenMethod = openfluid::fluidx::GeneratorDescriptor::Inject;
 
         if (GenMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
@@ -223,9 +216,9 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
               "FluidXDescriptor::extractModelFromNode",
               "unknown or missing generator method (" + m_CurrentFile + ")");
 
-        if (xmlVarSize != NULL)
+        if (!xmlVarSize.isNull())
         {
-          if (!openfluid::tools::ConvertString(std::string((char*) xmlVarSize),
+          if (!openfluid::tools::ConvertString(xmlVarSize.toStdString(),
                                                &VarSize))
             throw openfluid::base::FrameworkException(
                 "FluidXDescriptor::extractModelFromNode",
@@ -234,7 +227,7 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
         }
 
         GD = new openfluid::fluidx::GeneratorDescriptor(
-            (const char*) xmlVarName, (const char*) xmlUnitClass, GenMethod,
+            xmlVarName.toStdString(), xmlUnitClass.toStdString(), GenMethod,
             VarSize);
         GD->setParameters(extractParamsFromNode(CurrNode));
         m_ModelDescriptor.appendItem(GD);
@@ -246,7 +239,6 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
             + ")");
     }
 
-    CurrNode = CurrNode->next;
   }
 
   m_ModelDescriptor.setGlobalParameters(GParams);
@@ -256,7 +248,7 @@ void FluidXDescriptor::extractModelFromNode(xmlNodePtr NodePtr)
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractRunFromNode(QDomElement& Node)
 {
   if (m_RunConfigDefined)
     throw openfluid::base::FrameworkException(
@@ -266,20 +258,19 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
   bool FoundDeltaT = false;
   bool FoundPeriod = false;
 
-  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
 
-  while (CurrNode != NULL)
+  for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "period") == 0)
+    if (CurrNode.tagName() == QString("period"))
     {
-      xmlChar* xmlBegin = xmlGetProp(CurrNode, (const xmlChar*) "begin");
-      xmlChar* xmlEnd = xmlGetProp(CurrNode, (const xmlChar*) "end");
+      QString xmlBegin = CurrNode.attributeNode(QString("begin")).value();
+      QString xmlEnd = CurrNode.attributeNode(QString("end")).value();
 
-      if (xmlBegin != NULL && xmlEnd != NULL)
+      if (!xmlBegin.isNull() && !xmlEnd.isNull())
       {
         openfluid::core::DateTime ReadDate;
 
-        if (ReadDate.setFromISOString(std::string((char*) xmlBegin)))
+        if (ReadDate.setFromISOString(xmlBegin.toStdString()))
         {
           m_RunDescriptor.setBeginDate(ReadDate);
         }
@@ -288,7 +279,7 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
               "FluidXDescriptor::extractRunFromNode",
               "wrong format for begin date of period (" + m_CurrentFile + ")");
 
-        if (ReadDate.setFromISOString(std::string((char*) xmlEnd)))
+        if (ReadDate.setFromISOString(xmlEnd.toStdString()))
         {
           m_RunDescriptor.setEndDate(ReadDate);
         }
@@ -315,16 +306,15 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 
     // scheduling
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "scheduling") == 0)
+    if (CurrNode.tagName() == QString("scheduling"))
     {
-      xmlChar* xmlDeltaT = xmlGetProp(CurrNode, (const xmlChar*) "deltat");
-      xmlChar* xmlConstraint = xmlGetProp(CurrNode, (const xmlChar*) "constraint");
+      QString xmlDeltaT = CurrNode.attributeNode(QString("deltat")).value();
+      QString xmlConstraint = CurrNode.attributeNode(QString("constraint")).value();
 
-
-      if (xmlDeltaT != NULL)
+      if (!xmlDeltaT.isNull())
       {
         int DeltaT;
-        std::string ReadDeltaTStr = std::string((const char*) xmlDeltaT);
+        std::string ReadDeltaTStr = xmlDeltaT.toStdString();
 
         if (!openfluid::tools::ConvertString(ReadDeltaTStr, &DeltaT))
           throw openfluid::base::FrameworkException(
@@ -335,9 +325,9 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
         FoundDeltaT = true;
       }
 
-      if (xmlConstraint != NULL)
+      if (!xmlConstraint.isNull())
       {
-        std::string ReadConstraintStr = std::string((const char*) xmlConstraint);
+        std::string ReadConstraintStr = xmlConstraint.toStdString();
         if (ReadConstraintStr == "dt-checked")
           m_RunDescriptor.setSchedulingConstraint(openfluid::base::SimulationStatus::SCHED_DTCHECKED);
         else if (ReadConstraintStr == "dt-forced")
@@ -356,15 +346,15 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 
     // valuesbuffer
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "valuesbuffer") == 0)
+    if (CurrNode.tagName() == QString("valuesbuffer"))
     {
-      xmlChar* xmlSteps = xmlGetProp(CurrNode, (const xmlChar*) "size");
+      QString xmlSteps = CurrNode.attributeNode(QString("size")).value();
 
-      if (xmlSteps != NULL)
+      if (!xmlSteps.isNull())
       {
         unsigned int ReadSteps;
 
-        if (!openfluid::tools::ConvertString(std::string((char*) xmlSteps),
+        if (!openfluid::tools::ConvertString(xmlSteps.toStdString(),
                                              &ReadSteps))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractRunFromNode",
@@ -379,8 +369,6 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
             "missing size attribute for valuesbuffer tag (" + m_CurrentFile
             + ")");
     }
-
-    CurrNode = CurrNode->next;
   }
 
   if (!FoundPeriod)
@@ -402,22 +390,22 @@ void FluidXDescriptor::extractRunFromNode(xmlNodePtr NodePtr)
 // =====================================================================
 
 openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
-    xmlNodePtr NodePtr)
+    QDomElement& Node)
 {
-  xmlChar* xmlUnitID = xmlGetProp(NodePtr, (const xmlChar*) "ID");
-  xmlChar* xmlUnitClass = xmlGetProp(NodePtr, (const xmlChar*) "class");
+  QString xmlUnitID = Node.attributeNode(QString("ID")).value();
+  QString xmlUnitClass = Node.attributeNode(QString("class")).value();
 
-  if (xmlUnitID != NULL && xmlUnitClass != NULL)
+  if (!xmlUnitID.isNull() && !xmlUnitClass.isNull())
   {
     openfluid::core::UnitID_t UnitID;
 
-    if (!openfluid::tools::ConvertString(std::string((char*) xmlUnitID),
+    if (!openfluid::tools::ConvertString(xmlUnitID.toStdString(),
                                          &UnitID))
       throw openfluid::base::FrameworkException(
           "FluidXDescriptor::extractUnitsLinkFromNode",
           "wrong format for ID in unit definition (" + m_CurrentFile + ")");
 
-    return std::make_pair(std::string((char*) xmlUnitClass), UnitID);
+    return std::make_pair(xmlUnitClass.toStdString(), UnitID);
   }
   else
     throw openfluid::base::FrameworkException(
@@ -429,34 +417,32 @@ openfluid::core::UnitClassID_t FluidXDescriptor::extractUnitClassIDFromNode(
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
 {
-  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
-
-  while (CurrNode != NULL)
+  for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "unit") == 0)
+    if (CurrNode.tagName() == QString("unit"))
     {
-      xmlChar* xmlUnitID = xmlGetProp(CurrNode, (const xmlChar*) "ID");
-      xmlChar* xmlUnitClass = xmlGetProp(CurrNode, (const xmlChar*) "class");
-      xmlChar* xmlPcsOrd = xmlGetProp(CurrNode, (const xmlChar*) "pcsorder");
+      QString xmlUnitID = CurrNode.attributeNode(QString("ID")).value();
+      QString xmlUnitClass = CurrNode.attributeNode(QString("class")).value();
+      QString xmlPcsOrd = CurrNode.attributeNode(QString("pcsorder")).value();
 
-      if (xmlUnitID != NULL && xmlUnitClass != NULL && xmlPcsOrd != NULL)
+      if (!xmlUnitID.isNull() && !xmlUnitClass.isNull() && !xmlPcsOrd.isNull())
       {
         openfluid::fluidx::UnitDescriptor* UnitDesc =
             new openfluid::fluidx::UnitDescriptor();
         openfluid::core::PcsOrd_t PcsOrder;
         openfluid::core::UnitID_t UnitID;
 
-        UnitDesc->getUnitClass().assign((char*) xmlUnitClass);
+        UnitDesc->getUnitClass().assign(xmlUnitClass.toStdString());
 
-        if (!openfluid::tools::ConvertString(std::string((char*) xmlUnitID),
+        if (!openfluid::tools::ConvertString(xmlUnitID.toStdString(),
                                              &UnitID))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainDefinitionFromNode",
               "wrong format for ID in unit definition (" + m_CurrentFile + ")");
 
-        if (!openfluid::tools::ConvertString(std::string((char*) xmlPcsOrd),
+        if (!openfluid::tools::ConvertString(xmlPcsOrd.toStdString(),
                                              &PcsOrder))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainDefinitionFromNode",
@@ -466,23 +452,21 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
         UnitDesc->getProcessOrder() = PcsOrder;
         UnitDesc->getUnitID() = UnitID;
 
-        xmlNodePtr CurrLinkNode = CurrNode->xmlChildrenNode;
 
-        while (CurrLinkNode != NULL)
+        for(QDomElement CurrLinkNode = CurrNode.firstChildElement();
+            !CurrLinkNode.isNull(); CurrLinkNode = CurrLinkNode.nextSiblingElement())
         {
-          if (xmlStrcmp(CurrLinkNode->name, (const xmlChar*) "to") == 0)
+          if (CurrLinkNode.tagName() == QString("to"))
           {
             UnitDesc->getUnitsTos().push_back(
                 extractUnitClassIDFromNode(CurrLinkNode));
           }
 
-          if (xmlStrcmp(CurrLinkNode->name, (const xmlChar*) "childof") == 0)
+          if (CurrLinkNode.tagName() == QString("childof"))
           {
             UnitDesc->getUnitsParents().push_back(
                 extractUnitClassIDFromNode(CurrLinkNode));
           }
-
-          CurrLinkNode = CurrLinkNode->next;
         }
 
         m_DomainDescriptor.getUnits().push_back(*UnitDesc);
@@ -493,7 +477,6 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
             "missing or wrong attribute(s) in unit definition (" + m_CurrentFile
             + ")");
     }
-    CurrNode = CurrNode->next;
   }
 }
 
@@ -502,20 +485,20 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(xmlNodePtr NodePtr)
 // =====================================================================
 
 
-void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractDomainAttributesFromNode(QDomElement& Node)
 {
-  xmlChar* xmlUnitClass = xmlGetProp(NodePtr, (const xmlChar*) "unitclass");
-  xmlChar* xmlColOrder = xmlGetProp(NodePtr, (const xmlChar*) "colorder");
+  QString xmlUnitClass = Node.attributeNode(QString("unitclass")).value();
+  QString xmlColOrder = Node.attributeNode(QString("colorder")).value();
 
-  if (xmlUnitClass != NULL && xmlColOrder != NULL)
+  if (!xmlUnitClass.isNull() && !xmlColOrder.isNull())
   {
     openfluid::fluidx::AttributesDescriptor AttrsDesc;
 
-    AttrsDesc.getUnitsClass().assign((char*) xmlUnitClass);
+    AttrsDesc.getUnitsClass().assign(xmlUnitClass.toStdString());
 
     std::vector<std::string> ColOrder;
 
-    ColOrder = openfluid::tools::SplitString(std::string((char*) xmlColOrder),
+    ColOrder = openfluid::tools::SplitString(xmlColOrder.toStdString(),
                                              ";");
 
     if (ColOrder.empty())
@@ -526,10 +509,10 @@ void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
 
     AttrsDesc.getColumnsOrder() = ColOrder;
 
-    xmlChar *xmlDataBlob = xmlNodeGetContent(NodePtr);
+    QString xmlDataBlob = Node.text();
 
-    if (xmlDataBlob != NULL)
-      AttrsDesc.parseDataBlob(std::string((char*) xmlDataBlob));
+    if (!xmlDataBlob.isNull())
+      AttrsDesc.parseDataBlob(xmlDataBlob.toStdString());
     else
       throw openfluid::base::FrameworkException(
           "FluidXDescriptor::extractDomainAttributesFromNode",
@@ -550,26 +533,24 @@ void FluidXDescriptor::extractDomainAttributesFromNode(xmlNodePtr NodePtr)
 // =====================================================================
 
 
-void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractDomainCalendarFromNode(QDomElement& Node)
 {
-  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
-
-  while (CurrNode != NULL)
+  for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "event") == 0)
+    if (CurrNode.tagName() == QString("event"))
     {
-      xmlChar* xmlUnitID = xmlGetProp(CurrNode, (const xmlChar*) "unitID");
-      xmlChar* xmlUnitClass = xmlGetProp(CurrNode,
-                                         (const xmlChar*) "unitclass");
-      xmlChar* xmlDate = xmlGetProp(CurrNode, (const xmlChar*) "date");
+      QString xmlUnitID = CurrNode.attributeNode(QString("unitID")).value();
+      QString xmlUnitClass = CurrNode.attributeNode(QString("unitclass")).value();
 
-      if (xmlUnitID != NULL && xmlUnitClass != NULL && xmlDate != NULL)
+      QString xmlDate = CurrNode.attributeNode(QString("date")).value();
+
+      if (!xmlUnitID.isNull() && !xmlUnitClass.isNull() && !xmlDate.isNull())
       {
         openfluid::fluidx::EventDescriptor EvDesc;
 
         openfluid::core::UnitID_t UnitID;
 
-        if (!openfluid::tools::ConvertString(std::string((char*) xmlUnitID),
+        if (!openfluid::tools::ConvertString(xmlUnitID.toStdString(),
                                              &UnitID))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainCalendarFromNode",
@@ -577,29 +558,29 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
 
         openfluid::core::DateTime EventDate;
 
-        if (!EventDate.setFromISOString(std::string((char*) xmlDate)))
+        if (!EventDate.setFromISOString(xmlDate.toStdString()))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDomainCalendarFromNode",
               "wrong format for date in event (" + m_CurrentFile + ")");
 
-        EvDesc.getUnitClass().assign((char*) xmlUnitClass);
+        EvDesc.getUnitClass().assign(xmlUnitClass.toStdString());
         EvDesc.getUnitID() = UnitID;
         EvDesc.getEvent() = openfluid::core::Event(EventDate);
 
-        xmlNodePtr CurrInfoNode = CurrNode->xmlChildrenNode;
 
-        while (CurrInfoNode != NULL)
+        for(QDomElement CurrInfoNode = CurrNode.firstChildElement();
+            !CurrInfoNode.isNull(); CurrInfoNode = CurrInfoNode.nextSiblingElement())
         {
-          if (xmlStrcmp(CurrInfoNode->name, (const xmlChar*) "info") == 0)
+          if (CurrInfoNode.tagName() == QString("info"))
           {
-            xmlChar* xmlKey = xmlGetProp(CurrInfoNode, (const xmlChar*) "key");
-            xmlChar* xmlValue = xmlGetProp(CurrInfoNode,
-                                           (const xmlChar*) "value");
 
-            if (xmlKey != NULL && xmlValue != NULL)
+            QString xmlKey = CurrInfoNode.attributeNode(QString("key")).value();
+            QString xmlValue = CurrInfoNode.attributeNode(QString("value")).value();
+
+            if (!xmlKey.isNull() && !xmlValue.isNull())
             {
-              EvDesc.getEvent().addInfo(std::string((char*) xmlKey),
-                                        std::string((char*) xmlValue));
+              EvDesc.getEvent().addInfo(xmlKey.toStdString(),
+                                        xmlValue.toStdString());
             }
             else
               throw openfluid::base::FrameworkException(
@@ -608,7 +589,6 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
                   + ")");
           }
 
-          CurrInfoNode = CurrInfoNode->next;
         }
 
         m_DomainDescriptor.getEvents().push_back(EvDesc);
@@ -620,59 +600,53 @@ void FluidXDescriptor::extractDomainCalendarFromNode(xmlNodePtr NodePtr)
             + ")");
     }
 
-    CurrNode = CurrNode->next;
   }
 }
 
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::extractDomainFomNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractDomainFomNode(QDomElement& Node)
 {
-  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
-  while (CurrNode != NULL)
+  for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "definition") == 0)
+    if (CurrNode.tagName() == QString("definition"))
     {
       extractDomainDefinitionFromNode(CurrNode);
     }
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "attributes") == 0)
+    if (CurrNode.tagName() == QString("attributes"))
     {
       extractDomainAttributesFromNode(CurrNode);
     }
 
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "calendar") == 0)
+    if (CurrNode.tagName() == QString("calendar"))
     {
       extractDomainCalendarFromNode(CurrNode);
     }
 
-    CurrNode = CurrNode->next;
   }
 }
 
 // =====================================================================
 // =====================================================================
 
-void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
+void FluidXDescriptor::extractDatastoreFromNode(QDomElement& Node)
 {
-  xmlNodePtr CurrNode = NodePtr->xmlChildrenNode;
-
-  while (CurrNode != NULL)
+  for(QDomElement CurrNode = Node.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
   {
-    if (xmlStrcmp(CurrNode->name, (const xmlChar*) "dataitem") == 0)
+    if (CurrNode.tagName() == QString("dataitem"))
     {
-      xmlChar* xmlDataID = xmlGetProp(CurrNode, (const xmlChar*) "id");
-      xmlChar* xmlDataType = xmlGetProp(CurrNode, (const xmlChar*) "type");
-      xmlChar* xmlDataSrc = xmlGetProp(CurrNode, (const xmlChar*) "source");
-      xmlChar* xmlDataClass = xmlGetProp(CurrNode,
-                                         (const xmlChar*) "unitclass");
+      QString xmlDataID = CurrNode.attributeNode(QString("id")).value();
+      QString xmlDataType = CurrNode.attributeNode(QString("type")).value();
+      QString xmlDataSrc = CurrNode.attributeNode(QString("source")).value();
+      QString xmlDataClass = CurrNode.attributeNode(QString("unitclass")).value();
 
-      if (xmlDataID != NULL && xmlDataType != NULL && xmlDataSrc != NULL)
+      if (!xmlDataID.isNull() && !xmlDataType.isNull() && !xmlDataSrc.isNull())
       {
         std::string DataID;
 
-        if (!openfluid::tools::ConvertString(std::string((char*) xmlDataID),
+        if (!openfluid::tools::ConvertString(xmlDataID.toStdString(),
                                              &DataID)
             || DataID.empty())
           throw openfluid::base::FrameworkException(
@@ -683,7 +657,7 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
         openfluid::core::UnstructuredValue::UnstructuredType DataType;
 
         if (!openfluid::core::UnstructuredValue::getValueTypeFromString(
-            std::string((char*) xmlDataType), DataType))
+            xmlDataType.toStdString(), DataType))
           throw openfluid::base::FrameworkException(
               "FluidXDescriptor::extractDatastoreFromNode",
               "unknown or missing datatype in dataitem definition (" + m_CurrentFile
@@ -691,11 +665,11 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
 
         openfluid::fluidx::DatastoreItemDescriptor* Item =
             new openfluid::fluidx::DatastoreItemDescriptor(
-                DataID, m_CurrentDir, std::string((char*) xmlDataSrc),
+                DataID, m_CurrentDir, xmlDataSrc.toStdString(),
                 DataType);
 
-        if (xmlDataClass != NULL)
-          Item->setUnitClass(std::string((char*) xmlDataClass));
+        if (!xmlDataClass.isNull())
+          Item->setUnitClass(xmlDataClass.toStdString());
 
         if (!m_DatastoreDescriptor.appendItem(Item))
           throw openfluid::base::FrameworkException(
@@ -710,7 +684,6 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
             + ")");
     }
 
-    CurrNode = CurrNode->next;
   }
 }
 
@@ -719,52 +692,55 @@ void FluidXDescriptor::extractDatastoreFromNode(xmlNodePtr NodePtr)
 
 void FluidXDescriptor::parseFile(std::string Filename)
 {
-  xmlDocPtr Doc = NULL;
-  xmlNodePtr Root = NULL;
-  xmlNodePtr CurrNode = NULL;
+  QDomDocument Doc;
+  QDomElement Root;
 
   m_CurrentFile = Filename;
 
-  Doc = xmlParseFile(m_CurrentFile.c_str());
-
-  if (Doc != NULL)
+  QFile File(QString(m_CurrentFile.c_str()));
+  if (!File.open(QIODevice::ReadOnly))
   {
-    Root = xmlDocGetRootElement(Doc);
+    throw openfluid::base::FrameworkException("FluidXDescriptor::parseFile",
+        "error opening " + m_CurrentFile);
+  }
 
-    if (Root != NULL)
+  bool Parsed = Doc.setContent(&File);
+  File.close();
+
+  if (Parsed)
+  {
+    Root = Doc.documentElement();
+
+    if (!Root.isNull())
     {
-      if (xmlStrcmp(Root->name, (const xmlChar*) "openfluid") == 0)
+      if (Root.tagName() == QString("openfluid"))
       {
-        CurrNode = Root->xmlChildrenNode;
-        while (CurrNode != NULL)
+        for(QDomElement CurrNode = Root.firstChildElement(); !CurrNode.isNull(); CurrNode = CurrNode.nextSiblingElement())
         {
-
-          if (xmlStrcmp(CurrNode->name, (const xmlChar*) "run") == 0)
+          if (CurrNode.tagName() == QString("run"))
           {
             extractRunFromNode(CurrNode);
           }
 
-          if (xmlStrcmp(CurrNode->name, (const xmlChar*) "model") == 0)
+          if (CurrNode.tagName() == QString("model"))
           {
             extractModelFromNode(CurrNode);
           }
 
-          if (xmlStrcmp(CurrNode->name, (const xmlChar*) "monitoring") == 0)
+          if (CurrNode.tagName() == QString("monitoring"))
           {
             extractMonitoringFromNode(CurrNode);
           }
 
-          if (xmlStrcmp(CurrNode->name, (const xmlChar*) "domain") == 0)
+          if (CurrNode.tagName() == QString("domain"))
           {
             extractDomainFomNode(CurrNode);
           }
 
-          if (xmlStrcmp(CurrNode->name, (const xmlChar*) "datastore") == 0)
+          if (CurrNode.tagName() == QString("datastore"))
           {
             extractDatastoreFromNode(CurrNode);
           }
-
-          CurrNode = CurrNode->next;
         }
       }
     }

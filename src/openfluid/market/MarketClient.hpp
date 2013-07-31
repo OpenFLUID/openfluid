@@ -61,7 +61,6 @@
 #include <queue>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/market/MarketInfos.hpp>
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/market/MarketBinPackage.hpp>
