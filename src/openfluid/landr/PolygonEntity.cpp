@@ -81,7 +81,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
   {
-    delete mp_Centroide;
+    delete mp_Centroid;
 
     throw openfluid::base::FrameworkException(
                                        "PolygonEntity::PolygonEntity",
@@ -94,7 +94,7 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
 
   if (!mp_Polygon->isValid())
   {
-    delete mp_Centroide;
+    delete mp_Centroid;
 
     throw openfluid::base::FrameworkException(
                                        "PolygonEntity::PolygonEntity",
@@ -158,7 +158,7 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
   else
     throw openfluid::base::FrameworkException(
                                        "PolygonEntity::removeEdge",
-                                       "Edge doesn't exists in Edge vector.");
+                                       "Edge doesn't exist in Edge vector.");
 
   mp_NeighboursMap = 0;
 
@@ -209,7 +209,7 @@ PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(
 // =====================================================================
 // =====================================================================
 
-const PolygonEntity::NeigboursMap_t* PolygonEntity::getNeighboursAndEdges()
+const PolygonEntity::NeighboursMap_t* PolygonEntity::getNeighboursAndEdges()
 {
   if (!mp_NeighboursMap)
     computeNeighbours();
@@ -227,7 +227,7 @@ std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
   if (!mp_NeighboursMap)
     computeNeighbours();
 
-  for (NeigboursMap_t::iterator it = mp_NeighboursMap->begin();
+  for (NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
       it != mp_NeighboursMap->end(); ++it)
     Ids.push_back(it->first->getSelfId());
 
@@ -245,7 +245,7 @@ void PolygonEntity::computeNeighbours()
   mp_Neighbours = new std::set<LandREntity*>;
 
   delete mp_NeighboursMap;
-  mp_NeighboursMap = new NeigboursMap_t();
+  mp_NeighboursMap = new NeighboursMap_t();
 
   for (unsigned int i = 0; i < m_PolyEdges.size(); i++)
   {
@@ -328,7 +328,7 @@ void PolygonEntity::computeLineStringNeighbours(
     computeNeighbours();
 
   delete mp_LineStringNeighboursMap;
-  mp_LineStringNeighboursMap = new PolygonEntity::LineStringNeigboursMap_t;
+  mp_LineStringNeighboursMap = new PolygonEntity::LineStringNeighboursMap_t;
 
   geos::geom::Geometry* PolyBuff = getBufferedBoundary(BufferDistance);
 
@@ -371,7 +371,7 @@ void PolygonEntity::computeLineStringNeighbours(
 // =====================================================================
 // =====================================================================
 
-PolygonEntity::LineStringNeigboursMap_t* PolygonEntity::getLineStringNeighbours()
+PolygonEntity::LineStringNeighboursMap_t* PolygonEntity::getLineStringNeighbours()
 {
   return mp_LineStringNeighboursMap;
 }
