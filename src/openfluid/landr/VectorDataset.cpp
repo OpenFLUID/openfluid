@@ -301,7 +301,7 @@ void VectorDataset::addALayer(std::string LayerName,
 {
   if (mp_DataSource->GetLayerByName(LayerName.c_str()) != NULL)
     throw openfluid::base::FrameworkException(
-        "VectorDataset::createLayer",
+        "VectorDataset::addALayer",
         "Error while adding a layer to " + std::string(mp_DataSource->GetName())
         + ": a layer named " + LayerName + " already exists.");
 
@@ -310,7 +310,7 @@ void VectorDataset::addALayer(std::string LayerName,
 
   if (!Layer)
     throw openfluid::base::FrameworkException(
-        "VectorDataset::createLayer",
+        "VectorDataset::addALayer",
         "Error while adding a layer to " + std::string(mp_DataSource->GetName())
         + ": creation of layer " + LayerName + " failed.");
 
@@ -323,7 +323,7 @@ void VectorDataset::addALayer(std::string LayerName,
 
   if (!mp_DataSource)
     throw openfluid::base::FrameworkException(
-        "VectorDataset::createLayer",
+        "VectorDataset::addALayer",
         "Error while opening " + Path + " : "
         + "Opening of OGRDataSource failed.");
 }

@@ -404,7 +404,7 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
 
   if (!RasterPolys)
     throw openfluid::base::FrameworkException(
-        "PolygonGraph::getRasterPolyOverlaying",
+        "PolygonGraph::getRasterPolyOverlapping",
         "No RasterPolygonizedMultiPolygon associated to the PolygonGraph");
 
   for (std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();

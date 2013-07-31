@@ -98,7 +98,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
       << " as neighbour of this edge, because it doesn't contain edge line.";
 
     throw openfluid::base::FrameworkException(
-                                       "PolygonEdge::addNeighbour", s.str());
+                                       "PolygonEdge::addFace", s.str());
 
     return;
   }
@@ -110,7 +110,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
       << " as neighbour of this edge, which has already two neighbours.";
 
     throw openfluid::base::FrameworkException(
-                                       "PolygonEdge::addNeighbour", s.str());
+                                       "PolygonEdge::addFace", s.str());
     return;
   }
 
