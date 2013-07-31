@@ -47,16 +47,16 @@
 
 
 /**
-  \file CURLDownloader.cpp
+  \file FileDownloader.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include <openfluid/tools/CURLDownloader.hpp>
-#include <curl/curl.h>
-#include <stdio.h>
-
+#include <openfluid/tools/FileDownloader.hpp>
+#include <openfluid/base/FrameworkException.hpp>
+#include <QEventLoop>
+#include <QFile>
 
 // =====================================================================
 // =====================================================================
@@ -65,23 +65,10 @@
 namespace openfluid { namespace tools {
 
 
-int CURLDownloader::CURLWriterToBuffer(char *Data, size_t Size, size_t NMemb, std::string *BufferIn)
+FileDownloader::FileDownloader() : QObject(), m_FileContent(""), m_ContentDownloaded(false)
 {
-  /*
-    http://projectivemotion.com/news/using-libcurl-with-c-simple-oop-static-class-exampleusando-libcurl-en-c-ejemplo-de-oop
-  */
-
-  // Is there anything in the buffer?
-  if (BufferIn != NULL)
-  {
-    // Append the data to the buffer
-    BufferIn->append(Data, Size * NMemb);
-
-    // How much did we write?
-    return Size * NMemb;
-  }
-
-  return 0;
+  // Connect signal emitted by mangager when download is completed to the method which store content
+  connect(&m_Manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
 }
 
 
@@ -89,22 +76,9 @@ int CURLDownloader::CURLWriterToBuffer(char *Data, size_t Size, size_t NMemb, st
 // =====================================================================
 
 
-int CURLDownloader::CURLWriterToFile(void *Ptr, size_t Size, size_t NMemb, FILE *FileStream)
+FileDownloader::~FileDownloader()
 {
-  /*
-    http://stackoverflow.com/questions/1636333/download-file-using-libcurl-in-c-c
-  */
 
-  if (Ptr != NULL)
-  {
-
-    size_t Written;
-    Written = fwrite(Ptr, Size, NMemb, FileStream);
-    return Written;
-
-  }
-
-  return 0;
 }
 
 
@@ -112,37 +86,10 @@ int CURLDownloader::CURLWriterToFile(void *Ptr, size_t Size, size_t NMemb, FILE 
 // =====================================================================
 
 
-CURLDownloader::ErrorCode CURLDownloader::downloadToFile(const std::string URL,
-                                                             const std::string FilePath)
+void FileDownloader::downloadContent(const std::string& URL)
 {
-  /*
-    http://stackoverflow.com/questions/1636333/download-file-using-libcurl-in-c-c
-  */
-
-  CURL *Curl;
-  CURLcode Result;
-  char ErrorBuffer[CURL_ERROR_SIZE];
-  FILE* FP;
-
-  Curl = curl_easy_init();
-  if (Curl)
-  {
-    FP = fopen(FilePath.c_str(),"wb");
-    curl_easy_setopt(Curl, CURLOPT_ERRORBUFFER, ErrorBuffer);
-    curl_easy_setopt(Curl, CURLOPT_URL, URL.c_str());
-    curl_easy_setopt(Curl, CURLOPT_HEADER, 0);
-    curl_easy_setopt(Curl, CURLOPT_WRITEFUNCTION, CURLDownloader::CURLWriterToFile);
-    curl_easy_setopt(Curl, CURLOPT_WRITEDATA, FP);
-    curl_easy_setopt(Curl, CURLOPT_FAILONERROR, 1);
-
-    Result = curl_easy_perform(Curl);
-    curl_easy_cleanup(Curl);
-    fclose(FP);
-
-    if (Result == CURLE_OK) return CURLDownloader::ErrorCode(NO_ERROR);
-  }
-
-  return CURLDownloader::ErrorCode(CURL_ERROR);
+  QNetworkRequest Request(QString(URL.c_str()));
+  m_Manager.get(Request);
 }
 
 
@@ -150,45 +97,105 @@ CURLDownloader::ErrorCode CURLDownloader::downloadToFile(const std::string URL,
 // =====================================================================
 
 
-CURLDownloader::ErrorCode CURLDownloader::downloadToString(const std::string URL,
-                                                               std::string& Contents)
+QByteArray FileDownloader::getContent() const
 {
-  /*
-    http://projectivemotion.com/news/using-libcurl-with-c-simple-oop-static-class-exampleusando-libcurl-en-c-ejemplo-de-oop
-  */
+  return m_FileContent;
+}
 
-  CURL *Curl;
-  CURLcode Result;
-  char ErrorBuffer[CURL_ERROR_SIZE];
 
+// =====================================================================
+// =====================================================================
+
+
+bool FileDownloader::contentIsDownloaded() const
+{
+  return m_ContentDownloaded;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FileDownloader::writeToFile(const std::string& FilePath) const
+{
+  QFile File(QString(FilePath.c_str()));
+  if (!File.open(QIODevice::WriteOnly))
+    throw openfluid::base::FrameworkException("FileDownloader::writeToFile",
+         "Could not open "+FilePath+" : "+qPrintable(File.errorString()));
+
+  File.write(m_FileContent);
+  File.close();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void FileDownloader::downloadFinished(QNetworkReply *Reply)
+{
+  if (!Reply->error())
+  {
+    m_FileContent = Reply->readAll();
+    m_ContentDownloaded = true;
+  }
+
+  emit processFinished();
+  Reply->deleteLater();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool FileDownloader::downloadToString(const std::string& URL, std::string& Contents)
+{
   Contents.clear();
 
-  Curl = curl_easy_init();
+  FileDownloader Downloader;
+  Downloader.downloadContent(URL);
 
+  QEventLoop Loop;
+  QObject::connect(&Downloader, SIGNAL(processFinished()), &Loop, SLOT(quit()));
+  Loop.exec();
 
-  if (Curl)
+  if (Downloader.contentIsDownloaded())
   {
-    curl_easy_setopt(Curl, CURLOPT_ERRORBUFFER, ErrorBuffer);
-    curl_easy_setopt(Curl, CURLOPT_URL, URL.c_str());
-    curl_easy_setopt(Curl, CURLOPT_HEADER, 0);
-    curl_easy_setopt(Curl, CURLOPT_WRITEFUNCTION, CURLDownloader::CURLWriterToBuffer);
-    curl_easy_setopt(Curl, CURLOPT_WRITEDATA, &Contents);
-    curl_easy_setopt(Curl, CURLOPT_FAILONERROR, 1);
-
-    Result = curl_easy_perform(Curl);
-    curl_easy_cleanup(Curl);
-
-    if (Result == CURLE_OK) return CURLDownloader::ErrorCode(NO_ERROR);
+    // Get content downloaded
+    QByteArray Bytes = Downloader.getContent();
+    Contents = QString(Bytes).toStdString();
   }
 
-  return CURLDownloader::ErrorCode(CURL_ERROR);
-
+  return Downloader.contentIsDownloaded();
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
+bool FileDownloader::downloadToFile(const std::string& URL, const std::string& FilePath)
+{
+  FileDownloader Downloader;
+  Downloader.downloadContent(URL);
+
+  QEventLoop Loop;
+  QObject::connect(&Downloader, SIGNAL(processFinished()), &Loop, SLOT(quit()));
+  Loop.exec();
+
+  if (Downloader.contentIsDownloaded())
+    Downloader.writeToFile(FilePath);
+
+  return Downloader.contentIsDownloaded();
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 } } // namespaces
+
 

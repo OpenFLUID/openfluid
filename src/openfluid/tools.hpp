@@ -57,7 +57,7 @@
 #define __TOOLS_HPP___
 
 #include <openfluid/tools/ColTextParser.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
+#include <openfluid/tools/FileDownloader.hpp>
 #include <openfluid/tools/DistributionBindings.hpp>
 #include <openfluid/tools/ChronFileLinearInterpolator.hpp>
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>

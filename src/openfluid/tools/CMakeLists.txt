@@ -1,5 +1,4 @@
 
-FIND_PACKAGE(CURL REQUIRED)
 FIND_PACKAGE(LibArchive REQUIRED)
 
 IF(WIN32)
@@ -12,8 +11,8 @@ ENDIF()
 
 ADD_DEFINITIONS(${LibXML2_CFLAGS})
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS} ${CURL_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS})
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS} ${CURL_LIBRARY_DIR})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS})
+LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 FILE(GLOB OPENFLUID_TOOLS_CPP *.cpp)
 FILE(GLOB OPENFLUID_TOOLS_HPP *.hpp)
@@ -31,9 +30,9 @@ TARGET_LINK_LIBRARIES(openfluid-tools
                       openfluid-core
                       ${LibXML2_LIBRARIES} 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
-                      ${CURL_LIBRARY}
                       ${GLIBMM_LIBRARIES}
-                      ${LibArchive_LIBRARIES})
+                      ${LibArchive_LIBRARIES}
+                      ${QT_QTNETWORK_LIBRARY})
 
 
 
