@@ -54,7 +54,6 @@
 #include <openfluid/market/MarketSrcBuilderextPackage.hpp>
 #include <openfluid/market/MarketBinBuilderextPackage.hpp>
 #include <openfluid/market/MarketDatasetPackage.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/config.hpp>
 
 #include <fstream>
@@ -62,6 +61,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <glibmm/keyfile.h>
+#include <openfluid/tools/FileDownloader.hpp>
 
 
 namespace openfluid { namespace market {
@@ -431,7 +431,7 @@ void MarketClient::downloadAssociatedLicenses()
 
   for (Licit = m_LicensesTexts.begin(); Licit != m_LicensesTexts.end(); ++Licit)
   {
-    if (openfluid::tools::CURLDownloader::downloadToString(m_URL+"/licenses/"+Licit->first+".txt",Licit->second) != openfluid::tools::CURLDownloader::NO_ERROR)
+    if (!openfluid::tools::FileDownloader::downloadToString(m_URL+"/licenses/"+Licit->first+".txt",Licit->second))
       Licit->second = "(license text not available)";
   }
 }
@@ -469,7 +469,7 @@ void MarketClient::connect(const std::string& URL)
   CatalogsFileURL[PackageInfo::DATA] = "";
 
   // Downloading OpenFLUID-Marketplace file
-  if (!m_IsConnected && openfluid::tools::CURLDownloader::downloadToString(MarketFileURL, MarketData) == openfluid::tools::CURLDownloader::NO_ERROR)
+  if (!m_IsConnected && openfluid::tools::FileDownloader::downloadToString(MarketFileURL, MarketData))
   {
     lockMarketTemp();
     parseMarketSiteData(MarketData);
@@ -487,7 +487,7 @@ void MarketClient::connect(const std::string& URL)
       CUit->second = m_URL+"/"+openfluid::config::MARKETPLACE_CATALOGFILE+getTypeName(CUit->first,true,true)+"_"+openfluid::base::RuntimeEnvironment::getInstance()->getVersion();
 
       // downloading catalog
-      if (openfluid::tools::CURLDownloader::downloadToString(CUit->second, CatalogsData[CUit->first])  != openfluid::tools::CURLDownloader::NO_ERROR)
+      if (!openfluid::tools::FileDownloader::downloadToString(CUit->second, CatalogsData[CUit->first]))
         CatalogsData[CUit->first].clear();
       else
         parseCatalogData(CUit->first, CatalogsData[CUit->first]);

@@ -54,8 +54,7 @@
 */
 
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_marketclient
 #include <boost/test/unit_test.hpp>
@@ -66,6 +65,7 @@
 #include <openfluid/market/MarketClient.hpp>
 
 #include <tests-config.hpp>
+#include <QCoreApplication>
 
 // =====================================================================
 // =====================================================================
@@ -212,4 +212,14 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(MC.isConnected(),false);
 }
 
+// =====================================================================
+// =====================================================================
 
+int main(int argc, char *argv[])
+{
+  QCoreApplication app(argc, argv);
+
+  ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+
+  return 0;
+}

@@ -59,7 +59,7 @@
 
 #include <openfluid/config.hpp>
 #include <openfluid/market/MarketPackage.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
+#include <openfluid/tools/FileDownloader.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
 
@@ -305,7 +305,7 @@ void MarketPackage::download()
 
   appendToLogFile(m_PackageFilename,getPackageType(),"downloading","");
 
-  if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
+  if (!openfluid::tools::FileDownloader::downloadToFile(m_PackageURL, m_PackageDest))
   {
     appendToLogFile("Error");
     throw openfluid::base::FrameworkException("MarketPackage::download()","error while downloading package "+m_PackageFilename);

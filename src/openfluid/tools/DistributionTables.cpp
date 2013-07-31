@@ -53,11 +53,13 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <libxml/parser.h>
-
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ColTextParser.hpp>
 #include <boost/filesystem/convenience.hpp>
+
+#include <QDomDocument>
+#include <QDomElement>
+#include <QFile>
 
 namespace openfluid { namespace tools {
 
@@ -71,47 +73,51 @@ void DistributionTables::build(const std::string& BasePath,
 
   // Sources file
 
-  xmlDocPtr Doc = NULL;
-  xmlNodePtr Root = NULL;
-  xmlNodePtr CurrNode = NULL;
-  xmlNodePtr CurrNode2 = NULL;
+  QDomDocument Doc;
+  QDomElement Root;
 
   std::string SourcesFilePath = boost::filesystem::path(BasePath+"/"+SourcesFileName).string();
 
 
-  Doc = xmlParseFile(SourcesFilePath.c_str());
-
-  if (Doc != NULL)
+  QFile File(QString(SourcesFilePath.c_str()));
+  if (!File.open(QIODevice::ReadOnly))
   {
-    Root =  xmlDocGetRootElement(Doc);
+    throw openfluid::base::FrameworkException("DistributionTables::build",
+        "Error opening " + SourcesFilePath);
+  }
 
-    if (Root != NULL)
+  bool Parsed = Doc.setContent(&File);
+  File.close();
+
+
+  if (Parsed)
+  {
+    Root = Doc.documentElement();
+
+    if (!Root.isNull())
     {
-      if (xmlStrcmp(Root->name,(const xmlChar*)"openfluid") == 0)
+      if (Root.tagName() == QString("openfluid"))
       {
-        CurrNode = Root->xmlChildrenNode;
-        while (CurrNode != NULL)
+        for(QDomElement CurrNode = Root.firstChildElement(); !CurrNode.isNull();
+            CurrNode = CurrNode.nextSiblingElement())
         {
-          if (xmlStrcmp(CurrNode->name,(const xmlChar*)"datasources") == 0)
+          if (CurrNode.tagName() == QString("datasources"))
           {
-            CurrNode2 = CurrNode->xmlChildrenNode;
-            while (CurrNode2 != NULL)
+            for(QDomElement CurrNode2 = CurrNode.firstChildElement(); !CurrNode2.isNull();
+                CurrNode2 = CurrNode2.nextSiblingElement())
             {
-
-              if (xmlStrcmp(CurrNode2->name,(const xmlChar*)"filesource") == 0)
+              if (CurrNode2.tagName() == QString("filesource"))
               {
-                xmlChar* xmlID= xmlGetProp(CurrNode2,(const xmlChar*)"ID");
-                xmlChar* xmlFile= xmlGetProp(CurrNode2,(const xmlChar*)"file");
+                QString xmlID = CurrNode2.attributeNode(QString("ID")).value();
+                QString xmlFile = CurrNode2.attributeNode(QString("file")).value();
 
-                if (xmlID != NULL && xmlFile != NULL)
+                if (!xmlID.isNull() && !xmlFile.isNull())
                 {
-                  SourcesTable[std::string((char*)xmlID)] = boost::filesystem::path(BasePath + "/" + std::string((char*)xmlFile)).string();
+                  SourcesTable[xmlID.toStdString()] = boost::filesystem::path(BasePath + "/" + xmlFile.toStdString()).string();
                 }
               }
-              CurrNode2 = CurrNode2->next;
             }
           }
-          CurrNode = CurrNode->next;
         }
       }
       else
