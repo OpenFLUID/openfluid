@@ -54,6 +54,7 @@
  */
 
 
+#include <openfluid/base/ThreadedLoopMacros.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <cmath>
 #include <boost/date_time.hpp>

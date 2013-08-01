@@ -60,10 +60,10 @@
 
 #include <iostream>
 
-ProjectModule::ProjectModule():
-AbstractModule(), mp_Widget(NULL)
+ProjectModule::ProjectModule(const QString& ProjectPath):
+AbstractModule(), mp_Widget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
-
+  mp_ProjectCentral = new ProjectCentral(ProjectPath);
 }
 
 
@@ -73,7 +73,7 @@ AbstractModule(), mp_Widget(NULL)
 
 ProjectModule::~ProjectModule()
 {
-
+  delete mp_ProjectCentral;
 }
 
 
@@ -119,8 +119,7 @@ bool ProjectModule::whenNewAsked()
 
 bool ProjectModule::whenOpenAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return true;
+  return false;
 }
 
 
@@ -182,6 +181,7 @@ void ProjectModule::whenPreferencesAsked()
 void ProjectModule::whenRunAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+  mp_ProjectCentral->run();
 }
 
 
