@@ -56,7 +56,12 @@
 
 #include <QUrl>
 #include <QDesktopServices>
+#include <QMessageBox>
 
+#include <openfluid/guicommon/OpenProjectDialog.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/Exception.hpp>
 #include "AppCoordinator.hpp"
 #include "MainWindow.hpp"
 #include "AppActions.hpp"
@@ -65,6 +70,7 @@
 #include "builderconfig.hpp"
 
 #include <iostream>
+
 
 
 AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
@@ -139,6 +145,8 @@ void AppCoordinator::setHomeModule()
 
   m_Actions.setHomeMode();
 
+  m_MainWindow.setWindowTitle("OpenFLUID-Builder");
+
 }
 
 
@@ -146,15 +154,27 @@ void AppCoordinator::setHomeModule()
 // =====================================================================
 
 
-void AppCoordinator::setProjectModule()
+void AppCoordinator::setProjectModule(const QString& ProjectPath)
 {
-  AbstractModule* Module = new ProjectModule();
+  AbstractModule* Module = new ProjectModule(ProjectPath);
 
   setCurrentModule(Module);
 
   m_Actions.setProjectMode();
+
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::updateRecentsList()
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
+      QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
+      QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
+}
 
 // =====================================================================
 // =====================================================================
@@ -178,7 +198,7 @@ void AppCoordinator::whenNewAsked()
 {
   if (mp_CurrentModule->whenNewAsked())
   {
-    setProjectModule();
+    //setProjectModule();
   }
 }
 
@@ -189,7 +209,36 @@ void AppCoordinator::whenNewAsked()
 
 void AppCoordinator::whenOpenAsked()
 {
-  mp_CurrentModule->whenOpenAsked();
+  if (mp_CurrentModule->whenOpenAsked())
+  {
+    // TODO develop custom open project
+    /*openfluid::guicommon::OpenProjectDialog OpenPrjDlg(&m_MainWindow);
+    if (OpenPrjDlg.run()) setProjectModule(OpenPrjDlg.getProjectFolder());*/
+    QString SelectedDir = QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"));
+    if (SelectedDir !=  "")
+    {
+      if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
+      {
+        openfluid::base::ProjectManager::getInstance()->open(SelectedDir.toStdString());
+
+        try
+        {
+          setProjectModule(SelectedDir);
+          updateRecentsList();
+          QString ProjectName = QDir(SelectedDir).dirName();
+          m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  ProjectName +" ]");
+        }
+        catch (openfluid::base::Exception& E)
+        {
+          openfluid::base::ProjectManager::getInstance()->close();
+          return;
+        }
+      }
+      else
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),SelectedDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+
+    }
+  }
 }
 
 

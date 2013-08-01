@@ -57,6 +57,10 @@
 #include "BuilderApp.hpp"
 
 
+#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+
+
 BuilderApp::BuilderApp():
   m_Coordinator(m_MainWindow,m_Actions)
 {
@@ -80,6 +84,20 @@ BuilderApp::~BuilderApp()
 
 void BuilderApp::initialize()
 {
+  openfluid::guicommon::PreferencesManager* PrefsMgr =
+    openfluid::guicommon::PreferencesManager::getInstance();
+
+
+  QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
+  for (int i = ExtraPaths.size()-1; i >-1; i--)
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
+
+  ExtraPaths = PrefsMgr->getExtraObserversPaths();
+  for (int i = ExtraPaths.size()-1; i >-1; i--)
+    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
+
+  // TODO add extension extra paths
+
   m_Actions.createMenus(m_MainWindow);
   m_Actions.createToolbar(m_MainWindow);
 

@@ -68,8 +68,6 @@
 
 #define _UNITSPTRLISTID(_id) _M_##_id##_UList
 
-#define _THREADPOOLID(_id) _M_##_id##_Pool
-
 #define _PCSORDID(_id) _M_##_id##_PcsOrd
 
 #define _UNITSLISTITERID(_id) _M_##_id##_UListit
@@ -97,38 +95,6 @@
 
 
 
-#define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitclass,simptr,...) \
-  openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_CoreData->getUnits(unitclass)->getList(); \
-  if (_UNITSLISTID(id) != NULL) \
-  { \
-    openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
-    if (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
-    { \
-      openfluid::core::PcsOrd_t _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
-      while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
-      { \
-        Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetSimulatorMaxThreads(),true); \
-        while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end() && _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id)) \
-        { \
-          _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&simptr),&(*_UNITSLISTITERID(id)), ## __VA_ARGS__)); \
-          ++_UNITSLISTITERID(id); \
-        } \
-        _THREADPOOLID(id).shutdown(); \
-        if (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
-      } \
-    } \
-  }
-
-/**
-  Macro for applying a threaded simulator to each unit of a class, following their process order
-  @param[in] unitclass name of the unit class
-  @param[in] simptr member simulator name
-  @param[in] ... extra parameters to pass to the member simulator
-*/
-#define APPLY_UNITS_ORDERED_LOOP_THREADED(unitclass,simptr,...) \
-    _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitclass,simptr,## __VA_ARGS__)
-
-
 
 #define _OPENFLUID_ALLUNITS_ORDERED_LOOP_WITHID(unitptr,id) \
     openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_CoreData->getUnitsGlobally(); \
@@ -142,38 +108,6 @@
 */
 #define OPENFLUID_ALLUNITS_ORDERED_LOOP(unitptr) \
     _OPENFLUID_ALLUNITS_ORDERED_LOOP_WITHID(unitptr,__LINE__)
-
-
-
-#define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,simptr,...) \
-  openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_CoreData->getUnitsGlobally(); \
-  if (_UNITSPTRLISTID(id) != NULL) \
-  { \
-    openfluid::core::UnitsPtrList_t::iterator _UNITSPTRLISTITERID(id) = _UNITSPTRLISTID(id)->begin(); \
-    if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
-    { \
-      openfluid::core::PcsOrd_t _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
-      while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
-      { \
-        Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetSimulatorMaxThreads(),true); \
-        while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end() && (*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id)) \
-        { \
-          _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&simptr),(*_UNITSPTRLISTITERID(id)), ## __VA_ARGS__)); \
-          ++_UNITSPTRLISTITERID(id); \
-        } \
-        _THREADPOOLID(id).shutdown(); \
-        if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
-      } \
-    } \
-  }
-
-/**
-  Macro for applying a threaded simulator to each unit of the domain, following their process order
-  @param[in] simptr member simulator name
-  @param[in] ... extra parameters to pass to the member simulator
-*/
-#define APPLY_ALLUNITS_ORDERED_LOOP_THREADED(simptr,...) \
-    _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,simptr,## __VA_ARGS__)
 
 
 

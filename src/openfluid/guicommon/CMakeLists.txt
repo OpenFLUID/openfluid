@@ -4,8 +4,13 @@
 INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-FILE(GLOB OPENFLUID_GUICOMMON_CPP OpenProjectDialog.cpp)
-FILE(GLOB OPENFLUID_GUICOMMON_HPP OpenProjectDialog.hpp)
+FILE(GLOB OPENFLUID_GUICOMMON_CPP OpenProjectDialog.cpp
+                                  PreferencesManager.cpp
+                                  )
+
+FILE(GLOB OPENFLUID_GUICOMMON_HPP OpenProjectDialog.hpp
+                                  PreferencesManager.hpp
+                                  )
 
 
 ADD_LIBRARY(openfluid-guicommon SHARED ${OPENFLUID_GUICOMMON_CPP} ${OPENFLUID_GUICOMMON_HPP})
@@ -23,7 +28,8 @@ TARGET_LINK_LIBRARIES(openfluid-guicommon
                       openfluid-machine
                       openfluid-market
                       openfluid-fluidx
-                      ${QT_LIBRARIES}  
+                      ${QT_QTCORE_LIBRARIES}
+                      ${QT_QTGUI_LIBRARIES}    
                      )
 
 

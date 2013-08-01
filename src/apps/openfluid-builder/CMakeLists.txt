@@ -5,16 +5,19 @@ INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 INCLUDE_DIRECTORIES(base)
 
-SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp 
-                     base/HomeModule.cpp base/ProjectModule.cpp
-                     base/HomeWidget.cpp base/ProjectWidget.cpp
-                     base/BuilderApp.cpp base/MainWindow.cpp                      
+SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
+                     base/BuilderApp.cpp base/MainWindow.cpp 
+                     base/HomeModule.cpp base/HomeWidget.cpp                       
+                     base/ProjectModule.cpp base/ProjectWidget.cpp                     
+                     base/ProjectCentral.cpp
+                                           
                      )
-SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp 
-                     base/HomeModule.hpp base/ProjectModule.hpp
-                     base/HomeWidget.hpp base/ProjectWidget.hpp
+SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
-                     base/AbstractModule.hpp
+                     base/AbstractModule.hpp 
+                     base/HomeModule.hpp base/HomeWidget.hpp 
+                     base/ProjectModule.hpp base/ProjectWidget.hpp                     
+                     base/ProjectCentral.hpp
                      )
 
 

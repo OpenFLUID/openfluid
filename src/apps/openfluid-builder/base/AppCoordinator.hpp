@@ -77,6 +77,10 @@ class AppCoordinator : public QObject
 
     void setCurrentModule(AbstractModule* Module);
 
+    void setProjectModule(const QString& ProjectPath);
+
+    void updateRecentsList();
+
   private slots:
 
     void whenQuitAsked();
@@ -120,7 +124,6 @@ class AppCoordinator : public QObject
 
     void setHomeModule();
 
-    void setProjectModule();
 };
 
 

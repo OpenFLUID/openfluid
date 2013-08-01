@@ -56,9 +56,11 @@
 #ifndef __PROJECTMODULE_HPP__
 #define __PROJECTMODULE_HPP__
 
+#include <QString>
 
 #include "AbstractModule.hpp"
 #include "ProjectWidget.hpp"
+#include "ProjectCentral.hpp"
 
 class ProjectModule : public AbstractModule
 {
@@ -66,9 +68,13 @@ class ProjectModule : public AbstractModule
 
     ProjectWidget* mp_Widget;
 
+    QString m_ProjectPath;
+
+    ProjectCentral* mp_ProjectCentral;
+
   public:
 
-    ProjectModule();
+    ProjectModule(const QString& ProjectPath);
 
     ~ProjectModule();
 

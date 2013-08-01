@@ -116,7 +116,6 @@ bool HomeModule::whenNewAsked()
 
 bool HomeModule::whenOpenAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
   return true;
 }
 

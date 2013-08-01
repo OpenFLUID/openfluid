@@ -58,7 +58,6 @@
 
 
 #include <string>
-#include <glibmm/threadpool.h>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
