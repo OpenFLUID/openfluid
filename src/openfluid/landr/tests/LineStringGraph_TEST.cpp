@@ -716,3 +716,99 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
 // =====================================================================
 // =====================================================================
 
+
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.jpeg");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromMeanRasterValues("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 38.3333));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 53.66666));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.asc");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromMeanRasterValues("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(),  36.1858));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 50.9817));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem.Gtiff");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromMeanRasterValues("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 36.1858));
+
+  Graph->getEntity(2)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 50.9817));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+
+
+
+

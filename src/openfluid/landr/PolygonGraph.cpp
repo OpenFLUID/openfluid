@@ -473,7 +473,6 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(Mean));
   }
-
 }
 
 // =====================================================================

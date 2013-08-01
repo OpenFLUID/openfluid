@@ -174,7 +174,7 @@ class DLLEXPORT PolygonGraph: public LandRGraph
      *
      * @param AttributeName The name of the attribute to create
      */
-    void setAttributeFromMeanRasterValues(std::string AttributeName);
+    virtual void setAttributeFromMeanRasterValues(std::string AttributeName);
 
     /**
      * @brief Create on disk a shapefile representing the edges of this Graph.
