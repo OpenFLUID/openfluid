@@ -230,6 +230,17 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
     void setAttributeFromRasterValueAtCentroid(std::string AttributeName);
 
     /**
+     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * this attribute value as a mean of the raster value.
+     *
+     * @param AttributeName The name of the attribute to create.
+     */
+    virtual void setAttributeFromMeanRasterValues(std::string AttributeName)=0;
+
+
+
+
+    /**
      * @brief Compute the neighbours of each element of the graph, according to its type.
      */
     void computeNeighbours();
