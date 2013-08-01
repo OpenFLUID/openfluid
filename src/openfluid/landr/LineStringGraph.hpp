@@ -239,6 +239,15 @@ public:
 
 	bool isLineStringGraphArborescence();
 
+	/**
+	 * @brief Create a new attribute for this Graph entities, and set for each entity
+	 * this attribute value as the mean of the StartNode altitude, the centroid and the EndNode altitude
+	 * @param AttributeName The name of the attribute to create
+	 */
+	virtual void setAttributeFromMeanRasterValues(std::string AttributeName);
+
+
+
 };
 
 } // namespace landr

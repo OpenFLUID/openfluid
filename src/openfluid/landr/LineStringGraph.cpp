@@ -473,6 +473,60 @@ bool LineStringGraph::isLineStringGraphArborescence( )
 // =====================================================================
 // =====================================================================
 
+void LineStringGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
+{
+  addAttribute(AttributeName);
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
+  {
+    float* EndVal = getRasterValueForEntityEndNode(
+        *dynamic_cast<LineStringEntity*>(*it));
+
+    if (!EndVal)
+    {
+      std::ostringstream s;
+      s << "No raster value for entity " << (*it)->getSelfId() << " EndNode.";
+
+      throw openfluid::base::FrameworkException(
+          "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
+      return;
+    }
+
+    float* StartVal = getRasterValueForEntityStartNode(
+        *dynamic_cast<LineStringEntity*>(*it));
+
+    if (!StartVal)
+    {
+      std::ostringstream s;
+      s << "No raster value for entity " << (*it)->getSelfId() << " StartNode.";
+
+      throw openfluid::base::FrameworkException(
+          "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
+      return;
+    }
+
+    float* CentroVal =getRasterValueForEntityCentroid(
+        *const_cast<LandREntity*>(*it));
+
+    if (!CentroVal)
+    {
+      std::ostringstream s;
+      s << "No raster value for entity " << (*it)->getSelfId() << " Centroïd.";
+
+      throw openfluid::base::FrameworkException(
+          "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
+      return;
+    }
+
+
+    float Val=(*StartVal+*EndVal+*CentroVal)/3;
+    (*it)->setAttributeValue(AttributeName, new core::DoubleValue(Val));
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
 
 } // namespace landr
 } /* namespace openfluid */
