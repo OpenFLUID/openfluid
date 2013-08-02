@@ -62,15 +62,13 @@
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/Exception.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include "AppCoordinator.hpp"
 #include "MainWindow.hpp"
 #include "AppActions.hpp"
 #include "HomeModule.hpp"
 #include "ProjectModule.hpp"
 #include "builderconfig.hpp"
-
-#include <iostream>
-
 
 
 AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
@@ -176,8 +174,50 @@ void AppCoordinator::updateRecentsList()
       QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+bool AppCoordinator::createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
+                                   NewProjectDialog::ImportType IType, const QString& ISource)
+{
+
+  openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
+  openfluid::guicommon::PreferencesManager* PrefsMan = openfluid::guicommon::PreferencesManager::getInstance();
+
+  if (!PrjMan->create(Path.toStdString(), Name.toStdString(), Description.toStdString(), Authors.toStdString(), false))
+    return false;
+
+  if (IType == NewProjectDialog::IMPORT_NONE)
+  {
+    openfluid::fluidx::FluidXDescriptor FXD(NULL);
+    openfluid::core::DateTime DT;
+    DT.setFromISOString(PrefsMan->getBegin().toStdString());
+    FXD.getRunDescriptor().setBeginDate(DT);
+    DT.setFromISOString(PrefsMan->getEnd().toStdString());
+    FXD.getRunDescriptor().setEndDate(DT);
+    FXD.getRunDescriptor().setDeltaT(PrefsMan->getDeltaT());
+    FXD.getRunDescriptor().setFilled(true);
+
+    FXD.writeToManyFiles(PrjMan->getInputDir());
+  }
+  else if (IType == NewProjectDialog::IMPORT_PROJECT)
+  {
+    // TODO to be completed
+    return false;
+  }
+  else
+  {
+    // TODO to be completed
+    return false;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 void AppCoordinator::whenQuitAsked()
@@ -196,9 +236,33 @@ void AppCoordinator::whenQuitAsked()
 
 void AppCoordinator::whenNewAsked()
 {
+  std::cout << __PRETTY_FUNCTION__ << " import is missing" << std::endl;
+
   if (mp_CurrentModule->whenNewAsked())
   {
-    //setProjectModule();
+    NewProjectDialog NewPrjDlg(&m_MainWindow);
+    if (NewPrjDlg.exec() == QDialog::Accepted)
+    {
+      try
+      {
+        if (createProject(NewPrjDlg.getProjectName(),NewPrjDlg.getProjectFullPath(),
+                          NewPrjDlg.getProjectDescription(), NewPrjDlg.getProjectAuthors(),
+                          NewPrjDlg.getImportType(), NewPrjDlg.getImportSource()))
+        {
+          setProjectModule(NewPrjDlg.getProjectFullPath());
+          updateRecentsList();
+          m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  NewPrjDlg.getProjectName() +" ]");
+        }
+        else
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),tr("Error creating project ") + NewPrjDlg.getProjectName() + tr(" in\n") + NewPrjDlg.getProjectFullPath());
+      }
+      catch (openfluid::base::Exception& E)
+      {
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),tr("Error creating project ") + NewPrjDlg.getProjectName() + tr(" in\n") + NewPrjDlg.getProjectFullPath());
+      }
+    }
+
+
   }
 }
 

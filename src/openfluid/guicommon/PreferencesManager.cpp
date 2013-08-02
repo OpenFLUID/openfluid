@@ -218,7 +218,6 @@ unsigned int PreferencesManager::getRecentMax()
 // =====================================================================
 // =====================================================================
 
-#include <iostream>
 
 bool PreferencesManager::addRecentProject(const QString& ProjectName,
                                           const QString& ProjectPath)
@@ -304,6 +303,11 @@ QString PreferencesManager::getWorkdir()
   mp_ConfFile->beginGroup("openfluid.builder.paths");
   QString Dir = mp_ConfFile->value("workdir").toString();
   mp_ConfFile->endGroup();
+
+  if (Dir.isEmpty())
+  {
+    Dir = QString(openfluid::base::RuntimeEnvironment::getInstance()->getUserHomeDir().c_str())+"/OpenFLUID-Projects";
+  }
   return Dir;
 }
 
@@ -513,19 +517,16 @@ void PreferencesManager::setDeltaT(openfluid::core::Duration_t DeltaT)
 // =====================================================================
 
 
-bool PreferencesManager::getDeltaT(openfluid::core::Duration_t& DeltaT)
+openfluid::core::Duration_t PreferencesManager::getDeltaT()
 {
+  openfluid::core::Duration_t DeltaT;
+
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
-
-  if (mp_ConfFile->contains("deltat"))
-  {
-    DeltaT = mp_ConfFile->value("deltat").toUInt();
-    mp_ConfFile->endGroup();
-    return true;
-  }
-
+  if (!mp_ConfFile->contains("deltat")) mp_ConfFile->setValue("deltat",300);
+  DeltaT = mp_ConfFile->value("deltat").toUInt();
   mp_ConfFile->endGroup();
-  return false;
+
+  return DeltaT;
 }
 
 

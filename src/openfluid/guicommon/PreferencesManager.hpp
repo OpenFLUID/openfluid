@@ -173,7 +173,7 @@ class DLLEXPORT PreferencesManager
 
     void setDeltaT(openfluid::core::Duration_t DeltaT);
 
-    bool getDeltaT(openfluid::core::Duration_t& DeltaT);
+    openfluid::core::Duration_t getDeltaT();
 
 
     void setBegin(const QString& Begin);

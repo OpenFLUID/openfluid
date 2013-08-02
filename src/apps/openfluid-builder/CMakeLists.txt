@@ -10,6 +10,7 @@ SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/HomeModule.cpp base/HomeWidget.cpp                       
                      base/ProjectModule.cpp base/ProjectWidget.cpp                     
                      base/ProjectCentral.cpp
+                     base/NewProjectDialog.cpp
                                            
                      )
 SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
@@ -18,13 +19,17 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/HomeModule.hpp base/HomeWidget.hpp 
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
                      base/ProjectCentral.hpp
+                     base/NewProjectDialog.hpp
                      )
 
 
 QT4_ADD_RESOURCES(RCFILES resources/openfluidbuilder.qrc)
 
+QT4_WRAP_UI(UIFILES base/NewProjectDialog.ui)
+
+
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP}
-                                          ${RCFILES})
+                                          ${RCFILES} ${UIFILES})
 
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main 
