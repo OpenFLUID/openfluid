@@ -551,5 +551,59 @@ void PolygonGraph::computeLineStringNeighbours(
 // =====================================================================
 // =====================================================================
 
+
+void PolygonGraph::createEdgeAttribute(std::string AttributeName, core::Value &Value)
+{
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
+  {
+    std::vector<openfluid::landr::PolygonEdge*> vPolygonEdges=(dynamic_cast<openfluid::landr::PolygonEntity*>(*it))->m_PolyEdges;
+
+    for (std::vector<openfluid::landr::PolygonEdge*>::iterator it2 = vPolygonEdges.begin();
+        it2 != vPolygonEdges.end(); ++it2)
+    {
+      if (!(*it2)->m_EdgeAttributes.count(AttributeName))
+        (*it2)->m_EdgeAttributes[AttributeName] = Value.clone();
+    }
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::removeEdgeAttribute(std::string AttributeName)
+{
+  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
+      it != m_Entities.end(); ++it)
+  {
+    std::vector<openfluid::landr::PolygonEdge*> vPolygonEdges=(dynamic_cast<openfluid::landr::PolygonEntity*>(*it))->m_PolyEdges;
+
+    for (std::vector<openfluid::landr::PolygonEdge*>::iterator it2 = vPolygonEdges.begin();
+        it2 != vPolygonEdges.end(); ++it2)
+      (*it2)->removeAttribute(AttributeName);
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+std::vector<std::string> PolygonGraph::getEdgeAttributeNames()
+{
+  std::vector<std::string> Names;
+  std::vector<PolygonEdge*> vPolyEdge=(dynamic_cast<openfluid::landr::PolygonEntity*>(*m_Entities.begin()))->m_PolyEdges;
+
+  std::map<std::string, core::Value*> Attr =(*vPolyEdge.begin())->m_EdgeAttributes;
+  for (std::map<std::string, core::Value*>::iterator it = Attr.begin();
+      it != Attr.end(); ++it)
+    Names.push_back(it->first);
+
+  return Names;
+}
+
+// =====================================================================
+// =====================================================================
+
+
 }// namespace landr
 } /* namespace openfluid */

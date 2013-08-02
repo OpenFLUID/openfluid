@@ -54,6 +54,7 @@
 
 #include "PolygonEdge.hpp"
 
+#include <openfluid/core/Value.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <geos/geom/LineString.h>
@@ -149,6 +150,64 @@ void PolygonEdge::removeFace(PolygonEntity* Face)
 
 // =====================================================================
 // =====================================================================
+
+
+bool PolygonEdge::getAttributeValue(std::string AttributeName,
+                                    core::Value& Value) const
+{
+  std::map<std::string, core::Value*>::const_iterator it = m_EdgeAttributes.find(
+      AttributeName);
+
+  if (it != m_EdgeAttributes.end() && it->second)
+  {
+    Value = *it->second;
+    return true;
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool PolygonEdge::setAttributeValue(std::string AttributeName,
+                                    const core::Value* Value)
+{
+  std::map<std::string, core::Value*>::const_iterator it = m_EdgeAttributes.find(
+      AttributeName);
+
+  if (it != m_EdgeAttributes.end())
+  {
+    if (it->second)
+      delete it->second;
+    m_EdgeAttributes[AttributeName] = const_cast<core::Value*>(Value->clone());
+    return true;
+  }
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonEdge::removeAttribute(std::string AttributeName)
+{
+
+  std::map<std::string, core::Value*>::iterator it = m_EdgeAttributes.find(
+      AttributeName);
+
+  if (it != m_EdgeAttributes.end())
+  {
+    if ((*it).second)
+      delete (*it).second;
+
+    m_EdgeAttributes.erase(it);
+  }
+}
+
+// =====================================================================
+// =====================================================================
+
 
 }// namespace landr
 } /* namespace openfluid */

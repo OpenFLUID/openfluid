@@ -66,6 +66,8 @@
 #include <geos/geom/Polygon.h>
 #include <geos/geom/CoordinateArraySequenceFactory.h>
 #include <geos/geom/GeometryFactory.h>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/StringValue.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -120,4 +122,75 @@ BOOST_AUTO_TEST_CASE(check_isLineInFace)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
+{
+  // *********
+  // *       *
+  // *       **
+  // *       **
+  // X*********
+
+  geos::geom::CoordinateArraySequenceFactory SeqFactory;
+  geos::geom::GeometryFactory Factory;
+
+  std::vector<geos::geom::Coordinate>* CoosLS = new std::vector<
+      geos::geom::Coordinate>();
+  CoosLS->push_back(geos::geom::Coordinate(2, 0));
+  CoosLS->push_back(geos::geom::Coordinate(2, 1));
+  geos::geom::LineString* LS = Factory.createLineString(
+      SeqFactory.create(CoosLS));
+  openfluid::landr::PolygonEdge Edge(*LS);
+
+  std::vector<geos::geom::Coordinate>* CoosPoly = new std::vector<
+      geos::geom::Coordinate>();
+  CoosPoly->push_back(geos::geom::Coordinate(0, 0));
+  CoosPoly->push_back(geos::geom::Coordinate(0, 2));
+  CoosPoly->push_back(geos::geom::Coordinate(2, 2));
+  CoosPoly->push_back(geos::geom::Coordinate(2, 0));
+  CoosPoly->push_back(geos::geom::Coordinate(0, 0));
+  geos::geom::LinearRing* LR = Factory.createLinearRing(
+      SeqFactory.create(CoosPoly));
+  geos::geom::Polygon* P = Factory.createPolygon(LR, NULL);
+  openfluid::landr::PolygonEntity Entity(P, 0);
+
+
+  BOOST_CHECK(
+      !Edge.setAttributeValue("att",new openfluid::core::IntegerValue(9999)));
+
+  Edge.m_EdgeAttributes["att"]=0;
+
+  Edge.setAttributeValue("att",new openfluid::core::IntegerValue(123));
+  BOOST_CHECK(
+      Edge.setAttributeValue("att",new openfluid::core::IntegerValue(123)));
+  openfluid::core::IntegerValue Val;
+  Edge.getAttributeValue("att",Val);
+  BOOST_CHECK_EQUAL(Val.get(),123);
+
+
+  Edge.setAttributeValue("att",new openfluid::core::StringValue("val"));
+  BOOST_CHECK(
+      Edge.setAttributeValue("att",new openfluid::core::StringValue("val")));
+  openfluid::core::StringValue StrVal;
+  Edge.getAttributeValue("att",StrVal);
+  BOOST_CHECK_EQUAL(StrVal.get(),"val");
+
+  Edge.removeAttribute("att");
+  BOOST_CHECK(!Edge.getAttributeValue("att",StrVal));
+  BOOST_CHECK((Edge.m_EdgeAttributes).empty());
+
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
+
+
+
+
 

@@ -58,6 +58,8 @@
 #include <geos/planargraph/Edge.h>
 #include <openfluid/dllexport.hpp>
 
+#include <map>
+
 namespace geos {
 namespace geom {
 class LineString;
@@ -69,6 +71,10 @@ class Edge;
 }
 
 namespace openfluid {
+namespace core {
+class Value;
+
+}
 namespace landr {
 
 class PolygonEntity;
@@ -88,11 +94,18 @@ class DLLEXPORT PolygonEdge: public geos::planargraph::Edge
      */
     std::vector<PolygonEntity*> m_Faces;
 
+
   public:
 
     PolygonEdge(geos::geom::LineString& Line);
 
     ~PolygonEdge();
+
+    /**
+     * @brief Map of Attributes which are carried by this PolygonEdge.
+     */
+    std::map<std::string, core::Value*> m_EdgeAttributes;
+
 
     /**
      * @brief Return the LineString representing this PolygonEdge.
@@ -121,6 +134,33 @@ class DLLEXPORT PolygonEdge: public geos::planargraph::Edge
      * @details Does nothing if the input Face is not a part of this PolygonEdge Faces.
      */
     void removeFace(PolygonEntity* Face);
+
+    /**
+     * @brief Get the value of an attribute of this PolygonEdge.
+     *
+     * @param AttributeName The name of the attribute to get.
+     * @param Value The core::Value to assign the attribute value.
+     * @return True if the attribute exists, false otherwise.
+     */
+    bool getAttributeValue(std::string AttributeName, core::Value& Value) const;
+
+    /**
+     * @brief Set the value of an attribute of this PolygonEdge.
+     * @details Takes the ownership of Value.
+     *
+     * @param AttributeName The name of the attribute to set.
+     * @param Value The core::Value assign to the attribute value.
+     * @return True if the attribute exists, false otherwise.
+     */
+    bool setAttributeValue(std::string AttributeName, const core::Value* Value);
+
+    /**
+     * @brief Remove an attribute of this PolygonEdge.
+     *
+     * @param AttributeName The name of the attribute to set.
+     */
+    void removeAttribute(std::string AttributeName);
+
 };
 
 } // namespace landr
