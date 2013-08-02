@@ -250,7 +250,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
 
-  openfluid::market::MarketDatasetPackage DPack("tests.market.data","file:://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace/datasets/tests.market.data_2.0.0_data.ofpk").string());
+  openfluid::market::MarketDatasetPackage DPack("tests.market.data","file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace/datasets/tests.market.data_2.0.0_data.ofpk").string());
 
   DPack.download();
   BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp/downloads/tests.market.data_2.0.0_data.ofpk")));
@@ -267,8 +267,6 @@ int main(int argc, char *argv[])
 {
   QCoreApplication app(argc, argv);
 
-  ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
-
-  return 0;
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
 }
 

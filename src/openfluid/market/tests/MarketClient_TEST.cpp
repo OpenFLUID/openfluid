@@ -219,7 +219,5 @@ int main(int argc, char *argv[])
 {
   QCoreApplication app(argc, argv);
 
-  ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
-
-  return 0;
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
 }
