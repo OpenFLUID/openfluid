@@ -67,6 +67,7 @@
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
+#include <openfluid/landr/PolygonEdge.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
@@ -1131,3 +1132,47 @@ BOOST_AUTO_TEST_CASE(check_polygon_has_islands)
 
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_addRemoveEdgeAttribute)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Val);
+
+  std::vector<std::string> VEdgeAttributes;
+  VEdgeAttributes=Graph->getEdgeAttributeNames();
+  BOOST_CHECK(VEdgeAttributes.empty());
+
+  openfluid::core::DoubleValue DoubleVal;
+
+  Graph->createEdgeAttribute("att",DoubleVal);
+  VEdgeAttributes=Graph->getEdgeAttributeNames();
+  BOOST_CHECK(!VEdgeAttributes.empty());
+
+  Graph->removeEdgeAttribute("att");
+  VEdgeAttributes.clear();
+  VEdgeAttributes=Graph->getEdgeAttributeNames();
+  BOOST_CHECK(VEdgeAttributes.empty());
+
+
+  openfluid::core::IntegerValue IntVal=123;
+  Graph->createEdgeAttribute("att",IntVal);
+  openfluid::landr::PolygonEntity* U1 = Graph->getEntity(1);
+  std::vector<openfluid::landr::PolygonEdge*> vPolyEdge=U1->m_PolyEdges;
+  openfluid::core::IntegerValue IntVal2;
+  (*vPolyEdge.begin())->getAttributeValue("att",IntVal2);
+  BOOST_CHECK_EQUAL(IntVal2.get(),123);
+
+  Graph->removeEdgeAttribute("att");
+
+  delete Graph;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+

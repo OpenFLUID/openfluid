@@ -55,7 +55,10 @@
 #ifndef POLYGONGRAPH_HPP_
 #define POLYGONGRAPH_HPP_
 
+#include <openfluid/core/Value.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/landr/LandRGraph.hpp>
+
 
 // for covariant return type of getEntity
 #include <openfluid/landr/PolygonEntity.hpp>
@@ -107,6 +110,11 @@ class DLLEXPORT PolygonGraph: public LandRGraph
      * @param Segment The LineString to remove.
      */
     void removeSegment(PolygonEntity* Entity, geos::geom::LineString* Segment);
+
+
+    void addEdgeAttribute(std::string AttributeName, LandREntity& Entity);
+
+    void removeEdgeAttribute(std::string AttributeName, LandREntity& Entity);
 
   public:
 
@@ -195,6 +203,21 @@ class DLLEXPORT PolygonGraph: public LandRGraph
         LineStringGraph& Graph,
         openfluid::landr::LandRTools::Relationship Relation,
         double BufferDistance);
+
+    /**
+     * @details Doesn't reset if the AttributeName already exists.
+     */
+    void createEdgeAttribute(std::string AttributeName,openfluid::core::Value &Value);
+
+    /**
+     * @details Does nothing if AttributeName doesn't exist.
+     */
+    void removeEdgeAttribute(std::string AttributeName);
+
+    std::vector<std::string> getEdgeAttributeNames();
+
+
+
 };
 
 } // namespace landr
