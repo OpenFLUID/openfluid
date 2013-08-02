@@ -272,6 +272,14 @@ class DLLEXPORT RuntimeEnvironment
     std::string getConfigFilePath(std::string Filename) const
       { return boost::filesystem::path(m_UserDataDir + "/" + Filename).string(); };
 
+
+    /**
+      Returns the absolute path of the home directory
+      @return the absolute path
+    */
+    std::string getUserHomeDir() const
+      { return m_HomeDir; };
+
     /**
       Returns the absolute path for a given relative path in the user OpenFLUID directory (i.e. $HOME/.openfluid/RelativePath)
       @param[in] RelativePath the given relative path

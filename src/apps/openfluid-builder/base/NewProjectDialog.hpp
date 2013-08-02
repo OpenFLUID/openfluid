@@ -46,90 +46,73 @@
 */
 
 /**
-  \file AppCoordinator.hpp
+  \file NewProjectDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPCOORDINATOR_HPP__
-#define __APPCOORDINATOR_HPP__
+#ifndef __NEWPROJECTDIALOG_HPP__
+#define __NEWPROJECTDIALOG_HPP__
 
-#include <QObject>
+#include <QDialog>
 
-#include "NewProjectDialog.hpp"
 
-class MainWindow;
-class AppActions;
-class AbstractModule;
+class QFileSystemModel;
 
-class AppCoordinator : public QObject
+
+namespace Ui
 {
-  Q_OBJECT
+  class NewProjectDialog;
+}
+
+
+class NewProjectDialog : public QDialog
+{
+  Q_OBJECT;
 
   private:
 
-    MainWindow& m_MainWindow;
-    AppActions& m_Actions;
+    Ui::NewProjectDialog *ui;
 
-    AbstractModule* mp_CurrentModule;
+    QFileSystemModel *mp_DirectoryModel;
 
-    void unsetCurrentModule();
-
-    void setCurrentModule(AbstractModule* Module);
-
-    void setProjectModule(const QString& ProjectPath);
-
-    void updateRecentsList();
-
-    bool createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
-                       NewProjectDialog::ImportType IType, const QString& ISource);
+    void setMessage(const QString& Msg = "");
 
   private slots:
 
-    void whenQuitAsked();
+    void onGlobalCheck();
 
-    void whenNewAsked();
+    void onWorkdirButtonClicked();
 
-    void whenOpenAsked();
+    void onProjectButtonClicked();
 
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenCloseAsked();
-
-    void whenPropertiesAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRefreshAsked();
-
-    void whenRunAsked();
-
-    void whenMarketAsked();
-
-    void whenOnlineWebAsked();
-
-    void whenOnlineCommunityAsked();
-
-    void whenOpenExampleAsked();
-
-    void whenRestoreExamplesAsked();
-
-    void whenAboutAsked();
-
+    void onDatadirButtonClicked();
 
   public:
 
-    AppCoordinator(MainWindow& MainWin, AppActions& Actions);
+    enum ImportType { IMPORT_NONE, IMPORT_PROJECT, IMPORT_DIRECTORY};
 
-    ~AppCoordinator();
+    NewProjectDialog(QWidget *Parent);
 
-    void setHomeModule();
+    virtual ~NewProjectDialog();
+
+    QString getProjectName() const;
+
+    QString getWorkingDir() const;
+
+    QString getProjectFullPath() const;
+
+    QString getProjectDescription() const;
+
+    QString getProjectAuthors() const;
+
+    ImportType getImportType() const;
+
+    QString getImportSource() const;
 
 };
 
 
-#endif /* __APPCOORDINATOR_HPP__ */
+#endif /* __NEWPROJECTDIALOG_HPP__ */

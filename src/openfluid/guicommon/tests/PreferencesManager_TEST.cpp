@@ -115,9 +115,7 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),10);
   BOOST_CHECK(PrefMgr->getLang() == "oc");
   BOOST_CHECK(PrefMgr->getWorkdir() == "aa/bb/cc");
-  openfluid::core::Duration_t DT;
-  BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(DT),true);
-  BOOST_CHECK_EQUAL(DT,777);
+  BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),777);
   BOOST_CHECK(PrefMgr->getBegin() == "2222-11-11T00:11:22");
   BOOST_CHECK(PrefMgr->getEnd() == "2221-12-12=11;22;33");
 
