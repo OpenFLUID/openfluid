@@ -36,7 +36,6 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
-                      ${GTKMM_LIBRARIES}
                       ${GDAL_LIBRARIES}
                       ${QT_QTCORE_LIBRARIES}
                       ${QT_QTGUI_LIBRARIES}                      
@@ -59,11 +58,14 @@ ADD_EXECUTABLE(openfluid-builder main.cpp)
 
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
 
+IF(APPLE)
+  set_property(TARGET openfluid-builder PROPERTY OUTPUT_NAME "OpenFLUID-Builder")
+ENDIF()
+
 TARGET_LINK_LIBRARIES(openfluid-builder 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
-                      ${GTKMM_LIBRARIES}
                       ${GDAL_LIBRARIES}
                       openfluid-base
                       openfluid-buddies

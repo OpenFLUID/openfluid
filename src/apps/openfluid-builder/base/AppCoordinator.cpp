@@ -201,6 +201,8 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
     FXD.getRunDescriptor().setFilled(true);
 
     FXD.writeToManyFiles(PrjMan->getInputDir());
+
+    return true;
   }
   else if (IType == NewProjectDialog::IMPORT_PROJECT)
   {
