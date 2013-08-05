@@ -57,6 +57,7 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QApplication>
 
 #include <openfluid/guicommon/OpenProjectDialog.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -206,13 +207,13 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
   }
   else if (IType == NewProjectDialog::IMPORT_PROJECT)
   {
-    // TODO to be completed
-    return false;
+    openfluid::tools::CopyDirectoryContentsRecursively(ISource.toStdString()+"/IN",PrjMan->getInputDir());
+    return true;
   }
   else
   {
-    // TODO to be completed
-    return false;
+    openfluid::tools::CopyDirectoryContentsRecursively(ISource.toStdString(),PrjMan->getInputDir());
+    return true;
   }
 }
 
@@ -247,6 +248,7 @@ void AppCoordinator::whenNewAsked()
     {
       try
       {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         if (createProject(NewPrjDlg.getProjectName(),NewPrjDlg.getProjectFullPath(),
                           NewPrjDlg.getProjectDescription(), NewPrjDlg.getProjectAuthors(),
                           NewPrjDlg.getImportType(), NewPrjDlg.getImportSource()))
@@ -254,9 +256,13 @@ void AppCoordinator::whenNewAsked()
           setProjectModule(NewPrjDlg.getProjectFullPath());
           updateRecentsList();
           m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  NewPrjDlg.getProjectName() +" ]");
+          QApplication::restoreOverrideCursor();
         }
         else
+        {
+          QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),tr("Error creating project ") + NewPrjDlg.getProjectName() + tr(" in\n") + NewPrjDlg.getProjectFullPath());
+        }
       }
       catch (openfluid::base::Exception& E)
       {
@@ -289,14 +295,18 @@ void AppCoordinator::whenOpenAsked()
 
         try
         {
+          QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
           setProjectModule(SelectedDir);
           updateRecentsList();
           QString ProjectName = QDir(SelectedDir).dirName();
           m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  ProjectName +" ]");
+          m_MainWindow.unsetCursor();
+          QApplication::restoreOverrideCursor();
         }
         catch (openfluid::base::Exception& E)
         {
           openfluid::base::ProjectManager::getInstance()->close();
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
         }
       }

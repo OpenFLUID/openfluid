@@ -58,8 +58,40 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QLabel>
 
 class AppActions;
+
+
+// =====================================================================
+// =====================================================================
+
+
+class HomeLabel : public QLabel
+{
+  Q_OBJECT;
+
+  protected:
+
+    void mouseReleaseEvent(QMouseEvent *Event);
+
+   signals:
+
+      void clicked();
+
+  public:
+
+    HomeLabel(const QString& Text, QWidget* Parent = NULL);
+
+    virtual ~HomeLabel()
+    { }
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
 
 class HomeWidget : public QWidget
 {

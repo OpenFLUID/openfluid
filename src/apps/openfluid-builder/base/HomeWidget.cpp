@@ -64,6 +64,31 @@
 #include <openfluid/config.hpp>
 
 
+// =====================================================================
+// =====================================================================
+
+
+HomeLabel::HomeLabel(const QString& Text, QWidget* Parent) :
+  QLabel(Text,Parent)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeLabel::mouseReleaseEvent(QMouseEvent *Event)
+{
+  emit clicked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 HomeWidget::HomeWidget(QWidget* Parent,const AppActions* Actions):
   QWidget(Parent)
 {
@@ -84,8 +109,9 @@ HomeWidget::HomeWidget(QWidget* Parent,const AppActions* Actions):
   QLabel* Version = new QLabel(std::string("OpenFLUID v"+openfluid::config::FULL_VERSION).c_str(),this);
   Version->setAlignment(Qt::AlignCenter);
 
-  QLabel* URL = new QLabel("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>",this);
+  HomeLabel* URL = new HomeLabel("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>",this);
   URL->setAlignment(Qt::AlignCenter);
+  connect(URL,SIGNAL(clicked()),Actions->getAction("HelpOnlineWeb"),SLOT(trigger()));
 
 
   QFrame* HLine = new QFrame(this);
