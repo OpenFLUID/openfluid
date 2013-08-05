@@ -220,7 +220,7 @@ public:
 	 *
 	 * @param AttributeName The name of the attribute to create for the StartNode
 	 */
-	void setAttributeFromRasterValueAtStartNode(std::string AttributeName);
+	void setAttributeFromRasterValueAtStartNode(const std::string& AttributeName);
 
 	/**
 	 * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
@@ -228,7 +228,7 @@ public:
 	 *
 	 * @param AttributeName The name of the attribute to create for the EndNode
 	 */
-	void setAttributeFromRasterValueAtEndNode(std::string AttributeName);
+	void setAttributeFromRasterValueAtEndNode(const std::string& AttributeName);
 
 	/**
 	 * @brief Reverse a LineStringEntity orientation.
@@ -244,7 +244,7 @@ public:
 	 * this attribute value as the mean of the StartNode altitude, the centroid and the EndNode altitude
 	 * @param AttributeName The name of the attribute to create
 	 */
-	virtual void setAttributeFromMeanRasterValues(std::string AttributeName);
+	virtual void setAttributeFromMeanRasterValues(const std::string& AttributeName);
 
 
 

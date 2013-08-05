@@ -263,7 +263,8 @@ std::vector<LineStringEntity*> LineStringGraph::getEndLineStringEntities()
 
   LineStringEntity* CurrentEntity = 0;
 
-  for (unsigned int i = 0; i < getEdges()->size(); i++)
+  unsigned int iEnd=getEdges()->size();
+  for (unsigned int i = 0; i < iEnd; i++)
   {
     CurrentEntity = dynamic_cast<LineStringEntity*>(getEdges()->at(i));
 
@@ -285,7 +286,8 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
 
   LineStringEntity* CurrentEntity = 0;
 
-  for (unsigned int i = 0; i < getEdges()->size(); i++)
+  unsigned int iEnd=getEdges()->size();
+  for (unsigned int i = 0; i < iEnd; i++)
   {
     CurrentEntity = dynamic_cast<LineStringEntity*>(getEdges()->at(i));
 
@@ -344,11 +346,12 @@ float* LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 // =====================================================================
 
 void LineStringGraph::setAttributeFromRasterValueAtStartNode(
-    std::string AttributeName)
+    const std::string& AttributeName)
 {
   addAttribute(AttributeName);
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     float* Val = getRasterValueForEntityStartNode(
         *dynamic_cast<LineStringEntity*>(*it));
@@ -372,11 +375,13 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(
 // =====================================================================
 
 void LineStringGraph::setAttributeFromRasterValueAtEndNode(
-    std::string AttributeName)
+    const std::string& AttributeName)
 {
   addAttribute(AttributeName);
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     float* Val = getRasterValueForEntityEndNode(
         *dynamic_cast<LineStringEntity*>(*it));
@@ -439,15 +444,19 @@ bool LineStringGraph::isLineStringGraphArborescence( )
   std::vector<geos::planargraph::Node *> vNode;
 
   this->getNodes(vNode);
-  for (std::vector<geos::planargraph::Node*>::iterator
-      it=vNode.begin(); it!=vNode.end();it++)
+
+  std::vector<geos::planargraph::Node*>::iterator it=vNode.begin();
+  std::vector<geos::planargraph::Node*>::iterator ite=vNode.end();
+  for (; it!=ite;it++)
       (*it)->setVisited(false);
 
   // mark all edges as non marked
    std::vector<geos::planargraph::Edge *> *vEdge= this->getEdges();
-   for (std::vector<geos::planargraph::Edge*>::iterator
-       it=vEdge->begin(); it!=vEdge->end();it++)
-     (*it)->setVisited(false);
+
+   std::vector<geos::planargraph::Edge*>::iterator itE=vEdge->begin();
+   std::vector<geos::planargraph::Edge*>::iterator itEe=vEdge->end();
+   for (; itE!=itEe;itE++)
+     (*itE)->setVisited(false);
 
 
 
@@ -458,8 +467,10 @@ bool LineStringGraph::isLineStringGraphArborescence( )
   //check if all node have been visited
   vNode.clear();
   this->getNodes(vNode);
-  for (std::vector<geos::planargraph::Node*>::iterator
-      it=vNode.begin(); it!=vNode.end();it++)
+
+  it=vNode.begin();
+  ite=vNode.end();
+  for (; it!=ite;it++)
   {
     if(!(*it)->isVisited())
       return false;
@@ -473,11 +484,13 @@ bool LineStringGraph::isLineStringGraphArborescence( )
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
+void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& AttributeName)
 {
   addAttribute(AttributeName);
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     float* EndVal = getRasterValueForEntityEndNode(
         *dynamic_cast<LineStringEntity*>(*it));
@@ -530,3 +543,4 @@ void LineStringGraph::setAttributeFromMeanRasterValues(std::string AttributeName
 
 } // namespace landr
 } /* namespace openfluid */
+

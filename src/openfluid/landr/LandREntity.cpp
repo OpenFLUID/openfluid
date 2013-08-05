@@ -82,8 +82,9 @@ LandREntity::~LandREntity()
   delete mp_Geom;
   delete mp_Neighbours;
 
-  for (std::map<std::string, core::Value*>::iterator it = m_Attributes.begin();
-      it != m_Attributes.end(); ++it)
+  std::map<std::string, core::Value*>::iterator it = m_Attributes.begin();
+  std::map<std::string, core::Value*>::iterator ite = m_Attributes.end();
+  for (; it != ite; ++it)
     delete it->second;
 }
 
@@ -141,7 +142,7 @@ std::set<LandREntity*>* LandREntity::getNeighbours()
 // =====================================================================
 // =====================================================================
 
-bool LandREntity::getAttributeValue(std::string AttributeName,
+bool LandREntity::getAttributeValue(const std::string& AttributeName,
                                     core::Value& Value) const
 {
   std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(
@@ -159,7 +160,7 @@ bool LandREntity::getAttributeValue(std::string AttributeName,
 // =====================================================================
 // =====================================================================
 
-bool LandREntity::setAttributeValue(std::string AttributeName,
+bool LandREntity::setAttributeValue(const std::string& AttributeName,
                                     const core::Value* Value)
 {
   std::map<std::string, core::Value*>::const_iterator it = m_Attributes.find(
@@ -193,8 +194,9 @@ LandREntity* LandREntity::getNeighbour_MinDistCentroCentro()
 
   std::map<double, LandREntity*> NeighByDist;
 
-  for (std::set<LandREntity*>::iterator it = Neigh.begin(); it != Neigh.end();
-      ++it)
+  std::set<LandREntity*>::iterator it = Neigh.begin();
+  std::set<LandREntity*>::iterator ite = Neigh.end();
+  for (; it != ite; ++it)
   {
     LandREntity* Neigh = *it;
 

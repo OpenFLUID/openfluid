@@ -150,7 +150,7 @@ class DLLEXPORT RasterDataset
      * @return The newly created VectorDataset.
      */
     openfluid::landr::VectorDataset* polygonize(
-        std::string FileName, std::string FieldName = "",
+        const std::string& FileName, std::string FieldName = "",
         unsigned int RasterBandIndex = 1);
 
     static std::string getDefaultPolygonizedFieldName();

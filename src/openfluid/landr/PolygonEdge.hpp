@@ -142,7 +142,7 @@ class DLLEXPORT PolygonEdge: public geos::planargraph::Edge
      * @param Value The core::Value to assign the attribute value.
      * @return True if the attribute exists, false otherwise.
      */
-    bool getAttributeValue(std::string AttributeName, core::Value& Value) const;
+    bool getAttributeValue(const std::string& AttributeName, core::Value& Value) const;
 
     /**
      * @brief Set the value of an attribute of this PolygonEdge.
@@ -152,14 +152,14 @@ class DLLEXPORT PolygonEdge: public geos::planargraph::Edge
      * @param Value The core::Value assign to the attribute value.
      * @return True if the attribute exists, false otherwise.
      */
-    bool setAttributeValue(std::string AttributeName, const core::Value* Value);
+    bool setAttributeValue(const std::string& AttributeName, const core::Value* Value);
 
     /**
      * @brief Remove an attribute of this PolygonEdge.
      *
      * @param AttributeName The name of the attribute to set.
      */
-    void removeAttribute(std::string AttributeName);
+    void removeAttribute(const std::string& AttributeName);
 
 };
 

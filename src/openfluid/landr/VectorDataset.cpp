@@ -70,7 +70,7 @@
 namespace openfluid {
 namespace landr {
 
-VectorDataset::VectorDataset(std::string FileName, std::string DriverName)
+VectorDataset::VectorDataset(const std::string& FileName, std::string DriverName)
 {
   OGRRegisterAll();
 
@@ -168,7 +168,7 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
 // =====================================================================
 // =====================================================================
 
-std::string VectorDataset::getTimestampedPath(std::string OriginalFileName)
+std::string VectorDataset::getTimestampedPath(const std::string& OriginalFileName)
 {
   boost::filesystem::path OriginalFile = boost::filesystem::path(
       OriginalFileName);
@@ -200,7 +200,7 @@ std::string VectorDataset::getInitializedTmpPath()
 // =====================================================================
 // =====================================================================
 
-bool VectorDataset::isAlreadyExisting(std::string Path)
+bool VectorDataset::isAlreadyExisting(const std::string& Path)
 {
   OGRDataSource* DS = OGRSFDriverRegistrar::Open(Path.c_str(), false);
 
@@ -248,7 +248,7 @@ OGRDataSource* VectorDataset::getDataSource() const
 // =====================================================================
 // =====================================================================
 
-void VectorDataset::copyToDisk(std::string FilePath, std::string FileName,
+void VectorDataset::copyToDisk(const std::string& FilePath, const std::string& FileName,
                                bool ReplaceIfExists)
 {
   OGRSFDriver* Driver = mp_DataSource->GetDriver();
@@ -347,7 +347,7 @@ OGRFeatureDefn* VectorDataset::getLayerDef(unsigned int LayerIndex)
 // =====================================================================
 // =====================================================================
 
-void VectorDataset::addAField(std::string FieldName, OGRFieldType FieldType,
+void VectorDataset::addAField(const std::string& FieldName, OGRFieldType FieldType,
                               unsigned int LayerIndex)
 {
   OGRFieldDefn Field(FieldName.c_str(), FieldType);
@@ -377,7 +377,7 @@ bool VectorDataset::isPolygonType(unsigned int LayerIndex)
 // =====================================================================
 // =====================================================================
 
-bool VectorDataset::containsField(std::string FieldName,
+bool VectorDataset::containsField(const std::string& FieldName,
                                   unsigned int LayerIndex)
 {
   return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
@@ -386,7 +386,7 @@ bool VectorDataset::containsField(std::string FieldName,
 // =====================================================================
 // =====================================================================
 
-int VectorDataset::getFieldIndex(std::string FieldName, unsigned int LayerIndex)
+int VectorDataset::getFieldIndex(const std::string& FieldName, unsigned int LayerIndex)
 {
   return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
 }
@@ -394,7 +394,7 @@ int VectorDataset::getFieldIndex(std::string FieldName, unsigned int LayerIndex)
 // =====================================================================
 // =====================================================================
 
-bool VectorDataset::isFieldOfType(std::string FieldName, OGRFieldType FieldType,
+bool VectorDataset::isFieldOfType(const std::string& FieldName, OGRFieldType FieldType,
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))
@@ -409,7 +409,7 @@ bool VectorDataset::isFieldOfType(std::string FieldName, OGRFieldType FieldType,
 // =====================================================================
 // =====================================================================
 
-bool VectorDataset::isIntValueSet(std::string FieldName, int Value,
+bool VectorDataset::isIntValueSet(const std::string& FieldName, int Value,
                                   unsigned int LayerIndex)
 {
   if (!isFieldOfType(FieldName, OFTInteger, LayerIndex))

@@ -127,19 +127,22 @@ LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
 
 LandRGraph::~LandRGraph()
 {
-  for (geos::planargraph::NodeMap::container::iterator it = nodeBegin();
-      it != nodeEnd(); ++it)
+  geos::planargraph::NodeMap::container::iterator it = nodeBegin();
+  geos::planargraph::NodeMap::container::iterator ite = nodeEnd();
+  for (; it != ite; ++it)
     delete it->second;
 
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
-    delete (*it);
+  LandRGraph::Entities_t::iterator itE = m_Entities.begin();
+  LandRGraph::Entities_t::iterator itEe = m_Entities.end();
+  for (; itE != itEe; ++itE)
+    delete (*itE);
 
   delete mp_RasterPolygonized;
 
   if (mp_RasterPolygonizedPolys)
   {
-    for (unsigned int i = 0; i < mp_RasterPolygonizedPolys->size(); i++)
+    unsigned int mpSize=mp_RasterPolygonizedPolys->size();
+    for (unsigned int i = 0; i < mpSize; i++)
       delete mp_RasterPolygonizedPolys->at(i);
 
     delete mp_RasterPolygonizedPolys;
@@ -192,8 +195,9 @@ void LandRGraph::addEntitiesFromGeoVector()
 void LandRGraph::addEntitiesFromEntityList(
     const LandRGraph::Entities_t& Entities)
 {
-  for (LandRGraph::Entities_t::const_iterator it = Entities.begin();
-      it != Entities.end(); ++it)
+  LandRGraph::Entities_t::const_iterator it = Entities.begin();
+  LandRGraph::Entities_t::const_iterator ite = Entities.end();
+  for (; it != ite; ++it)
   {
     addEntity(getNewEntity((*it)->getGeometry()->clone(), (*it)->getSelfId()));
   }
@@ -225,7 +229,8 @@ void LandRGraph::removeUnusedNodes()
 {
   std::vector<geos::planargraph::Node*>* Unused = findNodesOfDegree(0);
 
-  for (unsigned int i = 0; i < Unused->size(); i++)
+  unsigned int UnSize=Unused->size();
+  for (unsigned int i = 0; i < UnSize; i++)
     remove(Unused->at(i));
 
   delete Unused;
@@ -257,8 +262,9 @@ LandRGraph::Entities_t LandRGraph::getSelfIdOrderedEntities()
 {
   LandRGraph::Entities_t Entities;
 
-  for (std::map<int, LandREntity*>::iterator it = m_EntitiesBySelfId.begin();
-      it != m_EntitiesBySelfId.end(); ++it)
+  std::map<int, LandREntity*>::iterator it = m_EntitiesBySelfId.begin();
+  std::map<int, LandREntity*>::iterator ite = m_EntitiesBySelfId.end();
+  for (; it != ite; ++it)
     Entities.push_back(it->second);
 
   return Entities;
@@ -283,10 +289,11 @@ unsigned int LandRGraph::getSize() const
 // =====================================================================
 // =====================================================================
 
-void LandRGraph::addAttribute(std::string AttributeName)
+void LandRGraph::addAttribute(const std::string& AttributeName)
 {
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     if (!(*it)->m_Attributes.count(AttributeName))
       (*it)->m_Attributes[AttributeName] = 0;
@@ -296,10 +303,11 @@ void LandRGraph::addAttribute(std::string AttributeName)
 // =====================================================================
 // =====================================================================
 
-void LandRGraph::removeAttribute(std::string AttributeName)
+void LandRGraph::removeAttribute(const std::string& AttributeName)
 {
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (;it != ite; ++it)
   {
     delete (*it)->m_Attributes[AttributeName];
     (*it)->m_Attributes.erase(AttributeName);
@@ -318,8 +326,9 @@ std::vector<std::string> LandRGraph::getAttributeNames()
     std::map<std::string, core::Value*> Attr =
         (*m_Entities.begin())->m_Attributes;
 
-    for (std::map<std::string, core::Value*>::iterator it = Attr.begin();
-        it != Attr.end(); ++it)
+    std::map<std::string, core::Value*>::iterator it = Attr.begin();
+    std::map<std::string, core::Value*>::iterator ite = Attr.end();
+    for (; it != ite; ++it)
       Names.push_back(it->first);
   }
 
@@ -455,12 +464,13 @@ float* LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
 // =====================================================================
 
 void LandRGraph::setAttributeFromRasterValueAtCentroid(
-    std::string AttributeName)
+    const std::string& AttributeName)
 {
   addAttribute(AttributeName);
 
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     float* Val = getRasterValueForEntityCentroid(
         *const_cast<LandREntity*>(*it));
@@ -484,15 +494,16 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
 
 void LandRGraph::computeNeighbours()
 {
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
     (*it)->computeNeighbours();
 }
 
 // =====================================================================
 // =====================================================================
 
-void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
+void LandRGraph::exportToShp(const std::string& FilePath, const std::string& FileName)
 {
   openfluid::landr::VectorDataset* Out = new openfluid::landr::VectorDataset(
       FileName);
@@ -515,8 +526,9 @@ void LandRGraph::exportToShp(std::string FilePath, std::string FileName)
 
   Out->addAField("SELF_ID", OFTInteger);
 
-  for (Entities_t::iterator it = m_Entities.begin(); it != m_Entities.end();
-      ++it)
+  Entities_t::iterator it = m_Entities.begin();
+  Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     OGRFeature *Feat = OGRFeature::CreateFeature(Out->getLayerDef());
 

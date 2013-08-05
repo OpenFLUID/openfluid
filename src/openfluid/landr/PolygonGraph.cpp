@@ -136,7 +136,8 @@ PolygonGraph* PolygonGraph::create(const LandRGraph::Entities_t& Entities)
 
 PolygonGraph::~PolygonGraph()
 {
-  for (unsigned int i = 0; i < edges.size(); i++)
+  unsigned int iEnd=edges.size();
+  for (unsigned int i = 0; i < iEnd; i++)
     delete edges[i];
 }
 
@@ -169,14 +170,16 @@ void PolygonGraph::addEntity(LandREntity* Entity)
 
   try
   {
-    for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-        it != m_Entities.end(); ++it)
+    LandRGraph::Entities_t::iterator it = m_Entities.begin();
+    LandRGraph::Entities_t::iterator ite = m_Entities.end();
+    for (; it != ite; ++it)
     {
       PolygonEntity* Poly = dynamic_cast<PolygonEntity*>(*it);
       std::vector<geos::geom::LineString*> SharedLines =
           NewEntity->getLineIntersectionsWith(*Poly);
 
-      for (unsigned int i = 0; i < SharedLines.size(); i++)
+      unsigned int iEnd=SharedLines.size();
+      for (unsigned int i = 0; i < iEnd; i++)
       {
         geos::geom::LineString* SharedLine = SharedLines[i];
 
@@ -203,7 +206,8 @@ void PolygonGraph::addEntity(LandREntity* Entity)
       std::vector<geos::geom::LineString*>* NewLines =
           LandRTools::getMergedLineStringsFromGeometry(DiffGeom);
 
-      for (unsigned int i = 0; i < NewLines->size(); i++)
+      unsigned int iEnd=NewLines->size();
+      for (unsigned int i = 0; i < iEnd; i++)
       {
         PolygonEdge* NewEdge = createEdge(*NewLines->at(i));
 
@@ -315,7 +319,9 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
     std::vector<geos::geom::LineString*>* DiffGeoms =
         LandRTools::getMergedLineStringsFromGeometry(DiffGeom);
-    for (unsigned int i = 0; i < DiffGeoms->size(); i++)
+
+    unsigned int iEnd=DiffGeoms->size();
+    for (unsigned int i = 0; i < iEnd; i++)
     {
       PolygonEdge* NewEdge = createEdge(
           dynamic_cast<geos::geom::LineString&>(*DiffGeoms->at(i)));
@@ -343,8 +349,9 @@ PolygonEntity* PolygonGraph::getEntity(int SelfId)
 
 bool PolygonGraph::isComplete()
 {
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     if (!(dynamic_cast<PolygonEntity*>(*it))->isComplete())
       return false;
@@ -358,9 +365,9 @@ bool PolygonGraph::isComplete()
 
 bool PolygonGraph::hasIsland()
 {
-
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     PolygonEntity*  Entity=dynamic_cast<PolygonEntity*>(*it);
     const geos::geom::Polygon* RefPoly = Entity->getPolygon();
@@ -372,8 +379,10 @@ bool PolygonGraph::hasIsland()
       for (int i=0;i<NumInteriorRing;i++)
       {
         const geos::geom::LineString *InnerRing=RefPoly->getInteriorRingN(i);
-        for (LandRGraph::Entities_t::iterator it2 = m_Entities.begin();
-            it2 != m_Entities.end(); ++it2)
+
+        LandRGraph::Entities_t::iterator it2 = m_Entities.begin();
+        LandRGraph::Entities_t::iterator itE2 = m_Entities.end();
+        for (; it2 != itE2; ++it2)
         {
           PolygonEntity*  IslandEntity=dynamic_cast<PolygonEntity*>(*it2);
           if(Entity->getSelfId()!=IslandEntity->getSelfId())
@@ -407,14 +416,16 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
         "PolygonGraph::getRasterPolyOverlapping",
         "No RasterPolygonizedMultiPolygon associated to the PolygonGraph");
 
-  for (std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();
-      it != RasterPolys->end(); ++it)
+  std::vector<geos::geom::Polygon*>::iterator it = RasterPolys->begin();
+  std::vector<geos::geom::Polygon*>::iterator ite = RasterPolys->end();
+  for (; it != ite; ++it)
   {
     if (RefPoly->relate(*it, "21*******"))
     {
       geos::geom::Geometry* Inter = RefPoly->intersection(*it);
 
-      for (unsigned int i = 0; i < Inter->getNumGeometries(); i++)
+      unsigned int iEnd=Inter->getNumGeometries();
+      for (unsigned int i = 0; i < iEnd; i++)
       {
         geos::geom::Polygon* Poly =
             dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
@@ -434,12 +445,13 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
+void PolygonGraph::setAttributeFromMeanRasterValues(const std::string& AttributeName)
 {
   addAttribute(AttributeName);
 
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     PolygonGraph::RastValByRastPoly_t RastPolys = getRasterPolyOverlapping(
         *dynamic_cast<PolygonEntity*>(*it));
@@ -451,8 +463,9 @@ void PolygonGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
 
     float Mean = 0;
 
-    for (PolygonGraph::RastValByRastPoly_t::iterator itPix = RastPolys.begin();
-        itPix != RastPolys.end(); ++itPix)
+    PolygonGraph::RastValByRastPoly_t::iterator itPix = RastPolys.begin();
+    PolygonGraph::RastValByRastPoly_t::iterator itPixE = RastPolys.end();
+    for (; itPix != itPixE; ++itPix)
     {
       double* PixelVal = ((double*) itPix->first->getUserData());
 
@@ -497,8 +510,9 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
         "No edges for this graph.");
   }
 
-  for (std::vector<geos::planargraph::Edge*>::iterator it = Edges->begin();
-      it != Edges->end(); ++it)
+  std::vector<geos::planargraph::Edge*>::iterator it = Edges->begin();
+  std::vector<geos::planargraph::Edge*>::iterator ite = Edges->end();
+  for (; it != ite; ++it)
   {
     OGRFeature* Feat = OGRFeature::CreateFeature(OutVector->getLayerDef());
 
@@ -542,8 +556,10 @@ void PolygonGraph::computeLineStringNeighbours(
     LineStringGraph& Graph, openfluid::landr::LandRTools::Relationship Relation,
     double BufferDistance)
 {
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
     dynamic_cast<PolygonEntity*>(*it)->computeLineStringNeighbours(
         Graph, Relation, BufferDistance);
 }
@@ -554,13 +570,15 @@ void PolygonGraph::computeLineStringNeighbours(
 
 void PolygonGraph::createEdgeAttribute(std::string AttributeName, core::Value &Value)
 {
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     std::vector<openfluid::landr::PolygonEdge*> vPolygonEdges=(dynamic_cast<openfluid::landr::PolygonEntity*>(*it))->m_PolyEdges;
 
-    for (std::vector<openfluid::landr::PolygonEdge*>::iterator it2 = vPolygonEdges.begin();
-        it2 != vPolygonEdges.end(); ++it2)
+    std::vector<openfluid::landr::PolygonEdge*>::iterator it2 = vPolygonEdges.begin();
+    std::vector<openfluid::landr::PolygonEdge*>::iterator it2E = vPolygonEdges.end();
+    for (; it2 != it2E; ++it2)
     {
       if (!(*it2)->m_EdgeAttributes.count(AttributeName))
         (*it2)->m_EdgeAttributes[AttributeName] = Value.clone();
@@ -573,13 +591,15 @@ void PolygonGraph::createEdgeAttribute(std::string AttributeName, core::Value &V
 
 void PolygonGraph::removeEdgeAttribute(std::string AttributeName)
 {
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     std::vector<openfluid::landr::PolygonEdge*> vPolygonEdges=(dynamic_cast<openfluid::landr::PolygonEntity*>(*it))->m_PolyEdges;
 
-    for (std::vector<openfluid::landr::PolygonEdge*>::iterator it2 = vPolygonEdges.begin();
-        it2 != vPolygonEdges.end(); ++it2)
+    std::vector<openfluid::landr::PolygonEdge*>::iterator it2 = vPolygonEdges.begin();
+    std::vector<openfluid::landr::PolygonEdge*>::iterator it2E = vPolygonEdges.end();
+    for (; it2 != it2E; ++it2)
       (*it2)->removeAttribute(AttributeName);
   }
 
@@ -594,8 +614,10 @@ std::vector<std::string> PolygonGraph::getEdgeAttributeNames()
   std::vector<PolygonEdge*> vPolyEdge=(dynamic_cast<openfluid::landr::PolygonEntity*>(*m_Entities.begin()))->m_PolyEdges;
 
   std::map<std::string, core::Value*> Attr =(*vPolyEdge.begin())->m_EdgeAttributes;
-  for (std::map<std::string, core::Value*>::iterator it = Attr.begin();
-      it != Attr.end(); ++it)
+
+  std::map<std::string, core::Value*>::iterator it = Attr.begin();
+  std::map<std::string, core::Value*>::iterator ite = Attr.end();
+  for (; it != ite; ++it)
     Names.push_back(it->first);
 
   return Names;

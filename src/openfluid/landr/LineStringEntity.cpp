@@ -99,7 +99,8 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
 
 LineStringEntity::~LineStringEntity()
 {
-  for (unsigned int i = 0; i < dirEdge.size(); i++)
+  unsigned int iEnd=dirEdge.size();
+  for (unsigned int i = 0; i < iEnd; i++)
     delete dirEdge[i];
 
   delete mp_LOUpNeighbours;
@@ -153,15 +154,18 @@ void LineStringEntity::computeNeighbours()
   geos::planargraph::DirectedEdgeStar* UpStar = getStartNode()->getOutEdges();
   geos::planargraph::DirectedEdgeStar* DownStar = getEndNode()->getOutEdges();
 
-  std::vector<geos::planargraph::DirectedEdge*>::iterator it;
-  for (it = UpStar->iterator(); it != UpStar->end(); ++it)
+  std::vector<geos::planargraph::DirectedEdge*>::iterator it=UpStar->iterator();
+  std::vector<geos::planargraph::DirectedEdge*>::iterator ite=UpStar->end();
+  for (; it != ite; ++it)
   {
     LandREntity* Ent = dynamic_cast<LandREntity*>((*it)->getEdge());
 
     if (Ent != this)
       mp_Neighbours->insert(Ent);
   }
-  for (it = DownStar->iterator(); it != DownStar->end(); ++it)
+  it = DownStar->iterator();
+  ite = DownStar->end();
+  for (; it != ite; ++it)
   {
     LandREntity* Ent = dynamic_cast<LandREntity*>((*it)->getEdge());
     if (Ent != this)
@@ -192,8 +196,11 @@ void LineStringEntity::computeLineOrientUpNeighbours()
 
   geos::geom::Coordinate UpNodeCoo = getStartNode()->getCoordinate();
 
-  for (std::vector<geos::planargraph::DirectedEdge*>::iterator it =
-      UpStar->iterator(); it != UpStar->end(); ++it)
+  std::vector<geos::planargraph::DirectedEdge*>::iterator it =
+        UpStar->iterator();
+  std::vector<geos::planargraph::DirectedEdge*>::iterator ite =
+        UpStar->end();
+  for (; it != ite; ++it)
   {
     LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
 
@@ -224,8 +231,11 @@ void LineStringEntity::computeLineOrientDownNeighbours()
 
   geos::geom::Coordinate DownNodeCoo = getEndNode()->getCoordinate();
 
-  for (std::vector<geos::planargraph::DirectedEdge*>::iterator it =
-      DownStar->iterator(); it != DownStar->end(); ++it)
+  std::vector<geos::planargraph::DirectedEdge*>::iterator it =
+        DownStar->iterator();
+  std::vector<geos::planargraph::DirectedEdge*>::iterator ite =
+        DownStar->end();
+  for (; it != ite; ++it)
   {
     LineStringEntity* Unit = dynamic_cast<LineStringEntity*>((*it)->getEdge());
 
