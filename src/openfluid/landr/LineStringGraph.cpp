@@ -518,21 +518,7 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
       return;
     }
 
-    float* CentroVal =getRasterValueForEntityCentroid(
-        *const_cast<LandREntity*>(*it));
-
-    if (!CentroVal)
-    {
-      std::ostringstream s;
-      s << "No raster value for entity " << (*it)->getSelfId() << " Centroïd.";
-
-      throw openfluid::base::FrameworkException(
-          "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
-      return;
-    }
-
-
-    float Val=(*StartVal+*EndVal+*CentroVal)/3;
+    float Val=(*StartVal+*EndVal)/2;
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(Val));
   }
 }
