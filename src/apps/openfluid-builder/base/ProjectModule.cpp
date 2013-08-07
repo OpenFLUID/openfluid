@@ -181,10 +181,7 @@ void ProjectModule::whenPreferencesAsked()
 void ProjectModule::whenRunAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
   mp_ProjectCentral->run();
-  QApplication::restoreOverrideCursor();
-
 }
 
 

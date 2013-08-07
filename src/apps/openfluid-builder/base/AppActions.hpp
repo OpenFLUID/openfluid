@@ -69,9 +69,13 @@ class AppActions : QObject
 
     std::map<std::string,QAction*> m_Actions;
 
+    std::vector<QAction*> m_RecentProjectsActions;
+
     QMenu* mp_SimulationMenu;
 
     QMenu* mp_ExtensionsMenu;
+
+    QMenu* mp_RecentProjectsMenu;
 
     QToolBar* mp_MainToolbar;
 
@@ -85,6 +89,11 @@ class AppActions : QObject
 
     QAction* getAction(const std::string& ID) const;
 
+    std::vector<QAction*>* getRecentProjectActions()
+    {
+      return &m_RecentProjectsActions;
+    }
+
     void setProjectMode();
 
     void setHomeMode();
@@ -92,6 +101,8 @@ class AppActions : QObject
     void createMenus(MainWindow& MainWin);
 
     void createToolbar(MainWindow& MainWin);
+
+    void updateRecentProjectsActions();
 
 };
 

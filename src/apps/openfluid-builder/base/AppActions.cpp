@@ -58,13 +58,14 @@
 #include <QToolBar>
 
 #include <openfluid/base/ApplicationException.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 #include "AppActions.hpp"
 
 
 
 AppActions::AppActions():
-  mp_SimulationMenu(NULL), mp_MainToolbar(NULL)
+  mp_SimulationMenu(NULL), mp_RecentProjectsMenu(NULL), mp_MainToolbar(NULL)
 {
   createActions();
 
@@ -78,6 +79,32 @@ AppActions::AppActions():
 AppActions::~AppActions()
 {
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+#include <iostream>
+
+void AppActions::updateRecentProjectsActions()
+{
+  openfluid::guicommon::PreferencesManager::RecentProjectsList_t RPList;
+
+  RPList = openfluid::guicommon::PreferencesManager::getInstance()->getRecentProjects();
+
+  int RFCount = qMin(int(RPList.size()),openfluid::guicommon::PreferencesManager::RecentProjectsLimit);
+
+  for (unsigned int i=0; i<RFCount;i++)
+  {
+    std::cout << "added recent action: " << RPList[i].Path.toStdString() << std::endl;
+    m_RecentProjectsActions[i]->setText(RPList[i].Path+" - " +RPList[i].Path);
+    m_RecentProjectsActions[i]->setData(RPList[i].Path);
+    m_RecentProjectsActions[i]->setVisible(true);
+  }
+
+  for (unsigned int i=RFCount;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+    m_RecentProjectsActions[i]->setVisible(false);
 }
 
 
@@ -163,7 +190,13 @@ void AppActions::createActions()
   m_Actions["MarketAccess"]->setIcon(QIcon(":/icons/market.png"));
 
 
+  for (unsigned int i=0; i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+  {
+    m_RecentProjectsActions.push_back(new QAction(this));
+    m_RecentProjectsActions.back()->setVisible(false);
+  }
 
+  updateRecentProjectsActions();
 }
 
 
@@ -230,6 +263,11 @@ void AppActions::createMenus(MainWindow& MainWin)
   Menu = MainWin.menuBar()->addMenu(tr("&Project"));
   Menu->addAction(getAction("ProjectNew"));
   Menu->addAction(getAction("ProjectOpen"));
+
+  mp_RecentProjectsMenu = Menu->addMenu("Open recent");
+  for (unsigned int i=0;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+    mp_RecentProjectsMenu->addAction(m_RecentProjectsActions[i]);
+
   Menu->addAction(getAction("ProjectSave"));
   Menu->addAction(getAction("ProjectSaveAs"));
   Menu->addAction(getAction("ProjectProperties"));
@@ -262,6 +300,7 @@ void AppActions::createMenus(MainWindow& MainWin)
   Menu->addSeparator();
   Menu->addAction(getAction("HelpAbout"));
 
+  updateRecentProjectsActions();
 }
 
 

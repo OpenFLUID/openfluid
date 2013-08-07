@@ -86,6 +86,8 @@ class AppCoordinator : public QObject
     bool createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
                        NewProjectDialog::ImportType IType, const QString& ISource);
 
+    void openProject(const QString& Name, const QString& Path);
+
   private slots:
 
     void whenQuitAsked();
@@ -93,6 +95,8 @@ class AppCoordinator : public QObject
     void whenNewAsked();
 
     void whenOpenAsked();
+
+    void whenOpenRecentAsked();
 
     void whenSaveAsked();
 
