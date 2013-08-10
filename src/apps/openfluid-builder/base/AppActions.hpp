@@ -89,9 +89,9 @@ class AppActions : QObject
 
     QAction* getAction(const std::string& ID) const;
 
-    std::vector<QAction*>* getRecentProjectActions()
+    std::vector<QAction*> getRecentProjectActions() const
     {
-      return &m_RecentProjectsActions;
+      return m_RecentProjectsActions;
     }
 
     void setProjectMode();

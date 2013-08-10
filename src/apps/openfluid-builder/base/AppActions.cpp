@@ -98,7 +98,7 @@ void AppActions::updateRecentProjectsActions()
   for (unsigned int i=0; i<RFCount;i++)
   {
     std::cout << "added recent action: " << RPList[i].Path.toStdString() << std::endl;
-    m_RecentProjectsActions[i]->setText(RPList[i].Path+" - " +RPList[i].Path);
+    m_RecentProjectsActions[i]->setText(RPList[i].Name+" - " +RPList[i].Path);
     m_RecentProjectsActions[i]->setData(RPList[i].Path);
     m_RecentProjectsActions[i]->setVisible(true);
   }
@@ -116,7 +116,7 @@ void AppActions::createActions()
 {
   // Project menu
 
-  m_Actions["ProjectNew"] = new QAction(tr("&New"), this);
+  m_Actions["ProjectNew"] = new QAction(tr("&New..."), this);
   m_Actions["ProjectNew"]->setShortcuts(QKeySequence::New);
   m_Actions["ProjectNew"]->setIcon(QIcon(":/icons/file-new.png"));
 

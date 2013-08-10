@@ -56,6 +56,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QFrame>
+#include <QDir>
 
 #include "HomeWidget.hpp"
 #include "AppActions.hpp"
@@ -89,7 +90,38 @@ void HomeLabel::mouseReleaseEvent(QMouseEvent *Event)
 // =====================================================================
 
 
-HomeWidget::HomeWidget(QWidget* Parent,const AppActions* Actions):
+void RecentProjectLabel::enterEvent(QEvent* Event)
+{
+  setStyleSheet("text-decoration : underline;");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RecentProjectLabel::leaveEvent(QEvent* Event)
+{
+  setStyleSheet("text-decoration : none;");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+RecentProjectLabel::RecentProjectLabel(const QString& Text, QWidget* Parent):
+  HomeLabel(Text,Parent)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   QWidget(Parent)
 {
 
@@ -170,6 +202,48 @@ HomeWidget::HomeWidget(QWidget* Parent,const AppActions* Actions):
 
   // Recent projects
   QFrame* Recent = new QFrame(this);
+  QVBoxLayout *RecentLayout = new QVBoxLayout(this);
+
+  QLabel* RecentProjectsLabel = new QLabel(tr("Recent projects:"),this);
+  RecentProjectsLabel->setStyleSheet("font : bold;");
+
+  RecentLayout->addWidget(RecentProjectsLabel);
+
+  std::vector<QAction*> RecentActions = Actions->getRecentProjectActions();
+
+  QPixmap DotPix(":/images/dot.png");
+
+  for (unsigned int i=0; i<RecentActions.size();i++)
+  {
+    if (RecentActions[i]->isVisible())
+    {
+      // the local layaout will be given a correct parent below with the addLayout() command
+      QHBoxLayout* LocalLayout = new QHBoxLayout(NULL);
+      QLabel* DotLabel = new QLabel(this);
+      DotLabel->setPixmap(DotPix);
+      DotLabel->setAlignment(Qt::AlignCenter);
+      LocalLayout->addWidget(DotLabel);
+      LocalLayout->setContentsMargins(30,0,0,0);
+
+      RecentProjectLabel* RecentLabel = new RecentProjectLabel(QDir(RecentActions[i]->data().toString()).dirName(),this);
+      RecentLabel->setContentsMargins(0,0,0,0);
+      RecentLabel->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
+      // TODO set the tooltip with icon and project info, with adapted stylesheet
+      // RecentLabel->setToolTip(RecentActions[i]->data().toString());
+      RecentLabel->setCursor(Qt::PointingHandCursor);
+      connect(RecentLabel,SIGNAL(clicked()),RecentActions[i],SLOT(trigger()));
+
+      LocalLayout->addWidget(RecentLabel);
+      LocalLayout->addStretch();
+      RecentLayout->addLayout(LocalLayout);
+    }
+  }
+  RecentLayout->addStretch();
+
+  RecentLayout->setContentsMargins(30,30,30,30);
+  RecentLayout->setSpacing(10);
+  Recent->setLayout(RecentLayout);
+
 
   QFrame* LowerPart = new QFrame(this);
   QHBoxLayout* LowLayout = new QHBoxLayout(this);

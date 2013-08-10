@@ -93,6 +93,30 @@ class HomeLabel : public QLabel
 // =====================================================================
 
 
+class RecentProjectLabel : public HomeLabel
+{
+  Q_OBJECT;
+
+  protected:
+
+    void enterEvent(QEvent* Event);
+
+    void leaveEvent(QEvent* Event);
+
+  public:
+
+    RecentProjectLabel(const QString& Text, QWidget* Parent = NULL);
+
+    virtual ~RecentProjectLabel()
+    { }
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
 class HomeWidget : public QWidget
 {
   Q_OBJECT;
@@ -103,7 +127,7 @@ class HomeWidget : public QWidget
 
   public:
 
-    HomeWidget(QWidget* Parent,const AppActions* Actions);
+    HomeWidget(QWidget* Parent, const AppActions* Actions);
 
     ~HomeWidget();
 };
