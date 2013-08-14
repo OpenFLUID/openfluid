@@ -58,6 +58,9 @@
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/StringValue.hpp>
+#include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/Polygon.h>
@@ -567,6 +570,61 @@ void LandRGraph::exportToShp(const std::string& FilePath, const std::string& Fil
 
 // =====================================================================
 // =====================================================================
+
+void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
+                                          openfluid::core::GeoVectorValue& Vector, const std::string& Column)
+{
+  if(!Vector.containsField(Column))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << Column << " in GeoVector.";
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorId", s.str());
+  }
+
+  addAttribute(AttributeName);
+
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 = mp_Vector->getLayer(0);
+  Layer0->ResetReading();
+
+  int columnIndex=Vector.getFieldIndex(Column);
+  OGRFeature* Feat;
+  while ((Feat = Layer0->GetNextFeature()) != NULL)
+  {
+    int SelfId=Feat->GetFieldAsInteger("SELF_ID");
+    openfluid::landr::LandREntity* Entity=getEntity(SelfId);
+    if(Entity)
+    {
+      if(Vector.isFieldOfType(Column, OFTInteger))
+      {
+        int value=Feat->GetFieldAsInteger(columnIndex);
+        Entity->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
+      }
+      else if(Vector.isFieldOfType(Column, OFTReal))
+      {
+        double value=Feat->GetFieldAsDouble(columnIndex);
+        Entity->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
+      }
+      else
+      {
+        std::string value=Feat->GetFieldAsString(columnIndex);
+        Entity->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
+      }
+    }
+
+    // destroying the feature
+    OGRFeature::DestroyFeature(Feat);
+
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 }// namespace landr
 } /* namespace openfluid */

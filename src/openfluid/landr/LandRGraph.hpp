@@ -253,6 +253,18 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
      */
     void exportToShp(const std::string& FilePath, const std::string& FileName);
 
+
+    /**
+     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * this attribute value as the vector value corresponding to the entity SELF_ID.
+     *
+     * @param AttributeName The name of the attribute to create.
+     * @param Vector The Name of the GeoVectorValue.
+     * @param Column The Name of the column of the GeoVectorValue to upload.
+     */
+    void setAttributeFromVectorId(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector, const std::string& Column);
+
+
 };
 
 } // namespace landr
