@@ -287,9 +287,42 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
   BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0));
 
 
+  openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
+       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+
+  Graph->setAttributeFromVectorId("attribut",*OtherVector, "USR_SLOP");
+
+  Entity=Graph->getEntity(1);
+  Entity->getAttributeValue("attribut", DoubleValue);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0.02));
+
+  Entity=Graph->getEntity(6);
+  Entity->getAttributeValue("attribut", DoubleValue);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0.06));
+
+
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Value);
+
+
+  Graph->setAttributeFromVectorId("attribut",*Vect, "USR_WID");
+
+  Entity=Graph->getEntity(1);
+  Entity->getAttributeValue("attribut", DoubleValue);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 2));
+
+  Entity=Graph->getEntity(6);
+  Entity->getAttributeValue("attribut", DoubleValue);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 1));
+
 
   delete Graph;
   delete Vector;
+  delete OtherVector;
+  delete Vect;
+
 
 }
 

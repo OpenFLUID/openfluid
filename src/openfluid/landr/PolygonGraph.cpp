@@ -62,10 +62,14 @@
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/StringValue.hpp>
 #include <geos/geom/Polygon.h>
+#include <geos/geom/Point.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/MultiLineString.h>
 #include <geos/geom/GeometryFactory.h>
+#include <geos/geom/Geometry.h>
 #include <geos/planargraph/DirectedEdge.h>
 
 namespace openfluid {
@@ -625,6 +629,158 @@ std::vector<std::string> PolygonGraph::getEdgeAttributeNames()
 
 // =====================================================================
 // =====================================================================
+
+void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
+                                                  const std::string& Column,double Thresh)
+{
+  if(!Vector.isPolygonType())
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::setAttributeFromVectorLocation",
+        "Vector is not a Polygon type");
+
+
+  if(!Vector.containsField(Column))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << Column << " in GeoVector.";
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorLocation", s.str());
+  }
+
+  addAttribute(AttributeName);
+
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 = Vector.getLayer(0);
+  Layer0->ResetReading();
+
+  int columnIndex=Vector.getFieldIndex(Column);
+
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
+  for (; it != ite; ++it)
+  {
+    geos::geom::Point* Centroid=(*it)->getCentroid();
+
+    OGRFeature* Feat;
+    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    {
+      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+      // c++ cast doesn't work (have to use the C API instead)
+      geos::geom::Geometry* GeosGeom =
+          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+      if(GeosGeom->contains(Centroid))
+      {
+        if(Vector.isFieldOfType(Column, OFTInteger))
+        {
+          int value=Feat->GetFieldAsInteger(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
+        }
+        else if(Vector.isFieldOfType(Column, OFTReal))
+        {
+          double value=Feat->GetFieldAsDouble(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
+        }
+        else
+        {
+          std::string value=Feat->GetFieldAsString(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
+        }
+
+      }
+      // destroying the feature destroys also the associated OGRGeom
+      OGRFeature::DestroyFeature(Feat);
+      delete GeosGeom;
+
+    }
+    Layer0->ResetReading();
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
+                                                  const std::string& Column,double Thresh)
+{
+  if(!Vector.isPolygonType())
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::setAttributeFromVectorLocation",
+        "Vector is not a Polygon type");
+
+
+  if(!Vector.containsField(Column))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << Column << " in GeoVector.";
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorLocation", s.str());
+  }
+
+  addAttribute(AttributeName);
+
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 = Vector.getLayer(0);
+  Layer0->ResetReading();
+
+  int columnIndex=Vector.getFieldIndex(Column);
+
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
+  for (; it != ite; ++it)
+  {
+    geos::geom::Point* Centroid=(*it)->getCentroid();
+
+    OGRFeature* Feat;
+    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    {
+      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+      // c++ cast doesn't work (have to use the C API instead)
+      geos::geom::Geometry* GeosGeom =
+          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+      if(GeosGeom->contains(Centroid))
+      {
+        if(Vector.isFieldOfType(Column, OFTInteger))
+        {
+          int value=Feat->GetFieldAsInteger(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
+        }
+        else if(Vector.isFieldOfType(Column, OFTReal))
+        {
+          double value=Feat->GetFieldAsDouble(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
+        }
+        else
+        {
+          std::string value=Feat->GetFieldAsString(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
+        }
+
+      }
+      // destroying the feature destroys also the associated OGRGeom
+      OGRFeature::DestroyFeature(Feat);
+      delete GeosGeom;
+
+    }
+    Layer0->ResetReading();
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 }// namespace landr

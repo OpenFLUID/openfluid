@@ -246,6 +246,29 @@ public:
 	 */
 	virtual void setAttributeFromMeanRasterValues(const std::string& AttributeName);
 
+	/**
+	 * @brief Create a new attribute for this Graph entities, and set for each entity.
+	 * this attribute value as the vector value corresponding to the Vector Entity Geometry
+	 *
+	 * @param AttributeName The name of the attribute to create.
+	 * @param Vector The Name of the GeoVectorValue.
+	 * @param Column The Name of the column of the GeoVectorValue to upload.
+	 * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+	 */
+	virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
+	                                            const std::string& Column,double Thresh=0.0001);
+
+	/**
+	 * @brief Create a new attribute for this Graph entities, and set for each entity.
+	 * this attribute value as the vector value corresponding to the Vector Entity Geometry
+	 *
+	 * @param AttributeName The name of the attribute to create.
+	 * @param Vector The Name of the VectorDataset.
+	 * @param Column The Name of the column of the GeoVectorValue to upload.
+	 * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+	 */
+	virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
+	                                            const std::string& Column,double Thresh=0.0001);
 
 
 };
