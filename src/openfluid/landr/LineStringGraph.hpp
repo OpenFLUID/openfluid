@@ -270,6 +270,16 @@ public:
 	virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
 	                                            const std::string& Column,double Thresh=0.0001);
 
+	/**
+	 * @brief Merge a LineStringEntity into an other one
+	 * The LineStringEntity to merge is deleted.
+	 *
+	 * @param Entity An existent LineStringEntity
+	 * @param EntityToMerge The LineStringEntity which will be merged into Entity and will be deleted
+	 */
+	void mergeLineStringEntities(LineStringEntity& Entity, LineStringEntity& EntityToMerge);
+
+
 
 };
 

@@ -704,6 +704,83 @@ void LineStringGraph::setAttributeFromVectorLocation(const std::string& Attribut
 // =====================================================================
 // =====================================================================
 
+void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStringEntity& EntityToMerge)
+{
+
+  //ensure that the two LineStrings are coincident
+  bool Coincident=false;
+  geos::planargraph::Node* StartNode=Entity.getStartNode();
+  geos::planargraph::Node* EndNode=Entity.getEndNode();
+
+  geos::planargraph::Node* StartNode2=EntityToMerge.getStartNode();
+  geos::planargraph::Node* EndNode2=EntityToMerge.getEndNode();
+
+  if((StartNode->getCoordinate()).equals(StartNode2->getCoordinate())||
+      (StartNode->getCoordinate()).equals(EndNode2->getCoordinate())||
+      (EndNode->getCoordinate()).equals(StartNode2->getCoordinate())||
+      (EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
+    Coincident=true;
+
+  if(!Coincident)
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::mergeLineStringEntities",
+        "The LineStringEntities are not coincident");
+
+
+  // Four possibility of coincidence
+  geos::geom::CoordinateSequence *CoordsOne;;
+  geos::geom::CoordinateSequence *CoordsTwo;
+
+  if((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
+  {
+    CoordsOne=(Entity.getLine())->getCoordinates();
+    CoordsTwo=(EntityToMerge.getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+  else if((StartNode->getCoordinate()).equals(EndNode2->getCoordinate()))
+  {
+    CoordsOne=(EntityToMerge.getLine())->getCoordinates();
+    CoordsTwo=(Entity.getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+  else if((EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
+  {
+    CoordsOne=(Entity.getLine())->getCoordinates();
+    CoordsTwo=(EntityToMerge.getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,false);
+  }
+  else if((StartNode->getCoordinate()).equals(StartNode2->getCoordinate()))
+  {
+    reverseLineStringEntity(EntityToMerge);
+    CoordsOne=(EntityToMerge.getLine())->getCoordinates();
+    CoordsTwo=(Entity.getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+
+  int SelfId=Entity.getSelfId();
+  removeEntity(SelfId);
+  int SelfIdToMerge=EntityToMerge.getSelfId();
+  removeEntity(SelfIdToMerge);
+
+  geos::geom::GeometryFactory Factory;
+  geos::geom::LineString * NewLine=Factory.createLineString(CoordsOne);
+
+  try {
+    addEntity(new LineStringEntity(NewLine,SelfId));
+  } catch (openfluid::base::FrameworkException& e) {
+    std::ostringstream s;
+    s << "Merge operation impossible for entity" << SelfId<<" : "<<e.what() ;
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::mergeLineStringEntities",s.str());
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
 } // namespace landr
 } /* namespace openfluid */
 

@@ -887,5 +887,71 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Val);
+  std::vector<geos::planargraph::Node*> Nodes;
+
+  BOOST_CHECK_THROW(Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(5))),
+                    openfluid::base::FrameworkException);
+  Graph->getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 9);
+
+  // first coincidence :   |----2------>|-----1----->
+  // result :              |----2------------------->
+  Graph->mergeLineStringEntities(*(Graph->getEntity(2)),*(Graph->getEntity(1)));
+  BOOST_CHECK_EQUAL(Graph->getSize(), 7);
+  BOOST_CHECK(!Graph->getEntity(1));
+  Nodes.clear();
+  Graph->getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 8);
 
 
+
+  delete Graph;
+
+  // second coincidence :   |----2------>|-----1----->
+  // result :               |----1------------------->
+  Graph = openfluid::landr::LineStringGraph::create(*Val);
+  Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
+  BOOST_CHECK_EQUAL(Graph->getSize(), 7);
+  BOOST_CHECK(!Graph->getEntity(2));
+  Nodes.clear();
+  Graph->getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 8);
+  delete Graph;
+
+  // third coincidence :   |----2------>|<----1-----|
+  // result :              <----1-------------------|
+  Graph = openfluid::landr::LineStringGraph::create(*Val);
+  Graph->reverseLineStringEntity(*(Graph->getEntity(1)));
+  Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
+  BOOST_CHECK_EQUAL(Graph->getSize(), 7);
+  BOOST_CHECK(!Graph->getEntity(2));
+  Nodes.clear();
+  Graph->getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 8);
+  delete Graph;
+
+  // fourth coincidence :   <-----2------|-----1----->
+  // result :               |----1------------------->
+  Graph = openfluid::landr::LineStringGraph::create(*Val);
+  Graph->reverseLineStringEntity(*(Graph->getEntity(2)));
+  Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
+  BOOST_CHECK_EQUAL(Graph->getSize(), 7);
+  BOOST_CHECK(!Graph->getEntity(2));
+  Nodes.clear();
+  Graph->getNodes(Nodes);
+  BOOST_CHECK_EQUAL(Nodes.size(), 8);
+  delete Graph;
+
+
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
