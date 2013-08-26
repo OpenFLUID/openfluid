@@ -140,6 +140,9 @@ protected:
 	virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
 			unsigned int SelfId);
 
+
+
+
 public:
 
 	/**
@@ -278,6 +281,18 @@ public:
 	 * @param EntityToMerge The LineStringEntity which will be merged into Entity and will be deleted
 	 */
 	void mergeLineStringEntities(LineStringEntity& Entity, LineStringEntity& EntityToMerge);
+
+	/**
+	 * @brief Get a map of small LineStringEntities under length threshold and only if the LineStringEntitie is
+	 * not between two confluences
+	 *
+	 * @param MinLength The length threshold (in map units).
+	 * @param rmDangle : if true, get also dangles under the threshold, default is true.
+	 * @return a multimap of LineStringEntities with key is the length of each Entity
+	 */
+	std::multimap<double,  LineStringEntity*> getLineStringEntitiesByMinLength(double MinLength,bool rmDangle=true);
+
+
 
 
 

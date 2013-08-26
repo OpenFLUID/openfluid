@@ -955,3 +955,35 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getLineStringEntityByMinLength)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Val);
+
+  std::multimap<double,  openfluid::landr::LineStringEntity*> mEntities;
+
+  BOOST_CHECK_THROW(Graph->getLineStringEntitiesByMinLength(-1),
+                    openfluid::base::FrameworkException);
+  mEntities=Graph->getLineStringEntitiesByMinLength(100,false);
+  BOOST_CHECK_EQUAL(mEntities.size(), 0);
+
+  mEntities.clear();
+  mEntities=Graph->getLineStringEntitiesByMinLength(100,true);
+  BOOST_CHECK_EQUAL(mEntities.size(), 1);
+
+  mEntities.clear();
+  mEntities=Graph->getLineStringEntitiesByMinLength(175,true);
+  BOOST_CHECK_EQUAL(mEntities.size(), 3);
+
+  delete Graph;
+  delete Val;
+
+}
+
+// =====================================================================
+// =====================================================================
+

@@ -728,7 +728,7 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
 
 
   // Four possibility of coincidence
-  geos::geom::CoordinateSequence *CoordsOne;;
+  geos::geom::CoordinateSequence *CoordsOne=0;
   geos::geom::CoordinateSequence *CoordsTwo;
 
   if((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
@@ -779,6 +779,48 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
 // =====================================================================
 // =====================================================================
 
+std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntitiesByMinLength(double MinLength,bool rmDangle)
+{
+  if (MinLength<=0.0)
+    throw  openfluid::base::FrameworkException("LineStringGraph : "
+        "LineStringGraph::getLineStringEntitiesByMinLength : "
+        "Threshold must be superior to 0.0");
+
+  std::list<LandREntity*> lEntities=getSelfIdOrderedEntities();
+  std::list<LandREntity*>::iterator it = lEntities.begin();
+  std::list<LandREntity*>::iterator ite = lEntities.end();
+  std::multimap<double, LineStringEntity*> mOrderedLength;
+  for(;it!=ite;++it)
+  {
+
+    if((*it)->getLength()<MinLength)
+    {
+
+      int StartDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getStartNode()->getDegree();
+      int EndDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getEndNode()->getDegree();
+
+      //is Line between two confluences ? StartNode and EndNode are in contact with three or more Edges
+      if(!(StartDegree>=3 && EndDegree>=3))
+      {
+        // is Line a dangle ? postulate : LineStringGraph  is not well-oriented.
+        //A dangle has StartNode in contact with one Edge and EndNode with three or more Edges
+        // or has EndNode in contact with one Edge and StartNode with three or more Edges
+        if((StartDegree==1 && EndDegree>=3 && rmDangle==false)||(EndDegree==1 && StartDegree>=3 && rmDangle==false))
+          break;
+        else
+          mOrderedLength.insert ( std::pair<double, LineStringEntity*>((*it)->getLength(),dynamic_cast<openfluid::landr::LineStringEntity*>(*it)) );
+
+      }
+
+    }
+  }
+
+  return mOrderedLength;
+
+}
+
+// =====================================================================
+// =====================================================================
 
 
 } // namespace landr
