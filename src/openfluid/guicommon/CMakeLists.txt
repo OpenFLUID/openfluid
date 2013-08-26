@@ -6,20 +6,28 @@ INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 FILE(GLOB OPENFLUID_GUICOMMON_CPP OpenProjectDialog.cpp
                                   PreferencesManager.cpp
+                                  RunSimulationDialog.cpp
+                                  RunSimulationWorker.cpp                                 
                                   )
 
 FILE(GLOB OPENFLUID_GUICOMMON_HPP OpenProjectDialog.hpp
                                   PreferencesManager.hpp
+                                  RunSimulationDialog.hpp
+                                  RunSimulationWorker.hpp                                  
                                   )
 
+QT4_WRAP_UI(OPENFLUID_GUICOMMON_UI RunSimulationDialog.ui)
 
-ADD_LIBRARY(openfluid-guicommon SHARED ${OPENFLUID_GUICOMMON_CPP} ${OPENFLUID_GUICOMMON_HPP})
+
+ADD_LIBRARY(openfluid-guicommon SHARED ${OPENFLUID_GUICOMMON_CPP} ${OPENFLUID_GUICOMMON_HPP}
+                                       ${OPENFLUID_GUICOMMON_UI})
 
 SET_TARGET_PROPERTIES(openfluid-guicommon PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
                                         SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
+                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        )
 
 TARGET_LINK_LIBRARIES(openfluid-guicommon
                       openfluid-base

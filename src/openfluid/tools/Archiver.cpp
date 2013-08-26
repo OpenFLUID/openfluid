@@ -92,6 +92,7 @@ std::string Archiver::getRelativePath(const std::string& FilePath, const std::st
 
 void Archiver::compressDirectoryAsZip(const std::string& InputDir, const std::string& OutputFile)
 {
+  /*
   struct archive* Archive = 0;
   Archive = archive_write_new();
   if (Archive == 0)
@@ -162,6 +163,7 @@ void Archiver::compressDirectoryAsZip(const std::string& InputDir, const std::st
 
   archive_write_close(Archive);
   archive_write_free(Archive);
+  */
 }
 
 
@@ -171,6 +173,7 @@ void Archiver::compressDirectoryAsZip(const std::string& InputDir, const std::st
 
 void Archiver::uncompressArchive(const std::string& ArchivePath, const std::string& OutputDir)
 {
+  /*
   struct archive* Archive, *ExtDir;
   struct archive_entry* Entry;
   int Length;
@@ -222,7 +225,7 @@ void Archiver::uncompressArchive(const std::string& ArchivePath, const std::stri
   archive_read_free(Archive);
   archive_write_close(ExtDir);
   archive_write_free(ExtDir);
-
+*/
 }
 
 

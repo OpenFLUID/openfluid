@@ -96,13 +96,13 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 
   connect(m_Actions.getAction("MarketAccess"), SIGNAL(triggered()), this, SLOT(whenMarketAsked()));
 
+
+  // connection of recent oen projects
+
   std::vector<QAction*> RecentActions = m_Actions.getRecentProjectActions();
 
   for (unsigned int i=0;i<RecentActions.size();i++)
-  {
-    std::cout << "connect " << i << std::endl;
     connect(RecentActions[i], SIGNAL(triggered()), this, SLOT(whenOpenRecentAsked()));
-  }
 
 }
 
