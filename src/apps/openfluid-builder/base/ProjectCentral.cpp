@@ -52,19 +52,12 @@
  */
 
 #include <QMessageBox>
+#include <QApplication>
+
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/machine/MachineListener.hpp>
-#include <openfluid/machine/Engine.hpp>
-#include <openfluid/machine/ModelInstance.hpp>
-#include <openfluid/machine/ModelItemInstance.hpp>
-#include <openfluid/machine/ObserverInstance.hpp>
-#include <openfluid/machine/MonitoringInstance.hpp>
-#include <openfluid/machine/Factory.hpp>
-#include <openfluid/machine/Generator.hpp>
+#include <openfluid/guicommon/RunSimulationDialog.hpp>
 
 
 #include "ProjectCentral.hpp"
@@ -136,69 +129,9 @@ void ProjectCentral::setDefaultDescriptors()
 
 void ProjectCentral::run()
 {
+  openfluid::guicommon::RunSimulationDialog RunDlg(QApplication::activeWindow(),mp_FXDesc);
 
-
-  openfluid::base::ProjectManager::getInstance()->updateOutputDir();
-
-  openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
-
-  openfluid::machine::SimulationBlob SimBlob;
-
-  //  openfluid::guicommon::RunDialogMachineListener Listener;
-  openfluid::machine::MachineListener Listener;
-
-  openfluid::machine::ModelInstance ModelInstance(SimBlob, &Listener);
-
-  openfluid::machine::MonitoringInstance MonitInstance(SimBlob);
-
-  openfluid::machine::Engine Engine(SimBlob, ModelInstance, MonitInstance,
-                                    &Listener);
-  try
-  {
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(*mp_FXDesc,
-                                                                    SimBlob);
-
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(
-        mp_FXDesc->getModelDescriptor(), ModelInstance);
-
-    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(
-        mp_FXDesc->getMonitoringDescriptor(), MonitInstance);
-
-    openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
-        mp_FXDesc->getRunDescriptor());
-
-    SimBlob.getCoreRepository().sortUnitsByProcessOrder();
-
-    Engine.initialize();
-
-    Engine.initParams();
-    Engine.prepareData();
-    Engine.checkConsistency();
-    Engine.run();
-  }
-  catch (openfluid::base::Exception& E)
-  {
-    QMessageBox::critical(NULL,tr("Simulation error"),QString(E.what()));
-  }
-  catch (std::exception& E)
-  {
-    QMessageBox::critical(NULL,tr("Simulation error"),QString(E.what()));
-  }
-  catch (...)
-  {
-    QMessageBox::critical(NULL,tr("Simulation error"),tr("Undetermined error."));
-  }
-
-  Engine.finalize();
-
-  //  openfluid::guicommon::SimulationRunDialog RunDialog(&Engine);
-  /*
-  RunDialog.signal_SimulationStarted().connect(
-      sigc::mem_fun(*this, &EngineProject::whenSimulationStarted));
-  RunDialog.signal_SimulationStopped().connect(
-      sigc::mem_fun(*this, &EngineProject::whenSimulationStopped));
-
-   */
+  RunDlg.execute();
 }
 
 
