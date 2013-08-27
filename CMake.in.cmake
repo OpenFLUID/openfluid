@@ -177,6 +177,9 @@ SET(BUILD_APP_MARKETCLIENT 0)
 SET(BUILD_APP_MINIMALGUI 0)
 
 
+SET(OPENFLUID_WITH_GTK 0)
+
+
 ################### simulators build ###################
 
 # uncomment this to build simulators mixing C++ and fortran source codes (in this source tree)
