@@ -11,8 +11,8 @@ SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/ProjectModule.cpp base/ProjectWidget.cpp                     
                      base/ProjectCentral.cpp
                      base/NewProjectDialog.cpp
-                                           
                      )
+                     
 SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
                      base/AbstractModule.hpp 
@@ -23,20 +23,19 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      )
 
 
-QT4_ADD_RESOURCES(RCFILES resources/openfluidbuilder.qrc)
+QT4_ADD_RESOURCES(BUILDER_RC resources/openfluidbuilder.qrc)
 
-QT4_WRAP_UI(UIFILES base/NewProjectDialog.ui)
+QT4_WRAP_UI(BUILDER_UI base/NewProjectDialog.ui)
 
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP}
-                                          ${RCFILES} ${UIFILES})
+                                          ${BUILDER_RC} ${BUILDER_UI})
 
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
-                      ${GTKMM_LIBRARIES}
                       ${GDAL_LIBRARIES}
                       ${QT_QTCORE_LIBRARIES}
                       ${QT_QTGUI_LIBRARIES}                      
@@ -59,11 +58,14 @@ ADD_EXECUTABLE(openfluid-builder main.cpp)
 
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
 
+IF(APPLE)
+  set_property(TARGET openfluid-builder PROPERTY OUTPUT_NAME "OpenFLUID-Builder")
+ENDIF()
+
 TARGET_LINK_LIBRARIES(openfluid-builder 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
-                      ${GTKMM_LIBRARIES}
                       ${GDAL_LIBRARIES}
                       openfluid-base
                       openfluid-buddies

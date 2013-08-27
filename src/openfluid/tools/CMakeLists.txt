@@ -28,6 +28,7 @@ TARGET_LINK_LIBRARIES(openfluid-tools
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
                       ${GLIBMM_LIBRARIES}
                       ${LibArchive_LIBRARIES}
+                      ${QT_QTCORE_LIBRARY}
                       ${QT_QTNETWORK_LIBRARY}
                       ${QT_QTXML_LIBRARY})
 

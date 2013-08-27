@@ -73,7 +73,7 @@ MainWindow::MainWindow()
   layout()->setSpacing(0);
 
   setWindowTitle("OpenFLUID-Builder");
-  setWindowIcon(QIcon(":/images/openfluid_icon.png"));
+  setWindowIcon(QIcon(":/icons/openfluid_icon.png"));
 }
 
 

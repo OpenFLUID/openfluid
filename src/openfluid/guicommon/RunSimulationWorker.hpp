@@ -46,94 +46,138 @@
 */
 
 /**
-  \file AppCoordinator.hpp
+  \file RunSimulationWorker.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPCOORDINATOR_HPP__
-#define __APPCOORDINATOR_HPP__
+#ifndef __RUNSIMULATIONWORKER_HPP__
+#define __RUNSIMULATIONWORKER_HPP__
 
-#include <QObject>
+#include <QApplication>
+#include <QtDeclarative>
 
-#include "NewProjectDialog.hpp"
+#include <openfluid/machine/MachineListener.hpp>
 
-class MainWindow;
-class AppActions;
-class AbstractModule;
 
-class AppCoordinator : public QObject
+#include <openfluid/dllexport.hpp>
+
+
+namespace openfluid {
+
+namespace fluidx {
+  class FluidXDescriptor;
+}
+
+
+namespace guicommon {
+
+
+class DLLEXPORT RunSimulationListener : public QObject, public openfluid::machine::MachineListener
 {
-  Q_OBJECT
+  Q_OBJECT;
+
+  public:
+
+    enum Stage { RUNW_BEFORE, RUNW_PRESIM, RUNW_INIT, RUNW_RUN, RUNW_FINAL, RUNW_AFTER };
 
   private:
+    unsigned int m_CurrentIndex;
+    std::string m_CurrentIndexStr;
+    unsigned int m_CurrentSimulator;
 
-    MainWindow& m_MainWindow;
-    AppActions& m_Actions;
+    unsigned int m_TotalTime;
+    unsigned int m_TotalSimulators;
 
-    AbstractModule* mp_CurrentModule;
+    unsigned int m_CurrentPreSim;
+    unsigned int m_CurrentInit;
+    unsigned int m_CurrentFinal;
+    unsigned int m_TotalTotal;
 
-    void unsetCurrentModule();
+    bool m_Completed;
 
-    void setCurrentModule(AbstractModule* Module);
+    openfluid::core::Duration_t m_SimDuration;
 
-    void setProjectModule(const QString& ProjectPath);
 
-    void updateRecentsList();
+  signals:
 
-    bool createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
-                       NewProjectDialog::ImportType IType, const QString& ISource);
+    void stageChanged(openfluid::guicommon::RunSimulationListener::Stage S);
 
-    void openProject(const QString& Name, const QString& Path);
+    void progressValueChanged(int Index);
 
-  private slots:
-
-    void whenQuitAsked();
-
-    void whenNewAsked();
-
-    void whenOpenAsked();
-
-    void whenOpenRecentAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenCloseAsked();
-
-    void whenPropertiesAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRefreshAsked();
-
-    void whenRunAsked();
-
-    void whenMarketAsked();
-
-    void whenOnlineWebAsked();
-
-    void whenOnlineCommunityAsked();
-
-    void whenOpenExampleAsked();
-
-    void whenRestoreExamplesAsked();
-
-    void whenAboutAsked();
+    void progressMaxChanged(int Index);
 
 
   public:
 
-    AppCoordinator(MainWindow& MainWin, AppActions& Actions);
+    RunSimulationListener();
 
-    ~AppCoordinator();
+    ~RunSimulationListener();
 
-    void setHomeModule();
+
+    void setInfos(const unsigned int& TotalSimulators, const unsigned int& TotalTime);
+
+
+    void onInitParams();
+
+
+    void onInitializeRun();
+
+
+    void onBeforeRunSteps();
+
+    void onRunStep(const openfluid::base::SimulationStatus* SimStatus);
+
+
+    void onFinalizeRun();
+
+    void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/);
 
 };
 
 
-#endif /* __APPCOORDINATOR_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+class RunSimulationWorker : public QObject
+{
+
+  Q_OBJECT;
+
+  private:
+
+    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
+
+    RunSimulationListener* mp_Listener;
+
+  signals:
+
+    void periodChanged(QString Begin, QString End, int Duration);
+
+    void finished();
+
+    void error(QString Error);
+
+  public slots:
+
+    void run();
+
+  public:
+
+
+    RunSimulationWorker(openfluid::fluidx::FluidXDescriptor* FXDesc, RunSimulationListener* Listener);
+
+    ~RunSimulationWorker();
+
+
+};
+
+} } //namespaces
+
+
+Q_DECLARE_METATYPE(openfluid::guicommon::RunSimulationListener::Stage);
+
+#endif /* __RUNSIMULATIONWORKER_HPP__ */

@@ -57,6 +57,7 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QApplication>
 
 #include <openfluid/guicommon/OpenProjectDialog.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -94,6 +95,15 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   connect(m_Actions.getAction("HelpAbout"), SIGNAL(triggered()), this, SLOT(whenAboutAsked()));
 
   connect(m_Actions.getAction("MarketAccess"), SIGNAL(triggered()), this, SLOT(whenMarketAsked()));
+
+
+  // connection of recent oen projects
+
+  std::vector<QAction*> RecentActions = m_Actions.getRecentProjectActions();
+
+  for (unsigned int i=0;i<RecentActions.size();i++)
+    connect(RecentActions[i], SIGNAL(triggered()), this, SLOT(whenOpenRecentAsked()));
+
 }
 
 
@@ -169,9 +179,12 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
 
 void AppCoordinator::updateRecentsList()
 {
+  // add of the current project
   openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
       QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
       QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
+
+  m_Actions.updateRecentProjectsActions();
 }
 
 
@@ -201,17 +214,31 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
     FXD.getRunDescriptor().setFilled(true);
 
     FXD.writeToManyFiles(PrjMan->getInputDir());
+
+    return true;
   }
   else if (IType == NewProjectDialog::IMPORT_PROJECT)
   {
-    // TODO to be completed
-    return false;
+    openfluid::tools::CopyDirectoryContentsRecursively(ISource.toStdString()+"/IN",PrjMan->getInputDir());
+    return true;
   }
   else
   {
-    // TODO to be completed
-    return false;
+    openfluid::tools::CopyDirectoryContentsRecursively(ISource.toStdString(),PrjMan->getInputDir());
+    return true;
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::openProject(const QString& Name, const QString& Path)
+{
+  setProjectModule(Path);
+  updateRecentsList();
+  m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  Name +" ]");
 }
 
 
@@ -245,20 +272,24 @@ void AppCoordinator::whenNewAsked()
     {
       try
       {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
         if (createProject(NewPrjDlg.getProjectName(),NewPrjDlg.getProjectFullPath(),
                           NewPrjDlg.getProjectDescription(), NewPrjDlg.getProjectAuthors(),
                           NewPrjDlg.getImportType(), NewPrjDlg.getImportSource()))
         {
-          setProjectModule(NewPrjDlg.getProjectFullPath());
-          updateRecentsList();
-          m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  NewPrjDlg.getProjectName() +" ]");
+          openProject(NewPrjDlg.getProjectName(),NewPrjDlg.getProjectFullPath());
+          QApplication::restoreOverrideCursor();
         }
         else
+        {
+          QApplication::restoreOverrideCursor();
           QMessageBox::critical(&m_MainWindow,tr("Project error"),tr("Error creating project ") + NewPrjDlg.getProjectName() + tr(" in\n") + NewPrjDlg.getProjectFullPath());
+        }
       }
       catch (openfluid::base::Exception& E)
       {
         QMessageBox::critical(&m_MainWindow,tr("Project error"),tr("Error creating project ") + NewPrjDlg.getProjectName() + tr(" in\n") + NewPrjDlg.getProjectFullPath());
+        QApplication::restoreOverrideCursor();
       }
     }
 
@@ -287,20 +318,62 @@ void AppCoordinator::whenOpenAsked()
 
         try
         {
-          setProjectModule(SelectedDir);
-          updateRecentsList();
-          QString ProjectName = QDir(SelectedDir).dirName();
-          m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  ProjectName +" ]");
+          QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+          openProject(QDir(SelectedDir).dirName(),SelectedDir);
+          QApplication::restoreOverrideCursor();
         }
         catch (openfluid::base::Exception& E)
         {
           openfluid::base::ProjectManager::getInstance()->close();
+          QApplication::restoreOverrideCursor();
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
           return;
         }
       }
       else
+      {
+        QApplication::restoreOverrideCursor();
         QMessageBox::critical(&m_MainWindow,tr("Project error"),SelectedDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+      }
+    }
+  }
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenOpenRecentAsked()
+{
+  QAction *Action = qobject_cast<QAction*>(sender());
+  if (Action)
+  {
+    std::cout << __PRETTY_FUNCTION__ << " " << Action->data().toString().toStdString() << std::endl;
+
+    QString ProjectPath = Action->data().toString();
+    if (openfluid::base::ProjectManager::isProject(ProjectPath.toStdString()))
+    {
+      openfluid::base::ProjectManager::getInstance()->open(ProjectPath.toStdString());
+
+      try
+      {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        openProject(QDir(ProjectPath).dirName(),ProjectPath);
+        QApplication::restoreOverrideCursor();
+      }
+      catch (openfluid::base::Exception& E)
+      {
+        openfluid::base::ProjectManager::getInstance()->close();
+        QApplication::restoreOverrideCursor();
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
+        return;
+      }
+    }
+    else
+    {
+      QApplication::restoreOverrideCursor();
+      QMessageBox::critical(&m_MainWindow,tr("Project error"),ProjectPath+ "\n\n" + tr("is not a valid OpenFLUID project"));
     }
   }
 }

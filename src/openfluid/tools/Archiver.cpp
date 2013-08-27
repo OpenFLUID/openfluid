@@ -222,7 +222,6 @@ void Archiver::uncompressArchive(const std::string& ArchivePath, const std::stri
   archive_read_free(Archive);
   archive_write_close(ExtDir);
   archive_write_free(ExtDir);
-
 }
 
 

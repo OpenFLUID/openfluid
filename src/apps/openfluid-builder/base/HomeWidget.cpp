@@ -56,6 +56,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 #include <QFrame>
+#include <QDir>
 
 #include "HomeWidget.hpp"
 #include "AppActions.hpp"
@@ -64,7 +65,63 @@
 #include <openfluid/config.hpp>
 
 
-HomeWidget::HomeWidget(QWidget* Parent,const AppActions* Actions):
+// =====================================================================
+// =====================================================================
+
+
+HomeLabel::HomeLabel(const QString& Text, QWidget* Parent) :
+  QLabel(Text,Parent)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeLabel::mouseReleaseEvent(QMouseEvent *Event)
+{
+  emit clicked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RecentProjectLabel::enterEvent(QEvent* Event)
+{
+  setStyleSheet("text-decoration : underline;");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RecentProjectLabel::leaveEvent(QEvent* Event)
+{
+  setStyleSheet("text-decoration : none;");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+RecentProjectLabel::RecentProjectLabel(const QString& Text, QWidget* Parent):
+  HomeLabel(Text,Parent)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   QWidget(Parent)
 {
 
@@ -84,8 +141,9 @@ HomeWidget::HomeWidget(QWidget* Parent,const AppActions* Actions):
   QLabel* Version = new QLabel(std::string("OpenFLUID v"+openfluid::config::FULL_VERSION).c_str(),this);
   Version->setAlignment(Qt::AlignCenter);
 
-  QLabel* URL = new QLabel("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>",this);
+  HomeLabel* URL = new HomeLabel("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>",this);
   URL->setAlignment(Qt::AlignCenter);
+  connect(URL,SIGNAL(clicked()),Actions->getAction("HelpOnlineWeb"),SLOT(trigger()));
 
 
   QFrame* HLine = new QFrame(this);
@@ -144,6 +202,48 @@ HomeWidget::HomeWidget(QWidget* Parent,const AppActions* Actions):
 
   // Recent projects
   QFrame* Recent = new QFrame(this);
+  QVBoxLayout *RecentLayout = new QVBoxLayout(this);
+
+  QLabel* RecentProjectsLabel = new QLabel(tr("Recent projects:"),this);
+  RecentProjectsLabel->setStyleSheet("font : bold;");
+
+  RecentLayout->addWidget(RecentProjectsLabel);
+
+  std::vector<QAction*> RecentActions = Actions->getRecentProjectActions();
+
+  QPixmap DotPix(":/images/dot.png");
+
+  for (unsigned int i=0; i<RecentActions.size();i++)
+  {
+    if (RecentActions[i]->isVisible())
+    {
+      // the local layaout will be given a correct parent below with the addLayout() command
+      QHBoxLayout* LocalLayout = new QHBoxLayout(NULL);
+      QLabel* DotLabel = new QLabel(this);
+      DotLabel->setPixmap(DotPix);
+      DotLabel->setAlignment(Qt::AlignCenter);
+      LocalLayout->addWidget(DotLabel);
+      LocalLayout->setContentsMargins(30,0,0,0);
+
+      RecentProjectLabel* RecentLabel = new RecentProjectLabel(QDir(RecentActions[i]->data().toString()).dirName(),this);
+      RecentLabel->setContentsMargins(0,0,0,0);
+      RecentLabel->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
+      // TODO set the tooltip with icon and project info, with adapted stylesheet
+      // RecentLabel->setToolTip(RecentActions[i]->data().toString());
+      RecentLabel->setCursor(Qt::PointingHandCursor);
+      connect(RecentLabel,SIGNAL(clicked()),RecentActions[i],SLOT(trigger()));
+
+      LocalLayout->addWidget(RecentLabel);
+      LocalLayout->addStretch();
+      RecentLayout->addLayout(LocalLayout);
+    }
+  }
+  RecentLayout->addStretch();
+
+  RecentLayout->setContentsMargins(30,30,30,30);
+  RecentLayout->setSpacing(10);
+  Recent->setLayout(RecentLayout);
+
 
   QFrame* LowerPart = new QFrame(this);
   QHBoxLayout* LowLayout = new QHBoxLayout(this);
