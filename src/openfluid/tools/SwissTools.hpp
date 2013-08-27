@@ -244,11 +244,13 @@ void DLLEXPORT printSTDOUT(std::vector<std::string> Strings, std::string Sep);
 
 void DLLEXPORT CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
 
+void DLLEXPORT CopyDirectoryContentsRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
+
 std::vector<std::string> DLLEXPORT GetFileLocationsUsingPATHEnvVar(const std::string Filename);
 
 
 /**
-  Compare 2 OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
+  Compare two OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
   @param[in] VersionA the first version number
   @param[in] VersionB the second version number
   @param[in] Strict If true, the comparison include the status part of the version (it ignores it otherwise)

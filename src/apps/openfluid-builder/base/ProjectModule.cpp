@@ -53,7 +53,7 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
+#include <QApplication>
 
 #include "ProjectModule.hpp"
 

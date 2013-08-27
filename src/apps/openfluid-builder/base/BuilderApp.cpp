@@ -53,6 +53,7 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <QApplication>
 
 #include "BuilderApp.hpp"
 
@@ -64,7 +65,7 @@
 BuilderApp::BuilderApp():
   m_Coordinator(m_MainWindow,m_Actions)
 {
-
+  QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
 }
 
 

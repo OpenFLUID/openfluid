@@ -361,6 +361,41 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
 // =====================================================================
 
 
+void CopyDirectoryContentsRecursively(const std::string SourceDir, const std::string IntoDir, const bool DontCopyDotDirs)
+{
+
+  boost::filesystem::path SourceDirPath(SourceDir);
+  boost::filesystem::path IntoDirPath(IntoDir);
+
+  if (boost::filesystem::is_directory(IntoDirPath)) boost::filesystem::remove_all(IntoDirPath);
+
+  boost::filesystem::create_directory(IntoDirPath);
+
+  boost::filesystem::directory_iterator it;
+
+  for (it = boost::filesystem::directory_iterator(SourceDirPath);it != boost::filesystem::directory_iterator(); ++it)
+  {
+
+    if (boost::filesystem::is_regular(it->status()))
+    {
+      boost::filesystem::copy_file(it->path(),boost::filesystem::path(IntoDirPath.string()+"/"+it->path().filename().string()));
+    }
+
+    if (boost::filesystem::is_directory(it->status()))
+    {
+      if (!DontCopyDotDirs || (DontCopyDotDirs && !boost::starts_with(it->path().filename().string(),".")))
+      {
+        CopyDirectoryRecursively(it->path().string(),IntoDirPath.string(), DontCopyDotDirs);
+      }
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filename)
 {
 

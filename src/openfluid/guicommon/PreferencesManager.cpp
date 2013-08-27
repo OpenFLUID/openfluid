@@ -67,7 +67,7 @@ namespace openfluid { namespace guicommon {
 
 PreferencesManager* PreferencesManager::mp_Instance = NULL;
 QString PreferencesManager::m_FileName = "";
-
+const int PreferencesManager::RecentProjectsLimit = 10;
 
 // =====================================================================
 // =====================================================================
@@ -197,6 +197,7 @@ QString PreferencesManager::getLang()
 void PreferencesManager::setRecentMax(unsigned int RecentMax)
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
+  if (RecentMax > RecentProjectsLimit) RecentMax = RecentProjectsLimit;
   mp_ConfFile->setValue("recentmax",RecentMax);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();

@@ -46,94 +46,92 @@
 */
 
 /**
-  \file AppCoordinator.hpp
+  \file RunSimulationDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPCOORDINATOR_HPP__
-#define __APPCOORDINATOR_HPP__
+#ifndef __RUNSIMULATIONDIALOG_HPP__
+#define __RUNSIMULATIONDIALOG_HPP__
 
 #include <QObject>
+#include <QDialog>
+#include <QTimer>
 
-#include "NewProjectDialog.hpp"
+#include <openfluid/machine/MachineListener.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
+#include <openfluid/guicommon/RunSimulationWorker.hpp>
 
-class MainWindow;
-class AppActions;
-class AbstractModule;
 
-class AppCoordinator : public QObject
+#include <openfluid/dllexport.hpp>
+
+
+namespace Ui
+{
+  class RunSimulationDialog;
+}
+
+
+namespace openfluid {
+
+namespace fluidx {
+  class FluidXDescriptor;
+}
+
+
+namespace guicommon {
+
+//class RunSimulationListener;
+
+
+class RunSimulationDialog : public QDialog
 {
   Q_OBJECT
 
   private:
 
-    MainWindow& m_MainWindow;
-    AppActions& m_Actions;
+    Ui::RunSimulationDialog *ui;
 
-    AbstractModule* mp_CurrentModule;
+    openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
-    void unsetCurrentModule();
+    openfluid::guicommon::RunSimulationListener* mp_Listener;
 
-    void setCurrentModule(AbstractModule* Module);
+    bool m_Launched;
 
-    void setProjectModule(const QString& ProjectPath);
+    bool m_Success;
 
-    void updateRecentsList();
+    static QString getDurationAsDaysHoursMinsSecsString(openfluid::core::Duration_t Duration);
 
-    bool createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
-                       NewProjectDialog::ImportType IType, const QString& ISource);
+  public slots:
 
-    void openProject(const QString& Name, const QString& Path);
+    void setPeriod(QString Begin, QString End, int Duration);
 
-  private slots:
+    void setStage(openfluid::guicommon::RunSimulationListener::Stage S);
 
-    void whenQuitAsked();
+    void setProgressValue(int Index);
 
-    void whenNewAsked();
+    void setProgressMax(int Index);
 
-    void whenOpenAsked();
+    void handleError(QString Msg);
 
-    void whenOpenRecentAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenCloseAsked();
-
-    void whenPropertiesAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRefreshAsked();
-
-    void whenRunAsked();
-
-    void whenMarketAsked();
-
-    void whenOnlineWebAsked();
-
-    void whenOnlineCommunityAsked();
-
-    void whenOpenExampleAsked();
-
-    void whenRestoreExamplesAsked();
-
-    void whenAboutAsked();
+    void handleFinish();
 
 
   public:
 
-    AppCoordinator(MainWindow& MainWin, AppActions& Actions);
+    // TODO FXDesc should be const
+    RunSimulationDialog(QWidget* Parent, openfluid::fluidx::FluidXDescriptor* FXDesc);
 
-    ~AppCoordinator();
+    virtual ~RunSimulationDialog();
 
-    void setHomeModule();
+    bool execute();
 
 };
 
 
-#endif /* __APPCOORDINATOR_HPP__ */
+} } // namespaces
+
+
+#endif /* __RUNSIMULATIONDIALOG_HPP__ */

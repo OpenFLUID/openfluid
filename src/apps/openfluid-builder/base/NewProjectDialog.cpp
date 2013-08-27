@@ -83,8 +83,8 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
   connect(ui->ProjectRadioButton,SIGNAL(toggled(bool)),this,SLOT(onGlobalCheck()));
   connect(ui->DirectoryRadioButton,SIGNAL(toggled(bool)),this,SLOT(onGlobalCheck()));
 
-  connect(ui->OKButton,SIGNAL(clicked()),this,SLOT(accept()));
-  connect(ui->CancelButton,SIGNAL(clicked()),this,SLOT(reject()));
+  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
+  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
   ui->DataGroupBox->setChecked(false);
 
@@ -142,11 +142,11 @@ void NewProjectDialog::setMessage(const QString& Msg)
   {
     ui->MessageFrame->setStyleSheet("background-color: rgb(71,97,123);");
     ui->MessageLabel->setText(tr("Creation of a new OpenFLUID project"));
-    ui->OKButton->setEnabled(true);
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
   else
   {
-    ui->OKButton->setEnabled(false);
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet("background-color: rgb(245,145,34);");
     ui->MessageLabel->setText(Msg);
   }

@@ -97,6 +97,8 @@ class DLLEXPORT PreferencesManager
 
   public:
 
+    static const int RecentProjectsLimit;
+
     class RecentProject_t
     {
       public:
