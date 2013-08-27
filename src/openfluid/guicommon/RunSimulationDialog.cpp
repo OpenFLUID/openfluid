@@ -140,6 +140,7 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   connect(mp_Listener,SIGNAL(progressMaxChanged(int)),this,
           SLOT(setProgressMax(int)));
 
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
   WThread->start();
 }
 
@@ -167,8 +168,8 @@ QString RunSimulationDialog::getDurationAsDaysHoursMinsSecsString(openfluid::cor
   Duration /= 60;
   int Hours = (int) (Duration % 24);
   int Days = (int) (Duration / 24);
-  return QString::number(Days)+tr(" days, ")+QString::number(Hours)+tr(" hours, ")+
-         QString::number(Minutes)+tr(" minutes, ")+QString::number(Seconds)+tr(" seconds");
+  return QString::number(Days)+tr(" day(s), ")+QString::number(Hours)+tr(" hour(s), ")+
+         QString::number(Minutes)+tr(" minute(s), ")+QString::number(Seconds)+tr(" second(s)");
 }
 
 
@@ -208,7 +209,7 @@ void RunSimulationDialog::setProgressMax(int Duration)
 // =====================================================================
 
 
-void RunSimulationDialog::setPeriod(QString Begin, QString End, int Duration)
+void RunSimulationDialog::setPeriod(QString /*Begin*/, QString /*End*/, int Duration)
 {
   // TODO check if better to display period in message box
 //  ui->MessageLabel->setText(ui->MessageLabel->text()+tr(" from ")+Begin+tr(" to ")+End);
@@ -273,6 +274,7 @@ void RunSimulationDialog::setStage(openfluid::guicommon::RunSimulationListener::
 
 void RunSimulationDialog::handleError(QString Msg)
 {
+  QApplication::restoreOverrideCursor();
   QMessageBox::critical(NULL,tr("Simulation error"),Msg);
   reject();
 }
@@ -284,6 +286,7 @@ void RunSimulationDialog::handleError(QString Msg)
 
 void RunSimulationDialog::handleFinish()
 {
+  QApplication::restoreOverrideCursor();
   ui->ButtonBox->button(QDialogButtonBox::Close)->setEnabled(true);
   m_Success = true;
 }
