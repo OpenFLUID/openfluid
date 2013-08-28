@@ -65,6 +65,7 @@
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/StringValue.hpp>
+#include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/landr/PolygonGraph.hpp>
 #include <openfluid/landr/PolygonEntity.hpp>
 #include <openfluid/landr/PolygonEdge.hpp>
@@ -1174,5 +1175,69 @@ BOOST_AUTO_TEST_CASE(check_addRemoveEdgeAttribute)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "field.shp");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  openfluid::core::GeoVectorValue* LineVector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*LineVector, "SELF_ID"),openfluid::base::FrameworkException);
+
+  openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
+       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
+
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
+
+  Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "type");
+  std::vector<std::string> vAttributes=Graph->getAttributeNames();
+  BOOST_CHECK_EQUAL(vAttributes.empty(),false);
+
+  openfluid::landr::PolygonEntity* Entity=Graph->getEntity(1);
+  openfluid::core::StringValue StringValue("");
+  Entity->getAttributeValue("attribut", StringValue);
+  BOOST_CHECK_EQUAL( StringValue.get(), "soil1");
+
+  Entity=Graph->getEntity(6);
+  Entity->getAttributeValue("attribut", StringValue);
+  BOOST_CHECK_EQUAL( StringValue.get(), "soil4");
+
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
+  Graph->setAttributeFromVectorLocation("attribut",*Vect, "id");
+  openfluid::core::IntegerValue IntegerValue(0);
+  Entity=Graph->getEntity(2);
+  Entity->getAttributeValue("attribut", IntegerValue);
+  BOOST_CHECK_EQUAL( IntegerValue.get(), 3);
+
+  Graph->setAttributeFromVectorLocation("attribut",*Vect, "val");
+  openfluid::core::DoubleValue DoubleValue(0);
+  Entity=Graph->getEntity(2);
+  Entity->getAttributeValue("attribut", DoubleValue);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 12.89));
+
+
+
+
+  delete Graph;
+  delete Vector;
+  delete OtherVector;
+  delete LineVector;
+  delete Vect;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
 
 

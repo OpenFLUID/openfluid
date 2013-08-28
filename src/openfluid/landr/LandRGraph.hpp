@@ -141,9 +141,9 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
 
     geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
 
-    void addAttribute(std::string AttributeName, LandREntity& Entity);
+    void addAttribute(const std::string& AttributeName, LandREntity& Entity);
 
-    void removeAttribute(std::string AttributeName, LandREntity& Entity);
+    void removeAttribute(const std::string& AttributeName, LandREntity& Entity);
 
   public:
 
@@ -178,12 +178,12 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
     /**
      * @details Doesn't reset if the AttributeName already exists.
      */
-    void addAttribute(std::string AttributeName);
+    void addAttribute(const std::string& AttributeName);
 
     /**
      * @details Does nothing if AttributeName doesn't exist.
      */
-    void removeAttribute(std::string AttributeName);
+    void removeAttribute(const std::string& AttributeName);
 
     std::vector<std::string> getAttributeNames();
 
@@ -227,7 +227,7 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
      *
      * @param AttributeName The name of the attribute to create.
      */
-    void setAttributeFromRasterValueAtCentroid(std::string AttributeName);
+    void setAttributeFromRasterValueAtCentroid(const std::string& AttributeName);
 
     /**
      * @brief Create a new attribute for this Graph entities, and set for each entity.
@@ -235,7 +235,7 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
      *
      * @param AttributeName The name of the attribute to create.
      */
-    virtual void setAttributeFromMeanRasterValues(std::string AttributeName)=0;
+    virtual void setAttributeFromMeanRasterValues(const std::string& AttributeName)=0;
 
 
 
@@ -251,7 +251,52 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
      * @param FilePath The path where to create the out file.
      * @param FileName A name for the out file to create, with a .shp extension.
      */
-    void exportToShp(std::string FilePath, std::string FileName);
+    void exportToShp(const std::string& FilePath, const std::string& FileName);
+
+
+    /**
+     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * this attribute value as the vector value corresponding to the entity SELF_ID.
+     *
+     * @param AttributeName The name of the attribute to create.
+     * @param Vector The Name of the GeoVectorValue.
+     * @param Column The Name of the column of the GeoVectorValue to upload.
+     */
+    void setAttributeFromVectorId(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector, const std::string& Column);
+
+    /**
+     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * this attribute value as the vector value corresponding to the entity SELF_ID.
+     *
+     * @param AttributeName The name of the attribute to create.
+     * @param Vector The Name of the VectorDataset.
+     * @param Column The Name of the column of the GeoVectorValue to upload.
+     */
+    void setAttributeFromVectorId(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector, const std::string& Column);
+
+    /**
+     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * this attribute value as the vector value corresponding to the Vector Entity Geometry
+     *
+     * @param AttributeName The name of the attribute to create.
+     * @param Vector The Name of the GeoVectorValue.
+     * @param Column The Name of the column of the GeoVectorValue to upload.
+     * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+     */
+    virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
+                                                const std::string& Column,double Thresh=0.0001)=0;
+
+    /**
+     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * this attribute value as the vector value corresponding to the Vector Entity Geometry
+     *
+     * @param AttributeName The name of the attribute to create.
+     * @param Vector The Name of the VectorDataset.
+     * @param Column The Name of the column of the GeoVectorValue to upload.
+     * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+     */
+    virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
+                                                const std::string& Column,double Thresh=0.0001)=0;
 
 };
 

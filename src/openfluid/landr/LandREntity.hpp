@@ -135,7 +135,7 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
      * @param Value The core::Value to assign the attribute value.
      * @return True if the attribute exists, false otherwise.
      */
-    bool getAttributeValue(std::string AttributeName, core::Value& Value) const;
+    bool getAttributeValue(const std::string& AttributeName, core::Value& Value) const;
 
     /**
      * @brief Set the value of an attribute.
@@ -145,7 +145,7 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
      * @param Value The core::Value assign to the attribute value.
      * @return True if the attribute exists, false otherwise.
      */
-    bool setAttributeValue(std::string AttributeName, const core::Value* Value);
+    bool setAttributeValue(const std::string& AttributeName, const core::Value* Value);
 
     /**
      * @brief Get the distance between this entity centroid and Other entity centroid.

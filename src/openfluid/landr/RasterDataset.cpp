@@ -294,7 +294,7 @@ float RasterDataset::getValueOfCoordinate(geos::geom::Coordinate Coo,
 // =====================================================================
 
 openfluid::landr::VectorDataset* RasterDataset::polygonize(
-    std::string FileName, std::string FieldName, unsigned int RasterBandIndex)
+    const std::string& FileName, std::string FieldName, unsigned int RasterBandIndex)
 {
   if (!mp_PolygonizedByRasterBandIndex.count(RasterBandIndex))
   {

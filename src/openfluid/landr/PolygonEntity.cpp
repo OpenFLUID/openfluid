@@ -194,8 +194,9 @@ std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(
 PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(
     geos::geom::LineString& Segment)
 {
-  for (std::vector<PolygonEdge*>::iterator it = m_PolyEdges.begin();
-      it != m_PolyEdges.end(); ++it)
+  std::vector<PolygonEdge*>::iterator it = m_PolyEdges.begin();
+  std::vector<PolygonEdge*>::iterator ite = m_PolyEdges.end();
+  for (; it != ite; ++it)
   {
     if (Segment.relate((*it)->getLine(), "1**"
                        "***"
@@ -227,8 +228,9 @@ std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
   if (!mp_NeighboursMap)
     computeNeighbours();
 
-  for (NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
-      it != mp_NeighboursMap->end(); ++it)
+  NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
+  NeighboursMap_t::iterator ite = mp_NeighboursMap->end();
+  for (; it != ite; ++it)
     Ids.push_back(it->first->getSelfId());
 
   std::sort(Ids.begin(), Ids.end());
@@ -247,7 +249,8 @@ void PolygonEntity::computeNeighbours()
   delete mp_NeighboursMap;
   mp_NeighboursMap = new NeighboursMap_t();
 
-  for (unsigned int i = 0; i < m_PolyEdges.size(); i++)
+  unsigned int iEnd=m_PolyEdges.size();
+  for (unsigned int i = 0; i < iEnd; i++)
   {
     PolygonEdge* Edge = m_PolyEdges[i];
 
@@ -274,7 +277,8 @@ bool PolygonEntity::isComplete()
 {
   std::vector<geos::geom::Geometry*> Geoms;
 
-  for (unsigned int i = 0; i < m_PolyEdges.size(); i++)
+  unsigned int iEnd=m_PolyEdges.size();
+  for (unsigned int i = 0; i < iEnd; i++)
     Geoms.push_back(m_PolyEdges.at(i)->getLine());
 
   geos::geom::MultiLineString* MLS =
@@ -334,15 +338,17 @@ void PolygonEntity::computeLineStringNeighbours(
 
   openfluid::landr::LandRGraph::Entities_t LSs = Graph.getEntities();
 
-  for (openfluid::landr::LandRGraph::Entities_t::const_iterator it =
-      LSs.begin(); it != LSs.end(); ++it)
+  openfluid::landr::LandRGraph::Entities_t::const_iterator it = LSs.begin();
+  openfluid::landr::LandRGraph::Entities_t::const_iterator ite = LSs.end();
+  for (; it != ite; ++it)
   {
     LineStringEntity* LS = dynamic_cast<LineStringEntity*>(*it);
 
     if (Relation == LandRTools::CONTAINS && LS->getLine()->within(PolyBuff))
     {
       geos::geom::Geometry* EdgeBuff;
-      for (unsigned j = 0; j < m_PolyEdges.size(); j++)
+      unsigned int jEnd=m_PolyEdges.size();
+      for (unsigned int j = 0; j < jEnd; j++)
       {
         EdgeBuff = m_PolyEdges[j]->getLine()->buffer(BufferDistance);
         if (LS->getLine()->within(EdgeBuff))
