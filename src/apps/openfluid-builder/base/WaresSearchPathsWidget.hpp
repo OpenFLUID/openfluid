@@ -45,74 +45,41 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file BuilderApp.cpp
-  \brief Implements ...
+  \file WaresSearchPathsWidget.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <QApplication>
 
-#include "BuilderApp.hpp"
-
-
-#include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#ifndef __WARESSEARCHPATHSWIDGET_HPP__
+#define __WARESSEARCHPATHSWIDGET_HPP__
 
 
-BuilderApp::BuilderApp():
-  m_Coordinator(m_MainWindow,m_Actions)
+#include <QWidget>
+
+
+namespace Ui
 {
-  QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
+  class WaresSearchPathsWidget;
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-BuilderApp::~BuilderApp()
+class WaresSearchPathsWidget : public QWidget
 {
+  Q_OBJECT;
 
-}
+  public:
 
+    Ui::WaresSearchPathsWidget *ui;
 
-// =====================================================================
-// =====================================================================
+    WaresSearchPathsWidget(QWidget* Parent = 0);
 
+    virtual ~WaresSearchPathsWidget();
 
-void BuilderApp::initialize()
-{
-  openfluid::guicommon::PreferencesManager* PrefsMgr =
-    openfluid::guicommon::PreferencesManager::getInstance();
-
-
-  // TODO see if this is moved into ProjectCoordinator or ProjectModule
-
-  QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
-
-  ExtraPaths = PrefsMgr->getExtraObserversPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
-
-  // TODO add extension extra paths
-
-  m_Actions.createMenus(m_MainWindow);
-  m_Actions.createToolbar(m_MainWindow);
-
-  m_Coordinator.setHomeModule();
-}
+    void initialize(const QStringList& UserPaths, const QStringList& PredefPaths);
+};
 
 
-// =====================================================================
-// =====================================================================
-
-
-void BuilderApp::run()
-{
-  m_MainWindow.show();
-}
+#endif /* __WARESSEARCHPATHSWIDGET_HPP__ */

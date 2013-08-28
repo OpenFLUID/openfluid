@@ -80,7 +80,7 @@ HomeLabel::HomeLabel(const QString& Text, QWidget* Parent) :
 // =====================================================================
 
 
-void HomeLabel::mouseReleaseEvent(QMouseEvent *Event)
+void HomeLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
 {
   emit clicked();
 }
@@ -90,7 +90,7 @@ void HomeLabel::mouseReleaseEvent(QMouseEvent *Event)
 // =====================================================================
 
 
-void RecentProjectLabel::enterEvent(QEvent* Event)
+void RecentProjectLabel::enterEvent(QEvent* /*Event*/)
 {
   setStyleSheet("text-decoration : underline;");
 }
@@ -100,7 +100,7 @@ void RecentProjectLabel::enterEvent(QEvent* Event)
 // =====================================================================
 
 
-void RecentProjectLabel::leaveEvent(QEvent* Event)
+void RecentProjectLabel::leaveEvent(QEvent* /*Event*/)
 {
   setStyleSheet("text-decoration : none;");
 }
@@ -120,6 +120,7 @@ RecentProjectLabel::RecentProjectLabel(const QString& Text, QWidget* Parent):
 // =====================================================================
 // =====================================================================
 
+#include <iostream>
 
 HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   QWidget(Parent)
@@ -200,16 +201,20 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   VLine->setFrameStyle(QFrame::VLine | QFrame::Sunken);
   VLine->setLineWidth(1);
 
+
   // Recent projects
   QFrame* Recent = new QFrame(this);
   QVBoxLayout *RecentLayout = new QVBoxLayout(this);
 
+  std::vector<QAction*> RecentActions = Actions->getRecentProjectActions();
+
   QLabel* RecentProjectsLabel = new QLabel(tr("Recent projects:"),this);
   RecentProjectsLabel->setStyleSheet("font : bold;");
 
-  RecentLayout->addWidget(RecentProjectsLabel);
+  if (!RecentActions[0]->isVisible())
+    RecentProjectsLabel->setText(tr("No recent project"));
 
-  std::vector<QAction*> RecentActions = Actions->getRecentProjectActions();
+  RecentLayout->addWidget(RecentProjectsLabel);
 
   QPixmap DotPix(":/images/dot.png");
 
@@ -217,7 +222,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   {
     if (RecentActions[i]->isVisible())
     {
-      // the local layaout will be given a correct parent below with the addLayout() command
+      // the local layout will be given a correct parent below with the addLayout() command
       QHBoxLayout* LocalLayout = new QHBoxLayout(NULL);
       QLabel* DotLabel = new QLabel(this);
       DotLabel->setPixmap(DotPix);

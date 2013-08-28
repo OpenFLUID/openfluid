@@ -47,25 +47,22 @@
 
 
 /**
-  \file BuilderApp.cpp
+  \file AppTools.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <QApplication>
-
-#include "BuilderApp.hpp"
 
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include "AppTools.hpp"
 
-
-BuilderApp::BuilderApp():
-  m_Coordinator(m_MainWindow,m_Actions)
+QDateTime convertToQDateTime(openfluid::core::DateTime DT)
 {
-  QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
+  QDate D(DT.getYear(),DT.getMonth(),DT.getDay());
+  QTime T(DT.getHour(),DT.getMinute(),DT.getSecond());
+
+  return QDateTime(D,T,Qt::UTC);
 }
 
 
@@ -73,46 +70,13 @@ BuilderApp::BuilderApp():
 // =====================================================================
 
 
-BuilderApp::~BuilderApp()
+QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect)
 {
+  QStringList QSL;
+  for (int i=0; i<StrVect.size();++i)
+    QSL.append(QString(StrVect[i].c_str()));
+
+  return QSL;
 
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderApp::initialize()
-{
-  openfluid::guicommon::PreferencesManager* PrefsMgr =
-    openfluid::guicommon::PreferencesManager::getInstance();
-
-
-  // TODO see if this is moved into ProjectCoordinator or ProjectModule
-
-  QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
-
-  ExtraPaths = PrefsMgr->getExtraObserversPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
-
-  // TODO add extension extra paths
-
-  m_Actions.createMenus(m_MainWindow);
-  m_Actions.createToolbar(m_MainWindow);
-
-  m_Coordinator.setHomeModule();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderApp::run()
-{
-  m_MainWindow.show();
-}

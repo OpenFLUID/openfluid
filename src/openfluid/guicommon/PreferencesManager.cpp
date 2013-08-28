@@ -210,6 +210,7 @@ void PreferencesManager::setRecentMax(unsigned int RecentMax)
 unsigned int PreferencesManager::getRecentMax()
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
+  if (!mp_ConfFile->contains("recentmax")) mp_ConfFile->setValue("recentmax",(unsigned int)(RecentProjectsLimit/2));
   unsigned int RecentMax = mp_ConfFile->value("recentmax").toUInt();
   mp_ConfFile->endGroup();
   return RecentMax;
@@ -252,7 +253,31 @@ bool PreferencesManager::addRecentProject(const QString& ProjectName,
 
 void PreferencesManager::clearRecentProjects()
 {
-  mp_ConfFile->remove("openfluid.builder.recentprojects");
+  mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
+  mp_ConfFile->remove("list");
+  mp_ConfFile->endGroup();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::adaptRecentProjects()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
+  QStringList Recents = mp_ConfFile->value("list").toStringList();
+  mp_ConfFile->endGroup();
+
+  int RecentMax = getRecentMax();
+
+  while (Recents.size() > RecentMax) Recents.removeLast();
+
+  mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
+  mp_ConfFile->setValue("list",Recents);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
 }
 
 
@@ -320,7 +345,10 @@ QString PreferencesManager::getWorkdir()
 void PreferencesManager::setExtraPaths(const QString& Key, const QStringList& Paths)
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
-  mp_ConfFile->setValue(Key,Paths);
+  if (Paths.isEmpty())
+    mp_ConfFile->remove(Key);
+  else
+    mp_ConfFile->setValue(Key,Paths);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
 

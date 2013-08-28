@@ -45,74 +45,27 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file BuilderApp.cpp
-  \brief Implements ...
+  \file AppTools.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <QApplication>
 
-#include "BuilderApp.hpp"
+#ifndef __APPTOOLS_HPP__
+#define __APPTOOLS_HPP__
 
+#include <QDateTime>
+#include <openfluid/core/DateTime.hpp>
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include <QStringList>
+#include <string>
+#include <vector>
 
+QDateTime convertToQDateTime(openfluid::core::DateTime DT);
 
-BuilderApp::BuilderApp():
-  m_Coordinator(m_MainWindow,m_Actions)
-{
-  QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
-}
-
-
-// =====================================================================
-// =====================================================================
+QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
 
 
-BuilderApp::~BuilderApp()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderApp::initialize()
-{
-  openfluid::guicommon::PreferencesManager* PrefsMgr =
-    openfluid::guicommon::PreferencesManager::getInstance();
-
-
-  // TODO see if this is moved into ProjectCoordinator or ProjectModule
-
-  QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
-
-  ExtraPaths = PrefsMgr->getExtraObserversPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
-
-  // TODO add extension extra paths
-
-  m_Actions.createMenus(m_MainWindow);
-  m_Actions.createToolbar(m_MainWindow);
-
-  m_Coordinator.setHomeModule();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderApp::run()
-{
-  m_MainWindow.show();
-}
+#endif /* __APPTOOLS_HPP__ */

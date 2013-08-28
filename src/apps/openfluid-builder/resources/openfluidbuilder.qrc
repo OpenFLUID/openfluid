@@ -13,5 +13,10 @@
     <file>icons/start.png</file>
     <file>icons/refresh.png</file>
     <file>icons/market.png</file>
+    <file>icons/add.png</file>
+    <file>icons/modify.png</file>
+    <file>icons/remove.png</file>
+    <file>icons/go-up.png</file>
+    <file>icons/go-down.png</file>
   </qresource>
 </RCC>

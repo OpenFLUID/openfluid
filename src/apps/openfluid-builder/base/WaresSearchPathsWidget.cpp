@@ -47,25 +47,38 @@
 
 
 /**
-  \file BuilderApp.cpp
+  \file WaresSearchPathsWidget.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <QApplication>
 
-#include "BuilderApp.hpp"
-
-
-#include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
+#include "ui_WaresSearchPathsWidget.h"
+#include "WaresSearchPathsWidget.hpp"
 
 
-BuilderApp::BuilderApp():
-  m_Coordinator(m_MainWindow,m_Actions)
+WaresSearchPathsWidget::WaresSearchPathsWidget(QWidget* Parent):
+  QWidget(Parent), ui(new Ui::WaresSearchPathsWidget)
 {
-  QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
+  ui->setupUi(this);
+
+  ui->AddButton->setText("");
+  ui->AddButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddButton->setIconSize(QSize(20,20));
+
+  ui->RemoveButton->setText("");
+  ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveButton->setIconSize(QSize(20,20));
+
+  ui->UpButton->setText("");
+  ui->UpButton->setIcon(QIcon(":/icons/go-up.png"));
+  ui->UpButton->setIconSize(QSize(20,20));
+
+  ui->DownButton->setText("");
+  ui->DownButton->setIcon(QIcon(":/icons/go-down.png"));
+  ui->DownButton->setIconSize(QSize(20,20));
+
 }
 
 
@@ -73,9 +86,9 @@ BuilderApp::BuilderApp():
 // =====================================================================
 
 
-BuilderApp::~BuilderApp()
+WaresSearchPathsWidget::~WaresSearchPathsWidget()
 {
-
+  delete ui;
 }
 
 
@@ -83,36 +96,11 @@ BuilderApp::~BuilderApp()
 // =====================================================================
 
 
-void BuilderApp::initialize()
+void WaresSearchPathsWidget::initialize(const QStringList& UserPaths, const QStringList& PredefPaths)
 {
-  openfluid::guicommon::PreferencesManager* PrefsMgr =
-    openfluid::guicommon::PreferencesManager::getInstance();
+  for (int i=0;i<UserPaths.size();++i)
+    new QListWidgetItem(UserPaths[i],ui->UserListWidget);
 
-
-  // TODO see if this is moved into ProjectCoordinator or ProjectModule
-
-  QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
-
-  ExtraPaths = PrefsMgr->getExtraObserversPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
-
-  // TODO add extension extra paths
-
-  m_Actions.createMenus(m_MainWindow);
-  m_Actions.createToolbar(m_MainWindow);
-
-  m_Coordinator.setHomeModule();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderApp::run()
-{
-  m_MainWindow.show();
+  for (int i=0;i<PredefPaths.size();++i)
+    new QListWidgetItem(PredefPaths[i],ui->PredefListWidget);
 }

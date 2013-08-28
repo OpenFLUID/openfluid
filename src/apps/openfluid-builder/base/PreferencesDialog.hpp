@@ -45,74 +45,126 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file BuilderApp.cpp
-  \brief Implements ...
+  \file PreferencesDialog.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <QApplication>
 
-#include "BuilderApp.hpp"
+#ifndef __PREFERENCESDIALOG_HPP__
+#define __PREFERENCESDIALOG_HPP__
+
+#include <QDialog>
+#include <QDateTime>
 
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
-
-
-BuilderApp::BuilderApp():
-  m_Coordinator(m_MainWindow,m_Actions)
+namespace Ui
 {
-  QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
+  class PreferencesDialog;
 }
 
 
-// =====================================================================
-// =====================================================================
+class QTreeWidgetItem;
+class WaresSearchPathsWidget;
 
 
-BuilderApp::~BuilderApp()
+class PreferencesDialog : public QDialog
 {
+  Q_OBJECT;
 
-}
+  private slots:
+
+    void changePage(QTreeWidgetItem* Current, QTreeWidgetItem* Previous);
+
+    void updateLanguage(const QString& Lang);
+
+    void clearRecentsList();
+
+    void updateRecentsMax(int Val);
+
+    void updateWorkDir();
+
+    void updateDeltaT(int Val);
+
+    void updatePeriodBegin(const QDateTime& DT);
+
+    void updatePeriodEnd(const QDateTime& DT);
+
+    void addMarketPlace();
+
+    void editMarketPlace();
+
+    void removeMarketPlace();
+
+    void addSimSearchPath();
+
+    void removeSimSearchPath();
+
+    void moveupSimSearchPath();
+
+    void movedownSimSearchPath();
+
+    void addObsSearchPath();
+
+    void removeObsSearchPath();
+
+    void moveupObsSearchPath();
+
+    void movedownObsSearchPath();
+
+    void addBExtSearchPath();
+
+    void removeBExtSearchPath();
+
+    void moveupBExtSearchPath();
+
+    void movedownBExtSearchPath();
 
 
-// =====================================================================
-// =====================================================================
+  private:
+
+    Ui::PreferencesDialog *ui;
+
+    WaresSearchPathsWidget* mp_SimSearchPaths;
+    WaresSearchPathsWidget* mp_ObsSearchPaths;
+    WaresSearchPathsWidget* mp_BExtSearchPaths;
+
+    bool m_RecentsChanged;
+
+    bool m_SimPathsChanged;
+
+    bool m_ObsPathsChanged;
+
+    void initialize();
+
+    void updateMarketplacesList();
+
+    QStringList extractSearchPath(WaresSearchPathsWidget* W);
+
+    bool addSearchPath(WaresSearchPathsWidget* W);
+
+    bool removeSearchPath(WaresSearchPathsWidget* W);
+
+    bool moveupSearchPath(WaresSearchPathsWidget* W);
+
+    bool movedownSearchPath(WaresSearchPathsWidget* W);
+
+  public:
+
+    PreferencesDialog(QWidget *Parent);
+
+    virtual ~PreferencesDialog();
+
+    bool isRecentsChanged() const { return m_RecentsChanged; }
+
+    bool isSimPathsChanged() const { return m_SimPathsChanged; }
+
+    bool isObsPathsChanged() const { return m_ObsPathsChanged; }
 
 
-void BuilderApp::initialize()
-{
-  openfluid::guicommon::PreferencesManager* PrefsMgr =
-    openfluid::guicommon::PreferencesManager::getInstance();
+};
 
 
-  // TODO see if this is moved into ProjectCoordinator or ProjectModule
-
-  QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
-
-  ExtraPaths = PrefsMgr->getExtraObserversPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
-
-  // TODO add extension extra paths
-
-  m_Actions.createMenus(m_MainWindow);
-  m_Actions.createToolbar(m_MainWindow);
-
-  m_Coordinator.setHomeModule();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderApp::run()
-{
-  m_MainWindow.show();
-}
+#endif /* __PREFERENCESDIALOG_HPP__ */
