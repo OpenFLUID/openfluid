@@ -69,9 +69,18 @@
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/tools.hpp>
-#include <geos/geom/Geometry.h>
-#include <geos/geom/LineString.h>
+#include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
+#include <geos/geom/CoordinateSequence.h>
+#include <geos/geom/LineString.h>
+#include <geos/geom/GeometryFactory.h>
+#include <geos/geom/LineSegment.h>
+#include <geos/geom/Point.h>
+#include <algorithm>
+
+
+
+
 
 // =====================================================================
 // =====================================================================
@@ -660,7 +669,6 @@ BOOST_AUTO_TEST_CASE(check_reverse_orientation_LineStringEntity)
   BOOST_CHECK(U1reverse->getStartNode()->getCoordinate().equals(oldEndNode->getCoordinate()));
   BOOST_CHECK(U1reverse->getEndNode()->getCoordinate().equals(oldStartNode->getCoordinate()));
 
-
   delete Graph;
   delete Val;
 }
@@ -896,22 +904,22 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
       openfluid::landr::LineStringGraph::create(*Val);
   std::vector<geos::planargraph::Node*> Nodes;
 
+
   BOOST_CHECK_THROW(Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(5))),
                     openfluid::base::FrameworkException);
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 9);
+
 
   // first coincidence :   |----2------>|-----1----->
   // result :              |----2------------------->
   Graph->mergeLineStringEntities(*(Graph->getEntity(2)),*(Graph->getEntity(1)));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK(!Graph->getEntity(1));
+  BOOST_CHECK(Graph->getEntity(2)->clone());
   Nodes.clear();
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
-
-
-
   delete Graph;
 
   // second coincidence :   |----2------>|-----1----->
@@ -920,6 +928,7 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK(!Graph->getEntity(2));
+  BOOST_CHECK(Graph->getEntity(1)->clone());
   Nodes.clear();
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
@@ -932,6 +941,7 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK(!Graph->getEntity(2));
+  BOOST_CHECK(Graph->getEntity(1)->clone());
   Nodes.clear();
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
@@ -944,13 +954,14 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
   Graph->mergeLineStringEntities(*(Graph->getEntity(1)),*(Graph->getEntity(2)));
   BOOST_CHECK_EQUAL(Graph->getSize(), 7);
   BOOST_CHECK(!Graph->getEntity(2));
+  BOOST_CHECK(Graph->getEntity(1)->clone());
   Nodes.clear();
   Graph->getNodes(Nodes);
   BOOST_CHECK_EQUAL(Nodes.size(), 8);
+
   delete Graph;
-
-
   delete Val;
+
 }
 
 // =====================================================================
@@ -986,4 +997,3 @@ BOOST_AUTO_TEST_CASE(check_getLineStringEntityByMinLength)
 
 // =====================================================================
 // =====================================================================
-

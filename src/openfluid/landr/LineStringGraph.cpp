@@ -729,7 +729,7 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
 
   // Four possibility of coincidence
   geos::geom::CoordinateSequence *CoordsOne=0;
-  geos::geom::CoordinateSequence *CoordsTwo;
+  geos::geom::CoordinateSequence *CoordsTwo=0;
 
   if((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {
@@ -752,21 +752,27 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
   else if((StartNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {
     reverseLineStringEntity(EntityToMerge);
+
     CoordsOne=(EntityToMerge.getLine())->getCoordinates();
     CoordsTwo=(Entity.getLine())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
 
-  int SelfId=Entity.getSelfId();
-  removeEntity(SelfId);
-  int SelfIdToMerge=EntityToMerge.getSelfId();
-  removeEntity(SelfIdToMerge);
+  geos::geom::LineString * NewLine=mp_Factory->createLineString(CoordsOne);
 
-  geos::geom::GeometryFactory Factory;
-  geos::geom::LineString * NewLine=Factory.createLineString(CoordsOne);
+
+  int SelfId=Entity.getSelfId();
+  int SelfIdToMerge=EntityToMerge.getSelfId();
 
   try {
-    addEntity(new LineStringEntity(NewLine,SelfId));
+
+    openfluid::landr::LineStringEntity* Entity2 =
+        new openfluid::landr::LineStringEntity(NewLine,
+                                               SelfId);
+    removeEntity(SelfId);
+    removeEntity(SelfIdToMerge);
+    addEntity(Entity2);
+
   } catch (openfluid::base::FrameworkException& e) {
     std::ostringstream s;
     s << "Merge operation impossible for entity" << SelfId<<" : "<<e.what() ;
@@ -821,6 +827,10 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
 
 // =====================================================================
 // =====================================================================
+
+
+
+
 
 
 } // namespace landr
