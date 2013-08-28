@@ -47,25 +47,37 @@
 
 
 /**
-  \file HomeModule.cpp
+  \file EditMarketplaceDialog.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
 
-#include "HomeModule.hpp"
-#include "PreferencesDialog.hpp"
+#include <QPushButton>
 
-#include <QApplication>
+#include "ui_EditMarketplaceDialog.h"
+#include "EditMarketplaceDialog.hpp"
 
-#include <iostream>
 
-HomeModule::HomeModule(const AppActions* Actions):
-AbstractModule(), mp_Widget(NULL), mp_Actions(Actions)
+
+EditMarketplaceDialog::EditMarketplaceDialog(QWidget* Parent, const QString& Name, const QString& URL,
+                                             const openfluid::guicommon::PreferencesManager::MarketPlaces_t& MPlaces):
+  QDialog(Parent), ui(new Ui::EditMarketplaceDialog), m_IsEditMode(!Name.isEmpty() && !URL.isEmpty()), m_OriginalName(Name),
+  m_MPlaces(MPlaces)
 {
+  ui->setupUi(this);
 
+  ui->NameEdit->setText(Name);
+  ui->URLEdit->setText(URL);
+
+  connect(ui->NameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
+  connect(ui->URLEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobally()));
+
+  checkGlobally();
+
+  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
+  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 }
 
 
@@ -73,23 +85,9 @@ AbstractModule(), mp_Widget(NULL), mp_Actions(Actions)
 // =====================================================================
 
 
-HomeModule::~HomeModule()
+EditMarketplaceDialog::~EditMarketplaceDialog()
 {
-
-}
-
-// =====================================================================
-// =====================================================================
-
-
-QWidget* HomeModule::getWidget(QWidget* Parent)
-{
-  if (mp_Widget != NULL)
-    delete mp_Widget;
-
-  mp_Widget = new HomeWidget(Parent,mp_Actions);
-
-  return mp_Widget;
+  delete ui;
 }
 
 
@@ -97,9 +95,23 @@ QWidget* HomeModule::getWidget(QWidget* Parent)
 // =====================================================================
 
 
-bool HomeModule::whenQuitAsked()
+void EditMarketplaceDialog::setMessage(const QString& Msg)
 {
-  return true;
+  if (Msg.isEmpty())
+  {
+    ui->MessageFrame->setStyleSheet("background-color: rgb(71,97,123);");
+    if (m_IsEditMode)
+      ui->MessageLabel->setText(tr("Edit a marketplace"));
+    else
+      ui->MessageLabel->setText(tr("Add a marketplace"));
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
+  else
+  {
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->MessageFrame->setStyleSheet("background-color: rgb(245,145,34);");
+    ui->MessageLabel->setText(Msg);
+  }
 }
 
 
@@ -107,38 +119,27 @@ bool HomeModule::whenQuitAsked()
 // =====================================================================
 
 
-bool HomeModule::whenNewAsked()
-{
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool HomeModule::whenOpenAsked()
-{
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenSaveAsked()
+void EditMarketplaceDialog::checkGlobally()
 {
 
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenSaveAsAsked()
-{
-
+  if (ui->NameEdit->text().isEmpty())
+  {
+    setMessage(tr("Name of the marketplace cannot be empty"));
+  }
+  else if (!m_IsEditMode && m_MPlaces.find(ui->NameEdit->text()) != m_MPlaces.end())
+  {
+    setMessage(tr("Name of the marketplace already exists"));
+  }
+  else if (m_IsEditMode && m_OriginalName != ui->NameEdit->text() && m_MPlaces.find(ui->NameEdit->text()) != m_MPlaces.end())
+  {
+    setMessage(tr("Name of the marketplace already exists"));
+  }
+  else if (ui->URLEdit->text().isEmpty())
+  {
+    setMessage(tr("URL of the marketplace cannot be empty"));
+  }
+  else
+    setMessage();
 }
 
 
@@ -146,71 +147,17 @@ void HomeModule::whenSaveAsAsked()
 // =====================================================================
 
 
-void HomeModule::whenPropertiesAsked()
+QString EditMarketplaceDialog::getURL() const
 {
-
-}
+  return ui->URLEdit->text();
+};
 
 
 // =====================================================================
 // =====================================================================
 
 
-bool HomeModule::whenCloseAsked()
+QString EditMarketplaceDialog::getName() const
 {
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenPreferencesAsked()
-{
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
-  PreferencesDialog PrefsDlg(QApplication::activeWindow());
-  PrefsDlg.exec();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenRunAsked()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenMarketAsked()
-{
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenRefreshAsked()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool HomeModule::whenOpenExampleAsked()
-{
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return false;
-}
+  return ui->NameEdit->text();
+};

@@ -85,7 +85,6 @@ AppActions::~AppActions()
 // =====================================================================
 // =====================================================================
 
-#include <iostream>
 
 void AppActions::updateRecentProjectsActions()
 {
@@ -279,6 +278,8 @@ void AppActions::createMenus(MainWindow& MainWin)
   Menu->addAction(getAction("EditCut"));
   Menu->addAction(getAction("EditCopy"));
   Menu->addAction(getAction("EditPaste"));
+  Menu->addSeparator();
+  Menu->addAction(getAction("EditPreferences"));
 
 
   mp_SimulationMenu = MainWin.menuBar()->addMenu(tr("&Simulation"));

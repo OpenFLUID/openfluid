@@ -55,10 +55,18 @@
 
 #include <QApplication>
 
-#include "ProjectModule.hpp"
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
+#include "ProjectModule.hpp"
+#include "PreferencesDialog.hpp"
 
 #include <iostream>
+
+
+// =====================================================================
+// =====================================================================
+
 
 ProjectModule::ProjectModule(const QString& ProjectPath):
 AbstractModule(), mp_Widget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
@@ -171,6 +179,35 @@ bool ProjectModule::whenCloseAsked()
 void ProjectModule::whenPreferencesAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+  PreferencesDialog PrefsDlg(QApplication::activeWindow());
+  PrefsDlg.exec();
+
+  openfluid::guicommon::PreferencesManager* PrefsMgr =
+    openfluid::guicommon::PreferencesManager::getInstance();
+
+  if (PrefsDlg.isSimPathsChanged())
+  {
+    QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
+
+    openfluid::base::RuntimeEnvironment::getInstance()->resetExtraSimulatorsPluginsPaths();
+    for (int i=0;i<ExtraPaths.size(); i++)
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
+
+    // TODO update current project (monitoring paths, model, ...)
+  }
+
+  if (PrefsDlg.isObsPathsChanged())
+  {
+    QStringList ExtraPaths = PrefsMgr->getExtraObserversPaths();
+
+    openfluid::base::RuntimeEnvironment::getInstance()->resetExtraObserversPluginsPaths();
+    for (int i=0;i<ExtraPaths.size(); i++)
+      openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
+
+    // TODO update current project (monitoring paths, observers, ...)
+  }
+
 }
 
 

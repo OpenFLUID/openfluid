@@ -263,8 +263,6 @@ void AppCoordinator::whenQuitAsked()
 
 void AppCoordinator::whenNewAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << " import is missing" << std::endl;
-
   if (mp_CurrentModule->whenNewAsked())
   {
     NewProjectDialog NewPrjDlg(&m_MainWindow);
@@ -309,7 +307,8 @@ void AppCoordinator::whenOpenAsked()
     // TODO develop custom open project
     /*openfluid::guicommon::OpenProjectDialog OpenPrjDlg(&m_MainWindow);
     if (OpenPrjDlg.run()) setProjectModule(OpenPrjDlg.getProjectFolder());*/
-    QString SelectedDir = QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"));
+    QString SelectedDir = QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"),
+                                                            openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
     if (SelectedDir !=  "")
     {
       if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
@@ -349,9 +348,8 @@ void AppCoordinator::whenOpenRecentAsked()
   QAction *Action = qobject_cast<QAction*>(sender());
   if (Action)
   {
-    std::cout << __PRETTY_FUNCTION__ << " " << Action->data().toString().toStdString() << std::endl;
-
     QString ProjectPath = Action->data().toString();
+
     if (openfluid::base::ProjectManager::isProject(ProjectPath.toStdString()))
     {
       openfluid::base::ProjectManager::getInstance()->open(ProjectPath.toStdString());
@@ -429,6 +427,8 @@ void AppCoordinator::whenCloseAsked()
 void AppCoordinator::whenPreferencesAsked()
 {
   mp_CurrentModule->whenPreferencesAsked();
+  openfluid::guicommon::PreferencesManager::getInstance()->adaptRecentProjects();
+  updateRecentsList();
 }
 
 

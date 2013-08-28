@@ -140,6 +140,8 @@ class DLLEXPORT PreferencesManager
 
     void clearRecentProjects();
 
+    void adaptRecentProjects();
+
 
     void setWorkdir(const QString& Workdir);
 

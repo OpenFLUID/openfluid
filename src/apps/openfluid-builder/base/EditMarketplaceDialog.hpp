@@ -45,74 +45,67 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file BuilderApp.cpp
-  \brief Implements ...
+  \file EditMarketplaceDialog.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <QApplication>
 
-#include "BuilderApp.hpp"
+#ifndef __EDITMARKETPLACEDIALOG_HPP__
+#define __EDITMARKETPLACEDIALOG_HPP__
 
+#include <QDialog>
 
 #include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/base/RuntimeEnv.hpp>
 
 
-BuilderApp::BuilderApp():
-  m_Coordinator(m_MainWindow,m_Actions)
+namespace Ui
 {
-  QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
+  class EditMarketplaceDialog;
 }
 
 
-// =====================================================================
-// =====================================================================
 
-
-BuilderApp::~BuilderApp()
+class EditMarketplaceDialog : public QDialog
 {
+  Q_OBJECT;
 
-}
+  private slots:
 
-
-// =====================================================================
-// =====================================================================
-
-
-void BuilderApp::initialize()
-{
-  openfluid::guicommon::PreferencesManager* PrefsMgr =
-    openfluid::guicommon::PreferencesManager::getInstance();
+    void checkGlobally();
 
 
-  // TODO see if this is moved into ProjectCoordinator or ProjectModule
+  private:
 
-  QStringList ExtraPaths = PrefsMgr->getExtraSimulatorsPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
+    Ui::EditMarketplaceDialog* ui;
 
-  ExtraPaths = PrefsMgr->getExtraObserversPaths();
-  for (int i=0;i<ExtraPaths.size(); i++)
-    openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
+    bool m_IsEditMode;
 
-  // TODO add extension extra paths
+    QString m_OriginalName;
 
-  m_Actions.createMenus(m_MainWindow);
-  m_Actions.createToolbar(m_MainWindow);
+    const openfluid::guicommon::PreferencesManager::MarketPlaces_t m_MPlaces;
 
-  m_Coordinator.setHomeModule();
-}
+    void setMessage(const QString& Msg = "");
 
 
-// =====================================================================
-// =====================================================================
+
+  public:
+
+    EditMarketplaceDialog(QWidget* Parent, const QString& Name, const QString& URL,
+                          const openfluid::guicommon::PreferencesManager::MarketPlaces_t& MPlaces);
+
+    virtual ~EditMarketplaceDialog();
+
+    QString getURL() const;
+
+    QString getName() const;
+
+    QString getOriginalName() const { return m_OriginalName; }
+
+};
 
 
-void BuilderApp::run()
-{
-  m_MainWindow.show();
-}
+
+#endif /* __EDITMARKETPLACEDIALOG_HPP__ */
