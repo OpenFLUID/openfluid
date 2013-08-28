@@ -61,12 +61,18 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/GeoRasterValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/IntegerValue.hpp>
+#include <openfluid/core/StringValue.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
 #include <geos/geom/CoordinateSequence.h>
 #include <geos/geom/LineString.h>
+#include <geos/geom/GeometryFactory.h>
+#include <geos/geom/LineSegment.h>
+#include <geos/geom/Point.h>
 #include <algorithm>
+
 
 namespace openfluid {
 namespace landr {
@@ -263,7 +269,8 @@ std::vector<LineStringEntity*> LineStringGraph::getEndLineStringEntities()
 
   LineStringEntity* CurrentEntity = 0;
 
-  for (unsigned int i = 0; i < getEdges()->size(); i++)
+  unsigned int iEnd=getEdges()->size();
+  for (unsigned int i = 0; i < iEnd; i++)
   {
     CurrentEntity = dynamic_cast<LineStringEntity*>(getEdges()->at(i));
 
@@ -285,7 +292,8 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
 
   LineStringEntity* CurrentEntity = 0;
 
-  for (unsigned int i = 0; i < getEdges()->size(); i++)
+  unsigned int iEnd=getEdges()->size();
+  for (unsigned int i = 0; i < iEnd; i++)
   {
     CurrentEntity = dynamic_cast<LineStringEntity*>(getEdges()->at(i));
 
@@ -344,11 +352,12 @@ float* LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 // =====================================================================
 
 void LineStringGraph::setAttributeFromRasterValueAtStartNode(
-    std::string AttributeName)
+    const std::string& AttributeName)
 {
   addAttribute(AttributeName);
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     float* Val = getRasterValueForEntityStartNode(
         *dynamic_cast<LineStringEntity*>(*it));
@@ -372,11 +381,13 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(
 // =====================================================================
 
 void LineStringGraph::setAttributeFromRasterValueAtEndNode(
-    std::string AttributeName)
+    const std::string& AttributeName)
 {
   addAttribute(AttributeName);
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     float* Val = getRasterValueForEntityEndNode(
         *dynamic_cast<LineStringEntity*>(*it));
@@ -439,15 +450,19 @@ bool LineStringGraph::isLineStringGraphArborescence( )
   std::vector<geos::planargraph::Node *> vNode;
 
   this->getNodes(vNode);
-  for (std::vector<geos::planargraph::Node*>::iterator
-      it=vNode.begin(); it!=vNode.end();it++)
+
+  std::vector<geos::planargraph::Node*>::iterator it=vNode.begin();
+  std::vector<geos::planargraph::Node*>::iterator ite=vNode.end();
+  for (; it!=ite;it++)
       (*it)->setVisited(false);
 
   // mark all edges as non marked
    std::vector<geos::planargraph::Edge *> *vEdge= this->getEdges();
-   for (std::vector<geos::planargraph::Edge*>::iterator
-       it=vEdge->begin(); it!=vEdge->end();it++)
-     (*it)->setVisited(false);
+
+   std::vector<geos::planargraph::Edge*>::iterator itE=vEdge->begin();
+   std::vector<geos::planargraph::Edge*>::iterator itEe=vEdge->end();
+   for (; itE!=itEe;itE++)
+     (*itE)->setVisited(false);
 
 
 
@@ -458,8 +473,10 @@ bool LineStringGraph::isLineStringGraphArborescence( )
   //check if all node have been visited
   vNode.clear();
   this->getNodes(vNode);
-  for (std::vector<geos::planargraph::Node*>::iterator
-      it=vNode.begin(); it!=vNode.end();it++)
+
+  it=vNode.begin();
+  ite=vNode.end();
+  for (; it!=ite;it++)
   {
     if(!(*it)->isVisited())
       return false;
@@ -473,11 +490,13 @@ bool LineStringGraph::isLineStringGraphArborescence( )
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::setAttributeFromMeanRasterValues(std::string AttributeName)
+void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& AttributeName)
 {
   addAttribute(AttributeName);
-  for (LandRGraph::Entities_t::iterator it = m_Entities.begin();
-      it != m_Entities.end(); ++it)
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  for (; it != ite; ++it)
   {
     float* EndVal = getRasterValueForEntityEndNode(
         *dynamic_cast<LineStringEntity*>(*it));
@@ -505,21 +524,7 @@ void LineStringGraph::setAttributeFromMeanRasterValues(std::string AttributeName
       return;
     }
 
-    float* CentroVal =getRasterValueForEntityCentroid(
-        *const_cast<LandREntity*>(*it));
-
-    if (!CentroVal)
-    {
-      std::ostringstream s;
-      s << "No raster value for entity " << (*it)->getSelfId() << " Centroïd.";
-
-      throw openfluid::base::FrameworkException(
-          "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
-      return;
-    }
-
-
-    float Val=(*StartVal+*EndVal+*CentroVal)/3;
+    float Val=(*StartVal+*EndVal)/2;
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(Val));
   }
 }
@@ -527,6 +532,307 @@ void LineStringGraph::setAttributeFromMeanRasterValues(std::string AttributeName
 // =====================================================================
 // =====================================================================
 
+void LineStringGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
+                                                     const std::string& Column,double Thresh)
+{
+  if(!Vector.isLineType())
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::setAttributeFromVectorLocation",
+        "Vector is not a Line type");
+
+
+  if(!Vector.containsField(Column))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << Column << " in GeoVector.";
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorId", s.str());
+  }
+
+  addAttribute(AttributeName);
+
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 = Vector.getLayer(0);
+  Layer0->ResetReading();
+
+  int columnIndex=Vector.getFieldIndex(Column);
+
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
+  for (; it != ite; ++it)
+  {
+
+    OGRFeature* Feat;
+    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    {
+      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+      // c++ cast doesn't work (have to use the C API instead)
+      geos::geom::Geometry* GeosGeom =
+          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+      const  geos::geom::LineString*  Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getLine();
+      const geos::geom::Coordinate FirstCoord=Line->getCoordinateN(0);
+      const geos::geom::Coordinate SecondCoord=Line->getCoordinateN(1);
+      geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
+      geos::geom::Coordinate CoordInteriorPoint;
+      LineSegment.midPoint(CoordInteriorPoint);
+      geos::geom::GeometryFactory Factory;
+      geos::geom::Point* CentroLine=Factory.createPoint(CoordInteriorPoint);
+
+      if(CentroLine->isWithinDistance(GeosGeom,Thresh))
+      {
+        if(Vector.isFieldOfType(Column, OFTInteger))
+        {
+          int value=Feat->GetFieldAsInteger(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
+          break;
+        }
+        else if(Vector.isFieldOfType(Column, OFTReal))
+        {
+          double value=Feat->GetFieldAsDouble(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
+          break;
+        }
+        else
+        {
+          std::string value=Feat->GetFieldAsString(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
+          break;
+        }
+
+      }
+      // destroying the feature destroys also the associated OGRGeom
+      OGRFeature::DestroyFeature(Feat);
+      delete GeosGeom;
+
+    }
+    Layer0->ResetReading();
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void LineStringGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
+                                                     const std::string& Column,double Thresh)
+{
+  if(!Vector.isLineType())
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::setAttributeFromVectorLocation",
+        "Vector is not a Line type");
+
+
+  if(!Vector.containsField(Column))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << Column << " in GeoVector.";
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorId", s.str());
+  }
+
+  addAttribute(AttributeName);
+
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 = Vector.getLayer(0);
+  Layer0->ResetReading();
+
+  int columnIndex=Vector.getFieldIndex(Column);
+
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
+  for (; it != ite; ++it)
+  {
+
+    OGRFeature* Feat;
+    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    {
+      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+      // c++ cast doesn't work (have to use the C API instead)
+      geos::geom::Geometry* GeosGeom =
+          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+      const  geos::geom::LineString*  Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getLine();
+      const geos::geom::Coordinate FirstCoord=Line->getCoordinateN(0);
+      const geos::geom::Coordinate SecondCoord=Line->getCoordinateN(1);
+      geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
+      geos::geom::Coordinate CoordInteriorPoint;
+      LineSegment.midPoint(CoordInteriorPoint);
+      geos::geom::GeometryFactory Factory;
+      geos::geom::Point* CentroLine=Factory.createPoint(CoordInteriorPoint);
+
+      if(CentroLine->isWithinDistance(GeosGeom,Thresh))
+      {
+        if(Vector.isFieldOfType(Column, OFTInteger))
+        {
+          int value=Feat->GetFieldAsInteger(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
+          break;
+        }
+        else if(Vector.isFieldOfType(Column, OFTReal))
+        {
+          double value=Feat->GetFieldAsDouble(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
+          break;
+        }
+        else
+        {
+          std::string value=Feat->GetFieldAsString(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
+          break;
+        }
+
+      }
+      // destroying the feature destroys also the associated OGRGeom
+      OGRFeature::DestroyFeature(Feat);
+      delete GeosGeom;
+
+    }
+    Layer0->ResetReading();
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStringEntity& EntityToMerge)
+{
+
+  //ensure that the two LineStrings are coincident
+  bool Coincident=false;
+  geos::planargraph::Node* StartNode=Entity.getStartNode();
+  geos::planargraph::Node* EndNode=Entity.getEndNode();
+
+  geos::planargraph::Node* StartNode2=EntityToMerge.getStartNode();
+  geos::planargraph::Node* EndNode2=EntityToMerge.getEndNode();
+
+  if((StartNode->getCoordinate()).equals(StartNode2->getCoordinate())||
+      (StartNode->getCoordinate()).equals(EndNode2->getCoordinate())||
+      (EndNode->getCoordinate()).equals(StartNode2->getCoordinate())||
+      (EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
+    Coincident=true;
+
+  if(!Coincident)
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::mergeLineStringEntities",
+        "The LineStringEntities are not coincident");
+
+
+  // Four possibility of coincidence
+  geos::geom::CoordinateSequence *CoordsOne=0;
+  geos::geom::CoordinateSequence *CoordsTwo=0;
+
+  if((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
+  {
+    CoordsOne=(Entity.getLine())->getCoordinates();
+    CoordsTwo=(EntityToMerge.getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+  else if((StartNode->getCoordinate()).equals(EndNode2->getCoordinate()))
+  {
+    CoordsOne=(EntityToMerge.getLine())->getCoordinates();
+    CoordsTwo=(Entity.getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+  else if((EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
+  {
+    CoordsOne=(Entity.getLine())->getCoordinates();
+    CoordsTwo=(EntityToMerge.getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,false);
+  }
+  else if((StartNode->getCoordinate()).equals(StartNode2->getCoordinate()))
+  {
+    reverseLineStringEntity(EntityToMerge);
+
+    CoordsOne=(EntityToMerge.getLine())->getCoordinates();
+    CoordsTwo=(Entity.getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+
+  geos::geom::LineString * NewLine=mp_Factory->createLineString(CoordsOne);
+
+
+  int SelfId=Entity.getSelfId();
+  int SelfIdToMerge=EntityToMerge.getSelfId();
+
+  try {
+
+    openfluid::landr::LineStringEntity* Entity2 =
+        new openfluid::landr::LineStringEntity(NewLine,
+                                               SelfId);
+    removeEntity(SelfId);
+    removeEntity(SelfIdToMerge);
+    addEntity(Entity2);
+
+  } catch (openfluid::base::FrameworkException& e) {
+    std::ostringstream s;
+    s << "Merge operation impossible for entity" << SelfId<<" : "<<e.what() ;
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::mergeLineStringEntities",s.str());
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntitiesByMinLength(double MinLength,bool rmDangle)
+{
+  if (MinLength<=0.0)
+    throw  openfluid::base::FrameworkException("LineStringGraph : "
+        "LineStringGraph::getLineStringEntitiesByMinLength : "
+        "Threshold must be superior to 0.0");
+
+  std::list<LandREntity*> lEntities=getSelfIdOrderedEntities();
+  std::list<LandREntity*>::iterator it = lEntities.begin();
+  std::list<LandREntity*>::iterator ite = lEntities.end();
+  std::multimap<double, LineStringEntity*> mOrderedLength;
+  for(;it!=ite;++it)
+  {
+
+    if((*it)->getLength()<MinLength)
+    {
+
+      int StartDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getStartNode()->getDegree();
+      int EndDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getEndNode()->getDegree();
+
+      //is Line between two confluences ? StartNode and EndNode are in contact with three or more Edges
+      if(!(StartDegree>=3 && EndDegree>=3))
+      {
+        // is Line a dangle ? postulate : LineStringGraph  is not well-oriented.
+        //A dangle has StartNode in contact with one Edge and EndNode with three or more Edges
+        // or has EndNode in contact with one Edge and StartNode with three or more Edges
+        if((StartDegree==1 && EndDegree>=3 && rmDangle==false)||(EndDegree==1 && StartDegree>=3 && rmDangle==false))
+          break;
+        else
+          mOrderedLength.insert ( std::pair<double, LineStringEntity*>((*it)->getLength(),dynamic_cast<openfluid::landr::LineStringEntity*>(*it)) );
+
+      }
+
+    }
+  }
+
+  return mOrderedLength;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
 
 } // namespace landr
 } /* namespace openfluid */
+

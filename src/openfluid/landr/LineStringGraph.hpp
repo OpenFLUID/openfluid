@@ -140,6 +140,9 @@ protected:
 	virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
 			unsigned int SelfId);
 
+
+
+
 public:
 
 	/**
@@ -220,7 +223,7 @@ public:
 	 *
 	 * @param AttributeName The name of the attribute to create for the StartNode
 	 */
-	void setAttributeFromRasterValueAtStartNode(std::string AttributeName);
+	void setAttributeFromRasterValueAtStartNode(const std::string& AttributeName);
 
 	/**
 	 * @brief Create a new attribute for this LineStringGraph entities, and set for each LineStringEntity
@@ -228,7 +231,7 @@ public:
 	 *
 	 * @param AttributeName The name of the attribute to create for the EndNode
 	 */
-	void setAttributeFromRasterValueAtEndNode(std::string AttributeName);
+	void setAttributeFromRasterValueAtEndNode(const std::string& AttributeName);
 
 	/**
 	 * @brief Reverse a LineStringEntity orientation.
@@ -244,7 +247,53 @@ public:
 	 * this attribute value as the mean of the StartNode altitude, the centroid and the EndNode altitude
 	 * @param AttributeName The name of the attribute to create
 	 */
-	virtual void setAttributeFromMeanRasterValues(std::string AttributeName);
+	virtual void setAttributeFromMeanRasterValues(const std::string& AttributeName);
+
+	/**
+	 * @brief Create a new attribute for this Graph entities, and set for each entity.
+	 * this attribute value as the vector value corresponding to the Vector Entity Geometry
+	 *
+	 * @param AttributeName The name of the attribute to create.
+	 * @param Vector The Name of the GeoVectorValue.
+	 * @param Column The Name of the column of the GeoVectorValue to upload.
+	 * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+	 */
+	virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
+	                                            const std::string& Column,double Thresh=0.0001);
+
+	/**
+	 * @brief Create a new attribute for this Graph entities, and set for each entity.
+	 * this attribute value as the vector value corresponding to the Vector Entity Geometry
+	 *
+	 * @param AttributeName The name of the attribute to create.
+	 * @param Vector The Name of the VectorDataset.
+	 * @param Column The Name of the column of the GeoVectorValue to upload.
+	 * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+	 */
+	virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
+	                                            const std::string& Column,double Thresh=0.0001);
+
+	/**
+	 * @brief Merge a LineStringEntity into an other one
+	 * The LineStringEntity to merge is deleted.
+	 *
+	 * @param Entity An existent LineStringEntity.
+	 * @param EntityToMerge The LineStringEntity which will be merged into Entity and will be deleted.
+	 */
+	void mergeLineStringEntities(LineStringEntity& Entity, LineStringEntity& EntityToMerge);
+
+
+	/**
+	 * @brief Get a map of small LineStringEntities under length threshold and only if the LineStringEntity is
+	 * not between two confluences.
+	 *
+	 * @param MinLength The length threshold (in map units).
+	 * @param rmDangle : if true, get also dangles under the threshold, default is true.
+	 * @return a multimap of LineStringEntities with key is the length of each Entity.
+	 */
+	std::multimap<double,  LineStringEntity*> getLineStringEntitiesByMinLength(double MinLength,bool rmDangle=true);
+
+
 
 
 

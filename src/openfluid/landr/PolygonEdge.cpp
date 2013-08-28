@@ -75,7 +75,8 @@ PolygonEdge::PolygonEdge(geos::geom::LineString& Line) :
 
 PolygonEdge::~PolygonEdge()
 {
-  for (unsigned int i = 0; i < dirEdge.size(); i++)
+  unsigned int iEnd=dirEdge.size();
+  for (unsigned int i = 0; i < iEnd; i++)
     delete dirEdge[i];
 }
 
@@ -152,7 +153,7 @@ void PolygonEdge::removeFace(PolygonEntity* Face)
 // =====================================================================
 
 
-bool PolygonEdge::getAttributeValue(std::string AttributeName,
+bool PolygonEdge::getAttributeValue(const std::string& AttributeName,
                                     core::Value& Value) const
 {
   std::map<std::string, core::Value*>::const_iterator it = m_EdgeAttributes.find(
@@ -170,7 +171,7 @@ bool PolygonEdge::getAttributeValue(std::string AttributeName,
 // =====================================================================
 // =====================================================================
 
-bool PolygonEdge::setAttributeValue(std::string AttributeName,
+bool PolygonEdge::setAttributeValue(const std::string& AttributeName,
                                     const core::Value* Value)
 {
   std::map<std::string, core::Value*>::const_iterator it = m_EdgeAttributes.find(
@@ -190,7 +191,7 @@ bool PolygonEdge::setAttributeValue(std::string AttributeName,
 // =====================================================================
 // =====================================================================
 
-void PolygonEdge::removeAttribute(std::string AttributeName)
+void PolygonEdge::removeAttribute(const std::string& AttributeName)
 {
 
   std::map<std::string, core::Value*>::iterator it = m_EdgeAttributes.find(

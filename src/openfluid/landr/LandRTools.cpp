@@ -87,7 +87,8 @@ geos::geom::LineString* LandRTools::getMergedLineStringFromGeometry(
 
   if (!Lines || Lines->size() != 1)
   {
-    for (unsigned int i = 0; i < Lines->size(); i++)
+    unsigned int iEnd=Lines->size();
+    for (unsigned int i = 0; i < iEnd; i++)
       delete Lines->at(i);
   }
   else
@@ -142,7 +143,8 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(
 
   geos::geom::Geometry* Geom = Val.getGeometries();
 
-  for (unsigned int i = 0; i < Geom->getNumGeometries(); i++)
+  unsigned int iEnd=Geom->getNumGeometries();
+  for (unsigned int i = 0; i < iEnd; i++)
     Lines.push_back(
         const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(
             i)))->getExteriorRing()));
@@ -165,7 +167,8 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(
 
   geos::geom::Geometry* Geom = Val.getGeometries();
 
-  for (unsigned int i = 0; i < Geom->getNumGeometries(); i++)
+  unsigned int iEnd=Geom->getNumGeometries();
+  for (unsigned int i = 0; i < iEnd; i++)
     Lines.push_back(
         dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Geom->getGeometryN(
             i))));
@@ -189,7 +192,8 @@ std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
 
     geos::operation::linemerge::LineMerger lm;
 
-    for (unsigned int i = 0; i < UnionGeom->getNumGeometries(); i++)
+    unsigned int iEnd=UnionGeom->getNumGeometries();
+    for (unsigned int i = 0; i < iEnd; i++)
     {
       geos::geom::LineString* Line =
           dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(UnionGeom->getGeometryN(
@@ -258,8 +262,9 @@ bool LandRTools::exists(geos::geom::LineString* Line,
                         std::list<geos::geom::LineString*> RefLines,
                         double Tolerance)
 {
-  for (std::list<geos::geom::LineString*>::iterator it = RefLines.begin();
-      it != RefLines.end(); ++it)
+  std::list<geos::geom::LineString*>::iterator it = RefLines.begin();
+  std::list<geos::geom::LineString*>::iterator ite = RefLines.end();
+  for (; it != ite; ++it)
   {
     if ((*it)->equalsExact(Line, Tolerance))
       return true;
@@ -300,8 +305,10 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
 
   geos::planargraph::DirectedEdgeStar *DEdge=Node->getOutEdges();
 
-  std::vector<geos::planargraph::DirectedEdge*>::iterator it;
-  for (it = DEdge->begin(); it != DEdge->end(); ++it)
+  std::vector<geos::planargraph::DirectedEdge*>::iterator it=DEdge->begin();
+  std::vector<geos::planargraph::DirectedEdge*>::iterator ite=DEdge->end();
+
+  for (; it != ite; ++it)
   {
     if(!(*it)->getEdge()->isVisited())
     {
@@ -330,13 +337,16 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(
   {
     std::vector<geos::geom::Polygon*> Polygons;
 
-    for (unsigned int i = 0; i < Geom1->getNumGeometries(); i++)
+    unsigned int iEnd=Geom1->getNumGeometries();
+    for (unsigned int i = 0; i < iEnd; i++)
     {
       if(Geom1->getGeometryN(i)->getGeometryTypeId()!=geos::geom::GEOS_POLYGON)
         throw openfluid::base::FrameworkException(
             "LandRTools::computeIntersectPolygons",
             " The Geometry is not Polygon-typed.");
-      for (unsigned int j = 0; j < Geom2->getNumGeometries(); j++)
+
+      unsigned int jEnd=Geom2->getNumGeometries();
+      for (unsigned int j = 0; j < jEnd; j++)
       {
         if(Geom2->getGeometryN(j)->getGeometryTypeId()!=geos::geom::GEOS_POLYGON)
           throw openfluid::base::FrameworkException(

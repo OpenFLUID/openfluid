@@ -96,11 +96,11 @@ class DLLEXPORT VectorDataset
      */
     std::map<unsigned int, geos::geom::Geometry*> m_Geometries;
 
-    std::string getTimestampedPath(std::string OriginalFileName);
+    std::string getTimestampedPath(const std::string& OriginalFileName);
 
     std::string getInitializedTmpPath();
 
-    bool isAlreadyExisting(std::string Path);
+    bool isAlreadyExisting(const std::string& Path);
 
     void parse(unsigned int LayerIndex);
 
@@ -112,7 +112,7 @@ class DLLEXPORT VectorDataset
      * @param DriverName The name of the OGR driver to use, default is "ESRI Shapefile"
      * @throw openfluid::base::OFException if fails
      */
-    VectorDataset(std::string FileName, std::string DriverName =
+    VectorDataset(const std::string& FileName, std::string DriverName =
         "ESRI Shapefile");
 
     /**
@@ -144,7 +144,7 @@ class DLLEXPORT VectorDataset
      * @param FileName The name of the file to write
      * @param ReplaceIfExists If true and the file FilePath/FileName already exists, overwrite it
      */
-    void copyToDisk(std::string FilePath, std::string FileName,
+    void copyToDisk(const std::string& FilePath, const std::string& FileName,
                     bool ReplaceIfExists);
 
     /**
@@ -183,7 +183,7 @@ class DLLEXPORT VectorDataset
      * @param LayerIndex The index of the layer to add the field, default 0
      * @throw openfluid::base::OFException if creating field failed
      */
-    void addAField(std::string FieldName, OGRFieldType FieldType = OFTString,
+    void addAField(const std::string& FieldName, OGRFieldType FieldType = OFTString,
                    unsigned int LayerIndex = 0);
 
     /**
@@ -205,7 +205,7 @@ class DLLEXPORT VectorDataset
      * @param LayerIndex The index of the layer to query, default 0
      * @return True if the field FieldName exists, False otherwise
      */
-    bool containsField(std::string FieldName, unsigned int LayerIndex = 0);
+    bool containsField(const std::string& FieldName, unsigned int LayerIndex = 0);
 
     /**
      * @brief Get the index of a field in the LayerIndex layer
@@ -214,7 +214,7 @@ class DLLEXPORT VectorDataset
      * @param FieldName The name of the field to query
      * @return The index of FieldName or -1 if field FieldName doesn't exist
      */
-    int getFieldIndex(std::string FieldName, unsigned int LayerIndex = 0);
+    int getFieldIndex(const std::string& FieldName, unsigned int LayerIndex = 0);
 
     /**
      * @brief Returns if a field is of the type FieldType in the LayerIndex layer
@@ -225,7 +225,7 @@ class DLLEXPORT VectorDataset
      * @return True if the field FieldName is type FieldType
      * @throw openfluid::base::OFException if the field doesn't exist.
      */
-    bool isFieldOfType(std::string FieldName, OGRFieldType FieldType,
+    bool isFieldOfType(const std::string& FieldName, OGRFieldType FieldType,
                        unsigned int LayerIndex = 0);
 
     /**
@@ -236,7 +236,7 @@ class DLLEXPORT VectorDataset
      * @param LayerIndex The index of the layer to query, default 0
      * @return True if the field has at least a feature containing the value Value, False otherwise.
      */
-    bool isIntValueSet(std::string FieldName, int Value,
+    bool isIntValueSet(const std::string& FieldName, int Value,
                        unsigned int LayerIndex = 0);
 
     /**
