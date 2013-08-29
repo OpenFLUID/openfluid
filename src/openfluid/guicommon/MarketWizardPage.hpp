@@ -43,62 +43,46 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-*/
-
-
-/**
-  \file main.cpp
-  \brief Implements ...
-
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+/*
+ * MarketWizardPage.hpp
+ *
+ *  Created on: 9 août 2013
+ *      Author: Manuel CHATAIGNER
+ */
 
-#include <openfluid/base/Init.hpp>
+#ifndef __MARKETWIZARDPAGE_HPP__
+#define __MARKETWIZARDPAGE_HPP__
 
-#include "BuilderApp.hpp"
+
+#include <QWizardPage>
 
 
-int main(int argc, char** argv)
+namespace openfluid { namespace guicommon {
+
+
+class MarketWizardPage : public QWizardPage
 {
+  private:
 
-  try
-  {
-    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
-    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
+    bool m_PackagesSelected;
+    bool m_LicensesRadioAccepted;
+    bool m_InstallationFinished;
 
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
+    bool isSelectionPage() const { return nextId() == 1; };
+    bool isLicensesnPage() const { return nextId() == 2; };
+    bool isInstallPage() const { return nextId() == -1; };
 
-    BuilderApp App;
+  public:
 
-    App.initialize();
-    App.run();
+    MarketWizardPage(QWidget *Parent = 0);
+    virtual bool isComplete() const;
+    void setPageComplete(bool Complete);
+};
 
-    return  CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
-  }
-  catch (std::bad_alloc & E)
-  {
-    std::cerr << "bad_alloc ERROR: " << E.what()
-             << ". Possibly not enough memory available" << std::endl;
-  }
-  catch (std::bad_exception & E)
-  {
-    std::cerr << "bad_exception ERROR: " << E.what() << std::endl;
-  }
-  catch (std::bad_cast & E)
-  {
-    std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
-  }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
-  }
-  catch (std::exception & E)
-  {
-    std::cerr << "std ERROR: " << E.what() << std::endl;
-  }
-  catch (...)
-  {
-    std::cerr << "ERROR: " << "Unknown Error" << std::endl;
-  }
-}
+
+} } //namespaces
+
+
+#endif /* __MARKETWIZARDPAGE_HPP__ */

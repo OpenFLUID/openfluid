@@ -45,60 +45,50 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file main.cpp
-  \brief Implements ...
+  \file MarketBuildOptionsDialog.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/base/Init.hpp>
+#ifndef __MARKETBUILDOPTIONSDIALOG_HPP__
+#define __MARKETBUILDOPTIONSDIALOG_HPP__
 
-#include "BuilderApp.hpp"
+#include <QDialog>
+#include <QLineEdit>
+#include <QString>
 
 
-int main(int argc, char** argv)
+namespace openfluid { namespace guicommon {
+
+// =====================================================================
+// =====================================================================
+
+
+class MarketBuildOptionsDialog : public QDialog
 {
+  private:
 
-  try
-  {
-    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
-    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
+    QString m_CommonBuildOptions;
+    QString m_BuildOptions;
 
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
+    QString m_SimID;
+    QLineEdit m_OptionsEntry;
 
-    BuilderApp App;
+  public:
 
-    App.initialize();
-    App.run();
+    MarketBuildOptionsDialog(const QString& CommonBuildOptions, const QString& BuildOptions,
+                             const QString& SimID = "");
 
-    return  CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
-  }
-  catch (std::bad_alloc & E)
-  {
-    std::cerr << "bad_alloc ERROR: " << E.what()
-             << ". Possibly not enough memory available" << std::endl;
-  }
-  catch (std::bad_exception & E)
-  {
-    std::cerr << "bad_exception ERROR: " << E.what() << std::endl;
-  }
-  catch (std::bad_cast & E)
-  {
-    std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
-  }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
-  }
-  catch (std::exception & E)
-  {
-    std::cerr << "std ERROR: " << E.what() << std::endl;
-  }
-  catch (...)
-  {
-    std::cerr << "ERROR: " << "Unknown Error" << std::endl;
-  }
-}
+    ~MarketBuildOptionsDialog() {};
+
+    QString getEditedOptions() const { return m_OptionsEntry.text(); };
+};
+
+
+} } //namespaces
+
+
+#endif /* __MARKETBUILDOPTIONSDIALOG_HPP__ */

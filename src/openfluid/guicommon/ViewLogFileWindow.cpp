@@ -47,58 +47,79 @@
 
 
 /**
-  \file main.cpp
+  \file ViewLog.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+*/
+
+#include <openfluid/guicommon/ViewLogFileWindow.hpp>
+#include <openfluid/base/FrameworkException.hpp>
+#include <QFile>
+#include <QTextStream>
+
+namespace openfluid { namespace guicommon {
 
 
-#include <openfluid/base/Init.hpp>
+// =====================================================================
+// =====================================================================
 
-#include "BuilderApp.hpp"
 
-
-int main(int argc, char** argv)
+ViewLogFileWindow::ViewLogFileWindow(const QString& PathToLogFile) : QDialog()
 {
+  resize(500, 350);
+  setWindowTitle(tr("Install log"));
 
-  try
-  {
-    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
-    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
+  m_CloseButton.setText(tr("Close"));
 
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
+  mp_LogTextView = new QTextEdit();
+  mp_LogTextView->setReadOnly(true);
+  mp_LogTextView->setText("");
+  mp_LogTextView->setWordWrapMode(QTextOption::WordWrap);
 
-    BuilderApp App;
+  m_LogSWindow.setWidget(mp_LogTextView);
+  m_LogSWindow.setWidgetResizable(true);
 
-    App.initialize();
-    App.run();
 
-    return  CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
-  }
-  catch (std::bad_alloc & E)
+  m_VBox.setSpacing(20);
+  m_VBox.addWidget(&m_LogSWindow);
+  m_VBox.addWidget(&m_CloseButton);
+
+  setLayout(&m_VBox);
+
+  connect(&m_CloseButton, SIGNAL(clicked()), this, SLOT(onCloseClicked()));
+
+
+  QFile File(PathToLogFile);
+  QString FullContent;
+  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
   {
-    std::cerr << "bad_alloc ERROR: " << E.what()
-             << ". Possibly not enough memory available" << std::endl;
+    throw openfluid::base::FrameworkException("ViewLogFileWindow::ViewLogFileWindow",
+       "error opening " + PathToLogFile.toStdString());
   }
-  catch (std::bad_exception & E)
+
+  QTextStream In(&File);
+  while (!In.atEnd())
   {
-    std::cerr << "bad_exception ERROR: " << E.what() << std::endl;
+    QString Line = In.readLine() + "\n";
+    FullContent += Line;
   }
-  catch (std::bad_cast & E)
-  {
-    std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
-  }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
-  }
-  catch (std::exception & E)
-  {
-    std::cerr << "std ERROR: " << E.what() << std::endl;
-  }
-  catch (...)
-  {
-    std::cerr << "ERROR: " << "Unknown Error" << std::endl;
-  }
+  File.close();
+
+  mp_LogTextView->setText(FullContent);
+
+  setModal(true);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ViewLogFileWindow::onCloseClicked()
+{
+  hide();
+}
+
+
+} } //namespaces

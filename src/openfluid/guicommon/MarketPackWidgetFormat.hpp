@@ -45,60 +45,75 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file main.cpp
-  \brief Implements ...
+ * MarketPackWidgetFormat.hpp
+ *
+ *  Created on: 21 mars 2013
+ *      Author: Manuel CHATAIGNER
+*/
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
-
-
-#include <openfluid/base/Init.hpp>
-
-#include "BuilderApp.hpp"
+#ifndef __MARKETPACKWIDGETFORMAT__HPP__
+#define __MARKETPACKWIDGETFORMAT__HPP__
 
 
-int main(int argc, char** argv)
+#include <openfluid/guicommon/MarketPackWidget.hpp>
+#include <QComboBox>
+#include <QList>
+#include <QStandardItemModel>
+
+
+namespace openfluid { namespace guicommon {
+
+
+class DLLEXPORT MarketPackWidgetFormat : public MarketPackWidget
 {
+  Q_OBJECT
 
-  try
-  {
-    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
-    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
+  private:
 
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
+    QString m_EditedBuildOptions;
 
-    BuilderApp App;
+    QHBoxLayout m_FormatHBox;
+    QLabel m_FormatLabel;
+    QComboBox m_FormatCombo;
+    QPushButton m_ConfigButton;
 
-    App.initialize();
-    App.run();
+    QStandardItemModel m_RefFormatComboBoxModel;
 
-    return  CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
-  }
-  catch (std::bad_alloc & E)
-  {
-    std::cerr << "bad_alloc ERROR: " << E.what()
-             << ". Possibly not enough memory available" << std::endl;
-  }
-  catch (std::bad_exception & E)
-  {
-    std::cerr << "bad_exception ERROR: " << E.what() << std::endl;
-  }
-  catch (std::bad_cast & E)
-  {
-    std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
-  }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
-  }
-  catch (std::exception & E)
-  {
-    std::cerr << "std ERROR: " << E.what() << std::endl;
-  }
-  catch (...)
-  {
-    std::cerr << "ERROR: " << "Unknown Error" << std::endl;
-  }
-}
+    class FormatComboColumns : public QList<QStandardItem*>
+    {
+      public:
+
+        enum { NAME, TYPE};
+
+        QStandardItem *mp_FormatName;
+        QStandardItem *mp_SelType;
+
+        FormatComboColumns() {}
+
+        void appendItems() { clear(); append(mp_FormatName); append(mp_SelType); }
+    };
+
+    FormatComboColumns m_FormatColumns;
+
+  private slots:
+
+    void onConfigClicked();
+
+  public:
+
+    MarketPackWidgetFormat(const openfluid::market::PackageInfo::PackageType& Type,const openfluid::market::MetaPackageInfo& MetaPackInfo);
+
+    virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
+
+    QString getEditedBuildOptions() const { return m_EditedBuildOptions; };
+
+    virtual void updateDisplayedInfos();
+
+};
+
+
+} } //namespaces
+
+
+#endif /* __MARKETPACKWIDGETFORMAT_HPP__ */

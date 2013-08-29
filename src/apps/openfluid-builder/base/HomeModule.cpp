@@ -54,6 +54,7 @@
  */
 
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/guicommon/MarketClientAssistant.hpp>
 
 #include "HomeModule.hpp"
 #include "PreferencesDialog.hpp"
@@ -192,6 +193,8 @@ void HomeModule::whenRunAsked()
 void HomeModule::whenMarketAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+  openfluid::guicommon::MarketClientAssistant MarketAssistant;
+  MarketAssistant.exec();
 }
 
 

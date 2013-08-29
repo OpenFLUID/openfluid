@@ -6,21 +6,26 @@ INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 FILE(GLOB OPENFLUID_GUICOMMON_CPP OpenProjectDialog.cpp
                                   PreferencesManager.cpp
-                                  RunSimulationDialog.cpp
-                                  RunSimulationWorker.cpp                                 
+                                  RunSimulationDialog.cpp RunSimulationWorker.cpp
+                                  MarketBuildOptionsDialog.cpp MarketClientAssistant.cpp MarketWizardPage.cpp 
+                                  MarketPackWidget.cpp MarketPackWidgetFormat.cpp
+                                  ViewLogFileWindow.cpp
                                   )
 
 FILE(GLOB OPENFLUID_GUICOMMON_HPP OpenProjectDialog.hpp
                                   PreferencesManager.hpp
-                                  RunSimulationDialog.hpp
-                                  RunSimulationWorker.hpp                                  
+                                  RunSimulationDialog.hpp RunSimulationWorker.hpp
+                                  MarketBuildOptionsDialog.hpp MarketClientAssistant.hpp MarketWizardPage.hpp 
+                                  MarketPackWidget.hpp MarketPackWidgetFormat.hpp
+                                  ViewLogFileWindow.hpp                                                                     
                                   )
 
 QT4_WRAP_UI(OPENFLUID_GUICOMMON_UI RunSimulationDialog.ui)
 
+QT4_ADD_RESOURCES(OPENFLUID_GUICOMMON_RC resources/openfluidmarket.qrc)
 
 ADD_LIBRARY(openfluid-guicommon SHARED ${OPENFLUID_GUICOMMON_CPP} ${OPENFLUID_GUICOMMON_HPP}
-                                       ${OPENFLUID_GUICOMMON_UI})
+                                       ${OPENFLUID_GUICOMMON_RC} ${OPENFLUID_GUICOMMON_UI})
 
 SET_TARGET_PROPERTIES(openfluid-guicommon PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
                                         SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
