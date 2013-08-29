@@ -45,60 +45,52 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file main.cpp
-  \brief Implements ...
+  \file ViewLogFileWindow.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/base/Init.hpp>
+#ifndef __VIEWLOGFILEWINDOW_HPP__
+#define __VIEWLOGFILEWINDOW_HPP__
 
-#include "BuilderApp.hpp"
+#include <QDialog>
+#include <QString>
+#include <QVBoxLayout>
+#include <QTextEdit>
+#include <QScrollArea>
+#include <QPushButton>
+
+#include <openfluid/dllexport.hpp>
 
 
-int main(int argc, char** argv)
+namespace openfluid { namespace guicommon {
+
+
+// =====================================================================
+// =====================================================================
+
+class DLLEXPORT ViewLogFileWindow : public QDialog
 {
+  Q_OBJECT
 
-  try
-  {
-    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
-    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
+  private:
+    QVBoxLayout m_VBox;
+    QTextEdit *mp_LogTextView;
+    QScrollArea m_LogSWindow;
+    QPushButton m_CloseButton;
 
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
+  private slots:
+    void onCloseClicked();
 
-    BuilderApp App;
+  public:
+    ViewLogFileWindow(const QString& PathToLogfile);
+};
 
-    App.initialize();
-    App.run();
+} } //namespaces
 
-    return  CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
-  }
-  catch (std::bad_alloc & E)
-  {
-    std::cerr << "bad_alloc ERROR: " << E.what()
-             << ". Possibly not enough memory available" << std::endl;
-  }
-  catch (std::bad_exception & E)
-  {
-    std::cerr << "bad_exception ERROR: " << E.what() << std::endl;
-  }
-  catch (std::bad_cast & E)
-  {
-    std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
-  }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
-  }
-  catch (std::exception & E)
-  {
-    std::cerr << "std ERROR: " << E.what() << std::endl;
-  }
-  catch (...)
-  {
-    std::cerr << "ERROR: " << "Unknown Error" << std::endl;
-  }
-}
+
+
+#endif /* __VIEWLOGFILEWINDOW_HPP__ */

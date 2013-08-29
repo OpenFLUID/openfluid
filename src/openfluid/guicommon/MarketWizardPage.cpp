@@ -43,62 +43,60 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-*/
+ */
 
-
-/**
-  \file main.cpp
-  \brief Implements ...
-
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+/*
+ * MarketWizardPage.cpp
+ *
+ *  Created on: 9 août 2013
+ *      Author: Manuel CHATAIGNER
  */
 
 
-#include <openfluid/base/Init.hpp>
-
-#include "BuilderApp.hpp"
+#include <openfluid/guicommon/MarketWizardPage.hpp>
 
 
-int main(int argc, char** argv)
+namespace openfluid { namespace guicommon {
+
+// =====================================================================
+// =====================================================================
+
+
+MarketWizardPage::MarketWizardPage(QWidget *Parent) : QWizardPage(Parent)
 {
 
-  try
-  {
-    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
-    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
-
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
-
-    BuilderApp App;
-
-    App.initialize();
-    App.run();
-
-    return  CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
-  }
-  catch (std::bad_alloc & E)
-  {
-    std::cerr << "bad_alloc ERROR: " << E.what()
-             << ". Possibly not enough memory available" << std::endl;
-  }
-  catch (std::bad_exception & E)
-  {
-    std::cerr << "bad_exception ERROR: " << E.what() << std::endl;
-  }
-  catch (std::bad_cast & E)
-  {
-    std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
-  }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
-  }
-  catch (std::exception & E)
-  {
-    std::cerr << "std ERROR: " << E.what() << std::endl;
-  }
-  catch (...)
-  {
-    std::cerr << "ERROR: " << "Unknown Error" << std::endl;
-  }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool MarketWizardPage::isComplete() const
+{
+  if (isSelectionPage()) return m_PackagesSelected;
+  else if (isLicensesnPage()) return m_LicensesRadioAccepted;
+  else if (isInstallPage()) return m_InstallationFinished;
+
+  return QWizardPage::isComplete();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketWizardPage::setPageComplete(bool Complete)
+{
+  if (isSelectionPage())
+    m_PackagesSelected = Complete;
+  else if (isLicensesnPage())
+    m_LicensesRadioAccepted = Complete;
+  else if (isInstallPage())
+    m_InstallationFinished = Complete;
+
+  emit completeChanged();
+}
+
+
+} } //namespaces

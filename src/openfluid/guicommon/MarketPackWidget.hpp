@@ -45,60 +45,96 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file main.cpp
-  \brief Implements ...
+  \file MarketPackWidget.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/base/Init.hpp>
+#ifndef __MARKETPACKWIDGET_HPP__
+#define __MARKETPACKWIDGET_HPP__
 
-#include "BuilderApp.hpp"
+
+#include <QLabel>
+#include <QGroupBox>
+#include <QBoxLayout>
+#include <QPushButton>
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/market/MarketInfos.hpp>
 
 
-int main(int argc, char** argv)
+namespace openfluid { namespace guicommon {
+
+// =====================================================================
+// =====================================================================
+
+class DLLEXPORT MarketPackWidget : public QGroupBox
 {
+  Q_OBJECT
 
-  try
-  {
-    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
-    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
+  private:
+    QLabel *mp_EmptyCartImage;
+    QLabel *mp_FullCartImage;
 
-    INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
+    QLabel m_VersionLabel;
 
-    BuilderApp App;
+    void setWidgetColor(QWidget *Widget);
 
-    App.initialize();
-    App.run();
+    //bool onButtonRelease(GdkEventButton* Event);
 
-    return  CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
-  }
-  catch (std::bad_alloc & E)
-  {
-    std::cerr << "bad_alloc ERROR: " << E.what()
-             << ". Possibly not enough memory available" << std::endl;
-  }
-  catch (std::bad_exception & E)
-  {
-    std::cerr << "bad_exception ERROR: " << E.what() << std::endl;
-  }
-  catch (std::bad_cast & E)
-  {
-    std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
-  }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
-  }
-  catch (std::exception & E)
-  {
-    std::cerr << "std ERROR: " << E.what() << std::endl;
-  }
-  catch (...)
-  {
-    std::cerr << "ERROR: " << "Unknown Error" << std::endl;
-  }
-}
+  protected:
+    openfluid::market::PackageInfo::PackageType m_PackageType;
+    openfluid::market::MetaPackageInfo m_MetaPackInfo;
+
+    QLabel m_IDLabel;
+    QLabel m_LicenseLabel;
+
+    QHBoxLayout m_MainHBox;
+
+    QPushButton m_InstallToggle;
+
+    QVBoxLayout m_DetailsLeftVBox;
+    QVBoxLayout m_DetailsRightVBox;
+
+    static QString replaceByUnknownIfEmpty(const QString& Str);
+
+    static QString replaceByNoneIfEmpty(const QString& Str);
+
+  protected slots:
+
+    void onInstallModified();
+
+  signals:
+
+    void installModified(openfluid::ware::WareID_t);
+
+  public:
+    MarketPackWidget(const openfluid::market::PackageInfo::PackageType& Type,const openfluid::market::MetaPackageInfo& MetaPackInfo);
+
+    ~MarketPackWidget();
+
+    QString getID() const { return QString::fromStdString(m_MetaPackInfo.ID); };
+
+    bool isInstall() const { return m_InstallToggle.isChecked(); };
+
+    void setInstall(bool Install) { m_InstallToggle.setChecked(Install); };
+
+    /**
+     @return selected format in combobox
+    */
+    virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
+
+    /**
+     Creates tooltip for market pack widget
+    */
+    virtual void updateDisplayedInfos();
+
+};
+
+} } //namespaces
+
+
+#endif /* __MARKETPACKWIDGET_HPP__ */
