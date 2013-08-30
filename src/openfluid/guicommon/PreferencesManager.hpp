@@ -95,6 +95,9 @@ class DLLEXPORT PreferencesManager
 
     QStringList getExtraPaths(const QString& Key);
 
+    static QString guessLang();
+
+
   public:
 
     static const int RecentProjectsLimit;
@@ -129,6 +132,9 @@ class DLLEXPORT PreferencesManager
 
     QString getLang();
 
+    static QStringList getAvailableLangs();
+
+    static bool isAvailableLang(const QString& Lang);
 
     void setRecentMax(unsigned int RecentMax);
 

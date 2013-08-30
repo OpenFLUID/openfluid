@@ -66,6 +66,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 
 
+#define OPENFLUID_APPLICATION _M_qapp
 
 #define INIT_OPENFLUID_APPLICATION(ac,av) \
   OFDBG_BANNER; \

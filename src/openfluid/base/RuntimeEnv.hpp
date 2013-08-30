@@ -417,6 +417,11 @@ class DLLEXPORT RuntimeEnvironment
     */
     std::string getLocaleDir()const;
 
+    /**
+      Returns the translations directory
+      @return the path for translationslocale directory
+    */
+    std::string getTranslationsDir() const;
 
     /**
       Returns the path for provided examples, taking into account the install prefix path

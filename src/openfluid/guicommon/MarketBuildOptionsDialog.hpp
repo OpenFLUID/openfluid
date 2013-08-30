@@ -69,6 +69,8 @@ namespace openfluid { namespace guicommon {
 
 class MarketBuildOptionsDialog : public QDialog
 {
+  Q_OBJECT;
+
   private:
 
     QString m_CommonBuildOptions;

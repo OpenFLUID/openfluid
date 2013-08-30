@@ -57,7 +57,7 @@
 #include <boost/filesystem.hpp>
 #include <QDir>
 #include <QFileInfo>
-
+#include <QLocale>
 
 #include <openfluid/config.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -185,10 +185,55 @@ void PreferencesManager::setLang(const QString& Lang)
 QString PreferencesManager::getLang()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("lang")) mp_ConfFile->setValue("lang",guessLang());
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
   QString Lang = mp_ConfFile->value("lang").toString();
   mp_ConfFile->endGroup();
   return Lang;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList PreferencesManager::getAvailableLangs()
+{
+  QStringList QMFiles;
+  QMFiles = QDir(QString(openfluid::base::RuntimeEnvironment::getInstance()->getTranslationsDir().c_str())).entryList(QStringList("*.qm"),QDir::Files);
+
+  QStringList Langs;
+  for (int i=0;i<QMFiles.size();++i)
+    Langs.append(QMFiles[i].right(8).left(5));
+
+  return Langs;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isAvailableLang(const QString& Lang)
+{
+  return getAvailableLangs().contains(Lang);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::guessLang()
+{
+  QString Locale = QLocale::system().name();
+
+  if (isAvailableLang(Locale)) return Locale;
+  else return "default";
+}
+
 
 // =====================================================================
 // =====================================================================

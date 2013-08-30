@@ -54,8 +54,6 @@
  */
 
 
-#include <iostream>
-
 #include <QFileDialog>
 
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -182,7 +180,10 @@ void PreferencesDialog::initialize()
 
 
   // Interface
-  // TODO languages
+  // TODO set up a fancier languages list
+  ui->LangComboBox->addItem("default");
+  ui->LangComboBox->addItems(openfluid::guicommon::PreferencesManager::getAvailableLangs());
+  ui->LangComboBox->setCurrentIndex(ui->LangComboBox->findText(PrefsMan->getLang()));
   ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
 
   // Paths
@@ -339,7 +340,7 @@ void PreferencesDialog::changePage(QTreeWidgetItem* Current, QTreeWidgetItem* Pr
 
 void PreferencesDialog::updateLanguage(const QString& Lang)
 {
-  std::cout << __PRETTY_FUNCTION__ << " " << Lang.toStdString() << std::endl;
+  openfluid::guicommon::PreferencesManager::getInstance()->setLang(Lang);
 }
 
 
