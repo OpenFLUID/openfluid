@@ -64,6 +64,8 @@ namespace openfluid { namespace guicommon {
 
 class MarketWizardPage : public QWizardPage
 {
+  Q_OBJECT;
+
   private:
 
     bool m_PackagesSelected;

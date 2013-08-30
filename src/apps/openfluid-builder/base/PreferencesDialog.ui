@@ -107,7 +107,7 @@ font : bold;
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="InterfacePage">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -126,7 +126,7 @@ font : bold;
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Interface language:</string>
+               <string>Interface language (requires restart):</string>
               </property>
              </widget>
             </item>
@@ -366,7 +366,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>9</month>
-                <day>11</day>
+                <day>10</day>
                </date>
               </property>
               <property name="displayFormat">

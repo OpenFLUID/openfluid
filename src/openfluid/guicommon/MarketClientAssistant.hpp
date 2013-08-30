@@ -80,7 +80,7 @@ namespace openfluid { namespace guicommon {
 
 class MarketPackWidget;
 
-
+// TODO review parenting of all widgets
 class DLLEXPORT MarketClientAssistant : public QWizard
 {
   Q_OBJECT
@@ -189,6 +189,7 @@ class DLLEXPORT MarketClientAssistant : public QWizard
 
     // ===== Download and install =====//
     MarketWizardPage m_InstallPage;
+
     QVBoxLayout m_InstallPageBox;
 
     QTableWidget *mp_InstallTable;
@@ -302,7 +303,8 @@ class DLLEXPORT MarketClientAssistant : public QWizard
 
 
   public:
-    MarketClientAssistant();
+
+    MarketClientAssistant(QWidget* Parent);
 
     virtual ~MarketClientAssistant();
 

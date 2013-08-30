@@ -477,6 +477,16 @@ std::string RuntimeEnvironment::getLocaleDir() const
 // =====================================================================
 
 
+std::string RuntimeEnvironment::getTranslationsDir() const
+{
+  return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::SHARE_TRANSLATIONS_PATH).string();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void RuntimeEnvironment::resetIgnitionDateTime()
 {
   m_IgnitionDateTime = boost::posix_time::microsec_clock::local_time();

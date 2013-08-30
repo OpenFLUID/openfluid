@@ -75,14 +75,14 @@
 namespace openfluid { namespace guicommon {
 
 
-MarketClientAssistant::MarketClientAssistant()
-: QWizard()
+MarketClientAssistant::MarketClientAssistant(QWidget* Parent):
+  QWizard(Parent),m_SelectionPage(this),m_LicensesPage(this),m_InstallPage(this)
 {
 
   m_MarketClient.enableLog(true);
 
-  setWindowTitle("OpenFLUID Market client");
-  resize(750, 700);
+  setWindowTitle(tr("OpenFLUID Market client"));
+  resize(750,700);
 
 
   setupSelectionPage();

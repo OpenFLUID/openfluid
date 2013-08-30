@@ -127,6 +127,7 @@ bool ProjectModule::whenNewAsked()
 
 bool ProjectModule::whenOpenAsked()
 {
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
   return false;
 }
 

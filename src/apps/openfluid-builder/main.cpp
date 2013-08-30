@@ -54,9 +54,20 @@
  */
 
 
+
+
+
 #include <openfluid/base/Init.hpp>
 
 #include "BuilderApp.hpp"
+
+#include <QTranslator>
+#include <QLibraryInfo>
+
+#include <openfluid/guicommon/PreferencesManager.hpp>
+
+#include <iostream>
+
 
 
 int main(int argc, char** argv)
@@ -69,12 +80,32 @@ int main(int argc, char** argv)
 
     INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
 
+
+    // translations management
+    QString Lang = openfluid::guicommon::PreferencesManager::getInstance()->getLang();
+
+    QTranslator QtTranslator;
+    QTranslator OpenFLUIDTranslator;
+    if (Lang != "default")
+    {
+      // load provided default translations
+      QtTranslator.load("qt_"+Lang.left(2)+".qm",
+                        QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+
+      // load provided OpenFLUID translations
+      OpenFLUIDTranslator.load(QString(openfluid::config::TRANSLATIONS_FILEROOT.c_str()) + "-" + Lang + ".qm",
+                               QString(openfluid::base::RuntimeEnvironment::getInstance()->getTranslationsDir().c_str()));
+    }
+    OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
+    OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);
+
+    // Application launching
     BuilderApp App;
 
     App.initialize();
     App.run();
 
-    return  CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
+    return CLOSE_OPENFLUID_APPLICATION_WITH_GUI;
   }
   catch (std::bad_alloc & E)
   {

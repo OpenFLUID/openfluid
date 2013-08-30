@@ -193,7 +193,7 @@ void HomeModule::whenRunAsked()
 void HomeModule::whenMarketAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
-  openfluid::guicommon::MarketClientAssistant MarketAssistant;
+  openfluid::guicommon::MarketClientAssistant MarketAssistant(QApplication::activeWindow());
   MarketAssistant.exec();
 }
 
