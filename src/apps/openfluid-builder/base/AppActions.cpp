@@ -174,6 +174,8 @@ void AppActions::createActions()
 
   m_Actions["HelpOnlineCommunity"] = new QAction(tr("Community site"), this);
 
+  m_Actions["HelpEmail"] = new QAction(tr("Email"), this);
+
   m_Actions["HelpExamplesOpen"] = new QAction(tr("Open an example project..."), this);
   m_Actions["HelpExamplesOpen"]->setIcon(QIcon(":/icons/file-open-example.png"));
 

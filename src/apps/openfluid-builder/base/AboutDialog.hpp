@@ -46,67 +46,56 @@
 */
 
 /**
-  \file HomeWidget.hpp
+  \file AboutDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEWIDGET_HPP__
-#define __HOMEWIDGET_HPP__
+#ifndef __ABOUTDIALOG_HPP__
+#define __ABOUTDIALOG_HPP__
 
-#include <QWidget>
-#include <QPushButton>
+#include <QDialog>
+#include <QAction>
 
-#include "ClickableLabel.hpp"
-
-
-class AppActions;
-
-
-// =====================================================================
-// =====================================================================
-
-
-class RecentProjectLabel : public ClickableLabel
+namespace Ui
 {
-  Q_OBJECT;
+  class AboutDialog;
+}
 
-  protected:
-
-    void enterEvent(QEvent* Event);
-
-    void leaveEvent(QEvent* Event);
-
-  public:
-
-    RecentProjectLabel(const QString& Text, QWidget* Parent = NULL);
-
-    virtual ~RecentProjectLabel()
-    { }
-
-};
+class ClickableLabel;
 
 
-// =====================================================================
-// =====================================================================
-
-
-class HomeWidget : public QWidget
+class AboutDialog : public QDialog
 {
   Q_OBJECT;
 
   private:
 
-    QPushButton* createButton(const QAction* Action, const QString& Text);
+    Ui::AboutDialog* ui;
+
+    ClickableLabel* mp_WebLabel;
+
+    const QAction* mp_WebAction;
+
+    ClickableLabel* mp_ContactLabel;
+
+    const QAction* mp_ContactAction;
+
+    bool m_InfoIsCredits;
+
+  private slots:
+
+    void toggleInfos();
 
   public:
 
-    HomeWidget(QWidget* Parent, const AppActions* Actions);
+    AboutDialog(QWidget *Parent, const QAction* WebAction, const QAction* ContactAction);
 
-    ~HomeWidget();
+    virtual ~AboutDialog();
 };
 
 
-#endif /* __HOMEWIDGET_HPP__ */
+
+#endif /* __ABOUTDIALOG_HPP__ */

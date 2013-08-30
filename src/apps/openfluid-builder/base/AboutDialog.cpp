@@ -45,68 +45,95 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file HomeWidget.hpp
-  \brief Header of ...
+  \file AboutDialog.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
-#ifndef __HOMEWIDGET_HPP__
-#define __HOMEWIDGET_HPP__
-
-#include <QWidget>
+#include <QLabel>
 #include <QPushButton>
+#include <QPixmap>
 
 #include "ClickableLabel.hpp"
 
+#include "ui_AboutDialog.h"
+#include "AboutDialog.hpp"
 
-class AppActions;
-
-
-// =====================================================================
-// =====================================================================
+#include "builderconfig.hpp"
 
 
-class RecentProjectLabel : public ClickableLabel
+AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QAction* ContactAction):
+  QDialog(Parent), ui(new Ui::AboutDialog),
+  mp_WebAction(WebAction), mp_ContactAction(ContactAction),
+  m_InfoIsCredits(false)
 {
-  Q_OBJECT;
+  ui->setupUi(this);
 
-  protected:
+  setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 
-    void enterEvent(QEvent* Event);
+  mp_WebLabel = new ClickableLabel("<A HREF='http://www.openfluid-project.org'>www.openfluid-project.org</A>",this);
+  mp_WebLabel->setCursor(Qt::PointingHandCursor);
+  mp_ContactLabel = new ClickableLabel("<A HREF='mailto:contact@openfluid-project.org'>contact@openfluid-project.org</A>",this);
+  mp_ContactLabel->setCursor(Qt::PointingHandCursor);
 
-    void leaveEvent(QEvent* Event);
+  ui->InfosLayout->insertWidget(1,mp_WebLabel);
+  ui->InfosLayout->insertWidget(2,mp_ContactLabel);
 
-  public:
+  ui->IconLabel->setPixmap(QPixmap(":/icons/openfluid_icon_about.png"));
+  ui->TitleLabel->setPixmap(QPixmap(":/images/openfluid_title.png"));
 
-    RecentProjectLabel(const QString& Text, QWidget* Parent = NULL);
+  ui->IconLabel->setFocus();
 
-    virtual ~RecentProjectLabel()
-    { }
+  ui->ButtonBox->button(QDialogButtonBox::Close)->setCursor(Qt::PointingHandCursor);
+  ui->ToggleButton->setCursor(Qt::PointingHandCursor);
 
-};
+  toggleInfos();
+
+  connect(mp_WebLabel,SIGNAL(clicked()),mp_WebAction,SLOT(trigger()));
+  connect(mp_ContactLabel,SIGNAL(clicked()),mp_ContactAction,SLOT(trigger()));
+  connect(ui->ToggleButton,SIGNAL(clicked()),this,SLOT(toggleInfos()));
+
+  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
+  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-class HomeWidget : public QWidget
+AboutDialog::~AboutDialog()
 {
-  Q_OBJECT;
-
-  private:
-
-    QPushButton* createButton(const QAction* Action, const QString& Text);
-
-  public:
-
-    HomeWidget(QWidget* Parent, const AppActions* Actions);
-
-    ~HomeWidget();
-};
+  delete ui;
+}
 
 
-#endif /* __HOMEWIDGET_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+void AboutDialog::toggleInfos()
+{
+  ui->IconLabel->setFocus();
+
+  m_InfoIsCredits = !m_InfoIsCredits;
+
+  if (m_InfoIsCredits)
+  {
+    ui->DescLabel->setText(tr("Credits")+":");
+    ui->ToggleButton->setText(tr("View license"));
+    ui->InfosEdit->setText(BUILDER_AUTHORS_TEXT);
+    ui->InfosEdit->setStyleSheet("font-size: 13px;");
+  }
+  else
+  {
+    ui->DescLabel->setText(tr("License")+":");
+    ui->ToggleButton->setText(tr("View credits"));
+    ui->InfosEdit->setStyleSheet("font-size: 12px;");
+    ui->InfosEdit->setText(BUILDER_LICENSE_TEXT);
+  }
+}
+

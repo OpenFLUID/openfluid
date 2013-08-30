@@ -67,6 +67,7 @@
 #include "AppCoordinator.hpp"
 #include "MainWindow.hpp"
 #include "AppActions.hpp"
+#include "AboutDialog.hpp"
 #include "HomeModule.hpp"
 #include "ProjectModule.hpp"
 #include "builderconfig.hpp"
@@ -90,6 +91,7 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 
   connect(m_Actions.getAction("HelpOnlineWeb"), SIGNAL(triggered()), this, SLOT(whenOnlineWebAsked()));
   connect(m_Actions.getAction("HelpOnlineCommunity"), SIGNAL(triggered()), this, SLOT(whenOnlineCommunityAsked()));
+  connect(m_Actions.getAction("HelpEmail"), SIGNAL(triggered()), this, SLOT(whenEmailAsked()));
   connect(m_Actions.getAction("HelpExamplesOpen"), SIGNAL(triggered()), this, SLOT(whenOpenExampleAsked()));
   connect(m_Actions.getAction("HelpExamplesRestore"), SIGNAL(triggered()), this, SLOT(whenRestoreExamplesAsked()));
   connect(m_Actions.getAction("HelpAbout"), SIGNAL(triggered()), this, SLOT(whenAboutAsked()));
@@ -468,7 +470,7 @@ void AppCoordinator::whenMarketAsked()
 
 void AppCoordinator::whenOnlineWebAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString(BUILDER_URL_WEBSITE.c_str()), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(BUILDER_URL_WEBSITE, QUrl::TolerantMode));
 }
 
 
@@ -478,7 +480,16 @@ void AppCoordinator::whenOnlineWebAsked()
 
 void AppCoordinator::whenOnlineCommunityAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString(BUILDER_URL_COMMUNITY.c_str()), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(BUILDER_URL_COMMUNITY, QUrl::TolerantMode));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void AppCoordinator::whenEmailAsked()
+{
+  QDesktopServices::openUrl(QUrl(BUILDER_URL_EMAIL, QUrl::TolerantMode));
 }
 
 
@@ -508,5 +519,7 @@ void AppCoordinator::whenRestoreExamplesAsked()
 
 void AppCoordinator::whenAboutAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  AboutDialog AboutDlg(&m_MainWindow, m_Actions.getAction("HelpOnlineWeb"),m_Actions.getAction("HelpEmail"));
+
+  AboutDlg.exec();
 }

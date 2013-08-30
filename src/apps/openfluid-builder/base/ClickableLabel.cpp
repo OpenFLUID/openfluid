@@ -45,68 +45,33 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file HomeWidget.hpp
-  \brief Header of ...
+  \file ClickableLabel.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEWIDGET_HPP__
-#define __HOMEWIDGET_HPP__
-
-#include <QWidget>
-#include <QPushButton>
-
 #include "ClickableLabel.hpp"
 
-
-class AppActions;
-
-
 // =====================================================================
 // =====================================================================
 
 
-class RecentProjectLabel : public ClickableLabel
+ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
+  QLabel(Text,Parent)
 {
-  Q_OBJECT;
 
-  protected:
-
-    void enterEvent(QEvent* Event);
-
-    void leaveEvent(QEvent* Event);
-
-  public:
-
-    RecentProjectLabel(const QString& Text, QWidget* Parent = NULL);
-
-    virtual ~RecentProjectLabel()
-    { }
-
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-class HomeWidget : public QWidget
+void ClickableLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
 {
-  Q_OBJECT;
-
-  private:
-
-    QPushButton* createButton(const QAction* Action, const QString& Text);
-
-  public:
-
-    HomeWidget(QWidget* Parent, const AppActions* Actions);
-
-    ~HomeWidget();
-};
-
-
-#endif /* __HOMEWIDGET_HPP__ */
+  emit clicked();
+}
