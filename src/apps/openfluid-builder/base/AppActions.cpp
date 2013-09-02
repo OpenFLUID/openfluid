@@ -228,6 +228,8 @@ void AppActions::setProjectMode()
   for (It=Itb;It!=Ite;++It)
     ((*It).second)->setVisible(true);
 
+  m_Actions["HelpExamplesRestore"]->setVisible(false);
+
   mp_SimulationMenu->menuAction()->setVisible(true);
   mp_ExtensionsMenu->menuAction()->setVisible(true);
   if (mp_MainToolbar != NULL) mp_MainToolbar->show();
@@ -240,6 +242,13 @@ void AppActions::setProjectMode()
 
 void AppActions::setHomeMode()
 {
+  std::map<std::string,QAction*>::const_iterator Itb = m_Actions.begin();
+  std::map<std::string,QAction*>::const_iterator Ite = m_Actions.end();
+  std::map<std::string,QAction*>::const_iterator It;
+
+  for (It=Itb;It!=Ite;++It)
+    ((*It).second)->setVisible(true);
+
   m_Actions["ProjectSave"]->setVisible(false);
   m_Actions["ProjectSaveAs"]->setVisible(false);
   m_Actions["ProjectProperties"]->setVisible(false);

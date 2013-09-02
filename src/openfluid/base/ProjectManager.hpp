@@ -152,6 +152,10 @@ class DLLEXPORT ProjectManager
 
     static bool isProject(const std::string& Path);
 
+    static bool getProjectInfos(const std::string& Path,
+                                std::string& Name, std::string& Description, std::string& Authors,
+                                std::string& CreationDate, std::string& LastModDate);
+
     void updateOutputDir();
 
 };

@@ -118,6 +118,9 @@
            <height>40</height>
           </size>
          </property>
+         <property name="styleSheet">
+          <string notr="true">font:bold;</string>
+         </property>
          <property name="text">
           <string notr="true">DescLabel</string>
          </property>
@@ -235,10 +238,10 @@ QPushButton:focus:pressed { background-color: rgb(71,97,123); }
         </property>
         <property name="styleSheet">
          <string notr="true">QPushButton {
-color: rgb(71,97,123);
-background-color: white;
-border-width: 1px;
-border-color: #777;
+color: white;
+background-color: rgb(71,97,123);
+border-width: 2px;
+border-color: white;
 border-style: solid;
 border-radius: 7;
 padding: 3px;
@@ -254,7 +257,7 @@ font : bold;
 QPushButton:pressed{ background-color: white; }
 QPushButton:focus:pressed{ background-color: white; }
 QPushButton:focus{ background-color: white; }
-QPushButton:hover{ background-color: #FFCE70; }</string>
+QPushButton:hover{ background-color: #86AE39; }</string>
         </property>
         <property name="standardButtons">
          <set>QDialogButtonBox::Close</set>

@@ -24,6 +24,7 @@ SET(BUILDER_BASE_CPP base/AppTools.cpp base/ClickableLabel.cpp
                      base/NewProjectDialog.cpp
                      base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
                      base/AboutDialog.cpp
+                     base/OpenExampleProjectDialog.cpp
                      )
                      
 SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
@@ -36,6 +37,7 @@ SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
                      base/NewProjectDialog.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
                      base/AboutDialog.hpp
+                     base/OpenExampleProjectDialog.hpp
                      )
 
 
@@ -45,7 +47,8 @@ QT4_WRAP_UI(BUILDER_UI base/NewProjectDialog.ui
                        base/PreferencesDialog.ui
                        base/WaresSearchPathsWidget.ui
                        base/EditMarketplaceDialog.ui
-                       base/AboutDialog.ui)
+                       base/AboutDialog.ui
+                       base/OpenExampleProjectDialog.ui)
 
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP}

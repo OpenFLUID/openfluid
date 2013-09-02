@@ -169,8 +169,6 @@ bool HomeModule::whenCloseAsked()
 
 void HomeModule::whenPreferencesAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   PreferencesDialog PrefsDlg(QApplication::activeWindow());
   PrefsDlg.exec();
 }
@@ -192,7 +190,6 @@ void HomeModule::whenRunAsked()
 
 void HomeModule::whenMarketAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
   openfluid::guicommon::MarketClientAssistant MarketAssistant(QApplication::activeWindow());
   MarketAssistant.exec();
 }
@@ -214,6 +211,5 @@ void HomeModule::whenRefreshAsked()
 
 bool HomeModule::whenOpenExampleAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  return false;
+  return true;
 }

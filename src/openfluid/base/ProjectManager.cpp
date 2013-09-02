@@ -304,11 +304,52 @@ bool ProjectManager::isProject(const std::string& Path)
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
+bool ProjectManager::getProjectInfos(const std::string& Path,
+                                     std::string& Name, std::string& Description, std::string& Authors,
+                                     std::string& CreationDate, std::string& LastModDate)
+{
+  Name.clear();
+  Description.clear();
+  Authors.clear();
+  CreationDate.clear();
+  LastModDate.clear();
+
+  if (boost::filesystem::exists(getFilePathFromProjectPath(Path)))
+   {
+     try
+     {
+       Glib::KeyFile KFile;
+       KFile.load_from_file(getFilePathFromProjectPath(Path));
+       if (boost::filesystem::exists(getInputDirFromProjectPath(Path)))
+       {
+         std::string KeyFileGroupName = "OpenFLUID Project";
+         Name = KFile.get_string(KeyFileGroupName, "Name");
+         Description = KFile.get_string(KeyFileGroupName, "Description");
+         Authors = KFile.get_string(KeyFileGroupName, "Authors");
+         CreationDate = KFile.get_string(KeyFileGroupName, "CreationDate");
+         LastModDate = KFile.get_string(KeyFileGroupName, "LastModDate");
+         return true;
+       }
+       return false;
+     }
+     catch (Glib::FileError& e)
+     {
+       return false;
+     }
+     catch (Glib::KeyFileError& e)
+     {
+       return false;
+     }
+   }
+   return false;
 }
-} //namespaces
+
+
+} } //namespaces
 
 

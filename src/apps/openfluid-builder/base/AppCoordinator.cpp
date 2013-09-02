@@ -64,10 +64,13 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/buddies/ExamplesBuddy.hpp>
+
 #include "AppCoordinator.hpp"
 #include "MainWindow.hpp"
 #include "AppActions.hpp"
 #include "AboutDialog.hpp"
+#include "OpenExampleProjectDialog.hpp"
 #include "HomeModule.hpp"
 #include "ProjectModule.hpp"
 #include "builderconfig.hpp"
@@ -499,7 +502,38 @@ void AppCoordinator::whenEmailAsked()
 
 void AppCoordinator::whenOpenExampleAsked()
 {
-  mp_CurrentModule->whenOpenExampleAsked();
+  if (mp_CurrentModule->whenOpenExampleAsked())
+  {
+    OpenExampleProjectDialog OpenExDlg(&m_MainWindow);
+    if (OpenExDlg.exec() == QDialog::Accepted)
+    {
+      QString SelectedDir = OpenExDlg.getSelectedProjectPath();
+
+      if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
+      {
+        openfluid::base::ProjectManager::getInstance()->open(SelectedDir.toStdString());
+
+        try
+        {
+          QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+          openProject(QDir(SelectedDir).dirName(),SelectedDir);
+          QApplication::restoreOverrideCursor();
+        }
+        catch (openfluid::base::Exception& E)
+        {
+          openfluid::base::ProjectManager::getInstance()->close();
+          QApplication::restoreOverrideCursor();
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
+          return;
+        }
+      }
+      else
+      {
+        QApplication::restoreOverrideCursor();
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),SelectedDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+      }
+    }
+  }
 }
 
 
@@ -509,7 +543,25 @@ void AppCoordinator::whenOpenExampleAsked()
 
 void AppCoordinator::whenRestoreExamplesAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  if (QMessageBox::question(&m_MainWindow,tr("Reinstall examples projects"),
+                            tr("Reinstalling will overwrite all modifications and delete simulations results associated to these examples.")+"\n\n"+
+                            tr("Proceed anyway?"),
+                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+  {
+    openfluid::buddies::ExamplesBuddy Buddy(NULL);
+    Buddy.parseOptions("force=1");
+    try
+    {
+      QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+      Buddy.run();
+      QApplication::restoreOverrideCursor();
+    }
+    catch (openfluid::base::Exception& e)
+    {
+      QApplication::restoreOverrideCursor();
+      QMessageBox::critical(&m_MainWindow,tr("Restore examples projects"),tr("Error restoring example projects"));
+    }
+  }
 }
 
 
