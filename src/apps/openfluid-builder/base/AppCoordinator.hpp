@@ -120,6 +120,8 @@ class AppCoordinator : public QObject
 
     void whenOpenExampleAsked();
 
+    void whenEmailAsked();
+
     void whenRestoreExamplesAsked();
 
     void whenAboutAsked();

@@ -1,11 +1,21 @@
 
+
+FILE(READ "${PROJECT_SOURCE_DIR}/COPYING" BUILDER_LICENSE_TEXT)
+STRING(REGEX REPLACE "\n" "\\\\n" BUILDER_LICENSE_TEXT "${BUILDER_LICENSE_TEXT}")
+STRING(REGEX REPLACE "\"" "''" BUILDER_LICENSE_TEXT "${BUILDER_LICENSE_TEXT}")
+
+FILE(READ "${PROJECT_SOURCE_DIR}/AUTHORS" BUILDER_AUTHORS_TEXT)
+STRING(REGEX REPLACE "\n" "\\\\n" BUILDER_AUTHORS_TEXT "${BUILDER_AUTHORS_TEXT}")
+STRING(REGEX REPLACE "\"" "''" BUILDER_AUTHORS_TEXT "${BUILDER_AUTHORS_TEXT}")
+
 CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 
+
 INCLUDE_DIRECTORIES(base)
 
-SET(BUILDER_BASE_CPP base/AppTools.cpp
+SET(BUILDER_BASE_CPP base/AppTools.cpp base/ClickableLabel.cpp
                      base/AppCoordinator.cpp base/AppActions.cpp
                      base/BuilderApp.cpp base/MainWindow.cpp 
                      base/HomeModule.cpp base/HomeWidget.cpp                       
@@ -13,9 +23,11 @@ SET(BUILDER_BASE_CPP base/AppTools.cpp
                      base/ProjectCentral.cpp
                      base/NewProjectDialog.cpp
                      base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
+                     base/AboutDialog.cpp
+                     base/OpenExampleProjectDialog.cpp
                      )
                      
-SET(BUILDER_BASE_HPP base/AppTools.hpp
+SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
                      base/AppCoordinator.hpp base/AppActions.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
                      base/AbstractModule.hpp 
@@ -24,6 +36,8 @@ SET(BUILDER_BASE_HPP base/AppTools.hpp
                      base/ProjectCentral.hpp
                      base/NewProjectDialog.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
+                     base/AboutDialog.hpp
+                     base/OpenExampleProjectDialog.hpp
                      )
 
 
@@ -32,7 +46,9 @@ QT4_ADD_RESOURCES(BUILDER_RC resources/openfluidbuilder.qrc)
 QT4_WRAP_UI(BUILDER_UI base/NewProjectDialog.ui
                        base/PreferencesDialog.ui
                        base/WaresSearchPathsWidget.ui
-                       base/EditMarketplaceDialog.ui)
+                       base/EditMarketplaceDialog.ui
+                       base/AboutDialog.ui
+                       base/OpenExampleProjectDialog.ui)
 
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP}

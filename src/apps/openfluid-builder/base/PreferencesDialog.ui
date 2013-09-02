@@ -38,10 +38,10 @@
       <string notr="true">background-color: rgb(71,97,123);</string>
      </property>
      <property name="frameShape">
-      <enum>QFrame::Panel</enum>
+      <enum>QFrame::NoFrame</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Sunken</enum>
+      <enum>QFrame::Plain</enum>
      </property>
      <property name="lineWidth">
       <number>0</number>
@@ -366,7 +366,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>9</month>
-                <day>10</day>
+                <day>9</day>
                </date>
               </property>
               <property name="displayFormat">

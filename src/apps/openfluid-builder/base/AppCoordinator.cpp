@@ -64,9 +64,13 @@
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
+#include <openfluid/buddies/ExamplesBuddy.hpp>
+
 #include "AppCoordinator.hpp"
 #include "MainWindow.hpp"
 #include "AppActions.hpp"
+#include "AboutDialog.hpp"
+#include "OpenExampleProjectDialog.hpp"
 #include "HomeModule.hpp"
 #include "ProjectModule.hpp"
 #include "builderconfig.hpp"
@@ -90,6 +94,7 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 
   connect(m_Actions.getAction("HelpOnlineWeb"), SIGNAL(triggered()), this, SLOT(whenOnlineWebAsked()));
   connect(m_Actions.getAction("HelpOnlineCommunity"), SIGNAL(triggered()), this, SLOT(whenOnlineCommunityAsked()));
+  connect(m_Actions.getAction("HelpEmail"), SIGNAL(triggered()), this, SLOT(whenEmailAsked()));
   connect(m_Actions.getAction("HelpExamplesOpen"), SIGNAL(triggered()), this, SLOT(whenOpenExampleAsked()));
   connect(m_Actions.getAction("HelpExamplesRestore"), SIGNAL(triggered()), this, SLOT(whenRestoreExamplesAsked()));
   connect(m_Actions.getAction("HelpAbout"), SIGNAL(triggered()), this, SLOT(whenAboutAsked()));
@@ -468,7 +473,7 @@ void AppCoordinator::whenMarketAsked()
 
 void AppCoordinator::whenOnlineWebAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString(BUILDER_URL_WEBSITE.c_str()), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(BUILDER_URL_WEBSITE, QUrl::TolerantMode));
 }
 
 
@@ -478,7 +483,16 @@ void AppCoordinator::whenOnlineWebAsked()
 
 void AppCoordinator::whenOnlineCommunityAsked()
 {
-  QDesktopServices::openUrl(QUrl(QString(BUILDER_URL_COMMUNITY.c_str()), QUrl::TolerantMode));
+  QDesktopServices::openUrl(QUrl(BUILDER_URL_COMMUNITY, QUrl::TolerantMode));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void AppCoordinator::whenEmailAsked()
+{
+  QDesktopServices::openUrl(QUrl(BUILDER_URL_EMAIL, QUrl::TolerantMode));
 }
 
 
@@ -488,7 +502,38 @@ void AppCoordinator::whenOnlineCommunityAsked()
 
 void AppCoordinator::whenOpenExampleAsked()
 {
-  mp_CurrentModule->whenOpenExampleAsked();
+  if (mp_CurrentModule->whenOpenExampleAsked())
+  {
+    OpenExampleProjectDialog OpenExDlg(&m_MainWindow);
+    if (OpenExDlg.exec() == QDialog::Accepted)
+    {
+      QString SelectedDir = OpenExDlg.getSelectedProjectPath();
+
+      if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
+      {
+        openfluid::base::ProjectManager::getInstance()->open(SelectedDir.toStdString());
+
+        try
+        {
+          QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+          openProject(QDir(SelectedDir).dirName(),SelectedDir);
+          QApplication::restoreOverrideCursor();
+        }
+        catch (openfluid::base::Exception& E)
+        {
+          openfluid::base::ProjectManager::getInstance()->close();
+          QApplication::restoreOverrideCursor();
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
+          return;
+        }
+      }
+      else
+      {
+        QApplication::restoreOverrideCursor();
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),SelectedDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+      }
+    }
+  }
 }
 
 
@@ -498,7 +543,25 @@ void AppCoordinator::whenOpenExampleAsked()
 
 void AppCoordinator::whenRestoreExamplesAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  if (QMessageBox::question(&m_MainWindow,tr("Reinstall examples projects"),
+                            tr("Reinstalling will overwrite all modifications and delete simulations results associated to these examples.")+"\n\n"+
+                            tr("Proceed anyway?"),
+                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+  {
+    openfluid::buddies::ExamplesBuddy Buddy(NULL);
+    Buddy.parseOptions("force=1");
+    try
+    {
+      QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+      Buddy.run();
+      QApplication::restoreOverrideCursor();
+    }
+    catch (openfluid::base::Exception& e)
+    {
+      QApplication::restoreOverrideCursor();
+      QMessageBox::critical(&m_MainWindow,tr("Restore examples projects"),tr("Error restoring example projects"));
+    }
+  }
 }
 
 
@@ -508,5 +571,7 @@ void AppCoordinator::whenRestoreExamplesAsked()
 
 void AppCoordinator::whenAboutAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  AboutDialog AboutDlg(&m_MainWindow, m_Actions.getAction("HelpOnlineWeb"),m_Actions.getAction("HelpEmail"));
+
+  AboutDlg.exec();
 }

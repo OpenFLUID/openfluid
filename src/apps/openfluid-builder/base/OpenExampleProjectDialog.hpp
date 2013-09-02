@@ -46,67 +46,52 @@
 */
 
 /**
-  \file HomeWidget.hpp
+  \file OpenExampleProjectDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEWIDGET_HPP__
-#define __HOMEWIDGET_HPP__
+#ifndef __OPENEXAMPLEPROJECTDIALOG_HPP__
+#define __OPENEXAMPLEPROJECTDIALOG_HPP__
 
-#include <QWidget>
-#include <QPushButton>
-
-#include "ClickableLabel.hpp"
+#include <QDialog>
+#include <QListWidgetItem>
 
 
-class AppActions;
-
-
-// =====================================================================
-// =====================================================================
-
-
-class RecentProjectLabel : public ClickableLabel
+namespace Ui
 {
-  Q_OBJECT;
-
-  protected:
-
-    void enterEvent(QEvent* Event);
-
-    void leaveEvent(QEvent* Event);
-
-  public:
-
-    RecentProjectLabel(const QString& Text, QWidget* Parent = NULL);
-
-    virtual ~RecentProjectLabel()
-    { }
-
-};
+  class OpenExampleProjectDialog;
+}
 
 
-// =====================================================================
-// =====================================================================
-
-
-class HomeWidget : public QWidget
+class OpenExampleProjectDialog : public QDialog
 {
   Q_OBJECT;
 
   private:
 
-    QPushButton* createButton(const QAction* Action, const QString& Text);
+    Ui::OpenExampleProjectDialog* ui;
+
+    void setMessage(const QString& Msg = "");
+
+    QString m_ProjectsRootPath;
+
+  private slots:
+
+    void updateProjectInfo();
+
 
   public:
 
-    HomeWidget(QWidget* Parent, const AppActions* Actions);
+    OpenExampleProjectDialog(QWidget *Parent);
 
-    ~HomeWidget();
+    virtual ~OpenExampleProjectDialog();
+
+    QString getSelectedProjectPath() const;
 };
 
 
-#endif /* __HOMEWIDGET_HPP__ */
+
+#endif /* __OPENEXAMPLEPROJECTDIALOG_HPP__ */

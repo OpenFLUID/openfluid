@@ -46,67 +46,38 @@
 */
 
 /**
-  \file HomeWidget.hpp
+  \file ClickableLabel.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEWIDGET_HPP__
-#define __HOMEWIDGET_HPP__
+#ifndef __CLICKABLELABEL_HPP__
+#define __CLICKABLELABEL_HPP__
 
-#include <QWidget>
-#include <QPushButton>
+#include <QLabel>
 
-#include "ClickableLabel.hpp"
-
-
-class AppActions;
-
-
-// =====================================================================
-// =====================================================================
-
-
-class RecentProjectLabel : public ClickableLabel
+class ClickableLabel : public QLabel
 {
   Q_OBJECT;
 
   protected:
 
-    void enterEvent(QEvent* Event);
+    void mouseReleaseEvent(QMouseEvent *Event);
 
-    void leaveEvent(QEvent* Event);
+   signals:
+
+      void clicked();
 
   public:
 
-    RecentProjectLabel(const QString& Text, QWidget* Parent = NULL);
+    ClickableLabel(const QString& Text, QWidget* Parent = NULL);
 
-    virtual ~RecentProjectLabel()
+    virtual ~ClickableLabel()
     { }
 
 };
 
 
-// =====================================================================
-// =====================================================================
-
-
-class HomeWidget : public QWidget
-{
-  Q_OBJECT;
-
-  private:
-
-    QPushButton* createButton(const QAction* Action, const QString& Text);
-
-  public:
-
-    HomeWidget(QWidget* Parent, const AppActions* Actions);
-
-    ~HomeWidget();
-};
-
-
-#endif /* __HOMEWIDGET_HPP__ */
+#endif /* __CLICKABLELABEL_HPP__ */
