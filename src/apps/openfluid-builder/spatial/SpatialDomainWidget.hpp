@@ -46,28 +46,39 @@
 */
 
 /**
-  \file AppTools.hpp
+  \file SpatialDomainWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPTOOLS_HPP__
-#define __APPTOOLS_HPP__
-
-#include <QDateTime>
-#include <openfluid/core/DateTime.hpp>
-
-#include <QStringList>
-#include <string>
-#include <vector>
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT);
-
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
-
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
+#ifndef __SPATIALDOMAINWIDGET_HPP__
+#define __SPATIALDOMAINWIDGET_HPP__
 
 
-#endif /* __APPTOOLS_HPP__ */
+#include <QWidget>
+
+namespace Ui
+{
+  class SpatialDomainWidget;
+}
+
+
+class SpatialDomainWidget : public QWidget
+{
+  Q_OBJECT
+
+  private:
+
+    Ui::SpatialDomainWidget* ui;
+
+  public:
+
+    SpatialDomainWidget(QWidget* Parent = 0);
+
+    virtual ~SpatialDomainWidget();
+};
+
+
+#endif /* __SPATIALDOMAINWIDGET_HPP__ */

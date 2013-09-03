@@ -45,29 +45,32 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file AppTools.hpp
-  \brief Header of ...
+  \file ModelWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPTOOLS_HPP__
-#define __APPTOOLS_HPP__
 
-#include <QDateTime>
-#include <openfluid/core/DateTime.hpp>
-
-#include <QStringList>
-#include <string>
-#include <vector>
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT);
-
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
-
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
+#include "ui_ModelWidget.h"
+#include "ModelWidget.hpp"
 
 
-#endif /* __APPTOOLS_HPP__ */
+ModelWidget::ModelWidget(QWidget* Parent):
+  QWidget(Parent), ui(new Ui::ModelWidget)
+{
+  ui->setupUi(this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ModelWidget::~ModelWidget()
+{
+  delete ui;
+}

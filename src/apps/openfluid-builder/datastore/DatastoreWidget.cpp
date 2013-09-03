@@ -45,29 +45,31 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file AppTools.hpp
-  \brief Header of ...
+  \file DatastoreWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPTOOLS_HPP__
-#define __APPTOOLS_HPP__
-
-#include <QDateTime>
-#include <openfluid/core/DateTime.hpp>
-
-#include <QStringList>
-#include <string>
-#include <vector>
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT);
-
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
-
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
+#include "ui_DatastoreWidget.h"
+#include "DatastoreWidget.hpp"
 
 
-#endif /* __APPTOOLS_HPP__ */
+DatastoreWidget::DatastoreWidget(QWidget* Parent):
+  QWidget(Parent), ui(new Ui::DatastoreWidget)
+{
+  ui->setupUi(this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+DatastoreWidget::~DatastoreWidget()
+{
+  delete ui;
+}

@@ -46,28 +46,38 @@
 */
 
 /**
-  \file AppTools.hpp
+  \file DatastoreWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPTOOLS_HPP__
-#define __APPTOOLS_HPP__
+#ifndef __DATASTOREWIDGET_HPP__
+#define __DATASTOREWIDGET_HPP__
 
-#include <QDateTime>
-#include <openfluid/core/DateTime.hpp>
+#include <QWidget>
 
-#include <QStringList>
-#include <string>
-#include <vector>
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT);
-
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
-
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
+namespace Ui
+{
+  class DatastoreWidget;
+}
 
 
-#endif /* __APPTOOLS_HPP__ */
+class DatastoreWidget : public QWidget
+{
+  Q_OBJECT
+
+  private:
+
+    Ui::DatastoreWidget* ui;
+
+  public:
+
+    DatastoreWidget(QWidget* Parent = 0);
+
+    virtual ~DatastoreWidget();
+};
+
+
+#endif /* __DATASTOREWIDGET_HPP__ */

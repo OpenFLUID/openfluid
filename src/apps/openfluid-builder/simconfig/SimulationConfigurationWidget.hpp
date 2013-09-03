@@ -46,28 +46,41 @@
 */
 
 /**
-  \file AppTools.hpp
+  \file SimulationConfigurationWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPTOOLS_HPP__
-#define __APPTOOLS_HPP__
-
-#include <QDateTime>
-#include <openfluid/core/DateTime.hpp>
-
-#include <QStringList>
-#include <string>
-#include <vector>
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT);
-
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
-
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
+#ifndef __SIMULATIONCONFIGURATIONWIDGET_HPP__
+#define __SIMULATIONCONFIGURATIONWIDGET_HPP__
 
 
-#endif /* __APPTOOLS_HPP__ */
+#include <QWidget>
+
+namespace Ui
+{
+  class SimulationConfigurationWidget;
+}
+
+
+class SimulationConfigurationWidget : public QWidget
+{
+  Q_OBJECT
+
+  private:
+
+    Ui::SimulationConfigurationWidget* ui;
+
+  public:
+
+    SimulationConfigurationWidget(QWidget* Parent = 0);
+
+    virtual ~SimulationConfigurationWidget();
+};
+
+
+
+
+#endif /* __SIMULATIONCONFIGURATIONWIDGET_HPP__ */

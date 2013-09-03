@@ -46,28 +46,51 @@
 */
 
 /**
-  \file AppTools.hpp
+  \file OutputsWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPTOOLS_HPP__
-#define __APPTOOLS_HPP__
-
-#include <QDateTime>
-#include <openfluid/core/DateTime.hpp>
-
-#include <QStringList>
-#include <string>
-#include <vector>
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT);
-
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
-
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
+#ifndef __OUTPUTSWIDGET_HPP__
+#define __OUTPUTSWIDGET_HPP__
 
 
-#endif /* __APPTOOLS_HPP__ */
+
+#include <QWidget>
+#include <QFileSystemModel>
+
+namespace Ui
+{
+  class OutputsWidget;
+}
+
+
+class OutputsWidget : public QWidget
+{
+  Q_OBJECT
+
+  private:
+
+    Ui::OutputsWidget* ui;
+
+    QFileSystemModel* mp_FSModel;
+
+  private slots:
+
+    void clearOutputDir();
+
+    void tryToOpenFile(const QModelIndex& Index);
+
+    void tryToExploreOutputDir();
+
+  public:
+
+    OutputsWidget(QWidget* Parent = 0);
+
+    virtual ~OutputsWidget();
+};
+
+
+#endif /* __OUTPUTSWIDGET_HPP__ */

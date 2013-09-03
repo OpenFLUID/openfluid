@@ -45,29 +45,32 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file AppTools.hpp
-  \brief Header of ...
+  \file SpatialDomainWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPTOOLS_HPP__
-#define __APPTOOLS_HPP__
 
-#include <QDateTime>
-#include <openfluid/core/DateTime.hpp>
-
-#include <QStringList>
-#include <string>
-#include <vector>
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT);
-
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
-
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
+#include "ui_SpatialDomainWidget.h"
+#include "SpatialDomainWidget.hpp"
 
 
-#endif /* __APPTOOLS_HPP__ */
+SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent):
+  QWidget(Parent), ui(new Ui::SpatialDomainWidget)
+{
+  ui->setupUi(this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+SpatialDomainWidget::~SpatialDomainWidget()
+{
+  delete ui;
+}

@@ -93,11 +93,19 @@ class RecentProjectLabel : public ClickableLabel
 // =====================================================================
 
 
+namespace Ui
+{
+  class HomeWidget;
+}
+
+
 class HomeWidget : public QWidget
 {
   Q_OBJECT;
 
   private:
+
+    Ui::HomeWidget* ui;
 
     QPushButton* createButton(const QAction* Action, const QString& Text);
 
