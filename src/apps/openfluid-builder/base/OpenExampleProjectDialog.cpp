@@ -64,6 +64,8 @@
 #include "ui_OpenExampleProjectDialog.h"
 #include "OpenExampleProjectDialog.hpp"
 
+#include "AppTools.hpp"
+
 
 OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
 QDialog(Parent), ui(new Ui::OpenExampleProjectDialog)
@@ -73,7 +75,7 @@ QDialog(Parent), ui(new Ui::OpenExampleProjectDialog)
   // installation of missing examples
   openfluid::buddies::ExamplesBuddy(NULL).run();
 
-  m_ProjectsRootPath = QString(openfluid::base::RuntimeEnvironment::getInstance()->getProvidedExamplesDir().c_str()) +
+  m_ProjectsRootPath = QString(openfluid::base::RuntimeEnvironment::getInstance()->getUserExamplesDir().c_str()) +
                        QString("/") +
                        QString(openfluid::config::PROJECTS_SUBDIR.c_str());
 
@@ -147,29 +149,12 @@ void OpenExampleProjectDialog::updateProjectInfo()
   }
   else
   {
-    std::string Name, Description, Authors, CreationDate, LastModDate;
+    QString InfosStr = getProjectInfosAsHTML(m_ProjectsRootPath+"/"+ui->ProjectsListWidget->currentItem()->text());
 
-    if (openfluid::base::ProjectManager::getProjectInfos(QString(m_ProjectsRootPath+"/"+ui->ProjectsListWidget->currentItem()->text()).toStdString(),
-                                                         Name, Description, Authors, CreationDate, LastModDate))
+    if (!InfosStr.isEmpty())
     {
-      openfluid::core::DateTime TmpDate;
-      TmpDate.setFromString(CreationDate,"%Y%m%dT%H%M%S");
-      CreationDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
-      TmpDate.setFromString(LastModDate,"%Y%m%dT%H%M%S");
-      LastModDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
-
       setMessage();
       ui->ProjectInfosLabel->setStyleSheet("");
-      QString InfosStr;
-      InfosStr += "<table><tr><td valign='middle' width='74px' style='padding: 5px;'><IMG STYLE='vertical-align:middle;' SRC=':/icons/openfluid_icon.png' /></td>"
-                  "<td valign='middle' style='padding: 5px;'><i>Project:</i><br>"
-                  "<b><big>"+QString(Name.c_str())+"</big></b></td>"
-                  "</tr></table><hr/>";
-      InfosStr += "<i>Description:</i><br>"+QString(Description.c_str())+"<hr/>";
-      InfosStr += "<i>Authors:</i><br>"+QString(Authors.c_str())+"<hr/>";
-      InfosStr += "<i>Creation:</i><br>"+QString(CreationDate.c_str())+"<hr/>";
-      InfosStr += "<i>Last modification:</i><br>"+QString(LastModDate.c_str())+"<br/>";
-
       ui->ProjectInfosLabel->setText(InfosStr);
     }
     else

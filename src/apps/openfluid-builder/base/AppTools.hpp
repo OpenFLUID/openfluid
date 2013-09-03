@@ -67,5 +67,7 @@ QDateTime convertToQDateTime(openfluid::core::DateTime DT);
 
 QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
 
+QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
+
 
 #endif /* __APPTOOLS_HPP__ */

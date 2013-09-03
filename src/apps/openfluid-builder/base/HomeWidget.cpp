@@ -58,8 +58,10 @@
 #include <QFrame>
 #include <QDir>
 
+#include "ui_HomeWidget.h"
 #include "HomeWidget.hpp"
 #include "AppActions.hpp"
+#include "AppTools.hpp"
 
 
 #include <openfluid/config.hpp>
@@ -72,7 +74,8 @@
 
 void RecentProjectLabel::enterEvent(QEvent* /*Event*/)
 {
-  setStyleSheet("text-decoration : underline;");
+  // TODO check why underline does not work on QLabel
+  setStyleSheet("QLabel {text-decoration : underline;} QToolTip { text-decoration : none; padding: 5px; }");
 }
 
 
@@ -82,7 +85,7 @@ void RecentProjectLabel::enterEvent(QEvent* /*Event*/)
 
 void RecentProjectLabel::leaveEvent(QEvent* /*Event*/)
 {
-  setStyleSheet("text-decoration : none;");
+  setStyleSheet("QLabel {text-decoration : none;} QToolTip { text-decoration : none; padding: 5px; }");
 }
 
 
@@ -102,49 +105,24 @@ RecentProjectLabel::RecentProjectLabel(const QString& Text, QWidget* Parent):
 
 
 HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
-  QWidget(Parent)
+  QWidget(Parent), ui(new Ui::HomeWidget)
 {
+  ui->setupUi(this);
 
-  QVBoxLayout* MainLayout;
+  ui->ImageLabel->setText("");
+  ui->ImageLabel->setPixmap(QPixmap(":/images/openfluid_official.png"));
 
-  QFrame* UpperPart = new QFrame(this);
-  UpperPart->setStyleSheet("QFrame { background-color: white; }");
-  UpperPart->setMinimumSize(300,270);
-  UpperPart->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Fixed);
-
-
-  QLabel* OFLogo = new QLabel(this);
-  QPixmap OFpix(":/images/openfluid_official.png");
-  OFLogo->setPixmap(OFpix);
-  OFLogo->setAlignment(Qt::AlignCenter);
-
-  QLabel* Version = new QLabel(std::string("OpenFLUID v"+openfluid::config::FULL_VERSION).c_str(),this);
-  Version->setAlignment(Qt::AlignCenter);
+  ui->VersionLabel->setText(std::string("OpenFLUID v"+openfluid::config::FULL_VERSION).c_str());
 
   ClickableLabel* URL = new ClickableLabel("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>",this);
   URL->setAlignment(Qt::AlignCenter);
   connect(URL,SIGNAL(clicked()),Actions->getAction("HelpOnlineWeb"),SLOT(trigger()));
+  ui->UpperFrame->layout()->addWidget(URL);
 
 
-  QFrame* HLine = new QFrame(this);
-  HLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
-  HLine->setLineWidth(1);
+  // left buttons
 
-
-  QVBoxLayout* UpLayout = new QVBoxLayout(this);
-  UpLayout->addWidget(OFLogo);
-  UpLayout->addWidget(Version);
-  UpLayout->addWidget(URL);
-  UpperPart->setLayout(UpLayout);
-
-
-  /// left buttons
-
-  QFrame* Buttons = new QFrame(this);
-  Buttons->setMinimumSize(380,150);
-  Buttons->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
-
-  QVBoxLayout* ButtonsLayout = new QVBoxLayout(this);
+  QVBoxLayout* ButtonsLayout = new QVBoxLayout(ui->ButtonsFrame);
 
   QPushButton* TheButton;
   TheButton = createButton(Actions->getAction("ProjectNew"),tr("Create a project..."));
@@ -153,7 +131,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   TheButton = createButton(Actions->getAction("ProjectOpen"),tr("Open a project..."));
   ButtonsLayout->addWidget(TheButton);
 
-  QFrame* ButtonsHLine = new QFrame(this);
+  QFrame* ButtonsHLine = new QFrame(ui->ButtonsFrame);
   ButtonsHLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
   ButtonsHLine->setLineWidth(1);
   ButtonsLayout->addWidget(ButtonsHLine);
@@ -161,7 +139,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   TheButton = createButton(Actions->getAction("HelpExamplesOpen"),tr("Open an example project..."));
   ButtonsLayout->addWidget(TheButton);
 
-  ButtonsHLine = new QFrame(this);
+  ButtonsHLine = new QFrame(ui->ButtonsFrame);
   ButtonsHLine->setFrameStyle(QFrame::HLine | QFrame::Sunken);
   ButtonsHLine->setLineWidth(1);
   ButtonsLayout->addWidget(ButtonsHLine);
@@ -169,31 +147,23 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
   TheButton = createButton(Actions->getAction("MarketAccess"),tr("Access to OpenFLUID-Market..."));
   ButtonsLayout->addWidget(TheButton);
 
-
-
   ButtonsLayout->setAlignment(Qt::AlignTop);
-  Buttons->setLayout(ButtonsLayout);
-
-
-
-  QFrame* VLine = new QFrame(this);
-  VLine->setFrameStyle(QFrame::VLine | QFrame::Sunken);
-  VLine->setLineWidth(1);
+  ui->ButtonsFrame->setLayout(ButtonsLayout);
 
 
   // Recent projects
-  QFrame* Recent = new QFrame(this);
-  QVBoxLayout *RecentLayout = new QVBoxLayout(this);
+  QVBoxLayout *RecentsLayout = new QVBoxLayout(ui->RecentsFrame);
+
 
   std::vector<QAction*> RecentActions = Actions->getRecentProjectActions();
 
-  QLabel* RecentProjectsLabel = new QLabel(tr("Recent projects:"),this);
+  QLabel* RecentProjectsLabel = new QLabel(tr("Recent projects:"),ui->RecentsFrame);
   RecentProjectsLabel->setStyleSheet("font : bold;");
 
   if (!RecentActions[0]->isVisible())
     RecentProjectsLabel->setText(tr("No recent project"));
 
-  RecentLayout->addWidget(RecentProjectsLabel);
+  RecentsLayout->addWidget(RecentProjectsLabel);
 
   QPixmap DotPix(":/images/dot.png");
 
@@ -203,51 +173,39 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
     {
       // the local layout will be given a correct parent below with the addLayout() command
       QHBoxLayout* LocalLayout = new QHBoxLayout(NULL);
-      QLabel* DotLabel = new QLabel(this);
+      QLabel* DotLabel = new QLabel(ui->RecentsFrame);
       DotLabel->setPixmap(DotPix);
       DotLabel->setAlignment(Qt::AlignCenter);
       LocalLayout->addWidget(DotLabel);
       LocalLayout->setContentsMargins(30,0,0,0);
 
-      RecentProjectLabel* RecentLabel = new RecentProjectLabel(QDir(RecentActions[i]->data().toString()).dirName(),this);
+      RecentProjectLabel* RecentLabel = new RecentProjectLabel(QDir(RecentActions[i]->data().toString()).dirName(),ui->RecentsFrame);
       RecentLabel->setContentsMargins(0,0,0,0);
       RecentLabel->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
-      // TODO set the tooltip with icon and project info, with adapted stylesheet
-      // RecentLabel->setToolTip(RecentActions[i]->data().toString());
+
+      QString InfosStr = getProjectInfosAsHTML(RecentActions[i]->data().toString(),true);
+      if (!InfosStr.isEmpty()) RecentLabel->setToolTip(InfosStr);
+
       RecentLabel->setCursor(Qt::PointingHandCursor);
       connect(RecentLabel,SIGNAL(clicked()),RecentActions[i],SLOT(trigger()));
 
       LocalLayout->addWidget(RecentLabel);
       LocalLayout->addStretch();
-      RecentLayout->addLayout(LocalLayout);
+      RecentsLayout->addLayout(LocalLayout);
     }
   }
-  RecentLayout->addStretch();
+  RecentsLayout->addStretch();
 
-  RecentLayout->setContentsMargins(30,30,30,30);
-  RecentLayout->setSpacing(10);
-  Recent->setLayout(RecentLayout);
+  RecentsLayout->setContentsMargins(30,30,30,30);
+  RecentsLayout->setSpacing(10);
 
-
-  QFrame* LowerPart = new QFrame(this);
-  QHBoxLayout* LowLayout = new QHBoxLayout(this);
-  LowLayout->setContentsMargins(0,0,0,0);
-  LowLayout->setSpacing(0);
-
-  LowLayout->addWidget(Buttons);
-  LowLayout->addWidget(VLine);
-  LowLayout->addWidget(Recent);
-  LowerPart->setLayout(LowLayout);
+  ui->RecentsFrame->setLayout(RecentsLayout);
 
 
-  MainLayout = new QVBoxLayout(this);
-  MainLayout->addWidget(UpperPart);
-  MainLayout->addWidget(HLine);
-  MainLayout->addWidget(LowerPart);
-  setLayout(MainLayout);
+  // TODO to enable once the OpenFLUID information broadcast will be developped
+  ui->InfosLineFrame->setVisible(false);
+  ui->InfosFrame->setVisible(false);
 
-  layout()->setContentsMargins(0,0,0,0);
-  layout()->setSpacing(0);
 }
 
 
@@ -257,7 +215,7 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
 
 HomeWidget::~HomeWidget()
 {
-
+  delete ui;
 }
 
 
@@ -267,7 +225,7 @@ HomeWidget::~HomeWidget()
 
 QPushButton* HomeWidget::createButton(const QAction* Action, const QString& Text)
 {
-  QPushButton* Button = new QPushButton(Text,this);
+  QPushButton* Button = new QPushButton(Text,ui->ButtonsFrame);
   Button->setMinimumHeight(65);
   Button->setIconSize(QSize(48,48));
   Button->setIcon(Action->icon());

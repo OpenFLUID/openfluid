@@ -43,7 +43,8 @@ SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
 
 QT4_ADD_RESOURCES(BUILDER_RC resources/openfluidbuilder.qrc)
 
-QT4_WRAP_UI(BUILDER_UI base/NewProjectDialog.ui
+QT4_WRAP_UI(BUILDER_UI base/HomeWidget.ui
+                       base/NewProjectDialog.ui
                        base/PreferencesDialog.ui
                        base/WaresSearchPathsWidget.ui
                        base/EditMarketplaceDialog.ui
