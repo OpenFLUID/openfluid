@@ -580,8 +580,7 @@ void LineStringGraph::setAttributeFromVectorLocation(const std::string& Attribut
       geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
       geos::geom::Coordinate CoordInteriorPoint;
       LineSegment.midPoint(CoordInteriorPoint);
-      geos::geom::GeometryFactory Factory;
-      geos::geom::Point* CentroLine=Factory.createPoint(CoordInteriorPoint);
+      geos::geom::Point* CentroLine=mp_Factory->createPoint(CoordInteriorPoint);
 
       if(CentroLine->isWithinDistance(GeosGeom,Thresh))
       {
@@ -666,8 +665,7 @@ void LineStringGraph::setAttributeFromVectorLocation(const std::string& Attribut
       geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
       geos::geom::Coordinate CoordInteriorPoint;
       LineSegment.midPoint(CoordInteriorPoint);
-      geos::geom::GeometryFactory Factory;
-      geos::geom::Point* CentroLine=Factory.createPoint(CoordInteriorPoint);
+      geos::geom::Point* CentroLine=mp_Factory->createPoint(CoordInteriorPoint);
 
       if(CentroLine->isWithinDistance(GeosGeom,Thresh))
       {
@@ -827,8 +825,6 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
 
 // =====================================================================
 // =====================================================================
-
-
 
 
 
