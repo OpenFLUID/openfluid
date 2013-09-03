@@ -59,6 +59,7 @@
 
 
 #include <QWidget>
+#include <QFileSystemModel>
 
 namespace Ui
 {
@@ -73,6 +74,16 @@ class OutputsWidget : public QWidget
   private:
 
     Ui::OutputsWidget* ui;
+
+    QFileSystemModel* mp_FSModel;
+
+  private slots:
+
+    void clearOutputDir();
+
+    void tryToOpenFile(const QModelIndex& Index);
+
+    void tryToExploreOutputDir();
 
   public:
 

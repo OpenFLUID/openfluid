@@ -53,17 +53,35 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <QFileSystemModel>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QMessageBox>
+#include <QApplication>
 
-
+#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 #include "ui_OutputsWidget.h"
 #include "OutputsWidget.hpp"
 
 
 OutputsWidget::OutputsWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::OutputsWidget)
+  QWidget(Parent), ui(new Ui::OutputsWidget), mp_FSModel(new QFileSystemModel(this))
 {
   ui->setupUi(this);
+
+  QDir("").mkpath(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
+
+  ui->OutputDirLabel->setText(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
+
+  ui->OutputDirView->setModel(mp_FSModel);
+  ui->OutputDirView->setRootIndex(mp_FSModel->setRootPath(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str())));
+
+  connect(ui->OutputDirView,SIGNAL(doubleClicked(const QModelIndex&)),this,SLOT(tryToOpenFile(const QModelIndex&)));
+  connect(ui->ClearButton,SIGNAL(clicked()),this,SLOT(clearOutputDir()));
+  connect(ui->ExploreButton,SIGNAL(clicked()),this,SLOT(tryToExploreOutputDir()));
+
 }
 
 
@@ -74,4 +92,47 @@ OutputsWidget::OutputsWidget(QWidget* Parent):
 OutputsWidget::~OutputsWidget()
 {
   delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OutputsWidget::clearOutputDir()
+{
+  if (QMessageBox::warning(this,tr("Clear outputs contents"),
+                           tr("This will delete all files and directories in the output directory.\n\nProceed anyway?"),
+                           QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+  {
+    openfluid::tools::EmptyDirectoryRecursively(openfluid::base::ProjectManager::getInstance()->getOutputDir());
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OutputsWidget::tryToOpenFile(const QModelIndex& Index)
+{
+  QString SelectedFile = mp_FSModel->fileInfo(Index).absoluteFilePath();
+
+  if (!SelectedFile.isEmpty())
+  {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    QDesktopServices::openUrl(QUrl::fromLocalFile(SelectedFile));
+    QApplication::restoreOverrideCursor();
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OutputsWidget::tryToExploreOutputDir()
+{
+  QDesktopServices::openUrl(QUrl::fromLocalFile(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str())));
 }
