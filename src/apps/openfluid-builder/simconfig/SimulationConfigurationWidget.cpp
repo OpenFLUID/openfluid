@@ -47,51 +47,22 @@
 
 
 /**
-  \file ProjectWidget.cpp
+  \file SimulationConfigurationWidget.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
-#include <QLabel>
-#include <QListWidget>
-#include <QVBoxLayout>
-#include <QSplitter>
-#include <QTabWidget>
 
-#include "ui_ProjectWidget.h"
-#include "ProjectWidget.hpp"
 
-#include "ModelWidget.hpp"
-#include "SpatialDomainWidget.hpp"
-#include "MonitoringWidget.hpp"
-#include "DatastoreWidget.hpp"
+#include "ui_SimulationConfigurationWidget.h"
 #include "SimulationConfigurationWidget.hpp"
-#include "OutputsWidget.hpp"
 
 
-ProjectWidget::ProjectWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::ProjectWidget)
+SimulationConfigurationWidget::SimulationConfigurationWidget(QWidget* Parent):
+  QWidget(Parent), ui(new Ui::SimulationConfigurationWidget)
 {
   ui->setupUi(this);
-
-  QList<int> Sizes;
-  Sizes << 300 << 10000;
-  ui->MainSplitter->setSizes(Sizes);
-
-  ModelWidget* ModelTab = new ModelWidget();
-  SpatialDomainWidget* SpatialTab = new SpatialDomainWidget();
-  DatastoreWidget* DatastoreTab = new DatastoreWidget();
-  MonitoringWidget* MonitoringTab = new MonitoringWidget();
-  SimulationConfigurationWidget* SimConfigTab = new SimulationConfigurationWidget();
-  OutputsWidget* OutputsTab = new OutputsWidget();
-
-  ui->MainTabWidget->addTab(ModelTab,tr("Model"));
-  ui->MainTabWidget->addTab(SpatialTab,tr("Spatial domain"));
-  ui->MainTabWidget->addTab(DatastoreTab,tr("Datastore"));
-  ui->MainTabWidget->addTab(MonitoringTab,tr("Monitoring"));
-  ui->MainTabWidget->addTab(SimConfigTab,tr("Simulation configuration"));
-  ui->MainTabWidget->addTab(OutputsTab,tr("Outputs browser"));
 }
 
 
@@ -99,10 +70,7 @@ ProjectWidget::ProjectWidget(QWidget* Parent):
 // =====================================================================
 
 
-ProjectWidget::~ProjectWidget()
+SimulationConfigurationWidget::~SimulationConfigurationWidget()
 {
   delete ui;
 }
-
-
-

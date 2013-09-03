@@ -58,12 +58,19 @@
 
 #include <QWidget>
 
+namespace Ui
+{
+  class ProjectWidget;
+}
+
 
 class ProjectWidget : public QWidget
 {
   Q_OBJECT;
 
   private:
+
+    Ui::ProjectWidget* ui;
 
   public:
 
