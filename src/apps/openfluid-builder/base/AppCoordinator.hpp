@@ -88,6 +88,9 @@ class AppCoordinator : public QObject
 
     void openProject(const QString& Name, const QString& Path);
 
+    bool closeProject();
+
+
   private slots:
 
     void whenQuitAsked();
@@ -126,6 +129,9 @@ class AppCoordinator : public QObject
 
     void whenAboutAsked();
 
+    void enableSave();
+
+    void disableSave();
 
   public:
 

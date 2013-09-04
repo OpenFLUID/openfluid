@@ -59,13 +59,15 @@
 
 #include <QWidget>
 
+#include "WorkspaceWidget.hpp"
+
 namespace Ui
 {
   class SpatialDomainWidget;
 }
 
 
-class SpatialDomainWidget : public QWidget
+class SpatialDomainWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
@@ -75,7 +77,7 @@ class SpatialDomainWidget : public QWidget
 
   public:
 
-    SpatialDomainWidget(QWidget* Parent = 0);
+    SpatialDomainWidget(QWidget* Parent,openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~SpatialDomainWidget();
 };

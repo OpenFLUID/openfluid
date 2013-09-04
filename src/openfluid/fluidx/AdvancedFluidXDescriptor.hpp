@@ -52,8 +52,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef ADVANCEDFLUIDXDESCRIPTOR_HPP_
-#define ADVANCEDFLUIDXDESCRIPTOR_HPP_
+#ifndef __ADVANCEDFLUIDXDESCRIPTOR_HPP__
+#define __ADVANCEDFLUIDXDESCRIPTOR_HPP__
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
@@ -63,8 +63,7 @@
 #include <openfluid/dllexport.hpp>
 
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
 
 class DLLEXPORT AdvancedFluidXDescriptor
 {
@@ -101,7 +100,6 @@ class DLLEXPORT AdvancedFluidXDescriptor
     AdvancedMonitoringDescriptor& getMonitoring();
 };
 
-}
-} // namespaces
+} } // namespaces
 
-#endif /* ADVANCEDFLUIDXDESCRIPTOR_HPP_ */
+#endif /* __ADVANCEDFLUIDXDESCRIPTOR_HPP__ */

@@ -65,6 +65,7 @@
 
 ProjectCentral::ProjectCentral(QString PrjPath)
 {
+  openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
 
   mp_FXDesc = new openfluid::fluidx::FluidXDescriptor(&m_IOListener);
 
@@ -89,6 +90,20 @@ ProjectCentral::ProjectCentral(QString PrjPath)
       throw;
     }
   }
+
+  try
+  {
+    mp_AdvancedFXDesc = new openfluid::fluidx::AdvancedFluidXDescriptor(*mp_FXDesc);
+  }
+  catch (openfluid::base::Exception& E)
+  {
+    QMessageBox::critical(NULL,tr("Project error"),QString(E.getMessage().c_str()));
+
+    //because we're in a constructor catch, so destructor isn't called
+    deleteData();
+    throw;
+  }
+
 }
 
 
@@ -100,6 +115,7 @@ ProjectCentral::~ProjectCentral()
 {
   deleteData();
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -139,9 +155,23 @@ void ProjectCentral::run()
 // =====================================================================
 
 
-void ProjectCentral::save()
+bool ProjectCentral::save()
 {
+  QString InputDir = QString(openfluid::base::ProjectManager::getInstance()->getInputDir().c_str());
 
+  openfluid::base::ProjectManager::getInstance()->save();
+
+  QDir InputPath(InputDir);
+
+  QStringList FluidXFileToRemove;
+  FluidXFileToRemove = InputPath.entryList(QStringList("*.fluidx"),QDir::Dirs | QDir::NoDotAndDotDot);
+
+  for (int i=0;i<FluidXFileToRemove.size();++i)
+     InputPath.remove(FluidXFileToRemove[i]);
+
+  mp_FXDesc->writeToManyFiles(InputDir.toStdString());
+
+  return true;
 }
 
 

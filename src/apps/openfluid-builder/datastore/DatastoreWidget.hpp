@@ -58,13 +58,16 @@
 
 #include <QWidget>
 
+#include "WorkspaceWidget.hpp"
+
+
 namespace Ui
 {
   class DatastoreWidget;
 }
 
 
-class DatastoreWidget : public QWidget
+class DatastoreWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
@@ -74,7 +77,7 @@ class DatastoreWidget : public QWidget
 
   public:
 
-    DatastoreWidget(QWidget* Parent = 0);
+    DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~DatastoreWidget();
 };

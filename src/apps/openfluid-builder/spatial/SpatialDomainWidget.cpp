@@ -59,8 +59,8 @@
 #include "SpatialDomainWidget.hpp"
 
 
-SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::SpatialDomainWidget)
+SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
+  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::SpatialDomainWidget)
 {
   ui->setupUi(this);
 }

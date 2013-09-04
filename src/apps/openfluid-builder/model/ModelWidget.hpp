@@ -59,13 +59,16 @@
 
 #include <QWidget>
 
+#include "WorkspaceWidget.hpp"
+
+
 namespace Ui
 {
   class ModelWidget;
 }
 
 
-class ModelWidget : public QWidget
+class ModelWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
@@ -75,7 +78,7 @@ class ModelWidget : public QWidget
 
   public:
 
-    ModelWidget(QWidget* Parent = 0);
+    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~ModelWidget();
 };

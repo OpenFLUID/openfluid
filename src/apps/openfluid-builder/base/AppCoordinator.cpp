@@ -79,6 +79,8 @@
 AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   m_MainWindow(MainWin),m_Actions(Actions), mp_CurrentModule(NULL)
 {
+  m_Actions.getAction("ProjectSave")->setEnabled(false);
+
   connect(m_Actions.getAction("ProjectQuit"), SIGNAL(triggered()), this, SLOT(whenQuitAsked()));
   connect(m_Actions.getAction("ProjectNew"), SIGNAL(triggered()), this, SLOT(whenNewAsked()));
   connect(m_Actions.getAction("ProjectOpen"), SIGNAL(triggered()), this, SLOT(whenOpenAsked()));
@@ -102,12 +104,14 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   connect(m_Actions.getAction("MarketAccess"), SIGNAL(triggered()), this, SLOT(whenMarketAsked()));
 
 
-  // connection of recent oen projects
+  // connection of recent open projects
 
   std::vector<QAction*> RecentActions = m_Actions.getRecentProjectActions();
 
   for (unsigned int i=0;i<RecentActions.size();i++)
     connect(RecentActions[i], SIGNAL(triggered()), this, SLOT(whenOpenRecentAsked()));
+
+  m_MainWindow.setQuitAction(m_Actions.getAction("ProjectQuit"));
 
 }
 
@@ -118,7 +122,7 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 
 AppCoordinator::~AppCoordinator()
 {
-
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 
@@ -175,6 +179,8 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
 
   m_Actions.setProjectMode();
 
+  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged()),this,SLOT(enableSave()));
+  connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),this,SLOT(disableSave()));
 }
 
 
@@ -251,13 +257,46 @@ void AppCoordinator::openProject(const QString& Name, const QString& Path)
 // =====================================================================
 
 
+bool AppCoordinator::closeProject()
+{
+  if (m_Actions.getAction("ProjectSave")->isEnabled())
+  {
+    QMessageBox::StandardButton Ret = QMessageBox::question(&m_MainWindow,tr("Close project"),tr("Do you want to save the current project before closing?"),QMessageBox::Cancel | QMessageBox::Save | QMessageBox::Discard);
+    if (Ret != QMessageBox::Cancel)
+    {
+      if (Ret == QMessageBox::Save) whenSaveAsked();
+      m_Actions.getAction("ProjectSave")->setEnabled(false);
+      openfluid::base::ProjectManager::getInstance()->close();
+      return true;
+    }
+    return false;
+  }
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 
 void AppCoordinator::whenQuitAsked()
 {
   if (mp_CurrentModule->whenQuitAsked())
   {
-    unsetCurrentModule();
-    m_MainWindow.close();
+    if (closeProject())
+    {
+      if (QMessageBox::question(&m_MainWindow,tr("Quit"),
+                                tr("Are you sure you want to quit OpenFLUID-Builder?"),
+                                QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+      {
+        QCoreApplication::exit(0);
+      }
+      else
+      {
+        setHomeModule();
+      }
+    }
   }
 }
 
@@ -418,10 +457,11 @@ void AppCoordinator::whenPropertiesAsked()
 
 void AppCoordinator::whenCloseAsked()
 {
-  if (mp_CurrentModule->whenCloseAsked())
+  if (mp_CurrentModule->whenCloseAsked() && closeProject())
   {
     setHomeModule();
   }
+
 }
 
 
@@ -574,4 +614,24 @@ void AppCoordinator::whenAboutAsked()
   AboutDialog AboutDlg(&m_MainWindow, m_Actions.getAction("HelpOnlineWeb"),m_Actions.getAction("HelpEmail"));
 
   AboutDlg.exec();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::enableSave()
+{
+  m_Actions.getAction("ProjectSave")->setEnabled(true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::disableSave()
+{
+  m_Actions.getAction("ProjectSave")->setEnabled(false);
 }

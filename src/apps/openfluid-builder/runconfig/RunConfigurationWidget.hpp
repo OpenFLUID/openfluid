@@ -45,32 +45,63 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file SimulationConfigurationWidget.cpp
-  \brief Implements ...
+  \file SimulationConfigurationWidget.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
+#ifndef __RUNCONFIGURATIONWIDGET_HPP__
+#define __RUNCONFIGURATIONWIDGET_HPP__
 
-#include "ui_SimulationConfigurationWidget.h"
-#include "SimulationConfigurationWidget.hpp"
+
+#include "WorkspaceWidget.hpp"
 
 
-SimulationConfigurationWidget::SimulationConfigurationWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::SimulationConfigurationWidget)
+namespace Ui
 {
-  ui->setupUi(this);
+  class RunConfigurationWidget;
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-SimulationConfigurationWidget::~SimulationConfigurationWidget()
+class RunConfigurationWidget : public WorkspaceWidget
 {
-  delete ui;
-}
+  Q_OBJECT
+
+  private:
+
+    Ui::RunConfigurationWidget* ui;
+
+
+  private slots:
+
+      void updateConstraintFXDesc(int Index);
+
+      void updateDeltaTFXDesc(int Value);
+
+      void updateBeginDateFXDesc(const QDateTime& QDT);
+
+      void updateEndDateFXDesc(const QDateTime& QDT);
+
+      void updateMemoryFXDesc(bool On);
+
+      void updateMemoryStepsFXDesc(int Value);
+
+  public slots:
+
+    void refresh();
+
+
+  public:
+
+    RunConfigurationWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+
+    virtual ~RunConfigurationWidget();
+};
+
+
+
+
+#endif /* __RUNCONFIGURATIONWIDGET_HPP__ */
