@@ -59,6 +59,7 @@
 #include <list>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/dllexport.hpp>
+#include <geos/geom/CoordinateArraySequenceFactory.h>
 
 namespace geos {
 namespace geom {
@@ -187,6 +188,22 @@ class DLLEXPORT LandRTools
      */
     static std::vector<geos::geom::Polygon*> computeIntersectPolygons(
         geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2);
+
+
+    /**
+         * @brief Split a geos::geom::LineString by a geos::geom Point
+         *
+         * @param Entity An existent geos::geom::LineString.
+         * @param Point A geos::geom::Point.
+         * @param SnapTolerance The threshold distance used to find Point on Line.
+         * @return a vector of geos::geom::LineString,
+         *  or empty vector if splitting operation is null.
+         */
+     static std::vector<geos::geom::LineString*> splitLineString(geos::geom::LineString& Entity, geos::geom::Point& Point,double SnapTolerance);
+
+
+
+
 
 };
 
