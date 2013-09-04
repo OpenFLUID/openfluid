@@ -786,7 +786,7 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
 std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntitiesByMinLength(double MinLength,bool rmDangle)
 {
   if (MinLength<=0.0)
-    throw  openfluid::base::FrameworkException("LineStringGraph : "
+    throw  openfluid::base::FrameworkException(
         "LineStringGraph::getLineStringEntitiesByMinLength : "
         "Threshold must be superior to 0.0");
 
@@ -825,9 +825,6 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
 
 // =====================================================================
 // =====================================================================
-
-
-
 
 } // namespace landr
 } /* namespace openfluid */
