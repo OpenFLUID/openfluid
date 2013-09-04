@@ -61,7 +61,10 @@
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/Point.h>
+#include <geos/geom/LineSegment.h>
 #include <geos/geom/GeometryFactory.h>
+#include <geos/geom/CoordinateSequenceFactory.h>
+#include <geos/geom/CoordinateArraySequenceFactory.h>
 #include <geos/operation/linemerge/LineMerger.h>
 #include <geos/operation/polygonize/Polygonizer.h>
 #include <geos/operation/overlay/OverlayOp.h>
@@ -372,10 +375,95 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(
   }
 }
 
-
 // =====================================================================
 // =====================================================================
 
+std::vector<geos::geom::LineString*> LandRTools::splitLineString( geos::geom::LineString& Entity,  geos::geom::Point& Point,double SnapTolerance)
+
+{
+  if (SnapTolerance<=0.0)
+    throw  openfluid::base::FrameworkException(
+        "LandRTools::splitLineString : "
+        "SnapTolerance must be superior to 0.0");
+
+
+  std::vector<geos::geom::LineString*> vEntities;
+
+  if((Point.getCoordinate()->equals(*Entity.getStartPoint()->getCoordinate())
+      ||Point.getCoordinate()->equals(*Entity.getEndPoint()->getCoordinate())))
+    return vEntities;
+
+  geos::geom::Geometry *Geom=openfluid::landr::LandRTools::computeSnapOverlayUnion(
+      Point, Entity,SnapTolerance);
+  if(Geom->getGeometryTypeId()!=1)
+    return vEntities;
+
+
+  unsigned int numVertices=Entity.getNumPoints()-1;
+  unsigned int i=0;
+  bool split=false;
+  const geos::geom::CoordinateSequenceFactory *CoordSeqFactory=geos::geom::GeometryFactory::getDefaultInstance()->getCoordinateSequenceFactory();
+
+
+  geos::geom::Coordinate newCoorPoint;
+  for(;i<numVertices;i++)
+  {
+    geos::geom::Coordinate FirstCoord=Entity.getCoordinateN(i);
+    geos::geom::Coordinate SecondCoord=Entity.getCoordinateN(i+1);
+
+    std::vector<geos::geom::Coordinate> vCoor;
+    vCoor.push_back(FirstCoord);
+    vCoor.push_back(SecondCoord);
+
+    geos::geom::CoordinateSequence* CoordSeq=CoordSeqFactory->create(&vCoor);
+    geos::geom::LineString * NewLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(CoordSeq);
+
+
+    geos::geom::Geometry *Geom=openfluid::landr::LandRTools::computeSnapOverlayUnion(
+        Point, *dynamic_cast<geos::geom::Geometry*>(NewLine),SnapTolerance);
+
+    if(Geom->getGeometryTypeId()==1)
+    {
+      split=true;
+      geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
+      LineSegment.project(*(Point.getCoordinate()),newCoorPoint);
+      break;
+    }
+  }
+
+  if(!split)
+    throw  openfluid::base::FrameworkException(
+        "LandRTools::splitLineString : "
+        "Splitting operation impossible");
+
+  unsigned int j=0;
+  std::vector<geos::geom::Coordinate>* vFirstCoorLine =new std::vector<geos::geom::Coordinate>;
+  for(;j<=i;j++)
+    vFirstCoorLine->push_back(Entity.getCoordinateN(j));
+
+  vFirstCoorLine->push_back(newCoorPoint);
+
+  geos::geom::CoordinateSequence* FirstCoordSeq=CoordSeqFactory->create(vFirstCoorLine);
+  geos::geom::LineString * NewFirstLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(FirstCoordSeq);
+
+
+  std::vector<geos::geom::Coordinate>* vSecondCoorLine= new std::vector<geos::geom::Coordinate>;
+  vSecondCoorLine->push_back(newCoorPoint);
+
+  numVertices=Entity.getNumPoints();
+  for(;j<numVertices;j++)
+    vSecondCoorLine->push_back(Entity.getCoordinateN(j));
+  geos::geom::CoordinateSequence* SecondCoordSeq=CoordSeqFactory->create(vSecondCoorLine);
+  geos::geom::LineString * NewSecondLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(SecondCoordSeq);
+
+  vEntities.push_back(NewFirstLine);
+  vEntities.push_back(NewSecondLine);
+
+  return vEntities;
+}
+
+// =====================================================================
+// =====================================================================
 
 }
 } /* namespace openfluid */
