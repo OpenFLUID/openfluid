@@ -66,8 +66,8 @@
 #include "OutputsWidget.hpp"
 
 
-OutputsWidget::OutputsWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::OutputsWidget), mp_FSModel(new QFileSystemModel(this))
+OutputsWidget::OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
+  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::OutputsWidget), mp_FSModel(new QFileSystemModel(this))
 {
   ui->setupUi(this);
 

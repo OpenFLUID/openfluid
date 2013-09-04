@@ -46,41 +46,46 @@
 */
 
 /**
-  \file SimulationConfigurationWidget.hpp
+  \file AbstractWorkspaceTab.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SIMULATIONCONFIGURATIONWIDGET_HPP__
-#define __SIMULATIONCONFIGURATIONWIDGET_HPP__
-
+#ifndef __WORKSPACEWIDGET_HPP__
+#define __WORKSPACEWIDGET_HPP__
 
 #include <QWidget>
 
-namespace Ui
+namespace openfluid { namespace fluidx {
+  class AdvancedFluidXDescriptor;
+} }
+
+
+class WorkspaceWidget : public QWidget
 {
-  class SimulationConfigurationWidget;
-}
+  Q_OBJECT;
 
+  protected:
 
-class SimulationConfigurationWidget : public QWidget
-{
-  Q_OBJECT
+    openfluid::fluidx::AdvancedFluidXDescriptor& m_AdvFluidxDesc;
 
-  private:
+  signals:
 
-    Ui::SimulationConfigurationWidget* ui;
+    void changed();
+
+  public slots:
+
+    virtual void refresh() { };
 
   public:
 
-    SimulationConfigurationWidget(QWidget* Parent = 0);
+    WorkspaceWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& Desc):
+      QWidget(Parent), m_AdvFluidxDesc(Desc)
+    { };
 
-    virtual ~SimulationConfigurationWidget();
 };
 
 
-
-
-#endif /* __SIMULATIONCONFIGURATIONWIDGET_HPP__ */
+#endif /* __WORKSPACEWIDGET_HPP__ */

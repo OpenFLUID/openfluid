@@ -72,11 +72,14 @@ class ProjectWidget : public QWidget
 
     Ui::ProjectWidget* ui;
 
+
   public:
 
     ProjectWidget(QWidget* Parent);
 
     ~ProjectWidget();
+
+    void addWorkspaceTab(QWidget* Tab, const QString& Label);
 };
 
 

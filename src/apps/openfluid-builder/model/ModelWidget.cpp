@@ -59,8 +59,8 @@
 #include "ModelWidget.hpp"
 
 
-ModelWidget::ModelWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::ModelWidget)
+ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
+  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::ModelWidget)
 {
   ui->setupUi(this);
 }

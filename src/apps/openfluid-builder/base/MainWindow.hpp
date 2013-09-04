@@ -57,6 +57,7 @@
 #define __MAINWINDOW_HPP__
 
 #include <QMainWindow>
+#include <QAction>
 
 
 class MainWindow : public QMainWindow
@@ -65,6 +66,7 @@ class MainWindow : public QMainWindow
 
   private:
 
+    QAction* mp_QuitAction;
 
   public:
 
@@ -79,6 +81,8 @@ class MainWindow : public QMainWindow
     void unsetToolbar();
 
     void closeEvent(QCloseEvent* Event);
+
+    void setQuitAction(QAction* Action) { mp_QuitAction = Action; }
 
 };
 

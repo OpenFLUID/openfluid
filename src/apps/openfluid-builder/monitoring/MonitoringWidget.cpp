@@ -59,8 +59,8 @@
 #include "MonitoringWidget.hpp"
 
 
-MonitoringWidget::MonitoringWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::MonitoringWidget)
+MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
+  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::MonitoringWidget)
 {
   ui->setupUi(this);
 }

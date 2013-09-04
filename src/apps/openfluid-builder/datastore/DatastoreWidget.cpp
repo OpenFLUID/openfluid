@@ -58,8 +58,8 @@
 #include "DatastoreWidget.hpp"
 
 
-DatastoreWidget::DatastoreWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::DatastoreWidget)
+DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
+  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::DatastoreWidget)
 {
   ui->setupUi(this);
 }

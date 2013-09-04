@@ -59,13 +59,16 @@
 
 #include <QWidget>
 
+#include "WorkspaceWidget.hpp"
+
+
 namespace Ui
 {
   class MonitoringWidget;
 }
 
 
-class MonitoringWidget : public QWidget
+class MonitoringWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
@@ -75,7 +78,7 @@ class MonitoringWidget : public QWidget
 
   public:
 
-    MonitoringWidget(QWidget* Parent = 0);
+    MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~MonitoringWidget();
 };

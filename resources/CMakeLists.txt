@@ -30,8 +30,6 @@ EXECUTE_PROCESS(COMMAND "${CMAKE_COMMAND}" "-E" "chdir" "${CMAKE_SOURCE_DIR}/cma
 # build of translations
 FIND_PROGRAM(LRELEASE_EXECUTABLE NAMES lrelease lrelease-qt4)
 
-message(LRELEASE_EXECUTABLE)
-
 IF(NOT LRELEASE_EXECUTABLE)
   MESSAGE(FATAL_ERROR "lrelease not found")
 ENDIF()

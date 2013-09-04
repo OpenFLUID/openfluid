@@ -54,12 +54,23 @@
  */
 
 #include <QApplication>
+#include <QMessageBox>
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
+#include "ProjectCentral.hpp"
+
 #include "ProjectModule.hpp"
 #include "PreferencesDialog.hpp"
+
+#include "ProjectWidget.hpp"
+#include "ModelWidget.hpp"
+#include "SpatialDomainWidget.hpp"
+#include "MonitoringWidget.hpp"
+#include "DatastoreWidget.hpp"
+#include "RunConfigurationWidget.hpp"
+#include "OutputsWidget.hpp"
 
 #include <iostream>
 
@@ -69,7 +80,7 @@
 
 
 ProjectModule::ProjectModule(const QString& ProjectPath):
-AbstractModule(), mp_Widget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
+AbstractModule(), mp_MainWidget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 }
@@ -91,12 +102,45 @@ ProjectModule::~ProjectModule()
 
 QWidget* ProjectModule::getWidget(QWidget* Parent)
 {
-  if (mp_Widget != NULL)
-    delete mp_Widget;
+  if (mp_MainWidget != NULL)
+  {
+    delete mp_MainWidget;
+    mp_MainWidget = NULL;
+  }
 
-  mp_Widget = new ProjectWidget(Parent);
+  mp_MainWidget = new ProjectWidget(Parent);
 
-  return mp_Widget;
+  mp_ModelTab = new ModelWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  connect(this,SIGNAL(modelChanged()),mp_ModelTab,SLOT(refresh()));
+  connect(mp_ModelTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+
+  mp_SpatialTab = new SpatialDomainWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  connect(this,SIGNAL(spatialChanged()),mp_SpatialTab,SLOT(refresh()));
+  connect(mp_SpatialTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+
+  mp_DatastoreTab = new DatastoreWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  connect(this,SIGNAL(datastoreChanged()),mp_DatastoreTab,SLOT(refresh()));
+  connect(mp_DatastoreTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+
+  mp_MonitoringTab = new MonitoringWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  connect(this,SIGNAL(monitoringChanged()),mp_MonitoringTab,SLOT(refresh()));
+  connect(mp_MonitoringTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+
+  mp_RunConfigTab = new RunConfigurationWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+  connect(this,SIGNAL(runconfigChanged()),mp_RunConfigTab,SLOT(refresh()));
+  connect(mp_RunConfigTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+
+  mp_OutputsTab = new OutputsWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
+
+
+  mp_MainWidget->addWorkspaceTab(mp_ModelTab,tr("Model"));
+  mp_MainWidget->addWorkspaceTab(mp_SpatialTab,tr("Spatial domain"));
+  mp_MainWidget->addWorkspaceTab(mp_DatastoreTab,tr("Datastore"));
+  mp_MainWidget->addWorkspaceTab(mp_MonitoringTab,tr("Monitoring"));
+  mp_MainWidget->addWorkspaceTab(mp_RunConfigTab,tr("Simulation configuration"));
+  mp_MainWidget->addWorkspaceTab(mp_OutputsTab,tr("Outputs browser"));
+
+  return mp_MainWidget;
 }
 
 
@@ -118,6 +162,7 @@ bool ProjectModule::whenQuitAsked()
 bool ProjectModule::whenNewAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
   return false;
 }
 
@@ -128,6 +173,7 @@ bool ProjectModule::whenNewAsked()
 bool ProjectModule::whenOpenAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
   return false;
 }
 
@@ -138,7 +184,12 @@ bool ProjectModule::whenOpenAsked()
 
 void ProjectModule::whenSaveAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  if (mp_ProjectCentral->save())
+  {
+    emit savePerformed();
+  }
+  QApplication::restoreOverrideCursor();
 }
 
 
@@ -149,6 +200,7 @@ void ProjectModule::whenSaveAsked()
 void ProjectModule::whenSaveAsAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
 }
 
 
@@ -159,6 +211,7 @@ void ProjectModule::whenSaveAsAsked()
 void ProjectModule::whenPropertiesAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
 }
 
 
@@ -168,7 +221,6 @@ void ProjectModule::whenPropertiesAsked()
 
 bool ProjectModule::whenCloseAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
   return true;
 }
 
@@ -218,7 +270,6 @@ void ProjectModule::whenPreferencesAsked()
 
 void ProjectModule::whenRunAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
   mp_ProjectCentral->run();
 }
 
@@ -240,6 +291,7 @@ void ProjectModule::whenMarketAsked()
 void ProjectModule::whenRefreshAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
 }
 
 
@@ -250,6 +302,18 @@ void ProjectModule::whenRefreshAsked()
 bool ProjectModule::whenOpenExampleAsked()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
   return false;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::dispatchChanges()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+  emit fluidxChanged();
+}

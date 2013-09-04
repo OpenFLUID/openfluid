@@ -70,7 +70,7 @@ class ProjectCentral : QObject
 
     openfluid::fluidx::FluidXDescriptor* mp_FXDesc;
 
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedFXDesc;
 
     openfluid::base::IOListener m_IOListener;
 
@@ -86,7 +86,10 @@ class ProjectCentral : QObject
 
    void run();
 
-   void save();
+   bool save();
+
+   openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDescriptors()
+   { return *mp_AdvancedFXDesc; }
 
 };
 

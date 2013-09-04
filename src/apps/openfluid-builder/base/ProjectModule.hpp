@@ -59,18 +59,67 @@
 #include <QString>
 
 #include "AbstractModule.hpp"
-#include "ProjectWidget.hpp"
-#include "ProjectCentral.hpp"
+
+
+class ProjectCentral;
+
+class ProjectWidget;
+class ModelWidget;
+class SpatialDomainWidget;
+class MonitoringWidget;
+class DatastoreWidget;
+class RunConfigurationWidget;
+class OutputsWidget;
+
 
 class ProjectModule : public AbstractModule
 {
+  Q_OBJECT;
+
   private:
 
-    ProjectWidget* mp_Widget;
+    ProjectWidget* mp_MainWidget;
+
+    ModelWidget* mp_ModelTab;
+
+    SpatialDomainWidget* mp_SpatialTab;
+
+    DatastoreWidget* mp_DatastoreTab;
+
+    MonitoringWidget* mp_MonitoringTab;
+
+    RunConfigurationWidget* mp_RunConfigTab;
+
+    OutputsWidget* mp_OutputsTab;
 
     QString m_ProjectPath;
 
     ProjectCentral* mp_ProjectCentral;
+
+
+  signals:
+
+    void fluidxChanged();
+
+    void savePerformed();
+
+    void modelChanged();
+
+    void spatialChanged();
+
+    void datastoreChanged();
+
+    void monitoringChanged();
+
+    void runconfigChanged();
+
+
+  private slots:
+
+    void dispatchChanges();
+
+    //void dispatchChangeFromExtension();
+
 
   public:
 

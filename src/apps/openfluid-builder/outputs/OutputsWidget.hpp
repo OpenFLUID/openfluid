@@ -57,9 +57,10 @@
 #define __OUTPUTSWIDGET_HPP__
 
 
+#include "WorkspaceWidget.hpp"
 
-#include <QWidget>
 #include <QFileSystemModel>
+
 
 namespace Ui
 {
@@ -67,9 +68,9 @@ namespace Ui
 }
 
 
-class OutputsWidget : public QWidget
+class OutputsWidget : public WorkspaceWidget
 {
-  Q_OBJECT
+  Q_OBJECT;
 
   private:
 
@@ -87,7 +88,7 @@ class OutputsWidget : public QWidget
 
   public:
 
-    OutputsWidget(QWidget* Parent = 0);
+    OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~OutputsWidget();
 };

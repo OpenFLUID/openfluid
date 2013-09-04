@@ -12,8 +12,7 @@ CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.h
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 
-
-INCLUDE_DIRECTORIES(base datastore model monitoring spatial outputs simconfig)
+INCLUDE_DIRECTORIES(base datastore model monitoring spatial outputs runconfig)
   
 
 ### BASE #
@@ -37,6 +36,7 @@ SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
                      base/HomeModule.hpp base/HomeWidget.hpp 
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
                      base/ProjectCentral.hpp
+                     base/WorkspaceWidget.hpp
                      base/NewProjectDialog.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
                      base/AboutDialog.hpp
@@ -100,14 +100,12 @@ QT4_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
 
 ### SIMCONFIG #
 
-SET(BUILDER_SIMCONFIG_CPP simconfig/SimulationConfigurationWidget.cpp
-                          )
+SET(BUILDER_RUNCONFIG_CPP runconfig/RunConfigurationWidget.cpp)
 
-SET(BUILDER_SIMCONFIG_HPP simconfig/SimulationConfigurationWidget.hpp
-                           )
+SET(BUILDER_RUNCONFIG_HPP runconfig/RunConfigurationWidget.hpp)
 
-QT4_WRAP_UI(BUILDER_SIMCONFIG_UI simconfig/SimulationConfigurationWidget.ui
-                                 )
+QT4_WRAP_UI(BUILDER_RUNCONFIG_UI runconfig/RunConfigurationWidget.ui)
+
 
 
 ### OUTPUTS #
@@ -131,9 +129,9 @@ ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP
                                           ${BUILDER_SPATIAL_CPP} ${BUILDER_SPATIAL_HPP} ${BUILDER_SPATIAL_UI}
                                           ${BUILDER_DATASTORE_CPP} ${BUILDER_DATASTORE_HPP} ${BUILDER_DATASTORE_UI}
                                           ${BUILDER_MONITORING_CPP} ${BUILDER_MONITORING_HPP} ${BUILDER_MONITORING_UI}
-                                          ${BUILDER_SIMCONFIG_CPP} ${BUILDER_SIMCONFIG_HPP} ${BUILDER_SIMCONFIG_UI}
+                                          ${BUILDER_RUNCONFIG_CPP} ${BUILDER_RUNCONFIG_HPP} ${BUILDER_RUNCONFIG_UI}
                                           ${BUILDER_OUTPUTS_CPP} ${BUILDER_OUTPUTS_HPP} ${BUILDER_OUTPUTS_UI}
-                                          ${BUILDER_RC} )
+                                          ${BUILDER_RC})
 
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main 
