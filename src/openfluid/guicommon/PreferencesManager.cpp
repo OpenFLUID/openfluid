@@ -769,5 +769,67 @@ void PreferencesManager::setExtensionValue(const QString& PluginName,
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+Qt::DockWidgetArea PreferencesManager::getDockPosition()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("dockpos")) mp_ConfFile->setValue("dockpos",Qt::LeftDockWidgetArea);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  Qt::DockWidgetArea Pos = Qt::DockWidgetArea(mp_ConfFile->value("dockpos").toInt());
+  mp_ConfFile->endGroup();
+
+  return Pos;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setDockPosition(Qt::DockWidgetArea Position)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("dockpos",Position);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+Qt::ToolBarArea PreferencesManager::getToolBarPosition()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("toolbarpos")) mp_ConfFile->setValue("toolbarpos",Qt::TopToolBarArea);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  Qt::ToolBarArea Pos = Qt::ToolBarArea(mp_ConfFile->value("toolbarpos").toInt());
+  mp_ConfFile->endGroup();
+
+  return Pos;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setToolBarPosition(Qt::ToolBarArea Position)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("toolbarpos",Position);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
 } } //namespaces
 

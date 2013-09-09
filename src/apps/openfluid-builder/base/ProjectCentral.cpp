@@ -63,6 +63,7 @@
 #include "ProjectCentral.hpp"
 
 
+
 ProjectCentral::ProjectCentral(QString PrjPath)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
@@ -104,6 +105,7 @@ ProjectCentral::ProjectCentral(QString PrjPath)
     throw;
   }
 
+  check();
 }
 
 
@@ -175,4 +177,24 @@ bool ProjectCentral::save()
 }
 
 
+// =====================================================================
+// =====================================================================
 
+
+void ProjectCentral::check()
+{
+  // TODO status and messages below are for example only
+  // they will be replaced by correct value when project checker will be developped
+
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELDEF].Status = ProjectPartCheckInfos::PRJ_ERROR;
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELDEF].Messages.clear();
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELDEF].Messages << "- xxx.yyy simulator is missing";
+
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELPARAMS].Status = ProjectPartCheckInfos::PRJ_WARNING;
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELPARAMS].Messages.clear();
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELPARAMS].Messages << "- a parameter is missing" << "- another parameter is missing";
+
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MONITORING].Status = ProjectPartCheckInfos::PRJ_WARNING;
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MONITORING].Messages.clear();
+  m_CheckInfos.Infos[ProjectCheckInfos::PART_MONITORING].Messages << "- no observer";
+}

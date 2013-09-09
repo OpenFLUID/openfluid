@@ -75,7 +75,10 @@ class HomeModule : public AbstractModule
 
     ~HomeModule();
 
-    QWidget* getWidget(QWidget* Parent);
+    QWidget* getMainWidget(QWidget* Parent);
+
+    QWidget* getDockWidget(QWidget* /*Parent*/)
+    { return NULL; }
 
     bool whenQuitAsked();
 
