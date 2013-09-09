@@ -858,7 +858,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
 // =====================================================================
 
 
-BOOST_AUTO_TEST_CASE(check_splitLineString)
+BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
@@ -874,7 +874,7 @@ BOOST_AUTO_TEST_CASE(check_splitLineString)
 
   geos::geom::Point * PointNode=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(CoorNode);
 
-  vEntities=openfluid::landr::LandRTools::splitLineString(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), *PointNode,0.01);
+  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), *PointNode,0.01);
   BOOST_CHECK(vEntities.empty());
 
   geos::geom::Coordinate Coor;
@@ -883,14 +883,14 @@ BOOST_AUTO_TEST_CASE(check_splitLineString)
   geos::geom::Point * Point=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(Coor);
 
 
-  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineString(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()),
+  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()),
                                                                   *Point,0),openfluid::base::FrameworkException);
 
 
-  vEntities=openfluid::landr::LandRTools::splitLineString(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), *Point,0.0001);
+  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), *Point,0.0001);
   BOOST_CHECK(vEntities.empty());
 
-  vEntities=openfluid::landr::LandRTools::splitLineString(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), *Point,1);
+  vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), *Point,1);
   BOOST_CHECK_EQUAL(vEntities.size(),2);
 
   BOOST_CHECK( openfluid::tools::IsVeryClose(Graph->getEntity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength())));
@@ -911,4 +911,71 @@ BOOST_AUTO_TEST_CASE(check_splitLineString)
 // =====================================================================
 
 
+
+BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Val);
+
+
+  std::vector<geos::geom::LineString*> vEntities;
+  std::vector<geos::geom::Point*> vPoints;
+
+  geos::geom::Coordinate CoorNode;
+  CoorNode=Graph->getEntity(7)->getStartNode()->getCoordinate();
+
+  geos::geom::Point * PointStartNode=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(CoorNode);
+  vPoints.push_back(PointStartNode);
+
+  CoorNode=Graph->getEntity(7)->getEndNode()->getCoordinate();
+  geos::geom::Point * PointEndNode=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(CoorNode);
+  vPoints.push_back(PointEndNode);
+
+  BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()),
+                                                                          vPoints,0,vEntities),openfluid::base::FrameworkException);
+
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), vPoints,0.01,vEntities);
+  BOOST_CHECK_EQUAL(vEntities.size(),1);
+
+  vPoints.clear();
+
+  geos::geom::Coordinate Coor;
+  Coor.x=679585;
+  Coor.y=132354;
+  geos::geom::Point * Point1=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(Coor);
+  vPoints.push_back(Point1);
+
+  Coor.x=679535;
+  Coor.y=132347;
+  geos::geom::Point * Point2=geos::geom::GeometryFactory::getDefaultInstance()->createPoint(Coor);
+  vPoints.push_back(Point2);
+
+  vEntities.clear();
+
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), vPoints,0.0001,vEntities);
+  BOOST_CHECK_EQUAL(vEntities.size(),1);
+
+  vEntities.clear();
+
+  openfluid::landr::LandRTools::splitLineStringByPoints(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), vPoints,1,vEntities);
+  BOOST_CHECK_EQUAL(vEntities.size(),3);
+
+
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Graph->getEntity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength()+vEntities[2]->getLength())));
+
+  delete Val;
+  delete Graph;
+  delete PointStartNode;
+  delete PointEndNode;
+  delete Point1;
+  delete Point2;
+
+
+}
+
+// =====================================================================
+// =====================================================================
 

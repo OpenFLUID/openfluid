@@ -378,12 +378,12 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::LineString*> LandRTools::splitLineString( geos::geom::LineString& Entity,  geos::geom::Point& Point,double SnapTolerance)
+std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::geom::LineString& Entity,  geos::geom::Point& Point,double SnapTolerance)
 
 {
   if (SnapTolerance<=0.0)
     throw  openfluid::base::FrameworkException(
-        "LandRTools::splitLineString : "
+        "LandRTools::splitLineStringByPoint : "
         "SnapTolerance must be superior to 0.0");
 
 
@@ -454,6 +454,7 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineString( geos::geom::Li
   for(;j<numVertices;j++)
     vSecondCoorLine->push_back(Entity.getCoordinateN(j));
   geos::geom::CoordinateSequence* SecondCoordSeq=CoordSeqFactory->create(vSecondCoorLine);
+  SecondCoordSeq->removeRepeatedPoints();
   geos::geom::LineString * NewSecondLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(SecondCoordSeq);
 
   vEntities.push_back(NewFirstLine);
@@ -464,6 +465,51 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineString( geos::geom::Li
 
 // =====================================================================
 // =====================================================================
+
+
+void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,std::vector<geos::geom::Point*>&Points,
+                                              double SnapTolerance,std::vector<geos::geom::LineString*>&vLines)
+{
+
+  if (SnapTolerance<=0.0)
+     throw  openfluid::base::FrameworkException(
+         "LandRTools::splitLineStringByPoints : "
+         "SnapTolerance must be superior to 0.0");
+
+
+
+  if (Points.empty())
+    vLines.push_back(&Entity);
+
+  else
+  {
+    std::vector<geos::geom::LineString*> vLinesSplitted=openfluid::landr::LandRTools::
+        splitLineStringByPoint(Entity,*Points[0],SnapTolerance);
+    std::vector<geos::geom::Point*>Points0=Points;
+    Points0.erase(Points0.begin());
+
+    if(vLinesSplitted.empty())
+      splitLineStringByPoints(Entity,Points0,SnapTolerance,vLines);
+
+    else
+    {
+      splitLineStringByPoints(*vLinesSplitted[0],Points0,SnapTolerance,vLines);
+      splitLineStringByPoints(*vLinesSplitted[1],Points0,SnapTolerance,vLines);
+
+    }
+
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
+
 
 }
 } /* namespace openfluid */
