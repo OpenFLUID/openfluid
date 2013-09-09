@@ -160,6 +160,10 @@ void AppActions::createActions()
   m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
   m_Actions["SimulationRun"]->setIcon(QIcon(":/icons/start.png"));
 
+  //View Menu
+  m_Actions["ViewDashboard"] = new QAction(tr("Show/Hide project dashboard"), this);
+  m_Actions["ViewRestore"] = new QAction(tr("Restore default view"), this);
+
 
   //Help menu
   m_Actions["WaresRefresh"] = new QAction(tr("Reload wares"), this);
@@ -231,6 +235,7 @@ void AppActions::setProjectMode()
   m_Actions["HelpExamplesRestore"]->setVisible(false);
 
   mp_SimulationMenu->menuAction()->setVisible(true);
+  mp_ViewMenu->menuAction()->setVisible(true);
   mp_ExtensionsMenu->menuAction()->setVisible(true);
   if (mp_MainToolbar != NULL) mp_MainToolbar->show();
 }
@@ -255,6 +260,7 @@ void AppActions::setHomeMode()
   m_Actions["ProjectClose"]->setVisible(false);
 
   mp_SimulationMenu->menuAction()->setVisible(false);
+  mp_ViewMenu->menuAction()->setVisible(false);
   mp_ExtensionsMenu->menuAction()->setVisible(false);
   if (mp_MainToolbar != NULL) mp_MainToolbar->hide();
 }
@@ -298,6 +304,10 @@ void AppActions::createMenus(MainWindow& MainWin)
   mp_SimulationMenu->addSeparator();
   mp_SimulationMenu->addAction(getAction("SimulationRun"));
 
+  mp_ViewMenu = MainWin.menuBar()->addMenu(tr("&View"));
+  mp_ViewMenu->addAction(getAction("ViewDashboard"));
+  mp_ViewMenu->addAction(getAction("ViewRestore"));
+
   mp_ExtensionsMenu = MainWin.menuBar()->addMenu(tr("&Extensions"));
 
   Menu = MainWin.menuBar()->addMenu(tr("&Help"));
@@ -324,8 +334,11 @@ void AppActions::createToolbar(MainWindow& MainWin)
   if (mp_MainToolbar == NULL)
   {
     mp_MainToolbar = new QToolBar(&MainWin);
+    mp_MainToolbar->setAllowedAreas(Qt::LeftToolBarArea |
+                                    Qt::RightToolBarArea |
+                                    Qt::TopToolBarArea);
     mp_MainToolbar->clear();
-    mp_MainToolbar->setMovable(true);
+    mp_MainToolbar->setMovable(false);
     mp_MainToolbar->setFloatable(false);
     mp_MainToolbar->setIconSize(QSize(32,32));
     mp_MainToolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -339,9 +352,19 @@ void AppActions::createToolbar(MainWindow& MainWin)
     mp_MainToolbar->addAction(getAction("WaresRefresh"));
     mp_MainToolbar->addSeparator();
     mp_MainToolbar->addAction(getAction("SimulationRun"));
+    mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
+
+    // TODO to complete the toolbar style (style of selected tool background to define, gradient orientation according to the toolbar orientation)
+    // mp_MainToolbar->setStyleSheet("QWidget {color: white; } QToolBar {background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(104, 131, 159, 255), stop:1 rgba(61, 79, 97, 255));}  ");
+
+    // keep the following stylesheets for a later user
+    //.QToolBar { spacing: 15px; background-color:blue}
+    // .QToolBar { background-color:blue} .QToolButton { background-color:blue; border : 1px solid grey; border-radius: 6px; }
   }
 
-  MainWin.addToolBar(mp_MainToolbar);
+  MainWin.addToolBar(openfluid::guicommon::PreferencesManager::getInstance()->getToolBarPosition(),
+                     mp_MainToolbar);
 }
+
 
 
