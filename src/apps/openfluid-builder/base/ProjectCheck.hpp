@@ -46,110 +46,77 @@
 */
 
 /**
-  \file AppCoordinator.hpp
+  \file ProjectCheckInfo.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPCOORDINATOR_HPP__
-#define __APPCOORDINATOR_HPP__
+#ifndef __PROJECTCHECK_HPP__
+#define __PROJECTCHECK_HPP__
 
-#include <QObject>
-#include <QDockWidget>
+#include <map>
 
-#include "NewProjectDialog.hpp"
+#include <QStringList>
 
-class MainWindow;
-class AppActions;
-class AbstractModule;
 
-class AppCoordinator : public QObject
+
+class ProjectPartCheckInfos
 {
-  Q_OBJECT
-
-  private:
-
-    MainWindow& m_MainWindow;
-    AppActions& m_Actions;
-    QDockWidget* mp_DockWidget;
-
-    AbstractModule* mp_CurrentModule;
-
-    void unsetCurrentModule();
-
-    void setCurrentModule(AbstractModule* Module);
-
-    void setProjectModule(const QString& ProjectPath);
-
-    void updateRecentsList();
-
-    bool createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
-                       NewProjectDialog::ImportType IType, const QString& ISource);
-
-    void openProject(const QString& Name, const QString& Path);
-
-    bool closeProject();
-
-
-  private slots:
-
-    void whenQuitAsked();
-
-    void whenNewAsked();
-
-    void whenOpenAsked();
-
-    void whenOpenRecentAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenCloseAsked();
-
-    void whenPropertiesAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRefreshAsked();
-
-    void whenRunAsked();
-
-    void whenViewDashboardAsked();
-
-    void whenViewRestoreAsked();
-
-    void whenMarketAsked();
-
-    void whenOnlineWebAsked();
-
-    void whenOnlineCommunityAsked();
-
-    void whenOpenExampleAsked();
-
-    void whenEmailAsked();
-
-    void whenRestoreExamplesAsked();
-
-    void whenAboutAsked();
-
-    void enableSave();
-
-    void disableSave();
-
-    void saveDockArea(Qt::DockWidgetArea Area);
-
   public:
 
-    AppCoordinator(MainWindow& MainWin, AppActions& Actions);
+    enum StatusInfo { PRJ_OK, PRJ_WARNING, PRJ_ERROR };
 
-    ~AppCoordinator();
+    StatusInfo Status;
 
-    void setHomeModule();
+    QStringList Messages;
 
+    ProjectPartCheckInfos()
+    {
+      Status = PRJ_OK;
+    }
 };
 
 
-#endif /* __APPCOORDINATOR_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+class ProjectCheckInfos
+{
+  public:
+
+    enum PartInfo { PART_MODELDEF, PART_MODELPARAMS,
+                    PART_SPATIALSTRUCT, PART_SPATIALATTRS,
+                    PART_DATASTORE,
+                    PART_MONITORING,
+                    PART_RUNCONFIG};
+
+    std::map<PartInfo,ProjectPartCheckInfos> Infos;
+
+    ProjectCheckInfos()
+    {
+      Infos[PART_MODELDEF] = ProjectPartCheckInfos();
+      Infos[PART_MODELPARAMS] = ProjectPartCheckInfos();
+      Infos[PART_SPATIALSTRUCT] = ProjectPartCheckInfos();
+      Infos[PART_SPATIALATTRS] = ProjectPartCheckInfos();
+      Infos[PART_DATASTORE] = ProjectPartCheckInfos();
+      Infos[PART_MONITORING] = ProjectPartCheckInfos();
+      Infos[PART_RUNCONFIG] = ProjectPartCheckInfos();
+    }
+
+    bool isOKForSimulation()
+    {
+      return (Infos[PART_MODELDEF].Status != ProjectPartCheckInfos::PRJ_ERROR &&
+              Infos[PART_MODELPARAMS].Status != ProjectPartCheckInfos::PRJ_ERROR &&
+              Infos[PART_SPATIALSTRUCT].Status != ProjectPartCheckInfos::PRJ_ERROR &&
+              Infos[PART_SPATIALATTRS].Status != ProjectPartCheckInfos::PRJ_ERROR &&
+              Infos[PART_DATASTORE].Status != ProjectPartCheckInfos::PRJ_ERROR &&
+              Infos[PART_MONITORING].Status != ProjectPartCheckInfos::PRJ_ERROR &&
+              Infos[PART_RUNCONFIG].Status != ProjectPartCheckInfos::PRJ_ERROR);
+    }
+};
+
+
+#endif /* __PROJECTCHECKINFO_HPP__ */

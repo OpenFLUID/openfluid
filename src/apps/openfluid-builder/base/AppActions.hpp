@@ -75,11 +75,14 @@ class AppActions : QObject
 
     QMenu* mp_ExtensionsMenu;
 
+    QMenu* mp_ViewMenu;
+
     QMenu* mp_RecentProjectsMenu;
 
     QToolBar* mp_MainToolbar;
 
     void createActions();
+
 
   public:
 

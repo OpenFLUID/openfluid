@@ -21,7 +21,7 @@ SET(BUILDER_BASE_CPP base/AppTools.cpp base/ClickableLabel.cpp
                      base/AppCoordinator.cpp base/AppActions.cpp
                      base/BuilderApp.cpp base/MainWindow.cpp 
                      base/HomeModule.cpp base/HomeWidget.cpp                       
-                     base/ProjectModule.cpp base/ProjectWidget.cpp                     
+                     base/ProjectModule.cpp base/ProjectWidget.cpp base/DashboardWidget.cpp                     
                      base/ProjectCentral.cpp
                      base/NewProjectDialog.cpp
                      base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
@@ -33,9 +33,9 @@ SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
                      base/AppCoordinator.hpp base/AppActions.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
                      base/AbstractModule.hpp 
-                     base/HomeModule.hpp base/HomeWidget.hpp 
+                     base/HomeModule.hpp base/HomeWidget.hpp base/DashboardWidget.hpp
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
-                     base/ProjectCentral.hpp
+                     base/ProjectCentral.hpp base/ProjectCheck.hpp
                      base/WorkspaceWidget.hpp
                      base/NewProjectDialog.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
@@ -43,7 +43,7 @@ SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
                      base/OpenExampleProjectDialog.hpp
                      )
 
-QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
+QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/DashboardWidget.ui
                             base/NewProjectDialog.ui
                             base/PreferencesDialog.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
                             base/AboutDialog.ui

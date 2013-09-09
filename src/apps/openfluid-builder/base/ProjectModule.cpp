@@ -55,6 +55,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QMainWindow>
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
@@ -80,7 +81,7 @@
 
 
 ProjectModule::ProjectModule(const QString& ProjectPath):
-AbstractModule(), mp_MainWidget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
+AbstractModule(), mp_MainWidget(NULL), mp_DashboardWidget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 }
@@ -100,7 +101,7 @@ ProjectModule::~ProjectModule()
 // =====================================================================
 
 
-QWidget* ProjectModule::getWidget(QWidget* Parent)
+QWidget* ProjectModule::getMainWidget(QWidget* Parent)
 {
   if (mp_MainWidget != NULL)
   {
@@ -109,6 +110,7 @@ QWidget* ProjectModule::getWidget(QWidget* Parent)
   }
 
   mp_MainWidget = new ProjectWidget(Parent);
+
 
   mp_ModelTab = new ModelWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
   connect(this,SIGNAL(modelChanged()),mp_ModelTab,SLOT(refresh()));
@@ -141,6 +143,24 @@ QWidget* ProjectModule::getWidget(QWidget* Parent)
   mp_MainWidget->addWorkspaceTab(mp_OutputsTab,tr("Outputs browser"));
 
   return mp_MainWidget;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QWidget* ProjectModule::getDockWidget(QWidget* Parent)
+{
+  if (mp_DashboardWidget != NULL)
+  {
+    delete mp_DashboardWidget;
+    mp_DashboardWidget = NULL;
+  }
+
+  mp_DashboardWidget = new DashboardWidget(Parent, mp_ProjectCentral);
+
+  return mp_DashboardWidget;
 }
 
 
