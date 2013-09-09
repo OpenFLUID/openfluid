@@ -56,9 +56,12 @@
 #ifndef __PROJECTMODULE_HPP__
 #define __PROJECTMODULE_HPP__
 
+
 #include <QString>
+#include <QDockWidget>
 
 #include "AbstractModule.hpp"
+#include "DashboardWidget.hpp"
 
 
 class ProjectCentral;
@@ -79,6 +82,8 @@ class ProjectModule : public AbstractModule
   private:
 
     ProjectWidget* mp_MainWidget;
+
+    DashboardWidget* mp_DashboardWidget;
 
     ModelWidget* mp_ModelTab;
 
@@ -127,7 +132,9 @@ class ProjectModule : public AbstractModule
 
     ~ProjectModule();
 
-    QWidget* getWidget(QWidget* Parent);
+    QWidget* getMainWidget(QWidget* Parent);
+
+    QWidget* getDockWidget(QWidget* Parent);
 
     bool whenQuitAsked();
 

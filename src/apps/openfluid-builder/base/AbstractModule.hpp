@@ -78,8 +78,9 @@ class AbstractModule : public QObject
 
     }
 
-    virtual QWidget* getWidget(QWidget* Parent) = 0;
+    virtual QWidget* getMainWidget(QWidget* Parent) = 0;
 
+    virtual QWidget* getDockWidget(QWidget* Parent) = 0;
 
     virtual bool whenQuitAsked() = 0;
 

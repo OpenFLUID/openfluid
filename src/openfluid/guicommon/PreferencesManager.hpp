@@ -208,6 +208,15 @@ class DLLEXPORT PreferencesManager
 
     void setExtensionValue(const QString& PluginName, const QString& Key, const QString& Value);
 
+
+    Qt::DockWidgetArea getDockPosition();
+
+    void setDockPosition(Qt::DockWidgetArea Position);
+
+    Qt::ToolBarArea getToolBarPosition();
+
+    void setToolBarPosition(Qt::ToolBarArea Position);
+
 };
 
 } } //namespaces
