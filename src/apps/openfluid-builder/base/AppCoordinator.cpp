@@ -77,31 +77,54 @@
 
 
 AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
-  m_MainWindow(MainWin),m_Actions(Actions), mp_CurrentModule(NULL)
+  m_MainWindow(MainWin),m_Actions(Actions),
+  mp_DockWidget(NULL), mp_CurrentModule(NULL)
 {
   m_Actions.getAction("ProjectSave")->setEnabled(false);
 
-  connect(m_Actions.getAction("ProjectQuit"), SIGNAL(triggered()), this, SLOT(whenQuitAsked()));
-  connect(m_Actions.getAction("ProjectNew"), SIGNAL(triggered()), this, SLOT(whenNewAsked()));
-  connect(m_Actions.getAction("ProjectOpen"), SIGNAL(triggered()), this, SLOT(whenOpenAsked()));
-  connect(m_Actions.getAction("ProjectSave"), SIGNAL(triggered()), this, SLOT(whenSaveAsked()));
-  connect(m_Actions.getAction("ProjectSaveAs"), SIGNAL(triggered()), this, SLOT(whenSaveAsAsked()));
-  connect(m_Actions.getAction("ProjectProperties"), SIGNAL(triggered()), this, SLOT(whenPropertiesAsked()));
-  connect(m_Actions.getAction("ProjectClose"), SIGNAL(triggered()), this, SLOT(whenCloseAsked()));
+  connect(m_Actions.getAction("ProjectQuit"), SIGNAL(triggered()),
+          this, SLOT(whenQuitAsked()));
+  connect(m_Actions.getAction("ProjectNew"), SIGNAL(triggered()),
+          this, SLOT(whenNewAsked()));
+  connect(m_Actions.getAction("ProjectOpen"), SIGNAL(triggered()),
+          this, SLOT(whenOpenAsked()));
+  connect(m_Actions.getAction("ProjectSave"), SIGNAL(triggered()),
+          this, SLOT(whenSaveAsked()));
+  connect(m_Actions.getAction("ProjectSaveAs"), SIGNAL(triggered()),
+          this, SLOT(whenSaveAsAsked()));
+  connect(m_Actions.getAction("ProjectProperties"), SIGNAL(triggered()),
+          this, SLOT(whenPropertiesAsked()));
+  connect(m_Actions.getAction("ProjectClose"), SIGNAL(triggered()),
+          this, SLOT(whenCloseAsked()));
 
-  connect(m_Actions.getAction("EditPreferences"), SIGNAL(triggered()), this, SLOT(whenPreferencesAsked()));
+  connect(m_Actions.getAction("EditPreferences"), SIGNAL(triggered()),
+          this, SLOT(whenPreferencesAsked()));
 
-  connect(m_Actions.getAction("SimulationRun"), SIGNAL(triggered()), this, SLOT(whenRunAsked()));
-  connect(m_Actions.getAction("WaresRefresh"), SIGNAL(triggered()), this, SLOT(whenRefreshAsked()));
+  connect(m_Actions.getAction("SimulationRun"), SIGNAL(triggered()),
+          this, SLOT(whenRunAsked()));
+  connect(m_Actions.getAction("WaresRefresh"), SIGNAL(triggered()),
+          this, SLOT(whenRefreshAsked()));
 
-  connect(m_Actions.getAction("HelpOnlineWeb"), SIGNAL(triggered()), this, SLOT(whenOnlineWebAsked()));
-  connect(m_Actions.getAction("HelpOnlineCommunity"), SIGNAL(triggered()), this, SLOT(whenOnlineCommunityAsked()));
-  connect(m_Actions.getAction("HelpEmail"), SIGNAL(triggered()), this, SLOT(whenEmailAsked()));
-  connect(m_Actions.getAction("HelpExamplesOpen"), SIGNAL(triggered()), this, SLOT(whenOpenExampleAsked()));
-  connect(m_Actions.getAction("HelpExamplesRestore"), SIGNAL(triggered()), this, SLOT(whenRestoreExamplesAsked()));
-  connect(m_Actions.getAction("HelpAbout"), SIGNAL(triggered()), this, SLOT(whenAboutAsked()));
+  connect(m_Actions.getAction("ViewDashboard"), SIGNAL(triggered()),
+          this, SLOT(whenViewDashboardAsked()));
+  connect(m_Actions.getAction("ViewRestore"), SIGNAL(triggered()),
+          this, SLOT(whenViewRestoreAsked()));
 
-  connect(m_Actions.getAction("MarketAccess"), SIGNAL(triggered()), this, SLOT(whenMarketAsked()));
+  connect(m_Actions.getAction("HelpOnlineWeb"), SIGNAL(triggered()),
+          this, SLOT(whenOnlineWebAsked()));
+  connect(m_Actions.getAction("HelpOnlineCommunity"), SIGNAL(triggered()),
+          this, SLOT(whenOnlineCommunityAsked()));
+  connect(m_Actions.getAction("HelpEmail"), SIGNAL(triggered()),
+          this, SLOT(whenEmailAsked()));
+  connect(m_Actions.getAction("HelpExamplesOpen"), SIGNAL(triggered()),
+          this, SLOT(whenOpenExampleAsked()));
+  connect(m_Actions.getAction("HelpExamplesRestore"), SIGNAL(triggered()),
+          this, SLOT(whenRestoreExamplesAsked()));
+  connect(m_Actions.getAction("HelpAbout"), SIGNAL(triggered()),
+          this, SLOT(whenAboutAsked()));
+
+  connect(m_Actions.getAction("MarketAccess"), SIGNAL(triggered()),
+          this, SLOT(whenMarketAsked()));
 
 
   // connection of recent open projects
@@ -146,7 +169,7 @@ void AppCoordinator::setCurrentModule(AbstractModule* Module)
   unsetCurrentModule();
   mp_CurrentModule = Module;
 
-  m_MainWindow.setWidget(Module->getWidget(&m_MainWindow));
+  m_MainWindow.setWidget(Module->getMainWidget(&m_MainWindow));
 }
 
 
@@ -156,6 +179,13 @@ void AppCoordinator::setCurrentModule(AbstractModule* Module)
 
 void AppCoordinator::setHomeModule()
 {
+  if (mp_DockWidget != NULL)
+  {
+    m_MainWindow.removeDockWidget(mp_DockWidget);
+    delete mp_DockWidget;
+    mp_DockWidget = NULL;
+  }
+
   AbstractModule* Module = new HomeModule(&m_Actions);
 
   setCurrentModule(Module);
@@ -163,7 +193,6 @@ void AppCoordinator::setHomeModule()
   m_Actions.setHomeMode();
 
   m_MainWindow.setWindowTitle("OpenFLUID-Builder");
-
 }
 
 
@@ -179,8 +208,31 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
 
   m_Actions.setProjectMode();
 
-  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged()),this,SLOT(enableSave()));
-  connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),this,SLOT(disableSave()));
+
+  if (mp_DockWidget == NULL)
+    mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
+
+  mp_DockWidget->setWidget(((ProjectModule*)Module)->getDockWidget(mp_DockWidget));
+  mp_DockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
+                                 Qt::RightDockWidgetArea |
+                                 Qt::BottomDockWidgetArea);
+  // TODO keep for a later customization
+  //mp_DockWidget->setStyleSheet(".QDockWidget {margin:5px; color: white; font: bold;} QDockWidget::title { padding : 5px; background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(128, 156, 185, 255), stop:1 rgba(61, 79, 97, 255));} QDockWidget::close-button, QDockWidget::float-button { color : white; }");
+  //mp_DockWidget->setStyleSheet(".QDockWidget {padding:5px; font: bold;} QDockWidget::title { padding : 5px; border: 1px solid rgb(71,97,123);}");
+  mp_DockWidget->setStyleSheet(".QDockWidget {padding:5px; font: bold;} "
+                               "QDockWidget::title { padding : 5px;}");
+
+  m_MainWindow.addDockWidget(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition(),
+                             mp_DockWidget);
+
+
+  connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
+          this,SLOT(saveDockArea(Qt::DockWidgetArea)));
+
+  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged()),
+          this,SLOT(enableSave()));
+  connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),
+          this,SLOT(disableSave()));
 }
 
 
@@ -261,7 +313,10 @@ bool AppCoordinator::closeProject()
 {
   if (m_Actions.getAction("ProjectSave")->isEnabled())
   {
-    QMessageBox::StandardButton Ret = QMessageBox::question(&m_MainWindow,tr("Close project"),tr("Do you want to save the current project before closing?"),QMessageBox::Cancel | QMessageBox::Save | QMessageBox::Discard);
+    QMessageBox::StandardButton Ret = QMessageBox::question(&m_MainWindow,
+                                                            tr("Close project"),
+                                                            tr("Do you want to save the current project before closing?"),
+                                                            QMessageBox::Cancel | QMessageBox::Save | QMessageBox::Discard);
     if (Ret != QMessageBox::Cancel)
     {
       if (Ret == QMessageBox::Save) whenSaveAsked();
@@ -415,7 +470,8 @@ void AppCoordinator::whenOpenRecentAsked()
     else
     {
       QApplication::restoreOverrideCursor();
-      QMessageBox::critical(&m_MainWindow,tr("Project error"),ProjectPath+ "\n\n" + tr("is not a valid OpenFLUID project"));
+      QMessageBox::critical(&m_MainWindow,tr("Project error"),
+                            ProjectPath+ "\n\n" + tr("is not a valid OpenFLUID project"));
     }
   }
 }
@@ -494,6 +550,35 @@ void AppCoordinator::whenRefreshAsked()
 void AppCoordinator::whenRunAsked()
 {
   mp_CurrentModule->whenRunAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenViewDashboardAsked()
+{
+  if (mp_DockWidget == NULL) return;
+
+  if (mp_DockWidget->isVisible())
+    mp_DockWidget->setVisible(false);
+  else
+    mp_DockWidget->setVisible(true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenViewRestoreAsked()
+{
+  m_MainWindow.removeDockWidget(mp_DockWidget);
+  m_MainWindow.addDockWidget(Qt::LeftDockWidgetArea, mp_DockWidget);
+  openfluid::guicommon::PreferencesManager::getInstance()->setDockPosition(Qt::LeftDockWidgetArea);
+  mp_DockWidget->setFloating(false);
+  mp_DockWidget->setVisible(true);
 }
 
 
@@ -584,7 +669,8 @@ void AppCoordinator::whenOpenExampleAsked()
 void AppCoordinator::whenRestoreExamplesAsked()
 {
   if (QMessageBox::question(&m_MainWindow,tr("Reinstall examples projects"),
-                            tr("Reinstalling will overwrite all modifications and delete simulations results associated to these examples.")+"\n\n"+
+                            tr("Reinstalling will overwrite all modifications and delete simulations results associated to these examples.")+
+                            "\n\n"+
                             tr("Proceed anyway?"),
                             QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
@@ -599,7 +685,8 @@ void AppCoordinator::whenRestoreExamplesAsked()
     catch (openfluid::base::Exception& e)
     {
       QApplication::restoreOverrideCursor();
-      QMessageBox::critical(&m_MainWindow,tr("Restore examples projects"),tr("Error restoring example projects"));
+      QMessageBox::critical(&m_MainWindow,tr("Restore examples projects"),
+                            tr("Error restoring example projects"));
     }
   }
 }
@@ -611,7 +698,9 @@ void AppCoordinator::whenRestoreExamplesAsked()
 
 void AppCoordinator::whenAboutAsked()
 {
-  AboutDialog AboutDlg(&m_MainWindow, m_Actions.getAction("HelpOnlineWeb"),m_Actions.getAction("HelpEmail"));
+  AboutDialog AboutDlg(&m_MainWindow,
+                       m_Actions.getAction("HelpOnlineWeb"),
+                       m_Actions.getAction("HelpEmail"));
 
   AboutDlg.exec();
 }
@@ -635,3 +724,15 @@ void AppCoordinator::disableSave()
 {
   m_Actions.getAction("ProjectSave")->setEnabled(false);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::saveDockArea(Qt::DockWidgetArea Area)
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setDockPosition(Area);
+}
+
+

@@ -500,4 +500,29 @@ BOOST_AUTO_TEST_CASE(test_MarketplacesManagement)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(test_DockToolbarPositionsManagement)
+{
+  QString CFile = QString(CONFIGTESTS_OUTPUT_DATA_DIR.c_str()) + "/" + QString(openfluid::config::DEFAULT_CONFIGFILE.c_str());
+  if (QFile::exists(CFile)) QFile::remove(CFile);
+
+  openfluid::guicommon::PreferencesManager::setFileName(CFile);
+  openfluid::guicommon::PreferencesManager* PrefMgr = openfluid::guicommon::PreferencesManager::getInstance();
+
+  PrefMgr->setToolBarPosition(Qt::LeftToolBarArea);
+  PrefMgr->setDockPosition(Qt::BottomDockWidgetArea);
+  BOOST_CHECK_EQUAL(PrefMgr->getToolBarPosition(),Qt::LeftToolBarArea);
+  BOOST_CHECK_EQUAL(PrefMgr->getDockPosition(),Qt::BottomDockWidgetArea);
+
+  PrefMgr->setToolBarPosition(Qt::BottomToolBarArea);
+  PrefMgr->setDockPosition(Qt::RightDockWidgetArea);
+  BOOST_CHECK_EQUAL(PrefMgr->getToolBarPosition(),Qt::BottomToolBarArea);
+  BOOST_CHECK_EQUAL(PrefMgr->getDockPosition(),Qt::RightDockWidgetArea);
+
+  delete PrefMgr;
+}
+
 

@@ -83,7 +83,7 @@ HomeModule::~HomeModule()
 // =====================================================================
 
 
-QWidget* HomeModule::getWidget(QWidget* Parent)
+QWidget* HomeModule::getMainWidget(QWidget* Parent)
 {
   if (mp_Widget != NULL)
     delete mp_Widget;
