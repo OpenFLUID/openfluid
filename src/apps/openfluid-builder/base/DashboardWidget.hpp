@@ -46,110 +46,53 @@
 */
 
 /**
-  \file AppCoordinator.hpp
+  \file DashboardWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __APPCOORDINATOR_HPP__
-#define __APPCOORDINATOR_HPP__
+#ifndef __DASHBOARDWIDGET_HPP__
+#define __DASHBOARDWIDGET_HPP__
 
-#include <QObject>
-#include <QDockWidget>
 
-#include "NewProjectDialog.hpp"
+#include "ProjectCentral.hpp"
 
-class MainWindow;
-class AppActions;
-class AbstractModule;
+#include <QWidget>
+#include <QPixmap>
 
-class AppCoordinator : public QObject
+
+namespace Ui
 {
-  Q_OBJECT
+  class DashboardWidget;
+}
+
+
+class DashboardWidget : public QWidget
+{
+  Q_OBJECT;
 
   private:
 
-    MainWindow& m_MainWindow;
-    AppActions& m_Actions;
-    QDockWidget* mp_DockWidget;
+    Ui::DashboardWidget* ui;
 
-    AbstractModule* mp_CurrentModule;
+    const ProjectCentral* mp_PrjCentral;
 
-    void unsetCurrentModule();
+    std::map<ProjectPartCheckInfos::StatusInfo,QPixmap> m_StatusPixmaps;
 
-    void setCurrentModule(AbstractModule* Module);
+  public slots:
 
-    void setProjectModule(const QString& ProjectPath);
-
-    void updateRecentsList();
-
-    bool createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
-                       NewProjectDialog::ImportType IType, const QString& ISource);
-
-    void openProject(const QString& Name, const QString& Path);
-
-    bool closeProject();
-
-
-  private slots:
-
-    void whenQuitAsked();
-
-    void whenNewAsked();
-
-    void whenOpenAsked();
-
-    void whenOpenRecentAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenCloseAsked();
-
-    void whenPropertiesAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRefreshAsked();
-
-    void whenRunAsked();
-
-    void whenViewDashboardAsked();
-
-    void whenViewRestoreAsked();
-
-    void whenMarketAsked();
-
-    void whenOnlineWebAsked();
-
-    void whenOnlineCommunityAsked();
-
-    void whenOpenExampleAsked();
-
-    void whenEmailAsked();
-
-    void whenRestoreExamplesAsked();
-
-    void whenAboutAsked();
-
-    void enableSave();
-
-    void disableSave();
-
-    void saveDockArea(Qt::DockWidgetArea Area);
+    void update();
 
   public:
 
-    AppCoordinator(MainWindow& MainWin, AppActions& Actions);
+    DashboardWidget(QWidget* Parent, const ProjectCentral* PrjCentral);
 
-    ~AppCoordinator();
-
-    void setHomeModule();
+    ~DashboardWidget();
 
 };
 
 
-#endif /* __APPCOORDINATOR_HPP__ */
+
+#endif /* __DASHBOARDWIDGET_HPP__ */

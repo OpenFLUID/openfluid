@@ -61,6 +61,9 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
 
+#include "ProjectCheck.hpp"
+
+
 
 class ProjectCentral : QObject
 {
@@ -72,6 +75,8 @@ class ProjectCentral : QObject
 
     openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedFXDesc;
 
+    ProjectCheckInfos m_CheckInfos;
+
     openfluid::base::IOListener m_IOListener;
 
     void deleteData();
@@ -80,13 +85,18 @@ class ProjectCentral : QObject
 
   public:
 
-   ProjectCentral(QString PrjPath = "");
+    ProjectCentral(QString PrjPath = "");
 
    ~ProjectCentral();
 
    void run();
 
+   void check();
+
    bool save();
+
+   const ProjectCheckInfos* getCheckInfos() const
+   {  return &m_CheckInfos; }
 
    openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDescriptors()
    { return *mp_AdvancedFXDesc; }
