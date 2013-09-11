@@ -61,11 +61,17 @@
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
 #include "AppActions.hpp"
-
+#include "ExtensionsRegistry.hpp"
 
 
 AppActions::AppActions():
-  mp_SimulationMenu(NULL), mp_RecentProjectsMenu(NULL), mp_MainToolbar(NULL)
+  mp_SimulationMenu(NULL),
+  mp_ExtensionsMenu(NULL),
+  mp_SpatialExtensionsMenu(NULL), mp_ModelExtensionsMenu(NULL),
+  mp_ResultsExtensionsMenu(NULL), mp_OtherExtensionsMenu(NULL),
+  mp_ViewMenu(NULL),
+  mp_RecentProjectsMenu(NULL),
+  mp_MainToolbar(NULL)
 {
   createActions();
 
@@ -94,14 +100,14 @@ void AppActions::updateRecentProjectsActions()
 
   int RFCount = qMin(int(RPList.size()),openfluid::guicommon::PreferencesManager::RecentProjectsLimit);
 
-  for (unsigned int i=0; i<RFCount;i++)
+  for (int i=0; i<RFCount;i++)
   {
     m_RecentProjectsActions[i]->setText(RPList[i].Name+" - " +RPList[i].Path);
     m_RecentProjectsActions[i]->setData(RPList[i].Path);
     m_RecentProjectsActions[i]->setVisible(true);
   }
 
-  for (unsigned int i=RFCount;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+  for (int i=RFCount;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
     m_RecentProjectsActions[i]->setVisible(false);
 }
 
@@ -138,6 +144,7 @@ void AppActions::createActions()
 
   m_Actions["ProjectQuit"] = new QAction(tr("Quit"), this);
   m_Actions["ProjectQuit"]->setShortcuts(QKeySequence::Quit);
+  m_Actions["ProjectQuit"]->setMenuRole(QAction::QuitRole);
 
 
   // Edit menu
@@ -151,6 +158,7 @@ void AppActions::createActions()
   m_Actions["EditPaste"]->setShortcuts(QKeySequence::Paste);
 
   m_Actions["EditPreferences"] = new QAction(tr("Preferences..."), this);
+  m_Actions["EditPreferences"]->setMenuRole(QAction::PreferencesRole);
 
 
   //Simulation menu
@@ -186,6 +194,7 @@ void AppActions::createActions()
   m_Actions["HelpExamplesRestore"] = new QAction(tr("Reinstall examples projects"), this);
 
   m_Actions["HelpAbout"] = new QAction(tr("About"), this);
+  m_Actions["HelpAbout"]->setMenuRole(QAction::AboutRole);
 
 
 
@@ -194,7 +203,7 @@ void AppActions::createActions()
   m_Actions["MarketAccess"]->setIcon(QIcon(":/icons/market.png"));
 
 
-  for (unsigned int i=0; i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+  for (int i=0; i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
   {
     m_RecentProjectsActions.push_back(new QAction(this));
     m_RecentProjectsActions.back()->setVisible(false);
@@ -270,6 +279,87 @@ void AppActions::setHomeMode()
 // =====================================================================
 
 
+void AppActions::updateExtensionsActionsAndMenus()
+{
+  ExtensionsRegistry* ExtReg = ExtensionsRegistry::getInstance();
+
+  ExtensionsRegistry::ExtensionsByName_t* Extensions = ExtReg->getRegisteredExtensions();
+
+  ExtensionsRegistry::ExtensionsByName_t::iterator it;
+  ExtensionsRegistry::ExtensionsByName_t::iterator itb = Extensions->begin();
+  ExtensionsRegistry::ExtensionsByName_t::iterator ite = Extensions->end();
+
+  mp_SpatialExtensionsMenu->clear();
+  mp_ModelExtensionsMenu->clear();
+  mp_ResultsExtensionsMenu->clear();
+  mp_OtherExtensionsMenu->clear();
+
+  for (it = itb; it!= ite; ++it)
+  {
+    m_ExtensionsActions[(*it).first] = new QAction((*it).second->Signature->MenuText,this);
+
+    // associate extension ID with QAction for use when action is triggered and launch the correct extension
+    m_ExtensionsActions[(*it).first]->setData(QString((*it).first.c_str()));
+
+    // set extension in the correct menu, taking into account the extension category
+    if ((*it).second->Signature->Category == openfluid::builderext::CAT_SPATIAL)
+    {
+      mp_SpatialExtensionsMenu->addAction(m_ExtensionsActions[(*it).first]);
+    }
+    else if ((*it).second->Signature->Category == openfluid::builderext::CAT_MODEL)
+    {
+      mp_ModelExtensionsMenu->addAction(m_ExtensionsActions[(*it).first]);
+    }
+    else if ((*it).second->Signature->Category == openfluid::builderext::CAT_RESULTS)
+    {
+      mp_ResultsExtensionsMenu->addAction(m_ExtensionsActions[(*it).first]);
+    }
+    else
+    {
+      mp_OtherExtensionsMenu->addAction(m_ExtensionsActions[(*it).first]);
+    }
+  }
+
+
+  // fill empty menus with a "none" action
+
+  QAction *NoneAction;
+
+  if (mp_SpatialExtensionsMenu->isEmpty())
+  {
+    NoneAction = new QAction(tr("(none)"),this);
+    NoneAction->setEnabled(false);
+    mp_SpatialExtensionsMenu->addAction(NoneAction);
+  }
+
+  if (mp_ModelExtensionsMenu->isEmpty())
+  {
+    NoneAction = new QAction(tr("(none)"),this);
+    NoneAction->setEnabled(false);
+    mp_ModelExtensionsMenu->addAction(NoneAction);
+  }
+
+  if (mp_ResultsExtensionsMenu->isEmpty())
+  {
+    NoneAction = new QAction(tr("(none)"),this);
+    NoneAction->setEnabled(false);
+    mp_ResultsExtensionsMenu->addAction(NoneAction);
+  }
+
+  if (mp_OtherExtensionsMenu->isEmpty())
+  {
+    NoneAction = new QAction(tr("(none)"),this);
+    NoneAction->setEnabled(false);
+    mp_OtherExtensionsMenu->addAction(NoneAction);
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void AppActions::createMenus(MainWindow& MainWin)
 {
   QMenu* Menu;
@@ -279,8 +369,9 @@ void AppActions::createMenus(MainWindow& MainWin)
   Menu->addAction(getAction("ProjectNew"));
   Menu->addAction(getAction("ProjectOpen"));
 
+  // recents
   mp_RecentProjectsMenu = Menu->addMenu("Open recent");
-  for (unsigned int i=0;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+  for (int i=0;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
     mp_RecentProjectsMenu->addAction(m_RecentProjectsActions[i]);
 
   Menu->addAction(getAction("ProjectSave"));
@@ -304,11 +395,20 @@ void AppActions::createMenus(MainWindow& MainWin)
   mp_SimulationMenu->addSeparator();
   mp_SimulationMenu->addAction(getAction("SimulationRun"));
 
+
   mp_ViewMenu = MainWin.menuBar()->addMenu(tr("&View"));
   mp_ViewMenu->addAction(getAction("ViewDashboard"));
   mp_ViewMenu->addAction(getAction("ViewRestore"));
 
+
   mp_ExtensionsMenu = MainWin.menuBar()->addMenu(tr("&Extensions"));
+
+  mp_SpatialExtensionsMenu = mp_ExtensionsMenu->addMenu(tr("Spatial domain"));
+  mp_ModelExtensionsMenu = mp_ExtensionsMenu->addMenu(tr("Model"));
+  mp_ResultsExtensionsMenu = mp_ExtensionsMenu->addMenu(tr("Results"));
+  mp_OtherExtensionsMenu = mp_ExtensionsMenu->addMenu(tr("Other"));
+
+
 
   Menu = MainWin.menuBar()->addMenu(tr("&Help"));
   SubMenu = Menu->addMenu(tr("OpenFLUID online"));
@@ -322,6 +422,8 @@ void AppActions::createMenus(MainWindow& MainWin)
   Menu->addAction(getAction("HelpAbout"));
 
   updateRecentProjectsActions();
+
+  updateExtensionsActionsAndMenus();
 }
 
 
@@ -365,6 +467,7 @@ void AppActions::createToolbar(MainWindow& MainWin)
   MainWin.addToolBar(openfluid::guicommon::PreferencesManager::getInstance()->getToolBarPosition(),
                      mp_MainToolbar);
 }
+
 
 
 

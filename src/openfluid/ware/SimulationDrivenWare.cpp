@@ -55,12 +55,10 @@
 
 
 #include <openfluid/ware/SimulationDrivenWare.hpp>
+#include <openfluid/config.hpp>
 
 namespace openfluid { namespace ware {
 
-
-// =====================================================================
-// =====================================================================
 
 
 void SimulationDrivenWare::linkToSimulation(const openfluid::base::SimulationStatus* SimStatus)
@@ -255,6 +253,43 @@ void SimulationDrivenWare::OPENFLUID_RaiseError(const std::string& Source, const
     throw WareException(OPENFLUID_GetWareID(),m_WareType,Source,mp_SimStatus->getCurrentTimeIndex(),Msg);
   else
     throw WareException(OPENFLUID_GetWareID(),m_WareType,Source,Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationDrivenWare::initializeWare(const WareID_t& ID)
+{
+  if (m_Initialized) return;
+
+  PluggableWare::initializeWare(ID);
+
+  // initialize loggers
+  std::string LogFile;
+  std::string LogDir;
+  std::string LogFileSuffix = "_undefined";
+
+  if (m_WareType == SIMULATOR) LogFileSuffix = openfluid::config::SIMULATORS_PLUGINS_SUFFIX;
+  if (m_WareType == OBSERVER) LogFileSuffix = openfluid::config::OBSERVERS_PLUGINS_SUFFIX;
+
+  OPENFLUID_GetRunEnvironment("dir.output",LogDir);
+  LogFile = boost::filesystem::path(LogDir + "/" + OPENFLUID_GetWareID() + LogFileSuffix + ".log").string();
+
+  OPENFLUID_Logger.open(LogFile.c_str());
+
+  m_Initialized = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulationDrivenWare::finalizeWare()
+{
+  OPENFLUID_Logger.close();
 }
 
 

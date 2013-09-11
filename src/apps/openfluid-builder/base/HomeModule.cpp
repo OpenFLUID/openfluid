@@ -61,7 +61,6 @@
 
 #include <QApplication>
 
-#include <iostream>
 
 HomeModule::HomeModule(const AppActions* Actions):
 AbstractModule(), mp_Widget(NULL), mp_Actions(Actions)
@@ -179,6 +178,16 @@ void HomeModule::whenPreferencesAsked()
 
 
 void HomeModule::whenRunAsked()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeModule::whenExtensionAsked(const QString& /*ID*/)
 {
 
 }

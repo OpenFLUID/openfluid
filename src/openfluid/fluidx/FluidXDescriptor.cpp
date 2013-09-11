@@ -62,6 +62,8 @@
 #include <QDomDocument>
 #include <QFile>
 
+#include <fstream>
+
 namespace openfluid {
 namespace fluidx {
 

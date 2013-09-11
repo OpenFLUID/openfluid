@@ -64,7 +64,6 @@
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
 
-#define QT_NO_KEYWORDS
 #include <QDomElement>
 
 

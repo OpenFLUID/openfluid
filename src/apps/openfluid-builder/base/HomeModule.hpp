@@ -98,6 +98,8 @@ class HomeModule : public AbstractModule
 
     void whenRunAsked();
 
+    void whenExtensionAsked(const QString& ID);
+
     void whenMarketAsked();
 
     void whenRefreshAsked();

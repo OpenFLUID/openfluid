@@ -166,7 +166,7 @@ bool ProjectCentral::save()
   QDir InputPath(InputDir);
 
   QStringList FluidXFileToRemove;
-  FluidXFileToRemove = InputPath.entryList(QStringList("*.fluidx"),QDir::Dirs | QDir::NoDotAndDotDot);
+  FluidXFileToRemove = InputPath.entryList(QStringList("*.fluidx"),QDir::Files | QDir::NoDotAndDotDot);
 
   for (int i=0;i<FluidXFileToRemove.size();++i)
      InputPath.remove(FluidXFileToRemove[i]);

@@ -119,12 +119,18 @@ class ProjectModule : public AbstractModule
 
     void runconfigChanged();
 
+    void simulationStarted();
+
+    void simulationFinished();
+
 
   private slots:
 
+    void releaseModelessExtension();
+
     void dispatchChanges();
 
-    //void dispatchChangeFromExtension();
+    void dispatchChangesFromExtension();
 
 
   public:
@@ -154,6 +160,8 @@ class ProjectModule : public AbstractModule
     void whenPreferencesAsked();
 
     void whenRunAsked();
+
+    void whenExtensionAsked(const QString& ID);
 
     void whenMarketAsked();
 

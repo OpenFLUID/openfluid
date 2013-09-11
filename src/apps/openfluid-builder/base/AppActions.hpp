@@ -58,6 +58,8 @@
 
 #include <QAction>
 
+#include <openfluid/ware/PluggableWare.hpp>
+
 #include "MainWindow.hpp"
 
 class AppActions : QObject
@@ -71,9 +73,19 @@ class AppActions : QObject
 
     std::vector<QAction*> m_RecentProjectsActions;
 
+    std::map<openfluid::ware::WareID_t,QAction*> m_ExtensionsActions;
+
     QMenu* mp_SimulationMenu;
 
     QMenu* mp_ExtensionsMenu;
+
+    QMenu* mp_SpatialExtensionsMenu;
+
+    QMenu* mp_ModelExtensionsMenu;
+
+    QMenu* mp_ResultsExtensionsMenu;
+
+    QMenu* mp_OtherExtensionsMenu;
 
     QMenu* mp_ViewMenu;
 
@@ -97,6 +109,11 @@ class AppActions : QObject
       return m_RecentProjectsActions;
     }
 
+    std::map<openfluid::ware::WareID_t,QAction*>& getExtensionsActions()
+    {
+      return m_ExtensionsActions;
+    }
+
     void setProjectMode();
 
     void setHomeMode();
@@ -106,6 +123,8 @@ class AppActions : QObject
     void createToolbar(MainWindow& MainWin);
 
     void updateRecentProjectsActions();
+
+    void updateExtensionsActionsAndMenus();
 
 };
 

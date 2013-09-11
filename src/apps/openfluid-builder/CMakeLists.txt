@@ -12,7 +12,7 @@ CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.h
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 
-INCLUDE_DIRECTORIES(base datastore model monitoring spatial outputs runconfig)
+INCLUDE_DIRECTORIES(base datastore model monitoring spatial outputs runconfig extensions)
   
 
 ### BASE #
@@ -26,7 +26,7 @@ SET(BUILDER_BASE_CPP base/AppTools.cpp base/ClickableLabel.cpp
                      base/NewProjectDialog.cpp
                      base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
                      base/AboutDialog.cpp
-                     base/OpenExampleProjectDialog.cpp
+                     base/OpenExampleProjectDialog.cpp                     
                      )
                      
 SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
@@ -120,6 +120,21 @@ QT4_WRAP_UI(BUILDER_OUTPUTS_UI outputs/OutputsWidget.ui
                                  )
 
 
+### EXTENSION #
+
+SET(BUILDER_EXTENSIONS_CPP extensions/ExtensionPluginsManager.cpp 
+                           extensions/ExtensionContainer.cpp
+                           extensions/ExtensionsRegistry.cpp
+                          )
+
+SET(BUILDER_EXTENSIONS_HPP extensions/ExtensionPluginsManager.hpp 
+                           extensions/ExtensionContainer.hpp
+                           extensions/ExtensionsRegistry.hpp
+                           )
+
+QT4_WRAP_UI(BUILDER_EXTENSIONS_UI )
+
+
 
 QT4_ADD_RESOURCES(BUILDER_RC resources/openfluidbuilder.qrc)
 
@@ -131,6 +146,7 @@ ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP
                                           ${BUILDER_MONITORING_CPP} ${BUILDER_MONITORING_HPP} ${BUILDER_MONITORING_UI}
                                           ${BUILDER_RUNCONFIG_CPP} ${BUILDER_RUNCONFIG_HPP} ${BUILDER_RUNCONFIG_UI}
                                           ${BUILDER_OUTPUTS_CPP} ${BUILDER_OUTPUTS_HPP} ${BUILDER_OUTPUTS_UI}
+                                          ${BUILDER_EXTENSIONS_CPP} ${BUILDER_EXTENSIONS_HPP} ${BUILDER_EXTENSIONS_UI}
                                           ${BUILDER_RC})
 
 
@@ -177,4 +193,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-guicommon
                       openfluid-builder-main
                       openfluid-fluidx)
-                                            
+                                   
+                                   
+IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
+  ADD_SUBDIRECTORY(extensions/tests)
+ENDIF()         

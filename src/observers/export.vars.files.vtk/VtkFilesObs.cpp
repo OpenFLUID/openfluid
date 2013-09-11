@@ -113,7 +113,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.vtk")
   DECLARE_VERSION(openfluid::config::FULL_VERSION);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-END_SIMULATOR_SIGNATURE
+END_OBSERVER_SIGNATURE
 
 
 // =====================================================================

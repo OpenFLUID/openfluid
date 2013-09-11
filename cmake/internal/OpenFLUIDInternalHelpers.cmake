@@ -139,7 +139,7 @@ ENDMACRO()
 
 
 # Macro for compiling a builder extension
-MACRO(OPNFLD_ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
+MACRO(OPNFLD_ADD_BUILDER_EXTENSION_GTK EXT_NAME EXT_SRCDIR EXT_BINDIR)
 
   FILE(GLOB EXT_CPP ${EXT_SRCDIR}/*.cpp)
   
@@ -166,6 +166,47 @@ MACRO(OPNFLD_ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
                         openfluid-guicommon
                         ${LibXML2_LIBRARIES}  
                         ${GTKMM_LIBRARIES})
+    
+ENDMACRO()
+
+
+###########################################################################
+
+
+MACRO(OPNFLD_ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
+
+  FILE(GLOB EXT_CPP ${EXT_SRCDIR}/*.cpp)  
+  FILE(GLOB EXT_UIFILES ${EXT_SRCDIR}/*.ui)
+  FILE(GLOB EXT_RCFILES ${EXT_SRCDIR}/*.qrc)
+    
+  QT4_WRAP_UI(EXT_UI ${EXT_UIFILES})
+  QT4_ADD_RESOURCES(EXT_RC ${EXT_RCFILES})
+  
+  ADD_LIBRARY(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} MODULE ${EXT_CPP} ${EXT_UI} ${EXT_RC})
+  
+  INCLUDE_DIRECTORIES(${QT_INCLUDES})
+  
+  SET_TARGET_PROPERTIES(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} PROPERTIES 
+                        PREFIX "" 
+                        SUFFIX "${PLUGINS_BINARY_EXTENSION}"
+                        LIBRARY_OUTPUT_DIRECTORY "${EXT_BINDIR}")
+
+  # Fix for win32 compatibility                                              
+  IF(WIN32)
+    SET_TARGET_PROPERTIES(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} PROPERTIES LINK_FLAGS "-shared")                                                
+  ENDIF(WIN32)
+                                              
+                                                
+  TARGET_LINK_LIBRARIES(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} 
+                        openfluid-core
+                        openfluid-base 
+                        openfluid-tools                        
+                        openfluid-ware
+                        openfluid-guicommon
+                        openfluid-builderext                        
+                        ${QT_QTCORE_LIBRARIES}
+                        ${QT_QTGUI_LIBRARIES}                      
+                       )
     
 ENDMACRO()
 

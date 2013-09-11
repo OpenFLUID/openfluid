@@ -61,6 +61,7 @@
 
 
 #include "AppTools.hpp"
+#include "ExtensionPluginsManager.hpp"
 
 #include "ui_PreferencesDialog.h"
 #include "PreferencesDialog.hpp"
@@ -186,17 +187,21 @@ void PreferencesDialog::initialize()
   ui->LangComboBox->setCurrentIndex(ui->LangComboBox->findText(PrefsMan->getLang()));
   ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
 
+
   // Paths
   ui->WorkDirEdit->setText(PrefsMan->getWorkdir());
   mp_SimSearchPaths->initialize(PrefsMan->getExtraSimulatorsPaths(),StringVectorToQStringList(RunEnv->getDefaultSimulatorsPluginsPaths()));
   mp_ObsSearchPaths->initialize(PrefsMan->getExtraObserversPaths(),StringVectorToQStringList(RunEnv->getDefaultObserversPluginsPaths()));
-  // TODO Search paths for builder extensions
+  mp_BExtSearchPaths->initialize(PrefsMan->getExtraExtensionsPaths(),
+                                 StringVectorToQStringList(ExtensionPluginsManager::getInstance()->getPluginsStandardSearchPaths()));
+
 
   // Simulations
   ui->DeltaTSpinBox->setValue(PrefsMan->getDeltaT());
 
   ui->BeginDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getBegin(),"yyyy-MM-dd HH:mm:ss"));
   ui->EndDateEdit->setDateTime(QDateTime::fromString(PrefsMan->getEnd(),"yyyy-MM-dd HH:mm:ss"));
+
 
   // Market
   updateMarketplacesList();
