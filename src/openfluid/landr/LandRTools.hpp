@@ -191,17 +191,29 @@ class DLLEXPORT LandRTools
 
 
     /**
-         * @brief Split a geos::geom::LineString by a geos::geom Point
-         *
-         * @param Entity An existent geos::geom::LineString.
-         * @param Point A geos::geom::Point.
-         * @param SnapTolerance The threshold distance used to find Point on Line.
-         * @return a vector of geos::geom::LineString,
-         *  or empty vector if splitting operation is null.
-         */
-     static std::vector<geos::geom::LineString*> splitLineString(geos::geom::LineString& Entity, geos::geom::Point& Point,double SnapTolerance);
+     * @brief Split a geos::geom::LineString by a geos::geom Point
+     *
+     * @param Entity An existent geos::geom::LineString.
+     * @param Point A geos::geom::Point.
+     * @param SnapTolerance The threshold distance used to find Point on Line.
+     * @return a vector of geos::geom::LineString,
+     *  or empty vector if splitting operation is null.
+     */
+    static std::vector<geos::geom::LineString*> splitLineStringByPoint(geos::geom::LineString& Entity, geos::geom::Point& Point,double SnapTolerance);
 
 
+    /**
+     * @brief Recursively Split a geos::geom::LineString by a std::vector of geos::geom Points
+     *
+     * @param Entity An existent geos::geom::LineString.
+     * @param Point A std::vector of geos::geom::Points.
+     * @param SnapTolerance The threshold distance used to find Point on Line.
+     * @param vLines the resulting vector of geos::geom::LineString splitted.
+     */
+
+
+    static void splitLineStringByPoints(geos::geom::LineString& Entity,std::vector<geos::geom::Point*>&Points,
+                                         double SnapTolerance,std::vector<geos::geom::LineString*>&vLines);
 
 
 
