@@ -46,66 +46,59 @@
 */
 
 /**
-  \file HomeModule.hpp
+  \file PluggableModalExtension.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
+#ifndef __PLUGGABLEMODALEXTENSION_HPP__
+#define __PLUGGABLEMODALEXTENSION_HPP__
 
-#include "AbstractModule.hpp"
-#include "HomeWidget.hpp"
+#include <QDialog>
 
-class HomeModule : public AbstractModule
+#include <openfluid/builderext/PluggableBuilderExtension.hpp>
+
+
+
+namespace openfluid { namespace builderext {
+
+class PluggableModalExtension : public QDialog, public PluggableBuilderExtension
 {
   Q_OBJECT;
 
-  private:
 
-     HomeWidget* mp_Widget;
+  signals:
 
-     const AppActions* mp_Actions;
+    void fluidxChanged();
+
+
+  public slots:
+
+    virtual void update();
+
+    virtual void manageSimulationStart();
+
+    virtual void manageSimulationFinish();
+
 
   public:
 
-    HomeModule(const AppActions* Actions);
+    PluggableModalExtension():
+      QDialog(NULL), PluggableBuilderExtension()
+    { }
 
-    ~HomeModule();
 
-    QWidget* getMainWidget(QWidget* Parent);
+    ~PluggableModalExtension()
+    {  }
 
-    QWidget* getDockWidget(QWidget* /*Parent*/)
-    { return NULL; }
 
-    bool whenQuitAsked();
-
-    bool whenNewAsked();
-
-    bool whenOpenAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenPropertiesAsked();
-
-    bool whenCloseAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRunAsked();
-
-    void whenExtensionAsked(const QString& ID);
-
-    void whenMarketAsked();
-
-    void whenRefreshAsked();
-
-    bool whenOpenExampleAsked();
+    virtual bool isReady() const
+    { return true; };
 };
 
+} } // namespaces
 
-#endif /* __HOMEMODULE_HPP__ */
+
+#endif /* __PLUGGABLEMODALEXTENSION_HPP__ */

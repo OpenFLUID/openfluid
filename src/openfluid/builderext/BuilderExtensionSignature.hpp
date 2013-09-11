@@ -46,125 +46,97 @@
 */
 
 /**
-  \file PluggableBuilderExtension.hpp
+  \file BuilderExtensionSignature.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-
-#ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
-#define __PLUGGABLEBUILDEREXTENSION_HPP__
-
+#ifndef __BUILDEREXTENSIONSIGNATURE_HPP__
+#define __BUILDEREXTENSIONSIGNATURE_HPP__
 
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/builderext/BuilderExtensionSignature.hpp>
+#include <openfluid/ware/WareSignature.hpp>
+#include <openfluid/config.hpp>
+
+#include <QString>
+
+/**
+  Macro for the beginning of definition of signature hook
+*/
+#define BEGIN_BUILDEREXT_SIGNATURE(id,exttype) \
+  openfluid::builderext::BuilderExtensionSignature* GetWareSignature() \
+  { \
+    openfluid::builderext::BuilderExtensionSignature* Signature = new openfluid::builderext::BuilderExtensionSignature(); \
+    Signature->setABIVersion(openfluid::config::FULL_VERSION); \
+    Signature->ID = (id); \
+    Signature->Type = (exttype);
 
 
 /**
-  Macro for declaration of builder extension and signature hooks
+  Macro for the end of definition of signature hook
 */
-#define DECLARE_BUILDEREXT_PLUGIN \
-  extern "C" \
-  { \
-    DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetWareBody(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* GetWareSignature(); \
+#define END_BUILDEREXT_SIGNATURE \
+    return Signature; \
   }
-
-
-
-
-// =====================================================================
-// =====================================================================
 
 
 /**
-  Macro for definition of builder extension class hook
-  @param[in] pluginclassname The name of the class to instantiate
+  Macro for declaration of a Builder extension configuration parameter
+  @param[in] name name of the parameter
+  @param[in] description description of the parameter
 */
-#define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
-  std::string GetWareABIVersion() \
-  { \
-    return std::string(openfluid::config::FULL_VERSION); \
-  } \
-  \
-  openfluid::builderext::PluggableBuilderExtension* GetWareBody() \
-  { \
-    return new pluginclassname(); \
-  }
+#define DECLARE_CONFIGURATION_PARAM(name,description) \
+  Signature->ConfigParameters[(name)] = (description);
+
+
+/**
+  Macro for declaration of the Builder extension category
+*/
+#define DECLARE_CATEGORY(category) Signature->Category = (category);
+
+
+/**
+  Macro for declaration of the Builder extension menu text
+*/
+#define DECLARE_MENUTEXT(menutext) Signature->MenuText = (menutext);
+
 
 
 // =====================================================================
 // =====================================================================
+
+#include <QString>
 
 
 namespace openfluid { namespace builderext {
 
 
-class PluggableBuilderExtension : public openfluid::ware::PluggableWare
+enum ExtensionCategory { CAT_SPATIAL, CAT_MODEL, CAT_RESULTS, CAT_OTHER };
+
+enum ExtensionType { TYPE_UNKNOWN, TYPE_MODAL, TYPE_MODELESS, TYPE_WORKSPACE};
+
+
+class BuilderExtensionSignature : public openfluid::ware::WareSignature
 {
-
-  protected:
-
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
-
-    openfluid::ware::WareParams_t m_Config;
-
   public:
 
-    PluggableBuilderExtension() : PluggableWare(openfluid::ware::PluggableWare::OTHER)
-    {
+    ExtensionCategory Category;
 
-    }
+    ExtensionType Type;
 
+    QString MenuText;
 
-    virtual ~PluggableBuilderExtension()
-    {
-      finalizeWare();
-    }
+    std::map<QString,QString> ConfigParameters;
 
 
-    /**
-      Internally called by the framework.
-    */
-    void initializeWare(const openfluid::ware::WareID_t& ID)
-    {
-      if (m_Initialized) return;
+    BuilderExtensionSignature():
+      Category(CAT_OTHER), Type(TYPE_UNKNOWN)
+    {  };
 
-      PluggableWare::initializeWare(ID);
-    }
-
-
-    virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)
-    { m_Config = Config; }
-
-
-    void setFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
-    { mp_AdvancedDesc = Desc; }
-
-
-    openfluid::ware::WareID_t getID() const
-    { return OPENFLUID_GetWareID(); }
-
-
-    virtual bool isReady() const = 0;
 };
-
-
-// =====================================================================
-// =====================================================================
-
-
-typedef PluggableBuilderExtension* (*GetPluggableBuilderExtensionBodyProc)();
-
-typedef BuilderExtensionSignature* (*GetPluggableBuilderExtensionSignatureProc)();
-
 
 } } // namespaces
 
-
-#endif /* __PLUGGABLEBUILDEREXTENSION_HPP__ */
+#endif /* __BUILDEREXTENSIONSIGNATURE_HPP__ */

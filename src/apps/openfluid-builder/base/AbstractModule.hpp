@@ -57,6 +57,8 @@
 #define __ABSTRACTMODULE_HPP__
 
 #include <QWidget>
+#include <QString>
+
 
 class AbstractModule : public QObject
 {
@@ -99,6 +101,8 @@ class AbstractModule : public QObject
     virtual void whenPreferencesAsked() = 0;
 
     virtual void whenRunAsked() = 0;
+
+    virtual void whenExtensionAsked(const QString& ID) = 0;
 
     virtual void whenMarketAsked() = 0;
 

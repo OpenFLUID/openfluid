@@ -61,6 +61,8 @@
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
+#include "ExtensionsRegistry.hpp"
+
 
 BuilderApp::BuilderApp():
   m_Coordinator(m_MainWindow,m_Actions)
@@ -99,10 +101,17 @@ void BuilderApp::initialize()
   for (int i=0;i<ExtraPaths.size(); i++)
     openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
 
-  // TODO add extension extra paths
+
+  // Extensions
+
+  ExtraPaths = PrefsMgr->getExtraExtensionsPaths();
+  ExtensionPluginsManager::getInstance(ExtraPaths); // initialization parameterized with extra paths
+  ExtensionsRegistry::getInstance()->registerExtensions();
 
   m_Actions.createMenus(m_MainWindow);
   m_Actions.createToolbar(m_MainWindow);
+
+  m_Coordinator.connectExtensions();
 
   m_Coordinator.setHomeModule();
 }

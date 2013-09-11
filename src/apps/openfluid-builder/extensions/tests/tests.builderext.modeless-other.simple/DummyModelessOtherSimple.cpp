@@ -45,113 +45,48 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file PluggableBuilderExtension.hpp
-  \brief Header of ...
+  \file DummyModalSpatialSimple.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
+#include <QLabel>
 
-#ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
-#define __PLUGGABLEBUILDEREXTENSION_HPP__
-
-
-
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/builderext/BuilderExtensionSignature.hpp>
+#include <openfluid/builderext/PluggableModelessExtension.hpp>
 
 
-/**
-  Macro for declaration of builder extension and signature hooks
-*/
-#define DECLARE_BUILDEREXT_PLUGIN \
-  extern "C" \
-  { \
-    DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetWareBody(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* GetWareSignature(); \
-  }
-
-
+DECLARE_BUILDEREXT_PLUGIN
 
 
 // =====================================================================
 // =====================================================================
 
 
-/**
-  Macro for definition of builder extension class hook
-  @param[in] pluginclassname The name of the class to instantiate
-*/
-#define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
-  std::string GetWareABIVersion() \
-  { \
-    return std::string(openfluid::config::FULL_VERSION); \
-  } \
-  \
-  openfluid::builderext::PluggableBuilderExtension* GetWareBody() \
-  { \
-    return new pluginclassname(); \
-  }
+BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modeless-other.simple", openfluid::builderext::TYPE_MODELESS)
+
+  DECLARE_CATEGORY(openfluid::builderext::CAT_OTHER)
+  DECLARE_MENUTEXT("Other simple (Modeless)")
+
+END_BUILDEREXT_SIGNATURE
 
 
 // =====================================================================
 // =====================================================================
 
 
-namespace openfluid { namespace builderext {
-
-
-class PluggableBuilderExtension : public openfluid::ware::PluggableWare
+class DummyModelessOtherSimple : public openfluid::builderext::PluggableModelessExtension
 {
-
-  protected:
-
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
-
-    openfluid::ware::WareParams_t m_Config;
-
   public:
 
-    PluggableBuilderExtension() : PluggableWare(openfluid::ware::PluggableWare::OTHER)
+    DummyModelessOtherSimple() :
+      openfluid::builderext::PluggableModelessExtension()
     {
-
+      new QLabel("test",this);
     }
-
-
-    virtual ~PluggableBuilderExtension()
-    {
-      finalizeWare();
-    }
-
-
-    /**
-      Internally called by the framework.
-    */
-    void initializeWare(const openfluid::ware::WareID_t& ID)
-    {
-      if (m_Initialized) return;
-
-      PluggableWare::initializeWare(ID);
-    }
-
-
-    virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)
-    { m_Config = Config; }
-
-
-    void setFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
-    { mp_AdvancedDesc = Desc; }
-
-
-    openfluid::ware::WareID_t getID() const
-    { return OPENFLUID_GetWareID(); }
-
-
-    virtual bool isReady() const = 0;
 };
 
 
@@ -159,12 +94,4 @@ class PluggableBuilderExtension : public openfluid::ware::PluggableWare
 // =====================================================================
 
 
-typedef PluggableBuilderExtension* (*GetPluggableBuilderExtensionBodyProc)();
-
-typedef BuilderExtensionSignature* (*GetPluggableBuilderExtensionSignatureProc)();
-
-
-} } // namespaces
-
-
-#endif /* __PLUGGABLEBUILDEREXTENSION_HPP__ */
+DEFINE_BUILDEREXT_CLASS(DummyModelessOtherSimple)

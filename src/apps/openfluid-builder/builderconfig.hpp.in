@@ -65,13 +65,15 @@ const QString BUILDER_AUTHORS_TEXT = "@BUILDER_AUTHORS_TEXT@";
 const QString BUILDER_EXTSDIR = "@BUILDER_EXTSDIR@";
 const QString BUILDEREXT_INSTALL_PATH = "@BUILDEREXT_INSTALL_PATH@";
 
-const QString BUILDEREXTENSION_BINARY_EXTENSION = "@BUILDEREXTENSION_BINARY_EXTENSION@";
+const std::string BUILDEREXTS_PLUGINS_SUFFIX = "@OPENFLUID_BUILDEREXTS_SUFFIX@";
 
 const QString BUILDER_URL_WEBSITE = "http://www.openfluid-project.org";
 const QString BUILDER_URL_COMMUNITY = "http://www.openfluid-project.org/community";
 const QString BUILDER_URL_DEV = "https://github.com/OpenFLUID/";
 const QString BUILDER_URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
 const QString BUILDER_URL_EMAIL = "mailto:contact@openfluid-project.org";
+
+
 
 
 #endif /* __BUILDERCONFIG_HPP__ */

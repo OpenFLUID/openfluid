@@ -61,7 +61,7 @@
         </sizepolicy>
        </property>
        <property name="text">
-        <string>Clear contents</string>
+        <string>Delete contents</string>
        </property>
       </widget>
      </item>

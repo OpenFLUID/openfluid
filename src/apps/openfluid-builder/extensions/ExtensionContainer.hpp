@@ -46,66 +46,40 @@
 */
 
 /**
-  \file HomeModule.hpp
+  \file ExtensionContainer.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
+#ifndef __EXTENSIONCONTAINER_HPP__
+#define __EXTENSIONCONTAINER_HPP__
 
-#include "AbstractModule.hpp"
-#include "HomeWidget.hpp"
 
-class HomeModule : public AbstractModule
+#include <openfluid/builderext/PluggableBuilderExtension.hpp>
+
+
+class ExtensionContainer
 {
-  Q_OBJECT;
-
-  private:
-
-     HomeWidget* mp_Widget;
-
-     const AppActions* mp_Actions;
-
   public:
 
-    HomeModule(const AppActions* Actions);
+    bool Verified;
 
-    ~HomeModule();
+    bool Active;
 
-    QWidget* getMainWidget(QWidget* Parent);
+    std::string Filename;
 
-    QWidget* getDockWidget(QWidget* /*Parent*/)
-    { return NULL; }
+    openfluid::builderext::BuilderExtensionSignature* Signature;
 
-    bool whenQuitAsked();
+    openfluid::builderext::PluggableBuilderExtension* Body;
 
-    bool whenNewAsked();
+    openfluid::ware::WareParams_t Params;
 
-    bool whenOpenAsked();
+    ExtensionContainer();
 
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenPropertiesAsked();
-
-    bool whenCloseAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRunAsked();
-
-    void whenExtensionAsked(const QString& ID);
-
-    void whenMarketAsked();
-
-    void whenRefreshAsked();
-
-    bool whenOpenExampleAsked();
+    ~ExtensionContainer();
 };
 
 
-#endif /* __HOMEMODULE_HPP__ */
+#endif /* __EXTENSIONCONTAINER_HPP__ */

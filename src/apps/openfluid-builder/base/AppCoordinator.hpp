@@ -117,6 +117,8 @@ class AppCoordinator : public QObject
 
     void whenRunAsked();
 
+    void whenExtensionAsked();
+
     void whenViewDashboardAsked();
 
     void whenViewRestoreAsked();
@@ -146,6 +148,8 @@ class AppCoordinator : public QObject
     AppCoordinator(MainWindow& MainWin, AppActions& Actions);
 
     ~AppCoordinator();
+
+    void connectExtensions();
 
     void setHomeModule();
 

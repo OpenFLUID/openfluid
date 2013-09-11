@@ -46,66 +46,64 @@
 */
 
 /**
-  \file HomeModule.hpp
+  \file ExtensionsRegistry.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
+#ifndef __EXTENSIONSREGISTRY_HPP__
+#define __EXTENSIONSREGISTRY_HPP__
 
-#include "AbstractModule.hpp"
-#include "HomeWidget.hpp"
+#include <QWidget>
 
-class HomeModule : public AbstractModule
+#include "ExtensionPluginsManager.hpp"
+#include "ExtensionContainer.hpp"
+
+
+class ExtensionsRegistry
 {
-  Q_OBJECT;
+  public:
+
+    typedef std::map<openfluid::ware::WareID_t, ExtensionContainer*> ExtensionsByName_t;
 
   private:
 
-     HomeWidget* mp_Widget;
+    static ExtensionsRegistry* mp_Instance;
 
-     const AppActions* mp_Actions;
+    bool m_IsRegistered;
+
+    ExtensionsByName_t m_Extensions;
+
+    ExtensionsRegistry();
 
   public:
 
-    HomeModule(const AppActions* Actions);
+    static ExtensionsRegistry* getInstance();
 
-    ~HomeModule();
+    ~ExtensionsRegistry();
 
-    QWidget* getMainWidget(QWidget* Parent);
 
-    QWidget* getDockWidget(QWidget* /*Parent*/)
-    { return NULL; }
+    void registerExtensions();
 
-    bool whenQuitAsked();
+    ExtensionsByName_t* getRegisteredExtensions()
+    { return &m_Extensions; };
 
-    bool whenNewAsked();
+    openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);
 
-    bool whenOpenAsked();
+    void releaseExtension(const openfluid::ware::WareID_t& ID);
 
-    void whenSaveAsked();
+    void releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
 
-    void whenSaveAsAsked();
+    bool isExtensionRegistered(const openfluid::ware::WareID_t& ID);
 
-    void whenPropertiesAsked();
+    bool isExtensionActive(const openfluid::ware::WareID_t& ID)
+    { return (isExtensionRegistered(ID) && m_Extensions[ID]->Active); }
 
-    bool whenCloseAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRunAsked();
-
-    void whenExtensionAsked(const QString& ID);
-
-    void whenMarketAsked();
-
-    void whenRefreshAsked();
-
-    bool whenOpenExampleAsked();
+    openfluid::builderext::ExtensionType getExtensionType(const openfluid::ware::WareID_t& ID);
 };
 
 
-#endif /* __HOMEMODULE_HPP__ */
+
+#endif /* __EXTENSIONSREGISTRY_HPP__ */

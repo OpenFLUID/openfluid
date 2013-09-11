@@ -45,126 +45,45 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file PluggableBuilderExtension.hpp
-  \brief Header of ...
+  \file PluggableWorkspaceExtension.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-
-#ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
-#define __PLUGGABLEBUILDEREXTENSION_HPP__
-
-
-
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/builderext/BuilderExtensionSignature.hpp>
-
-
-/**
-  Macro for declaration of builder extension and signature hooks
-*/
-#define DECLARE_BUILDEREXT_PLUGIN \
-  extern "C" \
-  { \
-    DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetWareBody(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* GetWareSignature(); \
-  }
-
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-  Macro for definition of builder extension class hook
-  @param[in] pluginclassname The name of the class to instantiate
-*/
-#define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
-  std::string GetWareABIVersion() \
-  { \
-    return std::string(openfluid::config::FULL_VERSION); \
-  } \
-  \
-  openfluid::builderext::PluggableBuilderExtension* GetWareBody() \
-  { \
-    return new pluginclassname(); \
-  }
-
-
-// =====================================================================
-// =====================================================================
+#include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 
 
 namespace openfluid { namespace builderext {
 
 
-class PluggableBuilderExtension : public openfluid::ware::PluggableWare
+void PluggableWorkspaceExtension::update()
 {
 
-  protected:
-
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
-
-    openfluid::ware::WareParams_t m_Config;
-
-  public:
-
-    PluggableBuilderExtension() : PluggableWare(openfluid::ware::PluggableWare::OTHER)
-    {
-
-    }
-
-
-    virtual ~PluggableBuilderExtension()
-    {
-      finalizeWare();
-    }
-
-
-    /**
-      Internally called by the framework.
-    */
-    void initializeWare(const openfluid::ware::WareID_t& ID)
-    {
-      if (m_Initialized) return;
-
-      PluggableWare::initializeWare(ID);
-    }
-
-
-    virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)
-    { m_Config = Config; }
-
-
-    void setFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
-    { mp_AdvancedDesc = Desc; }
-
-
-    openfluid::ware::WareID_t getID() const
-    { return OPENFLUID_GetWareID(); }
-
-
-    virtual bool isReady() const = 0;
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-typedef PluggableBuilderExtension* (*GetPluggableBuilderExtensionBodyProc)();
+void PluggableWorkspaceExtension::manageSimulationStart()
+{
 
-typedef BuilderExtensionSignature* (*GetPluggableBuilderExtensionSignatureProc)();
-
-
-} } // namespaces
+}
 
 
-#endif /* __PLUGGABLEBUILDEREXTENSION_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+void PluggableWorkspaceExtension::manageSimulationFinish()
+{
+
+}
+
+
+} }  // namespaces

@@ -46,66 +46,69 @@
 */
 
 /**
-  \file HomeModule.hpp
+  \file PluggableModelessExtension.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
+#ifndef __PLUGGABLEMODELESSEXTENSION_HPP__
+#define __PLUGGABLEMODELESSEXTENSION_HPP__
 
-#include "AbstractModule.hpp"
-#include "HomeWidget.hpp"
+#include <QDialog>
+#include <QCloseEvent>
 
-class HomeModule : public AbstractModule
+#include <openfluid/builderext/PluggableBuilderExtension.hpp>
+
+
+namespace openfluid { namespace builderext {
+
+class PluggableModelessExtension : public QDialog, public PluggableBuilderExtension
 {
   Q_OBJECT;
 
-  private:
+  signals:
 
-     HomeWidget* mp_Widget;
+    void fluidxChanged();
 
-     const AppActions* mp_Actions;
+
+  public slots:
+
+    virtual void update();
+
+    virtual void manageSimulationStart();
+
+    virtual void manageSimulationFinish();
+
 
   public:
 
-    HomeModule(const AppActions* Actions);
+    PluggableModelessExtension():
+      QDialog(NULL), PluggableBuilderExtension()
+    { }
 
-    ~HomeModule();
 
-    QWidget* getMainWidget(QWidget* Parent);
+    ~PluggableModelessExtension()
+    { }
 
-    QWidget* getDockWidget(QWidget* /*Parent*/)
-    { return NULL; }
 
-    bool whenQuitAsked();
+    virtual bool isReady() const
+    { return true; };
 
-    bool whenNewAsked();
 
-    bool whenOpenAsked();
+    virtual void closeEvent(QCloseEvent *E)
+    {
+      E->accept();
+      done(0);
+    }
 
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenPropertiesAsked();
-
-    bool whenCloseAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRunAsked();
-
-    void whenExtensionAsked(const QString& ID);
-
-    void whenMarketAsked();
-
-    void whenRefreshAsked();
-
-    bool whenOpenExampleAsked();
 };
 
+} } // namespaces
 
-#endif /* __HOMEMODULE_HPP__ */
+
+
+
+
+#endif /* __PLUGGABLEMODELESSEXTENSION_HPP__ */

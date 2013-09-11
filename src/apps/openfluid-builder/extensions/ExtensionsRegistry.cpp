@@ -45,126 +45,129 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file PluggableBuilderExtension.hpp
-  \brief Header of ...
+  \file ExtensionsRegistry.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
 
-#ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
-#define __PLUGGABLEBUILDEREXTENSION_HPP__
+#include "ExtensionsRegistry.hpp"
 
 
-
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/builderext/BuilderExtensionSignature.hpp>
+ExtensionsRegistry* ExtensionsRegistry::mp_Instance = NULL;
 
 
-/**
-  Macro for declaration of builder extension and signature hooks
-*/
-#define DECLARE_BUILDEREXT_PLUGIN \
-  extern "C" \
-  { \
-    DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetWareBody(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* GetWareSignature(); \
-  }
-
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-  Macro for definition of builder extension class hook
-  @param[in] pluginclassname The name of the class to instantiate
-*/
-#define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
-  std::string GetWareABIVersion() \
-  { \
-    return std::string(openfluid::config::FULL_VERSION); \
-  } \
-  \
-  openfluid::builderext::PluggableBuilderExtension* GetWareBody() \
-  { \
-    return new pluginclassname(); \
-  }
-
-
-// =====================================================================
-// =====================================================================
-
-
-namespace openfluid { namespace builderext {
-
-
-class PluggableBuilderExtension : public openfluid::ware::PluggableWare
+ExtensionsRegistry::ExtensionsRegistry():
+  m_IsRegistered(false)
 {
 
-  protected:
-
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
-
-    openfluid::ware::WareParams_t m_Config;
-
-  public:
-
-    PluggableBuilderExtension() : PluggableWare(openfluid::ware::PluggableWare::OTHER)
-    {
-
-    }
-
-
-    virtual ~PluggableBuilderExtension()
-    {
-      finalizeWare();
-    }
-
-
-    /**
-      Internally called by the framework.
-    */
-    void initializeWare(const openfluid::ware::WareID_t& ID)
-    {
-      if (m_Initialized) return;
-
-      PluggableWare::initializeWare(ID);
-    }
-
-
-    virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)
-    { m_Config = Config; }
-
-
-    void setFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
-    { mp_AdvancedDesc = Desc; }
-
-
-    openfluid::ware::WareID_t getID() const
-    { return OPENFLUID_GetWareID(); }
-
-
-    virtual bool isReady() const = 0;
-};
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-typedef PluggableBuilderExtension* (*GetPluggableBuilderExtensionBodyProc)();
+ExtensionsRegistry* ExtensionsRegistry::getInstance()
+{
+  if (!mp_Instance)
+    mp_Instance = new ExtensionsRegistry();
 
-typedef BuilderExtensionSignature* (*GetPluggableBuilderExtensionSignatureProc)();
+  return mp_Instance;
+}
 
 
-} } // namespaces
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __PLUGGABLEBUILDEREXTENSION_HPP__ */
+ExtensionsRegistry::~ExtensionsRegistry()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ExtensionsRegistry::registerExtensions()
+{
+  if (m_IsRegistered) return;
+
+  std::vector<ExtensionContainer*> ExtVector = ExtensionPluginsManager::getInstance()->getAvailableWaresSignatures();
+
+  for (unsigned int i=0; i<ExtVector.size(); i++)
+    m_Extensions[ExtVector[i]->Signature->ID] = ExtVector[i];
+
+  m_IsRegistered = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::builderext::PluggableBuilderExtension* ExtensionsRegistry::instanciateExtension(const openfluid::ware::WareID_t& ID)
+{
+  if (isExtensionRegistered(ID) && !m_Extensions[ID]->Active)
+  {
+    ExtensionPluginsManager::getInstance()->completeSignatureWithWareBody(m_Extensions[ID]);
+    m_Extensions[ID]->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
+    m_Extensions[ID]->Body->initializeWare(ID);
+    m_Extensions[ID]->Active = true;
+    return m_Extensions[ID]->Body;
+  }
+
+  return NULL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ExtensionsRegistry::releaseExtension(const openfluid::ware::WareID_t& ID)
+{
+  if (isExtensionRegistered(ID))
+  {
+    m_Extensions[ID]->Active = false;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ExtensionsRegistry::releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext)
+{
+  releaseExtension(Ext->getID());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ExtensionsRegistry::isExtensionRegistered(const openfluid::ware::WareID_t& ID)
+{
+  return (m_Extensions.find(ID) != m_Extensions.end());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::builderext::ExtensionType ExtensionsRegistry::getExtensionType(const openfluid::ware::WareID_t& ID)
+{
+  if (isExtensionRegistered(ID))
+    return m_Extensions[ID]->Signature->Type;
+
+  return openfluid::builderext::TYPE_UNKNOWN;
+}

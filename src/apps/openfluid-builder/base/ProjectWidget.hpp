@@ -57,6 +57,24 @@
 #define __PROJECTWIDGET_HPP__
 
 #include <QWidget>
+#include <QTabWidget>
+
+class WorkspaceTabWidget : public QTabWidget
+{
+  Q_OBJECT;
+
+  private slots:
+
+    void closeTab(int Index);
+
+  public:
+
+    WorkspaceTabWidget(QWidget* Parent);
+
+    void addWorkspaceTab(QWidget* Tab, const QString& Label, bool Closable = false);
+
+};
+
 
 namespace Ui
 {
@@ -72,6 +90,8 @@ class ProjectWidget : public QWidget
 
     Ui::ProjectWidget* ui;
 
+    WorkspaceTabWidget* mp_WorkspaceTabWidget;
+
 
   public:
 
@@ -80,6 +100,8 @@ class ProjectWidget : public QWidget
     ~ProjectWidget();
 
     void addWorkspaceTab(QWidget* Tab, const QString& Label);
+
+    void addWorkspaceExtensionTab(QWidget* Tab, const QString& Label);
 };
 
 

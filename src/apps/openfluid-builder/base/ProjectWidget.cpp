@@ -59,15 +59,70 @@
 #include <QSplitter>
 #include <QTabWidget>
 
+#include <openfluid/builderext/PluggableBuilderExtension.hpp>
+
 #include "ui_ProjectWidget.h"
 #include "ProjectWidget.hpp"
 
+#include "ExtensionsRegistry.hpp"
+
+
+WorkspaceTabWidget::WorkspaceTabWidget(QWidget* Parent):
+  QTabWidget(Parent)
+{
+  setTabsClosable(true);
+  connect(this,SIGNAL(tabCloseRequested(int)),this,SLOT(closeTab(int)));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceTabWidget::closeTab(int Index)
+{
+  ExtensionsRegistry::getInstance()->releaseExtension(widget(Index)->property("ID").toString().toStdString());
+  widget(Index)->deleteLater();
+  removeTab(Index);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WorkspaceTabWidget::addWorkspaceTab(QWidget* Tab, const QString& Label, bool Closable)
+{
+  int Pos = addTab(Tab,Label);
+
+  if (!Closable)
+  {
+    if (tabBar()->tabButton(Pos, QTabBar::RightSide) != NULL)
+    {
+      tabBar()->tabButton(Pos, QTabBar::RightSide)->resize(0,0);
+      tabBar()->tabButton(Pos, QTabBar::RightSide)->setVisible(false);
+    }
+    if (tabBar()->tabButton(Pos, QTabBar::LeftSide) != NULL)
+    {
+      tabBar()->tabButton(Pos, QTabBar::LeftSide)->resize(0,0);
+      tabBar()->tabButton(Pos, QTabBar::LeftSide)->setVisible(false);
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 
 ProjectWidget::ProjectWidget(QWidget* Parent):
-  QWidget(Parent), ui(new Ui::ProjectWidget)
+  QWidget(Parent), ui(new Ui::ProjectWidget), mp_WorkspaceTabWidget(NULL)
 {
   ui->setupUi(this);
 
+  mp_WorkspaceTabWidget = new WorkspaceTabWidget(this);
+  layout()->addWidget(mp_WorkspaceTabWidget);
 }
 
 
@@ -87,6 +142,15 @@ ProjectWidget::~ProjectWidget()
 
 void ProjectWidget::addWorkspaceTab(QWidget* Tab, const QString& Label)
 {
-  ui->WorkspaceTabWidget->addTab(Tab,Label);
+  mp_WorkspaceTabWidget->addWorkspaceTab(Tab,Label);
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectWidget::addWorkspaceExtensionTab(QWidget* Tab, const QString& Label)
+{
+  mp_WorkspaceTabWidget->addWorkspaceTab(Tab,Label,true);
+}

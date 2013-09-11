@@ -145,7 +145,23 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 
 AppCoordinator::~AppCoordinator()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::connectExtensions()
+{
+  std::map<openfluid::ware::WareID_t,QAction*>::const_iterator it;
+  std::map<openfluid::ware::WareID_t,QAction*>::const_iterator itb = m_Actions.getExtensionsActions().begin();
+  std::map<openfluid::ware::WareID_t,QAction*>::const_iterator ite = m_Actions.getExtensionsActions().end();
+
+  for (it = itb; it != ite; ++it)
+    connect((*it).second,SIGNAL(triggered()),this, SLOT(whenExtensionAsked()));
 }
 
 
@@ -550,6 +566,18 @@ void AppCoordinator::whenRefreshAsked()
 void AppCoordinator::whenRunAsked()
 {
   mp_CurrentModule->whenRunAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenExtensionAsked()
+{
+  QAction* Sender = (QAction*)(QObject::sender());
+  if ( Sender != NULL)
+    mp_CurrentModule->whenExtensionAsked(Sender->data().toString());
 }
 
 

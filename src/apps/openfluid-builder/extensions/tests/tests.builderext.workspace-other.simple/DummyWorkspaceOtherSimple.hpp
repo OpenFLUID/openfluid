@@ -45,67 +45,39 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file HomeModule.hpp
-  \brief Header of ...
+  \file DummyWorkspaceOtherSimple.hpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
+#include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 
-#include "AbstractModule.hpp"
-#include "HomeWidget.hpp"
 
-class HomeModule : public AbstractModule
+DECLARE_BUILDEREXT_PLUGIN
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+class DummyWorkspaceOtherSimple : public openfluid::builderext::PluggableWorkspaceExtension
 {
   Q_OBJECT;
 
-  private:
+  private slots:
 
-     HomeWidget* mp_Widget;
-
-     const AppActions* mp_Actions;
+    void change();
 
   public:
 
-    HomeModule(const AppActions* Actions);
+    DummyWorkspaceOtherSimple();
 
-    ~HomeModule();
-
-    QWidget* getMainWidget(QWidget* Parent);
-
-    QWidget* getDockWidget(QWidget* /*Parent*/)
-    { return NULL; }
-
-    bool whenQuitAsked();
-
-    bool whenNewAsked();
-
-    bool whenOpenAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenPropertiesAsked();
-
-    bool whenCloseAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRunAsked();
-
-    void whenExtensionAsked(const QString& ID);
-
-    void whenMarketAsked();
-
-    void whenRefreshAsked();
-
-    bool whenOpenExampleAsked();
+    QWidget* getWidget(QWidget* Parent);
 };
 
 
-#endif /* __HOMEMODULE_HPP__ */

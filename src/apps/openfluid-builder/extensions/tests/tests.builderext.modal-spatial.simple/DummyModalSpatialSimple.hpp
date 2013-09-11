@@ -46,66 +46,38 @@
 */
 
 /**
-  \file HomeModule.hpp
+  \file DummyModalSpatialSimple.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
+#ifndef __DUMMYMODALSPATIALSIMPLE_HPP__
+#define __DUMMYMODALSPATIALSIMPLE_HPP__
 
-#include "AbstractModule.hpp"
-#include "HomeWidget.hpp"
 
-class HomeModule : public AbstractModule
+#include <openfluid/builderext/PluggableModalExtension.hpp>
+
+
+DECLARE_BUILDEREXT_PLUGIN
+
+
+class DummyModalSpatialSimple : public openfluid::builderext::PluggableModalExtension
 {
   Q_OBJECT;
 
-  private:
+  public slots:
 
-     HomeWidget* mp_Widget;
-
-     const AppActions* mp_Actions;
+    void update();
 
   public:
 
-    HomeModule(const AppActions* Actions);
+    DummyModalSpatialSimple();
 
-    ~HomeModule();
 
-    QWidget* getMainWidget(QWidget* Parent);
 
-    QWidget* getDockWidget(QWidget* /*Parent*/)
-    { return NULL; }
-
-    bool whenQuitAsked();
-
-    bool whenNewAsked();
-
-    bool whenOpenAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenPropertiesAsked();
-
-    bool whenCloseAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRunAsked();
-
-    void whenExtensionAsked(const QString& ID);
-
-    void whenMarketAsked();
-
-    void whenRefreshAsked();
-
-    bool whenOpenExampleAsked();
 };
 
 
-#endif /* __HOMEMODULE_HPP__ */
+#endif /* __DUMMYMODALSPATIALSIMPLE_HPP__ */

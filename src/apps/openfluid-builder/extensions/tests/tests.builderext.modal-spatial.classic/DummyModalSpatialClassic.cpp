@@ -45,126 +45,109 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file PluggableBuilderExtension.hpp
-  \brief Header of ...
+  \file DummyModalSpatialClassic.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
 
-#ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
-#define __PLUGGABLEBUILDEREXTENSION_HPP__
+#include "ui_DummyModalSpatialClassic.h"
+#include "DummyModalSpatialClassic.hpp"
+
+#include <QInputDialog>
 
 
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <openfluid/ware/PluggableWare.hpp>
-#include <openfluid/builderext/BuilderExtensionSignature.hpp>
+// =====================================================================
+// =====================================================================
 
 
-/**
-  Macro for declaration of builder extension and signature hooks
-*/
-#define DECLARE_BUILDEREXT_PLUGIN \
-  extern "C" \
-  { \
-    DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetWareBody(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* GetWareSignature(); \
+BEGIN_BUILDEREXT_SIGNATURE("tests.builderext.modal-spatial.classic", openfluid::builderext::TYPE_MODAL)
+
+  DECLARE_CATEGORY(openfluid::builderext::CAT_SPATIAL)
+  DECLARE_MENUTEXT("Spatial classic")
+
+END_BUILDEREXT_SIGNATURE
+
+
+// =====================================================================
+// =====================================================================
+
+
+DummyModalSpatialClassic::DummyModalSpatialClassic() :
+  openfluid::builderext::PluggableModalExtension(),ui(new Ui::DummyModalSpatialClassic)
+{
+  Q_INIT_RESOURCE(spatialclassic);
+
+  ui->setupUi(this);
+
+  ui->ImageLabel->setText("");
+  ui->ImageLabel->setPixmap(QPixmap(":/logo_title.png"));
+
+
+  connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addUnitClass()));
+  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
+  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+DummyModalSpatialClassic::~DummyModalSpatialClassic()
+{
+  delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DummyModalSpatialClassic::addUnitClass()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+  bool OK;
+  QString UnitClass = QInputDialog::getText(this, tr("Add a unit Class"),
+                                            tr("Unit class name:"),
+                                            QLineEdit::Normal,
+                                            "",
+                                            &OK);
+
+  if (OK && !UnitClass.isEmpty())
+  {
+    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
+    UDesc->getUnitClass() = UnitClass.toStdString();
+    UDesc->getUnitID() = 1;
+    UDesc->getProcessOrder() = 1;
+    mp_AdvancedDesc->getDomain().addUnit(UDesc);
+
+    emit fluidxChanged();
   }
-
-
-
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-  Macro for definition of builder extension class hook
-  @param[in] pluginclassname The name of the class to instantiate
-*/
-#define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
-  std::string GetWareABIVersion() \
-  { \
-    return std::string(openfluid::config::FULL_VERSION); \
-  } \
-  \
-  openfluid::builderext::PluggableBuilderExtension* GetWareBody() \
-  { \
-    return new pluginclassname(); \
-  }
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-namespace openfluid { namespace builderext {
-
-
-class PluggableBuilderExtension : public openfluid::ware::PluggableWare
+void DummyModalSpatialClassic::update()
 {
 
-  protected:
-
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
-
-    openfluid::ware::WareParams_t m_Config;
-
-  public:
-
-    PluggableBuilderExtension() : PluggableWare(openfluid::ware::PluggableWare::OTHER)
-    {
-
-    }
-
-
-    virtual ~PluggableBuilderExtension()
-    {
-      finalizeWare();
-    }
-
-
-    /**
-      Internally called by the framework.
-    */
-    void initializeWare(const openfluid::ware::WareID_t& ID)
-    {
-      if (m_Initialized) return;
-
-      PluggableWare::initializeWare(ID);
-    }
-
-
-    virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)
-    { m_Config = Config; }
-
-
-    void setFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
-    { mp_AdvancedDesc = Desc; }
-
-
-    openfluid::ware::WareID_t getID() const
-    { return OPENFLUID_GetWareID(); }
-
-
-    virtual bool isReady() const = 0;
-};
+  ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)").arg(mp_AdvancedDesc->getDomain().getClassNames().size()));
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-typedef PluggableBuilderExtension* (*GetPluggableBuilderExtensionBodyProc)();
+DEFINE_BUILDEREXT_CLASS(DummyModalSpatialClassic)
 
-typedef BuilderExtensionSignature* (*GetPluggableBuilderExtensionSignatureProc)();
-
-
-} } // namespaces
-
-
-#endif /* __PLUGGABLEBUILDEREXTENSION_HPP__ */

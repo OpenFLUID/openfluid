@@ -60,9 +60,16 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
+#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/builderext/PluggableModelessExtension.hpp>
+#include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
+
+
 #include "ProjectCentral.hpp"
 #include "ProjectModule.hpp"
 #include "PreferencesDialog.hpp"
+
+#include "ExtensionsRegistry.hpp"
 
 #include "DashboardWidget.hpp"
 
@@ -292,7 +299,103 @@ void ProjectModule::whenPreferencesAsked()
 
 void ProjectModule::whenRunAsked()
 {
+  emit simulationStarted();
   mp_ProjectCentral->run();
+  emit simulationFinished();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenExtensionAsked(const QString& ID)
+{
+  // TODO provide simulators and observers registries to extensions?
+  // for model and monitoring handling for example
+
+  openfluid::ware::WareID_t WareID = ID.toStdString();
+
+  ExtensionsRegistry* ExtReg = ExtensionsRegistry::getInstance();
+
+  if (ExtReg->isExtensionRegistered(WareID))
+  {
+    if (!ExtReg->isExtensionActive(WareID))
+    {
+      if (ExtReg->getExtensionType(WareID) == openfluid::builderext::TYPE_MODAL)
+      {
+        openfluid::builderext::PluggableModalExtension* ExtModal =
+            (openfluid::builderext::PluggableModalExtension*)(ExtReg->instanciateExtension(WareID));
+        ExtModal->setParent(QApplication::activeWindow(),Qt::Dialog);
+        ExtModal->setModal(true);
+        // TODO set correct extension configuration
+        ExtModal->setConfiguration(openfluid::ware::WareParams_t());
+        ExtModal->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+        connect(ExtModal,SIGNAL(fluidxChanged()),this,SLOT(dispatchChangesFromExtension()));
+        connect(this,SIGNAL(fluidxChanged()),ExtModal,SLOT(update()));
+        connect(this,SIGNAL(simulationStarted()),ExtModal,SLOT(manageSimulationStart()));
+        connect(this,SIGNAL(simulationFinished()),ExtModal,SLOT(manageSimulationFinish()));
+        ExtModal->update();
+        ExtModal->exec();
+        ExtReg->releaseExtension(ExtModal);
+        ExtModal->deleteLater();
+      }
+      else if (ExtReg->getExtensionType(WareID) == openfluid::builderext::TYPE_MODELESS)
+      {
+        openfluid::builderext::PluggableModelessExtension* ExtModeless =
+            (openfluid::builderext::PluggableModelessExtension*)(ExtReg->instanciateExtension(WareID));
+        ExtModeless->setParent(QApplication::activeWindow(),Qt::Dialog);
+        ExtModeless->setModal(false);
+        // TODO set correct extension configuration
+        ExtModeless->setConfiguration(openfluid::ware::WareParams_t());
+        ExtModeless->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+        connect(ExtModeless,SIGNAL(finished(int)),this, SLOT(releaseModelessExtension()));
+        connect(ExtModeless,SIGNAL(fluidxChanged()),this,SLOT(dispatchChangesFromExtension()));
+        connect(this,SIGNAL(fluidxChanged()),ExtModeless,SLOT(update()));
+        connect(this,SIGNAL(simulationStarted()),ExtModeless,SLOT(manageSimulationStart()));
+        connect(this,SIGNAL(simulationFinished()),ExtModeless,SLOT(manageSimulationFinish()));
+        ExtModeless->update();
+        ExtModeless->show();
+      }
+      else if (ExtReg->getExtensionType(WareID) == openfluid::builderext::TYPE_WORKSPACE)
+      {
+        openfluid::builderext::PluggableWorkspaceExtension* ExtWork =
+            (openfluid::builderext::PluggableWorkspaceExtension*)(ExtReg->instanciateExtension(WareID));
+        ExtWork->setProperty("ID",QString::fromStdString(WareID));
+        // TODO set correct extension configuration
+        ExtWork->setConfiguration(openfluid::ware::WareParams_t());
+        ExtWork->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+        connect(ExtWork,SIGNAL(fluidxChanged()),this,SLOT(dispatchChangesFromExtension()));
+        connect(this,SIGNAL(fluidxChanged()),ExtWork,SLOT(update()));
+        connect(this,SIGNAL(simulationStarted()),ExtWork,SLOT(manageSimulationStart()));
+        connect(this,SIGNAL(simulationFinished()),ExtWork,SLOT(manageSimulationFinish()));
+        ExtWork->update();
+        mp_MainWidget->addWorkspaceExtensionTab(ExtWork,ExtReg->getRegisteredExtensions()->at(WareID)->Signature->MenuText);
+      }
+      else
+      {
+        QMessageBox::critical(QApplication::activeWindow(),
+                              tr("Extension error"),
+                              tr("Unknown extension type.\nExtension cannot be instantiated."),
+                              QMessageBox::Close);
+      }
+    }
+    else
+    {
+      QMessageBox::warning(QApplication::activeWindow(),
+                           tr("Extension warning"),
+                           tr("Extension is already active."),
+                           QMessageBox::Close);
+
+    }
+  }
+  else
+  {
+    QMessageBox::critical(QApplication::activeWindow(),
+                          tr("Extension error"),
+                          tr("Extension is not registered.\nExtension cannot be instantiated."),
+                          QMessageBox::Close);
+  }
 }
 
 
@@ -335,7 +438,31 @@ bool ProjectModule::whenOpenExampleAsked()
 
 void ProjectModule::dispatchChanges()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   emit fluidxChanged();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::dispatchChangesFromExtension()
+{
+  emit fluidxChanged();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::releaseModelessExtension()
+{
+  openfluid::builderext::PluggableModelessExtension* Sender = (openfluid::builderext::PluggableModelessExtension*)(QObject::sender());
+
+  if (Sender)
+  {
+    ExtensionsRegistry::getInstance()->releaseExtension(Sender);
+    Sender->deleteLater();
+  }
 }

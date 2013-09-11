@@ -45,67 +45,29 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file HomeModule.hpp
-  \brief Header of ...
+  \file ExtensionContainer.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include "ExtensionContainer.hpp"
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
 
-#include "AbstractModule.hpp"
-#include "HomeWidget.hpp"
-
-class HomeModule : public AbstractModule
+ExtensionContainer::ExtensionContainer():
+  Verified(false), Active(false), Filename(""), Signature(NULL), Body(NULL)
 {
-  Q_OBJECT;
 
-  private:
-
-     HomeWidget* mp_Widget;
-
-     const AppActions* mp_Actions;
-
-  public:
-
-    HomeModule(const AppActions* Actions);
-
-    ~HomeModule();
-
-    QWidget* getMainWidget(QWidget* Parent);
-
-    QWidget* getDockWidget(QWidget* /*Parent*/)
-    { return NULL; }
-
-    bool whenQuitAsked();
-
-    bool whenNewAsked();
-
-    bool whenOpenAsked();
-
-    void whenSaveAsked();
-
-    void whenSaveAsAsked();
-
-    void whenPropertiesAsked();
-
-    bool whenCloseAsked();
-
-    void whenPreferencesAsked();
-
-    void whenRunAsked();
-
-    void whenExtensionAsked(const QString& ID);
-
-    void whenMarketAsked();
-
-    void whenRefreshAsked();
-
-    bool whenOpenExampleAsked();
-};
+}
 
 
-#endif /* __HOMEMODULE_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+ExtensionContainer::~ExtensionContainer()
+{
+
+}
