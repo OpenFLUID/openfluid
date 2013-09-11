@@ -692,8 +692,8 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
                                                   snapTolerance);
 
   BOOST_CHECK_EQUAL(NodedPolys->size(), 58);
-  //  for (unsigned int i = 0; i < NodedPolys->size(); i++)
-  //    std::cout << NodedPolys->at(i)->toString() << std::endl;
+ //   for (unsigned int i = 0; i < NodedPolys->size(); i++)
+ //     std::cout << NodedPolys->at(i)->toString() << std::endl;
 
   std::vector<geos::geom::Geometry*> Polys;
   Polys.assign(NodedPolys->begin(), NodedPolys->end());
@@ -884,13 +884,14 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 
 
   BOOST_CHECK_THROW(openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()),
-                                                                  *Point,0),openfluid::base::FrameworkException);
+                                                                 *Point,0),openfluid::base::FrameworkException);
 
 
   vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), *Point,0.0001);
   BOOST_CHECK(vEntities.empty());
 
   vEntities=openfluid::landr::LandRTools::splitLineStringByPoint(*const_cast<geos::geom::LineString*>(Graph->getEntity(7)->getLine()), *Point,1);
+
   BOOST_CHECK_EQUAL(vEntities.size(),2);
 
   BOOST_CHECK( openfluid::tools::IsVeryClose(Graph->getEntity(7)->getLength(), (vEntities[0]->getLength()+vEntities[1]->getLength())));
