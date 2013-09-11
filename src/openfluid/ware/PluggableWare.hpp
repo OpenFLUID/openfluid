@@ -61,10 +61,9 @@
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/SimulationLogger.hpp>
 #include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/ware/SimulatorSignature.hpp>
-#include <openfluid/base/StdoutFileOStream.hpp>
+#include <openfluid/ware/WareSignature.hpp>
+
 
 namespace openfluid { namespace ware {
 
@@ -101,7 +100,7 @@ class DLLEXPORT PluggableWare
 {
   public:
 
-    enum WareType { UNDEFINED, OBSERVER, SIMULATOR };
+    enum WareType { UNDEFINED, OBSERVER, SIMULATOR, OTHER };
 
 
   private:
@@ -119,21 +118,9 @@ class DLLEXPORT PluggableWare
 
   protected:
 
-    virtual bool isLinked() const { return (mp_WareEnv != NULL && mp_SimLogger != NULL); };
+    virtual bool isLinked() const { return mp_WareEnv != NULL; };
 
     bool m_Initialized;
-
-    /**
-      Pointer to the execution messages repository
-     */
-    openfluid::base::SimulationLogger* mp_SimLogger;
-
-
-    /**
-      Raises a warning message to the kernel. This do not stops the simulation
-      @param[in] Msg the content of the message
-    */
-    virtual void OPENFLUID_RaiseWarning(const std::string& Msg);
 
     /**
       Raises an error message to the kernel. This stops the simulation the next time the kernel has the control
@@ -161,8 +148,6 @@ class DLLEXPORT PluggableWare
     */
     WareID_t OPENFLUID_GetWareID() const { return m_WareID; };
 
-    openfluid::base::StdoutAndFileOutputStream OPENFLUID_Logger;
-
     WareType m_WareType;
 
 
@@ -172,11 +157,6 @@ class DLLEXPORT PluggableWare
 
     virtual ~PluggableWare();
 
-    void linkToSimulationLogger(openfluid::base::SimulationLogger* SimLogger)
-    {
-      mp_SimLogger = SimLogger;
-    };
-
     void linkToRunEnvironment(const openfluid::base::EnvironmentProperties* Env)
     {
       mp_WareEnv = Env;
@@ -184,7 +164,7 @@ class DLLEXPORT PluggableWare
 
     virtual void initializeWare(const WareID_t& ID);
 
-    void finalizeWare();
+    virtual void finalizeWare();
 
     /**
      * Return false if ParameterKey starts nor ends with a dot, true otherwise

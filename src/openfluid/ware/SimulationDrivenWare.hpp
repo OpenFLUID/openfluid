@@ -58,6 +58,8 @@
 
 
 #include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
+#include <openfluid/base/StdoutFileOStream.hpp>
 #include <openfluid/ware/WareException.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
 #include <openfluid/base/FrameworkException.hpp>
@@ -91,7 +93,14 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
   protected:
 
-    virtual bool isLinked() const { return (PluggableWare::isLinked() && mp_SimStatus != NULL); };
+
+    /**
+      Pointer to the execution messages repository
+     */
+    openfluid::base::SimulationLogger* mp_SimLogger;
+
+
+    virtual bool isLinked() const { return (PluggableWare::isLinked() &&  mp_SimLogger != NULL && mp_SimStatus != NULL); };
 
     /**
       Returns the real beginning date of the simulated period
@@ -174,16 +183,27 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
     */
     virtual void OPENFLUID_RaiseError(const std::string& Source, const std::string& Msg);
 
+    openfluid::base::StdoutAndFileOutputStream OPENFLUID_Logger;
 
     SimulationDrivenWare(WareType WType) : PluggableWare(WType),
-        mp_SimStatus(NULL), m_PreviousTimeIndex(0) { };
+        mp_SimStatus(NULL), m_PreviousTimeIndex(0), mp_SimLogger(NULL) { };
 
 
   public:
 
-    virtual ~SimulationDrivenWare() { };
+    virtual ~SimulationDrivenWare()
+    { };
 
     void linkToSimulation(const openfluid::base::SimulationStatus* SimStatus);
+
+    void linkToSimulationLogger(openfluid::base::SimulationLogger* SimLogger)
+    {
+      mp_SimLogger = SimLogger;
+    };
+
+    void initializeWare(const WareID_t& ID);
+
+    void finalizeWare();
 
     void setPreviousTimeIndex(const openfluid::core::TimeIndex_t& TimeIndex) { m_PreviousTimeIndex = TimeIndex; };
 

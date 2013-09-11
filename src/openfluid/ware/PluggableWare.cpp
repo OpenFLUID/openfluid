@@ -64,7 +64,7 @@ namespace openfluid { namespace ware {
 // =====================================================================
 
 PluggableWare::PluggableWare(WareType WType)
-: mp_WareEnv(NULL),m_WareID(""),m_Initialized(false),mp_SimLogger(NULL), m_WareType(WType)
+: mp_WareEnv(NULL),m_WareID(""),m_Initialized(false),m_WareType(WType)
 {
 
 }
@@ -78,15 +78,6 @@ PluggableWare::~PluggableWare()
 
 }
 
-
-// =====================================================================
-// =====================================================================
-
-
-void PluggableWare::OPENFLUID_RaiseWarning(const std::string& Msg)
-{
-  mp_SimLogger->addWarning(OPENFLUID_GetWareID(),Msg);
-}
 
 // =====================================================================
 // =====================================================================
@@ -129,20 +120,7 @@ void PluggableWare::initializeWare(const WareID_t& ID)
 
   m_WareID = ID;
 
-  // initialize loggers
-  std::string LogFile;
-  std::string LogDir;
-  std::string LogFileSuffix = "_undefined";
 
-  if (m_WareType == SIMULATOR) LogFileSuffix = openfluid::config::SIMULATORS_PLUGINS_SUFFIX;
-  if (m_WareType == OBSERVER) LogFileSuffix = openfluid::config::OBSERVERS_PLUGINS_SUFFIX;
-
-  OPENFLUID_GetRunEnvironment("dir.output",LogDir);
-  LogFile = boost::filesystem::path(LogDir + "/" + m_WareID + LogFileSuffix + ".log").string();
-
-  OPENFLUID_Logger.open(LogFile.c_str());
-
-  m_Initialized = true;
 };
 
 
@@ -152,7 +130,7 @@ void PluggableWare::initializeWare(const WareID_t& ID)
 
 void PluggableWare::finalizeWare()
 {
-  OPENFLUID_Logger.close();
+
 }
 
 

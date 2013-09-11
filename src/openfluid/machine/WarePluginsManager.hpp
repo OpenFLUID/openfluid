@@ -64,6 +64,7 @@
 
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace machine {
@@ -78,6 +79,10 @@ typedef std::string (*GetWareABIVersionProc)();
 
 /**
   Management class for pluggable ware
+  @tparam S class defining the container for ware signature only
+  @tparam M class defining the container for ware signature and body
+  @tparam SP procedure definition for instantiation of the signature
+  @tparam BP procedure definition for instantiation of the body
 */
 template<class S, class M, typename SP, typename BP>
 class DLLEXPORT WarePluginsManager
@@ -168,6 +173,7 @@ class DLLEXPORT WarePluginsManager
       if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
       {
         m_LoadedPlugins[PluginFilename] = new Glib::Module(PluginFile,Glib::MODULE_BIND_LOCAL);
+        //std::cout << PluginFilename << " " << (m_LoadedPlugins[PluginFilename] != 0) << std::endl;
       }
 
 

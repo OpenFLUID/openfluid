@@ -101,7 +101,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.plot.gnuplot")
   DECLARE_VERSION(openfluid::config::FULL_VERSION);
   DECLARE_STATUS(openfluid::ware::STABLE);
 
-END_SIMULATOR_SIGNATURE
+END_OBSERVER_SIGNATURE
 
 
 // =====================================================================
