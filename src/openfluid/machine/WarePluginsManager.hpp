@@ -60,7 +60,7 @@
 #include <map>
 #include <string>
 
-#include <glibmm/module.h>
+#include <QLibrary>
 
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/dllexport.hpp>
@@ -98,58 +98,43 @@ class DLLEXPORT WarePluginsManager
 
       if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
       {
-        m_LoadedPlugins[PluginFilename] = new Glib::Module(PluginFile,Glib::MODULE_BIND_LOCAL);
+        m_LoadedPlugins[PluginFilename] = new QLibrary(QString::fromStdString(PluginFile));
       }
 
-      Glib::Module* PlugLib = m_LoadedPlugins[PluginFilename];
+      QLibrary* PlugLib = m_LoadedPlugins[PluginFilename];
 
 
       // library loading
-      if(*PlugLib)
+      if(PlugLib)
       {
         Plug = new M();
         Plug->Filename = PluginFile;
 
-        void* ABIVersionSymbol;
+        GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
 
-        if(PlugLib->get_symbol(WAREABIVERSION_PROC_NAME,ABIVersionSymbol))
+        if (ABIVersionProc)
         {
-          GetWareABIVersionProc ABIProc;
-
-          ABIProc = (GetWareABIVersionProc)ABIVersionSymbol;
-
-          Plug->Verified = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,ABIProc(),false) == 0);
+          Plug->Verified = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
         }
         else Plug->Verified = false;
 
 
-
         if (Plug->Verified)
         {
-          void* BodySymbol;
-          void* SignatureSymbol;
+          BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
+          SP SignatureProc = (SP)PlugLib->resolve(WARESIGNATURE_PROC_NAME);
 
-          // checks if the handle proc exists
-          if(PlugLib->get_symbol(WAREBODY_PROC_NAME,BodySymbol)
-              && PlugLib->get_symbol(WARESIGNATURE_PROC_NAME,SignatureSymbol))
+          // checks if the handle procs exist
+          if (SignatureProc && BodyProc)
           {
+            Plug->Signature = SignatureProc();
 
-            // hooks the handle proc
-            SP SignProc = (SP)SignatureSymbol;
+            if (Plug->Signature == NULL)
+              throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly","Signature from plugin file " + PluginFilename + " cannot be instanciated");
 
+            Plug->Verified = (Plug->Signature->ID == ID);
 
-            if (SignProc != NULL)
-            {
-              Plug->Signature = SignProc();
-
-              if (Plug->Signature == NULL)
-                throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly","Signature from plugin file " + PluginFilename + " cannot be instanciated");
-
-              Plug->Verified = (Plug->Signature->ID == ID);
-
-              Plug->Body = 0;
-            }
-            else throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly","Unable to find signature in plugin file " + PluginFilename);
+            Plug->Body = 0;
           }
           else throw openfluid::base::FrameworkException("WarePluginsManager::buildWareContainerWithSignatureOnly","Format error in plugin file " + PluginFilename);
         }
@@ -172,56 +157,41 @@ class DLLEXPORT WarePluginsManager
 
       if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
       {
-        m_LoadedPlugins[PluginFilename] = new Glib::Module(PluginFile,Glib::MODULE_BIND_LOCAL);
-        //std::cout << PluginFilename << " " << (m_LoadedPlugins[PluginFilename] != 0) << std::endl;
+        m_LoadedPlugins[PluginFilename] = new QLibrary(QString::fromStdString(PluginFile));
       }
 
+      QLibrary* PlugLib = m_LoadedPlugins[PluginFilename];
 
-      Glib::Module* PlugLib = m_LoadedPlugins[PluginFilename];
 
       // library loading
-      if(*PlugLib)
+      if(PlugLib)
       {
         Plug = new M();
         Plug->Filename = PluginFile;
 
-        void* ABIVersionSymbol = 0;
+        GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
 
-        if(PlugLib->get_symbol(WAREABIVERSION_PROC_NAME,ABIVersionSymbol))
+        if (ABIVersionProc)
         {
-          GetWareABIVersionProc ABIProc;
-
-          ABIProc = (GetWareABIVersionProc)ABIVersionSymbol;
-
-          Plug->Verified = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,ABIProc(),false) == 0);
+          Plug->Verified = (openfluid::tools::CompareVersions(openfluid::config::FULL_VERSION,ABIVersionProc(),false) == 0);
         }
         else Plug->Verified = false;
 
+
         if (Plug->Verified)
         {
-          void* SignatureSymbol = 0;
-          void* BodySymbol = 0;
+          BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
+          SP SignatureProc = (SP)PlugLib->resolve(WARESIGNATURE_PROC_NAME);
 
-          // checks if the handle proc exists
-          if(PlugLib->get_symbol(WAREBODY_PROC_NAME,BodySymbol)
-              && PlugLib->get_symbol(WARESIGNATURE_PROC_NAME,SignatureSymbol))
+          // checks if the handle procs exist
+          if (SignatureProc && BodyProc)
           {
+            Plug->Signature = SignatureProc();
 
-            // hooks the handle proc
-            SP SignProc = (SP)SignatureSymbol;
+            if (Plug->Signature == NULL)
+              throw openfluid::base::FrameworkException("WarePluginsManager::getWareSignature","Signature from plugin file " + PluginFilename + " cannot be instanciated");
 
-
-            if (SignProc != NULL)
-            {
-              Plug->Signature = SignProc();
-
-              if (Plug->Signature == NULL)
-                throw openfluid::base::FrameworkException("WarePluginsManager::getWareSignature","Signature from plugin file " + PluginFilename + " cannot be instanciated");
-
-              Plug->Verified = boost::algorithm::starts_with(PluginFilename,Plug->Signature->ID);
-
-            }
-            else throw openfluid::base::FrameworkException("WarePluginsManager::getWareSignature","Unable to find signature in plugin file " + PluginFilename);
+            Plug->Verified = QString::fromStdString(PluginFilename).startsWith(QString::fromStdString(Plug->Signature->ID));
           }
           else throw openfluid::base::FrameworkException("WarePluginsManager::getWareSignature","Format error in plugin file " + PluginFilename);
         }
@@ -238,7 +208,7 @@ class DLLEXPORT WarePluginsManager
 
   protected:
 
-    std::map<std::string,Glib::Module*> m_LoadedPlugins;
+    std::map<std::string,QLibrary*> m_LoadedPlugins;
 
 
     WarePluginsManager()
@@ -348,33 +318,25 @@ class DLLEXPORT WarePluginsManager
 
       if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
       {
-        m_LoadedPlugins[PluginFilename] = new Glib::Module(PluginFilename,Glib::MODULE_BIND_LOCAL);
+        m_LoadedPlugins[PluginFilename] = new QLibrary(QString::fromStdString(PluginFilename));
       }
 
-      Glib::Module* PlugLib = m_LoadedPlugins[PluginFilename];
+      QLibrary* PlugLib = m_LoadedPlugins[PluginFilename];
 
 
       // library loading
-      if(*PlugLib)
+      if(PlugLib)
       {
-        void* BodySymbol;
+        BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
 
         // checks if the handle proc exists
-        if(PlugLib->get_symbol(WAREBODY_PROC_NAME,BodySymbol))
+        if(BodyProc)
         {
+          Item->Body = BodyProc();
 
-          // hooks the handle proc
-          BP PlugProc = (BP)BodySymbol;
+          if (Item->Body == NULL)
+            throw openfluid::base::FrameworkException("WarePluginsManager::completeSignatureWithWareBody","Ware from plugin file " + PluginFilename + " cannot be instanciated");
 
-          if (PlugProc != NULL)
-          {
-            Item->Body = PlugProc();
-
-            if (Item->Body == NULL)
-              throw openfluid::base::FrameworkException("WarePluginsManager::completeSignatureWithWareBody","Ware from plugin file " + PluginFilename + " cannot be instanciated");
-
-          }
-          else throw openfluid::base::FrameworkException("completeSignatureWithWareBody","Unable to find ware in plugin file " + PluginFilename);
         }
         else throw openfluid::base::FrameworkException("completeSignatureWithWareBody","Format error in plugin file " + PluginFilename);
       }
@@ -388,10 +350,11 @@ class DLLEXPORT WarePluginsManager
 
     void unloadAllWares()
     {
-      std::map<std::string,Glib::Module*>::iterator it;
+      std::map<std::string,QLibrary*>::iterator it;
 
       for (it=m_LoadedPlugins.begin();it != m_LoadedPlugins.end(); ++it)
       {
+        it->second->unload();
         delete (it->second);
       }
 
