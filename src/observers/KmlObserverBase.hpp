@@ -61,14 +61,10 @@
 
 #include <ogrsf_frmts.h>
 
-#include <glibmm/fileutils.h>
-#include <glibmm/spawn.h>
-
-#include <ogrsf_frmts.h>
-
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/Archiver.hpp>
 
+#include <QProcess>
 
 class KmlUnitInfo
 {
@@ -313,7 +309,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
         if (!GEarthPaths.empty())
         {
           std::string GEarthCommand = boost::filesystem::path(GEarthPaths[0]).string()+" "+boost::filesystem::path(m_OutputDir + "/"+ m_OutputFileName).string();
-          Glib::spawn_command_line_async(GEarthCommand);
+          QProcess::execute(QString::fromStdString(GEarthCommand));
         }
         else
         {

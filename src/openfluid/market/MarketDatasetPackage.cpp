@@ -58,9 +58,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-#include <glibmm/error.h>
-#include <glibmm/spawn.h>
-
+#include <QProcess>
 
 
 namespace openfluid { namespace market {
@@ -111,10 +109,6 @@ void MarketDatasetPackage::process()
     throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","CMake command not defined");
 
 
-  std::string StrOut;
-  std::string StrErr;
-  int RetValue;
-
   std::string DatasetInstallDir = getInstallPath() + "/" + m_ID;
 
   if (boost::filesystem::is_directory(boost::filesystem::path(DatasetInstallDir)))
@@ -125,30 +119,26 @@ void MarketDatasetPackage::process()
 
   std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + DatasetInstallDir + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
 
+
   // uncompressing package
-  try
+  appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand);
+
+  QProcess Uncompress;
+
+  Uncompress.start(QString::fromStdString(ProcessCommand));
+  Uncompress.waitForFinished(-1);
+  Uncompress.waitForReadyRead(-1);
+
+  appendToLogFile(QString(Uncompress.readAllStandardOutput()).toStdString());
+
+  int RetValue = Uncompress.exitCode();
+
+  if (RetValue != 0)
   {
-    appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand);
-
-    StrOut.clear();
-    StrErr.clear();
-    RetValue = 0;
-    Glib::spawn_command_line_sync(ProcessCommand,&StrOut,&StrErr,&RetValue);
-
-    appendToLogFile(StrOut);
-
-    if (RetValue != 0)
-    {
-      appendToLogFile(StrErr);
-      throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","Error uncompressing package using CMake");
-
-    }
-
+    appendToLogFile(QString(Uncompress.readAllStandardError()).toStdString());
+    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","Error uncompressing package using CMake");
   }
-  catch (Glib::Error& E)
-  {
-    throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","Glib error uncompressing package using CMake");
-  }
+
 }
 
 

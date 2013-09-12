@@ -59,9 +59,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-#include <glibmm/error.h>
-#include <glibmm/spawn.h>
-
+#include <QProcess>
 
 
 namespace openfluid { namespace market {
@@ -90,9 +88,6 @@ void MarketSrcPackage::process()
   if (m_CMakeCommand.empty())
     throw openfluid::base::FrameworkException("MarketSrcPackage::process()","CMake command not defined");
 
-  std::string StrOut;
-  std::string StrErr;
-  int RetValue;
 
   std::string BuildConfigOptions = composeFullBuildOptions(getPackageType(), m_BuildConfigOptions);
 
@@ -122,78 +117,62 @@ void MarketSrcPackage::process()
   std::string BuildCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + BuildDir+ "\" \"" + m_CMakeCommand + "\" --build .";
 
 
+
   // uncompressing package
-  try
   {
-    appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing sources",UntarCommand);
+    QProcess Untar;
 
-    StrOut.clear();
-    StrErr.clear();
-    RetValue = 0;
-    Glib::spawn_command_line_sync(UntarCommand,&StrOut,&StrErr,&RetValue);
+    Untar.start(QString::fromStdString(UntarCommand));
+    Untar.waitForFinished(-1);
+    Untar.waitForReadyRead(-1);
 
-    appendToLogFile(StrOut);
+    appendToLogFile(QString(Untar.readAllStandardOutput()).toStdString());
+
+    int RetValue = Untar.exitCode();
 
     if (RetValue != 0)
     {
-      appendToLogFile(StrErr);
-      throw openfluid::base::FrameworkException("MarketSrcPackage::process()","Error uncompressing package using CMake");
+      appendToLogFile(QString(Untar.readAllStandardError()).toStdString());
+      throw openfluid::base::FrameworkException("MarketSrcPackage::process()","Error uncompressing sources package using CMake");
     }
   }
-  catch (Glib::Error& E)
+
+  // configuring the build
   {
-    throw openfluid::base::FrameworkException("MarketSrcPackage::process()","Glib error uncompressing package using CMake");
-  }
+    QProcess Config;
 
+    Config.start(QString::fromStdString(BuildConfigCommand));
+    Config.waitForFinished(-1);
+    Config.waitForReadyRead(-1);
 
-  // configuring build
-  try
-  {
-    appendToLogFile(m_PackageFilename,getPackageType(),"configuring sources build",BuildConfigCommand);
+    appendToLogFile(QString(Config.readAllStandardOutput()).toStdString());
 
-    StrOut.clear();
-    StrErr.clear();
-    RetValue = 0;
-    Glib::spawn_command_line_sync(BuildConfigCommand,&StrOut,&StrErr,&RetValue);
-
-    appendToLogFile(StrOut);
+    int RetValue = Config.exitCode();
 
     if (RetValue != 0)
     {
-      appendToLogFile(StrErr);
+      appendToLogFile(QString(Config.readAllStandardError()).toStdString());
       throw openfluid::base::FrameworkException("MarketSrcPackage::process()","Error configuring package build using CMake");
     }
-
   }
-  catch (Glib::Error& E)
-  {
-    throw openfluid::base::FrameworkException("MarketSrcPackage::process()","Glib error configuring package build using CMake");
-  }
-
 
   // building
-  try
   {
-    appendToLogFile(m_PackageFilename,getPackageType(),"building sources",BuildCommand);
+    QProcess Build;
 
-    StrOut.clear();
-    StrErr.clear();
-    RetValue = 0;
-    Glib::spawn_command_line_sync(BuildCommand,&StrOut,&StrErr,&RetValue);
+    Build.start(QString::fromStdString(BuildCommand));
+    Build.waitForFinished(-1);
+    Build.waitForReadyRead(-1);
 
-    appendToLogFile(StrOut);
+    appendToLogFile(QString(Build.readAllStandardOutput()).toStdString());
+
+    int RetValue = Build.exitCode();
 
     if (RetValue != 0)
     {
-      appendToLogFile(StrErr);
+      appendToLogFile(QString(Build.readAllStandardError()).toStdString());
       throw openfluid::base::FrameworkException("MarketSrcPackage::process()","Error building package using CMake");
-
     }
-
-  }
-  catch (Glib::Error& E)
-  {
-    throw openfluid::base::FrameworkException("MarketSrcPackage::process()","Glib error building package using CMake");
   }
 
 

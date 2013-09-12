@@ -116,7 +116,8 @@ MACRO(OPNFLD_ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
                         openfluid-core
                         openfluid-base
                         openfluid-ware
-                        openfluid-tools)
+                        openfluid-tools
+                        ${QT_QTCORE_LIBRARIES})
       
 ENDMACRO()
 

@@ -3,7 +3,7 @@
 PKG_CHECK_MODULES(GLIBMM REQUIRED glibmm-2.4)
 
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS} ${QT_INCLUDES})
 LINK_DIRECTORIES(${GLIBMM_LIBRARY_DIRS})
 
 
@@ -22,6 +22,7 @@ SET_TARGET_PROPERTIES(openfluid-market PROPERTIES VERSION "${VERSION_MAJOR}.${VE
 TARGET_LINK_LIBRARIES(openfluid-market
                       openfluid-base
                       openfluid-tools
+                      ${QT_QTCORE_LIBRARIES}
                       ${GLIBMM_LIBRARIES} 
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
 
