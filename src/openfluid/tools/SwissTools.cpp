@@ -53,6 +53,12 @@
 #include <openfluid/core/DateTime.hpp>
 
 
+#if WIN32
+#include <windows.h> // for Sleep
+#else
+#include <time.h>
+#endif
+
 namespace openfluid { namespace tools {
 
 
@@ -522,5 +528,18 @@ unsigned int computeTimeStepsCount(const openfluid::core::DateTime& BeginDate,
   return StepsCount;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void Sleep(const unsigned int MSec)
+{
+#if WIN32
+  Sleep(uint(ms));
+#else
+  usleep(MSec);
+#endif
+}
 
 } } // namespaces
