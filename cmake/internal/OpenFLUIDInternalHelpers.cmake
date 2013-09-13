@@ -73,7 +73,8 @@ MACRO(OPNFLD_ADD_SIMULATOR SIM_NAME SIM_SRCDIR SIM_BINDIR)
                         openfluid-core
                         openfluid-base
                         openfluid-ware
-                        openfluid-tools)
+                        openfluid-tools
+                        ${QT_QTCORE_LIBRARIES})
       
 ENDMACRO()
 
