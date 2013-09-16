@@ -45,72 +45,35 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file AppTools.cpp
-  \brief Implements ...
+  \file QtHelpers.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/base/ProjectManager.hpp>
-
-#include "AppTools.hpp"
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT)
-{
-  QDate D(DT.getYear(),DT.getMonth(),DT.getDay());
-  QTime T(DT.getHour(),DT.getMinute(),DT.getSecond());
-
-  return QDateTime(D,T,Qt::UTC);
-}
+#ifndef __QTHELPERS_HPP__
+#define __QTHELPERS_HPP__
 
 
-// =====================================================================
-// =====================================================================
+#include <list>
+
+#include <QVariant>
+#include <QString>
+#include <QStringList>
+
+#include <openfluid/dllexport.hpp>
+
+namespace openfluid { namespace tools {
+
+QString DLLEXPORT toIniCompatible(const std::string& Str);
+
+std::string DLLEXPORT fromIniCompatible(const QVariant& Var);
+
+std::list<std::string> DLLEXPORT toStdStringList(const QStringList& StrList);
+
+} } // namespaces
 
 
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect)
-{
-  QStringList QSL;
-  for (unsigned int i=0; i<StrVect.size();++i)
-    QSL.append(QString(StrVect[i].c_str()));
-
-  return QSL;
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
-{
-  QString InfosStr;
-  std::string Name, Description, Authors, CreationDate, LastModDate;
-
-  if (openfluid::base::ProjectManager::getProjectInfos(ProjectPath.toStdString(),
-                                                       Name, Description, Authors, CreationDate, LastModDate))
-  {
-    openfluid::core::DateTime TmpDate;
-    TmpDate.setFromString(CreationDate,"%Y%m%dT%H%M%S");
-    CreationDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
-    TmpDate.setFromString(LastModDate,"%Y%m%dT%H%M%S");
-    LastModDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
-
-    InfosStr += "<table><tr><td valign='middle' width='74px' style='padding: 5px;'><IMG STYLE='vertical-align:middle;' SRC=':/icons/openfluid_icon.png' /></td>"
-                "<td valign='middle' style='padding: 5px;'><i>Project:</i><br>"
-                "<b><big>"+QString(Name.c_str())+"</big></b></td>"
-                "</tr></table><hr/>";
-    InfosStr += "<i>Description:</i><br>"+QString(Description.c_str())+"<hr/>";
-    InfosStr += "<i>Authors:</i><br>"+QString(Authors.c_str())+"<hr/>";
-    InfosStr += "<i>Creation:</i><br>"+QString(CreationDate.c_str())+"<hr/>";
-    InfosStr += "<i>Last modification:</i><br>"+QString(LastModDate.c_str());
-    if (IncludeFullPath)
-      InfosStr += "<hr/><i>Project location:</i><br>"+ProjectPath;
-  }
-
-  return InfosStr;
-}
+#endif /* __QTHELPERS_HPP__ */

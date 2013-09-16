@@ -47,23 +47,23 @@
 
 
 /**
-  \file AppTools.cpp
+  \file QtHelpers.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
-#include "AppTools.hpp"
 
-QDateTime convertToQDateTime(openfluid::core::DateTime DT)
+namespace openfluid { namespace tools {
+
+
+
+QString toIniCompatible(const std::string& Str)
 {
-  QDate D(DT.getYear(),DT.getMonth(),DT.getDay());
-  QTime T(DT.getHour(),DT.getMinute(),DT.getSecond());
-
-  return QDateTime(D,T,Qt::UTC);
+  return (QString::fromStdString(Str));
 }
 
 
@@ -71,14 +71,11 @@ QDateTime convertToQDateTime(openfluid::core::DateTime DT)
 // =====================================================================
 
 
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect)
+std::string fromIniCompatible(const QVariant& Var)
 {
-  QStringList QSL;
-  for (unsigned int i=0; i<StrVect.size();++i)
-    QSL.append(QString(StrVect[i].c_str()));
-
-  return QSL;
-
+  if (Var.type() == QVariant::StringList)
+    return Var.toStringList().join(", ").toStdString();
+  else return Var.toString().toStdString();
 }
 
 
@@ -86,31 +83,15 @@ QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect)
 // =====================================================================
 
 
-QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
+std::list<std::string> toStdStringList(const QStringList& StrList)
 {
-  QString InfosStr;
-  std::string Name, Description, Authors, CreationDate, LastModDate;
+  std::list<std::string> TmpList;
 
-  if (openfluid::base::ProjectManager::getProjectInfos(ProjectPath.toStdString(),
-                                                       Name, Description, Authors, CreationDate, LastModDate))
-  {
-    openfluid::core::DateTime TmpDate;
-    TmpDate.setFromString(CreationDate,"%Y%m%dT%H%M%S");
-    CreationDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
-    TmpDate.setFromString(LastModDate,"%Y%m%dT%H%M%S");
-    LastModDate = TmpDate.getAsString("%Y-%m-%d, %H:%M:%S");
+  for (int i=0; i<StrList.size(); i++)
+    TmpList.push_back(StrList[i].toStdString());
 
-    InfosStr += "<table><tr><td valign='middle' width='74px' style='padding: 5px;'><IMG STYLE='vertical-align:middle;' SRC=':/icons/openfluid_icon.png' /></td>"
-                "<td valign='middle' style='padding: 5px;'><i>Project:</i><br>"
-                "<b><big>"+QString(Name.c_str())+"</big></b></td>"
-                "</tr></table><hr/>";
-    InfosStr += "<i>Description:</i><br>"+QString(Description.c_str())+"<hr/>";
-    InfosStr += "<i>Authors:</i><br>"+QString(Authors.c_str())+"<hr/>";
-    InfosStr += "<i>Creation:</i><br>"+QString(CreationDate.c_str())+"<hr/>";
-    InfosStr += "<i>Last modification:</i><br>"+QString(LastModDate.c_str());
-    if (IncludeFullPath)
-      InfosStr += "<hr/><i>Project location:</i><br>"+ProjectPath;
-  }
-
-  return InfosStr;
+  return TmpList;
 }
+
+
+} } // namespaces

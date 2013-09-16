@@ -56,6 +56,8 @@
 #ifndef __THREADEDLOOPMACROS_HPP__
 #define __THREADEDLOOPMACROS_HPP__
 
+
+#include <glibmm/thread.h>
 #include <glibmm/threadpool.h>
 #include <openfluid/base/LoopMacros.hpp>
 

@@ -110,14 +110,14 @@ class DLLEXPORT MarketClient
 
     void unlockMarketTemp();
 
-    void parseMarketSiteData(const std::string& SiteData);
+    void parseMarketSiteData(const std::string& SiteFile);
 
     /**
      Store all type catalog data in MetaPackageCatalog
      @param CatalogType Type of catalog read
      @param CatalogData string with data read
     */
-    void parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogData);
+    void parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogFile);
 
     void downloadAssociatedLicenses();
 
