@@ -241,7 +241,11 @@ class DLLEXPORT PolygonGraph: public LandRGraph
     virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
                                                 const std::string& Column,double Thresh=0.0001);
 
-
+    /**
+     * @brief Remove from the graph the entity with SelfId and its associated nodes.
+     * @param SelfId
+     */
+    virtual void removeEntity(int SelfId);
 
 };
 

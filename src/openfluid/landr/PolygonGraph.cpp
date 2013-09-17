@@ -71,6 +71,7 @@
 #include <geos/geom/GeometryFactory.h>
 #include <geos/geom/Geometry.h>
 #include <geos/planargraph/DirectedEdge.h>
+#include <algorithm>
 
 namespace openfluid {
 namespace landr {
@@ -777,9 +778,76 @@ void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeNa
 
 }
 
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::removeEntity(int SelfId)
+{
+
+  PolygonEntity* Ent = getEntity(SelfId);
+
+  if (!Ent)
+  {
+    std::ostringstream s;
+    s << "No entity with id " << SelfId;
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::removeEntity",
+        s.str());
+    return;
+  }
+  Ent->computeNeighbours();
+  std::vector<PolygonEdge*> vEdges=Ent->m_PolyEdges;
+  std::vector<PolygonEdge*>::iterator it=vEdges.begin();
+  std::vector<PolygonEdge*>::iterator ite=vEdges.end();
+
+  std::list<PolygonEdge*>lEdges;
+  for ( ; it != ite; ++it)
+  {
+
+    if((*it)->getFaces().size()==1)
+          lEdges.push_back(*it);
+
+  }
+
+
+  // for each neighbour of Ent
+
+  openfluid::landr::PolygonEntity::NeighboursMap_t::iterator jt = Ent->mp_NeighboursMap->begin();
+  openfluid::landr::PolygonEntity::NeighboursMap_t::iterator jte = Ent->mp_NeighboursMap->end();
+
+  for(;jt!=jte;++jt)
+  {
+    jt->first->mp_NeighboursMap->erase(Ent);
+
+    std::vector<PolygonEdge*> vNeighbourEdges=jt->first->m_PolyEdges;
+    std::vector<PolygonEdge*>::iterator ht=vNeighbourEdges.begin();
+    std::vector<PolygonEdge*>::iterator hte=vNeighbourEdges.end();
+    for(;ht!=hte;++ht)
+    {
+      if((*ht)->isLineInFace(*Ent))
+        (*ht)->removeFace(Ent);
+    }
+
+  }
+
+  std::list<PolygonEdge*>::iterator lt=lEdges.begin();
+  std::list<PolygonEdge*>::iterator lte=lEdges.end();
+  for(;lt!=lte;++lt)
+  {
+    removeSegment(Ent,(*lt)->getLine());
+  }
+
+
+  m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
+  m_EntitiesBySelfId.erase(SelfId);
+  delete Ent;
+  removeUnusedNodes();
+
+}
 
 // =====================================================================
 // =====================================================================
+
 
 
 
