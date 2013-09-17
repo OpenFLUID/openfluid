@@ -1237,7 +1237,65 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+    openfluid::landr::PolygonGraph* Graph =
+        openfluid::landr::PolygonGraph::create(*Vector);
+
+    BOOST_CHECK_EQUAL(Graph->getSize(),24);
+
+    Graph->computeNeighbours();
+    openfluid::landr::PolygonEntity* Ent=Graph->getEntity(10);
+    Ent->computeNeighbours();
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+    BOOST_CHECK_EQUAL(Graph->isComplete(),true);
+    BOOST_CHECK_EQUAL(Graph->getEdges()->size(),58);
+
+    Graph->removeEntity(9);
+
+    BOOST_CHECK_EQUAL(Graph->getSize(),23);
+    BOOST_CHECK_EQUAL(Graph->isComplete(),true);
+    BOOST_CHECK_EQUAL(Graph->getEdges()->size(),58);
+    BOOST_CHECK(!Graph->getEntity(9));
+
+    Graph->computeNeighbours();
+
+    Ent=Graph->getEntity(10);
+    Ent->computeNeighbours();
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),2);
+    Ent=Graph->getEntity(7);
+    Ent->computeNeighbours();
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+    Ent=Graph->getEntity(12);
+    Ent->computeNeighbours();
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+    Ent=Graph->getEntity(11);
+    Ent->computeNeighbours();
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),2);
+
+    Graph->removeEntity(10);
+
+    BOOST_CHECK_EQUAL(Graph->getSize(),22);
+    BOOST_CHECK_EQUAL(Graph->isComplete(),true);
+    BOOST_CHECK_EQUAL(Graph->getEdges()->size(),56);
+    BOOST_CHECK(!Graph->getEntity(10));
+
+    Ent=Graph->getEntity(11);
+    Ent->computeNeighbours();
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),1);
 
 
+
+    delete Graph;
+    delete Vector;
+
+
+}
+
+// =====================================================================
+// =====================================================================
 
 
