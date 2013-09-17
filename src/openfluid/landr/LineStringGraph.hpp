@@ -181,7 +181,7 @@ public:
 	 * @brief Remove from the graph the entity with SelfId and its associated nodes.
 	 * @param SelfId
 	 */
-	void removeEntity(int SelfId);
+	virtual void removeEntity(int SelfId);
 
 	/**
 	 * @brief Return the last LineStringEntity of the graph, according to LineString orientations,
