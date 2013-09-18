@@ -1,0 +1,6 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <datasources>
+    <filesource ID="1" file="windspeed.dat" />        
+  </datasources>
+</openfluid>

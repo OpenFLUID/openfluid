@@ -1,0 +1,537 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+   <domain>
+    <definition>
+    <unit class="AU" ID="1" pcsorder="1">
+     </unit>
+    <unit class="AU" ID="3" pcsorder="1">
+     </unit>
+    <unit class="AU" ID="2" pcsorder="1">
+     </unit>
+    <unit class="AU" ID="4" pcsorder="1">
+     </unit>
+    <unit class="LU" ID="1" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="2" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="3" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="4" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="5" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="6" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="7" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="8" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="9" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="10" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="11" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="12" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="13" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="105" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="106" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="107" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="108" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="109" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="110" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="111" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="112" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="113" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="114" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="115" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="116" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="117" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="209" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="210" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="211" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="212" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="213" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="214" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="215" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="216" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="217" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="218" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="219" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="220" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="221" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="313" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="314" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="315" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="316" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="317" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="318" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="319" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="320" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="321" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="322" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="323" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="324" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="325" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="417" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="418" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="419" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="420" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="421" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="422" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="423" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="424" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="425" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="426" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="427" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="428" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="429" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="521" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="522" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="523" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="524" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="525" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="526" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="527" pcsorder="1">
+        <childof class="AU" ID="1" />
+     </unit>
+    <unit class="LU" ID="528" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="529" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="530" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="531" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="532" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="533" pcsorder="1">
+        <childof class="AU" ID="2" />
+     </unit>
+    <unit class="LU" ID="625" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="626" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="627" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="628" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="629" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="630" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="631" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="632" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="633" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="634" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="635" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="636" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="637" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="729" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="730" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="731" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="732" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="733" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="734" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="735" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="736" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="737" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="738" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="739" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="740" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="741" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="833" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="834" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="835" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="836" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="837" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="838" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="839" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="840" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="841" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="842" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="843" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="844" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="845" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="937" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="938" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="939" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="940" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="941" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="942" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="943" pcsorder="1">
+        <childof class="AU" ID="4" />
+     </unit>
+    <unit class="LU" ID="944" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="945" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="946" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="947" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="948" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    <unit class="LU" ID="949" pcsorder="1">
+        <childof class="AU" ID="3" />
+     </unit>
+    </definition>
+ <attributes unitclass="LU" colorder="N;NE;E;SE;S;SW;W;NW;landcover;stockini" >
+1 -1 -1 2 106 105 -1 -1 -1 FOREST 2000
+2 -1 -1 3 107 106 105 1 -1 FOREST 2000
+3 -1 -1 4 108 107 106 2 -1 FOREST 2000
+4 -1 -1 5 109 108 107 3 -1 FOREST 2000
+5 -1 -1 6 110 109 108 4 -1 FOREST 2000
+6 -1 -1 7 111 110 109 5 -1 FOREST 2000
+7 -1 -1 8 112 111 110 6 -1 FOREST 2000
+8 -1 -1 9 113 112 111 7 -1 FOREST 2000
+9 -1 -1 10 114 113 112 8 -1 FOREST 2000
+10 -1 -1 11 115 114 113 9 -1 FOREST 2000
+11 -1 -1 12 116 115 114 10 -1 FOREST 2000
+12 -1 -1 13 117 116 115 11 -1 FOREST 2000
+13 -1 -1 -1 -1 117 116 12 -1 FOREST 2000
+105 1 2 106 210 209 -1 -1 -1 FOREST 2000
+106 2 3 107 211 210 209 105 1 FOREST 2000
+107 3 4 108 212 211 210 106 2 FOREST 2000
+108 4 5 109 213 212 211 107 3 FOREST 2000
+109 5 6 110 214 213 212 108 4 FOREST 2000
+110 6 7 111 215 214 213 109 5 FOREST 2000
+111 7 8 112 216 215 214 110 6 FOREST 2000
+112 8 9 113 217 216 215 111 7 FOREST 2000
+113 9 10 114 218 217 216 112 8 FOREST 2000
+114 10 11 115 219 218 217 113 9 FOREST 2000
+115 11 12 116 220 219 218 114 10 FOREST 2000
+116 12 13 117 221 220 219 115 11 FOREST 2000
+117 13 -1 -1 -1 221 220 116 12 FOREST 2000
+209 105 106 210 314 313 -1 -1 -1 FOREST 2000
+210 106 107 211 315 314 313 209 105 FOREST 2000
+211 107 108 212 316 315 314 210 106 FOREST 2000
+212 108 109 213 317 316 315 211 107 FOREST 2000
+213 109 110 214 318 317 316 212 108 FOREST 2000
+214 110 111 215 319 318 317 213 109 FOREST 2000
+215 111 112 216 320 319 318 214 110 FOREST 2000
+216 112 113 217 321 320 319 215 111 FOREST 2000
+217 113 114 218 322 321 320 216 112 FOREST 2000
+218 114 115 219 323 322 321 217 113 FOREST 2000
+219 115 116 220 324 323 322 218 114 FOREST 2000
+220 116 117 221 325 324 323 219 115 FOREST 2000
+221 117 -1 -1 -1 325 324 220 116 FOREST 2000
+313 209 210 314 418 417 -1 -1 -1 FOREST 2000
+314 210 211 315 419 418 417 313 209 FOREST 2000
+315 211 212 316 420 419 418 314 210 FOREST 2000
+316 212 213 317 421 420 419 315 211 FOREST 2000
+317 213 214 318 422 421 420 316 212 FOREST 2000
+318 214 215 319 423 422 421 317 213 FOREST 2000
+319 215 216 320 424 423 422 318 214 FOREST 2000
+320 216 217 321 425 424 423 319 215 FOREST 2000
+321 217 218 322 426 425 424 320 216 FOREST 2000
+322 218 219 323 427 426 425 321 217 FOREST 2000
+323 219 220 324 428 427 426 322 218 FOREST 2000
+324 220 221 325 429 428 427 323 219 FOREST 2000
+325 221 -1 -1 -1 429 428 324 220 FOREST 2000
+417 313 314 418 522 521 -1 -1 -1 FOREST 2000
+418 314 315 419 523 522 521 417 313 FOREST 2000
+419 315 316 420 524 523 522 418 314 FOREST 2000
+420 316 317 421 525 524 523 419 315 FOREST 2000
+421 317 318 422 526 525 524 420 316 FOREST 2000
+422 318 319 423 527 526 525 421 317 FOREST 2000
+423 319 320 424 528 527 526 422 318 FOREST 2000
+424 320 321 425 529 528 527 423 319 FOREST 2000
+425 321 322 426 530 529 528 424 320 FOREST 2000
+426 322 323 427 531 530 529 425 321 FOREST 2000
+427 323 324 428 532 531 530 426 322 FOREST 2000
+428 324 325 429 533 532 531 427 323 FOREST 2000
+429 325 -1 -1 -1 533 532 428 324 FOREST 2000
+521 417 418 522 626 625 -1 -1 -1 FOREST 2000
+522 418 419 523 627 626 625 521 417 FOREST 2000
+523 419 420 524 628 627 626 522 418 FOREST 2000
+524 420 421 525 629 628 627 523 419 FOREST 2000
+525 421 422 526 630 629 628 524 420 FOREST 2000
+526 422 423 527 631 630 629 525 421 FOREST 2000
+527 423 424 528 632 631 630 526 422 FOREST 2000
+528 424 425 529 633 632 631 527 423 FOREST 2000
+529 425 426 530 634 633 632 528 424 FOREST 2000
+530 426 427 531 635 634 633 529 425 FOREST 2000
+531 427 428 532 636 635 634 530 426 FOREST 2000
+532 428 429 533 637 636 635 531 427 FOREST 2000
+533 429 -1 -1 -1 637 636 532 428 FOREST 2000
+625 521 522 626 730 729 -1 -1 -1 FOREST 2000
+626 522 523 627 731 730 729 625 521 FOREST 2000
+627 523 524 628 732 731 730 626 522 FOREST 2000
+628 524 525 629 733 732 731 627 523 FOREST 2000
+629 525 526 630 734 733 732 628 524 FOREST 2000
+630 526 527 631 735 734 733 629 525 FOREST 2000
+631 527 528 632 736 735 734 630 526 FOREST 2000
+632 528 529 633 737 736 735 631 527 FOREST 2000
+633 529 530 634 738 737 736 632 528 FOREST 2000
+634 530 531 635 739 738 737 633 529 FOREST 2000
+635 531 532 636 740 739 738 634 530 CULTIVATED 500
+636 532 533 637 741 740 739 635 531 CULTIVATED 500
+637 533 -1 -1 -1 741 740 636 532 FOREST 2000
+729 625 626 730 834 833 -1 -1 -1 FOREST 2000
+730 626 627 731 835 834 833 729 625 FOREST 2000
+731 627 628 732 836 835 834 730 626 FOREST 2000
+732 628 629 733 837 836 835 731 627 FOREST 2000
+733 629 630 734 838 837 836 732 628 FOREST 2000
+734 630 631 735 839 838 837 733 629 FOREST 2000
+735 631 632 736 840 839 838 734 630 FOREST 2000
+736 632 633 737 841 840 839 735 631 FOREST 2000
+737 633 634 738 842 841 840 736 632 FOREST 2000
+738 634 635 739 843 842 841 737 633 FOREST 2000
+739 635 636 740 844 843 842 738 634 CULTIVATED 500
+740 636 637 741 845 844 843 739 635 CULTIVATED 500
+741 637 -1 -1 -1 845 844 740 636 CULTIVATED 500
+833 729 730 834 938 937 -1 -1 -1 FOREST 2000
+834 730 731 835 939 938 937 833 729 FOREST 2000
+835 731 732 836 940 939 938 834 730 FOREST 2000
+836 732 733 837 941 940 939 835 731 FOREST 2000
+837 733 734 838 942 941 940 836 732 FOREST 2000
+838 734 735 839 943 942 941 837 733 FOREST 2000
+839 735 736 840 944 943 942 838 734 FOREST 2000
+840 736 737 841 945 944 943 839 735 FOREST 2000
+841 737 738 842 946 945 944 840 736 FOREST 2000
+842 738 739 843 947 946 945 841 737 FOREST 2000
+843 739 740 844 948 947 946 842 738 CULTIVATED 500
+844 740 741 845 949 948 947 843 739 URBAN 200
+845 741 -1 -1 -1 949 948 844 740 CULTIVATED 500
+937 833 834 938 -1 -1 -1 -1 -1 FOREST 2000
+938 834 835 939 -1 -1 -1 937 833 FOREST 2000
+939 835 836 940 -1 -1 -1 938 834 FOREST 2000
+940 836 837 941 -1 -1 -1 939 835 FOREST 2000
+941 837 838 942 -1 -1 -1 940 836 FOREST 2000
+942 838 839 943 -1 -1 -1 941 837 FOREST 2000
+943 839 840 944 -1 -1 -1 942 838 FOREST 2000
+944 840 841 945 -1 -1 -1 943 839 FOREST 2000
+945 841 842 946 -1 -1 -1 944 840 FOREST 2000
+946 842 843 947 -1 -1 -1 945 841 FOREST 2000
+947 843 844 948 -1 -1 -1 946 842 CULTIVATED 500
+948 844 845 949 -1 -1 -1 947 843 URBAN 200
+949 845 -1 -1 -1 -1 -1 948 844 CULTIVATED 500
+   </attributes>
+   </domain>
+</openfluid>
