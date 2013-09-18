@@ -120,10 +120,6 @@ int main(int argc, char** argv)
   {
     std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
   }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
-  }
   catch (std::exception & E)
   {
     std::cerr << "std ERROR: " << E.what() << std::endl;

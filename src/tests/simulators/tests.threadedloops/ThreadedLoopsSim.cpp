@@ -98,7 +98,6 @@ END_SIMULATOR_SIGNATURE
 class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 {
   private:
-    Glib::RecMutex m_Mutex;
 
     openfluid::core::PcsOrd_t m_LastOrd;
 
@@ -176,6 +175,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   {
     if (m_LastOrd > aUnit->getProcessOrder())
       OPENFLUID_RaiseError("wrong process order");
+
     m_LastOrd = aUnit->getProcessOrder();
 
     openfluid::tools::Sleep(100);
@@ -190,9 +190,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   {
     openfluid::tools::Sleep(100*aUnit->getID());
 
-    Glib::RecMutex::Lock Lock(m_Mutex);
     OPENFLUID_AppendVariable(aUnit,"tests.data.threaded",double(aUnit->getID())+Value/1000.0);
-    Lock.release();
   }
 
 
