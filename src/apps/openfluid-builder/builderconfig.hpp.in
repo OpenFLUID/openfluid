@@ -53,23 +53,27 @@
  */
 
 
-#include <string>
+#include <QString>
 
 #ifndef __BUILDERCONFIG_HPP__
 #define __BUILDERCONFIG_HPP__
 
 
-const std::string BUILDER_LICENSE_TEXT = "@BUILDER_LICENSE_TEXT@";
-const std::string BUILDER_AUTHORS_TEXT = "@BUILDER_AUTHORS_TEXT@";
+const QString BUILDER_LICENSE_TEXT = "@BUILDER_LICENSE_TEXT@";
+const QString BUILDER_AUTHORS_TEXT = "@BUILDER_AUTHORS_TEXT@";
 
-const std::string BUILDER_EXTSDIR = "@BUILDER_EXTSDIR@";
-const std::string BUILDEREXT_INSTALL_PATH = "@BUILDEREXT_INSTALL_PATH@";
+const QString BUILDER_EXTSDIR = "@BUILDER_EXTSDIR@";
+const QString BUILDEREXT_INSTALL_PATH = "@BUILDEREXT_INSTALL_PATH@";
 
-const std::string BUILDEREXTENSION_BINARY_EXTENSION = "@BUILDEREXTENSION_BINARY_EXTENSION@";
+const std::string BUILDEREXTS_PLUGINS_SUFFIX = "@OPENFLUID_BUILDEREXTS_SUFFIX@";
 
-const std::string BUILDER_URL_WEBSITE = "http://www.openfluid-project.org";
-const std::string BUILDER_URL_COMMUNITY = "http://www.openfluid-project.org/community";
-const std::string BUILDER_URL_DEV = "https://github.com/OpenFLUID/";
-const std::string BUILDER_URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
+const QString BUILDER_URL_WEBSITE = "http://www.openfluid-project.org";
+const QString BUILDER_URL_COMMUNITY = "http://www.openfluid-project.org/community";
+const QString BUILDER_URL_DEV = "https://github.com/OpenFLUID/";
+const QString BUILDER_URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
+const QString BUILDER_URL_EMAIL = "mailto:contact@openfluid-project.org";
+
+
+
 
 #endif /* __BUILDERCONFIG_HPP__ */

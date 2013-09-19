@@ -62,8 +62,6 @@
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 
-#include <glibmm/spawn.h>
-
 #include "../KmlObserverBase.hpp"
 
 // =====================================================================
@@ -85,7 +83,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.files.kml-anim")
   DECLARE_VERSION(openfluid::config::FULL_VERSION);
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-END_SIMULATOR_SIGNATURE
+END_OBSERVER_SIGNATURE
 
 
 

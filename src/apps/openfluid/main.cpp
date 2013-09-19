@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 
   int ReturnValue = 0;
 
-  openfluid::base::Init();
+  INIT_OPENFLUID_APPLICATION(argc,argv);
 
   OpenFLUIDApp App;
 

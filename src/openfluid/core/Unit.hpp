@@ -124,8 +124,12 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
 class DLLEXPORT Unit
 {
   private:
+
     UnitID_t m_ID;
+
     UnitClass_t m_Class;
+
+    // TODO use openfluid::core::PcsOrd_t instead
     unsigned int m_PcsOrder;
 
     LinkedUnitsListByClassMap_t m_FromUnits;
@@ -157,6 +161,7 @@ class DLLEXPORT Unit
 
     /**
       Returns the process order of the unit
+      TODO use openfluid::core::PcsOrd_t instead
     */
     inline unsigned int getProcessOrder() const { return m_PcsOrder; };
 

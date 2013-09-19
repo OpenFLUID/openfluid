@@ -73,7 +73,8 @@ MACRO(OPNFLD_ADD_SIMULATOR SIM_NAME SIM_SRCDIR SIM_BINDIR)
                         openfluid-core
                         openfluid-base
                         openfluid-ware
-                        openfluid-tools)
+                        openfluid-tools
+                        ${QT_QTCORE_LIBRARIES})
       
 ENDMACRO()
 
@@ -116,7 +117,8 @@ MACRO(OPNFLD_ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
                         openfluid-core
                         openfluid-base
                         openfluid-ware
-                        openfluid-tools)
+                        openfluid-tools
+                        ${QT_QTCORE_LIBRARIES})
       
 ENDMACRO()
 
@@ -138,34 +140,40 @@ ENDMACRO()
 ###########################################################################
 
 
-# Macro for compiling a builder extension
 MACRO(OPNFLD_ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
 
-  FILE(GLOB EXT_CPP ${EXT_SRCDIR}/*.cpp)
+  FILE(GLOB EXT_CPP ${EXT_SRCDIR}/*.cpp)  
+  FILE(GLOB EXT_UIFILES ${EXT_SRCDIR}/*.ui)
+  FILE(GLOB EXT_RCFILES ${EXT_SRCDIR}/*.qrc)
+    
+  QT4_WRAP_UI(EXT_UI ${EXT_UIFILES})
+  QT4_ADD_RESOURCES(EXT_RC ${EXT_RCFILES})
   
-  ADD_LIBRARY(${EXT_NAME} MODULE ${EXT_CPP})
+  ADD_LIBRARY(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} MODULE ${EXT_CPP} ${EXT_UI} ${EXT_RC})
   
-  INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS})
-  LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
+  INCLUDE_DIRECTORIES(${QT_INCLUDES})
   
-  SET_TARGET_PROPERTIES(${EXT_NAME} PROPERTIES 
+  SET_TARGET_PROPERTIES(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} PROPERTIES 
                         PREFIX "" 
-                        SUFFIX "${BUILDEREXTENSION_BINARY_EXTENSION}"
+                        SUFFIX "${PLUGINS_BINARY_EXTENSION}"
                         LIBRARY_OUTPUT_DIRECTORY "${EXT_BINDIR}")
 
   # Fix for win32 compatibility                                              
   IF(WIN32)
-    SET_TARGET_PROPERTIES(${EXT_NAME} PROPERTIES LINK_FLAGS "-shared")                                                
+    SET_TARGET_PROPERTIES(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} PROPERTIES LINK_FLAGS "-shared")                                                
   ENDIF(WIN32)
                                               
                                                 
-  TARGET_LINK_LIBRARIES(${EXT_NAME} 
+  TARGET_LINK_LIBRARIES(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} 
                         openfluid-core
                         openfluid-base 
-                        openfluid-tools
+                        openfluid-tools                        
+                        openfluid-ware
                         openfluid-guicommon
-                        ${LibXML2_LIBRARIES}  
-                        ${GTKMM_LIBRARIES})
+                        openfluid-builderext                        
+                        ${QT_QTCORE_LIBRARIES}
+                        ${QT_QTGUI_LIBRARIES}                      
+                       )
     
 ENDMACRO()
 

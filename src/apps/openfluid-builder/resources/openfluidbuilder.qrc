@@ -1,0 +1,27 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource>
+    <file>images/openfluid_official.png</file>
+    <file>images/openfluid_title.png</file>
+    <file>images/dot.png</file>
+    <file>images/check-ok.png</file>
+    <file>images/check-warn.png</file>
+    <file>images/check-error.png</file>
+    <file>icons/openfluid_icon.png</file>
+    <file>icons/openfluid_icon_about.png</file>
+    <file>icons/file-new.png</file>
+    <file>icons/file-open.png</file>
+    <file>icons/file-open-example.png</file>
+    <file>icons/file-close.png</file>
+    <file>icons/file-save.png</file>
+    <file>icons/file-save-as.png</file>
+    <file>icons/start.png</file>
+    <file>icons/refresh.png</file>
+    <file>icons/market.png</file>
+    <file>icons/add.png</file>
+    <file>icons/modify.png</file>
+    <file>icons/remove.png</file>
+    <file>icons/go-up.png</file>
+    <file>icons/go-down.png</file>
+  </qresource>
+</RCC>

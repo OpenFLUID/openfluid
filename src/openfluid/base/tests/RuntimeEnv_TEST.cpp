@@ -68,8 +68,6 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-
-
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir(),"");
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir(),"");
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),"");
@@ -79,11 +77,22 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize(),false);
 
-  std::cout << "InputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
-  std::cout << "OutputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
-  std::cout << "TempDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
-  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths().size();i++) std::cout << "Plugins search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths().at(i) << std::endl;
   std::cout << "Arch: " << openfluid::base::RuntimeEnvironment::getInstance()->getArch() << std::endl;
+  std::cout << "Hostname: " << openfluid::base::RuntimeEnvironment::getInstance()->getHostName() << std::endl;
+  std::cout << "UserID: " << openfluid::base::RuntimeEnvironment::getInstance()->getUserID() << std::endl;
+  std::cout << "Home dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getUserHomeDir() << std::endl;
+  std::cout << "User data path for foo: " << openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath("foo") << std::endl;
+  std::cout << "Default config file: " << openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile() << std::endl;
+  std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
+  std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
+  std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
+  std::cout << "MarketBag dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagDir() << std::endl;
+  std::cout << "User examples dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getUserExamplesDir() << std::endl;
+  std::cout << "Provided examples dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getProvidedExamplesDir() << std::endl;
+  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths().size();i++)
+    std::cout << "Simulators search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths().at(i) << std::endl;
+  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths().size();i++)
+    std::cout << "Observers search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths().at(i) << std::endl;
 
 }
 

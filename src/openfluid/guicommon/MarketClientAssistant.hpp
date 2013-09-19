@@ -56,78 +56,89 @@
 #ifndef __MARKETCLIENTASSISTANT_HPP__
 #define __MARKETCLIENTASSISTANT_HPP__
 
-#include <gtkmm/assistant.h>
-#include <gtkmm/box.h>
-#include <gtkmm/label.h>
-#include <gtkmm/combobox.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/treestore.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/button.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/alignment.h>
-#include <gtkmm/progressbar.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/notebook.h>
-#include <gtkmm/paned.h>
-#include <gtkmm/messagedialog.h>
-#include <gtkmm/viewport.h>
+#include <QWizard>
+#include <QBoxLayout>
+#include <QLabel>
+#include <QComboBox>
+#include <QTabWidget>
+#include <QPushButton>
+#include <QScrollArea>
+#include <QTreeWidget>
+#include <QRadioButton>
+#include <QTextEdit>
+#include <QTableWidget>
+#include <QProgressBar>
+#include <QSplitter>
+#include <QStandardItemModel>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketClient.hpp>
+#include <openfluid/guicommon/MarketWizardPage.hpp>
 
 
 namespace openfluid { namespace guicommon {
 
 class MarketPackWidget;
 
-
-class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
+// TODO review parenting of all widgets
+class DLLEXPORT MarketClientAssistant : public QWizard
 {
+  Q_OBJECT
 
   private:
 
     // ===== Package selection =====//
-    Gtk::VBox m_SelectionPageBox;
+    MarketWizardPage m_SelectionPage;
+    QVBoxLayout m_SelectionPageBox;
 
-    Gtk::HBox m_URLBox;
-    Gtk::Label m_URLLabel;
-    Gtk::ComboBox m_URLCombo;
-    Glib::RefPtr<Gtk::ListStore> m_RefURLComboBoxModel;
+    QHBoxLayout m_URLBox;
+    QLabel m_URLLabel;
+    QComboBox m_URLCombo;
+    QStandardItemModel m_RefURLComboBoxModel;
 
-    class URLComboColumns : public Gtk::TreeModel::ColumnRecord
+    class URLComboColumns : public QList<QStandardItem*>
     {
       public:
 
-        Gtk::TreeModelColumn<Glib::ustring> m_Name;
-        Gtk::TreeModelColumn<Glib::ustring> m_URL;
+        enum { NAME, URL};
 
-        URLComboColumns() { add(m_Name); add(m_URL); }
+        QStandardItem *mp_Name;
+        QStandardItem *mp_URL;
+
+        URLComboColumns() {}
+
+        void appendItems() { clear(); append(mp_Name); append(mp_URL); }
     };
 
     URLComboColumns m_URLColumns;
 
 
     // Tabs
-    Gtk::Notebook m_TypesTabs;
+    QTabWidget m_TypesTabs;
 
-    // Main box of tab
-    std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*> mp_TabBox;
+    // Pages and main box of tab
+    std::map<openfluid::market::PackageInfo::PackageType,QWidget*> mp_TabPage;
+    std::map<openfluid::market::PackageInfo::PackageType,QVBoxLayout*> mp_TabBox;
 
     // Box and ScrolledWindow for packages list
-    std::map<openfluid::market::PackageInfo::PackageType,Gtk::VBox*> mp_AvailTypesPacksBox;
-    std::map<openfluid::market::PackageInfo::PackageType,Gtk::ScrolledWindow*> mp_AvailTypesPacksSWindow;
+    std::map<openfluid::market::PackageInfo::PackageType,QVBoxLayout*> mp_AvailTypesPacksBox;
+    std::map<openfluid::market::PackageInfo::PackageType,QScrollArea*> mp_AvailTypesPacksSWindow;
 
     // Buttons of tab
-    std::map<openfluid::market::PackageInfo::PackageType,Gtk::HBox*> mp_ActionButtonsBox;
-    std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_SelectAllButton;
-    std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_SelectNoneButton;
-    std::map<openfluid::market::PackageInfo::PackageType,Gtk::Button*> mp_CommonBuildConfigButton;
+    std::map<openfluid::market::PackageInfo::PackageType,QHBoxLayout*> mp_ActionButtonsBox;
+    std::map<openfluid::market::PackageInfo::PackageType,QPushButton*> mp_SelectAllButton;
+    std::map<openfluid::market::PackageInfo::PackageType,QPushButton*> mp_SelectNoneButton;
+    std::map<openfluid::market::PackageInfo::PackageType,QPushButton*> mp_CommonBuildConfigButton;
 
     // List of MarketPackWidget
     std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> > mp_AvailPacksWidgets;
 
-    void onURLComboChanged();
+
+    /**
+     @return Type of current tab
+    */
+    openfluid::market::PackageInfo::PackageType getCurrentTypeTab();
+
 
     /**
      @return MarketPackWidget of ID package
@@ -152,119 +163,72 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     bool getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
         const std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >& PacksToSelect);
 
-    /**
-     Selects dependencies of ID package
-     @param ID of package selected
-    */
-    void selectDependencies(const openfluid::ware::WareID_t& ID);
-
-    void onPackageInstallModified();
-
-    /**
-     @return Type of current gtk tab
-    */
-    openfluid::market::PackageInfo::PackageType getCurrentTypeTab();
-
-    /**
-     * Selects all packages of current tab
-    */
-    void onSelectAllClicked();
-
-    /**
-     * Unselects all packages of current tab
-    */
-    void onSelectNoneClicked();
-
-    /**
-     * Edit common options of packages of the current tab
-    */
-    void onCommonBuildConfigClicked();
-
 
     // ===== Licenses =====//
-    Gtk::VBox m_LicensesPageBox;
+    MarketWizardPage m_LicensesPage;
+    QVBoxLayout m_LicensesPageBox;
 
-    Gtk::Label m_LicensesLabel;
+    QLabel m_LicensesLabel;
 
     // Adjustable container for packages treeview and license text view
-    Gtk::HPaned m_LicensesReviewPaned;
-    Gtk::TreeView m_LicensesTreeView;
+    QSplitter m_LicensesReviewPaned;
 
-    Glib::RefPtr<Gtk::TreeStore> m_RefLicenseTreeViewModel;
+    QTreeWidget *mp_LicensesTreeView;
 
-
-    class LicensesTreeViewColumns : public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-
-        Gtk::TreeModelColumn<Glib::ustring> m_ID;
-
-        LicensesTreeViewColumns() { add(m_ID); }
-    };
-
-    LicensesTreeViewColumns m_LicensesColumns;
-
-    Glib::RefPtr<Gtk::TreeSelection> m_RefLicensesTreeSelection;
-
-    Gtk::TextView m_LicensesTextView;
-
-    Glib::RefPtr<Gtk::TextBuffer> m_RefLicenseTextBuffer;
+    QTextEdit *mp_LicensesTextView;
 
 
-    Gtk::ScrolledWindow m_LicensesListSWindow;
-    Gtk::ScrolledWindow m_LicensesReviewSWindow;
+    QScrollArea m_LicensesListSWindow;
+    QScrollArea m_LicensesReviewSWindow;
 
-    Gtk::RadioButton m_LicensesAcceptRadio;
-    Gtk::RadioButton m_LicensesDoNotRadio;
+    QRadioButton m_LicensesAcceptRadio;
+    QRadioButton m_LicensesDoNotRadio;
 
 
-    void onLicensesTreeviewChanged();
 
-    void onLicenseRadioClicked();
 
     // ===== Download and install =====//
-    Gtk::VBox m_InstallPageBox;
+    MarketWizardPage m_InstallPage;
 
-    Gtk::TreeView m_InstallTreeView;
-    Glib::RefPtr<Gtk::TreeView> m_RefInstallTreeView;
+    QVBoxLayout m_InstallPageBox;
 
-    Glib::RefPtr<Gtk::ListStore> m_RefInstallTreeViewModel;
+    QTableWidget *mp_InstallTable;
 
-    class InstallTreeViewColumns : public Gtk::TreeModel::ColumnRecord
+
+    class InstallTableColumns
     {
       public:
 
-        Gtk::TreeModelColumn<Glib::ustring> m_ID;
-        Gtk::TreeModelColumn<Glib::ustring> m_Type;
-        Gtk::TreeModelColumn<Glib::ustring> m_Format;
-        Gtk::TreeModelColumn<Glib::ustring> m_Status;
+        enum { ID, TYPE, FORMAT, STATUS};
 
-        InstallTreeViewColumns() { add(m_ID); add(m_Type); add(m_Format); add(m_Status);}
+        QTableWidgetItem *mp_ID;
+        QTableWidgetItem *mp_Type;
+        QTableWidgetItem *mp_Format;
+        QTableWidgetItem *mp_Status;
+
+        InstallTableColumns() {}
+
+        void setFlags()
+        {
+          mp_ID->setFlags(mp_ID->flags() ^ Qt::ItemIsEditable);
+          mp_Type->setFlags(mp_Type->flags() ^ Qt::ItemIsEditable);
+          mp_Format->setFlags(mp_Format->flags() ^ Qt::ItemIsEditable);
+          mp_Status->setFlags(mp_Status->flags() ^ Qt::ItemIsEditable);
+        }
     };
 
-    InstallTreeViewColumns m_InstallColumns;
+    InstallTableColumns m_InstallColumns;
 
 
-    Gtk::ScrolledWindow m_InstallSWindow;
-    Gtk::ProgressBar m_InstallProgressBar;
-    Gtk::Button m_ViewLogButton;
-    Gtk::Alignment m_LogButtonAlign;
+    QScrollArea m_InstallSWindow;
 
-    void onInstallTimeoutOnce();
-
-    void onViewLogClicked();
+    QProgressBar m_InstallProgressBar;
+    QPushButton m_ViewLogButton;
 
 
     void setupSelectionPage();
-    void setupConfirmationPage();
     void setupLicensesPage();
     void setupDownloadPage();
-
-
-    void onApply();
-    void onCancel();
-    void onClose();
-    void onPrepare(Gtk::Widget* Widget);
 
 
     /**
@@ -282,16 +246,65 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
     */
     void displayMarketplaceError();
 
-    void updateInstallTreeview();
 
     void initializeLicencesTreeView();
+
+    void updateInstallTreeview();
 
     openfluid::market::MarketClient m_MarketClient;
 
     int m_InstallationTimeout;
 
+
+  private slots:
+
+    void onApply();
+    void onCancel();
+    void onClose();
+    void onPrepare(int Id);
+
+    void onURLComboChanged(int RowNumber);
+
+    /**
+     * Selects all packages of current tab
+    */
+    void onSelectAllClicked();
+
+    /**
+     * Unselects all packages of current tab
+    */
+    void onSelectNoneClicked();
+
+    /**
+     * Edit common options of packages of the current tab
+    */
+    void onCommonBuildConfigClicked();
+
+
+    /**
+     Selects dependencies of ID package
+     @param ID of package selected
+    */
+    void selectDependencies(const openfluid::ware::WareID_t& ID);
+
+
+    void onPackageInstallModified();
+
+
+    void onLicenseRadioClicked(bool Checked);
+
+
+    void onLicensesTreeviewChanged(QTreeWidgetItem *CurrentItem);
+
+
+    void onInstallTimeoutOnce();
+
+    void onViewLogClicked();
+
+
   public:
-    MarketClientAssistant();
+
+    MarketClientAssistant(QWidget* Parent);
 
     virtual ~MarketClientAssistant();
 
@@ -301,9 +314,7 @@ class DLLEXPORT MarketClientAssistant : public Gtk::Assistant
      @param Maj First letter in maj
      @param Plural Return plural name
     */
-    static std::string getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
-
-
+    static QString getGraphicTypeName(const openfluid::market::PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
 };
 
 } } //namespaces

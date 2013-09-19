@@ -57,12 +57,9 @@
 #include <openfluid/market/MarketPackage.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
-#include <glibmm/i18n.h>
-
-#include <gtkmm/stock.h>
-#include <gtkmm/box.h>
-#include <gtkmm/button.h>
-#include <gtkmm/label.h>
+#include <QBoxLayout>
+#include <QDialogButtonBox>
+#include <QLabel>
 
 
 namespace openfluid { namespace guicommon {
@@ -71,57 +68,67 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 
 
-MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions, const std::string SimID)
-: Gtk::Dialog(), m_CommonBuildOptions(CommonBuildOptions),m_BuildOptions(BuildOptions),m_SimID(SimID)
+MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOptions, const QString& BuildOptions, const QString& SimID)
+: QDialog(), m_CommonBuildOptions(CommonBuildOptions),m_BuildOptions(BuildOptions),m_SimID(SimID)
 {
 
-  set_size_request(450,-1);
-  set_border_width(6);
+  setMinimumSize(450,0);
 
-  Gtk::Label* InfoLabel = Gtk::manage(new Gtk::Label());
-  InfoLabel->set_markup(std::string("<i>")+_("These options control the builds of source packages.\nChanging this is at your own risk.")+std::string("</i>"));
-  InfoLabel->set_justify(Gtk::JUSTIFY_CENTER);
+  QLabel *InfoLabel = new QLabel();
+  InfoLabel->setText("<i>"+tr("These options control the builds of source packages.<br/>Changing this is at your own risk.")+"</i>");
+  InfoLabel->setAlignment(Qt::AlignHCenter);
 
-  get_vbox()->pack_start(*InfoLabel);
+  QLabel *CommonOptsLabel = new QLabel();
 
-  Gtk::Label* CommonOptsLabel = Gtk::manage(new Gtk::Label());
-
-  if (!SimID.empty())
-    CommonOptsLabel->set_markup(_("<u>Common source build options:</u>\n")
-                                +openfluid::tools::ReplaceEmptyString(CommonBuildOptions,_("<i>none</i>")));
-  else
-    CommonOptsLabel->set_label("");
-
-  CommonOptsLabel->set_alignment(0,0.5);
-  get_vbox()->pack_start(*CommonOptsLabel,Gtk::PACK_SHRINK,12);
-
-
-  Gtk::Label* EditLabel = Gtk::manage(new Gtk::Label());
-  if (!SimID.empty())
+  if (!SimID.isEmpty())
   {
-    EditLabel->set_label(_("Specific build options for ")+SimID+_(":"));
+    QString Options = QString::fromStdString(openfluid::tools::ReplaceEmptyString(CommonBuildOptions.toStdString(),tr("<i>none</i>").toStdString()));
+    CommonOptsLabel->setText("<u>"+tr("Common source build options:")+"</u><br/>" + Options);
+  }
+  else
+    CommonOptsLabel->setText("");
+
+
+
+  QLabel *EditLabel = new QLabel();
+  if (!SimID.isEmpty())
+  {
+    EditLabel->setText(tr("Specific build options for ")+SimID+tr(":"));
   }
   else
   {
-    EditLabel->set_label(_("Common source build options:"));
+    EditLabel->setText(tr("Common source build options:"));
   }
-  EditLabel->set_alignment(0,0.5);
-  get_vbox()->pack_start(*EditLabel);
 
-  if (SimID.empty()) m_OptionsEntry.set_text(CommonBuildOptions);
-  else m_OptionsEntry.set_text(BuildOptions);
-  get_vbox()->pack_start(m_OptionsEntry);
 
-  add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+  if (SimID.isEmpty()) m_OptionsEntry.setText(CommonBuildOptions);
+  else m_OptionsEntry.setText(BuildOptions);
 
-  if(m_SimID.empty())
-    set_title(_("Common build options for all source packages"));
+
+  QDialogButtonBox *ButtonBox = new QDialogButtonBox(QDialogButtonBox::Ok
+                                      | QDialogButtonBox::Cancel);
+
+  connect(ButtonBox, SIGNAL(accepted()), this, SLOT(accept()));
+  connect(ButtonBox, SIGNAL(rejected()), this, SLOT(reject()));
+
+
+  QVBoxLayout *MainLayout = new QVBoxLayout();
+
+  MainLayout->addWidget(InfoLabel);
+  MainLayout->addSpacing(10);
+  MainLayout->addWidget(CommonOptsLabel);
+  MainLayout->addSpacing(10);
+  MainLayout->addWidget(EditLabel);
+  MainLayout->addWidget(&m_OptionsEntry);
+  MainLayout->addWidget(ButtonBox);
+
+
+  if(m_SimID.isEmpty())
+    setWindowTitle(tr("Common build options for all source packages"));
   else
-    set_title(_("Build options for ") + m_SimID);
+    setWindowTitle(tr("Build options for ") + m_SimID);
 
-
-  show_all_children();
+  setLayout(MainLayout);
 }
 
 
@@ -129,7 +136,4 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const std::string& CommonBuil
 // =====================================================================
 
 } } //namespaces
-
-
-
 

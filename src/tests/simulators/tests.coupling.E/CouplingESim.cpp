@@ -55,7 +55,6 @@
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
-#include <glibmm/timer.h>
 
 
 // =====================================================================
@@ -153,7 +152,7 @@ class CouplingESimulator : public openfluid::ware::PluggableSimulator
     }
 
 
-    Glib::usleep(5000);
+    openfluid::tools::Sleep(5000);
 
     return DefaultDeltaT();
   }

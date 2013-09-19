@@ -56,12 +56,12 @@
 #ifndef __VIEWLOGFILEWINDOW_HPP__
 #define __VIEWLOGFILEWINDOW_HPP__
 
-#include <gtkmm/window.h>
-#include <gtkmm/box.h>
-#include <gtkmm/textview.h>
-#include <gtkmm/textbuffer.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/button.h>
+#include <QDialog>
+#include <QString>
+#include <QVBoxLayout>
+#include <QTextEdit>
+#include <QScrollArea>
+#include <QPushButton>
 
 #include <openfluid/dllexport.hpp>
 
@@ -72,19 +72,21 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT ViewLogFileWindow : public Gtk::Window
+class DLLEXPORT ViewLogFileWindow : public QDialog
 {
-  private:
-    Gtk::VBox m_VBox;
-    Gtk::TextView m_LogTextView;
-    Glib::RefPtr<Gtk::TextBuffer> m_RefLogTextBuffer;
-    Gtk::ScrolledWindow m_LogSWindow;
-    Gtk::Button m_CloseButton;
+  Q_OBJECT
 
+  private:
+    QVBoxLayout m_VBox;
+    QTextEdit *mp_LogTextView;
+    QScrollArea m_LogSWindow;
+    QPushButton m_CloseButton;
+
+  private slots:
     void onCloseClicked();
 
   public:
-    ViewLogFileWindow(const std::string& PathToLogfile);
+    ViewLogFileWindow(const QString& PathToLogfile);
 };
 
 } } //namespaces

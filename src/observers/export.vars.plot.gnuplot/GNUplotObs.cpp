@@ -55,12 +55,11 @@
 
 
 #include <boost/foreach.hpp>
-#include <glibmm/fileutils.h>
-#include <glibmm/spawn.h>
-
 
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/tools/SwissTools.hpp>
+
+#include <QProcess>
 
 // =====================================================================
 // =====================================================================
@@ -101,7 +100,7 @@ BEGIN_OBSERVER_SIGNATURE("export.vars.plot.gnuplot")
   DECLARE_VERSION(openfluid::config::FULL_VERSION);
   DECLARE_STATUS(openfluid::ware::STABLE);
 
-END_SIMULATOR_SIGNATURE
+END_OBSERVER_SIGNATURE
 
 
 // =====================================================================
@@ -414,7 +413,7 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           if (m_Persistent) PersistOption = " -persist ";
 
           std::string GNUPlotCommand = boost::filesystem::path(GNUplotPaths[0]).string()+PersistOption+boost::filesystem::path(m_OutputDir + "/script.gnuplot").string();
-          Glib::spawn_command_line_async(GNUPlotCommand);
+          QProcess::execute(QString::fromStdString(GNUPlotCommand));
         }
         else
         {

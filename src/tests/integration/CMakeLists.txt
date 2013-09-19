@@ -2,18 +2,15 @@ FIND_PACKAGE(Boost REQUIRED COMPONENTS unit_test_framework)
 
 MACRO(ADD_INTEGRATIONTEST TEST_NAME EXE_NAME)
   ADD_EXECUTABLE(${EXE_NAME} ${ARGN})
-  TARGET_LINK_LIBRARIES(${EXE_NAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${Boost_REGEX_LIBRARY} ${LibXML2_LIBRARIES} openfluid-base openfluid-core)
+  TARGET_LINK_LIBRARIES(${EXE_NAME} ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY} ${Boost_REGEX_LIBRARY} openfluid-base openfluid-core)
   SET_TARGET_PROPERTIES(${EXE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${TEST_OUTPUT_PATH}")
   ADD_TEST(${TEST_NAME} "${TEST_OUTPUT_PATH}/${EXE_NAME}")
 ENDMACRO(ADD_INTEGRATIONTEST)
 
 ADD_DEFINITIONS(-DOPENFLUID_VERSION=${FULL_VERSION})
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS}
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS}
                     "${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src/tests")
-
-
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
 
 
 ###########################################################################
@@ -512,119 +509,6 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyNewSimRun
                                        "-p" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim"
                                        "-v")
 SET_PROPERTY(TEST integration-BuddyNewSimRun APPEND PROPERTY DEPENDS integration-BuddyNewSimBuild)
-
-
-###########################################################################
-
-
-ADD_TEST(integration-BuddyConvertHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddyhelp" "convert"
-                              )
-
-
-###########################################################################
-
-
-IF(${FULL_VERSION} VERSION_GREATER "1.3") 
-  OPENFLUID_ADD_TEST(NAME integration-BuddyConvert1314
-                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "convert"
-                              "--buddyopts" "convmode=13_14,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V13,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
-                              )                              
-ENDIF() 
-
-
-###########################################################################
-
-IF(${FULL_VERSION} EQUAL "1.4")  
-  OPENFLUID_ADD_TEST(NAME integration-BuddyConvert1314Check
-                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                                       "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14"
-                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted13to14"
-                                       "-p" "${TEST_OUTPUT_PATH}"
-                              )
-  SET_PROPERTY(TEST integration-BuddyConvert1314Check APPEND PROPERTY DEPENDS integration-BuddyConvert1314)
-ENDIF()  
-
-
-###########################################################################
-
-
-IF(${FULL_VERSION} VERSION_GREATER "1.4") 
-  OPENFLUID_ADD_TEST(NAME integration-BuddyConvert1415
-                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "convert"
-                              "--buddyopts" "convmode=14_15,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted13to14,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15"
-                              )
-  SET_PROPERTY(TEST integration-BuddyConvert1415 APPEND PROPERTY DEPENDS integration-BuddyConvert1314)                              
-ENDIF() 
-
-
-###########################################################################
-
-
-IF(${FULL_VERSION} EQUAL "1.5")  
-  OPENFLUID_ADD_TEST(NAME integration-BuddyConvert1415Check
-                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                                       "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15"
-                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted14to15"
-                                       "-p" "${TEST_OUTPUT_PATH}"
-                              )
-  SET_PROPERTY(TEST integration-BuddyConvert1415Check APPEND PROPERTY DEPENDS integration-BuddyConvert1415)                              
-ENDIF()  
-
-
-###########################################################################
-
-IF(${FULL_VERSION} VERSION_GREATER "1.5") 
-  OPENFLUID_ADD_TEST(NAME integration-BuddyConvert1516
-                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "convert"
-                              "--buddyopts" "convmode=15_16,inputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted14to15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16"
-                              )
-  SET_PROPERTY(TEST integration-BuddyConvert1516 APPEND PROPERTY DEPENDS integration-BuddyConvert1415)                              
-ENDIF()
- 
-
-###########################################################################
-
-
-IF(${FULL_VERSION} EQUAL "1.6")  
-  OPENFLUID_ADD_TEST(NAME integration-BuddyConvert1516Check
-                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                                     "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16"
-                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16"
-                                       "-p" "${TEST_OUTPUT_PATH}"
-                              )
-  SET_PROPERTY(TEST integration-BuddyConvert1516Check APPEND PROPERTY DEPENDS integration-BuddyConvert1516)                              
-ENDIF()  
-
-
-
-###########################################################################
-
-
-IF(${FULL_VERSION} VERSION_GREATER "1.5")
-  OPENFLUID_ADD_TEST(NAME integration-BuddyConvert1516wBuff
-                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "convert"
-                              "--buddyopts" "convmode=15_16,inputdir=${TESTS_DATASETS_PATH}/OPENFLUID.IN.V15,outputdir=${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
-                              )                                  
-ENDIF()
-  
-
-###########################################################################
-  
-  
-IF(${FULL_VERSION} EQUAL "1.6")  
-  OPENFLUID_ADD_TEST(NAME integration-BuddyConvert1516wBuffCheck
-                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                                       "-i" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.IN.Converted15to16wBuff"
-                                       "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Converted15to16wBuff"
-                                       "-p" "${TEST_OUTPUT_PATH}"
-                              )
-  SET_PROPERTY(TEST integration-BuddyConvert1516wBuffCheck APPEND PROPERTY DEPENDS integration-BuddyConvert1516wBuff)                              
-ENDIF()
 
 
 ###########################################################################

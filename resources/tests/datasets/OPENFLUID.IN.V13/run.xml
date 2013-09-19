@@ -1,7 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<openfluid>
-  <run>
-    <deltat>3600</deltat>
-    <period begin="2001-01-01 00:00:18" end="2001-01-02 16:23:21" />
-  </run>
-</openfluid>

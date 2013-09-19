@@ -56,12 +56,17 @@
 #define __PREFERENCESMANAGER_HPP__
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/DateTime.hpp>
 
 #include <map>
-#include <iostream>
-#include <glibmm/keyfile.h>
+#include <vector>
+
+
+#include <QSettings>
+
 
 namespace openfluid { namespace guicommon {
+
 
 // =====================================================================
 // =====================================================================
@@ -69,87 +74,148 @@ namespace openfluid { namespace guicommon {
 
 class DLLEXPORT PreferencesManager
 {
+
   private:
 
     static PreferencesManager* mp_Instance;
 
-    static std::string m_FileName;
+    static QString m_FileName;
 
-    Glib::KeyFile* mp_KFile;
+    QSettings* mp_ConfFile;
 
     PreferencesManager();
 
     void setDefaultValues();
 
-    void loadKeyFile();
+    void setExtraPaths(const QString& Key, const QStringList& Paths);
+
+    void addExtraPath(const QString& Key, const QString& Path);
+
+    void removeExtraPath(const QString& Key, const QString& Path);
+
+    QStringList getExtraPaths(const QString& Key);
+
+    static QString guessLang();
+
 
   public:
 
-    typedef std::map<std::string, std::string> MarketPlaces_t;
+    static const int RecentProjectsLimit;
+
+    class RecentProject_t
+    {
+      public:
+        QString Name;
+        QString Path;
+    };
+
+    typedef std::vector<RecentProject_t> RecentProjectsList_t;
+
+    typedef std::map<QString, QString> MarketPlaces_t;
 
     static PreferencesManager* getInstance();
 
     ~PreferencesManager();
 
-    bool save();
-
     /* Used only if we want to set another file name for the conf file
      * instead of the default one (for tests eg.)
      * To be set before the first call of getInstance().
      */
-    static void setFileName(Glib::ustring AbsoluteFileName);
-    std::string getFileName();
+    static void setFileName(const QString& AbsoluteFileName);
 
-    bool isValidKey(std::string Group, std::string Key);
+    QString getFileName();
 
-    void setLang(Glib::ustring Lang);
-    Glib::ustring getLang();
+    bool isValidKey(const QString& Group, const QString& Key);
+
+
+    void setLang(const QString& Lang);
+
+    QString getLang();
+
+    static QStringList getAvailableLangs();
+
+    static bool isAvailableLang(const QString& Lang);
 
     void setRecentMax(unsigned int RecentMax);
-    int getRecentMax();
 
-    bool
-    addRecentProject(std::string ProjectPath, std::string ProjectName = "");
+    unsigned int getRecentMax();
+
+    bool addRecentProject(const QString& ProjectName, const QString& ProjectPath = "");
+
+    RecentProjectsList_t getRecentProjects();
+
     void clearRecentProjects();
-    std::vector<std::pair<std::string, std::string> > getRecentProjects();
 
-    void setWorkdir(Glib::ustring Workdir);
-    Glib::ustring getWorkdir();
-
-    void setExtraPlugPaths(std::vector<Glib::ustring> ExtraPlugPaths);
-    void addExtraPlugPath(Glib::ustring Path);
-    void removeExtraPlugPath(Glib::ustring Path);
-    std::vector<std::string> getExtraPlugPaths();
-
-    void setExtraExtensionPaths(std::vector<Glib::ustring> ExtraExtPaths);
-    void addExtraExtensionPath(Glib::ustring Path);
-    void removeExtraExtensionPath(Glib::ustring Path);
-    std::vector<std::string> getExtraExtensionPaths();
-
-    void setExtraObserversPaths(std::vector<Glib::ustring> ExtraObsPaths);
-    void addExtraObserversPath(Glib::ustring Path);
-    void removeExtraObserversPath(Glib::ustring Path);
-    std::vector<std::string> getExtraObserversPaths();
+    void adaptRecentProjects();
 
 
-    void setDeltaT(unsigned int DeltaT);
-    int getDeltaT();
+    void setWorkdir(const QString& Workdir);
 
-    void setBegin(std::string Begin);
-    std::string getBegin();
+    QString getWorkdir();
 
-    void setEnd(std::string End);
-    std::string getEnd();
 
-    bool
-    addMarketplace(Glib::ustring PlaceName, Glib::ustring PlaceUrl);
-    void removeMarketplace(Glib::ustring PlaceName);
+    void setExtraSimulatorsPaths(const QStringList& Paths);
+
+    void addExtraSimulatorsPath(const QString& Path);
+
+    void removeExtraSimulatorsPath(const QString& Path);
+
+    QStringList getExtraSimulatorsPaths();
+
+
+    void setExtraExtensionsPaths(const QStringList& Paths);
+
+    void addExtraExtensionsPath(const QString& Path);
+
+    void removeExtraExtensionsPath(const QString& Path);
+
+    QStringList getExtraExtensionsPaths();
+
+
+    void setExtraObserversPaths(const QStringList& Paths);
+
+    void addExtraObserversPath(const QString& Path);
+
+    void removeExtraObserversPath(const QString& Path);
+
+    QStringList getExtraObserversPaths();
+
+
+    void setDeltaT(openfluid::core::Duration_t DeltaT);
+
+    openfluid::core::Duration_t getDeltaT();
+
+
+    void setBegin(const QString& Begin);
+
+    QString getBegin();
+
+    void setEnd(const QString& End);
+
+    QString getEnd();
+
+
+    bool addMarketplace(const QString& PlaceName, const QString& PlaceUrl);
+
+    void removeMarketplace(const QString& PlaceName);
+
     MarketPlaces_t getMarketplaces();
 
-    bool isPluginValueExist(std::string PluginName, std::string Key);
-    std::string getPluginValue(std::string PluginName, std::string Key);
-    void setPluginValue(std::string PluginName, std::string Key,
-        std::string Value);
+
+    bool isExtensionValueExist(const QString& PluginName, const QString& Key);
+
+    QString getExtensionValue(const QString& PluginName, const QString& Key);
+
+    void setExtensionValue(const QString& PluginName, const QString& Key, const QString& Value);
+
+
+    Qt::DockWidgetArea getDockPosition();
+
+    void setDockPosition(Qt::DockWidgetArea Position);
+
+    Qt::ToolBarArea getToolBarPosition();
+
+    void setToolBarPosition(Qt::ToolBarArea Position);
 
 };
 

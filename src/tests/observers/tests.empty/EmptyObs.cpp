@@ -76,7 +76,7 @@ BEGIN_OBSERVER_SIGNATURE("tests.empty")
   DECLARE_VERSION("1.0");
   DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
 
-END_SIMULATOR_SIGNATURE
+END_OBSERVER_SIGNATURE
 
 
 // =====================================================================

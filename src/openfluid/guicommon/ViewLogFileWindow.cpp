@@ -54,8 +54,9 @@
 */
 
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
-#include <fstream>
-#include <glibmm/i18n.h>
+#include <openfluid/base/FrameworkException.hpp>
+#include <QFile>
+#include <QTextStream>
 
 namespace openfluid { namespace guicommon {
 
@@ -64,50 +65,50 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 
 
-ViewLogFileWindow::ViewLogFileWindow(const std::string& PathToLogFile)
+ViewLogFileWindow::ViewLogFileWindow(const QString& PathToLogFile) : QDialog()
 {
-  set_default_size(500, 350);
-  set_position(Gtk::WIN_POS_CENTER_ON_PARENT);
+  resize(500, 350);
+  setWindowTitle(tr("Install log"));
 
-  set_title(_("Install log"));
+  m_CloseButton.setText(tr("Close"));
 
-  m_CloseButton.set_label(_("Close"));
+  mp_LogTextView = new QTextEdit();
+  mp_LogTextView->setReadOnly(true);
+  mp_LogTextView->setText("");
+  mp_LogTextView->setWordWrapMode(QTextOption::WordWrap);
 
-  m_RefLogTextBuffer = Gtk::TextBuffer::create();
-  m_RefLogTextBuffer->set_text("");
-
-  m_LogTextView.set_editable(false);
-  m_LogTextView.set_buffer(m_RefLogTextBuffer);
-  m_LogTextView.set_wrap_mode(Gtk::WRAP_WORD);
-
-  m_LogSWindow.add(m_LogTextView);
-  m_LogSWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  m_LogSWindow.setWidget(mp_LogTextView);
+  m_LogSWindow.setWidgetResizable(true);
 
 
-  m_VBox.set_border_width(12);
-  m_VBox.pack_start(m_LogSWindow,Gtk::PACK_EXPAND_WIDGET,12);
-  m_VBox.pack_start(m_CloseButton,Gtk::PACK_SHRINK,12);
+  m_VBox.setSpacing(20);
+  m_VBox.addWidget(&m_LogSWindow);
+  m_VBox.addWidget(&m_CloseButton);
 
-  add(m_VBox);
+  setLayout(&m_VBox);
 
-  m_CloseButton.signal_clicked().connect(
-      sigc::mem_fun(*this, &ViewLogFileWindow::onCloseClicked)
-    );
+  connect(&m_CloseButton, SIGNAL(clicked()), this, SLOT(onCloseClicked()));
 
-  std::ifstream LogFile(PathToLogFile.c_str());
-  std::string Line, FullContent;
 
-  while(getline(LogFile,Line))
+  QFile File(PathToLogFile);
+  QString FullContent;
+  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
   {
-    FullContent += Line + "\n";
+    throw openfluid::base::FrameworkException("ViewLogFileWindow::ViewLogFileWindow",
+       "error opening " + PathToLogFile.toStdString());
   }
-  LogFile.close();
 
-  m_RefLogTextBuffer->set_text(FullContent);
+  QTextStream In(&File);
+  while (!In.atEnd())
+  {
+    QString Line = In.readLine() + "\n";
+    FullContent += Line;
+  }
+  File.close();
 
-  show_all_children();
+  mp_LogTextView->setText(FullContent);
 
-  set_modal(true);
+  setModal(true);
 }
 
 
@@ -122,4 +123,3 @@ void ViewLogFileWindow::onCloseClicked()
 
 
 } } //namespaces
-

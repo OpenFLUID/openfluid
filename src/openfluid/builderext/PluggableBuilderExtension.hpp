@@ -53,127 +53,49 @@
  */
 
 
-#include <string>
-#include <set>
 
 #ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
 #define __PLUGGABLEBUILDEREXTENSION_HPP__
 
 
-#include <gtkmm/widget.h>
 
-#include <boost/preprocessor/seq/for_each.hpp>
-#include <boost/preprocessor/seq/elem.hpp>
-#include <boost/preprocessor/seq/push_back.hpp>
-#include <boost/preprocessor/comparison/equal.hpp>
-
-#include <openfluid/dllexport.hpp>
-#include <openfluid/config.hpp>
-#include <openfluid/guicommon/PreferencesPanel.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-
-
-// =====================================================================
-// =====================================================================
-
-/**
-  Extension hook name
-*/
-#define EXTENSION_PROC_NAME "GetExtension"
-
-/**
-  Infos hook name
-*/
-#define EXTINFOS_PROC_NAME "GetExtensionInfos"
-
-/**
-  Prefs hook name
-*/
-#define EXTPREFS_PROC_NAME "GetExtensionPrefs"
-
-/**
-  SDK version hook name
-*/
-#define EXTSDKVERSION_PROC_NAME "GetExtensionSDKVersion"
-
-
-// =====================================================================
-// =====================================================================
+#include <openfluid/ware/PluggableWare.hpp>
+#include <openfluid/builderext/BuilderExtensionSignature.hpp>
 
 
 /**
-  Macro for declaration of extension and infos hooks
+  Macro for declaration of builder extension and signature hooks
 */
-#define DECLARE_EXTENSION_HOOKS \
+#define DECLARE_BUILDEREXT_PLUGIN \
   extern "C" \
   { \
-    DLLEXPORT std::string GetExtensionSDKVersion(); \
-    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetExtension(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionInfos GetExtensionInfos(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionPrefs* GetExtensionPrefs(); \
-    DLLEXPORT std::set<std::string> GetDefaultConfig(); \
+    DLLEXPORT std::string GetWareABIVersion(); \
+    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetWareBody(); \
+    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* GetWareSignature(); \
   }
 
 
-#define EXT_PREFS_CLASS_DEFINED(seq) \
-  BOOST_PP_EQUAL(BOOST_PP_SEQ_SIZE(seq),2)
 
-#define EXT_RETURN_NEW(list) \
-  return new BOOST_PP_SEQ_ELEM(1,BOOST_PP_SEQ_PUSH_BACK(list,dummy))();
 
-#define EXT_RETURN_NULL return (openfluid::builderext::BuilderExtensionPrefs*)0;
+// =====================================================================
+// =====================================================================
+
 
 /**
-  Macro for definition of extension hook
-  @param[in] pluginclassnames The names of the classes to instantiate
-  in the form of a group of adjacent parenthesized elements:
-  DEFINE_EXTENSION_HOOKS((pluginclassname)) or DEFINE_EXTENSION_HOOKS((pluginclassname) (pluginprefsclassname))
+  Macro for definition of builder extension class hook
+  @param[in] pluginclassname The name of the class to instantiate
 */
-#define DEFINE_EXTENSION_HOOKS(pluginclassnames) \
-  std::string GetExtensionSDKVersion() \
+#define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
+  std::string GetWareABIVersion() \
   { \
     return std::string(openfluid::config::FULL_VERSION); \
   } \
   \
-  openfluid::builderext::PluggableBuilderExtension* GetExtension() \
+  openfluid::builderext::PluggableBuilderExtension* GetWareBody() \
   { \
-    openfluid::builderext::PluggableBuilderExtension* Ext = new BOOST_PP_SEQ_ELEM(0,pluginclassnames)(); \
-      Ext->setDefaultConfiguration(GetDefaultConfig()); \
-    return Ext; \
-  } \
-  \
-  openfluid::builderext::BuilderExtensionPrefs* GetExtensionPrefs() \
-  { \
-    BOOST_PP_IF(EXT_PREFS_CLASS_DEFINED(pluginclassnames),EXT_RETURN_NEW(pluginclassnames),EXT_RETURN_NULL) \
+    return new pluginclassname(); \
   }
-
-#define DEFINE_EXTENSION_INFOS(id,shortname,name,desc,authors,authorsctct,type) \
-  openfluid::builderext::BuilderExtensionInfos GetExtensionInfos() \
-  { \
-    openfluid::builderext::BuilderExtensionInfos BEI; \
-    \
-    BEI.ID = (id); \
-    BEI.ShortName = (shortname); \
-    BEI.Name = (name); \
-    BEI.Description = (desc); \
-    BEI.Authors = (authors); \
-    BEI.AuthorsContact = (authorsctct); \
-    BEI.Type = (type); \
-    \
-    return BEI; \
-  }
-
-
-#define ADD_TO_SET(r,data,elem) \
-  data.insert(elem);
-
-#define DEFINE_EXTENSION_DEFAULT_CONFIG(seq)       \
-    std::set<std::string> GetDefaultConfig()       \
-    {                                              \
-      std::set<std::string> config;                \
-      BOOST_PP_SEQ_FOR_EACH(ADD_TO_SET,config,seq) \
-      return config;                               \
-    }
 
 
 // =====================================================================
@@ -183,107 +105,53 @@
 namespace openfluid { namespace builderext {
 
 
-
-typedef std::map<std::string,std::string> ExtensionConfig_t;
-
-
-// =====================================================================
-// =====================================================================
-
-
-class PluggableBuilderExtension
+class PluggableBuilderExtension : public openfluid::ware::PluggableWare
 {
+
   protected:
-
-    ExtensionConfig_t m_Config;
-
-    sigc::signal<void> m_signal_ChangedOccurs;
 
     openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
 
+    openfluid::ware::WareParams_t m_Config;
+
   public:
 
-    enum ExtensionType { WorkspaceTab, ModelessWindow, ModalWindow,
-                         SpatialgraphImporter, AttributesImporter, EventsImporter, ExtraImporter, MixedImporter,
-                         HomeLauncher };
-
-
-    PluggableBuilderExtension() : mp_AdvancedDesc(NULL) { };
-
-
-    virtual ~PluggableBuilderExtension() { };
-
-
-    void setAdvancedFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor& AdvancedDesc)
-      { mp_AdvancedDesc = &AdvancedDesc; };
-
-
-    sigc::signal<void> signal_ChangedOccurs()
+    PluggableBuilderExtension() : PluggableWare(openfluid::ware::PluggableWare::OTHER)
     {
-      return m_signal_ChangedOccurs;
+
     }
 
-    void setDefaultConfiguration(std::set<std::string> DefaultConfig)
+
+    virtual ~PluggableBuilderExtension()
     {
-      for(std::set<std::string>::iterator it = DefaultConfig.begin() ; it != DefaultConfig.end() ; ++it)
-      {
-        std::vector<std::string> Splitted = openfluid::tools::SplitString(*it,"=");
-
-        if(Splitted.size() != 2)
-          throw openfluid::base::FrameworkException("PluggableBuilderExtension::setDefaultConfig",
-              "Configuration element \"" + Splitted[0] + "\" is not well formatted.");
-
-        m_Config[Splitted[0]] = Splitted[1];
-      }
+      finalizeWare();
     }
 
-    /**
-      Returns the type of the extension. This must be overridden.
-      @return the type of the extension
-    */
-    virtual ExtensionType getType() const = 0;
-
 
     /**
-      Returns true if the extension is configurable, false otherwise.
-      @return true if the extension is configurable
+      Internally called by the framework.
     */
-    virtual bool isConfigurable() { return false; };
+    void initializeWare(const openfluid::ware::WareID_t& ID)
+    {
+      if (m_Initialized) return;
+
+      PluggableWare::initializeWare(ID);
+    }
 
 
-    /**
-      Retrieves the configuration information from the extension.
-      @return the configuration information
-    */
-    ExtensionConfig_t getConfiguration() const { return m_Config; };
+    virtual void setConfiguration(const openfluid::ware::WareParams_t& Config)
+    { m_Config = Config; }
 
 
-    /**
-      Gives the configuration information to the extension.
-      @param[in] Config the configuration information
-    */
-    void setConfiguration(const ExtensionConfig_t& Config) { m_Config = Config; };
+    void setFluidXDescriptor(openfluid::fluidx::AdvancedFluidXDescriptor* Desc)
+    { mp_AdvancedDesc = Desc; }
 
 
-    /**
-      Returns the main widget of the extension. The kind of widget depends on the
-      extension type.
-      This must be overridden in derived extensions
-      @return a pointer to the main widget
-    */
-    virtual Gtk::Widget* getExtensionAsWidget() = 0;
+    openfluid::ware::WareID_t getID() const
+    { return OPENFLUID_GetWareID(); }
 
 
-    virtual void show() = 0;
-
-
-    /**
-      Returns true if the extension is currently ready to use (showtime!).
-      Default is false, but this should be overridden in derived extensions
-      @return  a boolean giving the state of the extension
-    */
-    virtual bool isReadyForShowtime() const { return false; };
-
+    virtual bool isReady() const = 0;
 };
 
 
@@ -291,62 +159,12 @@ class PluggableBuilderExtension
 // =====================================================================
 
 
-class DLLEXPORT BuilderExtensionInfos
-{
-  public:
+typedef PluggableBuilderExtension* (*GetPluggableBuilderExtensionBodyProc)();
 
-    std::string ID;
-
-    std::string Name;
-
-    std::string ShortName;
-
-    std::string Description;
-
-    std::string Authors;
-
-    std::string AuthorsContact;
-
-    PluggableBuilderExtension::ExtensionType Type;
-
-    BuilderExtensionInfos()
-    : ID(""), Name(""), ShortName(""), Description(""), Authors(""), AuthorsContact(""),
-      Type(PluggableBuilderExtension::ModalWindow)
-    {
-
-    }
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-class BuilderExtensionPrefs : public openfluid::guicommon::PreferencesPanel
-{
-  public:
-
-    BuilderExtensionPrefs(Glib::ustring PanelTitle) :
-      openfluid::guicommon::PreferencesPanel(PanelTitle) { };
-
-    virtual ~BuilderExtensionPrefs() { };
-
-};
-
-
-// =====================================================================
-// =====================================================================
-
-
-typedef PluggableBuilderExtension* (*GetExtensionProc)();
-
-typedef BuilderExtensionInfos (*GetExtensionInfosProc)();
-
-typedef BuilderExtensionPrefs* (*GetExtensionPrefsProc)();
-
-typedef std::string (*GetExtensionSDKVersionProc)();
+typedef BuilderExtensionSignature* (*GetPluggableBuilderExtensionSignatureProc)();
 
 
 } } // namespaces
+
 
 #endif /* __PLUGGABLEBUILDEREXTENSION_HPP__ */

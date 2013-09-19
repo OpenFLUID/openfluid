@@ -52,20 +52,25 @@
  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <QSettings>
+#include <QFile>
+#include <QDir>
+
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/config.hpp>
-#include <glibmm/keyfile.h>
-#include <glibmm/fileutils.h>
-#include <fstream>
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-namespace openfluid {
-namespace base {
+
+namespace openfluid { namespace base {
+
 
 ProjectManager* ProjectManager::mp_Singleton = NULL;
+QString ProjectManager::m_GroupName = "OpenFLUID Project";
+
 
 // =====================================================================
 // =====================================================================
@@ -73,8 +78,7 @@ ProjectManager* ProjectManager::mp_Singleton = NULL;
 
 ProjectManager::ProjectManager() :
   m_Path(""), m_Name(""), m_Description(""), m_Authors(""), m_CreationDate(""),
-  m_LastModDate(""), m_IsIncOutputDir(false), m_IsOpened(false),
-  m_KeyFileGroupName("OpenFLUID Project")
+  m_LastModDate(""), m_IsIncOutputDir(false), m_IsOpened(false)
 {
 
 }
@@ -99,54 +103,23 @@ ProjectManager* ProjectManager::getInstance()
   return mp_Singleton;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool ProjectManager::open(const std::string& Path)
+std::string ProjectManager::getNow()
 {
-  try
-  {
-    m_Path = Path;
-    m_InputDir = getInputDirFromProjectPath(Path);
-    m_OutputDir = getOuputDirFromProjectPath(Path);
-
-    Glib::KeyFile KFile;
-    KFile.load_from_file(getFilePathFromProjectPath(Path));
-
-    m_Name = KFile.get_string(m_KeyFileGroupName, "Name");
-    m_Description = KFile.get_string(m_KeyFileGroupName, "Description");
-    m_Authors = KFile.get_string(m_KeyFileGroupName, "Authors");
-    m_IsIncOutputDir = KFile.get_boolean(m_KeyFileGroupName, "IncOutput");
-    m_CreationDate = KFile.get_string(m_KeyFileGroupName, "CreationDate");
-    m_LastModDate = KFile.get_string(m_KeyFileGroupName, "LastModDate");
-
-    m_IsOpened = true;
-
-    return true;
-
-  } catch (Glib::FileError& e)
-  {
-    std::cerr << "ProjectManager::open Glib::FileError : " << e.what()
-        << std::endl;
-
-    return false;
-
-  } catch (Glib::KeyFileError& e)
-  {
-    std::cerr << "ProjectManager::open Glib::KeyFileError : " << e.what()
-        << std::endl;
-
-    return false;
-  }
+  return boost::posix_time::to_iso_string(
+      boost::posix_time::second_clock::local_time());
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::string ProjectManager::getFilePathFromProjectPath(
-    std::string ProjectPath)
+std::string ProjectManager::getFilePathFromProjectPath(std::string ProjectPath)
 {
   return ProjectPath.append("/").append(openfluid::config::PROJECT_FILE);
 }
@@ -155,24 +128,86 @@ std::string ProjectManager::getFilePathFromProjectPath(
 // =====================================================================
 
 
-std::string ProjectManager::getInputDirFromProjectPath(
-    std::string ProjectPath)
+std::string ProjectManager::getInputDirFromProjectPath(std::string ProjectPath)
 {
   return ProjectPath.append("/").append(openfluid::config::PROJECT_INPUTDIR);
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::string ProjectManager::getOuputDirFromProjectPath(
-    std::string ProjectPath)
+std::string ProjectManager::getOuputDirFromProjectPath(std::string ProjectPath)
 {
   return ProjectPath.append("/").append(openfluid::config::PROJECT_OUTPUTDIRPREFIX);
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+bool ProjectManager::checkProject(const std::string& ProjectPath)
+{
+  QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(ProjectPath));
+
+  if (!QFile::exists(PrjFilePath))
+    return false;
+
+  if (!QDir().exists(QString::fromStdString(getInputDirFromProjectPath(ProjectPath))))
+    return false;
+
+  QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
+
+  PrjFile.beginGroup(m_GroupName);
+  bool OK = PrjFile.contains("Name") &&
+            PrjFile.contains("Description") &&
+            PrjFile.contains("Authors") &&
+            PrjFile.contains("CreationDate") &&
+            PrjFile.contains("LastModDate");
+
+  PrjFile.endGroup();
+
+  return OK;
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ProjectManager::open(const std::string& Path)
+{
+  m_Path = Path;
+  m_InputDir = getInputDirFromProjectPath(Path);
+  m_OutputDir = getOuputDirFromProjectPath(Path);
+
+  if (checkProject(Path))
+  {
+    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(Path));
+    QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
+
+    PrjFile.beginGroup(m_GroupName);
+    m_Name = openfluid::tools::fromIniCompatible(PrjFile.value("Name"));
+    m_Description = openfluid::tools::fromIniCompatible(PrjFile.value("Description"));
+    m_Authors = openfluid::tools::fromIniCompatible(PrjFile.value("Authors"));
+    m_CreationDate = PrjFile.value("CreationDate").toString().toStdString();
+    m_LastModDate = PrjFile.value("LastModDate").toString().toStdString();
+    m_IsIncOutputDir = PrjFile.value("IncOutput").toBool();
+    PrjFile.endGroup();
+
+    m_IsOpened = true;
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 /* throws boost::filesystem::basic_filesystem_error<boost::filesystem::path> */
 bool ProjectManager::create(const std::string& Path,
@@ -199,15 +234,6 @@ bool ProjectManager::create(const std::string& Path,
   return false;
 }
 
-// =====================================================================
-// =====================================================================
-
-
-std::string ProjectManager::getNow()
-{
-  return boost::posix_time::to_iso_string(
-      boost::posix_time::second_clock::local_time());
-}
 
 // =====================================================================
 // =====================================================================
@@ -215,38 +241,20 @@ std::string ProjectManager::getNow()
 
 bool ProjectManager::save()
 {
-
-  std::ofstream PrjFile;
-
-  PrjFile.open(getFilePathFromProjectPath(m_Path).c_str());
-
-  if (PrjFile.fail())
-    return false;
+  QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(m_Path));
+  QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
 
   m_LastModDate = getNow();
 
-  try
-  {
-    Glib::KeyFile KFile;
-
-    KFile.set_string(m_KeyFileGroupName, "Name", m_Name);
-    KFile.set_string(m_KeyFileGroupName, "Description", m_Description);
-    KFile.set_string(m_KeyFileGroupName, "Authors", m_Authors);
-    KFile.set_boolean(m_KeyFileGroupName, "IncOutput", m_IsIncOutputDir);
-    KFile.set_string(m_KeyFileGroupName, "CreationDate", m_CreationDate);
-    KFile.set_string(m_KeyFileGroupName, "LastModDate", m_LastModDate);
-
-    PrjFile << KFile.to_data();
-
-  } catch (Glib::KeyFileError& e)
-  {
-    std::cerr << "ProjectManager::create Glib::KeyFileError : " << e.what()
-        << std::endl;
-
-    return false;
-  }
-
-  PrjFile.close();
+  PrjFile.beginGroup(m_GroupName);
+  PrjFile.setValue("Name",openfluid::tools::toIniCompatible(m_Name));
+  PrjFile.setValue("Description",openfluid::tools::toIniCompatible(m_Description));
+  PrjFile.setValue("Authors",openfluid::tools::toIniCompatible(m_Authors));
+  PrjFile.setValue("CreationDate",QString::fromStdString(m_CreationDate));
+  PrjFile.setValue("LastModDate",QString::fromStdString(m_LastModDate));
+  PrjFile.setValue("IncOutput",m_IsIncOutputDir);
+  PrjFile.endGroup();
+  PrjFile.sync();
 
   return true;
 }
@@ -286,29 +294,43 @@ void ProjectManager::updateOutputDir()
 
 bool ProjectManager::isProject(const std::string& Path)
 {
-  if (boost::filesystem::exists(getFilePathFromProjectPath(Path)))
+  return checkProject(Path);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ProjectManager::getProjectInfos(const std::string& Path,
+                                     std::string& Name, std::string& Description, std::string& Authors,
+                                     std::string& CreationDate, std::string& LastModDate)
+{
+  Name.clear();
+  Description.clear();
+  Authors.clear();
+  CreationDate.clear();
+  LastModDate.clear();
+
+  if (checkProject(Path))
   {
-    try
-    {
-      Glib::KeyFile KFile;
-      KFile.load_from_file(getFilePathFromProjectPath(Path));
-      return boost::filesystem::exists(getInputDirFromProjectPath(Path));
-    } catch (Glib::FileError& e)
-    {
-      return false;
-    } catch (Glib::KeyFileError& e)
-    {
-      return false;
-    }
+    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(Path));
+    QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
+
+    PrjFile.beginGroup(m_GroupName);
+    Name = openfluid::tools::fromIniCompatible(PrjFile.value("Name"));
+    Description = openfluid::tools::fromIniCompatible(PrjFile.value("Description"));
+    Authors = openfluid::tools::fromIniCompatible(PrjFile.value("Authors"));
+    CreationDate = PrjFile.value("CreationDate").toString().toStdString();
+    LastModDate = PrjFile.value("LastModDate").toString().toStdString();
+    PrjFile.endGroup();
+
+    return true;
   }
   return false;
 }
 
-// =====================================================================
-// =====================================================================
 
-
-}
-} //namespaces
+} } //namespaces
 
 

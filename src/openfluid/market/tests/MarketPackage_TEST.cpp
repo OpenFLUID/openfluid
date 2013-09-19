@@ -54,8 +54,7 @@
 */
 
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_marketpackage
 #include <boost/test/unit_test.hpp>
@@ -72,6 +71,7 @@
 #include <openfluid/market/MarketDatasetPackage.hpp>
 
 #include <tests-config.hpp>
+#include <QCoreApplication>
 
 // =====================================================================
 // =====================================================================
@@ -250,7 +250,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
 
 
-  openfluid::market::MarketDatasetPackage DPack("tests.market.data","file:://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace/datasets/tests.market.data_2.0.0_data.ofpk").string());
+  openfluid::market::MarketDatasetPackage DPack("tests.market.data","file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace/datasets/tests.market.data_2.0.0_data.ofpk").string());
 
   DPack.download();
   BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/temp/downloads/tests.market.data_2.0.0_data.ofpk")));
@@ -260,5 +260,13 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/packages/market-datasets/tests.market.data/tests.market.data.fluidx")));
 }
 
+// =====================================================================
+// =====================================================================
 
+int main(int argc, char *argv[])
+{
+  QCoreApplication app(argc, argv);
+
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+}
 

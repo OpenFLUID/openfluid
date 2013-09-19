@@ -61,7 +61,6 @@
 #include <queue>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/market/MarketInfos.hpp>
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/market/MarketBinPackage.hpp>
@@ -111,14 +110,14 @@ class DLLEXPORT MarketClient
 
     void unlockMarketTemp();
 
-    void parseMarketSiteData(const std::string& SiteData);
+    void parseMarketSiteData(const std::string& SiteFile);
 
     /**
      Store all type catalog data in MetaPackageCatalog
      @param CatalogType Type of catalog read
      @param CatalogData string with data read
     */
-    void parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogData);
+    void parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogFile);
 
     void downloadAssociatedLicenses();
 

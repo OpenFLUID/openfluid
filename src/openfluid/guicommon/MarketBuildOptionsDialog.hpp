@@ -56,9 +56,9 @@
 #ifndef __MARKETBUILDOPTIONSDIALOG_HPP__
 #define __MARKETBUILDOPTIONSDIALOG_HPP__
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <string>
+#include <QDialog>
+#include <QLineEdit>
+#include <QString>
 
 
 namespace openfluid { namespace guicommon {
@@ -67,24 +67,26 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 
 
-class MarketBuildOptionsDialog : public Gtk::Dialog
+class MarketBuildOptionsDialog : public QDialog
 {
+  Q_OBJECT;
+
   private:
 
-    std::string m_CommonBuildOptions;
-    std::string m_BuildOptions;
+    QString m_CommonBuildOptions;
+    QString m_BuildOptions;
 
-    std::string m_SimID;
-    Gtk::Entry m_OptionsEntry;
+    QString m_SimID;
+    QLineEdit m_OptionsEntry;
 
   public:
 
-    MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions,
-                             const std::string SimID = "");
+    MarketBuildOptionsDialog(const QString& CommonBuildOptions, const QString& BuildOptions,
+                             const QString& SimID = "");
 
     ~MarketBuildOptionsDialog() {};
 
-    std::string getEditedOptions() const { return m_OptionsEntry.get_text(); };
+    QString getEditedOptions() const { return m_OptionsEntry.text(); };
 };
 
 

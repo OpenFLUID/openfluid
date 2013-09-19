@@ -54,12 +54,11 @@
  */
 
 
+#include <openfluid/base/ThreadedLoopMacros.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <cmath>
 #include <boost/date_time.hpp>
 
-#include <glibmm/thread.h>
-#include <glibmm/timer.h>
 
 // =====================================================================
 // =====================================================================
@@ -99,7 +98,6 @@ END_SIMULATOR_SIGNATURE
 class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 {
   private:
-    Glib::RecMutex m_Mutex;
 
     openfluid::core::PcsOrd_t m_LastOrd;
 
@@ -177,9 +175,10 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
   {
     if (m_LastOrd > aUnit->getProcessOrder())
       OPENFLUID_RaiseError("wrong process order");
+
     m_LastOrd = aUnit->getProcessOrder();
 
-    Glib::usleep(100);
+    openfluid::tools::Sleep(100);
   }
 
 
@@ -189,11 +188,9 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
   void produceDataOnTUThreaded(openfluid::core::Unit* aUnit, const openfluid::core::DoubleValue& Value)
   {
-    Glib::usleep(100*aUnit->getID());
+    openfluid::tools::Sleep(100*aUnit->getID());
 
-    Glib::RecMutex::Lock Lock(m_Mutex);
     OPENFLUID_AppendVariable(aUnit,"tests.data.threaded",double(aUnit->getID())+Value/1000.0);
-    Lock.release();
   }
 
 
@@ -203,7 +200,7 @@ class ThreadedLoopsSimulator : public openfluid::ware::PluggableSimulator
 
   void produceDataOnTUSequenced(openfluid::core::Unit* aUnit, const openfluid::core::DoubleValue& Value)
   {
-    Glib::usleep(100*aUnit->getID());
+    openfluid::tools::Sleep(100*aUnit->getID());
     OPENFLUID_AppendVariable(aUnit,"tests.data.sequence",double(aUnit->getID())+Value/1000.0);
   }
 

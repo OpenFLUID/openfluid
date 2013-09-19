@@ -57,6 +57,9 @@
 
 
 #include <openfluid/guicommon/MarketPackWidget.hpp>
+#include <QComboBox>
+#include <QList>
+#include <QStandardItemModel>
 
 
 namespace openfluid { namespace guicommon {
@@ -64,29 +67,36 @@ namespace openfluid { namespace guicommon {
 
 class DLLEXPORT MarketPackWidgetFormat : public MarketPackWidget
 {
+  Q_OBJECT
 
   private:
 
-    std::string m_EditedBuildOptions;
+    QString m_EditedBuildOptions;
 
-    Gtk::HBox m_FormatHBox;
-    Gtk::Label m_FormatLabel;
-    Gtk::ComboBox m_FormatCombo;
-    Gtk::Button m_ConfigButton;
+    QHBoxLayout m_FormatHBox;
+    QLabel m_FormatLabel;
+    QComboBox m_FormatCombo;
+    QPushButton m_ConfigButton;
 
-    Glib::RefPtr<Gtk::ListStore> m_RefFormatComboBoxModel;
+    QStandardItemModel m_RefFormatComboBoxModel;
 
-    class FormatComboColumns : public Gtk::TreeModel::ColumnRecord
+    class FormatComboColumns : public QList<QStandardItem*>
     {
       public:
 
-        Gtk::TreeModelColumn<Glib::ustring> m_FormatName;
-        Gtk::TreeModelColumn<openfluid::market::MetaPackageInfo::SelectionType> m_SelType;
+        enum { NAME, TYPE};
 
-        FormatComboColumns() { add(m_FormatName); add(m_SelType); }
+        QStandardItem *mp_FormatName;
+        QStandardItem *mp_SelType;
+
+        FormatComboColumns() {}
+
+        void appendItems() { clear(); append(mp_FormatName); append(mp_SelType); }
     };
 
     FormatComboColumns m_FormatColumns;
+
+  private slots:
 
     void onConfigClicked();
 
@@ -96,9 +106,10 @@ class DLLEXPORT MarketPackWidgetFormat : public MarketPackWidget
 
     virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
-    std::string getEditedBuildOptions() const { return m_EditedBuildOptions; };
+    QString getEditedBuildOptions() const { return m_EditedBuildOptions; };
 
     virtual void updateDisplayedInfos();
+
 };
 
 

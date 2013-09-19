@@ -1,26 +1,38 @@
 
 
-PKG_CHECK_MODULES(GLIBMM REQUIRED glibmm-2.4)
-PKG_CHECK_MODULES(GTKMM REQUIRED gtkmm-2.4)
+
+INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-ADD_DEFINITIONS(${LibXML2_CFLAGS})
+FILE(GLOB OPENFLUID_GUICOMMON_CPP OpenProjectDialog.cpp
+                                  PreferencesManager.cpp
+                                  RunSimulationDialog.cpp RunSimulationWorker.cpp
+                                  MarketBuildOptionsDialog.cpp MarketClientAssistant.cpp MarketWizardPage.cpp 
+                                  MarketPackWidget.cpp MarketPackWidgetFormat.cpp
+                                  ViewLogFileWindow.cpp
+                                  )
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${GLIBMM_INCLUDE_DIRS} ${GTKMM_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS})
-LINK_DIRECTORIES(${GLIBMM_LIBRARY_DIRS} ${GTKMM_LIBRARY_DIRS} ${LibXML2_LIBRARY_DIRS})
+FILE(GLOB OPENFLUID_GUICOMMON_HPP OpenProjectDialog.hpp
+                                  PreferencesManager.hpp
+                                  RunSimulationDialog.hpp RunSimulationWorker.hpp
+                                  MarketBuildOptionsDialog.hpp MarketClientAssistant.hpp MarketWizardPage.hpp 
+                                  MarketPackWidget.hpp MarketPackWidgetFormat.hpp
+                                  ViewLogFileWindow.hpp                                                                     
+                                  )
 
+QT4_WRAP_UI(OPENFLUID_GUICOMMON_UI RunSimulationDialog.ui)
 
-FILE(GLOB OPENFLUID_GUICOMMON_CPP *.cpp)
-FILE(GLOB OPENFLUID_GUICOMMON_HPP *.hpp)
+QT4_ADD_RESOURCES(OPENFLUID_GUICOMMON_RC resources/openfluidmarket.qrc)
 
-
-ADD_LIBRARY(openfluid-guicommon SHARED ${OPENFLUID_GUICOMMON_CPP} ${OPENFLUID_GUICOMMON_HPP})
+ADD_LIBRARY(openfluid-guicommon SHARED ${OPENFLUID_GUICOMMON_CPP} ${OPENFLUID_GUICOMMON_HPP}
+                                       ${OPENFLUID_GUICOMMON_RC} ${OPENFLUID_GUICOMMON_UI})
 
 SET_TARGET_PROPERTIES(openfluid-guicommon PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
                                         SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
+                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        )
 
 TARGET_LINK_LIBRARIES(openfluid-guicommon
                       openfluid-base
@@ -29,10 +41,9 @@ TARGET_LINK_LIBRARIES(openfluid-guicommon
                       openfluid-machine
                       openfluid-market
                       openfluid-fluidx
-                      ${LibXML2_LIBRARIES}  
-                      ${GLIBMM_LIBRARIES}
-                      ${GTKMM_LIBRARIES}  
-                      ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY})
+                      ${QT_QTCORE_LIBRARIES}
+                      ${QT_QTGUI_LIBRARIES}    
+                     )
 
 
 

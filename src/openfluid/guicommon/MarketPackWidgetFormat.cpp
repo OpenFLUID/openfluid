@@ -57,69 +57,66 @@
 #include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/market/MarketPackage.hpp>
 
-#include <glibmm/i18n.h>
-#include <gtkmm/stock.h>
-
 namespace openfluid { namespace guicommon {
 
 
 MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageInfo::PackageType& Type,
     const openfluid::market::MetaPackageInfo& MetaPackInfo)
-    : MarketPackWidget(Type, MetaPackInfo), m_EditedBuildOptions(""), m_FormatLabel(_("Package Format:"))
+    : MarketPackWidget(Type, MetaPackInfo), m_EditedBuildOptions(""), m_FormatLabel(tr("Package Format:"))
 {
 
-  m_RefFormatComboBoxModel = Gtk::ListStore::create(m_FormatColumns);
-  m_FormatCombo.set_model(m_RefFormatComboBoxModel);
+  m_RefFormatComboBoxModel.setRowCount(0);
+  m_RefFormatComboBoxModel.setColumnCount(2);
+  m_FormatCombo.setModel(&m_RefFormatComboBoxModel);
 
-  m_FormatCombo.pack_start(m_FormatColumns.m_FormatName);
-
-  Gtk::TreeModel::Row TmpFormatRow;
 
   // source
   if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != MetaPackInfo.AvailablePackages.end())
   {
-    TmpFormatRow = *(m_RefFormatComboBoxModel->append());
-    TmpFormatRow[m_FormatColumns.m_FormatName] = _("source");
-    TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::SRC;
-    m_EditedBuildOptions = m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].BuildOptions;
+    m_FormatColumns.mp_FormatName = new QStandardItem(tr("source"));
+    m_FormatColumns.mp_SelType = new QStandardItem();
+    m_FormatColumns.mp_SelType->setData(QVariant(openfluid::market::MetaPackageInfo::SRC));
+
+    m_FormatColumns.appendItems();
+    m_RefFormatComboBoxModel.appendRow(m_FormatColumns);
+
+    m_EditedBuildOptions = QString::fromStdString(m_MetaPackInfo.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].BuildOptions);
   }
 
   // binary
   if (MetaPackInfo.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != MetaPackInfo.AvailablePackages.end())
   {
-    TmpFormatRow = *(m_RefFormatComboBoxModel->append());
-    TmpFormatRow[m_FormatColumns.m_FormatName] = _("binary");
-    TmpFormatRow[m_FormatColumns.m_SelType] = openfluid::market::MetaPackageInfo::BIN;
+    m_FormatColumns.mp_FormatName = new QStandardItem(tr("binary"));
+    m_FormatColumns.mp_SelType = new QStandardItem();
+    m_FormatColumns.mp_SelType->setData(QVariant(openfluid::market::MetaPackageInfo::BIN));
+
+    m_FormatColumns.appendItems();
+    m_RefFormatComboBoxModel.appendRow(m_FormatColumns);
   }
 
-  m_FormatCombo.set_active(0);
+  m_FormatCombo.setCurrentIndex(0);
 
-  Gtk::Image* Img = Gtk::manage(new Gtk::Image(Gtk::Stock::PREFERENCES, Gtk::ICON_SIZE_BUTTON));
-  m_ConfigButton.add(*Img);
-  m_ConfigButton.set_image_position(Gtk::POS_LEFT);
-  m_ConfigButton.set_tooltip_text(_("Edit build options for ") + MetaPackInfo.ID);
-  m_ConfigButton.show_all_children(true);
 
-  m_FormatHBox.pack_start(m_FormatLabel,Gtk::PACK_SHRINK,6);
-  m_FormatHBox.pack_start(m_FormatCombo,Gtk::PACK_SHRINK);
-  m_FormatHBox.pack_start(m_ConfigButton,Gtk::PACK_SHRINK,6);
+  m_ConfigButton.setIcon(QIcon(":/market/icons/preferences.png"));
+  m_ConfigButton.setToolTip(tr("Edit build options for ") + QString::fromStdString(MetaPackInfo.ID));
 
-  m_DetailsLeftVBox.pack_start(m_IDLabel,Gtk::PACK_EXPAND_WIDGET);
-  m_DetailsLeftVBox.pack_start(m_FormatHBox,Gtk::PACK_EXPAND_WIDGET);
 
-  m_MainHBox.pack_start(m_InstallToggle,Gtk::PACK_SHRINK,12);
-  m_MainHBox.pack_start(m_DetailsLeftVBox,Gtk::PACK_EXPAND_WIDGET,12);
-  m_MainHBox.pack_start(m_DetailsRightVBox,Gtk::PACK_EXPAND_WIDGET,12);
+  m_FormatHBox.setSpacing(5);
+  m_FormatHBox.setAlignment(Qt::AlignLeft);
+  m_FormatHBox.addWidget(&m_FormatLabel);
+  m_FormatHBox.addWidget(&m_FormatCombo);
+  m_FormatHBox.addWidget(&m_ConfigButton);
+
+  // Add of format box
+  m_DetailsLeftVBox.addLayout(&m_FormatHBox);
+
 
   updateDisplayedInfos();
 
-  add(m_MainHBox);
+  setLayout(&m_MainHBox);
 
-  m_FormatCombo.signal_changed().connect(sigc::mem_fun(*this,
-        &MarketPackWidgetFormat::onInstallModified));
-
-  m_ConfigButton.signal_clicked().connect(sigc::mem_fun(*this,
-      &MarketPackWidgetFormat::onConfigClicked));
+  connect(&m_FormatCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(onInstallModified()));
+  connect(&m_ConfigButton, SIGNAL(clicked()), this, SLOT(onConfigClicked()));
 }
 
 
@@ -129,11 +126,11 @@ MarketPackWidgetFormat::MarketPackWidgetFormat(const openfluid::market::PackageI
 
 void MarketPackWidgetFormat::onConfigClicked()
 {
-  MarketBuildOptionsDialog OptDialog(openfluid::market::MarketPackage::getCommonBuildOptions(m_PackageType),
-                                     m_EditedBuildOptions,m_MetaPackInfo.ID);
+  MarketBuildOptionsDialog OptDialog(QString::fromStdString(openfluid::market::MarketPackage::getCommonBuildOptions(m_PackageType)),
+                                     m_EditedBuildOptions,QString::fromStdString(m_MetaPackInfo.ID));
 
 
-  if (OptDialog.run() == Gtk::RESPONSE_OK)
+  if (OptDialog.exec() == QDialog::Accepted)
     m_EditedBuildOptions = OptDialog.getEditedOptions();
 
   onInstallModified();
@@ -146,17 +143,10 @@ void MarketPackWidgetFormat::onConfigClicked()
 
 openfluid::market::MetaPackageInfo::SelectionType MarketPackWidgetFormat::getPackageFormat() const
 {
-  Gtk::TreeModel::iterator TmpIter = m_FormatCombo.get_active();
-  if (TmpIter)
-  {
-    Gtk::TreeModel::Row TmpRow = *TmpIter;
-    if (TmpRow)
-    {
-      return TmpRow[m_FormatColumns.m_SelType];
-    }
-  }
+  int CurrRow = m_FormatCombo.currentIndex();
 
-  return openfluid::market::MetaPackageInfo::NONE;
+  return (openfluid::market::MetaPackageInfo::SelectionType)
+      m_RefFormatComboBoxModel.item(CurrRow, FormatComboColumns::TYPE)->data().toInt();
 }
 
 
@@ -169,36 +159,31 @@ void MarketPackWidgetFormat::updateDisplayedInfos()
   MarketPackWidget::updateDisplayedInfos();
 
   // get tooltip set in MarketPackWidget
-  std::string MarkupTooltip = get_tooltip_markup();
+  QString MarkupTooltip = toolTip();
   openfluid::market::MetaPackageInfo::SelectionType SelType;
 
-  Gtk::TreeModel::iterator TmpIter = m_FormatCombo.get_active();
-  if (TmpIter)
+  SelType = getPackageFormat();
+
+  QString LicenseStr = QString::fromStdString((*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License);
+
+  // license
+  MarkupTooltip += "<br/><u>"+tr("License:")+"</u> " + replaceByUnknownIfEmpty(LicenseStr);
+  m_LicenseLabel.setText("<u>"+tr("License:")+"</u> "+replaceByUnknownIfEmpty(LicenseStr));
+
+  // build options
+  if (SelType == openfluid::market::MetaPackageInfo::SRC)
   {
-    Gtk::TreeModel::Row TmpRow = *TmpIter;
-    if (TmpRow)
-    {
-      SelType = TmpRow[m_FormatColumns.m_SelType];
-      std::string LicenseStr = (*(m_MetaPackInfo.AvailablePackages.find(SelType))).second.License;
-
-      // license
-      MarkupTooltip += std::string("\n<u>")+_("License:")+std::string("</u> ") + replaceByUnknownIfEmpty(LicenseStr);
-      m_LicenseLabel.set_markup(std::string("<u>")+_("License:")+std::string("</u> ")+replaceByUnknownIfEmpty(LicenseStr));
-
-      // build options
-      if (SelType == openfluid::market::MetaPackageInfo::SRC)
-      {
-        MarkupTooltip += std::string("\n<u>")+_("Build options:")+std::string("</u> ") + replaceByNoneIfEmpty(openfluid::market::MarketPackage::composeFullBuildOptions(m_PackageType,m_EditedBuildOptions));
-      }
-    }
+    QString BuildOptions = QString::fromStdString(openfluid::market::MarketPackage::composeFullBuildOptions(m_PackageType,m_EditedBuildOptions.toStdString()));
+    MarkupTooltip += "<br/><u>"+tr("Build options:")+"</u> " + replaceByNoneIfEmpty(BuildOptions);
   }
 
   // description
-  if (!m_MetaPackInfo.Description.empty()) MarkupTooltip += "\n\n"+m_MetaPackInfo.Description;
+  if (!m_MetaPackInfo.Description.empty())
+    MarkupTooltip += "<br/><br/>"+QString::fromStdString(m_MetaPackInfo.Description);
 
-  m_ConfigButton.set_sensitive(getPackageFormat() == openfluid::market::MetaPackageInfo::SRC);
+  m_ConfigButton.setEnabled(getPackageFormat() == openfluid::market::MetaPackageInfo::SRC);
 
-  set_tooltip_markup(MarkupTooltip);
+  setToolTip(MarkupTooltip);
 }
 
 

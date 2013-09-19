@@ -60,6 +60,8 @@
 
 #include <openfluid/dllexport.hpp>
 #include <string>
+#include <QString>
+#include <QVariant>
 
 namespace openfluid { namespace base {
 
@@ -87,18 +89,21 @@ class DLLEXPORT ProjectManager
 
     bool m_IsOpened;
 
-    std::string m_KeyFileGroupName;
+    static QString m_GroupName;
 
 
     ProjectManager();
 
-    std::string getNow();
+    static std::string getNow();
 
     static std::string getFilePathFromProjectPath(std::string ProjectPath);
 
     static std::string getInputDirFromProjectPath(std::string ProjectPath);
 
     static std::string getOuputDirFromProjectPath(std::string ProjectPath);
+
+    static bool checkProject(const std::string& ProjectPath);
+
 
   public:
 
@@ -151,6 +156,10 @@ class DLLEXPORT ProjectManager
     void close();
 
     static bool isProject(const std::string& Path);
+
+    static bool getProjectInfos(const std::string& Path,
+                                std::string& Name, std::string& Description, std::string& Authors,
+                                std::string& CreationDate, std::string& LastModDate);
 
     void updateOutputDir();
 

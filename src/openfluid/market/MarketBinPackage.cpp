@@ -57,8 +57,7 @@
 
 #include <cstdlib>
 
-#include <glibmm/error.h>
-#include <glibmm/spawn.h>
+#include <QProcess>
 
 namespace openfluid { namespace market {
 
@@ -88,37 +87,26 @@ void MarketBinPackage::process()
     throw openfluid::base::FrameworkException("MarketBinPackage::process()","CMake command not defined");
 
 
-  std::string StrOut;
-  std::string StrErr;
-  int RetValue;
-
   std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + getInstallPath() + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
 
-  // uncompressing package
-  try
+  appendToLogFile(m_PackageFilename,getPackageType(),"processing binaries",ProcessCommand);
+
+
+  QProcess Uncompress;
+
+  Uncompress.start(QString::fromStdString(ProcessCommand));
+  Uncompress.waitForFinished(-1);
+  Uncompress.waitForReadyRead(-1);
+
+  appendToLogFile(QString(Uncompress.readAllStandardOutput()).toStdString());
+
+  int RetValue = Uncompress.exitCode();
+
+  if (RetValue != 0)
   {
-    appendToLogFile(m_PackageFilename,getPackageType(),"processing binaries",ProcessCommand);
-
-    StrOut.clear();
-    StrErr.clear();
-    RetValue = 0;
-    Glib::spawn_command_line_sync(ProcessCommand,&StrOut,&StrErr,&RetValue);
-
-    appendToLogFile(StrOut);
-
-    if (RetValue != 0)
-    {
-      appendToLogFile(StrErr);
-      throw openfluid::base::FrameworkException("MarketBinPackage::process()","Error uncompressing package using CMake");
-
-    }
-
+    appendToLogFile(QString(Uncompress.readAllStandardError()).toStdString());
+    throw openfluid::base::FrameworkException("MarketBinPackage::process()","Error uncompressing package using CMake");
   }
-  catch (Glib::Error& E)
-  {
-    throw openfluid::base::FrameworkException("MarketBinPackage::process()","Glib error uncompressing package using CMake");
-  }
-
 }
 
 

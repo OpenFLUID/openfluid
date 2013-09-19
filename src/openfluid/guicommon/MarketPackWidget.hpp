@@ -57,14 +57,10 @@
 #define __MARKETPACKWIDGET_HPP__
 
 
-#include <gtkmm/eventbox.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
-#include <gtkmm/box.h>
-#include <gtkmm/combobox.h>
-#include <gtkmm/button.h>
-#include <gtkmm/togglebutton.h>
-#include <gtkmm/liststore.h>
+#include <QLabel>
+#include <QGroupBox>
+#include <QBoxLayout>
+#include <QPushButton>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketInfos.hpp>
@@ -75,69 +71,68 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT MarketPackWidget : public Gtk::EventBox
+class DLLEXPORT MarketPackWidget : public QGroupBox
 {
-
-  public:
-    typedef sigc::signal<void> signal_install_modified_t;
+  Q_OBJECT
 
   private:
-    Gtk::Image* m_EmptyCartImage;
-    Gtk::Image* m_FullCartImage;
+    QLabel *mp_EmptyCartImage;
+    QLabel *mp_FullCartImage;
 
-    Gtk::Label m_VersionLabel;
+    QLabel m_VersionLabel;
 
-    bool onButtonRelease(GdkEventButton* Event);
+    void setWidgetColor(QWidget *Widget);
+
+    //bool onButtonRelease(GdkEventButton* Event);
 
   protected:
     openfluid::market::PackageInfo::PackageType m_PackageType;
     openfluid::market::MetaPackageInfo m_MetaPackInfo;
 
-    Gtk::Label m_IDLabel;
-    Gtk::Label m_LicenseLabel;
+    QLabel m_IDLabel;
+    QLabel m_LicenseLabel;
 
-    Gtk::HBox m_MainHBox;
+    QHBoxLayout m_MainHBox;
 
-    Gtk::ToggleButton m_InstallToggle;
+    QPushButton m_InstallToggle;
 
-    Gtk::VBox m_DetailsLeftVBox;
-    Gtk::VBox m_DetailsRightVBox;
+    QVBoxLayout m_DetailsLeftVBox;
+    QVBoxLayout m_DetailsRightVBox;
 
-    signal_install_modified_t m_signal_install_modified;
+    static QString replaceByUnknownIfEmpty(const QString& Str);
+
+    static QString replaceByNoneIfEmpty(const QString& Str);
+
+  protected slots:
 
     void onInstallModified();
 
-    static std::string replaceByUnknownIfEmpty(const std::string& Str);
+  signals:
 
-    static std::string replaceByNoneIfEmpty(const std::string& Str);
-
+    void installModified(openfluid::ware::WareID_t);
 
   public:
     MarketPackWidget(const openfluid::market::PackageInfo::PackageType& Type,const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     ~MarketPackWidget();
 
-    std::string getID() const { return m_MetaPackInfo.ID; };
+    QString getID() const { return QString::fromStdString(m_MetaPackInfo.ID); };
 
-    bool isInstall() const { return m_InstallToggle.get_active(); };
+    bool isInstall() const { return m_InstallToggle.isChecked(); };
 
-    void setInstall(bool Install) { m_InstallToggle.set_active(Install); };
+    void setInstall(bool Install) { m_InstallToggle.setChecked(Install); };
 
     /**
      @return selected format in combobox
     */
     virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
-    signal_install_modified_t signal_install_modified();
-
     /**
      Creates tooltip for market pack widget
     */
     virtual void updateDisplayedInfos();
 
-
 };
-
 
 } } //namespaces
 

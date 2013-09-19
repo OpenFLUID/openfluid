@@ -698,7 +698,6 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
     if (OptionsVars["buddyhelp"].as<std::string>() == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "sim2doc" ) Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
-    if (OptionsVars["buddyhelp"].as<std::string>() == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
 
@@ -869,7 +868,6 @@ void OpenFLUIDApp::runBuddy()
   openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
   if (m_BuddyToRun.first == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
   if (m_BuddyToRun.first == "sim2doc" ) Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
-  if (m_BuddyToRun.first == "convert" ) Buddy = new openfluid::buddies::ConvertBuddy(BuddyObs);
   if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
   if (m_BuddyToRun.first == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
 

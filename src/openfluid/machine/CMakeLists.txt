@@ -1,8 +1,5 @@
 
-ADD_DEFINITIONS(${LibXML2_CFLAGS})
-
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS})
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 
 FILE(GLOB OPENFLUID_MACHINE_CPP *.cpp)
@@ -22,7 +19,8 @@ TARGET_LINK_LIBRARIES(openfluid-machine
                       openfluid-core
                       openfluid-base
                       openfluid-ware
-                      openfluid-fluidx                    
+                      openfluid-fluidx
+                      ${QT_QTCORE_LIBRARY}                    
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} ${Boost_REGEX_LIBRARY})
 
 
