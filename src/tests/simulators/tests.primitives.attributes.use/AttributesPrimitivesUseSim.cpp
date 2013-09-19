@@ -49,7 +49,7 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
 
-#include <glibmm/ustring.h>
+#include <QString>
 
 
 // =====================================================================
@@ -236,7 +236,7 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
         RefDouble = (double)TUID/10;
         RefLong = TUID;
         RefBool = (TUID%2 == 0);
-        RefString = Glib::ustring::compose("ID %1",TUID);
+        RefString = QString("ID %1").arg(TUID).toStdString();
 
 
         if (!OPENFLUID_IsAttributeExist(TU,"indataDouble"))

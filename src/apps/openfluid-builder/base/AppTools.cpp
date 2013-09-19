@@ -74,7 +74,7 @@ QDateTime convertToQDateTime(openfluid::core::DateTime DT)
 QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect)
 {
   QStringList QSL;
-  for (int i=0; i<StrVect.size();++i)
+  for (unsigned int i=0; i<StrVect.size();++i)
     QSL.append(QString(StrVect[i].c_str()));
 
   return QSL;

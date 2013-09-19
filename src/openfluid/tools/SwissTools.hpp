@@ -266,6 +266,12 @@ unsigned int DLLEXPORT computeTimeStepsCount(const openfluid::core::DateTime& Be
                                              const openfluid::core::DateTime& EndDate,
                                              const openfluid::core::Duration_t& TimeStep);
 
+/*
+  Suspend execution for microseconds
+  @param[in] MSec the microseconds interval
+*/
+void DLLEXPORT Sleep(const unsigned int MSec);
+
 
 } } //namespaces
 

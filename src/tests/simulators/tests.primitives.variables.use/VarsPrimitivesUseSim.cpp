@@ -49,7 +49,7 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
 
-#include <glibmm/ustring.h>
+#include <QString>
 
 
 
@@ -256,17 +256,17 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           RefDouble = (double)TUID/10;
           RefLong = TUID;
           RefBool = (TUID%2 == 0);
-          RefString = Glib::ustring::compose("ID %1",TUID);
+          RefString = QString("ID %1").arg(TUID).toStdString();
 
           PreDouble = TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT())*m_ParamDouble;
           PreLong = TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT())*m_ParamLong;
           PreBool = ((TUID*(CurrIndex-OPENFLUID_GetDefaultDeltaT()))%2 == 0);
-          PreString = Glib::ustring::compose("%1 %2x%3",m_ParamString,TUID,(CurrIndex-OPENFLUID_GetDefaultDeltaT()));
+          PreString = QString("%1 %2x%3").arg(QString::fromStdString(m_ParamString)).arg(TUID).arg(CurrIndex-OPENFLUID_GetDefaultDeltaT()).toStdString();
 
           NewDouble = TUID*CurrIndex*m_ParamDouble;
           NewLong = TUID*CurrIndex*m_ParamLong;
           NewBool = ((TUID*CurrIndex)%2 == 0);
-          NewString = Glib::ustring::compose("%1 %2x%3",m_ParamString,TUID,CurrIndex);
+          NewString = QString("%1 %2x%3").arg(QString::fromStdString(m_ParamString)).arg(TUID).arg(CurrIndex).toStdString();
 
 
           // ====== Variables ======
@@ -681,13 +681,12 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
           RefDouble = (double)TUID/10;
           RefLong = TUID;
           RefBool = (TUID%2 == 0);
-          RefString = Glib::ustring::compose("ID %1",TUID);
+          RefString = QString("ID %1").arg(TUID).toStdString();
 
           NewDouble = TUID*CurrIndex*0.1;
           NewLong = TUID*CurrIndex*10;
           NewBool = ((TUID*CurrIndex)%2 == 0);
-          NewString = Glib::ustring::compose("%1 %2x%3","strvalue",TUID,CurrIndex);
-
+          NewString = QString("%1 %2x%3").arg("strvalue").arg(TUID).arg(CurrIndex).toStdString();
 
 
           // double

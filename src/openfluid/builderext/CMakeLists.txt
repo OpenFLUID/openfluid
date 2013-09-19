@@ -31,6 +31,7 @@ SET_TARGET_PROPERTIES(openfluid-builderext PROPERTIES VERSION "${VERSION_MAJOR}.
 TARGET_LINK_LIBRARIES(openfluid-builderext
                       openfluid-base
                       openfluid-core
+                      openfluid-ware
                       openfluid-tools                                           
                       openfluid-fluidx
                       ${QT_QTCORE_LIBRARIES}

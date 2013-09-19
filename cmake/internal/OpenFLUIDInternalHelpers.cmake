@@ -73,7 +73,8 @@ MACRO(OPNFLD_ADD_SIMULATOR SIM_NAME SIM_SRCDIR SIM_BINDIR)
                         openfluid-core
                         openfluid-base
                         openfluid-ware
-                        openfluid-tools)
+                        openfluid-tools
+                        ${QT_QTCORE_LIBRARIES})
       
 ENDMACRO()
 
@@ -116,7 +117,8 @@ MACRO(OPNFLD_ADD_OBSERVER OBS_NAME OBS_SRCDIR OBS_BINDIR)
                         openfluid-core
                         openfluid-base
                         openfluid-ware
-                        openfluid-tools)
+                        openfluid-tools
+                        ${QT_QTCORE_LIBRARIES})
       
 ENDMACRO()
 
@@ -132,41 +134,6 @@ MACRO(OPNFLD_ADD_OBSERVER_WITH_INSTALL OBS_NAME OBS_SRCDIR OBS_BINDIR)
   INSTALL(TARGETS "${OBS_NAME}${OPENFLUID_OBSERVERS_SUFFIX}"
           DESTINATION "${OBSERVERS_INSTALL_PATH}")
         
-ENDMACRO()
-
-
-###########################################################################
-
-
-# Macro for compiling a builder extension
-MACRO(OPNFLD_ADD_BUILDER_EXTENSION_GTK EXT_NAME EXT_SRCDIR EXT_BINDIR)
-
-  FILE(GLOB EXT_CPP ${EXT_SRCDIR}/*.cpp)
-  
-  ADD_LIBRARY(${EXT_NAME} MODULE ${EXT_CPP})
-  
-  INCLUDE_DIRECTORIES(${LibXML2_INCLUDE_DIRS})
-  LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
-  
-  SET_TARGET_PROPERTIES(${EXT_NAME} PROPERTIES 
-                        PREFIX "" 
-                        SUFFIX "${BUILDEREXTENSION_BINARY_EXTENSION}"
-                        LIBRARY_OUTPUT_DIRECTORY "${EXT_BINDIR}")
-
-  # Fix for win32 compatibility                                              
-  IF(WIN32)
-    SET_TARGET_PROPERTIES(${EXT_NAME} PROPERTIES LINK_FLAGS "-shared")                                                
-  ENDIF(WIN32)
-                                              
-                                                
-  TARGET_LINK_LIBRARIES(${EXT_NAME} 
-                        openfluid-core
-                        openfluid-base 
-                        openfluid-tools
-                        openfluid-guicommon
-                        ${LibXML2_LIBRARIES}  
-                        ${GTKMM_LIBRARIES})
-    
 ENDMACRO()
 
 

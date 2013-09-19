@@ -55,7 +55,6 @@
 
 
 #include <openfluid/ware/PluggableSimulator.hpp>
-#include <glibmm/timer.h>
 
 
 // =====================================================================
@@ -154,7 +153,7 @@ class CouplingASimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
     m_DeltaTList.pop_front();
 
-    Glib::usleep(5000);
+    openfluid::tools::Sleep(5000);
 
     return DT;
   }
@@ -180,7 +179,7 @@ class CouplingASimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest DT = m_DeltaTList.front();
     m_DeltaTList.pop_front();
 
-    if (DT.RequestType == openfluid::base::SchedulingRequest::DURATION) Glib::usleep(10000/DT.Duration);
+    if (DT.RequestType == openfluid::base::SchedulingRequest::DURATION) openfluid::tools::Sleep(10000/DT.Duration);
 
 
     return DT;

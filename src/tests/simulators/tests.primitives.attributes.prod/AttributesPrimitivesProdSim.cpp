@@ -48,7 +48,7 @@
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
-#include <glibmm/ustring.h>
+#include <QString>
 
 
 // =====================================================================
@@ -174,7 +174,7 @@ class AttributesPrimitivesProdSimulator : public openfluid::ware::PluggableSimul
         double Dbl = (double)TU->getID() / 10;
         long Lg = TU->getID();
         bool Bl = (TU->getID()%2 == 0);
-        std::string Str = Glib::ustring::compose("ID %1",TU->getID());
+        std::string Str = QString("ID %1").arg(TU->getID()).toStdString();
 
         OPENFLUID_SetAttribute(TU,"indataDouble2",Dbl);
         OPENFLUID_SetAttribute(TU,"indataDouble3",openfluid::core::DoubleValue(Dbl));

@@ -207,7 +207,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
             std::string StrOut = "";
             std::string StrErr = "";
             int RetValue = 0;
-            Glib::spawn_command_line_sync(FullPlotCommand,&StrOut,&StrErr,&RetValue);
+            QProcess::execute(QString::fromStdString(FullPlotCommand));
 
 
           }

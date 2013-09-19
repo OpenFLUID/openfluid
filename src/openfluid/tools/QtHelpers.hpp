@@ -46,40 +46,34 @@
 */
 
 /**
-  \file AttributesImporter.hpp
+  \file QtHelpers.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __ATTRIBUTESIMPORTER_HPP__
-#define __ATTRIBUTESIMPORTER_HPP__
+#ifndef __QTHELPERS_HPP__
+#define __QTHELPERS_HPP__
 
 
-#include <openfluid/builderext-gtk/DataImporter.hpp>
+#include <list>
 
+#include <QVariant>
+#include <QString>
+#include <QStringList>
 
-namespace openfluid { namespace builderext {
+#include <openfluid/dllexport.hpp>
 
+namespace openfluid { namespace tools {
 
-// =====================================================================
-// =====================================================================
+QString DLLEXPORT toIniCompatible(const std::string& Str);
 
+std::string DLLEXPORT fromIniCompatible(const QVariant& Var);
 
-class AttributesImporter : public DataImporter
-{
-  protected:
-
-
-  public:
-
-    ExtensionType getType() const { return PluggableBuilderExtension::AttributesImporter; };
-
-};
-
+std::list<std::string> DLLEXPORT toStdStringList(const QStringList& StrList);
 
 } } // namespaces
 
 
-#endif /* __ATTRIBUTESIMPORTER_HPP__ */
+#endif /* __QTHELPERS_HPP__ */

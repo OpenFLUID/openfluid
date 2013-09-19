@@ -17,9 +17,7 @@ The required libraries are:
 for the OpenFLUID framework libraries: 
   - C++ STL
   - Boost (system, filesystem)
-  - libXML2
-  - Glibmm 
-  - libCURL
+  - Qt : Core, XML, Network, GUI (optional)
   - GDAL/OGR
   - GEOS (optional)
 for openfluid command line application: 
@@ -30,7 +28,7 @@ for openfluid-builder GUI application:
   - OpenFLUID framework libraries
   - C++ STL
   - Boost
-  - Gtkmm
+  - Qt : GUI
 
 
 For unit testing, the Boost unit testing framework is also required (unit_test_framework)

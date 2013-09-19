@@ -58,7 +58,6 @@
 
 
 
-#include <glibmm/thread.h>
 #include <QApplication>
 
 
@@ -71,14 +70,12 @@
 #define INIT_OPENFLUID_APPLICATION(ac,av) \
   OFDBG_BANNER; \
   QCoreApplication _M_qapp(ac,av); \
-  if(!Glib::thread_supported()) Glib::thread_init(); \
   openfluid::base::RuntimeEnvironment::getInstance();
 
 
 #define INIT_OPENFLUID_APPLICATION_WITH_GUI(ac,av) \
   OFDBG_BANNER; \
   QApplication _M_qapp(ac,av); \
-  if(!Glib::thread_supported()) Glib::thread_init(); \
   openfluid::base::RuntimeEnvironment::getInstance();
 
 

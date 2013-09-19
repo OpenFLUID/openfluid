@@ -63,12 +63,8 @@
 #include <boost/filesystem.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 #include <tests-config.hpp>
-#include <unistd.h>
-
-#ifdef __WIN32__
-#include <windows.h>
-#endif
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -115,11 +111,8 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::ProjectManager::getInstance()->setDescription("This is a modified test project");
   openfluid::base::ProjectManager::getInstance()->setAuthors("John Doe, Tom Morello");
 
-#ifdef __WIN32__
-  Sleep(1000);
-#else
-  sleep(1);
-#endif
+  openfluid::tools::Sleep(1000000);
+
   openfluid::base::ProjectManager::getInstance()->save();
   openfluid::base::ProjectManager::getInstance()->close();
 

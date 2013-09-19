@@ -52,9 +52,11 @@
  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+
+#include <QDir>
+
 #include <openfluid/base/RuntimeEnv.hpp>
 
-#include <glibmm/miscutils.h>
 #include <boost/filesystem/operations.hpp>
 
 #include <openfluid/base/ProjectManager.hpp>
@@ -133,6 +135,9 @@ RuntimeEnvironment::RuntimeEnvironment() :
   // WIN32:
   //  User directory for Openfluid : home dir + openfluid subdir
 
+  m_HomeDir = QDir::homePath().toStdString();
+  m_TempDir = QDir(QDir::tempPath()+"/openfluid-tmp").absolutePath().toStdString();
+
 #if defined __unix__ || defined __APPLE__
   char ChHostName[512];
 
@@ -140,27 +145,27 @@ RuntimeEnvironment::RuntimeEnvironment() :
   {
     m_HostName = ChHostName;
   }
+
+  char* ChUserName = NULL;
+  ChUserName= std::getenv("USER");
+  if (ChUserName != NULL) m_UserID= ChUserName;
+
+  m_UserDataDir = boost::filesystem::path(m_HomeDir + "/."
+        + openfluid::config::RELATIVEDIR).string();
 #endif
 
 #if WIN32
   char* ChHostName = NULL;
-
   ChHostName= std::getenv("COMPUTERNAME");
   if (ChHostName != NULL) m_HostName = ChHostName;
-#endif
 
-  m_HomeDir = boost::filesystem::path(Glib::get_home_dir()).string();
-  m_TempDir = boost::filesystem::path(Glib::get_tmp_dir() + "/openfluid-tmp").string();
-  m_UserID = Glib::get_user_name();
+  char* ChUserName = NULL;
+  ChUserName= std::getenv("USERNAME");
+  if (ChUserName != NULL) m_UserID= ChUserName;
 
-#if WIN32
   m_UserDataDir = boost::filesystem::path(m_HomeDir+"/"+openfluid::config::RELATIVEDIR).string();
 #endif
 
-#if defined __unix__ || defined __APPLE__
-  m_UserDataDir = boost::filesystem::path(m_HomeDir + "/."
-      + openfluid::config::RELATIVEDIR).string();
-#endif
 
   m_OutputDir = boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::DEFAULT_OUTDIR).string();

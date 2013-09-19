@@ -1,6 +1,6 @@
 [OpenFLUID Project]
 Name=Primitives
-Description=Example project, showing usage of OpenFLUID primitives
+Description="Example project, showing usage of OpenFLUID primitives"
 Authors=Jean-Christophe Fabre
 IncOutput=false
 CreationDate=20130312T085754
