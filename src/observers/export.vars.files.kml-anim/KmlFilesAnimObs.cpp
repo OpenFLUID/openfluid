@@ -131,7 +131,7 @@ class KmlStaticLayerInfo : public KmlLayerInfo<KmlUnitInfo>
 
     std::string Color;
 
-    KmlStaticLayerInfo() : KmlLayerInfo(), Color("ffffffff")
+    KmlStaticLayerInfo() : KmlLayerInfo(), Color("00000000")
       {};
 
 };
@@ -208,8 +208,18 @@ class KmlFilesAnimObserver : public KmlObserverBase
             OPENFLUID_GetVariable(UU,m_AnimLayerInfo.VarName,CurrentTI,Val);
             ValueFound = true;
           }
+          else
+          {
+            openfluid::core::IndexedValue IVal;
+            OPENFLUID_GetLatestVariable(UU,m_AnimLayerInfo.VarName,IVal);
+            Val = IVal.getValue()->asDoubleValue().get();
+            ValueFound = true;
+          }
         }
-
+        else
+        {
+          OPENFLUID_RaiseWarning("Unknown spatial unit not found");
+        }
 
 
         CurrentKmlFile << "    <Placemark>\n";
@@ -222,7 +232,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
         if (ValueFound)
         {
           CurrentKmlFile << "<br/>\n";
-          CurrentKmlFile << "Current time: "<< OPENFLUID_GetCurrentDate().getAsString("%Y-%m-%d %H:%M:%S") << " (time index = " << CurrentTIStr<< ")<br/>\n";
+          CurrentKmlFile << "Current time: "<< OPENFLUID_GetCurrentDate().getAsString("%Y-%m-%d %H:%M:%S")
+                         << " (time index = " << CurrentTIStr<< ")<br/>\n";
           CurrentKmlFile << "Variable: " << m_AnimLayerInfo.VarName << "<br/>\n";
           CurrentKmlFile << "Value: " << Val << "<br/>\n";
         }
