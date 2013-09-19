@@ -6,6 +6,6 @@ includedir=${prefix}/include
 Name: openfluid
 Description: OpenFLUID framework (with GUI components)
 Version: @FULL_VERSION@
-Requires: gtkmm-2.4 openfluid
+Requires: openfluid
 Libs: -L${libdir} -lopenfluid-guicommon
 Cflags: -I${includedir}

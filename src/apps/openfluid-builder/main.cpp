@@ -65,6 +65,7 @@
 #include <QLibraryInfo>
 
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/config.hpp>
 
 #include <iostream>
 
