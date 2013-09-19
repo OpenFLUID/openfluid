@@ -49,15 +49,15 @@
 #include <openfluid/tools/SwissTools.hpp>
 
 #include <boost/filesystem/operations.hpp>
-//#include <boost/algorithm/string.hpp>
-#include <glibmm/spawn.h>
 
 #include <openfluid/core/DateTime.hpp>
 
-#ifdef G_OS_WIN32
-#include <windows.h>
-#endif
 
+#if WIN32
+#include <windows.h> // for Sleep
+#else
+#include <time.h>
+#endif
 
 namespace openfluid { namespace tools {
 
@@ -503,64 +503,9 @@ int CompareVersions(const std::string& VersionA, const std::string& VersionB, bo
 // =====================================================================
 
 
-bool OpenURLInBrowser(const std::string& URL)
+bool OpenURLInBrowser(const std::string& /*URL*/)
 {
-  if (URL.empty()) return false;
-
-#ifdef G_OS_WIN32
-
-  std::string URLTmp = URL;
-  if (URLTmp.find("file://") == 0)
-  {
-    URLTmp = URLTmp.substr(7);
-  }
-  return ((int)(ShellExecute(NULL, "open", LPCSTR(URLTmp.c_str()), NULL, NULL, SW_SHOWNORMAL)) > 32);
-
-  #endif
-
-#ifdef G_OS_UNIX
-
-  std::vector<std::string> Args(2,"");
-
-  Args[0] = "xdg-open";
-  Args[1] = URL;
-
-  try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-  catch (Glib::SpawnError& E)
-  {
-    Args[0] = "firefox";
-    try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-    catch (Glib::SpawnError& E)
-    {
-      Args[0] = "chrome";
-      try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-      catch (Glib::SpawnError& E)
-      {
-        Args[0] = "opera";
-        try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-        catch (Glib::SpawnError& E)
-        {
-          Args[0] = "mozilla";
-          try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-          catch (Glib::SpawnError& E)
-          {
-            Args[0] = "netscape";
-            try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-            catch (Glib::SpawnError& E)
-            {
-              return false;
-            }
-          }
-        }
-      }
-    }
-  }
-
   return true;
-#endif
-
-
-  return false;
 }
 
 
@@ -583,5 +528,18 @@ unsigned int computeTimeStepsCount(const openfluid::core::DateTime& BeginDate,
   return StepsCount;
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void Sleep(const unsigned int MSec)
+{
+#if WIN32
+  Sleep(uint(ms));
+#else
+  usleep(MSec);
+#endif
+}
 
 } } // namespaces

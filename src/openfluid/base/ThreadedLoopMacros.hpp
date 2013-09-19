@@ -56,7 +56,9 @@
 #ifndef __THREADEDLOOPMACROS_HPP__
 #define __THREADEDLOOPMACROS_HPP__
 
-#include <glibmm/threadpool.h>
+#include <QtConcurrentRun>
+#include <QFutureSynchronizer>
+
 #include <openfluid/base/LoopMacros.hpp>
 
 // =====================================================================
@@ -64,11 +66,10 @@
 
 
 
-#define _THREADPOOLID(_id) _M_##_id##_Pool
+#define _THREADSYNCID(_id) _M_##_id##_Sync
 
 
-
-#define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitclass,simptr,...) \
+#define _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(id,unitclass,funcptr,...) \
   openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_CoreData->getUnits(unitclass)->getList(); \
   if (_UNITSLISTID(id) != NULL) \
   { \
@@ -78,13 +79,26 @@
       openfluid::core::PcsOrd_t _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
       while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) \
       { \
-        Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetSimulatorMaxThreads(),true); \
+        QFutureSynchronizer<void> _THREADSYNCID(id); \
         while (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end() && _UNITSLISTITERID(id)->getProcessOrder() == _PCSORDID(id)) \
         { \
-          _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&simptr),&(*_UNITSLISTITERID(id)), ## __VA_ARGS__)); \
+          try \
+          { \
+            _THREADSYNCID(id).addFuture(QtConcurrent::run(boost::bind(&funcptr,this,&(*_UNITSLISTITERID(id)),## __VA_ARGS__)));\
+            if (_THREADSYNCID(id).futures().size() == OPENFLUID_GetSimulatorMaxThreads())\
+            { \
+              _THREADSYNCID(id).waitForFinished(); \
+              _THREADSYNCID(id).clearFutures(); \
+            }\
+          }\
+          catch(QtConcurrent::UnhandledException& E) \
+          { \
+            throw openfluid::base::FrameworkException("Unknown exception thrown from compute thread"); \
+          } \
           ++_UNITSLISTITERID(id); \
         } \
-        _THREADPOOLID(id).shutdown(); \
+        _THREADSYNCID(id).waitForFinished(); \
+        _THREADSYNCID(id).clearFutures(); \
         if (_UNITSLISTITERID(id) != _UNITSLISTID(id)->end()) _PCSORDID(id) = _UNITSLISTITERID(id)->getProcessOrder(); \
       } \
     } \
@@ -93,15 +107,15 @@
 /**
   Macro for applying a threaded simulator to each unit of a class, following their process order
   @param[in] unitclass name of the unit class
-  @param[in] simptr member simulator name
+  @param[in] funcptr member simulator name
   @param[in] ... extra parameters to pass to the member simulator
 */
-#define APPLY_UNITS_ORDERED_LOOP_THREADED(unitclass,simptr,...) \
-    _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitclass,simptr,## __VA_ARGS__)
+#define APPLY_UNITS_ORDERED_LOOP_THREADED(unitclass,funcptr,...) \
+    _APPLY_UNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,unitclass,funcptr,## __VA_ARGS__)
 
 
 
-#define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,simptr,...) \
+#define _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(id,funcptr,...) \
   openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_CoreData->getUnitsGlobally(); \
   if (_UNITSPTRLISTID(id) != NULL) \
   { \
@@ -111,13 +125,26 @@
       openfluid::core::PcsOrd_t _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
       while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) \
       { \
-        Glib::ThreadPool _THREADPOOLID(id)(OPENFLUID_GetSimulatorMaxThreads(),true); \
+        QFutureSynchronizer<void> _THREADSYNCID(id); \
         while (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end() && (*_UNITSPTRLISTITERID(id))->getProcessOrder() == _PCSORDID(id)) \
         { \
-          _THREADPOOLID(id).push(sigc::bind(sigc::mem_fun(*this,&simptr),(*_UNITSPTRLISTITERID(id)), ## __VA_ARGS__)); \
+          try \
+          { \
+            _THREADSYNCID(id).addFuture(QtConcurrent::run(boost::bind(&funcptr,this,(*_UNITSPTRLISTITERID(id)),## __VA_ARGS__)));\
+            if (_THREADSYNCID(id).futures().size() == OPENFLUID_GetSimulatorMaxThreads())\
+            { \
+              _THREADSYNCID(id).waitForFinished(); \
+              _THREADSYNCID(id).clearFutures(); \
+            }\
+          }\
+          catch(QtConcurrent::UnhandledException& E) \
+          { \
+            throw openfluid::base::FrameworkException("Unknown exception thrown from compute thread"); \
+          } \
           ++_UNITSPTRLISTITERID(id); \
         } \
-        _THREADPOOLID(id).shutdown(); \
+        _THREADSYNCID(id).waitForFinished(); \
+        _THREADSYNCID(id).clearFutures(); \
         if (_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end()) _PCSORDID(id) = (*_UNITSPTRLISTITERID(id))->getProcessOrder(); \
       } \
     } \
@@ -125,11 +152,11 @@
 
 /**
   Macro for applying a threaded simulator to each unit of the domain, following their process order
-  @param[in] simptr member simulator name
+  @param[in] funcptr member simulator name
   @param[in] ... extra parameters to pass to the member simulator
 */
-#define APPLY_ALLUNITS_ORDERED_LOOP_THREADED(simptr,...) \
-    _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,simptr,## __VA_ARGS__)
+#define APPLY_ALLUNITS_ORDERED_LOOP_THREADED(funcptr,...) \
+    _APPLY_ALLUNITS_ORDERED_LOOP_THREADED_WITHID(__LINE__,funcptr,## __VA_ARGS__)
 
 
 

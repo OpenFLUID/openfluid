@@ -65,6 +65,7 @@
 #include <QLibraryInfo>
 
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/config.hpp>
 
 #include <iostream>
 
@@ -119,10 +120,6 @@ int main(int argc, char** argv)
   catch (std::bad_cast & E)
   {
     std::cerr << "bad_cast ERROR: " << E.what() << std::endl;
-  }
-  catch (Glib::Error & E)
-  {
-    std::cerr << "Glib ERROR: " << E.what() << std::endl;
   }
   catch (std::exception & E)
   {

@@ -62,8 +62,6 @@
 #include <boost/foreach.hpp>
 #include <boost/filesystem.hpp>
 
-#include <glibmm/spawn.h>
-
 #include "../KmlObserverBase.hpp"
 
 // =====================================================================

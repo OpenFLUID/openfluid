@@ -49,7 +49,7 @@
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/core.hpp>
 
-#include <glibmm/ustring.h>
+#include <QString>
 
 
 // =====================================================================
@@ -194,7 +194,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheDouble = (double)TUID/10;
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
-          TheString = Glib::ustring::compose("ID %1",TUID);
+          TheString = QString("ID %1").arg(TU->getID()).toStdString();
 
           OPENFLUID_InitializeVariable(TU,"tests.double",TheDouble);
           OPENFLUID_InitializeVariable(TU,"tests.integer",TheLong);
@@ -249,7 +249,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheDouble = (double)TUID/10;
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
-          TheString = Glib::ustring::compose("ID %1",TUID);
+          TheString = QString("ID %1").arg(TU->getID()).toStdString();
 
 
           OPENFLUID_InitializeVariable(TU,"tests.typed.none",TheDouble);
@@ -320,7 +320,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheDouble = (double)TUID/10;
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
-          TheString = Glib::ustring::compose("ID %1",TUID);
+          TheString = QString("ID %1").arg(TUID).toStdString();
 
           // double
 
@@ -681,7 +681,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
           TheDouble = (double)TUID/10;
           TheLong = TUID;
           TheBool = (TUID%2 == 0);
-          TheString = Glib::ustring::compose("ID %1",TUID);
+          TheString = QString("ID %1").arg(TUID).toStdString();
 
           // none
 

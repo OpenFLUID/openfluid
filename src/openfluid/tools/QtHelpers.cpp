@@ -47,85 +47,51 @@
 
 
 /**
-  \file DummyAttributesImporter.cpp
+  \file QtHelpers.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
-*/
+ */
 
 
-#include <openfluid/builderext-gtk/AttributesImporter.hpp>
-
-#include <gtkmm/messagedialog.h>
-
-DECLARE_EXTENSION_HOOKS;
-
-DEFINE_EXTENSION_INFOS("tests.builder.attributesimporter",
-                       "Dummy attributes importer",
-                       "Dummy attributes importer for tests",
-                       "This is a attributes importer for tests",
-                       "JC.Fabre;A.Libres",
-                       "fabrejc@supagro.inra.fr;libres@supagro.inra.fr",
-                       openfluid::builderext::PluggableBuilderExtension::AttributesImporter);
-
-DEFINE_EXTENSION_DEFAULT_CONFIG()
-
-// =====================================================================
-// =====================================================================
+#include <openfluid/tools/QtHelpers.hpp>
 
 
-class DummyAttributesImporter : public openfluid::builderext::AttributesImporter
+namespace openfluid { namespace tools {
+
+
+
+QString toIniCompatible(const std::string& Str)
 {
-  private:
-
-  Gtk::MessageDialog* mp_Dialog;
-
-  public:
-
-    DummyAttributesImporter()
-    {
-      mp_Dialog = new Gtk::MessageDialog("I am DummyAttributesImporter");
-    };
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    ~DummyAttributesImporter()
-    {
-      delete mp_Dialog;
-    };
-
-
-    // =====================================================================
-    // =====================================================================
-
-
-    Gtk::Widget* getExtensionAsWidget()
-    {
-      return mp_Dialog;
-    }
-
-    // =====================================================================
-    // =====================================================================
-
-    void show()
-    {
-      mp_Dialog->run();
-      mp_Dialog->hide();
-    }
-
-
-};
+  return (QString::fromStdString(Str));
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-DEFINE_EXTENSION_HOOKS((DummyAttributesImporter));
+std::string fromIniCompatible(const QVariant& Var)
+{
+  if (Var.type() == QVariant::StringList)
+    return Var.toStringList().join(", ").toStdString();
+  else return Var.toString().toStdString();
+}
 
 
+// =====================================================================
+// =====================================================================
 
 
+std::list<std::string> toStdStringList(const QStringList& StrList)
+{
+  std::list<std::string> TmpList;
+
+  for (int i=0; i<StrList.size(); i++)
+    TmpList.push_back(StrList[i].toStdString());
+
+  return TmpList;
+}
+
+
+} } // namespaces
