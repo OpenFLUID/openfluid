@@ -18,7 +18,7 @@
   
 
     <simulator ID="examples.surf.fire.prod-spread">
-      <param name="ignitionunits" value="316;521" />    
+      <param name="ignitionunits" value="1237;387" />    
     </simulator>
   
   </model>

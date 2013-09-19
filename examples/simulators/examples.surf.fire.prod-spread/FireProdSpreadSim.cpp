@@ -164,9 +164,9 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         // CULTIVATED 0.6
         // URBAN 0.2
         if (CoverCode.get() == "WATER") m_UnitsCombustionFactor[LU->getID()] = 0.0;
-        else if (CoverCode.get() == "URBAN") m_UnitsCombustionFactor[LU->getID()] = 10.0/3600.0;
-        else if (CoverCode.get() == "CULTIVATED") m_UnitsCombustionFactor[LU->getID()] = 30.0/3600.0;
-        else if (CoverCode.get() == "FOREST") m_UnitsCombustionFactor[LU->getID()] = 50.0/3600.0;
+        else if (CoverCode.get() == "URBAN") m_UnitsCombustionFactor[LU->getID()] = 15.0/3600.0;
+        else if (CoverCode.get() == "CULTIVATED") m_UnitsCombustionFactor[LU->getID()] = 45.0/3600.0;
+        else if (CoverCode.get() == "FOREST") m_UnitsCombustionFactor[LU->getID()] = 75.0/3600.0;
         else OPENFLUID_RaiseError("FireProductionSpreadingSimulator::prepareData()","unknown cover code");
       }
 
@@ -233,10 +233,10 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
         OPENFLUID_GetLatestVariable(ParentAU->front(),"gas.atm.V.windspeed",WindSpeed);
 
         // set wind coeff according to wind speed
-        // 0 < 25 km/h -> 1
-        // 26 < 50 km/h -> 1.4
-        // < 75 km/h -> 1.7
-        // > 75 km/h -> 2
+        // 0 < 25 km/h : 1
+        // 26 < 50 km/h : 1.4
+        // < 75 km/h : 1.7
+        // > 75 km/h : 2
 
         int WindCoeff = 1.0;
         if (WindSpeed.getValue()->asDoubleValue().get() > 25) WindCoeff = 1.4;
@@ -277,11 +277,18 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
 
       // compute the new stock ratio : current/initial
-      double StockRatio = ((double)(Stock.get()))/((double)(m_UnitsStockIni[U->getID()]));
-      if (boost::math::isnan(StockRatio) || boost::math::isinf(StockRatio))
-        StockRatio = 0.0;
+      double StockRatio;
 
-      if (StockRatio > 100.0) StockRatio = 100.0;
+      if (m_UnitsStockIni[U->getID()] > 0)
+      {
+        StockRatio = ((double)(Stock.get()))/((double)(m_UnitsStockIni[U->getID()]));
+        if (boost::math::isnan(StockRatio) || boost::math::isinf(StockRatio))
+          StockRatio = 0.0;
+      }
+      else
+        StockRatio = 1.0;
+
+      if (StockRatio > 1.0) StockRatio = 1.0;
       if (StockRatio < 0.0) StockRatio = 0.0;
 
       OPENFLUID_AppendVariable(U,"fire.surf.Q.stocklevel",Stock);
