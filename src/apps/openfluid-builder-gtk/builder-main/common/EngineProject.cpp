@@ -52,9 +52,6 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#include "EngineProject.hpp"
-
-#include <libxml2/libxml/xmlerror.h>
 #include <boost/date_time.hpp>
 #include <boost/filesystem/convenience.hpp>
 
@@ -66,10 +63,6 @@
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
-#include <openfluid/guicommon-gtk/RunDialogMachineListener.hpp>
-#include <openfluid/guicommon-gtk/DialogBoxFactory.hpp>
-#include <openfluid/guicommon-gtk/PreferencesManager.hpp>
-#include <openfluid/guicommon-gtk/SimulationRunDialog.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -77,13 +70,23 @@
 #include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 #include <openfluid/machine/Generator.hpp>
-
 #include <openfluid/ware/GeneratorSignature.hpp>
-#include "EngineHelper.hpp"
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include "WaresHelper.hpp"
 
+#undef signals
+
+#include <openfluid/guicommon-gtk/RunDialogMachineListener.hpp>
+#include <openfluid/guicommon-gtk/DialogBoxFactory.hpp>
+#include <openfluid/guicommon-gtk/PreferencesManager.hpp>
+#include <openfluid/guicommon-gtk/SimulationRunDialog.hpp>
+
+
+#include <libxml2/libxml/xmlerror.h>
+
+#include "EngineHelper.hpp"
+#include "WaresHelper.hpp"
+#include "EngineProject.hpp"
 #include "ProjectChecker.hpp"
 
 // =====================================================================

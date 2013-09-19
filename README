@@ -17,8 +17,7 @@ The required libraries are:
 for the OpenFLUID framework libraries: 
   - C++ STL
   - Boost (system, filesystem)
-  - libXML2
-  - Glibmm 
+  - libXML2 
   - libCURL
   - GDAL/OGR
   - GEOS (optional)

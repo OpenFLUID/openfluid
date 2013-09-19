@@ -188,7 +188,6 @@ OPENFLUID_ADD_TEST(NAME simulators-Loops
 
 
 OPNFLD_ADD_SIMULATOR(tests.threadedloops tests.threadedloops ${TEST_OUTPUT_PATH})
-TARGET_LINK_LIBRARIES(tests.threadedloops${OPENFLUID_SIMULATORS_SUFFIX} ${GLIBMM_LIBRARIES})
 OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoopsDefault
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ThreadedLoops"

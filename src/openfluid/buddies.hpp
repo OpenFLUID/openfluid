@@ -57,7 +57,6 @@
 #define __BUDDIES_HPP___
 
 
-#include <openfluid/buddies/ConvertBuddy.hpp>
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
 #include <openfluid/buddies/NewDataBuddy.hpp>
 #include <openfluid/buddies/NewSimBuddy.hpp>

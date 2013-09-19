@@ -1,8 +1,7 @@
 
-ADD_DEFINITIONS(${LibXML2_CFLAGS})
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibXML2_INCLUDE_DIRS})
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
 FILE(GLOB OPENFLUID_BUDDIES_CPP *.cpp)
 FILE(GLOB OPENFLUID_BUDDIES_HPP *.hpp)
@@ -19,8 +18,7 @@ SET_TARGET_PROPERTIES(openfluid-buddies PROPERTIES VERSION "${VERSION_MAJOR}.${V
 TARGET_LINK_LIBRARIES(openfluid-buddies 
                       openfluid-base
                       openfluid-tools
-                      openfluid-core
-                      ${LibXML2_LIBRARIES}                      
+                      openfluid-core                      
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
                       ${Boost_REGEX_LIBRARY})
 
