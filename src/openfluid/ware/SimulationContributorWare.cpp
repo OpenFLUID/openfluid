@@ -549,9 +549,7 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::U
                                                       openfluid::core::UnitID_t IDTo)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   openfluid::core::Unit* FromUnit = mp_CoreData->getUnit(ClassNameFrom, IDFrom);
   openfluid::core::Unit* ToUnit = mp_CoreData->getUnit(ClassNameTo, IDTo);
@@ -568,9 +566,7 @@ bool SimulationContributorWare::OPENFLUID_AddFromToConnection(openfluid::core::U
                                                       openfluid::core::Unit* ToUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_AddFromToConnection","Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (FromUnit != NULL || ToUnit != NULL)
   {
@@ -591,9 +587,7 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
                                                          openfluid::core::UnitID_t IDTo)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   openfluid::core::Unit* FromUnit = mp_CoreData->getUnit(ClassNameFrom, IDFrom);
   openfluid::core::Unit* ToUnit = mp_CoreData->getUnit(ClassNameTo, IDTo);
@@ -610,9 +604,7 @@ bool SimulationContributorWare::OPENFLUID_RemoveFromToConnection(openfluid::core
                                                          openfluid::core::Unit* ToUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_RemoveFromToConnection","Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (FromUnit == NULL || ToUnit == NULL)
     throw openfluid::base::FrameworkException("CoreRepository::removeFromToConnection","Error removing from-to connection");
@@ -631,9 +623,7 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
                                                            openfluid::core::UnitID_t IDParent)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   openfluid::core::Unit* ChildUnit = mp_CoreData->getUnit(ClassNameChild, IDChild);
   openfluid::core::Unit* ParentUnit = mp_CoreData->getUnit(ClassNameParent, IDParent);
@@ -650,9 +640,7 @@ bool SimulationContributorWare::OPENFLUID_AddChildParentConnection(openfluid::co
                                                            openfluid::core::Unit* ParentUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_AddChildParentConnection","Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (ChildUnit != NULL || ParentUnit != NULL)
   {
@@ -673,9 +661,7 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
                                                            openfluid::core::UnitID_t IDParent)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   openfluid::core::Unit* ChildUnit = mp_CoreData->getUnit(ClassNameChild, IDChild);
   openfluid::core::Unit* ParentUnit = mp_CoreData->getUnit(ClassNameParent, IDParent);
@@ -692,9 +678,7 @@ bool SimulationContributorWare::OPENFLUID_RemoveChildParentConnection(openfluid:
                                                            openfluid::core::Unit* ParentUnit)
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
-                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
-  REQUIRE_SIMULATION_STAGE_LE(openfluid::base::SimulationStatus::CHECKCONSISTENCY,
-                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph can be modified during PREPAREDATA and CHECKCONSISTENCY stages only")
+                              "SimulationContributorWare::OPENFLUID_RemoveChildParentConnection","Spatial graph connections can be modified during PREPAREDATA and later stages only")
 
   if (ChildUnit == NULL || ParentUnit == NULL)
     throw openfluid::base::FrameworkException("CoreRepository::removeChildParentConnection","Error removing child-parent connection");

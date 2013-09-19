@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE(test_constructor)
 
   BOOST_CHECK_EQUAL(
       Signatures->getSimSignatures()[openfluid::fluidx::ModelItemDescriptor::PluggedSimulator].size(),
-      5);
+      7);
   BOOST_CHECK_EQUAL(
       Signatures->getSimSignatures()[openfluid::fluidx::ModelItemDescriptor::Generator].size(),
       4);

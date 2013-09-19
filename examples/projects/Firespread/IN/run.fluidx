@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <run>
+    <scheduling deltat="3600" constraint="none" />
+    <period begin="1991-08-12 09:00:00" end="1991-08-17 09:00:00" />
+    <valuesbuffer size="5" />  
+  </run>
+</openfluid>
