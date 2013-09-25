@@ -12,39 +12,31 @@ CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.h
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 
-INCLUDE_DIRECTORIES(base datastore model monitoring spatial outputs runconfig extensions)
+INCLUDE_DIRECTORIES(base common datastore model monitoring spatial outputs runconfig extensions)
   
 
 ### BASE #
 
-SET(BUILDER_BASE_CPP base/AppTools.cpp
-                     base/AppCoordinator.cpp base/AppActions.cpp
+SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/BuilderApp.cpp base/MainWindow.cpp 
                      base/HomeModule.cpp base/HomeWidget.cpp                       
                      base/ProjectModule.cpp base/ProjectWidget.cpp base/DashboardWidget.cpp                     
                      base/ProjectCentral.cpp
-                     base/ClickableLabel.cpp base/ActionLabel.cpp
                      base/NewProjectDialog.cpp
                      base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
                      base/AboutDialog.cpp
-                     base/OpenExampleProjectDialog.cpp
-                     base/WaresManagementWidget.cpp base/WareWidget.cpp base/SignatureWidget.cpp base/ParameterWidget.cpp
+                     base/OpenExampleProjectDialog.cpp                     
                      )
                      
-SET(BUILDER_BASE_HPP base/AppTools.hpp
-                     base/AppCoordinator.hpp base/AppActions.hpp
+SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
-                     base/AbstractModule.hpp 
                      base/HomeModule.hpp base/HomeWidget.hpp base/DashboardWidget.hpp
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
                      base/ProjectCentral.hpp base/ProjectCheck.hpp
-                     base/ClickableLabel.hpp base/ActionLabel.hpp
-                     base/WorkspaceWidget.hpp
                      base/NewProjectDialog.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
                      base/AboutDialog.hpp
-                     base/OpenExampleProjectDialog.hpp
-                     base/WaresManagementWidget.hpp base/WareWidget.hpp base/SignatureWidget.hpp base/ParameterWidget.hpp
+                     base/OpenExampleProjectDialog.hpp                     
                      )
 
 QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/DashboardWidget.ui
@@ -52,7 +44,30 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/Dashbo
                             base/PreferencesDialog.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
                             base/AboutDialog.ui
                             base/OpenExampleProjectDialog.ui
-                            base/WaresManagementWidget.ui base/WareWidget.ui base/SignatureWidget.ui base/ParameterWidget.ui)
+                            )
+
+
+
+### COMMON #
+
+SET(BUILDER_COMMON_CPP common/AppTools.cpp
+                       common/ClickableLabel.cpp common/ActionLabel.cpp
+                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
+
+                       )
+                     
+SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
+                       common/WorkspaceWidget.hpp
+                       common/AppTools.hpp
+                       common/ClickableLabel.hpp common/ActionLabel.hpp
+                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
+
+                      )
+
+QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
+
+                              )
+
 
 
 ### MODEL #
@@ -151,6 +166,7 @@ QT4_ADD_RESOURCES(BUILDER_RC resources/openfluidbuilder.qrc)
 
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP} ${BUILDER_BASE_UI}
+                                          ${BUILDER_COMMON_CPP} ${BUILDER_COMMON_HPP} ${BUILDER_COMMON_UI}
                                           ${BUILDER_MODEL_CPP} ${BUILDER_MODEL_HPP} ${BUILDER_MODEL_UI}
                                           ${BUILDER_SPATIAL_CPP} ${BUILDER_SPATIAL_HPP} ${BUILDER_SPATIAL_UI}
                                           ${BUILDER_DATASTORE_CPP} ${BUILDER_DATASTORE_HPP} ${BUILDER_DATASTORE_UI}
