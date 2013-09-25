@@ -45,62 +45,74 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ModelWidget.hpp
-  \brief Header of ...
+  \file ObserverWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#include <openfluid/machine/ObserverInstance.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+
+#include "ui_WareWidget.h"
+#include "ObserverWidget.hpp"
 
 
-#include <QWidget>
 
-#include "WaresManagementWidget.hpp"
-
-
-class ModelWidget : public WaresManagementWidget
+ObserverWidget::ObserverWidget(QWidget* Parent,
+                               openfluid::fluidx::ObserverDescriptor* Desc,
+                               const openfluid::ware::WareID_t& ID):
+  WareWidget(Parent,ID,Desc->isEnabled(),"#E9F7FE"), mp_Desc(Desc)
 {
-  Q_OBJECT
-
-  private:
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
+  refresh();
+}
 
 
-  private slots:
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
+// =====================================================================
+// =====================================================================
 
 
-  public slots:
+ObserverWidget::~ObserverWidget()
+{
 
-    void refresh();
-
-  public:
-
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
-
-    virtual ~ModelWidget();
-};
+}
 
 
+// =====================================================================
+// =====================================================================
 
-#endif /* __MODELWIDGET_HPP__ */
+
+void ObserverWidget::refresh()
+{
+  const openfluid::machine::ObserverSignatureInstance* Signature =
+    openfluid::machine::ObserverSignatureRegistry::getInstance()->getSignature(m_ID);
+
+  if (Signature != NULL)
+  {
+    setAvailableWare(true);
+    ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
+    mp_SignatureWidget->update(Signature);
+  }
+  else
+  {
+    setAvailableWare(false);
+  }
+
+  updateWidgetBackground();
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ObserverWidget::setEnabledWare(bool Enabled)
+{
+  mp_Desc->setEnabled(Enabled);
+  WareWidget::setEnabledWare(Enabled);
+  emit changed();
+}

@@ -45,62 +45,69 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ModelWidget.hpp
-  \brief Header of ...
+  \file GeneratorWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 
 
-#include <QWidget>
+#include "ui_WareWidget.h"
+#include "GeneratorWidget.hpp"
 
-#include "WaresManagementWidget.hpp"
 
 
-class ModelWidget : public WaresManagementWidget
+GeneratorWidget::GeneratorWidget(QWidget* Parent,
+                                 openfluid::fluidx::ModelItemDescriptor* Desc,
+                                 const openfluid::ware::WareID_t& ID,
+                                 openfluid::machine::ModelItemSignatureInstance* SignInstance):
+  WareWidget(Parent,ID,Desc->isEnabled(),"#FDFEDE"),mp_Desc(Desc), mp_SignInstance(SignInstance)
 {
-  Q_OBJECT
-
-  private:
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
+  refresh();
+}
 
 
-  private slots:
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
+// =====================================================================
+// =====================================================================
 
 
-  public slots:
-
-    void refresh();
-
-  public:
-
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
-
-    virtual ~ModelWidget();
-};
+GeneratorWidget::~GeneratorWidget()
+{
+}
 
 
+// =====================================================================
+// =====================================================================
 
-#endif /* __MODELWIDGET_HPP__ */
+
+void GeneratorWidget::refresh()
+{
+
+  if (mp_SignInstance != NULL)
+  {
+    setAvailableWare(true);
+    ui->NameLabel->setText(QString::fromStdString(mp_SignInstance->Signature->Name));
+    mp_SignatureWidget->update(mp_SignInstance);
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void GeneratorWidget::setEnabledWare(bool Enabled)
+{
+  mp_Desc->setEnabled(Enabled);
+  WareWidget::setEnabledWare(Enabled);
+  emit changed();
+}
+
+

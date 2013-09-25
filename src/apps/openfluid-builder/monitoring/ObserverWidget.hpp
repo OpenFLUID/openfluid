@@ -46,61 +46,51 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file ObserverWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __OBSERVERWIDGET_HPP__
+#define __OBSERVERWIDGET_HPP__
 
 
-#include <QWidget>
+#include <openfluid/fluidx/ObserverDescriptor.hpp>
+#include "WareWidget.hpp"
 
-#include "WaresManagementWidget.hpp"
 
-
-class ModelWidget : public WaresManagementWidget
+class ObserverWidget : public WareWidget
 {
-  Q_OBJECT
+  Q_OBJECT;
 
   private:
 
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
+    openfluid::fluidx::ObserverDescriptor* mp_Desc;
 
 
   private slots:
 
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
+    void setEnabledWare(bool Enabled);
 
 
   public slots:
 
     void refresh();
 
+
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    ObserverWidget(QWidget* Parent,
+                   openfluid::fluidx::ObserverDescriptor* Desc,
+                   const openfluid::ware::WareID_t& ID);
 
-    virtual ~ModelWidget();
+    ~ObserverWidget();
+
+
 };
 
 
 
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __OBSERVERWIDGET_HPP__ */

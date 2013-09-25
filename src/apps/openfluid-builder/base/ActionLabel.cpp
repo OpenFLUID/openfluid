@@ -45,62 +45,21 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ModelWidget.hpp
-  \brief Header of ...
+  \file ActionLabel.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#include "ActionLabel.hpp"
 
 
-#include <QWidget>
-
-#include "WaresManagementWidget.hpp"
-
-
-class ModelWidget : public WaresManagementWidget
+ActionLabel::ActionLabel(const QString& Text, QWidget* Parent):
+  ClickableLabel(Text,Parent)
 {
-  Q_OBJECT
-
-  private:
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
-
-  private slots:
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-
-  public slots:
-
-    void refresh();
-
-  public:
-
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
-
-    virtual ~ModelWidget();
-};
-
-
-
-#endif /* __MODELWIDGET_HPP__ */
+  setCursor(Qt::PointingHandCursor);
+  setStyleSheet("color:rgb(0,51,153); font:italic; text-decoration:underline;");
+}

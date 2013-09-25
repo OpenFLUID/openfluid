@@ -46,48 +46,35 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file GeneratorWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __GENERATORWIDGET_HPP__
+#define __GENERATORWIDGET_HPP__
 
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/machine/ModelItemInstance.hpp>
 
-#include <QWidget>
+#include "WareWidget.hpp"
 
-#include "WaresManagementWidget.hpp"
-
-
-class ModelWidget : public WaresManagementWidget
+class GeneratorWidget : public WareWidget
 {
-  Q_OBJECT
-
-  private:
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
+  Q_OBJECT;
 
   private slots:
 
-    void addSimulator();
+    void setEnabledWare(bool Enabled);
 
-    void addGenerator();
 
-    void addGlobalParam();
+  private:
 
-    void moveModelItemUp(const QString& ID);
+    openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
+    openfluid::machine::ModelItemSignatureInstance* mp_SignInstance;
 
 
   public slots:
@@ -96,11 +83,16 @@ class ModelWidget : public WaresManagementWidget
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    GeneratorWidget(QWidget* Parent,
+                    openfluid::fluidx::ModelItemDescriptor* Desc,
+                    const openfluid::ware::WareID_t& ID,
+                    openfluid::machine::ModelItemSignatureInstance* SignInstance);
 
-    virtual ~ModelWidget();
+    ~GeneratorWidget();
+
+
 };
 
 
 
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __GENERATORWIDGET_HPP__ */

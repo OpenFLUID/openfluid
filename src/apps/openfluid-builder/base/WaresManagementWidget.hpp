@@ -46,61 +46,68 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file WaresManagementWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __WARESMANAGEMENTWIDGET_HPP__
+#define __WARESMANAGEMENTWIDGET_HPP__
+
+#include "WorkspaceWidget.hpp"
+#include "ActionLabel.hpp"
 
 
-#include <QWidget>
+namespace Ui {
+  class WaresManagementWidget;
+}
 
-#include "WaresManagementWidget.hpp"
 
-
-class ModelWidget : public WaresManagementWidget
+class WaresManagementWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
   private:
 
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
+    ActionLabel* mp_ShowHideGlobalParamsLabel;
 
 
   private slots:
 
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
+    void updateShowHideGlobalParams();
 
 
-  public slots:
+  protected slots:
 
-    void refresh();
+    void expandAll();
+
+    void collapseAll();
+
+    void dispatchChangesFromChildren();
+
+
+  protected:
+
+    Ui::WaresManagementWidget* ui;
+
+    ActionLabel* mp_ExpandAllWaresLabel;
+    ActionLabel* mp_CollapseAllWaresLabel;
+
+    void updateUpDownButtons(bool withFinalStretch = true);
+
+    WaresManagementWidget(QWidget* Parent,
+                          openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc,
+                          bool WithGlobalParams,
+                          bool WithSecondAddWareButton);
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    virtual ~WaresManagementWidget();
 
-    virtual ~ModelWidget();
 };
 
 
 
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __WARESMANAGEMENTWIDGET_HPP__ */

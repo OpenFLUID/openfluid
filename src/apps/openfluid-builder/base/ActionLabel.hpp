@@ -46,61 +46,27 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file ActionLabel.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __ACTIONLABEL_HPP__
+#define __ACTIONLABEL_HPP__
 
 
-#include <QWidget>
-
-#include "WaresManagementWidget.hpp"
+#include "ClickableLabel.hpp"
 
 
-class ModelWidget : public WaresManagementWidget
+class ActionLabel : public ClickableLabel
 {
-  Q_OBJECT
-
-  private:
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
-
-  private slots:
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-
-  public slots:
-
-    void refresh();
-
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    ActionLabel(const QString& Text, QWidget* Parent = NULL);
 
-    virtual ~ModelWidget();
 };
 
 
-
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __ACTIONLABEL_HPP__ */

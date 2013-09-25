@@ -45,62 +45,113 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ModelWidget.hpp
-  \brief Header of ...
+  \file WareWidget.hpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __WAREWIDGET_HPP__
+#define __WAREWIDGET_HPP__
 
 
 #include <QWidget>
 
-#include "WaresManagementWidget.hpp"
+#include <openfluid/ware/WareSignature.hpp>
+
+#include "ActionLabel.hpp"
+#include "SignatureWidget.hpp"
 
 
-class ModelWidget : public WaresManagementWidget
+namespace Ui {
+  class WareWidget;
+}
+
+
+class WareWidget : public QWidget
 {
-  Q_OBJECT
-
-  private:
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
+  Q_OBJECT;
 
   private slots:
 
-    void addSimulator();
+    void updateShowHideParams();
 
-    void addGenerator();
+    void notifyUpClicked();
 
-    void addGlobalParam();
+    void notifyDownClicked();
 
-    void moveModelItemUp(const QString& ID);
+    void notifyRemoveClicked();
 
-    void moveModelItemDown(const QString& ID);
+    void addParameter();
 
-    void removeModelItem(const QString& ID);
+
+  protected slots:
+
+    virtual void setEnabledWare(bool Enabled);
+
+
+  protected:
+
+    Ui::WareWidget* ui;
+
+    const openfluid::ware::WareID_t m_ID;
+
+    const QString m_EnabledBGColor;
+
+    bool m_Available;
+
+    bool m_Enabled;
+
+    bool m_ParamsExpanded;
+
+    ActionLabel* mp_ShowHideParamsLabel;
+
+    ClickableLabel* mp_EnableLabel;
+
+    SignatureWidget* mp_SignatureWidget;
+
+    virtual void setAvailableWare(bool Available);
+
+    virtual void updateWidgetBackground();
+
+
+  signals:
+
+    void upClicked(const QString&);
+
+    void downClicked(const QString&);
+
+    void removeClicked(const QString&);
+
+    void changed();
 
 
   public slots:
 
-    void refresh();
+    virtual void refresh() =0;
+
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    void setExpanded(bool Expand);
 
-    virtual ~ModelWidget();
+    void setUpButtonEnabled(bool Enabled);
+
+    void setDownButtonEnabled(bool Enabled);
+
+    void displayParams();
+
+    openfluid::ware::WareID_t getID() const
+    { return m_ID; };
+
+    WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, bool Enabled, const QString& BGColor);
+
+    virtual ~WareWidget();
+
+
 };
 
-
-
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __WAREWIDGET_HPP__ */

@@ -17,48 +17,57 @@ INCLUDE_DIRECTORIES(base datastore model monitoring spatial outputs runconfig ex
 
 ### BASE #
 
-SET(BUILDER_BASE_CPP base/AppTools.cpp base/ClickableLabel.cpp
+SET(BUILDER_BASE_CPP base/AppTools.cpp
                      base/AppCoordinator.cpp base/AppActions.cpp
                      base/BuilderApp.cpp base/MainWindow.cpp 
                      base/HomeModule.cpp base/HomeWidget.cpp                       
                      base/ProjectModule.cpp base/ProjectWidget.cpp base/DashboardWidget.cpp                     
                      base/ProjectCentral.cpp
+                     base/ClickableLabel.cpp base/ActionLabel.cpp
                      base/NewProjectDialog.cpp
                      base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
                      base/AboutDialog.cpp
-                     base/OpenExampleProjectDialog.cpp                     
+                     base/OpenExampleProjectDialog.cpp
+                     base/WaresManagementWidget.cpp base/WareWidget.cpp base/SignatureWidget.cpp
                      )
                      
-SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
+SET(BUILDER_BASE_HPP base/AppTools.hpp
                      base/AppCoordinator.hpp base/AppActions.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
                      base/AbstractModule.hpp 
                      base/HomeModule.hpp base/HomeWidget.hpp base/DashboardWidget.hpp
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
                      base/ProjectCentral.hpp base/ProjectCheck.hpp
+                     base/ClickableLabel.hpp base/ActionLabel.hpp
                      base/WorkspaceWidget.hpp
                      base/NewProjectDialog.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
                      base/AboutDialog.hpp
                      base/OpenExampleProjectDialog.hpp
+                     base/WaresManagementWidget.hpp base/WareWidget.hpp base/SignatureWidget.hpp
                      )
 
 QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/DashboardWidget.ui
                             base/NewProjectDialog.ui
                             base/PreferencesDialog.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
                             base/AboutDialog.ui
-                            base/OpenExampleProjectDialog.ui)
+                            base/OpenExampleProjectDialog.ui
+                            base/WaresManagementWidget.ui base/WareWidget.ui base/SignatureWidget.ui)
 
 
 ### MODEL #
 
 SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
-                          )
+                      model/SimulatorWidget.cpp
+                      model/GeneratorWidget.cpp
+                     )
 
 SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
-                           )
+                      model/SimulatorWidget.hpp
+                      model/GeneratorWidget.hpp
+                     )
 
-QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
+QT4_WRAP_UI(BUILDER_MODEL_UI 
                                  )
 
 
@@ -89,12 +98,14 @@ QT4_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
 ### MONITORING #
 
 SET(BUILDER_MONITORING_CPP monitoring/MonitoringWidget.cpp
+                           monitoring/ObserverWidget.cpp
                           )
 
 SET(BUILDER_MONITORING_HPP monitoring/MonitoringWidget.hpp
+                           monitoring/ObserverWidget.hpp
                            )
 
-QT4_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
+QT4_WRAP_UI(BUILDER_MONITORING_UI 
                                  )
 
 

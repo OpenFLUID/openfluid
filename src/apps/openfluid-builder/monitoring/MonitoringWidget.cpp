@@ -54,15 +54,30 @@
  */
 
 
+#include <iostream>
+#include <QMessageBox>
 
-#include "ui_MonitoringWidget.h"
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+
+#include "ui_WaresManagementWidget.h"
 #include "MonitoringWidget.hpp"
+#include "ObserverWidget.hpp"
 
 
 MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::MonitoringWidget)
+  WaresManagementWidget(Parent, AFXDesc,false,false), m_Monitoring(AFXDesc.getMonitoring())
 {
-  ui->setupUi(this);
+  ui->WaresListLabel->setText(tr("Observers list"));
+
+  ui->AddWareFirstButton->setText(tr("Add observer"));
+
+  connect(ui->AddWareFirstButton,SIGNAL(clicked()),this,SLOT(addObserver()));
+
+  connect(mp_ExpandAllWaresLabel,SIGNAL(clicked()),this,SLOT(expandAll()));
+  connect(mp_CollapseAllWaresLabel,SIGNAL(clicked()),this,SLOT(collapseAll()));
+
+  refresh();
+
 }
 
 
@@ -72,5 +87,111 @@ MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedF
 
 MonitoringWidget::~MonitoringWidget()
 {
-  delete ui;
+
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MonitoringWidget::addObserver()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MonitoringWidget::moveModelItemUp(const QString& ID)
+{
+//  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("moving ")+ID+(" up is not implemented"),QMessageBox::Close);
+
+  int From = m_Monitoring.getFirstIndex(ID.toStdString());
+  m_Monitoring.moveItemTowardsTheBeginning(ID.toStdString());
+  int To = m_Monitoring.getFirstIndex(ID.toStdString());
+
+  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->insertWidget(To,W);
+
+  updateUpDownButtons();
+
+  dispatchChangesFromChildren();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MonitoringWidget::moveModelItemDown(const QString& ID)
+{
+  int From = m_Monitoring.getFirstIndex(ID.toStdString());
+  m_Monitoring.moveItemTowardsTheEnd(ID.toStdString());
+  int To = m_Monitoring.getFirstIndex(ID.toStdString());
+
+
+  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->insertWidget(To,W);
+
+  updateUpDownButtons();
+
+  dispatchChangesFromChildren();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MonitoringWidget::removeModelItem(const QString& ID)
+{
+  int Position = m_Monitoring.getFirstIndex(ID.toStdString());
+
+  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(Position)->widget());
+  W->deleteLater();
+
+  m_Monitoring.removeFromObserverList(ID.toStdString());
+
+  updateUpDownButtons();
+
+  dispatchChangesFromChildren();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+void MonitoringWidget::refresh()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+  const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = m_Monitoring.getItems();
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itb = Items.begin();
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator ite = Items.end();
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it;
+  std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itl = Items.end().operator --();
+
+
+  for (it = itb; it!= ite; ++it)
+  {
+    ObserverWidget* ObsWidget = new ObserverWidget(this,*it,(*it)->getID());
+    ui->WaresListAreaContents->layout()->addWidget(ObsWidget);
+    if (it == itb) ObsWidget->setUpButtonEnabled(false);
+    if (it == itl) ObsWidget->setDownButtonEnabled(false);
+
+    connect(ObsWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
+    connect(ObsWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
+    connect(ObsWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
+    connect(ObsWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+
+  }
+  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->addStretch();
+}
+

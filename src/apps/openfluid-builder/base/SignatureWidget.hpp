@@ -46,61 +46,77 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file SignatureWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __SIGNATUREWIDGET_HPP__
+#define __SIGNATUREWIDGET_HPP__
 
+
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
 
 #include <QWidget>
 
-#include "WaresManagementWidget.hpp"
-
-
-class ModelWidget : public WaresManagementWidget
+namespace Ui
 {
-  Q_OBJECT
+  class SignatureWidget;
+}
 
+
+class SignatureWidget : public QWidget
+{
   private:
 
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+    Ui::SignatureWidget* ui;
 
-    void updateGlobalParams();
+    void updateGeneral(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    void updateCoupledModel();
+    void updateParameters(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
+    void updateExtrafilesCategory(const std::vector<std::string>* Infos,
+                                  const QString& CatStr, unsigned int BaseIndex);
 
-  private slots:
+    void updateExtrafiles(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    void addSimulator();
+    void updateVariablesCategory(const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* Infos,
+                                 const QString& CatStr,
+                                 unsigned int BaseIndex);
 
-    void addGenerator();
+    void updateVariables(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    void addGlobalParam();
+    void updateAttributesCategory(const std::vector<openfluid::ware::SignatureHandledDataItem>* Infos,
+                                  const QString& CatStr,
+                                  unsigned int BaseIndex);
 
-    void moveModelItemUp(const QString& ID);
+    void updateAttributes(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    void moveModelItemDown(const QString& ID);
+    void updateEvents(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
-    void removeModelItem(const QString& ID);
+    void updateSpatialGraph(const openfluid::machine::ModelItemSignatureInstance* Signature);
 
+    void updateGeneral(const openfluid::machine::ObserverSignatureInstance* Signature);
 
-  public slots:
+    QString formatAuthors(const openfluid::ware::WareSignature::AuthorsList_t& AuthList);
 
-    void refresh();
+    void clearAllInfos();
+
+    static QString convertStdString(const std::string& Str, const QString& ReplaceStr = "<i>unknown</i>");
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    SignatureWidget(QWidget* Parent);
 
-    virtual ~ModelWidget();
+    ~SignatureWidget();
+
+    void update(const openfluid::machine::ModelItemSignatureInstance* Signature);
+
+    void update(const openfluid::machine::ObserverSignatureInstance* Signature);
 };
 
 
-
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __SIGNATUREWIDGET_HPP__ */

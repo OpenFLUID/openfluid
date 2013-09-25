@@ -54,15 +54,32 @@
  */
 
 
+#include <iostream>
+#include <QMessageBox>
 
-#include "ui_ModelWidget.h"
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+
+#include "ui_WaresManagementWidget.h"
 #include "ModelWidget.hpp"
+#include "SimulatorWidget.hpp"
+#include "GeneratorWidget.hpp"
 
 
 ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::ModelWidget)
+  WaresManagementWidget(Parent, AFXDesc,true,true), m_Model(AFXDesc.getModel())
 {
-  ui->setupUi(this);
+  ui->WaresListLabel->setText(tr("Coupled model"));
+
+  ui->AddWareFirstButton->setText(tr("Add simulator"));
+  ui->AddWareSecondButton->setText(tr("Add generator"));
+
+  connect(ui->AddWareFirstButton,SIGNAL(clicked()),this,SLOT(addSimulator()));
+  connect(ui->AddWareSecondButton,SIGNAL(clicked()),this,SLOT(addGenerator()));
+  connect(ui->AddGlobalParamButton,SIGNAL(clicked()),this,SLOT(addGlobalParam()));
+
+  refresh();
 }
 
 
@@ -72,5 +89,187 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
 
 ModelWidget::~ModelWidget()
 {
-  delete ui;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::addSimulator()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::addGenerator()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::addGlobalParam()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::moveModelItemUp(const QString& ID)
+{
+  int Position = m_Model.getFirstItemIndex(ID.toStdString());
+
+  if (Position < 0)
+    return;
+
+  unsigned int From = Position;
+  unsigned int To = (From == 0) ? m_Model.getItemsCount() - 1 : From - 1;
+
+  m_Model.moveItem(From, To);
+
+  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->insertWidget(To,W);
+
+  updateUpDownButtons();
+
+  dispatchChangesFromChildren();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::moveModelItemDown(const QString& ID)
+{
+  int Position = m_Model.getFirstItemIndex(ID.toStdString());
+
+  if (Position < 0)
+    return;
+
+  unsigned int From = Position;
+  unsigned int To = (From == m_Model.getItemsCount() - 1) ? 0 : From + 1;
+
+  m_Model.moveItem(From, To);
+
+
+  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->insertWidget(To,W);
+
+  updateUpDownButtons();
+
+  dispatchChangesFromChildren();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::removeModelItem(const QString& ID)
+{
+  int Position = m_Model.getFirstItemIndex(ID.toStdString());
+
+  if (Position < 0)
+    return;
+
+  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(Position)->widget());
+  W->deleteLater();
+
+  m_Model.removeItem(Position);
+
+  updateUpDownButtons();
+
+  dispatchChangesFromChildren();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::refresh()
+{
+  updateCoupledModel();
+
+  updateGlobalParams();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::updateGlobalParams()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::updateCoupledModel()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items = m_Model.getItems();
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itb = Items.begin();
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator ite = Items.end();
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator itl = Items.end().operator --();
+  std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it;
+
+  for (it = itb; it!= ite; ++it)
+  {
+    if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator)
+    {
+      SimulatorWidget* SimWidget = new SimulatorWidget(this,*it,m_Model.getID(*it));
+      ui->WaresListAreaContents->layout()->addWidget(SimWidget);
+      if (it == itb) SimWidget->setUpButtonEnabled(false);
+      if (it == itl) SimWidget->setDownButtonEnabled(false);
+
+      connect(SimWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
+      connect(SimWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
+      connect(SimWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
+      connect(SimWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+    }
+    else if ((*it)->getType() == openfluid::fluidx::WareDescriptor::Generator)
+    {
+      // TODO see if a more elegant method is possible for generators signature
+      // than passing signature instance to constructor
+
+      GeneratorWidget* GenWidget = new GeneratorWidget(this,*it,
+                                                       m_Model.getID(*it),
+                                                       openfluid::machine::SimulatorSignatureRegistry::getInstance()->getSignatureItemInstance(*it));
+
+      ui->WaresListAreaContents->layout()->addWidget(GenWidget);
+      if (it == itb) GenWidget->setUpButtonEnabled(false);
+      if (it == itl) GenWidget->setDownButtonEnabled(false);
+
+      connect(GenWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
+      connect(GenWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
+      connect(GenWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
+      connect(GenWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+
+    }
+  }
+  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->addStretch();
 }

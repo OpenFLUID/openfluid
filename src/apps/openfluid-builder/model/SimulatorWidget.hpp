@@ -46,49 +46,32 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file SimulatorWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __SIMULATORWIDGET_HPP__
+#define __SIMULATORWIDGET_HPP__
 
 
-#include <QWidget>
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include "WareWidget.hpp"
 
-#include "WaresManagementWidget.hpp"
 
-
-class ModelWidget : public WaresManagementWidget
+class SimulatorWidget : public WareWidget
 {
-  Q_OBJECT
+  Q_OBJECT;
 
   private:
 
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
+    openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
   private slots:
 
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
+    void setEnabledWare(bool Enabled);
 
   public slots:
 
@@ -96,11 +79,14 @@ class ModelWidget : public WaresManagementWidget
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    SimulatorWidget(QWidget* Parent,
+                    openfluid::fluidx::ModelItemDescriptor* Desc,
+                    const openfluid::ware::WareID_t& ID);
 
-    virtual ~ModelWidget();
+    ~SimulatorWidget();
+
+
 };
 
 
-
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __SIMULATORWIDGET_HPP__ */
