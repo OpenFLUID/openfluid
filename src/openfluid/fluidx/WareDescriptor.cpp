@@ -61,7 +61,7 @@ namespace fluidx {
 // =====================================================================
 
 WareDescriptor::WareDescriptor() :
-    m_WareType(NoWareType)
+    m_WareType(NoWareType), m_Enabled(true)
 {
 
 }
@@ -143,6 +143,25 @@ bool WareDescriptor::hasParameter(std::string ParameterKey)
 
 // =====================================================================
 // =====================================================================
+
+
+void WareDescriptor::setEnabled(bool Enabled)
+{
+  m_Enabled = Enabled;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareDescriptor::isEnabled() const
+{
+  return m_Enabled;
+}
+
+
+
 
 }
 } // namespaces

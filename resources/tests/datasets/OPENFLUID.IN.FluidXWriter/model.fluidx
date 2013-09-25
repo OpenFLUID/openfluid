@@ -10,9 +10,15 @@
      </gparams>
    
    
-      <simulator ID="tests.primitives.variables.prod" />       
+      <simulator ID="tests.primitives.variables.prod" enabled="false"/>
+      
+      <simulator ID="tests.primitives.variables.prod" />              
       
       <generator varname="tests.fixed" unitclass="TestUnits" method="fixed">
+         <param name="fixedvalue" value="12.7" />
+      </generator>
+
+      <generator varname="tests.fixed" unitclass="TestUnits" method="fixed" enabled="0">
          <param name="fixedvalue" value="12.7" />
       </generator>
 

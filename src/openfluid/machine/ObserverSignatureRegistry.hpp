@@ -82,8 +82,7 @@ class DLLEXPORT ObserverSignatureRegistry
      * @brief Returns the Signature of the Observer with ObserverID if available
      * @throw openfluid::base::OFException if this Observer plugin is not available
      */
-    const openfluid::machine::ObserverSignatureInstance& getSignature(
-        std::string ObserverID);
+    const openfluid::machine::ObserverSignatureInstance* getSignature(const std::string& ObserverID);
 
     /**
      * @brief Updates the list of available signatures, according to Runtime environment paths

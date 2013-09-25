@@ -101,6 +101,8 @@ class DLLEXPORT FluidXDescriptor
 
     std::string m_IndentStr;
 
+    bool extractWareEnabledFromNode(QDomElement& Node);
+
     void extractMonitoringFromNode(QDomElement& Node);
 
     openfluid::ware::WareParams_t extractParamsFromNode(QDomElement& Node);

@@ -241,70 +241,73 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
 
   for (it=ModelDesc.getItems().begin();it!=ModelDesc.getItems().end();++it)
   {
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
-      throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","unknown model item type");
-
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
+    if ((*it)->isEnabled())
     {
-      // instanciation of a plugged simulator using the plugin manager
-      IInstance = SimulatorPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID());
-      IInstance->Params = (*it)->getParameters();
-      IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
-    }
 
-    if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
-    {
-      // instanciation of a data generator
-      openfluid::fluidx::GeneratorDescriptor* GenDesc = (openfluid::fluidx::GeneratorDescriptor*)(*it);
+      if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::NoWareType))
+        throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","unknown model item type");
 
-      IInstance = new ModelItemInstance();
-      IInstance->Verified = true;
-      IInstance->Params = (*it)->getParameters();
-      IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::Generator;
-
-      openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature();
-
-      std::string TypedVarName = GenDesc->getVariableName();
-      GenDesc->isVectorVariable() ? TypedVarName += "[vector]" : TypedVarName += "[double]";
-
-      Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
-      Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem(TypedVarName,GenDesc->getUnitClass(),"",""));
-
-      IInstance->GeneratorInfo = new GeneratorExtraInfo();
-      IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();
-      IInstance->GeneratorInfo->UnitClass = GenDesc->getUnitClass();
-      IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
-
-      if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Fixed)
-        IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Fixed;
-
-      if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Random)
-        IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Random;
-
-      if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Interp)
+      if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
       {
-        IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Interp;
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
+        // instanciation of a plugged simulator using the plugin manager
+        IInstance = SimulatorPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID());
+        IInstance->Params = (*it)->getParameters();
+        IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
       }
 
-      if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Inject)
+      if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::Generator))
       {
-        IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Inject;
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
-        Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
+        // instanciation of a data generator
+        openfluid::fluidx::GeneratorDescriptor* GenDesc = (openfluid::fluidx::GeneratorDescriptor*)(*it);
+
+        IInstance = new ModelItemInstance();
+        IInstance->Verified = true;
+        IInstance->Params = (*it)->getParameters();
+        IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::Generator;
+
+        openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature();
+
+        std::string TypedVarName = GenDesc->getVariableName();
+        GenDesc->isVectorVariable() ? TypedVarName += "[vector]" : TypedVarName += "[double]";
+
+        Signature->ID = buildGeneratorID(GenDesc->getVariableName(),GenDesc->isVectorVariable(),GenDesc->getUnitClass());
+        Signature->HandledData.ProducedVars.push_back(openfluid::ware::SignatureHandledTypedDataItem(TypedVarName,GenDesc->getUnitClass(),"",""));
+
+        IInstance->GeneratorInfo = new GeneratorExtraInfo();
+        IInstance->GeneratorInfo->VariableName = GenDesc->getVariableName();
+        IInstance->GeneratorInfo->UnitClass = GenDesc->getUnitClass();
+        IInstance->GeneratorInfo->VariableSize = GenDesc->getVariableSize();
+
+        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Fixed)
+          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Fixed;
+
+        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Random)
+          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Random;
+
+        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Interp)
+        {
+          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Interp;
+          Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
+          Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
+        }
+
+        if (GenDesc->getGeneratorMethod() == openfluid::fluidx::GeneratorDescriptor::Inject)
+        {
+          IInstance->GeneratorInfo->GeneratorMethod = openfluid::fluidx::GeneratorDescriptor::Inject;
+          Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["sources"]);
+          Signature->HandledData.RequiredExtraFiles.push_back(GenDesc->getParameters()["distribution"]);
+        }
+
+        if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
+          throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","unknown generator type");
+
+        IInstance->Body = NULL;
+        IInstance->Signature = Signature;
       }
 
-      if (IInstance->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::NoGenMethod)
-        throw openfluid::base::FrameworkException("ModelFactory::buildInstanceFromDescriptor","unknown generator type");
-
-      IInstance->Body = NULL;
-      IInstance->Signature = Signature;
+      IInstance->OriginalPosition = MInstance.getItemsCount()+1;
+      MInstance.appendItem(IInstance);
     }
-
-    IInstance->OriginalPosition = MInstance.getItemsCount()+1;
-    MInstance.appendItem(IInstance);
-
   }
 
   MInstance.setGlobalParameters(ModelDesc.getGlobalParameters());
@@ -323,11 +326,14 @@ void Factory::buildMonitoringInstanceFromDescriptor(openfluid::fluidx::Monitorin
 
   for (it=MonDesc.getItems().begin();it!=MonDesc.getItems().end();++it)
   {
-    // instanciation of a plugged observer using the plugin manager
-    OInstance = ObserverPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::ObserverDescriptor*)(*it))->getID());
-    OInstance->Params = (*it)->getParameters();
+    if ((*it)->isEnabled())
+    {
+      // instanciation of a plugged observer using the plugin manager
+      OInstance = ObserverPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::ObserverDescriptor*)(*it))->getID());
+      OInstance->Params = (*it)->getParameters();
 
-    MonInstance.appendObserver(OInstance);
+      MonInstance.appendObserver(OInstance);
+    }
   }
 }
 

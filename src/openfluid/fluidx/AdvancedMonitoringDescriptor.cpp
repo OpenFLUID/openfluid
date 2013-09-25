@@ -160,8 +160,10 @@ void AdvancedMonitoringDescriptor::setItems(
   mp_MonitoringDesc->getItems() = ObserversList;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedMonitoringDescriptor::moveItemTowardsTheBeginning(
     std::string ObserverID)
@@ -227,8 +229,25 @@ void AdvancedMonitoringDescriptor::moveItemTowardsTheEnd(std::string ObserverID)
   std::swap(*itFrom, *itTo);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
+int AdvancedMonitoringDescriptor::getFirstIndex(const std::string& ID) const
+{
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
+      mp_MonitoringDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if ((*it)->getID() == ID)
+      return std::distance(Items.begin(), it);
+  }
+
+  return -1;
 }
-} //namespaces
+
+
+} } //namespaces

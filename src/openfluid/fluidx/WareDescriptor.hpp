@@ -73,7 +73,10 @@ class DLLEXPORT WareDescriptor
   protected:
 
     WareType m_WareType;
+
     openfluid::ware::WareParams_t m_Params;  // Simulator parameters set
+
+    bool m_Enabled;
 
   public:
 
@@ -97,6 +100,10 @@ class DLLEXPORT WareDescriptor
     void clearParameters();
 
     bool hasParameter(std::string ParameterKey);
+
+    void setEnabled(bool Enabled);
+
+    bool isEnabled() const;
 
 };
 
