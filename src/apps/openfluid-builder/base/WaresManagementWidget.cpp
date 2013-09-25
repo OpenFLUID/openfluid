@@ -189,9 +189,9 @@ void WaresManagementWidget::collapseAll()
 // =====================================================================
 
 
-void WaresManagementWidget::updateUpDownButtons(bool withFinalStretch)
+void WaresManagementWidget::updateUpDownButtons(bool WithFinalStretch)
 {
-  int LastIndex = ui->WaresListAreaContents->layout()->count()-withFinalStretch-1;
+  int LastIndex = ui->WaresListAreaContents->layout()->count()-WithFinalStretch-1;
 
   for (int i=0;i<=LastIndex;i++)
   {
@@ -213,3 +213,5 @@ void WaresManagementWidget::updateUpDownButtons(bool withFinalStretch)
     }
   }
 }
+
+

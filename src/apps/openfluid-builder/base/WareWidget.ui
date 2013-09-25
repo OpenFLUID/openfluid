@@ -231,7 +231,7 @@
                   <enum>Qt::Horizontal</enum>
                  </property>
                  <property name="sizeType">
-                  <enum>QSizePolicy::Fixed</enum>
+                  <enum>QSizePolicy::Expanding</enum>
                  </property>
                  <property name="sizeHint" stdset="0">
                   <size>
@@ -260,27 +260,20 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <spacer name="horizontalSpacer_2">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
               </layout>
              </item>
              <item>
               <widget class="QScrollArea" name="ParamsArea">
                <property name="minimumSize">
                 <size>
-                 <width>0</width>
+                 <width>200</width>
                  <height>250</height>
+                </size>
+               </property>
+               <property name="baseSize">
+                <size>
+                 <width>200</width>
+                 <height>0</height>
                 </size>
                </property>
                <property name="horizontalScrollBarPolicy">
@@ -299,6 +292,12 @@
                  </rect>
                 </property>
                 <property name="minimumSize">
+                 <size>
+                  <width>250</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="baseSize">
                  <size>
                   <width>250</width>
                   <height>0</height>

@@ -117,6 +117,7 @@ class WareWidget : public QWidget
 
     virtual void updateWidgetBackground();
 
+    bool removeParameterWidget(const QString& Name, bool WithFinalStretch = true);
 
   signals:
 

@@ -69,10 +69,16 @@ class ObserverWidget : public WareWidget
 
     openfluid::fluidx::ObserverDescriptor* mp_Desc;
 
+    void updateParams();
+
 
   private slots:
 
     void setEnabledWare(bool Enabled);
+
+    void updateParamValue(const QString& Name, const QString& Value);
+
+    void removeParam(const QString& Name);
 
 
   public slots:

@@ -59,6 +59,7 @@
 
 #include "ui_WareWidget.h"
 #include "ObserverWidget.hpp"
+#include "ParameterWidget.hpp"
 
 
 
@@ -95,6 +96,8 @@ void ObserverWidget::refresh()
     setAvailableWare(true);
     ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
     mp_SignatureWidget->update(Signature);
+
+    updateParams();
   }
   else
   {
@@ -115,4 +118,55 @@ void ObserverWidget::setEnabledWare(bool Enabled)
   mp_Desc->setEnabled(Enabled);
   WareWidget::setEnabledWare(Enabled);
   emit changed();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ObserverWidget::updateParams()
+{
+
+  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
+
+  for (openfluid::ware::WareParams_t::iterator it = DescParams.begin();it != DescParams.end(); ++it)
+  {
+    ParameterWidget* ParamWidget = new ParameterWidget(this,
+                                                       QString::fromStdString((*it).first),QString::fromStdString((*it).second),
+                                                       QString::fromStdString(""),true);
+
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeParam(const QString&)));
+
+
+    ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addWidget(ParamWidget);
+  }
+
+  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addStretch();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ObserverWidget::updateParamValue(const QString& Name, const QString& Value)
+{
+  mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
+  emit changed();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ObserverWidget::removeParam(const QString& Name)
+{
+  if (removeParameterWidget(Name))
+  {
+    mp_Desc->eraseParameter(Name.toStdString());
+    emit changed();
+  }
 }

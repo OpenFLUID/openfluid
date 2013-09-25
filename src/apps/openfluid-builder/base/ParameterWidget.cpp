@@ -45,55 +45,80 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file SimulatorWidget.hpp
-  \brief Header of ...
+  \file ParameterWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
-#ifndef __SIMULATORWIDGET_HPP__
-#define __SIMULATORWIDGET_HPP__
-
-
-#include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include "WareWidget.hpp"
+#include "ui_ParameterWidget.h"
+#include "ParameterWidget.hpp"
 
 
-class SimulatorWidget : public WareWidget
+ParameterWidget::ParameterWidget(QWidget* Parent,
+                    const QString& Name, const QString& Value,
+                    const QString& SIUnit,
+                    bool Removable):
+  QWidget(Parent),ui(new Ui::ParameterWidget)
 {
-  Q_OBJECT;
+  ui->setupUi(this);
+  ui->NameLabel->setText(Name);
+  ui->ValueEdit->setText(Value);
+  ui->SIUnitLabel->setText(SIUnit);
+  ui->GlobalValueLabel->setText("");
 
-  private:
+  connect(ui->ValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(notifyValueChanged()));
 
-    openfluid::fluidx::ModelItemDescriptor* mp_Desc;
+  if (Removable)
+  {
+    ui->RemoveButton->setText("");
+    ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
+    ui->RemoveButton->setIconSize(QSize(16,16));
 
-    void updateParams(openfluid::machine::ModelItemSignatureInstance* Signature);
+    connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(notifyRemoveClicked()));
+  }
 
-
-  private slots:
-
-    void setEnabledWare(bool Enabled);
-
-    void updateParamValue(const QString& Name, const QString& Value);
-
-    void removeParam(const QString& Name);
-
-  public slots:
-
-    void refresh();
-
-  public:
-
-    SimulatorWidget(QWidget* Parent,
-                    openfluid::fluidx::ModelItemDescriptor* Desc,
-                    const openfluid::ware::WareID_t& ID);
-
-    ~SimulatorWidget();
+  ui->RemoveButton->setVisible(Removable);
+}
 
 
-};
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __SIMULATORWIDGET_HPP__ */
+ParameterWidget::~ParameterWidget()
+{
+  delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ParameterWidget::notifyValueChanged()
+{
+  emit valueChanged(ui->NameLabel->text(),ui->ValueEdit->text());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ParameterWidget::notifyRemoveClicked()
+{
+  emit removeClicked(ui->NameLabel->text());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString ParameterWidget::getName()
+{
+  return ui->NameLabel->text();
+}

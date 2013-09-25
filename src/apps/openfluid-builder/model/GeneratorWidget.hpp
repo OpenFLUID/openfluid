@@ -69,12 +69,15 @@ class GeneratorWidget : public WareWidget
 
     void setEnabledWare(bool Enabled);
 
+    void updateParamValue(const QString& Name, const QString& Value);
 
   private:
 
     openfluid::fluidx::ModelItemDescriptor* mp_Desc;
 
     openfluid::machine::ModelItemSignatureInstance* mp_SignInstance;
+
+    void updateParams();
 
 
   public slots:

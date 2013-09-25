@@ -166,7 +166,6 @@ void MonitoringWidget::removeModelItem(const QString& ID)
 // =====================================================================
 
 
-
 void MonitoringWidget::refresh()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;

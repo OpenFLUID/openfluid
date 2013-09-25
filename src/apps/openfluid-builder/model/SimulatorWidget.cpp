@@ -59,6 +59,7 @@
 #include "ui_WareWidget.h"
 #include "SimulatorWidget.hpp"
 
+#include "ParameterWidget.hpp"
 
 
 SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDescriptor* Desc,
@@ -83,6 +84,60 @@ SimulatorWidget::~SimulatorWidget()
 // =====================================================================
 
 
+void SimulatorWidget::updateParams(openfluid::machine::ModelItemSignatureInstance* Signature)
+{
+  std::vector<openfluid::ware::SignatureHandledDataItem>* SignParams =
+      &(Signature->Signature->HandledData.SimulatorParams);
+
+  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
+
+  QStringList ParamsInSign;
+
+  for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it = SignParams->begin();
+       it != SignParams->end(); ++it)
+  {
+    std::string ParamName = (*it).DataName;
+    QString ParamValue = "";
+
+    if (DescParams.find(ParamName) != DescParams.end())
+      ParamValue = QString::fromStdString(DescParams[ParamName]);
+
+    ParameterWidget* ParamWidget = new ParameterWidget(this,
+                                                       QString::fromStdString(ParamName),ParamValue,
+                                                       QString::fromStdString((*it).DataUnit));
+
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
+
+    ParamsInSign << QString::fromStdString(ParamName);
+
+    ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addWidget(ParamWidget);
+  }
+
+
+  for (openfluid::ware::WareParams_t::iterator it = DescParams.begin();it != DescParams.end(); ++it)
+  {
+    if (!ParamsInSign.contains(QString::fromStdString((*it).first)))
+    {
+      ParameterWidget* ParamWidget = new ParameterWidget(this,
+                                                         QString::fromStdString((*it).first),QString::fromStdString((*it).second),
+                                                         QString::fromStdString(""),true);
+
+      connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
+      connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeParam(const QString&)));
+
+
+      ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addWidget(ParamWidget);
+    }
+  }
+
+  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addStretch();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SimulatorWidget::refresh()
 {
   openfluid::machine::ModelItemSignatureInstance* Signature = NULL;
@@ -94,6 +149,8 @@ void SimulatorWidget::refresh()
     setAvailableWare(true);
     ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
     mp_SignatureWidget->update(Signature);
+
+    updateParams(Signature);
   }
   else
   {
@@ -112,4 +169,29 @@ void SimulatorWidget::setEnabledWare(bool Enabled)
   mp_Desc->setEnabled(Enabled);
   WareWidget::setEnabledWare(Enabled);
   emit changed();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorWidget::updateParamValue(const QString& Name, const QString& Value)
+{
+  mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
+  emit changed();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorWidget::removeParam(const QString& Name)
+{
+  if (removeParameterWidget(Name))
+  {
+    mp_Desc->eraseParameter(Name.toStdString());
+    emit changed();
+  }
 }

@@ -28,7 +28,7 @@ SET(BUILDER_BASE_CPP base/AppTools.cpp
                      base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
                      base/AboutDialog.cpp
                      base/OpenExampleProjectDialog.cpp
-                     base/WaresManagementWidget.cpp base/WareWidget.cpp base/SignatureWidget.cpp
+                     base/WaresManagementWidget.cpp base/WareWidget.cpp base/SignatureWidget.cpp base/ParameterWidget.cpp
                      )
                      
 SET(BUILDER_BASE_HPP base/AppTools.hpp
@@ -44,7 +44,7 @@ SET(BUILDER_BASE_HPP base/AppTools.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
                      base/AboutDialog.hpp
                      base/OpenExampleProjectDialog.hpp
-                     base/WaresManagementWidget.hpp base/WareWidget.hpp base/SignatureWidget.hpp
+                     base/WaresManagementWidget.hpp base/WareWidget.hpp base/SignatureWidget.hpp base/ParameterWidget.hpp
                      )
 
 QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/DashboardWidget.ui
@@ -52,7 +52,7 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/Dashbo
                             base/PreferencesDialog.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
                             base/AboutDialog.ui
                             base/OpenExampleProjectDialog.ui
-                            base/WaresManagementWidget.ui base/WareWidget.ui base/SignatureWidget.ui)
+                            base/WaresManagementWidget.ui base/WareWidget.ui base/SignatureWidget.ui base/ParameterWidget.ui)
 
 
 ### MODEL #

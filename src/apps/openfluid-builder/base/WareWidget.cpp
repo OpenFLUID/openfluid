@@ -56,6 +56,7 @@
 
 #include "ui_WareWidget.h"
 #include "WareWidget.hpp"
+#include "ParameterWidget.hpp"
 
 #include <QMessageBox>
 
@@ -93,6 +94,10 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, boo
 
   mp_SignatureWidget = new SignatureWidget(this);
   ui->ParamInfoSplitter->addWidget(mp_SignatureWidget);
+
+  QList<int> SplitSizes;
+  SplitSizes << 300 << 300;
+  ui->ParamInfoSplitter->setSizes(SplitSizes);
 
   connect(mp_ShowHideParamsLabel,SIGNAL(clicked()),this,SLOT(updateShowHideParams()));
   connect(ui->EnabledCheckBox,SIGNAL(toggled(bool)),this,SLOT(setEnabledWare(bool)));
@@ -259,4 +264,27 @@ void WareWidget::addParameter()
 {
   std::cout << __PRETTY_FUNCTION__ << std::endl;
   QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareWidget::removeParameterWidget(const QString& Name, bool WithFinalStretch)
+{
+  int LastIndex = ui->ParamsAreaContents->layout()->count()-WithFinalStretch-1;
+
+  for (int i=0;i<=LastIndex;i++)
+  {
+    ParameterWidget* W = (ParameterWidget*)(ui->ParamsAreaContents->layout()->itemAt(i)->widget());
+    if (W != 0 && W->getName() == Name)
+    {
+      W = (ParameterWidget*)(ui->ParamsAreaContents->layout()->takeAt(i)->widget());
+      W->deleteLater();
+      return true;
+    }
+  }
+
+  return false;
 }

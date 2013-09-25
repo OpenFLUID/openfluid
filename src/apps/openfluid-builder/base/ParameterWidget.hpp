@@ -46,54 +46,55 @@
 */
 
 /**
-  \file SimulatorWidget.hpp
+  \file ParameterWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SIMULATORWIDGET_HPP__
-#define __SIMULATORWIDGET_HPP__
+#ifndef __PARAMETERWIDGET_HPP__
+#define __PARAMETERWIDGET_HPP__
 
 
-#include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include "WareWidget.hpp"
+#include <QWidget>
+
+namespace Ui
+{
+  class ParameterWidget;
+}
 
 
-class SimulatorWidget : public WareWidget
+class ParameterWidget : public QWidget
 {
   Q_OBJECT;
 
-  private:
-
-    openfluid::fluidx::ModelItemDescriptor* mp_Desc;
-
-    void updateParams(openfluid::machine::ModelItemSignatureInstance* Signature);
-
-
   private slots:
 
-    void setEnabledWare(bool Enabled);
+    void notifyValueChanged();
 
-    void updateParamValue(const QString& Name, const QString& Value);
+    void notifyRemoveClicked();
 
-    void removeParam(const QString& Name);
+  private:
 
-  public slots:
+    Ui::ParameterWidget* ui;
 
-    void refresh();
+  signals:
+
+    void removeClicked(const QString& Name);
+
+    void valueChanged(const QString& Name, const QString& Value);
 
   public:
 
-    SimulatorWidget(QWidget* Parent,
-                    openfluid::fluidx::ModelItemDescriptor* Desc,
-                    const openfluid::ware::WareID_t& ID);
+    ParameterWidget(QWidget* Parent,
+                    const QString& Name, const QString& Value,
+                    const QString& SIUnit,
+                    bool Removable = false);
 
-    ~SimulatorWidget();
+    ~ParameterWidget();
 
-
+    QString getName();
 };
 
-
-#endif /* __SIMULATORWIDGET_HPP__ */
+#endif /* __PARAMETERWIDGET_HPP__ */

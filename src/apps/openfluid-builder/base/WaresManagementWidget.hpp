@@ -95,7 +95,7 @@ class WaresManagementWidget : public WorkspaceWidget
     ActionLabel* mp_ExpandAllWaresLabel;
     ActionLabel* mp_CollapseAllWaresLabel;
 
-    void updateUpDownButtons(bool withFinalStretch = true);
+    void updateUpDownButtons(bool WithFinalStretch = true);
 
     WaresManagementWidget(QWidget* Parent,
                           openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc,
