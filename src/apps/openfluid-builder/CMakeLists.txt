@@ -82,8 +82,8 @@ SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
                       model/GeneratorWidget.hpp
                      )
 
-QT4_WRAP_UI(BUILDER_MODEL_UI 
-                                 )
+QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
+                           )
 
 
 ### SPATIAL #
@@ -120,8 +120,8 @@ SET(BUILDER_MONITORING_HPP monitoring/MonitoringWidget.hpp
                            monitoring/ObserverWidget.hpp
                            )
 
-QT4_WRAP_UI(BUILDER_MONITORING_UI 
-                                 )
+QT4_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
+                                  )
 
 
 ### SIMCONFIG #

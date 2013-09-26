@@ -59,22 +59,24 @@
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
+
 #include "ui_WaresManagementWidget.h"
+#include "ui_MonitoringWidget.h"
 #include "MonitoringWidget.hpp"
 #include "ObserverWidget.hpp"
 
 
 MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WaresManagementWidget(Parent, AFXDesc,false,false), m_Monitoring(AFXDesc.getMonitoring())
+  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::MonitoringWidget), m_Monitoring(AFXDesc.getMonitoring())
 {
-  ui->WaresListLabel->setText(tr("Observers list"));
+  ui->setupUi(this);
 
-  ui->AddWareFirstButton->setText(tr("Add observer"));
+  mp_WaresManWidget = new WaresManagementWidget(this,false);
+  layout()->addWidget(mp_WaresManWidget);
 
-  connect(ui->AddWareFirstButton,SIGNAL(clicked()),this,SLOT(addObserver()));
+  mp_WaresManWidget->ui->AddWareFirstButton->setText(tr("Add observer"));
 
-  connect(mp_ExpandAllWaresLabel,SIGNAL(clicked()),this,SLOT(expandAll()));
-  connect(mp_CollapseAllWaresLabel,SIGNAL(clicked()),this,SLOT(collapseAll()));
+  connect(mp_WaresManWidget->ui->AddWareFirstButton,SIGNAL(clicked()),this,SLOT(addObserver()));
 
   refresh();
 
@@ -87,7 +89,7 @@ MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedF
 
 MonitoringWidget::~MonitoringWidget()
 {
-
+  delete ui;
 }
 
 
@@ -108,18 +110,16 @@ void MonitoringWidget::addObserver()
 
 void MonitoringWidget::moveModelItemUp(const QString& ID)
 {
-//  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("moving ")+ID+(" up is not implemented"),QMessageBox::Close);
-
   int From = m_Monitoring.getFirstIndex(ID.toStdString());
   m_Monitoring.moveItemTowardsTheBeginning(ID.toStdString());
   int To = m_Monitoring.getFirstIndex(ID.toStdString());
 
-  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(From)->widget());
-  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->insertWidget(To,W);
+  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(To,W);
 
-  updateUpDownButtons();
+  mp_WaresManWidget->updateUpDownButtons();
 
-  dispatchChangesFromChildren();
+  emit changed();
 }
 
 
@@ -134,12 +134,12 @@ void MonitoringWidget::moveModelItemDown(const QString& ID)
   int To = m_Monitoring.getFirstIndex(ID.toStdString());
 
 
-  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(From)->widget());
-  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->insertWidget(To,W);
+  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(To,W);
 
-  updateUpDownButtons();
+  mp_WaresManWidget->updateUpDownButtons();
 
-  dispatchChangesFromChildren();
+  emit changed();
 }
 
 
@@ -151,14 +151,14 @@ void MonitoringWidget::removeModelItem(const QString& ID)
 {
   int Position = m_Monitoring.getFirstIndex(ID.toStdString());
 
-  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(Position)->widget());
+  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(Position)->widget());
   W->deleteLater();
 
   m_Monitoring.removeFromObserverList(ID.toStdString());
 
-  updateUpDownButtons();
+  mp_WaresManWidget->updateUpDownButtons();
 
-  dispatchChangesFromChildren();
+  emit changed();
 }
 
 
@@ -181,7 +181,7 @@ void MonitoringWidget::refresh()
   for (it = itb; it!= ite; ++it)
   {
     ObserverWidget* ObsWidget = new ObserverWidget(this,*it,(*it)->getID());
-    ui->WaresListAreaContents->layout()->addWidget(ObsWidget);
+    mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(ObsWidget);
     if (it == itb) ObsWidget->setUpButtonEnabled(false);
     if (it == itl) ObsWidget->setDownButtonEnabled(false);
 
@@ -191,6 +191,15 @@ void MonitoringWidget::refresh()
     connect(ObsWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
 
   }
-  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->addStretch();
+  ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->addStretch();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void MonitoringWidget::dispatchChangesFromChildren()
+{
+  emit changed();
+}

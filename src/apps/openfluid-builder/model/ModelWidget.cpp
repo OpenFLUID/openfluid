@@ -62,22 +62,37 @@
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 
 #include "ui_WaresManagementWidget.h"
+#include "ui_ModelWidget.h"
 #include "ModelWidget.hpp"
 #include "SimulatorWidget.hpp"
 #include "GeneratorWidget.hpp"
 
 
 ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WaresManagementWidget(Parent, AFXDesc,true,true), m_Model(AFXDesc.getModel())
+  WorkspaceWidget(Parent, AFXDesc), ui(new Ui::ModelWidget), m_Model(AFXDesc.getModel())
 {
-  ui->WaresListLabel->setText(tr("Coupled model"));
+  ui->setupUi(this);
 
-  ui->AddWareFirstButton->setText(tr("Add simulator"));
-  ui->AddWareSecondButton->setText(tr("Add generator"));
+  mp_WaresManWidget = new WaresManagementWidget(this,true);
+  ui->ModelTabWidget->insertTab(0,mp_WaresManWidget,"Management");
+  ui->ModelTabWidget->setCurrentIndex(0);
 
-  connect(ui->AddWareFirstButton,SIGNAL(clicked()),this,SLOT(addSimulator()));
-  connect(ui->AddWareSecondButton,SIGNAL(clicked()),this,SLOT(addGenerator()));
+  mp_ShowHideGlobalParamsLabel = new ActionLabel(tr("show"),ui->GlobalParamsWidget);
+  ui->GlobalParamsTitleLayout->insertWidget(1,mp_ShowHideGlobalParamsLabel);
+  ui->GlobalParamsManagementWidget->setVisible(false);
+
+  ui->AddGlobalParamButton->setText("");
+  ui->AddGlobalParamButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddGlobalParamButton->setIconSize(QSize(20,20));
+
+  mp_WaresManWidget->ui->AddWareFirstButton->setText(tr("Add simulator"));
+  mp_WaresManWidget->ui->AddWareSecondButton->setText(tr("Add generator"));
+
+  connect(mp_ShowHideGlobalParamsLabel,SIGNAL(clicked()),this,SLOT(updateShowHideGlobalParams()));
   connect(ui->AddGlobalParamButton,SIGNAL(clicked()),this,SLOT(addGlobalParam()));
+
+  connect(mp_WaresManWidget->ui->AddWareFirstButton,SIGNAL(clicked()),this,SLOT(addSimulator()));
+  connect(mp_WaresManWidget->ui->AddWareSecondButton,SIGNAL(clicked()),this,SLOT(addGenerator()));
 
   refresh();
 }
@@ -89,7 +104,26 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
 
 ModelWidget::~ModelWidget()
 {
+  delete ui;
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::updateShowHideGlobalParams()
+{
+  if (ui->GlobalParamsManagementWidget->isVisible())
+  {
+    ui->GlobalParamsManagementWidget->setVisible(false);
+    mp_ShowHideGlobalParamsLabel->setText(tr("show"));
+  }
+  else
+  {
+    ui->GlobalParamsManagementWidget->setVisible(true);
+    mp_ShowHideGlobalParamsLabel->setText(tr("hide"));
+  }
 }
 
 
@@ -142,12 +176,12 @@ void ModelWidget::moveModelItemUp(const QString& ID)
 
   m_Model.moveItem(From, To);
 
-  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(From)->widget());
-  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->insertWidget(To,W);
+  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(To,W);
 
-  updateUpDownButtons();
+  mp_WaresManWidget->updateUpDownButtons();
 
-  dispatchChangesFromChildren();
+  emit changed();
 }
 
 
@@ -168,12 +202,12 @@ void ModelWidget::moveModelItemDown(const QString& ID)
   m_Model.moveItem(From, To);
 
 
-  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(From)->widget());
-  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->insertWidget(To,W);
+  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(To,W);
 
-  updateUpDownButtons();
+  mp_WaresManWidget->updateUpDownButtons();
 
-  dispatchChangesFromChildren();
+  emit changed();
 
 }
 
@@ -189,14 +223,14 @@ void ModelWidget::removeModelItem(const QString& ID)
   if (Position < 0)
     return;
 
-  WareWidget* W = (WareWidget*)(ui->WaresListAreaContents->layout()->takeAt(Position)->widget());
+  WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->takeAt(Position)->widget());
   W->deleteLater();
 
   m_Model.removeItem(Position);
 
-  updateUpDownButtons();
+  mp_WaresManWidget->updateUpDownButtons();
 
-  dispatchChangesFromChildren();
+  emit changed();
 }
 
 
@@ -242,7 +276,7 @@ void ModelWidget::updateCoupledModel()
     if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator)
     {
       SimulatorWidget* SimWidget = new SimulatorWidget(this,*it,m_Model.getID(*it));
-      ui->WaresListAreaContents->layout()->addWidget(SimWidget);
+      mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(SimWidget);
       if (it == itb) SimWidget->setUpButtonEnabled(false);
       if (it == itl) SimWidget->setDownButtonEnabled(false);
 
@@ -260,7 +294,7 @@ void ModelWidget::updateCoupledModel()
                                                        m_Model.getID(*it),
                                                        openfluid::machine::SimulatorSignatureRegistry::getInstance()->getSignatureItemInstance(*it));
 
-      ui->WaresListAreaContents->layout()->addWidget(GenWidget);
+      mp_WaresManWidget->ui->WaresListAreaContents->layout()->addWidget(GenWidget);
       if (it == itb) GenWidget->setUpButtonEnabled(false);
       if (it == itl) GenWidget->setDownButtonEnabled(false);
 
@@ -271,5 +305,15 @@ void ModelWidget::updateCoupledModel()
 
     }
   }
-  ((QBoxLayout*)(ui->WaresListAreaContents->layout()))->addStretch();
+  ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->addStretch();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::dispatchChangesFromChildren()
+{
+  emit changed();
 }

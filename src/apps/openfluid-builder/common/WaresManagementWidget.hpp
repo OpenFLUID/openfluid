@@ -56,7 +56,8 @@
 #ifndef __WARESMANAGEMENTWIDGET_HPP__
 #define __WARESMANAGEMENTWIDGET_HPP__
 
-#include "WorkspaceWidget.hpp"
+
+#include <QWidget>
 #include "ActionLabel.hpp"
 
 
@@ -65,44 +66,37 @@ namespace Ui {
 }
 
 
-class WaresManagementWidget : public WorkspaceWidget
+class WaresManagementWidget : public QWidget
 {
   Q_OBJECT
 
-  private:
-
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
-
-
   private slots:
-
-    void updateShowHideGlobalParams();
-
-
-  protected slots:
 
     void expandAll();
 
     void collapseAll();
 
-    void dispatchChangesFromChildren();
 
-
-  protected:
-
-    Ui::WaresManagementWidget* ui;
+  private:
 
     ActionLabel* mp_ExpandAllWaresLabel;
+
     ActionLabel* mp_CollapseAllWaresLabel;
+
+
+  signals:
+
+    void changed();
+
+
+  public:
+
+    Ui::WaresManagementWidget* ui;
 
     void updateUpDownButtons(bool WithFinalStretch = true);
 
     WaresManagementWidget(QWidget* Parent,
-                          openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc,
-                          bool WithGlobalParams,
                           bool WithSecondAddWareButton);
-
-  public:
 
     virtual ~WaresManagementWidget();
 

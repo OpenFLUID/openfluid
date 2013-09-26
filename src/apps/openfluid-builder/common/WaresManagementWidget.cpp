@@ -58,14 +58,10 @@
 #include "WaresManagementWidget.hpp"
 #include "WareWidget.hpp"
 
-#include <iostream>
-
 
 WaresManagementWidget::WaresManagementWidget(QWidget* Parent,
-                                             openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc,
-                                             bool WithGlobalParams,
                                              bool WithSecondAddWareButton):
-  WorkspaceWidget(Parent, AFXDesc),ui(new Ui::WaresManagementWidget)
+  QWidget(Parent),ui(new Ui::WaresManagementWidget)
 {
   ui->setupUi(this);
 
@@ -76,24 +72,6 @@ WaresManagementWidget::WaresManagementWidget(QWidget* Parent,
   mp_CollapseAllWaresLabel = new ActionLabel(tr("collapse all"),this);
   ui->WaresButtonsLayout->addWidget(mp_CollapseAllWaresLabel);
   connect(mp_CollapseAllWaresLabel,SIGNAL(clicked()),this,SLOT(collapseAll()));
-
-
-  ui->GlobalParamsWidget->setVisible(WithGlobalParams);
-  ui->MainSeparatorFrame->setVisible(WithGlobalParams);
-
-  if (WithGlobalParams)
-  {
-    mp_ShowHideGlobalParamsLabel = new ActionLabel(tr("show"),ui->GlobalParamsWidget);
-    ui->GlobalParamsTitleLayout->insertWidget(1,mp_ShowHideGlobalParamsLabel);
-    ui->GlobalParamsManagementWidget->setVisible(false);
-
-    ui->AddGlobalParamButton->setText("");
-    ui->AddGlobalParamButton->setIcon(QIcon(":/icons/add.png"));
-    ui->AddGlobalParamButton->setIconSize(QSize(20,20));
-
-
-    connect(mp_ShowHideGlobalParamsLabel,SIGNAL(clicked()),this,SLOT(updateShowHideGlobalParams()));
-  }
 
 
   ui->AddWareFirstButton->setIcon(QIcon(":/icons/add.png"));
@@ -117,35 +95,6 @@ WaresManagementWidget::WaresManagementWidget(QWidget* Parent,
 WaresManagementWidget::~WaresManagementWidget()
 {
   delete ui;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WaresManagementWidget::updateShowHideGlobalParams()
-{
-  if (ui->GlobalParamsManagementWidget->isVisible())
-  {
-    ui->GlobalParamsManagementWidget->setVisible(false);
-    mp_ShowHideGlobalParamsLabel->setText(tr("show"));
-  }
-  else
-  {
-    ui->GlobalParamsManagementWidget->setVisible(true);
-    mp_ShowHideGlobalParamsLabel->setText(tr("hide"));
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WaresManagementWidget::dispatchChangesFromChildren()
-{
-  emit changed();
 }
 
 

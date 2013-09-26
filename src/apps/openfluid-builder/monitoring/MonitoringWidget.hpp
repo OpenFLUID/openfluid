@@ -59,14 +59,25 @@
 
 #include <QWidget>
 
+#include "WorkspaceWidget.hpp"
 #include "WaresManagementWidget.hpp"
 
 
-class MonitoringWidget : public WaresManagementWidget
+namespace Ui
+{
+  class MonitoringWidget;
+}
+
+
+class MonitoringWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
   private:
+
+    Ui::MonitoringWidget* ui;
+
+    WaresManagementWidget* mp_WaresManWidget;
 
     openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monitoring;
 
@@ -81,10 +92,13 @@ class MonitoringWidget : public WaresManagementWidget
 
     void removeModelItem(const QString& ID);
 
+    void dispatchChangesFromChildren();
+
 
   public slots:
 
     void refresh();
+
 
   public:
 

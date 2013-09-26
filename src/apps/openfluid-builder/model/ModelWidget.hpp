@@ -59,14 +59,28 @@
 
 #include <QWidget>
 
+#include "WorkspaceWidget.hpp"
 #include "WaresManagementWidget.hpp"
+#include "ActionLabel.hpp"
 
 
-class ModelWidget : public WaresManagementWidget
+namespace Ui
+{
+  class ModelWidget;
+}
+
+
+class ModelWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
   private:
+
+    Ui::ModelWidget* ui;
+
+    ActionLabel* mp_ShowHideGlobalParamsLabel;
+
+    WaresManagementWidget* mp_WaresManWidget;
 
     openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
@@ -76,6 +90,8 @@ class ModelWidget : public WaresManagementWidget
 
 
   private slots:
+
+    void updateShowHideGlobalParams();
 
     void addSimulator();
 
@@ -89,10 +105,13 @@ class ModelWidget : public WaresManagementWidget
 
     void removeModelItem(const QString& ID);
 
+    void dispatchChangesFromChildren();
+
 
   public slots:
 
     void refresh();
+
 
   public:
 
