@@ -385,5 +385,63 @@ PolygonEntity::LineStringNeighboursMap_t* PolygonEntity::getLineStringNeighbours
 // =====================================================================
 // =====================================================================
 
+geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge, PolygonEdge* EdgeToMerge)
+{
+
+  //ensure that the two PolygonEdges are coincident
+  if(!Edge->isCoincident(EdgeToMerge))
+    throw openfluid::base::FrameworkException(
+        "PolygonEntity::mergeEdges",
+        "The PolygonEdges are not coincident");
+
+
+  geos::geom::Point *StartPoint=Edge->getLine()->getStartPoint();
+  geos::geom::Point *EndPoint=Edge->getLine()->getEndPoint();
+
+  geos::geom::Point *StartPoint2=EdgeToMerge->getLine()->getStartPoint();
+  geos::geom::Point *EndPoint2=EdgeToMerge->getLine()->getEndPoint();
+
+  geos::geom::CoordinateSequence *CoordsOne=0;
+  geos::geom::CoordinateSequence *CoordsTwo=0;
+
+  if(EndPoint->getCoordinate()->equals(*(StartPoint2->getCoordinate())))
+  {
+    CoordsOne=(Edge->getLine())->getCoordinates();
+    CoordsTwo=(EdgeToMerge->getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+  else if(StartPoint->getCoordinate()->equals(*(EndPoint2->getCoordinate())))
+  {
+    CoordsOne=(EdgeToMerge->getLine())->getCoordinates();
+    CoordsTwo=(Edge->getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+  else if(EndPoint->getCoordinate()->equals(*(EndPoint2->getCoordinate())))
+  {
+    CoordsOne=(Edge->getLine())->getCoordinates();
+    CoordsTwo=(EdgeToMerge->getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,false);
+  }
+  else if(StartPoint->getCoordinate()->equals(*(StartPoint2->getCoordinate())))
+  {
+    geos::geom::Geometry * reverseLine=EdgeToMerge->getLine()->reverse();
+
+    CoordsOne=reverseLine->getCoordinates();
+    CoordsTwo=(Edge->getLine())->getCoordinates();
+    CoordsOne->add(CoordsTwo,false,true);
+  }
+
+  geos::geom::LineString * NewLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(CoordsOne);
+
+  return NewLine;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
 }// namespace landr
 } /* namespace openfluid */

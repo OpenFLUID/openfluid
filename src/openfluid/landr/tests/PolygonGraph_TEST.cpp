@@ -1249,7 +1249,7 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
 
     Graph->computeNeighbours();
     openfluid::landr::PolygonEntity* Ent=Graph->getEntity(10);
-    Ent->computeNeighbours();
+
     BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
     BOOST_CHECK_EQUAL(Graph->isComplete(),true);
     BOOST_CHECK_EQUAL(Graph->getEdges()->size(),58);
@@ -1261,33 +1261,27 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
     BOOST_CHECK_EQUAL(Graph->getEdges()->size(),58);
     BOOST_CHECK(!Graph->getEntity(9));
 
-    Graph->computeNeighbours();
-
     Ent=Graph->getEntity(10);
-    Ent->computeNeighbours();
     BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),2);
+
     Ent=Graph->getEntity(7);
-    Ent->computeNeighbours();
     BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+
     Ent=Graph->getEntity(12);
-    Ent->computeNeighbours();
     BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+
     Ent=Graph->getEntity(11);
-    Ent->computeNeighbours();
     BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),2);
 
     Graph->removeEntity(10);
 
     BOOST_CHECK_EQUAL(Graph->getSize(),22);
     BOOST_CHECK_EQUAL(Graph->isComplete(),true);
-    BOOST_CHECK_EQUAL(Graph->getEdges()->size(),56);
+    BOOST_CHECK_EQUAL(Graph->getEdges()->size(),53);
     BOOST_CHECK(!Graph->getEntity(10));
 
     Ent=Graph->getEntity(11);
-    Ent->computeNeighbours();
     BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),1);
-
-
 
     delete Graph;
     delete Vector;
@@ -1297,5 +1291,7 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
 
 // =====================================================================
 // =====================================================================
+
+
 
 

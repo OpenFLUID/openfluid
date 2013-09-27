@@ -247,6 +247,13 @@ class DLLEXPORT PolygonGraph: public LandRGraph
      */
     virtual void removeEntity(int SelfId);
 
+    /**
+     * @brief Clean the Edges of a PolygonEntity
+     *
+     * @param Entity The PolygonEntity to clean.
+     */
+    void cleanEdges(PolygonEntity & Entity);
+
 };
 
 } // namespace landr

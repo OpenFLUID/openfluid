@@ -795,7 +795,8 @@ void PolygonGraph::removeEntity(int SelfId)
         s.str());
     return;
   }
-  Ent->computeNeighbours();
+  computeNeighbours();
+
   std::vector<PolygonEdge*> vEdges=Ent->m_PolyEdges;
   std::vector<PolygonEdge*>::iterator it=vEdges.begin();
   std::vector<PolygonEdge*>::iterator ite=vEdges.end();
@@ -803,39 +804,35 @@ void PolygonGraph::removeEntity(int SelfId)
   std::list<PolygonEdge*>lEdges;
   for ( ; it != ite; ++it)
   {
-
     if((*it)->getFaces().size()==1)
-          lEdges.push_back(*it);
-
+      lEdges.push_back(*it);
   }
-
 
   // for each neighbour of Ent
 
   openfluid::landr::PolygonEntity::NeighboursMap_t::iterator jt = Ent->mp_NeighboursMap->begin();
   openfluid::landr::PolygonEntity::NeighboursMap_t::iterator jte = Ent->mp_NeighboursMap->end();
-
+  std::list<PolygonEntity*> lNeighbours;
   for(;jt!=jte;++jt)
   {
-    jt->first->mp_NeighboursMap->erase(Ent);
 
+    jt->first->mp_NeighboursMap->erase(Ent);
+    lNeighbours.push_back(jt->first);
     std::vector<PolygonEdge*> vNeighbourEdges=jt->first->m_PolyEdges;
     std::vector<PolygonEdge*>::iterator ht=vNeighbourEdges.begin();
     std::vector<PolygonEdge*>::iterator hte=vNeighbourEdges.end();
+
     for(;ht!=hte;++ht)
     {
       if((*ht)->isLineInFace(*Ent))
         (*ht)->removeFace(Ent);
     }
-
   }
 
   std::list<PolygonEdge*>::iterator lt=lEdges.begin();
   std::list<PolygonEdge*>::iterator lte=lEdges.end();
   for(;lt!=lte;++lt)
-  {
     removeSegment(Ent,(*lt)->getLine());
-  }
 
 
   m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
@@ -843,13 +840,87 @@ void PolygonGraph::removeEntity(int SelfId)
   delete Ent;
   removeUnusedNodes();
 
+  //rebuild the Edges of Neighbours of Ent
+  std::list<PolygonEntity*>::iterator mt=lNeighbours.begin();
+  std::list<PolygonEntity*>::iterator mte=lNeighbours.end();
+  for(;mt!=mte;++mt)
+    cleanEdges(**mt);
+
+
+  removeUnusedNodes();
 }
 
 // =====================================================================
 // =====================================================================
 
+void PolygonGraph::cleanEdges(PolygonEntity & Entity)
+{
 
+  Entity.computeNeighbours();
 
+  std::vector<PolygonEdge*> vNeighbourEdges=Entity.m_PolyEdges;
+  std::vector<PolygonEdge*>::iterator nt=vNeighbourEdges.begin();
+  std::vector<PolygonEdge*>::iterator nte=vNeighbourEdges.end();
+  std::list<PolygonEdge*> lEdgesWithOneFace;
+  for(;nt!=nte;++nt)
+  {
+    if((*nt)->getFaces().size()==1)
+      lEdgesWithOneFace.push_back(*nt);
+  }
+  if(!lEdgesWithOneFace.empty())
+  {
+
+    std::list<PolygonEdge*>::iterator ot=lEdgesWithOneFace.begin();
+    std::list<PolygonEdge*>::iterator ote=lEdgesWithOneFace.end();
+
+    while(ot!=ote)
+    {
+
+      std::list<PolygonEdge*>::iterator ot2=ot;
+      ++ot2;
+
+      while (ot2 != ote)
+      {
+        if((*ot)->isCoincident(*ot2))
+        {
+          geos::geom::LineString * NewLine=Entity.mergeEdges((*ot), (*ot2));
+          remove(*ot2);
+          Entity.removeEdge(*ot2);
+          remove(*ot);
+          Entity.removeEdge(*ot);
+          PolygonEdge* NewEdge=createEdge(*NewLine);
+          Entity.addEdge(*NewEdge);
+
+          lEdgesWithOneFace.clear();
+          vNeighbourEdges=Entity.m_PolyEdges;
+          std::vector<PolygonEdge*>::iterator pt=vNeighbourEdges.begin();
+          std::vector<PolygonEdge*>::iterator pte=vNeighbourEdges.end();
+
+          for(;pt!=pte;++pt)
+          {
+            if((*pt)->getFaces().size()==1)
+              lEdgesWithOneFace.push_back(*pt);
+          }
+          ot=lEdgesWithOneFace.begin();
+          ote=lEdgesWithOneFace.end();
+          ot2=ot;
+          ++ot2;
+        }
+        else
+          ++ot2;
+
+      }
+      ++ot;
+    }
+
+  }
+
+  removeUnusedNodes();
+
+}
+
+// =====================================================================
+// =====================================================================
 
 }// namespace landr
 } /* namespace openfluid */
