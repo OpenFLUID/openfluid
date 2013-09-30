@@ -201,6 +201,19 @@ class DLLEXPORT PolygonEntity: public LandREntity
      */
     LineStringNeighboursMap_t* getLineStringNeighbours();
 
+
+    /**
+     * @brief Merge a PolygonEdge into an other one
+     *
+     * @param Edge An existent PolygonEdge.
+     * @param EdgeToMerge Another PolygonEdge to merge.
+     * @return A geos::geom:LineString which have the geometry of the merged PolygonEdges.
+     */
+    geos::geom::LineString*  mergeEdges(PolygonEdge* Edge, PolygonEdge* EdgeToMerge);
+
+
+
+
 };
 
 } // namespace landr

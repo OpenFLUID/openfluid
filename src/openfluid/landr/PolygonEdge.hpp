@@ -161,6 +161,14 @@ class DLLEXPORT PolygonEdge: public geos::planargraph::Edge
      */
     void removeAttribute(const std::string& AttributeName);
 
+    /**
+     * @brief Test if this PolygonEdge is coincident with an other PolygonEdge
+     *
+     * @param Edge The PolygonEdge to test the coincidence
+     * @return True if the two PolygonEdge are coincidents, false otherwise.
+     */
+    bool isCoincident(PolygonEdge *Edge);
+
 };
 
 } // namespace landr

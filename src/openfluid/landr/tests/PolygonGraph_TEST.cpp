@@ -1237,7 +1237,122 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
+    openfluid::landr::PolygonGraph* Graph =
+        openfluid::landr::PolygonGraph::create(*Vector);
+
+    BOOST_CHECK_EQUAL(Graph->getSize(),24);
+
+    Graph->computeNeighbours();
+    openfluid::landr::PolygonEntity* Ent=Graph->getEntity(10);
+
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+    BOOST_CHECK_EQUAL(Graph->isComplete(),true);
+    BOOST_CHECK_EQUAL(Graph->getEdges()->size(),58);
+
+    Graph->removeEntity(9);
+
+    BOOST_CHECK_EQUAL(Graph->getSize(),23);
+    BOOST_CHECK_EQUAL(Graph->isComplete(),true);
+    BOOST_CHECK_EQUAL(Graph->getEdges()->size(),58);
+    BOOST_CHECK(!Graph->getEntity(9));
+
+    Ent=Graph->getEntity(10);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),2);
+
+    Ent=Graph->getEntity(7);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+
+    Ent=Graph->getEntity(12);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+
+    Ent=Graph->getEntity(11);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),2);
+
+    Graph->removeEntity(10);
+
+    BOOST_CHECK_EQUAL(Graph->getSize(),22);
+    BOOST_CHECK_EQUAL(Graph->isComplete(),true);
+    BOOST_CHECK_EQUAL(Graph->getEdges()->size(),53);
+    BOOST_CHECK(!Graph->getEntity(10));
+
+    Ent=Graph->getEntity(11);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),1);
+
+    delete Graph;
+    delete Vector;
+
+
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getPolygonEntityByMinArea)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+          CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph =
+          openfluid::landr::PolygonGraph::create(*Vector);
+
+
+  std::multimap<double,  openfluid::landr::PolygonEntity*> mEntities;
+
+  BOOST_CHECK_THROW(Graph->getPolygonEntitiesByMinArea(-1),
+                    openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->getPolygonEntitiesByMinArea(0),
+                      openfluid::base::FrameworkException);
+  mEntities=Graph->getPolygonEntitiesByMinArea(1);
+  BOOST_CHECK_EQUAL(mEntities.size(), 0);
+
+  mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByMinArea(20000);
+  BOOST_CHECK_EQUAL(mEntities.size(), 10);
+
+
+  delete Graph;
+  delete Vector;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_mergePolygonEntities)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+
+
+  BOOST_CHECK_THROW(Graph->mergePolygonEntities(*(Graph->getEntity(18)),*(Graph->getEntity(5))),
+                    openfluid::base::FrameworkException);
+
+  double areaBefore=Graph->getEntity(7)->getArea()+Graph->getEntity(13)->getArea();
+  Graph->mergePolygonEntities(*(Graph->getEntity(7)),*(Graph->getEntity(13)));
+  BOOST_CHECK_EQUAL(Graph->getSize(), 23);
+  BOOST_CHECK(!Graph->getEntity(13));
+  BOOST_CHECK_EQUAL(Graph->isComplete(),true);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(),57);
+  double areaAfter=Graph->getEntity(7)->getArea();
+  BOOST_CHECK( openfluid::tools::IsVeryClose(areaBefore, areaAfter));
+
+
+  delete Graph;
+  delete Vector;
+
+}
+
+// =====================================================================
+// =====================================================================
 
 
 

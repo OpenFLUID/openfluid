@@ -71,6 +71,7 @@
 #include <geos/geom/GeometryFactory.h>
 #include <geos/geom/Geometry.h>
 #include <geos/planargraph/DirectedEdge.h>
+#include <algorithm>
 
 namespace openfluid {
 namespace landr {
@@ -777,6 +778,206 @@ void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeNa
 
 }
 
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::removeEntity(int SelfId)
+{
+
+  PolygonEntity* Ent = getEntity(SelfId);
+
+  if (!Ent)
+  {
+    std::ostringstream s;
+    s << "No entity with id " << SelfId;
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::removeEntity",
+        s.str());
+    return;
+  }
+  computeNeighbours();
+
+  std::vector<PolygonEdge*> vEdges=Ent->m_PolyEdges;
+  std::vector<PolygonEdge*>::iterator it=vEdges.begin();
+  std::vector<PolygonEdge*>::iterator ite=vEdges.end();
+
+  std::list<PolygonEdge*>lEdges;
+  for ( ; it != ite; ++it)
+  {
+    if((*it)->getFaces().size()==1)
+      lEdges.push_back(*it);
+  }
+
+  // for each neighbour of Ent
+
+  openfluid::landr::PolygonEntity::NeighboursMap_t::iterator jt = Ent->mp_NeighboursMap->begin();
+  openfluid::landr::PolygonEntity::NeighboursMap_t::iterator jte = Ent->mp_NeighboursMap->end();
+  std::list<PolygonEntity*> lNeighbours;
+  for(;jt!=jte;++jt)
+  {
+
+    jt->first->mp_NeighboursMap->erase(Ent);
+    lNeighbours.push_back(jt->first);
+    std::vector<PolygonEdge*> vNeighbourEdges=jt->first->m_PolyEdges;
+    std::vector<PolygonEdge*>::iterator ht=vNeighbourEdges.begin();
+    std::vector<PolygonEdge*>::iterator hte=vNeighbourEdges.end();
+
+    for(;ht!=hte;++ht)
+    {
+      if((*ht)->isLineInFace(*Ent))
+        (*ht)->removeFace(Ent);
+    }
+  }
+
+  std::list<PolygonEdge*>::iterator lt=lEdges.begin();
+  std::list<PolygonEdge*>::iterator lte=lEdges.end();
+  for(;lt!=lte;++lt)
+    removeSegment(Ent,(*lt)->getLine());
+
+
+  m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
+  m_EntitiesBySelfId.erase(SelfId);
+  delete Ent;
+  removeUnusedNodes();
+
+  //rebuild the Edges of Neighbours of Ent
+  std::list<PolygonEntity*>::iterator mt=lNeighbours.begin();
+  std::list<PolygonEntity*>::iterator mte=lNeighbours.end();
+  for(;mt!=mte;++mt)
+    cleanEdges(**mt);
+
+
+  removeUnusedNodes();
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::cleanEdges(PolygonEntity & Entity)
+{
+
+  Entity.computeNeighbours();
+
+  std::vector<PolygonEdge*> vNeighbourEdges=Entity.m_PolyEdges;
+  std::vector<PolygonEdge*>::iterator nt=vNeighbourEdges.begin();
+  std::vector<PolygonEdge*>::iterator nte=vNeighbourEdges.end();
+  std::list<PolygonEdge*> lEdgesWithOneFace;
+  for(;nt!=nte;++nt)
+  {
+    if((*nt)->getFaces().size()==1)
+      lEdgesWithOneFace.push_back(*nt);
+  }
+  if(!lEdgesWithOneFace.empty())
+  {
+
+    std::list<PolygonEdge*>::iterator ot=lEdgesWithOneFace.begin();
+    std::list<PolygonEdge*>::iterator ote=lEdgesWithOneFace.end();
+
+    while(ot!=ote)
+    {
+
+      std::list<PolygonEdge*>::iterator ot2=ot;
+      ++ot2;
+
+      while (ot2 != ote)
+      {
+        if((*ot)->isCoincident(*ot2))
+        {
+          geos::geom::LineString * NewLine=Entity.mergeEdges((*ot), (*ot2));
+          remove(*ot2);
+          Entity.removeEdge(*ot2);
+          remove(*ot);
+          Entity.removeEdge(*ot);
+          PolygonEdge* NewEdge=createEdge(*NewLine);
+          Entity.addEdge(*NewEdge);
+
+          lEdgesWithOneFace.clear();
+          vNeighbourEdges=Entity.m_PolyEdges;
+          std::vector<PolygonEdge*>::iterator pt=vNeighbourEdges.begin();
+          std::vector<PolygonEdge*>::iterator pte=vNeighbourEdges.end();
+
+          for(;pt!=pte;++pt)
+          {
+            if((*pt)->getFaces().size()==1)
+              lEdgesWithOneFace.push_back(*pt);
+          }
+          ot=lEdgesWithOneFace.begin();
+          ote=lEdgesWithOneFace.end();
+          ot2=ot;
+          ++ot2;
+        }
+        else
+          ++ot2;
+
+      }
+      ++ot;
+    }
+
+  }
+
+  removeUnusedNodes();
+
+}
+
+// =====================================================================
+// =====================================================================
+
+std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea(double MinArea)
+{
+  if (MinArea<=0.0)
+    throw  openfluid::base::FrameworkException(
+        "PolygonGraph::getPolygonEntitiesByMinArea : "
+        "Threshold must be superior to 0.0");
+
+  std::list<LandREntity*> lEntities=getSelfIdOrderedEntities();
+  std::list<LandREntity*>::iterator it = lEntities.begin();
+  std::list<LandREntity*>::iterator ite = lEntities.end();
+  std::multimap<double, PolygonEntity*> mOrderedArea;
+  for(;it!=ite;++it)
+  {
+    if((*it)->getArea()<MinArea)
+      mOrderedArea.insert ( std::pair<double, PolygonEntity*>((*it)->getArea(),dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
+  }
+  return mOrderedArea;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& EntityToMerge)
+{
+
+  //ensure that the two PolygonEntities are neighbours
+  std::vector<PolygonEdge*> vEdge=Entity.getCommonEdgesWith(EntityToMerge);
+  if(vEdge.empty())
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::mergePolygonEntities",
+        "The PolygonEntities are not neighbours");
+
+  geos::geom::Geometry *  NewPoly=Entity.getGeometry()->Union(EntityToMerge.getGeometry());
+
+
+  int SelfId=Entity.getSelfId();
+  int SelfIdToMerge=EntityToMerge.getSelfId();
+
+  try {
+
+    openfluid::landr::PolygonEntity* Entity2 =
+        new openfluid::landr::PolygonEntity(dynamic_cast<geos::geom::Polygon*>(NewPoly),
+                                            SelfId);
+    removeEntity(SelfId);
+    removeEntity(SelfIdToMerge);
+    addEntity(Entity2);
+
+  } catch (openfluid::base::FrameworkException& e) {
+    std::ostringstream s;
+    s << "Merge operation impossible for entity" << SelfId<<" : "<<e.what() ;
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::mergePolygonEntities",s.str());
+  }
+
+}
 
 // =====================================================================
 // =====================================================================
