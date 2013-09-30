@@ -945,7 +945,42 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea
 // =====================================================================
 // =====================================================================
 
+void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& EntityToMerge)
+{
 
+  //ensure that the two PolygonEntities are neighbours
+  std::vector<PolygonEdge*> vEdge=Entity.getCommonEdgesWith(EntityToMerge);
+  if(vEdge.empty())
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::mergePolygonEntities",
+        "The PolygonEntities are not neighbours");
+
+  geos::geom::Geometry *  NewPoly=Entity.getGeometry()->Union(EntityToMerge.getGeometry());
+
+
+  int SelfId=Entity.getSelfId();
+  int SelfIdToMerge=EntityToMerge.getSelfId();
+
+  try {
+
+    openfluid::landr::PolygonEntity* Entity2 =
+        new openfluid::landr::PolygonEntity(dynamic_cast<geos::geom::Polygon*>(NewPoly),
+                                            SelfId);
+    removeEntity(SelfId);
+    removeEntity(SelfIdToMerge);
+    addEntity(Entity2);
+
+  } catch (openfluid::base::FrameworkException& e) {
+    std::ostringstream s;
+    s << "Merge operation impossible for entity" << SelfId<<" : "<<e.what() ;
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::mergePolygonEntities",s.str());
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
 
 
 

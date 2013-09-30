@@ -256,13 +256,21 @@ class DLLEXPORT PolygonGraph: public LandRGraph
 
 
     /**
-       * @brief Get a map of small PolygonEntities under area threshold
-       *
-       * @param MinArea The area threshold (in map units).
-       * @return a multimap of PolygonEntities with key is the area of each Entity.
-       */
-      std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
+     * @brief Get a map of small PolygonEntities under area threshold
+     *
+     * @param MinArea The area threshold (in map units).
+     * @return a multimap of PolygonEntities with key is the area of each Entity.
+     */
+    std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
 
+    /**
+     * @brief Merge a PolygonEntity into an other one
+     * The PolygonEntity to merge is deleted.
+     *
+     * @param Entity An existent PolygonEntity.
+     * @param EntityToMerge The PolygonEntity which will be merged into Entity and will be deleted.
+     */
+    void mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& EntityToMerge);
 
 
 

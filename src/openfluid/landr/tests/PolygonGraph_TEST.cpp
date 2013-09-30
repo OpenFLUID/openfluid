@@ -1292,7 +1292,6 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
 // =====================================================================
 // =====================================================================
 
-
 BOOST_AUTO_TEST_CASE(check_getPolygonEntityByMinArea)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
@@ -1314,6 +1313,37 @@ BOOST_AUTO_TEST_CASE(check_getPolygonEntityByMinArea)
   mEntities.clear();
   mEntities=Graph->getPolygonEntitiesByMinArea(20000);
   BOOST_CHECK_EQUAL(mEntities.size(), 10);
+
+
+  delete Graph;
+  delete Vector;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_mergePolygonEntities)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+
+
+  BOOST_CHECK_THROW(Graph->mergePolygonEntities(*(Graph->getEntity(18)),*(Graph->getEntity(5))),
+                    openfluid::base::FrameworkException);
+
+  double areaBefore=Graph->getEntity(7)->getArea()+Graph->getEntity(13)->getArea();
+  Graph->mergePolygonEntities(*(Graph->getEntity(7)),*(Graph->getEntity(13)));
+  BOOST_CHECK_EQUAL(Graph->getSize(), 23);
+  BOOST_CHECK(!Graph->getEntity(13));
+  BOOST_CHECK_EQUAL(Graph->isComplete(),true);
+  BOOST_CHECK_EQUAL(Graph->getEdges()->size(),57);
+  double areaAfter=Graph->getEntity(7)->getArea();
+  BOOST_CHECK( openfluid::tools::IsVeryClose(areaBefore, areaAfter));
 
 
   delete Graph;
