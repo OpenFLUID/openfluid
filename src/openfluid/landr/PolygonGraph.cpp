@@ -922,5 +922,32 @@ void PolygonGraph::cleanEdges(PolygonEntity & Entity)
 // =====================================================================
 // =====================================================================
 
+std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea(double MinArea)
+{
+  if (MinArea<=0.0)
+    throw  openfluid::base::FrameworkException(
+        "PolygonGraph::getPolygonEntitiesByMinArea : "
+        "Threshold must be superior to 0.0");
+
+  std::list<LandREntity*> lEntities=getSelfIdOrderedEntities();
+  std::list<LandREntity*>::iterator it = lEntities.begin();
+  std::list<LandREntity*>::iterator ite = lEntities.end();
+  std::multimap<double, PolygonEntity*> mOrderedArea;
+  for(;it!=ite;++it)
+  {
+    if((*it)->getArea()<MinArea)
+      mOrderedArea.insert ( std::pair<double, PolygonEntity*>((*it)->getArea(),dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
+  }
+  return mOrderedArea;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
 }// namespace landr
 } /* namespace openfluid */

@@ -254,6 +254,18 @@ class DLLEXPORT PolygonGraph: public LandRGraph
      */
     void cleanEdges(PolygonEntity & Entity);
 
+
+    /**
+       * @brief Get a map of small PolygonEntities under area threshold
+       *
+       * @param MinArea The area threshold (in map units).
+       * @return a multimap of PolygonEntities with key is the area of each Entity.
+       */
+      std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
+
+
+
+
 };
 
 } // namespace landr

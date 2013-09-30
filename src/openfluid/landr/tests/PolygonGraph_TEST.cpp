@@ -1293,5 +1293,36 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_getPolygonEntityByMinArea)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+          CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph =
+          openfluid::landr::PolygonGraph::create(*Vector);
+
+
+  std::multimap<double,  openfluid::landr::PolygonEntity*> mEntities;
+
+  BOOST_CHECK_THROW(Graph->getPolygonEntitiesByMinArea(-1),
+                    openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->getPolygonEntitiesByMinArea(0),
+                      openfluid::base::FrameworkException);
+  mEntities=Graph->getPolygonEntitiesByMinArea(1);
+  BOOST_CHECK_EQUAL(mEntities.size(), 0);
+
+  mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByMinArea(20000);
+  BOOST_CHECK_EQUAL(mEntities.size(), 10);
+
+
+  delete Graph;
+  delete Vector;
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 
