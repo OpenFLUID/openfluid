@@ -186,7 +186,7 @@
         </attribute>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QGraphicsView" name="GraphicalViewView"/>
+          <widget class="QGraphicsView" name="GraphicalView"/>
          </item>
         </layout>
        </widget>

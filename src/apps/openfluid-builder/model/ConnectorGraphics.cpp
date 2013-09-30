@@ -47,30 +47,30 @@
 
 
 /**
-  \file GeneratorWidget.cpp
+  \file ConnectorGraphics.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include "ModelItemGraphics.hpp"
+#include "ConnectorGraphics.hpp"
+
+#include <QPen>
+#include <QFont>
 
 
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
-#include "builderconfig.hpp"
-
-#include "ui_WareWidget.h"
-#include "GeneratorWidget.hpp"
-#include "ParameterWidget.hpp"
-
-
-GeneratorWidget::GeneratorWidget(QWidget* Parent,
-                                 openfluid::fluidx::ModelItemDescriptor* Desc,
-                                 const openfluid::ware::WareID_t& ID,
-                                 openfluid::machine::ModelItemSignatureInstance* SignInstance):
-  WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR),mp_Desc(Desc), mp_SignInstance(SignInstance)
+ConnectorGraphics::ConnectorGraphics(ModelItemGraphics* FromItem, OutNodeType FromOutNode,
+                                     ModelItemGraphics* ToItem, InNodeType ToInNode,
+                                     QGraphicsItem* Parent):
+  QGraphicsPathItem(Parent),
+  mp_FromItem(FromItem),m_FromOutNode(FromOutNode),
+  mp_ToItem(ToItem),m_ToInNode(ToInNode)
 {
-  ui->AddParamButton->setVisible(false);
-  refresh();
+  setZValue(-1000);
+  update();
+
+  setPen(QPen(QBrush(QColor("#96B4D1")),3));
 }
 
 
@@ -78,8 +78,9 @@ GeneratorWidget::GeneratorWidget(QWidget* Parent,
 // =====================================================================
 
 
-GeneratorWidget::~GeneratorWidget()
+ConnectorGraphics::~ConnectorGraphics()
 {
+
 }
 
 
@@ -87,33 +88,58 @@ GeneratorWidget::~GeneratorWidget()
 // =====================================================================
 
 
-void GeneratorWidget::updateParams()
+void ConnectorGraphics::update()
 {
-  std::vector<openfluid::ware::SignatureHandledDataItem>* SignParams =
-      &(mp_SignInstance->Signature->HandledData.SimulatorParams);
+  QPainterPath Path;
 
-  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
+  QPointF FromPos;
+  QPointF ToPos;
 
-  for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it = SignParams->begin();
-       it != SignParams->end(); ++it)
+  if (m_FromOutNode == NODE_PROD)
+    FromPos = mp_FromItem->getProducedIOPosition();
+  else
+    FromPos = mp_FromItem->getUpOutIOPosition();
+
+  if (m_ToInNode == NODE_REQ)
+    ToPos = mp_ToItem->getRequiredIOPosition();
+  else if (m_ToInNode == NODE_US)
+    ToPos = mp_ToItem->getUsedIOPosition();
+  else
+    ToPos = mp_ToItem->getUpInIOPosition();
+
+
+  Path.moveTo(FromPos);
+
+  QPointF InterPos;
+
+  if (FromPos.y() < ToPos.y())
   {
-    std::string ParamName = (*it).DataName;
-    QString ParamValue = "";
 
-    if (DescParams.find(ParamName) != DescParams.end())
-      ParamValue = QString::fromStdString(DescParams[ParamName]);
+    InterPos = QPointF(FromPos.x()+((ToPos.x()-FromPos.x())/2.0),
+                        FromPos.y()+((ToPos.y()-FromPos.y())/2.0));
 
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString(ParamName),ParamValue,
-                                                       QString::fromStdString((*it).DataUnit));
+    Path.quadTo(QPointF(FromPos.x(),InterPos.y()),InterPos);
+    Path.quadTo(QPointF(ToPos.x(),InterPos.y()),ToPos);
+  }
+  else
+  {
+    InterPos = QPointF(FromPos.x()+((ToPos.x()-FromPos.x())/2.0)-200,
+                       FromPos.y()+((ToPos.y()-FromPos.y())/2.0));
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
-
-    ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addWidget(ParamWidget);
+    Path.quadTo(QPointF(FromPos.x()-200,FromPos.y()+200),
+                InterPos);
+    Path.quadTo(QPointF(ToPos.x()-200,ToPos.y()-200),
+                ToPos);
   }
 
-  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addStretch();
 
+  // TODO add variables names
+/*  QGraphicsSimpleTextItem* VarsText = new QGraphicsSimpleTextItem(m_Variables.join("\n"));
+
+  VarsText->setPos(InterPos);
+  VarsText->setParentItem(this);*/
+
+  setPath(Path);
 }
 
 
@@ -121,39 +147,8 @@ void GeneratorWidget::updateParams()
 // =====================================================================
 
 
-void GeneratorWidget::refresh()
+void ConnectorGraphics::addVariable(const QString& Name)
 {
-
-  if (mp_SignInstance != NULL)
-  {
-    setAvailableWare(true);
-    ui->NameLabel->setText(QString::fromStdString(mp_SignInstance->Signature->Name));
-    mp_SignatureWidget->update(mp_SignInstance);
-
-    updateParams();
-  }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GeneratorWidget::setEnabledWare(bool Enabled)
-{
-  mp_Desc->setEnabled(Enabled);
-  WareWidget::setEnabledWare(Enabled);
-  emit changed();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GeneratorWidget::updateParamValue(const QString& Name, const QString& Value)
-{
-  mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
-  emit changed();
+  m_Variables.append(Name);
+  update();
 }

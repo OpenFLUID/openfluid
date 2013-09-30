@@ -46,83 +46,37 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file GeneratorGraphics.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __GENERATORGRAPHICS_HPP__
+#define __GENERATORGRAPHICS_HPP__
 
 
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
-#include "ModelScene.hpp"
+#include "ModelItemGraphics.hpp"
 
 
-namespace Ui
+class GeneratorGraphics : public ModelItemGraphics
 {
-  class ModelWidget;
-}
+  protected:
 
-
-class ModelWidget : public WorkspaceWidget
-{
-  Q_OBJECT
-
-  private:
-
-    Ui::ModelWidget* ui;
-
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
-
-    WaresManagementWidget* mp_WaresManWidget;
-
-    ModelScene* mp_ModelScene;
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
-
-  private slots:
-
-    void updateShowHideGlobalParams();
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
-
-
-  public slots:
-
-    void refresh();
-
+    static QPointF m_ProducedIOFromCenter;
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    GeneratorGraphics(const QPointF &Coords, const QString& ID,
+                      const QString& VarName, const QString& UnitClass,
+                      QGraphicsItem* Parent = 0);
 
-    virtual ~ModelWidget();
+    ~GeneratorGraphics();
+
+    QPointF getProducedIOPosition();
 };
 
 
 
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __GENERATORGRAPHICS_HPP__ */

@@ -45,84 +45,70 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ModelWidget.hpp
-  \brief Header of ...
+  \file SimulatorGraphics.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include "builderconfig.hpp"
+#include "SimulatorGraphics.hpp"
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+QPointF SimulatorGraphics::m_ProducedIOFromCenter = QPoint(-30,50);
 
-
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
-#include "ModelScene.hpp"
-
-
-namespace Ui
+SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
+                                     openfluid::machine::ModelItemSignatureInstance* Signature,
+                                     QGraphicsItem* Parent):
+  ModelItemGraphics(Coords,ID,Parent)
 {
-  class ModelWidget;
+  openfluid::ware::SimulatorSignature* SimSign = Signature->Signature;
+  std::vector<openfluid::ware::SignatureHandledTypedDataItem> VarList;
+
+  VarList = SimSign->HandledData.RequiredVars;
+  for (unsigned int i=0;i<VarList.size();i++)
+    m_RequiredVars[QString::fromStdString(VarList[i].UnitClass)].append(QString::fromStdString(VarList[i].DataName));
+
+  VarList = SimSign->HandledData.UsedVars;
+  for (unsigned int i=0;i<VarList.size();i++)
+    m_UsedVars[QString::fromStdString(VarList[i].UnitClass)].append(QString::fromStdString(VarList[i].DataName));
+
+  VarList = SimSign->HandledData.ProducedVars;
+  for (unsigned int i=0;i<VarList.size();i++)
+    m_ProducedVars[QString::fromStdString(VarList[i].UnitClass)].append(QString::fromStdString(VarList[i].DataName));
+
+  VarList = SimSign->HandledData.UpdatedVars;
+  for (unsigned int i=0;i<VarList.size();i++)
+    m_UpdatedVars[QString::fromStdString(VarList[i].UnitClass)].append(QString::fromStdString(VarList[i].DataName));
+
+
+  // In/Out slots
+  drawIOSlot(getRequiredIOPosition(),"Req",!m_RequiredVars.isEmpty());
+  drawIOSlot(getUsedIOPosition(),"Us",!m_UsedVars.isEmpty());
+  drawIOSlot(getUpInIOPosition(),"Upd",!m_UpdatedVars.isEmpty());
+  drawIOSlot(getProducedIOPosition(),"Prod",!m_ProducedVars.isEmpty());
+  drawIOSlot(getUpOutIOPosition(),"Upd",!m_UpdatedVars.isEmpty());
+
+  setBrush(QBrush(QColor(BUILDER_SIMULATOR_BGCOLOR)));
 }
 
 
-class ModelWidget : public WorkspaceWidget
+// =====================================================================
+// =====================================================================
+
+
+SimulatorGraphics::~SimulatorGraphics()
 {
-  Q_OBJECT
 
-  private:
-
-    Ui::ModelWidget* ui;
-
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
-
-    WaresManagementWidget* mp_WaresManWidget;
-
-    ModelScene* mp_ModelScene;
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
+}
 
 
-  private slots:
-
-    void updateShowHideGlobalParams();
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
+// =====================================================================
+// =====================================================================
 
 
-  public slots:
-
-    void refresh();
-
-
-  public:
-
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
-
-    virtual ~ModelWidget();
-};
-
-
-
-#endif /* __MODELWIDGET_HPP__ */
+QPointF SimulatorGraphics::getProducedIOPosition()
+{
+  return scenePos()+getCenterFromOrigin()+m_ProducedIOFromCenter;
+}

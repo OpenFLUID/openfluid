@@ -56,6 +56,7 @@
 
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include "builderconfig.hpp"
 
 #include "ui_WareWidget.h"
 #include "ObserverWidget.hpp"
@@ -66,7 +67,7 @@
 ObserverWidget::ObserverWidget(QWidget* Parent,
                                openfluid::fluidx::ObserverDescriptor* Desc,
                                const openfluid::ware::WareID_t& ID):
-  WareWidget(Parent,ID,Desc->isEnabled(),"#E9F7FE"), mp_Desc(Desc)
+  WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR), mp_Desc(Desc)
 {
   refresh();
 }

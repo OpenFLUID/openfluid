@@ -75,11 +75,19 @@ QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.
 SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
                       model/SimulatorWidget.cpp
                       model/GeneratorWidget.cpp
+                      model/ModelScene.cpp
+                      model/ModelItemGraphics.cpp 
+                      model/SimulatorGraphics.cpp model/GeneratorGraphics.cpp
+                      model/ConnectorGraphics.cpp
                      )
 
 SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
                       model/SimulatorWidget.hpp
                       model/GeneratorWidget.hpp
+                      model/ModelScene.hpp
+                      model/ModelItemGraphics.hpp 
+                      model/SimulatorGraphics.hpp model/GeneratorGraphics.hpp
+                      model/ConnectorGraphics.hpp                      
                      )
 
 QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui

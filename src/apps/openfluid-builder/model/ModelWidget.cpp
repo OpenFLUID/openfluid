@@ -77,6 +77,10 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
   ui->ModelTabWidget->insertTab(0,mp_WaresManWidget,"Management");
   ui->ModelTabWidget->setCurrentIndex(0);
 
+  ui->GraphicalView->setRenderHints(QPainter::TextAntialiasing | QPainter::Antialiasing);
+  mp_ModelScene = new ModelScene(m_Model,this);
+  ui->GraphicalView->setScene(mp_ModelScene);
+
   mp_ShowHideGlobalParamsLabel = new ActionLabel(tr("show"),ui->GlobalParamsWidget);
   ui->GlobalParamsTitleLayout->insertWidget(1,mp_ShowHideGlobalParamsLabel);
   ui->GlobalParamsManagementWidget->setVisible(false);
@@ -243,6 +247,8 @@ void ModelWidget::refresh()
   updateCoupledModel();
 
   updateGlobalParams();
+
+  mp_ModelScene->refresh();
 }
 
 
@@ -315,5 +321,6 @@ void ModelWidget::updateCoupledModel()
 
 void ModelWidget::dispatchChangesFromChildren()
 {
+  mp_ModelScene->refresh();
   emit changed();
 }

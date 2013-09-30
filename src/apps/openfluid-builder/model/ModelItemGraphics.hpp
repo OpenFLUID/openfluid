@@ -46,83 +46,110 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file ModelItemGraphics.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __MODELITEMGRAPHICS_HPP__
+#define __MODELITEMGRAPHICS_HPP__
 
 
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
-#include "ModelScene.hpp"
+#include <openfluid/machine/ModelItemInstance.hpp>
+#include <openfluid/fluidx/ModelItemDescriptor.hpp>
 
 
-namespace Ui
+#include <QGraphicsRectItem>
+#include <QBrush>
+
+#include "ConnectorGraphics.hpp"
+
+
+class ModelItemGraphics : public QGraphicsRectItem
 {
-  class ModelWidget;
-}
+  public:
 
+    typedef QMap<QString,QStringList> IOSet_t;
 
-class ModelWidget : public WorkspaceWidget
-{
-  Q_OBJECT
+  protected:
 
-  private:
+    static QPointF m_RequiredIOFromCenter;
 
-    Ui::ModelWidget* ui;
+    static QPointF m_UsedIOFromCenter;
 
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
+    static QPointF m_UpInIOFromCenter;
 
-    WaresManagementWidget* mp_WaresManWidget;
+    static QPointF m_UpOutIOFromCenter;
 
-    ModelScene* mp_ModelScene;
+    static QSize m_DefaultSize;
 
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+    QString m_ID;
 
-    void updateGlobalParams();
+    bool m_Initialized;
 
-    void updateCoupledModel();
+    QList<ConnectorGraphics*> m_Connectors;
 
+    IOSet_t m_ProducedVars;
 
-  private slots:
+    IOSet_t m_UpdatedVars;
 
-    void updateShowHideGlobalParams();
+    IOSet_t m_UsedVars;
 
-    void addSimulator();
+    IOSet_t m_RequiredVars;
 
-    void addGenerator();
+    QVariant itemChange(GraphicsItemChange Change,const QVariant &Value);
 
-    void addGlobalParam();
+    void drawIOSlot(const QPointF& Pos, const QString& Name, bool Active = false);
 
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
-
-
-  public slots:
-
-    void refresh();
-
+    QPointF getCenterFromOrigin();
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    ModelItemGraphics(const QPointF &Coords, const QString& ID,
+                      QGraphicsItem* Parent = 0);
 
-    virtual ~ModelWidget();
+    ~ModelItemGraphics();
+
+    void initialize();
+
+    QPointF getRequiredIOPosition();
+
+    QPointF getUsedIOPosition();
+
+    QPointF getUpInIOPosition();
+
+    virtual QPointF getProducedIOPosition() =0;
+
+    QPointF getUpOutIOPosition();
+
+    void addConnector(ConnectorGraphics* Connector);
+
+    /* TODo to be definitely removed if unused
+    void removeConnector(ConnectorGraphics* Connector);
+
+    void removeConnectors();*/
+
+    const IOSet_t* getProduced() const
+    { return &m_ProducedVars; }
+
+    const IOSet_t* getUpdated() const
+    { return &m_UpdatedVars; }
+
+    const IOSet_t* getRequired() const
+    { return &m_RequiredVars; }
+
+    const IOSet_t* getUsed() const
+    { return &m_UsedVars; }
+
+    bool hasProducedVar(const QString& UnitClass, const QString& Name);
+
+    bool hasUpdatedVar(const QString& UnitClass, const QString& Name);
+
+
 };
 
+#endif /* __MODELITEMGRAPHICS_HPP__ */
 
 
-#endif /* __MODELWIDGET_HPP__ */

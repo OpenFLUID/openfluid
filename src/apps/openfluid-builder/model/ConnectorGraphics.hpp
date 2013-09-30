@@ -46,83 +46,65 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file ConnectorGraphics.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __CONNECTORGRAPHICS_HPP__
+#define __CONNECTORGRAPHICS_HPP__
+
+class ModelItemGraphics;
+
+#include <QGraphicsPathItem>
 
 
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
-#include "ModelScene.hpp"
-
-
-namespace Ui
+class ConnectorGraphics : public QGraphicsPathItem
 {
-  class ModelWidget;
-}
+  public:
 
+    enum InNodeType { NODE_REQ, NODE_US, NODE_INUP };
 
-class ModelWidget : public WorkspaceWidget
-{
-  Q_OBJECT
+    enum OutNodeType { NODE_PROD, NODE_OUTUP };
+
 
   private:
 
-    Ui::ModelWidget* ui;
+    ModelItemGraphics* mp_FromItem;
+    OutNodeType m_FromOutNode;
 
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
+    ModelItemGraphics* mp_ToItem;
+    InNodeType m_ToInNode;
 
-    WaresManagementWidget* mp_WaresManWidget;
-
-    ModelScene* mp_ModelScene;
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
-
-  private slots:
-
-    void updateShowHideGlobalParams();
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
-
-
-  public slots:
-
-    void refresh();
-
+    QStringList m_Variables;
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    ConnectorGraphics(ModelItemGraphics* FromItem, OutNodeType FromOutNode,
+                      ModelItemGraphics* ToItem, InNodeType ToInNode,
+                      QGraphicsItem* Parent = 0);
 
-    virtual ~ModelWidget();
+    ~ConnectorGraphics();
+
+    void update();
+
+    void addVariable(const QString& Name);
+
+    ModelItemGraphics* getFromItem()
+    { return mp_FromItem; }
+
+    OutNodeType getFromNode()
+    { return m_FromOutNode; }
+
+    ModelItemGraphics* getToItem()
+    { return mp_ToItem; }
+
+    InNodeType getToNode()
+    { return m_ToInNode; }
+
 };
 
 
-
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __CONNECTORGRAPHICS_HPP__ */

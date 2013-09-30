@@ -46,83 +46,49 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file ModelScene.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __MODELSCENE_HPP__
+#define __MODELSCENE_HPP__
+
+#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
+#include <QGraphicsScene>
+
+#include "ModelItemGraphics.hpp"
 
 
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
-#include "ModelScene.hpp"
-
-
-namespace Ui
+class ModelScene : public QGraphicsScene
 {
-  class ModelWidget;
-}
-
-
-class ModelWidget : public WorkspaceWidget
-{
-  Q_OBJECT
-
   private:
 
-    Ui::ModelWidget* ui;
+    const openfluid::fluidx::AdvancedModelDescriptor& m_Model;
 
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
+    QList<ModelItemGraphics*> m_GraphicsItems;
 
-    WaresManagementWidget* mp_WaresManWidget;
+    QList<ConnectorGraphics*> m_GraphicsConnections;
 
-    ModelScene* mp_ModelScene;
+    void buildConnections();
 
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+    void addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::OutNodeType FromOutNode,
+                       ModelItemGraphics* ToItem, ConnectorGraphics::InNodeType ToInNode,
+                       const QString& VarName);
 
-    void updateGlobalParams();
+  public:
 
-    void updateCoupledModel();
+    ModelScene(const openfluid::fluidx::AdvancedModelDescriptor& ModelDesc, QObject* Parent = 0);
 
-
-  private slots:
-
-    void updateShowHideGlobalParams();
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
-
-
-  public slots:
+    ~ModelScene();
 
     void refresh();
 
 
-  public:
-
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
-
-    virtual ~ModelWidget();
 };
 
 
 
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __MODELSCENE_HPP__ */

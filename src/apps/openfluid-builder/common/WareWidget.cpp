@@ -53,6 +53,7 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include "builderconfig.hpp"
 
 #include "ui_WareWidget.h"
 #include "WareWidget.hpp"
@@ -158,7 +159,7 @@ void WareWidget::updateWidgetBackground()
   QString BGColor = m_EnabledBGColor;
   QString BGPattern = "";
 
-  if (!m_Enabled) BGColor = "#CCCCCC";
+  if (!m_Enabled) BGColor = BUILDER_DISABLEDWARE_BGCOLOR;
   if (!m_Available) BGPattern = " background-image:url(:/images/warn-pattern-lightgray.png);";
 
   setStyleSheet("QFrame#WareFrame { background-color:"+BGColor+"; "+BGPattern+"}");

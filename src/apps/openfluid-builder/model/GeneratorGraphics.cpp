@@ -45,84 +45,48 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ModelWidget.hpp
-  \brief Header of ...
+  \file GeneratorGraphics.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include "builderconfig.hpp"
+#include "GeneratorGraphics.hpp"
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+QPointF GeneratorGraphics::m_ProducedIOFromCenter = QPoint(0,50);
 
-
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
-#include "ModelScene.hpp"
-
-
-namespace Ui
+GeneratorGraphics::GeneratorGraphics(const QPointF& Coords, const QString& ID,
+                                     const QString& VarName, const QString& UnitClass,
+                                     QGraphicsItem* Parent):
+  ModelItemGraphics(Coords,ID,Parent)
 {
-  class ModelWidget;
+  m_ProducedVars[UnitClass].append(VarName);
+
+  drawIOSlot(getProducedIOPosition(),"Prod",true);
+
+  setBrush(QBrush(QColor(BUILDER_GENERATOR_BGCOLOR)));
 }
 
 
-class ModelWidget : public WorkspaceWidget
+// =====================================================================
+// =====================================================================
+
+
+GeneratorGraphics::~GeneratorGraphics()
 {
-  Q_OBJECT
 
-  private:
-
-    Ui::ModelWidget* ui;
-
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
-
-    WaresManagementWidget* mp_WaresManWidget;
-
-    ModelScene* mp_ModelScene;
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
+}
 
 
-  private slots:
-
-    void updateShowHideGlobalParams();
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void addGlobalParam();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
+// =====================================================================
+// =====================================================================
 
 
-  public slots:
+QPointF GeneratorGraphics::getProducedIOPosition()
+{
+  return scenePos()+getCenterFromOrigin()+m_ProducedIOFromCenter;
+}
 
-    void refresh();
-
-
-  public:
-
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
-
-    virtual ~ModelWidget();
-};
-
-
-
-#endif /* __MODELWIDGET_HPP__ */

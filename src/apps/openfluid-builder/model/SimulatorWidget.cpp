@@ -55,6 +55,7 @@
 
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include "builderconfig.hpp"
 
 #include "ui_WareWidget.h"
 #include "SimulatorWidget.hpp"
@@ -64,7 +65,7 @@
 
 SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID):
-  WareWidget(Parent,ID,Desc->isEnabled(),"#ECF9B5"), mp_Desc(Desc)
+  WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR), mp_Desc(Desc)
 {
   refresh();
 }
