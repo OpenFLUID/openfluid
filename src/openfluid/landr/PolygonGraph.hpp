@@ -241,6 +241,37 @@ class DLLEXPORT PolygonGraph: public LandRGraph
     virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
                                                 const std::string& Column,double Thresh=0.0001);
 
+    /**
+     * @brief Remove from the graph the entity with SelfId and its associated nodes.
+     * @param SelfId
+     */
+    virtual void removeEntity(int SelfId);
+
+    /**
+     * @brief Clean the Edges of a PolygonEntity
+     *
+     * @param Entity The PolygonEntity to clean.
+     */
+    void cleanEdges(PolygonEntity & Entity);
+
+
+    /**
+     * @brief Get a map of small PolygonEntities under area threshold
+     *
+     * @param MinArea The area threshold (in map units).
+     * @return a multimap of PolygonEntities with key is the area of each Entity.
+     */
+    std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
+
+    /**
+     * @brief Merge a PolygonEntity into an other one
+     * The PolygonEntity to merge is deleted.
+     *
+     * @param Entity An existent PolygonEntity.
+     * @param EntityToMerge The PolygonEntity which will be merged into Entity and will be deleted.
+     */
+    void mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& EntityToMerge);
+
 
 
 };

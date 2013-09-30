@@ -59,6 +59,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
+#include <geos/geom/Point.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <algorithm>
 
@@ -209,6 +210,27 @@ void PolygonEdge::removeAttribute(const std::string& AttributeName)
 // =====================================================================
 // =====================================================================
 
+bool PolygonEdge::isCoincident(PolygonEdge *Edge)
+{
+
+  geos::geom::Point *StartPoint=getLine()->getStartPoint();
+  geos::geom::Point *EndPoint=getLine()->getEndPoint();
+
+  geos::geom::Point *StartPoint2=Edge->getLine()->getStartPoint();
+  geos::geom::Point *EndPoint2=Edge->getLine()->getEndPoint();
+
+
+  if((StartPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
+      (StartPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate()))||
+      (EndPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
+      (EndPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate())))
+    return true;
+
+  return false;
+}
+
+// =====================================================================
+// =====================================================================
 
 }// namespace landr
 } /* namespace openfluid */
