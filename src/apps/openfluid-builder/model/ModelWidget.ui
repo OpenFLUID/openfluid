@@ -222,14 +222,14 @@
            <item>
             <widget class="QPushButton" name="PNGExportButton">
              <property name="text">
-              <string>Export to PNG...</string>
+              <string>Export as PNG...</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="SVGExportButton">
              <property name="text">
-              <string>Export to SVG...</string>
+              <string>Export as SVG...</string>
              </property>
             </widget>
            </item>

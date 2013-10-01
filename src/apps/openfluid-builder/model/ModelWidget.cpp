@@ -54,9 +54,6 @@
  */
 
 
-#include <iostream>
-#include <QMessageBox>
-
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
@@ -66,6 +63,13 @@
 #include "ModelWidget.hpp"
 #include "SimulatorWidget.hpp"
 #include "GeneratorWidget.hpp"
+
+#include <iostream>
+#include <QMessageBox>
+#include <QImage>
+#include <QSvgGenerator>
+#include <QFileDialog>
+
 
 
 ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -337,8 +341,21 @@ void ModelWidget::dispatchChangesFromChildren()
 
 void ModelWidget::exportModelViewAsPNG()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  QString FileName = QFileDialog::getSaveFileName(this,
+                                                  tr("Export as PNG image file"),
+                                                  "export_modelview.png",
+                                                  tr("PNG Files (*.png)"));
+
+  if (!FileName.isEmpty())
+  {
+    QImage Image((int)mp_ModelScene->sceneRect().width(),
+                 (int)mp_ModelScene->sceneRect().height(),
+                 QImage::Format_ARGB32_Premultiplied);
+    QPainter Painter(&Image);
+    Painter.setRenderHint(QPainter::Antialiasing);
+    mp_ModelScene->render(&Painter);
+    Image.save(FileName);
+  }
 }
 
 
@@ -348,7 +365,29 @@ void ModelWidget::exportModelViewAsPNG()
 
 void ModelWidget::exportModelViewAsSVG()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  QString FileName = QFileDialog::getSaveFileName(this,
+                                                  tr("Export as SVG vector file"),
+                                                  "export_modelview.svg",
+                                                  tr("SVG Files (*.svg)"));
+
+  if (!FileName.isEmpty())
+  {
+    // TODO see why exported graphic objects are out of the initial view
+    // (using inkscape or other tool)
+
+    QSvgGenerator SvgGen;
+
+    QRectF ExportRect = mp_ModelScene->itemsBoundingRect();
+
+    SvgGen.setFileName(FileName);
+    SvgGen.setSize(QSize((int)ExportRect.width(),
+                         (int)ExportRect.height()));
+    SvgGen.setViewBox(ExportRect);
+    SvgGen.setTitle("");
+    SvgGen.setDescription("");
+
+    QPainter Painter(&SvgGen);
+    mp_ModelScene->render(&Painter);
+  }
 }
 

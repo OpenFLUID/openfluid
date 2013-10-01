@@ -191,7 +191,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       ${Boost_REGEX_LIBRARY}
                       ${GDAL_LIBRARIES}
                       ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}                      
+                      ${QT_QTGUI_LIBRARIES}
+                      ${QT_QTSVG_LIBRARIES}
                       openfluid-base
                       openfluid-buddies
                       openfluid-core
