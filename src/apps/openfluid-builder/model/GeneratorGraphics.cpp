@@ -56,7 +56,11 @@
 #include "builderconfig.hpp"
 #include "GeneratorGraphics.hpp"
 
-QPointF GeneratorGraphics::m_ProducedIOFromCenter = QPoint(0,50);
+#include <QBrush>
+
+
+QPointF GeneratorGraphics::m_ProducedIOFromCenter = QPoint(0,ModelItemGraphics::m_DefaultSize.height()/2);
+
 
 GeneratorGraphics::GeneratorGraphics(const QPointF& Coords, const QString& ID,
                                      const QString& VarName, const QString& UnitClass,
@@ -65,6 +69,7 @@ GeneratorGraphics::GeneratorGraphics(const QPointF& Coords, const QString& ID,
 {
   m_ProducedVars[UnitClass].append(VarName);
 
+  // Out slot
   drawIOSlot(getProducedIOPosition(),"Prod",true);
 
   setBrush(QBrush(QColor(BUILDER_GENERATOR_BGCOLOR)));

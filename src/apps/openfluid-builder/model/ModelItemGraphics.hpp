@@ -62,7 +62,6 @@
 
 
 #include <QGraphicsRectItem>
-#include <QBrush>
 
 #include "ConnectorGraphics.hpp"
 
@@ -75,6 +74,8 @@ class ModelItemGraphics : public QGraphicsRectItem
 
   protected:
 
+    static QSize m_DefaultSize;
+
     static QPointF m_RequiredIOFromCenter;
 
     static QPointF m_UsedIOFromCenter;
@@ -82,8 +83,6 @@ class ModelItemGraphics : public QGraphicsRectItem
     static QPointF m_UpInIOFromCenter;
 
     static QPointF m_UpOutIOFromCenter;
-
-    static QSize m_DefaultSize;
 
     QString m_ID;
 
@@ -100,6 +99,10 @@ class ModelItemGraphics : public QGraphicsRectItem
     IOSet_t m_RequiredVars;
 
     QVariant itemChange(GraphicsItemChange Change,const QVariant &Value);
+
+    void mousePressEvent(QGraphicsSceneMouseEvent *Event);
+
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *Event);
 
     void drawIOSlot(const QPointF& Pos, const QString& Name, bool Active = false);
 

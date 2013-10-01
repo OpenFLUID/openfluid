@@ -56,6 +56,8 @@
 #include "ModelItemGraphics.hpp"
 #include "ConnectorGraphics.hpp"
 
+#include "builderconfig.hpp"
+
 #include <QPen>
 #include <QFont>
 
@@ -67,10 +69,19 @@ ConnectorGraphics::ConnectorGraphics(ModelItemGraphics* FromItem, OutNodeType Fr
   mp_FromItem(FromItem),m_FromOutNode(FromOutNode),
   mp_ToItem(ToItem),m_ToInNode(ToInNode)
 {
-  setZValue(-1000);
-  update();
+  setZValue(-2000);
+  setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_CONNECTCOLOR)),3));
 
-  setPen(QPen(QBrush(QColor("#96B4D1")),3));
+  mp_VarsText = new QGraphicsSimpleTextItem("");
+  mp_VarsText->setZValue(-1000);
+  mp_VarsText->setBrush(QBrush(QColor(BUILDER_MODELVIEW_ACTIVECOLOR)));
+  QFont TmpFont = mp_VarsText->font();
+  TmpFont.setPointSize(10);
+  TmpFont.setItalic(true);
+  mp_VarsText->setFont(TmpFont);
+
+  updatePosition();
+
 }
 
 
@@ -88,7 +99,7 @@ ConnectorGraphics::~ConnectorGraphics()
 // =====================================================================
 
 
-void ConnectorGraphics::update()
+void ConnectorGraphics::updatePosition()
 {
   QPainterPath Path;
 
@@ -110,9 +121,12 @@ void ConnectorGraphics::update()
 
   Path.moveTo(FromPos);
 
+  // intermediate position helps for correct bezier curve shape
+  // and for positionning of variable names as curve label
   QPointF InterPos;
 
-  if (FromPos.y() < ToPos.y())
+
+  if (FromPos.y() < ToPos.y()) // "From" slot (source) is upper than "To" slot (destination)
   {
 
     InterPos = QPointF(FromPos.x()+((ToPos.x()-FromPos.x())/2.0),
@@ -121,7 +135,7 @@ void ConnectorGraphics::update()
     Path.quadTo(QPointF(FromPos.x(),InterPos.y()),InterPos);
     Path.quadTo(QPointF(ToPos.x(),InterPos.y()),ToPos);
   }
-  else
+  else // "From" slot (source) is lower than "To" slot (destination)
   {
     InterPos = QPointF(FromPos.x()+((ToPos.x()-FromPos.x())/2.0)-200,
                        FromPos.y()+((ToPos.y()-FromPos.y())/2.0));
@@ -132,14 +146,14 @@ void ConnectorGraphics::update()
                 ToPos);
   }
 
-
-  // TODO add variables names
-/*  QGraphicsSimpleTextItem* VarsText = new QGraphicsSimpleTextItem(m_Variables.join("\n"));
-
-  VarsText->setPos(InterPos);
-  VarsText->setParentItem(this);*/
-
   setPath(Path);
+
+
+  // variables names
+  mp_VarsText->setText(m_Variables.join("\n"));
+  mp_VarsText->setPos(InterPos.x()-mp_VarsText->boundingRect().width()/2,
+                      InterPos.y()-mp_VarsText->boundingRect().height()/2);
+  mp_VarsText->setParentItem(this);
 }
 
 
@@ -147,8 +161,10 @@ void ConnectorGraphics::update()
 // =====================================================================
 
 
-void ConnectorGraphics::addVariable(const QString& Name)
+void ConnectorGraphics::addVariable(const QString& UnitClass, const QString& VarName)
 {
-  m_Variables.append(Name);
-  update();
+  m_Variables.append(VarName+" {"+UnitClass+"}");
+  updatePosition();
 }
+
+

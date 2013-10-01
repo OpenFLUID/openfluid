@@ -85,6 +85,7 @@ ModelScene::~ModelScene()
 
 void ModelScene::refresh()
 {
+  // clear existing scene
 
   foreach (ModelItemGraphics* MItemG, m_GraphicsItems)
   {
@@ -112,7 +113,9 @@ void ModelScene::refresh()
   unsigned int SimCount = 0;
   unsigned int GenCount = 0;
 
-  // model items
+
+
+  // add model items
 
   for (it = itb; it!= ite; ++it)
   {
@@ -157,7 +160,7 @@ void ModelScene::refresh()
   }
 
 
-  // connections items
+  // add connections
   buildConnections();
 }
 
@@ -191,14 +194,14 @@ void ModelScene::buildConnections()
             {
               addConnection(FromMItemG,ConnectorGraphics::NODE_PROD,
                             ToMItemG,ConnectorGraphics::NODE_REQ,
-                            VarName);
+                            itTo.key(),VarName);
             }
 
             if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
             {
               addConnection(FromMItemG,ConnectorGraphics::NODE_OUTUP,
                             ToMItemG,ConnectorGraphics::NODE_REQ,
-                            VarName);
+                            itTo.key(),VarName);
             }
           }
         }
@@ -223,14 +226,14 @@ void ModelScene::buildConnections()
             {
               addConnection(FromMItemG,ConnectorGraphics::NODE_PROD,
                             ToMItemG,ConnectorGraphics::NODE_US,
-                            VarName);
+                            itTo.key(),VarName);
             }
 
             if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
             {
               addConnection(FromMItemG,ConnectorGraphics::NODE_OUTUP,
                             ToMItemG,ConnectorGraphics::NODE_US,
-                            VarName);
+                            itTo.key(),VarName);
             }
           }
         }
@@ -255,14 +258,14 @@ void ModelScene::buildConnections()
             {
               addConnection(FromMItemG,ConnectorGraphics::NODE_PROD,
                             ToMItemG,ConnectorGraphics::NODE_INUP,
-                            VarName);
+                            itTo.key(),VarName);
             }
 
             if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
             {
               addConnection(FromMItemG,ConnectorGraphics::NODE_OUTUP,
                             ToMItemG,ConnectorGraphics::NODE_INUP,
-                            VarName);
+                            itTo.key(),VarName);
             }
           }
         }
@@ -278,16 +281,17 @@ void ModelScene::buildConnections()
 
 void ModelScene::addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::OutNodeType FromOutNode,
                                ModelItemGraphics* ToItem, ConnectorGraphics::InNodeType ToInNode,
-                               const QString& VarName)
+                               const QString& UnitClass, const QString& VarName)
 {
   bool Found = false;
 
   foreach(ConnectorGraphics* Conn, m_GraphicsConnections)
   {
     if (Conn->getFromItem() == FromItem && Conn->getFromNode() == FromOutNode &&
-        Conn->getToItem() == FromItem && Conn->getToNode() == ToInNode)
+        Conn->getToItem() == ToItem && Conn->getToNode() == ToInNode)
     {
-      Conn->addVariable(VarName);
+      // if connection already exist, just add the variable name
+      Conn->addVariable(UnitClass,VarName);
       Found = true;
     }
     if (Found) break;
@@ -295,12 +299,28 @@ void ModelScene::addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::O
 
   if (!Found)
   {
+    // if connection does not exist, add the connection and the variable name
+
     ConnectorGraphics* ConnG = new ConnectorGraphics(FromItem,FromOutNode,
                                                      ToItem,ToInNode);
-    ConnG->addVariable(VarName);
+    ConnG->addVariable(UnitClass,VarName);
     FromItem->addConnector(ConnG);
     ToItem->addConnector(ConnG);
     addItem(ConnG);
+    m_GraphicsConnections.append(ConnG);
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelScene::showVariables(bool Show)
+{
+  foreach(ConnectorGraphics* Conn, m_GraphicsConnections)
+  {
+    Conn->setVariablesNamesVisible(Show);
+  }
 }

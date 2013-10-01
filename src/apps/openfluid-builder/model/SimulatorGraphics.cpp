@@ -56,7 +56,11 @@
 #include "builderconfig.hpp"
 #include "SimulatorGraphics.hpp"
 
-QPointF SimulatorGraphics::m_ProducedIOFromCenter = QPoint(-30,50);
+#include <QBrush>
+
+
+QPointF SimulatorGraphics::m_ProducedIOFromCenter = QPoint(-30,ModelItemGraphics::m_DefaultSize.height()/2);
+
 
 SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
                                      openfluid::machine::ModelItemSignatureInstance* Signature,

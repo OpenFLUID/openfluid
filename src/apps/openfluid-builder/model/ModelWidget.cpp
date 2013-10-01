@@ -98,7 +98,12 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
   connect(mp_WaresManWidget->ui->AddWareFirstButton,SIGNAL(clicked()),this,SLOT(addSimulator()));
   connect(mp_WaresManWidget->ui->AddWareSecondButton,SIGNAL(clicked()),this,SLOT(addGenerator()));
 
+  connect(ui->PNGExportButton,SIGNAL(clicked()),this,SLOT(exportModelViewAsPNG()));
+  connect(ui->SVGExportButton,SIGNAL(clicked()),this,SLOT(exportModelViewAsSVG()));
+
   refresh();
+
+  connect(ui->ShowVarsCheckBox,SIGNAL(clicked(bool)),mp_ModelScene,SLOT(showVariables(bool)));
 }
 
 
@@ -324,3 +329,26 @@ void ModelWidget::dispatchChangesFromChildren()
   mp_ModelScene->refresh();
   emit changed();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::exportModelViewAsPNG()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::exportModelViewAsSVG()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+

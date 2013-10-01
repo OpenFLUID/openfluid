@@ -64,6 +64,8 @@
 
 class ModelScene : public QGraphicsScene
 {
+  Q_OBJECT;
+
   private:
 
     const openfluid::fluidx::AdvancedModelDescriptor& m_Model;
@@ -76,7 +78,11 @@ class ModelScene : public QGraphicsScene
 
     void addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::OutNodeType FromOutNode,
                        ModelItemGraphics* ToItem, ConnectorGraphics::InNodeType ToInNode,
-                       const QString& VarName);
+                       const QString& UnitClass, const QString& VarName);
+
+  public slots:
+
+    void showVariables(bool Show);
 
   public:
 

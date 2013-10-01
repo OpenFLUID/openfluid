@@ -55,23 +55,28 @@
 
 #include <openfluid/base/ProjectManager.hpp>
 
+#include "builderconfig.hpp"
+
 #include "ModelItemGraphics.hpp"
 #include <QPen>
+#include <QBrush>
+#include <QCursor>
 #include <QFont>
 #include <QGraphicsSimpleTextItem>
 #include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+
 
 #include <iostream>
 
-#define BORDERCOLOR "#B7B7B7"
-#define CONNECTCOLOR "#617487"
 
-QPointF ModelItemGraphics::m_RequiredIOFromCenter = QPoint(-60,-50);
-QPointF ModelItemGraphics::m_UsedIOFromCenter = QPoint(0,-50);
-QPointF ModelItemGraphics::m_UpInIOFromCenter = QPoint(60,-50);
-QPointF ModelItemGraphics::m_UpOutIOFromCenter = QPoint(30,50);
+QSize ModelItemGraphics::m_DefaultSize = QSize(200,70);
 
-QSize ModelItemGraphics::m_DefaultSize = QSize(200,100);
+QPointF ModelItemGraphics::m_RequiredIOFromCenter = QPoint(-60,-ModelItemGraphics::m_DefaultSize.height()/2);
+QPointF ModelItemGraphics::m_UsedIOFromCenter = QPoint(0,-ModelItemGraphics::m_DefaultSize.height()/2);
+QPointF ModelItemGraphics::m_UpInIOFromCenter = QPoint(60,-ModelItemGraphics::m_DefaultSize.height()/2);
+QPointF ModelItemGraphics::m_UpOutIOFromCenter = QPoint(30,ModelItemGraphics::m_DefaultSize.height()/2);
+
 
 
 // =====================================================================
@@ -83,12 +88,15 @@ ModelItemGraphics::ModelItemGraphics(const QPointF& Coords, const QString& ID,
   QGraphicsRectItem(Coords.x(),Coords.y(),m_DefaultSize.width(),m_DefaultSize.height(),Parent),
   m_ID(ID), m_Initialized(false)
 {
-  setPen(QPen(QBrush(QColor(BORDERCOLOR)),2));
+  setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_BORDERCOLOR)),2));
 
   setFlag(QGraphicsItem::ItemIsMovable);
   setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
-  // ID
+  setCursor(QCursor(Qt::OpenHandCursor));
+
+
+  // Model item ID
   QGraphicsSimpleTextItem* IDGraphics = new QGraphicsSimpleTextItem(ID,Parent);
   IDGraphics->setParentItem(this);
 
@@ -99,9 +107,9 @@ ModelItemGraphics::ModelItemGraphics(const QPointF& Coords, const QString& ID,
   QRectF IDRect = IDGraphics->boundingRect();
 
   if (rect().width() < IDRect.width()+20)
-  setRect(Coords.x(),Coords.y(),IDRect.width()+20,100);
+  setRect(Coords.x(),Coords.y(),IDRect.width()+20,m_DefaultSize.height());
 
-  IDGraphics->setPos((rect().width()/2)-(IDRect.width()/2),50-(IDRect.height()/2));
+  IDGraphics->setPos((rect().width()/2)-(IDRect.width()/2),(m_DefaultSize.height()/2)-(IDRect.height()/2));
 }
 
 
@@ -129,11 +137,35 @@ QVariant ModelItemGraphics::itemChange(GraphicsItemChange Change,
 
     foreach (ConnectorGraphics* Conn, m_Connectors)
     {
-      Conn->update();
+      Conn->updatePosition();
     }
   }
 
   return QGraphicsRectItem::itemChange(Change, Value);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelItemGraphics::mousePressEvent(QGraphicsSceneMouseEvent *Event)
+{
+  setCursor(QCursor(Qt::ClosedHandCursor));
+
+  QGraphicsItem::mousePressEvent(Event);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelItemGraphics::mouseReleaseEvent(QGraphicsSceneMouseEvent *Event)
+{
+  setCursor(QCursor(Qt::OpenHandCursor));
+
+  QGraphicsItem::mouseReleaseEvent(Event);
 }
 
 
@@ -161,7 +193,6 @@ QPointF ModelItemGraphics::getCenterFromOrigin()
 // =====================================================================
 
 
-
 void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const QString& Name, bool Active)
 {
 
@@ -186,15 +217,15 @@ void ModelItemGraphics::drawIOSlot(const QPointF& Pos, const QString& Name, bool
 
   if (Active)
   {
-    SlotShape->setPen(QPen(QBrush(QColor(CONNECTCOLOR)),1));
-    SlotShape->setBrush(QBrush(QColor(CONNECTCOLOR)));
-    TextShape->setPen(QPen(QBrush(QColor(CONNECTCOLOR)),0.5));
+    SlotShape->setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_ACTIVECOLOR)),1));
+    SlotShape->setBrush(QBrush(QColor(BUILDER_MODELVIEW_ACTIVECOLOR)));
+    TextShape->setBrush(QBrush(QColor(BUILDER_MODELVIEW_ACTIVECOLOR)));
   }
   else
   {
-    SlotShape->setPen(QPen(QBrush(QColor(BORDERCOLOR)),1));
-    SlotShape->setBrush(QBrush(QColor(BORDERCOLOR)));
-    TextShape->setPen(QPen(QBrush(QColor(BORDERCOLOR)),0.5));
+    SlotShape->setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_INACTIVECOLOR)),1));
+    SlotShape->setBrush(QBrush(QColor(BUILDER_MODELVIEW_INACTIVECOLOR)));
+    TextShape->setBrush(QBrush(QColor(BUILDER_MODELVIEW_INACTIVECOLOR)));
   }
 
   SlotShape->setParentItem(this);

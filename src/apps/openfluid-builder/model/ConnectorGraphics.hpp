@@ -59,7 +59,7 @@
 class ModelItemGraphics;
 
 #include <QGraphicsPathItem>
-
+#include <QGraphicsSceneMouseEvent>
 
 class ConnectorGraphics : public QGraphicsPathItem
 {
@@ -80,6 +80,9 @@ class ConnectorGraphics : public QGraphicsPathItem
 
     QStringList m_Variables;
 
+    QGraphicsSimpleTextItem* mp_VarsText;
+
+
   public:
 
     ConnectorGraphics(ModelItemGraphics* FromItem, OutNodeType FromOutNode,
@@ -88,9 +91,9 @@ class ConnectorGraphics : public QGraphicsPathItem
 
     ~ConnectorGraphics();
 
-    void update();
+    void updatePosition();
 
-    void addVariable(const QString& Name);
+    void addVariable(const QString& UnitClass, const QString& VarName);
 
     ModelItemGraphics* getFromItem()
     { return mp_FromItem; }
@@ -103,6 +106,9 @@ class ConnectorGraphics : public QGraphicsPathItem
 
     InNodeType getToNode()
     { return m_ToInNode; }
+
+    void setVariablesNamesVisible(bool Visible)
+    { mp_VarsText->setVisible(Visible); }
 
 };
 
