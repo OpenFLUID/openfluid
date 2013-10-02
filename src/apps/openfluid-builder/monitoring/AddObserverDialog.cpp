@@ -47,72 +47,67 @@
 
 
 /**
-  \file GeneratorWidget.cpp
+  \file AddObserverDialog.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverInstance.hpp>
 
-#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
-#include "builderconfig.hpp"
+#include "ui_AddWareDialog.h"
+#include "AddObserverDialog.hpp"
+#include "SignatureWidget.hpp"
 
-#include "ui_WareWidget.h"
-#include "GeneratorWidget.hpp"
-#include "ParameterWidget.hpp"
+#include <QPushButton>
 
 
-GeneratorWidget::GeneratorWidget(QWidget* Parent,
-                                 openfluid::fluidx::ModelItemDescriptor* Desc,
-                                 const openfluid::ware::WareID_t& ID,
-                                 openfluid::machine::ModelItemSignatureInstance* SignInstance):
-  WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR),mp_Desc(Desc), mp_SignInstance(SignInstance)
+AddObserverDialog::AddObserverDialog(const QStringList& ObsIDList, QWidget* Parent) :
+  AddWareDialog(Parent)
 {
-  ui->AddParamButton->setVisible(false);
-  refresh();
-}
+  ui->MessageLabel->setText(tr("Add observer"));
+
+  openfluid::machine::ObserverSignatureRegistry* Reg =
+    openfluid::machine::ObserverSignatureRegistry::getInstance();
+
+  std::vector<openfluid::machine::ObserverSignatureInstance*> ObsSigns =
+    Reg->getAvailableSignatures();
 
 
-// =====================================================================
-// =====================================================================
-
-
-GeneratorWidget::~GeneratorWidget()
-{
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GeneratorWidget::updateParams()
-{
-  std::vector<openfluid::ware::SignatureHandledDataItem>* SignParams =
-      &(mp_SignInstance->Signature->HandledData.SimulatorParams);
-
-  openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
-
-  for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it = SignParams->begin();
-       it != SignParams->end(); ++it)
+  for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
+      ObsSigns.begin(); it != ObsSigns.end(); ++it)
   {
-    std::string ParamName = (*it).DataName;
-    QString ParamValue = "";
+    QString ID = QString::fromStdString((*it)->Signature->ID);
 
-    if (DescParams.find(ParamName) != DescParams.end())
-      ParamValue = QString::fromStdString(DescParams[ParamName]);
+    QListWidgetItem* Item = new QListWidgetItem(ID);
 
-    ParameterWidget* ParamWidget = new ParameterWidget(this,
-                                                       QString::fromStdString(ParamName),ParamValue,
-                                                       QString::fromStdString((*it).DataUnit));
+    if (ObsIDList.contains(ID))
+      Item->setFlags(Qt::ItemIsSelectable);
 
-    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
+    if ((*it)->Signature->Status == openfluid::ware::EXPERIMENTAL)
+      Item->setIcon(QIcon(":/images/status-experimental.png"));
+    else if ((*it)->Signature->Status == openfluid::ware::BETA)
+      Item->setIcon(QIcon(":/images/status-beta.png"));
+    else if ((*it)->Signature->Status == openfluid::ware::STABLE)
+      Item->setIcon(QIcon(":/images/status-stable.png"));
 
-    ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addWidget(ParamWidget);
+    ui->WaresListWidget->addItem(Item);
   }
 
-  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->addStretch();
+  connect(ui->WaresListWidget,SIGNAL(itemSelectionChanged()),this,SLOT(updateSignature()));
+
+  setMessage(tr("Select observer to add"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+AddObserverDialog::~AddObserverDialog()
+{
 
 }
 
@@ -121,46 +116,39 @@ void GeneratorWidget::updateParams()
 // =====================================================================
 
 
-void GeneratorWidget::refresh()
+void AddObserverDialog::updateSignature()
 {
+  openfluid::machine::ObserverSignatureRegistry* Reg =
+    openfluid::machine::ObserverSignatureRegistry::getInstance();
 
-  if (mp_SignInstance != NULL)
+  const openfluid::machine::ObserverSignatureInstance* Sign =
+      Reg->getSignature(ui->WaresListWidget->currentItem()->text().toStdString());
+
+  ui->EmptyLabel->setVisible(false);
+  mp_SignWidget->setVisible(true);
+
+  mp_SignWidget->update(Sign);
+
+  setMessage();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AddObserverDialog::setMessage(const QString& Msg)
+{
+  if (Msg.isEmpty())
   {
-    setAvailableWare(true);
-    ui->NameLabel->setText(QString::fromStdString(mp_SignInstance->Signature->Name));
-
-    // TODO add produced variable in signature
-    mp_SignatureWidget->update(mp_SignInstance);
-
-    updateParams();
+    ui->MessageFrame->setStyleSheet("background-color: rgb(71,97,123);");
+    ui->MessageLabel->setText(tr("Add simulator"));
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
   else
   {
-    setAvailableWare(false);
-    ui->NameLabel->setText("");
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->MessageFrame->setStyleSheet("background-color: rgb(245,145,34);");
+    ui->MessageLabel->setText(Msg);
   }
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GeneratorWidget::setEnabledWare(bool Enabled)
-{
-  mp_Desc->setEnabled(Enabled);
-  WareWidget::setEnabledWare(Enabled);
-  emit changed();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void GeneratorWidget::updateParamValue(const QString& Name, const QString& Value)
-{
-  mp_Desc->setParameter(Name.toStdString(),Value.toStdString());
-  emit changed();
 }

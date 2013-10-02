@@ -77,7 +77,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
                       "The corrected wind direction is computed by applying a random value to the main wind direction");
 
   DECLARE_VERSION("1.0");
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_STATUS(openfluid::ware::BETA);
 
   DECLARE_DOMAIN("fire");
   DECLARE_PROCESS("spatial connections");

@@ -56,12 +56,15 @@
 #define __SIMULATORSIGNATUREREGISTRY_HPP__
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
+#include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
-namespace openfluid {
-namespace machine {
+
+namespace openfluid { namespace machine {
+
 
 class ModelItemSignatureInstance;
 class GeneratorSignature;
+
 
 // =====================================================================
 // =====================================================================
@@ -72,6 +75,8 @@ class DLLEXPORT SimulatorSignatureRegistry
 
     typedef std::map<std::string, openfluid::machine::ModelItemSignatureInstance*> SimSignaturesByName_t;
 
+    typedef std::map<openfluid::fluidx::GeneratorDescriptor::GeneratorMethod, openfluid::machine::ModelItemSignatureInstance*> GenSignaturesByMethod_t;
+
     typedef std::map<openfluid::fluidx::ModelItemDescriptor::WareType,
         SimSignaturesByName_t> SimSignaturesByTypeByName_t;
 
@@ -81,7 +86,9 @@ class DLLEXPORT SimulatorSignatureRegistry
 
   protected:
 
-    SimSignaturesByTypeByName_t m_Signatures;
+    SimSignaturesByTypeByName_t m_SimSignatures;
+
+    GenSignaturesByMethod_t m_GenSignatures;
 
     SimulatorSignatureRegistry();
 
@@ -113,12 +120,11 @@ class DLLEXPORT SimulatorSignatureRegistry
     ModelItemSignatureInstance* getSignatureItemInstance(
         openfluid::fluidx::ModelItemDescriptor* Item);
 
+    ModelItemSignatureInstance* getSignatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method);
+
 };
 
-// =====================================================================
-// =====================================================================
 
-}
-} //namespaces
+} } //namespaces
 
 #endif /* __SIMULATORSIGNATUREREGISTRY_HPP__ */

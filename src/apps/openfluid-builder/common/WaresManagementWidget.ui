@@ -20,16 +20,16 @@
    <item>
     <layout class="QHBoxLayout" name="WaresButtonsLayout">
      <item>
-      <widget class="QPushButton" name="AddWareSecondButton">
+      <widget class="QPushButton" name="AddWareFirstButton">
        <property name="text">
-        <string>A</string>
+        <string notr="true">A1</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="AddWareFirstButton">
+      <widget class="QPushButton" name="AddWareSecondButton">
        <property name="text">
-        <string>A</string>
+        <string notr="true">A2</string>
        </property>
       </widget>
      </item>

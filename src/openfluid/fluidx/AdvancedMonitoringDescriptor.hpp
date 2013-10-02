@@ -113,6 +113,10 @@ class DLLEXPORT AdvancedMonitoringDescriptor
 
     int getFirstIndex(const std::string& ID) const;
 
+    std::vector<openfluid::ware::WareID_t> getOrderedIDs() const;
+
+
+
 };
 
 }

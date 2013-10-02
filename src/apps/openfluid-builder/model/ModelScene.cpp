@@ -129,6 +129,12 @@ void ModelScene::refresh()
 
       if (ConfigPos.type() == QVariant::Point)
         Position = ConfigPos.toPoint();
+      else
+      {
+        QRectF CurrentRect = itemsBoundingRect();
+        Position.setX(int(CurrentRect.x()+CurrentRect.width()/2));
+        Position.setY(int(CurrentRect.y()+CurrentRect.height()/2));
+      }
 
       if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator &&
           openfluid::machine::SimulatorSignatureRegistry::getInstance()->isPluggableSimulatorAvailable(ID.toStdString()))

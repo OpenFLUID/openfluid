@@ -53,6 +53,7 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/Dashbo
 SET(BUILDER_COMMON_CPP common/AppTools.cpp
                        common/ClickableLabel.cpp common/ActionLabel.cpp
                        common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
+                       common/AddWareDialog.cpp
 
                        )
                      
@@ -61,11 +62,11 @@ SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
                        common/AppTools.hpp
                        common/ClickableLabel.hpp common/ActionLabel.hpp
                        common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
-
+                       common/AddWareDialog.hpp
                       )
 
 QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
-
+                              common/AddWareDialog.ui
                               )
 
 
@@ -79,6 +80,7 @@ SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
                       model/ModelItemGraphics.cpp 
                       model/SimulatorGraphics.cpp model/GeneratorGraphics.cpp
                       model/ConnectorGraphics.cpp
+                      model/AddSimulatorDialog.cpp model/AddGeneratorDialog.cpp
                      )
 
 SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
@@ -87,10 +89,12 @@ SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
                       model/ModelScene.hpp
                       model/ModelItemGraphics.hpp 
                       model/SimulatorGraphics.hpp model/GeneratorGraphics.hpp
-                      model/ConnectorGraphics.hpp                      
+                      model/ConnectorGraphics.hpp 
+                      model/AddSimulatorDialog.hpp model/AddGeneratorDialog.hpp
                      )
 
 QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
+                             model/AddGeneratorDialog.ui
                            )
 
 
@@ -122,10 +126,12 @@ QT4_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
 
 SET(BUILDER_MONITORING_CPP monitoring/MonitoringWidget.cpp
                            monitoring/ObserverWidget.cpp
+                           monitoring/AddObserverDialog.cpp
                           )
 
 SET(BUILDER_MONITORING_HPP monitoring/MonitoringWidget.hpp
                            monitoring/ObserverWidget.hpp
+                           monitoring/AddObserverDialog.hpp
                            )
 
 QT4_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui

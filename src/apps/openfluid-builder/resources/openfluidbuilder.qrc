@@ -8,6 +8,9 @@
     <file>images/check-warn.png</file>
     <file>images/check-error.png</file>
     <file>images/warn-pattern-lightgray.png</file>
+    <file>images/status-experimental.png</file>
+    <file>images/status-beta.png</file>
+    <file>images/status-stable.png</file>
     <file>icons/openfluid_icon.png</file>
     <file>icons/openfluid_icon_about.png</file>
     <file>icons/file-new.png</file>

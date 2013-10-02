@@ -62,8 +62,11 @@
 
 #include "ui_WaresManagementWidget.h"
 #include "ui_MonitoringWidget.h"
+#include "ui_AddWareDialog.h"
 #include "MonitoringWidget.hpp"
 #include "ObserverWidget.hpp"
+#include "AddObserverDialog.hpp"
+#include "AppTools.hpp"
 
 
 MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -99,8 +102,32 @@ MonitoringWidget::~MonitoringWidget()
 
 void MonitoringWidget::addObserver()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  QStringList ObsList = StringVectorToQStringList(m_Monitoring.getOrderedIDs());
+
+  AddObserverDialog AddObsDlg(ObsList,this);
+
+  // TODo duplicate observers may appears in list if a path is defined twice
+  if (AddObsDlg.exec() == QDialog::Accepted)
+  {
+    openfluid::ware::WareID_t ID = AddObsDlg.getSelectedID().toStdString();
+
+    m_Monitoring.addToObserverList(ID);
+
+    ObserverWidget* ObsWidget = new ObserverWidget(this,&m_Monitoring.getDescriptor(ID),ID);
+
+    connect(ObsWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
+    connect(ObsWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
+    connect(ObsWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
+    connect(ObsWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
+
+    // compute position in layout, taking into account the ending spacer
+    int Position = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
+    ((QBoxLayout*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()))->insertWidget(Position,ObsWidget);
+
+    mp_WaresManWidget->updateUpDownButtons();
+
+    emit changed();
+  }
 }
 
 
@@ -168,8 +195,6 @@ void MonitoringWidget::removeModelItem(const QString& ID)
 
 void MonitoringWidget::refresh()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   const std::list<openfluid::fluidx::ObserverDescriptor*>& Items = m_Monitoring.getItems();
 
   std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator itb = Items.begin();
