@@ -90,6 +90,8 @@ class PreferencesDialog : public QDialog
 
     void enableWatchers(bool Active);
 
+    void enableAutoSaveBeforeRun(bool AutoSave);
+
     void updateWorkDir();
 
     void updateDeltaT(int Val);

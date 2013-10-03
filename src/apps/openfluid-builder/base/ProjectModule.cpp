@@ -132,7 +132,7 @@ void ProjectModule::updateWatchersPaths()
   if (!mp_SimulatorsPlugsWatcher->directories().isEmpty())
     mp_SimulatorsPlugsWatcher->removePaths(mp_SimulatorsPlugsWatcher->directories());
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->getWaresWatcher())
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
     Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths())
             << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
@@ -153,7 +153,7 @@ void ProjectModule::updateWatchersPaths()
   if (!mp_ObserversPlugsWatcher->directories().isEmpty())
     mp_ObserversPlugsWatcher->removePaths(mp_ObserversPlugsWatcher->directories());
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->getWaresWatcher())
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
 
     Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths())
@@ -364,7 +364,7 @@ void ProjectModule::whenPreferencesAsked()
   {
     updateWatchersPaths();
 
-    if (PrefsMgr->getWaresWatcher())
+    if (PrefsMgr->isWaresWatchersActive())
     {
       // update wares when re-enabling watching
       updateSimulatorsWares();
@@ -380,6 +380,9 @@ void ProjectModule::whenPreferencesAsked()
 
 void ProjectModule::whenRunAsked()
 {
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isAutomaticSaveBeforeRun())
+    whenSaveAsked();
+
   emit simulationStarted();
   mp_ProjectCentral->run();
   emit simulationFinished();

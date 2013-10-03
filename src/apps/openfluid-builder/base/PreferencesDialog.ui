@@ -139,17 +139,17 @@ font : bold;
          <item>
           <widget class="QGroupBox" name="groupBox_2">
            <property name="title">
-            <string>Recent projects</string>
+            <string>Projects</string>
            </property>
-           <layout class="QHBoxLayout" name="horizontalLayout_6">
-            <item>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="1" column="0">
              <widget class="QLabel" name="label_2">
               <property name="text">
                <string>Maximum number of recent projects:</string>
               </property>
              </widget>
             </item>
-            <item>
+            <item row="1" column="1">
              <widget class="QSpinBox" name="RecentMaxSpinBox">
               <property name="minimum">
                <number>1</number>
@@ -159,14 +159,7 @@ font : bold;
               </property>
              </widget>
             </item>
-            <item>
-             <widget class="QPushButton" name="ClearRecentsButton">
-              <property name="text">
-               <string>Clear list</string>
-              </property>
-             </widget>
-            </item>
-            <item>
+            <item row="1" column="3">
              <spacer name="horizontalSpacer">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -178,6 +171,20 @@ font : bold;
                </size>
               </property>
              </spacer>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="ClearRecentsButton">
+              <property name="text">
+               <string>Clear list</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="4">
+             <widget class="QCheckBox" name="AutoSaveCheckBox">
+              <property name="text">
+               <string>Save project automatically before simulation run</string>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -205,7 +212,7 @@ font : bold;
             <item>
              <widget class="QCheckBox" name="WatchCheckBox">
               <property name="text">
-               <string>Watch for simulators and observers plugins changes</string>
+               <string>Watch for simulators and observers plugins changes on disk (recommended)</string>
               </property>
              </widget>
             </item>
@@ -396,7 +403,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>9</month>
-                <day>8</day>
+                <day>7</day>
                </date>
               </property>
               <property name="displayFormat">

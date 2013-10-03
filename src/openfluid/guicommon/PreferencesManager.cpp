@@ -835,7 +835,7 @@ void PreferencesManager::setToolBarPosition(Qt::ToolBarArea Position)
 // =====================================================================
 
 
-bool PreferencesManager::getItemRemovalConfirm()
+bool PreferencesManager::isItemRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("itemremovalconfirm")) mp_ConfFile->setValue("itemremovalconfirm",true);
@@ -866,7 +866,7 @@ void PreferencesManager::setItemRemovalConfirm(bool Confirm)
 // =====================================================================
 
 
-bool PreferencesManager::getParamRemovalConfirm()
+bool PreferencesManager::isParamRemovalConfirm()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("paramremovalconfirm")) mp_ConfFile->setValue("paramremovalconfirm",true);
@@ -897,7 +897,7 @@ void PreferencesManager::setParamRemovalConfirm(bool Confirm)
 // =====================================================================
 
 
-bool PreferencesManager::getWaresWatcher()
+bool PreferencesManager::isWaresWatchersActive()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   if (!mp_ConfFile->contains("wareswatchers")) mp_ConfFile->setValue("wareswatchers",true);
@@ -915,13 +915,45 @@ bool PreferencesManager::getWaresWatcher()
 // =====================================================================
 
 
-void PreferencesManager::setWaresWatcher(bool Active)
+void PreferencesManager::setWaresWatchersActive(bool Active)
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
   mp_ConfFile->setValue("wareswatchers",Active);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isAutomaticSaveBeforeRun()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("savebeforerun")) mp_ConfFile->setValue("savebeforerun",false);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  bool AutoSave = mp_ConfFile->value("savebeforerun").toBool();
+  mp_ConfFile->endGroup();
+
+  return AutoSave;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setAutomaticSaveBeforeRun(bool AutoSave)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("savebeforerun",AutoSave);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
 
 } } //namespaces
 
