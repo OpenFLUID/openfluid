@@ -94,7 +94,7 @@ GeneratorSignature::GeneratorSignature(
 
 void GeneratorSignature::setFixedInfo()
 {
-  Name = "Fixed Generator";
+  Name = "Fixed values";
   Description = "Generates a constant value";
 
   HandledData.SimulatorParams.push_back(
@@ -112,7 +112,7 @@ void GeneratorSignature::setFixedInfo()
 
 void GeneratorSignature::setRandomInfo()
 {
-  Name = "Random Generator";
+  Name = "Random values";
   Description = "Generates a random value in a range";
 
   HandledData.SimulatorParams.push_back(
@@ -136,7 +136,7 @@ void GeneratorSignature::setRandomInfo()
 
 void GeneratorSignature::setInterpInfo()
 {
-  Name = "Interpolation Generator";
+  Name = "Values from file interpolation";
   Description = "Generates a time-interpolated value from given data series";
 
   HandledData.SimulatorParams.push_back(
@@ -165,7 +165,7 @@ void GeneratorSignature::setInterpInfo()
 
 void GeneratorSignature::setInjectInfo()
 {
-  Name = "Injection Generator";
+  Name = "Values from file injection";
   Description =
       "Generates an injected value -no time interpolation- from given data series";
 

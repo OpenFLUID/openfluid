@@ -84,6 +84,12 @@ class PreferencesDialog : public QDialog
 
     void updateRecentsMax(int Val);
 
+    void confirmItemRemoval(bool Confirm);
+
+    void confirmParamRemoval(bool Confirm);
+
+    void enableWatchers(bool Active);
+
     void updateWorkDir();
 
     void updateDeltaT(int Val);
@@ -137,6 +143,8 @@ class PreferencesDialog : public QDialog
 
     bool m_ObsPathsChanged;
 
+    bool m_WaresWatchingChanged;
+
     void initialize();
 
     void updateMarketplacesList();
@@ -162,6 +170,8 @@ class PreferencesDialog : public QDialog
     bool isSimPathsChanged() const { return m_SimPathsChanged; }
 
     bool isObsPathsChanged() const { return m_ObsPathsChanged; }
+
+    bool isWaresWatchingChanged() const { return m_WaresWatchingChanged; }
 
 
 };

@@ -60,6 +60,7 @@
 #include <QWidget>
 
 #include "WorkspaceWidget.hpp"
+#include "WaresManagementWidget.hpp"
 
 
 namespace Ui
@@ -76,11 +77,36 @@ class MonitoringWidget : public WorkspaceWidget
 
     Ui::MonitoringWidget* ui;
 
+    WaresManagementWidget* mp_WaresManWidget;
+
+    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monitoring;
+
+
+  private slots:
+
+    void addObserver();
+
+    void moveModelItemUp(const QString& ID);
+
+    void moveModelItemDown(const QString& ID);
+
+    void removeModelItem(const QString& ID);
+
+    void dispatchChangesFromChildren();
+
+
+  public slots:
+
+    void refresh();
+
+
   public:
 
     MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~MonitoringWidget();
+
+    void updateWares();
 };
 
 

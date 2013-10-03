@@ -64,6 +64,8 @@
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
 #include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 
+#include <openfluid/machine/SimulatorSignatureRegistry.hpp>
+#include <openfluid/machine/ObserverSignatureRegistry.hpp>
 
 #include "ProjectCentral.hpp"
 #include "ProjectModule.hpp"
@@ -81,6 +83,7 @@
 #include "RunConfigurationWidget.hpp"
 #include "OutputsWidget.hpp"
 
+#include "AppTools.hpp"
 
 #include <iostream>
 
@@ -93,6 +96,14 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
 AbstractModule(), mp_MainWidget(NULL), mp_DashboardWidget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
+
+  mp_SimulatorsPlugsWatcher= new QFileSystemWatcher(this);
+  mp_ObserversPlugsWatcher = new QFileSystemWatcher(this);
+
+  connect(mp_SimulatorsPlugsWatcher,SIGNAL(directoryChanged(const QString&)),this,SLOT(updateSimulatorsWares()));
+  connect(mp_ObserversPlugsWatcher,SIGNAL(directoryChanged(const QString&)),this,SLOT(updateObserversWares()));
+
+  updateWatchersPaths();
 }
 
 
@@ -103,6 +114,59 @@ AbstractModule(), mp_MainWidget(NULL), mp_DashboardWidget(NULL), m_ProjectPath(P
 ProjectModule::~ProjectModule()
 {
   delete mp_ProjectCentral;
+  mp_SimulatorsPlugsWatcher->deleteLater();
+  mp_ObserversPlugsWatcher->deleteLater();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::updateWatchersPaths()
+{
+  QStringList Paths;
+
+  // simulators
+
+  if (!mp_SimulatorsPlugsWatcher->directories().isEmpty())
+    mp_SimulatorsPlugsWatcher->removePaths(mp_SimulatorsPlugsWatcher->directories());
+
+  if (openfluid::guicommon::PreferencesManager::getInstance()->getWaresWatcher())
+  {
+    Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths())
+            << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
+
+    Paths.removeDuplicates();
+
+    foreach (QString P,Paths)
+    {
+      if (QDir(P).exists())
+        mp_SimulatorsPlugsWatcher->addPath(P);
+    }
+  }
+
+  // observers
+
+  Paths.clear();
+
+  if (!mp_ObserversPlugsWatcher->directories().isEmpty())
+    mp_ObserversPlugsWatcher->removePaths(mp_ObserversPlugsWatcher->directories());
+
+  if (openfluid::guicommon::PreferencesManager::getInstance()->getWaresWatcher())
+  {
+
+    Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths())
+                  << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
+
+    Paths.removeDuplicates();
+
+    foreach (QString P,Paths)
+    {
+      if (QDir(P).exists())
+        mp_ObserversPlugsWatcher->addPath(P);
+    }
+  }
 }
 
 
@@ -260,7 +324,7 @@ bool ProjectModule::whenCloseAsked()
 
 void ProjectModule::whenPreferencesAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  bool WaresWatchingUpdated = false;
 
   PreferencesDialog PrefsDlg(QApplication::activeWindow());
   PrefsDlg.exec();
@@ -276,7 +340,10 @@ void ProjectModule::whenPreferencesAsked()
     for (int i=0;i<ExtraPaths.size(); i++)
       openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
 
-    // TODO update current project (monitoring paths, model, ...)
+    updateWatchersPaths();
+    WaresWatchingUpdated = true;
+
+    updateSimulatorsWares();
   }
 
   if (PrefsDlg.isObsPathsChanged())
@@ -287,9 +354,23 @@ void ProjectModule::whenPreferencesAsked()
     for (int i=0;i<ExtraPaths.size(); i++)
       openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
 
-    // TODO update current project (monitoring paths, observers, ...)
+    updateWatchersPaths();
+    WaresWatchingUpdated = true;
+
+    updateObserversWares();
   }
 
+  if (PrefsDlg.isWaresWatchingChanged() && !WaresWatchingUpdated)
+  {
+    updateWatchersPaths();
+
+    if (PrefsMgr->getWaresWatcher())
+    {
+      // update wares when re-enabling watching
+      updateSimulatorsWares();
+      updateObserversWares();
+    }
+  }
 }
 
 
@@ -466,3 +547,27 @@ void ProjectModule::releaseModelessExtension()
     Sender->deleteLater();
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::updateSimulatorsWares()
+{
+  openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
+
+  mp_ModelTab->updateWares();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::updateObserversWares()
+{
+  openfluid::machine::ObserverSignatureRegistry::getInstance()->update();
+  mp_MonitoringTab->updateWares();
+}
+

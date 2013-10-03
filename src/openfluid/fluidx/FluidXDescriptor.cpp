@@ -84,8 +84,31 @@ FluidXDescriptor::~FluidXDescriptor()
 {
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+bool FluidXDescriptor::extractWareEnabledFromNode(QDomElement& Node)
+{
+
+  // a ware is enabled if the enabled attribute is not present
+  // or if it is equal to "1" or "true"
+  QString xmlEnabled = Node.attributeNode(QString("enabled")).value();
+
+  if (!xmlEnabled.isNull())
+  {
+    if (xmlEnabled == "1" || xmlEnabled == "true")
+      return true;
+    else return false;
+  }
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void FluidXDescriptor::extractMonitoringFromNode(QDomElement& Node)
 {
@@ -101,6 +124,7 @@ void FluidXDescriptor::extractMonitoringFromNode(QDomElement& Node)
       {
         OD = new openfluid::fluidx::ObserverDescriptor(xmlID.toStdString());
         OD->setParameters(extractParamsFromNode(CurrNode));
+        OD->setEnabled(extractWareEnabledFromNode(CurrNode));
         m_MonitoringDescriptor.appendItem(OD);
       }
     }
@@ -168,7 +192,7 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
         "FluidXDescriptor::extractModelFromNode",
         "Duplicate model definition (" + m_CurrentFile + ")");
 
-  openfluid::fluidx::SimulatorDescriptor* FD;
+  openfluid::fluidx::SimulatorDescriptor* SD;
   openfluid::fluidx::GeneratorDescriptor* GD;
   openfluid::ware::WareParams_t GParams;
 
@@ -186,9 +210,10 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
       if (!xmlID.isNull())
       {
 
-        FD = new openfluid::fluidx::SimulatorDescriptor(xmlID.toStdString());
-        FD->setParameters(extractParamsFromNode(CurrNode));
-        m_ModelDescriptor.appendItem(FD);
+        SD = new openfluid::fluidx::SimulatorDescriptor(xmlID.toStdString());
+        SD->setParameters(extractParamsFromNode(CurrNode));
+        SD->setEnabled(extractWareEnabledFromNode(CurrNode));
+        m_ModelDescriptor.appendItem(SD);
       }
     }
 
@@ -232,6 +257,7 @@ void FluidXDescriptor::extractModelFromNode(QDomElement& Node)
             xmlVarName.toStdString(), xmlUnitClass.toStdString(), GenMethod,
             VarSize);
         GD->setParameters(extractParamsFromNode(CurrNode));
+        GD->setEnabled(extractWareEnabledFromNode(CurrNode));
         m_ModelDescriptor.appendItem(GD);
       }
       else
@@ -852,7 +878,8 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
           dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it);
 
       Contents << m_IndentStr << m_IndentStr << "<simulator ID=\""
-               << SimDesc->getFileID() << "\">\n";
+               << SimDesc->getFileID() << "\" "
+               << "enabled=\"" << SimDesc->isEnabled() <<  "\">\n";
       Contents << getParamsAsStr(SimDesc->getParameters());
       Contents << m_IndentStr << m_IndentStr << "</simulator>\n";
     }
@@ -870,7 +897,9 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
       if (GenDesc->getVariableSize() != 1)
         Contents << " varsize=\"" << GenDesc->getVariableSize() << "\"";
 
-      Contents << ">\n";
+
+      Contents << " enabled=\"" << GenDesc->isEnabled();
+      Contents << "\">\n";
       Contents << getParamsAsStr(GenDesc->getParameters());
       Contents << m_IndentStr << m_IndentStr << "</generator>\n";
     }
@@ -1161,7 +1190,8 @@ void FluidXDescriptor::writeMonitoringToStream(std::ostream& Contents)
       it != Items.end(); ++it)
   {
     Contents << m_IndentStr << m_IndentStr << "<observer ID=\""
-             << (*it)->getID() << "\">\n";
+             << (*it)->getID() << "\" " <<
+             "enabled=\"" << (*it)->isEnabled() <<"\">\n";
 
     Contents << getParamsAsStr((*it)->getParameters());
 

@@ -831,5 +831,97 @@ void PreferencesManager::setToolBarPosition(Qt::ToolBarArea Position)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::getItemRemovalConfirm()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("itemremovalconfirm")) mp_ConfFile->setValue("itemremovalconfirm",true);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  bool Confirm = mp_ConfFile->value("itemremovalconfirm").toBool();
+  mp_ConfFile->endGroup();
+
+  return Confirm;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setItemRemovalConfirm(bool Confirm)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("itemremovalconfirm",Confirm);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::getParamRemovalConfirm()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("paramremovalconfirm")) mp_ConfFile->setValue("paramremovalconfirm",true);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  bool Confirm = mp_ConfFile->value("paramremovalconfirm").toBool();
+  mp_ConfFile->endGroup();
+
+  return Confirm;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setParamRemovalConfirm(bool Confirm)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("paramremovalconfirm",Confirm);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::getWaresWatcher()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("wareswatchers")) mp_ConfFile->setValue("wareswatchers",true);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  bool Watchers = mp_ConfFile->value("wareswatchers").toBool();
+  mp_ConfFile->endGroup();
+
+  return Watchers;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setWaresWatcher(bool Active)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("wareswatchers",Active);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
 } } //namespaces
 

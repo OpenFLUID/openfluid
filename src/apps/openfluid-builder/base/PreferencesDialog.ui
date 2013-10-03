@@ -183,6 +183,36 @@ font : bold;
           </widget>
          </item>
          <item>
+          <widget class="QGroupBox" name="groupBox_7">
+           <property name="title">
+            <string>Simulators, generators and observers</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_5">
+            <item>
+             <widget class="QCheckBox" name="ItemRemovalCheckBox">
+              <property name="text">
+               <string>Confirm removal of simulators, observers and generators</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="ParamRemovalCheckBox">
+              <property name="text">
+               <string>Confirm removal of parameters</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="WatchCheckBox">
+              <property name="text">
+               <string>Watch for simulators and observers plugins changes</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -366,7 +396,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>9</month>
-                <day>9</day>
+                <day>8</day>
                </date>
               </property>
               <property name="displayFormat">

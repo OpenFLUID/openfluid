@@ -60,8 +60,10 @@
 namespace openfluid {
 namespace fluidx {
 
+
 // =====================================================================
 // =====================================================================
+
 
 AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(
     openfluid::fluidx::MonitoringDescriptor& MonitoringDesc) :
@@ -70,16 +72,20 @@ AdvancedMonitoringDescriptor::AdvancedMonitoringDescriptor(
   checkMonitoring();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 AdvancedMonitoringDescriptor::~AdvancedMonitoringDescriptor()
 {
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedMonitoringDescriptor::checkMonitoring() const
 {
@@ -99,15 +105,20 @@ void AdvancedMonitoringDescriptor::checkMonitoring() const
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const std::list<openfluid::fluidx::ObserverDescriptor*>& AdvancedMonitoringDescriptor::getItems() const
 {
   return mp_MonitoringDesc->getItems();
 }
+
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::fluidx::ObserverDescriptor& AdvancedMonitoringDescriptor::getDescriptor(
     std::string ObserverID) const
@@ -126,8 +137,10 @@ openfluid::fluidx::ObserverDescriptor& AdvancedMonitoringDescriptor::getDescript
       "Observer " + ObserverID + " is not in Observer list");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedMonitoringDescriptor::addToObserverList(std::string ObserverID)
 {
@@ -136,8 +149,10 @@ void AdvancedMonitoringDescriptor::addToObserverList(std::string ObserverID)
   mp_MonitoringDesc->appendItem(Obs);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedMonitoringDescriptor::removeFromObserverList(
     std::string ObserverID)
@@ -151,8 +166,10 @@ void AdvancedMonitoringDescriptor::removeFromObserverList(
     Observers.erase(it);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedMonitoringDescriptor::setItems(
     std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList)
@@ -160,8 +177,10 @@ void AdvancedMonitoringDescriptor::setItems(
   mp_MonitoringDesc->getItems() = ObserversList;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedMonitoringDescriptor::moveItemTowardsTheBeginning(
     std::string ObserverID)
@@ -194,8 +213,10 @@ void AdvancedMonitoringDescriptor::moveItemTowardsTheBeginning(
   std::swap(*itFrom, *itTo);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedMonitoringDescriptor::moveItemTowardsTheEnd(std::string ObserverID)
 {
@@ -227,8 +248,43 @@ void AdvancedMonitoringDescriptor::moveItemTowardsTheEnd(std::string ObserverID)
   std::swap(*itFrom, *itTo);
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
+int AdvancedMonitoringDescriptor::getFirstIndex(const std::string& ID) const
+{
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
+      mp_MonitoringDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if ((*it)->getID() == ID)
+      return std::distance(Items.begin(), it);
+  }
+
+  return -1;
 }
-} //namespaces
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<openfluid::ware::WareID_t> AdvancedMonitoringDescriptor::getOrderedIDs() const
+{
+  std::vector<openfluid::ware::WareID_t> IDs;
+
+  std::list<openfluid::fluidx::ObserverDescriptor*>& Items =
+      mp_MonitoringDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ObserverDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+    IDs.push_back((*it)->getID());
+
+  return IDs;
+}
+
+} } //namespaces

@@ -12,13 +12,12 @@ CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.h
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
 
-INCLUDE_DIRECTORIES(base datastore model monitoring spatial outputs runconfig extensions)
+INCLUDE_DIRECTORIES(base common datastore model monitoring spatial outputs runconfig extensions)
   
 
 ### BASE #
 
-SET(BUILDER_BASE_CPP base/AppTools.cpp base/ClickableLabel.cpp
-                     base/AppCoordinator.cpp base/AppActions.cpp
+SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/BuilderApp.cpp base/MainWindow.cpp 
                      base/HomeModule.cpp base/HomeWidget.cpp                       
                      base/ProjectModule.cpp base/ProjectWidget.cpp base/DashboardWidget.cpp                     
@@ -29,37 +28,76 @@ SET(BUILDER_BASE_CPP base/AppTools.cpp base/ClickableLabel.cpp
                      base/OpenExampleProjectDialog.cpp                     
                      )
                      
-SET(BUILDER_BASE_HPP base/AppTools.hpp base/ClickableLabel.cpp
-                     base/AppCoordinator.hpp base/AppActions.hpp
+SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
-                     base/AbstractModule.hpp 
                      base/HomeModule.hpp base/HomeWidget.hpp base/DashboardWidget.hpp
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
                      base/ProjectCentral.hpp base/ProjectCheck.hpp
-                     base/WorkspaceWidget.hpp
                      base/NewProjectDialog.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
                      base/AboutDialog.hpp
-                     base/OpenExampleProjectDialog.hpp
+                     base/OpenExampleProjectDialog.hpp                     
                      )
 
 QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/DashboardWidget.ui
                             base/NewProjectDialog.ui
                             base/PreferencesDialog.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
                             base/AboutDialog.ui
-                            base/OpenExampleProjectDialog.ui)
+                            base/OpenExampleProjectDialog.ui
+                            )
+
+
+
+### COMMON #
+
+SET(BUILDER_COMMON_CPP common/AppTools.cpp
+                       common/ClickableLabel.cpp common/ActionLabel.cpp
+                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
+                       common/AddWareDialog.cpp
+                       common/AddParamDialog.cpp
+                       )
+                     
+SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
+                       common/WorkspaceWidget.hpp
+                       common/AppTools.hpp
+                       common/ClickableLabel.hpp common/ActionLabel.hpp
+                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
+                       common/AddWareDialog.hpp
+                       common/AddParamDialog.hpp
+                      )
+
+QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
+                              common/AddWareDialog.ui
+                              common/AddParamDialog.ui
+                              )
+
 
 
 ### MODEL #
 
 SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
-                          )
+                      model/SimulatorWidget.cpp
+                      model/GeneratorWidget.cpp
+                      model/ModelScene.cpp
+                      model/ModelItemGraphics.cpp 
+                      model/SimulatorGraphics.cpp model/GeneratorGraphics.cpp
+                      model/ConnectorGraphics.cpp
+                      model/AddSimulatorDialog.cpp model/AddGeneratorDialog.cpp
+                     )
 
 SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
-                           )
+                      model/SimulatorWidget.hpp
+                      model/GeneratorWidget.hpp
+                      model/ModelScene.hpp
+                      model/ModelItemGraphics.hpp 
+                      model/SimulatorGraphics.hpp model/GeneratorGraphics.hpp
+                      model/ConnectorGraphics.hpp 
+                      model/AddSimulatorDialog.hpp model/AddGeneratorDialog.hpp
+                     )
 
 QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
-                                 )
+                             model/AddGeneratorDialog.ui
+                           )
 
 
 ### SPATIAL #
@@ -89,13 +127,17 @@ QT4_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
 ### MONITORING #
 
 SET(BUILDER_MONITORING_CPP monitoring/MonitoringWidget.cpp
+                           monitoring/ObserverWidget.cpp
+                           monitoring/AddObserverDialog.cpp
                           )
 
 SET(BUILDER_MONITORING_HPP monitoring/MonitoringWidget.hpp
+                           monitoring/ObserverWidget.hpp
+                           monitoring/AddObserverDialog.hpp
                            )
 
 QT4_WRAP_UI(BUILDER_MONITORING_UI monitoring/MonitoringWidget.ui
-                                 )
+                                  )
 
 
 ### SIMCONFIG #
@@ -140,6 +182,7 @@ QT4_ADD_RESOURCES(BUILDER_RC resources/openfluidbuilder.qrc)
 
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP} ${BUILDER_BASE_UI}
+                                          ${BUILDER_COMMON_CPP} ${BUILDER_COMMON_HPP} ${BUILDER_COMMON_UI}
                                           ${BUILDER_MODEL_CPP} ${BUILDER_MODEL_HPP} ${BUILDER_MODEL_UI}
                                           ${BUILDER_SPATIAL_CPP} ${BUILDER_SPATIAL_HPP} ${BUILDER_SPATIAL_UI}
                                           ${BUILDER_DATASTORE_CPP} ${BUILDER_DATASTORE_HPP} ${BUILDER_DATASTORE_UI}
@@ -156,7 +199,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       ${Boost_REGEX_LIBRARY}
                       ${GDAL_LIBRARIES}
                       ${QT_QTCORE_LIBRARIES}
-                      ${QT_QTGUI_LIBRARIES}                      
+                      ${QT_QTGUI_LIBRARIES}
+                      ${QT_QTSVG_LIBRARIES}
                       openfluid-base
                       openfluid-buddies
                       openfluid-core

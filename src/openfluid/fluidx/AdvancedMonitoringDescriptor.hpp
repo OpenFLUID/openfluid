@@ -62,6 +62,8 @@
 namespace openfluid {
 namespace fluidx {
 
+
+// TODO refactor this for enable the possibility to have the same observer twice in the monitoring list
 class DLLEXPORT AdvancedMonitoringDescriptor
 {
   private:
@@ -103,8 +105,17 @@ class DLLEXPORT AdvancedMonitoringDescriptor
     void setItems(
         std::list<openfluid::fluidx::ObserverDescriptor*> ObserversList);
 
+    // TODO to rename to match equivalent in AdvancedModelDescriptor
     void moveItemTowardsTheBeginning(std::string ObserverID);
+
+    // TODO to rename to match equivalent in AdvancedModelDescriptor
     void moveItemTowardsTheEnd(std::string ObserverID);
+
+    int getFirstIndex(const std::string& ID) const;
+
+    std::vector<openfluid::ware::WareID_t> getOrderedIDs() const;
+
+
 
 };
 

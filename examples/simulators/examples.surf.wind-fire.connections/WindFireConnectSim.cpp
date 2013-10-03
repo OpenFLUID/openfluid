@@ -77,7 +77,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
                       "The corrected wind direction is computed by applying a random value to the main wind direction");
 
   DECLARE_VERSION("1.0");
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_STATUS(openfluid::ware::BETA);
 
   DECLARE_DOMAIN("fire");
   DECLARE_PROCESS("spatial connections");
@@ -98,6 +98,10 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.wind-fire.connections")
 
   DECLARE_PRODUCED_VAR("gas.atm.degree.winddir","AU",
                        "Corrected wind direction in degrees in the athmospheric unit, computed using main wind direction and a random variation","degree")
+
+  DECLARE_UPDATED_UNITSGRAPH("The spatial graph of LU is modified according to wind directions at each time step");
+  DECLARE_UPDATED_UNITSCLASS("LU","The LU connections are modified according to wind directions, "
+                                   "using the neighbours cells attributes N, NE, E, SE, S, SW, W, NW.");
 
   DECLARE_SCHEDULING_DEFAULT;
 

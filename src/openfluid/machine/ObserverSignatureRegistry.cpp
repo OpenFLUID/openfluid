@@ -84,19 +84,15 @@ ObserverSignatureRegistry* ObserverSignatureRegistry::getInstance()
 // =====================================================================
 // =====================================================================
 
-const ObserverSignatureInstance& ObserverSignatureRegistry::getSignature(
-    std::string ObserverID)
+const ObserverSignatureInstance* ObserverSignatureRegistry::getSignature(const std::string& ObserverID)
 {
   for (std::vector<openfluid::machine::ObserverSignatureInstance*>::iterator it =
       m_AvailableSignatures.begin(); it != m_AvailableSignatures.end(); ++it)
   {
     if ((*it)->Signature->ID == ObserverID)
-      return **it;
+      return (*it);
   }
-
-  throw openfluid::base::FrameworkException(
-      "AdvancedMonitoringDescriptor::getSignature",
-      "Observer " + ObserverID + " is not available");
+  return NULL;
 }
 
 // =====================================================================

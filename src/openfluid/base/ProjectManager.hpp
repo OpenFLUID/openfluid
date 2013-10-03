@@ -62,6 +62,7 @@
 #include <string>
 #include <QString>
 #include <QVariant>
+#include <QSettings>
 
 namespace openfluid { namespace base {
 
@@ -74,6 +75,8 @@ class DLLEXPORT ProjectManager
   private:
 
     static ProjectManager* mp_Singleton;
+
+    QSettings* mp_PrjFile;
 
     std::string m_Path;
 
@@ -162,6 +165,10 @@ class DLLEXPORT ProjectManager
                                 std::string& CreationDate, std::string& LastModDate);
 
     void updateOutputDir();
+
+    QVariant getConfigValue(const QString& Group, const QString& Key) const;
+
+    void setConfigValue(const QString& Group, const QString& Key, const QVariant& Value);
 
 };
 

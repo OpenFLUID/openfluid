@@ -73,7 +73,15 @@ const QString BUILDER_URL_DEV = "https://github.com/OpenFLUID/";
 const QString BUILDER_URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
 const QString BUILDER_URL_EMAIL = "mailto:contact@openfluid-project.org";
 
+const QString BUILDER_SIMULATOR_BGCOLOR = "#ECF9B5";
+const QString BUILDER_GENERATOR_BGCOLOR = "#FDFEDE";
+const QString BUILDER_OBSERVER_BGCOLOR = "#E9F7FE";
+const QString BUILDER_DISABLEDWARE_BGCOLOR = "#CCCCCC";
 
+#define BUILDER_MODELVIEW_ACTIVECOLOR "#617487" 
+#define BUILDER_MODELVIEW_INACTIVECOLOR "#B7B7B7"
+#define BUILDER_MODELVIEW_BORDERCOLOR "#B7B7B7"
+#define BUILDER_MODELVIEW_CONNECTCOLOR "#96B4D1"
 
 
 #endif /* __BUILDERCONFIG_HPP__ */

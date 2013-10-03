@@ -76,7 +76,7 @@ BEGIN_SIMULATOR_SIGNATURE("examples.surf.fire.prod-spread")
                       "It also performs the propagation of the head of the fire using landscapes connections");
 
   DECLARE_VERSION("1.0");
-  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_STATUS(openfluid::ware::BETA);
 
   DECLARE_DOMAIN("fire");
   DECLARE_PROCESS("production, spreading");

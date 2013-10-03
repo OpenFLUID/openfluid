@@ -124,15 +124,15 @@ std::string GeneratorDescriptor::getGeneratorName(GeneratorDescriptor::Generator
   switch (GenMethod)
   {
     case Fixed:
-      return "Fixed Generator";
+      return "Fixed values";
     case Random:
-      return "Random Generator";
+      return "Random values";
     case Interp:
-      return "Interp Generator";
+      return "Values from file interpolation";
     case Inject:
-      return "Inject Generator";
+      return "Values from file injection";
     default:
-      return "NoGenMethod Generator";
+      return "unknown";
   }
 }
 

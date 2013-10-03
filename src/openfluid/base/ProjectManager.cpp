@@ -52,7 +52,6 @@
  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <QSettings>
 #include <QFile>
 #include <QDir>
 
@@ -77,6 +76,7 @@ QString ProjectManager::m_GroupName = "OpenFLUID Project";
 
 
 ProjectManager::ProjectManager() :
+  mp_PrjFile(NULL),
   m_Path(""), m_Name(""), m_Description(""), m_Authors(""), m_CreationDate(""),
   m_LastModDate(""), m_IsIncOutputDir(false), m_IsOpened(false)
 {
@@ -89,7 +89,7 @@ ProjectManager::ProjectManager() :
 
 ProjectManager::~ProjectManager()
 {
-
+  close();
 }
 
 // =====================================================================
@@ -184,21 +184,23 @@ bool ProjectManager::open(const std::string& Path)
   m_InputDir = getInputDirFromProjectPath(Path);
   m_OutputDir = getOuputDirFromProjectPath(Path);
 
-  if (checkProject(Path))
+  if (!m_IsOpened && checkProject(Path))
   {
     QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(Path));
-    QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
+    mp_PrjFile = new QSettings(PrjFilePath,QSettings::IniFormat);
 
-    PrjFile.beginGroup(m_GroupName);
-    m_Name = openfluid::tools::fromIniCompatible(PrjFile.value("Name"));
-    m_Description = openfluid::tools::fromIniCompatible(PrjFile.value("Description"));
-    m_Authors = openfluid::tools::fromIniCompatible(PrjFile.value("Authors"));
-    m_CreationDate = PrjFile.value("CreationDate").toString().toStdString();
-    m_LastModDate = PrjFile.value("LastModDate").toString().toStdString();
-    m_IsIncOutputDir = PrjFile.value("IncOutput").toBool();
-    PrjFile.endGroup();
+
+    mp_PrjFile->beginGroup(m_GroupName);
+    m_Name = openfluid::tools::fromIniCompatible(mp_PrjFile->value("Name"));
+    m_Description = openfluid::tools::fromIniCompatible(mp_PrjFile->value("Description"));
+    m_Authors = openfluid::tools::fromIniCompatible(mp_PrjFile->value("Authors"));
+    m_CreationDate = mp_PrjFile->value("CreationDate").toString().toStdString();
+    m_LastModDate = mp_PrjFile->value("LastModDate").toString().toStdString();
+    m_IsIncOutputDir = mp_PrjFile->value("IncOutput").toBool();
+    mp_PrjFile->endGroup();
 
     m_IsOpened = true;
+
     return true;
   }
   return false;
@@ -214,11 +216,16 @@ bool ProjectManager::create(const std::string& Path,
     const std::string& Name, const std::string& Description,
     const std::string& Authors, const bool Inc)
 {
+  if (m_IsOpened) return false;
+
   if (boost::filesystem::create_directories(getInputDirFromProjectPath(Path)))
   {
     m_Path = Path;
     m_InputDir = getInputDirFromProjectPath(Path);
     m_OutputDir = getOuputDirFromProjectPath(Path);
+
+    QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(Path));
+    mp_PrjFile = new QSettings(PrjFilePath,QSettings::IniFormat);
 
     m_Name = Name;
     m_Description = Description;
@@ -241,20 +248,19 @@ bool ProjectManager::create(const std::string& Path,
 
 bool ProjectManager::save()
 {
-  QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(m_Path));
-  QSettings PrjFile(PrjFilePath,QSettings::IniFormat);
+  if (!m_IsOpened) return false;
 
   m_LastModDate = getNow();
 
-  PrjFile.beginGroup(m_GroupName);
-  PrjFile.setValue("Name",openfluid::tools::toIniCompatible(m_Name));
-  PrjFile.setValue("Description",openfluid::tools::toIniCompatible(m_Description));
-  PrjFile.setValue("Authors",openfluid::tools::toIniCompatible(m_Authors));
-  PrjFile.setValue("CreationDate",QString::fromStdString(m_CreationDate));
-  PrjFile.setValue("LastModDate",QString::fromStdString(m_LastModDate));
-  PrjFile.setValue("IncOutput",m_IsIncOutputDir);
-  PrjFile.endGroup();
-  PrjFile.sync();
+  mp_PrjFile->beginGroup(m_GroupName);
+  mp_PrjFile->setValue("Name",openfluid::tools::toIniCompatible(m_Name));
+  mp_PrjFile->setValue("Description",openfluid::tools::toIniCompatible(m_Description));
+  mp_PrjFile->setValue("Authors",openfluid::tools::toIniCompatible(m_Authors));
+  mp_PrjFile->setValue("CreationDate",QString::fromStdString(m_CreationDate));
+  mp_PrjFile->setValue("LastModDate",QString::fromStdString(m_LastModDate));
+  mp_PrjFile->setValue("IncOutput",m_IsIncOutputDir);
+  mp_PrjFile->endGroup();
+  mp_PrjFile->sync();
 
   return true;
 }
@@ -270,6 +276,10 @@ void ProjectManager::close()
 
   m_IsIncOutputDir = m_IsOpened = false;
 
+  mp_PrjFile->sync();
+
+  delete mp_PrjFile;
+  mp_PrjFile = NULL;
 }
 
 // =====================================================================
@@ -284,7 +294,8 @@ void ProjectManager::updateOutputDir()
     Now.replace(8,1,"-");
 
     m_OutputDir = getOuputDirFromProjectPath(m_Path).append("_").append(Now);
-  } else
+  }
+  else
     m_OutputDir = getOuputDirFromProjectPath(m_Path);
 }
 
@@ -329,6 +340,29 @@ bool ProjectManager::getProjectInfos(const std::string& Path,
   }
   return false;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+QVariant ProjectManager::getConfigValue(const QString& Group, const QString& Key) const
+{
+  if (!m_IsOpened) return QVariant();
+  return mp_PrjFile->value(Group+"/"+Key);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectManager::setConfigValue(const QString& Group, const QString& Key, const QVariant& Value)
+{
+  if (!m_IsOpened) return;
+  mp_PrjFile->setValue(Group+"/"+Key,Value);
+}
+
 
 
 } } //namespaces

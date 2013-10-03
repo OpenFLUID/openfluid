@@ -60,6 +60,9 @@
 #include <QWidget>
 
 #include "WorkspaceWidget.hpp"
+#include "WaresManagementWidget.hpp"
+#include "ActionLabel.hpp"
+#include "ModelScene.hpp"
 
 
 namespace Ui
@@ -76,11 +79,57 @@ class ModelWidget : public WorkspaceWidget
 
     Ui::ModelWidget* ui;
 
+    ActionLabel* mp_ShowHideGlobalParamsLabel;
+
+    WaresManagementWidget* mp_WaresManWidget;
+
+    ModelScene* mp_ModelScene;
+
+    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
+
+    void updateGlobalParams();
+
+    void updateCoupledModel();
+
+
+  private slots:
+
+    void updateShowHideGlobalParams();
+
+    void addGlobalParam();
+
+    void removeGlobalParam(const QString& Name);
+
+    void updateGlobalParamValue(const QString& Name, const QString& Value);
+
+    void addSimulator();
+
+    void addGenerator();
+
+    void moveModelItemUp(const QString& ID);
+
+    void moveModelItemDown(const QString& ID);
+
+    void removeModelItem(const QString& ID);
+
+    void dispatchChangesFromChildren();
+
+    void exportModelViewAsPNG();
+
+    void exportModelViewAsSVG();
+
+  public slots:
+
+    void refresh();
+
+
   public:
 
     ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~ModelWidget();
+
+    void updateWares();
 };
 
 
