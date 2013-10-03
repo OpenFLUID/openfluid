@@ -53,6 +53,8 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <openfluid/guicommon/PreferencesManager.hpp>
+
 #include "builderconfig.hpp"
 
 #include "ui_WareWidget.h"
@@ -251,7 +253,24 @@ void WareWidget::notifyDownClicked()
 
 void WareWidget::notifyRemoveClicked()
 {
-  emit removeClicked(QString::fromStdString(m_ID));
+  bool OK = true;
+
+  if (openfluid::guicommon::PreferencesManager::getInstance()->getItemRemovalConfirm())
+  {
+    QString TypeStr = tr("generator");
+
+    if (getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator) TypeStr = tr("simulator");
+    else if (getType() == openfluid::fluidx::WareDescriptor::PluggedObserver) TypeStr = tr("observer");
+
+
+    OK = (QMessageBox::question(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("You are removing the %1 %2.\nAll parameters will be lost.\n\nProceed anyway?").arg(QString::fromStdString(getID())).arg(TypeStr),
+                                QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+  }
+
+  if (OK)
+    emit removeClicked(QString::fromStdString(m_ID));
 }
 
 

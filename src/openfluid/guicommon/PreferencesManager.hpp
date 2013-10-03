@@ -217,6 +217,19 @@ class DLLEXPORT PreferencesManager
 
     void setToolBarPosition(Qt::ToolBarArea Position);
 
+
+    bool getItemRemovalConfirm();
+
+    void setItemRemovalConfirm(bool Confirm);
+
+    bool getParamRemovalConfirm();
+
+    void setParamRemovalConfirm(bool Confirm);
+
+    bool getWaresWatcher();
+
+    void setWaresWatcher(bool Active);
+
 };
 
 } } //namespaces

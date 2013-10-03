@@ -95,6 +95,9 @@ class SimulatorWidget : public WareWidget
     ~SimulatorWidget();
 
     void updateWare();
+
+    openfluid::fluidx::WareDescriptor::WareType getType()
+    { return openfluid::fluidx::WareDescriptor::PluggedSimulator; }
 };
 
 

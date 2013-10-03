@@ -73,7 +73,8 @@
 
 PreferencesDialog::PreferencesDialog(QWidget* Parent):
   QDialog(Parent), ui(new Ui::PreferencesDialog),
-  m_RecentsChanged(false), m_SimPathsChanged(false), m_ObsPathsChanged(false)
+  m_RecentsChanged(false),
+  m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false)
 {
   setWindowModality(Qt::ApplicationModal);
 
@@ -117,6 +118,9 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent):
   connect(ui->LangComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(updateLanguage(const QString&)));
   connect(ui->RecentMaxSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateRecentsMax(int)));
   connect(ui->ClearRecentsButton,SIGNAL(clicked()),this,SLOT(clearRecentsList()));
+  connect(ui->ItemRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmItemRemoval(bool)));
+  connect(ui->ParamRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmParamRemoval(bool)));
+  connect(ui->WatchCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableWatchers(bool)));
 
   connect(ui->WorkDirButton,SIGNAL(clicked()),this,SLOT(updateWorkDir()));
 
@@ -187,6 +191,9 @@ void PreferencesDialog::initialize()
   ui->LangComboBox->setCurrentIndex(ui->LangComboBox->findText(PrefsMan->getLang()));
   ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
 
+  ui->ItemRemovalCheckBox->setChecked(PrefsMan->getItemRemovalConfirm());
+  ui->ParamRemovalCheckBox->setChecked(PrefsMan->getParamRemovalConfirm());
+  ui->WatchCheckBox->setChecked(PrefsMan->getWaresWatcher());
 
   // Paths
   ui->WorkDirEdit->setText(PrefsMan->getWorkdir());
@@ -368,6 +375,38 @@ void PreferencesDialog::updateRecentsMax(int Val)
 {
   openfluid::guicommon::PreferencesManager::getInstance()->setRecentMax(Val);
   m_RecentsChanged = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::confirmItemRemoval(bool Confirm)
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setItemRemovalConfirm(Confirm);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::confirmParamRemoval(bool Confirm)
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setParamRemovalConfirm(Confirm);
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::enableWatchers(bool Active)
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setWaresWatcher(Active);
+  m_WaresWatchingChanged = true;
 }
 
 

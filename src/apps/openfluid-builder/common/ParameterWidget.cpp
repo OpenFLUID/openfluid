@@ -53,9 +53,12 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <openfluid/guicommon/PreferencesManager.hpp>
+
 #include "ui_ParameterWidget.h"
 #include "ParameterWidget.hpp"
 
+#include <QMessageBox>
 
 ParameterWidget::ParameterWidget(QWidget* Parent,
                     const QString& Name, const QString& Value,
@@ -110,7 +113,18 @@ void ParameterWidget::notifyValueChanged()
 
 void ParameterWidget::notifyRemoveClicked()
 {
-  emit removeClicked(ui->NameLabel->text());
+  bool OK = true;
+
+  if (openfluid::guicommon::PreferencesManager::getInstance()->getParamRemovalConfirm())
+  {
+    OK = (QMessageBox::question(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("You are removing the %1 parameter.\nIts value will be lost.\nProceed anyway?").arg(getName()),
+                                QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+  }
+
+  if (OK)
+    emit removeClicked(ui->NameLabel->text());
 }
 
 
