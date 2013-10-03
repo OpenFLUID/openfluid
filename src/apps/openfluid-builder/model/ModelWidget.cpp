@@ -571,3 +571,21 @@ void ModelWidget::exportModelViewAsSVG()
   }
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::updateWares()
+{
+  int LastIndex = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
+
+  for (int i=0;i<=LastIndex;i++)
+  {
+    WareWidget* W = (WareWidget*)(mp_WaresManWidget->ui->WaresListAreaContents->layout()->itemAt(i)->widget());
+    if (W != NULL) W->updateWare();
+  }
+
+  mp_ModelScene->refresh();
+}
+

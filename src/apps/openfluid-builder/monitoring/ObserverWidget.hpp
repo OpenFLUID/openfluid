@@ -96,6 +96,7 @@ class ObserverWidget : public WareWidget
 
     ~ObserverWidget();
 
+    void updateWare();
 
 };
 

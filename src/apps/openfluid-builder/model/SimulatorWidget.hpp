@@ -94,7 +94,7 @@ class SimulatorWidget : public WareWidget
 
     ~SimulatorWidget();
 
-
+    void updateWare();
 };
 
 

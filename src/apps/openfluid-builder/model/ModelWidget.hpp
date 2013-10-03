@@ -128,6 +128,8 @@ class ModelWidget : public WorkspaceWidget
     ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~ModelWidget();
+
+    void updateWares();
 };
 
 

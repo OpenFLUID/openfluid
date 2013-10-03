@@ -204,3 +204,13 @@ void ObserverWidget::removeParam(const QString& Name)
     emit changed();
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ObserverWidget::updateWare()
+{
+  refresh();
+}

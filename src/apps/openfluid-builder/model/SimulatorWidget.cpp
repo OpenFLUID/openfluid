@@ -226,3 +226,14 @@ void SimulatorWidget::removeParam(const QString& Name)
     emit changed();
   }
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorWidget::updateWare()
+{
+  refresh();
+}
+

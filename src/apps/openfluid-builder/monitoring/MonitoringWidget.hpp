@@ -105,6 +105,8 @@ class MonitoringWidget : public WorkspaceWidget
     MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~MonitoringWidget();
+
+    void updateWares();
 };
 
 

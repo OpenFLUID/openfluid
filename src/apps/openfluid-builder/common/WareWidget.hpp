@@ -142,6 +142,12 @@ class WareWidget : public QWidget
 
   public:
 
+    WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, bool Enabled, const QString& BGColor);
+
+    virtual ~WareWidget();
+
+    virtual void updateWare();
+
     void setExpanded(bool Expand);
 
     void setUpButtonEnabled(bool Enabled);
@@ -152,11 +158,6 @@ class WareWidget : public QWidget
 
     openfluid::ware::WareID_t getID() const
     { return m_ID; };
-
-    WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, bool Enabled, const QString& BGColor);
-
-    virtual ~WareWidget();
-
 
 };
 

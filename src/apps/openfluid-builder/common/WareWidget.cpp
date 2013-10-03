@@ -316,3 +316,14 @@ bool WareWidget::removeParameterWidget(const QString& Name, bool WithFinalStretc
 
   return false;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::updateWare()
+{
+
+}
+

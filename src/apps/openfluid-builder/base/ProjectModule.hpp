@@ -57,10 +57,11 @@
 #define __PROJECTMODULE_HPP__
 
 
+#include "AbstractModule.hpp"
+
 #include <QString>
 #include <QDockWidget>
-
-#include "AbstractModule.hpp"
+#include <QFileSystemWatcher>
 
 
 class ProjectCentral;
@@ -74,6 +75,7 @@ class MonitoringWidget;
 class DatastoreWidget;
 class RunConfigurationWidget;
 class OutputsWidget;
+
 
 
 class ProjectModule : public AbstractModule
@@ -102,6 +104,11 @@ class ProjectModule : public AbstractModule
 
     ProjectCentral* mp_ProjectCentral;
 
+    QFileSystemWatcher* mp_SimulatorsPlugsWatcher;
+
+    QFileSystemWatcher* mp_ObserversPlugsWatcher;
+
+    void updateWatchersPaths();
 
   signals:
 
@@ -131,6 +138,10 @@ class ProjectModule : public AbstractModule
     void dispatchChanges();
 
     void dispatchChangesFromExtension();
+
+    void updateSimulatorsWares();
+
+    void updateObserversWares();
 
 
   public:
