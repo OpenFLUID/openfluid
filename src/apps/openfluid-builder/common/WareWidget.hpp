@@ -85,12 +85,14 @@ class WareWidget : public QWidget
 
     void notifyRemoveClicked();
 
-    void addParameter();
-
 
   protected slots:
 
     virtual void setEnabledWare(bool Enabled);
+
+    virtual void updateParamValue(const QString& Name, const QString& Value);
+
+    virtual void removeParam(const QString& Name);
 
 
   protected:
@@ -117,7 +119,10 @@ class WareWidget : public QWidget
 
     virtual void updateWidgetBackground();
 
+    bool addParameterWidget(const QString& Name, const QString& Value);
+
     bool removeParameterWidget(const QString& Name, bool WithFinalStretch = true);
+
 
   signals:
 
@@ -132,7 +137,7 @@ class WareWidget : public QWidget
 
   public slots:
 
-    virtual void refresh() =0;
+    virtual void refresh() = 0;
 
 
   public:

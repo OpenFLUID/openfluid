@@ -76,6 +76,8 @@ class ObserverWidget : public WareWidget
 
     void setEnabledWare(bool Enabled);
 
+    void addParam();
+
     void updateParamValue(const QString& Name, const QString& Value);
 
     void removeParam(const QString& Name);

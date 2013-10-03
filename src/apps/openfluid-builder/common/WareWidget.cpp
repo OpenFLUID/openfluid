@@ -107,8 +107,6 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, boo
   connect(ui->DownButton,SIGNAL(clicked()),this,SLOT(notifyDownClicked()));
   connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(notifyRemoveClicked()));
 
-  connect(ui->AddParamButton,SIGNAL(clicked()),this,SLOT(addParameter()));
-
   ui->ParamInfoWidget->setVisible(false);
 }
 
@@ -261,10 +259,39 @@ void WareWidget::notifyRemoveClicked()
 // =====================================================================
 
 
-void WareWidget::addParameter()
+void WareWidget::updateParamValue(const QString& /*Name*/, const QString& /*Value*/)
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::removeParam(const QString& /*Name*/)
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareWidget::addParameterWidget(const QString& Name, const QString& Value)
+{
+  ParameterWidget* ParamWidget = new ParameterWidget(this,
+                                                     Name,Value,
+                                                     QString::fromStdString(""),true);
+
+  connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateParamValue(const QString&,const QString&)));
+  connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeParam(const QString&)));
+
+  int Position = ui->ParamsAreaContents->layout()->count()-1;
+  ((QBoxLayout*)(ui->ParamsAreaContents->layout()))->insertWidget(Position,ParamWidget);
+
+  return true;
 }
 
 

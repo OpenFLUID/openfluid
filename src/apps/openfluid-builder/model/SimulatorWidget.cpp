@@ -59,8 +59,9 @@
 
 #include "ui_WareWidget.h"
 #include "SimulatorWidget.hpp"
-
 #include "ParameterWidget.hpp"
+#include "AddParamDialog.hpp"
+
 
 
 SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDescriptor* Desc,
@@ -68,6 +69,8 @@ SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDe
   WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR), mp_Desc(Desc)
 {
   refresh();
+
+  connect(ui->AddParamButton,SIGNAL(clicked()),this,SLOT(addParam()));
 }
 
 
@@ -170,6 +173,33 @@ void SimulatorWidget::setEnabledWare(bool Enabled)
   mp_Desc->setEnabled(Enabled);
   WareWidget::setEnabledWare(Enabled);
   emit changed();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorWidget::addParam()
+{
+  QStringList ExistPList;
+
+  openfluid::ware::WareParams_t Params = mp_Desc->getParameters();
+
+  for (openfluid::ware::WareParams_t::iterator it = Params.begin();it != Params.end(); ++it)
+    ExistPList.append(QString::fromStdString((*it).first));
+
+
+  AddParamDialog AddPDlg(ExistPList,QStringList(),this);
+
+  if (AddPDlg.exec() == QDialog::Accepted)
+  {
+    if (addParameterWidget(AddPDlg.getParamName(),AddPDlg.getParamValue()))
+    {
+      mp_Desc->setParameter(AddPDlg.getParamName().toStdString(),AddPDlg.getParamValue().toStdString());
+      emit changed();
+    }
+  }
 }
 
 

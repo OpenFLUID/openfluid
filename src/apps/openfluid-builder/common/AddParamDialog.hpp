@@ -46,90 +46,64 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file AddParamDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __ADDPARAMDIALOG_HPP__
+#define __ADDPARAMDIALOG_HPP__
 
 
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
-#include "ModelScene.hpp"
+#include <QDialog>
+#include <QCompleter>
+#include <QStringList>
 
 
 namespace Ui
 {
-  class ModelWidget;
+  class AddParamDialog;
 }
 
 
-class ModelWidget : public WorkspaceWidget
+class AddParamDialog : public QDialog
 {
-  Q_OBJECT
-
-  private:
-
-    Ui::ModelWidget* ui;
-
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
-
-    WaresManagementWidget* mp_WaresManWidget;
-
-    ModelScene* mp_ModelScene;
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
+  Q_OBJECT;
 
   private slots:
 
-    void updateShowHideGlobalParams();
+    void checkGlobal();
 
-    void addGlobalParam();
 
-    void removeGlobalParam(const QString& Name);
+  private:
 
-    void updateGlobalParamValue(const QString& Name, const QString& Value);
+    Ui::AddParamDialog* ui;
 
-    void addSimulator();
+    QCompleter* mp_Completer;
 
-    void addGenerator();
+    const QStringList m_ExistingParams;
 
-    void moveModelItemUp(const QString& ID);
+    const QStringList m_CompletingParams;
 
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
-
-    void exportModelViewAsPNG();
-
-    void exportModelViewAsSVG();
-
-  public slots:
-
-    void refresh();
+    void setMessage(const QString& Msg = "");
 
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    AddParamDialog(const QStringList& ExistingParams,const QStringList& CompletingParams,
+                   QWidget* Parent = 0);
 
-    virtual ~ModelWidget();
+    ~AddParamDialog();
+
+    QString getParamName() const;
+
+    QString getParamValue() const;
+
+
 };
 
 
 
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __ADDPARAMDIALOG_HPP__ */

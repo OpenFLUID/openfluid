@@ -61,6 +61,7 @@
 #include "ui_WareWidget.h"
 #include "ObserverWidget.hpp"
 #include "ParameterWidget.hpp"
+#include "AddParamDialog.hpp"
 
 
 
@@ -70,6 +71,8 @@ ObserverWidget::ObserverWidget(QWidget* Parent,
   WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR), mp_Desc(Desc)
 {
   refresh();
+
+  connect(ui->AddParamButton,SIGNAL(clicked()),this,SLOT(addParam()));
 }
 
 
@@ -150,6 +153,36 @@ void ObserverWidget::updateParams()
 
 // =====================================================================
 // =====================================================================
+
+
+void ObserverWidget::addParam()
+{
+  QStringList ExistPList;
+
+  openfluid::ware::WareParams_t Params = mp_Desc->getParameters();
+
+  for (openfluid::ware::WareParams_t::iterator it = Params.begin();it != Params.end(); ++it)
+    ExistPList.append(QString::fromStdString((*it).first));
+
+  // set existing parameters list as completion list
+  // (for easy access to series of similar parameters)
+
+  AddParamDialog AddPDlg(ExistPList,ExistPList,this);
+
+  if (AddPDlg.exec() == QDialog::Accepted)
+  {
+    if (addParameterWidget(AddPDlg.getParamName(),AddPDlg.getParamValue()))
+    {
+      mp_Desc->setParameter(AddPDlg.getParamName().toStdString(),AddPDlg.getParamValue().toStdString());
+      emit changed();
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 void ObserverWidget::updateParamValue(const QString& Name, const QString& Value)

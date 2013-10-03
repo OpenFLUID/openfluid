@@ -54,7 +54,7 @@ SET(BUILDER_COMMON_CPP common/AppTools.cpp
                        common/ClickableLabel.cpp common/ActionLabel.cpp
                        common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
                        common/AddWareDialog.cpp
-
+                       common/AddParamDialog.cpp
                        )
                      
 SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
@@ -63,10 +63,12 @@ SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
                        common/ClickableLabel.hpp common/ActionLabel.hpp
                        common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
                        common/AddWareDialog.hpp
+                       common/AddParamDialog.hpp
                       )
 
 QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
                               common/AddWareDialog.ui
+                              common/AddParamDialog.ui
                               )
 
 

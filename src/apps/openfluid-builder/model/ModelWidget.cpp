@@ -64,8 +64,10 @@
 #include "ModelWidget.hpp"
 #include "SimulatorWidget.hpp"
 #include "GeneratorWidget.hpp"
+#include "ParameterWidget.hpp"
 #include "AddSimulatorDialog.hpp"
 #include "AddGeneratorDialog.hpp"
+#include "AddParamDialog.hpp"
 
 #include "AppTools.hpp"
 
@@ -142,6 +144,129 @@ void ModelWidget::updateShowHideGlobalParams()
     ui->GlobalParamsManagementWidget->setVisible(true);
     mp_ShowHideGlobalParamsLabel->setText(tr("hide"));
   }
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::addGlobalParam()
+{
+
+  // existing parameters list
+  QStringList ExistPList;
+  openfluid::ware::WareParams_t GParams = m_Model.getGlobalParameters();
+
+  for (openfluid::ware::WareParams_t::iterator it = GParams.begin();it != GParams.end(); ++it)
+    ExistPList.append(QString::fromStdString((*it).first));
+
+
+  // parameters list for completion, based on model items parameters
+  QStringList CompPList;
+
+  openfluid::machine::SimulatorSignatureRegistry* Reg =
+      openfluid::machine::SimulatorSignatureRegistry::getInstance();
+
+  const std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      m_Model.getItems();
+
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    openfluid::machine::ModelItemSignatureInstance* Sign =
+        Reg->getSignatureItemInstance(*it);
+
+    if (Sign)
+    {
+      std::vector<openfluid::ware::SignatureHandledDataItem> Items =
+          Sign->Signature->HandledData.SimulatorParams;
+
+      for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator it =
+          Items.begin(); it != Items.end(); ++it)
+      {
+        if (!CompPList.contains(QString::fromStdString((*it).DataName)))
+          CompPList.append(QString::fromStdString((*it).DataName));
+      }
+    }
+  }
+
+
+  AddParamDialog AddPDlg(ExistPList,CompPList,this);
+
+  if (AddPDlg.exec() == QDialog::Accepted)
+  {
+    m_Model.setGlobalParameter(AddPDlg.getParamName().toStdString(),AddPDlg.getParamValue().toStdString());
+
+    ParameterWidget* ParamWidget = new ParameterWidget(this,
+                                                       AddPDlg.getParamName(),AddPDlg.getParamValue(),
+                                                       QString::fromStdString(""),true);
+
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateGlobalParamValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeGlobalParam(const QString&)));
+
+    int Position = ui->GlobalParamsAreaContents->layout()->count()-1;
+    ((QBoxLayout*)(ui->GlobalParamsAreaContents->layout()))->insertWidget(Position,ParamWidget);
+
+    emit changed();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::removeGlobalParam(const QString& Name)
+{
+  for (int i=0;i<ui->GlobalParamsAreaContents->layout()->count();i++)
+  {
+    ParameterWidget* W = (ParameterWidget*)(ui->GlobalParamsAreaContents->layout()->itemAt(i)->widget());
+    if (W != 0 && W->getName() == Name)
+    {
+      W->deleteLater();
+      m_Model.eraseGlobalParameter(Name.toStdString());
+
+      emit changed();
+      return;
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::updateGlobalParamValue(const QString& Name, const QString& Value)
+{
+  m_Model.setGlobalParameter(Name.toStdString(),Value.toStdString());
+  emit changed();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::updateGlobalParams()
+{
+  openfluid::ware::WareParams_t GParams = m_Model.getGlobalParameters();
+
+  for (openfluid::ware::WareParams_t::iterator it = GParams.begin();it != GParams.end(); ++it)
+  {
+    ParameterWidget* ParamWidget = new ParameterWidget(this,
+                                                       QString::fromStdString((*it).first),QString::fromStdString((*it).second),
+                                                       QString::fromStdString(""),true);
+
+    connect(ParamWidget,SIGNAL(valueChanged(const QString&, const QString&)),this, SLOT(updateGlobalParamValue(const QString&,const QString&)));
+    connect(ParamWidget,SIGNAL(removeClicked(const QString&)),this, SLOT(removeGlobalParam(const QString&)));
+
+    ((QBoxLayout*)(ui->GlobalParamsAreaContents->layout()))->addWidget(ParamWidget);
+  }
+
+  ((QBoxLayout*)(ui->GlobalParamsAreaContents->layout()))->addStretch();
 }
 
 
@@ -239,17 +364,6 @@ void ModelWidget::addGenerator()
 // =====================================================================
 
 
-void ModelWidget::addGlobalParam()
-{
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void ModelWidget::moveModelItemUp(const QString& ID)
 {
   int Position = m_Model.getFirstItemIndex(ID.toStdString());
@@ -337,16 +451,6 @@ void ModelWidget::refresh()
   updateGlobalParams();
 
   mp_ModelScene->refresh();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelWidget::updateGlobalParams()
-{
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
 }
 
 
