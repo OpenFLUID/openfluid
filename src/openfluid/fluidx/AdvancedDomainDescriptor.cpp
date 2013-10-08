@@ -60,11 +60,8 @@
 #include <stdexcept>
 #include <algorithm>
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
 
-// =====================================================================
-// =====================================================================
 
 AdvancedDomainDescriptor::AdvancedDomainDescriptor(
     openfluid::fluidx::DomainDescriptor& DomainDesc) :
@@ -79,15 +76,19 @@ AdvancedDomainDescriptor::AdvancedDomainDescriptor(
   dispatchEvents();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 AdvancedDomainDescriptor::~AdvancedDomainDescriptor()
 {
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::dispatchUnits()
 {
@@ -104,8 +105,10 @@ void AdvancedDomainDescriptor::dispatchUnits()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::checkUnitRelations() const
 {
@@ -120,8 +123,10 @@ void AdvancedDomainDescriptor::checkUnitRelations() const
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::checkUnitRelations(
     openfluid::fluidx::UnitDescriptor& Unit) const
@@ -170,8 +175,10 @@ void AdvancedDomainDescriptor::checkUnitRelations(
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::dispatchAttributes()
 {
@@ -220,8 +227,10 @@ void AdvancedDomainDescriptor::dispatchAttributes()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::checkAttributesConsistency() const
 {
@@ -262,8 +271,10 @@ void AdvancedDomainDescriptor::checkAttributesConsistency() const
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::dispatchEvents()
 {
@@ -289,16 +300,20 @@ void AdvancedDomainDescriptor::dispatchEvents()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& AdvancedDomainDescriptor::getUnitsByIdByClass() const
 {
   return m_Units;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const AdvancedUnitDescriptor& AdvancedDomainDescriptor::getUnit(std::string ClassName,
                                                      int ID) const
@@ -318,6 +333,7 @@ const AdvancedUnitDescriptor& AdvancedDomainDescriptor::getUnit(std::string Clas
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -327,8 +343,10 @@ const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescri
   return *(getUnit(ClassName, ID).UnitDescriptor);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::set<int> AdvancedDomainDescriptor::getIDsOfClass(
     std::string ClassName) const
@@ -345,16 +363,20 @@ std::set<int> AdvancedDomainDescriptor::getIDsOfClass(
   return IDs;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool AdvancedDomainDescriptor::isClassNameExists(std::string ClassName) const
 {
   return m_Units.count(ClassName);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::set<std::string> AdvancedDomainDescriptor::getClassNames() const
 {
@@ -367,8 +389,20 @@ std::set<std::string> AdvancedDomainDescriptor::getClassNames() const
   return Classes;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+unsigned int AdvancedDomainDescriptor::getUnitsCount() const
+{
+  return mp_DomainDesc->getUnits().size();
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void AdvancedDomainDescriptor::addUnit(
     openfluid::fluidx::UnitDescriptor* UnitDesc)
@@ -440,8 +474,10 @@ void AdvancedDomainDescriptor::addUnit(
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
 {
@@ -517,8 +553,10 @@ void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string& AdvancedDomainDescriptor::getAttribute(std::string ClassName,
                                                     int ID,
@@ -536,8 +574,10 @@ std::string& AdvancedDomainDescriptor::getAttribute(std::string ClassName,
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::set<std::string> AdvancedDomainDescriptor::getAttributesNames(
     std::string ClassName) const
@@ -550,8 +590,10 @@ std::set<std::string> AdvancedDomainDescriptor::getAttributesNames(
   return Names;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::addAttribute(std::string ClassName,
                                             std::string AttrName,
@@ -597,8 +639,10 @@ void AdvancedDomainDescriptor::addAttribute(std::string ClassName,
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::deleteAttribute(std::string ClassName,
                                                std::string AttrName)
@@ -663,8 +707,10 @@ void AdvancedDomainDescriptor::deleteAttribute(std::string ClassName,
   m_AttrsNames.at(ClassName).erase(AttrName);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::renameAttribute(std::string ClassName,
                                                std::string OldAttrName,
@@ -729,8 +775,10 @@ void AdvancedDomainDescriptor::renameAttribute(std::string ClassName,
   m_AttrsNames.at(ClassName).insert(NewAttrName);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUnitsToOf(
     const openfluid::core::UnitClassID_t Unit) const
@@ -747,8 +795,10 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUnitsParentsOf(
     const openfluid::core::UnitClassID_t Unit) const
@@ -765,8 +815,10 @@ const std::list<openfluid::core::UnitClassID_t>& AdvancedDomainDescriptor::getUn
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsFromOf(
     const openfluid::core::UnitClassID_t Unit) const
@@ -793,8 +845,10 @@ std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsFrom
   return Froms;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsChildrenOf(
     const openfluid::core::UnitClassID_t Unit) const
@@ -821,8 +875,10 @@ std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsChil
   return Children;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::addFromToRelation(
     const openfluid::core::UnitClassID_t FromUnit,
@@ -863,8 +919,10 @@ void AdvancedDomainDescriptor::addFromToRelation(
     Tos.push_back(ToUnit);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::removeFromToRelation(
     const openfluid::core::UnitClassID_t FromUnit,
@@ -915,8 +973,10 @@ void AdvancedDomainDescriptor::removeFromToRelation(
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::addParentChildRelation(
     const openfluid::core::UnitClassID_t ParentUnit,
@@ -956,8 +1016,10 @@ void AdvancedDomainDescriptor::addParentChildRelation(
     Parents.push_back(ParentUnit);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::removeParentChildRelation(
     const openfluid::core::UnitClassID_t ParentUnit,
@@ -1007,8 +1069,10 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::clearRelations(
     const openfluid::core::UnitClassID_t Unit)
@@ -1047,8 +1111,10 @@ void AdvancedDomainDescriptor::clearRelations(
   U->getUnitsParents().clear();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDomainDescriptor::clearDomain()
 {
@@ -1059,8 +1125,9 @@ void AdvancedDomainDescriptor::clearDomain()
   m_AttrsNames.clear();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces
+
+} } // namespaces

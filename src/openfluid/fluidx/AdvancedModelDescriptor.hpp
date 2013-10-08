@@ -139,6 +139,8 @@ class DLLEXPORT AdvancedModelDescriptor
 
     unsigned int getItemsCount() const;
 
+    void getItemsCount(unsigned int& SimCount, unsigned int& GenCount) const;
+
     void setGlobalParameter(const openfluid::ware::WareParamKey_t& Key,
                             const openfluid::ware::WareParamValue_t& Value);
 

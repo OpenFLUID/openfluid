@@ -20,30 +20,36 @@ INCLUDE_DIRECTORIES(base common datastore model monitoring spatial outputs runco
 SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/BuilderApp.cpp base/MainWindow.cpp 
                      base/HomeModule.cpp base/HomeWidget.cpp                       
-                     base/ProjectModule.cpp base/ProjectWidget.cpp base/DashboardWidget.cpp                     
-                     base/ProjectCentral.cpp
+                     base/ProjectModule.cpp base/ProjectWidget.cpp                     
+                     base/ProjectCentral.cpp base/ProjectCheckInfos.cpp
                      base/NewProjectDialog.cpp
                      base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
                      base/AboutDialog.cpp
-                     base/OpenExampleProjectDialog.cpp                     
+                     base/OpenExampleProjectDialog.cpp
+                     base/StatusMessagesWidget.cpp
+                     base/DashboardFrame.cpp base/DashboardWidget.cpp base/DashboardInfosWidget.cpp base/DashboardStatusWidget.cpp
                      )
                      
 SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/BuilderApp.hpp base/MainWindow.hpp
-                     base/HomeModule.hpp base/HomeWidget.hpp base/DashboardWidget.hpp
+                     base/HomeModule.hpp base/HomeWidget.hpp
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
-                     base/ProjectCentral.hpp base/ProjectCheck.hpp
+                     base/ProjectCentral.hpp base/ProjectCheckInfos.hpp
                      base/NewProjectDialog.hpp
                      base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
                      base/AboutDialog.hpp
-                     base/OpenExampleProjectDialog.hpp                     
+                     base/OpenExampleProjectDialog.hpp
+                     base/StatusMessagesWidget.hpp
+                     base/DashboardFrame.hpp base/DashboardWidget.hpp base/DashboardInfosWidget.hpp base/DashboardStatusWidget.hpp               
                      )
 
-QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui base/DashboardWidget.ui
+QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
                             base/NewProjectDialog.ui
                             base/PreferencesDialog.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
                             base/AboutDialog.ui
                             base/OpenExampleProjectDialog.ui
+                            base/StatusMessagesWidget.ui
+                            base/DashboardInfosWidget.ui base/DashboardStatusWidget.ui
                             )
 
 

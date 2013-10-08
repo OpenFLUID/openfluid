@@ -66,7 +66,7 @@
 
 class ProjectCentral;
 
-class DashboardWidget;
+class DashboardFrame;
 
 class ProjectWidget;
 class ModelWidget;
@@ -86,7 +86,7 @@ class ProjectModule : public AbstractModule
 
     ProjectWidget* mp_MainWidget;
 
-    DashboardWidget* mp_DashboardWidget;
+    DashboardFrame* mp_DashboardFrame;
 
     ModelWidget* mp_ModelTab;
 

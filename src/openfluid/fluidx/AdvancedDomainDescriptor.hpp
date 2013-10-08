@@ -171,6 +171,8 @@ class DLLEXPORT AdvancedDomainDescriptor
      */
     std::set<std::string> getClassNames() const;
 
+    unsigned int getUnitsCount() const;
+
     /**
      * @details Add this UnitDesc ID to the descriptor for all attributes of this UnitDesc class,
      * with a default value of "-"

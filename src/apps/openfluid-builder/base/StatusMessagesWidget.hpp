@@ -45,32 +45,50 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file DashboardWidget.cpp
-  \brief Implements ...
+  \file StatusMessagesWidget.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "DashboardWidget.hpp"
+#ifndef __STATUSMESSAGESWIDGET_HPP__
+#define __STATUSMESSAGESWIDGET_HPP__
 
 
-DashboardWidget::DashboardWidget(QWidget* Parent):
-  QWidget(Parent)
+namespace Ui
 {
-
+  class StatusMessagesWidget;
 }
 
+#include "ProjectCheckInfos.hpp"
 
-// =====================================================================
-// =====================================================================
+#include <QWidget>
 
 
-DashboardWidget::~DashboardWidget()
+class StatusMessagesWidget : public QWidget
 {
+  Q_OBJECT;
 
-}
+  private:
+
+    Ui::StatusMessagesWidget* ui;
 
 
+  public:
+
+    StatusMessagesWidget(const QString& Category, QWidget* Parent = 0);
+
+    ~StatusMessagesWidget();
+
+    void clear();
+
+    void addMessage(const QString& Msg);
+
+    void setStatusLevel(ProjectStatusLevel Level);
+
+};
+
+
+#endif /* __STATUSMESSAGESWIDGET_HPP__ */

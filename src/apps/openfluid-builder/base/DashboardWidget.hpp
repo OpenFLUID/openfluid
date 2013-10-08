@@ -57,37 +57,23 @@
 #define __DASHBOARDWIDGET_HPP__
 
 
-#include "ProjectCentral.hpp"
 
 #include <QWidget>
-#include <QPixmap>
-
-
-namespace Ui
-{
-  class DashboardWidget;
-}
 
 
 class DashboardWidget : public QWidget
 {
   Q_OBJECT;
 
-  private:
-
-    Ui::DashboardWidget* ui;
-
-    const ProjectCentral* mp_PrjCentral;
-
-    std::map<ProjectPartCheckInfos::StatusInfo,QPixmap> m_StatusPixmaps;
 
   public slots:
 
-    void update();
+      virtual void refresh() = 0;
+
 
   public:
 
-    DashboardWidget(QWidget* Parent, const ProjectCentral* PrjCentral);
+    DashboardWidget(QWidget* Parent = 0);
 
     ~DashboardWidget();
 

@@ -100,6 +100,8 @@ int main(int argc, char** argv)
     OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
     OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);
 
+    OPENFLUID_APPLICATION.setStyleSheet("QToolTip { color: #FFFFFF; background-color: #2C3A4C; border: 1px solid #4B4B4B; }");
+
     // Application launching
     BuilderApp App;
 

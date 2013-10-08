@@ -299,16 +299,44 @@ void AdvancedModelDescriptor::moveItem(unsigned int From, unsigned int To)
     insertItem(Item, To);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 unsigned int AdvancedModelDescriptor::getItemsCount() const
 {
   return mp_ModelDesc->getItems().size();
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+void AdvancedModelDescriptor::getItemsCount(unsigned int& SimCount, unsigned int& GenCount) const
+{
+  SimCount = 0;
+  GenCount = 0;
+
+  std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
+      mp_ModelDesc->getItems();
+
+  for (std::list<openfluid::fluidx::ModelItemDescriptor*>::iterator it =
+      Items.begin(); it != Items.end(); ++it)
+  {
+    if ((*it)->getType() == openfluid::fluidx::WareDescriptor::PluggedSimulator)
+      SimCount++;
+
+    if ((*it)->getType() == openfluid::fluidx::WareDescriptor::Generator)
+          GenCount++;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void AdvancedModelDescriptor::setGlobalParameter(
     const openfluid::ware::WareParamKey_t& Key,
@@ -317,8 +345,10 @@ void AdvancedModelDescriptor::setGlobalParameter(
   mp_ModelDesc->setGlobalParameter(Key, Value);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedModelDescriptor::setGlobalParameters(
     const openfluid::ware::WareParams_t& Params)
@@ -326,16 +356,20 @@ void AdvancedModelDescriptor::setGlobalParameters(
   mp_ModelDesc->setGlobalParameters(Params);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::ware::WareParams_t AdvancedModelDescriptor::getGlobalParameters() const
 {
   return mp_ModelDesc->getGlobalParameters();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedModelDescriptor::eraseGlobalParameter(
     const openfluid::ware::WareParamKey_t& Key)
@@ -343,8 +377,8 @@ void AdvancedModelDescriptor::eraseGlobalParameter(
   mp_ModelDesc->eraseGlobalParameter(Key);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces)
+}  } // namespaces)

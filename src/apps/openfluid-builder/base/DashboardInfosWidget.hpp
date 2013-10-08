@@ -46,77 +46,47 @@
 */
 
 /**
-  \file ProjectCheckInfo.hpp
+  \file DashboardInfosWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __PROJECTCHECK_HPP__
-#define __PROJECTCHECK_HPP__
-
-#include <map>
-
-#include <QStringList>
+#ifndef __DASHBOARDINFOSWIDGET_HPP__
+#define __DASHBOARDINFOSWIDGET_HPP__
 
 
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
-class ProjectPartCheckInfos
+#include "DashboardWidget.hpp"
+
+
+namespace Ui
 {
+  class DashboardInfosWidget;
+}
+
+
+class DashboardInfosWidget : public DashboardWidget
+{
+  Q_OBJECT;
+
+  private:
+
+    Ui::DashboardInfosWidget* ui;
+
+    const openfluid::fluidx::AdvancedFluidXDescriptor& m_AdvFluidxDesc;
+
+
   public:
 
-    enum StatusInfo { PRJ_OK, PRJ_WARNING, PRJ_ERROR };
+    DashboardInfosWidget(const openfluid::fluidx::AdvancedFluidXDescriptor& Desc, QWidget* Parent = 0);
 
-    StatusInfo Status;
+    ~DashboardInfosWidget();
 
-    QStringList Messages;
-
-    ProjectPartCheckInfos()
-    {
-      Status = PRJ_OK;
-    }
+    void refresh();
 };
 
 
-// =====================================================================
-// =====================================================================
-
-
-class ProjectCheckInfos
-{
-  public:
-
-    enum PartInfo { PART_MODELDEF, PART_MODELPARAMS,
-                    PART_SPATIALSTRUCT, PART_SPATIALATTRS,
-                    PART_DATASTORE,
-                    PART_MONITORING,
-                    PART_RUNCONFIG};
-
-    std::map<PartInfo,ProjectPartCheckInfos> Infos;
-
-    ProjectCheckInfos()
-    {
-      Infos[PART_MODELDEF] = ProjectPartCheckInfos();
-      Infos[PART_MODELPARAMS] = ProjectPartCheckInfos();
-      Infos[PART_SPATIALSTRUCT] = ProjectPartCheckInfos();
-      Infos[PART_SPATIALATTRS] = ProjectPartCheckInfos();
-      Infos[PART_DATASTORE] = ProjectPartCheckInfos();
-      Infos[PART_MONITORING] = ProjectPartCheckInfos();
-      Infos[PART_RUNCONFIG] = ProjectPartCheckInfos();
-    }
-
-    bool isOKForSimulation()
-    {
-      return (Infos[PART_MODELDEF].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_MODELPARAMS].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_SPATIALSTRUCT].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_SPATIALATTRS].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_DATASTORE].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_MONITORING].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_RUNCONFIG].Status != ProjectPartCheckInfos::PRJ_ERROR);
-    }
-};
-
-
-#endif /* __PROJECTCHECKINFO_HPP__ */
+#endif /* __DASHBOARDINFOSWIDGET_HPP__ */

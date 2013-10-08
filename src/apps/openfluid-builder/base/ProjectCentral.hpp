@@ -61,7 +61,7 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
 
-#include "ProjectCheck.hpp"
+#include "ProjectCheckInfos.hpp"
 
 
 
@@ -99,6 +99,9 @@ class ProjectCentral : QObject
    {  return &m_CheckInfos; }
 
    openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDescriptors()
+   { return *mp_AdvancedFXDesc; }
+
+   const openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDescriptors() const
    { return *mp_AdvancedFXDesc; }
 
 };

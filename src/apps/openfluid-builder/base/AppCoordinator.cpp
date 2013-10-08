@@ -73,6 +73,7 @@
 #include "OpenExampleProjectDialog.hpp"
 #include "HomeModule.hpp"
 #include "ProjectModule.hpp"
+#include "DashboardFrame.hpp"
 #include "builderconfig.hpp"
 
 
@@ -228,27 +229,36 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
   if (mp_DockWidget == NULL)
     mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
 
-  mp_DockWidget->setWidget(((ProjectModule*)Module)->getDockWidget(mp_DockWidget));
+  DashboardFrame* DockedWidget = (DashboardFrame*)(((ProjectModule*)Module)->getDockWidget(mp_DockWidget));
+  DockedWidget->updateOrientation(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition());
+
+  mp_DockWidget->setObjectName("DockWidget");
+  mp_DockWidget->setWidget(DockedWidget);
   mp_DockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
                                  Qt::RightDockWidgetArea |
                                  Qt::BottomDockWidgetArea);
-  // TODO keep for a later customization
-  //mp_DockWidget->setStyleSheet(".QDockWidget {margin:5px; color: white; font: bold;} QDockWidget::title { padding : 5px; background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(128, 156, 185, 255), stop:1 rgba(61, 79, 97, 255));} QDockWidget::close-button, QDockWidget::float-button { color : white; }");
-  //mp_DockWidget->setStyleSheet(".QDockWidget {padding:5px; font: bold;} QDockWidget::title { padding : 5px; border: 1px solid rgb(71,97,123);}");
-  mp_DockWidget->setStyleSheet(".QDockWidget {padding:5px; font: bold;} "
-                               "QDockWidget::title { padding : 5px;}");
+
+  mp_DockWidget->setStyleSheet("QDockWidget {padding: 5px; font: bold; background: #2C3A4C;} "
+                               "QDockWidget::title {padding : 5px; font: bold; }");
 
   m_MainWindow.addDockWidget(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition(),
                              mp_DockWidget);
 
+  connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
+          DockedWidget,SLOT(updateOrientation(Qt::DockWidgetArea)));
 
   connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
           this,SLOT(saveDockArea(Qt::DockWidgetArea)));
 
+
   connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged()),
           this,SLOT(enableSave()));
+
   connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),
           this,SLOT(disableSave()));
+
+  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged()),
+          DockedWidget,SLOT(refresh()));
 }
 
 

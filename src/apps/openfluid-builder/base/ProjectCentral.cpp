@@ -186,15 +186,29 @@ void ProjectCentral::check()
   // TODO status and messages below are for example only
   // they will be replaced by correct value when project checker will be developped
 
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELDEF].Status = ProjectPartCheckInfos::PRJ_ERROR;
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELDEF].Messages.clear();
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELDEF].Messages << "- xxx.yyy simulator is missing";
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).clearMessages();
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage("xxx.yyy simulator is missing");
 
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELPARAMS].Status = ProjectPartCheckInfos::PRJ_WARNING;
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELPARAMS].Messages.clear();
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MODELPARAMS].Messages << "- a parameter is missing" << "- another parameter is missing";
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).setStatus(PRJ_WARNING);
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).clearMessages();
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).addMessage("a parameter is missing");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).addMessage("another parameter is missing");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).addMessage("another parameter is missing");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).addMessage("another parameter is missing");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MODELPARAMS).addMessage("another parameter is missing");
 
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MONITORING].Status = ProjectPartCheckInfos::PRJ_WARNING;
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MONITORING].Messages.clear();
-  m_CheckInfos.Infos[ProjectCheckInfos::PART_MONITORING].Messages << "- no observer";
+  m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).setStatus(PRJ_ERROR);
+  m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).clearMessages();
+  m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).addMessage("the ks attribute required by simulator water.surf.transfert.method is missing");
+  m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).addMessage("another attribute is missing");
+
+  m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).setStatus(PRJ_WARNING);
+  m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).clearMessages();
+  m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage("no observer");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage("no observer");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage("no observer");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage("no observer");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage("no observer");
+  m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage("no observer");
 }

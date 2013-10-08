@@ -54,11 +54,41 @@
  */
 
 
-#include "DashboardWidget.hpp"
+#include "DashboardFrame.hpp"
+#include "DashboardInfosWidget.hpp"
+#include "DashboardStatusWidget.hpp"
 
 
-DashboardWidget::DashboardWidget(QWidget* Parent):
-  QWidget(Parent)
+
+DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent):
+  QFrame(Parent)
+{
+  setObjectName("DashboardWidget");
+  setStyleSheet("QFrame#DashboardWidget {background-color: #2C3A4C;}");
+  setFrameShape(QFrame::NoFrame);
+
+  mp_InfosWidget = new DashboardInfosWidget(PrjCentral->getAdvancedDescriptors(),this);
+  mp_StatusWidget = new DashboardStatusWidget(PrjCentral,this);
+
+  mp_Layout = new QBoxLayout(QBoxLayout::TopToBottom,this);
+  mp_Layout->setContentsMargins(16,16,16,16);
+  mp_Layout->setSpacing(16);
+
+  mp_Layout->addWidget(mp_InfosWidget);
+  mp_Layout->addWidget(mp_StatusWidget);
+
+  mp_Layout->setStretch(0,1);
+  mp_Layout->setStretch(1,2);
+
+  setLayout(mp_Layout);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+DashboardFrame::~DashboardFrame()
 {
 
 }
@@ -68,9 +98,20 @@ DashboardWidget::DashboardWidget(QWidget* Parent):
 // =====================================================================
 
 
-DashboardWidget::~DashboardWidget()
+void DashboardFrame::updateOrientation(Qt::DockWidgetArea Area)
 {
-
+  if (Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea)
+    mp_Layout->setDirection(QBoxLayout::TopToBottom);
+  else if (Area == Qt::TopDockWidgetArea || Area == Qt::BottomDockWidgetArea)
+    mp_Layout->setDirection(QBoxLayout::LeftToRight);
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void DashboardFrame::refresh()
+{
+  mp_InfosWidget->refresh();
+}

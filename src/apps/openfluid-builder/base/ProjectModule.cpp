@@ -73,7 +73,7 @@
 
 #include "ExtensionsRegistry.hpp"
 
-#include "DashboardWidget.hpp"
+#include "DashboardFrame.hpp"
 
 #include "ProjectWidget.hpp"
 #include "ModelWidget.hpp"
@@ -93,7 +93,7 @@
 
 
 ProjectModule::ProjectModule(const QString& ProjectPath):
-AbstractModule(), mp_MainWidget(NULL), mp_DashboardWidget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
+AbstractModule(), mp_MainWidget(NULL), mp_DashboardFrame(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 
@@ -225,15 +225,15 @@ QWidget* ProjectModule::getMainWidget(QWidget* Parent)
 
 QWidget* ProjectModule::getDockWidget(QWidget* Parent)
 {
-  if (mp_DashboardWidget != NULL)
+  if (mp_DashboardFrame != NULL)
   {
-    delete mp_DashboardWidget;
-    mp_DashboardWidget = NULL;
+    delete mp_DashboardFrame;
+    mp_DashboardFrame = NULL;
   }
 
-  mp_DashboardWidget = new DashboardWidget(Parent, mp_ProjectCentral);
+  mp_DashboardFrame = new DashboardFrame(mp_ProjectCentral,Parent);
 
-  return mp_DashboardWidget;
+  return mp_DashboardFrame;
 }
 
 
