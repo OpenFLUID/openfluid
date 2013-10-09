@@ -90,7 +90,7 @@ QStringList ProjectPartCheckInfos::getMessages() const
 
 void ProjectPartCheckInfos::setStatus(ProjectStatusLevel Level)
 {
-  m_Status = Level;
+  if (Level > m_Status) m_Status = Level;
 }
 
 
@@ -108,9 +108,10 @@ void ProjectPartCheckInfos::addMessage(const QString& Msg)
 // =====================================================================
 
 
-void ProjectPartCheckInfos::clearMessages()
+void ProjectPartCheckInfos::clear()
 {
   m_Messages.clear();
+  m_Status = PRJ_OK;
 }
 
 
@@ -162,3 +163,18 @@ ProjectStatusLevel ProjectCheckInfos::getOverallStatus() const
                                    qMax(m_Infos.at(PART_MONITORING).getStatus(),m_Infos.at(PART_RUNCONFIG).getStatus())))))));
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectCheckInfos::clear()
+{
+  m_Infos[PART_MODELDEF].clear();
+  m_Infos[PART_MODELPARAMS].clear();
+  m_Infos[PART_SPATIALSTRUCT].clear();
+  m_Infos[PART_SPATIALATTRS].clear();
+  m_Infos[PART_DATASTORE].clear();
+  m_Infos[PART_MONITORING].clear();
+  m_Infos[PART_RUNCONFIG].clear();
+}

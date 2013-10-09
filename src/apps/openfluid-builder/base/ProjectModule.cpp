@@ -523,6 +523,8 @@ bool ProjectModule::whenOpenExampleAsked()
 void ProjectModule::dispatchChanges()
 {
   emit fluidxChanged();
+
+  doCheck();
 }
 
 
@@ -532,7 +534,7 @@ void ProjectModule::dispatchChanges()
 
 void ProjectModule::dispatchChangesFromExtension()
 {
-  emit fluidxChanged();
+  dispatchChanges();
 }
 
 
@@ -559,8 +561,9 @@ void ProjectModule::releaseModelessExtension()
 void ProjectModule::updateSimulatorsWares()
 {
   openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
-
   mp_ModelTab->updateWares();
+
+  doCheck();
 }
 
 
@@ -572,5 +575,28 @@ void ProjectModule::updateObserversWares()
 {
   openfluid::machine::ObserverSignatureRegistry::getInstance()->update();
   mp_MonitoringTab->updateWares();
+
+  doCheck();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool ProjectModule::isOkForSimulation() const
+{
+  return mp_ProjectCentral->getCheckInfos()->isOKForSimulation();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::doCheck()
+{
+  mp_ProjectCentral->check();
+  mp_DashboardFrame->refresh();
+  emit runEnabled(mp_ProjectCentral->getCheckInfos()->isOKForSimulation());
+}

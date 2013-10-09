@@ -83,7 +83,12 @@ DashboardStatusWidget::DashboardStatusWidget(const ProjectCentral* PrjCentral,QW
   ui->ContentsWidget->setStyleSheet("background-color: rgba(0,0,0,0);");
 
 
-  ui->ContentsWidget->setLayout(new QVBoxLayout);
+  QVBoxLayout* Layout = new QVBoxLayout;
+
+  Layout->setContentsMargins(0,0,0,0);
+  Layout->setSpacing(0);
+
+  ui->ContentsWidget->setLayout(Layout);
 
   mp_MessagesWidgets[ProjectCheckInfos::PART_MODELDEF] = new StatusMessagesWidget(tr("Model definition"),this);
   ui->ContentsWidget->layout()->addWidget(mp_MessagesWidgets[ProjectCheckInfos::PART_MODELDEF]);
@@ -109,14 +114,7 @@ DashboardStatusWidget::DashboardStatusWidget(const ProjectCentral* PrjCentral,QW
   ((QBoxLayout*)ui->ContentsWidget->layout())->addStretch();
 
 
-//  ui->MessagesWidget->setStyleSheet("color : white; background-color : rgba(0,0,0,0); border:none;");
-
   refresh();
-
-//  ui->StatusAreaWidgetContents->setStyleSheet("#StatusAreaWidgetContents {" + m_StyleSheet + " }");
-
-//  ui->StatusArea->setStyleSheet("#StatusArea {border: 0px;}");
-
 }
 
 
@@ -136,7 +134,7 @@ DashboardStatusWidget::~DashboardStatusWidget()
 
 void DashboardStatusWidget::refresh()
 {
-  const ProjectCheckInfos* Check = mp_PrjCentral->getCheckInfos();
+   const ProjectCheckInfos* Check = mp_PrjCentral->getCheckInfos();
 
   setLevel(Check->getOverallStatus());
 
@@ -154,30 +152,6 @@ void DashboardStatusWidget::refresh()
       (*it).second->addMessage(Msg);
     }
   }
-
-
-  /*
-  ui->ModelDefIcon->setPixmap(m_StatusPixmaps[Check->Infos.at(ProjectCheckInfos::PART_MODELDEF).Status]);
-  ui->ModelDefMessages->setText(Check->Infos.at(ProjectCheckInfos::PART_MODELDEF).Messages.join("\n"));
-
-  ui->ModelParamsIcon->setPixmap(m_StatusPixmaps[Check->Infos.at(ProjectCheckInfos::PART_MODELPARAMS).Status]);
-  ui->ModelParamsMessages->setText(Check->Infos.at(ProjectCheckInfos::PART_MODELPARAMS).Messages.join("\n"));
-
-  ui->SpatialStructIcon->setPixmap(m_StatusPixmaps[Check->Infos.at(ProjectCheckInfos::PART_SPATIALSTRUCT).Status]);
-  ui->SpatialStructMessages->setText(Check->Infos.at(ProjectCheckInfos::PART_SPATIALSTRUCT).Messages.join("\n"));
-
-
-  ui->SpatialAttrsIcon->setPixmap(m_StatusPixmaps[Check->Infos.at(ProjectCheckInfos::PART_SPATIALATTRS).Status]);
-  ui->SpatialAttrsMessages->setText(Check->Infos.at(ProjectCheckInfos::PART_SPATIALATTRS).Messages.join("\n"));
-
-  ui->DatastoreIcon->setPixmap(m_StatusPixmaps[Check->Infos.at(ProjectCheckInfos::PART_DATASTORE).Status]);
-  ui->DatastoreMessages->setText(Check->Infos.at(ProjectCheckInfos::PART_DATASTORE).Messages.join("\n"));
-
-  ui->MonitoringIcon->setPixmap(m_StatusPixmaps[Check->Infos.at(ProjectCheckInfos::PART_MONITORING).Status]);
-  ui->MonitoringMessages->setText(Check->Infos.at(ProjectCheckInfos::PART_MONITORING).Messages.join("\n"));
-
-  ui->RunConfigIcon->setPixmap(m_StatusPixmaps[Check->Infos.at(ProjectCheckInfos::PART_RUNCONFIG).Status]);
-  ui->RunConfigMessages->setText(Check->Infos.at(ProjectCheckInfos::PART_RUNCONFIG).Messages.join("\n"));*/
 }
 
 
@@ -201,7 +175,7 @@ void DashboardStatusWidget::setLevel(const ProjectStatusLevel Level)
   }
   else
   {
-    ui->TitleLabel->setText(tr("Simulation cannot be launched"));
+    ui->TitleLabel->setText(tr("Simulation cannot be run"));
     ui->NoMessageLabel->setVisible(false);
     m_BorderColor = "#B31717";
 

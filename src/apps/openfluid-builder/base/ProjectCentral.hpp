@@ -83,6 +83,31 @@ class ProjectCentral : QObject
 
     void setDefaultDescriptors();
 
+    void checkModel();
+
+    void checkSpatialDomain();
+
+    void checkDatastore();
+
+    void checkMonitoring();
+
+    void checkRunConfig();
+
+    void checkGeneratorParam(const std::string& MinParamName,
+                             const std::string& MaxParamName,
+                             openfluid::fluidx::ModelItemDescriptor* Item,
+                             const std::string& ID);
+
+    bool isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
+                    const std::string& ParamName);
+
+    bool isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                         const std::string& ParamName);
+
+    double getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                            const std::string& ParamName);
+
+
   public:
 
     ProjectCentral(QString PrjPath = "");

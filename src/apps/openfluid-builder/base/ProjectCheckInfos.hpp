@@ -85,7 +85,7 @@ class ProjectPartCheckInfos
 
     void addMessage(const QString& Msg);
 
-    void clearMessages();
+    void clear();
 };
 
 
@@ -120,6 +120,8 @@ class ProjectCheckInfos
     inline ProjectPartCheckInfos& part(PartInfo Part) { return m_Infos[Part]; };
 
     inline const ProjectPartCheckInfos& part(PartInfo Part) const { return m_Infos.at(Part); };
+
+    void clear();
 };
 
 

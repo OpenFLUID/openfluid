@@ -114,4 +114,5 @@ void DashboardFrame::updateOrientation(Qt::DockWidgetArea Area)
 void DashboardFrame::refresh()
 {
   mp_InfosWidget->refresh();
+  mp_StatusWidget->refresh();
 }

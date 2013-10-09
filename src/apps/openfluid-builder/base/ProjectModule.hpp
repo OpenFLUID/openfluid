@@ -110,6 +110,9 @@ class ProjectModule : public AbstractModule
 
     void updateWatchersPaths();
 
+    void doCheck();
+
+
   signals:
 
     void fluidxChanged();
@@ -129,6 +132,8 @@ class ProjectModule : public AbstractModule
     void simulationStarted();
 
     void simulationFinished();
+
+    void runEnabled(bool Enabled);
 
 
   private slots:
@@ -179,6 +184,8 @@ class ProjectModule : public AbstractModule
     void whenRefreshAsked();
 
     bool whenOpenExampleAsked();
+
+    bool isOkForSimulation() const;
 
 };
 

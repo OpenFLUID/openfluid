@@ -257,8 +257,10 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
   connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),
           this,SLOT(disableSave()));
 
-  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged()),
-          DockedWidget,SLOT(refresh()));
+  connect((ProjectModule*)mp_CurrentModule,SIGNAL(runEnabled(bool)),
+          this,SLOT(enableRun(bool)));
+
+  enableRun(((ProjectModule*)Module)->isOkForSimulation());
 }
 
 
@@ -774,3 +776,11 @@ void AppCoordinator::saveDockArea(Qt::DockWidgetArea Area)
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::enableRun(bool Enabled)
+{
+  m_Actions.getAction("SimulationRun")->setEnabled(Enabled);
+}

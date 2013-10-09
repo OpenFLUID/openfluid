@@ -64,10 +64,13 @@ StatusMessagesWidget::StatusMessagesWidget(const QString& Category, QWidget* Par
   ui->setupUi(this);
 
   ui->CategoryLabel->setStyleSheet("color: white; text-decoration: underline;");
-
   ui->MessagesLabel->setStyleSheet("color: white;");
 
   ui->CategoryLabel->setText(Category);
+
+  QFont TmpFont = ui->MessagesLabel->font();
+  TmpFont.setPointSize(TmpFont.pointSize()-1);
+  ui->MessagesLabel->setFont(TmpFont);
 
   setVisible(false);
 }
@@ -102,7 +105,7 @@ void StatusMessagesWidget::addMessage(const QString& Msg)
 {
   setVisible(true);
 
-  ui->MessagesLabel->setText(ui->MessagesLabel->text()+Msg+"\n");
+  ui->MessagesLabel->setText(ui->MessagesLabel->text()+"- "+Msg+"\n");
 }
 
 
