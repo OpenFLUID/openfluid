@@ -47,20 +47,32 @@
 
 
 /**
-  \file DashboardWidget.cpp
+  \file StatusMessagesWidget.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "DashboardWidget.hpp"
+#include "ui_StatusMessagesWidget.h"
+#include "StatusMessagesWidget.hpp"
 
 
-DashboardWidget::DashboardWidget(QWidget* Parent):
-  QWidget(Parent)
+StatusMessagesWidget::StatusMessagesWidget(const QString& Category, QWidget* Parent):
+  QWidget(Parent), ui(new Ui::StatusMessagesWidget)
 {
+  ui->setupUi(this);
 
+  ui->CategoryLabel->setStyleSheet("color: white; text-decoration: underline;");
+  ui->MessagesLabel->setStyleSheet("color: white;");
+
+  ui->CategoryLabel->setText(Category);
+
+  QFont TmpFont = ui->MessagesLabel->font();
+  TmpFont.setPointSize(TmpFont.pointSize()-1);
+  ui->MessagesLabel->setFont(TmpFont);
+
+  setVisible(false);
 }
 
 
@@ -68,9 +80,43 @@ DashboardWidget::DashboardWidget(QWidget* Parent):
 // =====================================================================
 
 
-DashboardWidget::~DashboardWidget()
+StatusMessagesWidget::~StatusMessagesWidget()
 {
-
+  delete ui;
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void StatusMessagesWidget::clear()
+{
+  setVisible(false);
+  ui->MessagesLabel->setText("");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void StatusMessagesWidget::addMessage(const QString& Msg)
+{
+  setVisible(true);
+
+  ui->MessagesLabel->setText(ui->MessagesLabel->text()+"- "+Msg+"\n");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void StatusMessagesWidget::setStatusLevel(ProjectStatusLevel Level)
+{
+  if (Level == PRJ_WARNING)
+    ui->StatusIconLabel->setPixmap(QPixmap(":/images/check-warn.png"));
+  else if (Level == PRJ_ERROR)
+    ui->StatusIconLabel->setPixmap(QPixmap(":/images/check-error.png"));
+}

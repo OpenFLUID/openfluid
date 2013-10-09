@@ -61,7 +61,7 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
 
-#include "ProjectCheck.hpp"
+#include "ProjectCheckInfos.hpp"
 
 
 
@@ -83,6 +83,31 @@ class ProjectCentral : QObject
 
     void setDefaultDescriptors();
 
+    void checkModel();
+
+    void checkSpatialDomain();
+
+    void checkDatastore();
+
+    void checkMonitoring();
+
+    void checkRunConfig();
+
+    void checkGeneratorParam(const std::string& MinParamName,
+                             const std::string& MaxParamName,
+                             openfluid::fluidx::ModelItemDescriptor* Item,
+                             const std::string& ID);
+
+    bool isParamSet(openfluid::fluidx::ModelItemDescriptor* Item,
+                    const std::string& ParamName);
+
+    bool isParamIsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                         const std::string& ParamName);
+
+    double getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
+                            const std::string& ParamName);
+
+
   public:
 
     ProjectCentral(QString PrjPath = "");
@@ -99,6 +124,9 @@ class ProjectCentral : QObject
    {  return &m_CheckInfos; }
 
    openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDescriptors()
+   { return *mp_AdvancedFXDesc; }
+
+   const openfluid::fluidx::AdvancedFluidXDescriptor& getAdvancedDescriptors() const
    { return *mp_AdvancedFXDesc; }
 
 };

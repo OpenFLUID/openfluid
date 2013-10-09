@@ -456,12 +456,10 @@ void AppActions::createToolbar(MainWindow& MainWin)
     mp_MainToolbar->addAction(getAction("SimulationRun"));
     mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
 
-    // TODO to complete the toolbar style (style of selected tool background to define, gradient orientation according to the toolbar orientation)
-    // mp_MainToolbar->setStyleSheet("QWidget {color: white; } QToolBar {background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(104, 131, 159, 255), stop:1 rgba(61, 79, 97, 255));}  ");
-
-    // keep the following stylesheets for a later user
-    //.QToolBar { spacing: 15px; background-color:blue}
-    // .QToolBar { background-color:blue} .QToolButton { background-color:blue; border : 1px solid grey; border-radius: 6px; }
+    mp_MainToolbar->setObjectName("MainToolbar");
+    mp_MainToolbar->setStyleSheet("QWidget {color: white; padding-left : 10px; padding-right : 10px;} "
+                                  "#MainToolbar {background-color: #2C3A4C;}"
+                                  "QToolButton::hover { background-color: #3B4E66; border : 1px solid #4B4B4B; border-radius: 4px; }");
   }
 
   MainWin.addToolBar(openfluid::guicommon::PreferencesManager::getInstance()->getToolBarPosition(),

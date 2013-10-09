@@ -45,32 +45,48 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file DashboardWidget.cpp
-  \brief Implements ...
+  \file DashboardInfosWidget.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
+#ifndef __DASHBOARDINFOSWIDGET_HPP__
+#define __DASHBOARDINFOSWIDGET_HPP__
+
+
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+
 #include "DashboardWidget.hpp"
 
 
-DashboardWidget::DashboardWidget(QWidget* Parent):
-  QWidget(Parent)
+namespace Ui
 {
-
+  class DashboardInfosWidget;
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-DashboardWidget::~DashboardWidget()
+class DashboardInfosWidget : public DashboardWidget
 {
+  Q_OBJECT;
 
-}
+  private:
+
+    Ui::DashboardInfosWidget* ui;
+
+    const openfluid::fluidx::AdvancedFluidXDescriptor& m_AdvFluidxDesc;
 
 
+  public:
+
+    DashboardInfosWidget(const openfluid::fluidx::AdvancedFluidXDescriptor& Desc, QWidget* Parent = 0);
+
+    ~DashboardInfosWidget();
+
+    void refresh();
+};
+
+
+#endif /* __DASHBOARDINFOSWIDGET_HPP__ */

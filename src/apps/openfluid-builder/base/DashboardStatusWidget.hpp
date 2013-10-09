@@ -45,32 +45,61 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file DashboardWidget.cpp
-  \brief Implements ...
+  \file DashboardStatusWidget.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
+#ifndef __DASHBOARDSTATUSWIDGET_HPP__
+#define __DASHBOARDSTATUSWIDGET_HPP__
+
+
+#include "ProjectCentral.hpp"
 #include "DashboardWidget.hpp"
+#include "StatusMessagesWidget.hpp"
+
+#include <QPixmap>
 
 
-DashboardWidget::DashboardWidget(QWidget* Parent):
-  QWidget(Parent)
+namespace Ui
 {
-
+  class DashboardStatusWidget;
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-DashboardWidget::~DashboardWidget()
+class DashboardStatusWidget : public DashboardWidget
 {
+  Q_OBJECT;
 
-}
+  private:
+
+    Ui::DashboardStatusWidget* ui;
+
+    const ProjectCentral* mp_PrjCentral;
+
+    QString m_BorderColor;
+
+    std::map<ProjectCheckInfos::PartInfo,StatusMessagesWidget*> mp_MessagesWidgets;
+
+    void setLevel(const ProjectStatusLevel Level);
+
+    void applyStyleSheet();
+
+  public slots:
+
+    void refresh();
+
+  public:
+
+    DashboardStatusWidget(const ProjectCentral* PrjCentral,QWidget* Parent);
+
+    ~DashboardStatusWidget();
+
+};
 
 
+
+#endif /* __DASHBOARDSTATUSWIDGET_HPP__ */

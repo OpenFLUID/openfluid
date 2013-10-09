@@ -81,57 +81,117 @@ AdvancedFluidXDescriptor::~AdvancedFluidXDescriptor()
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain()
 {
   return *mp_Domain;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+const AdvancedDomainDescriptor& AdvancedFluidXDescriptor::getDomain() const
+{
+  return *mp_Domain;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel()
 {
   return *mp_Model;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+const AdvancedModelDescriptor& AdvancedFluidXDescriptor::getModel() const
+{
+  return *mp_Model;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescriptor()
 {
   return *mp_RunDesc;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+const openfluid::fluidx::RunDescriptor& AdvancedFluidXDescriptor::getRunDescriptor() const
+{
+  return *mp_RunDesc;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatastoreDescriptor()
 {
   return *mp_DatastoreDesc;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+const openfluid::fluidx::DatastoreDescriptor& AdvancedFluidXDescriptor::getDatastoreDescriptor() const
+{
+  return *mp_DatastoreDesc;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 AdvancedDatastoreDescriptor& AdvancedFluidXDescriptor::getDatastore()
 {
   return *mp_Datastore;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring()
 {
   return *mp_Monitoring;
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
+const AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring() const
+{
+  return *mp_Monitoring;
 }
-} // namespaces
+
+
+
+} } // namespaces
 

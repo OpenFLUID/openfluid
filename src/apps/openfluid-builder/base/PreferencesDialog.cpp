@@ -118,6 +118,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent):
   connect(ui->LangComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(updateLanguage(const QString&)));
   connect(ui->RecentMaxSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateRecentsMax(int)));
   connect(ui->ClearRecentsButton,SIGNAL(clicked()),this,SLOT(clearRecentsList()));
+  connect(ui->AutoSaveCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableAutoSaveBeforeRun(bool)));
   connect(ui->ItemRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmItemRemoval(bool)));
   connect(ui->ParamRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmParamRemoval(bool)));
   connect(ui->WatchCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableWatchers(bool)));
@@ -191,9 +192,11 @@ void PreferencesDialog::initialize()
   ui->LangComboBox->setCurrentIndex(ui->LangComboBox->findText(PrefsMan->getLang()));
   ui->RecentMaxSpinBox->setValue(PrefsMan->getRecentMax());
 
-  ui->ItemRemovalCheckBox->setChecked(PrefsMan->getItemRemovalConfirm());
-  ui->ParamRemovalCheckBox->setChecked(PrefsMan->getParamRemovalConfirm());
-  ui->WatchCheckBox->setChecked(PrefsMan->getWaresWatcher());
+  ui->AutoSaveCheckBox->setChecked(PrefsMan->isAutomaticSaveBeforeRun());
+
+  ui->ItemRemovalCheckBox->setChecked(PrefsMan->isItemRemovalConfirm());
+  ui->ParamRemovalCheckBox->setChecked(PrefsMan->isParamRemovalConfirm());
+  ui->WatchCheckBox->setChecked(PrefsMan->isWaresWatchersActive());
 
   // Paths
   ui->WorkDirEdit->setText(PrefsMan->getWorkdir());
@@ -395,7 +398,6 @@ void PreferencesDialog::confirmItemRemoval(bool Confirm)
 void PreferencesDialog::confirmParamRemoval(bool Confirm)
 {
   openfluid::guicommon::PreferencesManager::getInstance()->setParamRemovalConfirm(Confirm);
-
 }
 
 
@@ -405,8 +407,18 @@ void PreferencesDialog::confirmParamRemoval(bool Confirm)
 
 void PreferencesDialog::enableWatchers(bool Active)
 {
-  openfluid::guicommon::PreferencesManager::getInstance()->setWaresWatcher(Active);
+  openfluid::guicommon::PreferencesManager::getInstance()->setWaresWatchersActive(Active);
   m_WaresWatchingChanged = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::enableAutoSaveBeforeRun(bool AutoSave)
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setAutomaticSaveBeforeRun(AutoSave);
 }
 
 

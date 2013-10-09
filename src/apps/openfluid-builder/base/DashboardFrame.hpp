@@ -45,32 +45,56 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file DashboardWidget.cpp
-  \brief Implements ...
+  \file DashboardWidget.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "DashboardWidget.hpp"
+#ifndef __DASHBOARDFRAME_HPP__
+#define __DASHBOARDFRAME_HPP__
+
+#include "ProjectCentral.hpp"
+
+#include <QFrame>
+#include <QBoxLayout>
 
 
-DashboardWidget::DashboardWidget(QWidget* Parent):
-  QWidget(Parent)
+class DashboardInfosWidget;
+class DashboardStatusWidget;
+
+
+class DashboardFrame : public QFrame
 {
+  Q_OBJECT;
 
-}
+  private:
 
+    DashboardInfosWidget* mp_InfosWidget;
+    DashboardStatusWidget* mp_StatusWidget;
 
-// =====================================================================
-// =====================================================================
-
-
-DashboardWidget::~DashboardWidget()
-{
-
-}
+    QBoxLayout* mp_Layout;
 
 
+  public slots:
+
+    void updateOrientation(Qt::DockWidgetArea Area);
+
+
+  public slots:
+
+    void refresh();
+
+
+  public:
+
+    DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent = 0);
+
+    ~DashboardFrame();
+
+};
+
+
+#endif /* __DASHBOARDWIDGET_HPP__ */

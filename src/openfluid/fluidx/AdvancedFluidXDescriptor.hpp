@@ -89,15 +89,25 @@ class DLLEXPORT AdvancedFluidXDescriptor
 
     AdvancedDomainDescriptor& getDomain();
 
+    const AdvancedDomainDescriptor& getDomain() const;
+
     AdvancedModelDescriptor& getModel();
+
+    const AdvancedModelDescriptor& getModel() const;
 
     openfluid::fluidx::RunDescriptor& getRunDescriptor();
 
+    const openfluid::fluidx::RunDescriptor& getRunDescriptor() const;
+
     openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor();
+
+    const openfluid::fluidx::DatastoreDescriptor& getDatastoreDescriptor() const;
 
     AdvancedDatastoreDescriptor& getDatastore();
 
     AdvancedMonitoringDescriptor& getMonitoring();
+
+    const AdvancedMonitoringDescriptor& getMonitoring() const;
 };
 
 } } // namespaces

@@ -84,6 +84,8 @@ class DLLEXPORT DomainDescriptor
 
     inline std::list<UnitDescriptor>& getUnits() { return m_DefDescriptor; };
 
+    inline const std::list<UnitDescriptor>& getUnits() const { return m_DefDescriptor; };
+
     inline std::list<AttributesDescriptor>& getAttributes() { return m_AttrsDescriptor; };
 
     inline std::list<EventDescriptor>& getEvents() { return m_EventsDescriptor; };

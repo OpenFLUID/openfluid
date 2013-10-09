@@ -45,32 +45,84 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file DashboardWidget.cpp
-  \brief Implements ...
+  \file ProjectCheckInfo.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "DashboardWidget.hpp"
+#ifndef __PROJECTCHECKINFOS_HPP__
+#define __PROJECTCHECKINFOS_HPP__
+
+#include <map>
+
+#include <QStringList>
 
 
-DashboardWidget::DashboardWidget(QWidget* Parent):
-  QWidget(Parent)
+enum ProjectStatusLevel { PRJ_OK, PRJ_WARNING, PRJ_ERROR };
+
+
+class ProjectPartCheckInfos
 {
+  private:
 
-}
+    ProjectStatusLevel m_Status;
+
+    QStringList m_Messages;
+
+
+  public:
+
+    ProjectPartCheckInfos();
+
+    ProjectStatusLevel getStatus() const;
+
+    QStringList getMessages() const;
+
+    void setStatus(ProjectStatusLevel Level);
+
+    void addMessage(const QString& Msg);
+
+    void clear();
+};
 
 
 // =====================================================================
 // =====================================================================
 
 
-DashboardWidget::~DashboardWidget()
+class ProjectCheckInfos
 {
+  public:
 
-}
+    enum PartInfo { PART_MODELDEF, PART_MODELPARAMS,
+                    PART_SPATIALSTRUCT, PART_SPATIALATTRS,
+                    PART_DATASTORE,
+                    PART_MONITORING,
+                    PART_RUNCONFIG};
 
 
+  private:
+
+    std::map<PartInfo,ProjectPartCheckInfos> m_Infos;
+
+
+  public:
+
+    ProjectCheckInfos();
+
+    bool isOKForSimulation() const;
+
+    ProjectStatusLevel getOverallStatus() const;
+
+    inline ProjectPartCheckInfos& part(PartInfo Part) { return m_Infos[Part]; };
+
+    inline const ProjectPartCheckInfos& part(PartInfo Part) const { return m_Infos.at(Part); };
+
+    void clear();
+};
+
+
+#endif /* __PROJECTCHECKINFOS_HPP__ */

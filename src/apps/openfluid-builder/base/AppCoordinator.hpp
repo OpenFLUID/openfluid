@@ -72,7 +72,9 @@ class AppCoordinator : public QObject
   private:
 
     MainWindow& m_MainWindow;
+
     AppActions& m_Actions;
+
     QDockWidget* mp_DockWidget;
 
     AbstractModule* mp_CurrentModule;
@@ -142,6 +144,9 @@ class AppCoordinator : public QObject
     void disableSave();
 
     void saveDockArea(Qt::DockWidgetArea Area);
+
+    void enableRun(bool Enabled);
+
 
   public:
 

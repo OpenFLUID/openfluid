@@ -73,7 +73,7 @@
 
 #include "ExtensionsRegistry.hpp"
 
-#include "DashboardWidget.hpp"
+#include "DashboardFrame.hpp"
 
 #include "ProjectWidget.hpp"
 #include "ModelWidget.hpp"
@@ -93,7 +93,7 @@
 
 
 ProjectModule::ProjectModule(const QString& ProjectPath):
-AbstractModule(), mp_MainWidget(NULL), mp_DashboardWidget(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
+AbstractModule(), mp_MainWidget(NULL), mp_DashboardFrame(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 
@@ -132,7 +132,7 @@ void ProjectModule::updateWatchersPaths()
   if (!mp_SimulatorsPlugsWatcher->directories().isEmpty())
     mp_SimulatorsPlugsWatcher->removePaths(mp_SimulatorsPlugsWatcher->directories());
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->getWaresWatcher())
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
     Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths())
             << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
@@ -153,7 +153,7 @@ void ProjectModule::updateWatchersPaths()
   if (!mp_ObserversPlugsWatcher->directories().isEmpty())
     mp_ObserversPlugsWatcher->removePaths(mp_ObserversPlugsWatcher->directories());
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->getWaresWatcher())
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
 
     Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths())
@@ -225,15 +225,15 @@ QWidget* ProjectModule::getMainWidget(QWidget* Parent)
 
 QWidget* ProjectModule::getDockWidget(QWidget* Parent)
 {
-  if (mp_DashboardWidget != NULL)
+  if (mp_DashboardFrame != NULL)
   {
-    delete mp_DashboardWidget;
-    mp_DashboardWidget = NULL;
+    delete mp_DashboardFrame;
+    mp_DashboardFrame = NULL;
   }
 
-  mp_DashboardWidget = new DashboardWidget(Parent, mp_ProjectCentral);
+  mp_DashboardFrame = new DashboardFrame(mp_ProjectCentral,Parent);
 
-  return mp_DashboardWidget;
+  return mp_DashboardFrame;
 }
 
 
@@ -364,7 +364,7 @@ void ProjectModule::whenPreferencesAsked()
   {
     updateWatchersPaths();
 
-    if (PrefsMgr->getWaresWatcher())
+    if (PrefsMgr->isWaresWatchersActive())
     {
       // update wares when re-enabling watching
       updateSimulatorsWares();
@@ -380,6 +380,9 @@ void ProjectModule::whenPreferencesAsked()
 
 void ProjectModule::whenRunAsked()
 {
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isAutomaticSaveBeforeRun())
+    whenSaveAsked();
+
   emit simulationStarted();
   mp_ProjectCentral->run();
   emit simulationFinished();
@@ -520,6 +523,8 @@ bool ProjectModule::whenOpenExampleAsked()
 void ProjectModule::dispatchChanges()
 {
   emit fluidxChanged();
+
+  doCheck();
 }
 
 
@@ -529,7 +534,7 @@ void ProjectModule::dispatchChanges()
 
 void ProjectModule::dispatchChangesFromExtension()
 {
-  emit fluidxChanged();
+  dispatchChanges();
 }
 
 
@@ -556,8 +561,9 @@ void ProjectModule::releaseModelessExtension()
 void ProjectModule::updateSimulatorsWares()
 {
   openfluid::machine::SimulatorSignatureRegistry::getInstance()->updatePluggableSignatures();
-
   mp_ModelTab->updateWares();
+
+  doCheck();
 }
 
 
@@ -569,5 +575,28 @@ void ProjectModule::updateObserversWares()
 {
   openfluid::machine::ObserverSignatureRegistry::getInstance()->update();
   mp_MonitoringTab->updateWares();
+
+  doCheck();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+bool ProjectModule::isOkForSimulation() const
+{
+  return mp_ProjectCentral->getCheckInfos()->isOKForSimulation();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::doCheck()
+{
+  mp_ProjectCentral->check();
+  mp_DashboardFrame->refresh();
+  emit runEnabled(mp_ProjectCentral->getCheckInfos()->isOKForSimulation());
+}

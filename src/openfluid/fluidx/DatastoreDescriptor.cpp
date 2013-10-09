@@ -54,26 +54,37 @@
 
 #include "DatastoreDescriptor.hpp"
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
 
-// =====================================================================
-// =====================================================================
 
 DatastoreDescriptor::DatastoreDescriptor()
 {
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems()
 {
   return m_DatastoreDescription;
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+const DatastoreDescriptor::DatastoreDescription_t& DatastoreDescriptor::getItems() const
+{
+  return m_DatastoreDescription;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 bool DatastoreDescriptor::appendItem(DatastoreItemDescriptor* Item)
 {
@@ -84,8 +95,10 @@ bool DatastoreDescriptor::appendItem(DatastoreItemDescriptor* Item)
   return true;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool DatastoreDescriptor::isItemIDAlreadyExist(std::string ItemID) const
 {
@@ -99,8 +112,5 @@ bool DatastoreDescriptor::isItemIDAlreadyExist(std::string ItemID) const
   return false;
 }
 
-// =====================================================================
-// =====================================================================
 
-}
-} // namespaces
+}  } // namespaces

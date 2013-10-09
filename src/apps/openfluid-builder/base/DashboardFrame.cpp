@@ -45,78 +45,74 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ProjectCheckInfo.hpp
-  \brief Header of ...
+  \file DashboardWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __PROJECTCHECK_HPP__
-#define __PROJECTCHECK_HPP__
-
-#include <map>
-
-#include <QStringList>
+#include "DashboardFrame.hpp"
+#include "DashboardInfosWidget.hpp"
+#include "DashboardStatusWidget.hpp"
 
 
 
-class ProjectPartCheckInfos
+DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent):
+  QFrame(Parent)
 {
-  public:
+  setObjectName("DashboardWidget");
+  setStyleSheet("QFrame#DashboardWidget {background-color: #2C3A4C;}");
+  setFrameShape(QFrame::NoFrame);
 
-    enum StatusInfo { PRJ_OK, PRJ_WARNING, PRJ_ERROR };
+  mp_InfosWidget = new DashboardInfosWidget(PrjCentral->getAdvancedDescriptors(),this);
+  mp_StatusWidget = new DashboardStatusWidget(PrjCentral,this);
 
-    StatusInfo Status;
+  mp_Layout = new QBoxLayout(QBoxLayout::TopToBottom,this);
+  mp_Layout->setContentsMargins(16,16,16,16);
+  mp_Layout->setSpacing(16);
 
-    QStringList Messages;
+  mp_Layout->addWidget(mp_InfosWidget);
+  mp_Layout->addWidget(mp_StatusWidget);
 
-    ProjectPartCheckInfos()
-    {
-      Status = PRJ_OK;
-    }
-};
+  mp_Layout->setStretch(0,1);
+  mp_Layout->setStretch(1,2);
+
+  setLayout(mp_Layout);
+}
 
 
 // =====================================================================
 // =====================================================================
 
 
-class ProjectCheckInfos
+DashboardFrame::~DashboardFrame()
 {
-  public:
 
-    enum PartInfo { PART_MODELDEF, PART_MODELPARAMS,
-                    PART_SPATIALSTRUCT, PART_SPATIALATTRS,
-                    PART_DATASTORE,
-                    PART_MONITORING,
-                    PART_RUNCONFIG};
-
-    std::map<PartInfo,ProjectPartCheckInfos> Infos;
-
-    ProjectCheckInfos()
-    {
-      Infos[PART_MODELDEF] = ProjectPartCheckInfos();
-      Infos[PART_MODELPARAMS] = ProjectPartCheckInfos();
-      Infos[PART_SPATIALSTRUCT] = ProjectPartCheckInfos();
-      Infos[PART_SPATIALATTRS] = ProjectPartCheckInfos();
-      Infos[PART_DATASTORE] = ProjectPartCheckInfos();
-      Infos[PART_MONITORING] = ProjectPartCheckInfos();
-      Infos[PART_RUNCONFIG] = ProjectPartCheckInfos();
-    }
-
-    bool isOKForSimulation()
-    {
-      return (Infos[PART_MODELDEF].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_MODELPARAMS].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_SPATIALSTRUCT].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_SPATIALATTRS].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_DATASTORE].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_MONITORING].Status != ProjectPartCheckInfos::PRJ_ERROR &&
-              Infos[PART_RUNCONFIG].Status != ProjectPartCheckInfos::PRJ_ERROR);
-    }
-};
+}
 
 
-#endif /* __PROJECTCHECKINFO_HPP__ */
+// =====================================================================
+// =====================================================================
+
+
+void DashboardFrame::updateOrientation(Qt::DockWidgetArea Area)
+{
+  if (Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea)
+    mp_Layout->setDirection(QBoxLayout::TopToBottom);
+  else if (Area == Qt::TopDockWidgetArea || Area == Qt::BottomDockWidgetArea)
+    mp_Layout->setDirection(QBoxLayout::LeftToRight);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DashboardFrame::refresh()
+{
+  mp_InfosWidget->refresh();
+  mp_StatusWidget->refresh();
+}
