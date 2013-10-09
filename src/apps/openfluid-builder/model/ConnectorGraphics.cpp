@@ -69,8 +69,15 @@ ConnectorGraphics::ConnectorGraphics(ModelItemGraphics* FromItem, OutNodeType Fr
   mp_FromItem(FromItem),m_FromOutNode(FromOutNode),
   mp_ToItem(ToItem),m_ToInNode(ToInNode)
 {
-  setZValue(-2000);
+  setZValue(-3000);
   setPen(QPen(QBrush(QColor(BUILDER_MODELVIEW_CONNECTCOLOR)),3));
+
+  mp_VarsTextBox = new QGraphicsRectItem();
+  mp_VarsTextBox->setZValue(-2000);
+  mp_VarsTextBox->setBrush(QBrush(QColor("white")));
+  mp_VarsTextBox->setPen(QPen(Qt::NoPen));
+  mp_VarsTextBox->setOpacity(0.8);
+  mp_VarsTextBox->setParentItem(this);
 
   mp_VarsText = new QGraphicsSimpleTextItem("");
   mp_VarsText->setZValue(-1000);
@@ -79,6 +86,7 @@ ConnectorGraphics::ConnectorGraphics(ModelItemGraphics* FromItem, OutNodeType Fr
   TmpFont.setPointSize(10);
   TmpFont.setItalic(true);
   mp_VarsText->setFont(TmpFont);
+  mp_VarsText->setParentItem(this);
 
   updatePosition();
 
@@ -149,11 +157,20 @@ void ConnectorGraphics::updatePosition()
   setPath(Path);
 
 
+
   // variables names
   mp_VarsText->setText(m_Variables.join("\n"));
-  mp_VarsText->setPos(InterPos.x()-mp_VarsText->boundingRect().width()/2,
-                      InterPos.y()-mp_VarsText->boundingRect().height()/2);
-  mp_VarsText->setParentItem(this);
+
+  QPointF TextPos(InterPos.x()-mp_VarsText->boundingRect().width()/2,
+                  InterPos.y()-mp_VarsText->boundingRect().height()/2);
+
+  mp_VarsText->setPos(TextPos);
+
+
+
+  // variables names background box
+  mp_VarsTextBox->setRect(TextPos.x()-2,TextPos.y()-2,
+                          mp_VarsText->boundingRect().width()+4, mp_VarsText->boundingRect().height()+4);
 }
 
 
@@ -167,4 +184,14 @@ void ConnectorGraphics::addVariable(const QString& UnitClass, const QString& Var
   updatePosition();
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void ConnectorGraphics::setVariablesNamesVisible(bool Visible) const
+{
+  mp_VarsText->setVisible(Visible);
+  mp_VarsTextBox->setVisible(Visible);
+}
 
