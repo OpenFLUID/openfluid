@@ -271,15 +271,18 @@ bool ProjectManager::save()
 
 void ProjectManager::close()
 {
-  m_Path = m_InputDir = m_OutputDir = m_Name = m_Description = m_Authors
-      = m_CreationDate = m_LastModDate = "";
+  if (m_IsOpened)
+  {
+    m_Path = m_InputDir = m_OutputDir = m_Name = m_Description = m_Authors
+        = m_CreationDate = m_LastModDate = "";
 
-  m_IsIncOutputDir = m_IsOpened = false;
+    m_IsIncOutputDir = m_IsOpened = false;
 
-  mp_PrjFile->sync();
+    mp_PrjFile->sync();
 
-  delete mp_PrjFile;
-  mp_PrjFile = NULL;
+    delete mp_PrjFile;
+    mp_PrjFile = NULL;
+  }
 }
 
 // =====================================================================

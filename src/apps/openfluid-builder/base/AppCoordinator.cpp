@@ -354,6 +354,7 @@ bool AppCoordinator::closeProject()
     }
     return false;
   }
+  openfluid::base::ProjectManager::getInstance()->close();
   return true;
 }
 
@@ -390,7 +391,7 @@ void AppCoordinator::whenQuitAsked()
 
 void AppCoordinator::whenNewAsked()
 {
-  if (mp_CurrentModule->whenNewAsked())
+  if (mp_CurrentModule->whenNewAsked() && closeProject())
   {
     NewProjectDialog NewPrjDlg(&m_MainWindow);
     if (NewPrjDlg.exec() == QDialog::Accepted)
@@ -429,7 +430,7 @@ void AppCoordinator::whenNewAsked()
 
 void AppCoordinator::whenOpenAsked()
 {
-  if (mp_CurrentModule->whenOpenAsked())
+  if (mp_CurrentModule->whenOpenAsked() && closeProject())
   {
     // TODO develop custom open project
     /*openfluid::guicommon::OpenProjectDialog OpenPrjDlg(&m_MainWindow);
@@ -667,7 +668,7 @@ void AppCoordinator::whenEmailAsked()
 
 void AppCoordinator::whenOpenExampleAsked()
 {
-  if (mp_CurrentModule->whenOpenExampleAsked())
+  if (mp_CurrentModule->whenOpenExampleAsked() && closeProject())
   {
     OpenExampleProjectDialog OpenExDlg(&m_MainWindow);
     if (OpenExDlg.exec() == QDialog::Accepted)
