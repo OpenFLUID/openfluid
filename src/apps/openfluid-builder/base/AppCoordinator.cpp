@@ -174,6 +174,9 @@ void AppCoordinator::unsetCurrentModule()
 {
   if (mp_CurrentModule != NULL) delete mp_CurrentModule;
   mp_CurrentModule = NULL;
+
+  if (mp_DockWidget != NULL) delete mp_DockWidget;
+  mp_DockWidget = NULL;
 }
 
 
@@ -473,34 +476,37 @@ void AppCoordinator::whenOpenAsked()
 
 void AppCoordinator::whenOpenRecentAsked()
 {
-  QAction *Action = qobject_cast<QAction*>(sender());
-  if (Action)
+  if (closeProject())
   {
-    QString ProjectPath = Action->data().toString();
-
-    if (openfluid::base::ProjectManager::isProject(ProjectPath.toStdString()))
+    QAction *Action = qobject_cast<QAction*>(sender());
+    if (Action)
     {
-      openfluid::base::ProjectManager::getInstance()->open(ProjectPath.toStdString());
+      QString ProjectPath = Action->data().toString();
 
-      try
+      if (openfluid::base::ProjectManager::isProject(ProjectPath.toStdString()))
       {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        openProject(QDir(ProjectPath).dirName(),ProjectPath);
-        QApplication::restoreOverrideCursor();
+        openfluid::base::ProjectManager::getInstance()->open(ProjectPath.toStdString());
+
+        try
+        {
+          QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+          openProject(QDir(ProjectPath).dirName(),ProjectPath);
+          QApplication::restoreOverrideCursor();
+        }
+        catch (openfluid::base::Exception& E)
+        {
+          openfluid::base::ProjectManager::getInstance()->close();
+          QApplication::restoreOverrideCursor();
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
+          return;
+        }
       }
-      catch (openfluid::base::Exception& E)
+      else
       {
-        openfluid::base::ProjectManager::getInstance()->close();
         QApplication::restoreOverrideCursor();
-        QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
-        return;
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),
+                              ProjectPath+ "\n\n" + tr("is not a valid OpenFLUID project"));
       }
-    }
-    else
-    {
-      QApplication::restoreOverrideCursor();
-      QMessageBox::critical(&m_MainWindow,tr("Project error"),
-                            ProjectPath+ "\n\n" + tr("is not a valid OpenFLUID project"));
     }
   }
 }
