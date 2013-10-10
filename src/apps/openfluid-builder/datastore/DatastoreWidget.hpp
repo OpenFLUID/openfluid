@@ -59,6 +59,7 @@
 #include <QWidget>
 
 #include "WorkspaceWidget.hpp"
+#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
 
 
 namespace Ui
@@ -74,6 +75,14 @@ class DatastoreWidget : public WorkspaceWidget
   private:
 
     Ui::DatastoreWidget* ui;
+
+    openfluid::fluidx::AdvancedDatastoreDescriptor& m_Datastore;
+
+
+  public slots:
+
+    void refresh();
+
 
   public:
 
