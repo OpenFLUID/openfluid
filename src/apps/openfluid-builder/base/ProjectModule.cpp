@@ -534,6 +534,9 @@ void ProjectModule::dispatchChanges()
 
 void ProjectModule::dispatchChangesFromExtension()
 {
+  mp_SpatialTab->refresh();
+  mp_DatastoreTab->refresh();
+
   dispatchChanges();
 }
 

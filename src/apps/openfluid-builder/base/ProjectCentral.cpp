@@ -132,6 +132,7 @@ ProjectCentral::~ProjectCentral()
 
 void ProjectCentral::deleteData()
 {
+  delete mp_AdvancedFXDesc;
   delete mp_FXDesc;
 
   openfluid::base::RuntimeEnvironment::getInstance()->detachFromProject();

@@ -60,6 +60,8 @@
 #include <QWidget>
 
 #include "WorkspaceWidget.hpp"
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+
 
 namespace Ui
 {
@@ -74,6 +76,14 @@ class SpatialDomainWidget : public WorkspaceWidget
   private:
 
     Ui::SpatialDomainWidget* ui;
+
+    openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+
+
+  public slots:
+
+    void refresh();
+
 
   public:
 

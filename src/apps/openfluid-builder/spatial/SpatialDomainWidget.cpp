@@ -57,12 +57,18 @@
 
 #include "ui_SpatialDomainWidget.h"
 #include "SpatialDomainWidget.hpp"
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 
 SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::SpatialDomainWidget)
+  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::SpatialDomainWidget), m_Domain(AFXDesc.getDomain())
 {
   ui->setupUi(this);
+
+  connect(ui->UnitsTableWidget->horizontalHeader(),SIGNAL(sectionResized(int, int, int)),
+          ui->UnitsTableWidget,SLOT(resizeRowsToContents()));
+
+  refresh();
 }
 
 
@@ -73,4 +79,125 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
 SpatialDomainWidget::~SpatialDomainWidget()
 {
   delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::refresh()
+{
+  ui->UnitsTableWidget->setRowCount(0);
+
+  ui->UnitsTableWidget->setRowCount(m_Domain.getUnitsCount());
+
+  int CurrentRow = 0;
+
+  std::set<std::string> Classes = m_Domain.getClassNames();
+
+  for (std::set<std::string>::iterator itc = Classes.begin(); itc != Classes.end(); ++itc)
+  {
+    std::set<int> IDs = m_Domain.getIDsOfClass(*itc);
+
+    for (std::set<int>::iterator iti = IDs.begin(); iti != IDs.end(); ++iti)
+    {
+      QTableWidgetItem *Item;
+
+      // ======== ID, class, process order
+
+      Item = new QTableWidgetItem(QString::fromStdString(*itc));
+      ui->UnitsTableWidget->setItem(CurrentRow, 0, Item);
+
+      Item = new QTableWidgetItem(QString::fromStdString("%1").arg(*iti));
+      ui->UnitsTableWidget->setItem(CurrentRow, 1, Item);
+
+      const openfluid::fluidx::AdvancedUnitDescriptor& UnitDesc = m_Domain.getUnit(*itc,*iti);
+
+      Item = new QTableWidgetItem(QString("%1").arg(UnitDesc.UnitDescriptor->getProcessOrder()));
+      ui->UnitsTableWidget->setItem(CurrentRow, 2, Item);
+
+
+      // ======== Connections
+      std::list<openfluid::core::UnitClassID_t>::iterator itconn;
+      std::list<openfluid::core::UnitClassID_t> ConnUnits;
+      QString ConnStr;
+
+
+      // to connections
+      ConnUnits = m_Domain.getUnitsToOf(make_pair(*itc,*iti));
+      ConnStr.clear();
+
+      for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+      {
+        if (itconn != ConnUnits.begin()) ConnStr += ", ";
+        ConnStr += QString::fromStdString((*itconn).first) + QString("#%1").arg((*itconn).second);
+      }
+
+      Item = new QTableWidgetItem(ConnStr);
+      ui->UnitsTableWidget->setItem(CurrentRow, 3, Item);
+
+
+      // from connections
+      ConnUnits = m_Domain.getUnitsFromOf(make_pair(*itc,*iti));
+      ConnStr.clear();
+
+      for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+      {
+        if (itconn != ConnUnits.begin()) ConnStr += ", ";
+        ConnStr += QString::fromStdString((*itconn).first) + QString("#%1").arg((*itconn).second);
+      }
+
+      Item = new QTableWidgetItem(ConnStr);
+      ui->UnitsTableWidget->setItem(CurrentRow, 4, Item);
+
+
+      // parent connections
+      ConnUnits = m_Domain.getUnitsParentsOf(make_pair(*itc,*iti));
+      ConnStr.clear();
+
+      for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+      {
+        if (itconn != ConnUnits.begin()) ConnStr += ", ";
+        ConnStr += QString::fromStdString((*itconn).first) + QString("#%1").arg((*itconn).second);
+      }
+
+      Item = new QTableWidgetItem(ConnStr);
+      ui->UnitsTableWidget->setItem(CurrentRow, 5, Item);
+
+
+      // children connections
+      ConnUnits = m_Domain.getUnitsChildrenOf(make_pair(*itc,*iti));
+      ConnStr.clear();
+
+      for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+      {
+        if (itconn != ConnUnits.begin()) ConnStr += ", ";
+        ConnStr += QString::fromStdString((*itconn).first) + QString("#%1").arg((*itconn).second);
+      }
+
+      Item = new QTableWidgetItem(ConnStr);
+      ui->UnitsTableWidget->setItem(CurrentRow, 6, Item);
+
+
+      // ======== Attributes
+
+      std::map<openfluid::core::AttributeName_t, std::string*> Attrs = UnitDesc.Attributes;
+
+      QString AttrsStr;
+
+      for (std::map<openfluid::core::AttributeName_t, std::string*>::iterator ita = Attrs.begin();
+          ita != Attrs.end(); ++ita)
+      {
+        AttrsStr += QString::fromStdString((*ita).first) + "={" + QString::fromStdString(*((*ita).second))+"} ";
+      }
+
+      Item = new QTableWidgetItem(AttrsStr);
+      ui->UnitsTableWidget->setItem(CurrentRow, 7, Item);
+
+      CurrentRow++;
+    }
+  }
+
+  ui->UnitsTableWidget->resizeRowsToContents();
 }
