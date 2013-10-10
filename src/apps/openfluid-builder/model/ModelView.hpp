@@ -46,89 +46,42 @@
 */
 
 /**
-  \file ModelWidget.hpp
+  \file ModelView.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __MODELVIEW_HPP__
+#define __MODELVIEW_HPP__
+
+#include <QGraphicsView>
 
 
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
-#include "ModelScene.hpp"
-
-
-namespace Ui
+class ModelView : public QGraphicsView
 {
-  class ModelWidget;
-}
-
-
-class ModelWidget : public WorkspaceWidget
-{
-  Q_OBJECT
-
-  private:
-
-    Ui::ModelWidget* ui;
-
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
-
-    WaresManagementWidget* mp_WaresManWidget;
-
-    ModelScene* mp_ModelScene;
-
-    openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    void updateGlobalParams();
-
-    void updateCoupledModel();
-
-
-  private slots:
-
-    void updateShowHideGlobalParams();
-
-    void addGlobalParam();
-
-    void removeGlobalParam(const QString& Name);
-
-    void updateGlobalParamValue(const QString& Name, const QString& Value);
-
-    void addSimulator();
-
-    void addGenerator();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
-
+  Q_OBJECT;
 
   public slots:
 
-    void refresh();
+    void fitViewToItems();
+
+    void resetView();
+
+    void exportSceneAsPNG();
+
+    void exportSceneAsSVG();
 
 
   public:
 
-    ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    ModelView(QWidget* Parent = 0);
 
-    virtual ~ModelWidget();
+    void wheelEvent(QWheelEvent* Event);
 
-    void updateWares();
 };
 
 
 
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __MODELVIEW_HPP__ */

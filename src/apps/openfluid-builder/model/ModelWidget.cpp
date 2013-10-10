@@ -71,11 +71,8 @@
 
 #include "AppTools.hpp"
 
-#include <iostream>
 #include <QMessageBox>
 #include <QImage>
-#include <QSvgGenerator>
-#include <QFileDialog>
 
 
 
@@ -109,8 +106,10 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
   connect(mp_WaresManWidget->ui->AddWareFirstButton,SIGNAL(clicked()),this,SLOT(addSimulator()));
   connect(mp_WaresManWidget->ui->AddWareSecondButton,SIGNAL(clicked()),this,SLOT(addGenerator()));
 
-  connect(ui->PNGExportButton,SIGNAL(clicked()),this,SLOT(exportModelViewAsPNG()));
-  connect(ui->SVGExportButton,SIGNAL(clicked()),this,SLOT(exportModelViewAsSVG()));
+  connect(ui->FitViewButton,SIGNAL(clicked()),ui->GraphicalView,SLOT(fitViewToItems()));
+  connect(ui->ResetViewButton,SIGNAL(clicked()),ui->GraphicalView,SLOT(resetView()));
+  connect(ui->PNGExportButton,SIGNAL(clicked()),ui->GraphicalView,SLOT(exportSceneAsPNG()));
+  connect(ui->SVGExportButton,SIGNAL(clicked()),ui->GraphicalView,SLOT(exportSceneAsSVG()));
 
   refresh();
 
@@ -519,63 +518,6 @@ void ModelWidget::dispatchChangesFromChildren()
 // =====================================================================
 
 
-void ModelWidget::exportModelViewAsPNG()
-{
-  QString FileName = QFileDialog::getSaveFileName(this,
-                                                  tr("Export as PNG image file"),
-                                                  "export_modelview.png",
-                                                  tr("PNG Files (*.png)"));
-
-  if (!FileName.isEmpty())
-  {
-    QImage Image((int)mp_ModelScene->sceneRect().width(),
-                 (int)mp_ModelScene->sceneRect().height(),
-                 QImage::Format_ARGB32_Premultiplied);
-    QPainter Painter(&Image);
-    Painter.setRenderHint(QPainter::Antialiasing);
-    mp_ModelScene->render(&Painter);
-    Image.save(FileName);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void ModelWidget::exportModelViewAsSVG()
-{
-  QString FileName = QFileDialog::getSaveFileName(this,
-                                                  tr("Export as SVG vector file"),
-                                                  "export_modelview.svg",
-                                                  tr("SVG Files (*.svg)"));
-
-  if (!FileName.isEmpty())
-  {
-    // TODO see why exported graphic objects are out of the initial view
-    // (using inkscape or other tool)
-
-    QSvgGenerator SvgGen;
-
-    QRectF ExportRect = mp_ModelScene->itemsBoundingRect();
-
-    SvgGen.setFileName(FileName);
-    SvgGen.setSize(QSize((int)ExportRect.width(),
-                         (int)ExportRect.height()));
-    SvgGen.setViewBox(ExportRect);
-    SvgGen.setTitle("");
-    SvgGen.setDescription("");
-
-    QPainter Painter(&SvgGen);
-    mp_ModelScene->render(&Painter);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void ModelWidget::updateWares()
 {
   int LastIndex = mp_WaresManWidget->ui->WaresListAreaContents->layout()->count()-1;
@@ -588,4 +530,5 @@ void ModelWidget::updateWares()
 
   mp_ModelScene->refresh();
 }
+
 
