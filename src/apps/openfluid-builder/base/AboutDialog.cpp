@@ -57,6 +57,7 @@
 #include <QPushButton>
 #include <QPixmap>
 
+#include "ActionLabel.hpp"
 #include "ClickableLabel.hpp"
 
 #include "ui_AboutDialog.h"
@@ -88,13 +89,16 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
   ui->IconLabel->setFocus();
 
   ui->ButtonBox->button(QDialogButtonBox::Close)->setCursor(Qt::PointingHandCursor);
-  ui->ToggleButton->setCursor(Qt::PointingHandCursor);
+
+  mp_SwitchLabel = new ActionLabel("action",this);
+  mp_SwitchLabel->setAlignment(Qt::AlignBottom);
+  ui->DescLayout->addWidget(mp_SwitchLabel);
 
   toggleInfos();
 
   connect(mp_WebLabel,SIGNAL(clicked()),mp_WebAction,SLOT(trigger()));
   connect(mp_ContactLabel,SIGNAL(clicked()),mp_ContactAction,SLOT(trigger()));
-  connect(ui->ToggleButton,SIGNAL(clicked()),this,SLOT(toggleInfos()));
+  connect(mp_SwitchLabel,SIGNAL(clicked()),this,SLOT(toggleInfos()));
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
@@ -124,14 +128,14 @@ void AboutDialog::toggleInfos()
   if (m_InfoIsCredits)
   {
     ui->DescLabel->setText(tr("Credits")+":");
-    ui->ToggleButton->setText(tr("View license"));
+    mp_SwitchLabel->setText(tr("View license"));
     ui->InfosEdit->setText(BUILDER_AUTHORS_TEXT);
     ui->InfosEdit->setStyleSheet("font-size: 13px;");
   }
   else
   {
     ui->DescLabel->setText(tr("License")+":");
-    ui->ToggleButton->setText(tr("View credits"));
+    mp_SwitchLabel->setText(tr("View credits"));
     ui->InfosEdit->setStyleSheet("font-size: 12px;");
     ui->InfosEdit->setText(BUILDER_LICENSE_TEXT);
   }
