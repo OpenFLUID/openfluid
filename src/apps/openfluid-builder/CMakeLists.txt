@@ -244,6 +244,13 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-builder-main
                       openfluid-fluidx)
                                    
+INSTALL(TARGETS openfluid-builder-main
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
+               
+INSTALL(TARGETS openfluid-builder
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH})       
                                    
 IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
   ADD_SUBDIRECTORY(extensions/tests)
