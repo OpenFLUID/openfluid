@@ -46,51 +46,42 @@
 */
 
 /**
-  \file SpatialDomainWidget.hpp
+  \file ModelView.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SPATIALDOMAINWIDGET_HPP__
-#define __SPATIALDOMAINWIDGET_HPP__
+#ifndef __MODELVIEW_HPP__
+#define __MODELVIEW_HPP__
+
+#include <QGraphicsView>
 
 
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-
-
-namespace Ui
+class ModelView : public QGraphicsView
 {
-  class SpatialDomainWidget;
-}
-
-
-class SpatialDomainWidget : public WorkspaceWidget
-{
-  Q_OBJECT
-
-  private:
-
-    Ui::SpatialDomainWidget* ui;
-
-    openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
-
+  Q_OBJECT;
 
   public slots:
 
-    void refresh();
+    void fitViewToItems();
+
+    void resetView();
+
+    void exportSceneAsPNG();
+
+    void exportSceneAsSVG();
 
 
   public:
 
-    SpatialDomainWidget(QWidget* Parent,openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    ModelView(QWidget* Parent = 0);
 
-    virtual ~SpatialDomainWidget();
+    void wheelEvent(QWheelEvent* Event);
+
 };
 
 
-#endif /* __SPATIALDOMAINWIDGET_HPP__ */
+
+#endif /* __MODELVIEW_HPP__ */

@@ -114,9 +114,6 @@ class ModelWidget : public WorkspaceWidget
 
     void dispatchChangesFromChildren();
 
-    void exportModelViewAsPNG();
-
-    void exportModelViewAsSVG();
 
   public slots:
 

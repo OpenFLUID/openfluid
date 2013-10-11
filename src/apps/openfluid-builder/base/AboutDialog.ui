@@ -41,7 +41,7 @@
    <string notr="true">Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color : white;</string>
+   <string notr="true">QDialog {background-color : white;}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -78,7 +78,10 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="InfosLayout">
+      <layout class="QVBoxLayout" name="InfosLayout" stretch="0,0,1">
+       <property name="spacing">
+        <number>3</number>
+       </property>
        <item>
         <widget class="QLabel" name="TitleLabel">
          <property name="sizePolicy">
@@ -105,29 +108,52 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="DescLabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+        <layout class="QHBoxLayout" name="DescLayout">
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>40</height>
-          </size>
+         <property name="bottomMargin">
+          <number>6</number>
          </property>
-         <property name="styleSheet">
-          <string notr="true">font:bold;</string>
-         </property>
-         <property name="text">
-          <string notr="true">DescLabel</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
-         </property>
-        </widget>
+         <item>
+          <widget class="QLabel" name="DescLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">font:bold;</string>
+           </property>
+           <property name="text">
+            <string notr="true">DescLabel</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QTextEdit" name="InfosEdit">
@@ -177,57 +203,6 @@ p, li { white-space: pre-wrap; }
       <number>0</number>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <widget class="QPushButton" name="ToggleButton">
-        <property name="minimumSize">
-         <size>
-          <width>90</width>
-          <height>26</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-color: white;
-background-color: rgb(71,97,123);
-border: none;
-padding: 3px;
-font-size: 13px;
-padding-left: 5px;
-padding-right: 5px;
-min-width: 80px;
-max-width: 80px;
-min-height: 20px;
-max-height: 20px;
-font : bold;
-text-decoration : underline;
-}
-
-QPushButton:default { background-color: rgb(71,97,123); }
-QPushButton:pressed { background-color: rgb(71,97,123); }
-QPushButton:focus { background-color: rgb(71,97,123); }
-QPushButton:focus:pressed { background-color: rgb(71,97,123); }
-
-
-</string>
-        </property>
-        <property name="text">
-         <string>ToggleButton</string>
-        </property>
-       </widget>
-      </item>
       <item>
        <widget class="QDialogButtonBox" name="ButtonBox">
         <property name="minimumSize">

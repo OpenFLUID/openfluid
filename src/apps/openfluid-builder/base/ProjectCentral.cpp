@@ -132,6 +132,7 @@ ProjectCentral::~ProjectCentral()
 
 void ProjectCentral::deleteData()
 {
+  delete mp_AdvancedFXDesc;
   delete mp_FXDesc;
 
   openfluid::base::RuntimeEnvironment::getInstance()->detachFromProject();
@@ -337,9 +338,8 @@ void ProjectCentral::checkModel()
 
   openfluid::ware::SimulatorSignature* Sign;
 
+  std::set<std::pair<std::string, std::string> > AttrsUnits;
 
-
-  // ========== external constraints
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it = Items.begin(); it != Items.end(); ++it)
   {
@@ -352,6 +352,9 @@ void ProjectCentral::checkModel()
       if (SignII != NULL)
       {
         Sign = SignII->Signature;
+
+
+        // ========== external constraints
 
         // check extrafiles
 
@@ -469,8 +472,6 @@ void ProjectCentral::checkModel()
         // check required attributes
 
         std::vector<openfluid::ware::SignatureHandledDataItem>& ReqData = Sign->HandledData.RequiredAttribute;
-
-        std::set<std::pair<std::string, std::string> > AttrsUnits;
 
         for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt = ReqData.begin(); itt != ReqData.end(); ++itt)
         {

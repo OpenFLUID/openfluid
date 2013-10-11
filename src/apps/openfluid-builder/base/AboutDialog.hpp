@@ -65,6 +65,7 @@ namespace Ui
 }
 
 class ClickableLabel;
+class ActionLabel;
 
 
 class AboutDialog : public QDialog
@@ -82,6 +83,8 @@ class AboutDialog : public QDialog
     ClickableLabel* mp_ContactLabel;
 
     const QAction* mp_ContactAction;
+
+    ActionLabel* mp_SwitchLabel;
 
     bool m_InfoIsCredits;
 

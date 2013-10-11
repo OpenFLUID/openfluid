@@ -47,61 +47,26 @@
 
 
 /**
-  \file AboutDialog.cpp
+  \file ModelView.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <QLabel>
-#include <QPushButton>
-#include <QPixmap>
 
-#include "ActionLabel.hpp"
-#include "ClickableLabel.hpp"
+#include <openfluid/base/ProjectManager.hpp>
 
-#include "ui_AboutDialog.h"
-#include "AboutDialog.hpp"
+#include "ModelView.hpp"
 
-#include "builderconfig.hpp"
+#include <QWheelEvent>
+#include <QSvgGenerator>
+#include <QFileDialog>
 
 
-AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QAction* ContactAction):
-  QDialog(Parent), ui(new Ui::AboutDialog),
-  mp_WebAction(WebAction), mp_ContactAction(ContactAction),
-  m_InfoIsCredits(false)
+ModelView::ModelView(QWidget* Parent):
+  QGraphicsView(Parent)
 {
-  ui->setupUi(this);
 
-  setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
-
-  mp_WebLabel = new ClickableLabel("<A HREF='http://www.openfluid-project.org'>www.openfluid-project.org</A>",this);
-  mp_WebLabel->setCursor(Qt::PointingHandCursor);
-  mp_ContactLabel = new ClickableLabel("<A HREF='mailto:contact@openfluid-project.org'>contact@openfluid-project.org</A>",this);
-  mp_ContactLabel->setCursor(Qt::PointingHandCursor);
-
-  ui->InfosLayout->insertWidget(1,mp_WebLabel);
-  ui->InfosLayout->insertWidget(2,mp_ContactLabel);
-
-  ui->IconLabel->setPixmap(QPixmap(":/icons/openfluid_icon_about.png"));
-  ui->TitleLabel->setPixmap(QPixmap(":/images/openfluid_title.png"));
-
-  ui->IconLabel->setFocus();
-
-  ui->ButtonBox->button(QDialogButtonBox::Close)->setCursor(Qt::PointingHandCursor);
-
-  mp_SwitchLabel = new ActionLabel("action",this);
-  mp_SwitchLabel->setAlignment(Qt::AlignBottom);
-  ui->DescLayout->addWidget(mp_SwitchLabel);
-
-  toggleInfos();
-
-  connect(mp_WebLabel,SIGNAL(clicked()),mp_WebAction,SLOT(trigger()));
-  connect(mp_ContactLabel,SIGNAL(clicked()),mp_ContactAction,SLOT(trigger()));
-  connect(mp_SwitchLabel,SIGNAL(clicked()),this,SLOT(toggleInfos()));
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 }
 
 
@@ -109,35 +74,88 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
 // =====================================================================
 
 
-AboutDialog::~AboutDialog()
+void ModelView::wheelEvent(QWheelEvent* Event)
 {
-  delete ui;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AboutDialog::toggleInfos()
-{
-  ui->IconLabel->setFocus();
-
-  m_InfoIsCredits = !m_InfoIsCredits;
-
-  if (m_InfoIsCredits)
+  if (Event->modifiers().testFlag(Qt::ControlModifier)) // zoom only when Ctrl key is pressed
   {
-    ui->DescLabel->setText(tr("Credits")+":");
-    mp_SwitchLabel->setText(tr("View license"));
-    ui->InfosEdit->setText(BUILDER_AUTHORS_TEXT);
-    ui->InfosEdit->setStyleSheet("font-size: 13px;");
+    if (Event->delta() < 0) scale(0.9,0.9);
+    else scale(1.1,1.1);
   }
-  else
+//  Event->ignore();
+  QGraphicsView::wheelEvent(Event);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelView::fitViewToItems()
+{
+  fitInView(scene()->itemsBoundingRect(),Qt::KeepAspectRatio);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelView::resetView()
+{
+  resetTransform();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelView::exportSceneAsPNG()
+{
+  QString FileName = QFileDialog::getSaveFileName(this,
+                                                  tr("Export as PNG image file"),
+                                                  "export_modelview.png",
+                                                  tr("PNG Files (*.png)"));
+
+  if (!FileName.isEmpty())
   {
-    ui->DescLabel->setText(tr("License")+":");
-    mp_SwitchLabel->setText(tr("View credits"));
-    ui->InfosEdit->setStyleSheet("font-size: 12px;");
-    ui->InfosEdit->setText(BUILDER_LICENSE_TEXT);
+    QImage Image((int)scene()->sceneRect().width(),
+                 (int)scene()->sceneRect().height(),
+                 QImage::Format_ARGB32_Premultiplied);
+    QPainter Painter(&Image);
+    Painter.setRenderHint(QPainter::Antialiasing);
+    scene()->render(&Painter);
+    Image.save(FileName);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelView::exportSceneAsSVG()
+{
+  QString FileName = QFileDialog::getSaveFileName(this,
+                                                  tr("Export as SVG vector file"),
+                                                  "export_modelview.svg",
+                                                  tr("SVG Files (*.svg)"));
+
+  if (!FileName.isEmpty())
+  {
+    QSvgGenerator SvgGen;
+
+    QRectF ExportRect = scene()->itemsBoundingRect();
+
+    SvgGen.setFileName(FileName);
+    SvgGen.setSize(QSize((int)ExportRect.width(),
+                         (int)ExportRect.height()));
+    SvgGen.setViewBox(QRectF(0,0,ExportRect.width(),ExportRect.height()));
+    SvgGen.setTitle(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
+    SvgGen.setDescription(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getDescription()));
+
+    QPainter Painter(&SvgGen);
+    scene()->render(&Painter);
   }
 }
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>662</width>
-    <height>491</height>
+    <width>770</width>
+    <height>588</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,13 +15,39 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>DatastoreWidget</string>
+    <widget class="QTableWidget" name="DatastoreTableWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+     <property name="sortingEnabled">
+      <bool>true</bool>
      </property>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>ID</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Type</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Unit class</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Source</string>
+      </property>
+     </column>
     </widget>
    </item>
   </layout>

@@ -236,14 +236,13 @@ class DLLEXPORT AdvancedDomainDescriptor
     void renameAttribute(std::string ClassName, std::string OldAttrName,
                          std::string NewAttrName);
 
-    const std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(
-        const openfluid::core::UnitClassID_t Unit) const;
-    const std::list<openfluid::core::UnitClassID_t>& getUnitsParentsOf(
-        const openfluid::core::UnitClassID_t Unit) const;
-    std::list<openfluid::core::UnitClassID_t> getUnitsFromOf(
-        const openfluid::core::UnitClassID_t Unit) const;
-    std::list<openfluid::core::UnitClassID_t> getUnitsChildrenOf(
-        const openfluid::core::UnitClassID_t Unit) const;
+    const std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(const openfluid::core::UnitClassID_t Unit) const;
+
+    const std::list<openfluid::core::UnitClassID_t>& getUnitsParentsOf(const openfluid::core::UnitClassID_t Unit) const;
+
+    std::list<openfluid::core::UnitClassID_t> getUnitsFromOf(const openfluid::core::UnitClassID_t Unit) const;
+
+    std::list<openfluid::core::UnitClassID_t> getUnitsChildrenOf(const openfluid::core::UnitClassID_t Unit) const;
 
     /**
      * @brief Add ToUnit to the list of "Tos" of FromUnit

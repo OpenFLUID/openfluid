@@ -174,6 +174,9 @@ void AppCoordinator::unsetCurrentModule()
 {
   if (mp_CurrentModule != NULL) delete mp_CurrentModule;
   mp_CurrentModule = NULL;
+
+  if (mp_DockWidget != NULL) delete mp_DockWidget;
+  mp_DockWidget = NULL;
 }
 
 
@@ -354,6 +357,7 @@ bool AppCoordinator::closeProject()
     }
     return false;
   }
+  openfluid::base::ProjectManager::getInstance()->close();
   return true;
 }
 
@@ -390,7 +394,7 @@ void AppCoordinator::whenQuitAsked()
 
 void AppCoordinator::whenNewAsked()
 {
-  if (mp_CurrentModule->whenNewAsked())
+  if (mp_CurrentModule->whenNewAsked() && closeProject())
   {
     NewProjectDialog NewPrjDlg(&m_MainWindow);
     if (NewPrjDlg.exec() == QDialog::Accepted)
@@ -429,7 +433,7 @@ void AppCoordinator::whenNewAsked()
 
 void AppCoordinator::whenOpenAsked()
 {
-  if (mp_CurrentModule->whenOpenAsked())
+  if (mp_CurrentModule->whenOpenAsked() && closeProject())
   {
     // TODO develop custom open project
     /*openfluid::guicommon::OpenProjectDialog OpenPrjDlg(&m_MainWindow);
@@ -472,34 +476,37 @@ void AppCoordinator::whenOpenAsked()
 
 void AppCoordinator::whenOpenRecentAsked()
 {
-  QAction *Action = qobject_cast<QAction*>(sender());
-  if (Action)
+  if (closeProject())
   {
-    QString ProjectPath = Action->data().toString();
-
-    if (openfluid::base::ProjectManager::isProject(ProjectPath.toStdString()))
+    QAction *Action = qobject_cast<QAction*>(sender());
+    if (Action)
     {
-      openfluid::base::ProjectManager::getInstance()->open(ProjectPath.toStdString());
+      QString ProjectPath = Action->data().toString();
 
-      try
+      if (openfluid::base::ProjectManager::isProject(ProjectPath.toStdString()))
       {
-        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-        openProject(QDir(ProjectPath).dirName(),ProjectPath);
-        QApplication::restoreOverrideCursor();
+        openfluid::base::ProjectManager::getInstance()->open(ProjectPath.toStdString());
+
+        try
+        {
+          QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+          openProject(QDir(ProjectPath).dirName(),ProjectPath);
+          QApplication::restoreOverrideCursor();
+        }
+        catch (openfluid::base::Exception& E)
+        {
+          openfluid::base::ProjectManager::getInstance()->close();
+          QApplication::restoreOverrideCursor();
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
+          return;
+        }
       }
-      catch (openfluid::base::Exception& E)
+      else
       {
-        openfluid::base::ProjectManager::getInstance()->close();
         QApplication::restoreOverrideCursor();
-        QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
-        return;
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),
+                              ProjectPath+ "\n\n" + tr("is not a valid OpenFLUID project"));
       }
-    }
-    else
-    {
-      QApplication::restoreOverrideCursor();
-      QMessageBox::critical(&m_MainWindow,tr("Project error"),
-                            ProjectPath+ "\n\n" + tr("is not a valid OpenFLUID project"));
     }
   }
 }
@@ -667,7 +674,7 @@ void AppCoordinator::whenEmailAsked()
 
 void AppCoordinator::whenOpenExampleAsked()
 {
-  if (mp_CurrentModule->whenOpenExampleAsked())
+  if (mp_CurrentModule->whenOpenExampleAsked() && closeProject())
   {
     OpenExampleProjectDialog OpenExDlg(&m_MainWindow);
     if (OpenExDlg.exec() == QDialog::Accepted)

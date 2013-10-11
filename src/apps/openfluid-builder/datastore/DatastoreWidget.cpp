@@ -56,12 +56,18 @@
 
 #include "ui_DatastoreWidget.h"
 #include "DatastoreWidget.hpp"
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 
 DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::DatastoreWidget)
+  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::DatastoreWidget), m_Datastore(AFXDesc.getDatastore())
 {
   ui->setupUi(this);
+
+  connect(ui->DatastoreTableWidget->horizontalHeader(),SIGNAL(sectionResized(int, int, int)),
+          ui->DatastoreTableWidget,SLOT(resizeRowsToContents()));
+
+  refresh();
 }
 
 
@@ -73,3 +79,40 @@ DatastoreWidget::~DatastoreWidget()
 {
   delete ui;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DatastoreWidget::refresh()
+{
+  ui->DatastoreTableWidget->setRowCount(0);
+
+  const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& Items = m_Datastore.getItems();
+
+  ui->DatastoreTableWidget->setRowCount(Items.size());
+
+  int CurrentRow = 0;
+
+  for (std::list<openfluid::fluidx::DatastoreItemDescriptor*>::const_iterator it = Items.begin();
+       it != Items.end(); ++it)
+  {
+    QTableWidgetItem *Item;
+
+    Item = new QTableWidgetItem(QString::fromStdString((*it)->getID()));
+    ui->DatastoreTableWidget->setItem(CurrentRow, 0, Item);
+
+    Item = new QTableWidgetItem(QString::fromStdString(openfluid::core::UnstructuredValue::getStringFromValueType((*it)->getType())));
+    ui->DatastoreTableWidget->setItem(CurrentRow, 1, Item);
+
+    Item = new QTableWidgetItem(QString::fromStdString((*it)->getUnitClass()));
+    ui->DatastoreTableWidget->setItem(CurrentRow, 2, Item);
+
+    Item = new QTableWidgetItem(QString::fromStdString((*it)->getRelativePath()));
+    ui->DatastoreTableWidget->setItem(CurrentRow, 3, Item);
+  }
+
+  ui->DatastoreTableWidget->resizeRowsToContents();
+}
+

@@ -82,6 +82,8 @@ class ConnectorGraphics : public QGraphicsPathItem
 
     QGraphicsSimpleTextItem* mp_VarsText;
 
+    QGraphicsRectItem* mp_VarsTextBox;
+
 
   public:
 
@@ -107,8 +109,7 @@ class ConnectorGraphics : public QGraphicsPathItem
     InNodeType getToNode()
     { return m_ToInNode; }
 
-    void setVariablesNamesVisible(bool Visible)
-    { mp_VarsText->setVisible(Visible); }
+    void setVariablesNamesVisible(bool Visible) const;
 
 };
 

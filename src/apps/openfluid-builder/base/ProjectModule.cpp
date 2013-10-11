@@ -243,7 +243,6 @@ QWidget* ProjectModule::getDockWidget(QWidget* Parent)
 
 bool ProjectModule::whenQuitAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
   return true;
 }
 
@@ -254,9 +253,7 @@ bool ProjectModule::whenQuitAsked()
 
 bool ProjectModule::whenNewAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
-  return false;
+  return true;
 }
 
 // =====================================================================
@@ -265,9 +262,7 @@ bool ProjectModule::whenNewAsked()
 
 bool ProjectModule::whenOpenAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
-  return false;
+  return true;
 }
 
 
@@ -510,9 +505,7 @@ void ProjectModule::whenRefreshAsked()
 
 bool ProjectModule::whenOpenExampleAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
-  return false;
+  return true;
 }
 
 
@@ -534,6 +527,9 @@ void ProjectModule::dispatchChanges()
 
 void ProjectModule::dispatchChangesFromExtension()
 {
+  mp_SpatialTab->refresh();
+  mp_DatastoreTab->refresh();
+
   dispatchChanges();
 }
 

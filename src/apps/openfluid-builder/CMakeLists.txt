@@ -84,7 +84,7 @@ QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.
 SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
                       model/SimulatorWidget.cpp
                       model/GeneratorWidget.cpp
-                      model/ModelScene.cpp
+                      model/ModelScene.cpp model/ModelView.cpp
                       model/ModelItemGraphics.cpp 
                       model/SimulatorGraphics.cpp model/GeneratorGraphics.cpp
                       model/ConnectorGraphics.cpp
@@ -94,7 +94,7 @@ SET(BUILDER_MODEL_CPP model/ModelWidget.cpp
 SET(BUILDER_MODEL_HPP model/ModelWidget.hpp
                       model/SimulatorWidget.hpp
                       model/GeneratorWidget.hpp
-                      model/ModelScene.hpp
+                      model/ModelScene.hpp model/ModelView.hpp
                       model/ModelItemGraphics.hpp 
                       model/SimulatorGraphics.hpp model/GeneratorGraphics.hpp
                       model/ConnectorGraphics.hpp 
@@ -244,6 +244,13 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-builder-main
                       openfluid-fluidx)
                                    
+INSTALL(TARGETS openfluid-builder-main
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH}
+        LIBRARY DESTINATION ${LIB_INSTALL_PATH}
+        ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
+               
+INSTALL(TARGETS openfluid-builder
+        RUNTIME DESTINATION ${BIN_INSTALL_PATH})       
                                    
 IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
   ADD_SUBDIRECTORY(extensions/tests)
