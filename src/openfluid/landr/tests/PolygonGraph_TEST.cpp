@@ -1355,4 +1355,35 @@ BOOST_AUTO_TEST_CASE(check_mergePolygonEntities)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_getPolygonEntityByCompactness)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+          CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* Graph =
+          openfluid::landr::PolygonGraph::create(*Vector);
+
+
+  std::multimap<double,  openfluid::landr::PolygonEntity*> mEntities;
+
+  BOOST_CHECK_THROW(Graph->getPolygonEntitiesByCompactness(-1),
+                    openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->getPolygonEntitiesByCompactness(0),
+                      openfluid::base::FrameworkException);
+  mEntities=Graph->getPolygonEntitiesByCompactness(1.70);
+  BOOST_CHECK_EQUAL(mEntities.size(), 0);
+
+  mEntities.clear();
+  mEntities=Graph->getPolygonEntitiesByCompactness(1.50);
+  BOOST_CHECK_EQUAL(mEntities.size(), 3);
+
+
+  delete Graph;
+  delete Vector;
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
