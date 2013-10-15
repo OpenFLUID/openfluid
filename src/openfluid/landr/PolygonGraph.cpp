@@ -72,6 +72,7 @@
 #include <geos/geom/Geometry.h>
 #include <geos/planargraph/DirectedEdge.h>
 #include <algorithm>
+#include <complex>
 
 namespace openfluid {
 namespace landr {
@@ -982,6 +983,29 @@ void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& En
 // =====================================================================
 // =====================================================================
 
+std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompactness(double Compactness)
+{
+  if (Compactness<=0.0)
+    throw  openfluid::base::FrameworkException(
+        "PolygonGraph::getPolygonEntitiesByCompacteness : "
+        "Threshold must be superior to 0.0");
+
+  std::list<LandREntity*> lEntities=getSelfIdOrderedEntities();
+  std::list<LandREntity*>::iterator it = lEntities.begin();
+  std::list<LandREntity*>::iterator ite = lEntities.end();
+  std::multimap<double, PolygonEntity*> mOrderedCompact;
+  for(;it!=ite;++it)
+  {
+    double valCompact=(*it)->getLength()/(2*std::sqrt(4 * std::atan(1.0)*(*it)->getArea()));
+    if(valCompact>Compactness)
+      mOrderedCompact.insert ( std::pair<double, PolygonEntity*>(valCompact,dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
+  }
+  return mOrderedCompact;
+
+}
+
+// =====================================================================
+// =====================================================================
 
 
 }// namespace landr

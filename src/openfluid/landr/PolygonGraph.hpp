@@ -264,6 +264,16 @@ class DLLEXPORT PolygonGraph: public LandRGraph
     std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
 
     /**
+     * @brief Get a map of sliver PolygonEntities which compactness value are superior to a compactness threshold (Gravelius Index)
+     *
+     * @param Compactness The compactness threshold (perimeter/2 x sqrt (Pi x area))
+     * @return a multimap of PolygonEntities with key is the compactness of each Entity.
+     */
+    std::multimap<double,  PolygonEntity*> getPolygonEntitiesByCompactness(double Compactness);
+
+
+
+    /**
      * @brief Merge a PolygonEntity into an other one
      * The PolygonEntity to merge is deleted.
      *
