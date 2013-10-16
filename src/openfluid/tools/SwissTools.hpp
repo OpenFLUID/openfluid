@@ -210,8 +210,8 @@ std::vector<std::string> DLLEXPORT GetFilesBySuffixAndExt(const std::string& Dir
   @param[in] ReturnsEmpty if true, the empty strings are returned
   @return a vector of strings
 */
-inline std::vector<std::string> DLLEXPORT SplitString(const std::string StrToSplit,
-                                               const std::string Separators,
+std::vector<std::string> DLLEXPORT SplitString(const std::string& StrToSplit,
+                                               const std::string& Separators,
                                                bool ReturnsEmpty = false);
 
 bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
