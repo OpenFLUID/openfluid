@@ -54,6 +54,7 @@
  */
 
 
+#include <boost/algorithm/string.hpp>
 
 #include <openfluid/tools/ProgressiveColumnFileReader.hpp>
 #include <openfluid/tools/SwissTools.hpp>

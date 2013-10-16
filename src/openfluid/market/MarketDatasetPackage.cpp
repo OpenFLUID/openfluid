@@ -105,7 +105,7 @@ void MarketDatasetPackage::process()
     throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
 
 
-  if (m_CMakeCommand.empty())
+  if (!m_CMakeProgram.isFound())
     throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","CMake command not defined");
 
 
@@ -117,15 +117,16 @@ void MarketDatasetPackage::process()
   if (!boost::filesystem::create_directories(boost::filesystem::path(DatasetInstallDir)))
     throw openfluid::base::FrameworkException("MarketDatasetPackage::process()","unable to create dataset directory for "+m_ID+" package");
 
-  std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + DatasetInstallDir + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
-
-
+  QString ProcessCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
+                                    .arg(m_CMakeProgram.getFullProgramPath(),
+                                         QString::fromStdString(DatasetInstallDir),
+                                         QString::fromStdString(m_PackageDest));
   // uncompressing package
-  appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand);
+  appendToLogFile(m_PackageFilename,getPackageType(),"uncompressing datasets",ProcessCommand.toStdString());
 
   QProcess Uncompress;
 
-  Uncompress.start(QString::fromStdString(ProcessCommand));
+  Uncompress.start(ProcessCommand);
   Uncompress.waitForFinished(-1);
   Uncompress.waitForReadyRead(-1);
 

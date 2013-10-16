@@ -57,9 +57,11 @@
 #include <boost/foreach.hpp>
 
 #include <openfluid/ware/PluggableObserver.hpp>
-#include <openfluid/tools/SwissTools.hpp>
+#include <openfluid/tools/ExternalProgram.hpp>
 
+#include <QDir>
 #include <QProcess>
+
 
 // =====================================================================
 // =====================================================================
@@ -392,33 +394,24 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
     {
       if (m_TryOpenGNUplot)
       {
-        // search for Google Earth (google-earth)
-        std::string GNUplotProgram = "";
+        openfluid::tools::ExternalProgram GNUPlotProgram =
+            openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GnuplotProgram);
 
-#if defined __unix__ || defined __APPLE__
-        GNUplotProgram = "gnuplot";
-#endif
-
-#if WIN32
-        // TODO check for win32
-        GNUplotProgram = "wgnuplot";
-#endif
-
-
-        std::vector<std::string> GNUplotPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(GNUplotProgram);
-
-        if (!GNUplotPaths.empty())
+        if (GNUPlotProgram.isFound())
         {
-          std::string PersistOption = " ";
+          QString PersistOption = " ";
           if (m_Persistent) PersistOption = " -persist ";
 
-          std::string GNUPlotCommand = boost::filesystem::path(GNUplotPaths[0]).string()+PersistOption+boost::filesystem::path(m_OutputDir + "/script.gnuplot").string();
-          QProcess::execute(QString::fromStdString(GNUPlotCommand));
+          QString GNUPlotCommand = QString("%1%2%3").arg(GNUPlotProgram.getFullProgramPath())
+                                                    .arg(PersistOption)
+                                                    .arg(QDir(QString::fromStdString(m_OutputDir))
+                                                         .absoluteFilePath("script.gnuplot"));
+          QProcess::execute(GNUPlotCommand);
         }
         else
         {
-          OPENFLUID_RaiseWarning("Cannot find GNUplot");
-          return;
+          OPENFLUID_RaiseWarning("GNUplotObserver::tryOpenGNUplot()",
+                                 "Cannot find GNUPlot");
         }
       }
     }

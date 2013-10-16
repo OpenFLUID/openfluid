@@ -62,42 +62,54 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
 
-#include <openfluid/tools/Archiver.hpp>
+#include <openfluid/tools/ExternalProgram.hpp>
 
-#include <tests-config.hpp>
 
 // =====================================================================
 // =====================================================================
 
-
-BOOST_AUTO_TEST_CASE(check_construction)
+BOOST_AUTO_TEST_CASE(check_registered)
 {
+  openfluid::tools::ExternalProgram ExtProg =
+      openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::CMakeProgram);
+  std::cout << "Looking for CMake: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
 
+  ExtProg = openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GccProgram);
+  std::cout << "Looking for gcc: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+
+  ExtProg = openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::ZipProgram);
+  std::cout << "Looking for zip: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+
+  ExtProg = openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::SevenZipProgram);
+  std::cout << "Looking for 7zip: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+
+  ExtProg = openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GnuplotProgram);
+  std::cout << "Looking for gnuplot: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+
+  ExtProg = openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GoogleEarthProgram);
+  std::cout << "Looking for GoogleEarth: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+
+  ExtProg = openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::PdfLatexProgram);
+  std::cout << "Looking for pdflatex: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+
+  ExtProg = openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::BibTexProgram);
+  std::cout << "Looking for bibtex: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+
+  ExtProg = openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::Latex2HTMLProgram);
+  std::cout << "Looking for latex2html: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_operations)
+
+BOOST_AUTO_TEST_CASE(check_others)
 {
-  std::string InputDir = boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/Archiver").string();
-  std::string OutputArchiveFile = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Archiver/archive.zip").string();
-  std::string OutputUncompressDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Archiver/uncompress").string();
-
-  boost::filesystem::remove_all(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Archiver"));
-  boost::filesystem::create_directories(boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/Archiver"));
-
-
-  openfluid::tools::Archiver::compressDirectoryAsZip(InputDir,OutputArchiveFile);
-  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(OutputArchiveFile)));
-
-  boost::filesystem::create_directories(boost::filesystem::path(OutputUncompressDir));
-
-  openfluid::tools::Archiver::uncompressArchive(OutputArchiveFile, OutputUncompressDir);
-  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(OutputUncompressDir+"/File")));
-  BOOST_REQUIRE(boost::filesystem::exists(boost::filesystem::path(OutputUncompressDir+"/SubDir/SubFile")));
-
-
+#if defined(Q_OS_UNIX)
+  openfluid::tools::ExternalProgram ExtProg("ls");
+    std::cout << "Looking for ls: " << ExtProg.getFullProgramPath().toStdString() << std::endl;
+#endif
 }
 
 

@@ -59,6 +59,7 @@
 
 
 #include <string>
+#include <vector>
 
 #include <openfluid/core/SimpleValue.hpp>
 
@@ -110,6 +111,12 @@ class DLLEXPORT StringValue : public SimpleValue
 
     static bool convertStringToDouble(const std::string& Str, double& Dbl);
 
+    static std::vector<std::string> splitString(const std::string& StrToSplit,
+                                                const std::string& Separators,
+                                                bool ReturnsEmpty = false);
+
+    std::vector<std::string> split(const std::string& Separators,
+                                   bool ReturnsEmpty = false) const;
 
   public:
 

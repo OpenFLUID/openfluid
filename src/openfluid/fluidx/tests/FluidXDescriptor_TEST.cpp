@@ -71,12 +71,18 @@ typedef boost::onullstream onullstream_type;
 #endif
 
 #include <tests-config.hpp>
+#include <boost/foreach.hpp>
+
+// to avoid conflicts between Qt and boost foreach macros
+#define QT_NO_KEYWORDS
+
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
-#include <boost/foreach.hpp>
+
+
 
 // =====================================================================
 // =====================================================================

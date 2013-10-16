@@ -68,6 +68,8 @@
 #include <boost/spirit/include/classic_file_iterator.hpp>
 #include <boost/bind.hpp>
 
+#include <openfluid/tools/ExternalProgram.hpp>
+
 using namespace BOOST_SPIRIT_CLASSIC_NS;
 
 namespace openfluid { namespace buddies {
@@ -89,11 +91,11 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
     boost::filesystem::path m_OutputLatexFilePath;
     boost::filesystem::path m_TplFilePath;
     boost::filesystem::path m_CProcessedFilePath;
-    boost::filesystem::path m_PDFLatexPath;
-    boost::filesystem::path m_BibtexPath;
-    boost::filesystem::path m_Latex2HTMLPath;
 
-    boost::filesystem::path m_CPreProcessorPath;
+    openfluid::tools::ExternalProgram m_PDFLatexProgram;
+    openfluid::tools::ExternalProgram m_BibtexProgram;
+    openfluid::tools::ExternalProgram m_Latex2HTMLProgram;
+    openfluid::tools::ExternalProgram m_GCCProgram;
 
     std::string m_ExtractedLatexDoc;
 

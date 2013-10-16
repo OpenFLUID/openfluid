@@ -62,9 +62,10 @@
 #include <ogrsf_frmts.h>
 
 #include <openfluid/ware/PluggableObserver.hpp>
-#include <openfluid/tools/Archiver.hpp>
+#include <openfluid/tools/ExternalProgram.hpp>
 
 #include <QProcess>
+#include <QDir>
 
 class KmlUnitInfo
 {
@@ -279,7 +280,17 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
 
       boost::filesystem::remove_all(boost::filesystem::path(KmzFilePath));
 
-      openfluid::tools::Archiver::compressDirectoryAsZip(InputDir, KmzFilePath);
+      openfluid::tools::ExternalProgram SevenZProgram =
+          openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::SevenZipProgram);
+
+      if (SevenZProgram.isFound())
+      {
+        QString SevenZCommand = QString("\"%1\" a -tzip \"%2\" \"%3\"*").arg(SevenZProgram.getFullProgramPath())
+                                                                        .arg(QString::fromStdString(KmzFilePath))
+                                                                        .arg(QString::fromStdString(InputDir));
+
+        QProcess::execute(SevenZCommand);
+      }
     }
 
 
@@ -291,31 +302,20 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
     {
       if (m_TryOpenGEarth)
       {
-        // search for Google Earth (google-earth)
-        std::string GEarthProgram = "";
+        openfluid::tools::ExternalProgram GEarthProgram =
+            openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GoogleEarthProgram);
 
-#if defined __unix__ || defined __APPLE__
-        GEarthProgram = "google-earth";
-#endif
-
-#if WIN32
-        // TODO check for win32
-        GEarthProgram = "google-earth";
-#endif
-
-
-        std::vector<std::string> GEarthPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(GEarthProgram);
-
-        if (!GEarthPaths.empty())
+        if (GEarthProgram.isFound())
         {
-          std::string GEarthCommand = boost::filesystem::path(GEarthPaths[0]).string()+" "+boost::filesystem::path(m_OutputDir + "/"+ m_OutputFileName).string();
-          QProcess::execute(QString::fromStdString(GEarthCommand));
+          QString GEarthCommand = QString("%1 %2").arg(GEarthProgram.getFullProgramPath())
+                                                  .arg(QDir(QString::fromStdString(m_OutputDir))
+                                                       .absoluteFilePath(QString::fromStdString(m_OutputFileName)));
+          QProcess::execute(GEarthCommand);
         }
         else
         {
           OPENFLUID_RaiseWarning("KmlObserverBase::tryOpenGEarth()",
                                  "Cannot find Google Earth");
-          return;
         }
       }
     }

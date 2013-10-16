@@ -85,7 +85,7 @@ void MarketSrcPackage::process()
   if (!m_Downloaded)
     throw openfluid::base::FrameworkException("MarketSrcPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
 
-  if (m_CMakeCommand.empty())
+  if (!m_CMakeProgram.isFound())
     throw openfluid::base::FrameworkException("MarketSrcPackage::process()","CMake command not defined");
 
 
@@ -108,21 +108,29 @@ void MarketSrcPackage::process()
   if (!boost::filesystem::create_directories(boost::filesystem::path(BuildDir)))
     throw openfluid::base::FrameworkException("MarketSrcPackage::process()","unable to create build directory for "+m_ID+" package");
 
+
   // == Building commands ==
 
-  std::string UntarCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + SrcInstallDir+ "\" \"" + m_CMakeCommand + "\" -E tar xfvz \"" + m_PackageDest + "\"";
+  QString UntarCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
+                                .arg(m_CMakeProgram.getFullProgramPath(),
+                                     QString::fromStdString(SrcInstallDir),
+                                     QString::fromStdString(m_PackageDest));
 
-  std::string BuildConfigCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + BuildDir+ "\" \"" + m_CMakeCommand + "\" \"" + SrcInstallDir + "\"" + BuildConfigOptions;
+  QString BuildConfigCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" \"%3\" %4")
+                                      .arg(m_CMakeProgram.getFullProgramPath(),
+                                           QString::fromStdString(BuildDir),
+                                           QString::fromStdString(SrcInstallDir),
+                                           QString::fromStdString(BuildConfigOptions));
 
-  std::string BuildCommand = "\"" + m_CMakeCommand +"\" -E chdir \"" + BuildDir+ "\" \"" + m_CMakeCommand + "\" --build .";
-
-
+  QString BuildCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" --build .")
+                                      .arg(m_CMakeProgram.getFullProgramPath(),
+                                           QString::fromStdString(BuildDir));
 
   // uncompressing package
   {
     QProcess Untar;
 
-    Untar.start(QString::fromStdString(UntarCommand));
+    Untar.start(UntarCommand);
     Untar.waitForFinished(-1);
     Untar.waitForReadyRead(-1);
 
@@ -141,7 +149,7 @@ void MarketSrcPackage::process()
   {
     QProcess Config;
 
-    Config.start(QString::fromStdString(BuildConfigCommand));
+    Config.start(BuildConfigCommand);
     Config.waitForFinished(-1);
     Config.waitForReadyRead(-1);
 
@@ -160,7 +168,7 @@ void MarketSrcPackage::process()
   {
     QProcess Build;
 
-    Build.start(QString::fromStdString(BuildCommand));
+    Build.start(BuildCommand);
     Build.waitForFinished(-1);
     Build.waitForReadyRead(-1);
 

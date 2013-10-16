@@ -79,7 +79,11 @@ typedef parse_info<std::string::const_iterator>   Parser_t;
 
 
 Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
-               OpenFLUIDBuddy(Listener)
+  OpenFLUIDBuddy(Listener),
+  m_PDFLatexProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::PdfLatexProgram)),
+  m_BibtexProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::BibTexProgram)),
+  m_Latex2HTMLProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::Latex2HTMLProgram)),
+  m_GCCProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GccProgram))
 {
   m_RequiredOptionsHelp["outputdir"] = "path for generated files";
   m_RequiredOptionsHelp["inputcpp"] = "path for cpp file to parse";
@@ -250,7 +254,7 @@ void Sim2DocBuddy::cpreprocessCPP()
 
   boost::filesystem::remove(m_CProcessedFilePath);
 
-  std::string CommandToRun = m_CPreProcessorPath.string() + " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " + m_InputFilePath.string() + " > " + m_CProcessedFilePath.string() + " 2>/dev/null";
+  std::string CommandToRun = m_GCCProgram.getFullProgramPath().toStdString() + " -E -fdirectives-only -nostdinc -nostdinc++ -undef -fpreprocessed " + m_InputFilePath.string() + " > " + m_CProcessedFilePath.string() + " 2>/dev/null";
 
   if (system(CommandToRun.c_str()) == 0)
     throw openfluid::base::FrameworkException("Sim2DocBuddy::cpreprocessCPP()","Error running c preprocessor");
@@ -731,8 +735,14 @@ void Sim2DocBuddy::buildPDF()
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
     throw openfluid::base::FrameworkException("Sim2DocBuddy::buildPDF()","Error changing current directory to " + m_OutputDirPath.string());
 
-  std::string PDFCommandToRun = m_PDFLatexPath.string() + " -shell-escape -interaction=nonstopmode -output-directory="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() + " > /dev/null";
-  std::string BibCommandToRun = m_BibtexPath.string() + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_SimID).string() + " > /dev/null";
+  std::string PDFCommandToRun = m_PDFLatexProgram.getFullProgramPath().toStdString()
+                                + " -shell-escape -interaction=nonstopmode -output-directory="
+                                + m_OutputDirPath.string() + " "
+                                + m_OutputLatexFilePath.string() + " > /dev/null";
+
+  std::string BibCommandToRun = m_BibtexProgram.getFullProgramPath().toStdString()
+                                + " " + boost::filesystem::path(m_OutputDirPath.string()+"/"+m_SimID).string()
+                                + " > /dev/null";
 
   mp_Listener->onSubstageCompleted(" first pass...");
 
@@ -783,7 +793,7 @@ void Sim2DocBuddy::buildHTML()
   if (chdir(m_OutputDirPath.string().c_str()) != 0)
     throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()","Error changing current directory to " + m_OutputDirPath.string());
 
-  std::string CommandToRun = m_Latex2HTMLPath.string() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() +" > /dev/null";
+  std::string CommandToRun = m_Latex2HTMLProgram.getFullProgramPath().toStdString() + " -dir="+m_OutputDirPath.string()+" "+ m_OutputLatexFilePath.string() +" > /dev/null";
 
   if (system(CommandToRun.c_str()) != 0)
     throw openfluid::base::FrameworkException("Sim2DocBuddy::buildHTML()","Error running latex2html command");
@@ -814,51 +824,39 @@ bool Sim2DocBuddy::run()
   mp_Listener->onInfo("Generate PDF: " + getYesNoFromOneZero(m_Options["pdf"]));
   mp_Listener->onInfo("Generate HTML: " + getYesNoFromOneZero(m_Options["html"]));
 
-  std::vector<std::string> GCCPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar("gcc");
-
-  if (GCCPaths.size() > 0)
-  {
-    m_CPreProcessorPath = boost::filesystem::path(GCCPaths[0]);
-    mp_Listener->onInfo("Using C preprocessor: " + m_CPreProcessorPath.string());
-  }
+  if (m_GCCProgram.isFound())
+    mp_Listener->onInfo("Using C preprocessor: " + m_GCCProgram.getFullProgramPath().toStdString());
   else throw openfluid::base::FrameworkException("Sim2DocBuddy::run()","C preprocessor (gcc) not found");
 
 
   if (m_Options["pdf"] == "1")
   {
-    std::vector<std::string> PDFLatexPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar("pdflatex");
-    std::vector<std::string> BibtexPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar("bibtex");
 
-    if (PDFLatexPaths.size() > 0 && BibtexPaths.size() > 0)
-      {
-        m_PDFLatexPath = boost::filesystem::path(PDFLatexPaths[0]);
-        mp_Listener->onInfo("Using PDFLatex compiler: " + m_PDFLatexPath.string());
-        m_BibtexPath = boost::filesystem::path(BibtexPaths[0]);
-        mp_Listener->onInfo("Using Bibtex compiler: " + m_BibtexPath.string());
-      }
-      else
-      {
-        mp_Listener->onInfo("!! PDFLatex compiler and/or Bibtex compiler not found. Skipped. ");
-        m_Options["pdf"] = "0";
-      }
+    if (m_PDFLatexProgram.isFound() && m_BibtexProgram.isFound())
+    {
+      mp_Listener->onInfo("Using PDFLatex compiler: " + m_PDFLatexProgram.getFullProgramPath().toStdString());
+      mp_Listener->onInfo("Using Bibtex compiler: " + m_BibtexProgram.getFullProgramPath().toStdString());
+    }
+    else
+    {
+      mp_Listener->onInfo("!! PDFLatex compiler and/or Bibtex compiler not found. Skipped. ");
+      m_Options["pdf"] = "0";
+    }
   }
 
   if (m_Options["html"] == "1")
   {
-    std::vector<std::string> Latex2HTMLPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar("latex2html");
-
     m_HTMLPackageLatexCommand = "\\usepackage{html}";
 
-    if (Latex2HTMLPaths.size() > 0)
-      {
-        m_Latex2HTMLPath = boost::filesystem::path(Latex2HTMLPaths[0]);
-        mp_Listener->onInfo("Using Latex2HTML converter: " + m_Latex2HTMLPath.string());
-      }
-      else
-      {
-        mp_Listener->onInfo("!! Latex2HTML converter not found. Skipped. ");
-        m_Options["html"] = "0";
-      }
+    if (m_Latex2HTMLProgram.isFound())
+    {
+      mp_Listener->onInfo("Using Latex2HTML converter: " + m_Latex2HTMLProgram.getFullProgramPath().toStdString());
+    }
+    else
+    {
+      mp_Listener->onInfo("!! Latex2HTML converter not found. Skipped. ");
+      m_Options["html"] = "0";
+    }
   }
 
   m_InputFilePath = boost::filesystem::path(m_Options["inputcpp"]);

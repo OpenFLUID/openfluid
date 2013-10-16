@@ -61,17 +61,12 @@
 #include <sstream>
 #include <cmath>
 
-#include <boost/algorithm/string.hpp>
-
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/DateTime.hpp>
 
-namespace openfluid {
-namespace core {
-class DateTime;
-}
-}
+namespace openfluid { namespace core {
+  class DateTime;
+} }
 
 
 #define STRINGIFY(x) XSTRINGIFY(x)
@@ -215,19 +210,9 @@ std::vector<std::string> DLLEXPORT GetFilesBySuffixAndExt(const std::string& Dir
   @param[in] ReturnsEmpty if true, the empty strings are returned
   @return a vector of strings
 */
-inline std::vector<std::string> /*DLLEXPORT*/ SplitString(const std::string StrToSplit,
+inline std::vector<std::string> DLLEXPORT SplitString(const std::string StrToSplit,
                                                const std::string Separators,
-                                               bool ReturnsEmpty = false)
-{
-	std::vector<std::string> SplitParts;
-
-	boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
-	if (ReturnsEmpty) TokCompress = boost::token_compress_off;
-
-	boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
-
-	return SplitParts;
-}
+                                               bool ReturnsEmpty = false);
 
 bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
 
@@ -246,8 +231,6 @@ void DLLEXPORT CopyDirectoryRecursively(const std::string SourcePath, const std:
 
 void DLLEXPORT CopyDirectoryContentsRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
 
-std::vector<std::string> DLLEXPORT GetFileLocationsUsingPATHEnvVar(const std::string Filename);
-
 
 /**
   Compare two OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
@@ -257,14 +240,6 @@ std::vector<std::string> DLLEXPORT GetFileLocationsUsingPATHEnvVar(const std::st
   @return 1 if VersionA is greater than VersionB, -1 if VersionB is greater than VersionA, 0 if versions are equals, -2 if a version format is not well-formed
 */
 int DLLEXPORT CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
-
-
-bool DLLEXPORT OpenURLInBrowser(const std::string& URL);
-
-
-unsigned int DLLEXPORT computeTimeStepsCount(const openfluid::core::DateTime& BeginDate,
-                                             const openfluid::core::DateTime& EndDate,
-                                             const openfluid::core::Duration_t& TimeStep);
 
 /*
   Suspend execution for microseconds

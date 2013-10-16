@@ -57,6 +57,8 @@
 
 #include <sstream>
 
+#include <boost/algorithm/string.hpp>
+
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/BooleanValue.hpp>
@@ -67,8 +69,6 @@
 #include <openfluid/core/MatrixValue.hpp>
 
 #include <openfluid/base/FrameworkException.hpp>
-
-#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace core {
@@ -107,6 +107,34 @@ bool StringValue::convertStringToDouble(const std::string& Str, double& Dbl)
   return ((iss >> Dbl) && !iss.get(c));
 }
 
+
+// =====================================================================
+// =====================================================================
+
+std::vector<std::string> StringValue::splitString(const std::string& StrToSplit,
+                                                  const std::string& Separators,
+                                                  bool ReturnsEmpty)
+{
+  std::vector<std::string> SplitParts;
+
+  boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
+  if (ReturnsEmpty) TokCompress = boost::token_compress_off;
+
+  boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
+
+  return SplitParts;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> StringValue::split(const std::string& Separators,
+                                            bool ReturnsEmpty) const
+{
+  return splitString(m_Value,Separators,ReturnsEmpty);
+}
 
 // =====================================================================
 // =====================================================================
@@ -230,7 +258,7 @@ bool StringValue::toNullValue(NullValue& Val) const
 bool StringValue::toVectorValue(const std::string& Sep, VectorValue& Val) const
 {
 
-  std::vector<std::string> Splitted = openfluid::tools::SplitString(m_Value,Sep);
+  std::vector<std::string> Splitted = split(Sep);
 
   openfluid::core::VectorValue TmpVect(Splitted.size());
   double TmpDbl;
@@ -254,7 +282,7 @@ bool StringValue::toVectorValue(const std::string& Sep, VectorValue& Val) const
 bool StringValue::toMatrixValue(const std::string& ColSep, const std::string& RowSep, MatrixValue& Val) const
 {
 
-  std::vector<std::string> SplittedRows = openfluid::tools::SplitString(m_Value,RowSep);
+  std::vector<std::string> SplittedRows = split(RowSep);
 
   unsigned long TmpRowsNbr = SplittedRows.size();
   unsigned long TmpColsNbr;
@@ -264,7 +292,7 @@ bool StringValue::toMatrixValue(const std::string& ColSep, const std::string& Ro
 
   for (unsigned long i=0;i<TmpRowsNbr;i++)
   {
-    std::vector<std::string> SplittedCols = openfluid::tools::SplitString(SplittedRows[i],ColSep);
+    std::vector<std::string> SplittedCols = splitString(SplittedRows[i],ColSep);
 
     if (i==0)
     {
@@ -296,7 +324,7 @@ bool StringValue::toMatrixValue(const std::string& ColSep, const std::string& Ro
 bool StringValue::toMatrixValue(const std::string& Sep, const unsigned int& RowLength, MatrixValue& Val) const
 {
 
-  std::vector<std::string> Splitted = openfluid::tools::SplitString(m_Value,Sep);
+  std::vector<std::string> Splitted = split(Sep);
 
   unsigned long TmpSize = Splitted.size();
 
@@ -334,7 +362,7 @@ bool StringValue::toMatrixValue(const std::string& Sep, const unsigned int& RowL
 
 bool StringValue::toMapValue(const std::string& Sep, MapValue& Val) const
 {
-  std::vector<std::string> Splitted = openfluid::tools::SplitString(m_Value,Sep);
+  std::vector<std::string> Splitted = split(Sep);
 
 //  unsigned long TmpSize = Splitted.size();
 
@@ -343,7 +371,7 @@ bool StringValue::toMapValue(const std::string& Sep, MapValue& Val) const
 
   for (std::vector<std::string>::const_iterator it=Splitted.begin(); it!= Splitted.end(); ++it)
   {
-    std::vector<std::string> KeyValue = openfluid::tools::SplitString(*it,"=");
+    std::vector<std::string> KeyValue = splitString(*it,"=");
 
     if (KeyValue.size() != 2) return false;
 

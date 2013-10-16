@@ -81,7 +81,8 @@ std::string MarketPackage::m_MarketBagSrcSubDir = "";
 std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
 
-std::string MarketPackage::m_CMakeCommand = "";
+openfluid::tools::ExternalProgram MarketPackage::m_CMakeProgram =
+    openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::CMakeProgram);
 std::string MarketPackage::m_SimulatorBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 std::string MarketPackage::m_ObserverBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 std::string MarketPackage::m_BuilderextBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
@@ -112,27 +113,7 @@ MarketPackage::~MarketPackage()
 
 void MarketPackage::initialize(bool EnableLog = false)
 {
-  std::string CMakeProgram = "";
-
-#if defined __unix__ || defined __APPLE__
-  CMakeProgram = "cmake";
-#endif
-
-#if WIN32
-  CMakeProgram = "cmake.exe";
-#endif
-
-  if (CMakeProgram.empty())
-    throw openfluid::base::FrameworkException("MarketPackage::initialize()","Unsupported system platform");
-
-
-  std::vector<std::string> CMakePaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(CMakeProgram);
-
-  if (!CMakePaths.empty())
-  {
-    m_CMakeCommand = boost::filesystem::path(CMakePaths[0]).string();
-  }
-  else
+  if (!m_CMakeProgram.isFound())
     throw openfluid::base::FrameworkException("MarketPackage::initialize()","Required CMake program not found");
 
   // TODO
@@ -150,8 +131,10 @@ void MarketPackage::initialize(bool EnableLog = false)
 // =====================================================================
 
 
-void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& MarketBagSimulatorDir, const std::string& MarketBagObserverDir,
-    const std::string& MarketBagBuilderextDir, const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir, const std::string& MarketBagSrcSubDir)
+void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& MarketBagSimulatorDir,
+                                 const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
+                                 const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir,
+                                 const std::string& MarketBagSrcSubDir)
 {
   // Temporary directories
   m_TempDir = boost::filesystem::path(TempDir).string();

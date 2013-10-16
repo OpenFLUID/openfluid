@@ -59,6 +59,8 @@
 #include <iostream>
 #include <iomanip>
 
+#include <openfluid/tools/ExternalProgram.hpp>
+
 #include <boost/foreach.hpp>
 
 #include "../KmlObserverBase.hpp"
@@ -140,7 +142,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
     std::string m_GNUPlotSubDir;
 
-    std::string m_PlotCommand;
+    openfluid::tools::ExternalProgram m_PlotProgram;
 
     std::string m_PlotXTics;
 
@@ -202,13 +204,16 @@ class KmlFilesPlotObserver : public KmlObserverBase
     //        ScriptFile << "plot \""<< DataFilename << "\" using 1:2 with lines\n";
             ScriptFile.close();
 
-            std::string FullPlotCommand = "\"" + m_PlotCommand +"\" \"" + ScriptFilename +"\"";
 
-            std::string StrOut = "";
-            std::string StrErr = "";
-            int RetValue = 0;
-            QProcess::execute(QString::fromStdString(FullPlotCommand));
+            // execution of the script
 
+            if (m_PlotProgram.isFound())
+            {
+
+              QString GNUPlotCommand = QString("\"%1\" \"%2\"").arg(m_PlotProgram.getFullProgramPath())
+                                                               .arg(QString::fromStdString(ScriptFilename));
+              QProcess::execute(GNUPlotCommand);
+            }
 
           }
         }
@@ -332,7 +337,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
   public:
 
-    KmlFilesPlotObserver() : KmlObserverBase(), m_GNUPlotSubDir("gnuplot")
+    KmlFilesPlotObserver() :
+      KmlObserverBase(), m_GNUPlotSubDir("gnuplot"),
+      m_PlotProgram(openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::GnuplotProgram))
     {
       m_TmpSubDir = "export.vars.files.kml-plot";
       m_OutputFileName = "kmlplot.kmz";
@@ -439,32 +446,9 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       if (!m_OKToGo) return;
 
-      std::string PlotProgram = "";
-
-      #if defined __unix__ || defined __APPLE__
-        PlotProgram = "gnuplot";
-      #endif
-
-      #if WIN32
-        PlotProgram = "wgnuplot.exe";
-      #endif
-
-      if (PlotProgram.empty())
+      if (!m_PlotProgram.isFound())
       {
-        OPENFLUID_RaiseWarning("Unsupported system platform");
-        m_OKToGo = false;
-        return;
-      }
-
-      std::vector<std::string> PlotPaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(PlotProgram);
-
-      if (!PlotPaths.empty())
-      {
-        m_PlotCommand = boost::filesystem::path(PlotPaths[0]).string();
-      }
-      else
-      {
-        OPENFLUID_RaiseWarning("Required Plot program ("+ PlotProgram +") not found");
+        OPENFLUID_RaiseWarning("Required GNUplot program not found");
         m_OKToGo = false;
         return;
       }
