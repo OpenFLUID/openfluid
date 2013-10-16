@@ -83,18 +83,22 @@ void MarketBinPackage::process()
     throw openfluid::base::FrameworkException("MarketBinPackage::process()","package "+m_PackageFilename+" cannot be processed before download");
 
 
-  if (m_CMakeCommand.empty())
+  if (!m_CMakeProgram.isFound())
     throw openfluid::base::FrameworkException("MarketBinPackage::process()","CMake command not defined");
 
 
-  std::string ProcessCommand = "\"" + m_CMakeCommand + "\" -E chdir \"" + getInstallPath() + "\" \"" + m_CMakeCommand + "\" -E tar xfz \"" + m_PackageDest + "\"";
+  QString ProcessCommand = QString("\"%1\" -E chdir \"%2\" \"%1\" -E tar xfz \"%3\"")
+                                  .arg(m_CMakeProgram.getFullProgramPath(),
+                                       QString::fromStdString(getInstallPath()),
+                                       QString::fromStdString(m_PackageDest));
 
-  appendToLogFile(m_PackageFilename,getPackageType(),"processing binaries",ProcessCommand);
+
+  appendToLogFile(m_PackageFilename,getPackageType(),"processing binaries",ProcessCommand.toStdString());
 
 
   QProcess Uncompress;
 
-  Uncompress.start(QString::fromStdString(ProcessCommand));
+  Uncompress.start(ProcessCommand);
   Uncompress.waitForFinished(-1);
   Uncompress.waitForReadyRead(-1);
 

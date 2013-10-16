@@ -49,6 +49,7 @@
 #include <openfluid/tools/SwissTools.hpp>
 
 #include <boost/filesystem/operations.hpp>
+#include <boost/algorithm/string.hpp>
 
 #include <openfluid/core/DateTime.hpp>
 
@@ -225,8 +226,25 @@ std::vector<std::string> GetFilesBySuffixAndExt(const std::string& DirToExplore,
   }
 
   return FileList;
+}
 
-  return FileList;
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> SplitString(const std::string StrToSplit,
+                                     const std::string Separators,
+                                     bool ReturnsEmpty)
+{
+  std::vector<std::string> SplitParts;
+
+  boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
+  if (ReturnsEmpty) TokCompress = boost::token_compress_off;
+
+  boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
+
+  return SplitParts;
 }
 
 
@@ -396,43 +414,6 @@ void CopyDirectoryContentsRecursively(const std::string SourceDir, const std::st
 // =====================================================================
 
 
-std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filename)
-{
-
-  std::vector<std::string> FileLocations;
-  char *PATHEnvVar;
-
-  PATHEnvVar = std::getenv("PATH");
-
-  if (PATHEnvVar != NULL)
-  {
-    std::vector<std::string> PATHItems;
-
-#if defined __unix__ || defined __APPLE__
-    PATHItems = SplitString(std::string(PATHEnvVar), ":", false);
-#endif
-
-#ifdef WIN32
-    PATHItems = SplitString(std::string(PATHEnvVar), ";", false);
-#endif
-
-    for (unsigned int i=0;i<PATHItems.size();i++)
-    {
-      boost::filesystem::path PathToTest(PATHItems[i]+"/"+Filename);
-      if (boost::filesystem::exists(PathToTest)) FileLocations.push_back(PathToTest.string());
-    }
-
-  }
-
-  return FileLocations;
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 int CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict)
 {
   std::string LowCaseA(VersionA), LowCaseB(VersionB);
@@ -496,36 +477,6 @@ int CompareVersions(const std::string& VersionA, const std::string& VersionB, bo
   }
 
   return -2;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool OpenURLInBrowser(const std::string& /*URL*/)
-{
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-unsigned int computeTimeStepsCount(const openfluid::core::DateTime& BeginDate,
-                                   const openfluid::core::DateTime& EndDate,
-                                   const openfluid::core::Duration_t& TimeStep)
-{
-  int StepsCount;
-
-  openfluid::core::RawTime_t DeltaTime;
-
-  DeltaTime = EndDate.diffInSeconds(BeginDate);
-  StepsCount = int(DeltaTime / TimeStep);
-  if ((DeltaTime % TimeStep) != 0) StepsCount++;
-
-  return StepsCount;
 }
 
 

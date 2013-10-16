@@ -60,6 +60,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/market/MarketInfos.hpp>
+#include <openfluid/tools/ExternalProgram.hpp>
 
 
 namespace openfluid { namespace market {
@@ -121,7 +122,7 @@ class DLLEXPORT MarketPackage
     */
     static std::string m_MarketBagSrcSubDir;
 
-    static std::string m_CMakeCommand;
+    static openfluid::tools::ExternalProgram m_CMakeProgram;
 
     /**
      * Common build options for simulators
@@ -178,8 +179,9 @@ class DLLEXPORT MarketPackage
      Set directory paths attributes with paths passed as parameter
     */
     static void setWorksDirs(const std::string& TempDir, const std::string& MarketBagSimulatorDir,
-        const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
-        const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir, const std::string& MarketBagSrcSubDir);
+                             const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
+                             const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir,
+                             const std::string& MarketBagSrcSubDir);
 
     static std::string getMarketBagSimulatorDir() { return m_MarketBagSimulatorDir; };
 

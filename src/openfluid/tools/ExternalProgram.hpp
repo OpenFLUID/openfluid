@@ -45,67 +45,66 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
- * Archiver.hpp
- *
- *  Created on: 15 juil. 2013
- *      Author: Manuel CHATAIGNER
-*/
+  \file ExternalProgram.hpp
+  \brief Header of ...
 
-#ifndef __ARCHIVER_HPP__
-#define __ARCHIVER_HPP__
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
-#include <string>
-#include <vector>
-#include <map>
+
+#ifndef __EXTERNALPROGRAM_HPP__
+#define __EXTERNALPROGRAM_HPP__
+
 #include <openfluid/dllexport.hpp>
-#include <openfluid/tools/SwissTools.hpp>
 
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <archive.h>
-#include <archive_entry.h>
-#include <boost/filesystem.hpp>
+#include <QStringList>
 
 
 namespace openfluid { namespace tools {
 
-
-
-class DLLEXPORT Archiver
+class DLLEXPORT ExternalProgram
 {
   private:
 
-    /**
-      @action Removes slash after dir name if the path passed as parameter contains
-    */
-    static std::string removeLastSlash(const std::string& DirPath);
+    QString m_Program;
 
-    /**
-      @action Get relative path of the file from directory path
-      @param File path
-      @param Path of working directory
-    */
-    static std::string getRelativePath(const std::string& FilePath, const std::string& DirPath);
+    QString m_FullProgramPath;
+
+    QStringList m_SearchPaths;
+
+    bool m_UsePathEnv;
 
 
   public:
 
-    /**
-      @action Create zip archive which contains all files of InputDir passed as parameter
-    */
-    static void compressDirectoryAsZip(const std::string& InputDir, const std::string& OutputFile);
+    enum RegisteredPrograms { CMakeProgram, ZipProgram, SevenZipProgram,
+                              GnuplotProgram, GoogleEarthProgram, GccProgram,
+                              PdfLatexProgram, BibTexProgram, Latex2HTMLProgram };
 
-    /**
-      @action Read and return content of archive passed as parameter
-    */
-    static void uncompressArchive(const std::string& ArchivePath, const std::string& OutputDir);
+    ExternalProgram(const QString& Program,
+                    const QStringList& SearchPaths = QStringList(),
+                    bool UsePathEnv = true);
+
+    ~ExternalProgram();
+
+    static ExternalProgram getRegisteredProgram(RegisteredPrograms Prog,
+                                                const QStringList& SearchPaths = QStringList(),
+                                                bool UsePathEnv = true);
+
+    static QString findUsingPATHEnvVar(const QString& Program);
+
+    static QString findUsingPathsList(const QString& Program, const QStringList& PathsList);
+
+    bool isFound() const { return !m_FullProgramPath.isEmpty(); };
+
+    void searchForProgram();
+
+    QString getFullProgramPath() const { return m_FullProgramPath; };
+
 };
 
 
-} } //namespaces
+} } // namespaces
 
-
-
-#endif // __ARCHIVER_HPP__
+#endif /* __EXTERNALPROGRAM_HPP__ */
