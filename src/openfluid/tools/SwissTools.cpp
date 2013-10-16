@@ -233,8 +233,8 @@ std::vector<std::string> GetFilesBySuffixAndExt(const std::string& DirToExplore,
 // =====================================================================
 
 
-std::vector<std::string> SplitString(const std::string StrToSplit,
-                                     const std::string Separators,
+std::vector<std::string> SplitString(const std::string& StrToSplit,
+                                     const std::string& Separators,
                                      bool ReturnsEmpty)
 {
   std::vector<std::string> SplitParts;
