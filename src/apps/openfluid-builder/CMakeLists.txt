@@ -186,6 +186,8 @@ QT4_WRAP_UI(BUILDER_EXTENSIONS_UI )
 
 QT4_ADD_RESOURCES(BUILDER_RC resources/openfluidbuilder.qrc)
 
+ADD_DEFINITIONS(-DBUILDINGDLL)
+
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP} ${BUILDER_BASE_UI}
                                           ${BUILDER_COMMON_CPP} ${BUILDER_COMMON_HPP} ${BUILDER_COMMON_UI}
@@ -211,10 +213,14 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-buddies
                       openfluid-core
                       openfluid-machine
+                      openfluid-ware
                       openfluid-tools
                       openfluid-market
                       openfluid-guicommon
+                      openfluid-builderext
                       openfluid-fluidx)
+       
+       
                       
 SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
                                         SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
@@ -222,7 +228,14 @@ SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
 
-ADD_EXECUTABLE(openfluid-builder main.cpp)
+
+SET(BUILDER_GUI_OPTION)
+
+IF(WIN32)
+  SET(BUILDER_GUI_OPTION WIN32)
+ENDIF()
+
+ADD_EXECUTABLE(openfluid-builder ${BUILDER_GUI_OPTION} main.cpp)
 
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
 
@@ -230,7 +243,7 @@ IF(APPLE)
   set_property(TARGET openfluid-builder PROPERTY OUTPUT_NAME "OpenFLUID-Builder")
 ENDIF()
 
-TARGET_LINK_LIBRARIES(openfluid-builder 
+TARGET_LINK_LIBRARIES(openfluid-builder
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} 
                       ${Boost_DATE_TIME_LIBRARY} ${Boost_PROGRAM_OPTIONS_LIBRARY} 
                       ${Boost_REGEX_LIBRARY}
@@ -238,6 +251,7 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-base
                       openfluid-buddies
                       openfluid-core
+                      openfluid-ware
                       openfluid-machine
                       openfluid-tools
                       openfluid-guicommon

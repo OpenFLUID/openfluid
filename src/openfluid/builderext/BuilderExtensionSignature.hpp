@@ -59,6 +59,7 @@
 
 #include <openfluid/ware/WareSignature.hpp>
 #include <openfluid/config.hpp>
+#include <openfluid/dllexport.hpp>
 
 #include <QString>
 
@@ -118,7 +119,7 @@ enum ExtensionCategory { CAT_SPATIAL, CAT_MODEL, CAT_RESULTS, CAT_OTHER };
 enum ExtensionType { TYPE_UNKNOWN, TYPE_MODAL, TYPE_MODELESS, TYPE_WORKSPACE};
 
 
-class BuilderExtensionSignature : public openfluid::ware::WareSignature
+class DLLEXPORT BuilderExtensionSignature : public openfluid::ware::WareSignature
 {
   public:
 

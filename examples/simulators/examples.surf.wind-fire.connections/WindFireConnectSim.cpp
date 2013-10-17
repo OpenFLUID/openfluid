@@ -58,7 +58,6 @@
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 
-
 // =====================================================================
 // =====================================================================
 
@@ -163,7 +162,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
-        m_PotentialConnections[LU->getID()].assign(8,NULL);
+        m_PotentialConnections[LU->getID()].assign(8,(openfluid::core::Unit*)NULL);
 
         long int TargetID;
 

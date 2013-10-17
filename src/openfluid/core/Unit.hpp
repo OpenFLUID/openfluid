@@ -60,7 +60,6 @@
 
 #include <map>
 #include <string>
-#include <boost/noncopyable.hpp>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/UnitsColl.hpp>

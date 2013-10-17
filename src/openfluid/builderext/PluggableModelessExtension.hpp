@@ -60,11 +60,12 @@
 #include <QCloseEvent>
 
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace builderext {
 
-class PluggableModelessExtension : public QDialog, public PluggableBuilderExtension
+class DLLEXPORT PluggableModelessExtension : public QDialog, public PluggableBuilderExtension
 {
   Q_OBJECT;
 

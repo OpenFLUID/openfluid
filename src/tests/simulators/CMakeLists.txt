@@ -186,8 +186,12 @@ OPENFLUID_ADD_TEST(NAME simulators-Loops
 
 ###########################################################################
 
+INCLUDE_DIRECTORIES(Qt5Concurrent_INCLUDE_DIRS)
 
 OPNFLD_ADD_SIMULATOR(tests.threadedloops tests.threadedloops ${TEST_OUTPUT_PATH})
+IF(Qt5Concurrent_FOUND)
+  TARGET_LINK_LIBRARIES(tests.threadedloops${OPENFLUID_SIMULATORS_SUFFIX} ${QT_QTCONCURRENT_LIBRARIES})
+ENDIF()
 OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoopsDefault
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ThreadedLoops"
