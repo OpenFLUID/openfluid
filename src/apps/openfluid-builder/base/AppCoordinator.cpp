@@ -241,8 +241,9 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
                                  Qt::RightDockWidgetArea |
                                  Qt::BottomDockWidgetArea);
 
-  mp_DockWidget->setStyleSheet("QDockWidget {padding: 5px; font: bold; background: #2C3A4C;} "
-                               "QDockWidget::title {padding : 5px; font: bold; }");
+  mp_DockWidget->setStyleSheet(QString("QDockWidget {padding: 5px; font: bold; background: %1;} "
+                                       "QDockWidget::title {padding : 5px; font: bold; }")
+                                      .arg(BUILDER_TOOLBAR_BGCOLOR));
 
   m_MainWindow.addDockWidget(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition(),
                              mp_DockWidget);

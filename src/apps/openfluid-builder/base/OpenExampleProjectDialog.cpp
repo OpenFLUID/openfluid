@@ -65,6 +65,7 @@
 #include "OpenExampleProjectDialog.hpp"
 
 #include "AppTools.hpp"
+#include "builderconfig.hpp"
 
 
 OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
@@ -122,14 +123,16 @@ void OpenExampleProjectDialog::setMessage(const QString& Msg)
 {
   if (Msg.isEmpty())
   {
-    ui->MessageFrame->setStyleSheet("background-color: rgb(71,97,123);");
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Open an example project"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
   else
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet("background-color: rgb(245,145,34);");
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

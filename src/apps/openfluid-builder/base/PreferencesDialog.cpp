@@ -80,6 +80,9 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent):
 
   ui->setupUi(this);
 
+  ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                  .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+
   ui->AddMarketPlaceButton->setText("");
   ui->AddMarketPlaceButton->setIcon(QIcon(":/icons/add.png"));
   ui->AddMarketPlaceButton->setIconSize(QSize(20,20));
