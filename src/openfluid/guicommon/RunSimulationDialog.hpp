@@ -86,9 +86,9 @@ namespace guicommon {
 //class RunSimulationListener;
 
 
-class RunSimulationDialog : public QDialog
+class DLLEXPORT RunSimulationDialog : public QDialog
 {
-  Q_OBJECT
+  Q_OBJECT;
 
   private:
 

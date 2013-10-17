@@ -56,12 +56,14 @@
 #ifndef __BUILDERAPP_HPP__
 #define __BUILDERAPP_HPP__
 
+#include <openfluid/dllexport.hpp>
+
 #include "AppActions.hpp"
 #include "MainWindow.hpp"
 #include "AppCoordinator.hpp"
 
 
-class BuilderApp
+class DLLEXPORT BuilderApp
 {
 
   private:

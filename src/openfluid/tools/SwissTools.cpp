@@ -487,7 +487,7 @@ int CompareVersions(const std::string& VersionA, const std::string& VersionB, bo
 void Sleep(const unsigned int MSec)
 {
 #if WIN32
-  Sleep(uint(ms));
+  Sleep(MSec);
 #else
   usleep(MSec);
 #endif

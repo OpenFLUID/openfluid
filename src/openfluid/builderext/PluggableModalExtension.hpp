@@ -59,12 +59,13 @@
 #include <QDialog>
 
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 
 namespace openfluid { namespace builderext {
 
-class PluggableModalExtension : public QDialog, public PluggableBuilderExtension
+class DLLEXPORT PluggableModalExtension : public QDialog, public PluggableBuilderExtension
 {
   Q_OBJECT;
 

@@ -55,7 +55,6 @@
 #ifndef __SIMULATORSIGNATURE_HPP__
 #define __SIMULATORSIGNATURE_HPP__
 
-#include <boost/regex.hpp>
 
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>

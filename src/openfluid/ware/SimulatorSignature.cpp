@@ -53,6 +53,7 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <boost/regex.hpp>
 
 #include <openfluid/ware/SimulatorSignature.hpp>
 

@@ -59,11 +59,12 @@
 #include <QWidget>
 
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace builderext {
 
-class PluggableWorkspaceExtension : public QWidget, public PluggableBuilderExtension
+class DLLEXPORT PluggableWorkspaceExtension : public QWidget, public PluggableBuilderExtension
 {
   Q_OBJECT;
 

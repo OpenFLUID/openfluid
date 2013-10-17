@@ -22,8 +22,9 @@ ENDIF()
 IF(WIN32)
 
   IF (MINGW)
-    FIND_PATH(GEOS_INCLUDE_DIR geos.h /usr/local/include /usr/include c:/msys/local/include)
-    FIND_LIBRARY(GEOS_LIBRARY NAMES geos PATHS /usr/local/lib /usr/lib c:/msys/local/lib)
+    FIND_PATH(GEOS_INCLUDE_DIR geos.h $ENV{SUPPORT_DIR}/include /usr/local/include /usr/include c:/msys/local/include)
+    FIND_LIBRARY(GEOS_LIBRARY NAMES geos PATHS $ENV{SUPPORT_DIR}/bin $ENV{SUPPORT_DIR}/lib /usr/local/lib /usr/lib c:/msys/local/lib)
+    INCLUDE($ENV{SUPPORT_DIR}/share/geos-config.cmake)
   ENDIF (MINGW)
 
   IF (MSVC)

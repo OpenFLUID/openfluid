@@ -62,6 +62,7 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
+#include <openfluid/dllexport.hpp>
 
 
 /**
@@ -105,7 +106,7 @@
 namespace openfluid { namespace builderext {
 
 
-class PluggableBuilderExtension : public openfluid::ware::PluggableWare
+class DLLEXPORT PluggableBuilderExtension : public openfluid::ware::PluggableWare
 {
 
   protected:

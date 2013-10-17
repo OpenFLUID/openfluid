@@ -56,6 +56,12 @@
 #ifndef __THREADEDLOOPMACROS_HPP__
 #define __THREADEDLOOPMACROS_HPP__
 
+#include <QtGlobal>
+
+#if QT_VERSION >= QT_VERSION_CHECK(5,0,0)
+#include <QtConcurrent>
+#endif
+
 #include <QtConcurrentRun>
 #include <QFutureSynchronizer>
 

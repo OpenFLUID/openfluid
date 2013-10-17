@@ -59,8 +59,6 @@
 #include <QBrush>
 
 
-QPointF GeneratorGraphics::m_ProducedIOFromCenter = QPoint(0,ModelItemGraphics::m_DefaultSize.height()/2);
-
 
 GeneratorGraphics::GeneratorGraphics(const QPointF& Coords, const QString& ID,
                                      const QString& VarName, const QString& UnitClass,
@@ -92,6 +90,6 @@ GeneratorGraphics::~GeneratorGraphics()
 
 QPointF GeneratorGraphics::getProducedIOPosition()
 {
-  return scenePos()+getCenterFromOrigin()+m_ProducedIOFromCenter;
+  return scenePos()+getCenterFromOrigin()+QPoint(0,m_DefaultSize.height()/2);
 }
 

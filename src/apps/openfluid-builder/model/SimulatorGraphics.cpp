@@ -59,9 +59,6 @@
 #include <QBrush>
 
 
-QPointF SimulatorGraphics::m_ProducedIOFromCenter = QPoint(-30,ModelItemGraphics::m_DefaultSize.height()/2);
-
-
 SimulatorGraphics::SimulatorGraphics(const QPointF& Coords, const QString& ID,
                                      openfluid::machine::ModelItemSignatureInstance* Signature,
                                      QGraphicsItem* Parent):
@@ -114,5 +111,5 @@ SimulatorGraphics::~SimulatorGraphics()
 
 QPointF SimulatorGraphics::getProducedIOPosition()
 {
-  return scenePos()+getCenterFromOrigin()+m_ProducedIOFromCenter;
+  return scenePos()+getCenterFromOrigin()+QPoint(-30,m_DefaultSize.height()/2);
 }
