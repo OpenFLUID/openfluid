@@ -57,7 +57,9 @@
 #define __HOMEWIDGET_HPP__
 
 #include <QWidget>
+#include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 
 #include "ClickableLabel.hpp"
 
@@ -107,6 +109,12 @@ class HomeWidget : public QWidget
 
     Ui::HomeWidget* ui;
 
+    QVBoxLayout* mp_RecentsLayout;
+
+    QLabel* mp_RecentProjectsLabel;
+
+    const AppActions* mp_Actions;
+
     QPushButton* createButton(const QAction* Action, const QString& Text);
 
   public:
@@ -114,6 +122,8 @@ class HomeWidget : public QWidget
     HomeWidget(QWidget* Parent, const AppActions* Actions);
 
     ~HomeWidget();
+
+    void refreshRecentProjects();
 };
 
 

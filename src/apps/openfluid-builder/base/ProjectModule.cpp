@@ -93,7 +93,9 @@
 
 
 ProjectModule::ProjectModule(const QString& ProjectPath):
-AbstractModule(), mp_MainWidget(NULL), mp_DashboardFrame(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
+  AbstractModule(),
+  mp_MainWidget(NULL), mp_DashboardFrame(NULL),
+  m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 
@@ -366,6 +368,16 @@ void ProjectModule::whenPreferencesAsked()
       updateObserversWares();
     }
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenRecentProjectsActionsChanged()
+{
+
 }
 
 

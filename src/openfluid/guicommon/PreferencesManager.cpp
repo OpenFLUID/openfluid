@@ -96,7 +96,6 @@ PreferencesManager::PreferencesManager():
   }
 
 
-
   QDir FileDir = QFileInfo(m_FileName).path();
 
   if (!FileDir.exists() && !QDir::root().mkpath(FileDir.absolutePath()))
@@ -239,20 +238,22 @@ QString PreferencesManager::guessLang()
 // =====================================================================
 
 
-void PreferencesManager::setRecentMax(unsigned int RecentMax)
+void PreferencesManager::setRecentMax(int RecentMax)
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   if (RecentMax > RecentProjectsLimit) RecentMax = RecentProjectsLimit;
   mp_ConfFile->setValue("recentmax",RecentMax);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
+
+  adaptRecentProjects();
 }
 
 // =====================================================================
 // =====================================================================
 
 
-unsigned int PreferencesManager::getRecentMax()
+int PreferencesManager::getRecentMax()
 {
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   if (!mp_ConfFile->contains("recentmax")) mp_ConfFile->setValue("recentmax",(unsigned int)(RecentProjectsLimit/2));
@@ -272,8 +273,11 @@ bool PreferencesManager::addRecentProject(const QString& ProjectName,
   if (ProjectPath.indexOf("=") >= 0)
     return false;
 
+  QStringList Recents;
+
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
-  QStringList Recents = mp_ConfFile->value("list").toStringList();
+  if (mp_ConfFile->contains("list"))
+    Recents = mp_ConfFile->value("list").toStringList();
   mp_ConfFile->endGroup();
 
   QString NewRecentPair = ProjectName+"|"+ProjectPath;
@@ -301,7 +305,7 @@ void PreferencesManager::clearRecentProjects()
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
   mp_ConfFile->remove("list");
   mp_ConfFile->endGroup();
-
+  mp_ConfFile->sync();
 }
 
 
@@ -311,8 +315,11 @@ void PreferencesManager::clearRecentProjects()
 
 void PreferencesManager::adaptRecentProjects()
 {
+  QStringList Recents;
+
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
-  QStringList Recents = mp_ConfFile->value("list").toStringList();
+  if (mp_ConfFile->contains("list"))
+    Recents = mp_ConfFile->value("list").toStringList();
   mp_ConfFile->endGroup();
 
   int RecentMax = getRecentMax();
@@ -332,8 +339,11 @@ void PreferencesManager::adaptRecentProjects()
 
 PreferencesManager::RecentProjectsList_t PreferencesManager::getRecentProjects()
 {
+  QStringList Recents;
+
   mp_ConfFile->beginGroup("openfluid.builder.recentprojects");
-  QStringList Recents = mp_ConfFile->value("list").toStringList();
+  if (mp_ConfFile->contains("list"))
+    Recents = mp_ConfFile->value("list").toStringList();
   mp_ConfFile->endGroup();
 
   RecentProjectsList_t RPL;

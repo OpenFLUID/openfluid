@@ -177,6 +177,16 @@ void HomeModule::whenPreferencesAsked()
 // =====================================================================
 
 
+void HomeModule::whenRecentProjectsActionsChanged()
+{
+  mp_Widget->refreshRecentProjects();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeModule::whenRunAsked()
 {
 

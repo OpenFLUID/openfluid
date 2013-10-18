@@ -109,6 +109,9 @@ void AppActions::updateRecentProjectsActions()
 
   for (int i=RFCount;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
     m_RecentProjectsActions[i]->setVisible(false);
+
+  if (mp_RecentProjectsMenu != NULL)
+    mp_RecentProjectsMenu->setEnabled(!RPList.empty());
 }
 
 

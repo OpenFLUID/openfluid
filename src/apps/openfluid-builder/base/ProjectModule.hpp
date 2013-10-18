@@ -175,6 +175,8 @@ class ProjectModule : public AbstractModule
 
     void whenPreferencesAsked();
 
+    void whenRecentProjectsActionsChanged();
+
     void whenRunAsked();
 
     void whenExtensionAsked(const QString& ID);

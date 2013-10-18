@@ -272,21 +272,6 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
 // =====================================================================
 
 
-void AppCoordinator::updateRecentsList()
-{
-  // add of the current project
-  openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
-      QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
-      QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
-
-  m_Actions.updateRecentProjectsActions();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool AppCoordinator::createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
                                    NewProjectDialog::ImportType IType, const QString& ISource)
 {
@@ -331,8 +316,13 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
 
 void AppCoordinator::openProject(const QString& Name, const QString& Path)
 {
+  // update recents projects
+  openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
+        QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
+        QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
+
+  m_Actions.updateRecentProjectsActions();
   setProjectModule(Path);
-  updateRecentsList();
   m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  Name +" ]");
 }
 
@@ -564,8 +554,9 @@ void AppCoordinator::whenCloseAsked()
 void AppCoordinator::whenPreferencesAsked()
 {
   mp_CurrentModule->whenPreferencesAsked();
-  openfluid::guicommon::PreferencesManager::getInstance()->adaptRecentProjects();
-  updateRecentsList();
+
+  m_Actions.updateRecentProjectsActions();
+  mp_CurrentModule->whenRecentProjectsActionsChanged();
 }
 
 
