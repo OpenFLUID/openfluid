@@ -15,6 +15,9 @@ OPNFLD_ADD_SIMULATOR(tests.coupling.C tests.coupling.C ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.coupling.D tests.coupling.D ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.coupling.E tests.coupling.E ${TEST_OUTPUT_PATH})
 
+OPNFLD_ADD_SIMULATOR(tests.upvara1 tests.upvara1 ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_SIMULATOR(tests.upvara2 tests.upvara2 ${TEST_OUTPUT_PATH})
+
 
 ###########################################################################
 
