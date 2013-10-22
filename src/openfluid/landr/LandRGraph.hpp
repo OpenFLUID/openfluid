@@ -91,7 +91,7 @@ class VectorDataset;
 class RasterDataset;
 
 /**
- * @brief Interface for a graph composed of LandREntities.
+ * @brief Interface for a graph composed of LandREntity.
  */
 class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
 {
@@ -105,45 +105,91 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
     typedef std::list<LandREntity*> Entities_t;
 
   protected:
-
+    /**
+     * @brief The VectorDataset associated to this LandRGraph.
+     */
     openfluid::landr::VectorDataset* mp_Vector;
 
+    /**
+     * @brief The geos::geom::GeometryFactory used to build this LandRGraph.
+     */
     const geos::geom::GeometryFactory* mp_Factory;
 
+    /**
+     * @brief A map of the LandREntity of this LandRGraph and sorted by identifier.
+     */
     std::map<int, LandREntity*> m_EntitiesBySelfId;
 
+    /**
+     *@brief A list of the LandREntity of this LandRGraph.
+     */
     Entities_t m_Entities;
 
+    /**
+     * @brief The RasterDataset associated to this LandRGraph.
+     */
     openfluid::landr::RasterDataset* mp_Raster;
 
+    /**
+     * @brief The VectorDataset representation of the RasterDataset associated to this LandRGraph.
+     */
     openfluid::landr::VectorDataset* mp_RasterPolygonized;
 
+    /**
+     * @brief A vector of geos::geom::Polygon representation of the RasterDataset associated to this LandRGraph.
+     */
     std::vector<geos::geom::Polygon*>* mp_RasterPolygonizedPolys;
 
     static int FileNum;
 
     LandRGraph();
 
+    /**
+     * @brief Creates a new LandRGraph from a core::GeoVectorValue.
+     */
     LandRGraph(openfluid::core::GeoVectorValue& Val);
 
+    /**
+     * @brief Creates a new LandRGraph from a VectorDataset.
+     */
     LandRGraph(const openfluid::landr::VectorDataset& Vect);
 
 //    virtual LandRGraph* clone() = 0;
 
+    /**
+     * @brief Adds LandREntity from the associated VectorDataset of this LandRGraph.
+     */
     void addEntitiesFromGeoVector();
 
+    /**
+     * @brief Adds LandREntity from a LandREntity list to this LandRGraph.
+     */
     void addEntitiesFromEntityList(const LandRGraph::Entities_t& Entities);
 
+    /**
+     * @brief Adds a LandREntity to this LandRGraph.
+     *
+     * @param Entity The LandREntity to add.
+     */
     virtual void addEntity(LandREntity* Entity) = 0;
 
+    /**
+     * @brief Creates a new LandREntity.
+     *
+     * @param Geom A geos::geom::Geometry.
+     * @param SelfId The identifier of the new LandREntity.
+     */
     virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
                                       unsigned int SelfId) = 0;
 
+    /**
+     * @brief Returns a geos::planagraph::Node of this LandRGraph from a geos::geom::Coordinate.
+     *
+     * @param Coordinate A geos::geom::Coordinate.
+     *
+     * @return A geos::planargraph::Node.
+     */
     geos::planargraph::Node* getNode(const geos::geom::Coordinate& Coordinate);
-
-    void addAttribute(const std::string& AttributeName, LandREntity& Entity);
-
-    void removeAttribute(const std::string& AttributeName, LandREntity& Entity);
 
   public:
 
@@ -152,85 +198,111 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
      */
     virtual ~LandRGraph();
 
+  /**
+   * @brief Returns the type of graph.
+   */
     virtual GraphType getType() = 0;
 
     /**
-     * @brief Return the entity with SelfId, or 0 if it doesn't exist.
+     * @brief Returns the LandREntity with SelfId, or 0 if it doesn't exist.
      */
     virtual LandREntity* getEntity(int SelfId);
 
+    /**
+     * @brief Returns a list of the LandREntity of this LandRGraph.
+     */
     Entities_t getEntities();
 
+    /**
+     * @brief Returns a list of the LandREntity of this LandRGraph and sorted by identifier.
+     */
     Entities_t getSelfIdOrderedEntities();
 
+    /**
+     * @brief Returns a map of the LandREntity of this LandRGraph and their identifiers.
+     */
     std::map<int, LandREntity*> getEntitiesBySelfId();
 
     /**
-     * @brief Get the number of elements in the graph.
+     * @brief Gets the number of LandREntity in the LandRGraph.
      */
     unsigned int getSize() const;
 
     /**
-     * @brief Removes from this Graph the nodes of degree 0.
+     * @brief Removes from this LandRGraph the nodes of degree 0.
      */
     void removeUnusedNodes();
 
     /**
+     * @brief Adds an attribute to this LandRGraph.
      * @details Doesn't reset if the AttributeName already exists.
+     * @param AttributeName The name of the attribute.
      */
     void addAttribute(const std::string& AttributeName);
 
     /**
+     * @brief Removes an attribute to this LandRGraph.
      * @details Does nothing if AttributeName doesn't exist.
+     * @param AttributeName The name of the attribute.
      */
     void removeAttribute(const std::string& AttributeName);
 
+    /**
+     * @brief Returns a vector of the names of the attributes of this LandRGraph.
+     */
     std::vector<std::string> getAttributeNames();
 
     /**
+     * @brief Associates a core::GeoRasterValue to this LandRGraph.
+     * @param Raster A core::GeoRasterValue.
      * @details Replace associated raster if exists.
      */
     void addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster);
 
     /**
+     * @brief Associates a RasterDataset to this LandRGraph.
+     * @param Raster A RasterDataset.
      * @details Replace associated raster if exists.
      */
     void addAGeoRasterValue(const openfluid::landr::RasterDataset& Raster);
 
+    /**
+     * @brief Returns true if this LandRGraph has an associated raster, false otherwise.
+     */
     bool hasAnAssociatedRaster();
 
     /**
-     * @brief Transform the associated raster value into polygons.
+     * @brief Transforms the associated raster value into an openfluid::landr::VectorDataset of polygons.
      *
-     * @return A geometry collection of the created polygons.
+     * @return An openfluid::landr::VectorDataset of the created polygons.
      */
     openfluid::landr::VectorDataset* getRasterPolygonized();
 
     /**
-     * @brief Transform the associated raster value into polygons.
+     * @brief Transforms the associated raster value into a vector of geos::geom::Polygon.
      *
-     * @return A vector of the created polygons.
+     * @return A vector of the created geos::geom::Polygon.
      */
     std::vector<geos::geom::Polygon*>* getRasterPolygonizedPolys();
 
     /**
-     * @brief Fetch the raster value corresponding to the entity centroid coordinate.
+     * @brief Fetchs the associated raster value corresponding to the LandREntity centroid coordinate.
      *
      * @param Entity The LandREntity to get the centroid coordinate from.
-     * @return The raster value corresponding to the Entity centroid coordinate.
+     * @return The raster value corresponding to the LandREntity centroid coordinate.
      */
     virtual float* getRasterValueForEntityCentroid(const LandREntity& Entity);
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity.
-     * this attribute value as the raster value corresponding to the entity centroid coordinate.
+     * @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
+     * this attribute value as the raster value corresponding to the LandREntity centroid coordinate.
      *
      * @param AttributeName The name of the attribute to create.
      */
     void setAttributeFromRasterValueAtCentroid(const std::string& AttributeName);
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
      * this attribute value as a mean of the raster value.
      *
      * @param AttributeName The name of the attribute to create.
@@ -241,12 +313,12 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
 
 
     /**
-     * @brief Compute the neighbours of each element of the graph, according to its type.
+     * @brief Computes the LandREntity neighbours of each LandREntity of this LandRGraph, according to its type.
      */
     void computeNeighbours();
 
     /**
-     * @brief Create on disk a shapefile representing this Graph.
+     * @brief Creates on disk a shapefile representing this LandRGraph.
      *
      * @param FilePath The path where to create the out file.
      * @param FileName A name for the out file to create, with a .shp extension.
@@ -254,53 +326,55 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
     void exportToShp(const std::string& FilePath, const std::string& FileName);
 
 
+
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
      * this attribute value as the vector value corresponding to the entity SELF_ID.
      *
      * @param AttributeName The name of the attribute to create.
-     * @param Vector The Name of the GeoVectorValue.
-     * @param Column The Name of the column of the GeoVectorValue to upload.
+     * @param Vector The Name of the core::GeoVectorValue.
+     * @param Column The column of the core::GeoVectorValue to upload.
      */
     void setAttributeFromVectorId(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector, const std::string& Column);
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
      * this attribute value as the vector value corresponding to the entity SELF_ID.
      *
      * @param AttributeName The name of the attribute to create.
      * @param Vector The Name of the VectorDataset.
-     * @param Column The Name of the column of the GeoVectorValue to upload.
+     * @param Column The column of the core::GeoVectorValue to upload.
      */
     void setAttributeFromVectorId(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector, const std::string& Column);
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
      * this attribute value as the vector value corresponding to the Vector Entity Geometry
      *
      * @param AttributeName The name of the attribute to create.
-     * @param Vector The Name of the GeoVectorValue.
-     * @param Column The Name of the column of the GeoVectorValue to upload.
-     * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+     * @param Vector The Name of the core::GeoVectorValue.
+     * @param Column The column of the core::GeoVectorValue to upload.
+     * @param Thresh The threshold of minimum distance between the core::GeoVectorValue geometry and the LandRGraph geometry (only used for LineStringGraph).
      */
     virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
                                                 const std::string& Column,double Thresh=0.0001)=0;
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
      * this attribute value as the vector value corresponding to the Vector Entity Geometry
      *
      * @param AttributeName The name of the attribute to create.
      * @param Vector The Name of the VectorDataset.
-     * @param Column The Name of the column of the GeoVectorValue to upload.
-     * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+     * @param Column The column of the VectorDataset to upload.
+     * @param Thresh The threshold of minimum distance between the VectorDataset geometry and the LandRGraph geometry (only used for LineStringGraph).
      */
     virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
                                                 const std::string& Column,double Thresh=0.0001)=0;
 
     /**
-       * @brief Remove from the graph the entity with SelfId and its associated nodes.
-       * @param SelfId
+       * @brief Removes a LandREntity with identifier from this LandRGraph.
+       * @details The associated nodes of the LandREntity are also removed.
+       * @param SelfId The identifier.
        */
       virtual void removeEntity(int SelfId)=0;
 

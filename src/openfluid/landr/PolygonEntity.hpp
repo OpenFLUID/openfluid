@@ -82,6 +82,9 @@ class DLLEXPORT PolygonEntity: public LandREntity
 {
   private:
 
+    /**
+     * @brief The geos::geom::Polygon associated to this PolygonEntity.
+     */
     const geos::geom::Polygon* mp_Polygon;
 
     PolygonEntity();
@@ -89,27 +92,36 @@ class DLLEXPORT PolygonEntity: public LandREntity
 
   public:
 
+    /**
+     * @brief A map of the PolygonEntity neighbours and their shared PolygonEdge to this PolygonEntity.
+     */
     typedef std::map<PolygonEntity*, std::vector<PolygonEdge*> > NeighboursMap_t;
+
+    /**
+     * @brief A map of the LineStringEntity neighbours and the PolygonEdge in contact with this PolygonEntity.
+     */
     typedef std::map<LineStringEntity*, PolygonEdge*> LineStringNeighboursMap_t;
 
     /**
-     * @brief Map of neighbours of PolygonEntity type and the related vector of edges that are between this Polygon and the neighbour.
+     * @brief A Map of neighbours of PolygonEntity type and the related vector of PolygonEdge that are between this PolygonEntity and his neighbours.
      */
     NeighboursMap_t* mp_NeighboursMap;
 
     /**
-     * @brief Map of neighbours of LineStringEntity type and the related edge that is between this Polygon and the neighbour, if exists.
+     * @brief A Map of neighbours of LineStringEntity type and the related PolygonEdge that is between this PolygonEntity and his neighbours, if exist.
      */
     LineStringNeighboursMap_t* mp_LineStringNeighboursMap;
 
     /**
-     * @brief PolygonEdges of this PolygonEntity.
+     * @brief A vector of the PolygonEdge of this PolygonEntity.
      */
     std::vector<PolygonEdge*> m_PolyEdges;
 
     /**
      * @brief Create a new PolygonEntity.
      * @details Takes ownership of NewPolygon.
+     * @param NewPolygon The geos::geom::Geometry of this new PolygonEntity.
+     * @param SelfId The identifier of this new PolygonEntity.
      *
      *  @throw base::OFException if NewPolygon is not a geos::geom::Polygon or is not a valid geometry.
      */
@@ -118,75 +130,86 @@ class DLLEXPORT PolygonEntity: public LandREntity
     virtual ~PolygonEntity();
 
     /**
+     * @brief Clone a new PolygonEntity from this PolygonEntity.
      * @attention Doesn't deep-copy m_PolyEdges nor neighbours.
      */
     PolygonEntity* clone();
 
+    /**
+     * @brief Returns the geos::geom::Polygon associated to this PolygonEntity.
+     */
     const geos::geom::Polygon* getPolygon() const;
 
+    /**
+     * @brief Adds a PolygonEdge to this PolygonEntity.
+     */
     void addEdge(PolygonEdge& Edge);
 
     /**
+     * @brief Removes a PolygonEdge to this PolygonEntity.
      * @attention Also delete input parameter Edge.
      */
     void removeEdge(PolygonEdge* Edge);
 
     /**
-     * @brief Returns a vector of linear intersections between two Polygons.
+     * @brief Returns a vector of geos::geom::LineString representing the linear intersections between two PolygonEntity.
      *
-     * @param Other The Polygon Entity to compare to.
-     * @return A vector of new allocated LineStrings representing the linear intersections (eventually merged) between this Polygon Entity and Other.
+     * @param Other The PolygonEntity to compare to.
+     * @return A vector of new allocated geos::geom::LineString representing the linear intersections (eventually merged) between this PolygonEntity and Other.
      */
     std::vector<geos::geom::LineString*> getLineIntersectionsWith(
         PolygonEntity& Other);
 
     /**
-     * @brief Returns the Edge containing Segment
+     * @brief Returns the PolygonEdge containing Segment.
      *
-     * @param Segment The LineString to find.
-     * @return The PolygonEdge of this PolygonEntity containing the input LineString,
+     * @param Segment The geos::geom::LineString to find.
+     * @return The PolygonEdge of this PolygonEntity containing the input geos::geom::LineString,
      * or 0 if not found.
      */
     PolygonEdge* findEdgeLineIntersectingWith(geos::geom::LineString& Segment);
 
     /**
-     * @brief Return a map of this PolygonEntity neighbours with for each a vector of the shared PolygoneEdges.
-     * @return
+     * @brief Returns a map of this PolygonEntity neighbours with for each a vector of the shared PolygonEdge.
      */
     const NeighboursMap_t* getNeighboursAndEdges();
 
     /**
-     * @brief Return the SELF_IDs of this PolygonEntity neighbours, ascending ordered.
+     * @brief Returns a vector of the SELF_ID of this PolygonEntity neighbours, ascending ordered.
      */
     std::vector<int> getOrderedNeighbourSelfIds();
 
     /**
-     * @brief Check if this Entity is complete, that is if all edges of this Entity,
-     * merged in a LineString, equals this Entity polygon exterior ring.
+     * @brief Check if this PolygonEntity is complete, that is if all PolygonEdge of this PolygonEntity,
+     * merged in a LineString, equals this PolygonEntity polygon exterior ring.
      *
      * @return True if complete, false otherwise.
      */
     bool isComplete();
 
     /**
-     * @brief Get the PolygonEdges of this PolygonEntity that are shared with Other.
+     * @brief Gets the PolygonEdge of this PolygonEntity that are shared with Other.
+     * @param Other A PolygonEntity.
+     * @return A vector of PolygonEdge.
      */
     std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
 
     /**
-     * @brief Get the boundary of this PolygonEntity polygon, with a buffer of BufferDistance.
+     * @brief Gets the boundary of this PolygonEntity polygon, with a buffer of BufferDistance.
+     * @param BufferDistance The buffer distance.
+     * @return A geos::geom::Geometry representing the buffered boundaries of this PolygonEntity.
      */
     geos::geom::Geometry* getBufferedBoundary(double BufferDistance);
 
     /**
-     * @brief Compute neighbours of this PolygonEntity.
+     * @brief Computes the neighbours of this PolygonEntity.
      * @details A neighbour is another PolygonEntity that shares at least a PolygonEdge with this PolygonEntity.
      */
     void computeNeighbours();
 
     /**
-     * @brief Compute the relations between this PolygonEntity and LineStringEntities of input LineStringGraph.
-     * @details A LineString is considered as a neighbour if it lies within the buffer of this PolygonEntitys polygon boundary.
+     * @brief Computes the relations between this PolygonEntity and the LineStringEntity of an input LineStringGraph.
+     * @details A LineStringEntity is considered as a neighbour if it lies within the buffer of this PolygonEntity polygon boundary.
      *
      * @param Graph The LineStringGraph to compare to.
      * @param Relation The Relationship to use for comparison.
@@ -197,17 +220,17 @@ class DLLEXPORT PolygonEntity: public LandREntity
                                      double BufferDistance);
 
     /**
-     * @brief Return the LineStringEntities neighbours of this PolygonEntity.
+     * @brief Return the a map of the LineStringEntity neighbours of this PolygonEntity.
      */
     LineStringNeighboursMap_t* getLineStringNeighbours();
 
 
     /**
-     * @brief Merge a PolygonEdge into an other one
+     * @brief Merge a PolygonEdge into an other one.
      *
      * @param Edge An existent PolygonEdge.
      * @param EdgeToMerge Another PolygonEdge to merge.
-     * @return A geos::geom:LineString which have the geometry of the merged PolygonEdges.
+     * @return A geos::geom:LineString which have the geometry of the merged PolygonEdge.
      */
     geos::geom::LineString*  mergeEdges(PolygonEdge* Edge, PolygonEdge* EdgeToMerge);
 
