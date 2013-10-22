@@ -47,40 +47,46 @@
 
 
 /**
-  \file DashboardWidget.cpp
+  \file CMakeBExt.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "DashboardFrame.hpp"
-#include "DashboardInfosWidget.hpp"
-#include "DashboardStatusWidget.hpp"
-#include "builderconfig.hpp"
+#include "ui_bext.h"
+#include "CMakeBExt.hpp"
+
+#include <QPushButton>
 
 
-DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent):
-  QFrame(Parent)
+// =====================================================================
+// =====================================================================
+
+
+BEGIN_BUILDEREXT_SIGNATURE("tests.bext.cmake",openfluid::builderext::TYPE_MODAL)
+
+  DECLARE_CATEGORY(openfluid::builderext::CAT_OTHER)
+  DECLARE_MENUTEXT("tests.bext.cmake")
+
+END_BUILDEREXT_SIGNATURE
+
+
+// =====================================================================
+// =====================================================================
+
+
+CMakeBuilderExtension::CMakeBuilderExtension() :
+  openfluid::builderext::PluggableModalExtension(),
+  ui(new Ui::BExtDialog)
 {
-  setObjectName("DashboardWidget");
-  setStyleSheet(QString("QFrame#DashboardWidget {background-color: %1;}").arg(BUILDER_TOOLBAR_BGCOLOR));
-  setFrameShape(QFrame::NoFrame);
+  Q_INIT_RESOURCE(bext);
 
-  mp_InfosWidget = new DashboardInfosWidget(PrjCentral->getAdvancedDescriptors(),this);
-  mp_StatusWidget = new DashboardStatusWidget(PrjCentral,this);
+  ui->setupUi(this);
 
-  mp_Layout = new QBoxLayout(QBoxLayout::TopToBottom,this);
-  mp_Layout->setContentsMargins(16,16,16,16);
-  mp_Layout->setSpacing(16);
+  ui->CloseButton->setIcon(QPixmap(":/file-close.png"));
 
-  mp_Layout->addWidget(mp_InfosWidget);
-  mp_Layout->addWidget(mp_StatusWidget);
-
-  mp_Layout->setStretch(0,1);
-  mp_Layout->setStretch(1,2);
-
-  setLayout(mp_Layout);
+  connect(ui->CloseButton,SIGNAL(clicked()),this,SLOT(reject()));
 }
 
 
@@ -88,7 +94,17 @@ DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent
 // =====================================================================
 
 
-DashboardFrame::~DashboardFrame()
+CMakeBuilderExtension::~CMakeBuilderExtension()
+{
+  delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void CMakeBuilderExtension::update()
 {
 
 }
@@ -98,21 +114,5 @@ DashboardFrame::~DashboardFrame()
 // =====================================================================
 
 
-void DashboardFrame::updateOrientation(Qt::DockWidgetArea Area)
-{
-  if (Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea)
-    mp_Layout->setDirection(QBoxLayout::TopToBottom);
-  else if (Area == Qt::TopDockWidgetArea || Area == Qt::BottomDockWidgetArea)
-    mp_Layout->setDirection(QBoxLayout::LeftToRight);
-}
+DEFINE_BUILDEREXT_CLASS(CMakeBuilderExtension)
 
-
-// =====================================================================
-// =====================================================================
-
-
-void DashboardFrame::refresh()
-{
-  mp_InfosWidget->refresh();
-  mp_StatusWidget->refresh();
-}

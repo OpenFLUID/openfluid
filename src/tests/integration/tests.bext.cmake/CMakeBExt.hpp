@@ -45,74 +45,53 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
-
 /**
-  \file DashboardWidget.cpp
-  \brief Implements ...
+  \file CMakeBExt.hpp
+  \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "DashboardFrame.hpp"
-#include "DashboardInfosWidget.hpp"
-#include "DashboardStatusWidget.hpp"
-#include "builderconfig.hpp"
+#ifndef __CMAKEBEXT_HPP__
+#define __CMAKEBEXT_HPP__
 
 
-DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent):
-  QFrame(Parent)
+#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+
+#include <QDialog>
+
+
+DECLARE_BUILDEREXT_PLUGIN
+
+
+namespace Ui
 {
-  setObjectName("DashboardWidget");
-  setStyleSheet(QString("QFrame#DashboardWidget {background-color: %1;}").arg(BUILDER_TOOLBAR_BGCOLOR));
-  setFrameShape(QFrame::NoFrame);
-
-  mp_InfosWidget = new DashboardInfosWidget(PrjCentral->getAdvancedDescriptors(),this);
-  mp_StatusWidget = new DashboardStatusWidget(PrjCentral,this);
-
-  mp_Layout = new QBoxLayout(QBoxLayout::TopToBottom,this);
-  mp_Layout->setContentsMargins(16,16,16,16);
-  mp_Layout->setSpacing(16);
-
-  mp_Layout->addWidget(mp_InfosWidget);
-  mp_Layout->addWidget(mp_StatusWidget);
-
-  mp_Layout->setStretch(0,1);
-  mp_Layout->setStretch(1,2);
-
-  setLayout(mp_Layout);
+  class BExtDialog;
 }
 
 
-// =====================================================================
-// =====================================================================
 
-
-DashboardFrame::~DashboardFrame()
+class CMakeBuilderExtension : public openfluid::builderext::PluggableModalExtension
 {
+  Q_OBJECT;
 
-}
+  private:
 
+    Ui::BExtDialog* ui;
 
-// =====================================================================
-// =====================================================================
+  public slots:
 
+    void update();
 
-void DashboardFrame::updateOrientation(Qt::DockWidgetArea Area)
-{
-  if (Area == Qt::LeftDockWidgetArea || Area == Qt::RightDockWidgetArea)
-    mp_Layout->setDirection(QBoxLayout::TopToBottom);
-  else if (Area == Qt::TopDockWidgetArea || Area == Qt::BottomDockWidgetArea)
-    mp_Layout->setDirection(QBoxLayout::LeftToRight);
-}
+  public:
 
+    CMakeBuilderExtension();
 
-// =====================================================================
-// =====================================================================
+    ~CMakeBuilderExtension();
+
+};
 
 
-void DashboardFrame::refresh()
-{
-  mp_InfosWidget->refresh();
-  mp_StatusWidget->refresh();
-}
+#endif /* __CMAKEBEXT_HPP__ */

@@ -348,6 +348,40 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverBuild
 SET_PROPERTY(TEST integration-CMakeModuleObserverBuild APPEND PROPERTY DEPENDS integration-CMakeModuleObserverConfigure)                                                            
 
 
+###########################################################################
+
+
+IF(BUILD_APP_BUILDER AND OPENFLUID_ENABLE_GUI)
+
+FILE(MAKE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.bext.cmake")
+
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleBuilderextConfigure
+                   COMMAND "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.bext.cmake" 
+                              "${CMAKE_COMMAND}" "-G" "${CMAKE_GENERATOR}"
+                              "${CMAKE_CURRENT_SOURCE_DIR}/tests.bext.cmake"
+                              "-DOpenFLUID_DIR=${CMAKE_MODULES_OUTPUT_PATH}"
+                              "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
+                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
+                              "-DBEXT_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                    PRE_TEST EMPTY_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.bext.cmake")         
+                                         
+ENDIF()
+
+
+###########################################################################
+
+
+IF(BUILD_APP_BUILDER AND OPENFLUID_ENABLE_GUI)
+
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleBuilderextBuild
+                   COMMAND "${CMAKE_COMMAND}"
+                              "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.bext.cmake" 
+                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.bext.cmake")
+SET_PROPERTY(TEST integration-CMakeModuleBuilderextBuild APPEND PROPERTY DEPENDS integration-CMakeModuleBuilderextConfigure)                                                            
+
+ENDIF()
+
 
 ###########################################################################
 

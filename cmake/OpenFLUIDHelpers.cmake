@@ -85,6 +85,65 @@ ENDMACRO()
 
 ###########################################################################
 
+
+# Macro for Qt detection, and automatic selection of Qt4 or Qt5
+MACRO(OPENFLUID_FIND_QT)
+  FIND_PACKAGE(Qt5 QUIET COMPONENTS Core Widgets Network Xml Svg Declarative Concurrent)
+
+  IF(WIN32 AND Qt5Core_NOTFOUND)
+    MESSAGE(FATAL_ERROR "Qt5 is required on Windows platforms")
+  ENDIF()
+
+  IF(Qt5Core_FOUND AND Qt5Widgets_FOUND AND Qt5Network_FOUND)
+
+    CMAKE_MINIMUM_REQUIRED(VERSION 2.8.11)
+    CMAKE_POLICY(SET CMP0020 NEW)
+
+    # redefinition of QT4_* macros for Qt5 compatibility
+    MACRO(QT4_WRAP_UI)
+      QT5_WRAP_UI(${ARGN})
+    ENDMACRO()
+  
+    MACRO(QT4_WRAP_CPP)
+      QT5_WRAP_CPP(${ARGN})
+    ENDMACRO()
+  
+    MACRO(QT4_ADD_RESOURCES)
+      QT5_ADD_RESOURCES(${ARGN})
+    ENDMACRO()
+
+    SET(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
+                    ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS}
+                    ${Qt5Svg_INCLUDE_DIRS} ${Qt5Declarative_INCLUDE_DIRS} )
+                  
+    SET(QT_QTCORE_LIBRARIES ${Qt5Core_LIBRARIES})
+    SET(QT_QTGUI_LIBRARIES ${Qt5Widgets_LIBRARIES})
+    SET(QT_QTNETWORK_LIBRARIES ${Qt5Network_LIBRARIES})
+    SET(QT_QTXML_LIBRARIES ${Qt5Xml_LIBRARIES})
+    SET(QT_QTSVG_LIBRARIES ${Qt5Svg_LIBRARIES})
+    SET(QT_QTCONCURRENT_LIBRARIES ${Qt5Concurrent_LIBRARIES})
+  
+    # TODO use only LIBRARIES suffix
+    SET(QT_QTCORE_LIBRARY ${Qt5Core_LIBRARIES})
+    SET(QT_QTGUI_LIBRARY ${Qt5Widgets_LIBRARIES})
+    SET(QT_QTNETWORK_LIBRARY ${Qt5Network_LIBRARIES})
+    SET(QT_QTXML_LIBRARY ${Qt5Xml_LIBRARIES})
+    SET(QT_QTSVG_LIBRARY ${Qt5Svg_LIBRARIES})
+    SET(QT_QTCONCURRENT_LIBRARY ${Qt5Concurrent_LIBRARIES})
+  
+    MESSAGE(STATUS "Found Qt5 (version ${Qt5Core_VERSION})")
+  
+  ELSE()
+  
+    FIND_PACKAGE(Qt4 REQUIRED)
+    
+  ENDIF() 
+ENDMACRO(OPENFLUID_FIND_QT)
+
+
+###########################################################################
+
+
 # This macro uses the following variables
 # _SIMNAME_ID : simulator ID
 # _SIMNAME_CPP : list of C++ files. The sim2doc tag must be contained in the first one
@@ -92,7 +151,7 @@ ENDMACRO()
 # _SIMNAME_DEFINITIONS : definitions to add at compile time
 # _SIMNAME_INCLUDE_DIRS : directories to include for simulator compilation
 # _SIMNAME_LIBRARY_DIRS : directories to link for simulator compilation
-# _SIMNAME_LINK_LIBS : libraries to link for function build
+# _SIMNAME_LINK_LIBS : extra libraries to link for simulator build
 # _SIMNAME_INSTALL_PATH : install path, replacing the default one
 # _SIMNAME_SIM2DOC_DISABLED : set to 1 to disable sim2doc pdf build
 # _SIMNAME_SIM2DOC_INSTALL_DISABLED : set to 1 to disable installation of sim2doc built pdf
@@ -102,7 +161,7 @@ ENDMACRO()
 MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
 
   FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware)
-  FIND_PACKAGE(PkgConfig REQUIRED)
+  FIND_PACKAGE(Boost REQUIRED system iostreams filesystem)
   
   IF (NOT ${_SIMNAME}_SOURCE_DIR)
     SET(${_SIMNAME}_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
@@ -235,7 +294,6 @@ ENDMACRO()
 MACRO(OPENFLUID_ADD_OBSERVER _OBSNAME)
 
   FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware)
-  FIND_PACKAGE(PkgConfig REQUIRED)
   
   SET(${_OBSNAME}_TARGET ${${_OBSNAME}_ID}${OpenFLUID_OBSERVER_FILENAME_SUFFIX})
 
@@ -258,6 +316,88 @@ ENDMACRO()
 
 MACRO(OPENFLUID_ADD_DEFAULT_OBSERVER)
   OPENFLUID_ADD_OBSERVER(OBS)
+ENDMACRO()
+
+
+###########################################################################
+
+
+# This macro uses the following variables
+# _EXTNAME_ID : extension ID
+# _EXTNAME_CPP : list of C++ files.
+# _EXTNAME_UI : list of Qt ui files
+# _EXTNAME_RC : list of Qt rc files
+# _EXTNAME_DEFINITIONS : definitions to add at compile time
+# _EXTNAME_INCLUDE_DIRS : directories to include for extension compilation
+# _EXTNAME_LIBRARY_DIRS : directories to link for extension compilation
+# _EXTNAME_LINK_LIBS : extra libraries to link for extension build
+# _EXTNAME_INSTALL_PATH : install path, replacing the default one
+
+MACRO(OPENFLUID_ADD_BUILDEREXT _EXTNAME)
+
+  CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
+  SET(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+  FIND_PACKAGE(OpenFLUID REQUIRED core base tools ware builderext)
+  OPENFLUID_FIND_QT()  
+  
+  IF (NOT ${_EXTNAME}_SOURCE_DIR)
+    SET(${_EXTNAME}_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+  ENDIF()  
+  
+  SET(${_EXTNAME}_TARGET ${${_EXTNAME}_ID}${OpenFLUID_BUILDEREXT_FILENAME_SUFFIX})
+
+  _OPENFLUID_ADD_WARE_MESSAGES(${${_EXTNAME}_ID} "OpenFLUID-Builder extension" "${${_EXTNAME}_CPP}" ${${_EXTNAME}_TARGET})
+
+  ADD_DEFINITIONS(-DBUILDINGDLL)
+  ADD_DEFINITIONS(${${_EXTNAME}_DEFINITIONS})
+  INCLUDE_DIRECTORIES(${OpenFLUID_INCLUDE_DIRS} ${QT_INCLUDES} ${${_EXTNAME}_INCLUDE_DIRS})
+  LINK_DIRECTORIES(${OpenFLUID_LIBRARY_DIRS} ${${_EXTNAME}_LIBRARY_DIRS})
+                    
+  
+  # ====== build ======
+    
+  QT4_WRAP_UI(_QT_EXT_UI ${${_EXTNAME}_UI})
+  QT4_ADD_RESOURCES(_QT_EXT_RC ${${_EXTNAME}_RC})  
+    
+  IF(MINGW)
+    # workaround for CMake bug with MinGW
+    ADD_LIBRARY(${${_EXTNAME}_TARGET} SHARED ${${_EXTNAME}_CPP} ${_QT_EXT_UI} ${_QT_EXT_RC})
+  ELSE()
+    ADD_LIBRARY(${${_EXTNAME}_TARGET} MODULE ${${_EXTNAME}_CPP} ${_QT_EXT_UI} ${_QT_EXT_RC})
+  ENDIF()
+  
+  SET_TARGET_PROPERTIES(${${_EXTNAME}_TARGET} PROPERTIES PREFIX "" SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX}
+                                                         AUTOMOC ON)
+
+  TARGET_LINK_LIBRARIES(${${_EXTNAME}_TARGET} ${OpenFLUID_LIBRARIES}
+                        ${QT_QTCORE_LIBRARIES} ${QT_QTGUI_LIBRARIES}
+                        ${${_EXTNAME}_LINK_LIBS})
+  
+
+  # ====== install ======
+  
+  IF(NOT ${_EXTNAME}_INSTALL_PATH)
+    SET(_INSTALL_PATH "$ENV{HOME}/.openfluid/builder-extensions")
+    IF(WIN32)
+      SET(_INSTALL_PATH "$ENV{USERPROFILE}/openfluid/builder-extensions") 
+    ENDIF()
+  ELSE()
+    SET(_INSTALL_PATH "${${_EXTNAME}_INSTALL_PATH}")   
+  ENDIF()
+  
+  INSTALL(TARGETS ${${_EXTNAME}_TARGET} DESTINATION "${_INSTALL_PATH}")
+  
+  MESSAGE(STATUS "  Install path : ${_INSTALL_PATH}")
+  
+ENDMACRO()
+
+
+###########################################################################
+
+
+MACRO(OPENFLUID_ADD_DEFAULT_BUILDEREXT)
+  OPENFLUID_ADD_BUILDEREXT(BEXT)
 ENDMACRO()
 
 
