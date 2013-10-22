@@ -73,8 +73,16 @@ class DLLEXPORT GeoRasterValue: public openfluid::core::GeoValue
 
   protected:
 
+    /**
+     * @brief The GDALDataset associated to this GeoRasterValue.
+     */
     GDALDataset* mp_Data;
 
+    /**
+     * @brief Open the GDALDataset of this GeoRasterValue.
+     * @throw openfluid::base::OFException if GDAL doesn't succeed to open the datasource.
+     *
+     */
     void tryToOpenSource();
 
   public:
@@ -82,11 +90,12 @@ class DLLEXPORT GeoRasterValue: public openfluid::core::GeoValue
     /**
      * @brief Creates a new value.
      *
-     * The <tt>RelativePath</tt> may be path to a .jpeg, .tiff, .img or .asc file...
+     * The <tt>FileName</tt> may be the name of a .jpeg, .tiff, .img or .asc file...
      *
      * It doesn't open the associated GDAL dataset.
      *
-     * @param RelativePath The path of the data, relative to the PrefixPath.
+     * @param FilePath The path of the file(s).
+     * @param FileName The name or the relative path of the file to open.
      */
     GeoRasterValue(std::string FilePath, std::string FileName);
 
@@ -95,6 +104,10 @@ class DLLEXPORT GeoRasterValue: public openfluid::core::GeoValue
      */
     ~GeoRasterValue();
 
+    /**
+     * @brief Returns the type of this GeoRasterValue.
+     * @return An openfluid::core::UnstructuredValue::UnstructuredType.
+     */
     openfluid::core::UnstructuredValue::UnstructuredType getType() const;
 
     /**
@@ -107,6 +120,10 @@ class DLLEXPORT GeoRasterValue: public openfluid::core::GeoValue
      */
     GDALDataset* get();
 
+    /**
+     * @brief Returns the absolute Path of this GeoRasterValue.
+     *
+     */
     std::string getAbsolutePath();
 };
 

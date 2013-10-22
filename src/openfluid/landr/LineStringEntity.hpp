@@ -94,13 +94,20 @@ class DLLEXPORT LineStringEntity: public LandREntity, public geos::planargraph::
     LineStringEntity();
     LineStringEntity(const LineStringEntity&);
 
+    /**
+     * @brief Computes the down neighbour of this LineStringEntity.
+     */
     void computeLineOrientUpNeighbours();
+
+    /**
+     * @brief Computes the up neighbour of this LineStringEntity.
+     */
     void computeLineOrientDownNeighbours();
 
   public:
 
     /**
-     * @brief Create a new LineStringEntity.
+     * @brief Creates a new LineStringEntity.
      * @details Takes ownership of NewLine.
      *
      *  @throw base::OFException if NewLine is not a geos::geom::LineString or is an empty geometry.
@@ -109,26 +116,38 @@ class DLLEXPORT LineStringEntity: public LandREntity, public geos::planargraph::
 
     virtual ~LineStringEntity();
 
+    /**
+     * @brief Clones a LineStringEntity into a new LineStringEntity.
+     */
     LineStringEntity* clone();
 
+    /**
+     * @brief Returns the geos::geom::LineString of this LineStringEntity.
+     */
     const geos::geom::LineString* getLine() const;
 
+    /**
+     * @brief Returns the start geos::planargraph::Node of this LineStringEntity.
+     */
     geos::planargraph::Node* getStartNode();
 
+    /**
+     * @brief Returns the end geos::planargraph::Node of this LineStringEntity.
+     */
     geos::planargraph::Node* getEndNode();
 
     /**
-     * @brief Return up-neighbours against line orientation.
+     * @brief Return a vector of up-neighbours LineStringEntity using the line orientation of this LineStringEntity.
      */
     std::vector<LineStringEntity*> getLineOrientUpNeighbours();
 
     /**
-     * @brief Return down-neighbours against line orientation.
+     * @brief Return a vector of down-neighbours LineStringEntity using the line orientation of this LineStringEntity.
      */
     std::vector<LineStringEntity*> getLineOrientDownNeighbours();
 
     /**
-     * @brief Compute neighbours against line orientation.
+     * @brief Compute the neighbours using line orientation of this LineStringEntity.
      */
     void computeNeighbours();
 

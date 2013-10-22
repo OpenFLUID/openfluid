@@ -71,10 +71,21 @@ class DLLEXPORT GeoVectorValue: public openfluid::core::GeoValue
 {
   protected:
 
+    /**
+     * @brief The OGRDataSource associated to this GeoVectorValue.
+     */
     OGRDataSource* mp_Data;
 
+    /**
+     * @brief Open the OGRDataSource of this GeoVectorValue.
+     * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+     *
+     */
     void tryToOpenSource();
 
+    /**
+     * @brief Destroy the OGRDataSource.
+     */
     void destroyDataSource();
 
   public:
@@ -87,8 +98,8 @@ class DLLEXPORT GeoVectorValue: public openfluid::core::GeoValue
      *
      * It doesn't open the associated OGR datasource.
      *
-     * @param FilePath The path of the file(s)
-     * @param FileName The name or the relative path of the file to open
+     * @param FilePath The path of the file(s).
+     * @param FileName The name or the relative path of the file to open.
      */
     GeoVectorValue(std::string FilePath, std::string FileName);
 
@@ -97,6 +108,9 @@ class DLLEXPORT GeoVectorValue: public openfluid::core::GeoValue
      */
     ~GeoVectorValue();
 
+    /**
+     * @brief Returns the type of this GeoVectorValue.
+     */
     openfluid::core::UnstructuredValue::UnstructuredType getType() const;
 
     /**
@@ -105,71 +119,73 @@ class DLLEXPORT GeoVectorValue: public openfluid::core::GeoValue
      * If the datasource is not already opened, tries to open it first.
      *
      * @return The opened OGR datasource.
-     * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource
+     * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
      */
     OGRDataSource* get();
 
     /**
-     * @brief Get a layer of the shape.
+     * @brief Gets a layer of the shape.
      *
-     * @param LayerIndex The index of the asked layer, default 0
-     * @return The layer indexed LayerIndex
-     * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource
+     * @param LayerIndex The index of the asked layer, default 0.
+     * @return The layer indexed LayerIndex.
+     * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
      */
     OGRLayer* getLayer(unsigned int LayerIndex = 0);
 
     /**
-     * @brief Get the Feature definition of a layer.
+     * @brief Gets the Feature definition of a layer.
      *
-     * @param LayerIndex The index of the asked layer definition, default 0
-     * @return The OGR Feature definition of the LayerIndex layer
-     * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource
+     * @param LayerIndex The index of the asked layer definition, default 0.
+     * @return The OGR Feature definition of the LayerIndex layer.
+     * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
      */
     OGRFeatureDefn* getLayerDef(unsigned int LayerIndex = 0);
 
     /**
-      * @param LayerIndex The index of the layer to compare the type, default 0
-      * @return True if the type of the layer LayerIndex is wkbLineString, false otherwise
-      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource
+     * @brief Returns true if the GeoVectorValue is line type, false otherwise.
+      * @param LayerIndex The index of the layer to compare the type, default 0.
+      * @return True if the type of the layer LayerIndex is wkbLineString, false otherwise.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
       */
      bool isLineType(unsigned int LayerIndex = 0);
 
      /**
-      * @param LayerIndex The index of the layer to compare the type, default 0
-      * @return True if the type of the layer LayerIndex is wkbPolygon, false otherwise
-      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource
+     * @brief Returns true if the GeoVectorValue is polygon type, false otherwise.
+      * @param LayerIndex The index of the layer to compare the type, default 0.
+      * @return True if the type of the layer LayerIndex is wkbPolygon, false otherwise.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
       */
      bool isPolygonType(unsigned int LayerIndex = 0);
 
      /**
-      * @brief Returns if a field exists in the LayerIndex layer.
+      * @brief Returns true if a field exists in the LayerIndex layer.
       *
-      * @param FieldName The name of the field to query
-      * @param LayerIndex The index of the layer to query, default 0
-      * @return True if the field FieldName exists, False otherwise
-      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource
+      * @param FieldName The name of the field to query.
+      * @param LayerIndex The index of the layer to query, default 0.
+      * @return True if the field FieldName exists, False otherwise.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
       */
      bool containsField(std::string FieldName, unsigned int LayerIndex = 0);
 
      /**
-      * @brief Get the index of a field in the LayerIndex layer
+      * @brief Gets the index of a field in the LayerIndex layer.
       *
-      * @param LayerIndex The index of the layer to query, default 0
-      * @param FieldName The name of the field to query
-      * @return The index of FieldName or -1 if field FieldName doesn't exist
-      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource
+      * @param LayerIndex The index of the layer to query, default 0.
+      * @param FieldName The name of the field to query.
+      * @return The index of FieldName or -1 if field FieldName doesn't exist.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
       */
      int getFieldIndex(std::string FieldName, unsigned int LayerIndex = 0);
 
      /**
-      * @brief Returns if a field is of the type FieldType in the LayerIndex layer
+      * @brief Returns true if a field is of the type FieldType in the LayerIndex layer.
       *
-      * @param FieldName The name of the field to query
-      * @param FieldType The type of the field to query
-      * @param LayerIndex The index of the layer to query, default 0
-      * @return True if the field FieldName is type FieldType
-      * @throw openfluid::base::OFException if the field doesn't exist
-      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource
+      * @param FieldName The name of the field to query.
+      * @param FieldType The type of the field to query.
+      * @param LayerIndex The index of the layer to query, default 0.
+      * @return True if the field FieldName is type FieldType.
+      * @throw openfluid::base::OFException if the field doesn't exist.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
       */
      bool isFieldOfType(std::string FieldName, OGRFieldType FieldType,
                         unsigned int LayerIndex = 0);

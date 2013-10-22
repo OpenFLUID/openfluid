@@ -87,52 +87,52 @@ class DLLEXPORT LandRTools
     };
 
     /**
-     * @brief Returns a LineString representing the linearized input Geometry.
+     * @brief Returns a geos::geom::LineString representing the linearized input geos::geom::Geometry.
      *
-     * @param Geom The Geometry to linearize.
-     * @return A new allocated LineString representing the linearized input Geometry,
-     * or 0 if the Geometry cannot be linearized into a single LineString.
+     * @param Geom The geos::geom::Geometry to linearize.
+     * @return A new allocated geos::geom::LineString representing the linearized input geos::geom::Geometry,
+     * or 0 if the geos::geom::Geometry cannot be linearized into a single geos::geom::LineString.
      */
     static geos::geom::LineString* getMergedLineStringFromGeometry(
         geos::geom::Geometry* Geom);
 
     /**
-     * @brief Returns a vector of LineStrings representing the linearized input Geometry.
+     * @brief Returns a vector of geos::geom::LineString representing the linearized input geos::geom::Geometry.
      *
-     * @param Geom The Geometry to linearize.
-     * @return A new allocated vector of LineStrings representing the maximal linearized input Geometry,
-     * or 0 if the Geometry is not \"Line\" typed.
+     * @param Geom The geos::geom::Geometry to linearize.
+     * @return A new allocated vector of geos::geom::LineString representing the maximal linearized input geos::geom::Geometry,
+     * or 0 if the geos::geom::Geometry is not \"Line\" typed.
      */
     static std::vector<geos::geom::LineString*>* getMergedLineStringsFromGeometry(
         geos::geom::Geometry* Geom);
 
     /**
-     * @brief Return all exterior rings of the polygon-typed GeoVectorValue.
+     * @brief Returns all exterior rings of the polygon-typed VectorDataset.
      *
-     * @param Val A GeoVectorValue of polygons.
-     * @return A vector of new allocated Geometries representing exterior rings.
-     * @throw base::OFException if the GeoVectorValue is not polygon-typed.
+     * @param Val A VectorDataset of polygons.
+     * @return A vector of new allocated geos::geom::LineString representing exterior rings.
+     * @throw base::OFException if the VectorDataset is not polygon-typed.
      */
     static std::vector<geos::geom::LineString*> getVectorOfExteriorRings(
         openfluid::landr::VectorDataset& Val);
 
     /**
-     * @brief Return all lines composing of the linestring-typed GeoVectorValue.
+     * @brief Returns all geos::geom::LineString composing of the linestring-typed VectorDataset.
      *
-     * @param Val A GeoVectorValue of linestrings.
-     * @return A vector of new allocated Geometries representing lines.
-     * @throw base::OFException if the GeoVectorValue is not linestring-typed.
+     * @param Val A VectorDataset of linestrings.
+     * @return A vector of new allocated geos::geom::Geometry representing lines.
+     * @throw base::OFException if the VectorDataset is not linestring-typed.
      */
     static std::vector<geos::geom::LineString*> getVectorOfLines(
         openfluid::landr::VectorDataset& Val);
 
     /**
-     * @brief Get all full noded lines from intersection between geom1 and geom2, with snap tolerance.
+     * @brief Gets all full noded geos::geom::LineString from intersection between geom1 and geom2, with snap tolerance.
      *
-     * @param Geom1 The Geometry to node with Geom2.
-     * @param Geom2 The other Geometry.
+     * @param Geom1 The geos::geom::Geometry to node with Geom2.
+     * @param Geom2 The other geos::geom::Geometry.
      * @param SnapTolerance The tolerance to use while computing intersections and equality of lines.
-     * @return A vector of LineStrings, representing all input lines, cut at each node.
+     * @return A vector of geos::geom::LineString, representing all input lines, cut at each node.
      */
     static std::vector<geos::geom::LineString*>* getNodedLines(
         geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2,
@@ -142,30 +142,30 @@ class DLLEXPORT LandRTools
      * @brief Same as from geos::operation::overlay::snap::SnapOverlayOp::Union(),
      * but with ability to use the wished snap tolerance value.
      *
-     * @param Geom1 The Geometry to join with Geom2.
-     * @param Geom2 The other Geometry.
+     * @param Geom1 The geos::geom::Geometry to join with Geom2.
+     * @param Geom2 The other geos::geom::Geometry.
      * @param SnapTolerance The tolerance to use.
-     * @return A new Geometry representing the union of Geom1 and Geom2 according to SnapTolerance value.
+     * @return A new geos::geom::Geometry representing the union of Geom1 and Geom2 according to SnapTolerance value.
      */
     static geos::geom::Geometry* computeSnapOverlayUnion(
         geos::geom::Geometry& Geom1, geos::geom::Geometry& Geom2,
         double SnapTolerance = 0);
 
     /**
-     * @brief Returns true if Line exactly equals an element of RefLines, up to a specified tolerance.
-     * @param Line The Line to compare.
-     * @param RefLines The list of lines to compare to.
+     * @brief Returns true if a geos::geom::LineString is exactly equals of an element of a list of geos::geom::LineString, up to a specified tolerance.
+     * @param Line The geos::geom::LineString to compare.
+     * @param RefLines The list of geos::geom::LineString to compare to.
      * @param Tolerance The tolerance to use.
      */
     static bool exists(geos::geom::LineString* Line,
                        std::list<geos::geom::LineString*> RefLines, double Tolerance = 0);
 
     /**
-     * @brief Create all possible Polygons from a Geometry.
+     * @brief Creates all possible geos::geom::Polygon from a geos::geom::Geometry.
      *
-     * @param Lines The input vector of Geometries to polygonize.
-     * @param Polygons The output vector of newly created Polygons.
-     * @param Dangles The output vector of dangle lines.
+     * @param Lines The input vector of geos::geom::Geometry to polygonize.
+     * @param Polygons The output vector of newly created geos::geom::Polygon.
+     * @param Dangles The output vector of dangle geos::geom::LineString.
      */
     static void polygonizeGeometry(
         std::vector<geos::geom::Geometry*>& Lines,
@@ -173,25 +173,25 @@ class DLLEXPORT LandRTools
         std::vector<const geos::geom::LineString*>& Dangles);
 
     /**
-     * @brief recursive depth first search algorithm in a LineStringGraph and mark visited Nodes
+     * @brief Recursive depth first search algorithm in a LineStringGraph and mark visited Nodes
      *
-     * @param Node the begin Node of LineStringGraph
+     * @param Node the begin geos::planargraph::Node of LineStringGraph
      */
     static void markVisitedNodesUsingDFS(geos::planargraph::Node* Node);
 
     /**
-     * @brief Intersection of two GeometryCollection of Polygons.
+     * @brief Intersection of two geos::geom::Geometry of Polygons.
      *
-     * @param Geom1 The Geometry to join with Geom2.
-     * @param Geom2 The other Geometry.
-     * @return A vector of Polygons representing the intersection of Geom1 and Geom2.
+     * @param Geom1 The geos::geom::Geometry to join with Geom2.
+     * @param Geom2 The other geos::geom::Geometry.
+     * @return A vector of geos::geom::Polygon representing the intersection of Geom1 and Geom2.
      */
     static std::vector<geos::geom::Polygon*> computeIntersectPolygons(
         geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2);
 
 
     /**
-     * @brief Split a geos::geom::LineString by a geos::geom Point
+     * @brief Splits a geos::geom::LineString by a geos::geom::Point.
      *
      * @param Entity An existent geos::geom::LineString.
      * @param Point A geos::geom::Point.
@@ -203,10 +203,10 @@ class DLLEXPORT LandRTools
 
 
     /**
-     * @brief Recursively Split a geos::geom::LineString by a std::vector of geos::geom Points
+     * @brief Recursively split operation on a geos::geom::LineString by a vector of geos::geom::Point.
      *
      * @param Entity An existent geos::geom::LineString.
-     * @param Point A std::vector of geos::geom::Points.
+     * @param Point A vector of geos::geom::Point.
      * @param SnapTolerance The threshold distance used to find Point on Line.
      * @param vLines the resulting vector of geos::geom::LineString splitted.
      */
