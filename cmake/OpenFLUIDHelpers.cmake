@@ -378,9 +378,9 @@ MACRO(OPENFLUID_ADD_BUILDEREXT _EXTNAME)
   # ====== install ======
   
   IF(NOT ${_EXTNAME}_INSTALL_PATH)
-    SET(_INSTALL_PATH "$ENV{HOME}/.openfluid/builder-extensions")
+    SET(_INSTALL_PATH "$ENV{HOME}/.openfluid/builderext")
     IF(WIN32)
-      SET(_INSTALL_PATH "$ENV{USERPROFILE}/openfluid/builder-extensions") 
+      SET(_INSTALL_PATH "$ENV{USERPROFILE}/openfluid/builderext") 
     ENDIF()
   ELSE()
     SET(_INSTALL_PATH "${${_EXTNAME}_INSTALL_PATH}")   
