@@ -71,12 +71,13 @@ class DLLEXPORT PluggableModelessExtension : public QDialog, public PluggableBui
 
   signals:
 
-    void fluidxChanged();
+    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
+                         FluidXUpdateFlags::FLUIDX_ALL);
 
 
   public slots:
 
-    virtual void update();
+    virtual void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
     virtual void manageSimulationStart();
 

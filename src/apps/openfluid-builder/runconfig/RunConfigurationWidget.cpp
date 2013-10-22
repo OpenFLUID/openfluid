@@ -118,7 +118,7 @@ void RunConfigurationWidget::refresh()
 void RunConfigurationWidget::updateConstraintFXDesc(int Index)
 {
   m_AdvFluidxDesc.getRunDescriptor().setSchedulingConstraint(openfluid::base::SimulationStatus::SchedulingConstraint(Index));
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }
 
 
@@ -129,7 +129,7 @@ void RunConfigurationWidget::updateConstraintFXDesc(int Index)
 void RunConfigurationWidget::updateDeltaTFXDesc(int Value)
 {
   m_AdvFluidxDesc.getRunDescriptor().setDeltaT(Value);
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }
 
 
@@ -148,7 +148,7 @@ void RunConfigurationWidget::updateBeginDateFXDesc(const QDateTime& QDT)
     ui->EndDateTimeEdit->setDateTime(QDT.addSecs(1));
   }
 
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }
 
 
@@ -167,7 +167,7 @@ void RunConfigurationWidget::updateEndDateFXDesc(const QDateTime& QDT)
     ui->BeginDateTimeEdit->setDateTime(QDT.addSecs(-1));
   }
 
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }
 
 
@@ -181,7 +181,7 @@ void RunConfigurationWidget::updateMemoryFXDesc(bool On)
     m_AdvFluidxDesc.getRunDescriptor().setValuesBufferSize(ui->MemoryStepsSpinBox->value());
   else
     m_AdvFluidxDesc.getRunDescriptor().unsetUserValuesBufferSize();
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }
 
 
@@ -192,7 +192,7 @@ void RunConfigurationWidget::updateMemoryFXDesc(bool On)
 void RunConfigurationWidget::updateMemoryStepsFXDesc(int Value)
 {
   m_AdvFluidxDesc.getRunDescriptor().setValuesBufferSize(Value);
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_RUNCONFIG);
 }
 
 

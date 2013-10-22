@@ -255,7 +255,7 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
           this,SLOT(saveDockArea(Qt::DockWidgetArea)));
 
 
-  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged()),
+  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(enableSave()));
 
   connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),

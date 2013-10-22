@@ -126,7 +126,7 @@ void MonitoringWidget::addObserver()
 
     mp_WaresManWidget->updateUpDownButtons();
 
-    emit changed();
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
   }
 }
 
@@ -146,7 +146,7 @@ void MonitoringWidget::moveModelItemUp(const QString& ID)
 
   mp_WaresManWidget->updateUpDownButtons();
 
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
 }
 
 
@@ -166,7 +166,7 @@ void MonitoringWidget::moveModelItemDown(const QString& ID)
 
   mp_WaresManWidget->updateUpDownButtons();
 
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
 }
 
 
@@ -185,7 +185,7 @@ void MonitoringWidget::removeModelItem(const QString& ID)
 
   mp_WaresManWidget->updateUpDownButtons();
 
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
 }
 
 
@@ -226,7 +226,7 @@ void MonitoringWidget::refresh()
 
 void MonitoringWidget::dispatchChangesFromChildren()
 {
-  emit changed();
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
 }
 
 

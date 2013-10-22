@@ -69,7 +69,8 @@ class DummyModalSpatialSimple : public openfluid::builderext::PluggableModalExte
 
   public slots:
 
-    void update();
+    void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+
 
   public:
 

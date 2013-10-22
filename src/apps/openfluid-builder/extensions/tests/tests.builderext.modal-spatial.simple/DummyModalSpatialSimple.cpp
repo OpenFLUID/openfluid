@@ -86,7 +86,7 @@ DummyModalSpatialSimple::DummyModalSpatialSimple() :
 // =====================================================================
 
 
-void DummyModalSpatialSimple::update()
+void DummyModalSpatialSimple::update(openfluid::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
 {
   std::string DirStr;
 
