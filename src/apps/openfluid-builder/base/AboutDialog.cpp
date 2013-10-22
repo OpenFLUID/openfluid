@@ -96,6 +96,9 @@ AboutDialog::AboutDialog(QWidget *Parent, const QAction* WebAction, const QActio
 
   toggleInfos();
 
+  ui->BottomFrame->setStyleSheet(QString("QFrame#BottomFrame {background-color: %1;}")
+                                          .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+
   connect(mp_WebLabel,SIGNAL(clicked()),mp_WebAction,SLOT(trigger()));
   connect(mp_ContactLabel,SIGNAL(clicked()),mp_ContactAction,SLOT(trigger()));
   connect(mp_SwitchLabel,SIGNAL(clicked()),this,SLOT(toggleInfos()));

@@ -59,6 +59,8 @@
 
 #include "AbstractModule.hpp"
 
+#include <openfluid/builderext/FluidXUpdateFlags.hpp>
+
 #include <QString>
 #include <QDockWidget>
 #include <QFileSystemWatcher>
@@ -115,19 +117,9 @@ class ProjectModule : public AbstractModule
 
   signals:
 
-    void fluidxChanged();
+    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
     void savePerformed();
-
-    void modelChanged();
-
-    void spatialChanged();
-
-    void datastoreChanged();
-
-    void monitoringChanged();
-
-    void runconfigChanged();
 
     void simulationStarted();
 
@@ -140,9 +132,9 @@ class ProjectModule : public AbstractModule
 
     void releaseModelessExtension();
 
-    void dispatchChanges();
+    void dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
-    void dispatchChangesFromExtension();
+    void dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
     void updateSimulatorsWares();
 
@@ -174,6 +166,8 @@ class ProjectModule : public AbstractModule
     bool whenCloseAsked();
 
     void whenPreferencesAsked();
+
+    void whenRecentProjectsActionsChanged();
 
     void whenRunAsked();
 

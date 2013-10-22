@@ -62,6 +62,7 @@
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/builderext/BuilderExtensionSignature.hpp>
+#include <openfluid/builderext/FluidXUpdateFlags.hpp>
 #include <openfluid/dllexport.hpp>
 
 

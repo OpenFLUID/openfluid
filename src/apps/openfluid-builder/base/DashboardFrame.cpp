@@ -57,14 +57,14 @@
 #include "DashboardFrame.hpp"
 #include "DashboardInfosWidget.hpp"
 #include "DashboardStatusWidget.hpp"
-
+#include "builderconfig.hpp"
 
 
 DashboardFrame::DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent):
   QFrame(Parent)
 {
   setObjectName("DashboardWidget");
-  setStyleSheet("QFrame#DashboardWidget {background-color: #2C3A4C;}");
+  setStyleSheet(QString("QFrame#DashboardWidget {background-color: %1;}").arg(BUILDER_TOOLBAR_BGCOLOR));
   setFrameShape(QFrame::NoFrame);
 
   mp_InfosWidget = new DashboardInfosWidget(PrjCentral->getAdvancedDescriptors(),this);

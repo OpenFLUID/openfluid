@@ -93,7 +93,9 @@
 
 
 ProjectModule::ProjectModule(const QString& ProjectPath):
-AbstractModule(), mp_MainWidget(NULL), mp_DashboardFrame(NULL), m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
+  AbstractModule(),
+  mp_MainWidget(NULL), mp_DashboardFrame(NULL),
+  m_ProjectPath(ProjectPath), mp_ProjectCentral(NULL)
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 
@@ -186,24 +188,24 @@ QWidget* ProjectModule::getMainWidget(QWidget* Parent)
 
 
   mp_ModelTab = new ModelWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
-  connect(this,SIGNAL(modelChanged()),mp_ModelTab,SLOT(refresh()));
-  connect(mp_ModelTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+  connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
   mp_SpatialTab = new SpatialDomainWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
-  connect(this,SIGNAL(spatialChanged()),mp_SpatialTab,SLOT(refresh()));
-  connect(mp_SpatialTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+  connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
   mp_DatastoreTab = new DatastoreWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
-  connect(this,SIGNAL(datastoreChanged()),mp_DatastoreTab,SLOT(refresh()));
-  connect(mp_DatastoreTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+  connect(mp_DatastoreTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
   mp_MonitoringTab = new MonitoringWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
-  connect(this,SIGNAL(monitoringChanged()),mp_MonitoringTab,SLOT(refresh()));
-  connect(mp_MonitoringTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+  connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
   mp_RunConfigTab = new RunConfigurationWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
-  connect(this,SIGNAL(runconfigChanged()),mp_RunConfigTab,SLOT(refresh()));
-  connect(mp_RunConfigTab,SIGNAL(changed()),this,SLOT(dispatchChanges()));
+  connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
+          this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
 
   mp_OutputsTab = new OutputsWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
 
@@ -373,6 +375,16 @@ void ProjectModule::whenPreferencesAsked()
 // =====================================================================
 
 
+void ProjectModule::whenRecentProjectsActionsChanged()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ProjectModule::whenRunAsked()
 {
   if (openfluid::guicommon::PreferencesManager::getInstance()->isAutomaticSaveBeforeRun())
@@ -410,11 +422,13 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
         // TODO set correct extension configuration
         ExtModal->setConfiguration(openfluid::ware::WareParams_t());
         ExtModal->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
-        connect(ExtModal,SIGNAL(fluidxChanged()),this,SLOT(dispatchChangesFromExtension()));
-        connect(this,SIGNAL(fluidxChanged()),ExtModal,SLOT(update()));
+        connect(ExtModal,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+                this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
+        connect(this,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+                ExtModal,SLOT(update(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(simulationStarted()),ExtModal,SLOT(manageSimulationStart()));
         connect(this,SIGNAL(simulationFinished()),ExtModal,SLOT(manageSimulationFinish()));
-        ExtModal->update();
+        ExtModal->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
         ExtModal->exec();
         ExtReg->releaseExtension(ExtModal);
         ExtModal->deleteLater();
@@ -429,11 +443,13 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
         ExtModeless->setConfiguration(openfluid::ware::WareParams_t());
         ExtModeless->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
         connect(ExtModeless,SIGNAL(finished(int)),this, SLOT(releaseModelessExtension()));
-        connect(ExtModeless,SIGNAL(fluidxChanged()),this,SLOT(dispatchChangesFromExtension()));
-        connect(this,SIGNAL(fluidxChanged()),ExtModeless,SLOT(update()));
+        connect(ExtModeless,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+                this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
+        connect(this,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+                ExtModeless,SLOT(update(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(simulationStarted()),ExtModeless,SLOT(manageSimulationStart()));
         connect(this,SIGNAL(simulationFinished()),ExtModeless,SLOT(manageSimulationFinish()));
-        ExtModeless->update();
+        ExtModeless->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
         ExtModeless->show();
       }
       else if (ExtReg->getExtensionType(WareID) == openfluid::builderext::TYPE_WORKSPACE)
@@ -444,11 +460,13 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
         // TODO set correct extension configuration
         ExtWork->setConfiguration(openfluid::ware::WareParams_t());
         ExtWork->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
-        connect(ExtWork,SIGNAL(fluidxChanged()),this,SLOT(dispatchChangesFromExtension()));
-        connect(this,SIGNAL(fluidxChanged()),ExtWork,SLOT(update()));
+        connect(ExtWork,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+                this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
+        connect(this,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+                ExtWork,SLOT(update(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(simulationStarted()),ExtWork,SLOT(manageSimulationStart()));
         connect(this,SIGNAL(simulationFinished()),ExtWork,SLOT(manageSimulationFinish()));
-        ExtWork->update();
+        ExtWork->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
         mp_MainWidget->addWorkspaceExtensionTab(ExtWork,ExtReg->getRegisteredExtensions()->at(WareID)->Signature->MenuText);
       }
       else
@@ -513,9 +531,9 @@ bool ProjectModule::whenOpenExampleAsked()
 // =====================================================================
 
 
-void ProjectModule::dispatchChanges()
+void ProjectModule::dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
-  emit fluidxChanged();
+  emit fluidxChanged(UpdateFlags);
 
   doCheck();
 }
@@ -525,12 +543,24 @@ void ProjectModule::dispatchChanges()
 // =====================================================================
 
 
-void ProjectModule::dispatchChangesFromExtension()
+void ProjectModule::dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
-  mp_SpatialTab->refresh();
-  mp_DatastoreTab->refresh();
+  // TODO model refresh
 
-  dispatchChanges();
+  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
+      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
+      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT))
+    mp_SpatialTab->refresh();
+
+  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
+      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE))
+    mp_DatastoreTab->refresh();
+
+  // TODO monitoring refresh
+
+  // TODO run config refresh
+
+  dispatchChanges(UpdateFlags);
 }
 
 

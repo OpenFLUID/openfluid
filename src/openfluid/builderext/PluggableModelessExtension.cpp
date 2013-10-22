@@ -60,7 +60,7 @@
 namespace openfluid { namespace builderext {
 
 
-void PluggableModelessExtension::update()
+void PluggableModelessExtension::update(openfluid::builderext::FluidXUpdateFlags::Flags /*UpdateFlags*/)
 {
 
 }

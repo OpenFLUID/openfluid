@@ -109,6 +109,9 @@ void AppActions::updateRecentProjectsActions()
 
   for (int i=RFCount;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
     m_RecentProjectsActions[i]->setVisible(false);
+
+  if (mp_RecentProjectsMenu != NULL)
+    mp_RecentProjectsMenu->setEnabled(!RPList.empty());
 }
 
 
@@ -457,9 +460,12 @@ void AppActions::createToolbar(MainWindow& MainWin)
     mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");
 
     mp_MainToolbar->setObjectName("MainToolbar");
-    mp_MainToolbar->setStyleSheet("QWidget {color: white; padding-left : 10px; padding-right : 10px;} "
-                                  "#MainToolbar {background-color: #2C3A4C; border: 1px solid #2C3A4C;}"
-                                  "QToolButton::hover { background-color: #3B4E66; border : 1px solid #4B4B4B; border-radius: 4px; }");
+    mp_MainToolbar->setStyleSheet(QString("QWidget {color: white; padding-left : 10px; padding-right : 10px;} "
+                                          "#MainToolbar {background-color: %1; border: 1px solid %1;}"
+                                          "QToolButton::hover { background-color: %2; border : 1px solid %3; border-radius: 4px; }")
+                                         .arg(BUILDER_TOOLBAR_BGCOLOR,
+                                              BUILDER_TOOLBARBUTTON_BGCOLOR,
+                                              BUILDER_TOOLBARBUTTON_BORDERCOLOR));
   }
 
   MainWin.addToolBar(openfluid::guicommon::PreferencesManager::getInstance()->getToolBarPosition(),

@@ -61,6 +61,7 @@
 
 #include "ui_AddGeneratorDialog.h"
 #include "AddGeneratorDialog.hpp"
+#include "builderconfig.hpp"
 
 #include <QPushButton>
 #include <QFileDialog>
@@ -120,14 +121,16 @@ void AddGeneratorDialog::setMessage(const QString& Msg)
 {
   if (Msg.isEmpty())
   {
-    ui->MessageFrame->setStyleSheet("background-color: rgb(71,97,123);");
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Add generator"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
   else
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet("background-color: rgb(245,145,34);");
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

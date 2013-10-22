@@ -100,6 +100,8 @@ class AbstractModule : public QObject
 
     virtual void whenPreferencesAsked() = 0;
 
+    virtual void whenRecentProjectsActionsChanged() = 0;
+
     virtual void whenRunAsked() = 0;
 
     virtual void whenExtensionAsked(const QString& ID) = 0;

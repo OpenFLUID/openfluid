@@ -87,6 +87,7 @@ void ModelScene::refresh()
 {
   // clear existing scene
 
+  // clear model items
   foreach (ModelItemGraphics* MItemG, m_GraphicsItems)
   {
     removeItem(MItemG);
@@ -94,6 +95,7 @@ void ModelScene::refresh()
   }
   m_GraphicsItems.clear();
 
+  // clear connections
   foreach (ConnectorGraphics* ConnG, m_GraphicsConnections)
   {
     removeItem(ConnG);
@@ -182,6 +184,8 @@ void ModelScene::buildConnections()
     const ModelItemGraphics::IOSet_t* VarsSet;
     ModelItemGraphics::IOSet_t::const_iterator itTo;
 
+    ModelItemGraphics* ProviderItem;
+    ConnectorGraphics::OutNodeType ProviderOutNode;
 
     // Required vars
     VarsSet = ToMItemG->getRequired();
@@ -190,26 +194,35 @@ void ModelScene::buildConnections()
     for (itTo = VarsSet->constBegin(); itTo != VarsSet->constEnd(); ++itTo)
     {
       foreach (QString VarName, itTo.value())
-          {
+      {
+        ProviderItem = NULL;
+
         foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
-            {
+        {
           if (ToMItemG != FromMItemG)
           {
 
             if (FromMItemG->hasProducedVar(itTo.key(),VarName))
             {
-              addConnection(FromMItemG,ConnectorGraphics::NODE_PROD,
-                            ToMItemG,ConnectorGraphics::NODE_REQ,
-                            itTo.key(),VarName);
+              ProviderItem = FromMItemG;
+              ProviderOutNode = ConnectorGraphics::NODE_PROD;
+
             }
 
             if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
             {
-              addConnection(FromMItemG,ConnectorGraphics::NODE_OUTUP,
-                            ToMItemG,ConnectorGraphics::NODE_REQ,
-                            itTo.key(),VarName);
+              ProviderItem = FromMItemG;
+              ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
             }
           }
+        }
+
+        // use the latest provider item
+        if (ProviderItem != NULL)
+        {
+          addConnection(ProviderItem,ProviderOutNode,
+                        ToMItemG,ConnectorGraphics::NODE_REQ,
+                        itTo.key(),VarName);
         }
       }
     }
@@ -223,6 +236,7 @@ void ModelScene::buildConnections()
     {
       foreach (QString VarName, itTo.value())
       {
+        ProviderItem = NULL;
         foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
         {
           if (ToMItemG != FromMItemG)
@@ -230,18 +244,24 @@ void ModelScene::buildConnections()
 
             if (FromMItemG->hasProducedVar(itTo.key(),VarName))
             {
-              addConnection(FromMItemG,ConnectorGraphics::NODE_PROD,
-                            ToMItemG,ConnectorGraphics::NODE_US,
-                            itTo.key(),VarName);
+              ProviderItem = FromMItemG;
+              ProviderOutNode = ConnectorGraphics::NODE_PROD;
             }
 
             if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
             {
-              addConnection(FromMItemG,ConnectorGraphics::NODE_OUTUP,
-                            ToMItemG,ConnectorGraphics::NODE_US,
-                            itTo.key(),VarName);
+              ProviderItem = FromMItemG;
+              ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
             }
           }
+        }
+
+        // use the latest provider item
+        if (ProviderItem != NULL)
+        {
+          addConnection(ProviderItem,ProviderOutNode,
+                        ToMItemG,ConnectorGraphics::NODE_US,
+                        itTo.key(),VarName);
         }
       }
     }
@@ -255,6 +275,7 @@ void ModelScene::buildConnections()
     {
       foreach (QString VarName, itTo.value())
       {
+        ProviderItem = NULL;
         foreach (ModelItemGraphics* FromMItemG, m_GraphicsItems)
         {
 
@@ -262,18 +283,26 @@ void ModelScene::buildConnections()
           {
             if (FromMItemG->hasProducedVar(itTo.key(),VarName))
             {
-              addConnection(FromMItemG,ConnectorGraphics::NODE_PROD,
-                            ToMItemG,ConnectorGraphics::NODE_INUP,
-                            itTo.key(),VarName);
+              ProviderItem = FromMItemG;
+              ProviderOutNode = ConnectorGraphics::NODE_PROD;
             }
 
             if (FromMItemG->hasUpdatedVar(itTo.key(),VarName))
             {
-              addConnection(FromMItemG,ConnectorGraphics::NODE_OUTUP,
-                            ToMItemG,ConnectorGraphics::NODE_INUP,
-                            itTo.key(),VarName);
+              ProviderItem = FromMItemG;
+              ProviderOutNode = ConnectorGraphics::NODE_OUTUP;
             }
           }
+          // input for updated vars cannot be after the current simulator/generator
+          if (FromMItemG == ToMItemG) break;
+        }
+
+        // use the latest provider item
+        if (ProviderItem != NULL)
+        {
+          addConnection(ProviderItem,ProviderOutNode,
+                        ToMItemG,ConnectorGraphics::NODE_INUP,
+                        itTo.key(),VarName);
         }
       }
     }

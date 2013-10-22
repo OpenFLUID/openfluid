@@ -54,7 +54,6 @@
  */
 
 #include <QLabel>
-#include <QVBoxLayout>
 #include <QFrame>
 #include <QDir>
 
@@ -63,7 +62,7 @@
 #include "AppActions.hpp"
 #include "AppTools.hpp"
 
-
+#include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/config.hpp>
 
 
@@ -105,7 +104,7 @@ RecentProjectLabel::RecentProjectLabel(const QString& Text, QWidget* Parent):
 
 
 HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
-  QWidget(Parent), ui(new Ui::HomeWidget)
+  QWidget(Parent), ui(new Ui::HomeWidget), mp_Actions(Actions)
 {
   ui->setupUi(this);
 
@@ -152,55 +151,48 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
 
 
   // Recent projects
-  QVBoxLayout *RecentsLayout = new QVBoxLayout(ui->RecentsFrame);
+  mp_RecentsLayout = new QVBoxLayout(ui->RecentsFrame);
 
-
-  std::vector<QAction*> RecentActions = Actions->getRecentProjectActions();
-
-  QLabel* RecentProjectsLabel = new QLabel(tr("Recent projects:"),ui->RecentsFrame);
-  RecentProjectsLabel->setStyleSheet("font : bold;");
-
-  if (!RecentActions[0]->isVisible())
-    RecentProjectsLabel->setText(tr("No recent project"));
-
-  RecentsLayout->addWidget(RecentProjectsLabel);
+  mp_RecentProjectsLabel = new QLabel("",ui->RecentsFrame);
+  mp_RecentProjectsLabel->setStyleSheet("font : bold;");
+  mp_RecentsLayout->addWidget(mp_RecentProjectsLabel);
 
   QPixmap DotPix(":/images/dot.png");
 
-  for (unsigned int i=0; i<RecentActions.size();i++)
+  std::vector<QAction*> RecentActions = mp_Actions->getRecentProjectActions();
+
+  for (int i=0; i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
   {
-    if (RecentActions[i]->isVisible())
-    {
-      // the local layout will be given a correct parent below with the addLayout() command
-      QHBoxLayout* LocalLayout = new QHBoxLayout(NULL);
-      QLabel* DotLabel = new QLabel(ui->RecentsFrame);
-      DotLabel->setPixmap(DotPix);
-      DotLabel->setAlignment(Qt::AlignCenter);
-      LocalLayout->addWidget(DotLabel);
-      LocalLayout->setContentsMargins(30,0,0,0);
+    // the local layout will be given a correct parent below with the addLayout() command
+    QHBoxLayout* LocalLayout = new QHBoxLayout();
+    QLabel* DotLabel = new QLabel(ui->RecentsFrame);
+    DotLabel->setPixmap(DotPix);
+    DotLabel->setAlignment(Qt::AlignCenter);
+    DotLabel->setVisible(false);
 
-      RecentProjectLabel* RecentLabel = new RecentProjectLabel(QDir(RecentActions[i]->data().toString()).dirName(),ui->RecentsFrame);
-      RecentLabel->setContentsMargins(0,0,0,0);
-      RecentLabel->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
+    LocalLayout->addWidget(DotLabel);
+    LocalLayout->setContentsMargins(30,0,0,0);
 
-      QString InfosStr = getProjectInfosAsHTML(RecentActions[i]->data().toString(),true);
-      if (!InfosStr.isEmpty()) RecentLabel->setToolTip(InfosStr);
+    RecentProjectLabel* RecentLabel = new RecentProjectLabel("");
+    RecentLabel->setContentsMargins(0,0,0,0);
+    RecentLabel->setSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum);
+    RecentLabel->setVisible(false);
 
-      RecentLabel->setCursor(Qt::PointingHandCursor);
-      connect(RecentLabel,SIGNAL(clicked()),RecentActions[i],SLOT(trigger()));
+    RecentLabel->setCursor(Qt::PointingHandCursor);
+    connect(RecentLabel,SIGNAL(clicked()),RecentActions[i],SLOT(trigger()));
 
-      LocalLayout->addWidget(RecentLabel);
-      LocalLayout->addStretch();
-      RecentsLayout->addLayout(LocalLayout);
-    }
+    LocalLayout->addWidget(RecentLabel);
+    LocalLayout->addStretch();
+    mp_RecentsLayout->addLayout(LocalLayout);
   }
-  RecentsLayout->addStretch();
 
-  RecentsLayout->setContentsMargins(30,30,30,30);
-  RecentsLayout->setSpacing(10);
+  mp_RecentsLayout->addStretch();
+  mp_RecentsLayout->setContentsMargins(30,30,30,30);
+  mp_RecentsLayout->setSpacing(10);
 
-  ui->RecentsFrame->setLayout(RecentsLayout);
+  ui->RecentsFrame->setLayout(mp_RecentsLayout);
 
+  refreshRecentProjects();
 
   // TODO to enable once the OpenFLUID information broadcast will be developped
   ui->InfosLineFrame->setVisible(false);
@@ -229,9 +221,53 @@ QPushButton* HomeWidget::createButton(const QAction* Action, const QString& Text
   Button->setMinimumHeight(65);
   Button->setIconSize(QSize(48,48));
   Button->setIcon(Action->icon());
-//  Button->setStyleSheet("text-align: left; padding-left : 10px;");
 
   connect(Button,SIGNAL(clicked()),Action,SLOT(trigger()));
 
   return Button;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void HomeWidget::refreshRecentProjects()
+{
+  std::vector<QAction*> RecentActions = mp_Actions->getRecentProjectActions();
+
+  for (int i=0; i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+  {
+    QLayoutItem* Item = mp_RecentsLayout->itemAt(i+1);
+    QLayout* ItemLayout = Item->layout();
+
+    ItemLayout->itemAt(0)->widget()->setVisible(false);
+    ItemLayout->itemAt(1)->widget()->setVisible(false);
+    dynamic_cast<QLabel*>(ItemLayout->itemAt(1)->widget())->setText("");
+    ItemLayout->itemAt(1)->widget()->setToolTip("");
+  }
+
+  if (!RecentActions[0]->isVisible())
+    mp_RecentProjectsLabel->setText(tr("No recent project"));
+  else
+  {
+    mp_RecentProjectsLabel->setText(tr("Recent projects:"));
+
+    for (unsigned int i=0; i<RecentActions.size();i++)
+    {
+      QLayoutItem* Item = mp_RecentsLayout->itemAt(i+1);
+      QLayout* ItemLayout = Item->layout();
+
+      if (RecentActions[i]->isVisible())
+      {
+        dynamic_cast<QLabel*>(ItemLayout->itemAt(1)->widget())->setText(QDir(RecentActions[i]->data().toString()).dirName());
+
+        QString InfosStr = getProjectInfosAsHTML(RecentActions[i]->data().toString(),true);
+        if (!InfosStr.isEmpty()) ItemLayout->itemAt(1)->widget()->setToolTip(InfosStr);
+
+        ItemLayout->itemAt(0)->widget()->setVisible(true);
+        ItemLayout->itemAt(1)->widget()->setVisible(true);
+      }
+    }
+  }
 }

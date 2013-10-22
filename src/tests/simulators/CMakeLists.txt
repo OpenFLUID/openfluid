@@ -1,5 +1,3 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
-
 
 ADD_DEFINITIONS(-DOPENFLUID_VERSION=${FULL_VERSION})
 ADD_DEFINITIONS(-DBUILDINGDLL)
@@ -14,7 +12,6 @@ OPNFLD_ADD_SIMULATOR(tests.coupling.B tests.coupling.B ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.coupling.C tests.coupling.C ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.coupling.D tests.coupling.D ${TEST_OUTPUT_PATH})
 OPNFLD_ADD_SIMULATOR(tests.coupling.E tests.coupling.E ${TEST_OUTPUT_PATH})
-
 
 ###########################################################################
 

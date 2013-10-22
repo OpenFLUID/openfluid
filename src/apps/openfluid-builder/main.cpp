@@ -60,6 +60,7 @@
 #include <openfluid/base/Init.hpp>
 
 #include "BuilderApp.hpp"
+#include "builderconfig.hpp"
 
 #include <QTranslator>
 #include <QLibraryInfo>
@@ -100,7 +101,9 @@ int main(int argc, char** argv)
     OPENFLUID_APPLICATION.installTranslator(&QtTranslator);
     OPENFLUID_APPLICATION.installTranslator(&OpenFLUIDTranslator);
 
-    OPENFLUID_APPLICATION.setStyleSheet("QToolTip { color: #FFFFFF; background-color: #2C3A4C; border: 1px solid #4B4B4B; }");
+    OPENFLUID_APPLICATION.setStyleSheet(QString("QToolTip { color: #FFFFFF; background-color: %1; "
+                                                "border: 1px solid %2; }")
+                                        .arg(BUILDER_TOOLTIP_BGCOLOR,BUILDER_TOOLTIP_BORDERCOLOR));
 
     // Application launching
     BuilderApp App;

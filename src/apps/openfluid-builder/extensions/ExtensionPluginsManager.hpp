@@ -87,12 +87,12 @@ class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<Ex
       for (int i=0; i <ExtraSearchPaths.size();i++)
         m_SearchPaths.push_back(ExtraSearchPaths[i].toStdString());
 
-      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_EXTSDIR.toStdString()));
+      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDEREXT_PLUGINS_SUBDIR.toStdString()));
       m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getInstallPrefix()+
                               "/"+
                               BUILDEREXT_INSTALL_PATH.toStdString());
 
-      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDER_EXTSDIR.toStdString()));
+      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDEREXT_PLUGINS_SUBDIR.toStdString()));
       m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getInstallPrefix()+
                                       "/"+
                                       BUILDEREXT_INSTALL_PATH.toStdString());

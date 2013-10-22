@@ -241,8 +241,9 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
                                  Qt::RightDockWidgetArea |
                                  Qt::BottomDockWidgetArea);
 
-  mp_DockWidget->setStyleSheet("QDockWidget {padding: 5px; font: bold; background: #2C3A4C;} "
-                               "QDockWidget::title {padding : 5px; font: bold; }");
+  mp_DockWidget->setStyleSheet(QString("QDockWidget {padding: 5px; font: bold; background: %1;} "
+                                       "QDockWidget::title {padding : 5px; font: bold; }")
+                                      .arg(BUILDER_TOOLBAR_BGCOLOR));
 
   m_MainWindow.addDockWidget(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition(),
                              mp_DockWidget);
@@ -254,7 +255,7 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
           this,SLOT(saveDockArea(Qt::DockWidgetArea)));
 
 
-  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged()),
+  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(enableSave()));
 
   connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),
@@ -264,21 +265,6 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
           this,SLOT(enableRun(bool)));
 
   enableRun(((ProjectModule*)Module)->isOkForSimulation());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void AppCoordinator::updateRecentsList()
-{
-  // add of the current project
-  openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
-      QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
-      QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
-
-  m_Actions.updateRecentProjectsActions();
 }
 
 
@@ -330,8 +316,13 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
 
 void AppCoordinator::openProject(const QString& Name, const QString& Path)
 {
+  // update recents projects
+  openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
+        QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
+        QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
+
+  m_Actions.updateRecentProjectsActions();
   setProjectModule(Path);
-  updateRecentsList();
   m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  Name +" ]");
 }
 
@@ -563,8 +554,9 @@ void AppCoordinator::whenCloseAsked()
 void AppCoordinator::whenPreferencesAsked()
 {
   mp_CurrentModule->whenPreferencesAsked();
-  openfluid::guicommon::PreferencesManager::getInstance()->adaptRecentProjects();
-  updateRecentsList();
+
+  m_Actions.updateRecentProjectsActions();
+  mp_CurrentModule->whenRecentProjectsActionsChanged();
 }
 
 

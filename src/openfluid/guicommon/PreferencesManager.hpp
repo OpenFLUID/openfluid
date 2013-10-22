@@ -136,9 +136,9 @@ class DLLEXPORT PreferencesManager
 
     static bool isAvailableLang(const QString& Lang);
 
-    void setRecentMax(unsigned int RecentMax);
+    void setRecentMax(int RecentMax);
 
-    unsigned int getRecentMax();
+    int getRecentMax();
 
     bool addRecentProject(const QString& ProjectName, const QString& ProjectPath = "");
 

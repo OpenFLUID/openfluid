@@ -11,11 +11,12 @@ FILE(GLOB OPENFLUID_BUILDEREXT_CPP PluggableBuilderExtension.cpp
 
                                   )
 
-FILE(GLOB OPENFLUID_BUILDEREXT_HPP BuilderExtensionSignature.hpp
+FILE(GLOB OPENFLUID_BUILDEREXT_HPP FluidXUpdateFlags.hpp
+                                   BuilderExtensionSignature.hpp
                                    PluggableBuilderExtension.hpp
                                    PluggableModalExtension.hpp
                                    PluggableModelessExtension.hpp
-                                   PluggableWorkspaceExtension.hpp                                                                    
+                                   PluggableWorkspaceExtension.hpp                                                                
                                   )
 
 

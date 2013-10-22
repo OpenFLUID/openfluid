@@ -46,61 +46,48 @@
 */
 
 /**
-  \file PluggableModalExtension.hpp
+  \file FluidXUpdateFlags.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __PLUGGABLEMODALEXTENSION_HPP__
-#define __PLUGGABLEMODALEXTENSION_HPP__
+#ifndef __FLUIDXUPDATEFLAGS_HPP__
+#define __FLUIDXUPDATEFLAGS_HPP__
 
-#include <QDialog>
 
-#include <openfluid/builderext/PluggableBuilderExtension.hpp>
+#include <QFlags>
+
 #include <openfluid/dllexport.hpp>
-
 
 
 namespace openfluid { namespace builderext {
 
-class DLLEXPORT PluggableModalExtension : public QDialog, public PluggableBuilderExtension
+
+class DLLEXPORT FluidXUpdateFlags
 {
-  Q_OBJECT;
-
-
-  signals:
-
-    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
-                         openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-
-
-  public slots:
-
-    virtual void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
-
-    virtual void manageSimulationStart();
-
-    virtual void manageSimulationFinish();
-
-
   public:
 
-    PluggableModalExtension():
-      QDialog(NULL), PluggableBuilderExtension()
-    { }
+    enum Flag
+    {
+      FLUIDX_MODELDEF = 1 << 0,
+      FLUIDX_MODELPARAMS = 1 << 2,
+      FLUIDX_SPATIALSTRUCT = 1 << 3,
+      FLUIDX_SPATIALATTRS = 1 << 4,
+      FLUIDX_DATASTORE = 1 << 5,
+      FLUIDX_MONITORING = 1 << 6,
+      FLUIDX_RUNCONFIG = 1 << 7,
+      FLUIDX_ALL = 1 << 8
+    };
 
+    Q_DECLARE_FLAGS(Flags, Flag)
 
-    ~PluggableModalExtension()
-    {  }
-
-
-    virtual bool isReady() const
-    { return true; };
 };
 
-} } // namespaces
+Q_DECLARE_OPERATORS_FOR_FLAGS(FluidXUpdateFlags::Flags)
+
+} }  // namespaces
 
 
-#endif /* __PLUGGABLEMODALEXTENSION_HPP__ */
+#endif /* __FLUIDXUPDATEFLAGS_HPP__ */

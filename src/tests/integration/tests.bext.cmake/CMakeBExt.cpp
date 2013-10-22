@@ -45,62 +45,74 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file PluggableModalExtension.hpp
-  \brief Header of ...
+  \file CMakeBExt.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __PLUGGABLEMODALEXTENSION_HPP__
-#define __PLUGGABLEMODALEXTENSION_HPP__
+#include "ui_bext.h"
+#include "CMakeBExt.hpp"
 
-#include <QDialog>
-
-#include <openfluid/builderext/PluggableBuilderExtension.hpp>
-#include <openfluid/dllexport.hpp>
+#include <QPushButton>
 
 
+// =====================================================================
+// =====================================================================
 
-namespace openfluid { namespace builderext {
 
-class DLLEXPORT PluggableModalExtension : public QDialog, public PluggableBuilderExtension
+BEGIN_BUILDEREXT_SIGNATURE("tests.bext.cmake",openfluid::builderext::TYPE_MODAL)
+
+  DECLARE_CATEGORY(openfluid::builderext::CAT_OTHER)
+  DECLARE_MENUTEXT("tests.bext.cmake")
+
+END_BUILDEREXT_SIGNATURE
+
+
+// =====================================================================
+// =====================================================================
+
+
+CMakeBuilderExtension::CMakeBuilderExtension() :
+  openfluid::builderext::PluggableModalExtension(),
+  ui(new Ui::BExtDialog)
 {
-  Q_OBJECT;
+  Q_INIT_RESOURCE(bext);
+
+  ui->setupUi(this);
+
+  ui->CloseButton->setIcon(QPixmap(":/file-close.png"));
+
+  connect(ui->CloseButton,SIGNAL(clicked()),this,SLOT(reject()));
+}
 
 
-  signals:
-
-    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
-                         openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
+// =====================================================================
+// =====================================================================
 
 
-  public slots:
-
-    virtual void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
-
-    virtual void manageSimulationStart();
-
-    virtual void manageSimulationFinish();
+CMakeBuilderExtension::~CMakeBuilderExtension()
+{
+  delete ui;
+}
 
 
-  public:
-
-    PluggableModalExtension():
-      QDialog(NULL), PluggableBuilderExtension()
-    { }
+// =====================================================================
+// =====================================================================
 
 
-    ~PluggableModalExtension()
-    {  }
+void CMakeBuilderExtension::update()
+{
+
+}
 
 
-    virtual bool isReady() const
-    { return true; };
-};
-
-} } // namespaces
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __PLUGGABLEMODALEXTENSION_HPP__ */
+DEFINE_BUILDEREXT_CLASS(CMakeBuilderExtension)
+

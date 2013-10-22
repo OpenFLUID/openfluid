@@ -112,8 +112,6 @@ DummyModalSpatialClassic::~DummyModalSpatialClassic()
 
 void DummyModalSpatialClassic::addUnitClass()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   bool OK;
   QString UnitClass = QInputDialog::getText(this, tr("Add a unit Class"),
                                             tr("Unit class name:"),
@@ -129,7 +127,7 @@ void DummyModalSpatialClassic::addUnitClass()
     UDesc->getProcessOrder() = 1;
     mp_AdvancedDesc->getDomain().addUnit(UDesc);
 
-    emit fluidxChanged();
+    emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
   }
 }
 
@@ -138,9 +136,11 @@ void DummyModalSpatialClassic::addUnitClass()
 // =====================================================================
 
 
-void DummyModalSpatialClassic::update()
+void DummyModalSpatialClassic::update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
-
+  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
+      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
+      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT))
   ui->CountLabel->setText(QString("The spatial domain is made of %1 units class(es)").arg(mp_AdvancedDesc->getDomain().getClassNames().size()));
 }
 

@@ -90,7 +90,7 @@ class DummyModalSpatialClassic : public openfluid::builderext::PluggableModalExt
 
   public slots:
 
-    void update();
+    void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 
 
   public:

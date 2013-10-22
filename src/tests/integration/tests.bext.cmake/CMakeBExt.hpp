@@ -46,61 +46,52 @@
 */
 
 /**
-  \file PluggableModalExtension.hpp
+  \file CMakeBExt.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __PLUGGABLEMODALEXTENSION_HPP__
-#define __PLUGGABLEMODALEXTENSION_HPP__
+#ifndef __CMAKEBEXT_HPP__
+#define __CMAKEBEXT_HPP__
+
+
+#include <openfluid/builderext/PluggableModalExtension.hpp>
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 #include <QDialog>
 
-#include <openfluid/builderext/PluggableBuilderExtension.hpp>
-#include <openfluid/dllexport.hpp>
+
+DECLARE_BUILDEREXT_PLUGIN
+
+
+namespace Ui
+{
+  class BExtDialog;
+}
 
 
 
-namespace openfluid { namespace builderext {
-
-class DLLEXPORT PluggableModalExtension : public QDialog, public PluggableBuilderExtension
+class CMakeBuilderExtension : public openfluid::builderext::PluggableModalExtension
 {
   Q_OBJECT;
 
+  private:
 
-  signals:
-
-    void fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags =
-                         openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-
+    Ui::BExtDialog* ui;
 
   public slots:
 
-    virtual void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
-
-    virtual void manageSimulationStart();
-
-    virtual void manageSimulationFinish();
-
+    void update();
 
   public:
 
-    PluggableModalExtension():
-      QDialog(NULL), PluggableBuilderExtension()
-    { }
+    CMakeBuilderExtension();
 
+    ~CMakeBuilderExtension();
 
-    ~PluggableModalExtension()
-    {  }
-
-
-    virtual bool isReady() const
-    { return true; };
 };
 
-} } // namespaces
 
-
-#endif /* __PLUGGABLEMODALEXTENSION_HPP__ */
+#endif /* __CMAKEBEXT_HPP__ */

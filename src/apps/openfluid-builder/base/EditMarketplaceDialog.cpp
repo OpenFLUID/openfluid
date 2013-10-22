@@ -58,7 +58,7 @@
 
 #include "ui_EditMarketplaceDialog.h"
 #include "EditMarketplaceDialog.hpp"
-
+#include "builderconfig.hpp"
 
 
 EditMarketplaceDialog::EditMarketplaceDialog(QWidget* Parent, const QString& Name, const QString& URL,
@@ -99,7 +99,8 @@ void EditMarketplaceDialog::setMessage(const QString& Msg)
 {
   if (Msg.isEmpty())
   {
-    ui->MessageFrame->setStyleSheet("background-color: rgb(71,97,123);");
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
     if (m_IsEditMode)
       ui->MessageLabel->setText(tr("Edit a marketplace"));
     else
@@ -109,7 +110,8 @@ void EditMarketplaceDialog::setMessage(const QString& Msg)
   else
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet("background-color: rgb(245,145,34);");
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

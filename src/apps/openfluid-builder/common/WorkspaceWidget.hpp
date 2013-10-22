@@ -56,6 +56,8 @@
 #ifndef __WORKSPACEWIDGET_HPP__
 #define __WORKSPACEWIDGET_HPP__
 
+#include <openfluid/builderext/FluidXUpdateFlags.hpp>
+
 #include <QWidget>
 
 namespace openfluid { namespace fluidx {
@@ -73,7 +75,7 @@ class WorkspaceWidget : public QWidget
 
   signals:
 
-    void changed();
+    void changed(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags = openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
 
   public slots:
 

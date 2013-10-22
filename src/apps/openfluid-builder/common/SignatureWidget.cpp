@@ -291,13 +291,15 @@ void SignatureWidget::updateVariables(const openfluid::machine::ModelItemSignatu
   const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* ProdVars = &(Signature->Signature->HandledData.ProducedVars);
   const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* ReqVars = &(Signature->Signature->HandledData.RequiredVars);
   const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* UsVars = &(Signature->Signature->HandledData.UsedVars);
+  const std::vector<openfluid::ware::SignatureHandledTypedDataItem>* UpdVars = &(Signature->Signature->HandledData.UpdatedVars);
 
 
-  ui->VariablesTableWidget->setRowCount(ProdVars->size()+ReqVars->size()+UsVars->size());
+  ui->VariablesTableWidget->setRowCount(ProdVars->size()+ReqVars->size()+UsVars->size()+UpdVars->size());
 
   updateVariablesCategory(ProdVars,tr("Produced"),0);
   updateVariablesCategory(ReqVars,tr("Required"),ProdVars->size());
   updateVariablesCategory(UsVars,tr("Used"),ProdVars->size()+ReqVars->size());
+  updateVariablesCategory(UpdVars,tr("Updated"),ProdVars->size()+ReqVars->size()+UsVars->size());
 
   if (ui->VariablesTableWidget->rowCount() > 0)
     ui->InfosTabWidget->addTab(ui->VariablesTab,tr("Variables"));
