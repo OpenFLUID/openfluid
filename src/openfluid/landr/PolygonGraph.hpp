@@ -76,98 +76,128 @@ class DLLEXPORT PolygonGraph: public LandRGraph
 {
   public:
 
+    /**
+     * @brief A a map of polygonized Raster geos::geom::Polygon and its area intersecting PolygonEntity.
+     */
     typedef std::map<geos::geom::Polygon*, double> RastValByRastPoly_t;
 
   private:
 
+    /**
+     * @brief Creates a new PolygonGraph from an other PolygonGraph.
+     */
     PolygonGraph(PolygonGraph& Other);
 
   protected:
 
     PolygonGraph();
 
+    /**
+     * @brief Creates a new PolygonGraph initialized from a core::GeoVectorValue.
+     */
     PolygonGraph(openfluid::core::GeoVectorValue& Val);
 
+    /**
+     * @brief Creates a new PolygonGraph initialized from a VectorDataset.
+     */
     PolygonGraph(openfluid::landr::VectorDataset& Vect);
 
+    /**
+     * @brief Adds a LandREntity into this PolygonGraph.
+     */
     virtual void addEntity(LandREntity* Entity);
 
+    /**
+     * @brief Creates a new PolygonEntity.
+     *
+     * @param Geom The geos::geom::Geometry of the new PolygonEntity to create.
+     * @param SelfId The identifier of the new PolygonEntity.
+     *
+     * @return A new LandREntity.
+     */
     virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
                                       unsigned int SelfId);
 
     /**
      * @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
      *
-     * @param LineString The LineString representing the Edge to create.
-     * @return The newly created Edge, or 0 if fails.
+     * @param LineString The geos::geom::LineString representing the PolygonEdge to create.
+     * @return The newly created PolygonEdge, or 0 if fails.
      */
     PolygonEdge* createEdge(geos::geom::LineString& LineString);
 
     /**
-     * @brief Removes a segment of the exterior boundary of the input Entity.
+     * @brief Removes a segment of the exterior boundary of the input PolygonEntity.
      *
-     * @param Entity The entity to removes the segment to.
-     * @param Segment The LineString to remove.
+     * @param Entity The PolygonEntity to removes the segment to.
+     * @param Segment The geos::geom::LineString to remove.
      */
     void removeSegment(PolygonEntity* Entity, geos::geom::LineString* Segment);
 
-
+    /**
+     * @brief Adds an attribute to the PolygonEdge of a PolygonEntity.
+     * @param AttributeName The name of the attribute to add.
+     * @param Entity The LandREntity to add the PolygonEdge attribute.
+     */
     void addEdgeAttribute(std::string AttributeName, LandREntity& Entity);
 
+    /**
+     * @brief Removes an attribute to the PolygonEdge of a PolygonEntity.
+     * @param AttributeName The name of the attribute to remove.
+     * @param Entity The LandREntity to remove the PolygonEdge attribute.
+     */
     void removeEdgeAttribute(std::string AttributeName, LandREntity& Entity);
 
   public:
 
     /**
-     * @brief Create a new graph initialized with Val elements.
+     * @brief Creates a new PolygonGraph initialized from a core::GeoVectorValue.
      * @details Val must be composed of one or many Polygons, and each of them must contain a "SELF_ID" attribute.
      */
     static PolygonGraph* create(openfluid::core::GeoVectorValue& Val);
 
     /**
-     * @brief Create a new graph initialized with Vect elements.
+     * @brief Create a new PolygonGraph initialized from a VectorDataset.
      * @details Vect must be composed of one or many Polygons, and each of them must contain a "SELF_ID" attribute.
      */
     static PolygonGraph* create(openfluid::landr::VectorDataset& Vect);
 
     /**
-     * @brief Create a new graph initialized with Entities.
-     * @details Entities must be PolygonEntities.
+     * @brief Create a new PolygonGraph initialized with a list of LandREntity.
+     * @details Entities must be PolygonEntity.
      */
     static PolygonGraph* create(const LandRGraph::Entities_t& Entities);
 
     virtual ~PolygonGraph();
 
-//    /**
-//     * @attention Do not copy associated raster.
-//     */
-//    PolygonGraph* clone();
-
+    /**
+     * @brief Returns the type of graph.
+     */
     LandRGraph::GraphType getType();
 
     /**
-     * @see LandRGraph::getEntity;
+     * @brief Returns a PolygonEntity with SelfId, or 0 if it doesn't exist.
      */
     PolygonEntity* getEntity(int SelfId);
 
     /**
-     * @brief Check if each entity is complete.
+     * @brief Returns true if each PolygonEntity is complete.
      *
-     * @return True if all entities of this graph are complete, false otherwise.
+     * @return True if all PolygonEntity of this PolygonGraph are complete, false otherwise.
      */
     bool isComplete();
 
     /**
-     * @brief Check if PolygonGraph has island
+     * @brief Returns true if this PolygonGraph has one or more islands.
      *
      * @return True if one or more islands are present, false otherwise.
      */
     bool hasIsland();
 
     /**
-     * Get a map of polygonized Raster polygons and its area intersecting Entity.
+     * @brief Gets a map of polygonized Raster polygons and its area intersecting Entity.
      *
-     * @param Entity The Entity to compare with the associated Raster.
+     * @param Entity The PolygonEntity to compare with the associated Raster.
      *
      * @return A map of polygonized Raster Polygons, from associated polygonized raster,
      * with for each one the intersection area.
@@ -175,17 +205,15 @@ class DLLEXPORT PolygonGraph: public LandRGraph
     RastValByRastPoly_t getRasterPolyOverlapping(PolygonEntity& Entity);
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity
+     * @brief Creates a new attribute for this PolygonGraph entities, and set for each PolygonEntity
      * this attribute value as the mean of the overlapping raster values, relative to overlapping areas.
-     * Beware that this uses GeoRasterValue::polygonize function, which currently only deal with integer values.
-     * So raster float pixel values are rounded before computing.
      *
      * @param AttributeName The name of the attribute to create
      */
     virtual void setAttributeFromMeanRasterValues(const std::string& AttributeName);
 
     /**
-     * @brief Create on disk a shapefile representing the edges of this Graph.
+     * @brief Creates on disk a shapefile representing the PolygonEdges of this PolygonGraph.
      *
      * @param FilePath The path where to create the out file.
      * @param FileName A name for the out file to create, with a .shp extension.
@@ -193,7 +221,7 @@ class DLLEXPORT PolygonGraph: public LandRGraph
     void createVectorRepresentation(std::string FilePath, std::string FileName);
 
     /**
-     * @brief Compute neighbours between PolygonEntities elements of this graph and LineStringEntities of Graph.
+     * @brief Computes the neighbours between the PolygonEntity elements of this PolygonGraph and the LineStringEntity of a LineStringGraph.
      *
      * @param Graph The LineStringGraph to compare to.
      * @param Relation The Relationship to use for comparison.
@@ -205,50 +233,59 @@ class DLLEXPORT PolygonGraph: public LandRGraph
         double BufferDistance);
 
     /**
+     * @brief Creates attribute for the PolygonEdge of this PolygonGraph.
      * @details Doesn't reset if the AttributeName already exists.
+     * @param AttributeName The name of the PolygonEdge attribute.
+     * @param Value The core::Value to associate to this attribute.
      */
     void createEdgeAttribute(std::string AttributeName,openfluid::core::Value &Value);
 
     /**
+     * @brief Removes the attribute of the PolygonEdge of this PolygonGraph.
+     * @param AttributeName The name of the PolygonEdge attribute to delete.
      * @details Does nothing if AttributeName doesn't exist.
      */
     void removeEdgeAttribute(std::string AttributeName);
 
+    /**
+     * @brief Returns a vector of the name of the PolygonEdge attributes.
+     * @return A vector of the name of the PolygonEdge attributes.
+     */
     std::vector<std::string> getEdgeAttributeNames();
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity.
-     * this attribute value as the vector value corresponding to the Vector Entity Geometry
+     * @brief Creates a new attribute for this PolygonGraph entities, and set for each PolygonEntity
+     * this attribute value as the vector value corresponding to the Vector Entity Geometry.
      *
      * @param AttributeName The name of the attribute to create.
-     * @param Vector The Name of the GeoVectorValue.
-     * @param Column The Name of the column of the GeoVectorValue to upload.
-     * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+     * @param Vector The Name of the core::GeoVectorValue.
+     * @param Column The column of the core::GeoVectorValue to upload.
+     * @param Thresh This parameter is not used for PolygonGraph.
      */
     virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
                                                 const std::string& Column,double Thresh=0.0001);
 
 
     /**
-     * @brief Create a new attribute for this Graph entities, and set for each entity.
+     * @brief Create a new attribute for this PolygonGraph entities, and set for each PolygonEntity
      * this attribute value as the vector value corresponding to the Vector Entity Geometry
      *
      * @param AttributeName The name of the attribute to create.
      * @param Vector The Name of the VectorDataset.
-     * @param Column The Name of the column of the GeoVectorValue to upload.
-     * @param Thresh The threshold distance used to find entity (only used for LineStringGraph).
+     * @param Column The column of the VectorDataset to upload.
+     * @param Thresh This parameter is not used for PolygonGraph.
      */
     virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
                                                 const std::string& Column,double Thresh=0.0001);
 
     /**
-     * @brief Remove from the graph the entity with SelfId and its associated nodes.
+     * @brief Removes from this PolygonGraph the PolygonEntity with SelfId and its associated nodes.
      * @param SelfId
      */
     virtual void removeEntity(int SelfId);
 
     /**
-     * @brief Clean the Edges of a PolygonEntity
+     * @brief Clean the PolygonEdge of a PolygonEntity.
      *
      * @param Entity The PolygonEntity to clean.
      */
@@ -256,26 +293,26 @@ class DLLEXPORT PolygonGraph: public LandRGraph
 
 
     /**
-     * @brief Get a map of small PolygonEntities under area threshold
+     * @brief Gets a map of small PolygonEntity which area are under a threshold.
      *
      * @param MinArea The area threshold (in map units).
-     * @return a multimap of PolygonEntities with key is the area of each Entity.
+     * @return a multimap of PolygonEntity with key is the area of each PolygonEntity.
      */
     std::multimap<double,  PolygonEntity*> getPolygonEntitiesByMinArea(double MinArea);
 
     /**
-     * @brief Get a map of sliver PolygonEntities which compactness value are superior to a compactness threshold (Gravelius Index)
+     * @brief Gets a map of sliver PolygonEntity which compactness value are superior to a compactness threshold (Gravelius Index)
      *
      * @param Compactness The compactness threshold (perimeter/2 x sqrt (Pi x area))
-     * @return a multimap of PolygonEntities with key is the compactness of each Entity.
+     * @return a multimap of PolygonEntity with key is the compactness of each PolygonEntity.
      */
     std::multimap<double,  PolygonEntity*> getPolygonEntitiesByCompactness(double Compactness);
 
 
 
     /**
-     * @brief Merge a PolygonEntity into an other one
-     * The PolygonEntity to merge is deleted.
+     * @brief Merge a PolygonEntity into an other one.
+     * @details The PolygonEntity to merge is deleted.
      *
      * @param Entity An existent PolygonEntity.
      * @param EntityToMerge The PolygonEntity which will be merged into Entity and will be deleted.

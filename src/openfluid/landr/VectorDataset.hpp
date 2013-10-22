@@ -75,85 +75,116 @@ class GeoVectorValue;
 }
 
 namespace landr {
+/**
+ * @brief Interface for managing Vector Data format.
+ *
+ */
 
 class DLLEXPORT VectorDataset
 {
   public:
 
+    /**
+     * @brief A list of pair of OGRFeature and geos::geom::Geometry related to this VectorDataset entities.
+     */
     typedef std::list<std::pair<OGRFeature*, geos::geom::Geometry*> > FeaturesList_t;
 
   private:
 
+    /**
+     * @brief The OGRDataSource related to this VectorDataset.
+     */
     OGRDataSource* mp_DataSource;
 
     /**
-     * List of all features of layers of this GeoVectorValue, indexed by layer index
+     * @brief A list of all features of layers of this VectorDataset, indexed by layer index.
      */
     std::map<unsigned int, FeaturesList_t> m_Features;
 
     /**
-     * Geometries representing a collection of all the geometries of the layers of this GeoVectorValue, indexed by layer index
+     * @brief A map of geos::geom::Geometry representing a collection of all the geometries of the layers of this VectorDataset, indexed by layer index.
      */
     std::map<unsigned int, geos::geom::Geometry*> m_Geometries;
 
+    /**
+     * @brief Returns the path of this VectorDataset associated with time.
+     */
     std::string getTimestampedPath(const std::string& OriginalFileName);
 
+    /**
+     * @brief Returns the path of this VectorDataset.
+     */
     std::string getInitializedTmpPath();
 
+    /**
+     * @brief Returns true if this VectorDataset exists.
+     * @param Path The pathname to this VectorDataset.
+     * @return True if already exists, false otherwise.
+     */
     bool isAlreadyExisting(const std::string& Path);
 
+    /**
+     * @brief Parse the geometry of this VectorDataset.
+     * @param LayerIndex The index layer.
+     */
     void parse(unsigned int LayerIndex);
 
   public:
 
     /**
-     * @brief Create a new empty OGRDatasource in the openfluid temp directory, with filename suffixes with timestamp
-     * @param FileName The name of the file to create
-     * @param DriverName The name of the OGR driver to use, default is "ESRI Shapefile"
-     * @throw openfluid::base::OFException if fails
+     * @brief Creates a new empty OGRDatasource in the openfluid temp directory, with filename suffixes with timestamp.
+     * @param FileName The name of the file to create.
+     * @param DriverName The name of the OGR driver to use, default is "ESRI Shapefile".
+     * @throw openfluid::base::OFException if fails.
      */
     VectorDataset(const std::string& FileName, std::string DriverName =
         "ESRI Shapefile");
 
     /**
-     * @brief Create in the openfluid temp directory a copy of Value OGRDatasource,
-     * using Value filename suffixed with timestamp as filename
+     * @brief Creates in the openfluid temp directory a copy of Value OGRDatasource,
+     * using Value filename suffixed with timestamp as filename.
      * @param Value The GeoVectorValue to copy
-     * @throw openfluid::base::OFException if fails
+     * @throw openfluid::base::OFException if fails.
      */
     VectorDataset(openfluid::core::GeoVectorValue& Value);
 
     /**
-     * @brief Copy constructor
-     * @throw openfluid::base::OFException if fails
+     * @brief Copy constructor.
+     * @throw openfluid::base::OFException if fails.
      */
     VectorDataset(const VectorDataset& Other);
 
     /**
-     * Delete the OGRDatasource and relative files in openfluid temp directory
+     * @brief Delete the OGRDatasource and relative files in openfluid temp directory.
      */
     ~VectorDataset();
 
+    /**
+     * @brief Returns the OGRDataSource associated to this VectorDataset.
+     */
     OGRDataSource* getDataSource();
 
+    /**
+     * @brief Returns the const OGRDataSource associated to this VectorDataset.
+     */
     OGRDataSource* getDataSource() const;
 
     /**
-     * Write to disk a copy of the OGRDataSource
-     * @param FilePath The path to the directory where writing, will be created if needed
-     * @param FileName The name of the file to write
-     * @param ReplaceIfExists If true and the file FilePath/FileName already exists, overwrite it
+     * @brief Write to disk a copy of the OGRDataSource.
+     * @param FilePath The path to the directory where writing, will be created if needed.
+     * @param FileName The name of the file to write.
+     * @param ReplaceIfExists If true and the file FilePath/FileName already exists, overwrite it.
      */
     void copyToDisk(const std::string& FilePath, const std::string& FileName,
                     bool ReplaceIfExists);
 
     /**
-     * @brief Add to DataSource an empty new layer
+     * @brief Add to DataSource an empty new layer.
      *
-     * @param LayerName The name of the layer to create
-     * @param LayerType The type of the layer to create, default wkbUnknown
-     * @param SpatialRef The coordinate system to use for the new layer, or NULL (default) if no coordinate system is available
-     * @throw openfluid::base::OFException if the creation of layer failed
+     * @param LayerName The name of the layer to create.
+     * @param LayerType The type of the layer to create, default wkbUnknown.
+     * @param SpatialRef The coordinate system to use for the new layer, or NULL (default) if no coordinate system is available.
+     * @throw openfluid::base::OFException if the creation of layer failed.
      */
     void addALayer(std::string LayerName = "", OGRwkbGeometryType LayerType =
         wkbUnknown,
@@ -162,16 +193,16 @@ class DLLEXPORT VectorDataset
     /**
      * @brief Get a layer of the shape.
      *
-     * @param LayerIndex The index of the asked layer, default 0
-     * @return The layer indexed LayerIndex
+     * @param LayerIndex The index of the asked layer, default 0.
+     * @return The layer indexed LayerIndex.
      */
     OGRLayer* getLayer(unsigned int LayerIndex = 0);
 
     /**
      * @brief Get the Feature definition of a layer.
      *
-     * @param LayerIndex The index of the asked layer definition, default 0
-     * @return The OGR Feature definition of the LayerIndex layer
+     * @param LayerIndex The index of the asked layer definition, default 0.
+     * @return The OGR Feature definition of the LayerIndex layer.
      */
     OGRFeatureDefn* getLayerDef(unsigned int LayerIndex = 0);
 
@@ -180,76 +211,80 @@ class DLLEXPORT VectorDataset
      *
      * @param FieldName The name of the field to add.
      * @param FieldType The type of the field to add (default OFTString).
-     * @param LayerIndex The index of the layer to add the field, default 0
-     * @throw openfluid::base::OFException if creating field failed
+     * @param LayerIndex The index of the layer to add the field, default 0.
+     * @throw openfluid::base::OFException if creating field failed.
      */
     void addAField(const std::string& FieldName, OGRFieldType FieldType = OFTString,
                    unsigned int LayerIndex = 0);
 
     /**
-     * @param LayerIndex The index of the layer to compare the type, default 0
-     * @return True if the type of the layer LayerIndex is wkbLineString, false otherwise
+     * @brief Returns true if the VectorDataset is line type.
+     * @param LayerIndex The index of the layer to compare the type, default 0.
+     * @return True if the type of the layer LayerIndex is wkbLineString, false otherwise.
      */
     bool isLineType(unsigned int LayerIndex = 0);
 
     /**
-     * @param LayerIndex The index of the layer to compare the type, default 0
-     * @return True if the type of the layer LayerIndex is wkbPolygon, false otherwise
+     * @brief Returns true if the VectorDataset is polygon type.
+     * @param LayerIndex The index of the layer to compare the type, default 0.
+     * @return True if the type of the layer LayerIndex is wkbPolygon, false otherwise.
      */
     bool isPolygonType(unsigned int LayerIndex = 0);
 
     /**
-     * @brief Returns if a field exists in the LayerIndex layer.
+     * @brief Returns true if a field exists in the LayerIndex layer.
      *
-     * @param FieldName The name of the field to query
-     * @param LayerIndex The index of the layer to query, default 0
-     * @return True if the field FieldName exists, False otherwise
+     * @param FieldName The name of the field to query.
+     * @param LayerIndex The index of the layer to query, default 0.
+     * @return True if the field FieldName exists, False otherwise.
      */
     bool containsField(const std::string& FieldName, unsigned int LayerIndex = 0);
 
     /**
-     * @brief Get the index of a field in the LayerIndex layer
+     * @brief Get the index of a field in the LayerIndex layer.
      *
-     * @param LayerIndex The index of the layer to query, default 0
-     * @param FieldName The name of the field to query
-     * @return The index of FieldName or -1 if field FieldName doesn't exist
+     * @param LayerIndex The index of the layer to query, default 0.
+     * @param FieldName The name of the field to query.
+     * @return The index of FieldName or -1 if field FieldName doesn't exist.
      */
     int getFieldIndex(const std::string& FieldName, unsigned int LayerIndex = 0);
 
     /**
-     * @brief Returns if a field is of the type FieldType in the LayerIndex layer
+     * @brief Returns true if a field is of the type FieldType in the LayerIndex layer.
      *
-     * @param FieldName The name of the field to query
-     * @param FieldType The type of the field to query
-     * @param LayerIndex The index of the layer to query, default 0
-     * @return True if the field FieldName is type FieldType
+     * @param FieldName The name of the field to query.
+     * @param FieldType The type of the field to query.
+     * @param LayerIndex The index of the layer to query, default 0.
+     * @return True if the field FieldName is type FieldType.
      * @throw openfluid::base::OFException if the field doesn't exist.
      */
     bool isFieldOfType(const std::string& FieldName, OGRFieldType FieldType,
                        unsigned int LayerIndex = 0);
 
     /**
-     * @brief Returns if a field has the value Value in the LayerIndex layer
+     * @brief Returns true if a field has the value Value in the LayerIndex layer.
      *
-     * @param FieldName The name of the field to query
-     * @param Value The value to query
-     * @param LayerIndex The index of the layer to query, default 0
+     * @param FieldName The name of the field to query.
+     * @param Value The value to query.
+     * @param LayerIndex The index of the layer to query, default 0.
      * @return True if the field has at least a feature containing the value Value, False otherwise.
      */
     bool isIntValueSet(const std::string& FieldName, int Value,
                        unsigned int LayerIndex = 0);
 
     /**
-     * @brief Get the list of all features of a layer of this GeoVectorValue
+     * @brief Gets the list of all features of a layer of this GeoVectorValue.
      *
-     * @param LayerIndex The index of the layer to query, default 0
+     * @param LayerIndex The index of the layer to query, default 0.
+     * @return A list of OGRFeature and geos::geom::Geometry of this VectorDataset.
      */
     FeaturesList_t getFeatures(unsigned int LayerIndex = 0);
 
     /**
-     * Get a Geometry representing a collection of all the geometries of the layer LayerIndex of this GeoVectorValue
+     *@brief Gets a geos::geom::Geometry representing a collection of all the geometries of the layer LayerIndex of this GeoVectorValue.
      *
-     * @param LayerIndex The index of the layer to query, default 0
+     * @param LayerIndex The index of the layer to query, default 0.
+     * @return A geos::geom::Geometry.
      */
     geos::geom::Geometry* getGeometries(unsigned int LayerIndex = 0);
 

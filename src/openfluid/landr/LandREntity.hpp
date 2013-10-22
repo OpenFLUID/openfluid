@@ -88,24 +88,48 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
     LandREntity(const LandREntity&);
 
   protected:
-
+    /**
+     * @brief The geos::geom::Geometry of this LandREntity.
+     */
     const geos::geom::Geometry* mp_Geom;
 
+    /**
+     * @brief The identifier of this LandREntity.
+     */
     unsigned int m_SelfId;
 
+    /**
+     * @brief The centroid of this LandREntity.
+     */
     geos::geom::Point* mp_Centroid;
 
+    /**
+     * @brief The area of this LandREntity.
+     */
     double m_Area;
 
+    /**
+     * @brief The length of this LandREntity.
+     */
     double m_Lenght;
 
+    /**
+     * @brief A set of LandREntity neighbours of this LandREntity.
+     */
     std::set<LandREntity*>* mp_Neighbours;
+
+    /**
+     * @brief A map of attributes of this LandREntity.
+     */
 
     std::map<std::string, core::Value*> m_Attributes;
 
     // for limiting access to m_Attributes creation/deletion to LandRGraph class
     friend class LandRGraph;
 
+    /**
+     * @brief Computes the neighbours of this LandREntity.
+     */
     virtual void computeNeighbours() = 0;
 
   public:
@@ -116,20 +140,38 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
 
     virtual LandREntity* clone() = 0;
 
+    /**
+     * @brief Returns the geos::geom::Geometry of this LandREntity.
+     */
     const geos::geom::Geometry* getGeometry();
 
+    /**
+     * @brief Returns the identifier of this LandREntity.
+     */
     unsigned int getSelfId() const;
 
+    /**
+     * @brief Returns the centroid of this LandREntity.
+     */
     geos::geom::Point* getCentroid() const;
 
+    /**
+     * @brief Returns the area of this LandREntity.
+     */
     double getArea() const;
 
+    /**
+     * @brief Returns the length of this LandREntity.
+     */
     double getLength() const;
 
+    /**
+     * @brief Returns a set of LandREntity neighbours of this LandREntity.
+     */
     std::set<LandREntity*>* getNeighbours();
 
     /**
-     * @brief Get the value of an attribute.
+     * @brief Gets the value of an attribute.
      *
      * @param AttributeName The name of the attribute to get.
      * @param Value The core::Value to assign the attribute value.
@@ -138,7 +180,7 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
     bool getAttributeValue(const std::string& AttributeName, core::Value& Value) const;
 
     /**
-     * @brief Set the value of an attribute.
+     * @brief Sets the value of an attribute.
      * @details Takes the ownership of Value.
      *
      * @param AttributeName The name of the attribute to set.
@@ -148,12 +190,12 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
     bool setAttributeValue(const std::string& AttributeName, const core::Value* Value);
 
     /**
-     * @brief Get the distance between this entity centroid and Other entity centroid.
+     * @brief Gets the distance between this LandREntity centroid and Other LandREntity centroid.
      */
     double getDistCentroCentro(LandREntity& Other);
 
     /**
-     * @brief Get the neighbour that has the minimum centroid-to-centroid distance.
+     * @brief Gets the LandREntity neighbour that has the minimum centroid-to-centroid distance.
      */
     LandREntity* getNeighbour_MinDistCentroCentro();
 
