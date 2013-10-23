@@ -57,16 +57,42 @@
 
 #include "ui_SpatialDomainWidget.h"
 #include "SpatialDomainWidget.hpp"
+#include "UnitsClassWidget.hpp"
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+
+#include <QTableWidgetItem>
 
 
 SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
-  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::SpatialDomainWidget), m_Domain(AFXDesc.getDomain())
+  WorkspaceWidget(Parent,AFXDesc), ui(new Ui::SpatialDomainWidget),
+  m_Domain(AFXDesc.getDomain()), m_ActiveClass("")
 {
   ui->setupUi(this);
 
-  connect(ui->UnitsTableWidget->horizontalHeader(),SIGNAL(sectionResized(int, int, int)),
-          ui->UnitsTableWidget,SLOT(resizeRowsToContents()));
+  ui->AddUnitsClassButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddUnitsClassButton->setIconSize(QSize(20,20));
+
+  ui->AddUnitButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddUnitButton->setIconSize(QSize(20,20));
+
+  ui->AddConnectionButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddConnectionButton->setIconSize(QSize(16,16));
+
+  ui->RemoveConnectionButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveConnectionButton->setIconSize(QSize(16,16));
+
+  ui->AddAttributeButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddAttributeButton->setIconSize(QSize(20,20));
+
+  ui->EditAttributeButton->setIcon(QIcon(":/icons/modify.png"));
+  ui->EditAttributeButton->setIconSize(QSize(20,20));
+
+  ui->RemoveAttributeButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveAttributeButton->setIconSize(QSize(20,20));
+
+  ui->ConnectionsTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
+  connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
 
   refresh();
 }
@@ -88,116 +114,247 @@ SpatialDomainWidget::~SpatialDomainWidget()
 
 void SpatialDomainWidget::refresh()
 {
-  ui->UnitsTableWidget->setRowCount(0);
-
-  ui->UnitsTableWidget->setRowCount(m_Domain.getUnitsCount());
-
-  int CurrentRow = 0;
-
   std::set<std::string> Classes = m_Domain.getClassNames();
 
-  for (std::set<std::string>::iterator itc = Classes.begin(); itc != Classes.end(); ++itc)
+  QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+
+  // TODO remove classes that does not exist anymore
+
+  for (std::set<std::string>::iterator it=Classes.begin(); it!=Classes.end(); ++it)
   {
-    std::set<int> IDs = m_Domain.getIDsOfClass(*itc);
+    bool AlreadyExist = false;
 
-    for (std::set<int>::iterator iti = IDs.begin(); iti != IDs.end(); ++iti)
+    // searching for already existing unit class in class list
+    for (int i=0;i<Layout->count();i++)
     {
-      QTableWidgetItem *Item;
-
-      // ======== ID, class, process order
-
-      Item = new QTableWidgetItem(QString::fromStdString(*itc));
-      ui->UnitsTableWidget->setItem(CurrentRow, 0, Item);
-
-      Item = new QTableWidgetItem(QString::fromStdString("%1").arg(*iti));
-      ui->UnitsTableWidget->setItem(CurrentRow, 1, Item);
-
-      const openfluid::fluidx::AdvancedUnitDescriptor& UnitDesc = m_Domain.getUnit(*itc,*iti);
-
-      Item = new QTableWidgetItem(QString("%1").arg(UnitDesc.UnitDescriptor->getProcessOrder()));
-      ui->UnitsTableWidget->setItem(CurrentRow, 2, Item);
-
-
-      // ======== Connections
-      std::list<openfluid::core::UnitClassID_t>::iterator itconn;
-      std::list<openfluid::core::UnitClassID_t> ConnUnits;
-      QString ConnStr;
-
-
-      // to connections
-      ConnUnits = m_Domain.getUnitsToOf(make_pair(*itc,*iti));
-      ConnStr.clear();
-
-      for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+      if (i!=Layout->count()-1)
       {
-        if (itconn != ConnUnits.begin()) ConnStr += ", ";
-        ConnStr += QString::fromStdString((*itconn).first) + QString("#%1").arg((*itconn).second);
+        UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+
+        if (ClassW->getClassName() == QString::fromStdString(*it))
+          AlreadyExist = true;
       }
+    }
 
-      Item = new QTableWidgetItem(ConnStr);
-      ui->UnitsTableWidget->setItem(CurrentRow, 3, Item);
+    // Add if it does not already exist
+    if (!AlreadyExist)
+    {
+      UnitsClassWidget* ClassW = new UnitsClassWidget(QString::fromStdString((*it)),ui->UnitsClassAreaContents);
 
-
-      // from connections
-      ConnUnits = m_Domain.getUnitsFromOf(make_pair(*itc,*iti));
-      ConnStr.clear();
-
-      for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
-      {
-        if (itconn != ConnUnits.begin()) ConnStr += ", ";
-        ConnStr += QString::fromStdString((*itconn).first) + QString("#%1").arg((*itconn).second);
-      }
-
-      Item = new QTableWidgetItem(ConnStr);
-      ui->UnitsTableWidget->setItem(CurrentRow, 4, Item);
-
-
-      // parent connections
-      ConnUnits = m_Domain.getUnitsParentsOf(make_pair(*itc,*iti));
-      ConnStr.clear();
-
-      for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
-      {
-        if (itconn != ConnUnits.begin()) ConnStr += ", ";
-        ConnStr += QString::fromStdString((*itconn).first) + QString("#%1").arg((*itconn).second);
-      }
-
-      Item = new QTableWidgetItem(ConnStr);
-      ui->UnitsTableWidget->setItem(CurrentRow, 5, Item);
-
-
-      // children connections
-      ConnUnits = m_Domain.getUnitsChildrenOf(make_pair(*itc,*iti));
-      ConnStr.clear();
-
-      for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
-      {
-        if (itconn != ConnUnits.begin()) ConnStr += ", ";
-        ConnStr += QString::fromStdString((*itconn).first) + QString("#%1").arg((*itconn).second);
-      }
-
-      Item = new QTableWidgetItem(ConnStr);
-      ui->UnitsTableWidget->setItem(CurrentRow, 6, Item);
-
-
-      // ======== Attributes
-
-      std::map<openfluid::core::AttributeName_t, std::string*> Attrs = UnitDesc.Attributes;
-
-      QString AttrsStr;
-
-      for (std::map<openfluid::core::AttributeName_t, std::string*>::iterator ita = Attrs.begin();
-          ita != Attrs.end(); ++ita)
-      {
-        AttrsStr += QString::fromStdString((*ita).first) + "={" + QString::fromStdString(*((*ita).second))+"} ";
-      }
-
-      Item = new QTableWidgetItem(AttrsStr);
-      ui->UnitsTableWidget->setItem(CurrentRow, 7, Item);
-
-      CurrentRow++;
+      dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout())->insertWidget(Layout->count()-1,ClassW);
+      connect(ClassW,SIGNAL(selectionRequested(QString)),this,SLOT(setSelectedClass(QString)));
     }
   }
 
-  ui->UnitsTableWidget->resizeRowsToContents();
+  if (m_ActiveClass.isEmpty() && Layout->count()>1)
+    setSelectedClass(dynamic_cast<UnitsClassWidget*>(Layout->itemAt(0)->widget())->getClassName());
+  else
+    setActiveClass("");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::setSelectedClass(QString ClassName)
+{
+  QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+
+  for (int i=0;i<Layout->count();i++)
+  {
+    if (i!=Layout->count()-1)
+    {
+      UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+
+      if (ClassW->getClassName() != ClassName)
+        ClassW->setSelected(false);
+      else
+        ClassW->setSelected(true);
+    }
+  }
+
+  setActiveClass(ClassName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::setActiveClass(const QString& ClassName)
+{
+  m_ActiveClass = ClassName;
+
+  if (m_ActiveClass.isEmpty())
+  {
+    ui->StructureTabWidget->setVisible(false);
+    ui->DataTabWidget->setVisible(false);
+  }
+  else
+  {
+    ui->StructureTabWidget->setVisible(true);
+    ui->DataTabWidget->setVisible(true);
+    ui->AddUnitButton->setText(tr("Add unit in %1 class").arg(ClassName));
+  }
+
+  refreshStructure();
+  refreshData();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::refreshStructure()
+{
+  std::cout << __PRETTY_FUNCTION__ << " " << m_ActiveClass.toStdString() << std::endl;
+
+  ui->IDsListWidget->clear();
+
+  if (!m_ActiveClass.isEmpty())
+  {
+    std::set<int> IDs = m_Domain.getIDsOfClass(m_ActiveClass.toStdString());
+
+    for (std::set<int>::iterator iti = IDs.begin(); iti != IDs.end(); ++iti)
+    {
+      QListWidgetItem* Item = new QListWidgetItem(QString("%1").arg(*iti));
+      Item->setData(Qt::UserRole,(*iti));
+
+      ui->IDsListWidget->addItem(Item);
+    }
+
+    ui->IDsListWidget->setCurrentRow(0);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::updateUnitSelection(int Row)
+{
+  if (Row >= 0)
+  {
+    int ID = ui->IDsListWidget->item(Row)->data(Qt::UserRole).toInt();
+
+    const openfluid::fluidx::AdvancedUnitDescriptor& UnitDesc = m_Domain.getUnit(m_ActiveClass.toStdString(),ID);
+
+    // ======== Process order
+
+    ui->PcsOrderSpinBox->setValue(UnitDesc.UnitDescriptor->getProcessOrder());
+
+
+    // ======== Connections
+
+    ui->ConnectionsTableWidget->setRowCount(0);
+
+    int CurrentRow = 0;
+
+    std::list<openfluid::core::UnitClassID_t>::iterator itconn;
+    std::list<openfluid::core::UnitClassID_t> ConnUnits;
+
+    std::pair<std::string,int> UnitClassID = std::make_pair(m_ActiveClass.toStdString(),ID);
+
+    QTableWidgetItem *Item;
+
+    // to connections
+    ConnUnits = m_Domain.getUnitsToOf(UnitClassID);
+
+    for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+    {
+
+      ui->ConnectionsTableWidget->setRowCount(CurrentRow+1);
+
+      Item = new QTableWidgetItem("To");
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
+
+      Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 1, Item);
+
+      Item = new QTableWidgetItem(QString("%1").arg((*itconn).second));
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 2, Item);
+
+      CurrentRow++;
+    }
+
+
+    // from connections
+    ConnUnits = m_Domain.getUnitsFromOf(UnitClassID);
+
+    for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+    {
+
+      ui->ConnectionsTableWidget->setRowCount(CurrentRow+1);
+
+      Item = new QTableWidgetItem("From");
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
+
+      Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 1, Item);
+
+      Item = new QTableWidgetItem(QString("%1").arg((*itconn).second));
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 2, Item);
+
+      CurrentRow++;
+    }
+
+
+    // parent of connections
+    ConnUnits = m_Domain.getUnitsParentsOf(UnitClassID);
+
+    for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+    {
+
+      ui->ConnectionsTableWidget->setRowCount(CurrentRow+1);
+
+      Item = new QTableWidgetItem("Child of");
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
+
+      Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 1, Item);
+
+      Item = new QTableWidgetItem(QString("%1").arg((*itconn).second));
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 2, Item);
+
+      CurrentRow++;
+    }
+
+
+    // child of connections
+    ConnUnits = m_Domain.getUnitsChildrenOf(UnitClassID);
+
+    for (itconn = ConnUnits.begin(); itconn != ConnUnits.end(); ++itconn)
+    {
+
+      ui->ConnectionsTableWidget->setRowCount(CurrentRow+1);
+
+      Item = new QTableWidgetItem("Parent of");
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
+
+      Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 1, Item);
+
+      Item = new QTableWidgetItem(QString("%1").arg((*itconn).second));
+      ui->ConnectionsTableWidget->setItem(CurrentRow, 2, Item);
+
+      CurrentRow++;
+    }
+
+    ui->ConnectionsTableWidget->resizeRowsToContents();
+
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+void SpatialDomainWidget::refreshData()
+{
+
 }

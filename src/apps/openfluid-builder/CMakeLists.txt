@@ -109,13 +109,16 @@ QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
 ### SPATIAL #
 
 SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
-                          )
+                        spatial/UnitsClassWidget.cpp
+                       )
 
 SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
-                           )
+                        spatial/UnitsClassWidget.hpp
+                       )
 
 QT4_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
-                                 )
+                               spatial/UnitsClassWidget.ui
+                             )
 
 
 ### DATASTORE #

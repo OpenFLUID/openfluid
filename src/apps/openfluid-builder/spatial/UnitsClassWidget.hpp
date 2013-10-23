@@ -46,40 +46,64 @@
 */
 
 /**
-  \file ClickableLabel.hpp
+  \file UnitsClassWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __CLICKABLELABEL_HPP__
-#define __CLICKABLELABEL_HPP__
+#ifndef __UNITSCLASSWIDGET_HPP__
+#define __UNITSCLASSWIDGET_HPP__
 
-#include <QLabel>
 
-class ClickableLabel : public QLabel
+namespace Ui
+{
+  class UnitsClassWidget;
+}
+
+
+#include <QFrame>
+#include <QMouseEvent>
+
+
+class UnitsClassWidget : public QFrame
 {
   Q_OBJECT;
 
-  protected:
+  private slots:
 
-    void mouseReleaseEvent(QMouseEvent *Event);
+    void toggleShowHideStyle();
 
-   signals:
 
-      void clicked();
+  private:
+
+     Ui::UnitsClassWidget* ui;
+
+     bool m_Selected;
+
+     QString m_ClassName;
+
+     void mousePressEvent(QMouseEvent* Event);
+
+
+  signals:
+
+      void selectionRequested(QString ClassName);
+
 
   public:
 
-    ClickableLabel(QWidget* Parent = NULL);
+    UnitsClassWidget(const QString& ClassName, QWidget* Parent = NULL);
 
-    ClickableLabel(const QString& Text, QWidget* Parent = NULL);
+    ~UnitsClassWidget();
 
-    virtual ~ClickableLabel()
-    { }
+    void setSelected(bool Selected);
+
+    QString getClassName() const { return m_ClassName; }
 
 };
 
 
-#endif /* __CLICKABLELABEL_HPP__ */
+
+#endif /* __UNITSCLASSWIDGET_HPP__ */

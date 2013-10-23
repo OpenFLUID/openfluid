@@ -64,6 +64,8 @@ class ActionLabel : public ClickableLabel
 {
   public:
 
+    ActionLabel(QWidget* Parent = NULL);
+
     ActionLabel(const QString& Text, QWidget* Parent = NULL);
 
 };

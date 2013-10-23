@@ -47,22 +47,43 @@
 
 
 /**
-  \file ActionLabel.cpp
+  \file UnitsClassWidget.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "ActionLabel.hpp"
+#include "ui_UnitsClassWidget.h"
+#include "UnitsClassWidget.hpp"
 
+#include <iostream>
 
-
-ActionLabel::ActionLabel(QWidget* Parent):
-  ClickableLabel(Parent)
+UnitsClassWidget::UnitsClassWidget(const QString& ClassName, QWidget* Parent):
+  QFrame(Parent),ui(new Ui::UnitsClassWidget),
+  m_Selected(false), m_ClassName(ClassName)
 {
-  setCursor(Qt::PointingHandCursor);
-  setStyleSheet("color:rgb(0,51,153); font:italic; text-decoration:underline;");
+  setObjectName("UnitsClassFrame");
+
+  ui->setupUi(this);
+
+  setSelected(false);
+
+  ui->UnitClassLabel->setText(ClassName);
+
+  ui->UpButton->setIcon(QIcon(":/icons/go-up.png"));
+  ui->UpButton->setIconSize(QSize(16,16));
+
+  ui->DownButton->setIcon(QIcon(":/icons/go-down.png"));
+  ui->DownButton->setIconSize(QSize(16,16));
+
+  ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveButton->setIconSize(QSize(16,16));
+
+  ui->StyleWidget->setVisible(false);
+  ui->ShowHideStyleLabel->setText(tr("Show map style"));
+  connect(ui->ShowHideStyleLabel,SIGNAL(clicked()),this,SLOT(toggleShowHideStyle()));
+
 }
 
 
@@ -70,9 +91,59 @@ ActionLabel::ActionLabel(QWidget* Parent):
 // =====================================================================
 
 
-ActionLabel::ActionLabel(const QString& Text, QWidget* Parent):
-  ClickableLabel(Text,Parent)
+
+UnitsClassWidget::~UnitsClassWidget()
 {
-  setCursor(Qt::PointingHandCursor);
-  setStyleSheet("color:rgb(0,51,153); font:italic; text-decoration:underline;");
+  delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::toggleShowHideStyle()
+{
+  if (ui->StyleWidget->isVisible())
+  {
+    ui->StyleWidget->setVisible(false);
+    ui->ShowHideStyleLabel->setText(tr("Show map style"));
+  }
+  else
+  {
+    ui->StyleWidget->setVisible(true);
+    ui->ShowHideStyleLabel->setText(tr("Hide map style"));
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::mousePressEvent(QMouseEvent* Event)
+{
+  if (!m_Selected)
+    emit selectionRequested(m_ClassName);
+
+  QWidget::mousePressEvent(Event);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::setSelected(bool Selected)
+{
+  if (Selected)
+  {
+    m_Selected = true;
+    setStyleSheet("QFrame {background-color : #FBFFED;} QFrame#UnitsClassFrame {border : 1px solid #B9D63D;}");
+  }
+  else
+  {
+    m_Selected = false;
+    setStyleSheet("QFrame#UnitsClassFrame {border : 1px solid #CCCCCC;}");
+  }
 }

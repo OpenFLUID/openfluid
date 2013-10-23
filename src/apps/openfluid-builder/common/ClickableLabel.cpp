@@ -56,6 +56,16 @@
 
 #include "ClickableLabel.hpp"
 
+#include <QMouseEvent>
+
+
+ClickableLabel::ClickableLabel(QWidget* Parent) :
+  QLabel(Parent)
+{
+
+}
+
+
 // =====================================================================
 // =====================================================================
 
@@ -71,7 +81,9 @@ ClickableLabel::ClickableLabel(const QString& Text, QWidget* Parent) :
 // =====================================================================
 
 
-void ClickableLabel::mouseReleaseEvent(QMouseEvent* /*Event*/)
+void ClickableLabel::mouseReleaseEvent(QMouseEvent* Event)
 {
   emit clicked();
+
+  QLabel::mouseReleaseEvent(Event);
 }

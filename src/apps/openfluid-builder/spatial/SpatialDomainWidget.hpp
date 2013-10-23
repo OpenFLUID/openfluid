@@ -73,11 +73,25 @@ class SpatialDomainWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
+  private slots:
+
+    void setSelectedClass(QString ClassName);
+
+    void updateUnitSelection(int Row);
+
   private:
 
     Ui::SpatialDomainWidget* ui;
 
     openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+
+    QString m_ActiveClass;
+
+    void setActiveClass(const QString& ClassName);
+
+    void refreshStructure();
+
+    void refreshData();
 
 
   public slots:
