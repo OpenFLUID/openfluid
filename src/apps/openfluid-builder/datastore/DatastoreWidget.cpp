@@ -111,6 +111,8 @@ void DatastoreWidget::refresh()
 
     Item = new QTableWidgetItem(QString::fromStdString((*it)->getRelativePath()));
     ui->DatastoreTableWidget->setItem(CurrentRow, 3, Item);
+
+    CurrentRow++;
   }
 
   ui->DatastoreTableWidget->resizeRowsToContents();
