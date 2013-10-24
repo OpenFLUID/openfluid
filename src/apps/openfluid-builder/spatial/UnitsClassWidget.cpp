@@ -56,8 +56,21 @@
 
 #include "ui_UnitsClassWidget.h"
 #include "UnitsClassWidget.hpp"
+#include "AppTools.hpp"
+
+#include <openfluid/base/ProjectManager.hpp>
+
+#include <QColorDialog>
 
 #include <iostream>
+
+
+QString UnitsClassWidget::m_ColorButtonStyleSheet =
+    "QPushButton{ background-color : %1;}";
+/*    "QPushButton{ background-color : %1; border-radius : 6px; border: 1px solid #777777;}"
+    "QPushButton:pressed{ background-color : %1; border-radius : 6px; border: 1px solid #777777;}"
+    "QPushButton:default{ background-color : %1; border-radius : 2px; border: 1px solid #777777;}";*/
+
 
 UnitsClassWidget::UnitsClassWidget(const QString& ClassName, QWidget* Parent):
   QFrame(Parent),ui(new Ui::UnitsClassWidget),
@@ -80,9 +93,71 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName, QWidget* Parent):
   ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
   ui->RemoveButton->setIconSize(QSize(16,16));
 
+  connect(ui->UpButton,SIGNAL(clicked()),this,SLOT(notifyUpClicked()));
+  connect(ui->DownButton,SIGNAL(clicked()),this,SLOT(notifyDownClicked()));
+  connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(notifyRemoveClicked()));
+
   ui->StyleWidget->setVisible(false);
   ui->ShowHideStyleLabel->setText(tr("Show map style"));
   connect(ui->ShowHideStyleLabel,SIGNAL(clicked()),this,SLOT(toggleShowHideStyle()));
+
+  // initialize line width
+
+  QVariant TmpLineWidth = openfluid::base::ProjectManager::getInstance()->getConfigValue("builder.spatial.unitsclasses",
+                                                                                         m_ClassName+".linewidth");
+
+  if (TmpLineWidth.type() == QVariant::String)
+  {
+    m_LineWidth = TmpLineWidth.toString().toInt();
+  }
+  else
+  {
+    m_LineWidth = 1;
+
+    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+                                                                   m_ClassName+".linewidth",m_LineWidth);
+  }
+
+
+  // initialize line color
+
+  QVariant TmpLineColor = openfluid::base::ProjectManager::getInstance()->getConfigValue("builder.spatial.unitsclasses",
+                                                                                         m_ClassName+".linecolor");
+  if (TmpLineColor.type() == QVariant::String)
+  {
+    m_LineColor = TmpLineColor.toString();
+  }
+  else
+  {
+    m_LineColor = getRandomColor();
+    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+                                                                   m_ClassName+".linecolor",m_LineColor.name());
+  }
+
+
+  // initialize fill color
+
+  QVariant TmpFillColor = openfluid::base::ProjectManager::getInstance()->getConfigValue("builder.spatial.unitsclasses",
+                                                                                         m_ClassName+".fillcolor");
+  if (TmpFillColor.type() == QVariant::String)
+  {
+    m_FillColor = TmpFillColor.toString();
+  }
+  else
+  {
+    m_FillColor = getRandomColor();
+    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+                                                                   m_ClassName+".fillcolor",m_FillColor.name());
+  }
+
+
+  ui->LineColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_LineColor.name()));
+  ui->FillColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_FillColor.name()));
+  ui->LineWidthSpinBox->setValue(m_LineWidth);
+
+  connect(ui->LineColorButton,SIGNAL(clicked()),this,SLOT(changeLineColor()));
+  connect(ui->FillColorButton,SIGNAL(clicked()),this,SLOT(changeFillColor()));
+  connect(ui->LineWidthSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeLineWidth(int)));
 
 }
 
@@ -139,11 +214,112 @@ void UnitsClassWidget::setSelected(bool Selected)
   if (Selected)
   {
     m_Selected = true;
-    setStyleSheet("QFrame {background-color : #FBFFED;} QFrame#UnitsClassFrame {border : 1px solid #B9D63D;}");
+    setStyleSheet("QFrame {background-color : #FFFFFF;} QFrame#UnitsClassFrame {border : 1px solid #617487;}");
   }
   else
   {
     m_Selected = false;
     setStyleSheet("QFrame#UnitsClassFrame {border : 1px solid #CCCCCC;}");
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::notifyUpClicked()
+{
+  emit upClicked(m_ClassName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::notifyDownClicked()
+{
+  emit downClicked(m_ClassName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::notifyRemoveClicked()
+{
+  emit removeClicked(m_ClassName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::setUpButtonEnabled(bool Enabled)
+{
+  ui->UpButton->setEnabled(Enabled);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::setDownButtonEnabled(bool Enabled)
+{
+  ui->DownButton->setEnabled(Enabled);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::changeLineColor()
+{
+  QColor TmpColor = QColorDialog::getColor(m_LineColor,this);
+
+  if (TmpColor.isValid())
+  {
+    m_LineColor = TmpColor;
+    ui->LineColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_LineColor.name()));
+
+    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+                                                                   m_ClassName+".linecolor",m_LineColor.name());
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::changeFillColor()
+{
+  QColor TmpColor = QColorDialog::getColor(m_FillColor,this);
+
+  if (TmpColor.isValid())
+  {
+    m_FillColor = TmpColor;
+    ui->FillColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_FillColor.name()));
+
+    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+                                                                   m_ClassName+".fillcolor",m_FillColor.name());
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::changeLineWidth(int Width)
+{
+  m_LineWidth = Width;
+
+  openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+                                                                 m_ClassName+".linewidth",m_LineWidth);
 }

@@ -161,6 +161,13 @@
              </widget>
             </item>
             <item>
+             <widget class="QPushButton" name="RemoveUnitButton">
+              <property name="text">
+               <string>Remove unit %1 from %2 class</string>
+              </property>
+             </widget>
+            </item>
+            <item>
              <spacer name="horizontalSpacer_3">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -388,7 +395,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="EditAttributeButton">
+             <widget class="QPushButton" name="EditAttributesButton">
               <property name="minimumSize">
                <size>
                 <width>32</width>

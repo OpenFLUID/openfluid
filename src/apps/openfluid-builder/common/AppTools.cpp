@@ -148,3 +148,14 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
 
   return InfosStr;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+QColor getRandomColor()
+{
+  return QColor(qrand() % 256,qrand() % 256,qrand() % 256);
+}
+

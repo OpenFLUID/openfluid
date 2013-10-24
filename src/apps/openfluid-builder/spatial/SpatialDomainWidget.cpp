@@ -61,8 +61,11 @@
 #include "AppTools.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/base/ProjectManager.hpp>
+
 
 #include <QTableWidgetItem>
+#include <QMessageBox>
 
 
 SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -77,6 +80,9 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   ui->AddUnitButton->setIcon(QIcon(":/icons/add.png"));
   ui->AddUnitButton->setIconSize(QSize(20,20));
 
+  ui->RemoveUnitButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveUnitButton->setIconSize(QSize(20,20));
+
   ui->AddConnectionButton->setIcon(QIcon(":/icons/add.png"));
   ui->AddConnectionButton->setIconSize(QSize(16,16));
 
@@ -86,13 +92,25 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   ui->AddAttributeButton->setIcon(QIcon(":/icons/add.png"));
   ui->AddAttributeButton->setIconSize(QSize(20,20));
 
-  ui->EditAttributeButton->setIcon(QIcon(":/icons/modify.png"));
-  ui->EditAttributeButton->setIconSize(QSize(20,20));
+  ui->EditAttributesButton->setIcon(QIcon(":/icons/modify.png"));
+  ui->EditAttributesButton->setIconSize(QSize(20,20));
 
   ui->RemoveAttributeButton->setIcon(QIcon(":/icons/remove.png"));
   ui->RemoveAttributeButton->setIconSize(QSize(20,20));
 
   ui->ConnectionsTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
+
+  connect(ui->AddUnitsClassButton,SIGNAL(clicked()),this,SLOT(addUnitsClass()));
+
+  connect(ui->AddUnitButton,SIGNAL(clicked()),this,SLOT(addUnit()));
+  connect(ui->RemoveUnitButton,SIGNAL(clicked()),this,SLOT(removeUnit()));
+
+  connect(ui->AddConnectionButton,SIGNAL(clicked()),this,SLOT(addConnection()));
+  connect(ui->RemoveConnectionButton,SIGNAL(clicked()),this,SLOT(removeConnection()));
+
+  connect(ui->AddAttributeButton,SIGNAL(clicked()),this,SLOT(addAttribute()));
+  connect(ui->EditAttributesButton,SIGNAL(clicked()),this,SLOT(editAttributesValues()));
+  connect(ui->RemoveAttributeButton,SIGNAL(clicked()),this,SLOT(removeAttribute()));
 
   connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
 
@@ -116,24 +134,70 @@ SpatialDomainWidget::~SpatialDomainWidget()
 
 void SpatialDomainWidget::refresh()
 {
-  std::set<std::string> Classes = m_Domain.getClassNames();
+  QStringList OriginalClassesList = StringSetToQStringList(m_Domain.getClassNames());
+
+  QStringList ClassesList;
+
+  // get display order for classes from project config file
+  QVariant TmpList = openfluid::base::ProjectManager::getInstance()->getConfigValue("builder.spatial.unitsclasses","order");
+
+  if (!TmpList.isValid())
+  {
+    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses","order",OriginalClassesList);
+    ClassesList = OriginalClassesList;
+  }
+  else
+  {
+    ClassesList = TmpList.toStringList();
+
+    // find classes in project config file that are not in original dataset
+    QStringList ClassesToRemove;
+    for (int i=0; i< ClassesList.size();i++)
+    {
+      if (!OriginalClassesList.contains(ClassesList[i]))
+        ClassesToRemove.append(ClassesList[i]);
+    }
+
+    // remove them from classes to display
+    for (int i=0; i< ClassesToRemove.size();i++)
+      ClassesList.removeAll(ClassesToRemove[i]);
+
+    // remove classes from original list if they exists in classes to display
+    for (int i=0; i< ClassesList.size();i++)
+    {
+      if (OriginalClassesList.contains(ClassesList[i]))
+        OriginalClassesList.removeAll(ClassesList[i]);
+    }
+
+    // add original dataset classes that are not already in the classes to display
+    for (int i=0; i< OriginalClassesList.size();i++)
+    {
+      if (!ClassesList.contains(OriginalClassesList[i]))
+        ClassesList.append(OriginalClassesList[i]);
+    }
+
+    openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses","order",ClassesList);
+  }
+
+
+  // display classes widgets
 
   QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
 
   // TODO remove classes that does not exist anymore
 
-  for (std::set<std::string>::iterator it=Classes.begin(); it!=Classes.end(); ++it)
+  for (int i = 0; i<ClassesList.size(); i++)
   {
     bool AlreadyExist = false;
 
     // searching for already existing unit class in class list
-    for (int i=0;i<Layout->count();i++)
+    for (int j=0;j<Layout->count();j++)
     {
-      if (i!=Layout->count()-1)
+      if (j!=Layout->count()-1)
       {
-        UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+        UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(j)->widget());
 
-        if (ClassW->getClassName() == QString::fromStdString(*it))
+        if (ClassW->getClassName() == ClassesList[i])
           AlreadyExist = true;
       }
     }
@@ -141,7 +205,7 @@ void SpatialDomainWidget::refresh()
     // Add if it does not already exist
     if (!AlreadyExist)
     {
-      UnitsClassWidget* ClassW = new UnitsClassWidget(QString::fromStdString((*it)),ui->UnitsClassAreaContents);
+      UnitsClassWidget* ClassW = new UnitsClassWidget(ClassesList[i],ui->UnitsClassAreaContents);
 
       dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout())->insertWidget(Layout->count()-1,ClassW);
       connect(ClassW,SIGNAL(selectionRequested(QString)),this,SLOT(setSelectedClass(QString)));
@@ -173,6 +237,11 @@ void SpatialDomainWidget::setSelectedClass(QString ClassName)
         ClassW->setSelected(false);
       else
         ClassW->setSelected(true);
+
+      connect(ClassW,SIGNAL(upClicked(QString)),this,SLOT(moveUnitsClassUp(QString)));
+      connect(ClassW,SIGNAL(downClicked(QString)),this,SLOT(moveUnitsClassDown(QString)));
+      connect(ClassW,SIGNAL(removeClicked(QString)),this,SLOT(removeUnitsClass(QString)));
+
     }
   }
 
@@ -202,6 +271,7 @@ void SpatialDomainWidget::setActiveClass(const QString& ClassName)
 
   refreshStructure();
   refreshData();
+  updateUpDownButtons();
 }
 
 
@@ -241,6 +311,8 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
   if (Row >= 0)
   {
     int ID = ui->IDsListWidget->item(Row)->data(Qt::UserRole).toInt();
+
+    ui->RemoveUnitButton->setText(tr("Remove unit %1 from %2 class").arg(ID).arg(m_ActiveClass));
 
     const openfluid::fluidx::AdvancedUnitDescriptor& UnitDesc = m_Domain.getUnit(m_ActiveClass.toStdString(),ID);
 
@@ -383,4 +455,222 @@ void SpatialDomainWidget::refreshData()
   }
 
   ui->AttributesTableWidget->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::addUnitsClass()
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  updateUpDownButtons();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::moveUnitsClassUp(QString ClassName)
+{
+  int Position = getClassIndex(ClassName);
+
+  if (Position < 1 )
+    return;
+
+  int From = Position;
+  int To = Position-1;
+
+  UnitsClassWidget* W = (UnitsClassWidget*)(ui->UnitsClassAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(ui->UnitsClassAreaContents->layout()))->insertWidget(To,W);
+
+  updateUpDownButtons();
+
+  openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+                                                                 "order",
+                                                                 getClassesOrderedStringList());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
+{
+  int Position = getClassIndex(ClassName);
+
+  QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+
+  if (Position > Layout->count()-2)
+    return;
+
+  int From = Position;
+  int To = Position+1;
+
+  UnitsClassWidget* W = (UnitsClassWidget*)(ui->UnitsClassAreaContents->layout()->takeAt(From)->widget());
+  ((QBoxLayout*)(ui->UnitsClassAreaContents->layout()))->insertWidget(To,W);
+
+  updateUpDownButtons();
+
+  openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
+                                                                 "order",
+                                                                 getClassesOrderedStringList());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::removeUnitsClass(QString ClassName)
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),
+                        QString(__PRETTY_FUNCTION__)+"\n"+ClassName,QMessageBox::Close);
+  updateUpDownButtons();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::addUnit()
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::removeUnit()
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::addConnection()
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::removeConnection()
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::addAttribute()
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::editAttributesValues()
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::removeAttribute()
+{
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::updateUpDownButtons()
+{
+  int LastIndex = ui->UnitsClassAreaContents->layout()->count()-2;
+
+  for (int i=0;i<=LastIndex;i++)
+  {
+    UnitsClassWidget* W = (UnitsClassWidget*)(ui->UnitsClassAreaContents->layout()->itemAt(i)->widget());
+    if (i==0 && LastIndex == 0)
+    {
+      W->setUpButtonEnabled(false);
+      W->setDownButtonEnabled(false);
+    }
+    else if (i==0)
+    {
+      W->setUpButtonEnabled(false);
+      W->setDownButtonEnabled(true);
+    }
+    else if (i==LastIndex)
+    {
+      W->setUpButtonEnabled(true);
+      W->setDownButtonEnabled(false);
+    }
+    else
+    {
+      W->setUpButtonEnabled(true);
+      W->setDownButtonEnabled(true);
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+int SpatialDomainWidget::getClassIndex(const QString& ClassName)
+{
+  QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+
+  for (int i=0;i<Layout->count()-1;i++)
+  {
+    UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+
+    if (ClassW->getClassName() == ClassName)
+      return i;
+  }
+
+  return -1;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList SpatialDomainWidget::getClassesOrderedStringList()
+{
+  QStringList StrList;
+
+  QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+
+  for (int i=0;i<Layout->count()-1;i++)
+  {
+    UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+    StrList.append(ClassW->getClassName());
+  }
+
+  return StrList;
 }

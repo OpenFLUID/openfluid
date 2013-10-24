@@ -65,6 +65,7 @@ namespace Ui
 
 #include <QFrame>
 #include <QMouseEvent>
+#include <QColor>
 
 
 class UnitsClassWidget : public QFrame
@@ -74,6 +75,18 @@ class UnitsClassWidget : public QFrame
   private slots:
 
     void toggleShowHideStyle();
+
+    void notifyUpClicked();
+
+    void notifyDownClicked();
+
+    void notifyRemoveClicked();
+
+    void changeLineColor();
+
+    void changeFillColor();
+
+    void changeLineWidth(int Width);
 
 
   private:
@@ -86,10 +99,26 @@ class UnitsClassWidget : public QFrame
 
      void mousePressEvent(QMouseEvent* Event);
 
+     static QString m_ColorButtonStyleSheet;
+
+     int m_LineWidth;
+
+     QColor m_LineColor;
+
+     QColor m_FillColor;
+
 
   signals:
 
       void selectionRequested(QString ClassName);
+
+      void upClicked(QString);
+
+      void downClicked(QString);
+
+      void removeClicked(QString);
+
+      void styleChanged(QString);
 
 
   public:
@@ -100,7 +129,21 @@ class UnitsClassWidget : public QFrame
 
     void setSelected(bool Selected);
 
-    QString getClassName() const { return m_ClassName; }
+    QString getClassName() const
+    { return m_ClassName; }
+
+    void setUpButtonEnabled(bool Enabled);
+
+    void setDownButtonEnabled(bool Enabled);
+
+    int getLineWidth() const
+    { return m_LineWidth; }
+
+    QColor getLineColor() const
+    { return m_LineColor; }
+
+    QColor getFillColor() const
+    { return m_FillColor; }
 
 };
 

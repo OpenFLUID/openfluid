@@ -79,6 +79,28 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void updateUnitSelection(int Row);
 
+    void addUnitsClass();
+
+    void moveUnitsClassUp(QString ClassName);
+
+    void moveUnitsClassDown(QString ClassName);
+
+    void removeUnitsClass(QString ClassName);
+
+    void addUnit();
+
+    void removeUnit();
+
+    void addConnection();
+
+    void removeConnection();
+
+    void addAttribute();
+
+    void editAttributesValues();
+
+    void removeAttribute();
+
 
   private:
 
@@ -93,6 +115,12 @@ class SpatialDomainWidget : public WorkspaceWidget
     void refreshStructure();
 
     void refreshData();
+
+    void updateUpDownButtons();
+
+    int getClassIndex(const QString& ClassName);
+
+    QStringList getClassesOrderedStringList();
 
 
   public slots:

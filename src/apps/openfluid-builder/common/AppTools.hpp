@@ -57,6 +57,8 @@
 #define __APPTOOLS_HPP__
 
 #include <QDateTime>
+#include <QColor>
+
 #include <openfluid/core/DateTime.hpp>
 
 #include <QStringList>
@@ -75,5 +77,6 @@ QStringList IntSetToQStringList(const std::set<int>& IntSet);
 
 QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
 
+QColor getRandomColor();
 
 #endif /* __APPTOOLS_HPP__ */
