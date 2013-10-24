@@ -79,6 +79,10 @@ class RunConfigurationWidget;
 class OutputsWidget;
 
 
+namespace openfluid { namespace builderext {
+  class PluggableModelessExtension;
+} }
+
 
 class ProjectModule : public AbstractModule
 {
@@ -130,7 +134,7 @@ class ProjectModule : public AbstractModule
 
   private slots:
 
-    void releaseModelessExtension();
+    void releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender = NULL);
 
     void dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
 

@@ -96,8 +96,9 @@ class DLLEXPORT PluggableModalExtension : public QDialog, public PluggableBuilde
     {  }
 
 
-    virtual bool isReady() const
+    virtual bool initialize()
     { return true; };
+
 };
 
 } } // namespaces

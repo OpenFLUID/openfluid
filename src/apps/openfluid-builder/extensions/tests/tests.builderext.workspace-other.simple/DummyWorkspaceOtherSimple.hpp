@@ -77,7 +77,11 @@ class DummyWorkspaceOtherSimple : public openfluid::builderext::PluggableWorkspa
 
     DummyWorkspaceOtherSimple();
 
-    QWidget* getWidget(QWidget* Parent);
+    bool initialize()
+    {
+      return true;
+    }
+
 };
 
 

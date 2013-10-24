@@ -95,7 +95,7 @@ class DLLEXPORT PluggableModelessExtension : public QDialog, public PluggableBui
     { }
 
 
-    virtual bool isReady() const
+    virtual bool initialize()
     { return true; };
 
 

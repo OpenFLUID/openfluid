@@ -87,6 +87,12 @@ class DummyModelessOtherSimple : public openfluid::builderext::PluggableModeless
     {
       new QLabel("test",this);
     }
+
+    bool initialize()
+    {
+      return true;
+    }
+
 };
 
 
