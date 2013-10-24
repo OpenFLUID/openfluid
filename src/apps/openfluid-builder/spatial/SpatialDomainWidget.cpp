@@ -58,6 +58,8 @@
 #include "ui_SpatialDomainWidget.h"
 #include "SpatialDomainWidget.hpp"
 #include "UnitsClassWidget.hpp"
+#include "AppTools.hpp"
+
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 #include <QTableWidgetItem>
@@ -353,8 +355,32 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 // =====================================================================
 
 
-
 void SpatialDomainWidget::refreshData()
 {
+  ui->AttributesTableWidget->clear();
 
+  if (!m_ActiveClass.isEmpty())
+  {
+    QStringList AttrNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+    QStringList IDs = IntSetToQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+
+    ui->AttributesTableWidget->setColumnCount(AttrNames.size());
+    ui->AttributesTableWidget->setRowCount(IDs.size());
+
+    ui->AttributesTableWidget->setHorizontalHeaderLabels(AttrNames);
+    ui->AttributesTableWidget->setVerticalHeaderLabels(IDs);
+
+    for (int i=0;i<IDs.size();i++)
+    {
+      for (int j=0;j<AttrNames.size();j++)
+      {
+        ui->AttributesTableWidget->setItem(i,j,
+                                           new QTableWidgetItem(QString::fromStdString(m_Domain.getAttribute(m_ActiveClass.toStdString(),
+                                                                                                             IDs[i].toInt(),
+                                                                                                             AttrNames[j].toStdString()))));
+      }
+    }
+  }
+
+  ui->AttributesTableWidget->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 }

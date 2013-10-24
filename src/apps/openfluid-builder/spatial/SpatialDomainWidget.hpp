@@ -79,6 +79,7 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void updateUnitSelection(int Row);
 
+
   private:
 
     Ui::SpatialDomainWidget* ui;
