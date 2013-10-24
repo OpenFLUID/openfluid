@@ -419,17 +419,24 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
             (openfluid::builderext::PluggableModalExtension*)(ExtReg->instanciateExtension(WareID));
         ExtModal->setParent(QApplication::activeWindow(),Qt::Dialog);
         ExtModal->setModal(true);
+
         // TODO set correct extension configuration
         ExtModal->setConfiguration(openfluid::ware::WareParams_t());
         ExtModal->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+
         connect(ExtModal,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 ExtModal,SLOT(update(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(simulationStarted()),ExtModal,SLOT(manageSimulationStart()));
         connect(this,SIGNAL(simulationFinished()),ExtModal,SLOT(manageSimulationFinish()));
-        ExtModal->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-        ExtModal->exec();
+
+        if (ExtModal->initialize())
+        {
+          ExtModal->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
+          ExtModal->exec();
+        }
+
         ExtReg->releaseExtension(ExtModal);
         ExtModal->deleteLater();
       }
@@ -439,35 +446,57 @@ void ProjectModule::whenExtensionAsked(const QString& ID)
             (openfluid::builderext::PluggableModelessExtension*)(ExtReg->instanciateExtension(WareID));
         ExtModeless->setParent(QApplication::activeWindow(),Qt::Dialog);
         ExtModeless->setModal(false);
+
         // TODO set correct extension configuration
         ExtModeless->setConfiguration(openfluid::ware::WareParams_t());
         ExtModeless->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+
         connect(ExtModeless,SIGNAL(finished(int)),this, SLOT(releaseModelessExtension()));
         connect(ExtModeless,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 ExtModeless,SLOT(update(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(simulationStarted()),ExtModeless,SLOT(manageSimulationStart()));
+
         connect(this,SIGNAL(simulationFinished()),ExtModeless,SLOT(manageSimulationFinish()));
-        ExtModeless->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-        ExtModeless->show();
+
+        if (ExtModeless->initialize())
+        {
+          ExtModeless->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
+          ExtModeless->show();
+        }
+        else
+          releaseModelessExtension(ExtModeless);
       }
       else if (ExtReg->getExtensionType(WareID) == openfluid::builderext::TYPE_WORKSPACE)
       {
         openfluid::builderext::PluggableWorkspaceExtension* ExtWork =
             (openfluid::builderext::PluggableWorkspaceExtension*)(ExtReg->instanciateExtension(WareID));
         ExtWork->setProperty("ID",QString::fromStdString(WareID));
+
         // TODO set correct extension configuration
+
         ExtWork->setConfiguration(openfluid::ware::WareParams_t());
         ExtWork->setFluidXDescriptor(&(mp_ProjectCentral->getAdvancedDescriptors()));
+
         connect(ExtWork,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 this,SLOT(dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
                 ExtWork,SLOT(update(openfluid::builderext::FluidXUpdateFlags::Flags)));
         connect(this,SIGNAL(simulationStarted()),ExtWork,SLOT(manageSimulationStart()));
         connect(this,SIGNAL(simulationFinished()),ExtWork,SLOT(manageSimulationFinish()));
-        ExtWork->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
-        mp_MainWidget->addWorkspaceExtensionTab(ExtWork,ExtReg->getRegisteredExtensions()->at(WareID)->Signature->MenuText);
+
+        if (ExtWork->initialize())
+        {
+          ExtWork->update(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL);
+          mp_MainWidget->addWorkspaceExtensionTab(ExtWork,ExtReg->getRegisteredExtensions()->at(WareID)->Signature->MenuText);
+        }
+        else
+        {
+          // destruction of the extension
+          ExtensionsRegistry::getInstance()->releaseExtension(ExtWork);
+          ExtWork->deleteLater();
+        }
       }
       else
       {
@@ -568,9 +597,10 @@ void ProjectModule::dispatchChangesFromExtension(openfluid::builderext::FluidXUp
 // =====================================================================
 
 
-void ProjectModule::releaseModelessExtension()
+void ProjectModule::releaseModelessExtension(openfluid::builderext::PluggableModelessExtension* Sender)
 {
-  openfluid::builderext::PluggableModelessExtension* Sender = (openfluid::builderext::PluggableModelessExtension*)(QObject::sender());
+  if (Sender == NULL)
+    Sender = (openfluid::builderext::PluggableModelessExtension*)(QObject::sender());
 
   if (Sender)
   {

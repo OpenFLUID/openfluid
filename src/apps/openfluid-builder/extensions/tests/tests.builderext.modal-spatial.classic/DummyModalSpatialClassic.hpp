@@ -99,6 +99,11 @@ class DummyModalSpatialClassic : public openfluid::builderext::PluggableModalExt
 
     ~DummyModalSpatialClassic();
 
+    bool initialize()
+    {
+      return true;
+    }
+
 };
 
 

@@ -153,7 +153,7 @@ class DLLEXPORT PluggableBuilderExtension : public openfluid::ware::PluggableWar
     { return OPENFLUID_GetWareID(); }
 
 
-    virtual bool isReady() const = 0;
+    virtual bool initialize() = 0;
 };
 
 

@@ -88,8 +88,10 @@ class DLLEXPORT PluggableWorkspaceExtension : public QWidget, public PluggableBu
       QWidget(NULL), PluggableBuilderExtension()
     { }
 
-    virtual bool isReady() const
+
+    virtual bool initialize()
     { return true; };
+
 };
 
 } } // namespaces
