@@ -45,123 +45,31 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file UnitsClassWidget.hpp
-  \brief Header of ...
+  \file MultiLineGraphics.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __UNITSCLASSWIDGET_HPP__
-#define __UNITSCLASSWIDGET_HPP__
+#include "LineStringGraphics.hpp"
+#include <QPen>
 
-
-namespace Ui
+LineStringGraphics::LineStringGraphics(OGRLineString* OGRLine, const QPen& Pen):
+  QGraphicsPathItem()
 {
-  class UnitsClassWidget;
+  QPainterPath Path;
+
+  setPen(Pen);
+
+  Path.moveTo(OGRLine->getX(0),OGRLine->getY(0));
+
+  for (int i=1; i < OGRLine->getNumPoints(); i++)
+  {
+    Path.lineTo(OGRLine->getX(i),OGRLine->getY(i));
+  }
+
+  setPath(Path);
 }
-
-
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-
-#include <QFrame>
-#include <QMouseEvent>
-#include <QColor>
-
-
-class UnitsClassWidget : public QFrame
-{
-  Q_OBJECT;
-
-  private slots:
-
-    void toggleShowHideStyle();
-
-    void notifyUpClicked();
-
-    void notifyDownClicked();
-
-    void notifyRemoveClicked();
-
-    void changeVisible();
-
-    void changeLineColor();
-
-    void changeFillColor();
-
-    void changeLineWidth(int Width);
-
-
-  private:
-
-     Ui::UnitsClassWidget* ui;
-
-     bool m_Selected;
-
-     QString m_ClassName;
-
-     static QString m_ColorButtonStyleSheet;
-
-     int m_LineWidth;
-
-     QColor m_LineColor;
-
-     QColor m_FillColor;
-
-     openfluid::fluidx::DatastoreItemDescriptor* mp_LayerSource;
-
-     void mousePressEvent(QMouseEvent* Event);
-
-
-  signals:
-
-      void selectionRequested(QString ClassName);
-
-      void upClicked(QString);
-
-      void downClicked(QString);
-
-      void removeClicked(QString);
-
-      void styleChanged(QString);
-
-
-  public:
-
-    UnitsClassWidget(const QString& ClassName,
-                     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
-                     QWidget* Parent = NULL);
-
-    ~UnitsClassWidget();
-
-    void setSelected(bool Selected);
-
-    QString getClassName() const
-    { return m_ClassName; }
-
-    void setUpButtonEnabled(bool Enabled);
-
-    void setDownButtonEnabled(bool Enabled);
-
-    void setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
-
-    int getLineWidth() const
-    { return m_LineWidth; }
-
-    QColor getLineColor() const
-    { return m_LineColor; }
-
-    QColor getFillColor() const
-    { return m_FillColor; }
-
-    bool isLayerVisible() const;
-
-    const openfluid::fluidx::DatastoreItemDescriptor* getLayerSource() const
-    { return mp_LayerSource; }
-
-};
-
-
-
-#endif /* __UNITSCLASSWIDGET_HPP__ */

@@ -81,20 +81,20 @@ class DLLEXPORT DatastoreItemDescriptor
 
   public:
 
-    DatastoreItemDescriptor(std::string Id, std::string PrefixPath, std::string RelativePath,
+    DatastoreItemDescriptor(const std::string& ID, const std::string& PrefixPath, const std::string& RelativePath,
         openfluid::core::UnstructuredValue::UnstructuredType Type);
 
-    void setUnitClass(std::string UnitClass);
+    void setUnitClass(const std::string& UnitClass);
 
-    std::string getID();
+    std::string getID() const;
 
-    std::string getPrefixPath();
+    std::string getPrefixPath() const;
 
-    std::string getRelativePath();
+    std::string getRelativePath() const;
 
-    openfluid::core::UnstructuredValue::UnstructuredType getType();
+    openfluid::core::UnstructuredValue::UnstructuredType getType() const;
 
-    std::string getUnitClass();
+    std::string getUnitClass() const;
 };
 
 }

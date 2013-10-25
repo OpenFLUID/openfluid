@@ -59,8 +59,7 @@
 #include <string>
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid {
-namespace core {
+namespace openfluid { namespace core {
 
 class DatastoreItem;
 
@@ -113,7 +112,7 @@ class DLLEXPORT Datastore
      * @param ItemID ID of the expected item.
      * @return The item with the given ID, or 0 if not found.
      */
-    DatastoreItem* getItem(std::string ItemID);
+    DatastoreItem* getItem(const std::string& ItemID);
 
     /**
      * @brief Adds an item to the datastore.
@@ -123,10 +122,9 @@ class DLLEXPORT Datastore
      *
      * @param Item The item to add.
      */
-    void addItem(DatastoreItem* Item);
+    void addItem(const DatastoreItem* Item);
 };
 
-}
-} // namespaces
+} } // namespaces
 
 #endif /* __DATASTORE_HPP__ */

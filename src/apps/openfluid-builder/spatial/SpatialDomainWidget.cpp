@@ -66,13 +66,21 @@
 
 #include <QTableWidgetItem>
 #include <QMessageBox>
+#include <QTimer>
 
 
 SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
   WorkspaceWidget(Parent,AFXDesc), ui(new Ui::SpatialDomainWidget),
-  m_Domain(AFXDesc.getDomain()), m_ActiveClass("")
+  m_Domain(AFXDesc.getDomain()), m_Datastore(AFXDesc.getDatastore()),
+  m_ActiveClass(""), m_IsFirstShow(true)
 {
   ui->setupUi(this);
+
+  ui->StructureTabWidget->setCurrentIndex(0);
+  ui->DataTabWidget->setCurrentIndex(0);
+
+  mp_MapScene = new MapScene(m_Domain,this);
+  ui->GlobalMapView->setScene(mp_MapScene);
 
   ui->AddUnitsClassButton->setIcon(QIcon(":/icons/add.png"));
   ui->AddUnitsClassButton->setIconSize(QSize(20,20));
@@ -114,7 +122,25 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
 
   connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
 
+  connect(ui->ResetViewButton,SIGNAL(clicked()),ui->GlobalMapView,SLOT(fitViewToItems()));
+
   refresh();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::showEvent(QShowEvent *Event)
+{
+
+  if (m_IsFirstShow)
+  {
+    ui->GlobalMapView->fitViewToItems();
+    m_IsFirstShow = false;
+  }
+  WorkspaceWidget::showEvent(Event);
 }
 
 
@@ -205,10 +231,14 @@ void SpatialDomainWidget::refresh()
     // Add if it does not already exist
     if (!AlreadyExist)
     {
-      UnitsClassWidget* ClassW = new UnitsClassWidget(ClassesList[i],ui->UnitsClassAreaContents);
+      UnitsClassWidget* ClassW = new UnitsClassWidget(ClassesList[i],
+                                                      m_Datastore.getItems(ClassesList[i].toStdString(),
+                                                                           openfluid::core::UnstructuredValue::GeoVectorValue),
+                                                      ui->UnitsClassAreaContents);
 
       dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout())->insertWidget(Layout->count()-1,ClassW);
       connect(ClassW,SIGNAL(selectionRequested(QString)),this,SLOT(setSelectedClass(QString)));
+      connect(ClassW,SIGNAL(styleChanged(QString)),this,SLOT(refreshMap()));
     }
   }
 
@@ -216,6 +246,8 @@ void SpatialDomainWidget::refresh()
     setSelectedClass(dynamic_cast<UnitsClassWidget*>(Layout->itemAt(0)->widget())->getClassName());
   else
     setActiveClass("");
+
+  refreshMap();
 }
 
 
@@ -269,8 +301,8 @@ void SpatialDomainWidget::setActiveClass(const QString& ClassName)
     ui->AddUnitButton->setText(tr("Add unit in %1 class").arg(ClassName));
   }
 
-  refreshStructure();
-  refreshData();
+  refreshClassStructure();
+  refreshClassData();
   updateUpDownButtons();
 }
 
@@ -279,10 +311,8 @@ void SpatialDomainWidget::setActiveClass(const QString& ClassName)
 // =====================================================================
 
 
-void SpatialDomainWidget::refreshStructure()
+void SpatialDomainWidget::refreshClassStructure()
 {
-  std::cout << __PRETTY_FUNCTION__ << " " << m_ActiveClass.toStdString() << std::endl;
-
   ui->IDsListWidget->clear();
 
   if (!m_ActiveClass.isEmpty())
@@ -427,7 +457,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 // =====================================================================
 
 
-void SpatialDomainWidget::refreshData()
+void SpatialDomainWidget::refreshClassData()
 {
   ui->AttributesTableWidget->clear();
 
@@ -455,6 +485,32 @@ void SpatialDomainWidget::refreshData()
   }
 
   ui->AttributesTableWidget->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::refreshMap()
+{
+  mp_MapScene->clear();
+
+  QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+
+  for (int i=Layout->count()-2; i>=0;i--)
+  {
+    UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+
+    if (ClassW->getLayerSource() != NULL && ClassW->isLayerVisible())
+    {
+      mp_MapScene->renderLayer(ClassW->getLayerSource(), -i,
+                               ClassW->getLineWidth(),
+                               ClassW->getLineColor(),
+                               ClassW->getFillColor(),
+                               ClassW->getClassName() == m_ActiveClass);
+    }
+  }
 }
 
 
@@ -491,6 +547,8 @@ void SpatialDomainWidget::moveUnitsClassUp(QString ClassName)
   openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
                                                                  "order",
                                                                  getClassesOrderedStringList());
+
+  refreshMap();
 }
 
 
@@ -518,6 +576,8 @@ void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
   openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
                                                                  "order",
                                                                  getClassesOrderedStringList());
+
+  refreshMap();
 }
 
 
@@ -529,7 +589,6 @@ void SpatialDomainWidget::removeUnitsClass(QString ClassName)
 {
   QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),
                         QString(__PRETTY_FUNCTION__)+"\n"+ClassName,QMessageBox::Close);
-  updateUpDownButtons();
 }
 
 

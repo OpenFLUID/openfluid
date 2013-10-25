@@ -45,123 +45,48 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file UnitsClassWidget.hpp
-  \brief Header of ...
+  \file MapView.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __UNITSCLASSWIDGET_HPP__
-#define __UNITSCLASSWIDGET_HPP__
+#include "MapView.hpp"
+
+#include <QWheelEvent>
 
 
-namespace Ui
+MapView::MapView(QWidget* Parent):
+  QGraphicsView(Parent)
 {
-  class UnitsClassWidget;
+  setRenderHints(QPainter::TextAntialiasing | QPainter::Antialiasing);
 }
 
 
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-
-#include <QFrame>
-#include <QMouseEvent>
-#include <QColor>
+// =====================================================================
+// =====================================================================
 
 
-class UnitsClassWidget : public QFrame
+void MapView::wheelEvent(QWheelEvent* Event)
 {
-  Q_OBJECT;
-
-  private slots:
-
-    void toggleShowHideStyle();
-
-    void notifyUpClicked();
-
-    void notifyDownClicked();
-
-    void notifyRemoveClicked();
-
-    void changeVisible();
-
-    void changeLineColor();
-
-    void changeFillColor();
-
-    void changeLineWidth(int Width);
+  if (Event->modifiers().testFlag(Qt::ControlModifier)) // zoom only when Ctrl key is pressed
+  {
+    if (Event->delta() < 0) scale(0.9,0.9);
+    else scale(1.1,1.1);
+  }
+//  Event->ignore();
+  QGraphicsView::wheelEvent(Event);
+}
 
 
-  private:
-
-     Ui::UnitsClassWidget* ui;
-
-     bool m_Selected;
-
-     QString m_ClassName;
-
-     static QString m_ColorButtonStyleSheet;
-
-     int m_LineWidth;
-
-     QColor m_LineColor;
-
-     QColor m_FillColor;
-
-     openfluid::fluidx::DatastoreItemDescriptor* mp_LayerSource;
-
-     void mousePressEvent(QMouseEvent* Event);
+// =====================================================================
+// =====================================================================
 
 
-  signals:
-
-      void selectionRequested(QString ClassName);
-
-      void upClicked(QString);
-
-      void downClicked(QString);
-
-      void removeClicked(QString);
-
-      void styleChanged(QString);
-
-
-  public:
-
-    UnitsClassWidget(const QString& ClassName,
-                     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
-                     QWidget* Parent = NULL);
-
-    ~UnitsClassWidget();
-
-    void setSelected(bool Selected);
-
-    QString getClassName() const
-    { return m_ClassName; }
-
-    void setUpButtonEnabled(bool Enabled);
-
-    void setDownButtonEnabled(bool Enabled);
-
-    void setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
-
-    int getLineWidth() const
-    { return m_LineWidth; }
-
-    QColor getLineColor() const
-    { return m_LineColor; }
-
-    QColor getFillColor() const
-    { return m_FillColor; }
-
-    bool isLayerVisible() const;
-
-    const openfluid::fluidx::DatastoreItemDescriptor* getLayerSource() const
-    { return mp_LayerSource; }
-
-};
-
-
-
-#endif /* __UNITSCLASSWIDGET_HPP__ */
+void MapView::fitViewToItems()
+{
+  fitInView(scene()->itemsBoundingRect(),Qt::KeepAspectRatio);
+}

@@ -45,123 +45,54 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file UnitsClassWidget.hpp
-  \brief Header of ...
+  \file PolygonGraphics.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __UNITSCLASSWIDGET_HPP__
-#define __UNITSCLASSWIDGET_HPP__
+
+#include "PolygonGraphics.hpp"
+#include <QBrush>
 
 
-namespace Ui
+PolygonGraphics::PolygonGraphics(OGRPolygon* OGRPoly, const QPen& Pen, const QBrush& Brush):
+QGraphicsPolygonItem(QPolygonF())
 {
-  class UnitsClassWidget;
+  OGRLinearRing* LinearRing = OGRPoly->getExteriorRing();
+
+  QPolygonF Poly;
+
+  for (int i=0; i < LinearRing->getNumPoints(); i++)
+    Poly << QPointF(LinearRing->getX(i),LinearRing->getY(i));
+
+  setPolygon(Poly);
+  setPen(Pen);
+  setBrush(Brush);
 }
 
 
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
+// =====================================================================
+// =====================================================================
 
-#include <QFrame>
-#include <QMouseEvent>
-#include <QColor>
-
-
-class UnitsClassWidget : public QFrame
+// TODO handle selection
+/*
+QVariant PolygonGraphics::itemChange(GraphicsItemChange Change, const QVariant& Value)
 {
-  Q_OBJECT;
+  if (Change == QGraphicsItem::ItemSelectedHasChanged)
+  {
+    QBrush CurrentBrush = brush();
 
-  private slots:
+    if (isSelected())
+      CurrentBrush.setStyle(Qt::BDiagPattern);
+    else
+      CurrentBrush.setStyle(Qt::SolidPattern);
 
-    void toggleShowHideStyle();
-
-    void notifyUpClicked();
-
-    void notifyDownClicked();
-
-    void notifyRemoveClicked();
-
-    void changeVisible();
-
-    void changeLineColor();
-
-    void changeFillColor();
-
-    void changeLineWidth(int Width);
-
-
-  private:
-
-     Ui::UnitsClassWidget* ui;
-
-     bool m_Selected;
-
-     QString m_ClassName;
-
-     static QString m_ColorButtonStyleSheet;
-
-     int m_LineWidth;
-
-     QColor m_LineColor;
-
-     QColor m_FillColor;
-
-     openfluid::fluidx::DatastoreItemDescriptor* mp_LayerSource;
-
-     void mousePressEvent(QMouseEvent* Event);
-
-
-  signals:
-
-      void selectionRequested(QString ClassName);
-
-      void upClicked(QString);
-
-      void downClicked(QString);
-
-      void removeClicked(QString);
-
-      void styleChanged(QString);
-
-
-  public:
-
-    UnitsClassWidget(const QString& ClassName,
-                     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
-                     QWidget* Parent = NULL);
-
-    ~UnitsClassWidget();
-
-    void setSelected(bool Selected);
-
-    QString getClassName() const
-    { return m_ClassName; }
-
-    void setUpButtonEnabled(bool Enabled);
-
-    void setDownButtonEnabled(bool Enabled);
-
-    void setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
-
-    int getLineWidth() const
-    { return m_LineWidth; }
-
-    QColor getLineColor() const
-    { return m_LineColor; }
-
-    QColor getFillColor() const
-    { return m_FillColor; }
-
-    bool isLayerVisible() const;
-
-    const openfluid::fluidx::DatastoreItemDescriptor* getLayerSource() const
-    { return mp_LayerSource; }
-
-};
-
-
-
-#endif /* __UNITSCLASSWIDGET_HPP__ */
+    setBrush(CurrentBrush);
+  }
+  return QGraphicsPolygonItem::itemChange(Change, Value);
+}
+*/

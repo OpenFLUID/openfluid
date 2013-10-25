@@ -46,122 +46,43 @@
 */
 
 /**
-  \file UnitsClassWidget.hpp
+  \file MapScene.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __UNITSCLASSWIDGET_HPP__
-#define __UNITSCLASSWIDGET_HPP__
+#ifndef __MAPSCENE_HPP__
+#define __MAPSCENE_HPP__
 
-
-namespace Ui
-{
-  class UnitsClassWidget;
-}
-
-
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-
-#include <QFrame>
-#include <QMouseEvent>
+#include <QGraphicsScene>
 #include <QColor>
+#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/core/Datastore.hpp>
 
 
-class UnitsClassWidget : public QFrame
+class MapScene : public QGraphicsScene
 {
-  Q_OBJECT;
-
-  private slots:
-
-    void toggleShowHideStyle();
-
-    void notifyUpClicked();
-
-    void notifyDownClicked();
-
-    void notifyRemoveClicked();
-
-    void changeVisible();
-
-    void changeLineColor();
-
-    void changeFillColor();
-
-    void changeLineWidth(int Width);
-
-
   private:
 
-     Ui::UnitsClassWidget* ui;
+    const openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
 
-     bool m_Selected;
-
-     QString m_ClassName;
-
-     static QString m_ColorButtonStyleSheet;
-
-     int m_LineWidth;
-
-     QColor m_LineColor;
-
-     QColor m_FillColor;
-
-     openfluid::fluidx::DatastoreItemDescriptor* mp_LayerSource;
-
-     void mousePressEvent(QMouseEvent* Event);
-
-
-  signals:
-
-      void selectionRequested(QString ClassName);
-
-      void upClicked(QString);
-
-      void downClicked(QString);
-
-      void removeClicked(QString);
-
-      void styleChanged(QString);
-
+    openfluid::core::Datastore m_LocalDatastore;
 
   public:
 
-    UnitsClassWidget(const QString& ClassName,
-                     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
-                     QWidget* Parent = NULL);
+    MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
+             QObject* Parent = 0);
 
-    ~UnitsClassWidget();
-
-    void setSelected(bool Selected);
-
-    QString getClassName() const
-    { return m_ClassName; }
-
-    void setUpButtonEnabled(bool Enabled);
-
-    void setDownButtonEnabled(bool Enabled);
-
-    void setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
-
-    int getLineWidth() const
-    { return m_LineWidth; }
-
-    QColor getLineColor() const
-    { return m_LineColor; }
-
-    QColor getFillColor() const
-    { return m_FillColor; }
-
-    bool isLayerVisible() const;
-
-    const openfluid::fluidx::DatastoreItemDescriptor* getLayerSource() const
-    { return mp_LayerSource; }
-
+    void renderLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
+                     int ZLayer,
+                     int LineWidth,
+                     QColor LineColor,
+                     QColor FillColor,
+                     bool Active);
 };
 
 
-
-#endif /* __UNITSCLASSWIDGET_HPP__ */
+#endif /* __MAPSCENE_HPP__ */

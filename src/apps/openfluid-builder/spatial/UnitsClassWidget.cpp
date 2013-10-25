@@ -72,9 +72,11 @@ QString UnitsClassWidget::m_ColorButtonStyleSheet =
     "QPushButton:default{ background-color : %1; border-radius : 2px; border: 1px solid #777777;}";*/
 
 
-UnitsClassWidget::UnitsClassWidget(const QString& ClassName, QWidget* Parent):
+UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
+                                   const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
+                                   QWidget* Parent):
   QFrame(Parent),ui(new Ui::UnitsClassWidget),
-  m_Selected(false), m_ClassName(ClassName)
+  m_Selected(false), m_ClassName(ClassName), mp_LayerSource(NULL)
 {
   setObjectName("UnitsClassFrame");
 
@@ -100,6 +102,8 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName, QWidget* Parent):
   ui->StyleWidget->setVisible(false);
   ui->ShowHideStyleLabel->setText(tr("Show map style"));
   connect(ui->ShowHideStyleLabel,SIGNAL(clicked()),this,SLOT(toggleShowHideStyle()));
+
+  setDatastoreItemsList(DSList);
 
   // initialize line width
 
@@ -155,6 +159,7 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName, QWidget* Parent):
   ui->FillColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_FillColor.name()));
   ui->LineWidthSpinBox->setValue(m_LineWidth);
 
+  connect(ui->VisibleCheckBox,SIGNAL(toggled(bool)),this,SLOT(changeVisible()));
   connect(ui->LineColorButton,SIGNAL(clicked()),this,SLOT(changeLineColor()));
   connect(ui->FillColorButton,SIGNAL(clicked()),this,SLOT(changeFillColor()));
   connect(ui->LineWidthSpinBox,SIGNAL(valueChanged(int)),this,SLOT(changeLineWidth(int)));
@@ -289,6 +294,7 @@ void UnitsClassWidget::changeLineColor()
 
     openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
                                                                    m_ClassName+".linecolor",m_LineColor.name());
+    emit styleChanged(m_ClassName);
   }
 }
 
@@ -308,6 +314,8 @@ void UnitsClassWidget::changeFillColor()
 
     openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
                                                                    m_ClassName+".fillcolor",m_FillColor.name());
+
+    emit styleChanged(m_ClassName);
   }
 }
 
@@ -322,4 +330,50 @@ void UnitsClassWidget::changeLineWidth(int Width)
 
   openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
                                                                  m_ClassName+".linewidth",m_LineWidth);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::changeVisible()
+{
+  std::cout << __PRETTY_FUNCTION__ << std::endl;
+
+  emit styleChanged(m_ClassName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList)
+{
+  mp_LayerSource = NULL;
+
+  if (!DSList.empty())
+  {
+    mp_LayerSource = DSList.front();
+    ui->LayerSourceLabel->setText(QString::fromStdString(mp_LayerSource->getRelativePath()));
+    ui->StyleParamsWidget->setEnabled(true);
+    ui->VisibleCheckBox->setChecked(true);
+  }
+  else
+  {
+    ui->LayerSourceLabel->setText(tr("(none)"));
+    ui->StyleParamsWidget->setEnabled(false);
+    ui->VisibleCheckBox->setChecked(false);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool UnitsClassWidget::isLayerVisible() const
+{
+  return ui->VisibleCheckBox->isChecked();
 }

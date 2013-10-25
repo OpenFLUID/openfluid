@@ -46,122 +46,39 @@
 */
 
 /**
-  \file UnitsClassWidget.hpp
+  \file MapView.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __UNITSCLASSWIDGET_HPP__
-#define __UNITSCLASSWIDGET_HPP__
+#ifndef __MAPVIEW_HPP__
+#define __MAPVIEW_HPP__
 
 
-namespace Ui
-{
-  class UnitsClassWidget;
-}
+#include <QGraphicsView>
 
 
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-
-#include <QFrame>
-#include <QMouseEvent>
-#include <QColor>
-
-
-class UnitsClassWidget : public QFrame
+class MapView : public QGraphicsView
 {
   Q_OBJECT;
 
-  private slots:
-
-    void toggleShowHideStyle();
-
-    void notifyUpClicked();
-
-    void notifyDownClicked();
-
-    void notifyRemoveClicked();
-
-    void changeVisible();
-
-    void changeLineColor();
-
-    void changeFillColor();
-
-    void changeLineWidth(int Width);
-
-
   private:
 
-     Ui::UnitsClassWidget* ui;
-
-     bool m_Selected;
-
-     QString m_ClassName;
-
-     static QString m_ColorButtonStyleSheet;
-
-     int m_LineWidth;
-
-     QColor m_LineColor;
-
-     QColor m_FillColor;
-
-     openfluid::fluidx::DatastoreItemDescriptor* mp_LayerSource;
-
-     void mousePressEvent(QMouseEvent* Event);
+    void wheelEvent(QWheelEvent* Event);
 
 
-  signals:
+  public slots:
 
-      void selectionRequested(QString ClassName);
-
-      void upClicked(QString);
-
-      void downClicked(QString);
-
-      void removeClicked(QString);
-
-      void styleChanged(QString);
+    void fitViewToItems();
 
 
   public:
 
-    UnitsClassWidget(const QString& ClassName,
-                     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
-                     QWidget* Parent = NULL);
-
-    ~UnitsClassWidget();
-
-    void setSelected(bool Selected);
-
-    QString getClassName() const
-    { return m_ClassName; }
-
-    void setUpButtonEnabled(bool Enabled);
-
-    void setDownButtonEnabled(bool Enabled);
-
-    void setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
-
-    int getLineWidth() const
-    { return m_LineWidth; }
-
-    QColor getLineColor() const
-    { return m_LineColor; }
-
-    QColor getFillColor() const
-    { return m_FillColor; }
-
-    bool isLayerVisible() const;
-
-    const openfluid::fluidx::DatastoreItemDescriptor* getLayerSource() const
-    { return mp_LayerSource; }
+    MapView(QWidget* Parent = NULL);
 
 };
 
 
-
-#endif /* __UNITSCLASSWIDGET_HPP__ */
+#endif /* __MAPVIEW_HPP__ */

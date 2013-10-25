@@ -52,16 +52,17 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef ADVANCEDDATASTOREDESCRIPTOR_HPP_
-#define ADVANCEDDATASTOREDESCRIPTOR_HPP_
+#ifndef __ADVANCEDDATASTOREDESCRIPTOR_HPP__
+#define __ADVANCEDDATASTOREDESCRIPTOR_HPP__
 
 #include <list>
 #include <string>
 #include <openfluid/dllexport.hpp>
 
+#include <openfluid/core/UnstructuredValue.hpp>
 
-namespace openfluid {
-namespace fluidx {
+
+namespace openfluid { namespace fluidx {
 
 class DatastoreDescriptor;
 class DatastoreItemDescriptor;
@@ -80,6 +81,11 @@ class DLLEXPORT AdvancedDatastoreDescriptor
     ~AdvancedDatastoreDescriptor();
 
     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& getItems() const;
+
+    std::list<openfluid::fluidx::DatastoreItemDescriptor*> getItems(const std::string& UnitClass) const;
+
+    std::list<openfluid::fluidx::DatastoreItemDescriptor*> getItems(const std::string& UnitClass,
+                                                                    openfluid::core::UnstructuredValue::UnstructuredType Type) const;
 
     /**
      * Move the Item located at the given From position to the To position (positions starts at index 0)
@@ -112,7 +118,6 @@ class DLLEXPORT AdvancedDatastoreDescriptor
     bool isItemAlreadyExist(std::string ItemID) const;
 };
 
-}
-} // namespaces
+} } // namespaces
 
-#endif /* ADVANCEDDATASTOREDESCRIPTOR_HPP_ */
+#endif /* __ADVANCEDDATASTOREDESCRIPTOR_HPP__ */

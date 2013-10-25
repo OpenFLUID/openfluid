@@ -133,6 +133,8 @@ class DLLEXPORT AdvancedDomainDescriptor
 
     ~AdvancedDomainDescriptor();
 
+    bool isUnitExist(const std::string& ClassName, int ID) const;
+
     /**
      *
      * @return May return an empty map. Never throws.
@@ -145,7 +147,7 @@ class DLLEXPORT AdvancedDomainDescriptor
      * @param ID
      * @return
      */
-    const AdvancedUnitDescriptor& getUnit(std::string ClassName, int ID) const;
+    const AdvancedUnitDescriptor& getUnit(const std::string& ClassName, int ID) const;
 
     /**
      * @throw openfluid::base::OFException if Unit doesn't exist
@@ -154,16 +156,16 @@ class DLLEXPORT AdvancedDomainDescriptor
      * @return
      */
     const openfluid::fluidx::UnitDescriptor& getUnitDescriptor(
-        std::string ClassName, int ID) const;
+        const std::string& ClassName, int ID) const;
 
     /**
      *
      * @param ClassName
      * @return An empty set if ClassName doesn't exist. Never throws.
      */
-    std::set<int> getIDsOfClass(std::string ClassName) const;
+    std::set<int> getIDsOfClass(const std::string& ClassName) const;
 
-    bool isClassNameExists(std::string ClassName) const;
+    bool isClassNameExists(const std::string& ClassName) const;
 
     /**
      *
@@ -188,7 +190,7 @@ class DLLEXPORT AdvancedDomainDescriptor
      * @param ClassName
      * @param ID
      */
-    void deleteUnit(std::string ClassName, int ID);
+    void deleteUnit(const std::string& ClassName, int ID);
 
     /**
      * @throw openfluid::base::OFException if Unit or DataName doesn't exist
@@ -197,15 +199,15 @@ class DLLEXPORT AdvancedDomainDescriptor
      * @param AttrName
      * @return
      */
-    std::string& getAttribute(std::string ClassName, int ID,
-                              std::string AttrName);
+    std::string& getAttribute(const std::string& ClassName, int ID,
+                              const std::string& AttrName);
 
     /**
      *
      * @param ClassName
      * @return An empty set if ClassName doesn't exist or has no attribute. Never throws.
      */
-    std::set<std::string> getAttributesNames(std::string ClassName) const;
+    std::set<std::string> getAttributesNames(const std::string& ClassName) const;
 
     /**
      * @throw openfluid::base::OFException if ClassName doesn't exist
@@ -214,8 +216,8 @@ class DLLEXPORT AdvancedDomainDescriptor
      * @param AttrName
      * @param DefaultValue
      */
-    void addAttribute(std::string ClassName, std::string AttrName,
-                      std::string DefaultValue);
+    void addAttribute(const std::string& ClassName, const std::string& AttrName,
+                      const std::string& DefaultValue);
 
     /**
      * @throw openfluid::base::OFException if ClassName doesn't exist
@@ -223,7 +225,7 @@ class DLLEXPORT AdvancedDomainDescriptor
      * @param ClassName
      * @param AttrName
      */
-    void deleteAttribute(std::string ClassName, std::string AttrName);
+    void deleteAttribute(const std::string& ClassName, const std::string& AttrName);
 
     /**
      * Does nothing if NewDataName is the same as OldDataName
@@ -233,8 +235,8 @@ class DLLEXPORT AdvancedDomainDescriptor
      * @param OldAttrName
      * @param NewAttrName
      */
-    void renameAttribute(std::string ClassName, std::string OldAttrName,
-                         std::string NewAttrName);
+    void renameAttribute(const std::string& ClassName, const std::string& OldAttrName,
+                         const std::string& NewAttrName);
 
     const std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(const openfluid::core::UnitClassID_t Unit) const;
 

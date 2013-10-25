@@ -60,7 +60,10 @@
 #include <QWidget>
 
 #include "WorkspaceWidget.hpp"
+#include "MapScene.hpp"
+
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
 
 
 namespace Ui
@@ -101,6 +104,8 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void removeAttribute();
 
+    void refreshMap();
+
 
   private:
 
@@ -108,13 +113,19 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
 
+    openfluid::fluidx::AdvancedDatastoreDescriptor& m_Datastore;
+
     QString m_ActiveClass;
+
+    MapScene* mp_MapScene;
+
+    bool m_IsFirstShow;
 
     void setActiveClass(const QString& ClassName);
 
-    void refreshStructure();
+    void refreshClassStructure();
 
-    void refreshData();
+    void refreshClassData();
 
     void updateUpDownButtons();
 
@@ -122,6 +133,7 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     QStringList getClassesOrderedStringList();
 
+    void showEvent(QShowEvent *Event);
 
   public slots:
 

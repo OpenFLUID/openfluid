@@ -46,122 +46,30 @@
 */
 
 /**
-  \file UnitsClassWidget.hpp
+  \file PolygonGraphics.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __UNITSCLASSWIDGET_HPP__
-#define __UNITSCLASSWIDGET_HPP__
+#ifndef __POLYGONGRAPHICS_HPP__
+#define __POLYGONGRAPHICS_HPP__
 
 
-namespace Ui
+#include <QGraphicsPolygonItem>
+#include <ogr_geometry.h>
+
+
+class PolygonGraphics : public QGraphicsPolygonItem
 {
-  class UnitsClassWidget;
-}
-
-
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-
-#include <QFrame>
-#include <QMouseEvent>
-#include <QColor>
-
-
-class UnitsClassWidget : public QFrame
-{
-  Q_OBJECT;
-
-  private slots:
-
-    void toggleShowHideStyle();
-
-    void notifyUpClicked();
-
-    void notifyDownClicked();
-
-    void notifyRemoveClicked();
-
-    void changeVisible();
-
-    void changeLineColor();
-
-    void changeFillColor();
-
-    void changeLineWidth(int Width);
-
-
-  private:
-
-     Ui::UnitsClassWidget* ui;
-
-     bool m_Selected;
-
-     QString m_ClassName;
-
-     static QString m_ColorButtonStyleSheet;
-
-     int m_LineWidth;
-
-     QColor m_LineColor;
-
-     QColor m_FillColor;
-
-     openfluid::fluidx::DatastoreItemDescriptor* mp_LayerSource;
-
-     void mousePressEvent(QMouseEvent* Event);
-
-
-  signals:
-
-      void selectionRequested(QString ClassName);
-
-      void upClicked(QString);
-
-      void downClicked(QString);
-
-      void removeClicked(QString);
-
-      void styleChanged(QString);
-
-
   public:
 
-    UnitsClassWidget(const QString& ClassName,
-                     const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList,
-                     QWidget* Parent = NULL);
+    PolygonGraphics(OGRPolygon* OGRPoly, const QPen& Pen, const QBrush& Brush);
 
-    ~UnitsClassWidget();
-
-    void setSelected(bool Selected);
-
-    QString getClassName() const
-    { return m_ClassName; }
-
-    void setUpButtonEnabled(bool Enabled);
-
-    void setDownButtonEnabled(bool Enabled);
-
-    void setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
-
-    int getLineWidth() const
-    { return m_LineWidth; }
-
-    QColor getLineColor() const
-    { return m_LineColor; }
-
-    QColor getFillColor() const
-    { return m_FillColor; }
-
-    bool isLayerVisible() const;
-
-    const openfluid::fluidx::DatastoreItemDescriptor* getLayerSource() const
-    { return mp_LayerSource; }
-
+    // TODO handle selection
+    //QVariant itemChange(GraphicsItemChange Change, const QVariant& Value);
 };
 
 
-
-#endif /* __UNITSCLASSWIDGET_HPP__ */
+#endif /* __POLYGONGRAPHICS_HPP__ */
