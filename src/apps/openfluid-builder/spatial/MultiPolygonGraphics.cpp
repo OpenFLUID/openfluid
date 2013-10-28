@@ -45,62 +45,41 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file MapScene.hpp
-  \brief Header of ...
+  \file MultiPolygonGraphics.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MAPSCENE_HPP__
-#define __MAPSCENE_HPP__
 
-#include "MapItemGraphics.hpp"
-
-#include <QGraphicsScene>
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/core/Datastore.hpp>
+#include "MultiPolygonGraphics.hpp"
+#include <QBrush>
 
 
-class MapScene : public QGraphicsScene
+MultiPolygonGraphics::MultiPolygonGraphics(OGRMultiPolygon* OGRMultiPoly, const QPen& Pen, const QBrush& Brush):
+  SurfacicGraphics(Brush.color())
 {
-  Q_OBJECT;
+  QPainterPath Path;
 
-  private:
+  for (int i=0; i<OGRMultiPoly->getNumGeometries();i++)
+  {
 
-    const openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+    OGRLinearRing* LinearRing = dynamic_cast<OGRPolygon*>(OGRMultiPoly->getGeometryRef(i))->getExteriorRing();
 
-    openfluid::core::Datastore m_LocalDatastore;
+    QPolygonF Poly;
 
-    QMap<std::string,QList<MapItemGraphics*> > m_MapItems;
+    for (int i=0; i < LinearRing->getNumPoints(); i++)
+      Poly << QPointF(LinearRing->getX(i),LinearRing->getY(i));
 
-    QList<MapItemGraphics*>* m_ActiveLayer;
+    Path.addPolygon(Poly);
+  }
 
-    void updateActiveLayer();
+  setPen(Pen);
+  setBrush(Brush);
 
+  setPath(Path);
+}
 
-  public slots:
-
-    void enableUnitsIDs(bool Enabled);
-
-
-  public:
-
-    MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
-             QObject* Parent = 0);
-
-    void addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
-                     int ZLayer,
-                     int LineWidth,
-                     QColor LineColor,
-                     QColor FillColor);
-
-    void setActiveLayer(const QString& UnitClass);
-
-    void clear();
-};
-
-
-#endif /* __MAPSCENE_HPP__ */

@@ -57,18 +57,17 @@
 #define __POLYGONGRAPHICS_HPP__
 
 
-#include <QGraphicsPolygonItem>
+#include "SurfacicGraphics.hpp"
 #include <ogr_geometry.h>
 
 
-class PolygonGraphics : public QGraphicsPolygonItem
+class PolygonGraphics : public SurfacicGraphics
 {
+
   public:
 
     PolygonGraphics(OGRPolygon* OGRPoly, const QPen& Pen, const QBrush& Brush);
 
-    // TODO handle selection
-    //QVariant itemChange(GraphicsItemChange Change, const QVariant& Value);
 };
 
 

@@ -45,62 +45,37 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file MapScene.hpp
-  \brief Header of ...
+  \file MapItemGraphics.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MAPSCENE_HPP__
-#define __MAPSCENE_HPP__
 
 #include "MapItemGraphics.hpp"
 
-#include <QGraphicsScene>
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/core/Datastore.hpp>
+#include <QStyleOptionGraphicsItem>
 
 
-class MapScene : public QGraphicsScene
+QColor MapItemGraphics::m_SelectionColor = QColor("#FFC85F");
+
+MapItemGraphics::MapItemGraphics(const QColor& MainColor):
+  QGraphicsPathItem(), m_MainColor(MainColor)
 {
-  Q_OBJECT;
 
-  private:
-
-    const openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
-
-    openfluid::core::Datastore m_LocalDatastore;
-
-    QMap<std::string,QList<MapItemGraphics*> > m_MapItems;
-
-    QList<MapItemGraphics*>* m_ActiveLayer;
-
-    void updateActiveLayer();
+}
 
 
-  public slots:
-
-    void enableUnitsIDs(bool Enabled);
-
-
-  public:
-
-    MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
-             QObject* Parent = 0);
-
-    void addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
-                     int ZLayer,
-                     int LineWidth,
-                     QColor LineColor,
-                     QColor FillColor);
-
-    void setActiveLayer(const QString& UnitClass);
-
-    void clear();
-};
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __MAPSCENE_HPP__ */
+void MapItemGraphics::paint(QPainter *Painter, const QStyleOptionGraphicsItem *Option, QWidget *Widget)
+{
+    QStyleOptionGraphicsItem CustomOption(*Option);
+    CustomOption.state &= ~QStyle::State_Selected;
+    QGraphicsPathItem::paint(Painter, &CustomOption, Widget);
+}

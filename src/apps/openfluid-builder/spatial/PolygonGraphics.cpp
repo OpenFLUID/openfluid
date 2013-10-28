@@ -60,7 +60,7 @@
 
 
 PolygonGraphics::PolygonGraphics(OGRPolygon* OGRPoly, const QPen& Pen, const QBrush& Brush):
-QGraphicsPolygonItem(QPolygonF())
+  SurfacicGraphics(Brush.color())
 {
   OGRLinearRing* LinearRing = OGRPoly->getExteriorRing();
 
@@ -69,30 +69,11 @@ QGraphicsPolygonItem(QPolygonF())
   for (int i=0; i < LinearRing->getNumPoints(); i++)
     Poly << QPointF(LinearRing->getX(i),LinearRing->getY(i));
 
-  setPolygon(Poly);
+  QPainterPath Path;
+  Path.addPolygon(Poly);
+
   setPen(Pen);
   setBrush(Brush);
+
+  setPath(Path);
 }
-
-
-// =====================================================================
-// =====================================================================
-
-// TODO handle selection
-/*
-QVariant PolygonGraphics::itemChange(GraphicsItemChange Change, const QVariant& Value)
-{
-  if (Change == QGraphicsItem::ItemSelectedHasChanged)
-  {
-    QBrush CurrentBrush = brush();
-
-    if (isSelected())
-      CurrentBrush.setStyle(Qt::BDiagPattern);
-    else
-      CurrentBrush.setStyle(Qt::SolidPattern);
-
-    setBrush(CurrentBrush);
-  }
-  return QGraphicsPolygonItem::itemChange(Change, Value);
-}
-*/

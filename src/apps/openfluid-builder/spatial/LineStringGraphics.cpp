@@ -58,7 +58,7 @@
 #include <QPen>
 
 LineStringGraphics::LineStringGraphics(OGRLineString* OGRLine, const QPen& Pen):
-  QGraphicsPathItem()
+  LinearGraphics(Pen.color())
 {
   QPainterPath Path;
 
@@ -73,3 +73,4 @@ LineStringGraphics::LineStringGraphics(OGRLineString* OGRLine, const QPen& Pen):
 
   setPath(Path);
 }
+

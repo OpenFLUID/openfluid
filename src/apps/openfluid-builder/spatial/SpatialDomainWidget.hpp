@@ -106,6 +106,8 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void refreshMap();
 
+    void updateSelectionFromMap();
+
 
   private:
 

@@ -46,61 +46,30 @@
 */
 
 /**
-  \file MapScene.hpp
+  \file SurfacicGraphics.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __MAPSCENE_HPP__
-#define __MAPSCENE_HPP__
+#ifndef __SURFACICGRAPHICS_HPP__
+#define __SURFACICGRAPHICS_HPP__
 
 #include "MapItemGraphics.hpp"
 
-#include <QGraphicsScene>
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/core/Datastore.hpp>
 
-
-class MapScene : public QGraphicsScene
+class SurfacicGraphics : public MapItemGraphics
 {
-  Q_OBJECT;
-
-  private:
-
-    const openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
-
-    openfluid::core::Datastore m_LocalDatastore;
-
-    QMap<std::string,QList<MapItemGraphics*> > m_MapItems;
-
-    QList<MapItemGraphics*>* m_ActiveLayer;
-
-    void updateActiveLayer();
-
-
-  public slots:
-
-    void enableUnitsIDs(bool Enabled);
-
-
   public:
 
-    MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
-             QObject* Parent = 0);
+    SurfacicGraphics(const QColor& MainColor) : MapItemGraphics(MainColor)
+    { }
 
-    void addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
-                     int ZLayer,
-                     int LineWidth,
-                     QColor LineColor,
-                     QColor FillColor);
+    QVariant itemChange(GraphicsItemChange Change, const QVariant& Value);
 
-    void setActiveLayer(const QString& UnitClass);
-
-    void clear();
 };
 
 
-#endif /* __MAPSCENE_HPP__ */
+
+#endif /* __SURFACICGRAPHICS_HPP__ */

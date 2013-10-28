@@ -45,62 +45,35 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file MapScene.hpp
-  \brief Header of ...
+  \file LinearGraphics.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include "LinearGraphics.hpp"
 
-#ifndef __MAPSCENE_HPP__
-#define __MAPSCENE_HPP__
-
-#include "MapItemGraphics.hpp"
-
-#include <QGraphicsScene>
-#include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/core/Datastore.hpp>
+#include <QPen>
 
 
-class MapScene : public QGraphicsScene
+QVariant LinearGraphics::itemChange(GraphicsItemChange Change, const QVariant& Value)
 {
-  Q_OBJECT;
+  if (Change == QGraphicsItem::ItemSelectedHasChanged)
+  {
+    QPen CurrentPen = pen();
 
-  private:
+    if (isSelected())
+    {
+      CurrentPen.setColor(m_SelectionColor);
+    }
+    else
+    {
+      CurrentPen.setColor(m_MainColor);
+    }
 
-    const openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
-
-    openfluid::core::Datastore m_LocalDatastore;
-
-    QMap<std::string,QList<MapItemGraphics*> > m_MapItems;
-
-    QList<MapItemGraphics*>* m_ActiveLayer;
-
-    void updateActiveLayer();
-
-
-  public slots:
-
-    void enableUnitsIDs(bool Enabled);
-
-
-  public:
-
-    MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
-             QObject* Parent = 0);
-
-    void addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
-                     int ZLayer,
-                     int LineWidth,
-                     QColor LineColor,
-                     QColor FillColor);
-
-    void setActiveLayer(const QString& UnitClass);
-
-    void clear();
-};
-
-
-#endif /* __MAPSCENE_HPP__ */
+    setPen(CurrentPen);
+  }
+  return MapItemGraphics::itemChange(Change, Value);
+}

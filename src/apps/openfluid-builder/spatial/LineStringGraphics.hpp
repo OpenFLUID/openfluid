@@ -56,11 +56,12 @@
 #ifndef __LINESTRINGGRAPHICS_HPP__
 #define __LINESTRINGGRAPHICS_HPP__
 
-#include <QGraphicsPathItem>
+#include "LinearGraphics.hpp"
+
 #include <ogr_geometry.h>
 
 
-class LineStringGraphics : public QGraphicsPathItem
+class LineStringGraphics : public LinearGraphics
 {
   public:
 

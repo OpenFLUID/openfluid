@@ -111,13 +111,17 @@ QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
 SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
                         spatial/UnitsClassWidget.cpp
                         spatial/MapScene.cpp spatial/MapView.cpp
-                        spatial/PolygonGraphics.cpp spatial/LineStringGraphics.cpp
+                        spatial/MapItemGraphics.cpp spatial/LinearGraphics.cpp spatial/SurfacicGraphics.cpp
+                        spatial/LineStringGraphics.cpp
+                        spatial/PolygonGraphics.cpp spatial/MultiPolygonGraphics.cpp 
                        )
 
 SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
                         spatial/UnitsClassWidget.hpp
                         spatial/MapScene.hpp spatial/MapView.hpp
-                        spatial/PolygonGraphics.hpp spatial/LineStringGraphics.hpp
+                        spatial/MapItemGraphics.cpp spatial/LinearGraphics.hpp spatial/SurfacicGraphics.hpp
+                        spatial/LineStringGraphics.hpp
+                        spatial/PolygonGraphics.hpp spatial/MultiPolygonGraphics.hpp  
                        )
 
 QT4_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui

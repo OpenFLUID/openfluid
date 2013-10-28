@@ -59,15 +59,18 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
 
+#include "MultiPolygonGraphics.hpp"
 #include "PolygonGraphics.hpp"
 #include "LineStringGraphics.hpp"
 
 #include <iostream>
+#include <QMessageBox>
+#include <QApplication>
 
 
 MapScene::MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
                    QObject* Parent):
-  QGraphicsScene(Parent), m_Domain(Domain)
+  QGraphicsScene(Parent), m_Domain(Domain), m_ActiveLayer(NULL)
 {
 
 }
@@ -77,12 +80,11 @@ MapScene::MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
 // =====================================================================
 
 
-void MapScene::renderLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
-                           int ZLayer,
-                           int LineWidth,
-                           QColor LineColor,
-                           QColor FillColor,
-                           bool Active)
+void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
+                        int ZLayer,
+                        int LineWidth,
+                        QColor LineColor,
+                        QColor FillColor)
 {
   if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
   {
@@ -130,32 +132,98 @@ void MapScene::renderLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSI
           {
             // TODO
           }
+          else if (GeomType == wkbMultiLineString)
+          {
+            // TODO
+          }
           else if (GeomType == wkbLineString)
           {
             LineStringGraphics* LineSG = new LineStringGraphics(dynamic_cast<OGRLineString*>(Geometry),FeaturePen);
             LineSG->setZValue(ZLayer);
-            // TODO handle selection
-            //if (Active) LineSG->setFlag(QGraphicsItem::ItemIsSelectable,true);
+            LineSG->setUnitID(ID);
             addItem(LineSG);
+            m_MapItems[StdClassName].append(LineSG);
           }
-          else if (GeomType == wkbMultiLineString)
+          else if (GeomType == wkbMultiPolygon)
           {
-            // TODO
+            MultiPolygonGraphics* MultiPolyG = new MultiPolygonGraphics(dynamic_cast<OGRMultiPolygon*>(Geometry),
+                                                                        FeaturePen,FeatureBrush);
+            MultiPolyG->setZValue(ZLayer);
+            MultiPolyG->setUnitID(ID);
+            addItem(MultiPolyG);
+            m_MapItems[StdClassName].append(MultiPolyG);
           }
           else if (GeomType == wkbPolygon)
           {
             PolygonGraphics* PolyG = new PolygonGraphics(dynamic_cast<OGRPolygon*>(Geometry),FeaturePen,FeatureBrush);
             PolyG->setZValue(ZLayer);
-            // TODO handle selection
-            //if (Active) PolyG->setFlag(QGraphicsItem::ItemIsSelectable,true);
+            PolyG->setUnitID(ID);
             addItem(PolyG);
-          }
-          else if (GeomType == wkbMultiPolygon)
-          {
-            // TODO
+            m_MapItems[StdClassName].append(PolyG);
           }
         }
       }
     }
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MapScene::clear()
+{
+  m_MapItems.clear();
+  QGraphicsScene::clear();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MapScene::updateActiveLayer()
+{
+  foreach(QList<MapItemGraphics*> Layer,m_MapItems)
+  {
+    foreach(MapItemGraphics* Item,Layer)
+    {
+      Item->setFlag(QGraphicsItem::ItemIsSelectable,false);
+    }
+  }
+
+  if (m_ActiveLayer != NULL)
+  {
+    foreach(MapItemGraphics* Item,*m_ActiveLayer)
+    {
+      Item->setFlag(QGraphicsItem::ItemIsSelectable,true);
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MapScene::setActiveLayer(const QString& UnitClass)
+{
+  if (UnitClass.isEmpty() || !m_MapItems.contains(UnitClass.toStdString()))
+    m_ActiveLayer = NULL;
+  else
+    m_ActiveLayer = &m_MapItems[UnitClass.toStdString()];
+
+  updateActiveLayer();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MapScene::enableUnitsIDs(bool Enabled)
+{
+  // TODO
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
 }
