@@ -63,6 +63,7 @@
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 
 #include <QTableWidgetItem>
@@ -129,6 +130,7 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
 
   connect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(updateFluidXAttributeFromCellValue(int,int)));
+  connect(ui->PcsOrderSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateFluidXProcessOrder(int)));
 
   refresh();
 }
@@ -216,7 +218,23 @@ void SpatialDomainWidget::refresh()
 
   QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
 
-  // TODO remove classes that does not exist anymore
+  // remove classes from display that does not exist anymore
+  for (int j=0;j<Layout->count();j++)
+  {
+    if (j!=Layout->count()-1)
+    {
+      UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(j)->widget());
+
+      if (!ClassesList.contains(ClassW->getClassName()))
+      {
+        if (ClassW->getClassName() == m_ActiveClass)
+          m_ActiveClass = "";
+
+        Layout->takeAt(j)->widget()->deleteLater();
+      }
+    }
+  }
+
 
   for (int i = 0; i<ClassesList.size(); i++)
   {
@@ -251,10 +269,19 @@ void SpatialDomainWidget::refresh()
     }
   }
 
-  if (m_ActiveClass.isEmpty() && Layout->count()>1)
-    setSelectedClass(dynamic_cast<UnitsClassWidget*>(Layout->itemAt(0)->widget())->getClassName());
+
+  if (m_ActiveClass.isEmpty())
+  {
+    // active class is not defined, pick the first units class if any
+    if (Layout->count()>1)
+      setSelectedClass(dynamic_cast<UnitsClassWidget*>(Layout->itemAt(0)->widget())->getClassName());
+    else
+      setActiveClass("");
+  }
   else
-    setActiveClass("");
+  {
+    setSelectedClass(m_ActiveClass);
+  }
 
   refreshMap();
 }
@@ -353,7 +380,9 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
     // ======== Process order
 
+    disconnect(ui->PcsOrderSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateFluidXProcessOrder(int)));
     ui->PcsOrderSpinBox->setValue(UnitDesc.UnitDescriptor->getProcessOrder());
+    connect(ui->PcsOrderSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateFluidXProcessOrder(int)));
 
 
     // ======== Connections
@@ -378,6 +407,8 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
       ui->ConnectionsTableWidget->setRowCount(CurrentRow+1);
 
       Item = new QTableWidgetItem("To");
+      // set connection code to 0 for "To"
+      Item->setData(Qt::UserRole,0);
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -399,6 +430,8 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
       ui->ConnectionsTableWidget->setRowCount(CurrentRow+1);
 
       Item = new QTableWidgetItem("From");
+      // set connection code to 1 for "From"
+      Item->setData(Qt::UserRole,1);
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -420,6 +453,8 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
       ui->ConnectionsTableWidget->setRowCount(CurrentRow+1);
 
       Item = new QTableWidgetItem("Child of");
+      // set connection code to 2 for "Child of"
+      Item->setData(Qt::UserRole,2);
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -441,6 +476,8 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
       ui->ConnectionsTableWidget->setRowCount(CurrentRow+1);
 
       Item = new QTableWidgetItem("Parent of");
+      // set connection code to 3 for "Parent of"
+      Item->setData(Qt::UserRole,3);
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -458,7 +495,6 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
     ui->AttributesTableWidget->clearSelection();
     ui->AttributesTableWidget->selectRow(Row);
-
   }
 }
 
@@ -535,6 +571,7 @@ void SpatialDomainWidget::refreshMap()
 
 void SpatialDomainWidget::addUnitsClass()
 {
+  // TODO
   QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
   updateUpDownButtons();
 }
@@ -602,9 +639,23 @@ void SpatialDomainWidget::moveUnitsClassDown(QString ClassName)
 
 void SpatialDomainWidget::removeUnitsClass(QString ClassName)
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),
-                        QString(__PRETTY_FUNCTION__)+"\n"+ClassName,QMessageBox::Close);
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+  std::set<int> IDs = m_Domain.getIDsOfClass(ClassName.toStdString());
+
+  std::set<int>::iterator it;
+  std::set<int>::iterator itb = IDs.begin();
+  std::set<int>::iterator ite = IDs.end();
+
+  for (it =itb; it!= ite; ++it)
+    m_Domain.deleteUnit(ClassName.toStdString(),*it);
+
+  refresh();
+
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
+               openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+
+  QApplication::restoreOverrideCursor();
 }
 
 
@@ -625,10 +676,33 @@ void SpatialDomainWidget::addUnit()
 
 void SpatialDomainWidget::removeUnit()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
-}
+  int ID = ui->IDsListWidget->currentItem()->data(Qt::UserRole).toInt();
 
+  bool OK = true;
+
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isSpatialUnitsRemovalConfirm())
+  {
+    OK = (QMessageBox::question(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("You are removing the unit %1 of class %2.\n"
+                                    "All connections and attributes units related to this unit will be lost.\n\n"
+                                    "Proceed anyway?").arg(ID).arg(m_ActiveClass),
+                                    QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+  }
+
+  if (OK)
+  {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+    m_Domain.deleteUnit(m_ActiveClass.toStdString(),ID);
+    if (!m_Domain.isClassNameExists(m_ActiveClass.toStdString())) m_ActiveClass = "";
+
+    refresh();
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
+                 openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+    QApplication::restoreOverrideCursor();
+  }
+}
 
 // =====================================================================
 // =====================================================================
@@ -647,8 +721,64 @@ void SpatialDomainWidget::addConnection()
 
 void SpatialDomainWidget::removeConnection()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  if (ui->ConnectionsTableWidget->selectedItems().isEmpty())
+  {
+    QMessageBox::critical(QApplication::activeWindow(),QString("OpenFLUID-builder"),tr("No connection selected for removal"),QMessageBox::Close);
+  }
+  else
+  {
+    bool OK = true;
+
+    int SrcID = ui->IDsListWidget->currentItem()->data(Qt::UserRole).toInt();
+    QString SrcClass = m_ActiveClass;
+
+    int Row = ui->ConnectionsTableWidget->selectedItems().front()->row();
+
+    int DestID = ui->ConnectionsTableWidget->item(Row,2)->text().toInt();
+    QString DestClass = ui->ConnectionsTableWidget->item(Row,1)->text();
+
+    QString ConnStr = ui->ConnectionsTableWidget->item(Row,0)->text();
+    int ConnCode = ui->ConnectionsTableWidget->item(Row,0)->data(Qt::UserRole).toInt();
+
+    if (openfluid::guicommon::PreferencesManager::getInstance()->isSpatialConnsRemovalConfirm())
+    {
+      OK = (QMessageBox::question(QApplication::activeWindow(),
+                                  "OpenFLUID-Builder",
+                                  tr("You are removing the \"%1\" connection\n"
+                                     "between unit %2 of class %3 and unit %4 of class %5.\n\n"
+                                     "Proceed?").arg(ConnStr).arg(SrcID).arg(SrcClass).arg(DestID).arg(DestClass),
+                                      QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+    }
+
+    if (OK)
+    {
+       QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+       if (ConnCode == 0)
+       {
+         m_Domain.removeFromToRelation(make_pair(SrcClass.toStdString(),SrcID),
+                                       make_pair(DestClass.toStdString(),DestID));
+       }
+       else if (ConnCode == 1)
+       {
+         m_Domain.removeFromToRelation(make_pair(DestClass.toStdString(),DestID),
+                                       make_pair(SrcClass.toStdString(),SrcID));
+       }
+       else if (ConnCode == 2)
+       {
+         m_Domain.removeParentChildRelation(make_pair(DestClass.toStdString(),DestID),
+                                            make_pair(SrcClass.toStdString(),SrcID));
+       }
+       else if (ConnCode == 3)
+       {
+         m_Domain.removeParentChildRelation(make_pair(SrcClass.toStdString(),SrcID),
+                                            make_pair(DestClass.toStdString(),DestID));
+       }
+
+       ui->ConnectionsTableWidget->removeRow(Row);
+       emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
+       QApplication::restoreOverrideCursor();
+    }
+  }
 }
 
 
@@ -751,8 +881,23 @@ void SpatialDomainWidget::editAttributesValues()
 
 void SpatialDomainWidget::removeAttribute()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  bool OK = true;
+
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isSpatialAttrsRemovalConfirm())
+  {
+    OK = (QMessageBox::question(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("You are removing the attribute %1 of class %2.\n"
+                                    "All %1 values associated to units of class %2 will be lost.\n\n"
+                                    "Proceed anyway?").arg("TODO").arg(m_ActiveClass),
+                                    QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+  }
+
+  if (OK)
+  {
+    // TODO
+    QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  }
 }
 
 
@@ -867,4 +1012,17 @@ void SpatialDomainWidget::updateFluidXAttributeFromCellValue(int Row, int Column
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
+{
+  int ID = ui->IDsListWidget->currentItem()->text().toInt();
+  (&const_cast<openfluid::fluidx::UnitDescriptor&>(m_Domain.getUnitDescriptor(m_ActiveClass.toStdString(),ID)))->getProcessOrder() = PcsOrd;
+
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
 }

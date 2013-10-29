@@ -110,6 +110,8 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void updateFluidXAttributeFromCellValue(int Row, int Column);
 
+    void updateFluidXProcessOrder(int PcsOrd);
+
 
   private:
 

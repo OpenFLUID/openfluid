@@ -938,6 +938,99 @@ void PreferencesManager::setWaresWatchersActive(bool Active)
 // =====================================================================
 
 
+bool PreferencesManager::isSpatialUnitsRemovalConfirm()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("spatialunitsremovalconfirm")) mp_ConfFile->setValue("spatialunitsremovalconfirm",true);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  bool Confirm = mp_ConfFile->value("spatialunitsremovalconfirm").toBool();
+  mp_ConfFile->endGroup();
+
+  return Confirm;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setSpatialUnitsRemovalConfirm(bool Confirm)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("spatialunitsremovalconfirm",Confirm);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isSpatialConnsRemovalConfirm()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("spatialconnsremovalconfirm")) mp_ConfFile->setValue("spatialconnsremovalconfirm",true);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  bool Confirm = mp_ConfFile->value("spatialconnsremovalconfirm").toBool();
+  mp_ConfFile->endGroup();
+
+  return Confirm;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setSpatialConnsRemovalConfirm(bool Confirm)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("spatialconnsremovalconfirm",Confirm);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool PreferencesManager::isSpatialAttrsRemovalConfirm()
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  if (!mp_ConfFile->contains("spatialattrsremovalconfirm")) mp_ConfFile->setValue("spatialattrsremovalconfirm",true);
+  mp_ConfFile->endGroup();
+
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  bool Confirm = mp_ConfFile->value("spatialattrsremovalconfirm").toBool();
+  mp_ConfFile->endGroup();
+
+  return Confirm;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesManager::setSpatialAttrsRemovalConfirm(bool Confirm)
+{
+  mp_ConfFile->beginGroup("openfluid.builder.interface");
+  mp_ConfFile->setValue("spatialattrsremovalconfirm",Confirm);
+  mp_ConfFile->endGroup();
+  mp_ConfFile->sync();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool PreferencesManager::isAutomaticSaveBeforeRun()
 {
   mp_ConfFile->beginGroup("openfluid.builder.interface");
@@ -963,6 +1056,8 @@ void PreferencesManager::setAutomaticSaveBeforeRun(bool AutoSave)
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
 }
+
+
 
 
 } } //namespaces

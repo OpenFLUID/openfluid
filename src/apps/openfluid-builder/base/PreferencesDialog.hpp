@@ -88,6 +88,12 @@ class PreferencesDialog : public QDialog
 
     void confirmParamRemoval(bool Confirm);
 
+    void confirmUnitsRemoval(bool Confirm);
+
+    void confirmConnectionsRemoval(bool Confirm);
+
+    void confirmAttributesRemoval(bool Confirm);
+
     void enableWatchers(bool Active);
 
     void enableAutoSaveBeforeRun(bool AutoSave);

@@ -59,8 +59,10 @@
 #include "AppTools.hpp"
 
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/guicommon/PreferencesManager.hpp>
 
 #include <QColorDialog>
+#include <QMessageBox>
 
 #include <iostream>
 
@@ -255,7 +257,22 @@ void UnitsClassWidget::notifyDownClicked()
 
 void UnitsClassWidget::notifyRemoveClicked()
 {
-  emit removeClicked(m_ClassName);
+  bool OK = true;
+
+  if (openfluid::guicommon::PreferencesManager::getInstance()->isSpatialUnitsRemovalConfirm())
+  {
+    OK = (QMessageBox::question(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("You are removing the %1 units class.\n"
+                                   "All units of class %1 and associated attributes and connections will be lost.\n\n"
+                                   "Proceed anyway?").arg(m_ClassName),
+                                QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+  }
+
+  if (OK)
+  {
+    emit removeClicked(m_ClassName);
+  }
 }
 
 

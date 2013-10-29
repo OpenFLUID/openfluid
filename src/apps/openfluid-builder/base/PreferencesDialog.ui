@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>500</height>
+    <height>530</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -220,6 +220,36 @@ font : bold;
           </widget>
          </item>
          <item>
+          <widget class="QGroupBox" name="groupBox_8">
+           <property name="title">
+            <string>Spatial Domain</string>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QCheckBox" name="UnitsRemovalCheckBox">
+              <property name="text">
+               <string>Confirm removal of spatial units</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="ConnectionsRemovalCheckBox">
+              <property name="text">
+               <string>Confirm removal of spatial connections</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="AttributesRemovalCheckBox">
+              <property name="text">
+               <string>Confirm removal of spatial attributes</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
           <spacer name="verticalSpacer">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
@@ -403,7 +433,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>9</month>
-                <day>7</day>
+                <day>6</day>
                </date>
               </property>
               <property name="displayFormat">
