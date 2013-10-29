@@ -1,15 +1,6 @@
 
-FIND_PACKAGE(LibArchive REQUIRED)
 
-IF(WIN32)
-
-ENDIF()
-
-IF(WIN32)
-
-ENDIF()
-
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${LibArchive_INCLUDE_DIRS} ${QT_INCLUDES})
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${QT_INCLUDES})
 
 FILE(GLOB OPENFLUID_TOOLS_CPP *.cpp)
 FILE(GLOB OPENFLUID_TOOLS_HPP *.hpp)
@@ -26,7 +17,6 @@ SET_TARGET_PROPERTIES(openfluid-tools PROPERTIES VERSION "${VERSION_MAJOR}.${VER
 TARGET_LINK_LIBRARIES(openfluid-tools 
                       openfluid-core
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
-                      ${LibArchive_LIBRARIES}
                       ${QT_QTCORE_LIBRARY}
                       ${QT_QTNETWORK_LIBRARY}
                       ${QT_QTXML_LIBRARY})
