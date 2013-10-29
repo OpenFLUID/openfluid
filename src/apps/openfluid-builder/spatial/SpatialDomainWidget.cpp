@@ -59,6 +59,7 @@
 #include "SpatialDomainWidget.hpp"
 #include "UnitsClassWidget.hpp"
 #include "AppTools.hpp"
+#include "EditAttributesValuesDialog.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
@@ -126,6 +127,8 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   connect(ui->FitViewButton,SIGNAL(clicked()),ui->GlobalMapView,SLOT(fitViewToItems()));
 
   connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+
+  connect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(updateFluidXAttributeFromCellValue(int,int)));
 
   refresh();
 }
@@ -466,6 +469,8 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
 void SpatialDomainWidget::refreshClassData()
 {
+  disconnect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(updateFluidXAttributeFromCellValue(int,int)));
+
   ui->AttributesTableWidget->clear();
 
   if (!m_ActiveClass.isEmpty())
@@ -492,6 +497,8 @@ void SpatialDomainWidget::refreshClassData()
   }
 
   ui->AttributesTableWidget->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+
+  connect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(updateFluidXAttributeFromCellValue(int,int)));
 }
 
 
@@ -662,8 +669,79 @@ void SpatialDomainWidget::addAttribute()
 
 void SpatialDomainWidget::editAttributesValues()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  if (!ui->AttributesTableWidget->selectedItems().isEmpty())
+  {
+    EditAttributesValuesDialog EditDlg;
+
+    if (EditDlg.exec() == QDialog::Accepted)
+    {
+      if (EditDlg.getEditMode() == EditAttributesValuesDialog::EDIT_REPLACE)
+      {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+        foreach(QTableWidgetItem* Item,ui->AttributesTableWidget->selectedItems())
+        {
+          Item->setText(EditDlg.getReplaceValue());
+        }
+        QApplication::restoreOverrideCursor();
+      }
+      else
+      {
+        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+        bool GlobalOK = true;
+        bool LocalOK;
+
+        // check if selected attributes values are numeric values (required for math operations)
+        foreach(QTableWidgetItem* Item,ui->AttributesTableWidget->selectedItems())
+        {
+          Item->text().toDouble(&LocalOK);
+          GlobalOK &= LocalOK;
+        }
+
+        if (GlobalOK)
+        {
+          if (EditDlg.getEditMode() == EditAttributesValuesDialog::EDIT_MULTIPLY)
+          {
+            double MultValue = EditDlg.getMultiplyValue();
+            foreach(QTableWidgetItem* Item,ui->AttributesTableWidget->selectedItems())
+            {
+              double Value = Item->text().toDouble();
+              Value *= MultValue;
+              Item->setText(QString("%1").arg(Value,0,'g',12));
+            }
+          }
+          else
+          {
+            double AddValue = EditDlg.getAddValue();
+            foreach(QTableWidgetItem* Item,ui->AttributesTableWidget->selectedItems())
+            {
+              double Value = Item->text().toDouble();
+              Value += AddValue;
+              Item->setText(QString("%1").arg(Value,0,'g',12));
+            }
+          }
+
+          QApplication::restoreOverrideCursor();
+        }
+        else
+        {
+          // at least one value is not numeric
+          QApplication::restoreOverrideCursor();
+          QMessageBox::critical(this,"OpenFLUID-Builder",
+                                tr("At least one attribute value is not a numeric value.\n"
+                                   "Edition of attributes cannot be performed."),
+                                QMessageBox::Close);
+        }
+
+      }
+    }
+  }
+  else
+  {
+    // no attribute selected
+    QMessageBox::critical(this,"OpenFLUID-Builder",
+                          tr("No attribute value selected"),QMessageBox::Close);
+  }
 }
 
 
@@ -772,4 +850,21 @@ void SpatialDomainWidget::updateSelectionFromMap()
       }
     }
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::updateFluidXAttributeFromCellValue(int Row, int Column)
+{
+  std::string Attr = ui->AttributesTableWidget->horizontalHeaderItem(Column)->text().toStdString();
+  int ID = ui->AttributesTableWidget->verticalHeaderItem(Row)->text().toInt();
+  std::string Value = ui->AttributesTableWidget->item(Row,Column)->text().toStdString();
+
+  m_Domain.getAttribute(m_ActiveClass.toStdString(),ID,Attr) = Value;
+
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+
 }

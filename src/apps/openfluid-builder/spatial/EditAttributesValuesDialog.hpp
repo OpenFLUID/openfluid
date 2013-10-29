@@ -46,110 +46,61 @@
 */
 
 /**
-  \file SpatialDomainWidget.hpp
+  \file EditAttributesValuesDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SPATIALDOMAINWIDGET_HPP__
-#define __SPATIALDOMAINWIDGET_HPP__
-
-
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "MapScene.hpp"
-
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#ifndef __EDITATTRIBUTESVALUESDIALOG_HPP__
+#define __EDITATTRIBUTESVALUESDIALOG_HPP__
 
 
 namespace Ui
 {
-  class SpatialDomainWidget;
+  class EditAttributesValuesDialog;
 }
 
 
-class SpatialDomainWidget : public WorkspaceWidget
+#include <QDialog>
+
+
+class EditAttributesValuesDialog : public QDialog
 {
-  Q_OBJECT
+  Q_OBJECT;
 
   private slots:
 
-    void setSelectedClass(QString ClassName);
+    void checkGlobal();
 
-    void updateUnitSelection(int Row);
-
-    void addUnitsClass();
-
-    void moveUnitsClassUp(QString ClassName);
-
-    void moveUnitsClassDown(QString ClassName);
-
-    void removeUnitsClass(QString ClassName);
-
-    void addUnit();
-
-    void removeUnit();
-
-    void addConnection();
-
-    void removeConnection();
-
-    void addAttribute();
-
-    void editAttributesValues();
-
-    void removeAttribute();
-
-    void refreshMap();
-
-    void updateSelectionFromMap();
-
-    void updateFluidXAttributeFromCellValue(int Row, int Column);
+    void adaptSelection();
 
 
   private:
 
-    Ui::SpatialDomainWidget* ui;
+    Ui::EditAttributesValuesDialog* ui;
 
-    openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
-
-    openfluid::fluidx::AdvancedDatastoreDescriptor& m_Datastore;
-
-    QString m_ActiveClass;
-
-    MapScene* mp_MapScene;
-
-    bool m_IsFirstShow;
-
-    void setActiveClass(const QString& ClassName);
-
-    void refreshClassStructure();
-
-    void refreshClassData();
-
-    void updateUpDownButtons();
-
-    int getClassIndex(const QString& ClassName);
-
-    QStringList getClassesOrderedStringList();
-
-    void showEvent(QShowEvent *Event);
-
-  public slots:
-
-    void refresh();
+    void setMessage(const QString& Msg = "");
 
 
   public:
 
-    SpatialDomainWidget(QWidget* Parent,openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    enum EditMode { EDIT_REPLACE, EDIT_MULTIPLY, EDIT_ADD, EDIT_UNKNOWN };
 
-    virtual ~SpatialDomainWidget();
+    EditAttributesValuesDialog(QWidget* Parent = NULL);
+
+    ~EditAttributesValuesDialog();
+
+    EditMode getEditMode() const;
+
+    QString getReplaceValue() const;
+
+    double getMultiplyValue() const;
+
+    double getAddValue() const;
 };
 
 
-#endif /* __SPATIALDOMAINWIDGET_HPP__ */
+
+#endif /* __EDITATTRIBUTESVALUESDIALOG_HPP__ */
