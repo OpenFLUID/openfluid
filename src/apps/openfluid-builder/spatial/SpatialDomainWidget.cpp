@@ -60,6 +60,7 @@
 #include "UnitsClassWidget.hpp"
 #include "AppTools.hpp"
 #include "EditAttributesValuesDialog.hpp"
+#include "EditAttributeNameDialog.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
@@ -94,16 +95,19 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   ui->RemoveUnitButton->setIconSize(QSize(20,20));
 
   ui->AddConnectionButton->setIcon(QIcon(":/icons/add.png"));
-  ui->AddConnectionButton->setIconSize(QSize(16,16));
+  ui->AddConnectionButton->setIconSize(QSize(20,20));
 
   ui->RemoveConnectionButton->setIcon(QIcon(":/icons/remove.png"));
-  ui->RemoveConnectionButton->setIconSize(QSize(16,16));
+  ui->RemoveConnectionButton->setIconSize(QSize(20,20));
 
   ui->AddAttributeButton->setIcon(QIcon(":/icons/add.png"));
   ui->AddAttributeButton->setIconSize(QSize(20,20));
 
   ui->EditAttributesButton->setIcon(QIcon(":/icons/modify.png"));
   ui->EditAttributesButton->setIconSize(QSize(20,20));
+
+  ui->RenameAttributeButton->setIcon(QIcon(":/icons/rename-attribute.png"));
+  ui->RenameAttributeButton->setIconSize(QSize(20,20));
 
   ui->RemoveAttributeButton->setIcon(QIcon(":/icons/remove.png"));
   ui->RemoveAttributeButton->setIconSize(QSize(20,20));
@@ -120,6 +124,7 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
 
   connect(ui->AddAttributeButton,SIGNAL(clicked()),this,SLOT(addAttribute()));
   connect(ui->EditAttributesButton,SIGNAL(clicked()),this,SLOT(editAttributesValues()));
+  connect(ui->RenameAttributeButton,SIGNAL(clicked()),this,SLOT(renameAttribute()));
   connect(ui->RemoveAttributeButton,SIGNAL(clicked()),this,SLOT(removeAttribute()));
 
   connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
@@ -788,8 +793,18 @@ void SpatialDomainWidget::removeConnection()
 
 void SpatialDomainWidget::addAttribute()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  QStringList AttrsNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+
+  EditAttributeNameDialog AddDlg(EditAttributeNameDialog::EDIT_ADD,AttrsNames,this);
+  if (AddDlg.exec() == QDialog::Accepted)
+  {
+    m_Domain.addAttribute(m_ActiveClass.toStdString(),
+                          AddDlg.getNewName().toStdString(),
+                          AddDlg.getDefaultValue().toStdString());
+    refreshClassData();
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+  }
 }
 
 
@@ -879,24 +894,76 @@ void SpatialDomainWidget::editAttributesValues()
 // =====================================================================
 
 
+void SpatialDomainWidget::renameAttribute()
+{
+  QStringList AttrsNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+
+  if (AttrsNames.isEmpty())
+  {
+    QMessageBox::critical(this,"OpenFLUID-Builder",
+                          tr("There is no attribute in the %1 units class.\n"
+                             "Rename cannot be performed.").arg(m_ActiveClass),
+                          QMessageBox::Close);
+  }
+  else
+  {
+    EditAttributeNameDialog RenameDlg(EditAttributeNameDialog::EDIT_RENAME,AttrsNames,this);
+    if (RenameDlg.exec() == QDialog::Accepted)
+    {
+      m_Domain.renameAttribute(m_ActiveClass.toStdString(),
+                               RenameDlg.getSelectedOriginalName().toStdString(),
+                               RenameDlg.getNewName().toStdString());
+
+      refreshClassData();
+
+      emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SpatialDomainWidget::removeAttribute()
 {
   bool OK = true;
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->isSpatialAttrsRemovalConfirm())
-  {
-    OK = (QMessageBox::question(QApplication::activeWindow(),
-                                "OpenFLUID-Builder",
-                                tr("You are removing the attribute %1 of class %2.\n"
-                                    "All %1 values associated to units of class %2 will be lost.\n\n"
-                                    "Proceed anyway?").arg("TODO").arg(m_ActiveClass),
-                                    QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
-  }
+  QStringList AttrsNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
 
-  if (OK)
+  if (AttrsNames.isEmpty())
   {
-    // TODO
-    QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+    QMessageBox::critical(this,"OpenFLUID-Builder",
+                          tr("There is no attribute in the %1 units class.\n"
+                              "Rename cannot be performed.").arg(m_ActiveClass),
+                              QMessageBox::Close);
+  }
+  else
+  {
+    EditAttributeNameDialog RemoveDlg(EditAttributeNameDialog::EDIT_REMOVE,AttrsNames,this);
+    if (RemoveDlg.exec() == QDialog::Accepted)
+    {
+      if (openfluid::guicommon::PreferencesManager::getInstance()->isSpatialAttrsRemovalConfirm())
+      {
+        OK = (QMessageBox::question(QApplication::activeWindow(),
+                                    "OpenFLUID-Builder",
+                                    tr("You are removing the attribute %1 of class %2.\n"
+                                        "All %1 values associated to units of class %2 will be lost.\n\n"
+                                        "Proceed anyway?").arg(RemoveDlg.getSelectedOriginalName()).arg(m_ActiveClass),
+                                        QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+      }
+
+      if (OK)
+      {
+        m_Domain.deleteAttribute(m_ActiveClass.toStdString(),
+                                 RemoveDlg.getSelectedOriginalName().toStdString());
+
+        refreshClassData();
+
+        emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+      }
+    }
   }
 }
 

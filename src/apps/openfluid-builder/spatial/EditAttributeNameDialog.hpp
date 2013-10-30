@@ -46,114 +46,66 @@
 */
 
 /**
-  \file SpatialDomainWidget.hpp
+  \file EditAttributeName.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SPATIALDOMAINWIDGET_HPP__
-#define __SPATIALDOMAINWIDGET_HPP__
-
-
-#include <QWidget>
-
-#include "WorkspaceWidget.hpp"
-#include "MapScene.hpp"
-
-#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
-#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#ifndef __EDITATTRIBUTENAMEDIALOG_HPP__
+#define __EDITATTRIBUTENAMEDIALOG_HPP__
 
 
 namespace Ui
 {
-  class SpatialDomainWidget;
+  class EditAttributeNameDialog;
 }
 
 
-class SpatialDomainWidget : public WorkspaceWidget
+#include <QDialog>
+
+class EditAttributeNameDialog : public QDialog
 {
-  Q_OBJECT
+  Q_OBJECT;
+
+  public:
+
+    enum EditMode {EDIT_ADD, EDIT_RENAME, EDIT_REMOVE};
+
 
   private slots:
 
-    void setSelectedClass(QString ClassName);
-
-    void updateUnitSelection(int Row);
-
-    void addUnitsClass();
-
-    void moveUnitsClassUp(QString ClassName);
-
-    void moveUnitsClassDown(QString ClassName);
-
-    void removeUnitsClass(QString ClassName);
-
-    void addUnit();
-
-    void removeUnit();
-
-    void addConnection();
-
-    void removeConnection();
-
-    void addAttribute();
-
-    void editAttributesValues();
-
-    void removeAttribute();
-
-    void renameAttribute();
-
-    void refreshMap();
-
-    void updateSelectionFromMap();
-
-    void updateFluidXAttributeFromCellValue(int Row, int Column);
-
-    void updateFluidXProcessOrder(int PcsOrd);
+    void checkGlobal();
 
 
   private:
 
-    Ui::SpatialDomainWidget* ui;
+    Ui::EditAttributeNameDialog* ui;
 
-    openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+    EditMode m_Mode;
 
-    openfluid::fluidx::AdvancedDatastoreDescriptor& m_Datastore;
+    QStringList m_AttrsNames;
 
-    QString m_ActiveClass;
+    QString m_DefaultMsg;
 
-    MapScene* mp_MapScene;
-
-    bool m_IsFirstShow;
-
-    void setActiveClass(const QString& ClassName);
-
-    void refreshClassStructure();
-
-    void refreshClassData();
-
-    void updateUpDownButtons();
-
-    int getClassIndex(const QString& ClassName);
-
-    QStringList getClassesOrderedStringList();
-
-    void showEvent(QShowEvent *Event);
-
-  public slots:
-
-    void refresh();
+    void setMessage(const QString& Msg = "");
 
 
   public:
 
-    SpatialDomainWidget(QWidget* Parent,openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    EditAttributeNameDialog(EditMode Mode,
+                            const QStringList& AttrsList,
+                            QWidget* Parent = NULL);
 
-    virtual ~SpatialDomainWidget();
+    ~EditAttributeNameDialog();
+
+    QString getSelectedOriginalName() const;
+
+    QString getNewName() const;
+
+    QString getDefaultValue() const;
 };
 
 
-#endif /* __SPATIALDOMAINWIDGET_HPP__ */
+#endif /* __EDITATTRIBUTENAMEDIALOG_HPP__ */

@@ -115,6 +115,7 @@ SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
                         spatial/LineStringGraphics.cpp
                         spatial/PolygonGraphics.cpp spatial/MultiPolygonGraphics.cpp 
                         spatial/EditAttributesValuesDialog.cpp
+                        spatial/EditAttributeNameDialog.cpp
                        )
 
 SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
@@ -123,12 +124,14 @@ SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
                         spatial/MapItemGraphics.cpp spatial/LinearGraphics.hpp spatial/SurfacicGraphics.hpp
                         spatial/LineStringGraphics.hpp
                         spatial/PolygonGraphics.hpp spatial/MultiPolygonGraphics.hpp
-                        spatial/EditAttributesValuesDialog.hpp  
+                        spatial/EditAttributesValuesDialog.hpp
+                        spatial/EditAttributeNameDialog.hpp  
                        )
 
 QT4_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
                                spatial/UnitsClassWidget.ui
                                spatial/EditAttributesValuesDialog.ui
+                               spatial/EditAttributeNameDialog.ui
                              )
 
 

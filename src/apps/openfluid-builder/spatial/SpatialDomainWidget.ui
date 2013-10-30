@@ -301,6 +301,9 @@
                      <height>32</height>
                     </size>
                    </property>
+                   <property name="toolTip">
+                    <string>Add connection</string>
+                   </property>
                    <property name="text">
                     <string/>
                    </property>
@@ -319,6 +322,9 @@
                      <width>32</width>
                      <height>32</height>
                     </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Remove selected connection</string>
                    </property>
                    <property name="text">
                     <string/>
@@ -468,6 +474,9 @@
                <height>32</height>
               </size>
              </property>
+             <property name="toolTip">
+              <string>Add attribute</string>
+             </property>
              <property name="text">
               <string notr="true"/>
              </property>
@@ -487,8 +496,33 @@
                <height>32</height>
               </size>
              </property>
+             <property name="toolTip">
+              <string>Edit selected values</string>
+             </property>
              <property name="text">
               <string notr="true"/>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="RenameAttributeButton">
+             <property name="minimumSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>32</width>
+               <height>32</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Rename attribute</string>
+             </property>
+             <property name="text">
+              <string/>
              </property>
             </widget>
            </item>
@@ -505,6 +539,9 @@
                <width>32</width>
                <height>32</height>
               </size>
+             </property>
+             <property name="toolTip">
+              <string>Remove attribute</string>
              </property>
              <property name="text">
               <string notr="true"/>
