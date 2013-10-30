@@ -106,6 +106,12 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void renameAttribute();
 
+    void addEvent();
+
+    void editEvent();
+
+    void removeEvents();
+
     void refreshMap();
 
     void updateSelectionFromMap();
@@ -134,6 +140,10 @@ class SpatialDomainWidget : public WorkspaceWidget
     void refreshClassStructure();
 
     void refreshClassData();
+
+    void refreshClassAttributes();
+
+    void refreshClassEvents();
 
     void updateUpDownButtons();
 

@@ -112,6 +112,16 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   ui->RemoveAttributeButton->setIcon(QIcon(":/icons/remove.png"));
   ui->RemoveAttributeButton->setIconSize(QSize(20,20));
 
+  ui->AddEventButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddEventButton->setIconSize(QSize(20,20));
+
+  ui->EditEventButton->setIcon(QIcon(":/icons/modify.png"));
+  ui->EditEventButton->setIconSize(QSize(20,20));
+
+  ui->RemoveEventsButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveEventsButton->setIconSize(QSize(20,20));
+
+
   ui->ConnectionsTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
 
   connect(ui->AddUnitsClassButton,SIGNAL(clicked()),this,SLOT(addUnitsClass()));
@@ -126,6 +136,10 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   connect(ui->EditAttributesButton,SIGNAL(clicked()),this,SLOT(editAttributesValues()));
   connect(ui->RenameAttributeButton,SIGNAL(clicked()),this,SLOT(renameAttribute()));
   connect(ui->RemoveAttributeButton,SIGNAL(clicked()),this,SLOT(removeAttribute()));
+
+  connect(ui->AddEventButton,SIGNAL(clicked()),this,SLOT(addEvent()));
+  connect(ui->EditEventButton,SIGNAL(clicked()),this,SLOT(editEvent()));
+  connect(ui->RemoveEventsButton,SIGNAL(clicked()),this,SLOT(removeEvents()));
 
   connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
 
@@ -508,7 +522,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 // =====================================================================
 
 
-void SpatialDomainWidget::refreshClassData()
+void SpatialDomainWidget::refreshClassAttributes()
 {
   disconnect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(updateFluidXAttributeFromCellValue(int,int)));
 
@@ -540,6 +554,81 @@ void SpatialDomainWidget::refreshClassData()
   ui->AttributesTableWidget->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
 
   connect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(updateFluidXAttributeFromCellValue(int,int)));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::refreshClassEvents()
+{
+  ui->EventsTableWidget->clearContents();
+  ui->EventsTableWidget->setRowCount(0);
+
+  if (!m_ActiveClass.isEmpty())
+  {
+    std::set<int> IDs = m_Domain.getIDsOfClass(m_ActiveClass.toStdString());
+
+    std::set<int>::iterator it;
+    std::set<int>::iterator itb = IDs.begin();
+    std::set<int>::iterator ite = IDs.end();
+
+    int RowIndex = 0;
+
+    for (it=itb; it!=ite; ++it)
+    {
+      const std::list<openfluid::core::Event*>* EventsListPtr = &(m_Domain.getUnit(m_ActiveClass.toStdString(),*it).Events);
+
+      if (!EventsListPtr->empty())
+      {
+        std::list<openfluid::core::Event*>::const_iterator Eit;
+        std::list<openfluid::core::Event*>::const_iterator Eitb = EventsListPtr->begin();
+        std::list<openfluid::core::Event*>::const_iterator Eite = EventsListPtr->end();
+
+        for (Eit=Eitb; Eit!=Eite; ++Eit)
+        {
+          ui->EventsTableWidget->setRowCount(RowIndex+1);
+
+          ui->EventsTableWidget->setItem(RowIndex,0,new QTableWidgetItem(QString::fromStdString((*Eit)->getDateTime().getAsISOString())));
+
+          ui->EventsTableWidget->setItem(RowIndex,1,new QTableWidgetItem(QString("%1").arg(*it)));
+
+          openfluid::core::Event::EventInfosMap_t Infos = (*Eit)->getInfos();
+          openfluid::core::Event::EventInfosMap_t::iterator Iit;
+          openfluid::core::Event::EventInfosMap_t::iterator Iitb = Infos.begin();
+          openfluid::core::Event::EventInfosMap_t::iterator Iite = Infos.end();
+
+          QString InfosStr;
+
+          for (Iit=Iitb; Iit!=Iite; ++Iit)
+          {
+            if (Iit != Iitb) InfosStr += ", ";
+            InfosStr += QString::fromStdString((*Iit).first)+"="+QString::fromStdString((*Iit).second);
+          }
+
+          ui->EventsTableWidget->setItem(RowIndex,2,new QTableWidgetItem(InfosStr));
+
+          ui->EventsTableWidget->resizeRowToContents(RowIndex);
+
+          RowIndex++;
+        }
+      }
+    }
+  }
+
+  ui->EventsTableWidget->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::refreshClassData()
+{
+  refreshClassAttributes();
+  refreshClassEvents();
 }
 
 
@@ -801,7 +890,7 @@ void SpatialDomainWidget::addAttribute()
     m_Domain.addAttribute(m_ActiveClass.toStdString(),
                           AddDlg.getNewName().toStdString(),
                           AddDlg.getDefaultValue().toStdString());
-    refreshClassData();
+    refreshClassAttributes();
 
     emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
   }
@@ -914,7 +1003,7 @@ void SpatialDomainWidget::renameAttribute()
                                RenameDlg.getSelectedOriginalName().toStdString(),
                                RenameDlg.getNewName().toStdString());
 
-      refreshClassData();
+      refreshClassAttributes();
 
       emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
     }
@@ -959,7 +1048,7 @@ void SpatialDomainWidget::removeAttribute()
         m_Domain.deleteAttribute(m_ActiveClass.toStdString(),
                                  RemoveDlg.getSelectedOriginalName().toStdString());
 
-        refreshClassData();
+        refreshClassAttributes();
 
         emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
       }
@@ -1093,3 +1182,37 @@ void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::addEvent()
+{
+  // TODO
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::editEvent()
+{
+  // TODO
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::removeEvents()
+{
+  // TODO
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
