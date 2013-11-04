@@ -113,11 +113,8 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
 
   ui->VersionLabel->setText(std::string("OpenFLUID v"+openfluid::config::FULL_VERSION).c_str());
 
-  ClickableLabel* URL = new ClickableLabel("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>",this);
-  URL->setAlignment(Qt::AlignCenter);
-  connect(URL,SIGNAL(clicked()),Actions->getAction("HelpOnlineWeb"),SLOT(trigger()));
-  ui->UpperFrame->layout()->addWidget(URL);
-
+  ui->URLLabel->setText("<a href=\"http://www.openfluid-project.org\">http://www.openfluid-project.org</a>");
+  connect(ui->URLLabel,SIGNAL(clicked()),Actions->getAction("HelpOnlineWeb"),SLOT(trigger()));
 
   // left buttons
 
