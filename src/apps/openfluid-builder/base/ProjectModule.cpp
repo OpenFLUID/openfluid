@@ -87,6 +87,7 @@
 
 #include <iostream>
 
+#define BUILDER_WARE_WATCHERS_DELAY 2000
 
 // =====================================================================
 // =====================================================================
@@ -99,11 +100,27 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 
-  mp_SimulatorsPlugsWatcher= new QFileSystemWatcher(this);
+
+  // watcher for simulators, with delay for ui update using timer
+  mp_SimulatorsPlugsWatcher = new QFileSystemWatcher(this);
+
+  mp_SimulatorsPlugsUpdateTimer = new QTimer(this);
+  mp_SimulatorsPlugsUpdateTimer->setInterval(BUILDER_WARE_WATCHERS_DELAY);
+  mp_SimulatorsPlugsUpdateTimer->setSingleShot(true);
+
+  connect(mp_SimulatorsPlugsWatcher,SIGNAL(directoryChanged(const QString&)),mp_SimulatorsPlugsUpdateTimer,SLOT(start()));
+  connect(mp_SimulatorsPlugsUpdateTimer,SIGNAL(timeout()),SLOT(updateSimulatorsWares()));
+
+  // watcher for observers, with delay for ui update using timer
   mp_ObserversPlugsWatcher = new QFileSystemWatcher(this);
 
-  connect(mp_SimulatorsPlugsWatcher,SIGNAL(directoryChanged(const QString&)),this,SLOT(updateSimulatorsWares()));
-  connect(mp_ObserversPlugsWatcher,SIGNAL(directoryChanged(const QString&)),this,SLOT(updateObserversWares()));
+  mp_ObserversPlugsUpdateTimer = new QTimer(this);
+  mp_ObserversPlugsUpdateTimer->setInterval(BUILDER_WARE_WATCHERS_DELAY);
+  mp_ObserversPlugsUpdateTimer->setSingleShot(true);
+
+  connect(mp_ObserversPlugsWatcher,SIGNAL(directoryChanged(const QString&)),mp_ObserversPlugsUpdateTimer,SLOT(start()));
+  connect(mp_ObserversPlugsUpdateTimer,SIGNAL(timeout()),SLOT(updateObserversWares()));
+
 
   updateWatchersPaths();
 }
@@ -137,7 +154,7 @@ void ProjectModule::updateWatchersPaths()
   if (openfluid::guicommon::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
     Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths())
-            << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
+          << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
 
     Paths.removeDuplicates();
 
@@ -159,7 +176,7 @@ void ProjectModule::updateWatchersPaths()
   {
 
     Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths())
-                  << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
+          << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
 
     Paths.removeDuplicates();
 

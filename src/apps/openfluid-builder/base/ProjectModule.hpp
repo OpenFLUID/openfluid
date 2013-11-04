@@ -64,6 +64,7 @@
 #include <QString>
 #include <QDockWidget>
 #include <QFileSystemWatcher>
+#include <QTimer>
 
 
 class ProjectCentral;
@@ -113,6 +114,10 @@ class ProjectModule : public AbstractModule
     QFileSystemWatcher* mp_SimulatorsPlugsWatcher;
 
     QFileSystemWatcher* mp_ObserversPlugsWatcher;
+
+    QTimer* mp_SimulatorsPlugsUpdateTimer;
+
+    QTimer* mp_ObserversPlugsUpdateTimer;
 
     void updateWatchersPaths();
 
