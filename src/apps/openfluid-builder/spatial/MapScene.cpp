@@ -63,7 +63,6 @@
 #include "PolygonGraphics.hpp"
 #include "LineStringGraphics.hpp"
 
-#include <iostream>
 #include <QMessageBox>
 #include <QApplication>
 

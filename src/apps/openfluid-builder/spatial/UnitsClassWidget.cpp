@@ -64,8 +64,6 @@
 #include <QColorDialog>
 #include <QMessageBox>
 
-#include <iostream>
-
 
 QString UnitsClassWidget::m_ColorButtonStyleSheet =
     "QPushButton{ background-color : %1;}";
@@ -356,8 +354,6 @@ void UnitsClassWidget::changeLineWidth(int Width)
 
 void UnitsClassWidget::changeVisible()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
-
   emit styleChanged(m_ClassName);
 }
 

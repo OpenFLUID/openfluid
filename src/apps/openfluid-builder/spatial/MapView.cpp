@@ -60,7 +60,7 @@
 
 
 MapView::MapView(QWidget* Parent):
-  QGraphicsView(Parent)
+  QGraphicsView(Parent), m_AutomaticViewEnabled(true)
 {
   setRenderHints(QPainter::TextAntialiasing | QPainter::Antialiasing);
   scale(1,-1);
@@ -75,12 +75,40 @@ void MapView::wheelEvent(QWheelEvent* Event)
 {
   if (Event->modifiers().testFlag(Qt::ControlModifier)) // zoom only when Ctrl key is pressed
   {
+    emit automaticViewEnabled(false);
+
     // TODO zoom center on mouse cursor
     if (Event->delta() < 0) scale(0.9,0.9);
     else scale(1.1,1.1);
   }
 //  Event->ignore();
   QGraphicsView::wheelEvent(Event);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MapView::resizeEvent(QResizeEvent *Event)
+{
+  if (m_AutomaticViewEnabled)
+    fitViewToItems();
+
+  QGraphicsView::resizeEvent(Event);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MapView::enableAutomaticView(bool Enabled)
+{
+  m_AutomaticViewEnabled = Enabled;
+
+  if (m_AutomaticViewEnabled)
+    fitViewToItems();
 }
 
 

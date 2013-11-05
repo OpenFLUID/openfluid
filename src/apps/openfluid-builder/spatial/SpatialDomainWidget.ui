@@ -22,15 +22,15 @@
      <item>
       <widget class="QPushButton" name="AddUnitsClassButton">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>24</width>
-         <height>24</height>
+         <width>0</width>
+         <height>0</height>
         </size>
        </property>
        <property name="font">
@@ -104,7 +104,7 @@
          <x>0</x>
          <y>0</y>
          <width>278</width>
-         <height>583</height>
+         <height>580</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -371,16 +371,29 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_9">
               <item>
-               <widget class="QCheckBox" name="UnitsIDsCheckBox">
+               <widget class="QCheckBox" name="AutomaticViewCheckBox">
                 <property name="text">
-                 <string>Show units IDs</string>
+                 <string>Automatic view</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="QPushButton" name="FitViewButton">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
                 <property name="text">
-                 <string>Fit to global extent</string>
+                 <string>Fit view to full extent</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="UnitsIDsCheckBox">
+                <property name="text">
+                 <string>Show units IDs</string>
                 </property>
                </widget>
               </item>

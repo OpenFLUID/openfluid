@@ -114,6 +114,8 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void refreshMap();
 
+    void enableAutomaticView(bool Enabled);
+
     void updateSelectionFromMap();
 
     void updateFluidXAttributeFromCellValue(int Row, int Column);
@@ -133,8 +135,6 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     MapScene* mp_MapScene;
 
-    bool m_IsFirstShow;
-
     void setActiveClass(const QString& ClassName);
 
     void refreshClassStructure();
@@ -151,7 +151,6 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     QStringList getClassesOrderedStringList();
 
-    void showEvent(QShowEvent *Event);
 
   public slots:
 

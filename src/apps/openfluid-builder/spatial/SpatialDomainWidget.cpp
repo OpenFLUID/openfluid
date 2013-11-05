@@ -75,7 +75,7 @@
 SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
   WorkspaceWidget(Parent,AFXDesc), ui(new Ui::SpatialDomainWidget),
   m_Domain(AFXDesc.getDomain()), m_Datastore(AFXDesc.getDatastore()),
-  m_ActiveClass(""), m_IsFirstShow(true)
+  m_ActiveClass("")
 {
   ui->setupUi(this);
 
@@ -143,10 +143,19 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
 
   connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
 
+  // map view
+  // TODO to reactivate when units IDs display will be fully functional
+  ui->UnitsIDsCheckBox->setVisible(false);
+  ui->GlobalMapView->enableAutomaticView(ui->AutomaticViewCheckBox->isChecked());
+
   connect(ui->UnitsIDsCheckBox,SIGNAL(toggled(bool)),mp_MapScene,SLOT(enableUnitsIDs(bool)));
   connect(ui->FitViewButton,SIGNAL(clicked()),ui->GlobalMapView,SLOT(fitViewToItems()));
+  connect(ui->AutomaticViewCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableAutomaticView(bool)));
+  connect(ui->GlobalMapView,SIGNAL(automaticViewEnabled(bool)),
+          ui->AutomaticViewCheckBox,SLOT(setChecked(bool)));
 
   connect(mp_MapScene,SIGNAL(selectionChanged()),this,SLOT(updateSelectionFromMap()));
+
 
   connect(ui->AttributesTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(updateFluidXAttributeFromCellValue(int,int)));
   connect(ui->PcsOrderSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateFluidXProcessOrder(int)));
@@ -159,15 +168,9 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
 // =====================================================================
 
 
-void SpatialDomainWidget::showEvent(QShowEvent *Event)
+SpatialDomainWidget::~SpatialDomainWidget()
 {
-
-  if (m_IsFirstShow)
-  {
-    ui->GlobalMapView->fitViewToItems();
-    m_IsFirstShow = false;
-  }
-  WorkspaceWidget::showEvent(Event);
+  delete ui;
 }
 
 
@@ -175,9 +178,10 @@ void SpatialDomainWidget::showEvent(QShowEvent *Event)
 // =====================================================================
 
 
-SpatialDomainWidget::~SpatialDomainWidget()
+void SpatialDomainWidget::enableAutomaticView(bool Enabled)
 {
-  delete ui;
+  ui->GlobalMapView->enableAutomaticView(Enabled);
+  ui->FitViewButton->setEnabled(!Enabled);
 }
 
 
@@ -340,7 +344,8 @@ void SpatialDomainWidget::setActiveClass(const QString& ClassName)
   m_ActiveClass = ClassName;
 
   if (m_ActiveClass.isEmpty())
-  {
+  {//  ui->GlobalMapView->fitViewToItems();
+
     ui->StructureTabWidget->setVisible(false);
     ui->DataTabWidget->setVisible(false);
   }

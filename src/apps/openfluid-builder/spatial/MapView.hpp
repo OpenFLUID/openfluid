@@ -66,12 +66,26 @@ class MapView : public QGraphicsView
 
   private:
 
+    bool m_AutomaticViewEnabled;
+
     void wheelEvent(QWheelEvent* Event);
+
+
+  protected:
+
+    void resizeEvent(QResizeEvent *Event);
+
+
+  signals:
+
+    void automaticViewEnabled(bool);
 
 
   public slots:
 
     void fitViewToItems();
+
+    void enableAutomaticView(bool Enabled);
 
 
   public:
