@@ -100,7 +100,6 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 
-
   // watcher for simulators, with delay for ui update using timer
   mp_SimulatorsPlugsWatcher = new QFileSystemWatcher(this);
 
@@ -306,7 +305,7 @@ void ProjectModule::whenSaveAsked()
 
 void ProjectModule::whenSaveAsAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // TODO
   QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
 }
 
@@ -317,7 +316,7 @@ void ProjectModule::whenSaveAsAsked()
 
 void ProjectModule::whenPropertiesAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // TODO
   QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
 }
 
@@ -558,7 +557,7 @@ void ProjectModule::whenMarketAsked()
 
 void ProjectModule::whenRefreshAsked()
 {
-  std::cout << __PRETTY_FUNCTION__ << std::endl;
+  // TODO Enabled only if ware changes are not automatic (remove from toolbar)
   QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
 }
 

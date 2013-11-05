@@ -222,49 +222,57 @@ void AppCoordinator::setHomeModule()
 
 void AppCoordinator::setProjectModule(const QString& ProjectPath)
 {
-  AbstractModule* Module = new ProjectModule(ProjectPath);
+  try
+  {
+    AbstractModule* Module = new ProjectModule(ProjectPath);
 
-  setCurrentModule(Module);
+    setCurrentModule(Module);
 
-  m_Actions.setProjectMode();
-
-
-  if (mp_DockWidget == NULL)
-    mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
-
-  DashboardFrame* DockedWidget = (DashboardFrame*)(((ProjectModule*)Module)->getDockWidget(mp_DockWidget));
-  DockedWidget->updateOrientation(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition());
-
-  mp_DockWidget->setObjectName("DockWidget");
-  mp_DockWidget->setWidget(DockedWidget);
-  mp_DockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
-                                 Qt::RightDockWidgetArea |
-                                 Qt::BottomDockWidgetArea);
-
-  mp_DockWidget->setStyleSheet(QString("QDockWidget {padding: 5px; font: bold; background: %1;} "
-                                       "QDockWidget::title {padding : 5px; font: bold; }")
-                                      .arg(BUILDER_TOOLBAR_BGCOLOR));
-
-  m_MainWindow.addDockWidget(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition(),
-                             mp_DockWidget);
-
-  connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
-          DockedWidget,SLOT(updateOrientation(Qt::DockWidgetArea)));
-
-  connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
-          this,SLOT(saveDockArea(Qt::DockWidgetArea)));
+    m_Actions.setProjectMode();
 
 
-  connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
-          this,SLOT(enableSave()));
+    if (mp_DockWidget == NULL)
+      mp_DockWidget = new QDockWidget(tr("Project dashboard"),&m_MainWindow);
 
-  connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),
-          this,SLOT(disableSave()));
+    DashboardFrame* DockedWidget = (DashboardFrame*)(((ProjectModule*)Module)->getDockWidget(mp_DockWidget));
+    DockedWidget->updateOrientation(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition());
 
-  connect((ProjectModule*)mp_CurrentModule,SIGNAL(runEnabled(bool)),
-          this,SLOT(enableRun(bool)));
+    mp_DockWidget->setObjectName("DockWidget");
+    mp_DockWidget->setWidget(DockedWidget);
+    mp_DockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
+                                   Qt::RightDockWidgetArea |
+                                   Qt::BottomDockWidgetArea);
 
-  enableRun(((ProjectModule*)Module)->isOkForSimulation());
+    mp_DockWidget->setStyleSheet(QString("QDockWidget {padding: 5px; font: bold; background: %1;} "
+                                         "QDockWidget::title {padding : 5px; font: bold; }")
+                                        .arg(BUILDER_TOOLBAR_BGCOLOR));
+
+    m_MainWindow.addDockWidget(openfluid::guicommon::PreferencesManager::getInstance()->getDockPosition(),
+                               mp_DockWidget);
+
+    connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
+            DockedWidget,SLOT(updateOrientation(Qt::DockWidgetArea)));
+
+    connect(mp_DockWidget,SIGNAL(dockLocationChanged(Qt::DockWidgetArea)),
+            this,SLOT(saveDockArea(Qt::DockWidgetArea)));
+
+
+    connect((ProjectModule*)mp_CurrentModule,SIGNAL(fluidxChanged(openfluid::builderext::FluidXUpdateFlags::Flags)),
+            this,SLOT(enableSave()));
+
+    connect((ProjectModule*)mp_CurrentModule,SIGNAL(savePerformed()),
+            this,SLOT(disableSave()));
+
+    connect((ProjectModule*)mp_CurrentModule,SIGNAL(runEnabled(bool)),
+            this,SLOT(enableRun(bool)));
+
+    enableRun(((ProjectModule*)Module)->isOkForSimulation());
+  }
+  catch (openfluid::base::Exception& E)
+  {
+    QApplication::restoreOverrideCursor();
+    QMessageBox::critical(NULL,tr("Project error"),QString(E.getMessage().c_str()));
+  }
 }
 
 
@@ -321,8 +329,8 @@ void AppCoordinator::openProject(const QString& Name, const QString& Path)
         QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
         QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
 
-  m_Actions.updateRecentProjectsActions();
   setProjectModule(Path);
+  m_Actions.updateRecentProjectsActions();
   m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  Name +" ]");
 }
 

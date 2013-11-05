@@ -51,8 +51,6 @@
  \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
  */
 
-#include <QMessageBox>
-#include <QApplication>
 
 
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -71,7 +69,8 @@
 
 
 
-ProjectCentral::ProjectCentral(QString PrjPath)
+ProjectCentral::ProjectCentral(QString PrjPath):
+  mp_FXDesc(NULL),mp_AdvancedFXDesc(NULL)
 {
   openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
 
@@ -91,9 +90,7 @@ ProjectCentral::ProjectCentral(QString PrjPath)
     }
     catch (openfluid::base::Exception& E)
     {
-      QMessageBox::critical(NULL,tr("Project error"),QString(E.getMessage().c_str()));
-
-      //because we're in a constructor catch, so destructor isn't called
+      //because we're in a constructor catch, so destructor is not called
       deleteData();
       throw;
     }
@@ -105,9 +102,7 @@ ProjectCentral::ProjectCentral(QString PrjPath)
   }
   catch (openfluid::base::Exception& E)
   {
-    QMessageBox::critical(NULL,tr("Project error"),QString(E.getMessage().c_str()));
-
-    //because we're in a constructor catch, so destructor isn't called
+    //because we're in a constructor catch, so destructor is not called
     deleteData();
     throw;
   }
@@ -132,8 +127,17 @@ ProjectCentral::~ProjectCentral()
 
 void ProjectCentral::deleteData()
 {
-  delete mp_AdvancedFXDesc;
-  delete mp_FXDesc;
+  if (mp_AdvancedFXDesc == NULL)
+  {
+    delete mp_AdvancedFXDesc;
+    mp_AdvancedFXDesc = NULL;
+  }
+
+  if (mp_FXDesc == NULL)
+  {
+    delete mp_FXDesc;
+    mp_FXDesc = NULL;
+  }
 
   openfluid::base::RuntimeEnvironment::getInstance()->detachFromProject();
 }
