@@ -86,6 +86,8 @@ class HomeModule : public AbstractModule
 
     bool whenOpenAsked();
 
+    bool whenReloadAsked();
+
     void whenSaveAsked();
 
     void whenSaveAsAsked();
@@ -104,7 +106,7 @@ class HomeModule : public AbstractModule
 
     void whenMarketAsked();
 
-    void whenRefreshAsked();
+    void whenWaresRefreshAsked();
 
     bool whenOpenExampleAsked();
 };

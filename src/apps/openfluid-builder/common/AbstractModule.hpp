@@ -90,6 +90,8 @@ class AbstractModule : public QObject
 
     virtual bool whenOpenAsked() = 0;
 
+    virtual bool whenReloadAsked() = 0;
+
     virtual void whenSaveAsked() = 0;
 
     virtual void whenSaveAsAsked() = 0;
@@ -108,7 +110,7 @@ class AbstractModule : public QObject
 
     virtual void whenMarketAsked() = 0;
 
-    virtual void whenRefreshAsked() = 0;
+    virtual void whenWaresRefreshAsked() = 0;
 
     virtual bool whenOpenExampleAsked() = 0;
 

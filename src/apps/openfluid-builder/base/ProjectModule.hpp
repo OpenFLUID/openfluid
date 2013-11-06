@@ -136,6 +136,8 @@ class ProjectModule : public AbstractModule
 
     void runEnabled(bool Enabled);
 
+    void refreshWaresEnabled(bool Enabled);
+
 
   private slots:
 
@@ -166,6 +168,8 @@ class ProjectModule : public AbstractModule
 
     bool whenOpenAsked();
 
+    bool whenReloadAsked();
+
     void whenSaveAsked();
 
     void whenSaveAsAsked();
@@ -184,7 +188,7 @@ class ProjectModule : public AbstractModule
 
     void whenMarketAsked();
 
-    void whenRefreshAsked();
+    void whenWaresRefreshAsked();
 
     bool whenOpenExampleAsked();
 

@@ -89,6 +89,8 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
           this, SLOT(whenNewAsked()));
   connect(m_Actions.getAction("ProjectOpen"), SIGNAL(triggered()),
           this, SLOT(whenOpenAsked()));
+  connect(m_Actions.getAction("ProjectReload"), SIGNAL(triggered()),
+            this, SLOT(whenReloadAsked()));
   connect(m_Actions.getAction("ProjectSave"), SIGNAL(triggered()),
           this, SLOT(whenSaveAsked()));
   connect(m_Actions.getAction("ProjectSaveAs"), SIGNAL(triggered()),
@@ -104,7 +106,7 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   connect(m_Actions.getAction("SimulationRun"), SIGNAL(triggered()),
           this, SLOT(whenRunAsked()));
   connect(m_Actions.getAction("WaresRefresh"), SIGNAL(triggered()),
-          this, SLOT(whenRefreshAsked()));
+          this, SLOT(whenWaresRefreshAsked()));
 
   connect(m_Actions.getAction("ViewDashboard"), SIGNAL(triggered()),
           this, SLOT(whenViewDashboardAsked()));
@@ -266,7 +268,12 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
     connect((ProjectModule*)mp_CurrentModule,SIGNAL(runEnabled(bool)),
             this,SLOT(enableRun(bool)));
 
+    connect((ProjectModule*)mp_CurrentModule,SIGNAL(refreshWaresEnabled(bool)),
+            m_Actions.getAction("WaresRefresh"),SLOT(setEnabled(bool)));
+
     enableRun(((ProjectModule*)Module)->isOkForSimulation());
+
+    m_Actions.getAction("WaresRefresh")->setEnabled(!openfluid::guicommon::PreferencesManager::getInstance()->isWaresWatchersActive());
   }
   catch (openfluid::base::Exception& E)
   {
@@ -515,6 +522,20 @@ void AppCoordinator::whenOpenRecentAsked()
 // =====================================================================
 
 
+void AppCoordinator::whenReloadAsked()
+{
+  if (mp_CurrentModule->whenReloadAsked())
+  {
+    // TODO
+    QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void AppCoordinator::whenSaveAsked()
 {
   mp_CurrentModule->whenSaveAsked();
@@ -572,9 +593,9 @@ void AppCoordinator::whenPreferencesAsked()
 // =====================================================================
 
 
-void AppCoordinator::whenRefreshAsked()
+void AppCoordinator::whenWaresRefreshAsked()
 {
-  mp_CurrentModule->whenRefreshAsked();
+  mp_CurrentModule->whenWaresRefreshAsked();
 }
 
 

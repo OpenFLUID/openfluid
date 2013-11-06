@@ -100,6 +100,7 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
 {
   mp_ProjectCentral = new ProjectCentral(ProjectPath);
 
+
   // watcher for simulators, with delay for ui update using timer
   mp_SimulatorsPlugsWatcher = new QFileSystemWatcher(this);
 
@@ -288,6 +289,16 @@ bool ProjectModule::whenOpenAsked()
 // =====================================================================
 
 
+bool ProjectModule::whenReloadAsked()
+{
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ProjectModule::whenSaveAsked()
 {
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
@@ -384,6 +395,8 @@ void ProjectModule::whenPreferencesAsked()
       updateObserversWares();
     }
   }
+
+  emit refreshWaresEnabled(!PrefsMgr->isWaresWatchersActive());
 }
 
 
@@ -555,10 +568,10 @@ void ProjectModule::whenMarketAsked()
 // =====================================================================
 
 
-void ProjectModule::whenRefreshAsked()
+void ProjectModule::whenWaresRefreshAsked()
 {
-  // TODO Enabled only if ware changes are not automatic (remove from toolbar)
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  updateSimulatorsWares();
+  updateObserversWares();
 }
 
 
