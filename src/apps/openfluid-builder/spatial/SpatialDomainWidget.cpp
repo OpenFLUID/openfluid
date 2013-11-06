@@ -64,6 +64,7 @@
 #include "EditAttributeNameDialog.hpp"
 #include "AddUnitsClassDialog.hpp"
 #include "AddUnitToClassDialog.hpp"
+#include "AddConnectionDialog.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
@@ -435,7 +436,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
       Item = new QTableWidgetItem("To");
       // set connection code to 0 for "To"
-      Item->setData(Qt::UserRole,0);
+      Item->setData(Qt::UserRole,BUILDER_CONNCODE_TO);
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -458,7 +459,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
       Item = new QTableWidgetItem("From");
       // set connection code to 1 for "From"
-      Item->setData(Qt::UserRole,1);
+      Item->setData(Qt::UserRole,BUILDER_CONNCODE_FROM);
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -481,7 +482,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
       Item = new QTableWidgetItem("Child of");
       // set connection code to 2 for "Child of"
-      Item->setData(Qt::UserRole,2);
+      Item->setData(Qt::UserRole,BUILDER_CONNCODE_CHILDOF);
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -504,7 +505,7 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
       Item = new QTableWidgetItem("Parent of");
       // set connection code to 3 for "Parent of"
-      Item->setData(Qt::UserRole,3);
+      Item->setData(Qt::UserRole,BUILDER_CONNCODE_PARENTOF);
       ui->ConnectionsTableWidget->setItem(CurrentRow, 0, Item);
 
       Item = new QTableWidgetItem(QString::fromStdString((*itconn).first));
@@ -678,7 +679,6 @@ void SpatialDomainWidget::addUnitsClass()
   AddUnitsClassDialog AddDlg(ExistingClasses,this);
   if (AddDlg.exec() == QDialog::Accepted)
   {
-    // TODO
     openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
     UDesc->getUnitClass() = AddDlg.getClassName().toStdString();
     UDesc->getUnitID() = AddDlg.getUnitID();
@@ -866,8 +866,48 @@ void SpatialDomainWidget::removeUnit()
 
 void SpatialDomainWidget::addConnection()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  openfluid::core::UnitID_t SrcID = ui->IDsListWidget->currentItem()->data(Qt::UserRole).toInt();
+
+  AddConnectionDialog AddDlg(m_ActiveClass, QString("%1").arg(SrcID),
+                             &m_Domain,
+                             this);
+
+  if (AddDlg.exec() == QDialog::Accepted)
+  {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    ConnectionCode ConnCode = AddDlg.getConnectionCode();
+    std::string SrcClass = m_ActiveClass.toStdString();
+    std::string DestClass = AddDlg.getDestinationClass().toStdString();
+    openfluid::core::UnitID_t DestID = AddDlg.getDestinationID().toInt();
+
+    if (ConnCode == BUILDER_CONNCODE_TO)
+    {
+      m_Domain.addFromToRelation(make_pair(SrcClass,SrcID),
+                                 make_pair(DestClass,DestID));
+    }
+    else if (ConnCode == BUILDER_CONNCODE_FROM)
+    {
+      m_Domain.addFromToRelation(make_pair(DestClass,DestID),
+                                 make_pair(SrcClass,SrcID));
+    }
+    else if (ConnCode == BUILDER_CONNCODE_PARENTOF)
+    {
+      m_Domain.addParentChildRelation(make_pair(SrcClass,SrcID),
+                                      make_pair(DestClass,DestID));
+    }
+    else if (ConnCode == BUILDER_CONNCODE_CHILDOF)
+    {
+      m_Domain.addParentChildRelation(make_pair(DestClass,DestID),
+                                      make_pair(SrcClass,SrcID));
+    }
+
+    updateUnitSelection(ui->IDsListWidget->currentRow());
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
+
+    QApplication::restoreOverrideCursor();
+  }
 }
 
 
@@ -909,29 +949,32 @@ void SpatialDomainWidget::removeConnection()
     if (OK)
     {
        QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-       if (ConnCode == 0)
+
+       if (ConnCode == BUILDER_CONNCODE_TO)
        {
          m_Domain.removeFromToRelation(make_pair(SrcClass.toStdString(),SrcID),
                                        make_pair(DestClass.toStdString(),DestID));
        }
-       else if (ConnCode == 1)
+       else if (ConnCode == BUILDER_CONNCODE_FROM)
        {
          m_Domain.removeFromToRelation(make_pair(DestClass.toStdString(),DestID),
                                        make_pair(SrcClass.toStdString(),SrcID));
        }
-       else if (ConnCode == 2)
-       {
-         m_Domain.removeParentChildRelation(make_pair(DestClass.toStdString(),DestID),
-                                            make_pair(SrcClass.toStdString(),SrcID));
-       }
-       else if (ConnCode == 3)
+       else if (ConnCode == BUILDER_CONNCODE_PARENTOF)
        {
          m_Domain.removeParentChildRelation(make_pair(SrcClass.toStdString(),SrcID),
                                             make_pair(DestClass.toStdString(),DestID));
        }
+       else if (ConnCode == BUILDER_CONNCODE_CHILDOF)
+       {
+         m_Domain.removeParentChildRelation(make_pair(DestClass.toStdString(),DestID),
+                                            make_pair(SrcClass.toStdString(),SrcID));
+       }
 
-       ui->ConnectionsTableWidget->removeRow(Row);
+       updateUnitSelection(ui->IDsListWidget->currentRow());
+
        emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
+
        QApplication::restoreOverrideCursor();
     }
   }

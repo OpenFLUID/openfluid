@@ -117,6 +117,7 @@ SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
                         spatial/EditAttributesValuesDialog.cpp
                         spatial/EditAttributeNameDialog.cpp
                         spatial/AddUnitDialog.cpp spatial/AddUnitsClassDialog.cpp spatial/AddUnitToClassDialog.cpp
+                        spatial/AddConnectionDialog.cpp
                        )
 
 SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
@@ -128,6 +129,7 @@ SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
                         spatial/EditAttributesValuesDialog.hpp
                         spatial/EditAttributeNameDialog.hpp
                         spatial/AddUnitDialog.hpp spatial/AddUnitsClassDialog.hpp spatial/AddUnitToClassDialog.hpp
+                        spatial/AddConnectionDialog.hpp
                        )
 
 QT4_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
@@ -135,6 +137,7 @@ QT4_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
                                spatial/EditAttributesValuesDialog.ui
                                spatial/EditAttributeNameDialog.ui
                                spatial/AddUnitDialog.ui
+                               spatial/AddConnectionDialog.ui
                              )
 
 
