@@ -54,13 +54,16 @@
  */
 
 
+#include "AppTools.hpp"
 
 #include "ui_SpatialDomainWidget.h"
 #include "SpatialDomainWidget.hpp"
 #include "UnitsClassWidget.hpp"
-#include "AppTools.hpp"
+
 #include "EditAttributesValuesDialog.hpp"
 #include "EditAttributeNameDialog.hpp"
+#include "AddUnitsClassDialog.hpp"
+#include "AddUnitToClassDialog.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
@@ -144,7 +147,7 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
 
   // map view
-  // TODO to reactivate when units IDs display will be fully functional
+  // TODO to reactivate when units IDs display on map will be fully functional
   ui->UnitsIDsCheckBox->setVisible(false);
   ui->GlobalMapView->enableAutomaticView(ui->AutomaticViewCheckBox->isChecked());
 
@@ -515,8 +518,8 @@ void SpatialDomainWidget::updateUnitSelection(int Row)
 
     ui->ConnectionsTableWidget->resizeRowsToContents();
 
-    // attributes
 
+    // attributes
     ui->AttributesTableWidget->clearSelection();
     ui->AttributesTableWidget->selectRow(Row);
   }
@@ -670,9 +673,24 @@ void SpatialDomainWidget::refreshMap()
 
 void SpatialDomainWidget::addUnitsClass()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
-  updateUpDownButtons();
+  QStringList ExistingClasses = StringSetToQStringList(m_Domain.getClassNames());
+
+  AddUnitsClassDialog AddDlg(ExistingClasses,this);
+  if (AddDlg.exec() == QDialog::Accepted)
+  {
+    // TODO
+    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
+    UDesc->getUnitClass() = AddDlg.getClassName().toStdString();
+    UDesc->getUnitID() = AddDlg.getUnitID();
+    UDesc->getProcessOrder() = AddDlg.getUnitPcsOrd();
+    m_Domain.addUnit(UDesc);
+
+    updateUpDownButtons();
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
+
+    refresh();
+  }
 }
 
 
@@ -764,8 +782,47 @@ void SpatialDomainWidget::removeUnitsClass(QString ClassName)
 
 void SpatialDomainWidget::addUnit()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  QStringList AttrsNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+
+  QStringList UnitsIDs = IntSetToQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+
+  AddUnitToClassDialog AddDlg(m_ActiveClass,AttrsNames,UnitsIDs,this);
+  if (AddDlg.exec() == QDialog::Accepted)
+  {
+    int ID = AddDlg.getUnitID();
+
+    // create unit in FluidX descriptor
+    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
+    UDesc->getUnitClass() = m_ActiveClass.toStdString();
+    UDesc->getUnitID() = ID;
+    UDesc->getProcessOrder() = AddDlg.getUnitPcsOrd();
+
+    m_Domain.addUnit(UDesc);
+
+
+    // create attributes in FluidX descriptor
+    QMap<QString,QString> Attrs = AddDlg.getAttributes();
+    QMapIterator<QString, QString> it(Attrs);
+
+    while (it.hasNext())
+    {
+      it.next();
+      m_Domain.getAttribute(m_ActiveClass.toStdString(),AddDlg.getUnitID(),it.key().toStdString()) =
+          it.value().toStdString();
+    }
+
+    // add unit in ui
+    refreshClassStructure();
+
+    // add unit attributes in ui, and restore current attribute selection
+    refreshClassAttributes();
+    ui->AttributesTableWidget->selectRow(ui->IDsListWidget->currentRow());
+
+    refreshMap();
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
+                 openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+  }
 }
 
 
@@ -1172,7 +1229,6 @@ void SpatialDomainWidget::updateFluidXAttributeFromCellValue(int Row, int Column
   m_Domain.getAttribute(m_ActiveClass.toStdString(),ID,Attr) = Value;
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
-
 }
 
 
@@ -1185,7 +1241,7 @@ void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
   int ID = ui->IDsListWidget->currentItem()->text().toInt();
   (&const_cast<openfluid::fluidx::UnitDescriptor&>(m_Domain.getUnitDescriptor(m_ActiveClass.toStdString(),ID)))->getProcessOrder() = PcsOrd;
 
-  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+  emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
 }
 
 

@@ -47,63 +47,42 @@
 
 
 /**
-  \file EditAttributeName.cpp
+  \file AddUnitToClassDialog.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "ui_EditAttributeNameDialog.h"
-#include "EditAttributeNameDialog.hpp"
+
+#include "ui_AddUnitDialog.h"
+#include "AddUnitToClassDialog.hpp"
 
 #include "builderconfig.hpp"
 
 #include <QPushButton>
 
 
-EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
-                                                 const QStringList& AttrsList,
-                                                 QWidget* Parent):
-  QDialog(Parent),ui(new Ui::EditAttributeNameDialog),
-  m_Mode(Mode), m_AttrsNames(AttrsList)
+AddUnitToClassDialog::AddUnitToClassDialog(const QString& ClassName,
+                                           const QStringList& AttrsNames,
+                                           const QStringList& UnitsIDs,
+                                           QWidget* Parent):
+  AddUnitDialog(Parent), m_AttrsNames(AttrsNames), m_UnitsIDs(UnitsIDs)
 {
-  ui->setupUi(this);
+  ui->ClassEdit->setVisible(false);
 
-  if (m_Mode == EDIT_ADD)
-  {
-    ui->NewNameLabel->setText(tr("Attribute name:"));
-    ui->DefaultValueLabel->setText(tr("Default value:"));
-    m_DefaultMsg = tr("Add new attribute");
-    connect(ui->NewNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
-    connect(ui->DefaultValueEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
-  }
-  else if (m_Mode == EDIT_RENAME)
-  {
-    ui->OriginalNameLabel->setText(tr("Attribute to rename:"));
-    ui->OriginalNameComboBox->addItems(AttrsList);
-    ui->NewNameLabel->setText(tr("New attribute name:"));
-    m_DefaultMsg = tr("Rename attribute");
-    connect(ui->OriginalNameComboBox,SIGNAL(currentIndexChanged(const QString&)),this,SLOT(checkGlobal()));
-    connect(ui->NewNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
-  }
-  else if (m_Mode == EDIT_REMOVE)
-  {
-    ui->OriginalNameLabel->setText(tr("Attribute to remove:"));
-    ui->OriginalNameComboBox->addItems(AttrsList);
-    m_DefaultMsg = tr("Remove attribute");
-  }
+  ui->ClassLabel->setText(ClassName);
 
-  ui->OriginalNameWidget->setVisible(m_Mode == EDIT_REMOVE ||
-                                     m_Mode == EDIT_RENAME);
+  ui->AttrsTableWidget->setColumnCount(AttrsNames.size());
+  ui->AttrsTableWidget->setHorizontalHeaderLabels(AttrsNames);
+  ui->AttrsTableWidget->setRowCount(1);
 
-  ui->NewNameWidget->setVisible(m_Mode == EDIT_RENAME ||
-                                m_Mode == EDIT_ADD);
+  for (int i=0; i<AttrsNames.size();i++)
+    ui->AttrsTableWidget->setItem(0,i,new QTableWidgetItem("0"));
 
-  ui->DefaultValueWidget->setVisible(m_Mode == EDIT_ADD);
-
-  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
+  connect(ui->ClassEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
+  connect(ui->UnitIDEdit,SIGNAL(textEdited(const QString&)),this,SLOT(checkGlobal()));
+  connect(ui->AttrsTableWidget,SIGNAL(cellChanged(int,int)),this,SLOT(checkAttribute(int,int)));
 
   adjustSize();
 
@@ -115,9 +94,9 @@ EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
 // =====================================================================
 
 
-EditAttributeNameDialog::~EditAttributeNameDialog()
+AddUnitToClassDialog::~AddUnitToClassDialog()
 {
-  delete ui;
+
 }
 
 
@@ -125,30 +104,24 @@ EditAttributeNameDialog::~EditAttributeNameDialog()
 // =====================================================================
 
 
-void EditAttributeNameDialog::checkGlobal()
+void AddUnitToClassDialog::checkGlobal()
 {
-  if (m_Mode == EDIT_ADD)
+  if (ui->UnitIDEdit->text().isEmpty())
+    setMessage(tr("Unit ID cannot be empty"));
+  else if (m_UnitsIDs.contains(ui->UnitIDEdit->text()))
+    setMessage(tr("Unit ID already exists"));
+  else
   {
-    if (m_AttrsNames.contains(ui->NewNameEdit->text()))
-      setMessage(tr("New attribute name already exists"));
-    else if (ui->NewNameEdit->text().isEmpty())
-      setMessage(tr("New attribute name is empty"));
-    else if (ui->DefaultValueEdit->text().isEmpty())
-      setMessage(tr("Default attribute value is empty"));
+    bool OK = true;
+    for (int i=0; i<m_AttrsNames.size();i++)
+      OK = OK && !(ui->AttrsTableWidget->item(0,i)->text().isEmpty());
+
+    if (!OK)
+      setMessage(tr("Wrong attribute(s) value(s)"));
     else
       setMessage();
   }
-  else if (m_Mode == EDIT_RENAME)
-  {
-    if (m_AttrsNames.contains(ui->NewNameEdit->text()))
-      setMessage(tr("New attribute name already exists"));
-    else if (ui->NewNameEdit->text().isEmpty())
-      setMessage(tr("New attribute name is empty"));
-    else
-      setMessage();
-  }
-  else if (m_Mode == EDIT_REMOVE)
-    setMessage();
+
 }
 
 
@@ -156,13 +129,23 @@ void EditAttributeNameDialog::checkGlobal()
 // =====================================================================
 
 
-void EditAttributeNameDialog::setMessage(const QString& Msg)
+void AddUnitToClassDialog::checkAttribute(int /*Row*/,int /*Column*/)
+{
+  checkGlobal();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AddUnitToClassDialog::setMessage(const QString& Msg)
 {
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
                                     .arg(BUILDER_DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(m_DefaultMsg);
+    ui->MessageLabel->setText(tr("Add spatial units class"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
   else
@@ -179,9 +162,9 @@ void EditAttributeNameDialog::setMessage(const QString& Msg)
 // =====================================================================
 
 
-QString EditAttributeNameDialog::getSelectedOriginalName() const
+QString AddUnitToClassDialog::getClassName() const
 {
-  return ui->OriginalNameComboBox->currentText();
+  return ui->ClassEdit->text();
 }
 
 
@@ -189,9 +172,9 @@ QString EditAttributeNameDialog::getSelectedOriginalName() const
 // =====================================================================
 
 
-QString EditAttributeNameDialog::getNewName() const
+int AddUnitToClassDialog::getUnitID() const
 {
-  return ui->NewNameEdit->text();
+  return ui->UnitIDEdit->text().toInt();
 }
 
 
@@ -199,7 +182,22 @@ QString EditAttributeNameDialog::getNewName() const
 // =====================================================================
 
 
-QString EditAttributeNameDialog::getDefaultValue() const
+int AddUnitToClassDialog::getUnitPcsOrd() const
 {
-  return ui->DefaultValueEdit->text();
+  return ui->PcsOrderSpinBox->value();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QMap<QString,QString> AddUnitToClassDialog::getAttributes() const
+{
+  QMap<QString,QString> Attrs;
+
+  for (int i=0; i<m_AttrsNames.size();i++)
+    Attrs[ui->AttrsTableWidget->horizontalHeaderItem(i)->text()] = ui->AttrsTableWidget->item(0,i)->text();
+
+  return Attrs;
 }
