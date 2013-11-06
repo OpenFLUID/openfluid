@@ -64,6 +64,7 @@
 #include <QString>
 #include <QDockWidget>
 #include <QFileSystemWatcher>
+#include <QTimer>
 
 
 class ProjectCentral;
@@ -114,6 +115,10 @@ class ProjectModule : public AbstractModule
 
     QFileSystemWatcher* mp_ObserversPlugsWatcher;
 
+    QTimer* mp_SimulatorsPlugsUpdateTimer;
+
+    QTimer* mp_ObserversPlugsUpdateTimer;
+
     void updateWatchersPaths();
 
     void doCheck();
@@ -130,6 +135,8 @@ class ProjectModule : public AbstractModule
     void simulationFinished();
 
     void runEnabled(bool Enabled);
+
+    void refreshWaresEnabled(bool Enabled);
 
 
   private slots:
@@ -161,6 +168,8 @@ class ProjectModule : public AbstractModule
 
     bool whenOpenAsked();
 
+    bool whenReloadAsked();
+
     void whenSaveAsked();
 
     void whenSaveAsAsked();
@@ -179,7 +188,7 @@ class ProjectModule : public AbstractModule
 
     void whenMarketAsked();
 
-    void whenRefreshAsked();
+    void whenWaresRefreshAsked();
 
     bool whenOpenExampleAsked();
 

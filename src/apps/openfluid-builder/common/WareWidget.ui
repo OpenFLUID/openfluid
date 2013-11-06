@@ -106,6 +106,9 @@
             <height>24</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Move up</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -125,6 +128,9 @@
             <height>24</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Move down</string>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -143,6 +149,9 @@
             <width>24</width>
             <height>24</height>
            </size>
+          </property>
+          <property name="toolTip">
+           <string>Remove</string>
           </property>
           <property name="text">
            <string/>
@@ -254,6 +263,9 @@
                    <width>24</width>
                    <height>24</height>
                   </size>
+                 </property>
+                 <property name="toolTip">
+                  <string>Add parameter</string>
                  </property>
                  <property name="text">
                   <string notr="true"/>

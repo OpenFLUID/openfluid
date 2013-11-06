@@ -129,8 +129,10 @@ void AppActions::createActions()
 
   m_Actions["ProjectOpen"] = new QAction(tr("&Open..."), this);
   m_Actions["ProjectOpen"]->setShortcuts(QKeySequence::Open);
-
   m_Actions["ProjectOpen"]->setIcon(QIcon(":/icons/file-open.png"));
+
+  m_Actions["ProjectReload"] = new QAction(tr("Reload"), this);
+  m_Actions["ProjectReload"]->setIcon(QIcon(":/icons/refresh.png"));
 
   m_Actions["ProjectSave"] = new QAction(tr("&Save"), this);
   m_Actions["ProjectSave"]->setShortcuts(QKeySequence::Save);
@@ -165,8 +167,7 @@ void AppActions::createActions()
 
 
   //Simulation menu
-  m_Actions["WaresRefresh"] = new QAction(tr("Reload wares"), this);
-  m_Actions["WaresRefresh"]->setIcon(QIcon(":/icons/refresh.png"));
+  m_Actions["WaresRefresh"] = new QAction(tr("Reload simulators and observers"), this);
 
   m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
   m_Actions["SimulationRun"]->setIcon(QIcon(":/icons/start.png"));
@@ -177,18 +178,8 @@ void AppActions::createActions()
 
 
   //Help menu
-  m_Actions["WaresRefresh"] = new QAction(tr("Reload wares"), this);
-  m_Actions["WaresRefresh"]->setIcon(QIcon(":/icons/refresh.png"));
-
-  m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
-  m_Actions["SimulationRun"]->setIcon(QIcon(":/icons/start.png"));
-
-
-  //Help menu
   m_Actions["HelpOnlineWeb"] = new QAction(tr("Web site"), this);
-
   m_Actions["HelpOnlineCommunity"] = new QAction(tr("Community site"), this);
-
   m_Actions["HelpEmail"] = new QAction(tr("Email"), this);
 
   m_Actions["HelpExamplesOpen"] = new QAction(tr("Open an example project..."), this);
@@ -227,7 +218,9 @@ QAction* AppActions::getAction(const std::string& ID) const
   if (It != m_Actions.end())
     return (*It).second;
   else
-    throw openfluid::base::ApplicationException("openfluid-builder","AppActions::getAction","Required action \"" + ID + "\" does not exist.");
+    throw openfluid::base::ApplicationException("openfluid-builder",
+                                                "AppActions::getAction",
+                                                "Required action \"" + ID + "\" does not exist.");
 }
 
 
@@ -377,6 +370,7 @@ void AppActions::createMenus(MainWindow& MainWin)
   for (int i=0;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
     mp_RecentProjectsMenu->addAction(m_RecentProjectsActions[i]);
 
+  Menu->addAction(getAction("ProjectReload"));
   Menu->addAction(getAction("ProjectSave"));
   Menu->addAction(getAction("ProjectSaveAs"));
   Menu->addAction(getAction("ProjectProperties"));
@@ -450,11 +444,10 @@ void AppActions::createToolbar(MainWindow& MainWin)
 
     mp_MainToolbar->addAction(getAction("ProjectNew"));
     mp_MainToolbar->addAction(getAction("ProjectOpen"));
+    mp_MainToolbar->addAction(getAction("ProjectReload"));
     mp_MainToolbar->addAction(getAction("ProjectSave"));
     mp_MainToolbar->addAction(getAction("ProjectSaveAs"));
     mp_MainToolbar->addAction(getAction("ProjectClose"));
-    mp_MainToolbar->addSeparator();
-    mp_MainToolbar->addAction(getAction("WaresRefresh"));
     mp_MainToolbar->addSeparator();
     mp_MainToolbar->addAction(getAction("SimulationRun"));
     mp_MainToolbar->setStyleSheet("QWidget {padding-left : 10px; padding-right : 10px;}");

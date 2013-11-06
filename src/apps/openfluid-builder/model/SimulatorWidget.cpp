@@ -90,6 +90,8 @@ SimulatorWidget::~SimulatorWidget()
 
 void SimulatorWidget::updateParams(openfluid::machine::ModelItemSignatureInstance* Signature)
 {
+  clearParameterWidgets();
+
   std::vector<openfluid::ware::SignatureHandledDataItem>* SignParams =
       &(Signature->Signature->HandledData.SimulatorParams);
 

@@ -58,36 +58,90 @@
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
-namespace openfluid {
-namespace fluidx {
+
+namespace openfluid { namespace fluidx {
+
 
 // =====================================================================
 // =====================================================================
+
 
 AdvancedDatastoreDescriptor::AdvancedDatastoreDescriptor(
     openfluid::fluidx::DatastoreDescriptor& DatastoreDesc) :
     mp_DatastoreDesc(&DatastoreDesc)
 {
+
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 AdvancedDatastoreDescriptor::~AdvancedDatastoreDescriptor()
 {
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& AdvancedDatastoreDescriptor::getItems() const
 {
   return mp_DatastoreDesc->getItems();
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescriptor::getItems(const std::string& UnitClass) const
+{
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->getItems().begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->getItems().end();
+
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*> ClassList;
+
+  for (it = itb; it != ite; ++it)
+  {
+    if ((*it)->getUnitClass() == UnitClass)
+      ClassList.push_back((*it));
+  }
+
+  return ClassList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::list<openfluid::fluidx::DatastoreItemDescriptor*> AdvancedDatastoreDescriptor::getItems(const std::string& UnitClass,
+                                                                                             openfluid::core::UnstructuredValue::UnstructuredType Type) const
+{
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->getItems().begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->getItems().end();
+
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*> ClassList;
+
+  for (it = itb; it != ite; ++it)
+  {
+    if ((*it)->getUnitClass() == UnitClass && (*it)->getType() == Type)
+      ClassList.push_back((*it));
+  }
+
+  return ClassList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 void AdvancedDatastoreDescriptor::moveItem(unsigned int From, unsigned int To)
 {
@@ -117,8 +171,10 @@ void AdvancedDatastoreDescriptor::moveItem(unsigned int From, unsigned int To)
     insertItem(Item, To);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDatastoreDescriptor::appendItem(
     openfluid::fluidx::DatastoreItemDescriptor* Item)
@@ -127,8 +183,10 @@ void AdvancedDatastoreDescriptor::appendItem(
     mp_DatastoreDesc->appendItem(Item);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDatastoreDescriptor::insertItem(
     openfluid::fluidx::DatastoreItemDescriptor* Item, unsigned int Position)
@@ -151,8 +209,10 @@ void AdvancedDatastoreDescriptor::insertItem(
                                               "Bad index of item to insert");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
 {
@@ -172,16 +232,19 @@ void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
                                               "Bad index of item to delete");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID) const
 {
   return mp_DatastoreDesc->isItemIDAlreadyExist(ItemID);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces
+
+} } // namespaces

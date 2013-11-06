@@ -346,3 +346,21 @@ void WareWidget::updateWare()
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+void WareWidget::clearParameterWidgets()
+{
+  QBoxLayout* Layout = ((QBoxLayout*)(ui->ParamsAreaContents->layout()));
+  QLayoutItem* Item;
+
+  while ((Item = Layout->takeAt(0)) != NULL)
+  {
+    if (Item->widget() != NULL)
+      Item->widget()->deleteLater();
+
+    delete Item;
+  }
+}

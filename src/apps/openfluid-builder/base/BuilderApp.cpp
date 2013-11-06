@@ -54,6 +54,7 @@
  */
 
 #include <QApplication>
+#include <QTime>
 
 #include "BuilderApp.hpp"
 
@@ -87,6 +88,8 @@ BuilderApp::~BuilderApp()
 
 void BuilderApp::initialize()
 {
+  qsrand((uint)QTime::currentTime().msec());
+
   openfluid::guicommon::PreferencesManager* PrefsMgr =
     openfluid::guicommon::PreferencesManager::getInstance();
 

@@ -305,6 +305,18 @@ void AdvancedDomainDescriptor::dispatchEvents()
 // =====================================================================
 
 
+bool AdvancedDomainDescriptor::isUnitExist(const std::string& ClassName, int ID) const
+{
+  std::map<std::string, std::map<int, AdvancedUnitDescriptor> >::const_iterator it = m_Units.find(ClassName);
+
+  return (it != m_Units.end() && (*it).second.find(ID) != (*it).second.end());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& AdvancedDomainDescriptor::getUnitsByIdByClass() const
 {
   return m_Units;
@@ -315,7 +327,7 @@ const std::map<std::string, std::map<int, AdvancedUnitDescriptor> >& AdvancedDom
 // =====================================================================
 
 
-const AdvancedUnitDescriptor& AdvancedDomainDescriptor::getUnit(std::string ClassName,
+const AdvancedUnitDescriptor& AdvancedDomainDescriptor::getUnit(const std::string& ClassName,
                                                      int ID) const
 {
   try
@@ -337,8 +349,8 @@ const AdvancedUnitDescriptor& AdvancedDomainDescriptor::getUnit(std::string Clas
 // =====================================================================
 // =====================================================================
 
-const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescriptor(
-    std::string ClassName, int ID) const
+const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescriptor(const std::string& ClassName,
+                                                                                     int ID) const
 {
   return *(getUnit(ClassName, ID).UnitDescriptor);
 }
@@ -348,8 +360,7 @@ const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescri
 // =====================================================================
 
 
-std::set<int> AdvancedDomainDescriptor::getIDsOfClass(
-    std::string ClassName) const
+std::set<int> AdvancedDomainDescriptor::getIDsOfClass(const std::string& ClassName) const
 {
   std::set<int> IDs;
 
@@ -368,7 +379,7 @@ std::set<int> AdvancedDomainDescriptor::getIDsOfClass(
 // =====================================================================
 
 
-bool AdvancedDomainDescriptor::isClassNameExists(std::string ClassName) const
+bool AdvancedDomainDescriptor::isClassNameExists(const std::string& ClassName) const
 {
   return m_Units.count(ClassName);
 }
@@ -404,8 +415,7 @@ unsigned int AdvancedDomainDescriptor::getUnitsCount() const
 // =====================================================================
 
 
-void AdvancedDomainDescriptor::addUnit(
-    openfluid::fluidx::UnitDescriptor* UnitDesc)
+void AdvancedDomainDescriptor::addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc)
 {
   std::string ClassName = UnitDesc->getUnitClass();
   int ID = UnitDesc->getUnitID();
@@ -479,7 +489,7 @@ void AdvancedDomainDescriptor::addUnit(
 // =====================================================================
 
 
-void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
+void AdvancedDomainDescriptor::deleteUnit(const std::string& ClassName, int ID)
 {
   // delete in m_Units and in m_AttrsNames
   m_Units[ClassName].erase(ID);
@@ -558,9 +568,9 @@ void AdvancedDomainDescriptor::deleteUnit(std::string ClassName, int ID)
 // =====================================================================
 
 
-std::string& AdvancedDomainDescriptor::getAttribute(std::string ClassName,
+std::string& AdvancedDomainDescriptor::getAttribute(const std::string& ClassName,
                                                     int ID,
-                                                    std::string AttrName)
+                                                    const std::string& AttrName)
 {
   try
   {
@@ -579,8 +589,7 @@ std::string& AdvancedDomainDescriptor::getAttribute(std::string ClassName,
 // =====================================================================
 
 
-std::set<std::string> AdvancedDomainDescriptor::getAttributesNames(
-    std::string ClassName) const
+std::set<std::string> AdvancedDomainDescriptor::getAttributesNames(const std::string& ClassName) const
 {
   std::set<std::string> Names;
 
@@ -595,9 +604,9 @@ std::set<std::string> AdvancedDomainDescriptor::getAttributesNames(
 // =====================================================================
 
 
-void AdvancedDomainDescriptor::addAttribute(std::string ClassName,
-                                            std::string AttrName,
-                                            std::string DefaultValue)
+void AdvancedDomainDescriptor::addAttribute(const std::string& ClassName,
+                                            const std::string& AttrName,
+                                            const std::string& DefaultValue)
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::FrameworkException(
@@ -644,8 +653,8 @@ void AdvancedDomainDescriptor::addAttribute(std::string ClassName,
 // =====================================================================
 
 
-void AdvancedDomainDescriptor::deleteAttribute(std::string ClassName,
-                                               std::string AttrName)
+void AdvancedDomainDescriptor::deleteAttribute(const std::string& ClassName,
+                                               const std::string& AttrName)
 {
   if (!isClassNameExists(ClassName))
     throw openfluid::base::FrameworkException(
@@ -712,9 +721,9 @@ void AdvancedDomainDescriptor::deleteAttribute(std::string ClassName,
 // =====================================================================
 
 
-void AdvancedDomainDescriptor::renameAttribute(std::string ClassName,
-                                               std::string OldAttrName,
-                                               std::string NewAttrName)
+void AdvancedDomainDescriptor::renameAttribute(const std::string& ClassName,
+                                               const std::string& OldAttrName,
+                                               const std::string& NewAttrName)
 {
   if (OldAttrName == NewAttrName)
     return;

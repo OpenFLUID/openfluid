@@ -57,6 +57,19 @@
 #include "ActionLabel.hpp"
 
 
+
+ActionLabel::ActionLabel(QWidget* Parent):
+  ClickableLabel(Parent)
+{
+  setCursor(Qt::PointingHandCursor);
+  setStyleSheet("color:rgb(0,51,153); font:italic; text-decoration:underline;");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 ActionLabel::ActionLabel(const QString& Text, QWidget* Parent):
   ClickableLabel(Text,Parent)
 {

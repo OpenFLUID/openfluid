@@ -72,6 +72,8 @@ class ClickableLabel : public QLabel
 
   public:
 
+    ClickableLabel(QWidget* Parent = NULL);
+
     ClickableLabel(const QString& Text, QWidget* Parent = NULL);
 
     virtual ~ClickableLabel()

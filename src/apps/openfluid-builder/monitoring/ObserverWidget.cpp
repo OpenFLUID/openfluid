@@ -131,6 +131,7 @@ void ObserverWidget::setEnabledWare(bool Enabled)
 
 void ObserverWidget::updateParams()
 {
+  clearParameterWidgets();
 
   openfluid::ware::WareParams_t DescParams = mp_Desc->getParameters();
 

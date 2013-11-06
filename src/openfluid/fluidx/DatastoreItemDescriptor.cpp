@@ -54,74 +54,84 @@
 
 #include "DatastoreItemDescriptor.hpp"
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
+
 
 // =====================================================================
 // =====================================================================
 
-DatastoreItemDescriptor::DatastoreItemDescriptor(std::string Id,
-  std::string PrefixPath, std::string RelativePath, openfluid::core::UnstructuredValue::UnstructuredType Type) :
-  m_ID(Id), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_Type(Type), m_UnitClass("")
+
+DatastoreItemDescriptor::DatastoreItemDescriptor(const std::string& ID,
+                                                 const std::string& PrefixPath,
+                                                 const std::string& RelativePath,
+                                                 openfluid::core::UnstructuredValue::UnstructuredType Type) :
+  m_ID(ID), m_PrefixPath(PrefixPath), m_RelativePath(RelativePath), m_Type(Type), m_UnitClass("")
 {
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void DatastoreItemDescriptor::setUnitClass(std::string UnitClass)
+
+void DatastoreItemDescriptor::setUnitClass(const std::string& UnitClass)
 {
   m_UnitClass = UnitClass;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::string DatastoreItemDescriptor::getID()
+std::string DatastoreItemDescriptor::getID() const
 {
   return m_ID;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::string DatastoreItemDescriptor::getRelativePath()
+std::string DatastoreItemDescriptor::getRelativePath() const
 {
   return m_RelativePath;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::string DatastoreItemDescriptor::getPrefixPath()
+std::string DatastoreItemDescriptor::getPrefixPath() const
 {
   return m_PrefixPath;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-openfluid::core::UnstructuredValue::UnstructuredType DatastoreItemDescriptor::getType()
+openfluid::core::UnstructuredValue::UnstructuredType DatastoreItemDescriptor::getType() const
 {
   return m_Type;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::string DatastoreItemDescriptor::getUnitClass()
+std::string DatastoreItemDescriptor::getUnitClass() const
 {
   return m_UnitClass;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces
+} } // namespaces

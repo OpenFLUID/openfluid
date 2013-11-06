@@ -123,6 +123,8 @@ class WareWidget : public QWidget
 
     bool removeParameterWidget(const QString& Name, bool WithFinalStretch = true);
 
+    void clearParameterWidgets();
+
 
   signals:
 

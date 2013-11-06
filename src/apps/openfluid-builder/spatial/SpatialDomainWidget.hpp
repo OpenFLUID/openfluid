@@ -60,7 +60,10 @@
 #include <QWidget>
 
 #include "WorkspaceWidget.hpp"
+#include "MapScene.hpp"
+
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
+#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
 
 
 namespace Ui
@@ -73,11 +76,80 @@ class SpatialDomainWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
+  private slots:
+
+    void setSelectedClass(QString ClassName);
+
+    void updateUnitSelection(int Row);
+
+    void addUnitsClass();
+
+    void moveUnitsClassUp(QString ClassName);
+
+    void moveUnitsClassDown(QString ClassName);
+
+    void removeUnitsClass(QString ClassName);
+
+    void addUnit();
+
+    void removeUnit();
+
+    void addConnection();
+
+    void removeConnection();
+
+    void addAttribute();
+
+    void editAttributesValues();
+
+    void removeAttribute();
+
+    void renameAttribute();
+
+    void addEvent();
+
+    void editEvent();
+
+    void removeEvents();
+
+    void refreshMap();
+
+    void enableAutomaticView(bool Enabled);
+
+    void updateSelectionFromMap();
+
+    void updateFluidXAttributeFromCellValue(int Row, int Column);
+
+    void updateFluidXProcessOrder(int PcsOrd);
+
+
   private:
 
     Ui::SpatialDomainWidget* ui;
 
     openfluid::fluidx::AdvancedDomainDescriptor& m_Domain;
+
+    openfluid::fluidx::AdvancedDatastoreDescriptor& m_Datastore;
+
+    QString m_ActiveClass;
+
+    MapScene* mp_MapScene;
+
+    void setActiveClass(const QString& ClassName);
+
+    void refreshClassStructure();
+
+    void refreshClassData();
+
+    void refreshClassAttributes();
+
+    void refreshClassEvents();
+
+    void updateUpDownButtons();
+
+    int getClassIndex(const QString& ClassName);
+
+    QStringList getClassesOrderedStringList();
 
 
   public slots:

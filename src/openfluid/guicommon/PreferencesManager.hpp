@@ -234,6 +234,18 @@ class DLLEXPORT PreferencesManager
 
     void setAutomaticSaveBeforeRun(bool AutoSave);
 
+    bool isSpatialUnitsRemovalConfirm();
+
+    void setSpatialUnitsRemovalConfirm(bool Confirm);
+
+    bool isSpatialConnsRemovalConfirm();
+
+    void setSpatialConnsRemovalConfirm(bool Confirm);
+
+    bool isSpatialAttrsRemovalConfirm();
+
+    void setSpatialAttrsRemovalConfirm(bool Confirm);
+
 };
 
 } } //namespaces

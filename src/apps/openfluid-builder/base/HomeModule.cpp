@@ -126,6 +126,16 @@ bool HomeModule::whenOpenAsked()
 // =====================================================================
 
 
+bool HomeModule::whenReloadAsked()
+{
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void HomeModule::whenSaveAsked()
 {
 
@@ -218,7 +228,7 @@ void HomeModule::whenMarketAsked()
 // =====================================================================
 
 
-void HomeModule::whenRefreshAsked()
+void HomeModule::whenWaresRefreshAsked()
 {
 
 }

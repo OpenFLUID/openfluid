@@ -126,6 +126,11 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent):
   connect(ui->ParamRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmParamRemoval(bool)));
   connect(ui->WatchCheckBox,SIGNAL(toggled(bool)),this,SLOT(enableWatchers(bool)));
 
+  connect(ui->UnitsRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmUnitsRemoval(bool)));
+  connect(ui->ConnectionsRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmConnectionsRemoval(bool)));
+  connect(ui->AttributesRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmAttributesRemoval(bool)));
+
+
   connect(ui->WorkDirButton,SIGNAL(clicked()),this,SLOT(updateWorkDir()));
 
   connect(ui->DeltaTSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateDeltaT(int)));
@@ -200,6 +205,10 @@ void PreferencesDialog::initialize()
   ui->ItemRemovalCheckBox->setChecked(PrefsMan->isItemRemovalConfirm());
   ui->ParamRemovalCheckBox->setChecked(PrefsMan->isParamRemovalConfirm());
   ui->WatchCheckBox->setChecked(PrefsMan->isWaresWatchersActive());
+
+  ui->UnitsRemovalCheckBox->setChecked(PrefsMan->isSpatialUnitsRemovalConfirm());
+  ui->ConnectionsRemovalCheckBox->setChecked(PrefsMan->isSpatialConnsRemovalConfirm());
+  ui->AttributesRemovalCheckBox->setChecked(PrefsMan->isSpatialAttrsRemovalConfirm());
 
   // Paths
   ui->WorkDirEdit->setText(PrefsMan->getWorkdir());
@@ -401,6 +410,36 @@ void PreferencesDialog::confirmItemRemoval(bool Confirm)
 void PreferencesDialog::confirmParamRemoval(bool Confirm)
 {
   openfluid::guicommon::PreferencesManager::getInstance()->setParamRemovalConfirm(Confirm);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::confirmUnitsRemoval(bool Confirm)
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setSpatialUnitsRemovalConfirm(Confirm);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::confirmConnectionsRemoval(bool Confirm)
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setSpatialConnsRemovalConfirm(Confirm);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PreferencesDialog::confirmAttributesRemoval(bool Confirm)
+{
+  openfluid::guicommon::PreferencesManager::getInstance()->setSpatialAttrsRemovalConfirm(Confirm);
 }
 
 

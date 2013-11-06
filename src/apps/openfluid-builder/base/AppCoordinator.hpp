@@ -101,6 +101,8 @@ class AppCoordinator : public QObject
 
     void whenOpenAsked();
 
+    void whenReloadAsked();
+
     void whenOpenRecentAsked();
 
     void whenSaveAsked();
@@ -113,7 +115,7 @@ class AppCoordinator : public QObject
 
     void whenPreferencesAsked();
 
-    void whenRefreshAsked();
+    void whenWaresRefreshAsked();
 
     void whenRunAsked();
 

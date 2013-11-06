@@ -27,5 +27,6 @@
     <file>icons/remove.png</file>
     <file>icons/go-up.png</file>
     <file>icons/go-down.png</file>
+    <file>icons/rename-attribute.png</file>
   </qresource>
 </RCC>

@@ -78,9 +78,43 @@ QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect)
     QSL.append(QString(StrVect[i].c_str()));
 
   return QSL;
-
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList StringSetToQStringList(const std::set<std::string>& StrSet)
+{
+  QStringList QSL;
+
+  std::set<std::string>::const_iterator it;
+  std::set<std::string>::const_iterator itb = StrSet.begin();
+  std::set<std::string>::const_iterator ite = StrSet.end();
+
+  for (it=itb;it!= ite;++it)
+    QSL.append(QString((*it).c_str()));
+
+  return QSL;
+}
+
+// =====================================================================
+// =====================================================================
+
+QStringList IntSetToQStringList(const std::set<int>& IntSet)
+{
+  QStringList QSL;
+
+  std::set<int>::const_iterator it;
+  std::set<int>::const_iterator itb = IntSet.begin();
+  std::set<int>::const_iterator ite = IntSet.end();
+
+  for (it=itb;it!= ite;++it)
+    QSL.append(QString("%1").arg(*it));
+
+  return QSL;
+}
 
 // =====================================================================
 // =====================================================================
@@ -114,3 +148,14 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
 
   return InfosStr;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+QColor getRandomColor()
+{
+  return QColor(qrand() % 256,qrand() % 256,qrand() % 256);
+}
+
