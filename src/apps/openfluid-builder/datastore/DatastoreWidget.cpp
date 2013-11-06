@@ -58,11 +58,27 @@
 #include "DatastoreWidget.hpp"
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
+#include <QMessageBox>
+
 
 DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
   WorkspaceWidget(Parent,AFXDesc), ui(new Ui::DatastoreWidget), m_Datastore(AFXDesc.getDatastore())
 {
   ui->setupUi(this);
+
+  ui->AddButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddButton->setIconSize(QSize(20,20));
+
+  ui->EditButton->setIcon(QIcon(":/icons/modify.png"));
+  ui->EditButton->setIconSize(QSize(20,20));
+
+  ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveButton->setIconSize(QSize(20,20));
+
+
+  connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addItem()));
+  connect(ui->EditButton,SIGNAL(clicked()),this,SLOT(editItem()));
+  connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(removeItem()));
 
   connect(ui->DatastoreTableWidget->horizontalHeader(),SIGNAL(sectionResized(int, int, int)),
           ui->DatastoreTableWidget,SLOT(resizeRowsToContents()));
@@ -116,5 +132,37 @@ void DatastoreWidget::refresh()
   }
 
   ui->DatastoreTableWidget->resizeRowsToContents();
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void DatastoreWidget::addItem()
+{
+  // TODO
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DatastoreWidget::editItem()
+{
+  // TODO
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DatastoreWidget::removeItem()
+{
+  // TODO
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
 }
 

@@ -72,6 +72,15 @@ class DatastoreWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
+  private slots:
+
+    void addItem();
+
+    void editItem();
+
+    void removeItem();
+
+
   private:
 
     Ui::DatastoreWidget* ui;
