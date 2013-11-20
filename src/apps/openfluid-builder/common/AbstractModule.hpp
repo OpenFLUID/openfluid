@@ -94,7 +94,7 @@ class AbstractModule : public QObject
 
     virtual void whenSaveAsked() = 0;
 
-    virtual void whenSaveAsAsked() = 0;
+    virtual bool whenSaveAsAsked() = 0;
 
     virtual void whenPropertiesAsked() = 0;
 

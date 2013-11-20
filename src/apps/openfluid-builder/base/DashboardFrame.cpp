@@ -116,3 +116,13 @@ void DashboardFrame::refresh()
   mp_InfosWidget->refresh();
   mp_StatusWidget->refresh();
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DashboardFrame::refreshProjectInfos()
+{
+  mp_InfosWidget->refreshProjectInfos();
+}

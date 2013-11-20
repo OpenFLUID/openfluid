@@ -214,7 +214,7 @@ void AppCoordinator::setHomeModule()
 
   m_Actions.setHomeMode();
 
-  m_MainWindow.setWindowTitle("OpenFLUID-Builder");
+  m_MainWindow.setProjectName();
 }
 
 
@@ -226,6 +226,8 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
 {
   try
   {
+    unsetCurrentModule();
+
     AbstractModule* Module = new ProjectModule(ProjectPath);
 
     setCurrentModule(Module);
@@ -294,7 +296,9 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
   openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
   openfluid::guicommon::PreferencesManager* PrefsMan = openfluid::guicommon::PreferencesManager::getInstance();
 
-  if (!PrjMan->create(Path.toStdString(), Name.toStdString(), Description.toStdString(), Authors.toStdString(), false))
+  if (!PrjMan->create(Path.toStdString(), Name.toStdString(),
+                      Description.toStdString(), Authors.toStdString(),
+                      false))
     return false;
 
   if (IType == NewProjectDialog::IMPORT_NONE)
@@ -333,12 +337,12 @@ void AppCoordinator::openProject(const QString& Name, const QString& Path)
 {
   // update recents projects
   openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
-        QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
-        QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
+        QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()),
+        QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
 
   setProjectModule(Path);
   m_Actions.updateRecentProjectsActions();
-  m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  Name +" ]");
+  m_MainWindow.setProjectName(Name);
 }
 
 
@@ -524,10 +528,45 @@ void AppCoordinator::whenOpenRecentAsked()
 
 void AppCoordinator::whenReloadAsked()
 {
+  QString ProjectDir = QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath());
+
   if (mp_CurrentModule->whenReloadAsked())
   {
-    // TODO
-    QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+    openfluid::base::ProjectManager::getInstance()->close();
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    if (ProjectDir !=  "")
+    {
+      if (openfluid::base::ProjectManager::isProject(ProjectDir.toStdString()))
+      {
+        unsetCurrentModule();
+
+        openfluid::base::ProjectManager::getInstance()->open(ProjectDir.toStdString());
+
+        try
+        {
+          openProject(QDir(ProjectDir).dirName(),ProjectDir);
+          QApplication::restoreOverrideCursor();
+        }
+        catch (openfluid::base::Exception& E)
+        {
+          openfluid::base::ProjectManager::getInstance()->close();
+          QApplication::restoreOverrideCursor();
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
+          return;
+        }
+      }
+      else
+      {
+        QApplication::restoreOverrideCursor();
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),ProjectDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+      }
+    }
+    else
+    {
+      QApplication::restoreOverrideCursor();
+    }
   }
 }
 
@@ -548,7 +587,17 @@ void AppCoordinator::whenSaveAsked()
 
 void AppCoordinator::whenSaveAsAsked()
 {
-  mp_CurrentModule->whenSaveAsAsked();
+  if (mp_CurrentModule->whenSaveAsAsked())
+  {
+    openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
+
+    openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
+          QString::fromStdString(PrjMan->getName()),
+          QString::fromStdString(PrjMan->getPath()));
+
+    m_Actions.updateRecentProjectsActions();
+    m_MainWindow.setProjectName(QString::fromStdString(PrjMan->getName()));
+  }
 }
 
 

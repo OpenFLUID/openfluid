@@ -120,6 +120,8 @@ class ProjectCentral : QObject
 
    bool save();
 
+   bool saveAs(const QString& NewPrjName, const QString& NewPrjPath);
+
    const ProjectCheckInfos* getCheckInfos() const
    {  return &m_CheckInfos; }
 

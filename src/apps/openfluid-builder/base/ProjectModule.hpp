@@ -172,7 +172,7 @@ class ProjectModule : public AbstractModule
 
     void whenSaveAsked();
 
-    void whenSaveAsAsked();
+    bool whenSaveAsAsked();
 
     void whenPropertiesAsked();
 

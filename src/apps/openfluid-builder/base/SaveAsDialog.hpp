@@ -46,57 +46,60 @@
 */
 
 /**
-  \file DashboardWidget.hpp
+  \file SaveAsDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __DASHBOARDFRAME_HPP__
-#define __DASHBOARDFRAME_HPP__
-
-#include "ProjectCentral.hpp"
-
-#include <QFrame>
-#include <QBoxLayout>
+#ifndef __SAVEASDIALOG_HPP__
+#define __SAVEASDIALOG_HPP__
 
 
-class DashboardInfosWidget;
-class DashboardStatusWidget;
+namespace Ui
+{
+  class SaveAsDialog;
+}
 
 
-class DashboardFrame : public QFrame
+
+#include <QDialog>
+#include <QDir>
+
+
+class SaveAsDialog : public QDialog
 {
   Q_OBJECT;
 
+  private slots:
+
+    void projectChanged();
+
+    void browseClicked();
+
+
   private:
 
-    DashboardInfosWidget* mp_InfosWidget;
-    DashboardStatusWidget* mp_StatusWidget;
+    Ui::SaveAsDialog* ui;
 
-    QBoxLayout* mp_Layout;
+    QDir m_PrjDir;
 
+    void setMessage(const QString& Msg = "");
 
-  public slots:
-
-    void updateOrientation(Qt::DockWidgetArea Area);
-
-
-  public slots:
-
-    void refresh();
-
-    void refreshProjectInfos();
+    void checkGlobal();
 
 
   public:
 
-    DashboardFrame(const ProjectCentral* PrjCentral, QWidget* Parent = 0);
+    SaveAsDialog(QWidget* Parent);
 
-    ~DashboardFrame();
+    ~SaveAsDialog();
+
+    QString getProjectName() const;
+
+    QString getProjectFullPath() const;
 
 };
 
-
-#endif /* __DASHBOARDWIDGET_HPP__ */
+#endif /* __SAVEASDIALOG_HPP__ */

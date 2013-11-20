@@ -64,6 +64,7 @@
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
 #include <openfluid/base/ApplicationException.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 #include "ProjectCentral.hpp"
 
@@ -177,13 +178,51 @@ bool ProjectCentral::save()
 
   QDir InputPath(InputDir);
 
+  // remove all fluidx files
   QStringList FluidXFileToRemove;
   FluidXFileToRemove = InputPath.entryList(QStringList("*.fluidx"),QDir::Files | QDir::NoDotAndDotDot);
 
   for (int i=0;i<FluidXFileToRemove.size();++i)
      InputPath.remove(FluidXFileToRemove[i]);
 
+  // save all fluidx files
   mp_FXDesc->writeToManyFiles(InputDir.toStdString());
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ProjectCentral::saveAs(const QString& NewPrjName, const QString& NewPrjPath)
+{
+  openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
+
+  QString OldPrjPath = QString::fromStdString(PrjMan->getPath());
+
+  // close current project
+  PrjMan->close();
+
+  // create new project dir
+  QDir().mkpath(NewPrjPath);
+
+  // copy files and subdirectories from current to renamed project
+  openfluid::tools::CopyDirectoryContentsRecursively(OldPrjPath.toStdString(),NewPrjPath.toStdString());
+
+  // open renamed project
+  PrjMan->open(NewPrjPath.toStdString());
+
+  openfluid::base::RuntimeEnvironment::getInstance()->linkToProject();
+
+  // update project metadata
+  PrjMan->setName(NewPrjName.toStdString());
+  PrjMan->setCreationDateAsNow();
+
+  // save project and project metadata
+  PrjMan->save();
+  save();
 
   return true;
 }

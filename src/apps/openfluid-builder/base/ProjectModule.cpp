@@ -70,6 +70,7 @@
 #include "ProjectCentral.hpp"
 #include "ProjectModule.hpp"
 #include "PreferencesDialog.hpp"
+#include "SaveAsDialog.hpp"
 
 #include "ExtensionsRegistry.hpp"
 
@@ -291,7 +292,18 @@ bool ProjectModule::whenOpenAsked()
 
 bool ProjectModule::whenReloadAsked()
 {
-  return true;
+  if (QMessageBox::question(QApplication::activeWindow(),tr("Reload project"),
+                              tr("Reloading project from disk will overwrite all unsaved modifications if any.")+
+                              "\n\n"+
+                              tr("Proceed anyway?"),
+                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+  {
+    emit savePerformed();
+
+    return true;
+  }
+
+  return false;
 }
 
 
@@ -314,10 +326,21 @@ void ProjectModule::whenSaveAsked()
 // =====================================================================
 
 
-void ProjectModule::whenSaveAsAsked()
+bool ProjectModule::whenSaveAsAsked()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  SaveAsDialog SaveAsDlg(QApplication::activeWindow());
+
+  if (SaveAsDlg.exec() == QDialog::Accepted)
+  {
+    if (mp_ProjectCentral->saveAs(SaveAsDlg.getProjectName(),
+                                  SaveAsDlg.getProjectFullPath()))
+    {
+      mp_DashboardFrame->refreshProjectInfos();
+      emit savePerformed();
+      return true;
+    }
+  }
+  return false;
 }
 
 
@@ -615,6 +638,8 @@ void ProjectModule::dispatchChangesFromExtension(openfluid::builderext::FluidXUp
     mp_DatastoreTab->refresh();
 
   // TODO monitoring refresh
+
+  // TODO datastore refresh
 
   // TODO run config refresh
 

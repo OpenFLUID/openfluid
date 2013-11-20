@@ -73,7 +73,7 @@ MainWindow::MainWindow():
   layout()->setContentsMargins(0,0,0,0);
   layout()->setSpacing(0);
 
-  setWindowTitle("OpenFLUID-Builder");
+  setProjectName();
   setWindowIcon(QIcon(":/icons/openfluid_icon.png"));
 }
 
@@ -96,4 +96,17 @@ void MainWindow::closeEvent(QCloseEvent* Event)
 {
   Event->ignore();
   mp_QuitAction->trigger();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::setProjectName(const QString& PrjName)
+{
+  if (PrjName.isEmpty())
+    setWindowTitle("OpenFLUID-Builder");
+  else
+    setWindowTitle(QString("OpenFLUID-Builder [ %1 ]").arg(PrjName));
 }
