@@ -64,8 +64,7 @@ DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::AdvancedFlui
 {
   ui->setupUi(this);
 
-  ui->TitleLabel->setText(QString("<b><big>%1</big></b>").arg(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName())));
-  ui->PathLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
+  refreshProjectInfos();
 
   ui->ContentsFrame->setStyleSheet("#ContentsFrame {background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, "
                                                                                       "stop:0 #314054, "
@@ -134,3 +133,12 @@ void DashboardInfosWidget::refresh()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+void DashboardInfosWidget::refreshProjectInfos()
+{
+  ui->TitleLabel->setText(QString("<b><big>%1</big></b>").arg(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName())));
+  ui->PathLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
+}

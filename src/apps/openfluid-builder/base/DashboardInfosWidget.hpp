@@ -86,6 +86,8 @@ class DashboardInfosWidget : public DashboardWidget
     ~DashboardInfosWidget();
 
     void refresh();
+
+    void refreshProjectInfos();
 };
 
 

@@ -47,25 +47,43 @@
 
 
 /**
-  \file HomeModule.cpp
+  \file SaveAsDialog.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+
 #include <openfluid/guicommon/PreferencesManager.hpp>
-#include <openfluid/guicommon/MarketClientAssistant.hpp>
+#include <openfluid/base/ProjectManager.hpp>
 
-#include "HomeModule.hpp"
-#include "PreferencesDialog.hpp"
+#include "ui_SaveAsDialog.h"
+#include "SaveAsDialog.hpp"
+#include "builderconfig.hpp"
 
-#include <QApplication>
+#include <QPushButton>
+#include <QFileDialog>
 
+// TODO to remove
+#include <iostream>
 
-HomeModule::HomeModule(const AppActions* Actions):
-AbstractModule(), mp_Widget(NULL), mp_Actions(Actions)
+SaveAsDialog::SaveAsDialog(QWidget* Parent) :
+  QDialog(Parent),ui(new Ui::SaveAsDialog)
 {
+  ui->setupUi(this);
 
+  ui->DirectoryLabel->setText(openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
+  ui->ProjectNameEdit->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
+
+  projectChanged();
+
+  connect(ui->BrowseButton,SIGNAL(clicked()),this,SLOT(browseClicked()));
+  connect(ui->ProjectNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(projectChanged()));
+
+  connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
+  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
+
+  adjustSize();
 }
 
 
@@ -73,23 +91,9 @@ AbstractModule(), mp_Widget(NULL), mp_Actions(Actions)
 // =====================================================================
 
 
-HomeModule::~HomeModule()
+SaveAsDialog::~SaveAsDialog()
 {
-
-}
-
-// =====================================================================
-// =====================================================================
-
-
-QWidget* HomeModule::getMainWidget(QWidget* Parent)
-{
-  if (mp_Widget != NULL)
-    delete mp_Widget;
-
-  mp_Widget = new HomeWidget(Parent,mp_Actions);
-
-  return mp_Widget;
+  delete ui;
 }
 
 
@@ -97,9 +101,15 @@ QWidget* HomeModule::getMainWidget(QWidget* Parent)
 // =====================================================================
 
 
-bool HomeModule::whenQuitAsked()
+void SaveAsDialog::browseClicked()
 {
-  return true;
+  QString SelectedDir = QFileDialog::getExistingDirectory(QApplication::activeWindow(),tr("Select directory"),
+                                                          ui->DirectoryLabel->text());
+  if (!SelectedDir.isEmpty())
+  {
+    ui->DirectoryLabel->setText(SelectedDir);
+    projectChanged();
+  }
 }
 
 
@@ -107,18 +117,13 @@ bool HomeModule::whenQuitAsked()
 // =====================================================================
 
 
-bool HomeModule::whenNewAsked()
+void SaveAsDialog::projectChanged()
 {
-  return true;
-}
+  ui->ProjectNameEdit->setText(ui->ProjectNameEdit->text().replace(QRegExp("[^\\w]"),"_"));
 
-// =====================================================================
-// =====================================================================
+  m_PrjDir.setPath(ui->DirectoryLabel->text()+"/"+ui->ProjectNameEdit->text());
 
-
-bool HomeModule::whenOpenAsked()
-{
-  return true;
+  checkGlobal();
 }
 
 
@@ -126,9 +131,14 @@ bool HomeModule::whenOpenAsked()
 // =====================================================================
 
 
-bool HomeModule::whenReloadAsked()
+void SaveAsDialog::checkGlobal()
 {
-  return true;
+  if (openfluid::base::ProjectManager::isProject(m_PrjDir.path().toStdString()))
+    setMessage(tr("Project already exists"));
+  else if (m_PrjDir.exists())
+    setMessage(tr("Project directory already exist"));
+  else
+    setMessage();
 }
 
 
@@ -136,9 +146,22 @@ bool HomeModule::whenReloadAsked()
 // =====================================================================
 
 
-void HomeModule::whenSaveAsked()
+void SaveAsDialog::setMessage(const QString& Msg)
 {
-
+  if (Msg.isEmpty())
+  {
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+    ui->MessageLabel->setText(tr("Add parameter"));
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
+  }
+  else
+  {
+    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+    ui->MessageLabel->setText(Msg);
+  }
 }
 
 
@@ -146,9 +169,9 @@ void HomeModule::whenSaveAsked()
 // =====================================================================
 
 
-bool HomeModule::whenSaveAsAsked()
+QString SaveAsDialog::getProjectName() const
 {
-  return false;
+  return ui->ProjectNameEdit->text();
 }
 
 
@@ -156,89 +179,7 @@ bool HomeModule::whenSaveAsAsked()
 // =====================================================================
 
 
-void HomeModule::whenPropertiesAsked()
+QString SaveAsDialog::getProjectFullPath() const
 {
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool HomeModule::whenCloseAsked()
-{
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenPreferencesAsked()
-{
-  PreferencesDialog PrefsDlg(QApplication::activeWindow());
-  PrefsDlg.exec();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenRecentProjectsActionsChanged()
-{
-  mp_Widget->refreshRecentProjects();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenRunAsked()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenExtensionAsked(const QString& /*ID*/)
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenMarketAsked()
-{
-  openfluid::guicommon::MarketClientAssistant MarketAssistant(QApplication::activeWindow());
-  MarketAssistant.exec();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void HomeModule::whenWaresRefreshAsked()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool HomeModule::whenOpenExampleAsked()
-{
-  return true;
+  return m_PrjDir.path();
 }

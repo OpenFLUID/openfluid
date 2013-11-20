@@ -214,7 +214,7 @@ void AppCoordinator::setHomeModule()
 
   m_Actions.setHomeMode();
 
-  m_MainWindow.setWindowTitle("OpenFLUID-Builder");
+  m_MainWindow.setProjectName();
 }
 
 
@@ -294,7 +294,9 @@ bool AppCoordinator::createProject(const QString& Name, const QString& Path, con
   openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
   openfluid::guicommon::PreferencesManager* PrefsMan = openfluid::guicommon::PreferencesManager::getInstance();
 
-  if (!PrjMan->create(Path.toStdString(), Name.toStdString(), Description.toStdString(), Authors.toStdString(), false))
+  if (!PrjMan->create(Path.toStdString(), Name.toStdString(),
+                      Description.toStdString(), Authors.toStdString(),
+                      false))
     return false;
 
   if (IType == NewProjectDialog::IMPORT_NONE)
@@ -333,12 +335,12 @@ void AppCoordinator::openProject(const QString& Name, const QString& Path)
 {
   // update recents projects
   openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
-        QString(openfluid::base::ProjectManager::getInstance()->getName().c_str()),
-        QString(openfluid::base::ProjectManager::getInstance()->getPath().c_str()));
+        QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()),
+        QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
 
   setProjectModule(Path);
   m_Actions.updateRecentProjectsActions();
-  m_MainWindow.setWindowTitle("OpenFLUID-Builder  [ " +  Name +" ]");
+  m_MainWindow.setProjectName(Name);
 }
 
 
@@ -548,7 +550,17 @@ void AppCoordinator::whenSaveAsked()
 
 void AppCoordinator::whenSaveAsAsked()
 {
-  mp_CurrentModule->whenSaveAsAsked();
+  if (mp_CurrentModule->whenSaveAsAsked())
+  {
+    openfluid::base::ProjectManager* PrjMan = openfluid::base::ProjectManager::getInstance();
+
+    openfluid::guicommon::PreferencesManager::getInstance()->addRecentProject(
+          QString::fromStdString(PrjMan->getName()),
+          QString::fromStdString(PrjMan->getPath()));
+
+    m_Actions.updateRecentProjectsActions();
+    m_MainWindow.setProjectName(QString::fromStdString(PrjMan->getName()));
+  }
 }
 
 

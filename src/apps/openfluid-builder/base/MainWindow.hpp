@@ -84,6 +84,8 @@ class MainWindow : public QMainWindow
 
     void setQuitAction(QAction* Action) { mp_QuitAction = Action; }
 
+    void setProjectName(const QString& PrjName = "");
+
 };
 
 
