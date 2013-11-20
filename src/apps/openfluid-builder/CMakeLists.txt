@@ -30,6 +30,7 @@ SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/DashboardFrame.cpp 
                      base/DashboardWidget.cpp base/DashboardInfosWidget.cpp base/DashboardStatusWidget.cpp
                      base/SaveAsDialog.cpp
+                     base/NewslineWidget.cpp base/NewsItemWidget.cpp base/NewslineDownloadWorker.cpp
                      )
                      
 SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
@@ -44,7 +45,8 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/StatusMessagesWidget.hpp
                      base/DashboardFrame.hpp 
                      base/DashboardWidget.hpp base/DashboardInfosWidget.hpp base/DashboardStatusWidget.hpp
-                     base/SaveAsDialog.hpp               
+                     base/SaveAsDialog.hpp
+                     base/NewslineWidget.hpp base/NewsItemWidget.hpp base/NewslineDownloadWorker.hpp         
                      )
 
 QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
@@ -55,6 +57,7 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
                             base/StatusMessagesWidget.ui
                             base/DashboardInfosWidget.ui base/DashboardStatusWidget.ui
                             base/SaveAsDialog.ui
+                            base/NewslineWidget.ui base/NewsItemWidget.ui
                             )
 
 
