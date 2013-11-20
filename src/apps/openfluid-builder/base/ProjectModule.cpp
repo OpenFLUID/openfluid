@@ -292,7 +292,18 @@ bool ProjectModule::whenOpenAsked()
 
 bool ProjectModule::whenReloadAsked()
 {
-  return true;
+  if (QMessageBox::question(QApplication::activeWindow(),tr("Reload project"),
+                              tr("Reloading project from disk will overwrite all unsaved modifications if any.")+
+                              "\n\n"+
+                              tr("Proceed anyway?"),
+                              QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+  {
+    emit savePerformed();
+
+    return true;
+  }
+
+  return false;
 }
 
 
@@ -317,7 +328,6 @@ void ProjectModule::whenSaveAsked()
 
 bool ProjectModule::whenSaveAsAsked()
 {
-  // TODO
   SaveAsDialog SaveAsDlg(QApplication::activeWindow());
 
   if (SaveAsDlg.exec() == QDialog::Accepted)
@@ -628,6 +638,8 @@ void ProjectModule::dispatchChangesFromExtension(openfluid::builderext::FluidXUp
     mp_DatastoreTab->refresh();
 
   // TODO monitoring refresh
+
+  // TODO datastore refresh
 
   // TODO run config refresh
 

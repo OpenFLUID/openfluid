@@ -226,6 +226,8 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
 {
   try
   {
+    unsetCurrentModule();
+
     AbstractModule* Module = new ProjectModule(ProjectPath);
 
     setCurrentModule(Module);
@@ -526,10 +528,45 @@ void AppCoordinator::whenOpenRecentAsked()
 
 void AppCoordinator::whenReloadAsked()
 {
+  QString ProjectDir = QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath());
+
   if (mp_CurrentModule->whenReloadAsked())
   {
-    // TODO
-    QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+    openfluid::base::ProjectManager::getInstance()->close();
+
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+    if (ProjectDir !=  "")
+    {
+      if (openfluid::base::ProjectManager::isProject(ProjectDir.toStdString()))
+      {
+        unsetCurrentModule();
+
+        openfluid::base::ProjectManager::getInstance()->open(ProjectDir.toStdString());
+
+        try
+        {
+          openProject(QDir(ProjectDir).dirName(),ProjectDir);
+          QApplication::restoreOverrideCursor();
+        }
+        catch (openfluid::base::Exception& E)
+        {
+          openfluid::base::ProjectManager::getInstance()->close();
+          QApplication::restoreOverrideCursor();
+          QMessageBox::critical(&m_MainWindow,tr("Project error"),QString(E.what()));
+          return;
+        }
+      }
+      else
+      {
+        QApplication::restoreOverrideCursor();
+        QMessageBox::critical(&m_MainWindow,tr("Project error"),ProjectDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+      }
+    }
+    else
+    {
+      QApplication::restoreOverrideCursor();
+    }
   }
 }
 
