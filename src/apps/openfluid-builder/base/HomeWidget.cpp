@@ -191,10 +191,13 @@ HomeWidget::HomeWidget(QWidget* Parent, const AppActions* Actions):
 
   refreshRecentProjects();
 
-  // TODO to enable once the OpenFLUID information broadcast will be developped
-  ui->InfosLineFrame->setVisible(false);
-  ui->InfosFrame->setVisible(false);
+  QList<int> SplitSizes;
+  SplitSizes.append(2);
+  SplitSizes.append(1);
 
+  //ui->RecentsNewsSplitter->setSizes(SplitSizes);
+  ui->RecentsNewsSplitter->setStretchFactor(0, 2);
+  ui->RecentsNewsSplitter->setStretchFactor(1, 1);
 }
 
 
@@ -245,10 +248,10 @@ void HomeWidget::refreshRecentProjects()
   }
 
   if (!RecentActions[0]->isVisible())
-    mp_RecentProjectsLabel->setText(tr("No recent project"));
+    mp_RecentProjectsLabel->setText(QString("<big>%1</big>").arg(tr("No recent project")));
   else
   {
-    mp_RecentProjectsLabel->setText(tr("Recent projects:"));
+    mp_RecentProjectsLabel->setText(QString("<big>%1</big>").arg(tr("Recent projects:")));
 
     for (unsigned int i=0; i<RecentActions.size();i++)
     {
