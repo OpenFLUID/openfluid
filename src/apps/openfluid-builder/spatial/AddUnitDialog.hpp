@@ -63,10 +63,10 @@ namespace Ui
 }
 
 
-#include <QDialog>
+#include "OpenFLUIDDialog.hpp"
 
 
-class AddUnitDialog : public QDialog
+class AddUnitDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 

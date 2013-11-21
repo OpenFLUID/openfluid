@@ -46,61 +46,27 @@
 */
 
 /**
-  \file EditAttributesValuesDialog.hpp
+  \file OpenFLUIDDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EDITATTRIBUTESVALUESDIALOG_HPP__
-#define __EDITATTRIBUTESVALUESDIALOG_HPP__
+#ifndef __OPENFLUIDDIALOG_HPP__
+#define __OPENFLUIDDIALOG_HPP__
 
 
-namespace Ui
+#include <QDialog>
+
+class OpenFLUIDDialog : public QDialog
 {
-  class EditAttributesValuesDialog;
-}
-
-
-#include "OpenFLUIDDialog.hpp"
-
-
-class EditAttributesValuesDialog : public OpenFLUIDDialog
-{
-  Q_OBJECT;
-
-  private slots:
-
-    void checkGlobal();
-
-    void adaptSelection();
-
-
-  private:
-
-    Ui::EditAttributesValuesDialog* ui;
-
-    void setMessage(const QString& Msg = "");
-
-
   public:
 
-    enum EditMode { EDIT_REPLACE, EDIT_MULTIPLY, EDIT_ADD, EDIT_UNKNOWN };
+    OpenFLUIDDialog(QWidget* Parent = NULL);
 
-    EditAttributesValuesDialog(QWidget* Parent = NULL);
-
-    ~EditAttributesValuesDialog();
-
-    EditMode getEditMode() const;
-
-    QString getReplaceValue() const;
-
-    double getMultiplyValue() const;
-
-    double getAddValue() const;
 };
 
 
 
-#endif /* __EDITATTRIBUTESVALUESDIALOG_HPP__ */
+#endif /* __OPENFLUIDDIALOG_HPP__ */

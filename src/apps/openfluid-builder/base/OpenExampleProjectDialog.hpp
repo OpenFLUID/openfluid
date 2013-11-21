@@ -56,7 +56,8 @@
 #ifndef __OPENEXAMPLEPROJECTDIALOG_HPP__
 #define __OPENEXAMPLEPROJECTDIALOG_HPP__
 
-#include <QDialog>
+#include "OpenFLUIDDialog.hpp"
+
 #include <QListWidgetItem>
 
 
@@ -66,7 +67,7 @@ namespace Ui
 }
 
 
-class OpenExampleProjectDialog : public QDialog
+class OpenExampleProjectDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 

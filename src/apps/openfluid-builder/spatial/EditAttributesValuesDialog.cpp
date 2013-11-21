@@ -64,7 +64,7 @@
 
 
 EditAttributesValuesDialog::EditAttributesValuesDialog(QWidget* Parent):
-QDialog(Parent), ui(new Ui::EditAttributesValuesDialog)
+  OpenFLUIDDialog(Parent), ui(new Ui::EditAttributesValuesDialog)
 {
 
   ui->setupUi(this);

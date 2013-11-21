@@ -72,7 +72,7 @@
 
 
 PreferencesDialog::PreferencesDialog(QWidget* Parent):
-  QDialog(Parent), ui(new Ui::PreferencesDialog),
+  OpenFLUIDDialog(Parent), ui(new Ui::PreferencesDialog),
   m_RecentsChanged(false),
   m_SimPathsChanged(false), m_ObsPathsChanged(false), m_WaresWatchingChanged(false)
 {

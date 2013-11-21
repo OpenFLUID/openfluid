@@ -72,10 +72,10 @@ namespace Ui
 
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
-#include <QDialog>
+#include "OpenFLUIDDialog.hpp"
 
 
-class AddConnectionDialog : public QDialog
+class AddConnectionDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 

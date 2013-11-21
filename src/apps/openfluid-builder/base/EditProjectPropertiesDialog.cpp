@@ -47,41 +47,52 @@
 
 
 /**
-  \file SaveAsDialog.cpp
+  \file EditProjectPropertiesDialog.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
-#include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 
-#include "ui_SaveAsDialog.h"
-#include "SaveAsDialog.hpp"
+#include "ui_EditProjectPropertiesDialog.h"
+#include "EditProjectPropertiesDialog.hpp"
+
 #include "builderconfig.hpp"
 
 #include <QPushButton>
-#include <QFileDialog>
+#include <QDateTime>
 
 
-SaveAsDialog::SaveAsDialog(QWidget* Parent) :
-  OpenFLUIDDialog(Parent),ui(new Ui::SaveAsDialog)
+EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
+  OpenFLUIDDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
 {
+  openfluid::base::ProjectManager* PrjMan =
+      openfluid::base::ProjectManager::getInstance();
+
   ui->setupUi(this);
 
-  ui->DirectoryLabel->setText(openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
-  ui->ProjectNameEdit->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
+  setMessage();
 
-  projectChanged();
+  ui->ProjectNameLabel->setText(QString::fromStdString(PrjMan->getName()));
+  ui->DescriptionTextEdit->setPlainText(QString::fromStdString(PrjMan->getDescription()));
+  ui->AuthorsLineEdit->setText(QString::fromStdString(PrjMan->getAuthors()));
 
-  connect(ui->BrowseButton,SIGNAL(clicked()),this,SLOT(browseClicked()));
-  connect(ui->ProjectNameEdit,SIGNAL(textEdited(const QString&)),this,SLOT(projectChanged()));
+  QDateTime DT = QDateTime::fromString(QString::fromStdString(PrjMan->getCreationDate()),"yyyyMMdd'T'hhmmss");
+  if (DT.isValid())
+    ui->CreationDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));
+  else
+    ui->CreationDateLabel->setText(tr("unknown"));
+
+  DT = QDateTime::fromString(QString::fromStdString(PrjMan->getLastModDate()),"yyyyMMdd'T'hhmmss");
+  if (DT.isValid())
+    ui->LastModDateLabel->setText(DT.toString("yyyy-MM-dd, hh:mm:ss"));
+  else
+    ui->LastModDateLabel->setText(tr("unknown"));
+
 
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
-
-  adjustSize();
 }
 
 
@@ -89,7 +100,7 @@ SaveAsDialog::SaveAsDialog(QWidget* Parent) :
 // =====================================================================
 
 
-SaveAsDialog::~SaveAsDialog()
+EditProjectPropertiesDialog::~EditProjectPropertiesDialog()
 {
   delete ui;
 }
@@ -99,15 +110,12 @@ SaveAsDialog::~SaveAsDialog()
 // =====================================================================
 
 
-void SaveAsDialog::browseClicked()
+void EditProjectPropertiesDialog::setMessage()
 {
-  QString SelectedDir = QFileDialog::getExistingDirectory(QApplication::activeWindow(),tr("Select directory"),
-                                                          ui->DirectoryLabel->text());
-  if (!SelectedDir.isEmpty())
-  {
-    ui->DirectoryLabel->setText(SelectedDir);
-    projectChanged();
-  }
+  ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
+                                  .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+  ui->MessageLabel->setText(tr("Edit project properties"));
+  ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }
 
 
@@ -115,13 +123,9 @@ void SaveAsDialog::browseClicked()
 // =====================================================================
 
 
-void SaveAsDialog::projectChanged()
+QString EditProjectPropertiesDialog::getDescription() const
 {
-  ui->ProjectNameEdit->setText(ui->ProjectNameEdit->text().replace(QRegExp("[^\\w]"),"_"));
-
-  m_PrjDir.setPath(ui->DirectoryLabel->text()+"/"+ui->ProjectNameEdit->text());
-
-  checkGlobal();
+  return ui->DescriptionTextEdit->toPlainText();
 }
 
 
@@ -129,55 +133,7 @@ void SaveAsDialog::projectChanged()
 // =====================================================================
 
 
-void SaveAsDialog::checkGlobal()
+QString EditProjectPropertiesDialog::getAuthors() const
 {
-  if (openfluid::base::ProjectManager::isProject(m_PrjDir.path().toStdString()))
-    setMessage(tr("Project already exists"));
-  else if (m_PrjDir.exists())
-    setMessage(tr("Project directory already exist"));
-  else
-    setMessage();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void SaveAsDialog::setMessage(const QString& Msg)
-{
-  if (Msg.isEmpty())
-  {
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add parameter"));
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
-  }
-  else
-  {
-    ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-    ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
-    ui->MessageLabel->setText(Msg);
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString SaveAsDialog::getProjectName() const
-{
-  return ui->ProjectNameEdit->text();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QString SaveAsDialog::getProjectFullPath() const
-{
-  return m_PrjDir.path();
+  return ui->AuthorsLineEdit->text();
 }

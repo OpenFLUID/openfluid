@@ -45,62 +45,22 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file EditAttributesValuesDialog.hpp
-  \brief Header of ...
+  \file OpenFLUIDDialog.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EDITATTRIBUTESVALUESDIALOG_HPP__
-#define __EDITATTRIBUTESVALUESDIALOG_HPP__
-
-
-namespace Ui
-{
-  class EditAttributesValuesDialog;
-}
-
 
 #include "OpenFLUIDDialog.hpp"
 
 
-class EditAttributesValuesDialog : public OpenFLUIDDialog
+OpenFLUIDDialog::OpenFLUIDDialog(QWidget* Parent) :
+  QDialog(Parent)
 {
-  Q_OBJECT;
+  setWindowTitle("OpenFLUID-Builder");
+}
 
-  private slots:
-
-    void checkGlobal();
-
-    void adaptSelection();
-
-
-  private:
-
-    Ui::EditAttributesValuesDialog* ui;
-
-    void setMessage(const QString& Msg = "");
-
-
-  public:
-
-    enum EditMode { EDIT_REPLACE, EDIT_MULTIPLY, EDIT_ADD, EDIT_UNKNOWN };
-
-    EditAttributesValuesDialog(QWidget* Parent = NULL);
-
-    ~EditAttributesValuesDialog();
-
-    EditMode getEditMode() const;
-
-    QString getReplaceValue() const;
-
-    double getMultiplyValue() const;
-
-    double getAddValue() const;
-};
-
-
-
-#endif /* __EDITATTRIBUTESVALUESDIALOG_HPP__ */

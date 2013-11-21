@@ -56,7 +56,7 @@
 #ifndef __NEWPROJECTDIALOG_HPP__
 #define __NEWPROJECTDIALOG_HPP__
 
-#include <QDialog>
+#include "OpenFLUIDDialog.hpp"
 
 
 class QFileSystemModel;
@@ -68,7 +68,7 @@ namespace Ui
 }
 
 
-class NewProjectDialog : public QDialog
+class NewProjectDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 

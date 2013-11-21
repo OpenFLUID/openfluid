@@ -56,7 +56,8 @@
 #ifndef __PREFERENCESDIALOG_HPP__
 #define __PREFERENCESDIALOG_HPP__
 
-#include <QDialog>
+#include "OpenFLUIDDialog.hpp"
+
 #include <QDateTime>
 
 
@@ -70,7 +71,7 @@ class QTreeWidgetItem;
 class WaresSearchPathsWidget;
 
 
-class PreferencesDialog : public QDialog
+class PreferencesDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 

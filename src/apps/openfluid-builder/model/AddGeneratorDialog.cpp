@@ -69,7 +69,7 @@
 
 
 AddGeneratorDialog::AddGeneratorDialog(const QStringList& UnitsClasses, QWidget* Parent) :
-  QDialog(Parent),ui(new Ui::AddGeneratorDialog)
+  OpenFLUIDDialog(Parent),ui(new Ui::AddGeneratorDialog)
 {
   ui->setupUi(this);
 

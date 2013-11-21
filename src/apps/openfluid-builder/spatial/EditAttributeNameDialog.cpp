@@ -65,7 +65,7 @@
 EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
                                                  const QStringList& AttrsList,
                                                  QWidget* Parent):
-  QDialog(Parent),ui(new Ui::EditAttributeNameDialog),
+  OpenFLUIDDialog(Parent),ui(new Ui::EditAttributeNameDialog),
   m_Mode(Mode), m_AttrsNames(AttrsList)
 {
   ui->setupUi(this);

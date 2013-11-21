@@ -67,10 +67,9 @@
 
 
 NewProjectDialog::NewProjectDialog(QWidget *Parent):
-  QDialog(Parent), ui(new Ui::NewProjectDialog), mp_DirectoryModel(new QFileSystemModel(this))
+  OpenFLUIDDialog(Parent), ui(new Ui::NewProjectDialog), mp_DirectoryModel(new QFileSystemModel(this))
 {
   ui->setupUi(this);
-  setWindowTitle(tr("New project"));
 
   ui->WorkdirLabel->setText(openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
 

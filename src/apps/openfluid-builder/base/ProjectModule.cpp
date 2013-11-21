@@ -59,6 +59,7 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/ProjectManager.hpp>
 
 #include <openfluid/builderext/PluggableModalExtension.hpp>
 #include <openfluid/builderext/PluggableModelessExtension.hpp>
@@ -71,6 +72,7 @@
 #include "ProjectModule.hpp"
 #include "PreferencesDialog.hpp"
 #include "SaveAsDialog.hpp"
+#include "EditProjectPropertiesDialog.hpp"
 
 #include "ExtensionsRegistry.hpp"
 
@@ -350,8 +352,15 @@ bool ProjectModule::whenSaveAsAsked()
 
 void ProjectModule::whenPropertiesAsked()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+  EditProjectPropertiesDialog EditDlg(QApplication::activeWindow());
+
+  if (EditDlg.exec() == QDialog::Accepted)
+  {
+    openfluid::base::ProjectManager::getInstance()->setDescription(EditDlg.getDescription().toStdString());
+    openfluid::base::ProjectManager::getInstance()->setAuthors(EditDlg.getAuthors().toStdString());
+    openfluid::base::ProjectManager::getInstance()->save();
+  }
+
 }
 
 

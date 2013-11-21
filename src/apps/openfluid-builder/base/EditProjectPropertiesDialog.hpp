@@ -46,61 +46,48 @@
 */
 
 /**
-  \file EditAttributesValuesDialog.hpp
+  \file EditProjectPropertiesDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EDITATTRIBUTESVALUESDIALOG_HPP__
-#define __EDITATTRIBUTESVALUESDIALOG_HPP__
+#ifndef __EDITPROJECTPROPERTIESDIALOG_HPP__
+#define __EDITPROJECTPROPERTIESDIALOG_HPP__
 
 
 namespace Ui
 {
-  class EditAttributesValuesDialog;
+  class EditProjectPropertiesDialog;
 }
 
 
 #include "OpenFLUIDDialog.hpp"
 
 
-class EditAttributesValuesDialog : public OpenFLUIDDialog
+class EditProjectPropertiesDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 
-  private slots:
-
-    void checkGlobal();
-
-    void adaptSelection();
-
-
   private:
 
-    Ui::EditAttributesValuesDialog* ui;
+    Ui::EditProjectPropertiesDialog* ui;
 
-    void setMessage(const QString& Msg = "");
+    void setMessage();
 
 
   public:
 
-    enum EditMode { EDIT_REPLACE, EDIT_MULTIPLY, EDIT_ADD, EDIT_UNKNOWN };
+    EditProjectPropertiesDialog(QWidget* Parent = NULL);
 
-    EditAttributesValuesDialog(QWidget* Parent = NULL);
+    ~EditProjectPropertiesDialog();
 
-    ~EditAttributesValuesDialog();
+    QString getDescription() const;
 
-    EditMode getEditMode() const;
+    QString getAuthors() const;
 
-    QString getReplaceValue() const;
-
-    double getMultiplyValue() const;
-
-    double getAddValue() const;
 };
 
 
-
-#endif /* __EDITATTRIBUTESVALUESDIALOG_HPP__ */
+#endif /* __EDITPROJECTPROPERTIESDIALOG_HPP__ */

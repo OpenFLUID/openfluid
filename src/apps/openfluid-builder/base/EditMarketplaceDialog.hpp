@@ -56,7 +56,7 @@
 #ifndef __EDITMARKETPLACEDIALOG_HPP__
 #define __EDITMARKETPLACEDIALOG_HPP__
 
-#include <QDialog>
+#include "OpenFLUIDDialog.hpp"
 
 #include <openfluid/guicommon/PreferencesManager.hpp>
 
@@ -68,7 +68,7 @@ namespace Ui
 
 
 
-class EditMarketplaceDialog : public QDialog
+class EditMarketplaceDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 

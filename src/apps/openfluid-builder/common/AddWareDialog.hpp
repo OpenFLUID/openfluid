@@ -57,7 +57,7 @@
 #define __ADDWAREDIALOG_HPP__
 
 
-#include <QDialog>
+#include "OpenFLUIDDialog.hpp"
 
 
 namespace Ui
@@ -69,7 +69,7 @@ namespace Ui
 class SignatureWidget;
 
 
-class AddWareDialog : public QDialog
+class AddWareDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 
