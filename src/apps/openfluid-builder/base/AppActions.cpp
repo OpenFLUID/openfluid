@@ -262,6 +262,7 @@ void AppActions::setHomeMode()
   m_Actions["ProjectSave"]->setVisible(false);
   m_Actions["ProjectSaveAs"]->setVisible(false);
   m_Actions["ProjectProperties"]->setVisible(false);
+  m_Actions["ProjectReload"]->setVisible(false);
   m_Actions["ProjectClose"]->setVisible(false);
 
   mp_SimulationMenu->menuAction()->setVisible(false);
