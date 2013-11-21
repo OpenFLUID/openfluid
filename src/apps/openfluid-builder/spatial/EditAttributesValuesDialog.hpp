@@ -63,10 +63,10 @@ namespace Ui
 }
 
 
-#include <QDialog>
+#include "OpenFLUIDDialog.hpp"
 
 
-class EditAttributesValuesDialog : public QDialog
+class EditAttributesValuesDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 

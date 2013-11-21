@@ -64,7 +64,7 @@
 
 AddParamDialog::AddParamDialog(const QStringList& ExistingParams,const QStringList& CompletingParams,
                                QWidget* Parent):
-  QDialog(Parent),ui(new(Ui::AddParamDialog)),
+  OpenFLUIDDialog(Parent),ui(new(Ui::AddParamDialog)),
   mp_Completer(NULL),
   m_ExistingParams(ExistingParams), m_CompletingParams(CompletingParams)
 {

@@ -62,7 +62,7 @@
 
 
 AddUnitDialog::AddUnitDialog(QWidget* Parent):
-  QDialog(Parent),ui(new Ui::AddUnitDialog)
+  OpenFLUIDDialog(Parent),ui(new Ui::AddUnitDialog)
 {
   ui->setupUi(this);
 

@@ -10,9 +10,6 @@
     <height>530</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Dialog</string>
-  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -433,7 +430,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>9</month>
-                <day>5</day>
+                <day>3</day>
                </date>
               </property>
               <property name="displayFormat">

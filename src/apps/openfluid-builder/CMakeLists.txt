@@ -72,6 +72,7 @@ SET(BUILDER_COMMON_CPP common/AppTools.cpp
                        common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
                        common/AddWareDialog.cpp
                        common/AddParamDialog.cpp
+                       common/OpenFLUIDDialog.cpp
                        )
                      
 SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
@@ -81,6 +82,7 @@ SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
                        common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
                        common/AddWareDialog.hpp
                        common/AddParamDialog.hpp
+                       common/OpenFLUIDDialog.hpp
                       )
 
 QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui

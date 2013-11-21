@@ -46,48 +46,27 @@
 */
 
 /**
-  \file EditProjectPropertiesDialog.hpp
+  \file OpenFLUIDDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EDITPROJECTPROPERTIESDIALOG_HPP__
-#define __EDITPROJECTPROPERTIESDIALOG_HPP__
+#ifndef __OPENFLUIDDIALOG_HPP__
+#define __OPENFLUIDDIALOG_HPP__
 
 
-namespace Ui
+#include <QDialog>
+
+class OpenFLUIDDialog : public QDialog
 {
-  class EditProjectPropertiesDialog;
-}
-
-
-#include "OpenFLUIDDialog.hpp"
-
-
-class EditProjectPropertiesDialog : public OpenFLUIDDialog
-{
-  Q_OBJECT;
-
-  private:
-
-    Ui::EditProjectPropertiesDialog* ui;
-
-    void setMessage();
-
-
   public:
 
-    EditProjectPropertiesDialog(QWidget* Parent = NULL);
-
-    ~EditProjectPropertiesDialog();
-
-    QString getDescription() const;
-
-    QString getAuthors() const;
+    OpenFLUIDDialog(QWidget* Parent = NULL);
 
 };
 
 
-#endif /* __EDITPROJECTPROPERTIESDIALOG_HPP__ */
+
+#endif /* __OPENFLUIDDIALOG_HPP__ */

@@ -45,49 +45,22 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file EditProjectPropertiesDialog.hpp
-  \brief Header of ...
+  \file OpenFLUIDDialog.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EDITPROJECTPROPERTIESDIALOG_HPP__
-#define __EDITPROJECTPROPERTIESDIALOG_HPP__
-
-
-namespace Ui
-{
-  class EditProjectPropertiesDialog;
-}
-
 
 #include "OpenFLUIDDialog.hpp"
 
 
-class EditProjectPropertiesDialog : public OpenFLUIDDialog
+OpenFLUIDDialog::OpenFLUIDDialog(QWidget* Parent) :
+  QDialog(Parent)
 {
-  Q_OBJECT;
+  setWindowTitle("OpenFLUID-Builder");
+}
 
-  private:
-
-    Ui::EditProjectPropertiesDialog* ui;
-
-    void setMessage();
-
-
-  public:
-
-    EditProjectPropertiesDialog(QWidget* Parent = NULL);
-
-    ~EditProjectPropertiesDialog();
-
-    QString getDescription() const;
-
-    QString getAuthors() const;
-
-};
-
-
-#endif /* __EDITPROJECTPROPERTIESDIALOG_HPP__ */

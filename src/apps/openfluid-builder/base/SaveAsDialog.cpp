@@ -64,11 +64,9 @@
 #include <QPushButton>
 #include <QFileDialog>
 
-// TODO to remove
-#include <iostream>
 
 SaveAsDialog::SaveAsDialog(QWidget* Parent) :
-  QDialog(Parent),ui(new Ui::SaveAsDialog)
+  OpenFLUIDDialog(Parent),ui(new Ui::SaveAsDialog)
 {
   ui->setupUi(this);
 

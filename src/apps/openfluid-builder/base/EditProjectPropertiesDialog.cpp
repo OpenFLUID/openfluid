@@ -65,7 +65,7 @@
 
 
 EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
-  QDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
+  OpenFLUIDDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
 {
   openfluid::base::ProjectManager* PrjMan =
       openfluid::base::ProjectManager::getInstance();

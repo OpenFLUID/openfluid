@@ -69,7 +69,7 @@
 
 
 OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
-QDialog(Parent), ui(new Ui::OpenExampleProjectDialog)
+  OpenFLUIDDialog(Parent), ui(new Ui::OpenExampleProjectDialog)
 {
   ui->setupUi(this);
 
