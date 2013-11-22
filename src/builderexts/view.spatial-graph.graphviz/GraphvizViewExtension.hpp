@@ -45,67 +45,75 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ExtensionsRegistry.hpp
-  \brief Header of ...
+  \file GraphvizViewExtension.hpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EXTENSIONSREGISTRY_HPP__
-#define __EXTENSIONSREGISTRY_HPP__
+#include <openfluid/builderext/PluggableWorkspaceExtension.hpp>
 
-#include <QWidget>
-
-#include "ExtensionPluginsManager.hpp"
-#include "ExtensionContainer.hpp"
+#include "GraphvizScene.hpp"
 
 
-class ExtensionsRegistry
+DECLARE_BUILDEREXT_PLUGIN
+
+
+// =====================================================================
+// =====================================================================
+
+namespace Ui
 {
-  public:
+  class GraphvizWidget;
+}
 
-    typedef std::map<openfluid::ware::WareID_t, ExtensionContainer*> ExtensionsByName_t;
+class GraphvizViewExtension : public openfluid::builderext::PluggableWorkspaceExtension
+{
+  Q_OBJECT;
+
+  private slots:
+
+    void handleFileGenerationFinished();
+
+    void handleSceneChanged();
+
+    void launchSVGFileGeneration();
+
 
   private:
 
-    static ExtensionsRegistry* mp_Instance;
+    Ui::GraphvizWidget* ui;
 
-    bool m_IsRegistered;
+    QString m_GVFileName;
 
-    ExtensionsByName_t m_Extensions;
+    QString m_SVGFileName;
 
-    ExtensionsRegistry();
+    GraphvizScene* mp_GraphvizScene;
+
+    static QString generateEdge(const QString& SrcClass, const QString& SrcID,
+                                   const QString& DestClass, const QString& DestID,
+                                   const QString& Options);
+
+    static QString generateNode(const QString& UClass, const QString& UID,
+                                   const QString& Options);
+
+
+  public slots:
+
+      void update(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags);
+
 
   public:
 
-    static ExtensionsRegistry* getInstance();
+    GraphvizViewExtension();
 
-    ~ExtensionsRegistry();
+    ~GraphvizViewExtension();
 
+    bool initialize();
 
-    void registerExtensions();
-
-    ExtensionsByName_t* getRegisteredExtensions()
-    { return &m_Extensions; };
-
-    openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
-
-    void releaseAllExtensions();
-
-    bool isExtensionRegistered(const openfluid::ware::WareID_t& ID);
-
-    bool isExtensionActive(const openfluid::ware::WareID_t& ID)
-    { return (isExtensionRegistered(ID) && m_Extensions[ID]->Active); }
-
-    openfluid::builderext::ExtensionType getExtensionType(const openfluid::ware::WareID_t& ID);
 };
 
 
-
-#endif /* __EXTENSIONSREGISTRY_HPP__ */

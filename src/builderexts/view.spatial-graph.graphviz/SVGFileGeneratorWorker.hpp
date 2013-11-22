@@ -46,66 +46,58 @@
 */
 
 /**
-  \file ExtensionsRegistry.hpp
+  \file SVGFileGeneratorWorker.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EXTENSIONSREGISTRY_HPP__
-#define __EXTENSIONSREGISTRY_HPP__
+#ifndef __SVGFILEGENERATORWORKER_HPP__
+#define __SVGFILEGENERATORWORKER_HPP__
 
-#include <QWidget>
+#include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
-#include "ExtensionPluginsManager.hpp"
-#include "ExtensionContainer.hpp"
+#include <QObject>
+#include <QMap>
 
 
-class ExtensionsRegistry
+class SVGFileGeneratorWorker : public QObject
 {
-  public:
 
-    typedef std::map<openfluid::ware::WareID_t, ExtensionContainer*> ExtensionsByName_t;
+  Q_OBJECT;
 
   private:
 
-    static ExtensionsRegistry* mp_Instance;
+    const QString m_GVFileName;
 
-    bool m_IsRegistered;
+    const QString m_SVGFileName;
 
-    ExtensionsByName_t m_Extensions;
+    const openfluid::fluidx::AdvancedDomainDescriptor* mp_AdvDomainDesc;
 
-    ExtensionsRegistry();
+    QMap<QString,QString> m_Options;
+
+
+  signals:
+
+    void finished();
+
+
+  public slots:
+
+    void run();
+
 
   public:
 
-    static ExtensionsRegistry* getInstance();
+    SVGFileGeneratorWorker(const QString& GVFileName, const QString& SVGFileName,
+                          openfluid::fluidx::AdvancedDomainDescriptor* AdvDomainDesc);
 
-    ~ExtensionsRegistry();
+    ~SVGFileGeneratorWorker();
 
+    void setOption(const QString& Name, const QString& Value);
 
-    void registerExtensions();
-
-    ExtensionsByName_t* getRegisteredExtensions()
-    { return &m_Extensions; };
-
-    openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
-
-    void releaseAllExtensions();
-
-    bool isExtensionRegistered(const openfluid::ware::WareID_t& ID);
-
-    bool isExtensionActive(const openfluid::ware::WareID_t& ID)
-    { return (isExtensionRegistered(ID) && m_Extensions[ID]->Active); }
-
-    openfluid::builderext::ExtensionType getExtensionType(const openfluid::ware::WareID_t& ID);
 };
 
 
-
-#endif /* __EXTENSIONSREGISTRY_HPP__ */
+#endif /* __SVGFILEGENERATORWORKER_HPP__ */

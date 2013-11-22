@@ -46,66 +46,41 @@
 */
 
 /**
-  \file ExtensionsRegistry.hpp
+  \file GraphvizView.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EXTENSIONSREGISTRY_HPP__
-#define __EXTENSIONSREGISTRY_HPP__
-
-#include <QWidget>
-
-#include "ExtensionPluginsManager.hpp"
-#include "ExtensionContainer.hpp"
+#ifndef __GRAPHVIZVIEW_HPP__
+#define __GRAPHVIZVIEW_HPP__
 
 
-class ExtensionsRegistry
+#include <QGraphicsView>
+#include <QWheelEvent>
+
+
+class GraphvizView : public QGraphicsView
 {
-  public:
+  Q_OBJECT;
 
-    typedef std::map<openfluid::ware::WareID_t, ExtensionContainer*> ExtensionsByName_t;
+  public slots:
 
-  private:
+    void fitViewToItems();
 
-    static ExtensionsRegistry* mp_Instance;
+    void exportSceneAsPNG();
 
-    bool m_IsRegistered;
+    void exportSceneAsSVG();
 
-    ExtensionsByName_t m_Extensions;
-
-    ExtensionsRegistry();
 
   public:
 
-    static ExtensionsRegistry* getInstance();
+    GraphvizView(QWidget* Parent = 0);
 
-    ~ExtensionsRegistry();
+    void wheelEvent(QWheelEvent* Event);
 
-
-    void registerExtensions();
-
-    ExtensionsByName_t* getRegisteredExtensions()
-    { return &m_Extensions; };
-
-    openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
-
-    void releaseAllExtensions();
-
-    bool isExtensionRegistered(const openfluid::ware::WareID_t& ID);
-
-    bool isExtensionActive(const openfluid::ware::WareID_t& ID)
-    { return (isExtensionRegistered(ID) && m_Extensions[ID]->Active); }
-
-    openfluid::builderext::ExtensionType getExtensionType(const openfluid::ware::WareID_t& ID);
 };
 
 
-
-#endif /* __EXTENSIONSREGISTRY_HPP__ */
+#endif /* __GRAPHVIZVIEW_HPP__ */

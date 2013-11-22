@@ -46,66 +46,36 @@
 */
 
 /**
-  \file ExtensionsRegistry.hpp
+  \file GraphvizScene.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EXTENSIONSREGISTRY_HPP__
-#define __EXTENSIONSREGISTRY_HPP__
+#ifndef __GRAPHVIZSCENE_HPP__
+#define __GRAPHVIZSCENE_HPP__
 
-#include <QWidget>
-
-#include "ExtensionPluginsManager.hpp"
-#include "ExtensionContainer.hpp"
+#include <QGraphicsScene>
 
 
-class ExtensionsRegistry
+class GraphvizScene : public QGraphicsScene
 {
-  public:
-
-    typedef std::map<openfluid::ware::WareID_t, ExtensionContainer*> ExtensionsByName_t;
+  Q_OBJECT;
 
   private:
 
-    static ExtensionsRegistry* mp_Instance;
+    QString m_SVGFileName;
 
-    bool m_IsRegistered;
-
-    ExtensionsByName_t m_Extensions;
-
-    ExtensionsRegistry();
 
   public:
 
-    static ExtensionsRegistry* getInstance();
+    GraphvizScene(const QString& SVGFileName, QObject* Parent = 0);
 
-    ~ExtensionsRegistry();
+    ~GraphvizScene();
 
+    bool reloadFromFile();
 
-    void registerExtensions();
-
-    ExtensionsByName_t* getRegisteredExtensions()
-    { return &m_Extensions; };
-
-    openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
-
-    void releaseAllExtensions();
-
-    bool isExtensionRegistered(const openfluid::ware::WareID_t& ID);
-
-    bool isExtensionActive(const openfluid::ware::WareID_t& ID)
-    { return (isExtensionRegistered(ID) && m_Extensions[ID]->Active); }
-
-    openfluid::builderext::ExtensionType getExtensionType(const openfluid::ware::WareID_t& ID);
 };
 
-
-
-#endif /* __EXTENSIONSREGISTRY_HPP__ */
+#endif /* __GRAPHVIZSCENE_HPP__ */

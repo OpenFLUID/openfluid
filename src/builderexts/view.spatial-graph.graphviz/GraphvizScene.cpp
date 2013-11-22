@@ -45,67 +45,51 @@
   with the terms contained in the written agreement between You and INRA.
 */
 
+
 /**
-  \file ExtensionsRegistry.hpp
-  \brief Header of ...
+  \file GraphvizScene.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __EXTENSIONSREGISTRY_HPP__
-#define __EXTENSIONSREGISTRY_HPP__
+#include "GraphvizScene.hpp"
 
-#include <QWidget>
-
-#include "ExtensionPluginsManager.hpp"
-#include "ExtensionContainer.hpp"
+#include <QGraphicsSvgItem>
 
 
-class ExtensionsRegistry
+GraphvizScene::GraphvizScene(const QString& SVGFileName, QObject* Parent):
+  QGraphicsScene(Parent), m_SVGFileName(SVGFileName)
 {
-  public:
 
-    typedef std::map<openfluid::ware::WareID_t, ExtensionContainer*> ExtensionsByName_t;
-
-  private:
-
-    static ExtensionsRegistry* mp_Instance;
-
-    bool m_IsRegistered;
-
-    ExtensionsByName_t m_Extensions;
-
-    ExtensionsRegistry();
-
-  public:
-
-    static ExtensionsRegistry* getInstance();
-
-    ~ExtensionsRegistry();
+}
 
 
-    void registerExtensions();
-
-    ExtensionsByName_t* getRegisteredExtensions()
-    { return &m_Extensions; };
-
-    openfluid::builderext::PluggableBuilderExtension* instanciateExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(const openfluid::ware::WareID_t& ID);
-
-    void releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
-
-    void releaseAllExtensions();
-
-    bool isExtensionRegistered(const openfluid::ware::WareID_t& ID);
-
-    bool isExtensionActive(const openfluid::ware::WareID_t& ID)
-    { return (isExtensionRegistered(ID) && m_Extensions[ID]->Active); }
-
-    openfluid::builderext::ExtensionType getExtensionType(const openfluid::ware::WareID_t& ID);
-};
+// =====================================================================
+// =====================================================================
 
 
+GraphvizScene::~GraphvizScene()
+{
 
-#endif /* __EXTENSIONSREGISTRY_HPP__ */
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool GraphvizScene::reloadFromFile()
+{
+  clear();
+
+  QGraphicsSvgItem* SVGItem = new QGraphicsSvgItem(m_SVGFileName);
+  SVGItem->setFlags(QGraphicsItem::ItemClipsToShape);
+  SVGItem->setCacheMode(QGraphicsItem::NoCache);
+  SVGItem->setZValue(0);
+
+  addItem(SVGItem);
+
+  return true;
+}
