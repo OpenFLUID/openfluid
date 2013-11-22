@@ -96,6 +96,8 @@ class ExtensionsRegistry
 
     void releaseExtension(openfluid::builderext::PluggableBuilderExtension* Ext);
 
+    void releaseAllExtensions();
+
     bool isExtensionRegistered(const openfluid::ware::WareID_t& ID);
 
     bool isExtensionActive(const openfluid::ware::WareID_t& ID)

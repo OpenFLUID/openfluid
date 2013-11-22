@@ -54,8 +54,8 @@
  */
 
 
-
 #include "ExtensionsRegistry.hpp"
+#include <openfluid/builderext/PluggableModelessExtension.hpp>
 
 
 ExtensionsRegistry* ExtensionsRegistry::mp_Instance = NULL;
@@ -154,6 +154,34 @@ void ExtensionsRegistry::releaseExtension(openfluid::builderext::PluggableBuilde
 // =====================================================================
 
 
+void ExtensionsRegistry::releaseAllExtensions()
+{
+  ExtensionsByName_t::iterator it;
+  ExtensionsByName_t::iterator itb = m_Extensions.begin();
+  ExtensionsByName_t::iterator ite = m_Extensions.end();
+
+  for (it=itb;it!=ite;++it)
+  {
+    if ((*it).second->Active)
+      (*it).second->Active = false;
+
+    if ((*it).second->Body != NULL && (*it).second->Signature != NULL &&
+        (*it).second->Signature->Type == openfluid::builderext::TYPE_MODELESS)
+    {
+      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body)->close();
+      dynamic_cast<openfluid::builderext::PluggableModelessExtension*>((*it).second->Body)->deleteLater();
+    }
+
+
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool ExtensionsRegistry::isExtensionRegistered(const openfluid::ware::WareID_t& ID)
 {
   return (m_Extensions.find(ID) != m_Extensions.end());
@@ -171,3 +199,4 @@ openfluid::builderext::ExtensionType ExtensionsRegistry::getExtensionType(const 
 
   return openfluid::builderext::TYPE_UNKNOWN;
 }
+

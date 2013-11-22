@@ -135,6 +135,8 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
 
 ProjectModule::~ProjectModule()
 {
+  ExtensionsRegistry::getInstance()->releaseAllExtensions();
+
   delete mp_ProjectCentral;
   mp_SimulatorsPlugsWatcher->deleteLater();
   mp_ObserversPlugsWatcher->deleteLater();
