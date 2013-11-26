@@ -4,5 +4,6 @@ ADD_DEFINITIONS(-DBUILDINGDLL)
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 OPNFLD_ADD_BUILDER_EXTENSION_WITH_INSTALL(view.spatial-graph.graphviz view.spatial-graph.graphviz ${BUILDEREXT_OUTPUT_PATH})
-																						
+TARGET_LINK_LIBRARIES(view.spatial-graph.graphviz${OPENFLUID_BUILDEREXTS_SUFFIX}
+                      ${QT_QTSVG_LIBRARIES})																						
 

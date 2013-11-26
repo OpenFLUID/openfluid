@@ -199,15 +199,19 @@ void SVGFileGeneratorWorker::run()
 
   // Generation of SVG file
 
+#if defined(Q_OS_WIN32)
+  openfluid::tools::ExternalProgram DotProgram("dot.exe");
+#else
   openfluid::tools::ExternalProgram DotProgram("dot");
+#endif
 
   if (DotProgram.isFound())
   {
 
     QString DotCommand = QString("%1 -Tsvg %2 -o %3")
                          .arg(DotProgram.getFullProgramPath())
-                         .arg(m_GVFileName)
-                         .arg(m_SVGFileName);
+                         .arg("\""+m_GVFileName+"\"")
+                         .arg("\""+m_SVGFileName+"\"");
 
     QProcess::execute(DotCommand);
   }
