@@ -87,6 +87,8 @@ class DummyModalSpatialClassic : public openfluid::builderext::PluggableModalExt
 
     void addUnitClass();
 
+    void clearSpatialDomain();
+
 
   public slots:
 
