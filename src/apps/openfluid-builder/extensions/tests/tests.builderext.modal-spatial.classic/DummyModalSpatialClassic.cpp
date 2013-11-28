@@ -90,6 +90,7 @@ DummyModalSpatialClassic::DummyModalSpatialClassic() :
 
 
   connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addUnitClass()));
+  connect(ui->ClearButton,SIGNAL(clicked()),this,SLOT(clearSpatialDomain()));
   connect(ui->ButtonBox,SIGNAL(accepted()),this,SLOT(accept()));
   connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
 
@@ -129,6 +130,20 @@ void DummyModalSpatialClassic::addUnitClass()
 
     emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DummyModalSpatialClassic::clearSpatialDomain()
+{
+  mp_AdvancedDesc->getDomain().clearDomain();
+
+  emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
+                     openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+
 }
 
 

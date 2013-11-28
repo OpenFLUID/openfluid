@@ -81,7 +81,7 @@ MapScene::MapScene(const openfluid::fluidx::AdvancedDomainDescriptor& Domain,
 
 void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc,
                         int ZLayer,
-                        int LineWidth,
+                        int /*LineWidth*/,
                         QColor LineColor,
                         QColor FillColor)
 {
@@ -221,7 +221,7 @@ void MapScene::setActiveLayer(const QString& UnitClass)
 // =====================================================================
 
 
-void MapScene::enableUnitsIDs(bool Enabled)
+void MapScene::enableUnitsIDs(bool /*Enabled*/)
 {
   // TODO
   QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);

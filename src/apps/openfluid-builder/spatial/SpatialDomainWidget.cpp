@@ -200,6 +200,8 @@ void SpatialDomainWidget::enableAutomaticView(bool Enabled)
 
 void SpatialDomainWidget::refresh()
 {
+  // -------- prepare classes list --------
+
   QStringList OriginalClassesList = StringSetToQStringList(m_Domain.getClassNames());
 
   QStringList ClassesList;
@@ -246,15 +248,20 @@ void SpatialDomainWidget::refresh()
   }
 
 
-  // display classes widgets
+  // -------- display classes widgets ---------
+
+  // remove classes from display that does not exist anymore
 
   QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
 
-  // remove classes from display that does not exist anymore
+  // search for classes to remove from layout
+  QList<int> ItemsToRemove;
+
   for (int j=0;j<Layout->count();j++)
   {
-    if (j!=Layout->count()-1)
+    if (Layout->itemAt(j)->widget() != NULL)
     {
+
       UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(j)->widget());
 
       if (!ClassesList.contains(ClassW->getClassName()))
@@ -262,12 +269,19 @@ void SpatialDomainWidget::refresh()
         if (ClassW->getClassName() == m_ActiveClass)
           m_ActiveClass = "";
 
-        Layout->takeAt(j)->widget()->deleteLater();
+        ItemsToRemove.append(j);
       }
     }
   }
 
+  // effectively remove classes from layout
+  QListIterator<int> itTR(ItemsToRemove);
+  itTR.toBack();
+  while (itTR.hasPrevious())
+    Layout->takeAt(itTR.previous())->widget()->deleteLater();
 
+
+  // Add of new classes to layout
   for (int i = 0; i<ClassesList.size(); i++)
   {
     bool AlreadyExist = false;
