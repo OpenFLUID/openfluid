@@ -980,3 +980,82 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
+{
+  // intersect HorseShoe with simple polygon
+  openfluid::core::GeoVectorValue Val(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+  openfluid::core::GeoVectorValue ValHorse(
+        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_HORSESHOE.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+  openfluid::landr::VectorDataset* VectHorse = new openfluid::landr::VectorDataset(
+      ValHorse);
+
+  geos::geom::Geometry *Geom1=Vect->getGeometries();
+  geos::geom::Geometry *GeomHorse=VectHorse->getGeometries();
+
+  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, GeomHorse);
+  BOOST_CHECK_EQUAL(IntersectPolys.size(), 3);
+
+  std::vector<geos::geom::Polygon*>::iterator it=IntersectPolys.begin();
+  std::vector<geos::geom::Polygon*>::iterator ite=IntersectPolys.end();
+  double area=0.0;
+
+  for(;it!=ite;++it)
+      area=area+(*it)->getArea();
+
+  BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.12999));
+
+  // intersect HorseShoe with polygon with hole
+  IntersectPolys.clear();
+  openfluid::core::GeoVectorValue ValHole(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU-has-hole.shp");
+
+  openfluid::landr::VectorDataset* VectHole = new openfluid::landr::VectorDataset(
+      ValHole);
+
+  geos::geom::Geometry *GeomHole=VectHole->getGeometries();
+  IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(GeomHole, GeomHorse);
+  BOOST_CHECK_EQUAL(IntersectPolys.size(), 3);
+  area=0.0;
+  it=IntersectPolys.begin();
+  ite=IntersectPolys.end();
+
+  for(;it!=ite;++it)
+    area=area+(*it)->getArea();
+
+  BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.69474));
+
+
+  // intersect HorseShoe with polygon with island
+  IntersectPolys.clear();
+  openfluid::core::GeoVectorValue ValIsland(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU-has-islands.shp");
+
+  openfluid::landr::VectorDataset* VectIsland = new openfluid::landr::VectorDataset(
+      ValIsland);
+
+  geos::geom::Geometry *GeomIsland=VectIsland->getGeometries();
+  IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(GeomIsland, GeomHorse);
+  BOOST_CHECK_EQUAL(IntersectPolys.size(), 4);
+  area=0.0;
+  it=IntersectPolys.begin();
+  ite=IntersectPolys.end();
+
+  for(;it!=ite;++it)
+    area=area+(*it)->getArea();
+
+  BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.743386));
+
+  delete Vect;
+  delete VectHorse;
+  delete VectHole;
+  delete VectIsland;
+
+
+}
+
+// =====================================================================
+// =====================================================================

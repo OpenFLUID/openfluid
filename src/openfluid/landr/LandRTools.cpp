@@ -358,7 +358,15 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(
         if((Geom1->getGeometryN(i))->intersects(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j))))
         {
           geos::geom::Geometry *Intersect=(Geom1->getGeometryN(i))->intersection(const_cast<geos::geom::Geometry*>(Geom2->getGeometryN(j)));
-          Polygons.push_back(dynamic_cast<geos::geom::Polygon*>(Intersect));
+          if(Intersect->getGeometryTypeId()==geos::geom::GEOS_POLYGON)
+            Polygons.push_back(dynamic_cast<geos::geom::Polygon*>(Intersect));
+          else if (Intersect->getGeometryTypeId()==geos::geom::GEOS_MULTIPOLYGON)
+          {
+            unsigned int hEnd=Intersect->getNumGeometries();
+            for (unsigned int h = 0; h < hEnd; h++)
+              Polygons.push_back(dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Intersect->getGeometryN(h))));
+
+          }
 
         }
       }
