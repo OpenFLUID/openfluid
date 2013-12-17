@@ -850,9 +850,7 @@ void MarketClientAssistant::updateAvailPacksTreeview()
       mp_SelectAllButton[TCIter->first] = new QPushButton(tr("Select all"));
       mp_SelectNoneButton[TCIter->first] = new QPushButton(tr("Select none"));
       mp_CommonBuildConfigButton[TCIter->first] = new QPushButton(tr("Edit build options"));
-
-      QString IconPath = QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getAppResourceFilePath("openfluid-market-client","preferences.png"));
-      mp_CommonBuildConfigButton[TCIter->first]->setIcon(QIcon(IconPath));
+      mp_CommonBuildConfigButton[TCIter->first]->setIcon(QIcon(":/market/icons/preferences.png"));
 
 
       // Disable build options button for datasets
