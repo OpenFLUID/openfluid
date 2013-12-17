@@ -4,15 +4,13 @@ OpenFLUID sources
 The OpenFLUID source tree is organized as follow
 - cmake : CMake files included in main build system 
 - doc: Doxygen and LaTeX sources for users and developers manuals
-- po : i18n files
 - examples : examples of projects and simulator
 - resources : general resources for building, testing and packaging
 - share : shared resources at runtime
-- src/apps/ : sources of the OpenFLUID applications
-- src/openfluid : sources of the OpenFLUID framework
+- src : sources of the OpenFLUID framework and applications
 
 
-OpenFLUID relies on open-source libraries, required for build or use OpenFLUID.
+OpenFLUID relies on open-source libraries, required to build or use OpenFLUID.
 The required libraries are:
 for the OpenFLUID framework libraries: 
   - C++ STL
@@ -30,15 +28,18 @@ for openfluid-builder GUI application:
   - Boost
   - Qt : GUI
 
-
-For unit testing, the Boost unit testing framework is also required (unit_test_framework)
-
+For unit testing, the Boost unit testing framework is also required 
+(unit_test_framework)
 
 For building Latex documents, required tools and packages are:
 - pdflatex
 - latex2html
 - packages: a4wide, babel, ltxtable, pgf/tikz, tabularx, verbatim
 - fonts: cmbright
+
+
+OpenFLUID uses CMake version 2.8.9 or higher for build configuration, 
+and has been tested with the GCC compiling system
 
 
 Further informations are available on the OpenFLUID web site and community site:  
