@@ -247,4 +247,29 @@ bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID) const
 // =====================================================================
 
 
+openfluid::fluidx::DatastoreItemDescriptor* AdvancedDatastoreDescriptor::getItem(const std::string& ItemID)
+{
+
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->getItems().begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->getItems().end();
+
+  for (it = itb; it != ite; ++it)
+  {
+    if ((*it)->getID() == ItemID)
+      return (*it) ;
+  }
+
+  return (openfluid::fluidx::DatastoreItemDescriptor*) 0;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
 } } // namespaces

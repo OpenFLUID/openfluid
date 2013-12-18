@@ -116,6 +116,17 @@ class DLLEXPORT AdvancedDatastoreDescriptor
     void removeItem(unsigned int Position);
 
     bool isItemAlreadyExist(std::string ItemID) const;
+
+    /**
+     * @brief Gets the item of the datastore matching the given ID.
+     *
+     * @param ItemID ID of the expected item.
+     * @return The item with the given ID, or 0 if not found.
+     */
+    openfluid::fluidx::DatastoreItemDescriptor* getItem(const std::string& ItemID);
+
+
+
 };
 
 } } // namespaces
