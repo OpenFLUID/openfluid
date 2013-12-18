@@ -135,6 +135,15 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::fluidx::AdvancedDatastoreDescriptor DS(
       FXDesc.getDatastoreDescriptor());
 
+
+  openfluid::fluidx::DatastoreItemDescriptor* Item =DS.getItem("units_A");
+  BOOST_CHECK_EQUAL(Item->getID(), "units_A");
+  BOOST_CHECK_EQUAL(Item->getType(),
+                    openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(Item->getRelativePath(), "shapes/units_A.shp");
+
+
+
   BOOST_CHECK_EQUAL(DS.getItems().size(), 5);
 
   const std::list<openfluid::fluidx::DatastoreItemDescriptor*>* Items =
