@@ -82,14 +82,15 @@ bool ExamplesBuddy::installExampleProject(const std::string& ProjectsSourcePath,
 {
   mp_Listener->onSubstageCompleted("Installing example project \"" + ProjectDir + "\" ... ");
 
-  boost::filesystem::path InstallPath(ProjectsInstallPath);
+  boost::filesystem::path AllProjectsInstallPath(ProjectsInstallPath);
+  boost::filesystem::path ThisProjectInstallPath(ProjectsInstallPath+"/"+ProjectDir);
 
-  if (!boost::filesystem::is_directory(InstallPath) || Force)
+  if (!boost::filesystem::is_directory(ThisProjectInstallPath) || Force)
   {
-    boost::filesystem::create_directories(InstallPath);
+    boost::filesystem::create_directories(ThisProjectInstallPath);
 
     openfluid::tools::CopyDirectoryRecursively(boost::filesystem::path(ProjectsSourcePath+"/"+ProjectDir).string(),
-                                               InstallPath.string());
+                                               AllProjectsInstallPath.string());
     mp_Listener->onSubstageCompleted("Done");
     return true;
   }
