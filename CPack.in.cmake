@@ -1,7 +1,7 @@
 SET(OPENFLUID_PACKAGE_TITLE "OpenFLUID")
 SET(OPENFLUID_PACKAGE_SUMMARY "OpenFLUID software environment for modelling landscapes functionning")
 SET(OPENFLUID_PACKAGE_DESCRIPTION "This package contains the OpenFLUID software environment for modelling landscapes functionning, mainly for spatial fluxes modelling. It also includes API and tools for development.")
-SET(OPENFLUID_PACKAGE_LICENSE "GPLv3 (with special exception)")
+SET(OPENFLUID_PACKAGE_LICENSE "GPLv3")
 
 SET(CPACK_CMAKE_GENERATOR "${CMAKE_GENERATOR}")
 
