@@ -12,13 +12,14 @@
    <param name="set.TLU.vars" value="*"/>
   </observer>
   <observer ID="export.vars.files.kml-anim">
-  <param name="layers.anim.colorscale" value="FFFFFFFF;100;FF00BFFF;250;FF9ACD32;500;FFFFFF00;750;FFFF7F50;1000;FFFF0000"/>
+   <param name="layers.anim.colorscale" value="FFFFFDF6;10;FFCBD3B3;25;FFD3CD92;50;FFD3B283;75;FFD39669;100;FFA84F0F;250;FF9A9301;500;FF6BAC00;750;FF00CF0A;1000;FF00E570;1500;FF00F9DC;2000;FF00F5FF;2500;FF00D7FF;3000;FF00B3FF;4000;FF008CFF;5000;FF004FFF;6000;FF1800F6"/>
    <param name="layers.anim.linewidth" value="4"/>
    <param name="layers.anim.sourcefile" value="manhattan.shp"/>
    <param name="layers.anim.sourcetype" value="file"/>
    <param name="layers.anim.unitclass" value="RU"/>
    <param name="layers.anim.varname" value="examples.RU.S.stock"/>
-   <param name="title" value="kml anim export"/>
+   <param name="title" value="Cars circulation in Manhattan streets"/>
+   <param name="kmzfilename" value="manhattan-anim.kmz" /> 
    <param name="tryopengearth" value="0"/>
   </observer>
    <observer ID="export.vars.plot.gnuplot">

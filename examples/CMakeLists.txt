@@ -26,7 +26,7 @@ OPENFLUID_ADD_TEST(NAME examples-Manhattan
                               "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan" 
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Manhattan"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/openfluid-messages.log"
-                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/kmlanim.kmz"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/manhattan-anim.kmz"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/examples.RU11.stock.pdf"
                               
                    )

@@ -188,7 +188,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetVariable(pTLU,"examples.TLU.S.state",CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),StateBool);
 
 
-        if(NextPeriod==OPENFLUID_GetCurrentTimeIndex())
+        if(unsigned(NextPeriod)==OPENFLUID_GetCurrentTimeIndex())
         {
           StateBool=1-StateBool;
           NextPeriod=NextPeriod+PeriodInt;
