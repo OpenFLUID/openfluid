@@ -79,7 +79,7 @@ void WFSSourceAddDialog::connectToWFS()
   {
     m_CurrentSourceURI = "WFS:"+ui->URLLineEdit->text();
 
-    openSource();
+    openDataSource();
 
     if (mp_DataSource == NULL)
     {

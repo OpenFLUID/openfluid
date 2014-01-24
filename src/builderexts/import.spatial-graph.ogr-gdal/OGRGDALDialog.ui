@@ -59,11 +59,17 @@
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
              <widget class="QTableWidget" name="SourcesTableWidget">
+              <property name="editTriggers">
+               <set>QAbstractItemView::NoEditTriggers</set>
+              </property>
               <property name="selectionMode">
                <enum>QAbstractItemView::SingleSelection</enum>
               </property>
               <property name="selectionBehavior">
                <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <property name="textElideMode">
+               <enum>Qt::ElideRight</enum>
               </property>
               <attribute name="horizontalHeaderStretchLastSection">
                <bool>true</bool>
@@ -130,7 +136,7 @@
                </spacer>
               </item>
               <item>
-               <widget class="QPushButton" name="CheckButton">
+               <widget class="QPushButton" name="PrecheckButton">
                 <property name="text">
                  <string>Precheck import</string>
                 </property>
@@ -153,7 +159,7 @@
           <item>
            <widget class="QTabWidget" name="ConfigTabWidget">
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="StructureTab">
              <attribute name="title">
@@ -165,7 +171,7 @@
                 <item>
                  <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>Units class:</string>
+                   <string>Units class to create:</string>
                   </property>
                  </widget>
                 </item>
@@ -224,7 +230,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="PCsOrdComboBox"/>
+                 <widget class="QComboBox" name="PcsOrdComboBox"/>
                 </item>
                 <item>
                  <spacer name="horizontalSpacer_5">
@@ -300,7 +306,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="ChildofConnecComboBox_2"/>
+                 <widget class="QComboBox" name="ChildofConnectComboBox"/>
                 </item>
                 <item>
                  <spacer name="horizontalSpacer_2">
@@ -355,7 +361,17 @@
                    </widget>
                   </item>
                   <item>
-                   <widget class="QListWidget" name="listWidget"/>
+                   <widget class="QListWidget" name="AttributesListWidget">
+                    <property name="editTriggers">
+                     <set>QAbstractItemView::NoEditTriggers</set>
+                    </property>
+                    <property name="selectionMode">
+                     <enum>QAbstractItemView::NoSelection</enum>
+                    </property>
+                    <property name="selectionBehavior">
+                     <enum>QAbstractItemView::SelectItems</enum>
+                    </property>
+                   </widget>
                   </item>
                  </layout>
                 </item>
@@ -393,7 +409,7 @@
                        <bool>false</bool>
                       </property>
                       <property name="text">
-                       <string>area</string>
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -414,7 +430,7 @@
                        <bool>false</bool>
                       </property>
                       <property name="text">
-                       <string>length</string>
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -435,7 +451,7 @@
                        <bool>false</bool>
                       </property>
                       <property name="text">
-                       <string>xcentroid</string>
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -456,7 +472,7 @@
                        <bool>false</bool>
                       </property>
                       <property name="text">
-                       <string>ycentroid</string>
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -477,7 +493,7 @@
                        <bool>false</bool>
                       </property>
                       <property name="text">
-                       <string>zcentroid</string>
+                       <string/>
                       </property>
                      </widget>
                     </item>
@@ -514,13 +530,20 @@
                 </property>
                 <item>
                  <widget class="QCheckBox" name="checkBox_2">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Import in project dataset as</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_4"/>
+                 <widget class="QLineEdit" name="lineEdit_4">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>
@@ -528,13 +551,20 @@
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <item>
                  <widget class="QCheckBox" name="checkBox">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>Import in datastore with ID</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit"/>
+                 <widget class="QLineEdit" name="lineEdit">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </item>

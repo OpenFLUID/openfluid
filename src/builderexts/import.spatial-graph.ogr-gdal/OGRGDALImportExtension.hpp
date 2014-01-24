@@ -59,6 +59,8 @@ namespace Ui
 #include "SourceInfos.hpp"
 
 #include <QAbstractButton>
+#include <QListWidgetItem>
+#include <QCloseEvent>
 
 
 class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExtension
@@ -77,7 +79,39 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
 
     void updateConfigTabWidget();
 
-    void runConsistencyCheck();
+    void runPrecheck();
+
+    void updateUnitsClassInfos();
+
+    void updateUnitsIDsInfos();
+
+    void updateUnitsPcsOrdInfos();
+
+    void updateUnitsToConnInfos();
+
+    void updateUnitsChildofConnInfos();
+
+    void updateImportedFieldsInfos(QListWidgetItem* Item);
+
+    void updateIsAreaComputeInfos();
+
+    void updateAreaComputeAttrInfos();
+
+    void updateIsLengthComputeInfos();
+
+    void updateLengthComputeAttrInfos();
+
+    void updateIsXCentroidComputeInfos();
+
+    void updateXCentroidComputeAttrInfos();
+
+    void updateIsYCentroidComputeInfos();
+
+    void updateYCentroidComputeAttrInfos();
+
+    void updateIsZCentroidComputeInfos();
+
+    void updateZCentroidComputeAttrInfos();
 
 
   private:
@@ -86,6 +120,8 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
 
     QString m_InputDir;
 
+    int m_CurrentSrcIndex;
+
     QList<SourceInfos> m_SourcesInfos;
 
     void addSource(const SourceInfos& SrcInfos);
@@ -93,6 +129,8 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
     void proceedToImport();
 
     void cancelImport();
+
+    void closeEvent(QCloseEvent *Event);
 
 
   public slots:

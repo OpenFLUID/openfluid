@@ -41,8 +41,6 @@
 #include "ui_SourceAddDialog.h"
 #include "SourceAddDialog.hpp"
 
-#include <iostream>
-
 
 SourceAddDialog::SourceAddDialog(QWidget* Parent = NULL):
   QDialog(Parent), ui(new Ui::SourceAddDialog),
@@ -80,7 +78,7 @@ SourceAddDialog::~SourceAddDialog()
 // =====================================================================
 
 
-void SourceAddDialog::openSource()
+void SourceAddDialog::openDataSource()
 {
   ui->BrowseButton->setEnabled(false);
   ui->ConnectButton->setEnabled(false);
@@ -88,6 +86,8 @@ void SourceAddDialog::openSource()
   ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
   setCursor(Qt::WaitCursor);
+
+  // TODO move processing to thread
 
   OGRDataSource::DestroyDataSource(mp_DataSource);
   mp_DataSource = NULL;
@@ -141,10 +141,14 @@ void SourceAddDialog::globalCheck()
 void SourceAddDialog::proceedToImport()
 {
   prepareToImport();
-  std::cout << __PRETTY_FUNCTION__ << ", line " << __LINE__ << std::endl;
 
   m_SrcInfos.SourceGeomType = mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetGeomType();
   m_SrcInfos.LayerName = QString(mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetName());
+
+  OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
+
+  for (int i=0; i< Defn->GetFieldCount();i++)
+    m_SrcInfos.AvailableFields.append(Defn->GetFieldDefn(i)->GetNameRef());
 
   accept();
 }

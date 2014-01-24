@@ -89,7 +89,7 @@ void FileSourceAddDialog::selectFile()
     ui->LayersTableWidget->setRowCount(0);
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
 
-    openSource();
+    openDataSource();
 
     if (mp_DataSource == NULL)
     {
@@ -111,7 +111,6 @@ void FileSourceAddDialog::prepareToImport()
 {
   std::cout << __PRETTY_FUNCTION__ << ", line " << __LINE__ << std::endl;
 
-  m_SrcInfos.SourcePath = m_CurrentSourceURI;
   m_SrcInfos.SourceURI = m_CurrentSourceURI;
 }
 

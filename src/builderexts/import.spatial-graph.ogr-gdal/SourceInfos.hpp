@@ -41,7 +41,7 @@
 #define __SOURCEINFOS_HPP__
 
 
-#include <QString>
+#include <QStringList>
 #include "ogrsf_frmts.h"
 
 
@@ -51,13 +51,46 @@ class SourceInfos
 
     OGRwkbGeometryType SourceGeomType;
 
-    QString SourcePath;
+    QString CachedSourceURI;
 
     QString SourceURI;
 
     QString LayerName;
 
-    QString UnitClass;
+    QString UnitsClass;
+
+    QStringList AvailableFields;
+
+    QStringList ImportedFields;
+
+    QString UnitsIDsField;
+
+    QString UnitsPcsOrdField;
+
+    QString ToConnectionsField;
+
+    QString ChildofConnectionsField;
+
+    bool IsAreaCompute;
+
+    QString AreaComputeAttribute;
+
+    bool IsLengthCompute;
+
+    QString LengthComputeAttribute;
+
+    bool IsXCentroidCompute;
+
+    QString XCentroidComputeAttribute;
+
+    bool IsYCentroidCompute;
+
+    QString YCentroidComputeAttribute;
+
+    bool IsZCentroidCompute;
+
+    QString ZCentroidComputeAttribute;
+
 
     SourceInfos();
 

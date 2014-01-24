@@ -43,7 +43,12 @@
 
 
 SourceInfos::SourceInfos():
-  SourceGeomType(wkbUnknown)
+  SourceGeomType(wkbUnknown),
+  IsAreaCompute(false), AreaComputeAttribute("area"),
+  IsLengthCompute(false), LengthComputeAttribute("length"),
+  IsXCentroidCompute(false), XCentroidComputeAttribute("xcentroid"),
+  IsYCentroidCompute(false), YCentroidComputeAttribute("ycentroid"),
+  IsZCentroidCompute(false), ZCentroidComputeAttribute("zcentroid")
 {
 
 }

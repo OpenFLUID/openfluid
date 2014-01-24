@@ -75,7 +75,7 @@ class SourceAddDialog : public QDialog
 
     SourceInfos m_SrcInfos;
 
-    void openSource();
+    void openDataSource();
 
     virtual void prepareToImport() = 0;
 
