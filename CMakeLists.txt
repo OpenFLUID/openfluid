@@ -3,7 +3,16 @@
 #
 # Author : Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 #
+# Usage for debug build:
+#  cmake <path to sources>
 #
+# Usage for debug build with heavy tests enabled:
+#  cmake <path to sources> -DOPENFLUID_ENABLE_HEAVYTESTING=1
+#
+# Usage for release build:
+#  cmake <path to sources> -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=<prefix for install path>
+#
+
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.9)
 
@@ -166,6 +175,11 @@ ELSE()
   MESSAGE(STATUS "Build OpenFLUID documentation : no") 
 ENDIF()
 
+IF(OPENFLUID_ENABLE_HEAVYTESTING)
+  MESSAGE(STATUS "Run heavy tests : yes")  
+ELSE()
+  MESSAGE(STATUS "Run heavy tests : no")  
+ENDIF()
   
 MESSAGE(STATUS "****************************************")
 
