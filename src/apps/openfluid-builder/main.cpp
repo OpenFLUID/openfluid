@@ -62,8 +62,8 @@ int main(int argc, char** argv)
 
   try
   {
-    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
-    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
+    Q_INIT_RESOURCE(openfluidbuilder);
+    Q_INIT_RESOURCE(openfluidmarket);
 
     INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
 

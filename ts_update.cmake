@@ -1,3 +1,12 @@
+# Usage:
+#  cmake -P ts_update.cmake
+#
+# Usage with extra search path for lupdate program:
+#  cmake -DCMAKE_PREFIX_PATH=/path/to/dir -P ts_update.cmake
+#
+##
+
+
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 
 FIND_PROGRAM(LUPDATE_EXECUTABLE NAMES lupdate lupdate-qt4)

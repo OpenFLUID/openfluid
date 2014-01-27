@@ -404,42 +404,50 @@ SET_TESTS_PROPERTIES(integration-CMakeModuleRun PROPERTIES PASS_REGULAR_EXPRESSI
 ###########################################################################
 
 
-ADD_TEST(integration-BuddySim2DocHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddyhelp" "sim2doc"
-                              )
+IF(NOT APPLE)
+  ADD_TEST(integration-BuddySim2DocHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
+                                "--buddyhelp" "sim2doc"
+                                )
+ENDIF()
 
 
 ###########################################################################
 
 
+IF(NOT APPLE)
 OPENFLUID_ADD_TEST(NAME integration-BuddySim2Doc
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                               "--buddy" "sim2doc"
                               "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.sim2doc/Sim2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/sim2doc"
                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/sim2doc"                              
                   )
-  
-
-###########################################################################
-
-
-OPENFLUID_ADD_TEST(NAME integration-BuddySim2DocPDF
-                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "sim2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.sim2doc/Sim2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/sim2doc_tpl.tex,pdf=1"
-                   PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF"           
-                  )
+ENDIF()  
 
 
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-BuddySim2DocPDFHTML
-                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "--buddy" "sim2doc"
-                              "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.sim2doc/Sim2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF-HTML,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/sim2doc_tpl.tex,pdf=1,html=1"
-                   PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF-HTML"           
-                  )
+IF(NOT APPLE)
+  OPENFLUID_ADD_TEST(NAME integration-BuddySim2DocPDF
+                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
+                                "--buddy" "sim2doc"
+                                "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.sim2doc/Sim2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/sim2doc_tpl.tex,pdf=1"
+                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF"           
+                    )
+ENDIF()
+
+
+###########################################################################
+
+
+IF(NOT APPLE)
+  OPENFLUID_ADD_TEST(NAME integration-BuddySim2DocPDFHTML
+                     COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
+                             "--buddy" "sim2doc"
+                             "--buddyopts" "inputcpp=${CMAKE_SOURCE_DIR}/src/tests/simulators/tests.sim2doc/Sim2DocSim.cpp,outputdir=${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF-HTML,tplfile=${CMAKE_SOURCE_DIR}/${SHARE_COMMON_INSTALL_PATH}/sim2doc_tpl.tex,pdf=1,html=1"
+                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/sim2doc-PDF-HTML"           
+                    )
+ENDIF()
 
 
 ###########################################################################

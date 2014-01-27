@@ -41,6 +41,13 @@
 #ifndef __SIM2DOCBUDDY_H___
 #define __SIM2DOCBUDDY_H___
 
+
+#ifndef __APPLE__
+
+// Disabled for compilation errors due to boost.spirit usage under MacOSX
+// TODO Should be re-enabled later
+
+
 #include <boost/filesystem/path.hpp>
 #include <map>
 #include <vector>
@@ -337,5 +344,7 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
 
 
 } } //namespaces
+
+#endif /* __APPLE__ */
 
 #endif /* __SIM2DOCBUDDY_HPP__ */

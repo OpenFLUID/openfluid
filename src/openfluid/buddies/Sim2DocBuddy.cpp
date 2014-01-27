@@ -41,6 +41,8 @@
 
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
 
+#ifndef __APPLE__
+
 #include <iosfwd>
 #include <fstream>
 #include <boost/algorithm/string/replace.hpp>
@@ -886,3 +888,5 @@ bool Sim2DocBuddy::run()
 
 } } //namespaces
 
+
+#endif /* __APPLE__ */
