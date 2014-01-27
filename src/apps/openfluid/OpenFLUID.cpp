@@ -682,7 +682,11 @@ void OpenFLUIDApp::processOptions(int ArgC, char **ArgV)
     openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
     openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
     if (OptionsVars["buddyhelp"].as<std::string>() == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
+#ifndef __APPLE__
+    // Disabled for compilation errors due to boost.spirit usage under MacOSX
+    // TODO Should be re-enabled later
     if (OptionsVars["buddyhelp"].as<std::string>() == "sim2doc" ) Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
+#endif
     if (OptionsVars["buddyhelp"].as<std::string>() == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
     if (OptionsVars["buddyhelp"].as<std::string>() == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
 
@@ -852,7 +856,11 @@ void OpenFLUIDApp::runBuddy()
   openfluid::buddies::OpenFLUIDBuddy* Buddy = NULL;
   openfluid::buddies::BuddiesListener* BuddyObs = new DefaultBuddiesListener();
   if (m_BuddyToRun.first == "newsim" ) Buddy = new openfluid::buddies::NewSimulatorBuddy(BuddyObs);
+#ifndef __APPLE__
+    // Disabled for compilation errors due to boost.spirit usage under MacOSX
+    // TODO Should be re-enabled later
   if (m_BuddyToRun.first == "sim2doc" ) Buddy = new openfluid::buddies::Sim2DocBuddy(BuddyObs);
+#endif
   if (m_BuddyToRun.first == "newdata" ) Buddy = new openfluid::buddies::NewDataBuddy(BuddyObs);
   if (m_BuddyToRun.first == "examples" ) Buddy = new openfluid::buddies::ExamplesBuddy(BuddyObs);
 
