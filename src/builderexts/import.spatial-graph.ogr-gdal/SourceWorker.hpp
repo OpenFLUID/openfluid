@@ -30,41 +30,61 @@
 */
 
 /**
-  \file WFSSourceAddDialog.hpp
+  \file SourceWorker.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __WFSSOURCEADDDIALOG_HPP__
-#define __WFSSOURCEADDDIALOG_HPP__
-
-#include "SourceAddDialog.hpp"
+#ifndef __SOURCEWORKER_HPP__
+#define __SOURCEWORKER_HPP__
 
 
-class WFSSourceAddDialog : public SourceAddDialog
+#include "ogrsf_frmts.h"
+
+#include <QObject>
+
+
+class SourceWorker : public QObject
 {
   Q_OBJECT;
 
-  private slots:
 
-    void connectToWFS();
+  private:
 
-    void prepareToImport();
+    QString m_URI;
+
+    OGRDataSource* mp_DataSource;
 
 
-  protected:
+  signals:
 
-    void updateAfterOpen();
+    void sourceLinked(void* Src);
+
+    void layerCounted(int Count);
+
+    void layerFetched(int Index, QString Name, QString GeomStr);
+
+    void finished();
+
+    void errorHappened(QString Message);
+
+
+  public slots:
+
+    void run();
 
 
   public:
 
-    WFSSourceAddDialog(QWidget* Parent);
+    SourceWorker(const QString& URI, OGRDataSource* Src);
 
-    ~WFSSourceAddDialog();
+    ~SourceWorker();
 
-};
 
-#endif /* __WFSSOURCEADDDIALOG_HPP__ */
+
+ };
+
+
+#endif /* __SOURCEWORKER_HPP__ */

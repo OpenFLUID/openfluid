@@ -48,7 +48,6 @@ namespace Ui
 #include "SourceInfos.hpp"
 
 #include <QDialog>
-#include "ogrsf_frmts.h"
 
 
 class SourceAddDialog : public QDialog
@@ -58,6 +57,16 @@ class SourceAddDialog : public QDialog
   private slots:
 
     void proceedToImport();
+
+    void handleSourceLinked(void* Src);
+
+    void handleLayerCounted(int Count);
+
+    void handleLayerFetched(int Index, QString Name, QString GeomStr);
+
+    void handleSourceFinished();
+
+    void handleSourceError(QString Message);
 
 
   protected slots:
@@ -76,6 +85,8 @@ class SourceAddDialog : public QDialog
     SourceInfos m_SrcInfos;
 
     void openDataSource();
+
+    virtual void updateAfterOpen() = 0;
 
     virtual void prepareToImport() = 0;
 

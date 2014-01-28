@@ -31,29 +31,22 @@
 
 
 /**
-  \file FileSourceAddDialog.cpp
+  \file SourceWorker.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#include "ui_SourceAddDialog.h"
-#include "FileSourceAddDialog.hpp"
-
-#include <QFileDialog>
+#include "SourceWorker.hpp"
 
 
-FileSourceAddDialog::FileSourceAddDialog(const QString& InputDir, QWidget* Parent):
-  SourceAddDialog(Parent), m_InputDir(InputDir)
+
+SourceWorker::SourceWorker(const QString& URI, OGRDataSource* Src):
+  m_URI(URI), mp_DataSource(NULL)
 {
-  setWindowTitle("Spatial data import (OGR/GDAL) - Add file source");
-
-  ui->URLConnectWidget->setVisible(false);
-
-  ui->FileLineEdit->setText(m_CurrentSourceURI);
-
-  connect(ui->BrowseButton,SIGNAL(clicked()),this,SLOT(selectFile()));
+  OGRDataSource::DestroyDataSource(Src);
+  Src = NULL;
 }
 
 
@@ -61,7 +54,7 @@ FileSourceAddDialog::FileSourceAddDialog(const QString& InputDir, QWidget* Paren
 // =====================================================================
 
 
-FileSourceAddDialog::~FileSourceAddDialog()
+SourceWorker::~SourceWorker()
 {
 
 }
@@ -71,36 +64,26 @@ FileSourceAddDialog::~FileSourceAddDialog()
 // =====================================================================
 
 
-void FileSourceAddDialog::selectFile()
+void SourceWorker::run()
 {
-  m_CurrentSourceURI = QFileDialog::getOpenFileName(this,
-                                                    tr("Open file"),
-                                                    m_InputDir,
-                                                    tr("All vector files (*.shp *.mif);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif)"));
+  OGRRegisterAll();
 
-  if (!m_CurrentSourceURI.isEmpty())
-    openDataSource();
+  mp_DataSource = OGRSFDriverRegistrar::Open(m_URI.toStdString().c_str(), FALSE );
 
+  if (mp_DataSource != NULL)
+  {
+    emit sourceLinked((void*)mp_DataSource);
+
+    emit layerCounted(mp_DataSource->GetLayerCount());
+
+    for (int i=0; i < mp_DataSource->GetLayerCount();i++)
+      emit layerFetched(i,QString(mp_DataSource->GetLayer(i)->GetName()),
+                        QString(OGRGeometryTypeToName(mp_DataSource->GetLayer(i)->GetGeomType())));
+
+    emit finished();
+  }
+  else
+  {
+    emit errorHappened(QString(CPLGetLastErrorMsg()));
+  }
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-void FileSourceAddDialog::updateAfterOpen()
-{
-  ui->FileLineEdit->setText(m_CurrentSourceURI);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-
-void FileSourceAddDialog::prepareToImport()
-{
-  m_SrcInfos.SourceURI = m_CurrentSourceURI;
-}
-

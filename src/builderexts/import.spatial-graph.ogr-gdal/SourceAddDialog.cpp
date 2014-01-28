@@ -40,6 +40,10 @@
 
 #include "ui_SourceAddDialog.h"
 #include "SourceAddDialog.hpp"
+#include "SourceWorker.hpp"
+
+#include <QThread>
+#include <QMessageBox>
 
 
 SourceAddDialog::SourceAddDialog(QWidget* Parent = NULL):
@@ -47,6 +51,9 @@ SourceAddDialog::SourceAddDialog(QWidget* Parent = NULL):
   mp_DataSource(NULL), m_CurrentSourceURI("")
 {
   ui->setupUi(this);
+
+  ui->StatusLabel->setText(tr("No layer"));
+  ui->StatusProgressBar->setVisible(false);
 
 #if QT_VERSION < QT_VERSION_CHECK(5,0,0)
   ui->LayersTableWidget->horizontalHeader()->setResizeMode(QHeaderView::ResizeToContents);
@@ -83,37 +90,111 @@ void SourceAddDialog::openDataSource()
   ui->BrowseButton->setEnabled(false);
   ui->ConnectButton->setEnabled(false);
   ui->URLLineEdit->setEnabled(false);
-  ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-
+  ui->ButtonBox->setEnabled(false);
+  ui->StatusProgressBar->setValue(0);
+  ui->LayersTableWidget->setRowCount(0);
+  ui->StatusProgressBar->setTextVisible(false);
+  ui->StatusProgressBar->setVisible(true);
+  ui->StatusLabel->setText(tr("Connecting to source"));
   setCursor(Qt::WaitCursor);
 
-  // TODO move processing to thread
 
-  OGRDataSource::DestroyDataSource(mp_DataSource);
-  mp_DataSource = NULL;
+  QThread* WThread = new QThread;
+  SourceWorker* Worker = new SourceWorker(m_CurrentSourceURI,mp_DataSource);
+  Worker->moveToThread(WThread);
 
-  ui->LayersTableWidget->setRowCount(0);
+  connect(Worker, SIGNAL(finished()), this, SLOT(handleSourceFinished()));
+  connect(Worker, SIGNAL(sourceLinked(void*)), this, SLOT(handleSourceLinked(void*)));
+  connect(Worker, SIGNAL(layerCounted(int)), this, SLOT(handleLayerCounted(int)));
+  connect(Worker, SIGNAL(layerFetched(int,QString,QString)), this, SLOT(handleLayerFetched(int,QString,QString)));
+  connect(Worker, SIGNAL(errorHappened(QString)), this, SLOT(handleSourceError(QString)));
+  connect(WThread, SIGNAL(started()), Worker, SLOT(run()));
+  connect(Worker, SIGNAL(finished()), WThread, SLOT(quit()));
+  connect(Worker, SIGNAL(finished()), Worker, SLOT(deleteLater()));
+  connect(WThread, SIGNAL(finished()), WThread, SLOT(deleteLater()));
 
-  OGRRegisterAll();
+  WThread->start();
+}
 
-  mp_DataSource = OGRSFDriverRegistrar::Open(m_CurrentSourceURI.toStdString().c_str(), FALSE );
 
-  if (mp_DataSource != NULL)
-  {
-    ui->LayersTableWidget->setRowCount(mp_DataSource->GetLayerCount());
+// =====================================================================
+// =====================================================================
 
-    for (int i=0; i < mp_DataSource->GetLayerCount();i++)
-    {
-      ui->LayersTableWidget->setItem(i,0,new QTableWidgetItem(QString(mp_DataSource->GetLayer(i)->GetName())));
-      ui->LayersTableWidget->setItem(i,1,new QTableWidgetItem(QString(OGRGeometryTypeToName(mp_DataSource->GetLayer(i)->GetGeomType()))));
-    }
 
-    ui->LayersTableWidget->selectRow(0);
-  }
+void SourceAddDialog::handleSourceLinked(void* Src)
+{
+  mp_DataSource = (OGRDataSource*)Src;
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void SourceAddDialog::handleLayerCounted(int Count)
+{
+  ui->StatusLabel->setText(tr("Fetching layers..."));
+
+  ui->StatusProgressBar->setTextVisible(true);
+  ui->StatusProgressBar->setMaximum(Count);
+  ui->StatusProgressBar->setValue(0);
+  ui->LayersTableWidget->setRowCount(Count);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SourceAddDialog::handleLayerFetched(int Index, QString Name, QString GeomStr)
+{
+  ui->StatusProgressBar->setValue(Index+1);
+  ui->LayersTableWidget->setItem(Index,0,new QTableWidgetItem(Name));
+  ui->LayersTableWidget->setItem(Index,1,new QTableWidgetItem(GeomStr));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SourceAddDialog::handleSourceFinished()
+{
+  updateAfterOpen();
+
+  ui->LayersTableWidget->selectRow(0);
+  ui->StatusProgressBar->setVisible(false);
   ui->BrowseButton->setEnabled(true);
   ui->ConnectButton->setEnabled(true);
   ui->URLLineEdit->setEnabled(true);
+  ui->ButtonBox->setEnabled(true);
+  setCursor(Qt::ArrowCursor);
+
+  globalCheck();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SourceAddDialog::handleSourceError(QString Message)
+{
+  if (!Message.isEmpty())
+    QMessageBox::critical(this,tr("Source error"),Message);
+  else
+    QMessageBox::critical(this,tr("Source error"),tr("Error opening source\n")+m_CurrentSourceURI+tr("\n\nAborting."));
+
+  m_CurrentSourceURI.clear();
+
+  updateAfterOpen();
+
+  ui->StatusProgressBar->setVisible(false);
+  ui->LayersTableWidget->setRowCount(0);
+  ui->BrowseButton->setEnabled(true);
+  ui->ConnectButton->setEnabled(true);
+  ui->URLLineEdit->setEnabled(true);
+  ui->ButtonBox->setEnabled(true);
   setCursor(Qt::ArrowCursor);
 
   globalCheck();
@@ -126,6 +207,11 @@ void SourceAddDialog::openDataSource()
 
 void SourceAddDialog::globalCheck()
 {
+  int LayerCount = ui->LayersTableWidget->rowCount();
+
+  if (LayerCount == 0) ui->StatusLabel->setText(tr("No layer"));
+  else ui->StatusLabel->setText(tr("%1 layer(s) available").arg(LayerCount));
+
   bool OK = mp_DataSource != NULL &&
             !m_CurrentSourceURI.isEmpty() &&
             ui->LayersTableWidget->selectedItems().size() > 0;

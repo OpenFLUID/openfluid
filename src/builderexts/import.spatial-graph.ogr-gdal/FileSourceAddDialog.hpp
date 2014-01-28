@@ -53,6 +53,8 @@ class FileSourceAddDialog : public SourceAddDialog
 
     void selectFile();
 
+    void prepareToImport();
+
 
   private:
 
@@ -61,7 +63,7 @@ class FileSourceAddDialog : public SourceAddDialog
 
   protected:
 
-    void prepareToImport();
+    void updateAfterOpen();
 
 
   public:

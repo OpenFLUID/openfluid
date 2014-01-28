@@ -42,8 +42,6 @@
 #include "WFSSourceAddDialog.hpp"
 
 #include <QPushButton>
-#include <QMessageBox>
-#include <iostream>
 
 
 WFSSourceAddDialog::WFSSourceAddDialog(QWidget* Parent):
@@ -78,17 +76,18 @@ void WFSSourceAddDialog::connectToWFS()
   if (!ui->URLLineEdit->text().isEmpty())
   {
     m_CurrentSourceURI = "WFS:"+ui->URLLineEdit->text();
-
     openDataSource();
-
-    if (mp_DataSource == NULL)
-    {
-      m_CurrentSourceURI.clear();
-      QMessageBox::critical(this,tr("WFS error"),tr("Error connecting to WFS service\n")+m_CurrentSourceURI+tr("\n\nAborting."));
-    }
   }
+}
 
-  globalCheck();
+
+// =====================================================================
+// =====================================================================
+
+
+void WFSSourceAddDialog::updateAfterOpen()
+{
+
 }
 
 
@@ -98,7 +97,6 @@ void WFSSourceAddDialog::connectToWFS()
 
 void WFSSourceAddDialog::prepareToImport()
 {
-  std::cout << __PRETTY_FUNCTION__ << ", line " << __LINE__ << std::endl;
   m_SrcInfos.SourceURI = m_CurrentSourceURI;
 }
 
