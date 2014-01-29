@@ -413,13 +413,33 @@ void OGRGDALImportExtension::updateConfigTabWidget()
     }
 
 
-    // Area attribute to compute
-    ui->ComputeAreaCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsAreaCompute);
-    ui->ComputeAreaLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].AreaComputeAttribute);
+    // Area attribute to compute, enabled for 2D+ geometries only
+    if (m_SourcesInfos[m_CurrentSrcIndex].getGeometryDimension() >= 2)
+    {
+      ui->ComputeAreaCheckBox->setEnabled(true);
+      ui->ComputeAreaCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsAreaCompute);
+      ui->ComputeAreaLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].AreaComputeAttribute);
+    }
+    else
+    {
+      ui->ComputeAreaCheckBox->setEnabled(false);
+      ui->ComputeAreaLineEdit->setEnabled(false);
+      ui->ComputeAreaCheckBox->setChecked(false);
+    }
 
-    // Length attribute to compute
-    ui->ComputeLengthCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsLengthCompute);
-    ui->ComputeLengthLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].LengthComputeAttribute);
+    // Length attribute to compute, enabled for 1D geometries only
+    if (m_SourcesInfos[m_CurrentSrcIndex].getGeometryDimension() == 1)
+    {
+      ui->ComputeLengthCheckBox->setEnabled(true);
+      ui->ComputeLengthCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsLengthCompute);
+      ui->ComputeLengthLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].LengthComputeAttribute);
+    }
+    else
+    {
+      ui->ComputeLengthCheckBox->setEnabled(false);
+      ui->ComputeLengthLineEdit->setEnabled(false);
+      ui->ComputeLengthCheckBox->setChecked(false);
+    }
 
     // XCentroid attribute to compute
     ui->ComputeXCentroidCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsXCentroidCompute);

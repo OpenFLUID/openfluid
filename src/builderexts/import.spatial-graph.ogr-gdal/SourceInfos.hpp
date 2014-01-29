@@ -91,6 +91,7 @@ class SourceInfos
 
     QString ZCentroidComputeAttribute;
 
+    int getGeometryDimension();
 
     SourceInfos();
 

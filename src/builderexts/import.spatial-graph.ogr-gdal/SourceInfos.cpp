@@ -52,3 +52,36 @@ SourceInfos::SourceInfos():
 {
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+int SourceInfos::getGeometryDimension()
+{
+  int Dim = -1;
+
+  switch (SourceGeomType)
+  {
+    case wkbUnknown: Dim = -1; break;
+    case wkbPoint: Dim = 0; break;
+    case wkbLineString: Dim = 1; break;
+    case wkbPolygon: Dim = 2; break;
+    case wkbMultiPoint: Dim = 0; break;
+    case wkbMultiLineString: Dim = 1; break;
+    case wkbMultiPolygon: Dim = 2; break;
+    case wkbGeometryCollection: Dim = -1; break;
+    case wkbNone: Dim = -1; break;
+    case wkbLinearRing: Dim = 1; break;
+    case wkbPoint25D: Dim = 0; break;
+    case wkbLineString25D: Dim = 1; break;
+    case wkbPolygon25D: Dim = 2; break;
+    case wkbMultiPoint25D: Dim = 0; break;
+    case wkbMultiLineString25D: Dim = 1; break;
+    case wkbMultiPolygon25D: Dim = 2; break;
+    case wkbGeometryCollection25D: Dim = -1; break;
+  }
+
+  return Dim;
+}

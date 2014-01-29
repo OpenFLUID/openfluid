@@ -90,6 +90,7 @@ void SourceAddDialog::openDataSource()
   ui->BrowseButton->setEnabled(false);
   ui->ConnectButton->setEnabled(false);
   ui->URLLineEdit->setEnabled(false);
+  ui->LayersTableWidget->setEnabled(false);
   ui->ButtonBox->setEnabled(false);
   ui->StatusProgressBar->setValue(0);
   ui->LayersTableWidget->setRowCount(0);
@@ -167,6 +168,7 @@ void SourceAddDialog::handleSourceFinished()
   ui->BrowseButton->setEnabled(true);
   ui->ConnectButton->setEnabled(true);
   ui->URLLineEdit->setEnabled(true);
+  ui->LayersTableWidget->setEnabled(true);
   ui->ButtonBox->setEnabled(true);
   setCursor(Qt::ArrowCursor);
 
@@ -194,6 +196,7 @@ void SourceAddDialog::handleSourceError(QString Message)
   ui->BrowseButton->setEnabled(true);
   ui->ConnectButton->setEnabled(true);
   ui->URLLineEdit->setEnabled(true);
+  ui->LayersTableWidget->setEnabled(true);
   ui->ButtonBox->setEnabled(true);
   setCursor(Qt::ArrowCursor);
 
