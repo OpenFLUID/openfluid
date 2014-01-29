@@ -53,7 +53,7 @@ class FileSourceAddDialog : public SourceAddDialog
 
     void selectFile();
 
-    void prepareToImport();
+    bool prepareToImport();
 
 
   private:

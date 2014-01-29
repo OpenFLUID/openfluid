@@ -99,8 +99,10 @@ void FileSourceAddDialog::updateAfterOpen()
 
 
 
-void FileSourceAddDialog::prepareToImport()
+bool FileSourceAddDialog::prepareToImport()
 {
   m_SrcInfos.SourceURI = m_CurrentSourceURI;
+
+  return true;
 }
 

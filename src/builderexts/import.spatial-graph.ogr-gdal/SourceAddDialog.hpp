@@ -88,7 +88,7 @@ class SourceAddDialog : public QDialog
 
     virtual void updateAfterOpen() = 0;
 
-    virtual void prepareToImport() = 0;
+    virtual bool prepareToImport() = 0;
 
 
   public:

@@ -42,10 +42,12 @@
 #include "WFSSourceAddDialog.hpp"
 
 #include <QPushButton>
+#include <QDir>
+#include <QFile>
 
 
-WFSSourceAddDialog::WFSSourceAddDialog(QWidget* Parent):
-  SourceAddDialog(Parent)
+WFSSourceAddDialog::WFSSourceAddDialog(const QString& TempDir, QWidget* Parent):
+  SourceAddDialog(Parent), m_TempDir(TempDir)
 {
   setWindowTitle("Spatial data import (OGR/GDAL) - Add WFS source");
 
@@ -95,8 +97,55 @@ void WFSSourceAddDialog::updateAfterOpen()
 // =====================================================================
 
 
-void WFSSourceAddDialog::prepareToImport()
+bool WFSSourceAddDialog::prepareToImport()
 {
-  m_SrcInfos.SourceURI = m_CurrentSourceURI;
+
+  OGRSFDriver *CopyDriver;
+
+  // determine the exact URI for the selected layer to import
+  QString LayerURI = m_CurrentSourceURI.section("?",0,0) +
+                     "?request=GetFeature&typeName=" +
+                     QString(mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetName());
+
+
+  // prepare temp directory for cached layer file
+  QString TempCacheDir = m_TempDir+"/import.spatial-graph.ogr-gdal";
+  if (!QDir().mkpath(TempCacheDir)) return false;
+
+
+  OGRRegisterAll();
+
+  OGRDataSource* LayerDS = OGRSFDriverRegistrar::Open(LayerURI.toStdString().c_str(), FALSE );
+
+  if (LayerDS)
+  {
+    m_SrcInfos.SourceURI = m_CurrentSourceURI;
+    QString CachedURI;
+
+    // Determine the file name for local layer cache
+    unsigned int DirNameIncr = 0;
+    do
+    {
+      DirNameIncr++;
+      CachedURI = QString(TempCacheDir+"/layer_cache_%1.geojson").arg(DirNameIncr);
+    }
+    while (QFile::exists(CachedURI));
+
+
+    // copy layer in cache using geoJSON format
+    CopyDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName("GeoJSON");
+
+    OGRDataSource *CopiedDS;
+    CopiedDS = CopyDriver->CopyDataSource(LayerDS,CachedURI.toStdString().c_str());
+    OGRDataSource::DestroyDataSource(LayerDS);
+
+    if (CopiedDS)
+    {
+      OGRDataSource::DestroyDataSource(CopiedDS);
+      m_SrcInfos.CachedSourceURI = CachedURI;
+    }
+  }
+
+  return !m_SrcInfos.CachedSourceURI.isEmpty();
 }
 

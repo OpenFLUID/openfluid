@@ -226,17 +226,23 @@ void SourceAddDialog::globalCheck()
 
 void SourceAddDialog::proceedToImport()
 {
-  prepareToImport();
+  if (prepareToImport())
+  {
+    m_SrcInfos.SourceGeomType = mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetGeomType();
+    m_SrcInfos.LayerName = QString(mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetName());
 
-  m_SrcInfos.SourceGeomType = mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetGeomType();
-  m_SrcInfos.LayerName = QString(mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetName());
+    OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
 
-  OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
+    for (int i=0; i< Defn->GetFieldCount();i++)
+      m_SrcInfos.AvailableFields.append(Defn->GetFieldDefn(i)->GetNameRef());
 
-  for (int i=0; i< Defn->GetFieldCount();i++)
-    m_SrcInfos.AvailableFields.append(Defn->GetFieldDefn(i)->GetNameRef());
-
-  accept();
+    accept();
+  }
+  else
+  {
+    QMessageBox::critical(this,tr("Import error"),tr("Error importing from source\n")+m_CurrentSourceURI+tr("\n\nAborting."));
+    reject();
+  }
 }
 
 

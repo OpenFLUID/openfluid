@@ -51,7 +51,12 @@ class WFSSourceAddDialog : public SourceAddDialog
 
     void connectToWFS();
 
-    void prepareToImport();
+    bool prepareToImport();
+
+
+  private:
+
+    QString m_TempDir;
 
 
   protected:
@@ -61,7 +66,7 @@ class WFSSourceAddDialog : public SourceAddDialog
 
   public:
 
-    WFSSourceAddDialog(QWidget* Parent);
+    WFSSourceAddDialog(const QString& TempDir, QWidget* Parent);
 
     ~WFSSourceAddDialog();
 

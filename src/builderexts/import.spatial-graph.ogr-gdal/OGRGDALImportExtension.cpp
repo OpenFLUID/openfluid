@@ -150,9 +150,13 @@ OGRGDALImportExtension::~OGRGDALImportExtension()
 bool OGRGDALImportExtension::initialize()
 {
   std::string DirStr;
-  OPENFLUID_GetRunEnvironment("dir.input",DirStr);
 
+  OPENFLUID_GetRunEnvironment("dir.input",DirStr);
   m_InputDir = QString::fromStdString(DirStr);
+
+  OPENFLUID_GetRunEnvironment("dir.temp",DirStr);
+  m_TempDir = QString::fromStdString(DirStr);
+
 
   return true;
 }
@@ -213,7 +217,7 @@ void OGRGDALImportExtension::addFileSource()
 
 void OGRGDALImportExtension::addWFSSource()
 {
-  WFSSourceAddDialog AddDlg(this);
+  WFSSourceAddDialog AddDlg(m_TempDir,this);
 
   if (AddDlg.exec() == QDialog::Accepted)
   {

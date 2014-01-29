@@ -120,6 +120,8 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
 
     QString m_InputDir;
 
+    QString m_TempDir;
+
     int m_CurrentSrcIndex;
 
     QList<SourceInfos> m_SourcesInfos;
