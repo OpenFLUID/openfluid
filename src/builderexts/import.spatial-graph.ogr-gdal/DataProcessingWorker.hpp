@@ -30,75 +30,66 @@
 */
 
 /**
-  \file SourceInfos.hpp
+  \file DataProcessingWorker.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SOURCEINFOS_HPP__
-#define __SOURCEINFOS_HPP__
+#ifndef __DATAPROCESSINGWORKER_HPP__
+#define __DATAPROCESSINGWORKER_HPP__
+
+#include "SourceInfos.hpp"
+
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <QObject>
 
 
-#include <QStringList>
-#include "ogrsf_frmts.h"
-
-
-class SourceInfos
+class DataProcessingWorker : public QObject
 {
+  Q_OBJECT;
+
+
+  protected:
+
+    const SourcesInfosList_t& m_SourcesInfos;
+
+    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvDesc;
+
+    bool runCheck(int StartStep);
+
+    void loadDataFromSources();
+
+    static QString getStyledText(const QString& Text,
+                                 const QString& Color, bool IsBold);
+
+
+  signals:
+
+    void stepEntered(QString Message);
+
+    void stepCompleted(int StepNbr, QString Message);
+
+    void completed(QString Message);
+
+    void finished();
+
+
+  public slots:
+
+    virtual void run() = 0;
+
+
   public:
 
-    OGRwkbGeometryType SourceGeomType;
+    DataProcessingWorker(const SourcesInfosList_t& SourcesInfos,
+                         openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc);
 
-    QString CachedSourceURI;
+    ~DataProcessingWorker();
 
-    QString SourceURI;
-
-    QString LayerName;
-
-    QString UnitsClass;
-
-    QStringList AvailableFields;
-
-    QStringList ImportedFields;
-
-    QString UnitsIDsField;
-
-    QString UnitsPcsOrdField;
-
-    QString ToConnectionsField;
-
-    QString ChildofConnectionsField;
-
-    bool IsAreaCompute;
-
-    QString AreaComputeAttribute;
-
-    bool IsLengthCompute;
-
-    QString LengthComputeAttribute;
-
-    bool IsXCentroidCompute;
-
-    QString XCentroidComputeAttribute;
-
-    bool IsYCentroidCompute;
-
-    QString YCentroidComputeAttribute;
-
-    bool IsZCentroidCompute;
-
-    QString ZCentroidComputeAttribute;
-
-    int getGeometryDimension();
-
-    SourceInfos();
 
 };
 
 
-typedef QList<SourceInfos> SourcesInfosList_t;
-
-
-#endif /* __SOURCEINFOS_HPP__ */
+#endif /* __DATAPROCESSINGWORKER_HPP__ */

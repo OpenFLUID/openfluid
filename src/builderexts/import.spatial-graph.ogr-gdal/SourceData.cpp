@@ -29,76 +29,29 @@
   
 */
 
+
 /**
-  \file SourceInfos.hpp
-  \brief Header of ...
+  \file SourceData.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SOURCEINFOS_HPP__
-#define __SOURCEINFOS_HPP__
+#include "SourceData.hpp"
 
 
-#include <QStringList>
-#include "ogrsf_frmts.h"
-
-
-class SourceInfos
+SourceData::SourceData()
 {
-  public:
 
-    OGRwkbGeometryType SourceGeomType;
-
-    QString CachedSourceURI;
-
-    QString SourceURI;
-
-    QString LayerName;
-
-    QString UnitsClass;
-
-    QStringList AvailableFields;
-
-    QStringList ImportedFields;
-
-    QString UnitsIDsField;
-
-    QString UnitsPcsOrdField;
-
-    QString ToConnectionsField;
-
-    QString ChildofConnectionsField;
-
-    bool IsAreaCompute;
-
-    QString AreaComputeAttribute;
-
-    bool IsLengthCompute;
-
-    QString LengthComputeAttribute;
-
-    bool IsXCentroidCompute;
-
-    QString XCentroidComputeAttribute;
-
-    bool IsYCentroidCompute;
-
-    QString YCentroidComputeAttribute;
-
-    bool IsZCentroidCompute;
-
-    QString ZCentroidComputeAttribute;
-
-    int getGeometryDimension();
-
-    SourceInfos();
-
-};
+}
 
 
-typedef QList<SourceInfos> SourcesInfosList_t;
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __SOURCEINFOS_HPP__ */
+SourceData::~SourceData()
+{
+
+}

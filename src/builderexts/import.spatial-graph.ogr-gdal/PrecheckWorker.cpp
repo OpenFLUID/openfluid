@@ -29,76 +29,48 @@
   
 */
 
+
 /**
-  \file SourceInfos.hpp
-  \brief Header of ...
+  \file PrecheckWorker.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SOURCEINFOS_HPP__
-#define __SOURCEINFOS_HPP__
+#include "PrecheckWorker.hpp"
 
 
-#include <QStringList>
-#include "ogrsf_frmts.h"
-
-
-class SourceInfos
+PrecheckWorker::PrecheckWorker(const SourcesInfosList_t& SourcesInfos,
+                               openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc):
+  DataProcessingWorker(SourcesInfos,AdvDesc)
 {
-  public:
 
-    OGRwkbGeometryType SourceGeomType;
-
-    QString CachedSourceURI;
-
-    QString SourceURI;
-
-    QString LayerName;
-
-    QString UnitsClass;
-
-    QStringList AvailableFields;
-
-    QStringList ImportedFields;
-
-    QString UnitsIDsField;
-
-    QString UnitsPcsOrdField;
-
-    QString ToConnectionsField;
-
-    QString ChildofConnectionsField;
-
-    bool IsAreaCompute;
-
-    QString AreaComputeAttribute;
-
-    bool IsLengthCompute;
-
-    QString LengthComputeAttribute;
-
-    bool IsXCentroidCompute;
-
-    QString XCentroidComputeAttribute;
-
-    bool IsYCentroidCompute;
-
-    QString YCentroidComputeAttribute;
-
-    bool IsZCentroidCompute;
-
-    QString ZCentroidComputeAttribute;
-
-    int getGeometryDimension();
-
-    SourceInfos();
-
-};
+}
 
 
-typedef QList<SourceInfos> SourcesInfosList_t;
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __SOURCEINFOS_HPP__ */
+PrecheckWorker::~PrecheckWorker()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PrecheckWorker::run()
+{
+  if (runCheck(1))
+    emit completed(getStyledText(tr("Ready for import"),"green",true));
+  else
+    emit completed(getStyledText(tr("Consistency error, "
+                                    "import should not be performed with current import configuration"),
+                                 "red",true));
+
+  emit finished();
+}

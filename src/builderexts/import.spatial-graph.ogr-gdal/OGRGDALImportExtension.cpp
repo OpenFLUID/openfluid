@@ -42,8 +42,10 @@
 #include "OGRGDALImportExtension.hpp"
 #include "FileSourceAddDialog.hpp"
 #include "WFSSourceAddDialog.hpp"
+#include "PrecheckWorker.hpp"
 
 #include <QMessageBox>
+#include <QThread>
 
 
 // =====================================================================
@@ -64,7 +66,7 @@ END_BUILDEREXT_SIGNATURE
 
 OGRGDALImportExtension::OGRGDALImportExtension() :
   openfluid::builderext::PluggableModalExtension(), ui(new Ui::OGRGDALDialog),
-  m_CurrentSrcIndex(-1)
+  m_CurrentSrcIndex(-1), mp_PrecheckImportDlg(NULL)
 {
   Q_INIT_RESOURCE(ogrgdalimport);
 
@@ -81,6 +83,8 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
   ui->RemoveButton->setIcon(QIcon(":/remove.png"));
   ui->RemoveButton->setIconSize(QSize(16,16));
 
+  ui->PrecheckButton->setEnabled(false);
+
   ui->ConfigTabWidget->setEnabled(false);
   ui->ConfigTabWidget->setCurrentIndex(0);
 
@@ -96,7 +100,7 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 
   connect(ui->PrecheckButton,SIGNAL(clicked()),this,SLOT(runPrecheck()));
 
-  connect(ui->SourcesTableWidget,SIGNAL(itemSelectionChanged()),this,SLOT(updateConfigTabWidget()));
+  connect(ui->SourcesTableWidget,SIGNAL(itemSelectionChanged()),this,SLOT(updateUI()));
 
 
   connect(ui->UnitsClassLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateUnitsClassInfos()));
@@ -191,7 +195,7 @@ void OGRGDALImportExtension::addSource(const SourceInfos& SrcInfos)
 
   ui->SourcesTableWidget->setFocus();
 
-  updateConfigTabWidget();
+  updateUI();
 }
 
 
@@ -269,7 +273,8 @@ void OGRGDALImportExtension::processButtonBoxClicked(QAbstractButton* Button)
 
 void OGRGDALImportExtension::proceedToImport()
 {
-  accept();
+  //accept();
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
 }
 
 
@@ -311,9 +316,12 @@ void OGRGDALImportExtension::closeEvent(QCloseEvent* Event)
 // =====================================================================
 
 
-void OGRGDALImportExtension::updateConfigTabWidget()
+void OGRGDALImportExtension::updateUI()
 {
   std::cout << __PRETTY_FUNCTION__ << ", line " << __LINE__ << std::endl;
+
+  ui->PrecheckButton->setEnabled(!m_SourcesInfos.isEmpty());
+  ui->ButtonBox->button(QDialogButtonBox::Apply)->setEnabled(!m_SourcesInfos.isEmpty());
 
   if (ui->SourcesTableWidget->currentRow() >= m_SourcesInfos.size())
   {
@@ -477,7 +485,30 @@ void OGRGDALImportExtension::updateConfigTabWidget()
 
 void OGRGDALImportExtension::runPrecheck()
 {
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  if (mp_PrecheckImportDlg != NULL)
+    delete mp_PrecheckImportDlg;
+
+  mp_PrecheckImportDlg = new PrecheckImportDialog(3,this);
+
+  mp_PrecheckImportDlg->open();
+
+
+  QThread* WThread = new QThread;
+  PrecheckWorker* Worker = new PrecheckWorker(m_SourcesInfos,mp_AdvancedDesc);
+  Worker->moveToThread(WThread);
+
+
+  connect(Worker, SIGNAL(stepEntered(QString)), mp_PrecheckImportDlg, SLOT(handleStepEntered(QString)));
+  connect(Worker, SIGNAL(stepCompleted(int,QString)), mp_PrecheckImportDlg, SLOT(handleStepCompleted(int,QString)));
+  connect(Worker, SIGNAL(completed(QString)), mp_PrecheckImportDlg, SLOT(handleCompleted(QString)));
+  connect(Worker, SIGNAL(finished()), mp_PrecheckImportDlg, SLOT(handleFinished()));
+
+  connect(WThread, SIGNAL(started()), Worker, SLOT(run()));
+  connect(Worker, SIGNAL(finished()), WThread, SLOT(quit()));
+  connect(Worker, SIGNAL(finished()), Worker, SLOT(deleteLater()));
+  connect(WThread, SIGNAL(finished()), WThread, SLOT(deleteLater()));
+
+  WThread->start();
 }
 
 

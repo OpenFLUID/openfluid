@@ -30,75 +30,35 @@
 */
 
 /**
-  \file SourceInfos.hpp
+  \file PrecheckWorker.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SOURCEINFOS_HPP__
-#define __SOURCEINFOS_HPP__
+#ifndef __PRECHECKWORKER_HPP__
+#define __PRECHECKWORKER_HPP__
+
+#include "DataProcessingWorker.hpp"
 
 
-#include <QStringList>
-#include "ogrsf_frmts.h"
-
-
-class SourceInfos
+class PrecheckWorker : public DataProcessingWorker
 {
+
+  public slots:
+
+    void run();
+
+
   public:
 
-    OGRwkbGeometryType SourceGeomType;
+    PrecheckWorker(const SourcesInfosList_t& SourcesInfos,
+                   openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc);
 
-    QString CachedSourceURI;
-
-    QString SourceURI;
-
-    QString LayerName;
-
-    QString UnitsClass;
-
-    QStringList AvailableFields;
-
-    QStringList ImportedFields;
-
-    QString UnitsIDsField;
-
-    QString UnitsPcsOrdField;
-
-    QString ToConnectionsField;
-
-    QString ChildofConnectionsField;
-
-    bool IsAreaCompute;
-
-    QString AreaComputeAttribute;
-
-    bool IsLengthCompute;
-
-    QString LengthComputeAttribute;
-
-    bool IsXCentroidCompute;
-
-    QString XCentroidComputeAttribute;
-
-    bool IsYCentroidCompute;
-
-    QString YCentroidComputeAttribute;
-
-    bool IsZCentroidCompute;
-
-    QString ZCentroidComputeAttribute;
-
-    int getGeometryDimension();
-
-    SourceInfos();
+    ~PrecheckWorker();
 
 };
 
 
-typedef QList<SourceInfos> SourcesInfosList_t;
-
-
-#endif /* __SOURCEINFOS_HPP__ */
+#endif /* __PRECHECKWORKER_HPP__ */

@@ -42,7 +42,7 @@
 
 
 #include <openfluid/builderext/PluggableModalExtension.hpp>
-
+#include "PrecheckImportDialog.hpp"
 
 DECLARE_BUILDEREXT_PLUGIN
 
@@ -77,7 +77,7 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
 
     void processButtonBoxClicked(QAbstractButton* Button);
 
-    void updateConfigTabWidget();
+    void updateUI();
 
     void runPrecheck();
 
@@ -124,7 +124,9 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
 
     int m_CurrentSrcIndex;
 
-    QList<SourceInfos> m_SourcesInfos;
+    SourcesInfosList_t m_SourcesInfos;
+
+    PrecheckImportDialog* mp_PrecheckImportDlg;
 
     void addSource(const SourceInfos& SrcInfos);
 

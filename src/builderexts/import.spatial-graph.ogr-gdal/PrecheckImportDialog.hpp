@@ -30,75 +30,55 @@
 */
 
 /**
-  \file SourceInfos.hpp
+  \file PrecheckImportDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SOURCEINFOS_HPP__
-#define __SOURCEINFOS_HPP__
+#ifndef __PRECHECKIMPORTDIALOG_HPP__
+#define __PRECHECKIMPORTDIALOG_HPP__
 
 
-#include <QStringList>
-#include "ogrsf_frmts.h"
-
-
-class SourceInfos
+namespace Ui
 {
+  class PrecheckImportDialog;
+}
+
+
+#include <QDialog>
+
+class PrecheckImportDialog : public QDialog
+{
+  Q_OBJECT;
+
+  private:
+
+    void closeEvent(QCloseEvent* Event);
+
+    Ui::PrecheckImportDialog* ui;
+
+    bool m_IsFinished;
+
+
+  public slots:
+
+    void handleStepEntered(QString Message);
+
+    void handleStepCompleted(int StepNbr, QString Message);
+
+    void handleCompleted(QString Message);
+
+    void handleFinished();
+
+
   public:
 
-    OGRwkbGeometryType SourceGeomType;
+    PrecheckImportDialog(int StepsCount, QWidget* Parent);
 
-    QString CachedSourceURI;
-
-    QString SourceURI;
-
-    QString LayerName;
-
-    QString UnitsClass;
-
-    QStringList AvailableFields;
-
-    QStringList ImportedFields;
-
-    QString UnitsIDsField;
-
-    QString UnitsPcsOrdField;
-
-    QString ToConnectionsField;
-
-    QString ChildofConnectionsField;
-
-    bool IsAreaCompute;
-
-    QString AreaComputeAttribute;
-
-    bool IsLengthCompute;
-
-    QString LengthComputeAttribute;
-
-    bool IsXCentroidCompute;
-
-    QString XCentroidComputeAttribute;
-
-    bool IsYCentroidCompute;
-
-    QString YCentroidComputeAttribute;
-
-    bool IsZCentroidCompute;
-
-    QString ZCentroidComputeAttribute;
-
-    int getGeometryDimension();
-
-    SourceInfos();
-
+    ~PrecheckImportDialog();
 };
 
 
-typedef QList<SourceInfos> SourcesInfosList_t;
-
-
-#endif /* __SOURCEINFOS_HPP__ */
+#endif /* __PRECHECKIMPORTDIALOG_HPP__ */

@@ -30,75 +30,60 @@
 */
 
 /**
-  \file SourceInfos.hpp
+  \file SourceData.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SOURCEINFOS_HPP__
-#define __SOURCEINFOS_HPP__
+#ifndef __SOURCEDATA_HPP__
+#define __SOURCEDATA_HPP__
+
+#include <QString>
+#include <QList>
+#include <QMap>
 
 
-#include <QStringList>
-#include "ogrsf_frmts.h"
-
-
-class SourceInfos
+class SourceConnection
 {
-  public:
+  int DestID;
 
-    OGRwkbGeometryType SourceGeomType;
-
-    QString CachedSourceURI;
-
-    QString SourceURI;
-
-    QString LayerName;
-
-    QString UnitsClass;
-
-    QStringList AvailableFields;
-
-    QStringList ImportedFields;
-
-    QString UnitsIDsField;
-
-    QString UnitsPcsOrdField;
-
-    QString ToConnectionsField;
-
-    QString ChildofConnectionsField;
-
-    bool IsAreaCompute;
-
-    QString AreaComputeAttribute;
-
-    bool IsLengthCompute;
-
-    QString LengthComputeAttribute;
-
-    bool IsXCentroidCompute;
-
-    QString XCentroidComputeAttribute;
-
-    bool IsYCentroidCompute;
-
-    QString YCentroidComputeAttribute;
-
-    bool IsZCentroidCompute;
-
-    QString ZCentroidComputeAttribute;
-
-    int getGeometryDimension();
-
-    SourceInfos();
+  QString DestClass;
 
 };
 
 
-typedef QList<SourceInfos> SourcesInfosList_t;
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __SOURCEINFOS_HPP__ */
+class SourceUnit
+{
+  QList<SourceConnection> ToConn;
+
+  QList<SourceConnection> ChildofConn;
+
+  QMap<QString,QString> Attributes;
+
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
+class SourceData
+{
+  public:
+
+    QMap<int,SourceUnit> Units;
+
+    SourceData();
+
+    ~SourceData();
+
+};
+
+
+#endif /* __SOURCEDATA_HPP__ */
