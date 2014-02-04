@@ -174,7 +174,9 @@ void NewProjectDialog::onProjectButtonClicked()
       onGlobalCheck();
     }
     else
-      QMessageBox::critical(this,tr("Project error"),SelectedDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+      QMessageBox::critical(this,
+                            tr("Project error"),
+                            tr("%1\n\nis not a valid OpenFLUID project").arg(SelectedDir));
   }
 }
 

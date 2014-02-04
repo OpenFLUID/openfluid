@@ -407,12 +407,16 @@ void AppCoordinator::whenNewAsked()
         else
         {
           QApplication::restoreOverrideCursor();
-          QMessageBox::critical(&m_MainWindow,tr("Project error"),tr("Error creating project ") + NewPrjDlg.getProjectName() + tr(" in\n") + NewPrjDlg.getProjectFullPath());
+          QMessageBox::critical(&m_MainWindow,
+                                tr("Project error"),
+                                tr("Error creating project %1 in\n%2").arg(NewPrjDlg.getProjectName(),NewPrjDlg.getProjectFullPath()));
         }
       }
       catch (openfluid::base::Exception& E)
       {
-        QMessageBox::critical(&m_MainWindow,tr("Project error"),tr("Error creating project ") + NewPrjDlg.getProjectName() + tr(" in\n") + NewPrjDlg.getProjectFullPath());
+        QMessageBox::critical(&m_MainWindow,
+                              tr("Project error"),
+                              tr("Error creating project %1 in\n%2").arg(NewPrjDlg.getProjectName(),NewPrjDlg.getProjectFullPath()));
         QApplication::restoreOverrideCursor();
       }
     }
@@ -458,7 +462,9 @@ void AppCoordinator::whenOpenAsked()
       else
       {
         QApplication::restoreOverrideCursor();
-        QMessageBox::critical(&m_MainWindow,tr("Project error"),SelectedDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+        QMessageBox::critical(&m_MainWindow,
+                              tr("Project error"),
+                              tr("%1\n\nis not a valid OpenFLUID project").arg(SelectedDir));
       }
     }
   }
@@ -499,8 +505,9 @@ void AppCoordinator::whenOpenRecentAsked()
       else
       {
         QApplication::restoreOverrideCursor();
-        QMessageBox::critical(&m_MainWindow,tr("Project error"),
-                              ProjectPath+ "\n\n" + tr("is not a valid OpenFLUID project"));
+        QMessageBox::critical(&m_MainWindow,
+                              tr("Project error"),
+                              tr("%1\n\nis not a valid OpenFLUID project").arg(ProjectPath));
       }
     }
   }
@@ -545,7 +552,9 @@ void AppCoordinator::whenReloadAsked()
       else
       {
         QApplication::restoreOverrideCursor();
-        QMessageBox::critical(&m_MainWindow,tr("Project error"),ProjectDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+        QMessageBox::critical(&m_MainWindow,
+                              tr("Project error"),
+                              tr("%1\n\nis not a valid OpenFLUID project").arg(ProjectDir));
       }
     }
     else
@@ -757,7 +766,9 @@ void AppCoordinator::whenOpenExampleAsked()
       else
       {
         QApplication::restoreOverrideCursor();
-        QMessageBox::critical(&m_MainWindow,tr("Project error"),SelectedDir+ "\n\n" + tr("is not a valid OpenFLUID project"));
+        QMessageBox::critical(&m_MainWindow,
+                              tr("Project error"),
+                              tr("%1\n\nis not a valid OpenFLUID project").arg(SelectedDir));
       }
     }
   }

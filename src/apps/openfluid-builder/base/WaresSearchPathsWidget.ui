@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="1">
@@ -32,7 +32,7 @@
       <string>Add search path</string>
      </property>
      <property name="text">
-      <string>A</string>
+      <string notr="true">A</string>
      </property>
     </widget>
    </item>
@@ -54,7 +54,7 @@
       <string>Move down</string>
      </property>
      <property name="text">
-      <string>D</string>
+      <string notr="true">D</string>
      </property>
     </widget>
    </item>
@@ -76,7 +76,7 @@
       <string>Move up</string>
      </property>
      <property name="text">
-      <string>U</string>
+      <string notr="true">U</string>
      </property>
     </widget>
    </item>
@@ -111,7 +111,7 @@
       <string>Remove selected search path</string>
      </property>
      <property name="text">
-      <string>R</string>
+      <string notr="true">R</string>
      </property>
     </widget>
    </item>
