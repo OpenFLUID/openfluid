@@ -159,7 +159,7 @@ void AddGeneratorDialog::checkGlobal()
   if (ui->VarNameEdit->text().isEmpty())
     setMessage(tr("Variable name cannot be empty"));
   else if (ui->UnitsClassComboBox->currentText().isEmpty())
-    setMessage(tr("Unit class cannot be empty"));
+    setMessage(tr("Units class cannot be empty"));
   else
     setMessage();
 }
@@ -238,7 +238,7 @@ void AddGeneratorDialog::selectSourcesFile()
   QString CurrentDir = QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getInputDir());
 
   QString FileName = QFileDialog::getOpenFileName(this,
-                                                  tr("Select source file"),
+                                                  tr("Select sources file"),
                                                   CurrentDir,
                                                   tr("All files (*.*)"));
   if (FileName.startsWith(CurrentDir))

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <property name="spacing">
@@ -81,8 +81,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>744</width>
-          <height>489</height>
+          <width>738</width>
+          <height>480</height>
          </rect>
         </property>
         <property name="styleSheet">

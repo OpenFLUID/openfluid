@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,1">
    <property name="spacing">
@@ -20,7 +20,16 @@
    <item>
     <widget class="QWidget" name="GlobalParamsWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
@@ -73,7 +82,16 @@
            </size>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
-           <property name="margin">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
             <number>0</number>
            </property>
            <item>
@@ -92,7 +110,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>702</width>
+                <width>694</width>
                 <height>148</height>
                </rect>
               </property>
@@ -120,7 +138,7 @@
                 <string>Add global parameter</string>
                </property>
                <property name="text">
-                <string>A</string>
+                <string notr="true">A</string>
                </property>
               </widget>
              </item>

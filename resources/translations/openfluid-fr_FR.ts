@@ -88,141 +88,132 @@
         <translation type="obsolete">Exécution de la simulation</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="80"/>
-        <source>MessageLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="106"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="109"/>
         <source>Fixed values</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs fixées</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="119"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="122"/>
         <source>Random values</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs aléatoires</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="129"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="132"/>
         <source>Values from file interpolation</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs interpolées depuis un fichier</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="139"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="142"/>
         <source>Values from file injection</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeurs injectées depuis un fichier</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="170"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="182"/>
         <source>Double</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="183"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="195"/>
         <source>Vector:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vecteur:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="203"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="215"/>
         <source>Units class:</source>
-        <translation type="unfinished"></translation>
+        <translation>Classe d&apos;unités:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="216"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="228"/>
         <source>Type:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="226"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="238"/>
         <source>Variable name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom de la variable:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="262"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="274"/>
         <source>Value:</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="276"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="288"/>
         <source>Minimum value:</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur minimum:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="292"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="304"/>
         <source>Maximum value:</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur maximum:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="340"/>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="388"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="352"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="400"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="347"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="359"/>
         <source>Sources file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier des sources:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="360"/>
+        <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.ui" line="372"/>
         <source>Distribution file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichier de distribution:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="61"/>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="111"/>
         <source>Add generator</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un générateur</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="160"/>
         <source>Variable name cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom de la variable ne peut être vide</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="162"/>
-        <source>Unit class cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <source>Units class cannot be empty</source>
+        <translation>La classe d&apos;unités ne peut être vide</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="241"/>
-        <source>Select source file</source>
-        <translation type="unfinished"></translation>
+        <source>Select sources file</source>
+        <translation>Sélectionner le fichier des sources</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="243"/>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="267"/>
         <source>All files (*.*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les fichiers (*.*)</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="250"/>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="274"/>
         <source>Choosen file is not located in the input dataset of the project</source>
-        <translation type="unfinished"></translation>
+        <translation>Le fichier choisi n&apos;est pas dans le jeu de données d&apos;entrée du projet</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddGeneratorDialog.cpp" line="265"/>
         <source>Select distribution file</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner le fichier de distribution</translation>
     </message>
 </context>
 <context>
     <name>AddObserverDialog</name>
     <message>
         <location filename="../../src/apps/openfluid-builder/monitoring/AddObserverDialog.cpp" line="56"/>
+        <location filename="../../src/apps/openfluid-builder/monitoring/AddObserverDialog.cpp" line="132"/>
         <source>Add observer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un observateur</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/monitoring/AddObserverDialog.cpp" line="87"/>
         <source>Select observer to add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/monitoring/AddObserverDialog.cpp" line="132"/>
-        <source>Add simulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner l&apos;observateur à ajouter</translation>
     </message>
 </context>
 <context>
@@ -234,28 +225,28 @@
     <message>
         <location filename="../../src/apps/openfluid-builder/common/AddParamDialog.ui" line="109"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/AddParamDialog.ui" line="125"/>
         <source>Value:</source>
-        <translation type="unfinished"></translation>
+        <translation>Valeur:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/AddParamDialog.cpp" line="58"/>
         <location filename="../../src/apps/openfluid-builder/common/AddParamDialog.cpp" line="114"/>
         <source>Add parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un paramètre</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/AddParamDialog.cpp" line="96"/>
         <source>Parameter name cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom du paramètre ne peut être vide</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/AddParamDialog.cpp" line="98"/>
         <source>Parameter already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Le paramètre existe déjà</translation>
     </message>
 </context>
 <context>
@@ -264,12 +255,12 @@
         <location filename="../../src/apps/openfluid-builder/model/AddSimulatorDialog.cpp" line="56"/>
         <location filename="../../src/apps/openfluid-builder/model/AddSimulatorDialog.cpp" line="131"/>
         <source>Add simulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un simulateur</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/AddSimulatorDialog.cpp" line="86"/>
         <source>Select simulator to add</source>
-        <translation type="unfinished"></translation>
+        <translation>Sélectionner le simulateur à ajouter</translation>
     </message>
 </context>
 <context>
@@ -286,7 +277,7 @@
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/AddUnitDialog.ui" line="103"/>
         <source>Units class:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Classe d&apos;unités:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/AddUnitDialog.ui" line="119"/>
@@ -938,7 +929,7 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.ui" line="129"/>
         <source>Name:</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nom:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.cpp" line="92"/>
@@ -1086,134 +1077,119 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/ModelView.cpp" line="101"/>
         <source>Export as PNG image file</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter en PNG</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/ModelView.cpp" line="103"/>
         <source>PNG Files (*.png)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers PNG (*.png)</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/ModelView.cpp" line="125"/>
         <source>Export as SVG vector file</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter en SVG</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/ModelView.cpp" line="127"/>
         <source>SVG Files (*.svg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers SVG (*.svg)</translation>
     </message>
 </context>
 <context>
     <name>ModelWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="43"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="52"/>
         <source>Global parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres globaux</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="120"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="138"/>
         <source>Add global parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un paramètre global</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="123"/>
-        <source>A</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="174"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="192"/>
         <source>Coupled model</source>
-        <translation type="unfinished"></translation>
+        <translation>Modèle couplé</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="194"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="212"/>
         <source>Graphical view</source>
-        <translation type="unfinished"></translation>
+        <translation>Vue graphique</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="208"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="226"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation>Affichage</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="214"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="232"/>
         <source>Show variables</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les variables</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="227"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="245"/>
         <source>Fit to all items</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajuster à tous les éléments</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="234"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="252"/>
         <source>Reset to default</source>
-        <translation type="unfinished"></translation>
+        <translation>Réinitialiser la vue</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="265"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="283"/>
         <source>Use Ctrl key + mouse wheel for zooming</source>
-        <translation type="unfinished"></translation>
+        <translation>Utiliser la touche Ctrl + roue de souris pour zoomer</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="297"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="315"/>
         <source>Export</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="303"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="321"/>
         <source>Export as PNG...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter en PNG...</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="310"/>
+        <location filename="../../src/apps/openfluid-builder/model/ModelWidget.ui" line="328"/>
         <source>Export as SVG...</source>
-        <translation type="unfinished"></translation>
+        <translation>Exporter en SVG...</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/ModelWidget.cpp" line="77"/>
         <location filename="../../src/apps/openfluid-builder/model/ModelWidget.cpp" line="124"/>
         <source>show</source>
-        <translation type="unfinished"></translation>
+        <translation>montrer</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/ModelWidget.cpp" line="85"/>
         <source>Add simulator</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un simulateur</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/ModelWidget.cpp" line="86"/>
         <source>Add generator</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un générateur</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/model/ModelWidget.cpp" line="129"/>
         <source>hide</source>
-        <translation type="unfinished"></translation>
+        <translation>cacher</translation>
     </message>
 </context>
 <context>
     <name>MonitoringWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/monitoring/MonitoringWidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/monitoring/MonitoringWidget.ui" line="32"/>
         <source>Observers list</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des observateurs</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/monitoring/MonitoringWidget.cpp" line="65"/>
         <source>Add observer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un observateur</translation>
     </message>
 </context>
 <context>
@@ -1415,26 +1391,13 @@ Proceed anyway?</source>
 <context>
     <name>ParameterWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/ParameterWidget.ui" line="32"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/common/ParameterWidget.ui" line="70"/>
-        <source>SIUnitLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/common/ParameterWidget.ui" line="83"/>
-        <source>GlobalValueLabel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/common/ParameterWidget.cpp" line="107"/>
         <source>You are removing the %1 parameter.
 Its value will be lost.
 Proceed anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous supprimez le paramètre %1.
+Sa valeur sera perdue.
+Continuer quand même?</translation>
     </message>
 </context>
 <context>
@@ -1967,197 +1930,187 @@ L&apos;extension ne peut être instanciée.</translation>
 <context>
     <name>SignatureWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="30"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="39"/>
         <source>General</source>
-        <translation type="unfinished"></translation>
+        <translation>Général</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="84"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="102"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="194"/>
         <source>Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="115"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="209"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="271"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="139"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="251"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="322"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="136"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="409"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nom</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="120"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="219"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="276"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="144"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="261"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="327"/>
         <source>SI unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Unité SI</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="125"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="167"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="229"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="286"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="378"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="149"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="200"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="271"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="337"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="447"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="137"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="410"/>
         <source>Description</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="134"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="158"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="232"/>
         <source>Extra files</source>
-        <translation type="unfinished"></translation>
+        <translation>Fichiers extras</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="162"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="266"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="195"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="317"/>
         <source>In</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrée</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="176"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="209"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="290"/>
         <source>Variables</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="204"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="246"/>
         <source>In/Out</source>
-        <translation type="unfinished"></translation>
+        <translation>E/S</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="214"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="256"/>
         <source>Data type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="224"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="281"/>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="373"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="266"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="332"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="442"/>
         <source>Units class</source>
-        <translation type="unfinished"></translation>
+        <translation>Classe d&apos;unités</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="238"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="280"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="343"/>
         <source>Attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>Attributs</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="295"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="346"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="366"/>
         <source>Events</source>
-        <translation type="unfinished"></translation>
+        <translation>Evénements</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="323"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="383"/>
         <source>Units classes</source>
-        <translation type="unfinished"></translation>
+        <translation>Classes d&apos;unités</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="332"/>
+        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="392"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="396"/>
         <source>Spatial graph</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.ui" line="341"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation>Graphe d&apos;espace</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="142"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="413"/>
         <source>Author(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Auteur(s)</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="150"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="421"/>
         <source>Plugin path</source>
-        <translation type="unfinished"></translation>
+        <translation>Chemin du plugin</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="152"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="423"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Version</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="154"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="425"/>
         <source>experimental</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="155"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="426"/>
         <source>beta</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="156"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="427"/>
         <source>stable</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="157"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="428"/>
         <source>Status</source>
-        <translation type="unfinished">Etat</translation>
+        <translation>Etat</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="159"/>
         <source>Domain(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Domaine(s)</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="160"/>
         <source>Process(es)</source>
-        <translation type="unfinished"></translation>
+        <translation>Processus</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="161"/>
         <source>Methods(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Méthode(s)</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="228"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="285"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="339"/>
         <source>Required</source>
-        <translation type="unfinished"></translation>
+        <translation>Requis</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="229"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="286"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="340"/>
         <source>Used</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilisé</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="284"/>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="338"/>
         <source>Produced</source>
-        <translation type="unfinished"></translation>
+        <translation>Produit</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="287"/>
         <source>Updated</source>
-        <translation type="unfinished"></translation>
+        <translation>Mis à jour</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/SignatureWidget.cpp" line="380"/>
         <source>&lt;b&gt;Overall description&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Description générale&lt;/b&gt;</translation>
     </message>
 </context>
 <context>
@@ -2233,7 +2186,7 @@ L&apos;extension ne peut être instanciée.</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="370"/>
         <source>View</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Affichage</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="376"/>
@@ -2253,12 +2206,12 @@ L&apos;extension ne peut être instanciée.</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="430"/>
         <source>Use Ctrl key + mouse wheel for zooming</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Utiliser la touche Ctrl + roue de souris pour zoomer</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="464"/>
         <source>Attributes</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Attributs</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="491"/>
@@ -2283,7 +2236,7 @@ L&apos;extension ne peut être instanciée.</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="583"/>
         <source>Events</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Evénements</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="611"/>
@@ -2408,91 +2361,84 @@ Proceed anyway?</source>
 <context>
     <name>WareWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="26"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="75"/>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Activé</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="110"/>
         <source>Move up</source>
-        <translation type="unfinished">Monter</translation>
+        <translation>Monter</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="132"/>
         <source>Move down</source>
-        <translation type="unfinished">Descendre</translation>
+        <translation>Descendre</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="154"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Enlever</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="233"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="248"/>
         <source>Parameters:</source>
-        <translation type="unfinished"></translation>
+        <translation>Paramètres:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="268"/>
+        <location filename="../../src/apps/openfluid-builder/common/WareWidget.ui" line="283"/>
         <source>Add parameter</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter un paramètre</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="80"/>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="191"/>
         <source>show parameters and informations</source>
-        <translation type="unfinished"></translation>
+        <translation>montrer les paramètres et les informations</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="189"/>
         <source>hide parameters and informations</source>
-        <translation type="unfinished"></translation>
+        <translation>cacher les paramètres et les informations</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="245"/>
-        <source>generator</source>
-        <translation type="unfinished"></translation>
+        <source>the generator</source>
+        <translation>le générateur</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="247"/>
-        <source>simulator</source>
-        <translation type="unfinished">simulateur</translation>
+        <source>the simulator</source>
+        <translation>le simulateur</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="248"/>
-        <source>observer</source>
-        <translation type="unfinished">observateur</translation>
+        <source>the observer</source>
+        <translation>l&apos;observateur</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WareWidget.cpp" line="253"/>
-        <source>You are removing the %1 %2.
+        <source>You are removing %1 %2.
 All parameters will be lost.
 
 Proceed anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous enlevez %1 %2.
+Tous les paramètres seront perdus.
+
+Continuer quand même?</translation>
     </message>
 </context>
 <context>
     <name>WaresManagementWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/common/WaresManagementWidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/common/WaresManagementWidget.cpp" line="53"/>
         <source>expand all</source>
-        <translation type="unfinished"></translation>
+        <translation>tout déplier</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/common/WaresManagementWidget.cpp" line="57"/>
         <source>collapse all</source>
-        <translation type="unfinished"></translation>
+        <translation>tout replier</translation>
     </message>
 </context>
 <context>
