@@ -53,7 +53,7 @@
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/AddConnectionDialog.cpp" line="104"/>
         <source>Add connection between spatial units</source>
-        <translation>Ajouter une connection entre unités spatiales</translation>
+        <translation>Ajouter une connexion entre unités spatiales</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/AddConnectionDialog.cpp" line="124"/>
@@ -877,38 +877,38 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.ui" line="113"/>
         <source>URL:</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.ui" line="129"/>
         <source>Name:</source>
-        <translation type="unfinished">Nom:</translation>
+        <translation>Nom:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.cpp" line="92"/>
         <source>Edit a marketplace</source>
-        <translation type="unfinished"></translation>
+        <translation>Editer une marketplace</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.cpp" line="94"/>
         <source>Add a marketplace</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajouter une marketplace</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.cpp" line="116"/>
         <source>Name of the marketplace cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom de la marketplace ne peut être vide</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.cpp" line="120"/>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.cpp" line="124"/>
         <source>Name of the marketplace already exists</source>
-        <translation type="unfinished"></translation>
+        <translation>Le nom de la marketplace existe déjà</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/EditMarketplaceDialog.cpp" line="128"/>
         <source>URL of the marketplace cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;URL de la marketplace ne peut être vide</translation>
     </message>
 </context>
 <context>
@@ -1424,7 +1424,7 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/PreferencesDialog.ui" line="238"/>
         <source>Confirm removal of spatial connections</source>
-        <translation>Confirmer la suppression de connections spatiales</translation>
+        <translation>Confirmer la suppression de connexions spatiales</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/PreferencesDialog.ui" line="245"/>
@@ -2090,12 +2090,12 @@ L&apos;extension ne peut être instanciée.</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="248"/>
         <source>Connections:</source>
-        <translation>Connections:</translation>
+        <translation>Connexions:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="273"/>
         <source>Connection type</source>
-        <translation>Type de connection</translation>
+        <translation>Type de connexion</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="278"/>
@@ -2111,12 +2111,12 @@ L&apos;extension ne peut être instanciée.</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="305"/>
         <source>Add connection</source>
-        <translation>Ajouter une connection</translation>
+        <translation>Ajouter une connexion</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="327"/>
         <source>Remove selected connection</source>
-        <translation>Supprimer la connection sélectionnée</translation>
+        <translation>Supprimer la connexion sélectionnée</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="359"/>
@@ -2195,14 +2195,14 @@ All connections and attributes units related to this unit will be lost.
 
 Proceed anyway?</source>
         <translation>Vous supprimez l&apos;unité %1 de la classe%2.
-Toutes les connections et les attributs en relation avec cette unité seront perdus.
+Toutes les connexions et les attributs en relation avec cette unité seront perdus.
 
 Continuer quand même?</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="926"/>
         <source>No connection selected for removal</source>
-        <translation>Aucune connection sélectionnée pour suppression</translation>
+        <translation>Aucune connexion sélectionnée pour suppression</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="947"/>
@@ -2210,7 +2210,7 @@ Continuer quand même?</translation>
 between unit %2 of class %3 and unit %4 of class %5.
 
 Proceed?</source>
-        <translation>Vous supprimez la connection &quot;%1&quot;
+        <translation>Vous supprimez la connexion &quot;%1&quot;
 entre l&apos;unité %2 de la classe %3 et l&apos;unité %4 de la classe %5.
 
 Continuer?</translation>
@@ -2292,7 +2292,7 @@ All units of class %1 and associated attributes and connections will be lost.
 
 Proceed anyway?</source>
         <translation>Vous supprimez la classe d&apos;unités %1.
-Toutes les unités de la classe %1 ainsi que les attributs et connections associées seront perdues.
+Toutes les unités de la classe %1 ainsi que les attributs et connexions associées seront perdues.
 
 Continuer quand même?</translation>
     </message>
@@ -2432,38 +2432,33 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketBuildOptionsDialog.cpp" line="63"/>
         <source>These options control the builds of source packages.&lt;br/&gt;Changing this is at your own risk.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ces options controllent la construction des paquets sources.&lt;br/&gt;Les modifier peut entraîner des modifications.</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketBuildOptionsDialog.cpp" line="70"/>
         <source>&lt;i&gt;none&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;aucune&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketBuildOptionsDialog.cpp" line="71"/>
         <location filename="../../src/openfluid/guicommon/MarketBuildOptionsDialog.cpp" line="85"/>
         <source>Common source build options:</source>
-        <translation type="unfinished"></translation>
+        <translation>Options communes de construction des sources:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketBuildOptionsDialog.cpp" line="81"/>
-        <source>Specific build options for </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketBuildOptionsDialog.cpp" line="81"/>
-        <source>:</source>
-        <translation type="unfinished"></translation>
+        <source>Specific build options for %1:</source>
+        <translation>Options de construction spécifiques pour %1:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketBuildOptionsDialog.cpp" line="112"/>
         <source>Common build options for all source packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Options de construction communes pour tous les paquets source</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketBuildOptionsDialog.cpp" line="114"/>
-        <source>Build options for </source>
-        <translation type="unfinished"></translation>
+        <source>Build options for %1</source>
+        <translation>Options de construction pour %1</translation>
     </message>
 </context>
 <context>
@@ -2471,214 +2466,215 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="69"/>
         <source>OpenFLUID Market client</source>
-        <translation type="unfinished">Client OpenFLUID-Market</translation>
+        <translation>Client OpenFLUID-Market</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="115"/>
         <source>Packages selection</source>
-        <translation type="unfinished">Sélection des paquets</translation>
+        <translation>Sélection des paquets</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="117"/>
         <source>Marketplace:</source>
-        <translation type="unfinished"></translation>
+        <translation>Marketplace:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="123"/>
         <source>--- No marketplace selected ---</source>
-        <translation type="unfinished">--- Aucune marketplace sélectionnée ---</translation>
+        <translation>--- Aucune marketplace sélectionnée ---</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="164"/>
         <source>Licenses</source>
-        <translation type="unfinished"></translation>
+        <translation>Licences</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="166"/>
         <source>Licenses:</source>
-        <translation type="unfinished"></translation>
+        <translation>Licences:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="188"/>
         <source>I accept the terms of the license(s) agreement(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>J&apos;accepte les termes de la licence</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="189"/>
         <source>I do not accept the terms of the license(s) agreement(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Je n&apos;accepte pas les termes de la licence</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="223"/>
         <source>Download and install</source>
-        <translation type="unfinished"></translation>
+        <translation>Télécharger et installer</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="228"/>
         <source>Status</source>
-        <translation type="unfinished">Etat</translation>
+        <translation>Etat</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="228"/>
         <source>Package ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID du paquet</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="228"/>
         <source>Type</source>
-        <translation type="unfinished">Type</translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="228"/>
         <source>Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Format</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="238"/>
         <source>View installation log</source>
-        <translation type="unfinished"></translation>
+        <translation>Voir le rapport d&apos;installation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="299"/>
+        <source>OpenFLUID Market client (Step %1 of 3)</source>
+        <translation>Client OpenFLUID-Market (Etape %1 sur 3)</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="378"/>
         <source>(License content not available)</source>
-        <translation type="unfinished"></translation>
+        <translation>(Le contenu de la licence n&apos;est pas disponible)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="456"/>
-        <source> needs some dependencies to run.&lt;br/&gt;Do you want to select this packages ?&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="457"/>
+        <source>&lt;b&gt;%1&lt;/b&gt; needs some dependencies to run.&lt;br/&gt;Do you want to select this packages ?&lt;br/&gt;</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; nécessite des dépendances.&lt;br/&gt;Voulez-vous sélectionner les paquets dépendants?&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="460"/>
-        <source> has dependencies selected.&lt;br/&gt;Do you want to unselect this packages ?&lt;br/&gt;</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="462"/>
+        <source>&lt;b&gt;%1&lt;/b&gt; has dependencies selected.&lt;br/&gt;Do you want to unselect this packages ?&lt;br/&gt;</source>
+        <translation>&lt;b&gt;%1&lt;/b&gt; a des dépendances sélectionnées.&lt;br/&gt;Voulez-cous déselectionner les paquets dépendants?&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="477"/>
-        <source>Warning, the selected package cannot be used without them.</source>
-        <translation type="unfinished"></translation>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="714"/>
+        <source>%1% complete</source>
+        <translation>Complété à %1\%</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="479"/>
-        <source>Dependencies</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="687"/>
-        <source>0% complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="695"/>
-        <source>Installation in progress...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="700"/>
-        <source>Success</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="705"/>
-        <source>Failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="711"/>
-        <source>% complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="715"/>
-        <source>100% complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="850"/>
-        <source>Select all</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="851"/>
-        <source>Select none</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="852"/>
-        <source>Edit build options</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="911"/>
-        <source>Connection error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="912"/>
-        <source>Unable to connect to &quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="913"/>
-        <source>&quot; marketplace.
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="915"/>
+        <source>Unable to connect to &quot;%1&quot; marketplace.
 This marketplace is not available, does not contain any catalog files or catalogs are empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de se connecter à la marketplace\&quot;%1\&quot;
+Cette marketplace n&apos;est pas disponible, ne contient pas de catalogue ou les catalogues sont vides.</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="990"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="480"/>
+        <source>Warning, the selected package cannot be used without them.</source>
+        <translation>Attention, le paquet sélectionné ne peut être utilisé sans ces dépendances.</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="482"/>
+        <source>Dependencies</source>
+        <translation>Dépendances</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="690"/>
+        <source>0% complete</source>
+        <translation>Complété à 0%</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="698"/>
+        <source>Installation in progress...</source>
+        <translation>Installation en cours...</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="703"/>
+        <source>Success</source>
+        <translation>Succés</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="708"/>
+        <source>Failed</source>
+        <translation>Erreur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="718"/>
+        <source>100% complete</source>
+        <translation>Complété à 100%</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="853"/>
+        <source>Select all</source>
+        <translation>Sélectionner tout</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="854"/>
+        <source>Select none</source>
+        <translation>Tout déselectionner</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="855"/>
+        <source>Edit build options</source>
+        <translation>Editer les options de construction</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="914"/>
+        <source>Connection error</source>
+        <translation>Erreur de connexion</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="993"/>
         <source>binary</source>
-        <translation type="unfinished">binaire</translation>
+        <translation>binaire</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="992"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="995"/>
         <source>source</source>
-        <translation type="unfinished"></translation>
+        <translation>source</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="994"/>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1029"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="997"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1032"/>
         <source>dataset</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeu de données</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="996"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="999"/>
         <source>Pending</source>
-        <translation type="unfinished"></translation>
+        <translation>En attente</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1029"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1032"/>
         <source>simulator</source>
-        <translation type="unfinished">simulateur</translation>
+        <translation>simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1029"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1032"/>
         <source>observer</source>
-        <translation type="unfinished">observateur</translation>
+        <translation>observateur</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1029"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1032"/>
         <source>builder extension</source>
-        <translation type="unfinished"></translation>
+        <translation>extension builder</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1030"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1033"/>
         <source>simulators</source>
-        <translation type="unfinished">simulators</translation>
+        <translation>simulators</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1030"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1033"/>
         <source>observers</source>
-        <translation type="unfinished"></translation>
+        <translation>observateurs</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1030"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1033"/>
         <source>builder extensions</source>
-        <translation type="unfinished"></translation>
+        <translation>extensions builder</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1030"/>
+        <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="1033"/>
         <source>datasets</source>
-        <translation type="unfinished"></translation>
+        <translation>jeux de données</translation>
     </message>
 </context>
 <context>
@@ -2687,33 +2683,33 @@ This marketplace is not available, does not contain any catalog files or catalog
         <location filename="../../src/openfluid/guicommon/MarketPackWidget.cpp" line="170"/>
         <location filename="../../src/openfluid/guicommon/MarketPackWidget.cpp" line="176"/>
         <source>Version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Version:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidget.cpp" line="178"/>
         <source>Author(s):</source>
-        <translation type="unfinished">Auteur(s):</translation>
+        <translation>Auteur(s):</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidget.cpp" line="187"/>
         <location filename="../../src/openfluid/guicommon/MarketPackWidget.cpp" line="188"/>
         <source>License:</source>
-        <translation type="unfinished"></translation>
+        <translation>Licence:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidget.cpp" line="198"/>
         <source>Dependencies:</source>
-        <translation type="unfinished"></translation>
+        <translation>Dépendances:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidget.cpp" line="219"/>
         <source>&lt;i&gt;unknown&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;inconnu&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidget.cpp" line="231"/>
         <source>&lt;i&gt;none&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;aucun&lt;/i&gt;</translation>
     </message>
 </context>
 <context>
@@ -2721,33 +2717,33 @@ This marketplace is not available, does not contain any catalog files or catalog
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidgetFormat.cpp" line="50"/>
         <source>Package Format:</source>
-        <translation type="unfinished"></translation>
+        <translation>Format de paquet:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidgetFormat.cpp" line="61"/>
         <source>source</source>
-        <translation type="unfinished"></translation>
+        <translation>source</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidgetFormat.cpp" line="74"/>
         <source>binary</source>
-        <translation type="unfinished">binaire</translation>
+        <translation>binairebinaire</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidgetFormat.cpp" line="86"/>
         <source>Edit build options for </source>
-        <translation type="unfinished"></translation>
+        <translation>Editer les options de construction pour</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidgetFormat.cpp" line="155"/>
         <location filename="../../src/openfluid/guicommon/MarketPackWidgetFormat.cpp" line="156"/>
         <source>License:</source>
-        <translation type="unfinished"></translation>
+        <translation>Licence:</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketPackWidgetFormat.cpp" line="162"/>
         <source>Build options:</source>
-        <translation type="unfinished"></translation>
+        <translation>Options de construction:</translation>
     </message>
 </context>
 <context>
