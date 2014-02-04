@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>528</width>
-    <height>305</height>
+    <height>375</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string notr="true">Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -52,7 +52,7 @@
    <item>
     <widget class="QLabel" name="CountLabel">
      <property name="text">
-      <string>TextLabel</string>
+      <string notr="true">TextLabel</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -99,7 +99,7 @@
    <item>
     <widget class="QPushButton" name="ClearButton">
      <property name="text">
-      <string>Clear spatial domain</string>
+      <string notr="true">Clear spatial domain</string>
      </property>
     </widget>
    </item>
