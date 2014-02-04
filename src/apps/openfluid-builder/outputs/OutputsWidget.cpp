@@ -86,7 +86,7 @@ OutputsWidget::~OutputsWidget()
 
 void OutputsWidget::clearOutputDir()
 {
-  if (QMessageBox::warning(this,tr("Clear outputs contents"),
+  if (QMessageBox::warning(this,tr("Delete outputs contents"),
                            tr("This will delete all files and directories in the output directory.\n\nProceed anyway?"),
                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {

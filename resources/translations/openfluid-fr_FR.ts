@@ -737,29 +737,24 @@ n&apos;est pas un projet OpenFLUID valide</translation>
 <context>
     <name>DatastoreWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.ui" line="39"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.ui" line="44"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Type</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.ui" line="49"/>
-        <source>Unit class</source>
-        <translation type="unfinished"></translation>
+        <source>Units class</source>
+        <translation>Classe d&apos;unités</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.ui" line="54"/>
         <source>Source</source>
-        <translation type="unfinished"></translation>
+        <translation>Source</translation>
     </message>
 </context>
 <context>
@@ -1314,36 +1309,33 @@ n&apos;est pas un projet OpenFLUID valide</translation>
 <context>
     <name>OutputsWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="28"/>
         <source>Output directory: </source>
-        <translation type="unfinished"></translation>
+        <translation>Répertoire de sortie:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="51"/>
         <source>Explore</source>
-        <translation type="unfinished"></translation>
+        <translation>Explorer</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.ui" line="64"/>
         <source>Delete contents</source>
-        <translation type="unfinished"></translation>
+        <translation>Effacer le contenu</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.cpp" line="89"/>
-        <source>Clear outputs contents</source>
-        <translation type="unfinished"></translation>
+        <source>Delete outputs contents</source>
+        <translation>Effacer le contenu des sorties</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.cpp" line="90"/>
         <source>This will delete all files and directories in the output directory.
 
 Proceed anyway?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceci supprimera tous les fichiers et répertoires dans le répertoire de sortie.
+
+Continuer quand même?</translation>
     </message>
 </context>
 <context>
@@ -1726,69 +1718,64 @@ L&apos;extension ne peut être instanciée.</translation>
 <context>
     <name>RunConfigurationWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="26"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="35"/>
         <source>Simulation period</source>
-        <translation type="unfinished"></translation>
+        <translation>Période de simulation</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="50"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="59"/>
         <source>End date:</source>
-        <translation type="unfinished"></translation>
+        <translation>Date de début:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="83"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="92"/>
         <source>Begin date:</source>
-        <translation type="unfinished"></translation>
+        <translation>Date de fin:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="116"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="125"/>
         <source>Simulation scheduling</source>
-        <translation type="unfinished"></translation>
+        <translation>Planification de simulation</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="130"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="139"/>
         <source>Default DeltaT:</source>
-        <translation type="unfinished">DeltaT par défaut:</translation>
+        <translation>DeltaT par défaut:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="153"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="162"/>
         <source>seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>secondes</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="183"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="192"/>
         <source>Constraint:</source>
-        <translation type="unfinished"></translation>
+        <translation>Contrainte:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="211"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="220"/>
         <source>Memory management</source>
-        <translation type="unfinished"></translation>
+        <translation>Gestion de la mémoire</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="233"/>
+        <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="242"/>
         <source>steps</source>
-        <translation type="unfinished"></translation>
+        <translation>pas de temps</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.cpp" line="54"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>Aucune</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.cpp" line="55"/>
         <source>Checked - Simulators scheduling requests are checked to be equal to DeltaT</source>
-        <translation type="unfinished"></translation>
+        <translation>Vérifiée - La planification des simulateurs est vérifiée et doit être égale à DeltaT</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.cpp" line="56"/>
         <source>Forced - Simulators scheduling requests are forced to DeltaT</source>
-        <translation type="unfinished"></translation>
+        <translation>Forcée - La planification des simulateurs est forcée pour être égale à DeltaT</translation>
     </message>
 </context>
 <context>
@@ -2539,7 +2526,7 @@ Continuer quand même?</translation>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="228"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Type</translation>
     </message>
     <message>
         <location filename="../../src/openfluid/guicommon/MarketClientAssistant.cpp" line="228"/>

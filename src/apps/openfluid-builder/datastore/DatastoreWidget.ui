@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true"/>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -46,7 +46,7 @@
      </column>
      <column>
       <property name="text">
-       <string>Unit class</string>
+       <string>Units class</string>
       </property>
      </column>
      <column>
