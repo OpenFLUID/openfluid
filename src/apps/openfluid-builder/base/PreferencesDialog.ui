@@ -10,6 +10,9 @@
     <height>530</height>
    </rect>
   </property>
+  <property name="windowTitle">
+   <string notr="true"/>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -104,7 +107,7 @@ font : bold;
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="InterfacePage">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -195,7 +198,7 @@ font : bold;
             <item>
              <widget class="QCheckBox" name="ItemRemovalCheckBox">
               <property name="text">
-               <string>Confirm removal of simulators, observers and generators</string>
+               <string>Confirm removal of simulators, generators or observers</string>
               </property>
              </widget>
             </item>
@@ -375,7 +378,7 @@ font : bold;
                </sizepolicy>
               </property>
               <property name="displayFormat">
-               <string>yyyy-MM-dd HH:mm:ss</string>
+               <string notr="true">yyyy-MM-dd HH:mm:ss</string>
               </property>
               <property name="calendarPopup">
                <bool>true</bool>
@@ -429,12 +432,12 @@ font : bold;
               <property name="minimumDate">
                <date>
                 <year>1752</year>
-                <month>9</month>
-                <day>3</day>
+                <month>8</month>
+                <day>31</day>
                </date>
               </property>
               <property name="displayFormat">
-               <string>yyyy-MM-dd HH:mm:ss</string>
+               <string notr="true">yyyy-MM-dd HH:mm:ss</string>
               </property>
               <property name="calendarPopup">
                <bool>true</bool>

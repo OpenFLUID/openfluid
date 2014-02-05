@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>204</height>
+    <height>231</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,6 +21,9 @@
     <width>350</width>
     <height>0</height>
    </size>
+  </property>
+  <property name="windowTitle">
+   <string notr="true"/>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -72,7 +75,7 @@ font : bold;
 </string>
           </property>
           <property name="text">
-           <string>MessageLabel</string>
+           <string notr="true">MessageLabel</string>
           </property>
          </widget>
         </item>
@@ -90,9 +93,6 @@ font : bold;
       </sizepolicy>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
-      <property name="margin">
-       <number>9</number>
-      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="spacing">

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>620</width>
-    <height>400</height>
+    <height>414</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,6 +21,9 @@
     <width>0</width>
     <height>0</height>
    </size>
+  </property>
+  <property name="windowTitle">
+   <string notr="true"/>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -75,7 +78,7 @@ font : bold;
 </string>
           </property>
           <property name="text">
-           <string>MessageLabel</string>
+           <string notr="true">MessageLabel</string>
           </property>
          </widget>
         </item>
@@ -120,7 +123,7 @@ font : bold;
         </font>
        </property>
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">TextLabel</string>
        </property>
       </widget>
      </item>
@@ -155,7 +158,7 @@ font : bold;
      <item row="3" column="1">
       <widget class="QLabel" name="CreationDateLabel">
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">TextLabel</string>
        </property>
       </widget>
      </item>
@@ -169,7 +172,7 @@ font : bold;
      <item row="4" column="1">
       <widget class="QLabel" name="LastModDateLabel">
        <property name="text">
-        <string>TextLabel</string>
+        <string notr="true">TextLabel</string>
        </property>
       </widget>
      </item>

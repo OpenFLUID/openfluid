@@ -99,8 +99,8 @@ DummyModalSpatialClassic::~DummyModalSpatialClassic()
 void DummyModalSpatialClassic::addUnitClass()
 {
   bool OK;
-  QString UnitClass = QInputDialog::getText(this, tr("Add a unit Class"),
-                                            tr("Unit class name:"),
+  QString UnitClass = QInputDialog::getText(this, "Add a unit Class",
+                                            "Unit class name:",
                                             QLineEdit::Normal,
                                             "",
                                             &OK);

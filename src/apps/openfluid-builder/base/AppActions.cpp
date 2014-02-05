@@ -352,7 +352,7 @@ void AppActions::createMenus(MainWindow& MainWin)
   Menu->addAction(getAction("ProjectOpen"));
 
   // recents
-  mp_RecentProjectsMenu = Menu->addMenu("Open recent");
+  mp_RecentProjectsMenu = Menu->addMenu(tr("Open recent"));
   for (int i=0;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
     mp_RecentProjectsMenu->addAction(m_RecentProjectsActions[i]);
 

@@ -78,7 +78,7 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOpt
   QLabel *EditLabel = new QLabel();
   if (!SimID.isEmpty())
   {
-    EditLabel->setText(tr("Specific build options for ")+SimID+tr(":"));
+    EditLabel->setText(tr("Specific build options for %1:").arg(SimID));
   }
   else
   {
@@ -111,7 +111,7 @@ MarketBuildOptionsDialog::MarketBuildOptionsDialog(const QString& CommonBuildOpt
   if(m_SimID.isEmpty())
     setWindowTitle(tr("Common build options for all source packages"));
   else
-    setWindowTitle(tr("Build options for ") + m_SimID);
+    setWindowTitle(tr("Build options for %1").arg(m_SimID));
 
   setLayout(MainLayout);
 }

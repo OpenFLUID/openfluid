@@ -135,7 +135,7 @@ void SaveAsDialog::setMessage(const QString& Msg)
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
                                     .arg(BUILDER_DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add parameter"));
+    ui->MessageLabel->setText(tr("Save project as..."));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
   else

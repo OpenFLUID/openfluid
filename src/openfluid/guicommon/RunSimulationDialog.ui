@@ -29,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>OpenFLUID-Builder</string>
+   <string notr="true">OpenFLUID-Builder</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -61,7 +61,7 @@
      <item row="0" column="0" colspan="4">
       <widget class="QLabel" name="DurationLabel">
        <property name="text">
-        <string>DurationLabel</string>
+        <string notr="true">DurationLabel</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -71,7 +71,7 @@
      <item row="2" column="2">
       <widget class="QLabel" name="RunLabel">
        <property name="text">
-        <string>RunLabel</string>
+        <string notr="true">RunLabel</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -97,7 +97,7 @@
      <item row="2" column="3">
       <widget class="QLabel" name="FinalLabel">
        <property name="text">
-        <string>FinalLabel</string>
+        <string notr="true">FinalLabel</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -107,7 +107,7 @@
      <item row="2" column="1">
       <widget class="QLabel" name="InitLabel">
        <property name="text">
-        <string>InitLabel</string>
+        <string notr="true">InitLabel</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -117,7 +117,7 @@
      <item row="2" column="0">
       <widget class="QLabel" name="PresimLabel">
        <property name="text">
-        <string>PresimLabel</string>
+        <string notr="true">PresimLabel</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

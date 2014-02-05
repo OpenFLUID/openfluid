@@ -55,6 +55,8 @@ namespace Ui
 
 class SignatureWidget : public QWidget
 {
+  Q_OBJECT;
+
   private:
 
     Ui::SignatureWidget* ui;

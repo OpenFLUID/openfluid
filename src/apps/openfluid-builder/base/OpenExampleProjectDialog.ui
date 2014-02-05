@@ -13,6 +13,9 @@
     <height>500</height>
    </rect>
   </property>
+  <property name="windowTitle">
+   <string notr="true"/>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -143,8 +146,8 @@ font : bold;
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>320</width>
-          <height>374</height>
+          <width>316</width>
+          <height>354</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">

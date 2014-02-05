@@ -129,7 +129,7 @@ void AddObserverDialog::setMessage(const QString& Msg)
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
                                     .arg(BUILDER_DIALOGBANNER_BGCOLOR));
-    ui->MessageLabel->setText(tr("Add simulator"));
+    ui->MessageLabel->setText(tr("Add observer"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
   else

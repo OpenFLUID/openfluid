@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>375</width>
-    <height>162</height>
+    <width>414</width>
+    <height>170</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,6 +21,9 @@
     <width>0</width>
     <height>0</height>
    </size>
+  </property>
+  <property name="windowTitle">
+   <string notr="true"/>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -75,7 +78,7 @@ font : bold;
 </string>
           </property>
           <property name="text">
-           <string>MessageLabel</string>
+           <string notr="true">MessageLabel</string>
           </property>
          </widget>
         </item>
@@ -123,7 +126,7 @@ font : bold;
         </font>
        </property>
        <property name="text">
-        <string>Class</string>
+        <string notr="true">Class</string>
        </property>
       </widget>
      </item>
@@ -142,7 +145,7 @@ font : bold;
         </font>
        </property>
        <property name="text">
-        <string>ID</string>
+        <string notr="true">ID</string>
        </property>
       </widget>
      </item>

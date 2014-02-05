@@ -102,19 +102,19 @@ void DashboardInfosWidget::refresh()
   int Duration = m_AdvFluidxDesc.getRunDescriptor().getEndDate().diffInSeconds(m_AdvFluidxDesc.getRunDescriptor().getBeginDate());
 
   openfluid::base::SimulationStatus::SchedulingConstraint SchedConst = m_AdvFluidxDesc.getRunDescriptor().getSchedulingConstraint();
-  QString SchedConstStr = tr("no");
+  QString SchedConstStr = tr("no constraint");
 
   if (SchedConst == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
-    SchedConstStr = tr("checked");
+    SchedConstStr = tr("checked default DeltaT");
   if (SchedConst == openfluid::base::SimulationStatus::SCHED_DTFORCED)
-    SchedConstStr = tr("Forced");
+    SchedConstStr = tr("forced default DeltaT");
 
 
   ui->ModelLabel->setText(tr("<u>Coupled model:</u> %1 simulator(s) and %2 generator(s)").arg(SimCount).arg(GenCount));
-  ui->SpatialLabel->setText(tr("<u>Spatial domain:</u> %1 spatial units(s) in %2 units class(es)").arg(UnitsCount).arg(UnitsClassesCount));
-  ui->DatastoreLabel->setText(tr("<u>Datastore:</u> %1 items").arg(DStoreCount));
+  ui->SpatialLabel->setText(tr("<u>Spatial domain:</u> %1 spatial unit(s) in %2 units class(es)").arg(UnitsCount).arg(UnitsClassesCount));
+  ui->DatastoreLabel->setText(tr("<u>Datastore:</u> %1 item(s)").arg(DStoreCount));
   ui->MonitoringLabel->setText(tr("<u>Monitoring:</u> %1 observer(s)").arg(MonitoringCount));
-  ui->SimConfigLabel->setText(tr("<u>Run configuration:</u> total duration of %1 seconds with a default DeltaT of %2 seconds and %3 constraint").arg(Duration).arg(DeltaT).arg(SchedConstStr));
+  ui->SimConfigLabel->setText(tr("<u>Run configuration:</u> total duration of %1 seconds with a default DeltaT of %2 seconds and %3").arg(Duration).arg(DeltaT).arg(SchedConstStr));
 }
 
 

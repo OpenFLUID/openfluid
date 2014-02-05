@@ -16,6 +16,9 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="windowTitle">
+   <string notr="true"/>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -66,7 +69,7 @@ font : bold;
 </string>
           </property>
           <property name="text">
-           <string>MessageLabel</string>
+           <string notr="true">MessageLabel</string>
           </property>
          </widget>
         </item>
@@ -151,7 +154,7 @@ font : bold;
         </font>
        </property>
        <property name="text">
-        <string>DirectoryLabel</string>
+        <string notr="true">DirectoryLabel</string>
        </property>
       </widget>
      </item>

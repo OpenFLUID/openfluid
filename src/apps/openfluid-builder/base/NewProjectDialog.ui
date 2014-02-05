@@ -10,6 +10,9 @@
     <height>600</height>
    </rect>
   </property>
+  <property name="windowTitle">
+   <string notr="true"/>
+  </property>
   <property name="modal">
    <bool>true</bool>
   </property>
@@ -228,7 +231,7 @@
         <string notr="true">font : bold;</string>
        </property>
        <property name="text">
-        <string>/path/to/xxx</string>
+        <string notr="true">/path/to/xxx</string>
        </property>
       </widget>
      </item>

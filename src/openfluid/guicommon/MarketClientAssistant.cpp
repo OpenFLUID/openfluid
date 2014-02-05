@@ -296,7 +296,7 @@ void MarketClientAssistant::onClose()
 
 void MarketClientAssistant::onPrepare(int Id)
 {
-  setWindowTitle("OpenFLUID Market client (Step " + QString::number(Id+1) + " of 3)");
+  setWindowTitle(tr("OpenFLUID Market client (Step %1 of 3)").arg(QString::number(Id+1)));
 
   // page : Licenses
   if (Id == 1)
@@ -450,14 +450,17 @@ bool MarketClientAssistant::hasParentSelected(const openfluid::ware::WareID_t& I
 bool MarketClientAssistant::getUserChoice(const openfluid::ware::WareID_t& ID, const bool Select,
     const std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >& PacksToSelect)
 {
-  QString Message = "<b>" + QString::fromStdString(ID) + "</b>";
+  QString Message;
+
   if (Select)
   {
-    Message += tr(" needs some dependencies to run.<br/>Do you want to select this packages ?<br/>");
+    Message = tr("<b>%1</b> needs some dependencies to run.<br/>Do you want to select this packages ?<br/>")
+        .arg(QString::fromStdString(ID));
   }
   else
   {
-    Message += tr(" has dependencies selected.<br/>Do you want to unselect this packages ?<br/>");
+    Message = tr("<b>%1</b> has dependencies selected.<br/>Do you want to unselect this packages ?<br/>")
+        .arg(QString::fromStdString(ID));
   }
 
   std::map<openfluid::market::PackageInfo::PackageType,std::list<MarketPackWidget*> >::const_iterator APMiter;
@@ -708,7 +711,7 @@ void MarketClientAssistant::onInstallTimeoutOnce()
 
     int Percent = int(float(InstalledCount)/float(PackToInstallCount) * 100);
     m_InstallProgressBar.setValue(Percent);
-    m_InstallProgressBar.setFormat(QString::number(Percent)+tr("% complete"));
+    m_InstallProgressBar.setFormat(tr("%1\% complete").arg(QString::number(Percent)));
   }
 
   m_InstallProgressBar.setValue(100);
@@ -909,8 +912,8 @@ void MarketClientAssistant::displayMarketplaceError()
 
   // display error message
   QMessageBox::critical(this, tr("Connection error"),
-      tr("Unable to connect to \"") + MarketplaceName
-      + tr("\" marketplace.\nThis marketplace is not available, does not contain any catalog files or catalogs are empty."));
+      tr("Unable to connect to \"%1\" marketplace.\nThis marketplace is not available, does not contain any catalog files or catalogs are empty.")
+      .arg(MarketplaceName));
 
   m_URLCombo.setCurrentIndex(0);
 }

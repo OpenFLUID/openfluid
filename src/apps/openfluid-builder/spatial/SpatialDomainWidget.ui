@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>762</width>
+    <width>770</width>
     <height>635</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string notr="true">Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_7">
    <item>
@@ -104,7 +104,7 @@
          <x>0</x>
          <y>0</y>
          <width>278</width>
-         <height>580</height>
+         <height>567</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -275,7 +275,7 @@
                  </column>
                  <column>
                   <property name="text">
-                   <string>Unit class</string>
+                   <string>Units class</string>
                   </property>
                  </column>
                  <column>
