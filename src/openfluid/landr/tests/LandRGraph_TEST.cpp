@@ -54,6 +54,7 @@
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/tools.hpp>
+#include <geos/geom/LineString.h>
 
 // =====================================================================
 // =====================================================================
@@ -314,6 +315,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_LineStringGraph)
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_PolygonGraph)
 {
   openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
@@ -337,6 +339,55 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Id_for_PolygonGraph)
   Entity->getAttributeValue("attribut", StringValue);
   BOOST_CHECK_EQUAL( StringValue.get(), "S");
 
+
+  delete Graph;
+  delete Vector;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_snap_LineStringGraph)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_non_snapped.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Vector);
+  BOOST_CHECK_EQUAL(Graph->isLineStringGraphArborescence(),false);
+
+  Graph->snapVertices(3);
+  BOOST_CHECK_EQUAL(Graph->isLineStringGraphArborescence(),true);
+
+
+  delete Graph;
+  delete Vector;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_snap_PolygonGraph)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badSU_non_snapped.shp");
+
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+  openfluid::landr::PolygonEntity* p_Ent1 = Graph->getEntity(1);
+  openfluid::landr::PolygonEntity* p_Ent9 = Graph->getEntity(9);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 0);
+  BOOST_CHECK_EQUAL(p_Ent9->getOrderedNeighbourSelfIds().size(), 3);
+
+  Graph->snapVertices(8);
+
+  p_Ent1 = Graph->getEntity(1);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 2);
+  p_Ent9 = Graph->getEntity(9);
+  BOOST_CHECK_EQUAL(p_Ent9->getOrderedNeighbourSelfIds().size(), 4);
 
   delete Graph;
   delete Vector;
