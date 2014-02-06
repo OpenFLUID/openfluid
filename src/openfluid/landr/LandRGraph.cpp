@@ -26,8 +26,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
  \file LandRGraph.cpp
@@ -50,6 +50,7 @@
 #include <geos/geom/Polygon.h>
 #include <geos/geom/Point.h>
 #include <geos/geom/GeometryFactory.h>
+#include <geos/operation/overlay/snap/GeometrySnapper.h>
 
 namespace openfluid {
 namespace landr {
@@ -60,9 +61,9 @@ int LandRGraph::FileNum = 0;
 // =====================================================================
 
 LandRGraph::LandRGraph() :
-    geos::planargraph::PlanarGraph(), mp_Vector(0), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
-        0), mp_RasterPolygonizedPolys(0)
+        geos::planargraph::PlanarGraph(), mp_Vector(0), mp_Factory(
+            geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+                0), mp_RasterPolygonizedPolys(0)
 {
 
 }
@@ -71,16 +72,16 @@ LandRGraph::LandRGraph() :
 // =====================================================================
 
 LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
-    geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
-        0), mp_RasterPolygonizedPolys(0)
+        geos::planargraph::PlanarGraph(), mp_Factory(
+            geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+                0), mp_RasterPolygonizedPolys(0)
 {
   mp_Vector = new VectorDataset(Val);
 
   if (!mp_Vector)
     throw openfluid::base::FrameworkException(
-                                       "LandRGraph::LandRGraph",
-                                       "No GeoVectorValue.");
+        "LandRGraph::LandRGraph",
+        "No GeoVectorValue.");
 
   if (!mp_Vector->containsField("SELF_ID"))
     throw openfluid::base::FrameworkException(
@@ -92,16 +93,16 @@ LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 
 LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
-    geos::planargraph::PlanarGraph(), mp_Factory(
-        geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
-        0), mp_RasterPolygonizedPolys(0)
+        geos::planargraph::PlanarGraph(), mp_Factory(
+            geos::geom::GeometryFactory::getDefaultInstance()), mp_Raster(0), mp_RasterPolygonized(
+                0), mp_RasterPolygonizedPolys(0)
 {
   mp_Vector = new openfluid::landr::VectorDataset(Vect);
 
   if (!mp_Vector)
     throw openfluid::base::FrameworkException(
-                                       "LandRGraph::LandRGraph",
-                                       "No GeoVectorValue.");
+        "LandRGraph::LandRGraph",
+        "No GeoVectorValue.");
 
   if (!mp_Vector->containsField("SELF_ID"))
     throw openfluid::base::FrameworkException(
@@ -146,8 +147,8 @@ void LandRGraph::addEntitiesFromGeoVector()
 {
   if (!mp_Vector)
     throw openfluid::base::FrameworkException(
-                                       "LandRGraph::addEntitiesFromGeoVector",
-                                       "No GeoVectorValue.");
+        "LandRGraph::addEntitiesFromGeoVector",
+        "No GeoVectorValue.");
 
   // TODO move to... ?
   setlocale(LC_NUMERIC, "C");
@@ -661,6 +662,51 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
 // =====================================================================
 // =====================================================================
+
+void LandRGraph::snapVertices(double snapTolerance)
+{
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+  std::list<int> listSelfId;
+  for (; it != ite; ++it)
+    listSelfId.push_back((*it)->getSelfId());
+
+  std::list<int>::iterator li=listSelfId.begin();
+  std::list<int>::iterator lie=listSelfId.end();
+
+  for(; li != lie; ++li)
+  {
+
+    std::vector<geos::geom::Geometry*> entitiesGeoms;
+    LandRGraph::Entities_t::iterator jt = m_Entities.begin();
+    LandRGraph::Entities_t::iterator jte = m_Entities.end();
+    for (; jt != jte; ++jt)
+    {
+      if((*li)!=(*jt)->getSelfId())
+        entitiesGeoms.push_back(const_cast<geos::geom::Geometry*>((*jt)->getGeometry()));
+    }
+
+    geos::geom::Geometry* entitiesGeom =
+        geos::geom::GeometryFactory::getDefaultInstance()->buildGeometry(
+            entitiesGeoms);
+
+    geos::operation::overlay::snap::GeometrySnapper geomSnapper(*(getEntity(*li))->getGeometry());
+    std::auto_ptr<geos::geom::Geometry> snapEntityGeom=geomSnapper.snapTo(*entitiesGeom,snapTolerance);
+    geos::geom::Geometry* snappedEntityGeom=snapEntityGeom.release();
+
+    removeEntity(*(li));
+    addEntity(getNewEntity(snappedEntityGeom,(*li)));
+
+    removeUnusedNodes();
+
+  }
+
+}
+// =====================================================================
+// =====================================================================
+
+
 
 }// namespace landr
 } /* namespace openfluid */

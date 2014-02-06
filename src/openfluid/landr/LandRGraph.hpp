@@ -362,6 +362,8 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
        */
       virtual void removeEntity(int SelfId)=0;
 
+      void snapVertices(double snapTolerance);
+
 };
 
 } // namespace landr
