@@ -363,6 +363,7 @@ void OGRGDALImportExtension::updateUI()
     if (m_SourcesInfos[m_CurrentSrcIndex].UnitsIDsField.isEmpty())
     {
       ui->UnitsIDsComboBox->setCurrentIndex(ui->UnitsIDsComboBox->findText("OFLD_ID"));
+      m_SourcesInfos[m_CurrentSrcIndex].UnitsIDsField = ui->UnitsIDsComboBox->currentText();
     }
     else
     {
@@ -371,11 +372,13 @@ void OGRGDALImportExtension::updateUI()
 
 
     // Units process order field
+    ui->PcsOrdComboBox->addItem("");
     ui->PcsOrdComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
 
     if (m_SourcesInfos[m_CurrentSrcIndex].UnitsPcsOrdField.isEmpty())
     {
       ui->PcsOrdComboBox->setCurrentIndex(ui->PcsOrdComboBox->findText("OFLD_PSORD"));
+      m_SourcesInfos[m_CurrentSrcIndex].UnitsPcsOrdField = ui->PcsOrdComboBox->currentText();
     }
     else
     {
@@ -384,11 +387,14 @@ void OGRGDALImportExtension::updateUI()
 
 
     // Units "to" connections field
+    ui->ToConnectComboBox->addItem("");
     ui->ToConnectComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
 
     if (m_SourcesInfos[m_CurrentSrcIndex].ToConnectionsField.isEmpty())
     {
       ui->ToConnectComboBox->setCurrentIndex(ui->ToConnectComboBox->findText("OFLD_TO"));
+      m_SourcesInfos[m_CurrentSrcIndex].ToConnectionsField = ui->ToConnectComboBox->currentText();
+
     }
     else
     {
@@ -397,11 +403,13 @@ void OGRGDALImportExtension::updateUI()
 
 
     // Units "childof" connections field
+    ui->ChildofConnectComboBox->addItem("");
     ui->ChildofConnectComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
 
     if (m_SourcesInfos[m_CurrentSrcIndex].ChildofConnectionsField.isEmpty())
     {
       ui->ChildofConnectComboBox->setCurrentIndex(ui->ChildofConnectComboBox->findText("OFLD_CHILD"));
+      m_SourcesInfos[m_CurrentSrcIndex].ChildofConnectionsField = ui->ChildofConnectComboBox->currentText();
     }
     else
     {

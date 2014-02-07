@@ -41,6 +41,7 @@
 #define __DATAPROCESSINGWORKER_HPP__
 
 #include "SourceInfos.hpp"
+#include "SourceData.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <QObject>
@@ -55,14 +56,26 @@ class DataProcessingWorker : public QObject
 
     const SourcesInfosList_t& m_SourcesInfos;
 
+    SourcesDataList_t m_SourcesData;
+
     openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvDesc;
 
     bool runCheck(int StartStep);
 
-    void loadDataFromSources();
+    bool loadDataFromSources(int Step);
+
+    bool checkConnectivity(int Step);
 
     static QString getStyledText(const QString& Text,
                                  const QString& Color, bool IsBold);
+
+    static bool convertFieldToAttribute(const OGRFeature* Feature, const int FieldIndex,
+                                        QString& Attr);
+
+    static bool convertConnectionsStringToList(const QString& ConnStr,
+                                               QList<SourceConnection>& ConnList);
+
+    bool isUnitExists(const QString& Class, int ID);
 
 
   signals:

@@ -159,7 +159,7 @@
           <item>
            <widget class="QTabWidget" name="ConfigTabWidget">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="StructureTab">
              <attribute name="title">
@@ -219,7 +219,11 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QComboBox" name="UnitsIDsComboBox"/>
+                 <widget class="QComboBox" name="UnitsIDsComboBox">
+                  <property name="frame">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <spacer name="horizontalSpacer_4">

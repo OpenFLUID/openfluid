@@ -47,9 +47,14 @@
 
 class SourceConnection
 {
-  int DestID;
+  public:
 
-  QString DestClass;
+    int DestID;
+
+    QString DestClass;
+
+    SourceConnection(const QString& DClass, int DID):
+      DestID(DID), DestClass(DClass) { };
 
 };
 
@@ -60,11 +65,19 @@ class SourceConnection
 
 class SourceUnit
 {
-  QList<SourceConnection> ToConn;
+  public:
 
-  QList<SourceConnection> ChildofConn;
+    int ProcessOrder;
 
-  QMap<QString,QString> Attributes;
+    QString ToConnStr;
+
+    QList<SourceConnection> ToConn;
+
+    QString ChildofConnStr;
+
+    QList<SourceConnection> ChildofConn;
+
+    QMap<QString,QString> Attributes;
 
 };
 
@@ -79,11 +92,18 @@ class SourceData
 
     QMap<int,SourceUnit> Units;
 
+    void clear();
+
+    bool isUnitExists(int UnitID);
+
     SourceData();
 
     ~SourceData();
 
 };
+
+
+typedef QList<SourceData> SourcesDataList_t;
 
 
 #endif /* __SOURCEDATA_HPP__ */
