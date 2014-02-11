@@ -68,7 +68,7 @@ DataProcessingWorker::~DataProcessingWorker()
 
 
 QString DataProcessingWorker::getStyledText(const QString& Text,
-                                            const QString& Color, bool IsBold=false)
+                                            const QString& Color, bool IsBold)
 {
   QString BoldStyle;
 

@@ -46,7 +46,7 @@
 
 PrecheckImportDialog::PrecheckImportDialog(int StepsCount, QWidget* Parent = NULL):
   QDialog(Parent),ui(new Ui::PrecheckImportDialog),
-  m_IsFinished(false)
+  m_IsFinished(false), m_IsCloseRequired(false)
 {
   ui->setupUi(this);
 
@@ -59,7 +59,7 @@ PrecheckImportDialog::PrecheckImportDialog(int StepsCount, QWidget* Parent = NUL
 
   ui->ButtonBox->setEnabled(false);
 
-  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(reject()));
+  connect(ui->ButtonBox,SIGNAL(rejected()),this,SLOT(close()));
 }
 
 
@@ -110,7 +110,7 @@ void PrecheckImportDialog::handleStepCompleted(int StepNbr, QString Message)
 // =====================================================================
 
 
-void PrecheckImportDialog::handleCompleted(QString Message)
+void PrecheckImportDialog::handleCompleted(QString Message, bool IsCloseRequired)
 {
   ui->ProgressBar->setValue(ui->ProgressBar->maximum());
   ui->MessagesTextEdit->insertHtml("<br/>"+Message+"<br/>");
@@ -122,8 +122,31 @@ void PrecheckImportDialog::handleCompleted(QString Message)
 // =====================================================================
 
 
+void PrecheckImportDialog::handleCloseRequired()
+{
+  m_IsCloseRequired = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void PrecheckImportDialog::handleFinished()
 {
   m_IsFinished = true;
   ui->ButtonBox->setEnabled(true);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void PrecheckImportDialog::close()
+{
+  reject();
+
+  if (m_IsCloseRequired)
+    emit closeRequired();
 }

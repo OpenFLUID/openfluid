@@ -61,6 +61,13 @@ class PrecheckImportDialog : public QDialog
 
     bool m_IsFinished;
 
+    bool m_IsCloseRequired;
+
+
+  signals:
+
+    void closeRequired();
+
 
   public slots:
 
@@ -68,7 +75,11 @@ class PrecheckImportDialog : public QDialog
 
     void handleStepCompleted(int StepNbr, QString Message);
 
-    void handleCompleted(QString Message);
+    void handleCompleted(QString Message, bool IsCloseRequired = false);
+
+    void handleCloseRequired();
+
+    void close();
 
     void handleFinished();
 

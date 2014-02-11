@@ -46,7 +46,7 @@
 #include <QMessageBox>
 
 
-SourceAddDialog::SourceAddDialog(QWidget* Parent = NULL):
+SourceAddDialog::SourceAddDialog(QWidget* Parent):
   QDialog(Parent), ui(new Ui::SourceAddDialog),
   mp_DataSource(NULL), m_CurrentSourceURI("")
 {

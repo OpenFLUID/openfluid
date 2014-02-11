@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>850</width>
-    <height>600</height>
+    <height>615</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -159,7 +159,7 @@
           <item>
            <widget class="QTabWidget" name="ConfigTabWidget">
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="StructureTab">
              <attribute name="title">
@@ -597,9 +597,9 @@
               </item>
              </layout>
             </widget>
-            <widget class="QWidget" name="DatastoreTab">
+            <widget class="QWidget" name="FilesDatastoreTab">
              <attribute name="title">
-              <string>Datastore</string>
+              <string>Files and Datastore</string>
              </attribute>
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <item>
@@ -629,7 +629,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="text">
-                   <string>Import in project dataset as</string>
+                   <string>Import in project dataset as file:</string>
                   </property>
                  </widget>
                 </item>
@@ -650,7 +650,7 @@
                    <bool>false</bool>
                   </property>
                   <property name="text">
-                   <string>Import in datastore with ID</string>
+                   <string>Import in datastore with ID:</string>
                   </property>
                  </widget>
                 </item>

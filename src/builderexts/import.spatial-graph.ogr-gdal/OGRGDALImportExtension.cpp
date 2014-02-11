@@ -43,6 +43,7 @@
 #include "FileSourceAddDialog.hpp"
 #include "WFSSourceAddDialog.hpp"
 #include "PrecheckWorker.hpp"
+#include "ImportWorker.hpp"
 
 #include <QMessageBox>
 #include <QThread>
@@ -63,6 +64,9 @@ END_BUILDEREXT_SIGNATURE
 // =====================================================================
 // =====================================================================
 
+/* TODO check why the following message appears on Mac OSX:
+modalSession has been exited prematurely - check for a reentrant call to endModalSession
+*/
 
 OGRGDALImportExtension::OGRGDALImportExtension() :
   openfluid::builderext::PluggableModalExtension(), ui(new Ui::OGRGDALDialog),
@@ -273,8 +277,34 @@ void OGRGDALImportExtension::processButtonBoxClicked(QAbstractButton* Button)
 
 void OGRGDALImportExtension::proceedToImport()
 {
-  //accept();
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+
+  if (mp_PrecheckImportDlg != NULL)
+    delete mp_PrecheckImportDlg;
+
+  mp_PrecheckImportDlg = new PrecheckImportDialog(3+m_SourcesInfos.size()+1,this);
+
+  mp_PrecheckImportDlg->open();
+
+
+  QThread* WThread = new QThread;
+  ImportWorker* Worker = new ImportWorker(m_SourcesInfos,mp_AdvancedDesc);
+  Worker->moveToThread(WThread);
+
+  connect(Worker, SIGNAL(stepEntered(QString)), mp_PrecheckImportDlg, SLOT(handleStepEntered(QString)));
+  connect(Worker, SIGNAL(stepCompleted(int,QString)), mp_PrecheckImportDlg, SLOT(handleStepCompleted(int,QString)));
+  connect(Worker, SIGNAL(completed(QString)), mp_PrecheckImportDlg, SLOT(handleCompleted(QString)));
+  connect(Worker, SIGNAL(finished()), mp_PrecheckImportDlg, SLOT(handleFinished()));
+
+  // for automatic closing on successful import
+  connect(Worker, SIGNAL(closeRequired()), mp_PrecheckImportDlg, SLOT(handleCloseRequired()));
+  connect(mp_PrecheckImportDlg, SIGNAL(closeRequired()), this, SLOT(handleCloseRequired()));
+
+  connect(WThread, SIGNAL(started()), Worker, SLOT(run()));
+  connect(Worker, SIGNAL(finished()), WThread, SLOT(quit()));
+  connect(Worker, SIGNAL(finished()), Worker, SLOT(deleteLater()));
+  connect(WThread, SIGNAL(finished()), WThread, SLOT(deleteLater()));
+
+  WThread->start();
 }
 
 
@@ -318,8 +348,6 @@ void OGRGDALImportExtension::closeEvent(QCloseEvent* Event)
 
 void OGRGDALImportExtension::updateUI()
 {
-  std::cout << __PRETTY_FUNCTION__ << ", line " << __LINE__ << std::endl;
-
   ui->PrecheckButton->setEnabled(!m_SourcesInfos.isEmpty());
   ui->ButtonBox->button(QDialogButtonBox::Apply)->setEnabled(!m_SourcesInfos.isEmpty());
 
@@ -344,9 +372,6 @@ void OGRGDALImportExtension::updateUI()
   ui->ToConnectComboBox->clear();
   ui->ChildofConnectComboBox->clear();
   ui->AttributesListWidget->clear();
-
-
-  std::cout << m_SourcesInfos.size() << " > " << m_CurrentSrcIndex << std::endl;
 
 
   if (m_CurrentSrcIndex >=0)
@@ -473,17 +498,11 @@ void OGRGDALImportExtension::updateUI()
     // Import to datastore
     // TODO
 
-    for (int i=0;i<m_SourcesInfos.size();i++)
-    {
-      std::cout << m_SourcesInfos[i].AreaComputeAttribute.toStdString() << std::endl;
-    }
   }
   else
   {
     ui->ConfigTabWidget->setEnabled(false);
   }
-
-  std::cout << __PRETTY_FUNCTION__ << ", line " << __LINE__ << std::endl;
 }
 
 
@@ -690,6 +709,22 @@ void OGRGDALImportExtension::updateZCentroidComputeAttrInfos()
 
 // =====================================================================
 // =====================================================================
+
+
+void OGRGDALImportExtension::handleCloseRequired()
+{
+  // TODO emit datastore changes
+
+  emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
+                     openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+
+  accept();
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 DEFINE_BUILDEREXT_CLASS(OGRGDALImportExtension)

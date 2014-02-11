@@ -47,6 +47,9 @@
 #include <QObject>
 
 
+#define OGRGDALEXT_PRECHECK_STEPS 3
+
+
 class DataProcessingWorker : public QObject
 {
   Q_OBJECT;
@@ -67,7 +70,7 @@ class DataProcessingWorker : public QObject
     bool checkConnectivity(int Step);
 
     static QString getStyledText(const QString& Text,
-                                 const QString& Color, bool IsBold);
+                                 const QString& Color, bool IsBold=false);
 
     static bool convertFieldToAttribute(const OGRFeature* Feature, const int FieldIndex,
                                         QString& Attr);

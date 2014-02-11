@@ -30,76 +30,50 @@
 */
 
 /**
-  \file SourceAddDialog.hpp
+  \file ImportWorker.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __SOURCEADDDIALOG_HPP__
-#define __SOURCEADDDIALOG_HPP__
+#ifndef __IMPORTWORKER_HPP__
+#define __IMPORTWORKER_HPP__
 
-namespace Ui
-{
-  class SourceAddDialog;
-}
-
-#include "SourceInfos.hpp"
-
-#include <QDialog>
+#include "DataProcessingWorker.hpp"
 
 
-class SourceAddDialog : public QDialog
+class ImportWorker : public DataProcessingWorker
 {
   Q_OBJECT;
 
-  private slots:
+  private:
 
-    void proceedToImport();
+    bool runImport(int StartStep);
 
-    void handleSourceLinked(void* Src);
+    bool importLayer(int Step,int Index);
 
-    void handleLayerCounted(int Count);
-
-    void handleLayerFetched(int Index, QString Name, QString GeomStr);
-
-    void handleSourceFinished();
-
-    void handleSourceError(QString Message);
+    bool buildConnections(int Step);
 
 
-  protected slots:
+  signals:
 
-    void globalCheck();
+    void closeRequired();
 
 
-  protected:
+  public slots:
 
-    Ui::SourceAddDialog* ui;
-
-    OGRDataSource* mp_DataSource;
-
-    QString m_CurrentSourceURI;
-
-    SourceInfos m_SrcInfos;
-
-    void openDataSource();
-
-    virtual void updateAfterOpen() = 0;
-
-    virtual bool prepareToImport() = 0;
+    void run();
 
 
   public:
 
-    SourceAddDialog(QWidget* Parent = NULL);
+    ImportWorker(const SourcesInfosList_t& SourcesInfos,
+                   openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc);
 
-    ~SourceAddDialog();
+    ~ImportWorker();
 
-    const SourceInfos& getSourceInfos()
-    { return m_SrcInfos; }
 };
 
 
-#endif /* __SOURCEADDDIALOG_HPP__ */
+#endif /* __IMPORTWORKER_HPP__ */
