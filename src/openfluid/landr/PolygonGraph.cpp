@@ -420,7 +420,8 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
         geos::geom::Polygon* Poly =
             dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
                 i)));
-
+        if(Poly==NULL)
+          break;
         // !! copy doesn't keep UserData !
         Poly->setUserData((*it)->getUserData());
 
