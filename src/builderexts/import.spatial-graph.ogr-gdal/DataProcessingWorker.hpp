@@ -47,7 +47,7 @@
 #include <QObject>
 
 
-#define OGRGDALEXT_PRECHECK_STEPS 3
+#define OGRGDALEXT_PRECHECK_STEPS 4
 
 
 class DataProcessingWorker : public QObject

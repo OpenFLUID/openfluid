@@ -113,6 +113,8 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
 
     void updateZCentroidComputeAttrInfos();
 
+    void updateIsDatasetImportInfos();
+
     void handleCloseRequired();
 
 

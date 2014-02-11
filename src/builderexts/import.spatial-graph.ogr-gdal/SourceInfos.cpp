@@ -48,7 +48,8 @@ SourceInfos::SourceInfos():
   IsLengthCompute(false), LengthComputeAttribute("length"),
   IsXCentroidCompute(false), XCentroidComputeAttribute("xcentroid"),
   IsYCentroidCompute(false), YCentroidComputeAttribute("ycentroid"),
-  IsZCentroidCompute(false), ZCentroidComputeAttribute("zcentroid")
+  IsZCentroidCompute(false), ZCentroidComputeAttribute("zcentroid"),
+  IsDatasetImport(false), IsDatastore(false)
 {
 
 }

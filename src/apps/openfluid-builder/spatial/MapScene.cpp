@@ -72,7 +72,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
 {
   if (DSItemDesc->getType() == openfluid::core::UnstructuredValue::GeoVectorValue)
   {
-    openfluid::core::DatastoreItem* DSItem;
+    openfluid::core::DatastoreItem* DSItem = NULL;
 
     if (m_LocalDatastore.getItem(DSItemDesc->getID()) == NULL)
     {
@@ -89,16 +89,14 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
     openfluid::core::GeoVectorValue* VectorData =
         dynamic_cast<openfluid::core::GeoVectorValue*>(DSItem->getValue());
 
-    if (VectorData->get() != NULL && VectorData->containsField("SELF_ID",0))
+    if (VectorData->get() != NULL && VectorData->containsField("OFLD_ID",0))
     {
-
       OGRLayer* Layer = VectorData->getLayer();
 
       // TODO fix for correct line width with QPen FeaturePen(QBrush(LineColor),LineWidth), FeaturePen.setCosmetic(true);
       QPen FeaturePen(QBrush(LineColor),0);
       QBrush FeatureBrush(FillColor);
       std::string StdClassName = DSItemDesc->getUnitClass();
-
 
       OGRFeature *Feature;
       Layer->ResetReading();
@@ -108,7 +106,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
         OGRGeometry *Geometry = Feature->GetGeometryRef();
         OGRwkbGeometryType GeomType =  Geometry->getGeometryType();
 
-        int ID = Feature->GetFieldAsInteger("SELF_ID");
+        int ID = Feature->GetFieldAsInteger("OFLD_ID");
 
         if (Geometry != NULL && m_Domain.isUnitExist(StdClassName,ID))
         {

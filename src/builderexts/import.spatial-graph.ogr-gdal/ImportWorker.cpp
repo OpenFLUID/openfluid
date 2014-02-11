@@ -39,10 +39,16 @@
 
 #include "ImportWorker.hpp"
 
+#include <QFileInfo>
+#include <QDir>
+
+#include <ogrsf_frmts.h>
+
 
 ImportWorker::ImportWorker(const SourcesInfosList_t& SourcesInfos,
-                           openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc):
-  DataProcessingWorker(SourcesInfos,AdvDesc)
+                           openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc,
+                           const QString& InputDir):
+  DataProcessingWorker(SourcesInfos,AdvDesc), m_InputDir(InputDir)
 {
 
 }
@@ -169,6 +175,91 @@ bool ImportWorker::buildConnections(int Step)
 // =====================================================================
 
 
+bool ImportWorker::processFilesAndDatastore(int Step)
+{
+  emit stepEntered(tr("Copying files and populating datastore..."));
+
+  int i=0;
+  bool OKToContinue = true;
+
+  while (i<m_SourcesInfos.size() && OKToContinue)
+  {
+
+    if (m_SourcesInfos[i].IsDatasetImport)
+    {
+      // local copy of files in dataset
+
+      QString FullSrcFilePath = m_SourcesInfos[i].SourceURI;
+      if (!m_SourcesInfos[i].CachedSourceURI.isEmpty())
+        FullSrcFilePath = m_SourcesInfos[i].CachedSourceURI;
+
+      QString FullDestFilePath = m_InputDir + "/" + m_SourcesInfos[i].RelativeDatasetPath;
+      QString FullDestPath = QFileInfo(FullDestFilePath).absolutePath();
+      QString DestExtension = QFileInfo(FullDestFilePath).suffix();
+
+      QDir().mkpath(FullDestPath);
+
+      OGRRegisterAll();
+
+      OGRDataSource* SrcDS = OGRSFDriverRegistrar::Open(FullSrcFilePath.toStdString().c_str(),FALSE);
+
+      if (SrcDS != NULL)
+      {
+        OGRSFDriver *CopyDriver;
+
+        QString DriverName;
+
+        // TODO use a real lookup table for OGR drivers
+        // see if provided by OGR lib
+        if (DestExtension == "shp")
+          DriverName = "ESRI Shapefile";
+        else if (DestExtension == "geojson")
+          DriverName = "GeoJSON";
+
+        CopyDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(DriverName.toStdString().c_str());
+
+        if (CopyDriver != NULL)
+        {
+          OGRDataSource* DestDS = CopyDriver->CopyDataSource(SrcDS,
+                                                             FullDestFilePath.toStdString().c_str());
+
+          // TODO if DestDS != NULL, rename ID field to OFLD_ID
+
+          OGRDataSource::DestroyDataSource(DestDS);
+        }
+
+        OGRDataSource::DestroyDataSource(SrcDS);
+
+      }
+
+      if (m_SourcesInfos[i].IsDatastore)
+      {
+        // populate datastore
+
+        openfluid::fluidx::DatastoreItemDescriptor* DSItem =
+            new openfluid::fluidx::DatastoreItemDescriptor(m_SourcesInfos[i].DatastoreID.toStdString(),
+                                                           m_InputDir.toStdString(),
+                                                           m_SourcesInfos[i].RelativeDatasetPath.toStdString(),
+                                                           openfluid::core::UnstructuredValue::GeoVectorValue);
+        DSItem->setUnitClass(m_SourcesInfos[i].UnitsClass.toStdString());
+
+        mp_AdvDesc->getDatastore().appendItem(DSItem);
+      }
+    }
+
+    i++;
+  }
+
+  emit stepCompleted(Step,getStyledText(tr("[OK]"),"green"));
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool ImportWorker::runImport(int StartStep)
 {
   int i=0;
@@ -183,6 +274,9 @@ bool ImportWorker::runImport(int StartStep)
 
   if (OKToContinue)
     OKToContinue = buildConnections(StartStep+m_SourcesInfos.size()+1);
+
+  if (OKToContinue)
+    OKToContinue = processFilesAndDatastore(StartStep+m_SourcesInfos.size()+2);
 
   return OKToContinue;
 }

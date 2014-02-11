@@ -49,11 +49,15 @@ class ImportWorker : public DataProcessingWorker
 
   private:
 
+    QString m_InputDir;
+
     bool runImport(int StartStep);
 
     bool importLayer(int Step,int Index);
 
     bool buildConnections(int Step);
+
+    bool processFilesAndDatastore(int Step);
 
 
   signals:
@@ -69,7 +73,8 @@ class ImportWorker : public DataProcessingWorker
   public:
 
     ImportWorker(const SourcesInfosList_t& SourcesInfos,
-                   openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc);
+                   openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc,
+                   const QString& InputDir);
 
     ~ImportWorker();
 

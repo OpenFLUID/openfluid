@@ -133,6 +133,10 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
   connect(ui->ComputeZCentroidCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateIsZCentroidComputeInfos()));
   connect(ui->ComputeZCentroidLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateZCentroidComputeAttrInfos()));
 
+  connect(ui->DatasetImportCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateIsDatasetImportInfos()));
+  connect(ui->DatasetImportLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateIsDatasetImportInfos()));
+  connect(ui->DatastoreIDCheckBox,SIGNAL(toggled(bool)),this,SLOT(updateIsDatasetImportInfos()));
+  connect(ui->DatastoreIDLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateIsDatasetImportInfos()));
 
   ui->ButtonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
   connect(ui->ButtonBox,SIGNAL(clicked(QAbstractButton*)),this,SLOT(processButtonBoxClicked(QAbstractButton*)));
@@ -281,13 +285,13 @@ void OGRGDALImportExtension::proceedToImport()
   if (mp_PrecheckImportDlg != NULL)
     delete mp_PrecheckImportDlg;
 
-  mp_PrecheckImportDlg = new PrecheckImportDialog(3+m_SourcesInfos.size()+1,this);
+  mp_PrecheckImportDlg = new PrecheckImportDialog(OGRGDALEXT_PRECHECK_STEPS+m_SourcesInfos.size()+2,this);
 
   mp_PrecheckImportDlg->open();
 
 
   QThread* WThread = new QThread;
-  ImportWorker* Worker = new ImportWorker(m_SourcesInfos,mp_AdvancedDesc);
+  ImportWorker* Worker = new ImportWorker(m_SourcesInfos,mp_AdvancedDesc,m_InputDir);
   Worker->moveToThread(WThread);
 
   connect(Worker, SIGNAL(stepEntered(QString)), mp_PrecheckImportDlg, SLOT(handleStepEntered(QString)));
@@ -495,8 +499,21 @@ void OGRGDALImportExtension::updateUI()
     ui->ComputeZCentroidLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].ZCentroidComputeAttribute);
 
 
-    // Import to datastore
-    // TODO
+    // Import to files and datastore
+    ui->DatastoreIDLineEdit->setEnabled(true);
+    ui->DatasetImportLineEdit->setEnabled(true);
+    ui->DatastoreIDCheckBox->setEnabled(true);
+    ui->DatastoreIDLineEdit->setEnabled(true);
+
+    ui->DatasetImportLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].RelativeDatasetPath);
+    ui->DatastoreIDLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].DatastoreID);
+    ui->DatasetImportCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport);
+    ui->DatastoreIDCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsDatastore);
+
+    ui->DatasetImportLineEdit->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport);
+    ui->DatastoreIDCheckBox->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport);
+    ui->DatastoreIDLineEdit->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport &&
+                                        m_SourcesInfos[m_CurrentSrcIndex].IsDatastore);
 
   }
   else
@@ -515,7 +532,7 @@ void OGRGDALImportExtension::runPrecheck()
   if (mp_PrecheckImportDlg != NULL)
     delete mp_PrecheckImportDlg;
 
-  mp_PrecheckImportDlg = new PrecheckImportDialog(3,this);
+  mp_PrecheckImportDlg = new PrecheckImportDialog(OGRGDALEXT_PRECHECK_STEPS,this);
 
   mp_PrecheckImportDlg->open();
 
@@ -711,12 +728,42 @@ void OGRGDALImportExtension::updateZCentroidComputeAttrInfos()
 // =====================================================================
 
 
+void OGRGDALImportExtension::updateIsDatasetImportInfos()
+{
+  if (!ui->DatasetImportCheckBox->isChecked())
+    ui->DatastoreIDCheckBox->setChecked(false);
+
+  m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport = ui->DatasetImportCheckBox->isChecked();
+  m_SourcesInfos[m_CurrentSrcIndex].RelativeDatasetPath = ui->DatasetImportLineEdit->text();
+
+  m_SourcesInfos[m_CurrentSrcIndex].IsDatastore = ui->DatastoreIDCheckBox->isChecked();
+  m_SourcesInfos[m_CurrentSrcIndex].DatastoreID = ui->DatastoreIDLineEdit->text();
+
+  ui->DatasetImportLineEdit->setEnabled(ui->DatasetImportCheckBox->isChecked());
+  ui->DatastoreIDCheckBox->setEnabled(ui->DatasetImportCheckBox->isChecked());
+  ui->DatastoreIDLineEdit->setEnabled(ui->DatastoreIDCheckBox->isChecked());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void OGRGDALImportExtension::handleCloseRequired()
 {
-  // TODO emit datastore changes
+  openfluid::builderext::FluidXUpdateFlags::Flags ChangesFlags =
+      openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
+      openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS;
 
-  emit fluidxChanged(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT |
-                     openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS);
+  bool DatastoreChanged = false;
+
+  for (int i=0;i<m_SourcesInfos.size();i++)
+    DatastoreChanged = DatastoreChanged || m_SourcesInfos[i].IsDatastore;
+
+  if (DatastoreChanged)
+    ChangesFlags = ChangesFlags | openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE;
+
+  emit fluidxChanged(ChangesFlags);
 
   accept();
 }

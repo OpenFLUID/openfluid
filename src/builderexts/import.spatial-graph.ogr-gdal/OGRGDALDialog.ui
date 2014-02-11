@@ -624,17 +624,17 @@
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QCheckBox" name="checkBox_2">
+                 <widget class="QCheckBox" name="DatasetImportCheckBox">
                   <property name="enabled">
-                   <bool>false</bool>
+                   <bool>true</bool>
                   </property>
                   <property name="text">
-                   <string>Import in project dataset as file:</string>
+                   <string>Copy layer in project dataset as file:</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit_4">
+                 <widget class="QLineEdit" name="DatasetImportLineEdit">
                   <property name="enabled">
                    <bool>false</bool>
                   </property>
@@ -645,17 +645,17 @@
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
                 <item>
-                 <widget class="QCheckBox" name="checkBox">
+                 <widget class="QCheckBox" name="DatastoreIDCheckBox">
                   <property name="enabled">
-                   <bool>false</bool>
+                   <bool>true</bool>
                   </property>
                   <property name="text">
-                   <string>Import in datastore with ID:</string>
+                   <string>Add layer copy in datastore with ID:</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLineEdit" name="lineEdit">
+                 <widget class="QLineEdit" name="DatastoreIDLineEdit">
                   <property name="enabled">
                    <bool>false</bool>
                   </property>

@@ -461,7 +461,6 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
 
       // === YCentroid computed attribute ===
-      // TODO
 
       if (m_SourcesInfos[i].IsYCentroidCompute)
       {
@@ -611,12 +610,51 @@ bool DataProcessingWorker::runCheck(int StartStep)
   emit stepCompleted(StartStep,getStyledText(tr("[OK]"),"green"));
 
 
+  emit stepEntered(tr("Checking configuration of files copies and datastore..."));
+
+  for (int i=0; i<m_SourcesInfos.size();i++)
+  {
+
+    // check if dataset import file is not empty
+    if (m_SourcesInfos[i].IsDatasetImport && m_SourcesInfos[i].RelativeDatasetPath.isEmpty())
+    {
+      emit stepCompleted(StartStep,getStyledText(tr("[Error] Missing file name for copy of layer \"%1\" in project dataset")
+                                                 .arg(m_SourcesInfos[i].LayerName),
+                                                 "red"));
+      return false;
+    }
+
+
+    // check if datastore ID is not empty
+    if (m_SourcesInfos[i].IsDatastore && m_SourcesInfos[i].DatastoreID.isEmpty())
+    {
+      emit stepCompleted(StartStep,getStyledText(tr("[Error] Missing datastore ID for layer \"%1\"")
+                                                 .arg(m_SourcesInfos[i].LayerName),
+                                                 "red"));
+      return false;
+    }
+
+    // check if datastore ID already exists
+    if (m_SourcesInfos[i].IsDatastore &&
+        mp_AdvDesc->getDatastore().isItemAlreadyExist(m_SourcesInfos[i].DatastoreID.toStdString()))
+    {
+      emit stepCompleted(StartStep,getStyledText(tr("[Error] Datastore ID for layer \"%1\" already exists")
+                                                       .arg(m_SourcesInfos[i].LayerName),
+                                                       "red"));
+      return false;
+    }
+
+  }
+
+  emit stepCompleted(StartStep+1,getStyledText(tr("[OK]"),"green"));
+
+
   // load data from source
-  if (!loadDataFromSources(StartStep+1))
+  if (!loadDataFromSources(StartStep+2))
     return false;
 
 
-  if (!checkConnectivity(StartStep+2))
+  if (!checkConnectivity(StartStep+3))
     return false;
 
   return true;

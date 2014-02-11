@@ -91,6 +91,14 @@ class SourceInfos
 
     QString ZCentroidComputeAttribute;
 
+    bool IsDatasetImport;
+
+    QString RelativeDatasetPath;
+
+    bool IsDatastore;
+
+    QString DatastoreID;
+
     int getGeometryDimension();
 
     SourceInfos();

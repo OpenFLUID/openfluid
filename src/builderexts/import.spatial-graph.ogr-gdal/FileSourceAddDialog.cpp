@@ -73,10 +73,14 @@ FileSourceAddDialog::~FileSourceAddDialog()
 
 void FileSourceAddDialog::selectFile()
 {
+  // TODO add most commonly used formats
+
   m_CurrentSourceURI = QFileDialog::getOpenFileName(this,
                                                     tr("Open file"),
                                                     m_InputDir,
-                                                    tr("All vector files (*.shp *.mif);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif)"));
+                                                    tr("All vector files (*.shp *.mif *.tab);;"
+                                                        "ESRI Shapefiles (*.shp);;"
+                                                        "Mapinfo (*.mif *.tab)"));
 
   if (!m_CurrentSourceURI.isEmpty())
     openDataSource();
