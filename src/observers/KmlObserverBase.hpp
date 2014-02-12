@@ -141,12 +141,12 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       }
 
 
-      int SelfIDFieldIndex = Layer->GetLayerDefn()->GetFieldIndex("SELF_ID");
+      int OfldIDFieldIndex = Layer->GetLayerDefn()->GetFieldIndex("OFLD_ID");
 
-      if (SelfIDFieldIndex < 0)
+      if (OfldIDFieldIndex < 0)
       {
         OPENFLUID_RaiseWarning("KmlObserverBase::transformVectorLayerToKmlGeometry()",
-            "Cannot find SELF_ID attribute in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
+            "Cannot find OFLD_ID attribute in "+LayerInfo.SourceFilename+". This Kml output is ignored.");
         return false;
       }
 
@@ -154,7 +154,7 @@ class KmlObserverBase : public openfluid::ware::PluggableObserver
       Layer->ResetReading();
       while((Feature = Layer->GetNextFeature()) != NULL)
       {
-        openfluid::core::UnitID_t UnitID = Feature->GetFieldAsInteger(SelfIDFieldIndex);
+        openfluid::core::UnitID_t UnitID = Feature->GetFieldAsInteger(OfldIDFieldIndex);
 
         if (OPENFLUID_IsUnitExist(LayerInfo.UnitsClass,UnitID))
         {

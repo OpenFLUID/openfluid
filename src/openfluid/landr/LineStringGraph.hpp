@@ -55,7 +55,7 @@
 
 
 /**
- Macro for declaration of a loop processing all entities of a graph, following their selfid
+ Macro for declaration of a loop processing all entities of a graph, following their OFLD_ID
  @param[in] loopid ID of the loop
  */
 #define DECLARE_ENTITIES_ORDERED_LOOP(loopid) \
@@ -77,7 +77,7 @@
 				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
 /**
- Macro for the beginning of a loop processing all entities of a graph, following their selfid
+ Macro for the beginning of a loop processing all entities of a graph, following their OFLD_ID
  @param[in] loopid ID of the loop, must match declaration
  @param[in] graph pointer to a openfluid::landr::LineStringGraph
  @param[out] entity pointer to a openfluid::landr::LineStringEntity object, pointing to the current processed entity
@@ -85,7 +85,7 @@
 #define BEGIN_ENTITIES_ORDERED_LOOP(loopid,graph,entity) \
 		if (graph) \
 		{ \
-			_M_##loopid##_uvect = graph->getSelfIdOrderedEntities();\
+			_M_##loopid##_uvect = graph->getOfldIdOrderedEntities();\
 			for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
 			{ \
 				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
@@ -134,12 +134,12 @@ protected:
 	 * @brief Creates a new LineStringEntity.
 	 *
 	 * @param Geom The geos::geom::Geometry of the new LineStringEntity to create.
-	 * @param SelfId The identifier of the new LineStringEntity.
+	 * @param OfldId The identifier of the new LineStringEntity.
 	 *
 	 * @return A new LandREntity.
 	 */
 	virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-			unsigned int SelfId);
+			unsigned int OfldId);
 
 
 
@@ -148,13 +148,13 @@ public:
 
 	/**
 	 * @brief Creates a new LineStringGraph initialized from a core::GeoVectorValue.
-	 * @param Val A core::GeoVectorValue which must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
+	 * @param Val A core::GeoVectorValue which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
 	 */
 	static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
 
 	/**
 	 * @brief Creates a new LineStringGraph initialized from a VectorDataset.
-	 * @param Vect A VectorDataset which must be composed of one or many LineStrings, and each of them must contain a "SELF_ID" attribute.
+	 * @param Vect A VectorDataset which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
 	 */
 	static LineStringGraph* create(openfluid::landr::VectorDataset& Vect);
 
@@ -172,15 +172,15 @@ public:
 	LandRGraph::GraphType getType();
 
 	/**
-	 * @brief Returns a LineStringEntity with SelfId, or 0 if it doesn't exist.
+	 * @brief Returns a LineStringEntity with OFLD_ID, or 0 if it doesn't exist.
 	 */
-	LineStringEntity* getEntity(int SelfId);
+	LineStringEntity* getEntity(int OfldId);
 
 	/**
-	 * @brief Removes from this LineStringGraph the LineStringEntity with SelfId and its associated nodes.
-	 * @param SelfId The identifier.
+	 * @brief Removes from this LineStringGraph the LineStringEntity with OFLD_ID and its associated nodes.
+	 * @param OfldId The identifier.
 	 */
-	virtual void removeEntity(int SelfId);
+	virtual void removeEntity(int OfldId);
 
 	/**
 	 * @brief Returns the last LineStringEntity of this LineStringGraph, according to the LineStringEntity orientations,

@@ -81,7 +81,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
   if (!isLineInFace(NewFace))
   {
     std::ostringstream s;
-    s << "Can not add Polygon " << NewFace.getSelfId()
+    s << "Can not add Polygon " << NewFace.getOfldId()
       << " as neighbour of this edge, because it doesn't contain edge line.";
 
     throw openfluid::base::FrameworkException(
@@ -93,7 +93,7 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
   if (m_Faces.size() > 1)
   {
     std::ostringstream s;
-    s << "Can not add Polygon " << NewFace.getSelfId()
+    s << "Can not add Polygon " << NewFace.getOfldId()
       << " as neighbour of this edge, which has already two neighbours.";
 
     throw openfluid::base::FrameworkException(

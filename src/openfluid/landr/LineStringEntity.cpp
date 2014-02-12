@@ -51,8 +51,8 @@ namespace landr {
 // =====================================================================
 
 LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
-                                   unsigned int SelfId) :
-    LandREntity(NewLine, SelfId), geos::planargraph::Edge(), mp_LOUpNeighbours(
+                                   unsigned int OfldId) :
+    LandREntity(NewLine, OfldId), geos::planargraph::Edge(), mp_LOUpNeighbours(
         0), mp_LODownNeighbours(0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_LINESTRING)
@@ -96,7 +96,7 @@ LineStringEntity::~LineStringEntity()
 
 LineStringEntity* LineStringEntity::clone()
 {
-  return new LineStringEntity(mp_Geom->clone(), m_SelfId);
+  return new LineStringEntity(mp_Geom->clone(), m_OfldId);
 }
 
 // =====================================================================

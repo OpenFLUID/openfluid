@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 
     openfluid::landr::LandREntity* Entity = new openfluid::landr::PolygonEntity(
         dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
-        Feat->GetFieldAsInteger("SELF_ID"));
+        Feat->GetFieldAsInteger("OFLD_ID"));
 
     Entities.push_back(Entity);
 
@@ -241,10 +241,10 @@ BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
   openfluid::landr::PolygonEntity* p_Ent1 = Graph->getEntity(1);
   openfluid::landr::PolygonEntity* p_Ent2 = Graph->getEntity(2);
 
-  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 1);
-  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds()[0], 2);
-  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds().size(), 1);
-  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds()[0], 1);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourOfldIds().size(), 1);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourOfldIds()[0], 2);
+  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourOfldIds().size(), 1);
+  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourOfldIds()[0], 1);
 
   delete Graph;
 }
@@ -317,11 +317,11 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   openfluid::landr::PolygonEntity* p_Ent2 = Graph->getEntity(2);
   openfluid::landr::PolygonEntity* p_Ent3 = Graph->getEntity(3);
 
-  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 1);
-  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds()[0], 3);
-  BOOST_CHECK_EQUAL(p_Ent3->getOrderedNeighbourSelfIds().size(), 1);
-  BOOST_CHECK_EQUAL(p_Ent3->getOrderedNeighbourSelfIds()[0], 1);
-  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourSelfIds().size(), 0);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourOfldIds().size(), 1);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourOfldIds()[0], 3);
+  BOOST_CHECK_EQUAL(p_Ent3->getOrderedNeighbourOfldIds().size(), 1);
+  BOOST_CHECK_EQUAL(p_Ent3->getOrderedNeighbourOfldIds()[0], 1);
+  BOOST_CHECK_EQUAL(p_Ent2->getOrderedNeighbourOfldIds().size(), 0);
 
   delete Graph;
 }
@@ -648,7 +648,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
+BOOST_AUTO_TEST_CASE(check_getOfldIdOrderedEntities)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
@@ -657,12 +657,12 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
       openfluid::landr::PolygonGraph::create(*Val);
 
   openfluid::landr::LandRGraph::Entities_t OrderedEntities =
-      Graph->getSelfIdOrderedEntities();
+      Graph->getOfldIdOrderedEntities();
 
   int i = 0;
   for (openfluid::landr::LandRGraph::Entities_t::iterator it =
       OrderedEntities.begin(); it != OrderedEntities.end(); ++it)
-    BOOST_CHECK_EQUAL((*it)->getSelfId(), ++i);
+    BOOST_CHECK_EQUAL((*it)->getOfldId(), ++i);
 
   delete Graph;
   delete Val;
@@ -1006,14 +1006,14 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains)
                                        0.0001);
 
   BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 1);
-  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->begin()->first->getSelfId(),
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->begin()->first->getOfldId(),
                     1);
   BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 1);
-  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->begin()->first->getSelfId(),
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->begin()->first->getOfldId(),
                     3);
   BOOST_CHECK_EQUAL(SU17->getLineStringNeighbours()->size(), 1);
   BOOST_CHECK_EQUAL(
-      SU17->getLineStringNeighbours()->begin()->first->getSelfId(), 6);
+      SU17->getLineStringNeighbours()->begin()->first->getOfldId(), 6);
 
   BOOST_CHECK_EQUAL(SU1->getNeighbours()->size(), 3);
   BOOST_CHECK_EQUAL(SU4->getNeighbours()->size(), 5);
@@ -1171,7 +1171,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph)
   openfluid::core::GeoVectorValue* LineVector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*LineVector, "SELF_ID"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*LineVector, "OFLD_ID"),openfluid::base::FrameworkException);
 
   openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
        CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
@@ -1234,7 +1234,7 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
     Graph->computeNeighbours();
     openfluid::landr::PolygonEntity* Ent=Graph->getEntity(10);
 
-    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourOfldIds().size(),3);
     BOOST_CHECK_EQUAL(Graph->isComplete(),true);
     BOOST_CHECK_EQUAL(Graph->getEdges()->size(),58);
 
@@ -1246,16 +1246,16 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
     BOOST_CHECK(!Graph->getEntity(9));
 
     Ent=Graph->getEntity(10);
-    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),2);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourOfldIds().size(),2);
 
     Ent=Graph->getEntity(7);
-    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourOfldIds().size(),3);
 
     Ent=Graph->getEntity(12);
-    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),3);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourOfldIds().size(),3);
 
     Ent=Graph->getEntity(11);
-    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),2);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourOfldIds().size(),2);
 
     Graph->removeEntity(10);
 
@@ -1265,7 +1265,7 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
     BOOST_CHECK(!Graph->getEntity(10));
 
     Ent=Graph->getEntity(11);
-    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourSelfIds().size(),1);
+    BOOST_CHECK_EQUAL(Ent->getOrderedNeighbourOfldIds().size(),1);
 
     delete Graph;
     delete Vector;

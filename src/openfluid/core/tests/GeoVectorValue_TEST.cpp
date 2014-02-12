@@ -255,10 +255,10 @@ BOOST_AUTO_TEST_CASE(check_Properties)
   BOOST_CHECK(!Val->isLineType());
   BOOST_CHECK(Val->isPolygonType());
 
-  BOOST_CHECK(Val->containsField("SELF_ID"));
+  BOOST_CHECK(Val->containsField("OFLD_ID"));
   BOOST_CHECK(!Val->containsField("wrongField"));
 
-  BOOST_CHECK_EQUAL(Val->getFieldIndex("SELF_ID"), 1);
+  BOOST_CHECK_EQUAL(Val->getFieldIndex("OFLD_ID"), 9);
 
   delete Val;
 }
