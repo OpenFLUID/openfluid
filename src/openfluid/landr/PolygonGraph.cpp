@@ -207,7 +207,7 @@ void PolygonGraph::addEntity(LandREntity* Entity)
 
     }
 
-    m_EntitiesBySelfId[NewEntity->getSelfId()] = NewEntity;
+    m_EntitiesByOfldId[NewEntity->getOfldId()] = NewEntity;
     m_Entities.push_back(NewEntity);
 
   }
@@ -223,9 +223,9 @@ void PolygonGraph::addEntity(LandREntity* Entity)
 // =====================================================================
 
 LandREntity* PolygonGraph::getNewEntity(const geos::geom::Geometry* Geom,
-                                        unsigned int SelfId)
+                                        unsigned int OfldId)
 {
-  return new PolygonEntity(Geom, SelfId);
+  return new PolygonEntity(Geom, OfldId);
 }
 
 // =====================================================================
@@ -281,7 +281,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
     std::ostringstream s;
     s << "Error when removing segment (" << Segment->toString()
-          << ") from Polygon " << Entity->getSelfId()
+          << ") from Polygon " << Entity->getOfldId()
           << ": doesn't find edge intersection.";
 
     throw openfluid::base::FrameworkException(
@@ -299,7 +299,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
       std::ostringstream s;
       s << "Error when removing segment (" << Segment->toString()
-            << ") from Polygon " << Entity->getSelfId()
+            << ") from Polygon " << Entity->getOfldId()
             << ": difference geometry is not \"Line\" typed.";
 
       throw openfluid::base::FrameworkException(
@@ -329,9 +329,9 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 // =====================================================================
 // =====================================================================
 
-PolygonEntity* PolygonGraph::getEntity(int SelfId)
+PolygonEntity* PolygonGraph::getEntity(int OfldId)
 {
-  return dynamic_cast<PolygonEntity*>(LandRGraph::getEntity(SelfId));
+  return dynamic_cast<PolygonEntity*>(LandRGraph::getEntity(OfldId));
 }
 
 // =====================================================================
@@ -375,7 +375,7 @@ bool PolygonGraph::hasIsland()
         for (; it2 != itE2; ++it2)
         {
           PolygonEntity*  IslandEntity=dynamic_cast<PolygonEntity*>(*it2);
-          if(Entity->getSelfId()!=IslandEntity->getSelfId())
+          if(Entity->getOfldId()!=IslandEntity->getOfldId())
           {
             const geos::geom::Polygon* IslandPoly = IslandEntity->getPolygon();
             const geos::geom::LineString *OuterRing=IslandPoly->getExteriorRing();
@@ -464,7 +464,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(const std::string& Attribute
       {
         std::ostringstream s;
         s << "No raster value for a raster pixel overlapping entity "
-            << (*it)->getSelfId() << " .";
+            << (*it)->getOfldId() << " .";
 
         throw openfluid::base::FrameworkException(
             "PolygonGraph::setAttributeFromMeanRasterValues", s.str());
@@ -767,15 +767,15 @@ void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeNa
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::removeEntity(int SelfId)
+void PolygonGraph::removeEntity(int OfldId)
 {
 
-  PolygonEntity* Ent = getEntity(SelfId);
+  PolygonEntity* Ent = getEntity(OfldId);
 
   if (!Ent)
   {
     std::ostringstream s;
-    s << "No entity with id " << SelfId;
+    s << "No entity with id " << OfldId;
     throw openfluid::base::FrameworkException(
         "PolygonGraph::removeEntity",
         s.str());
@@ -822,7 +822,7 @@ void PolygonGraph::removeEntity(int SelfId)
 
 
   m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
-  m_EntitiesBySelfId.erase(SelfId);
+  m_EntitiesByOfldId.erase(OfldId);
   delete Ent;
   removeUnusedNodes();
 
@@ -915,7 +915,7 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea
         "PolygonGraph::getPolygonEntitiesByMinArea : "
         "Threshold must be superior to 0.0");
 
-  std::list<LandREntity*> lEntities=getSelfIdOrderedEntities();
+  std::list<LandREntity*> lEntities=getOfldIdOrderedEntities();
   std::list<LandREntity*>::iterator it = lEntities.begin();
   std::list<LandREntity*>::iterator ite = lEntities.end();
   std::multimap<double, PolygonEntity*> mOrderedArea;
@@ -944,21 +944,21 @@ void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& En
   geos::geom::Geometry *  NewPoly=Entity.getGeometry()->Union(EntityToMerge.getGeometry());
 
 
-  int SelfId=Entity.getSelfId();
-  int SelfIdToMerge=EntityToMerge.getSelfId();
+  int OfldId=Entity.getOfldId();
+  int OfldIdToMerge=EntityToMerge.getOfldId();
 
   try {
 
     openfluid::landr::PolygonEntity* Entity2 =
         new openfluid::landr::PolygonEntity(dynamic_cast<geos::geom::Polygon*>(NewPoly),
-                                            SelfId);
-    removeEntity(SelfId);
-    removeEntity(SelfIdToMerge);
+                                            OfldId);
+    removeEntity(OfldId);
+    removeEntity(OfldIdToMerge);
     addEntity(Entity2);
 
   } catch (openfluid::base::FrameworkException& e) {
     std::ostringstream s;
-    s << "Merge operation impossible for entity" << SelfId<<" : "<<e.what() ;
+    s << "Merge operation impossible for entity" << OfldId<<" : "<<e.what() ;
     throw openfluid::base::FrameworkException(
         "PolygonGraph::mergePolygonEntities",s.str());
   }
@@ -975,7 +975,7 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompact
         "PolygonGraph::getPolygonEntitiesByCompacteness : "
         "Threshold must be superior to 0.0");
 
-  std::list<LandREntity*> lEntities=getSelfIdOrderedEntities();
+  std::list<LandREntity*> lEntities=getOfldIdOrderedEntities();
   std::list<LandREntity*>::iterator it = lEntities.begin();
   std::list<LandREntity*>::iterator ite = lEntities.end();
   std::multimap<double, PolygonEntity*> mOrderedCompact;

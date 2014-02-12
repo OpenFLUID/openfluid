@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   openfluid::landr::LineStringEntity* Entity =
       new openfluid::landr::LineStringEntity(
           dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
-          FirstFeature->GetFieldAsInteger("SELF_ID"));
+          FirstFeature->GetFieldAsInteger("OFLD_ID"));
 
   BOOST_CHECK_EQUAL(Val.getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 //  BOOST_CHECK(Entity->getFeature()->Equal(FirstFeature));
 
-  BOOST_CHECK_EQUAL(Entity->getSelfId(), 5);
+  BOOST_CHECK_EQUAL(Entity->getOfldId(), 5);
 
   OGRFeature::DestroyFeature(FirstFeature);
   delete Entity;
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(check_clone)
 
   openfluid::landr::LineStringEntity* Entity =
       new openfluid::landr::LineStringEntity(
-          GeosGeom->clone(), FirstFeature->GetFieldAsInteger("SELF_ID"));
+          GeosGeom->clone(), FirstFeature->GetFieldAsInteger("OFLD_ID"));
 
   OGRFeature::DestroyFeature(FirstFeature);
   delete GeosGeom;
@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(check_clone)
   openfluid::landr::LineStringEntity* CopyEntity = Entity->clone();
 
   BOOST_CHECK(Entity->getLine()->equals(CopyEntity->getLine()));
-  BOOST_CHECK_EQUAL(Entity->getSelfId(), CopyEntity->getSelfId());
+  BOOST_CHECK_EQUAL(Entity->getOfldId(), CopyEntity->getOfldId());
 
   std::string UnitLineStr = Entity->getLine()->toString();
 
@@ -203,21 +203,21 @@ BOOST_AUTO_TEST_CASE(check_LineOrientNeighbours)
 
   BOOST_CHECK_EQUAL(U1Down.size(), 0);
   BOOST_CHECK_EQUAL(U2Down.size(), 1);
-  BOOST_CHECK_EQUAL((*U2Down.begin())->getSelfId(), 1);
+  BOOST_CHECK_EQUAL((*U2Down.begin())->getOfldId(), 1);
   BOOST_CHECK_EQUAL(U3Down.size(), 1);
-  BOOST_CHECK_EQUAL((*U3Down.begin())->getSelfId(), 2);
+  BOOST_CHECK_EQUAL((*U3Down.begin())->getOfldId(), 2);
   BOOST_CHECK_EQUAL(U8Down.size(), 1);
-  BOOST_CHECK_EQUAL((*U8Down.begin())->getSelfId(), 2);
+  BOOST_CHECK_EQUAL((*U8Down.begin())->getOfldId(), 2);
   BOOST_CHECK_EQUAL(U4Down.size(), 1);
-  BOOST_CHECK_EQUAL((*U4Down.begin())->getSelfId(), 3);
+  BOOST_CHECK_EQUAL((*U4Down.begin())->getOfldId(), 3);
 
   BOOST_CHECK_EQUAL(U1Up.size(), 1);
-  BOOST_CHECK_EQUAL((*U1Up.begin())->getSelfId(), 2);
+  BOOST_CHECK_EQUAL((*U1Up.begin())->getOfldId(), 2);
   BOOST_CHECK_EQUAL(U2Up.size(), 3);
   BOOST_CHECK_EQUAL(U3Up.size(), 2);
   BOOST_CHECK_EQUAL(U8Up.size(), 0);
   BOOST_CHECK_EQUAL(U4Up.size(), 1);
-  BOOST_CHECK_EQUAL((*U4Up.begin())->getSelfId(), 5);
+  BOOST_CHECK_EQUAL((*U4Up.begin())->getOfldId(), 5);
 
   delete Graph;
   delete Val;

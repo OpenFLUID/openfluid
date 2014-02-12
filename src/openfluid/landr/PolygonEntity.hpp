@@ -105,11 +105,11 @@ class DLLEXPORT PolygonEntity: public LandREntity
      * @brief Create a new PolygonEntity.
      * @details Takes ownership of NewPolygon.
      * @param NewPolygon The geos::geom::Geometry of this new PolygonEntity.
-     * @param SelfId The identifier of this new PolygonEntity.
+     * @param OfldId The identifier of this new PolygonEntity.
      *
      *  @throw base::OFException if NewPolygon is not a geos::geom::Polygon or is not a valid geometry.
      */
-    PolygonEntity(const geos::geom::Geometry* NewPolygon, unsigned int SelfId);
+    PolygonEntity(const geos::geom::Geometry* NewPolygon, unsigned int OfldId);
 
     virtual ~PolygonEntity();
 
@@ -159,9 +159,9 @@ class DLLEXPORT PolygonEntity: public LandREntity
     const NeighboursMap_t* getNeighboursAndEdges();
 
     /**
-     * @brief Returns a vector of the SELF_ID of this PolygonEntity neighbours, ascending ordered.
+     * @brief Returns a vector of the OFLD_ID of this PolygonEntity neighbours, ascending ordered.
      */
-    std::vector<int> getOrderedNeighbourSelfIds();
+    std::vector<int> getOrderedNeighbourOfldIds();
 
     /**
      * @brief Check if this PolygonEntity is complete, that is if all PolygonEdge of this PolygonEntity,

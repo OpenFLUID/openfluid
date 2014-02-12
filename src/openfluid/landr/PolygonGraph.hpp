@@ -95,12 +95,12 @@ class DLLEXPORT PolygonGraph: public LandRGraph
      * @brief Creates a new PolygonEntity.
      *
      * @param Geom The geos::geom::Geometry of the new PolygonEntity to create.
-     * @param SelfId The identifier of the new PolygonEntity.
+     * @param OfldId The identifier of the new PolygonEntity.
      *
      * @return A new LandREntity.
      */
     virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-                                      unsigned int SelfId);
+                                      unsigned int OfldId);
 
     /**
      * @brief Creates a new PolygonEdge, with its two DirectedEdges and add them to this graph.
@@ -136,13 +136,13 @@ class DLLEXPORT PolygonGraph: public LandRGraph
 
     /**
      * @brief Creates a new PolygonGraph initialized from a core::GeoVectorValue.
-     * @details Val must be composed of one or many Polygons, and each of them must contain a "SELF_ID" attribute.
+     * @details Val must be composed of one or many Polygons, and each of them must contain a "OFLD_ID" attribute.
      */
     static PolygonGraph* create(openfluid::core::GeoVectorValue& Val);
 
     /**
      * @brief Create a new PolygonGraph initialized from a VectorDataset.
-     * @details Vect must be composed of one or many Polygons, and each of them must contain a "SELF_ID" attribute.
+     * @details Vect must be composed of one or many Polygons, and each of them must contain a "OFLD_ID" attribute.
      */
     static PolygonGraph* create(openfluid::landr::VectorDataset& Vect);
 
@@ -160,9 +160,9 @@ class DLLEXPORT PolygonGraph: public LandRGraph
     LandRGraph::GraphType getType();
 
     /**
-     * @brief Returns a PolygonEntity with SelfId, or 0 if it doesn't exist.
+     * @brief Returns a PolygonEntity with OfldId, or 0 if it doesn't exist.
      */
-    PolygonEntity* getEntity(int SelfId);
+    PolygonEntity* getEntity(int OfldId);
 
     /**
      * @brief Returns true if each PolygonEntity is complete.
@@ -263,10 +263,10 @@ class DLLEXPORT PolygonGraph: public LandRGraph
                                                 const std::string& Column,double Thresh=0.0001);
 
     /**
-     * @brief Removes from this PolygonGraph the PolygonEntity with SelfId and its associated nodes.
-     * @param SelfId
+     * @brief Removes from this PolygonGraph the PolygonEntity with OfldId and its associated nodes.
+     * @param OfldId
      */
-    virtual void removeEntity(int SelfId);
+    virtual void removeEntity(int OfldId);
 
     /**
      * @brief Clean the PolygonEdge of a PolygonEntity.

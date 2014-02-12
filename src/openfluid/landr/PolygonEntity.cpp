@@ -59,8 +59,8 @@ namespace landr {
 // =====================================================================
 
 PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
-                             unsigned int SelfId) :
-    LandREntity(NewPolygon, SelfId), mp_NeighboursMap(0), mp_LineStringNeighboursMap(
+                             unsigned int OfldId) :
+    LandREntity(NewPolygon, OfldId), mp_NeighboursMap(0), mp_LineStringNeighboursMap(
         0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
@@ -101,7 +101,7 @@ PolygonEntity::~PolygonEntity()
 
 PolygonEntity* PolygonEntity::clone()
 {
-  PolygonEntity* Clone = new PolygonEntity(mp_Geom->clone(), m_SelfId);
+  PolygonEntity* Clone = new PolygonEntity(mp_Geom->clone(), m_OfldId);
 
   Clone->m_PolyEdges = m_PolyEdges;
 
@@ -205,7 +205,7 @@ const PolygonEntity::NeighboursMap_t* PolygonEntity::getNeighboursAndEdges()
 // =====================================================================
 // =====================================================================
 
-std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
+std::vector<int> PolygonEntity::getOrderedNeighbourOfldIds()
 {
   std::vector<int> Ids;
 
@@ -215,7 +215,7 @@ std::vector<int> PolygonEntity::getOrderedNeighbourSelfIds()
   NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
   NeighboursMap_t::iterator ite = mp_NeighboursMap->end();
   for (; it != ite; ++it)
-    Ids.push_back(it->first->getSelfId());
+    Ids.push_back(it->first->getOfldId());
 
   std::sort(Ids.begin(), Ids.end());
 

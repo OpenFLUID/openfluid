@@ -102,7 +102,7 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
     /**
      * @brief A map of the LandREntity of this LandRGraph and sorted by identifier.
      */
-    std::map<int, LandREntity*> m_EntitiesBySelfId;
+    std::map<int, LandREntity*> m_EntitiesByOfldId;
 
     /**
      *@brief A list of the LandREntity of this LandRGraph.
@@ -161,10 +161,10 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
      * @brief Creates a new LandREntity.
      *
      * @param Geom A geos::geom::Geometry.
-     * @param SelfId The identifier of the new LandREntity.
+     * @param OfldId The identifier of the new LandREntity.
      */
     virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-                                      unsigned int SelfId) = 0;
+                                      unsigned int OfldId) = 0;
 
     /**
      * @brief Returns a geos::planagraph::Node of this LandRGraph from a geos::geom::Coordinate.
@@ -188,9 +188,9 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
     virtual GraphType getType() = 0;
 
     /**
-     * @brief Returns the LandREntity with SelfId, or 0 if it doesn't exist.
+     * @brief Returns the LandREntity with OfldId, or 0 if it doesn't exist.
      */
-    virtual LandREntity* getEntity(int SelfId);
+    virtual LandREntity* getEntity(int OfldId);
 
     /**
      * @brief Returns a list of the LandREntity of this LandRGraph.
@@ -200,12 +200,12 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
     /**
      * @brief Returns a list of the LandREntity of this LandRGraph and sorted by identifier.
      */
-    Entities_t getSelfIdOrderedEntities();
+    Entities_t getOfldIdOrderedEntities();
 
     /**
      * @brief Returns a map of the LandREntity of this LandRGraph and their identifiers.
      */
-    std::map<int, LandREntity*> getEntitiesBySelfId();
+    std::map<int, LandREntity*> getEntitiesByOfldId();
 
     /**
      * @brief Gets the number of LandREntity in the LandRGraph.
@@ -313,7 +313,7 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
 
     /**
      * @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
-     * this attribute value as the vector value corresponding to the entity SELF_ID.
+     * this attribute value as the vector value corresponding to the entity OFLD_ID.
      *
      * @param AttributeName The name of the attribute to create.
      * @param Vector The Name of the core::GeoVectorValue.
@@ -323,7 +323,7 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
 
     /**
      * @brief Creates a new attribute for all the LandREntity of this LandRGraph, and set for each LandREntity
-     * this attribute value as the vector value corresponding to the entity SELF_ID.
+     * this attribute value as the vector value corresponding to the entity OFLD_ID.
      *
      * @param AttributeName The name of the attribute to create.
      * @param Vector The Name of the VectorDataset.
@@ -358,9 +358,9 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
     /**
        * @brief Removes a LandREntity with identifier from this LandRGraph.
        * @details The associated nodes of the LandREntity are also removed.
-       * @param SelfId The identifier.
+       * @param OfldId The identifier.
        */
-      virtual void removeEntity(int SelfId)=0;
+      virtual void removeEntity(int OfldId)=0;
 
       void snapVertices(double snapTolerance);
 

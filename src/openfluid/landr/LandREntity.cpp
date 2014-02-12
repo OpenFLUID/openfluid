@@ -49,8 +49,8 @@ namespace landr {
 // =====================================================================
 // =====================================================================
 
-LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int SelfId) :
-    mp_Geom(Geom), m_SelfId(SelfId), mp_Neighbours(0)
+LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int OfldId) :
+    mp_Geom(Geom), m_OfldId(OfldId), mp_Neighbours(0)
 {
   mp_Centroid = mp_Geom->getCentroid();
   m_Area = mp_Geom->getArea();
@@ -83,9 +83,9 @@ const geos::geom::Geometry* LandREntity::getGeometry()
 // =====================================================================
 // =====================================================================
 
-unsigned int LandREntity::getSelfId() const
+unsigned int LandREntity::getOfldId() const
 {
-  return m_SelfId;
+  return m_OfldId;
 }
 
 // =====================================================================

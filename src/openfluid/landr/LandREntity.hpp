@@ -80,7 +80,7 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
     /**
      * @brief The identifier of this LandREntity.
      */
-    unsigned int m_SelfId;
+    unsigned int m_OfldId;
 
     /**
      * @brief The centroid of this LandREntity.
@@ -118,7 +118,7 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
 
   public:
 
-    LandREntity(const geos::geom::Geometry* Geom, unsigned int SelfId);
+    LandREntity(const geos::geom::Geometry* Geom, unsigned int OfldId);
 
     virtual ~LandREntity();
 
@@ -132,7 +132,7 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
     /**
      * @brief Returns the identifier of this LandREntity.
      */
-    unsigned int getSelfId() const;
+    unsigned int getOfldId() const;
 
     /**
      * @brief Returns the centroid of this LandREntity.
