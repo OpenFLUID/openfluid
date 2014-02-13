@@ -49,7 +49,7 @@ SourceInfos::SourceInfos():
   IsXCentroidCompute(false), XCentroidComputeAttribute("xcentroid"),
   IsYCentroidCompute(false), YCentroidComputeAttribute("ycentroid"),
   IsZCentroidCompute(false), ZCentroidComputeAttribute("zcentroid"),
-  IsDatasetImport(false), IsDatastore(false)
+  IsAlreadyInDataset(false), IsDatasetImport(false), IsDatastore(false)
 {
 
 }

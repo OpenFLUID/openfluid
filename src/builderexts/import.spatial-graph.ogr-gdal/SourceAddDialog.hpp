@@ -54,6 +54,11 @@ class SourceAddDialog : public QDialog
 {
   Q_OBJECT;
 
+  private:
+
+    bool checkRequiredFields();
+
+
   private slots:
 
     void proceedToImport();

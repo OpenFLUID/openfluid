@@ -42,7 +42,19 @@
 
 
 #include <QStringList>
+#include <QMap>
 #include "ogrsf_frmts.h"
+
+
+#define OGRGDAL_UNITID_FIELD "OFLD_ID"
+#define OGRGDAL_PSORD_FIELD "OFLD_PSORD"
+#define OGRGDAL_TOCONN_FIELD "OFLD_TO"
+#define OGRGDAL_CHILDOF_FIELD "OFLD_CHILD"
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 class SourceInfos
@@ -62,8 +74,6 @@ class SourceInfos
     QStringList AvailableFields;
 
     QStringList ImportedFields;
-
-    QString UnitsIDsField;
 
     QString UnitsPcsOrdField;
 
@@ -90,6 +100,8 @@ class SourceInfos
     bool IsZCentroidCompute;
 
     QString ZCentroidComputeAttribute;
+
+    bool IsAlreadyInDataset;
 
     bool IsDatasetImport;
 

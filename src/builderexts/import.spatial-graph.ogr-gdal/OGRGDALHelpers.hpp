@@ -30,76 +30,51 @@
 */
 
 /**
-  \file DataProcessingWorker.hpp
+  \file OGRGDALHelpers.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __DATAPROCESSINGWORKER_HPP__
-#define __DATAPROCESSINGWORKER_HPP__
+#ifndef __OGRGDALHELPERS_HPP__
+#define __OGRGDALHELPERS_HPP__
 
-#include "SourceInfos.hpp"
 #include "SourceData.hpp"
 
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-#include <QObject>
+#include <QMap>
+#include <QString>
+
+#include <ogrsf_frmts.h>
 
 
-#define OGRGDALEXT_PRECHECK_STEPS 4
-
-
-class DataProcessingWorker : public QObject
+class OGRGDALHelpers
 {
-  Q_OBJECT;
 
+  private:
 
-  protected:
+    static const QMap<QString,QString> m_FileExtsDriversMap;
 
-    const SourcesInfosList_t& m_SourcesInfos;
-
-    SourcesDataList_t m_SourcesData;
-
-    openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvDesc;
-
-    bool runCheck(int StartStep);
-
-    bool loadDataFromSources(int Step);
-
-    bool checkConnectivity(int Step);
-
-    static QString getStyledText(const QString& Text,
-                                 const QString& Color, bool IsBold=false);
-
-    bool isUnitExists(const QString& Class, int ID);
-
-
-  signals:
-
-    void stepEntered(QString Message);
-
-    void stepCompleted(int StepNbr, QString Message);
-
-    void completed(QString Message);
-
-    void finished();
-
-
-  public slots:
-
-    virtual void run() = 0;
+    static QMap<QString,QString> initOGRGDALDriversMap();
 
 
   public:
 
-    DataProcessingWorker(const SourcesInfosList_t& SourcesInfos,
-                         openfluid::fluidx::AdvancedFluidXDescriptor* AdvDesc);
+    static QString getDriverFromFileExt(const QString& FileExt);
 
-    ~DataProcessingWorker();
+    static bool isFileExt(const QString& FileExt);
 
+    static bool convertFieldToAttribute(const OGRFeature* Feature, const int FieldIndex,
+                                        QString& Attr);
+
+    static bool convertConnectionsStringToList(const QString& ConnStr,
+                                               QList<SourceConnection>& ConnList);
 
 };
 
 
-#endif /* __DATAPROCESSINGWORKER_HPP__ */
+
+
+
+
+#endif /* __OGRGDALHELPERS_HPP__ */

@@ -39,6 +39,7 @@
 
 
 #include "DataProcessingWorker.hpp"
+#include "OGRGDALHelpers.hpp"
 
 #include <ogrsf_frmts.h>
 
@@ -83,78 +84,6 @@ QString DataProcessingWorker::getStyledText(const QString& Text,
 // =====================================================================
 
 
-bool DataProcessingWorker::convertFieldToAttribute(const OGRFeature* Feature,
-                                                   const int FieldIndex,
-                                                   QString& Attr)
-{
-  if (Feature == NULL) return false;
-  if (FieldIndex < 0) return false;
-
-  const OGRFieldDefn* FieldDef = const_cast<OGRFeature*>(Feature)->GetFieldDefnRef(FieldIndex);
-
-  if (FieldDef == NULL) return false;
-
-  const OGRFieldType FieldType = const_cast<OGRFieldDefn*>(FieldDef)->GetType();
-
-  if (FieldType == OFTInteger)
-  {
-    Attr = QString::number(const_cast<OGRFeature*>(Feature)->GetFieldAsInteger(FieldIndex));
-    return true;
-  }
-  else if (FieldType == OFTReal)
-  {
-    Attr = QString::number(const_cast<OGRFeature*>(Feature)->GetFieldAsDouble(FieldIndex));
-    return true;
-  }
-  else if (FieldType == OFTString)
-  {
-    Attr = QString(const_cast<OGRFeature*>(Feature)->GetFieldAsString(FieldIndex));
-    return true;
-  }
-  else
-    return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool DataProcessingWorker::convertConnectionsStringToList(const QString& ConnStr,
-                                                          QList<SourceConnection>& ConnList)
-{
-  ConnList.clear();
-
-  QStringList UnitsList = ConnStr.split(";",QString::SkipEmptyParts);
-
-  if (!UnitsList.isEmpty())
-  {
-    for (int i=0; i< UnitsList.size(); i++)
-    {
-      QStringList ClassIDPair = UnitsList[i].split("#",QString::SkipEmptyParts);
-
-      if (ClassIDPair.size() != 2) return false;
-
-      ClassIDPair[0] = ClassIDPair[0].trimmed();
-      ClassIDPair[1] = ClassIDPair[1].trimmed();
-
-      bool OK = false;
-      int ID = ClassIDPair[1].toInt(&OK);
-
-      if (!OK) return false;
-
-      ConnList.append(SourceConnection(ClassIDPair[0],ID));
-    }
-  }
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 bool DataProcessingWorker::isUnitExists(const QString& Class, int ID)
 {
   // is unit exist in imported units
@@ -179,15 +108,6 @@ bool DataProcessingWorker::isUnitExists(const QString& Class, int ID)
 bool DataProcessingWorker::loadDataFromSources(int Step)
 {
   emit stepEntered(tr("Loading and checking data from sources..."));
-
-  for (int i=0; i<m_SourcesInfos.size();i++)
-  {
-    if (m_SourcesInfos[i].UnitsIDsField.isEmpty())
-    {
-      emit stepCompleted(Step,getStyledText(tr("[Error] No field selected for unit ID in layer \"%1\"").arg(m_SourcesInfos[i].LayerName),"red"));
-      return false;
-    }
-  }
 
 
   OGRRegisterAll();
@@ -229,7 +149,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
       // === Unit ID ===
 
-      FieldIndex = Feature->GetFieldIndex(m_SourcesInfos[i].UnitsIDsField.toStdString().c_str());
+      FieldIndex = Feature->GetFieldIndex(OGRGDAL_UNITID_FIELD);
 
       if (FieldIndex < 0)
       {
@@ -307,7 +227,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         CurrentUnit.ToConnStr = QString(Feature->GetFieldAsString(FieldIndex));
 
-        if (!convertConnectionsStringToList(CurrentUnit.ToConnStr,CurrentUnit.ToConn))
+        if (!OGRGDALHelpers::convertConnectionsStringToList(CurrentUnit.ToConnStr,CurrentUnit.ToConn))
         {
           emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field \"%2\" format for \"to\" connections "
                                                    "in layer \"%1\"")
@@ -334,7 +254,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
 
         CurrentUnit.ChildofConnStr = QString(Feature->GetFieldAsString(FieldIndex));
 
-        if (!convertConnectionsStringToList(CurrentUnit.ChildofConnStr,CurrentUnit.ChildofConn))
+        if (!OGRGDALHelpers::convertConnectionsStringToList(CurrentUnit.ChildofConnStr,CurrentUnit.ChildofConn))
         {
           emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field \"%2\" format for \"childof\" connections "
                                                    "in layer \"%1\"")
@@ -365,7 +285,7 @@ bool DataProcessingWorker::loadDataFromSources(int Step)
         // replacing unwanted chars (space, tab) by underscore
         QString Attr;
 
-        if (!convertFieldToAttribute(Feature,FieldIndex,Attr))
+        if (!OGRGDALHelpers::convertFieldToAttribute(Feature,FieldIndex,Attr))
         {
           OGRDataSource::DestroyDataSource(DS);
           emit stepCompleted(Step,getStyledText(tr("[Error] Wrong field format for attribute \"%2\" in layer \"%1\"")

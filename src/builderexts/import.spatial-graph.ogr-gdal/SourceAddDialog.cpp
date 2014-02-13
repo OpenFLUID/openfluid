@@ -227,6 +227,25 @@ void SourceAddDialog::globalCheck()
 // =====================================================================
 
 
+bool SourceAddDialog::checkRequiredFields()
+{
+  if (mp_DataSource == NULL) return false;
+
+  OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
+
+  int FIndex = Defn->GetFieldIndex(OGRGDAL_UNITID_FIELD);
+  if (FIndex >=0 && (Defn->GetFieldDefn(FIndex)->GetType() == OFTInteger ||
+                     Defn->GetFieldDefn(FIndex)->GetType() == OFTReal ||
+                     Defn->GetFieldDefn(FIndex)->GetType() == OFTString)) return true;
+
+    return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void SourceAddDialog::proceedToImport()
 {
   if (prepareToImport())
@@ -234,12 +253,30 @@ void SourceAddDialog::proceedToImport()
     m_SrcInfos.SourceGeomType = mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetGeomType();
     m_SrcInfos.LayerName = QString(mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetName());
 
-    OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
+    if (checkRequiredFields())
+    {
+      OGRFeatureDefn* Defn = mp_DataSource->GetLayerByName(m_SrcInfos.LayerName.toStdString().c_str())->GetLayerDefn();
 
-    for (int i=0; i< Defn->GetFieldCount();i++)
-      m_SrcInfos.AvailableFields.append(Defn->GetFieldDefn(i)->GetNameRef());
+      for (int i=0; i< Defn->GetFieldCount();i++)
+        m_SrcInfos.AvailableFields.append(Defn->GetFieldDefn(i)->GetNameRef());
 
-    accept();
+      if (m_SrcInfos.AvailableFields.contains(OGRGDAL_PSORD_FIELD))
+        m_SrcInfos.UnitsPcsOrdField = OGRGDAL_PSORD_FIELD;
+
+      if (m_SrcInfos.AvailableFields.contains(OGRGDAL_TOCONN_FIELD))
+        m_SrcInfos.ToConnectionsField = OGRGDAL_TOCONN_FIELD;
+
+      if (m_SrcInfos.AvailableFields.contains(OGRGDAL_CHILDOF_FIELD))
+        m_SrcInfos.ChildofConnectionsField = OGRGDAL_CHILDOF_FIELD;
+
+      accept();
+    }
+    else
+    {
+      QMessageBox::critical(this,tr("Import error"),tr("Error importing from source\n")+m_CurrentSourceURI+
+                                                    tr("\n\nThe mandatory field \"OFLD_ID\" cannot be found. \n\nAborting."));
+      reject();
+    }
   }
   else
   {

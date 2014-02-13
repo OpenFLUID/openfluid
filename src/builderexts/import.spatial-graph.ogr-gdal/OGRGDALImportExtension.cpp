@@ -109,7 +109,6 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 
   connect(ui->UnitsClassLineEdit,SIGNAL(textEdited(const QString&)),this,SLOT(updateUnitsClassInfos()));
 
-  connect(ui->UnitsIDsComboBox,SIGNAL(activated(int)),this,SLOT(updateUnitsIDsInfos()));
   connect(ui->PcsOrdComboBox,SIGNAL(activated(int)),this,SLOT(updateUnitsPcsOrdInfos()));
 
   connect(ui->ToConnectComboBox,SIGNAL(activated(int)),this,SLOT(updateUnitsToConnInfos()));
@@ -371,7 +370,6 @@ void OGRGDALImportExtension::updateUI()
   m_CurrentSrcIndex = ui->SourcesTableWidget->currentRow();
 
   ui->UnitsClassLineEdit->clear();
-  ui->UnitsIDsComboBox->clear();
   ui->PcsOrdComboBox->clear();
   ui->ToConnectComboBox->clear();
   ui->ChildofConnectComboBox->clear();
@@ -386,64 +384,22 @@ void OGRGDALImportExtension::updateUI()
     ui->UnitsClassLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].UnitsClass);
 
 
-    // Units IDs field
-    ui->UnitsIDsComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
-
-    if (m_SourcesInfos[m_CurrentSrcIndex].UnitsIDsField.isEmpty())
-    {
-      ui->UnitsIDsComboBox->setCurrentIndex(ui->UnitsIDsComboBox->findText("OFLD_ID"));
-      m_SourcesInfos[m_CurrentSrcIndex].UnitsIDsField = ui->UnitsIDsComboBox->currentText();
-    }
-    else
-    {
-      ui->UnitsIDsComboBox->setCurrentIndex(ui->UnitsIDsComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].UnitsIDsField));
-    }
-
-
     // Units process order field
     ui->PcsOrdComboBox->addItem("");
     ui->PcsOrdComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
-
-    if (m_SourcesInfos[m_CurrentSrcIndex].UnitsPcsOrdField.isEmpty())
-    {
-      ui->PcsOrdComboBox->setCurrentIndex(ui->PcsOrdComboBox->findText("OFLD_PSORD"));
-      m_SourcesInfos[m_CurrentSrcIndex].UnitsPcsOrdField = ui->PcsOrdComboBox->currentText();
-    }
-    else
-    {
-      ui->PcsOrdComboBox->setCurrentIndex(ui->PcsOrdComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].UnitsPcsOrdField));
-    }
+    ui->PcsOrdComboBox->setCurrentIndex(ui->PcsOrdComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].UnitsPcsOrdField));
 
 
     // Units "to" connections field
     ui->ToConnectComboBox->addItem("");
     ui->ToConnectComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
-
-    if (m_SourcesInfos[m_CurrentSrcIndex].ToConnectionsField.isEmpty())
-    {
-      ui->ToConnectComboBox->setCurrentIndex(ui->ToConnectComboBox->findText("OFLD_TO"));
-      m_SourcesInfos[m_CurrentSrcIndex].ToConnectionsField = ui->ToConnectComboBox->currentText();
-
-    }
-    else
-    {
-      ui->ToConnectComboBox->setCurrentIndex(ui->ToConnectComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].ToConnectionsField));
-    }
+    ui->ToConnectComboBox->setCurrentIndex(ui->ToConnectComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].ToConnectionsField));
 
 
     // Units "childof" connections field
     ui->ChildofConnectComboBox->addItem("");
     ui->ChildofConnectComboBox->addItems(m_SourcesInfos[m_CurrentSrcIndex].AvailableFields);
-
-    if (m_SourcesInfos[m_CurrentSrcIndex].ChildofConnectionsField.isEmpty())
-    {
-      ui->ChildofConnectComboBox->setCurrentIndex(ui->ChildofConnectComboBox->findText("OFLD_CHILD"));
-      m_SourcesInfos[m_CurrentSrcIndex].ChildofConnectionsField = ui->ChildofConnectComboBox->currentText();
-    }
-    else
-    {
-      ui->ChildofConnectComboBox->setCurrentIndex(ui->ChildofConnectComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].ChildofConnectionsField));
-    }
+    ui->ChildofConnectComboBox->setCurrentIndex(ui->ChildofConnectComboBox->findText(m_SourcesInfos[m_CurrentSrcIndex].ChildofConnectionsField));
 
 
     // Fields to import as attributes
@@ -500,10 +456,22 @@ void OGRGDALImportExtension::updateUI()
 
 
     // Import to files and datastore
-    ui->DatastoreIDLineEdit->setEnabled(true);
     ui->DatasetImportLineEdit->setEnabled(true);
     ui->DatastoreIDCheckBox->setEnabled(true);
     ui->DatastoreIDLineEdit->setEnabled(true);
+
+    if (m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset)
+    {
+      ui->InDatasetLabel->setVisible(true);
+      ui->DatasetImportCheckBox->setVisible(false);
+      ui->DatasetImportLineEdit->setVisible(false);
+    }
+    else
+    {
+      ui->InDatasetLabel->setVisible(false);
+      ui->DatasetImportCheckBox->setVisible(true);
+      ui->DatasetImportLineEdit->setVisible(true);
+    }
 
     ui->DatasetImportLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].RelativeDatasetPath);
     ui->DatastoreIDLineEdit->setText(m_SourcesInfos[m_CurrentSrcIndex].DatastoreID);
@@ -511,8 +479,10 @@ void OGRGDALImportExtension::updateUI()
     ui->DatastoreIDCheckBox->setChecked(m_SourcesInfos[m_CurrentSrcIndex].IsDatastore);
 
     ui->DatasetImportLineEdit->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport);
-    ui->DatastoreIDCheckBox->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport);
-    ui->DatastoreIDLineEdit->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport &&
+    ui->DatastoreIDCheckBox->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport ||
+                                        m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset);
+    ui->DatastoreIDLineEdit->setEnabled((m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport ||
+                                         m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset) &&
                                         m_SourcesInfos[m_CurrentSrcIndex].IsDatastore);
 
   }
@@ -564,16 +534,6 @@ void OGRGDALImportExtension::updateUnitsClassInfos()
 {
   m_SourcesInfos[m_CurrentSrcIndex].UnitsClass = ui->UnitsClassLineEdit->text();
   ui->SourcesTableWidget->setItem(m_CurrentSrcIndex,0,new QTableWidgetItem(m_SourcesInfos[m_CurrentSrcIndex].UnitsClass));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void OGRGDALImportExtension::updateUnitsIDsInfos()
-{
-  m_SourcesInfos[m_CurrentSrcIndex].UnitsIDsField = ui->UnitsIDsComboBox->currentText();
 }
 
 
@@ -730,8 +690,11 @@ void OGRGDALImportExtension::updateZCentroidComputeAttrInfos()
 
 void OGRGDALImportExtension::updateIsDatasetImportInfos()
 {
-  if (!ui->DatasetImportCheckBox->isChecked())
+  if (!(ui->DatasetImportCheckBox->isChecked() ||
+      m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset))
+  {
     ui->DatastoreIDCheckBox->setChecked(false);
+  }
 
   m_SourcesInfos[m_CurrentSrcIndex].IsDatasetImport = ui->DatasetImportCheckBox->isChecked();
   m_SourcesInfos[m_CurrentSrcIndex].RelativeDatasetPath = ui->DatasetImportLineEdit->text();
@@ -740,7 +703,8 @@ void OGRGDALImportExtension::updateIsDatasetImportInfos()
   m_SourcesInfos[m_CurrentSrcIndex].DatastoreID = ui->DatastoreIDLineEdit->text();
 
   ui->DatasetImportLineEdit->setEnabled(ui->DatasetImportCheckBox->isChecked());
-  ui->DatastoreIDCheckBox->setEnabled(ui->DatasetImportCheckBox->isChecked());
+  ui->DatastoreIDCheckBox->setEnabled(m_SourcesInfos[m_CurrentSrcIndex].IsAlreadyInDataset ||
+                                      ui->DatasetImportCheckBox->isChecked());
   ui->DatastoreIDLineEdit->setEnabled(ui->DatastoreIDCheckBox->isChecked());
 }
 

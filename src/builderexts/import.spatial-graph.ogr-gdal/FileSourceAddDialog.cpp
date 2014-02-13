@@ -107,6 +107,8 @@ bool FileSourceAddDialog::prepareToImport()
 {
   m_SrcInfos.SourceURI = m_CurrentSourceURI;
 
+  m_SrcInfos.IsAlreadyInDataset = m_SrcInfos.SourceURI.startsWith(m_InputDir);
+
   return true;
 }
 

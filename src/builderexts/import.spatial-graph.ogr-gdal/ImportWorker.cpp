@@ -38,6 +38,7 @@
  */
 
 #include "ImportWorker.hpp"
+#include "OGRGDALHelpers.hpp"
 
 #include <QFileInfo>
 #include <QDir>
@@ -207,14 +208,7 @@ bool ImportWorker::processFilesAndDatastore(int Step)
       {
         OGRSFDriver *CopyDriver;
 
-        QString DriverName;
-
-        // TODO use a real lookup table for OGR drivers
-        // see if provided by OGR lib
-        if (DestExtension == "shp")
-          DriverName = "ESRI Shapefile";
-        else if (DestExtension == "geojson")
-          DriverName = "GeoJSON";
+        QString DriverName = OGRGDALHelpers::getDriverFromFileExt(DestExtension);
 
         CopyDriver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(DriverName.toStdString().c_str());
 
@@ -223,28 +217,33 @@ bool ImportWorker::processFilesAndDatastore(int Step)
           OGRDataSource* DestDS = CopyDriver->CopyDataSource(SrcDS,
                                                              FullDestFilePath.toStdString().c_str());
 
-          // TODO if DestDS != NULL, rename ID field to OFLD_ID
-
           OGRDataSource::DestroyDataSource(DestDS);
         }
 
         OGRDataSource::DestroyDataSource(SrcDS);
 
       }
+    }
 
-      if (m_SourcesInfos[i].IsDatastore)
-      {
-        // populate datastore
+    if (m_SourcesInfos[i].IsDatastore)
+    {
 
-        openfluid::fluidx::DatastoreItemDescriptor* DSItem =
-            new openfluid::fluidx::DatastoreItemDescriptor(m_SourcesInfos[i].DatastoreID.toStdString(),
-                                                           m_InputDir.toStdString(),
-                                                           m_SourcesInfos[i].RelativeDatasetPath.toStdString(),
-                                                           openfluid::core::UnstructuredValue::GeoVectorValue);
-        DSItem->setUnitClass(m_SourcesInfos[i].UnitsClass.toStdString());
+      QString RelativePath = m_SourcesInfos[i].RelativeDatasetPath;
 
-        mp_AdvDesc->getDatastore().appendItem(DSItem);
-      }
+      if (m_SourcesInfos[i].IsAlreadyInDataset)
+        RelativePath = QDir(m_InputDir).relativeFilePath(m_SourcesInfos[i].SourceURI);
+
+
+      // populate datastore
+
+      openfluid::fluidx::DatastoreItemDescriptor* DSItem =
+          new openfluid::fluidx::DatastoreItemDescriptor(m_SourcesInfos[i].DatastoreID.toStdString(),
+                                                         m_InputDir.toStdString(),
+                                                         RelativePath.toStdString(),
+                                                         openfluid::core::UnstructuredValue::GeoVectorValue);
+      DSItem->setUnitClass(m_SourcesInfos[i].UnitsClass.toStdString());
+
+      mp_AdvDesc->getDatastore().appendItem(DSItem);
     }
 
     i++;
