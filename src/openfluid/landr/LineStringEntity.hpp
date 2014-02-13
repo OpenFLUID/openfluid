@@ -96,7 +96,7 @@ class DLLEXPORT LineStringEntity: public LandREntity, public geos::planargraph::
      *
      *  @throw base::OFException if NewLine is not a geos::geom::LineString or is an empty geometry.
      */
-    LineStringEntity(const geos::geom::Geometry* NewLine, unsigned int SelfId);
+    LineStringEntity(const geos::geom::Geometry* NewLine, unsigned int OfldId);
 
     virtual ~LineStringEntity();
 

@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
     openfluid::landr::LandREntity* Entity =
         new openfluid::landr::LineStringEntity(
             dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
-            Feat->GetFieldAsInteger("SELF_ID"));
+            Feat->GetFieldAsInteger("OFLD_ID"));
 
     Entities.push_back(Entity);
 
@@ -159,7 +159,7 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
     openfluid::landr::LandREntity* Entity =
         new openfluid::landr::LineStringEntity(
             dynamic_cast<geos::geom::LineString*>(GeosGeom->clone()),
-            Feat->GetFieldAsInteger("SELF_ID"));
+            Feat->GetFieldAsInteger("OFLD_ID"));
 
     Entities.push_back(Entity);
 
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(check_StartsEnds)
       Graph->getEndLineStringEntities();
   BOOST_CHECK_EQUAL(Ends.size(), 1);
 
-  BOOST_CHECK_EQUAL(Graph->getLastLineStringEntity()->getSelfId(), 1);
+  BOOST_CHECK_EQUAL(Graph->getLastLineStringEntity()->getOfldId(), 1);
 
   delete Graph;
   delete Val;
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(check_getEntity)
 // =====================================================================
 // =====================================================================
 
-BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
+BOOST_AUTO_TEST_CASE(check_getOfldIdOrderedEntities)
 {
 
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
@@ -262,12 +262,12 @@ BOOST_AUTO_TEST_CASE(check_getSelfIdOrderedEntities)
       openfluid::landr::LineStringGraph::create(*Val);
 
   openfluid::landr::LandRGraph::Entities_t OrderedEntities =
-      Graph->getSelfIdOrderedEntities();
+      Graph->getOfldIdOrderedEntities();
 
   int i = 0;
   for (openfluid::landr::LandRGraph::Entities_t::iterator it =
       OrderedEntities.begin(); it != OrderedEntities.end(); ++it)
-    BOOST_CHECK_EQUAL((*it)->getSelfId(), ++i);
+    BOOST_CHECK_EQUAL((*it)->getOfldId(), ++i);
 
   delete Graph;
   delete Val;
@@ -307,8 +307,8 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
   i = 1;
   DECLARE_ENTITIES_ORDERED_LOOP(3);
   BEGIN_ENTITIES_ORDERED_LOOP(3,Graph,CurrentEntity)
-  BOOST_CHECK_EQUAL(CurrentEntity->getSelfId(),
-                    Graph->getEntity(i)->getSelfId());
+  BOOST_CHECK_EQUAL(CurrentEntity->getOfldId(),
+                    Graph->getEntity(i)->getOfldId());
   i++;
   END_LOOP;
 
@@ -816,7 +816,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
   openfluid::core::GeoVectorValue* PolygonVector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
 
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*PolygonVector, "SELF_ID"),openfluid::base::FrameworkException);
+  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*PolygonVector, "OFLD_ID"),openfluid::base::FrameworkException);
 
   openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "reach2.shp");

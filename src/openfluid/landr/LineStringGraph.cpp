@@ -181,7 +181,7 @@ void LineStringGraph::addEntity(LandREntity* Entity)
 
   add(Edge);
 
-  m_EntitiesBySelfId[Edge->getSelfId()] = Edge;
+  m_EntitiesByOfldId[Edge->getOfldId()] = Edge;
   m_Entities.push_back(Edge);
 
   delete Coordinates;
@@ -191,22 +191,22 @@ void LineStringGraph::addEntity(LandREntity* Entity)
 // =====================================================================
 
 LandREntity* LineStringGraph::getNewEntity(const geos::geom::Geometry* Geom,
-                                           unsigned int SelfId)
+                                           unsigned int OfldId)
 {
-  return new LineStringEntity(Geom, SelfId);
+  return new LineStringEntity(Geom, OfldId);
 }
 
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::removeEntity(int SelfId)
+void LineStringGraph::removeEntity(int OfldId)
 {
-  LineStringEntity* Ent = getEntity(SelfId);
+  LineStringEntity* Ent = getEntity(OfldId);
 
   if (!Ent)
   {
     std::ostringstream s;
-    s << "No entity with id " << SelfId;
+    s << "No entity with id " << OfldId;
     throw openfluid::base::FrameworkException(
                                        "LineStringGraph::removeEntity",
                                        s.str());
@@ -216,7 +216,7 @@ void LineStringGraph::removeEntity(int SelfId)
   remove(dynamic_cast<geos::planargraph::Edge*>(Ent));
 
   m_Entities.erase(std::find(m_Entities.begin(), m_Entities.end(), Ent));
-  m_EntitiesBySelfId.erase(SelfId);
+  m_EntitiesByOfldId.erase(OfldId);
 
   delete Ent;
 
@@ -226,9 +226,9 @@ void LineStringGraph::removeEntity(int SelfId)
 // =====================================================================
 // =====================================================================
 
-LineStringEntity* LineStringGraph::getEntity(int SelfId)
+LineStringEntity* LineStringGraph::getEntity(int OfldId)
 {
-  return dynamic_cast<LineStringEntity*>(LandRGraph::getEntity(SelfId));
+  return dynamic_cast<LineStringEntity*>(LandRGraph::getEntity(OfldId));
 }
 
 // =====================================================================
@@ -349,7 +349,7 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(
     if (!Val)
     {
       std::ostringstream s;
-      s << "No raster value for entity " << (*it)->getSelfId() << " StartNode.";
+      s << "No raster value for entity " << (*it)->getOfldId() << " StartNode.";
 
       throw openfluid::base::FrameworkException(
           "LineStringGraph::setAttributeFromRasterValueAtStartNode", s.str());
@@ -379,7 +379,7 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(
     if (!Val)
     {
       std::ostringstream s;
-      s << "No raster value for entity " << (*it)->getSelfId() << " EndNode.";
+      s << "No raster value for entity " << (*it)->getOfldId() << " EndNode.";
 
       throw openfluid::base::FrameworkException(
           "LineStringGraph::setAttributeFromRasterValueAtEndNode", s.str());
@@ -401,13 +401,13 @@ void LineStringGraph::reverseLineStringEntity(
   const geos::geom::LineString* Ent=Entity.getLine();
   geos::geom::Geometry* ReverseEnt=Ent->reverse();
   LandREntity* LandEnt = dynamic_cast<LandREntity*>(&Entity);
-  int selfId=LandEnt->getSelfId();
-  removeEntity(selfId);
+  int OfldId=LandEnt->getOfldId();
+  removeEntity(OfldId);
   try {
-    addEntity(new LineStringEntity(ReverseEnt,selfId));
+    addEntity(new LineStringEntity(ReverseEnt,OfldId));
   } catch (openfluid::base::FrameworkException& e) {
     std::ostringstream s;
-    s << "Reverse orientation impossible for entity" << selfId<<" : "<<e.what() ;
+    s << "Reverse orientation impossible for entity" << OfldId<<" : "<<e.what() ;
     throw openfluid::base::FrameworkException(
         "LineStringGraph::reverseLineStringEntity",s.str());
   }
@@ -488,7 +488,7 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
     if (!EndVal)
     {
       std::ostringstream s;
-      s << "No raster value for entity " << (*it)->getSelfId() << " EndNode.";
+      s << "No raster value for entity " << (*it)->getOfldId() << " EndNode.";
 
       throw openfluid::base::FrameworkException(
           "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
@@ -501,7 +501,7 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
     if (!StartVal)
     {
       std::ostringstream s;
-      s << "No raster value for entity " << (*it)->getSelfId() << " StartNode.";
+      s << "No raster value for entity " << (*it)->getOfldId() << " StartNode.";
 
       throw openfluid::base::FrameworkException(
           "LineStringGraph::setAttributeFromMeanRasterValues", s.str());
@@ -743,21 +743,21 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
   geos::geom::LineString * NewLine=mp_Factory->createLineString(CoordsOne);
 
 
-  int SelfId=Entity.getSelfId();
-  int SelfIdToMerge=EntityToMerge.getSelfId();
+  int OfldId=Entity.getOfldId();
+  int OfldIdToMerge=EntityToMerge.getOfldId();
 
   try {
 
     openfluid::landr::LineStringEntity* Entity2 =
         new openfluid::landr::LineStringEntity(NewLine,
-                                               SelfId);
-    removeEntity(SelfId);
-    removeEntity(SelfIdToMerge);
+                                               OfldId);
+    removeEntity(OfldId);
+    removeEntity(OfldIdToMerge);
     addEntity(Entity2);
 
   } catch (openfluid::base::FrameworkException& e) {
     std::ostringstream s;
-    s << "Merge operation impossible for entity" << SelfId<<" : "<<e.what() ;
+    s << "Merge operation impossible for entity" << OfldId<<" : "<<e.what() ;
     throw openfluid::base::FrameworkException(
         "LineStringGraph::mergeLineStringEntities",s.str());
   }
@@ -774,7 +774,7 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
         "LineStringGraph::getLineStringEntitiesByMinLength : "
         "Threshold must be superior to 0.0");
 
-  std::list<LandREntity*> lEntities=getSelfIdOrderedEntities();
+  std::list<LandREntity*> lEntities=getOfldIdOrderedEntities();
   std::list<LandREntity*>::iterator it = lEntities.begin();
   std::list<LandREntity*>::iterator ite = lEntities.end();
   std::multimap<double, LineStringEntity*> mOrderedLength;

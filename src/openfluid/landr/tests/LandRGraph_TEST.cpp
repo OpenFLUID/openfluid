@@ -379,15 +379,15 @@ BOOST_AUTO_TEST_CASE(check_snap_PolygonGraph)
       openfluid::landr::PolygonGraph::create(*Vector);
   openfluid::landr::PolygonEntity* p_Ent1 = Graph->getEntity(1);
   openfluid::landr::PolygonEntity* p_Ent9 = Graph->getEntity(9);
-  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 0);
-  BOOST_CHECK_EQUAL(p_Ent9->getOrderedNeighbourSelfIds().size(), 3);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourOfldIds().size(), 0);
+  BOOST_CHECK_EQUAL(p_Ent9->getOrderedNeighbourOfldIds().size(), 3);
 
   Graph->snapVertices(8);
 
   p_Ent1 = Graph->getEntity(1);
-  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourSelfIds().size(), 2);
+  BOOST_CHECK_EQUAL(p_Ent1->getOrderedNeighbourOfldIds().size(), 2);
   p_Ent9 = Graph->getEntity(9);
-  BOOST_CHECK_EQUAL(p_Ent9->getOrderedNeighbourSelfIds().size(), 4);
+  BOOST_CHECK_EQUAL(p_Ent9->getOrderedNeighbourOfldIds().size(), 4);
 
   delete Graph;
   delete Vector;

@@ -174,10 +174,10 @@ BOOST_AUTO_TEST_CASE(check_Properties)
   BOOST_CHECK(!Vect->isLineType());
   BOOST_CHECK(Vect->isPolygonType());
 
-  BOOST_CHECK(Vect->containsField("SELF_ID"));
+  BOOST_CHECK(Vect->containsField("OFLD_ID"));
   BOOST_CHECK(!Vect->containsField("wrongField"));
 
-  BOOST_CHECK_EQUAL(Vect->getFieldIndex("SELF_ID"), 1);
+  BOOST_CHECK_EQUAL(Vect->getFieldIndex("OFLD_ID"), 9);
 
   delete Vect;
 }

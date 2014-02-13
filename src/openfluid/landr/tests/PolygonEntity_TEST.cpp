@@ -79,14 +79,14 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
   openfluid::landr::PolygonEntity* Entity = new openfluid::landr::PolygonEntity(
       dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
-      FirstFeature->GetFieldAsInteger("SELF_ID"));
+      FirstFeature->GetFieldAsInteger("OFLD_ID"));
 
   BOOST_CHECK_EQUAL(Val.getType(),
                     openfluid::core::UnstructuredValue::GeoVectorValue);
 
   BOOST_CHECK(Entity->getPolygon()->equals(GeosGeom));
 
-  BOOST_CHECK_EQUAL(Entity->getSelfId(), 1);
+  BOOST_CHECK_EQUAL(Entity->getOfldId(), 1);
 
   OGRFeature::DestroyFeature(FirstFeature);
   delete Entity;
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 //
 //  openfluid::landr::PolygonEntity* Entity = new openfluid::landr::PolygonEntity(
 //      dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
-//      FirstFeature->GetFieldAsInteger("SELF_ID"));
+//      FirstFeature->GetFieldAsInteger("OFLD_ID"));
 //
 //  OGRFeature::DestroyFeature(FirstFeature);
 //  delete GeosGeom;
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 //  openfluid::landr::PolygonEntity* CopyEntity = Entity->clone();
 //
 //  BOOST_CHECK(Entity->getPolygon()->equals(CopyEntity->getPolygon()));
-//  BOOST_CHECK_EQUAL(Entity->getSelfId(), CopyEntity->getSelfId());
+//  BOOST_CHECK_EQUAL(Entity->getOfldId(), CopyEntity->getOfldId());
 //
 //  std::string EntityPolyStr = Entity->getPolygon()->toString();
 //
@@ -152,7 +152,7 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   std::vector<int> NeighbourIds;
   std::vector<int>::iterator it;
 
-  NeighbourIds = U2->getOrderedNeighbourSelfIds();
+  NeighbourIds = U2->getOrderedNeighbourOfldIds();
   it = NeighbourIds.begin();
 
   BOOST_CHECK_EQUAL(NeighbourIds.size(), 5);
@@ -162,7 +162,7 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   BOOST_CHECK_EQUAL(*(++it), 5);
   BOOST_CHECK_EQUAL(*(++it), 23);
 
-  NeighbourIds = U18->getOrderedNeighbourSelfIds();
+  NeighbourIds = U18->getOrderedNeighbourOfldIds();
   it = NeighbourIds.begin();
 
   BOOST_CHECK_EQUAL(NeighbourIds.size(), 4);
@@ -171,7 +171,7 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   BOOST_CHECK_EQUAL(*(++it), 19);
   BOOST_CHECK_EQUAL(*(++it), 20);
 
-  NeighbourIds = U24->getOrderedNeighbourSelfIds();
+  NeighbourIds = U24->getOrderedNeighbourOfldIds();
   it = NeighbourIds.begin();
 
   BOOST_CHECK_EQUAL(NeighbourIds.size(), 3);
@@ -497,7 +497,7 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Contains)
                                    openfluid::landr::LandRTools::CONTAINS,
                                    0.0001);
   BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 1);
-  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->begin()->first->getSelfId(),
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->begin()->first->getOfldId(),
                     1);
 
   BOOST_CHECK(!SU4->getLineStringNeighbours());
@@ -508,7 +508,7 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Contains)
                                    openfluid::landr::LandRTools::CONTAINS,
                                    0.0001);
   BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 1);
-  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->begin()->first->getSelfId(),
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->begin()->first->getOfldId(),
                     3);
 
   BOOST_CHECK(!SU17->getLineStringNeighbours());
@@ -520,7 +520,7 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Contains)
                                     0.0001);
   BOOST_CHECK_EQUAL(SU17->getLineStringNeighbours()->size(), 1);
   BOOST_CHECK_EQUAL(
-      SU17->getLineStringNeighbours()->begin()->first->getSelfId(), 6);
+      SU17->getLineStringNeighbours()->begin()->first->getOfldId(), 6);
 
   delete RSGraph;
   delete SUGraph;

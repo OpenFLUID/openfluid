@@ -83,10 +83,10 @@ LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
         "LandRGraph::LandRGraph",
         "No GeoVectorValue.");
 
-  if (!mp_Vector->containsField("SELF_ID"))
+  if (!mp_Vector->containsField("OFLD_ID"))
     throw openfluid::base::FrameworkException(
         "LandRGraph::LandRGraph",
-        "GeoVector file must contain a \"SELF_ID\" field.");
+        "GeoVector file must contain a \"OFLD_ID\" field.");
 }
 
 // =====================================================================
@@ -104,10 +104,10 @@ LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
         "LandRGraph::LandRGraph",
         "No GeoVectorValue.");
 
-  if (!mp_Vector->containsField("SELF_ID"))
+  if (!mp_Vector->containsField("OFLD_ID"))
     throw openfluid::base::FrameworkException(
         "LandRGraph::LandRGraph",
-        "GeoVector file must contain a \"SELF_ID\" field.");
+        "GeoVector file must contain a \"OFLD_ID\" field.");
 }
 
 // =====================================================================
@@ -167,7 +167,7 @@ void LandRGraph::addEntitiesFromGeoVector()
         (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
     addEntity(
-        getNewEntity(GeosGeom->clone(), Feat->GetFieldAsInteger("SELF_ID")));
+        getNewEntity(GeosGeom->clone(), Feat->GetFieldAsInteger("OFLD_ID")));
 
     // destroying the feature destroys also the associated OGRGeom
     OGRFeature::DestroyFeature(Feat);
@@ -187,7 +187,7 @@ void LandRGraph::addEntitiesFromEntityList(
   LandRGraph::Entities_t::const_iterator ite = Entities.end();
   for (; it != ite; ++it)
   {
-    addEntity(getNewEntity((*it)->getGeometry()->clone(), (*it)->getSelfId()));
+    addEntity(getNewEntity((*it)->getGeometry()->clone(), (*it)->getOfldId()));
   }
 
   removeUnusedNodes();
@@ -227,10 +227,10 @@ void LandRGraph::removeUnusedNodes()
 // =====================================================================
 // =====================================================================
 
-LandREntity* LandRGraph::getEntity(int SelfId)
+LandREntity* LandRGraph::getEntity(int OfldId)
 {
-  if (m_EntitiesBySelfId.count(SelfId))
-    return m_EntitiesBySelfId.find(SelfId)->second;
+  if (m_EntitiesByOfldId.count(OfldId))
+    return m_EntitiesByOfldId.find(OfldId)->second;
 
   return (LandREntity*) 0;
 }
@@ -246,12 +246,12 @@ std::list<LandREntity*> LandRGraph::getEntities()
 // =====================================================================
 // =====================================================================
 
-LandRGraph::Entities_t LandRGraph::getSelfIdOrderedEntities()
+LandRGraph::Entities_t LandRGraph::getOfldIdOrderedEntities()
 {
   LandRGraph::Entities_t Entities;
 
-  std::map<int, LandREntity*>::iterator it = m_EntitiesBySelfId.begin();
-  std::map<int, LandREntity*>::iterator ite = m_EntitiesBySelfId.end();
+  std::map<int, LandREntity*>::iterator it = m_EntitiesByOfldId.begin();
+  std::map<int, LandREntity*>::iterator ite = m_EntitiesByOfldId.end();
   for (; it != ite; ++it)
     Entities.push_back(it->second);
 
@@ -261,9 +261,9 @@ LandRGraph::Entities_t LandRGraph::getSelfIdOrderedEntities()
 // =====================================================================
 // =====================================================================
 
-std::map<int, LandREntity*> LandRGraph::getEntitiesBySelfId()
+std::map<int, LandREntity*> LandRGraph::getEntitiesByOfldId()
 {
-  return m_EntitiesBySelfId;
+  return m_EntitiesByOfldId;
 }
 
 // =====================================================================
@@ -466,7 +466,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
     if (!Val)
     {
       std::ostringstream s;
-      s << "No raster value for entity " << (*it)->getSelfId() << " centroid.";
+      s << "No raster value for entity " << (*it)->getOfldId() << " centroid.";
 
       throw openfluid::base::FrameworkException(
           "LandRGraph::setAttributeFromRasterValueAtCentroid", s.str());
@@ -512,7 +512,7 @@ void LandRGraph::exportToShp(const std::string& FilePath, const std::string& Fil
       break;
   }
 
-  Out->addAField("SELF_ID", OFTInteger);
+  Out->addAField("OFLD_ID", OFTInteger);
 
   Entities_t::iterator it = m_Entities.begin();
   Entities_t::iterator ite = m_Entities.end();
@@ -520,7 +520,7 @@ void LandRGraph::exportToShp(const std::string& FilePath, const std::string& Fil
   {
     OGRFeature *Feat = OGRFeature::CreateFeature(Out->getLayerDef());
 
-    Feat->SetField("SELF_ID", (int) (*it)->getSelfId());
+    Feat->SetField("OFLD_ID", (int) (*it)->getOfldId());
 
     OGRGeometry* OGRGeom = OGRGeometryFactory::createFromGEOS(
         (GEOSGeom) (*it)->getGeometry());
@@ -578,8 +578,8 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
   OGRFeature* Feat;
   while ((Feat = Layer0->GetNextFeature()) != NULL)
   {
-    int SelfId=Feat->GetFieldAsInteger("SELF_ID");
-    openfluid::landr::LandREntity* Entity=getEntity(SelfId);
+    int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
+    openfluid::landr::LandREntity* Entity=getEntity(OfldId);
     if(Entity)
     {
       if(Vector.isFieldOfType(Column, OFTInteger))
@@ -632,8 +632,8 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
   OGRFeature* Feat;
   while ((Feat = Layer0->GetNextFeature()) != NULL)
   {
-    int SelfId=Feat->GetFieldAsInteger("SELF_ID");
-    openfluid::landr::LandREntity* Entity=getEntity(SelfId);
+    int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
+    openfluid::landr::LandREntity* Entity=getEntity(OfldId);
     if(Entity)
     {
       if(Vector.isFieldOfType(Column, OFTInteger))
@@ -668,12 +668,12 @@ void LandRGraph::snapVertices(double snapTolerance)
 
   LandRGraph::Entities_t::iterator it = m_Entities.begin();
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
-  std::list<int> listSelfId;
+  std::list<int> listOfldId;
   for (; it != ite; ++it)
-    listSelfId.push_back((*it)->getSelfId());
+    listOfldId.push_back((*it)->getOfldId());
 
-  std::list<int>::iterator li=listSelfId.begin();
-  std::list<int>::iterator lie=listSelfId.end();
+  std::list<int>::iterator li=listOfldId.begin();
+  std::list<int>::iterator lie=listOfldId.end();
 
   for(; li != lie; ++li)
   {
@@ -683,7 +683,7 @@ void LandRGraph::snapVertices(double snapTolerance)
     LandRGraph::Entities_t::iterator jte = m_Entities.end();
     for (; jt != jte; ++jt)
     {
-      if((*li)!=(*jt)->getSelfId())
+      if((*li)!=(*jt)->getOfldId())
         entitiesGeoms.push_back(const_cast<geos::geom::Geometry*>((*jt)->getGeometry()));
     }
 

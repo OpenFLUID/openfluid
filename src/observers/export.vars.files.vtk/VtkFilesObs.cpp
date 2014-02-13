@@ -297,12 +297,12 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
       }
 
 
-      int SelfIDFieldIndex = Layer->GetLayerDefn()->GetFieldIndex("SELF_ID");
+      int OfldIDFieldIndex = Layer->GetLayerDefn()->GetFieldIndex("OFLD_ID");
 
-      if (SelfIDFieldIndex < 0)
+      if (OfldIDFieldIndex < 0)
       {
         OPENFLUID_RaiseWarning("ExportVtkFunction::prepareVtkFile",
-            "Cannot find SELF_ID attribute in "+VtkSerie.VectorSourceFilename+". This Vtk output is ignored.");
+            "Cannot find OFLD_ID attribute in "+VtkSerie.VectorSourceFilename+". This Vtk output is ignored.");
         return false;
       }
 
@@ -318,7 +318,7 @@ class VtkFilesObserver : public openfluid::ware::PluggableObserver
       Layer->ResetReading();
       while((Feature = Layer->GetNextFeature()) != NULL)
       {
-        openfluid::core::UnitID_t UnitID = Feature->GetFieldAsInteger(SelfIDFieldIndex);
+        openfluid::core::UnitID_t UnitID = Feature->GetFieldAsInteger(OfldIDFieldIndex);
 
         OGRGeometry *Geometry;
 
