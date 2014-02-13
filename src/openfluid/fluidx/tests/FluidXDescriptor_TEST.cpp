@@ -133,7 +133,7 @@ void TestDataset(std::string DatasetPath)
       (*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),
       true);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID(),
+      ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID(),
       "tests.simulatorA");
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),
@@ -187,7 +187,7 @@ void TestDataset(std::string DatasetPath)
       (*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),
       true);
   BOOST_REQUIRE_EQUAL(
-      ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID(),
+      ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID(),
       "tests.simulatorB");
   BOOST_REQUIRE_EQUAL(
       ((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),

@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 {
   openfluid::fluidx::SimulatorDescriptor SimDesc("test.id");
 
-  BOOST_REQUIRE_EQUAL(SimDesc.getFileID(),"test.id");
+  BOOST_REQUIRE_EQUAL(SimDesc.getID(),"test.id");
   BOOST_REQUIRE_EQUAL(SimDesc.isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),true);
   BOOST_REQUIRE_EQUAL(SimDesc.getParameters().size(),0);
 
@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   it++;
   BOOST_REQUIRE_EQUAL((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator),true);
-  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID(),"test.id");
+  BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID(),"test.id");
   BOOST_REQUIRE_EQUAL(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getParameters().size(),3);
 
   it++;

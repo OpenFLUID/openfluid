@@ -46,16 +46,20 @@ namespace machine {
 
 ObserverSignatureRegistry* ObserverSignatureRegistry::m_Instance = 0;
 
+
 // =====================================================================
 // =====================================================================
+
 
 ObserverSignatureRegistry::ObserverSignatureRegistry()
 {
   update();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 ObserverSignatureRegistry* ObserverSignatureRegistry::getInstance()
 {
@@ -65,8 +69,10 @@ ObserverSignatureRegistry* ObserverSignatureRegistry::getInstance()
   return m_Instance;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const ObserverSignatureInstance* ObserverSignatureRegistry::getSignature(const std::string& ObserverID)
 {
@@ -79,26 +85,40 @@ const ObserverSignatureInstance* ObserverSignatureRegistry::getSignature(const s
   return NULL;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void ObserverSignatureRegistry::update()
 {
   openfluid::machine::ObserverPluginsManager::getInstance()->unloadAllWares();
   m_AvailableSignatures =
       openfluid::machine::ObserverPluginsManager::getInstance()->getAvailableWaresSignatures();
+
+  openfluid::machine::ObserverPluginsManager::getInstance()->unloadAllWares();
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 std::vector<ObserverSignatureInstance*> ObserverSignatureRegistry::getAvailableSignatures()
 {
   return m_AvailableSignatures;
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
+void ObserverSignatureRegistry::unloadAllObservers()
+{
+  openfluid::machine::ObserverPluginsManager::getInstance()->unloadAllWares();
 }
-} /* namespace openfluid */
+
+
+
+} } /* namespaces */

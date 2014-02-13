@@ -53,7 +53,7 @@ class ExtensionContainer
 
     bool Active;
 
-    std::string Filename;
+    std::string FileFullPath;
 
     openfluid::builderext::BuilderExtensionSignature* Signature;
 

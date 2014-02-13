@@ -46,6 +46,7 @@
 #include <string>
 
 #include <QLibrary>
+#include <QFileInfo>
 
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/dllexport.hpp>
@@ -74,26 +75,37 @@ class DLLEXPORT WarePluginsManager
 {
   private:
 
+    QLibrary* loadWare(const std::string& FullFilePath)
+    {
+      std::string PluginFileName = QFileInfo(QString::fromStdString(FullFilePath)).fileName().toStdString();
+
+      if (m_LoadedPlugins.find(PluginFileName) == m_LoadedPlugins.end())
+      {
+        m_LoadedPlugins[PluginFileName] = new QLibrary(QString::fromStdString(FullFilePath));
+      }
+
+      return m_LoadedPlugins[PluginFileName];
+    }
+
+
+    // =====================================================================
+    // =====================================================================
+
+
     M* buildWareContainerWithSignatureOnly(const std::string& ID)
     {
 
       std::string PluginFilename = ID+getPluginFilenameSuffix()+openfluid::config::PLUGINS_EXT;
-      std::string PluginFile = getPluginFullPath(PluginFilename);
+      std::string PluginFullPath = getPluginFullPath(PluginFilename);
       M* Plug = NULL;
 
-      if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
-      {
-        m_LoadedPlugins[PluginFilename] = new QLibrary(QString::fromStdString(PluginFile));
-      }
-
-      QLibrary* PlugLib = m_LoadedPlugins[PluginFilename];
-
+      QLibrary* PlugLib = loadWare(PluginFullPath);
 
       // library loading
-      if(PlugLib)
+      if (PlugLib)
       {
         Plug = new M();
-        Plug->Filename = PluginFile;
+        Plug->FileFullPath = PluginFullPath;
 
         GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
 
@@ -137,22 +149,16 @@ class DLLEXPORT WarePluginsManager
 
     S* getWareSignature(const std::string& PluginFilename)
     {
-      std::string PluginFile = getPluginFullPath(PluginFilename);
+      std::string PluginFullPath = getPluginFullPath(PluginFilename);
       S* Plug = NULL;
 
-      if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
-      {
-        m_LoadedPlugins[PluginFilename] = new QLibrary(QString::fromStdString(PluginFile));
-      }
-
-      QLibrary* PlugLib = m_LoadedPlugins[PluginFilename];
-
+      QLibrary* PlugLib = loadWare(PluginFullPath);
 
       // library loading
-      if(PlugLib)
+      if (PlugLib)
       {
         Plug = new M();
-        Plug->Filename = PluginFile;
+        Plug->FileFullPath = PluginFullPath;
 
         GetWareABIVersionProc ABIVersionProc = (GetWareABIVersionProc)PlugLib->resolve(WAREABIVERSION_PROC_NAME);
 
@@ -299,18 +305,12 @@ class DLLEXPORT WarePluginsManager
 
     void completeSignatureWithWareBody(M* Item)
     {
-      std::string PluginFilename = Item->Filename;
+      std::string PluginFullPath = Item->FileFullPath;
 
-      if (m_LoadedPlugins.find(PluginFilename) == m_LoadedPlugins.end())
-      {
-        m_LoadedPlugins[PluginFilename] = new QLibrary(QString::fromStdString(PluginFilename));
-      }
-
-      QLibrary* PlugLib = m_LoadedPlugins[PluginFilename];
-
+      QLibrary* PlugLib = loadWare(PluginFullPath);
 
       // library loading
-      if(PlugLib)
+      if (PlugLib)
       {
         BP BodyProc = (BP)PlugLib->resolve(WAREBODY_PROC_NAME);
 
@@ -320,12 +320,12 @@ class DLLEXPORT WarePluginsManager
           Item->Body = BodyProc();
 
           if (Item->Body == NULL)
-            throw openfluid::base::FrameworkException("WarePluginsManager::completeSignatureWithWareBody","Ware from plugin file " + PluginFilename + " cannot be instanciated");
+            throw openfluid::base::FrameworkException("WarePluginsManager::completeSignatureWithWareBody","Ware from plugin file " + PluginFullPath + " cannot be instanciated");
 
         }
-        else throw openfluid::base::FrameworkException("completeSignatureWithWareBody","Format error in plugin file " + PluginFilename);
+        else throw openfluid::base::FrameworkException("completeSignatureWithWareBody","Format error in plugin file " + PluginFullPath);
       }
-      else throw openfluid::base::FrameworkException("completeSignatureWithWareBody","Unable to find plugin file " + PluginFilename);
+      else throw openfluid::base::FrameworkException("completeSignatureWithWareBody","Unable to find plugin file " + PluginFullPath);
     }
 
 
@@ -345,7 +345,6 @@ class DLLEXPORT WarePluginsManager
 
       m_LoadedPlugins.clear();
     }
-
 
 };
 

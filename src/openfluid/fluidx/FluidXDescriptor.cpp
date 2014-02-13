@@ -862,7 +862,7 @@ void FluidXDescriptor::writeModelToStream(std::ostream& Contents)
           dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(*it);
 
       Contents << m_IndentStr << m_IndentStr << "<simulator ID=\""
-               << SimDesc->getFileID() << "\" "
+               << SimDesc->getID() << "\" "
                << "enabled=\"" << SimDesc->isEnabled() <<  "\">\n";
       Contents << getParamsAsStr(SimDesc->getParameters());
       Contents << m_IndentStr << m_IndentStr << "</simulator>\n";

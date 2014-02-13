@@ -52,14 +52,14 @@ class DLLEXPORT SimulatorDescriptor : public ModelItemDescriptor
 
   private:
 
-    // TODO to replace by m_ID, see to put it in ModelItemDescriptor or higher class
-    std::string m_FileID;
+    std::string m_ID;
+
 
   public:
 
-    SimulatorDescriptor(std::string FileID);
+    SimulatorDescriptor(const std::string& ID);
 
-    std::string getFileID() const;
+    std::string getID() const;
 
 };
 

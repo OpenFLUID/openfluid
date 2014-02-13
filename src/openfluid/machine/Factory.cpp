@@ -235,7 +235,7 @@ void Factory::buildModelInstanceFromDescriptor(openfluid::fluidx::CoupledModelDe
       if ((*it)->isType(openfluid::fluidx::ModelItemDescriptor::PluggedSimulator))
       {
         // instanciation of a plugged simulator using the plugin manager
-        IInstance = SimulatorPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getFileID());
+        IInstance = SimulatorPluginsManager::getInstance()->loadWareSignatureOnly(((openfluid::fluidx::SimulatorDescriptor*)(*it))->getID());
         IInstance->Params = (*it)->getParameters();
         IInstance->ItemType = openfluid::fluidx::ModelItemDescriptor::PluggedSimulator;
       }

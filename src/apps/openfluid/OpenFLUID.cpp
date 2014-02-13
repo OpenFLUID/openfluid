@@ -356,7 +356,7 @@ void OpenFLUIDApp::printSimulatorsReport(const std::string Pattern)
 
       std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
       std::cout << "   - Name: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Name,("(unknown)")) << std::endl;
-      std::cout << "   - File: " << PlugContainers[i]->Filename << std::endl;
+      std::cout << "   - File: " << PlugContainers[i]->FileFullPath << std::endl;
       std::cout << "   - Domain: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Domain,("(unknown)")) << std::endl;
       std::cout << "   - Process: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Process,("(unknown)")) << std::endl;
       std::cout << "   - Method: " << openfluid::tools::ReplaceEmptyString(PlugContainers[i]->Signature->Method,("(unknown)")) << std::endl;
@@ -400,7 +400,7 @@ void OpenFLUIDApp::printObserversReport(const std::string Pattern)
     for (unsigned int i=0;i<PlugContainers.size();i++)
     {
       std::cout << "* " << PlugContainers[i]->Signature->ID << std::endl;
-      printWareInfosReport((openfluid::ware::WareSignature*)(PlugContainers[i]->Signature),PlugContainers[i]->Filename);
+      printWareInfosReport((openfluid::ware::WareSignature*)(PlugContainers[i]->Signature),PlugContainers[i]->FileFullPath);
 
       if (i != PlugContainers.size()-1)
         std::cout << "================================================================================" << std::endl;

@@ -147,6 +147,9 @@ void ProjectCentral::run()
   openfluid::guicommon::RunSimulationDialog RunDlg(QApplication::activeWindow(),mp_FXDesc);
 
   RunDlg.execute();
+
+  openfluid::machine::SimulatorSignatureRegistry::getInstance()->unloadAllSimulators();
+  openfluid::machine::ObserverSignatureRegistry::getInstance()->unloadAllObservers();
 }
 
 
