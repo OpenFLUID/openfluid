@@ -120,7 +120,7 @@ class SerieInfo
     std::string Color;
 
     SerieInfo() : Type(SERIE_UNKNOWN),
-        SourceFile(""), VarName(""), UnitClass(""), UnitID(1), Unit(NULL),
+        SourceFile(""), FileHandle(NULL), VarName(""), UnitClass(""), UnitID(1), Unit(NULL),
         Label(""), Style("line"), Color("")
     { }
 

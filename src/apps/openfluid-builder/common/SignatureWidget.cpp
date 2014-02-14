@@ -147,7 +147,7 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
       Contents += convertStdString("");
 
     Contents += "<hr>";
-    Contents += "<b>" + tr("Plugin path") + ":</b> " + convertStdString(Signature->Filename);
+    Contents += "<b>" + tr("Plugin path") + ":</b> " + convertStdString(Signature->FileFullPath);
     Contents += "<hr>";
     Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";
 
@@ -418,7 +418,7 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ObserverSignatureI
     Contents += convertStdString("");
 
   Contents += "<hr>";
-  Contents += "<b>" + tr("Plugin path") + ":</b> " + convertStdString(Signature->Filename);
+  Contents += "<b>" + tr("Plugin path") + ":</b> " + convertStdString(Signature->FileFullPath);
   Contents += "<hr>";
   Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";
 

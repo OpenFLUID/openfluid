@@ -42,7 +42,7 @@
 
 
 ExtensionContainer::ExtensionContainer():
-  Verified(false), Active(false), Filename(""), Signature(NULL), Body(NULL)
+  Verified(false), Active(false), FileFullPath(""), Signature(NULL), Body(NULL)
 {
 
 }

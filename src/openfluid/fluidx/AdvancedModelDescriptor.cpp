@@ -175,7 +175,7 @@ std::string AdvancedModelDescriptor::getID(
     openfluid::fluidx::ModelItemDescriptor* Item) const
 {
   if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedSimulator))
-    return (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getFileID();
+    return (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getID();
 
   if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
     return (dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(Item))->getGeneratedID();

@@ -36,17 +36,18 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef OBSERVERSIGNATUREREGISTRY_HPP_
-#define OBSERVERSIGNATUREREGISTRY_HPP_
+#ifndef __OBSERVERSIGNATUREREGISTRY_HPP__
+#define __OBSERVERSIGNATUREREGISTRY_HPP__
 
 #include <vector>
 #include <string>
 #include <openfluid/dllexport.hpp>
 
-namespace openfluid {
-namespace machine {
+namespace openfluid { namespace machine {
+
 
 class ObserverSignatureInstance;
+
 
 class DLLEXPORT ObserverSignatureRegistry
 {
@@ -75,8 +76,11 @@ class DLLEXPORT ObserverSignatureRegistry
 
     std::vector<openfluid::machine::ObserverSignatureInstance*> getAvailableSignatures();
 
+    void unloadAllObservers();
+
 };
 
-}
-} // namespaces
+} } // namespaces
+
+
 #endif /* OBSERVERSIGNATUREREGISTRY_HPP_ */

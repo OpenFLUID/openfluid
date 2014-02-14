@@ -54,7 +54,7 @@ class ObserverDescriptor : public WareDescriptor
 
   public:
 
-    ObserverDescriptor(std::string ID) : WareDescriptor(), m_ID(ID)
+    ObserverDescriptor(const std::string& ID) : WareDescriptor(), m_ID(ID)
     { m_WareType = PluggedObserver; }
 
     std::string getID() const

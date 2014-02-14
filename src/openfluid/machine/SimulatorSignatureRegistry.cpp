@@ -167,6 +167,8 @@ void SimulatorSignatureRegistry::updatePluggableSignatures()
     if (Signatures[i]->Signature)
       addAPluggableSignature(Signatures[i]);
   }
+
+  openfluid::machine::SimulatorPluginsManager::getInstance()->unloadAllWares();
 }
 
 
@@ -255,7 +257,7 @@ ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance
 
   if (Item->isType(openfluid::fluidx::WareDescriptor::PluggedSimulator))
     ItemID =
-        (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getFileID();
+        (dynamic_cast<openfluid::fluidx::SimulatorDescriptor*>(Item))->getID();
   else if (Item->isType(openfluid::fluidx::WareDescriptor::Generator))
     ItemID =
         openfluid::fluidx::GeneratorDescriptor::getGeneratorName(
@@ -273,5 +275,17 @@ ModelItemSignatureInstance* SimulatorSignatureRegistry::getSignatureItemInstance
 {
   return m_GenSignatures[Method];
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorSignatureRegistry::unloadAllSimulators()
+{
+  openfluid::machine::SimulatorPluginsManager::getInstance()->unloadAllWares();
+}
+
+
 
 } } //namespaces

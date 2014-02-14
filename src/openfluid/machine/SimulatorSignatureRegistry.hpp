@@ -106,6 +106,7 @@ class DLLEXPORT SimulatorSignatureRegistry
 
     ModelItemSignatureInstance* getSignatureItemInstance(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod Method);
 
+    void unloadAllSimulators();
 };
 
 

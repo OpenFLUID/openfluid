@@ -54,11 +54,11 @@ class DLLEXPORT WareSignatureInstance
 
     openfluid::fluidx::WareDescriptor::WareType ItemType;
 
-    std::string Filename;
+    std::string FileFullPath;
 
     bool Verified;
 
-    WareSignatureInstance() : ItemType(openfluid::fluidx::WareDescriptor::NoWareType), Filename(""),Verified(false)
+    WareSignatureInstance() : ItemType(openfluid::fluidx::WareDescriptor::NoWareType), FileFullPath(""),Verified(false)
     { }
 
 };
