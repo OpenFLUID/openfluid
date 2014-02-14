@@ -83,8 +83,6 @@ class OGRGDALImportExtension : public openfluid::builderext::PluggableModalExten
 
     void updateUnitsClassInfos();
 
-    void updateUnitsIDsInfos();
-
     void updateUnitsPcsOrdInfos();
 
     void updateUnitsToConnInfos();
