@@ -32,6 +32,23 @@ ENDIF(BUILD_FORTRAN_SIMULATORS)
 ###########################################################################
 
 
+OPNFLD_ADD_SIMULATOR(tests.exceptions tests.exceptions ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME simulators-Exceptions 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.SimExceptions"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.SimExceptions" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           "-n${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.SimExceptions"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.SimExceptions/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.SimExceptions/tests.exceptions_ofware-sim.log"
+                   )
+SET_TESTS_PROPERTIES(simulators-Exceptions PROPERTIES WILL_FAIL TRUE)
+
+
+###########################################################################
+
+
 OPNFLD_ADD_SIMULATOR(tests.primitives.runenv tests.primitives.runenv ${TEST_OUTPUT_PATH})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesRunEnv 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 

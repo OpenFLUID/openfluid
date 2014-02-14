@@ -25,6 +25,23 @@ OPENFLUID_ADD_TEST(NAME observers-Hopla
 
 ###########################################################################
 
+
+OPNFLD_ADD_OBSERVER(tests.exceptions tests.exceptions ${TEST_OUTPUT_PATH})
+OPENFLUID_ADD_TEST(NAME observers-Exceptions 
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                           "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ObsExceptions"
+                           "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ObsExceptions" 
+                           "-p${TEST_OUTPUT_PATH}"
+                           "-n${TEST_OUTPUT_PATH}"
+                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ObsExceptions"
+                    POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ObsExceptions/openfluid-messages.log"
+                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ObsExceptions/tests.exceptions_ofware-sim.log"
+                   )
+SET_TESTS_PROPERTIES(observers-Exceptions PROPERTIES WILL_FAIL TRUE)
+
+
+###########################################################################
+
                                  
 OPENFLUID_ADD_TEST(NAME observers-CSVFiles 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
