@@ -399,7 +399,7 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::g
 
 
   geos::geom::Coordinate newCoorPoint;
-  for(;i<numVertices;i++)
+  while(i<numVertices&&!split)
   {
     geos::geom::Coordinate FirstCoord=Entity.getCoordinateN(i);
     geos::geom::Coordinate SecondCoord=Entity.getCoordinateN(i+1);
@@ -420,8 +420,9 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::g
       split=true;
       geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
       LineSegment.project(*(Point.getCoordinate()),newCoorPoint);
-      break;
     }
+    else
+      i++;
   }
 
   if(!split)
