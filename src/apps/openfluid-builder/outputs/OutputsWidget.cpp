@@ -84,13 +84,55 @@ OutputsWidget::~OutputsWidget()
 // =====================================================================
 
 
+bool OutputsWidget::removeDirectory(QDir Dir)
+{
+  if (!Dir.exists())
+    return false;
+
+  foreach (QFileInfo FI, Dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
+  {
+    if ( FI.isSymLink() || FI.isFile() )
+    {
+      if (!Dir.remove(FI.absoluteFilePath()))
+        return false;
+    }
+    else if (FI.isDir())
+    {
+      if (!removeDirectory(FI.filePath()))
+        return false;
+    }
+  }
+
+  if (!Dir.rmdir(Dir.absolutePath()))
+    return false;
+
+  return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void OutputsWidget::clearOutputDir()
 {
   if (QMessageBox::warning(this,tr("Delete outputs contents"),
                            tr("This will delete all files and directories in the output directory.\n\nProceed anyway?"),
                            QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
   {
-    openfluid::tools::EmptyDirectoryRecursively(openfluid::base::ProjectManager::getInstance()->getOutputDir());
+    QDir OutDir(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getOutputDir()));
+
+    foreach (QFileInfo FI, OutDir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden | QDir::System))
+    {
+      if (FI.isSymLink() || FI.isFile())
+      {
+        OutDir.remove(FI.absoluteFilePath());
+      }
+      else if (FI.isDir())
+      {
+        removeDirectory(FI.filePath());
+      }
+    }
   }
 }
 

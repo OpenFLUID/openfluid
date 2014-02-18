@@ -63,6 +63,9 @@ class OutputsWidget : public WorkspaceWidget
 
     QFileSystemModel* mp_FSModel;
 
+    static bool removeDirectory(QDir Dir);
+
+
   private slots:
 
     void clearOutputDir();
