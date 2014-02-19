@@ -62,11 +62,12 @@ int main(int argc, char** argv)
 
   try
   {
-    Q_INIT_RESOURCE(openfluidbuilder);
-    Q_INIT_RESOURCE(openfluidmarket);
-
     INIT_OPENFLUID_APPLICATION_WITH_GUI(argc,argv);
 
+#if QT_VERSION < QT_VERSION_CHECK(5,2,0)
+    Q_INIT_RESOURCE_EXTERN(openfluidbuilder);
+    Q_INIT_RESOURCE_EXTERN(openfluidmarket);
+#endif
 
     // translations management
     QString Lang = openfluid::guicommon::PreferencesManager::getInstance()->getLang();

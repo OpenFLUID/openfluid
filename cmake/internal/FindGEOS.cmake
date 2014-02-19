@@ -30,13 +30,15 @@ IF(WIN32)
   IF (MSVC)
     SET (
        GEOS_INCLUDE_DIR 
-       "$ENV{LIB_DIR}/include"
+       "$ENV{SUPPORT_DIR}/include"
        CACHE STRING INTERNAL
        )
+    INCLUDE($ENV{SUPPORT_DIR}/share/geos-config.cmake)
     FIND_LIBRARY(GEOS_LIBRARY NAMES geos geos PATHS 
       "$ENV{LIB_DIR}/lib"
       #mingw
       c:/msys/local/lib
+      $ENV{SUPPORT_DIR}/lib
       NO_DEFAULT_PATH
       )
   ENDIF (MSVC)

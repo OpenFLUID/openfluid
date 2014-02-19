@@ -236,7 +236,7 @@ std::vector<std::string> SplitString(const std::string& StrToSplit,
 // =====================================================================
 // =====================================================================
 
-
+// TODO to be fixed: should not delete the given path, may not work on win32
 bool EmptyDirectoryRecursively(const std::string DirPath)
 {
 

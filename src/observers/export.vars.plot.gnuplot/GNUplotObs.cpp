@@ -387,10 +387,11 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
           QString PersistOption = " ";
           if (m_Persistent) PersistOption = " -persist ";
 
-          QString GNUPlotCommand = QString("%1%2%3").arg(GNUPlotProgram.getFullProgramPath())
+          QString GNUPlotCommand = QString("\"%1\"%2\"%3\"").arg(GNUPlotProgram.getFullProgramPath())
                                                     .arg(PersistOption)
                                                     .arg(QDir(QString::fromStdString(m_OutputDir))
                                                          .absoluteFilePath("script.gnuplot"));
+
           QProcess::execute(GNUPlotCommand);
         }
         else

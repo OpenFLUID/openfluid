@@ -193,10 +193,10 @@ void SVGFileGeneratorWorker::run()
   if (DotProgram.isFound())
   {
 
-    QString DotCommand = QString("%1 -Tsvg %2 -o %3")
+    QString DotCommand = QString("\"%1\" -Tsvg \"%2\" -o \"%3\"")
                          .arg(DotProgram.getFullProgramPath())
-                         .arg("\""+m_GVFileName+"\"")
-                         .arg("\""+m_SVGFileName+"\"");
+                         .arg(m_GVFileName)
+                         .arg(m_SVGFileName);
 
     QProcess::execute(DotCommand);
   }
