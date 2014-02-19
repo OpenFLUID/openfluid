@@ -86,7 +86,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
     {
 
       OPENFLUID_GetSimulatorParameter(Params,"MultiCapacity",m_MultiCapacity);
-      if(m_MultiCapacity<0)
+      if (m_MultiCapacity<0)
         OPENFLUID_RaiseError("examples.road.traffic","The Multiplying factor for capacity (MultiCapacity) should be positive");
     }
 
@@ -170,7 +170,7 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
       {
 
         TLUState=1;
-        if(m_UseTLUStateFromTLUVar)
+        if (m_UseTLUStateFromTLUVar)
         {
           UpTLUsList = RU->getFromUnits("TLU");
           if (UpTLUsList != NULL)
@@ -198,19 +198,19 @@ class RUSimulator : public openfluid::ware::PluggableSimulator
             CapacityByDeltaT=(Capacity*m_MultiCapacity)/60*DeltaT;
 
 
-            if(OPENFLUID_IsVariableExist(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()))
+            if (OPENFLUID_IsVariableExist(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()))
               OPENFLUID_GetVariable(RU,"examples.RU.S.stock",StockValue);
 
 
             else
               OPENFLUID_GetVariable(RU,"examples.RU.S.stock",OPENFLUID_GetCurrentTimeIndex()-OPENFLUID_GetDefaultDeltaT(),StockValue);
 
-            for(UpRUiter=UpRUsList->begin(); UpRUiter != UpRUsList->end(); UpRUiter++)
+            for (UpRUiter=UpRUsList->begin(); UpRUiter != UpRUsList->end(); UpRUiter++)
             {
 
               UpRU = *UpRUiter;
               OPENFLUID_GetVariable(UpRU,"examples.RU.S.stock",StockValueUp);
-              if(StockValueUp>CapacityByDeltaT)
+              if (StockValueUp>CapacityByDeltaT)
               {
                 StockValue=StockValue+CapacityByDeltaT;
                 StockValueUp=StockValueUp-CapacityByDeltaT;

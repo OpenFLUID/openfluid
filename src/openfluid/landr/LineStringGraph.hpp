@@ -72,7 +72,7 @@
 		if (graph) \
 		{ \
 			_M_##loopid##_uvect = graph->getEntities();\
-			for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+			for (_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
 			{ \
 				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 
@@ -86,7 +86,7 @@
 		if (graph) \
 		{ \
 			_M_##loopid##_uvect = graph->getOfldIdOrderedEntities();\
-			for(_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
+			for (_M_##loopid##_it=_M_##loopid##_uvect.begin(); _M_##loopid##_it != _M_##loopid##_uvect.end(); ++_M_##loopid##_it) \
 			{ \
 				entity = dynamic_cast<openfluid::landr::LineStringEntity*>(*_M_##loopid##_it); \
 

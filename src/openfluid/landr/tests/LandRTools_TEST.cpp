@@ -971,7 +971,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   std::vector<geos::geom::Polygon*>::iterator ite=IntersectPolys.end();
   double area=0.0;
 
-  for(;it!=ite;++it)
+  for (;it!=ite;++it)
       area=area+(*it)->getArea();
 
   BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.12999));
@@ -991,7 +991,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   it=IntersectPolys.begin();
   ite=IntersectPolys.end();
 
-  for(;it!=ite;++it)
+  for (;it!=ite;++it)
     area=area+(*it)->getArea();
 
   BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.69474));
@@ -1012,7 +1012,7 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   it=IntersectPolys.begin();
   ite=IntersectPolys.end();
 
-  for(;it!=ite;++it)
+  for (;it!=ite;++it)
     area=area+(*it)->getArea();
 
   BOOST_CHECK( openfluid::tools::IsVeryClose(area,0.743386));

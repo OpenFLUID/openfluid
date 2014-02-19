@@ -375,11 +375,11 @@ bool PolygonGraph::hasIsland()
         for (; it2 != itE2; ++it2)
         {
           PolygonEntity*  IslandEntity=dynamic_cast<PolygonEntity*>(*it2);
-          if(Entity->getOfldId()!=IslandEntity->getOfldId())
+          if (Entity->getOfldId()!=IslandEntity->getOfldId())
           {
             const geos::geom::Polygon* IslandPoly = IslandEntity->getPolygon();
             const geos::geom::LineString *OuterRing=IslandPoly->getExteriorRing();
-            if(InnerRing->within(OuterRing))
+            if (InnerRing->within(OuterRing))
               return true;
           }
         }
@@ -420,7 +420,7 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
         geos::geom::Polygon* Poly =
             dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
                 i)));
-        if(Poly)
+        if (Poly)
         {
           // !! copy doesn't keep UserData !
           Poly->setUserData((*it)->getUserData());
@@ -620,13 +620,13 @@ std::vector<std::string> PolygonGraph::getEdgeAttributeNames()
 void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
                                                   const std::string& Column,double Thresh)
 {
-  if(!Vector.isPolygonType())
+  if (!Vector.isPolygonType())
     throw openfluid::base::FrameworkException(
         "PolygonGraph::setAttributeFromVectorLocation",
         "Vector is not a Polygon type");
 
 
-  if(!Vector.containsField(Column))
+  if (!Vector.containsField(Column))
   {
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in GeoVector.";
@@ -660,14 +660,14 @@ void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeNa
       geos::geom::Geometry* GeosGeom =
           (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-      if(GeosGeom->contains(Centroid))
+      if (GeosGeom->contains(Centroid))
       {
-        if(Vector.isFieldOfType(Column, OFTInteger))
+        if (Vector.isFieldOfType(Column, OFTInteger))
         {
           int value=Feat->GetFieldAsInteger(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
         }
-        else if(Vector.isFieldOfType(Column, OFTReal))
+        else if (Vector.isFieldOfType(Column, OFTReal))
         {
           double value=Feat->GetFieldAsDouble(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
@@ -695,13 +695,13 @@ void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeNa
 void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
                                                   const std::string& Column,double Thresh)
 {
-  if(!Vector.isPolygonType())
+  if (!Vector.isPolygonType())
     throw openfluid::base::FrameworkException(
         "PolygonGraph::setAttributeFromVectorLocation",
         "Vector is not a Polygon type");
 
 
-  if(!Vector.containsField(Column))
+  if (!Vector.containsField(Column))
   {
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in GeoVector.";
@@ -735,14 +735,14 @@ void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeNa
       geos::geom::Geometry* GeosGeom =
           (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-      if(GeosGeom->contains(Centroid))
+      if (GeosGeom->contains(Centroid))
       {
-        if(Vector.isFieldOfType(Column, OFTInteger))
+        if (Vector.isFieldOfType(Column, OFTInteger))
         {
           int value=Feat->GetFieldAsInteger(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
         }
-        else if(Vector.isFieldOfType(Column, OFTReal))
+        else if (Vector.isFieldOfType(Column, OFTReal))
         {
           double value=Feat->GetFieldAsDouble(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
@@ -790,7 +790,7 @@ void PolygonGraph::removeEntity(int OfldId)
   std::list<PolygonEdge*>lEdges;
   for ( ; it != ite; ++it)
   {
-    if((*it)->getFaces().size()==1)
+    if ((*it)->getFaces().size()==1)
       lEdges.push_back(*it);
   }
 
@@ -799,7 +799,7 @@ void PolygonGraph::removeEntity(int OfldId)
   openfluid::landr::PolygonEntity::NeighboursMap_t::iterator jt = Ent->mp_NeighboursMap->begin();
   openfluid::landr::PolygonEntity::NeighboursMap_t::iterator jte = Ent->mp_NeighboursMap->end();
   std::list<PolygonEntity*> lNeighbours;
-  for(;jt!=jte;++jt)
+  for (;jt!=jte;++jt)
   {
 
     jt->first->mp_NeighboursMap->erase(Ent);
@@ -808,16 +808,16 @@ void PolygonGraph::removeEntity(int OfldId)
     std::vector<PolygonEdge*>::iterator ht=vNeighbourEdges.begin();
     std::vector<PolygonEdge*>::iterator hte=vNeighbourEdges.end();
 
-    for(;ht!=hte;++ht)
+    for (;ht!=hte;++ht)
     {
-      if((*ht)->isLineInFace(*Ent))
+      if ((*ht)->isLineInFace(*Ent))
         (*ht)->removeFace(Ent);
     }
   }
 
   std::list<PolygonEdge*>::iterator lt=lEdges.begin();
   std::list<PolygonEdge*>::iterator lte=lEdges.end();
-  for(;lt!=lte;++lt)
+  for (;lt!=lte;++lt)
     removeSegment(Ent,(*lt)->getLine());
 
 
@@ -829,7 +829,7 @@ void PolygonGraph::removeEntity(int OfldId)
   //rebuild the Edges of Neighbours of Ent
   std::list<PolygonEntity*>::iterator mt=lNeighbours.begin();
   std::list<PolygonEntity*>::iterator mte=lNeighbours.end();
-  for(;mt!=mte;++mt)
+  for (;mt!=mte;++mt)
     cleanEdges(**mt);
 
 
@@ -848,18 +848,18 @@ void PolygonGraph::cleanEdges(PolygonEntity & Entity)
   std::vector<PolygonEdge*>::iterator nt=vNeighbourEdges.begin();
   std::vector<PolygonEdge*>::iterator nte=vNeighbourEdges.end();
   std::list<PolygonEdge*> lEdgesWithOneFace;
-  for(;nt!=nte;++nt)
+  for (;nt!=nte;++nt)
   {
-    if((*nt)->getFaces().size()==1)
+    if ((*nt)->getFaces().size()==1)
       lEdgesWithOneFace.push_back(*nt);
   }
-  if(!lEdgesWithOneFace.empty())
+  if (!lEdgesWithOneFace.empty())
   {
 
     std::list<PolygonEdge*>::iterator ot=lEdgesWithOneFace.begin();
     std::list<PolygonEdge*>::iterator ote=lEdgesWithOneFace.end();
 
-    while(ot!=ote)
+    while (ot!=ote)
     {
 
       std::list<PolygonEdge*>::iterator ot2=ot;
@@ -867,7 +867,7 @@ void PolygonGraph::cleanEdges(PolygonEntity & Entity)
 
       while (ot2 != ote)
       {
-        if((*ot)->isCoincident(*ot2))
+        if ((*ot)->isCoincident(*ot2))
         {
           geos::geom::LineString * NewLine=Entity.mergeEdges((*ot), (*ot2));
           remove(*ot2);
@@ -882,9 +882,9 @@ void PolygonGraph::cleanEdges(PolygonEntity & Entity)
           std::vector<PolygonEdge*>::iterator pt=vNeighbourEdges.begin();
           std::vector<PolygonEdge*>::iterator pte=vNeighbourEdges.end();
 
-          for(;pt!=pte;++pt)
+          for (;pt!=pte;++pt)
           {
-            if((*pt)->getFaces().size()==1)
+            if ((*pt)->getFaces().size()==1)
               lEdgesWithOneFace.push_back(*pt);
           }
           ot=lEdgesWithOneFace.begin();
@@ -919,9 +919,9 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea
   std::list<LandREntity*>::iterator it = lEntities.begin();
   std::list<LandREntity*>::iterator ite = lEntities.end();
   std::multimap<double, PolygonEntity*> mOrderedArea;
-  for(;it!=ite;++it)
+  for (;it!=ite;++it)
   {
-    if((*it)->getArea()<MinArea)
+    if ((*it)->getArea()<MinArea)
       mOrderedArea.insert ( std::pair<double, PolygonEntity*>((*it)->getArea(),dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
   }
   return mOrderedArea;
@@ -936,7 +936,7 @@ void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& En
 
   //ensure that the two PolygonEntities are neighbours
   std::vector<PolygonEdge*> vEdge=Entity.getCommonEdgesWith(EntityToMerge);
-  if(vEdge.empty())
+  if (vEdge.empty())
     throw openfluid::base::FrameworkException(
         "PolygonGraph::mergePolygonEntities",
         "The PolygonEntities are not neighbours");
@@ -979,10 +979,10 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompact
   std::list<LandREntity*>::iterator it = lEntities.begin();
   std::list<LandREntity*>::iterator ite = lEntities.end();
   std::multimap<double, PolygonEntity*> mOrderedCompact;
-  for(;it!=ite;++it)
+  for (;it!=ite;++it)
   {
     double valCompact=(*it)->getLength()/(2*std::sqrt(4 * std::atan(1.0)*(*it)->getArea()));
-    if(valCompact>Compactness)
+    if (valCompact>Compactness)
       mOrderedCompact.insert ( std::pair<double, PolygonEntity*>(valCompact,dynamic_cast<openfluid::landr::PolygonEntity*>(*it)) );
   }
   return mOrderedCompact;

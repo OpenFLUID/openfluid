@@ -373,7 +373,7 @@ geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge, PolygonEdge
 {
 
   //ensure that the two PolygonEdges are coincident
-  if(!Edge->isCoincident(EdgeToMerge))
+  if (!Edge->isCoincident(EdgeToMerge))
     throw openfluid::base::FrameworkException(
         "PolygonEntity::mergeEdges",
         "The PolygonEdges are not coincident");
@@ -388,25 +388,25 @@ geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge, PolygonEdge
   geos::geom::CoordinateSequence *CoordsOne=0;
   geos::geom::CoordinateSequence *CoordsTwo=0;
 
-  if(EndPoint->getCoordinate()->equals(*(StartPoint2->getCoordinate())))
+  if (EndPoint->getCoordinate()->equals(*(StartPoint2->getCoordinate())))
   {
     CoordsOne=(Edge->getLine())->getCoordinates();
     CoordsTwo=(EdgeToMerge->getLine())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
-  else if(StartPoint->getCoordinate()->equals(*(EndPoint2->getCoordinate())))
+  else if (StartPoint->getCoordinate()->equals(*(EndPoint2->getCoordinate())))
   {
     CoordsOne=(EdgeToMerge->getLine())->getCoordinates();
     CoordsTwo=(Edge->getLine())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
-  else if(EndPoint->getCoordinate()->equals(*(EndPoint2->getCoordinate())))
+  else if (EndPoint->getCoordinate()->equals(*(EndPoint2->getCoordinate())))
   {
     CoordsOne=(Edge->getLine())->getCoordinates();
     CoordsTwo=(EdgeToMerge->getLine())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,false);
   }
-  else if(StartPoint->getCoordinate()->equals(*(StartPoint2->getCoordinate())))
+  else if (StartPoint->getCoordinate()->equals(*(StartPoint2->getCoordinate())))
   {
     geos::geom::Geometry * reverseLine=EdgeToMerge->getLine()->reverse();
 

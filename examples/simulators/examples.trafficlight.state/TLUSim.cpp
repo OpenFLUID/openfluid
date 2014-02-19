@@ -117,12 +117,12 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
       {
         OPENFLUID_GetAttribute(TLU,"duration",Period);
         Period.toIntegerValue(PeriodInt);
-        if(PeriodInt>DeltaT)
+        if (PeriodInt>DeltaT)
           Modulo=PeriodInt%DeltaT;
         else
           Modulo=DeltaT%PeriodInt;
 
-        if(Modulo!=0)
+        if (Modulo!=0)
         {
           ID = TLU->getID();
           std::string IDStr;
@@ -188,7 +188,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_GetVariable(pTLU,"examples.TLU.S.state",CurrentTimeIndex-OPENFLUID_GetDefaultDeltaT(),StateBool);
 
 
-        if(unsigned(NextPeriod)==OPENFLUID_GetCurrentTimeIndex())
+        if (unsigned(NextPeriod)==OPENFLUID_GetCurrentTimeIndex())
         {
           StateBool=1-StateBool;
           NextPeriod=NextPeriod+PeriodInt;
