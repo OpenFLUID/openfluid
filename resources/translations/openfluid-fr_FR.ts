@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="fr_FR">
+<TS version="2.0" language="fr_FR">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -588,7 +588,7 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     </message>
     <message>
         <source>Error creating project </source>
-        <translation type="vanished">Erreur à la création du projet</translation>
+        <translation>Erreur à la création du projet</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="440"/>
@@ -625,15 +625,15 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     <name>DashboardInfosWidget</name>
     <message>
         <source>checked</source>
-        <translation type="vanished">vérifié</translation>
+        <translation>vérifié</translation>
     </message>
     <message>
         <source>none</source>
-        <translation type="vanished">aucun</translation>
+        <translation>aucun</translation>
     </message>
     <message>
         <source>forced</source>
-        <translation type="vanished">forcé</translation>
+        <translation>forcé</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/DashboardInfosWidget.cpp" line="105"/>
@@ -677,7 +677,7 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     </message>
     <message>
         <source>&lt;u&gt;Run configuration:&lt;/u&gt; total duration of %1 seconds with a default DeltaT of %2 seconds and %3 constraint</source>
-        <translation type="vanished">&lt;u&gt;Configuration de simulation:&lt;/u&gt; durée totale de %1 secondes avec un DeltaT par défaut de %2 secondes et %3 contrainte</translation>
+        <translation>&lt;u&gt;Configuration de simulation:&lt;/u&gt; durée totale de %1 secondes avec un DeltaT par défaut de %2 secondes et %3 contrainte</translation>
     </message>
 </context>
 <context>
@@ -1725,12 +1725,12 @@ L&apos;extension ne peut être instanciée.</translation>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="59"/>
         <source>End date:</source>
-        <translation>Date de début:</translation>
+        <translation>Date de fin:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="92"/>
         <source>Begin date:</source>
-        <translation>Date de fin:</translation>
+        <translation>Date de début:</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/runconfig/RunConfigurationWidget.ui" line="125"/>
