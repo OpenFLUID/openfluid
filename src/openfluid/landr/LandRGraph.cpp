@@ -559,7 +559,7 @@ void LandRGraph::exportToShp(const std::string& FilePath, const std::string& Fil
 void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
                                           openfluid::core::GeoVectorValue& Vector, const std::string& Column)
 {
-  if(!Vector.containsField(Column))
+  if (!Vector.containsField(Column))
   {
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in GeoVector.";
@@ -580,14 +580,14 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
   {
     int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
     openfluid::landr::LandREntity* Entity=getEntity(OfldId);
-    if(Entity)
+    if (Entity)
     {
-      if(Vector.isFieldOfType(Column, OFTInteger))
+      if (Vector.isFieldOfType(Column, OFTInteger))
       {
         int value=Feat->GetFieldAsInteger(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
       }
-      else if(Vector.isFieldOfType(Column, OFTReal))
+      else if (Vector.isFieldOfType(Column, OFTReal))
       {
         double value=Feat->GetFieldAsDouble(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
@@ -613,7 +613,7 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
                                           openfluid::landr::VectorDataset& Vector, const std::string& Column)
 {
-  if(!Vector.containsField(Column))
+  if (!Vector.containsField(Column))
   {
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in VectorDataset.";
@@ -634,14 +634,14 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
   {
     int OfldId=Feat->GetFieldAsInteger("OFLD_ID");
     openfluid::landr::LandREntity* Entity=getEntity(OfldId);
-    if(Entity)
+    if (Entity)
     {
-      if(Vector.isFieldOfType(Column, OFTInteger))
+      if (Vector.isFieldOfType(Column, OFTInteger))
       {
         int value=Feat->GetFieldAsInteger(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
       }
-      else if(Vector.isFieldOfType(Column, OFTReal))
+      else if (Vector.isFieldOfType(Column, OFTReal))
       {
         double value=Feat->GetFieldAsDouble(columnIndex);
         Entity->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
@@ -675,7 +675,7 @@ void LandRGraph::snapVertices(double snapTolerance)
   std::list<int>::iterator li=listOfldId.begin();
   std::list<int>::iterator lie=listOfldId.end();
 
-  for(; li != lie; ++li)
+  for (; li != lie; ++li)
   {
 
     std::vector<geos::geom::Geometry*> entitiesGeoms;
@@ -683,7 +683,7 @@ void LandRGraph::snapVertices(double snapTolerance)
     LandRGraph::Entities_t::iterator jte = m_Entities.end();
     for (; jt != jte; ++jt)
     {
-      if((*li)!=(*jt)->getOfldId())
+      if ((*li)!=(*jt)->getOfldId())
         entitiesGeoms.push_back(const_cast<geos::geom::Geometry*>((*jt)->getGeometry()));
     }
 

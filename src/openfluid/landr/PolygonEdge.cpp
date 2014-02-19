@@ -204,7 +204,7 @@ bool PolygonEdge::isCoincident(PolygonEdge *Edge)
   geos::geom::Point *EndPoint2=Edge->getLine()->getEndPoint();
 
 
-  if((StartPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
+  if ((StartPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
       (StartPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate()))||
       (EndPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
       (EndPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate())))

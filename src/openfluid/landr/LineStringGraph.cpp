@@ -425,7 +425,7 @@ bool LineStringGraph::isLineStringGraphArborescence( )
   int nEntities=this->getSize();
   int nNodes=std::distance(this->nodeBegin(), this->nodeEnd());
 
-  if(nNodes!=(nEntities+1))
+  if (nNodes!=(nEntities+1))
     return false;
 
   // use DFS method to travel in the nodes, if all nodes are visited, LineStringGraph is a corrected arborescence
@@ -462,7 +462,7 @@ bool LineStringGraph::isLineStringGraphArborescence( )
   ite=vNode.end();
   for (; it!=ite;it++)
   {
-    if(!(*it)->isVisited())
+    if (!(*it)->isVisited())
       return false;
   }
 
@@ -519,13 +519,13 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
 void LineStringGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
                                                      const std::string& Column,double Thresh)
 {
-  if(!Vector.isLineType())
+  if (!Vector.isLineType())
     throw openfluid::base::FrameworkException(
         "LineStringGraph::setAttributeFromVectorLocation",
         "Vector is not a Line type");
 
 
-  if(!Vector.containsField(Column))
+  if (!Vector.containsField(Column))
   {
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in GeoVector.";
@@ -566,15 +566,15 @@ void LineStringGraph::setAttributeFromVectorLocation(const std::string& Attribut
       LineSegment.midPoint(CoordInteriorPoint);
       geos::geom::Point* CentroLine=mp_Factory->createPoint(CoordInteriorPoint);
 
-      if(CentroLine->isWithinDistance(GeosGeom,Thresh))
+      if (CentroLine->isWithinDistance(GeosGeom,Thresh))
       {
-        if(Vector.isFieldOfType(Column, OFTInteger))
+        if (Vector.isFieldOfType(Column, OFTInteger))
         {
           int value=Feat->GetFieldAsInteger(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
           break;
         }
-        else if(Vector.isFieldOfType(Column, OFTReal))
+        else if (Vector.isFieldOfType(Column, OFTReal))
         {
           double value=Feat->GetFieldAsDouble(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
@@ -604,13 +604,13 @@ void LineStringGraph::setAttributeFromVectorLocation(const std::string& Attribut
 void LineStringGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
                                                      const std::string& Column,double Thresh)
 {
-  if(!Vector.isLineType())
+  if (!Vector.isLineType())
     throw openfluid::base::FrameworkException(
         "LineStringGraph::setAttributeFromVectorLocation",
         "Vector is not a Line type");
 
 
-  if(!Vector.containsField(Column))
+  if (!Vector.containsField(Column))
   {
     std::ostringstream s;
     s << "Unable to find the column " << Column << " in GeoVector.";
@@ -651,15 +651,15 @@ void LineStringGraph::setAttributeFromVectorLocation(const std::string& Attribut
       LineSegment.midPoint(CoordInteriorPoint);
       geos::geom::Point* CentroLine=mp_Factory->createPoint(CoordInteriorPoint);
 
-      if(CentroLine->isWithinDistance(GeosGeom,Thresh))
+      if (CentroLine->isWithinDistance(GeosGeom,Thresh))
       {
-        if(Vector.isFieldOfType(Column, OFTInteger))
+        if (Vector.isFieldOfType(Column, OFTInteger))
         {
           int value=Feat->GetFieldAsInteger(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
           break;
         }
-        else if(Vector.isFieldOfType(Column, OFTReal))
+        else if (Vector.isFieldOfType(Column, OFTReal))
         {
           double value=Feat->GetFieldAsDouble(columnIndex);
           (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
@@ -697,13 +697,13 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
   geos::planargraph::Node* StartNode2=EntityToMerge.getStartNode();
   geos::planargraph::Node* EndNode2=EntityToMerge.getEndNode();
 
-  if((StartNode->getCoordinate()).equals(StartNode2->getCoordinate())||
+  if ((StartNode->getCoordinate()).equals(StartNode2->getCoordinate())||
       (StartNode->getCoordinate()).equals(EndNode2->getCoordinate())||
       (EndNode->getCoordinate()).equals(StartNode2->getCoordinate())||
       (EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
     Coincident=true;
 
-  if(!Coincident)
+  if (!Coincident)
     throw openfluid::base::FrameworkException(
         "LineStringGraph::mergeLineStringEntities",
         "The LineStringEntities are not coincident");
@@ -713,25 +713,25 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
   geos::geom::CoordinateSequence *CoordsOne=0;
   geos::geom::CoordinateSequence *CoordsTwo=0;
 
-  if((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
+  if ((EndNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {
     CoordsOne=(Entity.getLine())->getCoordinates();
     CoordsTwo=(EntityToMerge.getLine())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
-  else if((StartNode->getCoordinate()).equals(EndNode2->getCoordinate()))
+  else if ((StartNode->getCoordinate()).equals(EndNode2->getCoordinate()))
   {
     CoordsOne=(EntityToMerge.getLine())->getCoordinates();
     CoordsTwo=(Entity.getLine())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
   }
-  else if((EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
+  else if ((EndNode->getCoordinate()).equals(EndNode2->getCoordinate()))
   {
     CoordsOne=(Entity.getLine())->getCoordinates();
     CoordsTwo=(EntityToMerge.getLine())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,false);
   }
-  else if((StartNode->getCoordinate()).equals(StartNode2->getCoordinate()))
+  else if ((StartNode->getCoordinate()).equals(StartNode2->getCoordinate()))
   {
     reverseLineStringEntity(EntityToMerge);
 
@@ -778,22 +778,22 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
   std::list<LandREntity*>::iterator it = lEntities.begin();
   std::list<LandREntity*>::iterator ite = lEntities.end();
   std::multimap<double, LineStringEntity*> mOrderedLength;
-  for(;it!=ite;++it)
+  for (;it!=ite;++it)
   {
 
-    if((*it)->getLength()<MinLength)
+    if ((*it)->getLength()<MinLength)
     {
 
       int StartDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getStartNode()->getDegree();
       int EndDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getEndNode()->getDegree();
 
       //is Line between two confluences ? StartNode and EndNode are in contact with three or more Edges
-      if(!(StartDegree>=3 && EndDegree>=3))
+      if (!(StartDegree>=3 && EndDegree>=3))
       {
         // is Line a dangle ? postulate : LineStringGraph  is not well-oriented.
         //A dangle has StartNode in contact with one Edge and EndNode with three or more Edges
         // or has EndNode in contact with one Edge and StartNode with three or more Edges
-        if(!((StartDegree==1 && EndDegree>=3 && rmDangle==false)||(EndDegree==1 && StartDegree>=3 && rmDangle==false)))
+        if (!((StartDegree==1 && EndDegree>=3 && rmDangle==false)||(EndDegree==1 && StartDegree>=3 && rmDangle==false)))
           mOrderedLength.insert ( std::pair<double, LineStringEntity*>((*it)->getLength(),dynamic_cast<openfluid::landr::LineStringEntity*>(*it)) );
 
       }
