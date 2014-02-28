@@ -381,10 +381,10 @@ bool PolygonGraph::hasIsland()
             const geos::geom::LineString *OuterRing=IslandPoly->getExteriorRing();
             if (InnerRing->within(OuterRing))
               return true;
+
           }
         }
       }
-
     }
   }
   return false;
@@ -685,6 +685,7 @@ void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeNa
 
     }
     Layer0->ResetReading();
+
   }
 
 }

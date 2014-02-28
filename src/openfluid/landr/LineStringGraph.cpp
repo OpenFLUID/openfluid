@@ -510,6 +510,10 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
 
     float Val=(*StartVal+*EndVal)/2;
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(Val));
+
+    delete EndVal;
+    delete StartVal;
+
   }
 }
 
@@ -591,6 +595,7 @@ void LineStringGraph::setAttributeFromVectorLocation(const std::string& Attribut
       // destroying the feature destroys also the associated OGRGeom
       OGRFeature::DestroyFeature(Feat);
       delete GeosGeom;
+      delete CentroLine;
 
     }
     Layer0->ResetReading();
@@ -676,6 +681,7 @@ void LineStringGraph::setAttributeFromVectorLocation(const std::string& Attribut
       // destroying the feature destroys also the associated OGRGeom
       OGRFeature::DestroyFeature(Feat);
       delete GeosGeom;
+      delete CentroLine;
 
     }
     Layer0->ResetReading();

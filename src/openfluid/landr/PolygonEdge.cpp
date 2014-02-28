@@ -203,14 +203,18 @@ bool PolygonEdge::isCoincident(PolygonEdge *Edge)
   geos::geom::Point *StartPoint2=Edge->getLine()->getStartPoint();
   geos::geom::Point *EndPoint2=Edge->getLine()->getEndPoint();
 
-
+  bool Coincident=false;
   if ((StartPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
       (StartPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate()))||
       (EndPoint->getCoordinate())->equals(*(StartPoint2->getCoordinate()))||
       (EndPoint->getCoordinate())->equals(*(EndPoint2->getCoordinate())))
-    return true;
+    Coincident=true;
 
-  return false;
+  delete StartPoint;
+  delete StartPoint2;
+  delete EndPoint;
+  delete EndPoint2;
+  return Coincident;
 }
 
 // =====================================================================

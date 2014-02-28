@@ -389,8 +389,11 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::g
   geos::geom::Geometry *Geom=openfluid::landr::LandRTools::computeSnapOverlayUnion(
       Point, Entity,SnapTolerance);
   if (Geom->getGeometryTypeId()!=1)
+  {
+    delete Geom;
     return vEntities;
-
+  }
+  delete Geom;
 
   unsigned int numVertices=Entity.getNumPoints()-1;
   unsigned int i=0;
@@ -423,6 +426,9 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::g
     }
     else
       i++;
+
+    delete Geom;
+
   }
 
   if (!split)
@@ -453,6 +459,7 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::g
 
   vEntities.push_back(NewFirstLine);
   vEntities.push_back(NewSecondLine);
+
 
   return vEntities;
 }
