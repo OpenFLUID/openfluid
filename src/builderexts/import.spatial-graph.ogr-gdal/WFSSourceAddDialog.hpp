@@ -56,7 +56,17 @@ class WFSSourceAddDialog : public SourceAddDialog
 
   private:
 
+    void generateXMLConfigFile(const QString& URL);
+
+    QString getXMLConfigFilePath();
+
     QString m_TempDir;
+
+    QString m_CurrentUsername;
+
+    QString m_CurrentPassword;
+
+    QString m_RealSourceURI;
 
 
   protected:

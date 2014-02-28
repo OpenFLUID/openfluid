@@ -44,6 +44,7 @@
 #include <QPushButton>
 #include <QDir>
 #include <QFile>
+#include <QTextStream>
 
 
 WFSSourceAddDialog::WFSSourceAddDialog(const QString& TempDir, QWidget* Parent):
@@ -52,6 +53,11 @@ WFSSourceAddDialog::WFSSourceAddDialog(const QString& TempDir, QWidget* Parent):
   setWindowTitle("Spatial data import (OGR/GDAL) - Add WFS source");
 
   ui->FileSelectWidget->setVisible(false);
+  ui->AuthWidget->setVisible(true);
+  ui->AuthCheckBox->setChecked(false);
+  ui->AuthWidget->setEnabled(false);
+
+  connect(ui->AuthCheckBox,SIGNAL(toggled(bool)),ui->AuthWidget,SLOT(setEnabled(bool)));
 
   connect(ui->ConnectButton,SIGNAL(clicked()),this,SLOT(connectToWFS()));
 }
@@ -71,13 +77,63 @@ WFSSourceAddDialog::~WFSSourceAddDialog()
 // =====================================================================
 
 
+void WFSSourceAddDialog::generateXMLConfigFile(const QString& URL)
+{
+
+  QString ConfigFilePath = getXMLConfigFilePath();
+
+  if (!QDir().mkpath(QFileInfo(ConfigFilePath).absolutePath())) return;
+
+  QFile ConfigFile(ConfigFilePath);
+  if (!ConfigFile.open(QIODevice::WriteOnly | QIODevice::Text))
+    return;
+
+  QTextStream Out(&ConfigFile);
+
+  Out << "<OGRWFSDataSource>\n";
+  Out << "  <URL>" << URL << "</URL>\n";
+
+  if (!m_CurrentUsername.isEmpty())
+    Out << "  <UserPwd>" << m_CurrentUsername << ":" << m_CurrentPassword << "</UserPwd>\n";
+  Out << "</OGRWFSDataSource>\n";
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WFSSourceAddDialog::getXMLConfigFilePath()
+{
+  return m_TempDir+"/import.spatial-graph.ogr-gdal/wfsconfig.xml";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WFSSourceAddDialog::connectToWFS()
 {
   ui->URLLineEdit->setText(ui->URLLineEdit->text().trimmed());
 
   if (!ui->URLLineEdit->text().isEmpty())
   {
-    m_CurrentSourceURI = "WFS:"+ui->URLLineEdit->text();
+    m_CurrentUsername = "";
+    m_CurrentPassword = "";
+    m_CurrentSourceURI = getXMLConfigFilePath();
+    m_RealSourceURI = ui->URLLineEdit->text();
+    m_CurrentSourceDisplay = m_RealSourceURI;
+
+    if (ui->AuthCheckBox->isChecked() && !ui->UsernameLineEdit->text().isEmpty())
+    {
+      m_CurrentUsername = ui->UsernameLineEdit->text();
+      m_CurrentPassword = ui->PasswordLineEdit->text();
+    }
+
+    generateXMLConfigFile(m_RealSourceURI);
+
     openDataSource();
   }
 }
@@ -99,12 +155,12 @@ void WFSSourceAddDialog::updateAfterOpen()
 
 bool WFSSourceAddDialog::prepareToImport()
 {
-
+  QString ConfigFilePath = getXMLConfigFilePath();
   OGRSFDriver *CopyDriver;
 
   // determine the exact URI for the selected layer to import
-  QString LayerURI = m_CurrentSourceURI.section("?",0,0) +
-                     "?request=GetFeature&typeName=" +
+  QString LayerURI = m_RealSourceURI.section("?",0,0) +
+                     "?request=GetFeature&amp;typeName=" +
                      QString(mp_DataSource->GetLayer(ui->LayersTableWidget->currentRow())->GetName());
 
 
@@ -112,10 +168,11 @@ bool WFSSourceAddDialog::prepareToImport()
   QString TempCacheDir = m_TempDir+"/import.spatial-graph.ogr-gdal";
   if (!QDir().mkpath(TempCacheDir)) return false;
 
+  generateXMLConfigFile(LayerURI);
 
   OGRRegisterAll();
 
-  OGRDataSource* LayerDS = OGRSFDriverRegistrar::Open(LayerURI.toStdString().c_str(), FALSE );
+  OGRDataSource* LayerDS = OGRSFDriverRegistrar::Open(ConfigFilePath.toStdString().c_str(), FALSE );
 
   if (LayerDS)
   {
@@ -145,6 +202,8 @@ bool WFSSourceAddDialog::prepareToImport()
       m_SrcInfos.CachedSourceURI = CachedURI;
     }
   }
+
+  m_SrcInfos.SourceDisplay = m_CurrentSourceDisplay;
 
   return !m_SrcInfos.CachedSourceURI.isEmpty();
 }

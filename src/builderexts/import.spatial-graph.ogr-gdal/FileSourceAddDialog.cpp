@@ -82,6 +82,8 @@ void FileSourceAddDialog::selectFile()
                                                         "ESRI Shapefiles (*.shp);;"
                                                         "Mapinfo (*.mif *.tab)"));
 
+  m_CurrentSourceDisplay = m_CurrentSourceURI;
+
   if (!m_CurrentSourceURI.isEmpty())
     openDataSource();
 
@@ -106,6 +108,7 @@ void FileSourceAddDialog::updateAfterOpen()
 bool FileSourceAddDialog::prepareToImport()
 {
   m_SrcInfos.SourceURI = m_CurrentSourceURI;
+  m_SrcInfos.SourceDisplay = m_CurrentSourceDisplay;
 
   m_SrcInfos.IsAlreadyInDataset = m_SrcInfos.SourceURI.startsWith(m_InputDir);
 

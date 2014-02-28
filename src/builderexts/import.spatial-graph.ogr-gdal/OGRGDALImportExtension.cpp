@@ -64,6 +64,19 @@ END_BUILDEREXT_SIGNATURE
 // =====================================================================
 // =====================================================================
 
+
+void CPLOGRGDALErrorHandler(CPLErr ErrClass,
+                            int Error,
+                            const char *ErrorMsg)
+{
+  // TODO redirect errors
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 /* TODO check why the following message appears on Mac OSX:
 modalSession has been exited prematurely - check for a reentrant call to endModalSession
 */
@@ -150,6 +163,7 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
 
 OGRGDALImportExtension::~OGRGDALImportExtension()
 {
+  CPLSetErrorHandler(NULL);
   delete ui;
 }
 
@@ -168,6 +182,8 @@ bool OGRGDALImportExtension::initialize()
   OPENFLUID_GetRunEnvironment("dir.temp",DirStr);
   m_TempDir = QString::fromStdString(DirStr);
 
+
+  CPLSetErrorHandler(CPLOGRGDALErrorHandler);
 
   return true;
 }
@@ -194,7 +210,7 @@ void OGRGDALImportExtension::addSource(const SourceInfos& SrcInfos)
 
   int RowIndex = ui->SourcesTableWidget->rowCount()-1;
 
-  ui->SourcesTableWidget->setItem(RowIndex,1,new QTableWidgetItem(SrcInfos.SourceURI));
+  ui->SourcesTableWidget->setItem(RowIndex,1,new QTableWidgetItem(SrcInfos.SourceDisplay));
   ui->SourcesTableWidget->setItem(RowIndex,2,new QTableWidgetItem(SrcInfos.LayerName));
   ui->SourcesTableWidget->setItem(RowIndex,3,new QTableWidgetItem(QString(OGRGeometryTypeToName(SrcInfos.SourceGeomType))));
 

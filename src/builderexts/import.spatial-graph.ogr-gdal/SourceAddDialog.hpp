@@ -87,6 +87,8 @@ class SourceAddDialog : public QDialog
 
     QString m_CurrentSourceURI;
 
+    QString m_CurrentSourceDisplay;
+
     SourceInfos m_SrcInfos;
 
     void openDataSource();

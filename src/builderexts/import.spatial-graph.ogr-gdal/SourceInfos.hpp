@@ -67,6 +67,8 @@ class SourceInfos
 
     QString SourceURI;
 
+    QString SourceDisplay;
+
     QString LayerName;
 
     QString UnitsClass;
