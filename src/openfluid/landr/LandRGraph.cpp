@@ -700,6 +700,8 @@ void LandRGraph::snapVertices(double snapTolerance)
 
     removeUnusedNodes();
 
+    delete entitiesGeom;
+
   }
 
 }

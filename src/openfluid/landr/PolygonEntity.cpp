@@ -413,9 +413,16 @@ geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge, PolygonEdge
     CoordsOne=reverseLine->getCoordinates();
     CoordsTwo=(Edge->getLine())->getCoordinates();
     CoordsOne->add(CoordsTwo,false,true);
+    delete reverseLine;
   }
 
   geos::geom::LineString * NewLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(CoordsOne);
+
+  delete CoordsTwo;
+  delete EndPoint2;
+  delete StartPoint2;
+  delete EndPoint;
+  delete StartPoint;
 
   return NewLine;
 }
