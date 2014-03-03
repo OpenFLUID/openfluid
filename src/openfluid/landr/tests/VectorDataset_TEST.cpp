@@ -253,6 +253,7 @@ BOOST_AUTO_TEST_CASE(check_parse)
         (geos::geom::Geometry*) it->first->GetGeometryRef()->exportToGEOS();
 
     BOOST_CHECK_EQUAL(GeosGeom->toString(), it->second->toString());
+    delete GeosGeom;
   }
 
   Geom = Vect->getGeometries();

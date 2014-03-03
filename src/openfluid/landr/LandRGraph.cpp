@@ -473,6 +473,7 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
     }
 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
+    delete Val;
   }
 
 }
@@ -528,7 +529,7 @@ void LandRGraph::exportToShp(const std::string& FilePath, const std::string& Fil
     if (!OGRGeom)
     {
       delete Out;
-
+      delete OGRGeom;
       throw openfluid::base::FrameworkException(
           "LandRGraph::exportToShp",
           "Failed to transform geometry from GEOS to OGR.");
@@ -539,13 +540,14 @@ void LandRGraph::exportToShp(const std::string& FilePath, const std::string& Fil
     if (Out->getLayer(0)->CreateFeature(Feat) != OGRERR_NONE)
     {
       delete Out;
-
+      delete OGRGeom;
       throw openfluid::base::FrameworkException(
           "LandRGraph::exportToShp",
           "Failed to create feature in shapefile.");
     }
 
     OGRFeature::DestroyFeature(Feat);
+    delete OGRGeom;
   }
 
   Out->copyToDisk(FilePath, FileName, true);

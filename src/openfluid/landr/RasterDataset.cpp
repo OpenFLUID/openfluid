@@ -104,7 +104,7 @@ RasterDataset::RasterDataset(const RasterDataset& Other) :
 RasterDataset::~RasterDataset()
 {
   GDALClose(mp_Dataset);
-  delete mp_GeoTransform;
+  delete[] mp_GeoTransform;
 }
 
 // =====================================================================

@@ -387,6 +387,7 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(
     }
 
     (*it)->setAttributeValue(AttributeName, new core::DoubleValue(*Val));
+    delete Val;
   }
 
 }
