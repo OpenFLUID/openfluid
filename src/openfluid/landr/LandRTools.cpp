@@ -280,6 +280,7 @@ void LandRTools::polygonizeGeometry(
   if (ThePolygons)
     Polygons = *ThePolygons;
 
+  delete ThePolygons;
   delete P;
 }
 

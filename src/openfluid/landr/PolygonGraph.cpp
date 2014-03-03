@@ -209,7 +209,8 @@ void PolygonGraph::addEntity(LandREntity* Entity)
 
     m_EntitiesByOfldId[NewEntity->getOfldId()] = NewEntity;
     m_Entities.push_back(NewEntity);
-
+    delete DiffGeom;
+    delete NewMultiShared;
   }
   catch (openfluid::base::FrameworkException& e)
   {
@@ -322,7 +323,7 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
   }
 
   remove(OldEdge);
-
+  delete DiffGeom;
   Entity->removeEdge(OldEdge);
 }
 
@@ -515,7 +516,7 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
     if (!OGRGeom)
     {
       delete OutVector;
-
+      delete Geom;
       throw openfluid::base::FrameworkException(
           "PolygonGraph::createVectorRepresentation",
           "Failed to transform geometry from GEOS to OGR.");
@@ -531,7 +532,7 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
           "PolygonGraph::createVectorRepresentation",
           "Failed to create feature in shapefile.");
     }
-
+    delete Geom;
     OGRFeature::DestroyFeature(Feat);
   }
 
