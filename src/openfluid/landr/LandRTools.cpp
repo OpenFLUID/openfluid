@@ -26,8 +26,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
  \file Tools.cpp
@@ -213,6 +213,7 @@ std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
 // =====================================================================
 // =====================================================================
 
+
 geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
     geos::geom::Geometry& Geom1, geos::geom::Geometry& Geom2,
     double SnapTolerance)
@@ -238,6 +239,11 @@ geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
           geos::operation::overlay::OverlayOp::opUNION));
 
   cbr->addCommonBits(&(*Result));
+  delete cbr.release();
+  delete PrepGeom.first.release();
+  delete PrepGeom.second.release();
+  delete RemGeom.first.release();
+  delete RemGeom.second.release();
 
   return Result.release();
 }
@@ -381,9 +387,14 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::g
 
 
   std::vector<geos::geom::LineString*> vEntities;
+  geos::geom::Point * StartPoint=Entity.getStartPoint();
+  geos::geom::Point * EndPoint=Entity.getEndPoint();
 
-  double endDistance=Point.getCoordinate()->distance(*(Entity.getEndPoint()->getCoordinate()));
-  double startDistance=Point.getCoordinate()->distance(*(Entity.getStartPoint()->getCoordinate()));
+  double endDistance=Point.getCoordinate()->distance(*(EndPoint->getCoordinate()));
+  double startDistance=Point.getCoordinate()->distance(*(StartPoint->getCoordinate()));
+  delete EndPoint;
+  delete StartPoint;
+
   if (endDistance<=SnapTolerance||startDistance<=SnapTolerance)
     return vEntities;
 
@@ -470,7 +481,7 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::g
 
 
 void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,std::vector<geos::geom::Point*>&Points,
-                                         double SnapTolerance,std::vector<geos::geom::LineString*>&vLines)
+                                         double SnapTolerance,std::vector<geos::geom::LineString*>&vLines,unsigned int step)
 {
 
   if (SnapTolerance<=0.0)
@@ -480,23 +491,21 @@ void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,std::vec
 
 
 
-  if (Points.empty())
+  if (step>=Points.size())
     vLines.push_back(&Entity);
 
   else
   {
     std::vector<geos::geom::LineString*> vLinesSplitted=openfluid::landr::LandRTools::
-        splitLineStringByPoint(Entity,*Points[0],SnapTolerance);
-    std::vector<geos::geom::Point*>Points0=Points;
-    Points0.erase(Points0.begin());
-
+        splitLineStringByPoint(Entity,*Points.at(step),SnapTolerance);
+    step=step+1;
     if (vLinesSplitted.empty())
-      splitLineStringByPoints(Entity,Points0,SnapTolerance,vLines);
+      splitLineStringByPoints(Entity,Points,SnapTolerance,vLines,step);
 
     else
     {
-      splitLineStringByPoints(*vLinesSplitted[0],Points0,SnapTolerance,vLines);
-      splitLineStringByPoints(*vLinesSplitted[1],Points0,SnapTolerance,vLines);
+      splitLineStringByPoints(*vLinesSplitted[0],Points,SnapTolerance,vLines,step);
+      splitLineStringByPoints(*vLinesSplitted[1],Points,SnapTolerance,vLines,step);
 
     }
 

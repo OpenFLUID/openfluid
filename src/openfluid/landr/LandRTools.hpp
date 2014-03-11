@@ -193,11 +193,12 @@ class DLLEXPORT LandRTools
      * @param Point A vector of geos::geom::Point.
      * @param SnapTolerance The threshold distance used to find Point on Line.
      * @param vLines the resulting vector of geos::geom::LineString splitted.
+     * @param step iterator of the vector of Point; default is 0.
      */
 
 
     static void splitLineStringByPoints(geos::geom::LineString& Entity,std::vector<geos::geom::Point*>&Points,
-                                         double SnapTolerance,std::vector<geos::geom::LineString*>&vLines);
+                                             double SnapTolerance,std::vector<geos::geom::LineString*>&vLines,unsigned int step=0);
 
 
 
