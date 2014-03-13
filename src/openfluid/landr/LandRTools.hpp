@@ -195,12 +195,18 @@ class DLLEXPORT LandRTools
      * @param vLines the resulting vector of geos::geom::LineString splitted.
      * @param step iterator of the vector of Point; default is 0.
      */
-
-
     static void splitLineStringByPoints(geos::geom::LineString& Entity,std::vector<geos::geom::Point*>&Points,
                                              double SnapTolerance,std::vector<geos::geom::LineString*>&vLines,unsigned int step=0);
 
-
+    /**
+     * @brief Clean a vector of geos::geom::LineString (break at each intersection and remove duplicate geometry)
+     *
+     * @param vLines An existent vector of geos::geom::LineString.
+     * @param SnapTolerance The tolerance to use.
+     * @return a vector of geos::geom::LineString.
+     */
+    static std::vector<geos::geom::LineString*>* cleanLineStrings(
+        std::vector<geos::geom::LineString*> vLines,double SnapTolerance);
 
 };
 
