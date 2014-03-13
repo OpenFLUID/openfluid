@@ -98,6 +98,9 @@
 #include <geos/util/IllegalArgumentException.h>
 #include <geos/planargraph/Node.h>
 #include <openfluid/tools.hpp>
+#include <geos/operation/overlay/snap/SnapOverlayOp.h>
+#include <geos/operation/overlay/snap/GeometrySnapper.h>
+#include <geos/operation/distance/DistanceOp.h>
 
 // =====================================================================
 // =====================================================================
@@ -499,7 +502,7 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
 
   BOOST_CHECK_EQUAL(Noded_lines->size(), 51);
 //  for (unsigned int i = 0; i < Noded_lines->size(); i++)
-//    std::cout << Noded_lines->at(i)->toString() << std::endl;
+ //   std::cout << Noded_lines->at(i)->toString() << std::endl;
 
   std::vector<geos::geom::Geometry*> Noded;
   Noded.assign(Noded_lines->begin(), Noded_lines->end());
@@ -515,7 +518,7 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
   BOOST_CHECK_EQUAL(ThePolygons.size(), 24);
 
 //  for (unsigned int i = 0; i < ThePolygons.size(); i++)
-//    std::cout << ThePolygons.at(i)->toString() << std::endl;
+ //   std::cout << ThePolygons.at(i)->toString() << std::endl;
 //  for (unsigned int i = 0; i < TheDangles.size(); i++)
 //    std::cout << TheDangles.at(i)->toString() << std::endl;
 
@@ -1027,3 +1030,67 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
 
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
+{
+  double SnapTolerance=0.001;
+  openfluid::core::GeoVectorValue ValSU(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "fields_extract2.shp");
+  openfluid::core::GeoVectorValue ValSU2(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soils_extract3.shp");
+
+  openfluid::landr::VectorDataset* VectSU = new openfluid::landr::VectorDataset(
+      ValSU);
+
+  openfluid::landr::VectorDataset* VectSU2 =
+      new openfluid::landr::VectorDataset(ValSU2);
+
+  geos::geom::Geometry *Geom1=VectSU->getGeometries();
+  geos::geom::Geometry *Geom2=VectSU2->getGeometries();
+
+
+  std::vector<geos::geom::Polygon*> IntersectPolys  =  openfluid::landr::LandRTools::computeIntersectPolygons(Geom1, Geom2);
+
+  std::vector<geos::geom::Geometry*> GeomPolygons;
+  const geos::geom::GeometryFactory* Factory ;
+  geos::geom::Geometry* GeomPolygons_coll=0;
+
+  GeomPolygons.assign(IntersectPolys.begin(), IntersectPolys.end());
+  Factory= geos::geom::GeometryFactory::getDefaultInstance();
+  GeomPolygons_coll = Factory->buildGeometry(GeomPolygons);
+
+
+  std::vector<geos::geom::LineString*> PolyRings;
+  unsigned int i2End=GeomPolygons_coll->getNumGeometries();
+  for (unsigned int i = 0; i < i2End; i++)
+    PolyRings.push_back(
+        const_cast<geos::geom::LineString*>(dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(GeomPolygons_coll->getGeometryN(
+            i)))->getExteriorRing()));
+
+
+  std::vector<geos::geom::LineString*>* cleanLines  =  openfluid::landr::LandRTools::cleanLineStrings(PolyRings,SnapTolerance);
+
+  BOOST_CHECK_EQUAL(cleanLines->size(), 26);
+
+  delete VectSU;
+  delete VectSU2;
+  delete Geom1;
+  delete Geom2;
+  unsigned int iEnd=IntersectPolys.size();
+  for (unsigned int i = 0; i < iEnd; i++)
+    delete IntersectPolys.at(i);
+
+  delete GeomPolygons_coll;
+
+  iEnd=cleanLines->size();
+  for (unsigned int i = 0; i < iEnd; i++)
+    delete cleanLines->at(i);
+  delete cleanLines;
+
+
+}
+
+// =====================================================================
+// =====================================================================
+

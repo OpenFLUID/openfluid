@@ -517,10 +517,67 @@ void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,std::vec
 // =====================================================================
 
 
+std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(
+    std::vector<geos::geom::LineString*> vLines,double SnapTolerance)
+{
+  try
+  {
+    std::list<geos::geom::LineString*> ExistingLines;
+    geos::operation::linemerge::LineMerger Merger;
 
+    std::vector<geos::geom::LineString*>::iterator it=vLines.begin();
+    std::vector<geos::geom::LineString*>::iterator ite=vLines.end();
+    const geos::geom::CoordinateSequenceFactory *CoordSeqFactory=geos::geom::GeometryFactory::getDefaultInstance()->getCoordinateSequenceFactory();
 
+    for(;it!=ite;++it)
+    {
+      unsigned int numVertices=(*it)->getNumPoints()-1;
+      unsigned int i=0;
 
+      while(i<numVertices)
+      {
+
+        geos::geom::Coordinate FirstCoord=(*it)->getCoordinateN(i);
+        geos::geom::Coordinate SecondCoord=(*it)->getCoordinateN(i+1);
+        std::vector<geos::geom::Coordinate>* vCoor=new std::vector<geos::geom::Coordinate>;;
+        vCoor->push_back(FirstCoord);
+        vCoor->push_back(SecondCoord);
+
+        geos::geom::CoordinateSequence* CoordSeq=CoordSeqFactory->create(vCoor);
+        geos::geom::LineString * NewLine=geos::geom::GeometryFactory::getDefaultInstance()->createLineString(CoordSeq);
+        NewLine->normalize();
+
+        if (!exists(NewLine, ExistingLines,SnapTolerance))
+        {
+          ExistingLines.push_back(NewLine);
+          Merger.add(NewLine);
+        }
+        i++;
+
+      }
+
+    }
+
+    return Merger.getMergedLineStrings();
+  }
+  catch (geos::util::GEOSException& e)
+  {
+    throw openfluid::base::FrameworkException(
+        "LandRTools::cleanLineStrings",
+        "Error while cleaning lines, you can try again with an other snap tolerance value.\n"
+        "(Details: "
+        + std::string(e.what()) + ")");
+  }
+
+  return (std::vector<geos::geom::LineString*>*) 0;
+
+}
+
+// =====================================================================
+// =====================================================================
 
 
 }
 } /* namespace openfluid */
+
+
