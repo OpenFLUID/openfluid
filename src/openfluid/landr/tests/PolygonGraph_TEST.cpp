@@ -1371,3 +1371,34 @@ BOOST_AUTO_TEST_CASE(check_getPolygonEntityByCompactness)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_construction_from_Bad_Geometry)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "BAD_POLYTEST.shp");
+
+  openfluid::landr::PolygonGraph* Graph =0;
+
+  BOOST_CHECK_THROW(Graph =
+      openfluid::landr::PolygonGraph::create(*Val),
+      openfluid::base::FrameworkException);
+
+
+  delete Val;
+
+  openfluid::core::GeoVectorValue Val2(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                        "BAD_POLYTEST.shp");
+
+    openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+        Val2);
+
+    BOOST_CHECK_THROW(Graph =
+          openfluid::landr::PolygonGraph::create(*Vect),
+          openfluid::base::FrameworkException);
+
+  delete Vect;
+}
+
+// =====================================================================
+// =====================================================================
+
+

@@ -161,6 +161,14 @@ void LandRGraph::addEntitiesFromGeoVector()
   while ((Feat = Layer0->GetNextFeature()) != NULL)
   {
     OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+    if(!OGRGeom->IsValid())
+    {
+      std::ostringstream s;
+      s << "Error when exporting OGR Geometry into GEOS geometry";
+      throw openfluid::base::FrameworkException(
+          "LandRGraph::addEntitiesFromGeoVector", s.str());
+
+    }
 
     // c++ cast doesn't work (have to use the C API instead)
     geos::geom::Geometry* GeosGeom =
