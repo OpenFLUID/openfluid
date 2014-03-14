@@ -26,8 +26,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
  \file PolygonGraph.cpp
@@ -65,7 +65,7 @@ namespace landr {
 // =====================================================================
 
 PolygonGraph::PolygonGraph() :
-        LandRGraph()
+                LandRGraph()
 {
 
 }
@@ -74,7 +74,7 @@ PolygonGraph::PolygonGraph() :
 // =====================================================================
 
 PolygonGraph::PolygonGraph(openfluid::core::GeoVectorValue& Val) :
-        LandRGraph(Val)
+                LandRGraph(Val)
 {
 
 }
@@ -83,7 +83,7 @@ PolygonGraph::PolygonGraph(openfluid::core::GeoVectorValue& Val) :
 // =====================================================================
 
 PolygonGraph::PolygonGraph(openfluid::landr::VectorDataset& Vect) :
-        LandRGraph(Vect)
+                LandRGraph(Vect)
 {
 
 }
@@ -94,7 +94,16 @@ PolygonGraph::PolygonGraph(openfluid::landr::VectorDataset& Vect) :
 PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
 {
   PolygonGraph* Graph = new PolygonGraph(Val);
-  Graph->addEntitiesFromGeoVector();
+  try{
+
+    Graph->addEntitiesFromGeoVector();
+
+  }catch (openfluid::base::FrameworkException& e)
+  {
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::create",
+        "Unable to create the PolygonGraph");
+  }
 
   return Graph;
 }
@@ -105,7 +114,16 @@ PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
 PolygonGraph* PolygonGraph::create(openfluid::landr::VectorDataset& Vect)
 {
   PolygonGraph* Graph = new PolygonGraph(Vect);
-  Graph->addEntitiesFromGeoVector();
+  try{
+
+    Graph->addEntitiesFromGeoVector();
+
+  }catch (openfluid::base::FrameworkException& e)
+  {
+    throw openfluid::base::FrameworkException(
+        "PolygonGraph::create",
+        "Unable to create the PolygonGraph");
+  }
 
   return Graph;
 }
@@ -282,8 +300,8 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
     std::ostringstream s;
     s << "Error when removing segment (" << Segment->toString()
-          << ") from Polygon " << Entity->getOfldId()
-          << ": doesn't find edge intersection.";
+                  << ") from Polygon " << Entity->getOfldId()
+                  << ": doesn't find edge intersection.";
 
     throw openfluid::base::FrameworkException(
         "PolygonGraph::removeSegment", s.str());
@@ -300,8 +318,8 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
 
       std::ostringstream s;
       s << "Error when removing segment (" << Segment->toString()
-            << ") from Polygon " << Entity->getOfldId()
-            << ": difference geometry is not \"Line\" typed.";
+                    << ") from Polygon " << Entity->getOfldId()
+                    << ": difference geometry is not \"Line\" typed.";
 
       throw openfluid::base::FrameworkException(
           "PolygonGraph::removeSegment",
