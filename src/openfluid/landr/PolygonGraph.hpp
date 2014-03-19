@@ -210,11 +210,12 @@ class DLLEXPORT PolygonGraph: public LandRGraph
      * @param Graph The LineStringGraph to compare to.
      * @param Relation The Relationship to use for comparison.
      * @param BufferDistance The distance below which we consider that two elements are related.
+     * @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
      */
     void computeLineStringNeighbours(
         LineStringGraph& Graph,
         openfluid::landr::LandRTools::Relationship Relation,
-        double BufferDistance);
+        double BufferDistance,double ContactLength=0);
 
     /**
      * @brief Creates attribute for the PolygonEdge of this PolygonGraph.

@@ -26,8 +26,8 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
-*/
+
+ */
 
 /**
  \file PolygonEntity.cpp
@@ -60,16 +60,16 @@ namespace landr {
 
 PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
                              unsigned int OfldId) :
-    LandREntity(NewPolygon, OfldId), mp_NeighboursMap(0), mp_LineStringNeighboursMap(
-        0)
+                        LandREntity(NewPolygon, OfldId), mp_NeighboursMap(0), mp_LineStringNeighboursMap(
+                            0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
   {
     delete mp_Centroid;
 
     throw openfluid::base::FrameworkException(
-                                       "PolygonEntity::PolygonEntity",
-                                       "Geometry is not a Polygon.");
+        "PolygonEntity::PolygonEntity",
+        "Geometry is not a Polygon.");
 
   }
 
@@ -81,8 +81,8 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
     delete mp_Centroid;
 
     throw openfluid::base::FrameworkException(
-                                       "PolygonEntity::PolygonEntity",
-                                       "Polygon is not valid.");
+        "PolygonEntity::PolygonEntity",
+        "Polygon is not valid.");
   }
 
 }
@@ -141,8 +141,8 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
     m_PolyEdges.erase(itEdge);
   else
     throw openfluid::base::FrameworkException(
-                                       "PolygonEntity::removeEdge",
-                                       "Edge doesn't exist in Edge vector.");
+        "PolygonEntity::removeEdge",
+        "Edge doesn't exist in Edge vector.");
 
   mp_NeighboursMap = 0;
 
@@ -243,7 +243,7 @@ void PolygonEntity::computeNeighbours()
     if (Edge->getFaces().size() > 1)
       OtherFace =
           Edge->getFaces()[0] == this ? Edge->getFaces()[1] :
-                                        Edge->getFaces()[0];
+              Edge->getFaces()[0];
 
     if (OtherFace)
     {
@@ -310,8 +310,13 @@ geos::geom::Geometry* PolygonEntity::getBufferedBoundary(double BufferDistance)
 
 void PolygonEntity::computeLineStringNeighbours(
     LineStringGraph& Graph, LandRTools::Relationship Relation,
-    double BufferDistance)
+    double BufferDistance,double ContactLength)
 {
+  if (Relation == LandRTools::TOUCHES && ContactLength==0)
+    throw openfluid::base::FrameworkException(
+        "PolygonEntity::computeLineStringNeighbours",
+        "ContactLength must be superior to 0 for LandRTools::TOUCHES RelationShip");
+
   if (!mp_NeighboursMap)
     computeNeighbours();
 
@@ -347,12 +352,45 @@ void PolygonEntity::computeLineStringNeighbours(
     }
 
     else if (Relation == LandRTools::INTERSECTS
-             && LS->getLine()->intersects(PolyBuff))
+        && LS->getLine()->intersects(PolyBuff))
     {
       mp_LineStringNeighboursMap->insert(
           std::make_pair(LS, (openfluid::landr::PolygonEdge*) 0));
       mp_Neighbours->insert(*it);
     }
+
+    else if (Relation == LandRTools::TOUCHES
+        && LS->getLine()->intersects(PolyBuff))
+
+    {
+      geos::geom::Geometry* EdgeBuff;
+      unsigned int jEnd=m_PolyEdges.size();
+      for (unsigned int j = 0; j < jEnd; j++)
+      {
+        EdgeBuff = m_PolyEdges[j]->getLine()->buffer(BufferDistance);
+
+        geos::geom::Geometry * Inter=LS->getLine()->intersection(EdgeBuff);
+        double lengthInter=0.0;
+        unsigned int iEnd=Inter->getNumGeometries();
+        for (unsigned int i = 0; i < iEnd; i++)
+        {
+          geos::geom::LineString* LineIntersect =
+              dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
+                  i)));
+          lengthInter=lengthInter+LineIntersect->getLength();
+        }
+
+        if(lengthInter>ContactLength)
+        {
+          mp_LineStringNeighboursMap->insert(
+              std::make_pair(LS, m_PolyEdges[j]));
+          mp_Neighbours->insert(*it);
+        }
+        delete EdgeBuff;
+      }
+
+    }
+
   }
 
   delete PolyBuff;

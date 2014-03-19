@@ -564,14 +564,21 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
 
 void PolygonGraph::computeLineStringNeighbours(
     LineStringGraph& Graph, openfluid::landr::LandRTools::Relationship Relation,
-    double BufferDistance)
+    double BufferDistance,double ContactLength)
 {
+  if (Relation == LandRTools::TOUCHES && ContactLength==0)
+    throw openfluid::base::FrameworkException(
+           "PolygonGraph::computeLineStringNeighbours",
+           "ContactLength must be superior to 0 for LandRTools::TOUCHES RelationShip");
+
+
+
 
   LandRGraph::Entities_t::iterator it = m_Entities.begin();
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
     dynamic_cast<PolygonEntity*>(*it)->computeLineStringNeighbours(
-        Graph, Relation, BufferDistance);
+        Graph, Relation, BufferDistance,ContactLength);
 }
 
 // =====================================================================

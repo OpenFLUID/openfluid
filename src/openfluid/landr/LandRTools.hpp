@@ -67,7 +67,7 @@ class DLLEXPORT LandRTools
 
     enum Relationship
     {
-      NONE, INTERSECTS, CONTAINS, EQUALS
+      NONE, INTERSECTS, CONTAINS, EQUALS, TOUCHES
     };
 
     /**

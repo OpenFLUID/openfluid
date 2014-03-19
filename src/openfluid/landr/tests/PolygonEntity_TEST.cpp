@@ -26,7 +26,7 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
-  
+
 */
 
 /**
@@ -581,3 +581,411 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Intersect)
   delete ValRS;
   delete ValSU;
 }
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Contains)
+{
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST4.shp");
+
+  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+
+  openfluid::landr::LineStringGraph* RSGraph =
+      openfluid::landr::LineStringGraph::create(*ValRS);
+  openfluid::landr::PolygonGraph* SUGraph =
+      openfluid::landr::PolygonGraph::create(*ValSU);
+
+  openfluid::landr::PolygonEntity* SU1 = SUGraph->getEntity(1);
+  openfluid::landr::PolygonEntity* SU2 = SUGraph->getEntity(2);
+  openfluid::landr::PolygonEntity* SU3 = SUGraph->getEntity(3);
+  openfluid::landr::PolygonEntity* SU4 = SUGraph->getEntity(4);
+
+  // line Neighbours of SU1
+  BOOST_CHECK(!SU1->getLineStringNeighbours());
+  SU1->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS, 0);
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 0);
+  SU1->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS,
+                                   0.0001);
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 2);
+
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*> *lineMap=SU1->getLineStringNeighbours();
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*>::iterator it=lineMap->begin();
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*>::iterator ite=lineMap->end();
+  std::list<int> lNeighbours;
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+  lNeighbours.sort();
+  std::list<int>::iterator jt=lNeighbours.begin();
+
+  BOOST_CHECK_EQUAL((*jt),1);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),2);
+
+  SU1->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS,
+                                   0.1);
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 3);
+
+
+  lNeighbours.clear();
+  lineMap=SU1->getLineStringNeighbours();
+
+  it=lineMap->begin();
+  ite=lineMap->end();
+
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+
+  lNeighbours.sort();
+  jt=lNeighbours.begin();
+
+  BOOST_CHECK_EQUAL((*jt),1);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),2);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),12);
+
+
+
+  // line Neighbours of SU2
+  BOOST_CHECK(!SU2->getLineStringNeighbours());
+  SU2->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS, 0);
+  BOOST_CHECK_EQUAL(SU2->getLineStringNeighbours()->size(), 0);
+  SU2->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS,
+                                   0.0001);
+  BOOST_CHECK_EQUAL(SU2->getLineStringNeighbours()->size(), 0);
+
+  // line Neighbours of SU3
+  BOOST_CHECK(!SU3->getLineStringNeighbours());
+  SU3->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS, 0);
+  BOOST_CHECK_EQUAL(SU3->getLineStringNeighbours()->size(), 0);
+  SU3->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS,
+                                   0.0001);
+  BOOST_CHECK_EQUAL(SU3->getLineStringNeighbours()->size(), 0);
+
+  // line Neighbours of SU4
+  BOOST_CHECK(!SU4->getLineStringNeighbours());
+  SU4->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS, 0);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 0);
+  SU4->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS,
+                                   0.01);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 0);
+  SU4->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::CONTAINS,
+                                   0.1);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 1);
+  BOOST_CHECK_EQUAL(
+      SU4->getLineStringNeighbours()->begin()->first->getOfldId(), 10);
+
+
+  delete RSGraph;
+  delete SUGraph;
+  delete ValRS;
+  delete ValSU;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Intersects)
+{
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST4.shp");
+
+  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+
+  openfluid::landr::LineStringGraph* RSGraph =
+      openfluid::landr::LineStringGraph::create(*ValRS);
+  openfluid::landr::PolygonGraph* SUGraph =
+      openfluid::landr::PolygonGraph::create(*ValSU);
+
+  openfluid::landr::PolygonEntity* SU1 = SUGraph->getEntity(1);
+  openfluid::landr::PolygonEntity* SU2 = SUGraph->getEntity(2);
+  openfluid::landr::PolygonEntity* SU3 = SUGraph->getEntity(3);
+  openfluid::landr::PolygonEntity* SU4 = SUGraph->getEntity(4);
+
+  // line Neighbours of SU1
+  BOOST_CHECK(!SU1->getLineStringNeighbours());
+  SU1->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS, 0);
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 0);
+  SU1->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS,
+                                   0.0001);
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 4);
+
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*> *lineMap=SU1->getLineStringNeighbours();
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*>::iterator it=lineMap->begin();
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*>::iterator ite=lineMap->end();
+
+  std::list<int> lNeighbours;
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+  lNeighbours.sort();
+  std::list<int>::iterator jt=lNeighbours.begin();
+
+  BOOST_CHECK_EQUAL((*jt),1);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),2);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),3);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),12);
+
+  // line Neighbours of SU2
+  BOOST_CHECK(!SU2->getLineStringNeighbours());
+  SU2->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS, 0);
+  BOOST_CHECK_EQUAL(SU2->getLineStringNeighbours()->size(), 0);
+  SU2->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS,
+                                   0.0001);
+  BOOST_CHECK_EQUAL(SU2->getLineStringNeighbours()->size(), 5);
+
+
+  lNeighbours.clear();
+  lineMap=SU2->getLineStringNeighbours();
+  it=lineMap->begin();
+  ite=lineMap->end();
+
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+  lNeighbours.sort();
+  jt=lNeighbours.begin();
+
+  BOOST_CHECK_EQUAL((*jt),1);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),5);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),6);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),7);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),11);
+
+
+  // line Neighbours of SU3
+  BOOST_CHECK(!SU3->getLineStringNeighbours());
+  SU3->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS, 0);
+  BOOST_CHECK_EQUAL(SU3->getLineStringNeighbours()->size(), 0);
+  SU3->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS,
+                                   0.0001);
+  BOOST_CHECK_EQUAL(SU3->getLineStringNeighbours()->size(), 3);
+
+
+  lNeighbours.clear();
+  lineMap=SU3->getLineStringNeighbours();
+  it=lineMap->begin();
+  ite=lineMap->end();
+
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+  lNeighbours.sort();
+  jt=lNeighbours.begin();
+
+  BOOST_CHECK_EQUAL((*jt),3);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),4);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),8);
+
+
+  // line Neighbours of SU4
+  BOOST_CHECK(!SU4->getLineStringNeighbours());
+  SU4->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS, 0);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 0);
+  SU4->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS,
+                                   0.0001);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 3);
+  SU4->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS,
+                                   0.1);
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 4);
+
+
+  lNeighbours.clear();
+  lineMap=SU4->getLineStringNeighbours();
+  it=lineMap->begin();
+  ite=lineMap->end();
+
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+  lNeighbours.sort();
+  jt=lNeighbours.begin();
+
+
+  BOOST_CHECK_EQUAL((*jt),4);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),5);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),9);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),10);
+
+  delete RSGraph;
+  delete SUGraph;
+  delete ValRS;
+  delete ValSU;
+
+}
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
+{
+
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "LINE_TEST4.shp");
+
+  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+
+  openfluid::landr::LineStringGraph* RSGraph =
+      openfluid::landr::LineStringGraph::create(*ValRS);
+  openfluid::landr::PolygonGraph* SUGraph =
+      openfluid::landr::PolygonGraph::create(*ValSU);
+
+  openfluid::landr::PolygonEntity* SU1 = SUGraph->getEntity(1);
+  openfluid::landr::PolygonEntity* SU2 = SUGraph->getEntity(2);
+  openfluid::landr::PolygonEntity* SU3 = SUGraph->getEntity(3);
+  openfluid::landr::PolygonEntity* SU4 = SUGraph->getEntity(4);
+
+  // line Neighbours of SU1
+  BOOST_CHECK(!SU1->getLineStringNeighbours());
+
+  BOOST_CHECK_THROW(SU1->computeLineStringNeighbours(*RSGraph,
+                                                     openfluid::landr::LandRTools::TOUCHES, 0),openfluid::base::FrameworkException);
+
+  SU1->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::TOUCHES, 0,0.1);
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 0);
+  SU1->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::TOUCHES,
+                                   0.01,0.1);
+
+  BOOST_CHECK_EQUAL(SU1->getLineStringNeighbours()->size(), 4);
+
+  std::list<int> lNeighbours;
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*> *lineMap=SU1->getLineStringNeighbours();
+  lineMap=SU1->getLineStringNeighbours();
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*>::iterator it=lineMap->begin();
+  std::map<openfluid::landr::LineStringEntity*, openfluid::landr::PolygonEdge*>::iterator ite=lineMap->end();
+
+
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+  lNeighbours.sort();
+  std::list<int>::iterator jt=lNeighbours.begin();
+  jt=lNeighbours.begin();
+
+
+  BOOST_CHECK_EQUAL((*jt),1);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),2);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),3);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),12);
+
+  // line Neighbours of SU2
+  SU2->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::TOUCHES,
+                                   0.01,0.1);
+
+  BOOST_CHECK_EQUAL(SU2->getLineStringNeighbours()->size(), 1);
+  BOOST_CHECK_EQUAL(
+      SU2->getLineStringNeighbours()->begin()->first->getOfldId(), 5);
+
+
+
+
+  // line Neighbours of SU3
+  SU3->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::TOUCHES,
+                                   0.01,0.1);
+
+  BOOST_CHECK_EQUAL(SU3->getLineStringNeighbours()->size(), 2);
+
+  lNeighbours.clear();
+  lineMap=SU3->getLineStringNeighbours();
+  it=lineMap->begin();
+  ite=lineMap->end();
+
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+  lNeighbours.sort();
+  jt=lNeighbours.begin();
+
+  BOOST_CHECK_EQUAL((*jt),3);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),4);
+
+
+
+  // line Neighbours of SU4
+  SU4->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::TOUCHES,
+                                   0.1,0.2);
+
+  BOOST_CHECK_EQUAL(SU4->getLineStringNeighbours()->size(), 4);
+
+  lNeighbours.clear();
+  lineMap=SU4->getLineStringNeighbours();
+  it=lineMap->begin();
+  ite=lineMap->end();
+
+  for (; it != ite; ++it)
+    lNeighbours.push_back((*it).first->getOfldId());
+
+  lNeighbours.sort();
+  jt=lNeighbours.begin();
+
+  BOOST_CHECK_EQUAL((*jt),4);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),5);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),9);
+  ++jt;
+  BOOST_CHECK_EQUAL((*jt),10);
+
+
+
+
+
+  delete RSGraph;
+  delete SUGraph;
+  delete ValRS;
+  delete ValSU;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
