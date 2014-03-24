@@ -23,7 +23,7 @@ before_script:
 
 script:
   - cd _build-devel
-  - make && ctest -E unit-api-Market
+  - make && ctest -E "unit-api-Market|LineStringGraph"
   - cd ..
   - cd _build-release
   - make && cpack -G DEB
