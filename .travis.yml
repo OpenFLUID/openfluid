@@ -1,0 +1,34 @@
+language: cpp
+
+compiler:
+  - gcc
+
+before_install:
+  - sudo add-apt-repository ppa:ubuntugis/ppa -y
+  - sudo add-apt-repository ppa:czchen/travis-ci -y
+  - sudo apt-get update -qq
+
+install:
+  - sudo apt-get install -qq openssh-server openssh-client g++ gfortran cmake libboost-all-dev libqt4-dev libgdal1-dev libgeos++-dev p7zip-full gnuplot graphviz
+
+before_script:
+  - mkdir _build-devel
+  - cd _build-devel
+  - cmake .. -DOPENFLUID_ENABLE_HEAVYTESTING=1
+  - cd ..
+  - mkdir _build-release
+  - cd _build-release
+  - cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
+  - cd ..
+
+script:
+  - cd _build-devel
+  - make && ctest -E unit-api-Market
+  - cd ..
+  - cd _build-release
+  - make && cpack -G DEB
+  
+notifications:
+  email:
+    on_success: always
+    on_failure: always
