@@ -99,7 +99,7 @@ INCLUDE(CPack.in.cmake)
 
 INSTALL(FILES "COPYING"
         "AUTHORS"
-        "README"   
+        "README.md"   
         "CHANGELOG"
         DESTINATION "${DOC_INSTALL_PATH}")
   
