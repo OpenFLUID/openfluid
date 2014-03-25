@@ -3,6 +3,10 @@ language: cpp
 compiler:
   - gcc
 
+env:
+  - OFBUILD_TRAVIS_BUILDTYPE=debug
+  - OFBUILD_TRAVIS_BUILDTYPE=release
+
 before_install:
   - sudo add-apt-repository ppa:ubuntugis/ppa -y
   - sudo add-apt-repository ppa:czchen/travis-ci -y
@@ -12,23 +16,17 @@ install:
   - sudo apt-get install -qq openssh-server openssh-client g++ gfortran cmake libboost-all-dev libqt4-dev libgdal1-dev libgeos++-dev p7zip-full gnuplot graphviz
 
 before_script:
-  - mkdir _build-devel
-  - cd _build-devel
-  - cmake .. -DOPENFLUID_ENABLE_HEAVYTESTING=1
-  - cd ..
-  - mkdir _build-release
-  - cd _build-release
-  - cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
-  - cd ..
+  - mkdir _build
+  - cd _build
+  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "debug" ] ; then cmake .. -DOPENFLUID_ENABLE_HEAVYTESTING=1 ; fi
+  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "release" ] ; then cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ; fi
 
 script:
-  - cd _build-devel
-  - make && ctest -E "unit-api-Market|LineStringGraph"
-  - cd ..
-  - cd _build-release
-  - make && cpack -G DEB
-  
+  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "debug" ] ; then make && ctest -E "unit-api-Market|LineStringGraph" ; fi
+  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "release" ] ; then make && cpack -G DEB ; fi
+
 notifications:
   email:
     on_success: always
     on_failure: always
+
