@@ -308,7 +308,7 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
     {
       geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getStartNode();
 
-      if (Node->getCoordinate()==theNextNode->getCoordinate())
+      if (Node->getCoordinate().equals(theNextNode->getCoordinate()))
         theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getEndNode();
 
       // set Edge visited as true
