@@ -22,7 +22,7 @@ before_script:
   - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "release" ] ; then cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr ; fi
 
 script:
-  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "debug" ] ; then make && ctest -E "unit-api-Market|LineStringGraph" ; fi
+  - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "debug" ] ; then make && ctest -E "unit-api-Market" ; fi
   - if [ ${OFBUILD_TRAVIS_BUILDTYPE} == "release" ] ; then make && cpack -G DEB ; fi
 
 notifications:
