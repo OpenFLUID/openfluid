@@ -85,26 +85,14 @@ QWidget(Parent), ui(new Ui::NewsItemWidget)
     TagLayout->setSpacing(5);
     TagLayout->setContentsMargins(0,0,0,0);
 
-    QLabel* TagLabel = new QLabel(Tag,TagWidget);
+    QString TagLabelText = Tag;
+    TagLabelText.replace(" ","\n");
+
+    QLabel* TagLabel = new QLabel(TagLabelText,TagWidget);
     TagLabel->setWordWrap(true);
 
-    QString TagBGColor = "#47617B";
-
-    if (Tag == "software")
-    {
-      TagBGColor = "#4BA84F";
-    }
-    else if (Tag == "doc" || Tag == "publication")
-    {
-      TagBGColor = "#4F75D1";
-    }
-    else if (Tag == "training")
-    {
-      TagBGColor = "#A04FD1";
-    }
-
-    TagLabel->setStyleSheet(QString("color : %1; background-color : %2 ; border-radius: 4px; padding : 3px; font-size : 8pt;")
-                            .arg("white",TagBGColor));
+    TagLabel->setStyleSheet(QString("qproperty-alignment: AlignCenter; color : %1; background-color : %2 ; border-radius: 4px; padding : 4px; font-size : 9pt;")
+                            .arg("white",getCSSColorFromTag(Tag)));
 
 
     TagLayout->addStretch();
@@ -126,6 +114,43 @@ QWidget(Parent), ui(new Ui::NewsItemWidget)
 NewsItemWidget::~NewsItemWidget()
 {
   delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString NewsItemWidget::getCSSColorFromTag(const QString& Tag)
+{
+  QString TagColor = "#47617B"; // OpenFLUID grey-blue
+
+  if (Tag == "software")
+  {
+    TagColor = "#4BA84F";  // green
+  }
+  else if (Tag == "doc" || Tag == "publication")
+  {
+    TagColor = "#4F75D1";  // blue
+  }
+  else if (Tag == "training" || Tag == "meeting")
+  {
+    TagColor = "#A04FD1";  // purple
+  }
+/*  else if (Tag == "meeting")
+  {
+    TagColor = "#FF78C7";  // pink
+  }*/
+  else if (Tag == "research project")
+  {
+    TagColor = "#979797";  // grey
+  }
+  else if (Tag == "important")
+  {
+    TagColor = "#FF7600";  // orange
+  }
+
+  return TagColor;
 }
 
 
