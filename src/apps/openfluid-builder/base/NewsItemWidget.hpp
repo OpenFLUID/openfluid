@@ -76,6 +76,8 @@ class NewsItemWidget : public QWidget
 
     static QLocale m_Locale;
 
+    static QString getCSSColorFromTag(const QString& Tag);
+
 
   public:
 
