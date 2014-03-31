@@ -325,6 +325,7 @@ bool ProjectModule::whenSaveAsAsked()
                                   SaveAsDlg.getProjectFullPath()))
     {
       mp_DashboardFrame->refreshProjectInfos();
+      mp_OutputsTab->refreshOutputDir();
       emit savePerformed();
       return true;
     }
