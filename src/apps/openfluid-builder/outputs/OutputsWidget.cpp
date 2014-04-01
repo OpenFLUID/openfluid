@@ -58,10 +58,8 @@ OutputsWidget::OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXD
 
   QDir("").mkpath(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
 
-  ui->OutputDirLabel->setText(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
-
   ui->OutputDirView->setModel(mp_FSModel);
-  ui->OutputDirView->setRootIndex(mp_FSModel->setRootPath(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str())));
+  refreshOutputDir();
 
   connect(ui->OutputDirView,SIGNAL(doubleClicked(const QModelIndex&)),this,SLOT(tryToOpenFile(const QModelIndex&)));
   connect(ui->ClearButton,SIGNAL(clicked()),this,SLOT(clearOutputDir()));
@@ -77,6 +75,17 @@ OutputsWidget::OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXD
 OutputsWidget::~OutputsWidget()
 {
   delete ui;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void OutputsWidget::refreshOutputDir() const
+{
+  ui->OutputDirLabel->setText(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
+  ui->OutputDirView->setRootIndex(mp_FSModel->setRootPath(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str())));
 }
 
 

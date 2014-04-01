@@ -74,11 +74,18 @@ class OutputsWidget : public WorkspaceWidget
 
     void tryToExploreOutputDir();
 
+
+  public slots:
+
+    void refreshOutputDir() const;
+
+
   public:
 
     OutputsWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
 
     virtual ~OutputsWidget();
+
 };
 
 
