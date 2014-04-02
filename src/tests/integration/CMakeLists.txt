@@ -26,7 +26,7 @@ SET_TESTS_PROPERTIES(integration-DisplayHelp PROPERTIES PASS_REGULAR_EXPRESSION 
 
 ADD_TEST(integration-DisplayVersion "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                        "--version")
-  SET_TESTS_PROPERTIES(integration-DisplayVersion PROPERTIES PASS_REGULAR_EXPRESSION ${FULL_VERSION})  
+SET_TESTS_PROPERTIES(integration-DisplayVersion PROPERTIES PASS_REGULAR_EXPRESSION ${FULL_VERSION})  
                        
 
 ###########################################################################
@@ -37,16 +37,29 @@ ADD_TEST(integration-ShowPaths "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                        "-n" "barfoo")  
 SET_TESTS_PROPERTIES(integration-ShowPaths PROPERTIES PASS_REGULAR_EXPRESSION "#1 foobar")
 SET_TESTS_PROPERTIES(integration-ShowPaths PROPERTIES PASS_REGULAR_EXPRESSION "#1 barfoo")
-  
-  
 
+
+###########################################################################
+
+
+ADD_TEST(integration-ShowPathsEnvVar "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                       "--show-paths"
+                       "-p" "foobar"
+                       "-n" "barfoo")  
+SET_TESTS_PROPERTIES(integration-ShowPaths PROPERTIES PASS_REGULAR_EXPRESSION "#1 foobar")
+SET_TESTS_PROPERTIES(integration-ShowPaths PROPERTIES PASS_REGULAR_EXPRESSION "#1 barfoo")
+SET_TESTS_PROPERTIES(integration-ShowPaths PROPERTIES PASS_REGULAR_EXPRESSION "${TESTS_USERDATA_PATH}/${OPENFLUID_SIMPLUGSDIR}")
+SET_TESTS_PROPERTIES(integration-ShowPaths PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")  
+
+  
 ###########################################################################
 
 
 ADD_TEST(integration-SimulatorsList "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                          "-f"
                          "-p${TEST_OUTPUT_PATH}")
-  
+SET_TESTS_PROPERTIES(integration-SimulatorsList PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+
 
 ###########################################################################
 
@@ -54,6 +67,7 @@ ADD_TEST(integration-SimulatorsList "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
 ADD_TEST(integration-SimulatorsReport "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                            "-r"
                            "-p${TEST_OUTPUT_PATH}")
+SET_TESTS_PROPERTIES(integration-SimulatorsReport PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
   
 
 ###########################################################################
@@ -63,7 +77,7 @@ ADD_TEST(integration-ObserversList "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                          "-e"
                          "-n${TEST_OUTPUT_PATH}")
 SET_TESTS_PROPERTIES(integration-ObserversList PROPERTIES PASS_REGULAR_EXPRESSION "tests.empty")  
-                         
+SET_TESTS_PROPERTIES(integration-ObserversList PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
  
 
 ###########################################################################
@@ -73,7 +87,7 @@ ADD_TEST(integration-ObserversReport "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                          "-l"
                          "-n${TEST_OUTPUT_PATH}")  
 SET_TESTS_PROPERTIES(integration-ObserversReport PROPERTIES PASS_REGULAR_EXPRESSION "empty observer for tests")
-  
+SET_TESTS_PROPERTIES(integration-ObserversReport PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -81,7 +95,7 @@ SET_TESTS_PROPERTIES(integration-ObserversReport PROPERTIES PASS_REGULAR_EXPRESS
   
 IF(CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR CUSTOM_CMAKE_VERSION VERSION_GREATER "2.8.0") 
   ADD_TEST(integration-SimulatorsReportEnvVar "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" "-r")
-  SET_TESTS_PROPERTIES(integration-SimulatorsReportEnvVar PROPERTIES ENVIRONMENT "OPENFLUID_SIMS_PATH=${TEST_OUTPUT_PATH}")                           
+  SET_TESTS_PROPERTIES(integration-SimulatorsReportEnvVar PROPERTIES ENVIRONMENT "OPENFLUID_SIMS_PATH=${TEST_OUTPUT_PATH};OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
   SET_TESTS_PROPERTIES(integration-SimulatorsReportEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.use")  
   SET_TESTS_PROPERTIES(integration-SimulatorsReportEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.prod")    
 ENDIF(CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR CUSTOM_CMAKE_VERSION VERSION_GREATER "2.8.0")
@@ -91,7 +105,8 @@ ENDIF(CUSTOM_CMAKE_VERSION VERSION_EQUAL "2.8.0" OR CUSTOM_CMAKE_VERSION VERSION
 ###########################################################################
 
 
-ADD_TEST(integration-SimulatorsReportNoEnvVar "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" "-r")                           
+ADD_TEST(integration-SimulatorsReportNoEnvVar "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" "-r")
+SET_TESTS_PROPERTIES(integration-SimulatorsReportNoEnvVar PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")                           
 SET_TESTS_PROPERTIES(integration-SimulatorsReportNoEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.use")  
 SET_TESTS_PROPERTIES(integration-SimulatorsReportNoEnvVar PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.prod")
 SET_TESTS_PROPERTIES(integration-SimulatorsReportNoEnvVar PROPERTIES WILL_FAIL TRUE)        
@@ -105,22 +120,15 @@ ADD_TEST(integration-SimulatorsMatchReport "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_A
                                 "-p${TEST_OUTPUT_PATH}")
 SET_TESTS_PROPERTIES(integration-SimulatorsMatchReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.use")  
 SET_TESTS_PROPERTIES(integration-SimulatorsMatchReport PROPERTIES PASS_REGULAR_EXPRESSION "tests.primitives.variables.prod")
-                           
-
-###########################################################################
-
-ADD_TEST(integration-SimulatorsXMLReport "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
-                              "-x"
-                              "-p${TEST_OUTPUT_PATH}")
-SET_TESTS_PROPERTIES(integration-SimulatorsXMLReport PROPERTIES WILL_FAIL TRUE)        
-                              
-  
+SET_TESTS_PROPERTIES(integration-SimulatorsMatchReport PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+ 
 
 ###########################################################################
 
 
 ADD_TEST(integration-InputDoesNotExist "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" "-i" "${CMAKE_BINARY_DIR}/path/does/not/exist")                           
 SET_TESTS_PROPERTIES(integration-InputDoesNotExist PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(integration-InputDoesNotExist PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -134,7 +142,7 @@ OPENFLUID_ADD_TEST(NAME integration-InputWithNoModel
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.NoModel"
                    )               
 SET_TESTS_PROPERTIES(integration-InputWithNoModel PROPERTIES WILL_FAIL TRUE)
-
+SET_TESTS_PROPERTIES(integration-InputWithNoModel PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -146,7 +154,7 @@ OPENFLUID_ADD_TEST(NAME integration-InputWithNoRun
                            "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.NoRun"
                            "-p" "${TEST_OUTPUT_PATH}")                           
 SET_TESTS_PROPERTIES(integration-InputWithNoRun PROPERTIES WILL_FAIL TRUE)
-
+SET_TESTS_PROPERTIES(integration-InputWithNoRun PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -158,7 +166,7 @@ OPENFLUID_ADD_TEST(NAME integration-MissingSimulator
                                         "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MissingSim"
                                         "-p" "${TEST_OUTPUT_PATH}")               
 SET_TESTS_PROPERTIES(integration-MissingSimulator PROPERTIES WILL_FAIL TRUE)
-
+SET_TESTS_PROPERTIES(integration-MissingSimulator PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -170,6 +178,7 @@ OPENFLUID_ADD_TEST(NAME integration-MissingUnitClass
                                         "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MissingClass"
                                         "-p" "${TEST_OUTPUT_PATH}")               
 SET_TESTS_PROPERTIES(integration-MissingUnitClass PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(integration-MissingUnitClass PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -181,7 +190,7 @@ OPENFLUID_ADD_TEST(NAME integration-MissingVariable
                                         "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MissingVar"
                                         "-p" "${TEST_OUTPUT_PATH}")               
 SET_TESTS_PROPERTIES(integration-MissingVariable PROPERTIES WILL_FAIL TRUE)
-
+SET_TESTS_PROPERTIES(integration-MissingVariable PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -193,7 +202,7 @@ OPENFLUID_ADD_TEST(NAME integration-MissingAttributes
                                         "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MissingAttributes"
                                         "-p" "${TEST_OUTPUT_PATH}")               
 SET_TESTS_PROPERTIES(integration-MissingAttributes PROPERTIES WILL_FAIL TRUE)
-
+SET_TESTS_PROPERTIES(integration-MissingAttributes PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -205,6 +214,7 @@ OPENFLUID_ADD_TEST(NAME integration-DuplicateVariable
                                         "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DuplicateVar"
                                         "-p" "${TEST_OUTPUT_PATH}")               
 SET_TESTS_PROPERTIES(integration-DuplicateVariable PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(integration-DuplicateVariable PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -216,7 +226,8 @@ OPENFLUID_ADD_TEST(NAME integration-Verbose
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Verbose"
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-v")
-  
+SET_TESTS_PROPERTIES(integration-Verbose PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+
 
 ###########################################################################
 
@@ -241,7 +252,7 @@ OPENFLUID_ADD_TEST(NAME integration-Project
                                "-w" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.PRJ.Primitives"
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-c")
-
+SET_TESTS_PROPERTIES(integration-Project PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 ###########################################################################
 
@@ -252,7 +263,7 @@ OPENFLUID_ADD_TEST(NAME integration-Profiling
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Profiling"
                                "-p" "${TEST_OUTPUT_PATH}"
                                "-k")
-
+SET_TESTS_PROPERTIES(integration-Profiling PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 ###########################################################################
 
@@ -263,6 +274,7 @@ OPENFLUID_ADD_TEST(NAME integration-FluidXWriterSingle
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunSingle"
                                "-p" "${TEST_OUTPUT_PATH}")
 SET_PROPERTY(TEST integration-FluidXWriterSingle APPEND PROPERTY DEPENDS unit-api-FluidXDescriptor_TEST)
+SET_TESTS_PROPERTIES(integration-FluidXWriterSingle PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -274,6 +286,7 @@ OPENFLUID_ADD_TEST(NAME integration-FluidXWriterMany
                                "-o" "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.FluidXWriterRunMany"
                                "-p" "${TEST_OUTPUT_PATH}")
 SET_PROPERTY(TEST integration-FluidXWriterMany APPEND PROPERTY DEPENDS unit-api-FluidXDescriptor_TEST)
+SET_TESTS_PROPERTIES(integration-FluidXWriterMany PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
   
 
 ###########################################################################
@@ -308,17 +321,19 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorConfigure
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
                              "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
                    PRE_TEST EMPTY_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake")                                                                                          
+SET_TESTS_PROPERTIES(integration-CMakeModuleSimulatorConfigure PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorBuild
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorBuildInstall
                    COMMAND "${CMAKE_COMMAND}"
                            "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake" 
-                           "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake")
-SET_PROPERTY(TEST integration-CMakeModuleSimulatorBuild APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorConfigure)                                                            
-
+                           "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake" "--target" "install" "--clean-first"
+                   )        
+SET_PROPERTY(TEST integration-CMakeModuleSimulatorBuildInstall APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorConfigure)                                                            
+SET_TESTS_PROPERTIES(integration-CMakeModuleSimulatorBuildInstall PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -336,16 +351,19 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverConfigure
                               "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"                              
                               "-DOBS_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
                     PRE_TEST EMPTY_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake")                              
-                              
+SET_TESTS_PROPERTIES(integration-CMakeModuleObserverConfigure PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")                              
+
 
 ###########################################################################
 
 
-OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverBuild
+OPENFLUID_ADD_TEST(NAME integration-CMakeModuleObserverBuildInstall
                    COMMAND "${CMAKE_COMMAND}"
                               "-E" "chdir" "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake" 
-                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake")
-SET_PROPERTY(TEST integration-CMakeModuleObserverBuild APPEND PROPERTY DEPENDS integration-CMakeModuleObserverConfigure)                                                            
+                              "${CMAKE_COMMAND}" "--build" "${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake" "--target" "install" "--clean-first"
+                  )           
+SET_PROPERTY(TEST integration-CMakeModuleObserverBuildInstall APPEND PROPERTY DEPENDS integration-CMakeModuleObserverConfigure)                                                            
+SET_TESTS_PROPERTIES(integration-CMakeModuleObserverBuildInstall PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -390,16 +408,15 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleRun
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.CMakeModule"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule" 
-                           "-p${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake"
-                           "-n${TESTS_OUTPUTDATA_PATH}/tests.obs.cmake"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.cmake_ofware-sim.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CMakeModule/tests.cmake_ofware-obs.log")
-SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorBuild)
+SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleSimulatorBuildInstall)
 SET_PROPERTY(TEST integration-CMakeModuleRun APPEND PROPERTY DEPENDS integration-CMakeModuleObserverBuild)
 SET_TESTS_PROPERTIES(integration-CMakeModuleRun PROPERTIES PASS_REGULAR_EXPRESSION "CMake module built simulator"
                                                            PASS_REGULAR_EXPRESSION "CMake module built observer")
-                                                             
+SET_TESTS_PROPERTIES(integration-CMakeModuleRun PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")                                                             
+
 
 ###########################################################################
 
@@ -407,7 +424,7 @@ SET_TESTS_PROPERTIES(integration-CMakeModuleRun PROPERTIES PASS_REGULAR_EXPRESSI
 IF(NOT APPLE)
   ADD_TEST(integration-BuddySim2DocHelp "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}"
                                 "--buddyhelp" "sim2doc"
-                                )
+                                )                                
 ENDIF()
 
 
@@ -467,6 +484,7 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesInstallAll
                               "--buddyopts" "selection=*,sourcedir=${EXAMPLES_PROJECTS_PATH},installdir=${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects,force=1"
                    PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/examplesbuddy"                              
                               )
+SET_TESTS_PROPERTIES(integration-BuddyExamplesInstallAll PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
   
 
 ###########################################################################
@@ -482,6 +500,7 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyExamplesRunPrimitives
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/examplesbuddy/projects/Primitives/OUT/fullB_unitsB2_var5.csv"
                    )
 SET_PROPERTY(TEST integration-BuddyExamplesRunPrimitives APPEND PROPERTY DEPENDS integration-BuddyExamplesInstallAll)
+SET_TESTS_PROPERTIES(integration-BuddyExamplesRunPrimitives PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -538,7 +557,7 @@ SET_TESTS_PROPERTIES(integration-BuddyNewSimCheck PROPERTIES PASS_REGULAR_EXPRES
                                                                 PASS_REGULAR_EXPRESSION "John Doe"
                                                                 PASS_REGULAR_EXPRESSION "doe@foo.bar.org") 
 SET_PROPERTY(TEST integration-BuddyNewSimCheck APPEND PROPERTY DEPENDS integration-BuddyNewSimBuild)                                                                 
-                       
+SET_TESTS_PROPERTIES(integration-BuddyNewSimCheck PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")                       
 
 
 ###########################################################################
@@ -551,6 +570,7 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyNewSimRun
                                        "-p" "${TESTS_OUTPUTDATA_PATH}/tests.buddy.newsim"
                                        "-v")
 SET_PROPERTY(TEST integration-BuddyNewSimRun APPEND PROPERTY DEPENDS integration-BuddyNewSimBuild)
+SET_TESTS_PROPERTIES(integration-BuddyNewSimRun PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -582,6 +602,7 @@ OPENFLUID_ADD_TEST(NAME integration-BuddyNewDataCheck
                                        "-p" "${TEST_OUTPUT_PATH}"
                               )
 SET_PROPERTY(TEST integration-BuddyNewDataCheck APPEND PROPERTY DEPENDS integration-BuddyNewData)
+SET_TESTS_PROPERTIES(integration-BuddyNewDataCheck PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -593,7 +614,8 @@ OPENFLUID_ADD_TEST(NAME integration-MinimalRun
                                   "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MinimalRun"
                                   "${TEST_OUTPUT_PATH}"
                               )
-  
+SET_TESTS_PROPERTIES(integration-MinimalRun PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+
 
 ###########################################################################
 
@@ -604,6 +626,7 @@ OPENFLUID_ADD_TEST(NAME integration-MinimalFailsArgs
                                   "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.MinimalFailsArgs"
                               )
 SET_TESTS_PROPERTIES(integration-MinimalFailsArgs PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(integration-MinimalFailsArgs PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
                               
 
 ###########################################################################
@@ -616,7 +639,8 @@ OPENFLUID_ADD_TEST(NAME integration-MinimalFailsInput
                                   "${TEST_OUTPUT_PATH}"
                               )                              
 SET_TESTS_PROPERTIES(integration-MinimalFailsInput PROPERTIES WILL_FAIL TRUE)
- 
+SET_TESTS_PROPERTIES(integration-MinimalFailsInput PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+
  
 ###########################################################################
 
@@ -628,5 +652,6 @@ IF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   SET_TESTS_PROPERTIES(integration-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "OpenFLUID debugging mode is enabled")
 ENDIF() 
+SET_TESTS_PROPERTIES(integration-Debug PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
   
   

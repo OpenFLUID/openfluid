@@ -122,6 +122,7 @@ SET(TRANSLATIONS_BUILD_DIR "${BUILD_OUTPUT_PATH}/${SHARE_TRANSLATIONS_PATH}")
 SET(TEST_OUTPUT_PATH "${CMAKE_BINARY_DIR}/tests-bin")
 SET(TESTS_DATASETS_PATH "${CMAKE_SOURCE_DIR}/resources/tests/datasets")
 SET(TESTS_OUTPUTDATA_PATH "${CMAKE_BINARY_DIR}/tests-output")
+SET(TESTS_USERDATA_PATH "${CMAKE_BINARY_DIR}/tests-userdata")
 
 
 ################### versions ###################

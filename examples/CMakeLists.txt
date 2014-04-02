@@ -5,6 +5,12 @@ ADD_SUBDIRECTORY(simulators)
 
 FILE(COPY "${EXAMPLES_PROJECTS_PATH}" 
      DESTINATION "${BUILD_OUTPUT_PATH}/${EXAMPLES_INSTALL_PATH}")
+
+INSTALL(DIRECTORY "projects/" 
+        DESTINATION "${EXAMPLES_PROJECTS_INSTALL_PATH}" PATTERN ".svn" EXCLUDE)
+
+
+###########################################################################
        
        
 OPENFLUID_ADD_TEST(NAME examples-Primitives 
@@ -18,7 +24,11 @@ OPENFLUID_ADD_TEST(NAME examples-Primitives
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives/fullA_unitsA1_var1.csv"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Primitives/fullB_unitsB2_var5.csv"
                    )
-                   
+SET_TESTS_PROPERTIES(examples-Primitives PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")                   
+
+
+###########################################################################
+
                    
 OPENFLUID_ADD_TEST(NAME examples-Manhattan 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
@@ -30,6 +40,10 @@ OPENFLUID_ADD_TEST(NAME examples-Manhattan
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Manhattan/examples.RU11.stock.pdf"
                               
                    )
+SET_TESTS_PROPERTIES(examples-Manhattan PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+
+
+###########################################################################                   
 
                    
 OPENFLUID_ADD_TEST(NAME examples-Firespread 
@@ -40,7 +54,5 @@ OPENFLUID_ADD_TEST(NAME examples-Firespread
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Firespread/openfluid-messages.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Examples.Firespread/firespread-anim.kmz"                                                            
                    )                   
-                                                       
+SET_TESTS_PROPERTIES(examples-Firespread PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")                                                       
 
-INSTALL(DIRECTORY "projects/" 
-        DESTINATION "${EXAMPLES_PROJECTS_INSTALL_PATH}" PATTERN ".svn" EXCLUDE)
