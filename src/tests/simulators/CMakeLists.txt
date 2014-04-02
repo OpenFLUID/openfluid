@@ -25,7 +25,8 @@ IF(BUILD_FORTRAN_SIMULATORS)
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran" 
                         "-p${TEST_OUTPUT_PATH}"
                      PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran"
-                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran/tests.fortran_ofware-sim.log"                        )  
+                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Fortran/tests.fortran_ofware-sim.log")
+  SET_TESTS_PROPERTIES(simulators-Fortran PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 ENDIF(BUILD_FORTRAN_SIMULATORS)
 
 
@@ -44,6 +45,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Exceptions
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.SimExceptions/tests.exceptions_ofware-sim.log"
                    )
 SET_TESTS_PROPERTIES(simulators-Exceptions PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(simulators-Exceptions PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -60,6 +62,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesRunEnv
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv/openfluid-messages.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesRunEnv/tests.primitives.runenv_ofware-sim.log"
                    )
+SET_TESTS_PROPERTIES(simulators-PrimitivesRunEnv PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -77,6 +80,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesTime
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/tests.primitives.time_ofware-sim.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesTime/tests.primitives.time_ofware-obs.log"
                    )
+SET_TESTS_PROPERTIES(simulators-PrimitivesTime PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -93,6 +97,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesSimParams
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams/openfluid-messages.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesSimParams/tests.primitives.simparams_ofware-sim.log"
                    )
+SET_TESTS_PROPERTIES(simulators-PrimitivesSimParams PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -111,6 +116,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAttributes
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes/tests.primitives.attributes.prod_ofware-sim.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAttributes/tests.primitives.attributes.use_ofware-sim.log"
                    )
+SET_TESTS_PROPERTIES(simulators-PrimitivesAttributes PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -127,7 +133,8 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesEvents
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents/openfluid-messages.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesEvents/tests.primitives.events_ofware-sim.log"
                    )
-                   
+SET_TESTS_PROPERTIES(simulators-PrimitivesEvents PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+
 
 ###########################################################################
 
@@ -145,6 +152,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesVariables
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables/tests.primitives.variables.prod_ofware-sim.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesVariables/tests.primitives.variables.use_ofware-sim.log"
                    )
+SET_TESTS_PROPERTIES(simulators-PrimitivesVariables PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -160,6 +168,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesLand
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand/openfluid-messages.log"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesLand/tests.primitives.land_ofware-sim.log"                                                     
                     )
+SET_TESTS_PROPERTIES(simulators-PrimitivesLand PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -172,6 +181,7 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesAll
                            "-p${TEST_OUTPUT_PATH}"
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesAll"
                     )
+SET_TESTS_PROPERTIES(simulators-PrimitivesAll PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -185,6 +195,7 @@ OPENFLUID_ADD_TEST(NAME simulators-VariableTimeProd
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VariableTimeProd" 
                            "-p${TEST_OUTPUT_PATH}"
                            )
+SET_TESTS_PROPERTIES(simulators-VariableTimeProd PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -196,6 +207,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Loops
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Loops"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Loops" 
                         "-p${TEST_OUTPUT_PATH}")
+SET_TESTS_PROPERTIES(simulators-Loops PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -206,17 +218,21 @@ OPNFLD_ADD_SIMULATOR(tests.threadedloops tests.threadedloops ${TEST_OUTPUT_PATH}
 IF(Qt5Concurrent_FOUND)
   TARGET_LINK_LIBRARIES(tests.threadedloops${OPENFLUID_SIMULATORS_SUFFIX} ${QT_QTCONCURRENT_LIBRARIES})
 ENDIF()
+
 OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoopsDefault
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ThreadedLoops"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ThreadedLoops" 
-                        "-p${TEST_OUTPUT_PATH}")             
+                        "-p${TEST_OUTPUT_PATH}")
+SET_TESTS_PROPERTIES(simulators-ThreadedLoopsDefault PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+                                     
 OPENFLUID_ADD_TEST(NAME simulators-ThreadedLoops9
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ThreadedLoops"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ThreadedLoops" 
                         "-p${TEST_OUTPUT_PATH}"
                         "-t" "9")             
+SET_TESTS_PROPERTIES(simulators-ThreadedLoops9 PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -228,6 +244,7 @@ OPENFLUID_ADD_TEST(NAME simulators-DeltaTChecked
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DeltaTChecked" 
                            "-p${TEST_OUTPUT_PATH}"
                            )
+SET_TESTS_PROPERTIES(simulators-DeltaTChecked PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -240,6 +257,7 @@ OPENFLUID_ADD_TEST(NAME simulators-DeltaTCheckedFails
                            "-p${TEST_OUTPUT_PATH}"
                            )
 SET_TESTS_PROPERTIES(simulators-DeltaTCheckedFails PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(simulators-DeltaTCheckedFails PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -251,6 +269,7 @@ OPENFLUID_ADD_TEST(NAME simulators-DeltaTForced
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DeltaTForced" 
                            "-p${TEST_OUTPUT_PATH}"
                            )
+SET_TESTS_PROPERTIES(simulators-DeltaTForced PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -262,7 +281,8 @@ OPENFLUID_ADD_TEST(NAME simulators-WithBuffer
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CouplingWithBuffer" 
                            "-p${TEST_OUTPUT_PATH}"
                            )
-  
+SET_TESTS_PROPERTIES(simulators-WithBuffer PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+
 
 ###########################################################################
 
@@ -274,23 +294,28 @@ OPENFLUID_ADD_TEST(NAME simulators-WithSmallBuffer
                            "-p${TEST_OUTPUT_PATH}"
                            )
 SET_TESTS_PROPERTIES(simulators-WithSmallBuffer PROPERTIES PASS_REGULAR_EXPRESSION "buffers for variables is set to 2")
+SET_TESTS_PROPERTIES(simulators-WithSmallBuffer PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
 
 
 OPNFLD_ADD_SIMULATOR(tests.messages tests.messages ${TEST_OUTPUT_PATH})
+
 OPENFLUID_ADD_TEST(NAME simulators-Messages
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                          "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Messages"
                          "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Messages" 
                          "-p${TEST_OUTPUT_PATH}")
+SET_TESTS_PROPERTIES(simulators-Messages PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
+                         
 OPENFLUID_ADD_TEST(NAME simulators-ManyMessages
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                              "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ManyMessages"
                              "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ManyMessages" 
                              "-p${TEST_OUTPUT_PATH}"
                              "-z")                              
+SET_TESTS_PROPERTIES(simulators-ManyMessages PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -302,6 +327,7 @@ OPENFLUID_ADD_TEST(NAME simulators-ManyUnits
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.ManyUnits"
                            "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ManyUnits" 
                            "-p${TEST_OUTPUT_PATH}")                              
+SET_TESTS_PROPERTIES(simulators-ManyUnits PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
              
 
 ###########################################################################
@@ -319,6 +345,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Tools
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Tools"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Tools" 
                         "-p${TEST_OUTPUT_PATH}")                 
+SET_TESTS_PROPERTIES(simulators-Tools PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -337,6 +364,7 @@ OPENFLUID_ADD_TEST(NAME simulators-WrongProduction
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.WrongProd" 
                         "-p${TEST_OUTPUT_PATH}")                              
 SET_TESTS_PROPERTIES(simulators-WrongProduction PROPERTIES WILL_FAIL TRUE)        
+SET_TESTS_PROPERTIES(simulators-WrongProduction PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -348,6 +376,7 @@ OPENFLUID_ADD_TEST(NAME simulators-GlobalParams
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.GlobalParams"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GlobalParams" 
                         "-p${TEST_OUTPUT_PATH}")                              
+SET_TESTS_PROPERTIES(simulators-GlobalParams PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -359,6 +388,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Generators
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.Generators"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Generators" 
                         "-p${TEST_OUTPUT_PATH}" "-v")                              
+SET_TESTS_PROPERTIES(simulators-Generators PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -371,6 +401,7 @@ OPENFLUID_ADD_TEST(NAME simulators-Logger
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.Logger" 
                         "-p${TEST_OUTPUT_PATH}"
                         "-n${TEST_OUTPUT_PATH}")                              
+SET_TESTS_PROPERTIES(simulators-Logger PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -387,6 +418,7 @@ IF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 ELSE(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   SET_TESTS_PROPERTIES(simulators-Debug PROPERTIES FAIL_REGULAR_EXPRESSION "TU#")
 ENDIF(${CMAKE_BUILD_TYPE} STREQUAL "Debug") 
+SET_TESTS_PROPERTIES(simulators-Debug PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -398,6 +430,7 @@ OPENFLUID_ADD_TEST(NAME simulators-WrongID
                                   "-f"
                                   "-p${TEST_OUTPUT_PATH}")
 SET_TESTS_PROPERTIES(simulators-WrongID PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongid")
+SET_TESTS_PROPERTIES(simulators-WrongID PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -409,5 +442,5 @@ OPENFLUID_ADD_TEST(NAME simulators-WrongVersion
                                   "-f"
                                   "-p${TEST_OUTPUT_PATH}")
 SET_TESTS_PROPERTIES(simulators-WrongVersion PROPERTIES FAIL_REGULAR_EXPRESSION "tests.wrongversion")
-
+SET_TESTS_PROPERTIES(simulators-WrongVersion PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
                             

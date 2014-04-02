@@ -21,6 +21,7 @@ OPENFLUID_ADD_TEST(NAME observers-Hopla
                     PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesHopla"
                     POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.PrimitivesHopla/tests.hopla_ofware-obs.log"
                    )
+SET_TESTS_PROPERTIES(observers-Hopla PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -38,6 +39,7 @@ OPENFLUID_ADD_TEST(NAME observers-Exceptions
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.ObsExceptions/tests.exceptions_ofware-sim.log"
                    )
 SET_TESTS_PROPERTIES(observers-Exceptions PROPERTIES WILL_FAIL TRUE)
+SET_TESTS_PROPERTIES(observers-Exceptions PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -56,6 +58,7 @@ OPENFLUID_ADD_TEST(NAME observers-CSVFiles
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CSVObserver/someunits_TestUnits9_tests.matrix.dt.csv"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.CSVObserver/somevars_TestUnits7_tests.vector.csv"
                    )
+SET_TESTS_PROPERTIES(observers-CSVFiles PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -72,6 +75,7 @@ OPENFLUID_ADD_TEST(NAME observers-DotFiles
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DotObserver/spatial-graph_init.dot"
                               CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.DotObserver/spatial-graph_final.dot"
                    )
+SET_TESTS_PROPERTIES(observers-DotFiles PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -88,6 +92,7 @@ OPENFLUID_ADD_TEST(NAME observers-KmlFiles
                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers/SU.kmz"
                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.KmlObservers/RS.kmz"
                   )
+SET_TESTS_PROPERTIES(observers-KmlFiles PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -105,6 +110,7 @@ OPENFLUID_ADD_TEST(NAME observers-VtkFiles
                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver/VTKseries/SU_tests.fixed/SU_tests.fixed_t57600.vtu"
                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver/VTKseries/SU_tests.random/SU_tests.random_t57600.vtu"                                                          
                   ) 
+SET_TESTS_PROPERTIES(observers-VtkFiles PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
 
 
 ###########################################################################
@@ -122,4 +128,5 @@ OPENFLUID_ADD_TEST(NAME observers-GNUplot
                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GNUplotObserver/s2_data.gnuplot"
                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GNUplotObserver/s4_data.gnuplot"
                   )
+SET_TESTS_PROPERTIES(observers-GNUplot PROPERTIES ENVIRONMENT "OPENFLUID_USERDATA_PATH=${TESTS_USERDATA_PATH}")
                                                 
