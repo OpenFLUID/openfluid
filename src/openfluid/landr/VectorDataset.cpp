@@ -51,8 +51,9 @@
 #include <openfluid/core/GeoVectorValue.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
-namespace openfluid {
-namespace landr {
+
+namespace openfluid { namespace landr {
+
 
 VectorDataset::VectorDataset(const std::string& FileName, std::string DriverName)
 {
@@ -176,7 +177,7 @@ std::string VectorDataset::getInitializedTmpPath()
       openfluid::base::RuntimeEnvironment::getInstance()->getTempDir();
 
   if (!boost::filesystem::exists(TmpPath))
-    boost::filesystem::create_directory(TmpPath);
+    boost::filesystem::create_directories(TmpPath);
 
   return TmpPath;
 }
@@ -221,7 +222,7 @@ OGRDataSource* VectorDataset::getDataSource()
   return mp_DataSource;
 }
 
-// =====================================================================
+// =======================================y==============================
 // =====================================================================
 
 OGRDataSource* VectorDataset::getDataSource() const
@@ -238,7 +239,7 @@ void VectorDataset::copyToDisk(const std::string& FilePath, const std::string& F
   OGRSFDriver* Driver = mp_DataSource->GetDriver();
 
   if (!boost::filesystem::exists(FilePath))
-    boost::filesystem::create_directory(FilePath);
+    boost::filesystem::create_directories(FilePath);
 
   std::string Path = openfluid::core::GeoValue::computeAbsolutePath(FilePath,
                                                                     FileName);

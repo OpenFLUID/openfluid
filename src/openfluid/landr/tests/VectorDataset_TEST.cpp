@@ -133,7 +133,7 @@ BOOST_AUTO_TEST_CASE(check_copyToDisk)
 
   if (!boost::filesystem::exists(
       CONFIGTESTS_OUTPUT_DATA_DIR + "/OPENFLUID.OUT.VectorDataset"))
-    boost::filesystem::create_directory(
+    boost::filesystem::create_directories(
         CONFIGTESTS_OUTPUT_DATA_DIR + "/OPENFLUID.OUT.VectorDataset");
 
   openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR,

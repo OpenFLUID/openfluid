@@ -76,6 +76,8 @@ MarketClient::MarketClient() :
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinSubDir(),
                               openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagSrcSubDir());
 
+  boost::filesystem::create_directories(boost::filesystem::path(m_TempDir));
+
   m_URL.clear();
   m_MarketInfo.clear();
 }

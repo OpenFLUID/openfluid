@@ -151,6 +151,26 @@ RuntimeEnvironment::RuntimeEnvironment() :
 #endif
 
 
+  char *USERDATAEnvVar;
+  USERDATAEnvVar = std::getenv("OPENFLUID_USERDATA_PATH");
+
+  if (USERDATAEnvVar != NULL)
+  {
+    m_UserDataDir
+        = boost::filesystem::path(std::string(USERDATAEnvVar)).string();
+  }
+
+
+  char *TEMPEnvVar;
+  TEMPEnvVar = std::getenv("OPENFLUID_TEMP_PATH");
+
+  if (TEMPEnvVar != NULL)
+  {
+    m_TempDir
+        = boost::filesystem::path(std::string(TEMPEnvVar)).string();
+  }
+
+
   m_OutputDir = boost::filesystem::path(m_UserDataDir + "/"
       + openfluid::config::DEFAULT_OUTDIR).string();
   m_InputDir = boost::filesystem::path(m_UserDataDir + "/"

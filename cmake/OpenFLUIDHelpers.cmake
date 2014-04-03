@@ -195,11 +195,17 @@ MACRO(OPENFLUID_ADD_SIMULATOR _SIMNAME)
 
   # ====== install ======
   
+  SET(_USERDATA_PATH "$ENV{HOME}/.openfluid")
+  IF(WIN32)
+    SET(_USERDATA_PATH "$ENV{USERPROFILE}/openfluid") 
+  ENDIF()
+
+  IF(DEFINED ENV{OPENFLUID_USERDATA_PATH})
+    SET(_USERDATA_PATH "$ENV{OPENFLUID_USERDATA_PATH}")
+  ENDIF()
+  
   IF(NOT ${_SIMNAME}_INSTALL_PATH)
-    SET(_INSTALL_PATH "$ENV{HOME}/.openfluid/simulators")
-    IF(WIN32)
-      SET(_INSTALL_PATH "$ENV{USERPROFILE}/openfluid/simulators") 
-    ENDIF()
+    SET(_INSTALL_PATH "${_USERDATA_PATH}/simulators")
   ELSE()
     SET(_INSTALL_PATH "${${_SIMNAME}_INSTALL_PATH}")   
   ENDIF()
@@ -225,6 +231,13 @@ ENDMACRO()
 
 ###########################################################################
 
+# This macro uses the following variables
+# _OBSNAME_ID : observer ID
+# _OBSNAME_CPP : list of C++ files
+# _OBSNAME_INCLUDE_DIRS : directories to include for observer compilation
+# _OBSNAME_LIBRARY_DIRS : directories to link for observer compilation
+# _OBSNAME_LINK_LIBS : extra libraries to link for observer build
+# _OBSNAME_INSTALL_PATH : install path, replacing the default one
 
 MACRO(OPENFLUID_ADD_OBSERVER _OBSNAME)
 
@@ -232,16 +245,47 @@ MACRO(OPENFLUID_ADD_OBSERVER _OBSNAME)
   
   SET(${_OBSNAME}_TARGET ${${_OBSNAME}_ID}${OpenFLUID_OBSERVER_FILENAME_SUFFIX})
 
-  _OPENFLUID_ADD_WARE_MESSAGES(${${_OBSNAME}_ID} "Observer" ${${_OBSNAME}_CPP} ${${_OBSNAME}_TARGET})
+  _OPENFLUID_ADD_WARE_MESSAGES(${${_OBSNAME}_ID} "Observer" "${${_OBSNAME}_CPP}" ${${_OBSNAME}_TARGET})
 
-  INCLUDE_DIRECTORIES(${OpenFLUID_INCLUDE_DIRS} ${${_OBSNAME}_INCLUDE_DIRS})
+
+  INCLUDE_DIRECTORIES(${OpenFLUID_INCLUDE_DIRS} ${${_OBSNAME}_INCLUDE_DIRS})   
   LINK_DIRECTORIES(${OpenFLUID_LIBRARY_DIRS}) 
 
 
-  ADD_LIBRARY(${${_OBSNAME}_TARGET} MODULE ${${_OBSNAME}_CPP})
+  # ====== build ======
+    
+  IF(MINGW)
+    # workaround for CMake bug with MinGW
+      ADD_LIBRARY(${${_OBSNAME}_TARGET} SHARED ${${_OBSNAME}_CPP})
+  ELSE()
+      ADD_LIBRARY(${${_OBSNAME}_TARGET} MODULE ${${_OBSNAME}_CPP})
+  ENDIF()
+
   SET_TARGET_PROPERTIES(${${_OBSNAME}_TARGET} PROPERTIES PREFIX "" SUFFIX ${CMAKE_SHARED_LIBRARY_SUFFIX})
 
   TARGET_LINK_LIBRARIES(${${_OBSNAME}_TARGET} ${OpenFLUID_LIBRARIES})
+
+  
+  # ====== install ======
+  
+  SET(_USERDATA_PATH "$ENV{HOME}/.openfluid")
+  IF(WIN32)
+    SET(_USERDATA_PATH "$ENV{USERPROFILE}/openfluid") 
+  ENDIF()
+
+  IF(DEFINED ENV{OPENFLUID_USERDATA_PATH})
+    SET(_USERDATA_PATH "$ENV{OPENFLUID_USERDATA_PATH}")
+  ENDIF()
+  
+  IF(NOT ${_OBSNAME}_INSTALL_PATH)
+    SET(_INSTALL_PATH "${_USERDATA_PATH}/observers")
+  ELSE()
+    SET(_INSTALL_PATH "${${_OBSNAME}_INSTALL_PATH}")   
+  ENDIF()
+  
+  INSTALL(TARGETS ${${_OBSNAME}_TARGET} DESTINATION "${_INSTALL_PATH}")
+    
+  MESSAGE(STATUS "  Install path : ${_INSTALL_PATH}")
   
 ENDMACRO()
 
@@ -311,12 +355,18 @@ MACRO(OPENFLUID_ADD_BUILDEREXT _EXTNAME)
   
 
   # ====== install ======
+
+  SET(_USERDATA_PATH "$ENV{HOME}/.openfluid")
+  IF(WIN32)
+    SET(_USERDATA_PATH "$ENV{USERPROFILE}/openfluid") 
+  ENDIF()
+
+  IF(DEFINED ENV{OPENFLUID_USERDATA_PATH})
+    SET(_USERDATA_PATH "$ENV{OPENFLUID_USERDATA_PATH}")
+  ENDIF()
   
   IF(NOT ${_EXTNAME}_INSTALL_PATH)
-    SET(_INSTALL_PATH "$ENV{HOME}/.openfluid/builderext")
-    IF(WIN32)
-      SET(_INSTALL_PATH "$ENV{USERPROFILE}/openfluid/builderext") 
-    ENDIF()
+    SET(_INSTALL_PATH "${_USERDATA_PATH}/builderext")
   ELSE()
     SET(_INSTALL_PATH "${${_EXTNAME}_INSTALL_PATH}")   
   ENDIF()
@@ -354,6 +404,30 @@ MACRO(OPENFLUID_ADD_TEST)
                                                "-DPRECMDS=${_ADD_TEST_PRE_TEST}"
                                                "-DPOSTCMDS=${_ADD_TEST_POST_TEST}"
                                                "-P" "${OpenFLUID_DIR}/OpenFLUIDTestScript.cmake")
+  
+  # add env vars for tests if present
+  
+  GET_TEST_PROPERTY(${_ADD_TEST_NAME} ENVIRONMENT _TEST_ENVVARS)
+  
+  IF (DEFINED OPENFLUID_TESTS_TEMP_PATH)
+    IF(_TEST_ENVVARS)
+      SET(_TEST_ENVVARS "${_TEST_ENVVARS}\;OPENFLUID_TEMP_PATH=${OPENFLUID_TESTS_TEMP_PATH}")
+    ELSE()
+      SET(_TEST_ENVVARS "OPENFLUID_TEMP_PATH=${OPENFLUID_TESTS_TEMP_PATH}")
+    ENDIF()      
+  ENDIF()
+
+  IF (DEFINED OPENFLUID_TESTS_USERDATA_PATH)
+    IF(_TEST_ENVVARS)
+      SET(_TEST_ENVVARS "${_TEST_ENVVARS}\;OPENFLUID_USERDATA_PATH=${OPENFLUID_TESTS_USERDATA_PATH}")
+    ELSE()
+      SET(_TEST_ENVVARS "OPENFLUID_USERDATA_PATH=${OPENFLUID_TESTS_USERDATA_PATH}")
+    ENDIF()      
+  ENDIF()
+
+  SET_TESTS_PROPERTIES(${_ADD_TEST_NAME} 
+                       PROPERTIES ENVIRONMENT ${_TEST_ENVVARS})      
+                                                   
 ENDMACRO()
 
 
