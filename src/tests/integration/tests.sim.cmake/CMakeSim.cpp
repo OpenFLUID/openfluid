@@ -29,7 +29,11 @@
   
 */
 
-
+/*
+<sim2doc>
+This is a text for testing \LaTeX doc
+</sim2doc>
+*/
 
 /**
   \file CmakeSim.cpp

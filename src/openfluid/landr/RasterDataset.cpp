@@ -46,8 +46,7 @@
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
 
 // =====================================================================
 // =====================================================================
