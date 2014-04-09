@@ -27,9 +27,10 @@
   * Added OPENFLUID_* primitives for accessing variables in many ways
   * Improved checking of primitives usage regarding the current 
     simulation stage 
-  * Updated standard fields names for external spatial data  
+  * Updated standard fields names for external spatial data
   * Added observers and datasets as packages for OpenFLUID-market deployment
     system
+  * Added environment variables for overriding default user and temp paths
   * Switched to version 3 of the Boost filesystem library  
   * Deeply refactored OpenFLUID source code, with many internal improvements
   * Improved internal test system
