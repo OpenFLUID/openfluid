@@ -45,6 +45,8 @@
 #include "PrecheckWorker.hpp"
 #include "ImportWorker.hpp"
 
+#include "ogr_api.h"
+
 #include <QMessageBox>
 #include <QThread>
 
@@ -184,6 +186,11 @@ bool OGRGDALImportExtension::initialize()
 
 
   CPLSetErrorHandler(CPLOGRGDALErrorHandler);
+
+  OGRRegisterAll();
+
+  if (OGRGetDriverByName("WFS") == NULL)
+    ui->AddWFSButton->setEnabled(false);
 
   return true;
 }
