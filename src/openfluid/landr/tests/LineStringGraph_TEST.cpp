@@ -981,3 +981,19 @@ BOOST_AUTO_TEST_CASE(check_getLineStringEntityByMinLength)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_construction_from_MultiLineString)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "MultiLine.shp");
+
+  openfluid::landr::LineStringGraph* Graph;
+  BOOST_CHECK_THROW( Graph =
+      openfluid::landr::LineStringGraph::create(*Val),openfluid::base::FrameworkException);
+
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
