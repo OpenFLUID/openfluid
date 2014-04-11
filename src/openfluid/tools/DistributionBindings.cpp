@@ -75,6 +75,14 @@ DistributionBindings::~DistributionBindings()
 {
   // delete readers
 
+  ReadersNextValues_t::iterator it;
+  ReadersNextValues_t::iterator bit = m_ReadersNextValues.begin();
+  ReadersNextValues_t::iterator eit = m_ReadersNextValues.end();
+
+  for (it=bit;it!=eit;++it)
+  {
+    if ((*it).Reader) delete (*it).Reader;
+  }
 }
 
 
