@@ -56,14 +56,9 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
         0), mp_LODownNeighbours(0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_LINESTRING)
-  {
-    delete mp_Centroid;
-
     throw openfluid::base::FrameworkException(
-                                       "LineStringEntity::LineStringEntity",
-                                       "Geometry is not a LineString.");
-
-  }
+        "LineStringEntity::LineStringEntity",
+        "Geometry is not a LineString.");
 
   mp_Line =
       dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(mp_Geom));

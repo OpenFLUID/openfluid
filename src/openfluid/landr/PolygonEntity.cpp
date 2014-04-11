@@ -64,14 +64,11 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
                             0)
 {
   if (mp_Geom->getGeometryTypeId() != geos::geom::GEOS_POLYGON)
-  {
-    delete mp_Centroid;
-
     throw openfluid::base::FrameworkException(
         "PolygonEntity::PolygonEntity",
         "Geometry is not a Polygon.");
 
-  }
+
 
   mp_Polygon =
       dynamic_cast<geos::geom::Polygon*>(const_cast<geos::geom::Geometry*>(mp_Geom));

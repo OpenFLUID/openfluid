@@ -2406,3 +2406,19 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_construction_from_MultiPolygon)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "MultiPolygon.shp");
+
+  openfluid::landr::PolygonGraph* Graph;
+  BOOST_CHECK_THROW( Graph =
+      openfluid::landr::PolygonGraph::create(*Val),openfluid::base::FrameworkException);
+
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
