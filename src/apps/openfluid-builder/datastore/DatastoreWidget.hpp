@@ -65,6 +65,10 @@ class DatastoreWidget : public WorkspaceWidget
 
     void removeItem();
 
+    void moveItemUp();
+
+    void moveItemDown();
+
 
   private:
 

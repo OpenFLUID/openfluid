@@ -60,10 +60,19 @@ DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFlu
   ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
   ui->RemoveButton->setIconSize(QSize(20,20));
 
+  ui->UpButton->setIcon(QIcon(":/icons/go-up.png"));
+  ui->UpButton->setIconSize(QSize(20,20));
+
+  ui->DownButton->setIcon(QIcon(":/icons/go-down.png"));
+  ui->DownButton->setIconSize(QSize(20,20));
+
 
   connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addItem()));
   connect(ui->EditButton,SIGNAL(clicked()),this,SLOT(editItem()));
   connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(removeItem()));
+
+  connect(ui->UpButton,SIGNAL(clicked()),this,SLOT(moveItemUp()));
+  connect(ui->DownButton,SIGNAL(clicked()),this,SLOT(moveItemDown()));
 
   connect(ui->DatastoreTableWidget->horizontalHeader(),SIGNAL(sectionResized(int, int, int)),
           ui->DatastoreTableWidget,SLOT(resizeRowsToContents()));
@@ -146,6 +155,53 @@ void DatastoreWidget::editItem()
 
 
 void DatastoreWidget::removeItem()
+{
+  bool OK = true;
+
+  int DSItemIndex = ui->DatastoreTableWidget->currentRow();
+
+  if (DSItemIndex >=0 )
+  {
+    QString DSItemID = ui->DatastoreTableWidget->item(DSItemIndex,0)->text();
+
+    // TODO translation in french
+
+    OK = (QMessageBox::question(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("You are removing %1 item from datastore.\n"
+                                   "This item will not be available anymore, but data will be kept on disk.\n"
+                                   "\n"
+                                   "Proceed anyway?").arg(DSItemID),
+                                QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+
+    if (OK)
+    {
+      m_Datastore.removeItem(DSItemIndex);
+
+      emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+
+      refresh();
+    }
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DatastoreWidget::moveItemUp()
+{
+  // TODO
+  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DatastoreWidget::moveItemDown()
 {
   // TODO
   QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);

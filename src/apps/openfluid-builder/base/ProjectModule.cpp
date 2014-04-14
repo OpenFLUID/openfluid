@@ -611,6 +611,19 @@ bool ProjectModule::whenOpenExampleAsked()
 
 void ProjectModule::dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
+  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL))
+  {
+    mp_SpatialTab->refresh();
+    mp_DatastoreTab->refresh();
+  }
+  else
+  {
+    if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE))
+    {
+      mp_SpatialTab->refreshMap();
+    }
+  }
+
   emit fluidxChanged(UpdateFlags);
 
   doCheck();
@@ -623,22 +636,19 @@ void ProjectModule::dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Fl
 
 void ProjectModule::dispatchChangesFromExtension(openfluid::builderext::FluidXUpdateFlags::Flags UpdateFlags)
 {
-  // TODO model refresh
 
-  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
-      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
+  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALATTRS) ||
       UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT))
+  {
     mp_SpatialTab->refresh();
+  }
 
-  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_ALL) ||
-      UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE))
+
+  if (UpdateFlags.testFlag(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE))
+  {
     mp_DatastoreTab->refresh();
+  }
 
-  // TODO monitoring refresh
-
-  // TODO datastore refresh
-
-  // TODO run config refresh
 
   dispatchChanges(UpdateFlags);
 }

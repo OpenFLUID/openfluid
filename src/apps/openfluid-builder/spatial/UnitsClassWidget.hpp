@@ -129,7 +129,7 @@ class UnitsClassWidget : public QFrame
 
     void setDownButtonEnabled(bool Enabled);
 
-    void setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
+    void linkToDatastoreItem(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList);
 
     int getLineWidth() const
     { return m_LineWidth; }
