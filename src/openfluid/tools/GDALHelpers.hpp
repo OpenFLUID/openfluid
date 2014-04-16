@@ -29,48 +29,46 @@
   
 */
 
-
 /**
-  \file QtHelpers.hpp
+  \file GDALHelpers.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __QTHELPERS_HPP__
-#define __QTHELPERS_HPP__
-
-
-#include <openfluid/tools/GDALHelpers.hpp>
-
-#include <list>
-
-#include <QVariant>
-#include <QString>
-#include <QStringList>
+#ifndef __GDALHELPERS_HPP__
+#define __GDALHELPERS_HPP__
 
 #include <openfluid/dllexport.hpp>
 
+#include <vector>
+#include <map>
+#include <QString>
+
+
 namespace openfluid { namespace tools {
 
-QString DLLEXPORT toIniCompatible(const std::string& Str);
 
-std::string DLLEXPORT fromIniCompatible(const QVariant& Var);
+struct GDALDriverInfos_t {
+    std::string Label;
+    std::vector<std::string> FilesExts;
+};
 
-std::list<std::string> DLLEXPORT toStdStringList(const QStringList& StrList);
 
-/**
-  Returns the available GDAL/OGR formats as a QFileDialog formats string.
-  The string is built according to GDAL/OGR available drivers.
-  The OGRRegisterAll() and/or GDALAllRegister() instruction must be called before using this function.
-  @param[in] AllFormatsLabel the label displayed for all formats
-  @return the format string (e.g. "All vector files (*.shp *.mif *.tab);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif *.tab)")
-*/
-QString DLLEXPORT getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
-                                                   const QString& AllFormatsLabel);
+typedef std::map<std::string,GDALDriverInfos_t> GDALDriversFilesExts_t;
+
+
+// =====================================================================
+// =====================================================================
+
+
+const GDALDriversFilesExts_t DLLEXPORT getOGRFilesDriversForOpenFLUID();
+
+const GDALDriversFilesExts_t DLLEXPORT getGDALFilesDriversForOpenFLUID();
+
 
 } } // namespaces
 
 
-#endif /* __QTHELPERS_HPP__ */
+#endif /* __GDALHELPERS_HPP__ */
