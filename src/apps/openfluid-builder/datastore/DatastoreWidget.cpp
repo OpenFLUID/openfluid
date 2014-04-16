@@ -41,8 +41,19 @@
 
 #include "ui_DatastoreWidget.h"
 #include "DatastoreWidget.hpp"
-#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include "AddDatastoreItemDialog.hpp"
+#include "AppTools.hpp"
 
+#include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+
+#include <gdal.h>
+#include <gdal_priv.h>
+#include <ogr_api.h>
+#include "ogrsf_frmts.h"
+
+#include <QFileInfo>
+#include <QDir>
 #include <QMessageBox>
 
 
@@ -66,6 +77,8 @@ DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFlu
   ui->DownButton->setIcon(QIcon(":/icons/go-down.png"));
   ui->DownButton->setIconSize(QSize(20,20));
 
+  // TODO to re-enable
+  ui->EditButton->setVisible(false);
 
   connect(ui->AddButton,SIGNAL(clicked()),this,SLOT(addItem()));
   connect(ui->EditButton,SIGNAL(clicked()),this,SLOT(editItem()));
@@ -128,14 +141,151 @@ void DatastoreWidget::refresh()
   ui->DatastoreTableWidget->resizeRowsToContents();
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
 void DatastoreWidget::addItem()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  // TODO french translation
+
+  AddDatastoreItemDialog AddItemDlg(StringSetToQStringList(m_AdvFluidxDesc.getDomain().getClassNames()),
+                                    StringListToQStringList(m_Datastore.getItemsIDs()),
+                                    this);
+
+  if (AddItemDlg.exec() == QDialog::Accepted)
+  {
+
+    // by default, the file associated to the item is in the inputdir path
+    QString DSItemFile = AddItemDlg.getSourceFilePath();
+
+    // copy of source file(s) if file is not in the inputdir path
+    if (!AddItemDlg.isSourceFileInInputDataset())
+    {
+      // Prepare copy in dataset
+
+      QString Subdir = AddItemDlg.getCopySubdir();
+      QString SourceFilename = QFileInfo(AddItemDlg.getSourceFilePath()).fileName();
+
+      QString DestFile = QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()) +
+                         "/"+Subdir+"/"+SourceFilename;
+
+      if (AddItemDlg.getItemType() == openfluid::core::UnstructuredValue::GeoVectorValue)
+      {
+        // copy vector file
+        OGRDataSource* SrcDS = OGRSFDriverRegistrar::Open(AddItemDlg.getSourceFilePath().toStdString().c_str(),
+                                                          FALSE);
+
+        if (SrcDS != NULL)
+        {
+          OGRSFDriver *CopyDriver = SrcDS->GetDriver();
+
+          if (CopyDriver != NULL)
+          {
+            QDir().mkpath(QFileInfo(DestFile).absolutePath());
+
+            OGRDataSource* DestDS = CopyDriver->CopyDataSource(SrcDS,
+                                                               DestFile.toStdString().c_str());
+
+            OGRDataSource::DestroyDataSource(DestDS);
+          }
+          else
+          {
+            QMessageBox::critical(QApplication::activeWindow(),
+                                  "OpenFLUID-Builder",
+                                  tr("OGR driver error while copying GeoVector file source\n"
+                                     "The datastore item will not be added"),
+                                  QMessageBox::Close);
+            return;
+          }
+        }
+        else
+        {
+          QMessageBox::critical(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("OGR error while copying GeoVector file source\n"
+                                   "The datastore item will not be added"),
+                                QMessageBox::Close);
+          return;
+        }
+      }
+      else
+      {
+        // copy raster file
+
+        GDALDataset* SrcDS = (GDALDataset *)GDALOpen(AddItemDlg.getSourceFilePath().toStdString().c_str(),
+                                                     GA_ReadOnly);
+
+        if (SrcDS != NULL)
+        {
+          GDALDriver *CopyDriver = SrcDS->GetDriver();
+
+          if (CopyDriver != NULL)
+          {
+            QDir().mkpath(QFileInfo(DestFile).absolutePath());
+
+            if (CopyDriver->CopyFiles(DestFile.toStdString().c_str(),
+                                  AddItemDlg.getSourceFilePath().toStdString().c_str()) == CE_Failure)
+            {
+              QMessageBox::critical(QApplication::activeWindow(),
+                                    "OpenFLUID-Builder",
+                                    tr("GDAL error while copying Georaster file source\n"
+                                       "The datastore item will not be added"),
+                                    QMessageBox::Close);
+              return;
+            }
+
+          }
+          else
+          {
+            QMessageBox::critical(QApplication::activeWindow(),
+                                  "OpenFLUID-Builder",
+                                  tr("GDAL driver error while opening GeoRaster file source to copy\n"
+                                     "The datastore item will not be added"),
+                                  QMessageBox::Close);
+            return;
+          }
+        }
+        else
+        {
+          QMessageBox::critical(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("GDAL error while opening GeoRaster file source to copy\n"
+                                   "The datastore item will not be added"),
+                                QMessageBox::Close);
+          return;
+        }
+        GDALClose(SrcDS);
+      }
+
+      // adjust the file associated to the item with the copied file
+      DSItemFile = DestFile;
+    }
+
+
+    // creation of datastore item
+
+    // build of the relative path for the file associated with the item
+    QString RelativeDSItemFile = QDir(QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()))
+                                     .relativeFilePath(DSItemFile);
+
+    openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc =
+        new openfluid::fluidx::DatastoreItemDescriptor(AddItemDlg.getItemID().toStdString(),
+                                                       openfluid::base::RuntimeEnvironment::getInstance()->getInputDir(),
+                                                       RelativeDSItemFile.toStdString(),
+                                                       AddItemDlg.getItemType());
+
+    if (AddItemDlg.isUnitsClass())
+      DSItemDesc->setUnitClass(AddItemDlg.getUnitsClass().toStdString());
+
+    m_Datastore.appendItem(DSItemDesc);
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+
+    refresh();
+
+  }
 }
 
 
@@ -163,8 +313,6 @@ void DatastoreWidget::removeItem()
   if (DSItemIndex >=0 )
   {
     QString DSItemID = ui->DatastoreTableWidget->item(DSItemIndex,0)->text();
-
-    // TODO translation in french
 
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",

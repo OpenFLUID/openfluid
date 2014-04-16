@@ -157,13 +157,15 @@ QT4_WRAP_UI(BUILDER_SPATIAL_UI spatial/SpatialDomainWidget.ui
 ### DATASTORE #
 
 SET(BUILDER_DATASTORE_CPP datastore/DatastoreWidget.cpp
+                          datastore/AddDatastoreItemDialog.cpp
                           )
 
 SET(BUILDER_DATASTORE_HPP datastore/DatastoreWidget.hpp
-                           )
+                          datastore/AddDatastoreItemDialog.hpp
+                          )
 
 QT4_WRAP_UI(BUILDER_DATASTORE_UI datastore/DatastoreWidget.ui
-      
+                                 datastore/EditDatastoreItemDialog.ui
                                  )
 
 ### MONITORING #
