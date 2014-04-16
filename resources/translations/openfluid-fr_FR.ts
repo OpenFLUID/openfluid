@@ -67,6 +67,65 @@
     </message>
 </context>
 <context>
+    <name>AddDatastoreItemDialog</name>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="68"/>
+        <source>All vector files</source>
+        <translation>Tous les fichiers vecteurs</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="71"/>
+        <source>All raster files</source>
+        <translation>Tous les fichiers raster</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="136"/>
+        <source>Item ID cannot be empty</source>
+        <translation>L&apos;ID de l&apos;élément ne peut être vide</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="138"/>
+        <source>Item ID already exists</source>
+        <translation>L&apos;ID de l&apos;élément existe déjà</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="140"/>
+        <source>Units class cannot be empty</source>
+        <translation>La classe d&apos;unités ne peut être vide</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="142"/>
+        <source>No geovector source file selected</source>
+        <translation>Aucune source geovector n&apos;est sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="144"/>
+        <source>No georaster source file selected</source>
+        <translation>Aucune source georaster n&apos;est sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="146"/>
+        <source>Subdirectory for data destination is empty</source>
+        <translation>Le sous-répertoire de destination des données n&apos;est pas renseigné</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="149"/>
+        <source>Wrong subdirectory name for data destination</source>
+        <translation>Le nom du sous-répertoire des données de destination est incorrect</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="165"/>
+        <source>Add of a datastore item</source>
+        <translation>Ajout d&apos;un élément dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="186"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="206"/>
+        <source>Select file</source>
+        <translation>Sélectionner un fichier</translation>
+    </message>
+</context>
+<context>
     <name>AddGeneratorDialog</name>
     <message>
         <source>Dialog</source>
@@ -765,7 +824,54 @@ Proceed anyway?</source>
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="171"/>
+        <source>OGR driver error while copying GeoVector file source
+The datastore item will not be added</source>
+        <translation type="obsolete">Erreur de driver OGR pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <source>OGR error while copying GeoVector file source
+The datastore item will not be added</source>
+        <translation type="obsolete">Erreur OGR pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="195"/>
+        <source>OGR driver error while copying geovector file source
+The datastore item will not be added</source>
+        <translation>Erreur de driver OGR pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="205"/>
+        <source>OGR error while copying geovector file source
+The datastore item will not be added</source>
+        <translation>Erreur OGR pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="231"/>
+        <source>GDAL error while copying georaster file source
+The datastore item will not be added</source>
+        <translation>Erreur GDAL pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="242"/>
+        <source>GDAL driver error while opening georaster file source to copy
+The datastore item will not be added</source>
+        <translation>Erreur de driver GDAL pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="252"/>
+        <source>GDAL error while opening georaster file source to copy
+The datastore item will not be added</source>
+        <translation>Erreur de driver OGR pendant l&apos;ouverture du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="317"/>
         <source>You are removing %1 item from datastore.
 This item will not be available anymore, but data will be kept on disk.
 
@@ -885,6 +991,50 @@ Continuer quand même?</translation>
         <location filename="../../src/apps/openfluid-builder/spatial/EditAttributesValuesDialog.cpp" line="137"/>
         <source>Edit values of selected attributes</source>
         <translation>Editer les valeurs des attributs sélectinnés</translation>
+    </message>
+</context>
+<context>
+    <name>EditDatastoreItemDialog</name>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="165"/>
+        <source>Units class</source>
+        <translation>Classe d&apos;unités</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="206"/>
+        <source>Data source</source>
+        <translation>Source de données</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="226"/>
+        <source>geovector</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="243"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="271"/>
+        <source>Browse...</source>
+        <translation>Parcourir...</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="254"/>
+        <source>georaster</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="283"/>
+        <source>Data destination</source>
+        <translation>Destination des données</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="303"/>
+        <source>Copy into dataset root directory</source>
+        <translation>Copier dans le répertoire des données d&apos;entrée</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="314"/>
+        <source>Copy into dataset subdirectory:</source>
+        <translation>Copier dans un sous-répertoire des données d&apos;entrée:</translation>
     </message>
 </context>
 <context>

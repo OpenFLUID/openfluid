@@ -122,6 +122,8 @@ AddDatastoreItemDialog::~AddDatastoreItemDialog()
 
 void AddDatastoreItemDialog::checkGlobal()
 {
+  ui->IDEdit->setText(ui->IDEdit->text().replace(QRegExp("[^\\w]"),"_"));
+
   ui->GeovectorEdit->setEnabled(ui->GeovectorRadioButton->isChecked());
   ui->GeovectorBrowseButton->setEnabled(ui->GeovectorRadioButton->isChecked());
 

@@ -148,8 +148,6 @@ void DatastoreWidget::refresh()
 
 void DatastoreWidget::addItem()
 {
-  // TODO french translation
-
   AddDatastoreItemDialog AddItemDlg(StringSetToQStringList(m_AdvFluidxDesc.getDomain().getClassNames()),
                                     StringListToQStringList(m_Datastore.getItemsIDs()),
                                     this);
@@ -194,7 +192,7 @@ void DatastoreWidget::addItem()
           {
             QMessageBox::critical(QApplication::activeWindow(),
                                   "OpenFLUID-Builder",
-                                  tr("OGR driver error while copying GeoVector file source\n"
+                                  tr("OGR driver error while copying geovector file source\n"
                                      "The datastore item will not be added"),
                                   QMessageBox::Close);
             return;
@@ -204,7 +202,7 @@ void DatastoreWidget::addItem()
         {
           QMessageBox::critical(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
-                                tr("OGR error while copying GeoVector file source\n"
+                                tr("OGR error while copying geovector file source\n"
                                    "The datastore item will not be added"),
                                 QMessageBox::Close);
           return;
@@ -230,7 +228,7 @@ void DatastoreWidget::addItem()
             {
               QMessageBox::critical(QApplication::activeWindow(),
                                     "OpenFLUID-Builder",
-                                    tr("GDAL error while copying Georaster file source\n"
+                                    tr("GDAL error while copying georaster file source\n"
                                        "The datastore item will not be added"),
                                     QMessageBox::Close);
               return;
@@ -241,7 +239,7 @@ void DatastoreWidget::addItem()
           {
             QMessageBox::critical(QApplication::activeWindow(),
                                   "OpenFLUID-Builder",
-                                  tr("GDAL driver error while opening GeoRaster file source to copy\n"
+                                  tr("GDAL driver error while opening georaster file source to copy\n"
                                      "The datastore item will not be added"),
                                   QMessageBox::Close);
             return;
@@ -251,7 +249,7 @@ void DatastoreWidget::addItem()
         {
           QMessageBox::critical(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",
-                                tr("GDAL error while opening GeoRaster file source to copy\n"
+                                tr("GDAL error while opening georaster file source to copy\n"
                                    "The datastore item will not be added"),
                                 QMessageBox::Close);
           return;
@@ -310,7 +308,7 @@ void DatastoreWidget::removeItem()
 
   int DSItemIndex = ui->DatastoreTableWidget->currentRow();
 
-  if (DSItemIndex >=0 )
+  if (DSItemIndex >=0)
   {
     QString DSItemID = ui->DatastoreTableWidget->item(DSItemIndex,0)->text();
 
@@ -340,8 +338,24 @@ void DatastoreWidget::removeItem()
 
 void DatastoreWidget::moveItemUp()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  if (ui->DatastoreTableWidget->rowCount() < 2)
+    return;
+
+  int DSItemIndex = ui->DatastoreTableWidget->currentRow();
+
+  if (DSItemIndex >=1)
+  {
+    int From = DSItemIndex;
+    int To = DSItemIndex-1;
+
+    m_Datastore.moveItem(From,To);
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+
+    refresh();
+
+    ui->DatastoreTableWidget->selectRow(To);
+  }
 }
 
 
@@ -351,7 +365,25 @@ void DatastoreWidget::moveItemUp()
 
 void DatastoreWidget::moveItemDown()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  int RowCount = ui->DatastoreTableWidget->rowCount();
+
+  if (RowCount < 2)
+    return;
+
+  int DSItemIndex = ui->DatastoreTableWidget->currentRow();
+
+  if (DSItemIndex>=0 && DSItemIndex<RowCount-1)
+  {
+    int From = DSItemIndex;
+    int To = DSItemIndex+1;
+
+    m_Datastore.moveItem(From,To);
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+
+    refresh();
+
+    ui->DatastoreTableWidget->selectRow(To);
+  }
 }
 
