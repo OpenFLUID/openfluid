@@ -221,6 +221,25 @@ void AdvancedDatastoreDescriptor::removeItem(unsigned int Position)
 // =====================================================================
 
 
+std::list<std::string> AdvancedDatastoreDescriptor::getItemsIDs() const
+{
+  std::list<std::string> IDsList;
+
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator it;
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator itb = mp_DatastoreDesc->getItems().begin();
+  std::list<openfluid::fluidx::DatastoreItemDescriptor*>::iterator ite = mp_DatastoreDesc->getItems().end();
+
+  for (it = itb; it != ite; ++it)
+    IDsList.push_back((*it)->getID());
+
+  return IDsList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool AdvancedDatastoreDescriptor::isItemAlreadyExist(std::string ItemID) const
 {
   return mp_DatastoreDesc->isItemIDAlreadyExist(ItemID);

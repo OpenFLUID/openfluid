@@ -97,8 +97,6 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     void removeEvents();
 
-    void refreshMap();
-
     void enableAutomaticView(bool Enabled);
 
     void updateSelectionFromMap();
@@ -140,6 +138,8 @@ class SpatialDomainWidget : public WorkspaceWidget
   public slots:
 
     void refresh();
+
+    void refreshMap();
 
 
   public:

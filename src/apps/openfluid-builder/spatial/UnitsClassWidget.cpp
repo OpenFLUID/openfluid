@@ -88,7 +88,7 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   ui->ShowHideStyleLabel->setText(tr("Show map style"));
   connect(ui->ShowHideStyleLabel,SIGNAL(clicked()),this,SLOT(toggleShowHideStyle()));
 
-  setDatastoreItemsList(DSList);
+  linkToDatastoreItem(DSList);
 
   // initialize line width
 
@@ -347,9 +347,13 @@ void UnitsClassWidget::changeVisible()
 // =====================================================================
 
 
-void UnitsClassWidget::setDatastoreItemsList(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList)
+void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::DatastoreItemDescriptor*>& DSList)
 {
   mp_LayerSource = NULL;
+
+  // disconnect signal to avoid multiple refresh of map,
+  // due to changeVisible slot
+  disconnect(ui->VisibleCheckBox,SIGNAL(toggled(bool)),this,SLOT(changeVisible()));
 
   if (!DSList.empty())
   {
@@ -364,6 +368,8 @@ void UnitsClassWidget::setDatastoreItemsList(const std::list<openfluid::fluidx::
     ui->StyleParamsWidget->setEnabled(false);
     ui->VisibleCheckBox->setChecked(false);
   }
+
+  connect(ui->VisibleCheckBox,SIGNAL(toggled(bool)),this,SLOT(changeVisible()));
 }
 
 

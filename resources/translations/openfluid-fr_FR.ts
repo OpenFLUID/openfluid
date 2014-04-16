@@ -67,6 +67,65 @@
     </message>
 </context>
 <context>
+    <name>AddDatastoreItemDialog</name>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="68"/>
+        <source>All vector files</source>
+        <translation>Tous les fichiers vecteurs</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="71"/>
+        <source>All raster files</source>
+        <translation>Tous les fichiers raster</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="136"/>
+        <source>Item ID cannot be empty</source>
+        <translation>L&apos;ID de l&apos;élément ne peut être vide</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="138"/>
+        <source>Item ID already exists</source>
+        <translation>L&apos;ID de l&apos;élément existe déjà</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="140"/>
+        <source>Units class cannot be empty</source>
+        <translation>La classe d&apos;unités ne peut être vide</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="142"/>
+        <source>No geovector source file selected</source>
+        <translation>Aucune source geovector n&apos;est sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="144"/>
+        <source>No georaster source file selected</source>
+        <translation>Aucune source georaster n&apos;est sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="146"/>
+        <source>Subdirectory for data destination is empty</source>
+        <translation>Le sous-répertoire de destination des données n&apos;est pas renseigné</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="149"/>
+        <source>Wrong subdirectory name for data destination</source>
+        <translation>Le nom du sous-répertoire des données de destination est incorrect</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="165"/>
+        <source>Add of a datastore item</source>
+        <translation>Ajout d&apos;un élément dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="186"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/AddDatastoreItemDialog.cpp" line="206"/>
+        <source>Select file</source>
+        <translation>Sélectionner un fichier</translation>
+    </message>
+</context>
+<context>
     <name>AddGeneratorDialog</name>
     <message>
         <source>Dialog</source>
@@ -588,7 +647,7 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     </message>
     <message>
         <source>Error creating project </source>
-        <translation>Erreur à la création du projet</translation>
+        <translation type="obsolete">Erreur à la création du projet</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/AppCoordinator.cpp" line="440"/>
@@ -625,15 +684,15 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     <name>DashboardInfosWidget</name>
     <message>
         <source>checked</source>
-        <translation>vérifié</translation>
+        <translation type="obsolete">vérifié</translation>
     </message>
     <message>
         <source>none</source>
-        <translation>aucun</translation>
+        <translation type="obsolete">aucun</translation>
     </message>
     <message>
         <source>forced</source>
-        <translation>forcé</translation>
+        <translation type="obsolete">forcé</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/base/DashboardInfosWidget.cpp" line="105"/>
@@ -677,7 +736,7 @@ n&apos;est pas un projet OpenFLUID valide</translation>
     </message>
     <message>
         <source>&lt;u&gt;Run configuration:&lt;/u&gt; total duration of %1 seconds with a default DeltaT of %2 seconds and %3 constraint</source>
-        <translation>&lt;u&gt;Configuration de simulation:&lt;/u&gt; durée totale de %1 secondes avec un DeltaT par défaut de %2 secondes et %3 contrainte</translation>
+        <translation type="obsolete">&lt;u&gt;Configuration de simulation:&lt;/u&gt; durée totale de %1 secondes avec un DeltaT par défaut de %2 secondes et %3 contrainte</translation>
     </message>
 </context>
 <context>
@@ -755,6 +814,72 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.ui" line="54"/>
         <source>Source</source>
         <translation>Source</translation>
+    </message>
+    <message>
+        <source>You are removing %1 item from datastore.
+
+Proceed anyway?</source>
+        <translation type="obsolete">Vous enlevez l&apos;élément %1 du datastore.
+
+Continuer quand même?</translation>
+    </message>
+    <message>
+        <source>OGR driver error while copying GeoVector file source
+The datastore item will not be added</source>
+        <translation type="obsolete">Erreur de driver OGR pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <source>OGR error while copying GeoVector file source
+The datastore item will not be added</source>
+        <translation type="obsolete">Erreur OGR pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="195"/>
+        <source>OGR driver error while copying geovector file source
+The datastore item will not be added</source>
+        <translation>Erreur de driver OGR pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="205"/>
+        <source>OGR error while copying geovector file source
+The datastore item will not be added</source>
+        <translation>Erreur OGR pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="231"/>
+        <source>GDAL error while copying georaster file source
+The datastore item will not be added</source>
+        <translation>Erreur GDAL pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="242"/>
+        <source>GDAL driver error while opening georaster file source to copy
+The datastore item will not be added</source>
+        <translation>Erreur de driver GDAL pendant la copie du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="252"/>
+        <source>GDAL error while opening georaster file source to copy
+The datastore item will not be added</source>
+        <translation>Erreur de driver OGR pendant l&apos;ouverture du fichier source
+L&apos;élément ne sera pas ajouté dans le datastore</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="317"/>
+        <source>You are removing %1 item from datastore.
+This item will not be available anymore, but data will be kept on disk.
+
+Proceed anyway?</source>
+        <translation>Vous enlevez l&apos;élément %1 du datastore.
+Cet élément ne sera plus disponible, mais les données seront conservées sur le disque.
+
+Continuer quand même?</translation>
     </message>
 </context>
 <context>
@@ -866,6 +991,50 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <location filename="../../src/apps/openfluid-builder/spatial/EditAttributesValuesDialog.cpp" line="137"/>
         <source>Edit values of selected attributes</source>
         <translation>Editer les valeurs des attributs sélectinnés</translation>
+    </message>
+</context>
+<context>
+    <name>EditDatastoreItemDialog</name>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="165"/>
+        <source>Units class</source>
+        <translation>Classe d&apos;unités</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="206"/>
+        <source>Data source</source>
+        <translation>Source de données</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="226"/>
+        <source>geovector</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="243"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="271"/>
+        <source>Browse...</source>
+        <translation>Parcourir...</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="254"/>
+        <source>georaster</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="283"/>
+        <source>Data destination</source>
+        <translation>Destination des données</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="303"/>
+        <source>Copy into dataset root directory</source>
+        <translation>Copier dans le répertoire des données d&apos;entrée</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="314"/>
+        <source>Copy into dataset subdirectory:</source>
+        <translation>Copier dans un sous-répertoire des données d&apos;entrée:</translation>
     </message>
 </context>
 <context>
@@ -1324,12 +1493,12 @@ n&apos;est pas un projet OpenFLUID valide</translation>
         <translation>Effacer le contenu</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.cpp" line="89"/>
+        <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.cpp" line="128"/>
         <source>Delete outputs contents</source>
         <translation>Effacer le contenu des sorties</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.cpp" line="90"/>
+        <location filename="../../src/apps/openfluid-builder/outputs/OutputsWidget.cpp" line="129"/>
         <source>This will delete all files and directories in the output directory.
 
 Proceed anyway?</source>
@@ -1535,97 +1704,97 @@ Continuer quand même?</translation>
 <context>
     <name>ProjectCentral</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="230"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="233"/>
         <source>Model is empty</source>
         <translation>Le modèle est vide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="244"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="247"/>
         <source>Monitoring is empty</source>
         <translation>Le monitoring est vide</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="270"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="282"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="273"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="285"/>
         <source>Parameter %1 for %2 has to be a double precision value</source>
         <translation>Le paramètre %1 pour %2 doit être en dpuble précision</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="292"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="295"/>
         <source>Parameter %1 is greater or equal to parameter %2 for %3</source>
         <translation>Le paramètre %1 est plus grand ou égal au paramètre %2 pour %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="406"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="419"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="433"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="409"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="422"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="436"/>
         <source>File %1 required by generator %2 does not exist</source>
         <translation>Le fichier %1 requis par le générateur %2 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="466"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="469"/>
         <source>Parameter %1 for generator %2 is not set</source>
         <translation>Le paramètre %1 pour le générateur %2 n&apos;est pas défini</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="509"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="512"/>
         <source>Unit class %1 does not exist for attribute %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;attribut %2 requis par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="519"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="522"/>
         <source>Attribute %1 required on %2 units by %3 does not exist</source>
         <translation>L&apos;attribut %1 requis sur la classe d&apos;unité %2 par %3 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="536"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="539"/>
         <source>Unit class %1 does not exist for attribute %2 produced by %3</source>
         <translation>La classe d&apos;unité %1 n&apos;existe pas pour l&apos;attribut %2 produit par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="550"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="553"/>
         <source>Attribute %1 produced on %2 units by %3 is already produced by another simulator</source>
         <translation>L&apos;attribut %1 produit sur la classe d&apos;unité %2 par %3 est déjà produit par un autre simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="561"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="564"/>
         <source>Simulator %1 is not available</source>
         <translation>Le simulateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="606"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="638"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="670"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="609"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="641"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="673"/>
         <source>Unit class %1 does not exist for variable %2 produced by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 produite par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="622"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="625"/>
         <source>Variable %1 on %2 produced by %3 cannot be created because it is created by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 ne peut être créée car elle est déjà crée par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="654"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="657"/>
         <source>Variable %1 on %2 produced by %3 is already produced by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 est déjà produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="710"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="713"/>
         <source>Unit class %1 does not exist for variable %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 requise par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="724"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="727"/>
         <source>Variable %1 on %2 required by %3 is not produced by another simulator or generator</source>
         <translation>La variable %1 sur la classe d&apos;unités %2 requise par %3 n&apos;est pas produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="763"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="766"/>
         <source>Unit class %1 does not exist for datastore item %2</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;élément du datastore %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="791"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="794"/>
         <source>Observer %1 is not available</source>
         <translation>L&apos;observateur %1 n&apos;est pas disponible</translation>
     </message>
@@ -1678,30 +1847,30 @@ Continuer quand même?</translation>
         <translation>Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="552"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="569"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="553"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="570"/>
         <source>Extension error</source>
         <translation>Erreur d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="553"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="554"/>
         <source>Unknown extension type.
 Extension cannot be instantiated.</source>
         <translation>Type d&apos;extension inconnu.
 L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="560"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="561"/>
         <source>Extension warning</source>
         <translation>Avertissement d&apos;extension</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="561"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="562"/>
         <source>Extension is already active.</source>
         <translation>L&apos;extension est déjà active.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="570"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectModule.cpp" line="571"/>
         <source>Extension is not registered.
 Extension cannot be instantiated.</source>
         <translation>Extension inconnue.
@@ -2189,7 +2358,7 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="847"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="850"/>
         <source>You are removing the unit %1 of class %2.
 All connections and attributes units related to this unit will be lost.
 
@@ -2200,12 +2369,12 @@ Toutes les connexions et les attributs en relation avec cette unité seront perd
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="926"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="929"/>
         <source>No connection selected for removal</source>
         <translation>Aucune connexion sélectionnée pour suppression</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="947"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="950"/>
         <source>You are removing the &quot;%1&quot; connection
 between unit %2 of class %3 and unit %4 of class %5.
 
@@ -2216,27 +2385,27 @@ entre l&apos;unité %2 de la classe %3 et l&apos;unité %4 de la classe %5.
 Continuer?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1074"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1077"/>
         <source>At least one attribute value is not a numeric value.
 Edition of attributes cannot be performed.</source>
         <translation>Au moins une valeur d&apos;attribut n&apos;est pas une valeur numérique.
 L&apos;édition des attributs ne peut être réalisée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1086"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1089"/>
         <source>No attribute value selected</source>
         <translation>Aucune valeur d&apos;attribut n&apos;est sélectionnée</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1102"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1136"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1105"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1139"/>
         <source>There is no attribute in the %1 units class.
 Rename cannot be performed.</source>
         <translation>Il n&apos;y a pas d&apos;attribut dans la classe d&apos;unités %1.
 Le renommage ne peut pas être réalisé.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1149"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1152"/>
         <source>You are removing the attribute %1 of class %2.
 All %1 values associated to units of class %2 will be lost.
 
@@ -2297,7 +2466,7 @@ Toutes les unités de la classe %1 ainsi que les attributs et connexions associ�
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="363"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="367"/>
         <source>(none)</source>
         <translation>(aucune)</translation>
     </message>

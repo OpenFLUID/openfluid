@@ -659,6 +659,9 @@ void SpatialDomainWidget::refreshMap()
   {
     UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
 
+    ClassW->linkToDatastoreItem(m_Datastore.getItems(ClassW->getClassName().toStdString(),
+                                  openfluid::core::UnstructuredValue::GeoVectorValue));
+
     if (ClassW->getLayerSource() != NULL && ClassW->isLayerVisible())
     {
       mp_MapScene->addLayer(ClassW->getLayerSource(), -i,

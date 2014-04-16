@@ -58,6 +58,8 @@ QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
 
 QStringList StringSetToQStringList(const std::set<std::string>& StrSet);
 
+QStringList StringListToQStringList(const std::list<std::string>& StrSet);
+
 QStringList IntSetToQStringList(const std::set<int>& IntSet);
 
 QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);

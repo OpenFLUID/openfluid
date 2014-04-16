@@ -99,6 +99,8 @@ class DLLEXPORT AdvancedDatastoreDescriptor
      */
     void removeItem(unsigned int Position);
 
+    std::list<std::string> getItemsIDs() const;
+
     bool isItemAlreadyExist(std::string ItemID) const;
 
     /**

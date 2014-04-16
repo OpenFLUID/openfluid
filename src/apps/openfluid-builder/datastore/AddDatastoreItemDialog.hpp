@@ -29,65 +29,79 @@
   
 */
 
-
 /**
-  \file DatastoreWidget.hpp
+  \file AddDatastoreItemDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __DATASTOREWIDGET_HPP__
-#define __DATASTOREWIDGET_HPP__
+#ifndef __ADDDATASTOREITEMDIALOG_HPP__
+#define __ADDDATASTOREITEMDIALOG_HPP__
 
-#include <QWidget>
+#include "OpenFLUIDDialog.hpp"
+#include <openfluid/core/UnstructuredValue.hpp>
 
-#include "WorkspaceWidget.hpp"
-#include <openfluid/fluidx/AdvancedDatastoreDescriptor.hpp>
+#include <QCompleter>
 
 
 namespace Ui
 {
-  class DatastoreWidget;
+  class EditDatastoreItemDialog;
 }
 
 
-class DatastoreWidget : public WorkspaceWidget
+class AddDatastoreItemDialog : public OpenFLUIDDialog
 {
-  Q_OBJECT
+  Q_OBJECT;
 
   private slots:
 
-    void addItem();
+    void checkGlobal();
 
-    void editItem();
+    void selectVectorFile();
 
-    void removeItem();
-
-    void moveItemUp();
-
-    void moveItemDown();
+    void selectRasterFile();
 
 
   private:
 
-    Ui::DatastoreWidget* ui;
+    Ui::EditDatastoreItemDialog* ui;
 
-    openfluid::fluidx::AdvancedDatastoreDescriptor& m_Datastore;
+    const QStringList m_ExistingIDs;
 
+    QString m_GDALFormatsStr;
 
-  public slots:
+    QString m_OGRFormatsStr;
 
-    void refresh();
+    QCompleter* mp_Completer;
+
+    void setMessage(const QString& Msg = "");
 
 
   public:
 
-    DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
+    AddDatastoreItemDialog(const QStringList& ExistingUnitsClass,const QStringList& ExistingIDs,
+                           QWidget* Parent = 0);
 
-    virtual ~DatastoreWidget();
+    ~AddDatastoreItemDialog();
+
+    QString getItemID() const;
+
+    bool isUnitsClass() const;
+
+    QString getUnitsClass() const;
+
+    openfluid::core::UnstructuredValue::UnstructuredType getItemType() const;
+
+    QString getSourceFilePath() const;
+
+    bool isSourceFileInInputDataset() const;
+
+    QString getCopySubdir() const;
+
 };
 
 
-#endif /* __DATASTOREWIDGET_HPP__ */
+#endif /* __ADDDATASTOREITEMDIALOG_HPP__ */
