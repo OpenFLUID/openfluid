@@ -44,6 +44,9 @@
 namespace openfluid { namespace fluidx {
 
 
+EventID_t EventDescriptor::m_NextID = 0;
+
+
 // =====================================================================
 // =====================================================================
 
@@ -51,8 +54,22 @@ namespace openfluid { namespace fluidx {
 EventDescriptor::EventDescriptor()
 : m_Event()
 {
-
+  m_ID = assignID();
 }
+
+// =====================================================================
+// =====================================================================
+
+
+EventDescriptor::EventDescriptor(const EventDescriptor& EvDesc)
+{
+  m_ID = EvDesc.m_ID;
+
+  m_UnitClass = EvDesc.m_UnitClass;
+  m_UnitID = EvDesc.m_UnitID;
+  m_Event = EvDesc.m_Event;
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -62,6 +79,18 @@ EventDescriptor::~EventDescriptor()
 {
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+EventID_t EventDescriptor::assignID()
+{
+  m_NextID++;
+  return m_NextID;
+}
+
 
 
 } } // namespaces

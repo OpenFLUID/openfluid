@@ -50,6 +50,7 @@
 #include "AddUnitsClassDialog.hpp"
 #include "AddUnitToClassDialog.hpp"
 #include "AddConnectionDialog.hpp"
+#include "EditEventDialog.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/ProjectManager.hpp>
@@ -59,6 +60,18 @@
 #include <QTableWidgetItem>
 #include <QMessageBox>
 #include <QTimer>
+
+
+// for storing pointers to Event in QTableWidget
+Q_DECLARE_METATYPE(openfluid::fluidx::EventID_t);
+
+enum CustomRoles {
+    EventIDRole = Qt::UserRole + 1
+};
+
+
+// =====================================================================
+// =====================================================================
 
 
 SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -133,6 +146,7 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
 
   connect(ui->AddEventButton,SIGNAL(clicked()),this,SLOT(addEvent()));
   connect(ui->EditEventButton,SIGNAL(clicked()),this,SLOT(editEvent()));
+  connect(ui->EventsTableWidget,SIGNAL(cellDoubleClicked(int,int)),this,SLOT(editEvent()));
   connect(ui->RemoveEventsButton,SIGNAL(clicked()),this,SLOT(removeEvents()));
 
   connect(ui->IDsListWidget,SIGNAL(currentRowChanged(int)),this,SLOT(updateUnitSelection(int)));
@@ -591,23 +605,31 @@ void SpatialDomainWidget::refreshClassEvents()
 
     for (it=itb; it!=ite; ++it)
     {
-      const std::list<openfluid::core::Event*>* EventsListPtr = &(m_Domain.getUnit(m_ActiveClass.toStdString(),*it).Events);
+      const std::list<openfluid::fluidx::EventDescriptor*>* EventsDescsListPtr = &(m_Domain.getUnit(m_ActiveClass.toStdString(),*it).EventsDescriptors);
 
-      if (!EventsListPtr->empty())
+      if (!EventsDescsListPtr->empty())
       {
-        std::list<openfluid::core::Event*>::const_iterator Eit;
-        std::list<openfluid::core::Event*>::const_iterator Eitb = EventsListPtr->begin();
-        std::list<openfluid::core::Event*>::const_iterator Eite = EventsListPtr->end();
+        std::list<openfluid::fluidx::EventDescriptor*>::const_iterator Eit;
+        std::list<openfluid::fluidx::EventDescriptor*>::const_iterator Eitb = EventsDescsListPtr->begin();
+        std::list<openfluid::fluidx::EventDescriptor*>::const_iterator Eite = EventsDescsListPtr->end();
 
         for (Eit=Eitb; Eit!=Eite; ++Eit)
         {
+
           ui->EventsTableWidget->setRowCount(RowIndex+1);
 
-          ui->EventsTableWidget->setItem(RowIndex,0,new QTableWidgetItem(QString::fromStdString((*Eit)->getDateTime().getAsISOString())));
+          // storage of the event ID for edition and removal
+          QTableWidgetItem *Item = new QTableWidgetItem(QString::fromStdString((*Eit)->getEvent().getDateTime().getAsISOString()));
+          Item->setData(EventIDRole,QVariant::fromValue<openfluid::fluidx::EventID_t>((*Eit)->getID()));
 
+          ui->EventsTableWidget->setItem(RowIndex,0,Item);
+
+          // unit ID
           ui->EventsTableWidget->setItem(RowIndex,1,new QTableWidgetItem(QString("%1").arg(*it)));
 
-          openfluid::core::Event::EventInfosMap_t Infos = (*Eit)->getInfos();
+
+          // associated infos
+          openfluid::core::Event::EventInfosMap_t Infos = (*Eit)->getEvent().getInfos();
           openfluid::core::Event::EventInfosMap_t::iterator Iit;
           openfluid::core::Event::EventInfosMap_t::iterator Iitb = Infos.begin();
           openfluid::core::Event::EventInfosMap_t::iterator Iite = Infos.end();
@@ -1301,8 +1323,33 @@ void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
 
 void SpatialDomainWidget::addEvent()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  QStringList UnitsIDsList = IntSetToQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+
+  AddEventDialog AddEventDlg(m_ActiveClass,UnitsIDsList,
+                              m_AdvFluidxDesc.getRunDescriptor().getBeginDate(),
+                              this);
+
+  if (AddEventDlg.exec() == QDialog::Accepted)
+  {
+    openfluid::core::Event Ev(AddEventDlg.getDateTime());
+
+    const openfluid::core::Event::EventInfosMap_t EvInfos = AddEventDlg.getInfos();
+
+    openfluid::core::Event::EventInfosMap_t::const_iterator it;
+    openfluid::core::Event::EventInfosMap_t::const_iterator itb = EvInfos.begin();
+    openfluid::core::Event::EventInfosMap_t::const_iterator ite = EvInfos.end();
+
+    for (it=itb;it!=ite;++it)
+      Ev.addInfo((*it).first,(*it).second);
+
+    m_Domain.addEvent(m_ActiveClass.toStdString(),
+                      AddEventDlg.getUnitID(),
+                      Ev);
+
+    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALEVENTS);
+
+    refreshClassEvents();
+  }
 }
 
 
@@ -1312,8 +1359,59 @@ void SpatialDomainWidget::addEvent()
 
 void SpatialDomainWidget::editEvent()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  int Row = ui->EventsTableWidget->currentRow();
+
+  if (Row >= 0)
+  {
+    openfluid::fluidx::EventID_t OriginEventID =
+        ui->EventsTableWidget->item(Row,0)->data(EventIDRole).value<openfluid::fluidx::EventID_t>();
+
+    openfluid::fluidx::EventDescriptor* EvDesc = m_Domain.getEventDescriptor(OriginEventID);
+
+    if (EvDesc)
+    {
+      QStringList UnitsIDsList = IntSetToQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+
+      openfluid::core::UnitID_t OriginUnitID = ui->EventsTableWidget->item(Row,1)->text().toInt();
+
+      EditEventDialog EditEventDlg(m_ActiveClass,UnitsIDsList,
+                                  ui->EventsTableWidget->item(Row,1)->text(),
+                                  EvDesc->getEvent().getDateTime(),
+                                  EvDesc->getEvent().getInfos(),
+                                  this);
+
+
+      if (EditEventDlg.exec() == QDialog::Accepted)
+      {
+        openfluid::core::UnitID_t FinalUnitID = EditEventDlg.getUnitID();
+
+        openfluid::core::Event Ev(EditEventDlg.getDateTime());
+        const openfluid::core::Event::EventInfosMap_t EvInfos = EditEventDlg.getInfos();
+
+        openfluid::core::Event::EventInfosMap_t::const_iterator it;
+        openfluid::core::Event::EventInfosMap_t::const_iterator itb = EvInfos.begin();
+        openfluid::core::Event::EventInfosMap_t::const_iterator ite = EvInfos.end();
+
+        for (it=itb;it!=ite;++it)
+          Ev.addInfo((*it).first,(*it).second);
+
+
+        if (OriginUnitID == FinalUnitID)
+        {
+          m_Domain.modifyEvent(OriginEventID,Ev);
+        }
+        else
+        {
+          m_Domain.deleteEvent(m_ActiveClass.toStdString(),OriginUnitID,OriginEventID);
+          m_Domain.addEvent(m_ActiveClass.toStdString(),FinalUnitID,Ev);
+        }
+
+        emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALEVENTS);
+
+        refreshClassEvents();
+      }
+    }
+  }
 }
 
 
@@ -1323,7 +1421,42 @@ void SpatialDomainWidget::editEvent()
 
 void SpatialDomainWidget::removeEvents()
 {
-  // TODO
-  QMessageBox::critical(QApplication::activeWindow(),QString("not implemented"),QString(__PRETTY_FUNCTION__),QMessageBox::Close);
+  // TODO french translation
+
+  bool OK = true;
+
+  QList<QTableWidgetItem *> SelItems = ui->EventsTableWidget->selectedItems();
+
+  if (SelItems.size() > 0)
+  {
+    OK = (QMessageBox::question(QApplication::activeWindow(),
+                                "OpenFLUID-Builder",
+                                tr("You are removing one or many spatial event(s).\n"
+                                   "All associated informations will be lost.\n"
+                                   "\n"
+                                   "Proceed anyway?"),
+                                QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+
+    if (OK)
+    {
+
+      while(!SelItems.isEmpty())
+      {
+        openfluid::core::UnitID_t UnitID = ui->EventsTableWidget->item(SelItems[0]->row(),1)->text().toInt();
+
+        openfluid::fluidx::EventID_t EventID =
+            ui->EventsTableWidget->item(SelItems[0]->row(),0)->data(EventIDRole).value<openfluid::fluidx::EventID_t>();
+
+        m_Domain.deleteEvent(m_ActiveClass.toStdString(),UnitID,EventID);
+
+        ui->EventsTableWidget->removeRow(SelItems[0]->row());
+        SelItems = ui->EventsTableWidget->selectedItems();
+      }
+
+      emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALEVENTS);
+
+      refreshClassEvents();
+    }
+  }
 }
 

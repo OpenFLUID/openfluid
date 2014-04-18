@@ -29,51 +29,64 @@
   
 */
 
-
 /**
-  \file FluidXUpdateFlags.hpp
+  \file AddEventDialog.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __FLUIDXUPDATEFLAGS_HPP__
-#define __FLUIDXUPDATEFLAGS_HPP__
+#ifndef __ADDEVENTDIALOG_HPP__
+#define __ADDEVENTDIALOG_HPP__
 
-
-#include <QFlags>
-
-#include <openfluid/dllexport.hpp>
-
-
-namespace openfluid { namespace builderext {
-
-
-class DLLEXPORT FluidXUpdateFlags
+namespace Ui
 {
+  class EditEventDialog;
+}
+
+
+#include <openfluid/core/Event.hpp>
+
+#include "OpenFLUIDDialog.hpp"
+
+
+class AddEventDialog : public OpenFLUIDDialog
+{
+  Q_OBJECT;
+
+  protected slots:
+
+    void checkGlobal();
+
+    void addInfoLine();
+
+    void removeInfoLine();
+
+
+  protected:
+
+    Ui::EditEventDialog* ui;
+
+    QString m_DefaultMsg;
+
+    void setMessage(const QString& Msg = "");
+
+
   public:
 
-    enum Flag
-    {
-      FLUIDX_MODELDEF = 1 << 0,
-      FLUIDX_MODELPARAMS = 1 << 2,
-      FLUIDX_SPATIALSTRUCT = 1 << 3,
-      FLUIDX_SPATIALATTRS = 1 << 4,
-      FLUIDX_SPATIALEVENTS = 1 << 5,
-      FLUIDX_DATASTORE = 1 << 6,
-      FLUIDX_MONITORING = 1 << 7,
-      FLUIDX_RUNCONFIG = 1 << 8,
-      FLUIDX_ALL = 1 << 9
-    };
+    AddEventDialog(const QString& ClassName, const QStringList& IDsList,
+                   const openfluid::core::DateTime& CurrentDateTime,
+                   QWidget* Parent = NULL);
 
-    Q_DECLARE_FLAGS(Flags, Flag)
+    ~AddEventDialog();
+
+    openfluid::core::Event::EventInfosMap_t getInfos() const;
+
+    openfluid::core::DateTime getDateTime() const;
+
+    openfluid::core::UnitID_t getUnitID() const;
 
 };
 
-Q_DECLARE_OPERATORS_FOR_FLAGS(FluidXUpdateFlags::Flags)
-
-} }  // namespaces
-
-
-#endif /* __FLUIDXUPDATEFLAGS_HPP__ */
+#endif /* __ADDEVENTDIALOG_HPP__ */

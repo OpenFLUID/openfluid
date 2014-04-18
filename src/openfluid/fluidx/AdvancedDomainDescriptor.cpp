@@ -67,6 +67,7 @@ AdvancedDomainDescriptor::AdvancedDomainDescriptor(
 
 AdvancedDomainDescriptor::~AdvancedDomainDescriptor()
 {
+
 }
 
 
@@ -270,8 +271,7 @@ void AdvancedDomainDescriptor::dispatchEvents()
   {
     try
     {
-      m_Units.at(it->getUnitClass()).at(it->getUnitID()).Events.push_back(
-          &(it->getEvent()));
+      m_Units.at(it->getUnitClass()).at(it->getUnitID()).EventsDescriptors.push_back(&(*it));
     }
     catch (std::out_of_range& e)
     {
@@ -332,6 +332,7 @@ const AdvancedUnitDescriptor& AdvancedDomainDescriptor::getUnit(const std::strin
 
 // =====================================================================
 // =====================================================================
+
 
 const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescriptor(const std::string& ClassName,
                                                                                      int ID) const
@@ -766,6 +767,142 @@ void AdvancedDomainDescriptor::renameAttribute(const std::string& ClassName,
   //rename in m_AttrsNames
   m_AttrsNames.at(ClassName).erase(OldAttrName);
   m_AttrsNames.at(ClassName).insert(NewAttrName);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AdvancedDomainDescriptor::addEvent(const openfluid::core::UnitClass_t& UnitsClass,
+                                        const openfluid::core::UnitID_t& UnitID,
+                                        const openfluid::core::Event& Event)
+{
+  try
+  {
+    AdvancedUnitDescriptor* AdvUnitDesc = &m_Units.at(UnitsClass).at(UnitID);
+
+    EventDescriptor EvDesc;
+    EvDesc.getUnitClass() = UnitsClass;
+    EvDesc.getUnitID() = UnitID;
+    EvDesc.getEvent() = Event;
+
+    mp_DomainDesc->getEvents().push_back(EvDesc);
+
+    AdvUnitDesc->EventsDescriptors.push_back(&(mp_DomainDesc->getEvents().back()));
+
+   }
+  catch (std::out_of_range& e)
+  {
+    throw openfluid::base::FrameworkException(
+        "AdvancedDomainDescriptor::addEvent",
+        "Error adding event");
+
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AdvancedDomainDescriptor::deleteEvent(const openfluid::core::UnitClass_t& UnitsClass,
+                                           const openfluid::core::UnitID_t& UnitID,
+                                           const openfluid::fluidx::EventID_t& EventID)
+{
+  // remove link from unit
+  try
+  {
+    AdvancedUnitDescriptor* AdvUnitDesc = &m_Units.at(UnitsClass).at(UnitID);
+
+    std::list<openfluid::fluidx::EventDescriptor*>::iterator itu = AdvUnitDesc->EventsDescriptors.begin();
+    std::list<openfluid::fluidx::EventDescriptor*>::iterator itue = AdvUnitDesc->EventsDescriptors.end();
+
+    bool Found = false;
+
+    while (itu != itue && !Found)
+    {
+      if ((*itu)->getID() == EventID)
+      {
+        AdvUnitDesc->EventsDescriptors.erase(itu);
+        Found = true;
+      }
+      else
+        ++itu;
+    }
+
+  }
+  catch (std::out_of_range& e)
+  {
+    throw openfluid::base::FrameworkException(
+        "AdvancedDomainDescriptor::addEvent",
+        "Error deleting event");
+  }
+
+
+ // remove event from list
+
+  std::list<openfluid::fluidx::EventDescriptor>* EventsDescs =
+      &(mp_DomainDesc->getEvents());
+
+  std::list<openfluid::fluidx::EventDescriptor>::iterator it = EventsDescs->begin();
+  std::list<openfluid::fluidx::EventDescriptor>::iterator ite = EventsDescs->end();
+
+  bool Found = false;
+
+  while (it != ite && !Found)
+  {
+    if ((*it).getID() == EventID)
+    {
+      EventsDescs->erase(it);
+      Found = true;
+    }
+    else
+      ++it;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AdvancedDomainDescriptor::modifyEvent(const openfluid::fluidx::EventID_t& EventID,
+                                           const openfluid::core::Event& Event)
+{
+  openfluid::fluidx::EventDescriptor* EvDesc = getEventDescriptor(EventID);
+
+  if (EvDesc)
+    EvDesc->getEvent() = Event;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::fluidx::EventDescriptor* AdvancedDomainDescriptor::getEventDescriptor(const openfluid::fluidx::EventID_t& ID)
+{
+  openfluid::fluidx::EventDescriptor* EvDesc = NULL;
+
+  std::list<openfluid::fluidx::EventDescriptor>* EventsDescs =
+      &(mp_DomainDesc->getEvents());
+
+  std::list<openfluid::fluidx::EventDescriptor>::iterator it = EventsDescs->begin();
+  std::list<openfluid::fluidx::EventDescriptor>::iterator ite = EventsDescs->end();
+
+
+  while (it != ite && EvDesc == NULL)
+  {
+    if ((*it).getID() == ID)
+    {
+      EvDesc = &(*it);
+    }
+    else
+      ++it;
+  }
+
+  return EvDesc;
 }
 
 

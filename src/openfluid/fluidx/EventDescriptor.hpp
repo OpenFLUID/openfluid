@@ -48,24 +48,44 @@
 
 namespace openfluid { namespace fluidx {
 
+typedef unsigned long long EventID_t;
 
 class DLLEXPORT EventDescriptor
 {
   private:
+
+    EventID_t m_ID;
+
     openfluid::core::UnitClass_t m_UnitClass;
+
     openfluid::core::UnitID_t m_UnitID;
+
     openfluid::core::Event m_Event;
+
+    static EventID_t m_NextID;
+
+    static EventID_t assignID();
+
+
   public:
 
     EventDescriptor();
 
+    EventDescriptor(const EventDescriptor& EvDesc);
+
     ~EventDescriptor();
 
-    inline openfluid::core::UnitID_t& getUnitID() { return m_UnitID; };
+    inline openfluid::core::UnitID_t& getUnitID()
+    { return m_UnitID; };
 
-    inline openfluid::core::UnitClass_t& getUnitClass() { return m_UnitClass; };
+    inline openfluid::core::UnitClass_t& getUnitClass()
+    { return m_UnitClass; };
 
-    inline openfluid::core::Event& getEvent() { return m_Event; };
+    inline openfluid::core::Event& getEvent()
+    { return m_Event; };
+
+    inline EventID_t getID() const
+    { return m_ID; };
 
 };
 
