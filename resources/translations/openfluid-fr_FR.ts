@@ -126,6 +126,19 @@
     </message>
 </context>
 <context>
+    <name>AddEventDialog</name>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/AddEventDialog.cpp" line="51"/>
+        <source>Add of a new event</source>
+        <translation>Ajout d&apos;un nouvel évènement</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/AddEventDialog.cpp" line="113"/>
+        <source>Informations keys are not unique</source>
+        <translation>Les clés des informations ne sont pas uniques</translation>
+    </message>
+</context>
+<context>
     <name>AddGeneratorDialog</name>
     <message>
         <source>Dialog</source>
@@ -1035,6 +1048,56 @@ Continuer quand même?</translation>
         <location filename="../../src/apps/openfluid-builder/datastore/EditDatastoreItemDialog.ui" line="314"/>
         <source>Copy into dataset subdirectory:</source>
         <translation>Copier dans un sous-répertoire des données d&apos;entrée:</translation>
+    </message>
+</context>
+<context>
+    <name>EditEventDialog</name>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/EditEventDialog.ui" line="107"/>
+        <source>Units class:</source>
+        <translation>Classe d&apos;unités:</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/EditEventDialog.ui" line="134"/>
+        <source>Unit ID:</source>
+        <translation>ID de l&apos;unité:</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/EditEventDialog.ui" line="161"/>
+        <source>Date:</source>
+        <translation>Date:</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/EditEventDialog.ui" line="206"/>
+        <source>Associated informations:</source>
+        <translation>Informations associées:</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/EditEventDialog.ui" line="231"/>
+        <source>Key</source>
+        <translation>Clé</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/EditEventDialog.ui" line="236"/>
+        <source>Value</source>
+        <translation>Valeur</translation>
+    </message>
+    <message>
+        <source>Informations keys are not unique</source>
+        <translation type="obsolete">Les clés des informations ne sont pas uniques</translation>
+    </message>
+    <message>
+        <source>Add of a new event</source>
+        <translation type="obsolete">Ajout d&apos;un nouvel évènement</translation>
+    </message>
+    <message>
+        <source>Edit of a new event</source>
+        <translation type="obsolete">Edition d&apos;un évènement</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/EditEventDialog.cpp" line="53"/>
+        <source>Edit of an event</source>
+        <translation>Edition d&apos;un évènement</translation>
     </message>
 </context>
 <context>
@@ -2241,13 +2304,13 @@ L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="168"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="364"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="378"/>
         <source>Add unit in %1 class</source>
         <translation>Ajouter une unité dans la classe %1</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="175"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="409"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="423"/>
         <source>Remove unit %1 from %2 class</source>
         <translation>Supprimer l&apos;unité %1 de la classe %2</translation>
     </message>
@@ -2358,7 +2421,7 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="850"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="872"/>
         <source>You are removing the unit %1 of class %2.
 All connections and attributes units related to this unit will be lost.
 
@@ -2369,12 +2432,12 @@ Toutes les connexions et les attributs en relation avec cette unité seront perd
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="929"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="951"/>
         <source>No connection selected for removal</source>
         <translation>Aucune connexion sélectionnée pour suppression</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="950"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="972"/>
         <source>You are removing the &quot;%1&quot; connection
 between unit %2 of class %3 and unit %4 of class %5.
 
@@ -2385,33 +2448,44 @@ entre l&apos;unité %2 de la classe %3 et l&apos;unité %4 de la classe %5.
 Continuer?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1077"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1099"/>
         <source>At least one attribute value is not a numeric value.
 Edition of attributes cannot be performed.</source>
         <translation>Au moins une valeur d&apos;attribut n&apos;est pas une valeur numérique.
 L&apos;édition des attributs ne peut être réalisée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1089"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1111"/>
         <source>No attribute value selected</source>
         <translation>Aucune valeur d&apos;attribut n&apos;est sélectionnée</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1105"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1139"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1127"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1161"/>
         <source>There is no attribute in the %1 units class.
 Rename cannot be performed.</source>
         <translation>Il n&apos;y a pas d&apos;attribut dans la classe d&apos;unités %1.
 Le renommage ne peut pas être réalisé.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1152"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1174"/>
         <source>You are removing the attribute %1 of class %2.
 All %1 values associated to units of class %2 will be lost.
 
 Proceed anyway?</source>
         <translation>Vous supprimez l&apos;attribut %1 de la classe %2.
 Toutes les valeurs %1 associées aux unités de la classe %2 seront perdues.
+
+Continuer quand même?</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1434"/>
+        <source>You are removing one or many spatial event(s).
+All associated informations will be lost.
+
+Proceed anyway?</source>
+        <translation>Vous supprimez un ou plusieurs évènements.
+Toutes les informations associées seront perdues..
 
 Continuer quand même?</translation>
     </message>

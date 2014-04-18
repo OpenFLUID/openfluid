@@ -47,8 +47,10 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <algorithm>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
@@ -76,7 +78,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
     BOOST_CHECK_EQUAL(it2->second.UnitDescriptor->getUnitClass(), "unitsA");
     BOOST_CHECK_EQUAL(*(it2->second.Attributes.at("indataA")), "1.1");
   }
-  BOOST_CHECK_EQUAL(it->second.at(1).Events.size(), 2);
+  BOOST_CHECK_EQUAL(it->second.at(1).EventsDescriptors.size(), 2);
   BOOST_CHECK(Domain.isClassNameExists("unitsA"));
   BOOST_CHECK_EQUAL(Domain.getIDsOfClass("unitsA").size(), 8);
   BOOST_CHECK_EQUAL(Domain.getAttributesNames("unitsA").size(), 1);
@@ -479,8 +481,10 @@ BOOST_AUTO_TEST_CASE(check_deleteAttrs)
   BOOST_CHECK(!Domain.getAttributesNames("unitsB").count("indataB3"));
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_renameAttrs)
 {
@@ -507,8 +511,37 @@ BOOST_AUTO_TEST_CASE(check_renameAttrs)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_operations_on_events)
+{
+  openfluid::fluidx::FluidXDescriptor FXDesc(0);
+
+  openfluid::fluidx::AdvancedDomainDescriptor Domain(
+      FXDesc.getDomainDescriptor());
+
+  openfluid::fluidx::UnitDescriptor UnitDesc;
+  UnitDesc.getUnitClass() = "TU";
+  UnitDesc.getUnitID() = 1;
+
+  Domain.addUnit(&UnitDesc);
+
+  for (int i=0; i< 10; i++)
+  {
+    openfluid::core::Event Ev(openfluid::core::DateTime(2000,1,i,12,13,14));
+    Domain.addEvent("TU",1,Ev);
+  }
+
+  Domain.deleteEvent("TU",1,1);
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_operations_on_relations)
 {

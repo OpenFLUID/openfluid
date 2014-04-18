@@ -41,6 +41,7 @@
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
+#include <openfluid/fluidx/EventDescriptor.hpp>
 
 #include <map>
 #include <set>
@@ -57,6 +58,7 @@ class DomainDescriptor;
 class UnitDescriptor;
 class AttributesDescriptor;
 
+
 // =====================================================================
 // =====================================================================
 
@@ -70,7 +72,7 @@ class DLLEXPORT AdvancedUnitDescriptor
 
     std::map<openfluid::core::AttributeName_t, std::string*> Attributes;
 
-    std::list<openfluid::core::Event*> Events;
+    std::list<openfluid::fluidx::EventDescriptor*> EventsDescriptors;
 
     AdvancedUnitDescriptor(openfluid::fluidx::UnitDescriptor& UnitDesc) :
         UnitDescriptor(&UnitDesc)
@@ -79,8 +81,10 @@ class DLLEXPORT AdvancedUnitDescriptor
 
 };
 
+
 // =====================================================================
 // =====================================================================
+
 
 class DLLEXPORT AdvancedDomainDescriptor
 {
@@ -110,6 +114,7 @@ class DLLEXPORT AdvancedDomainDescriptor
     void checkAttributesConsistency() const;
 
     void dispatchEvents();
+
 
   public:
 
@@ -222,6 +227,39 @@ class DLLEXPORT AdvancedDomainDescriptor
     void renameAttribute(const std::string& ClassName, const std::string& OldAttrName,
                          const std::string& NewAttrName);
 
+    /**
+      Adds an event
+      @param[in] UnitsClass The units class of the event
+      @param[in] UnitID The unit ID of the event
+      @param[in] Event The event definition
+    */
+    void addEvent(const openfluid::core::UnitClass_t& UnitsClass, const openfluid::core::UnitID_t& UnitID,
+                     const openfluid::core::Event& Event);
+
+    /**
+      Deletes an event
+      @param[in] UnitsClass The units class of the event
+      @param[in] UnitID The unit ID of the event
+      @param[in] EventID The ID of the event to delete
+    */
+    void deleteEvent(const openfluid::core::UnitClass_t& UnitsClass, const openfluid::core::UnitID_t& UnitID,
+                     const openfluid::fluidx::EventID_t& EventID);
+
+    /**
+      Modify an event
+      @param[in] EventID The ID of the event to modify
+      @param[in] Event The new content of the event
+    */
+    void modifyEvent(const openfluid::fluidx::EventID_t& EventID,
+                     const openfluid::core::Event& Event);
+
+    /**
+      Returns a pointer to the event descriptor corresponding to the event ID
+      @param[in] EventID The ID of the event to delete
+    */
+    openfluid::fluidx::EventDescriptor* getEventDescriptor(const openfluid::fluidx::EventID_t& ID);
+
+
     const std::list<openfluid::core::UnitClassID_t>& getUnitsToOf(const openfluid::core::UnitClassID_t Unit) const;
 
     const std::list<openfluid::core::UnitClassID_t>& getUnitsParentsOf(const openfluid::core::UnitClassID_t Unit) const;
@@ -271,10 +309,12 @@ class DLLEXPORT AdvancedDomainDescriptor
     void clearDomain();
 };
 
+
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces
+
+} } // namespaces
 
 #endif /* ADVANCEDDOMAINDESCRIPTOR_HPP_ */
+
