@@ -118,11 +118,9 @@ class DLLEXPORT VectorDataset
     /**
      * @brief Creates a new empty OGRDatasource in the openfluid temp directory, with filename suffixes with timestamp.
      * @param FileName The name of the file to create.
-     * @param DriverName The name of the OGR driver to use, default is "ESRI Shapefile".
      * @throw openfluid::base::OFException if fails.
      */
-    VectorDataset(const std::string& FileName, std::string DriverName =
-        "ESRI Shapefile");
+    VectorDataset(const std::string& FileName);
 
     /**
      * @brief Creates in the openfluid temp directory a copy of Value OGRDatasource,

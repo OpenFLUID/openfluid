@@ -70,12 +70,9 @@ void deleteIfExists(std::string Path)
 // =====================================================================
 // =====================================================================
 
-// TODO Test with other than shapefiles
+
 BOOST_AUTO_TEST_CASE(check_constructor_empty)
 {
-  BOOST_CHECK_THROW(
-      new openfluid::landr::VectorDataset("test.shp","wrong_driver_name"),
-      openfluid::base::FrameworkException);
 
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
       "test.shp");
@@ -95,6 +92,37 @@ BOOST_AUTO_TEST_CASE(check_constructor_empty)
 
   delete Vect;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_constructor_WrongVectorFormat)
+{
+
+  BOOST_CHECK_THROW(
+      new openfluid::landr::VectorDataset(CONFIGTESTS_INPUT_DATASETS_DIR +"/GeoVectorValue/SU.gml"),
+      openfluid::base::FrameworkException);
+
+  BOOST_CHECK_THROW(
+      new openfluid::landr::VectorDataset(CONFIGTESTS_INPUT_DATASETS_DIR +"/GeoVectorValue/SU.geojson"),
+      openfluid::base::FrameworkException);
+
+
+  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                        "/GeoVectorValue/SU.geojson");
+
+  BOOST_CHECK_THROW( new openfluid::landr::VectorDataset(Value),
+                     openfluid::base::FrameworkException);
+
+  openfluid::core::GeoVectorValue Value2(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                         "/GeoVectorValue/SU.gml");
+
+  BOOST_CHECK_THROW( new openfluid::landr::VectorDataset(Value2),
+                     openfluid::base::FrameworkException);
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -123,7 +151,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 // =====================================================================
 // =====================================================================
 
-// TODO Test with other than shapefiles
+
 BOOST_AUTO_TEST_CASE(check_copyToDisk)
 {
   std::string NewPath = openfluid::core::GeoValue::computeAbsolutePath(

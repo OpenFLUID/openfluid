@@ -265,3 +265,60 @@ BOOST_AUTO_TEST_CASE(check_Properties)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GeoJSON)
+{
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU.geojson");
+  Val->tryToOpenSource();
+
+  BOOST_CHECK(Val->getData());
+  BOOST_CHECK_EQUAL(Val->isPolygonType(),true);
+  BOOST_CHECK_EQUAL(Val->containsField("OFLD_ID"),true);
+  BOOST_CHECK_EQUAL(Val->get()->GetDriver()->GetName(),"GeoJSON");
+
+  GeoVectorValueSub* Val2 = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                  "GeoVectorValue/RS.geojson");
+  Val2->tryToOpenSource();
+
+  BOOST_CHECK(Val2->getData());
+  BOOST_CHECK_EQUAL(Val2->isLineType(),true);
+  BOOST_CHECK_EQUAL(Val2->containsField("OFLD_ID"),true);
+  BOOST_CHECK_EQUAL(Val2->get()->GetDriver()->GetName(),"GeoJSON");
+
+  delete Val2;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GML)
+{
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU.gml");
+  Val->tryToOpenSource();
+
+  BOOST_CHECK(Val->getData());
+  BOOST_CHECK_EQUAL(Val->isPolygonType(),true);
+  BOOST_CHECK_EQUAL(Val->containsField("OFLD_ID"),true);
+  BOOST_CHECK_EQUAL(Val->get()->GetDriver()->GetName(),"GML");
+
+  GeoVectorValueSub* Val2 = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                  "GeoVectorValue/RS.gml");
+  Val2->tryToOpenSource();
+
+  BOOST_CHECK(Val2->getData());
+  BOOST_CHECK_EQUAL(Val2->isLineType(),true);
+  BOOST_CHECK_EQUAL(Val2->containsField("OFLD_ID"),true);
+  BOOST_CHECK_EQUAL(Val2->get()->GetDriver()->GetName(),"GML");
+
+  delete Val2;
+  delete Val;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
