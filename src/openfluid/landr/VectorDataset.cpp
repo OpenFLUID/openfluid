@@ -55,17 +55,33 @@
 namespace openfluid { namespace landr {
 
 
-VectorDataset::VectorDataset(const std::string& FileName, std::string DriverName)
+VectorDataset::VectorDataset(const std::string& FileName)
 {
+  std::string DefaultDriverName="ESRI Shapefile";
   OGRRegisterAll();
 
+  OGRDataSource  *poDS= OGRSFDriverRegistrar::Open( FileName.c_str(), FALSE );
+  if (poDS!=NULL)
+  {
+
+    std::string DriverName=poDS->GetDriver()->GetName();
+    if (DriverName!=DefaultDriverName)
+    {
+      OGRDataSource::DestroyDataSource( poDS );
+      throw openfluid::base::FrameworkException(
+          "VectorDataset::VectorDataset",
+          "\"" + DriverName + "\" driver not supported.");
+    }
+  }
+  OGRDataSource::DestroyDataSource( poDS );
+
   OGRSFDriver* Driver = OGRSFDriverRegistrar::GetRegistrar()->GetDriverByName(
-      DriverName.c_str());
+      DefaultDriverName.c_str());
 
   if (!Driver)
     throw openfluid::base::FrameworkException(
         "VectorDataset::VectorDataset",
-        "\"" + DriverName + "\" driver not available.");
+        "\"" + DefaultDriverName + "\" driver not available.");
 
   std::string Path = getTimestampedPath(FileName);
 
@@ -89,6 +105,13 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 
   OGRDataSource* DS = Value.get();
   OGRSFDriver* Driver = DS->GetDriver();
+
+  std::string DriverName=Driver->GetName();
+
+  if (DriverName!="ESRI Shapefile")
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::VectorDataset",
+        "\"" + DriverName + "\" driver not supported.");
 
   std::string Path = getTimestampedPath(
       boost::filesystem::path(DS->GetName()).filename().string());
@@ -124,6 +147,13 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
 
   OGRDataSource* DS = Other.getDataSource();
   OGRSFDriver* Driver = DS->GetDriver();
+
+  std::string DriverName=Driver->GetName();
+
+  if (DriverName!="ESRI Shapefile")
+    throw openfluid::base::FrameworkException(
+        "VectorDataset::VectorDataset",
+        "\"" + DriverName + "\" driver not supported.");
 
   std::string Path = getTimestampedPath(
       boost::filesystem::path(DS->GetName()).filename().string());
