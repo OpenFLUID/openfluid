@@ -370,11 +370,14 @@ void ProjectCentral::checkModel()
 
   std::set<std::pair<std::string, std::string> > AttrsUnits;
 
+  bool AtLeastOneEnabled = false;
+
 
   for (std::list<openfluid::fluidx::ModelItemDescriptor*>::const_iterator it = Items.begin(); it != Items.end(); ++it)
   {
     if ((*it)->isEnabled())
     {
+      AtLeastOneEnabled = true;
 
       openfluid::machine::ModelItemSignatureInstance* SignII = Reg->getSignatureItemInstance(*it);
       std::string ID = Model.getID(*it);
@@ -733,6 +736,13 @@ void ProjectCentral::checkModel()
       }
     }
   }
+
+
+  if (!AtLeastOneEnabled)
+  {
+    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).setStatus(PRJ_ERROR);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MODELDEF).addMessage(tr("No simulator or generator is enabled in model"));
+  }
 }
 
 
@@ -782,10 +792,15 @@ void ProjectCentral::checkMonitoring()
 
   openfluid::machine::ObserverSignatureRegistry* Reg = openfluid::machine::ObserverSignatureRegistry::getInstance();
 
+  bool AtLeastOneEnabled = false;
+
+
   for (std::list<openfluid::fluidx::ObserverDescriptor*>::const_iterator it = Items.begin(); it != Items.end(); ++it)
   {
     if ((*it)->isEnabled())
     {
+      AtLeastOneEnabled = true;
+
       const openfluid::machine::ObserverSignatureInstance* SignII = Reg->getSignature((*it)->getID());
 
       if (SignII == NULL)
@@ -794,6 +809,13 @@ void ProjectCentral::checkMonitoring()
         m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("Observer %1 is not available").arg(QString::fromStdString((*it)->getID())));
       }
     }
+  }
+
+
+  if (!AtLeastOneEnabled)
+  {
+    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).setStatus(PRJ_WARNING);
+    m_CheckInfos.part(ProjectCheckInfos::PART_MONITORING).addMessage(tr("No observer is enabled in monitoring"));
   }
 }
 

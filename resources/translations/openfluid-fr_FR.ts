@@ -755,53 +755,53 @@ n&apos;est pas un projet OpenFLUID valide</translation>
 <context>
     <name>DashboardStatusWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.ui" line="124"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.ui" line="100"/>
         <source>No problem detected</source>
         <translation>Aucun problème détecté</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="78"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="79"/>
         <source>Model definition</source>
         <translation>Définition du modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="81"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="82"/>
         <source>Model parameters</source>
         <translation>Paramètres du modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="84"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="86"/>
         <source>Spatial structure</source>
         <translation>Structure spatiale</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="87"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="90"/>
         <source>Spatial attributes</source>
         <translation>Attributs spatiaux</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="90"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="94"/>
         <source>Datastore</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="93"/>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="96"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="98"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="102"/>
         <source>Monitoring</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="151"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="158"/>
         <source>Ready for simulation</source>
         <translation>Prêt à simuler</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="157"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="164"/>
         <source>Ready for simulation, with warnings</source>
         <translation>Prêt à simuler, avec des avertissements</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="163"/>
+        <location filename="../../src/apps/openfluid-builder/base/DashboardStatusWidget.cpp" line="170"/>
         <source>Simulation cannot be run</source>
         <translation>La simulation ne peut être exécutée</translation>
     </message>
@@ -1815,78 +1815,88 @@ Continuer quand même?</translation>
         <translation>Le paramètre %1 est plus grand ou égal au paramètre %2 pour %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="409"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="422"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="436"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="412"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="425"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="439"/>
         <source>File %1 required by generator %2 does not exist</source>
         <translation>Le fichier %1 requis par le générateur %2 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="469"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="472"/>
         <source>Parameter %1 for generator %2 is not set</source>
         <translation>Le paramètre %1 pour le générateur %2 n&apos;est pas défini</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="512"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="515"/>
         <source>Unit class %1 does not exist for attribute %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;attribut %2 requis par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="522"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="525"/>
         <source>Attribute %1 required on %2 units by %3 does not exist</source>
         <translation>L&apos;attribut %1 requis sur la classe d&apos;unité %2 par %3 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="539"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="542"/>
         <source>Unit class %1 does not exist for attribute %2 produced by %3</source>
         <translation>La classe d&apos;unité %1 n&apos;existe pas pour l&apos;attribut %2 produit par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="553"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="556"/>
         <source>Attribute %1 produced on %2 units by %3 is already produced by another simulator</source>
         <translation>L&apos;attribut %1 produit sur la classe d&apos;unité %2 par %3 est déjà produit par un autre simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="564"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="567"/>
         <source>Simulator %1 is not available</source>
         <translation>Le simulateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="609"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="641"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="673"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="612"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="644"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="676"/>
         <source>Unit class %1 does not exist for variable %2 produced by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 produite par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="625"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="628"/>
         <source>Variable %1 on %2 produced by %3 cannot be created because it is created by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 ne peut être créée car elle est déjà crée par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="657"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="660"/>
         <source>Variable %1 on %2 produced by %3 is already produced by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 est déjà produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="713"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="716"/>
         <source>Unit class %1 does not exist for variable %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 requise par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="727"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="730"/>
         <source>Variable %1 on %2 required by %3 is not produced by another simulator or generator</source>
         <translation>La variable %1 sur la classe d&apos;unités %2 requise par %3 n&apos;est pas produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="766"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="744"/>
+        <source>No simulator or generator is enabled in model</source>
+        <translation>Aucun simulateur ou générateur n&apos;est actif dans le modèle</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="776"/>
         <source>Unit class %1 does not exist for datastore item %2</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;élément du datastore %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="794"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="809"/>
         <source>Observer %1 is not available</source>
         <translation>L&apos;observateur %1 n&apos;est pas disponible</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="818"/>
+        <source>No observer is enabled in monitoring</source>
+        <translation>Aucun observateur n&apos;est actif dans le monitoring</translation>
     </message>
 </context>
 <context>
