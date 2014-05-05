@@ -134,6 +134,8 @@ class SpatialDomainWidget : public WorkspaceWidget
 
     QStringList getClassesOrderedStringList();
 
+    void setAllMapLayersVisible();
+
 
   public slots:
 

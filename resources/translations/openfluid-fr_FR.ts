@@ -2304,13 +2304,13 @@ L&apos;extension ne peut être instanciée.</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="168"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="378"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="382"/>
         <source>Add unit in %1 class</source>
         <translation>Ajouter une unité dans la classe %1</translation>
     </message>
     <message>
         <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.ui" line="175"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="423"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="427"/>
         <source>Remove unit %1 from %2 class</source>
         <translation>Supprimer l&apos;unité %1 de la classe %2</translation>
     </message>
@@ -2421,7 +2421,7 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="872"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="894"/>
         <source>You are removing the unit %1 of class %2.
 All connections and attributes units related to this unit will be lost.
 
@@ -2432,12 +2432,12 @@ Toutes les connexions et les attributs en relation avec cette unité seront perd
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="951"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="973"/>
         <source>No connection selected for removal</source>
         <translation>Aucune connexion sélectionnée pour suppression</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="972"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="994"/>
         <source>You are removing the &quot;%1&quot; connection
 between unit %2 of class %3 and unit %4 of class %5.
 
@@ -2448,27 +2448,27 @@ entre l&apos;unité %2 de la classe %3 et l&apos;unité %4 de la classe %5.
 Continuer?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1099"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1121"/>
         <source>At least one attribute value is not a numeric value.
 Edition of attributes cannot be performed.</source>
         <translation>Au moins une valeur d&apos;attribut n&apos;est pas une valeur numérique.
 L&apos;édition des attributs ne peut être réalisée.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1111"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1133"/>
         <source>No attribute value selected</source>
         <translation>Aucune valeur d&apos;attribut n&apos;est sélectionnée</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1127"/>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1161"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1149"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1183"/>
         <source>There is no attribute in the %1 units class.
 Rename cannot be performed.</source>
         <translation>Il n&apos;y a pas d&apos;attribut dans la classe d&apos;unités %1.
 Le renommage ne peut pas être réalisé.</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1174"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1196"/>
         <source>You are removing the attribute %1 of class %2.
 All %1 values associated to units of class %2 will be lost.
 
@@ -2479,7 +2479,7 @@ Toutes les valeurs %1 associées aux unités de la classe %2 seront perdues.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1434"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1456"/>
         <source>You are removing one or many spatial event(s).
 All associated informations will be lost.
 
@@ -2493,27 +2493,26 @@ Continuer quand même?</translation>
 <context>
     <name>UnitsClassWidget</name>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="156"/>
         <source>Layer source:</source>
-        <translation>Source de la couche:</translation>
+        <translation type="obsolete">Source de la couche:</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="193"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="187"/>
         <source>Visible</source>
         <translation>Visible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="202"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="196"/>
         <source>Line width</source>
         <translation>Largeur de ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="231"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="225"/>
         <source>Line color</source>
         <translation>Couleur de ligne</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="257"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.ui" line="251"/>
         <source>Fill color</source>
         <translation>Couleur de remplissage</translation>
     </message>
@@ -2540,9 +2539,17 @@ Toutes les unités de la classe %1 ainsi que les attributs et connexions associ�
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="367"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/UnitsClassWidget.cpp" line="366"/>
+        <source>(no layer to display)</source>
+        <translation>(pas de couche à afficher)</translation>
+    </message>
+    <message>
+        <source>(no source layer for map)</source>
+        <translation type="obsolete">(pas de couche à afficher)</translation>
+    </message>
+    <message>
         <source>(none)</source>
-        <translation>(aucune)</translation>
+        <translation type="obsolete">(aucune)</translation>
     </message>
 </context>
 <context>

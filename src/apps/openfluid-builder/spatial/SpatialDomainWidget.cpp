@@ -62,7 +62,7 @@
 #include <QTimer>
 
 
-// for storing pointers to Event in QTableWidget
+// for storing Event IDs in QTableWidget
 Q_DECLARE_METATYPE(openfluid::fluidx::EventID_t);
 
 enum CustomRoles {
@@ -169,6 +169,10 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   connect(ui->PcsOrderSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateFluidXProcessOrder(int)));
 
   refresh();
+
+  // all map layers are set visible at startup only
+  setAllMapLayersVisible();
+
 }
 
 
@@ -686,14 +690,32 @@ void SpatialDomainWidget::refreshMap()
 
     if (ClassW->getLayerSource() != NULL && ClassW->isLayerVisible())
     {
-      mp_MapScene->addLayer(ClassW->getLayerSource(), -i,
-                               ClassW->getLineWidth(),
-                               ClassW->getLineColor(),
-                               ClassW->getFillColor());
+      mp_MapScene->addLayer(ClassW->getLayerSource(),
+                            -i,
+                            ClassW->getLineWidth(),
+                            ClassW->getLineColor(),
+                            ClassW->getFillColor());
     }
   }
 
   mp_MapScene->setActiveLayer(m_ActiveClass);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SpatialDomainWidget::setAllMapLayersVisible()
+{
+  QVBoxLayout* Layout = dynamic_cast<QVBoxLayout*>(ui->UnitsClassAreaContents->layout());
+
+  for (int i=Layout->count()-2; i>=0;i--)
+  {
+    UnitsClassWidget* ClassW = dynamic_cast<UnitsClassWidget*>(Layout->itemAt(i)->widget());
+
+    ClassW->setLayerVisible();
+  }
 }
 
 
@@ -1421,8 +1443,6 @@ void SpatialDomainWidget::editEvent()
 
 void SpatialDomainWidget::removeEvents()
 {
-  // TODO french translation
-
   bool OK = true;
 
   QList<QTableWidgetItem *> SelItems = ui->EventsTableWidget->selectedItems();
