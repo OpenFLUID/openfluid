@@ -269,7 +269,8 @@ SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR
                                         SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
+                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        AUTOMOC ON)
 
 
 SET(BUILDER_GUI_OPTION)
@@ -280,10 +281,11 @@ ENDIF()
 
 ADD_EXECUTABLE(openfluid-builder ${BUILDER_GUI_OPTION} main.cpp)
 
-SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}")
+SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}"
+                                                   AUTOMOC ON)
 
 IF(APPLE)
-  set_property(TARGET openfluid-builder PROPERTY OUTPUT_NAME "OpenFLUID-Builder")
+  SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES OUTPUT_NAME "OpenFLUID-Builder")
 ENDIF()
 
 TARGET_LINK_LIBRARIES(openfluid-builder

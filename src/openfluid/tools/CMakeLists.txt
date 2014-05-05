@@ -1,5 +1,3 @@
-
-
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${QT_INCLUDES} ${GDAL_INCLUDE_DIR})
 
 FILE(GLOB OPENFLUID_TOOLS_CPP *.cpp)
@@ -12,7 +10,8 @@ SET_TARGET_PROPERTIES(openfluid-tools PROPERTIES VERSION "${VERSION_MAJOR}.${VER
                                         SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}")
+                                        ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        AUTOMOC ON)
 
 TARGET_LINK_LIBRARIES(openfluid-tools 
                       openfluid-core
