@@ -849,42 +849,69 @@ The datastore item will not be added</source>
 L&apos;élément ne sera pas ajouté dans le datastore</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="195"/>
+        <source>The file %1 is about to be copied in your input dataset,
+as the source file for the added datastore item.
+
+A file with the same name already exists in the input dataset.
+It will be replaced by the new file.
+
+Proceed anyway?</source>
+        <translation type="obsolete">Le fichier %1 va être copié </translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="199"/>
+        <source>The file %1 is about to be copied in the input dataset,
+as the source file for the added datastore item.
+
+A file with the same name already exists in the input dataset.
+It will be replaced by the new file.
+
+Proceed anyway?</source>
+        <translation>Le fichier %1 va être copié dans le jeu de données d&apos;entrée,
+en tant que fichier source de l&apos;élément ajouté au datastore.
+
+Un fichier avec le même nom existe déjà dans le jeu de données d&apos;entrée.
+Il sera écrasé par le nouveau fichier.
+
+Continuer quand même?</translation>
+    </message>
+    <message>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="227"/>
         <source>OGR driver error while copying geovector file source
 The datastore item will not be added</source>
         <translation>Erreur de driver OGR pendant la copie du fichier source
 L&apos;élément ne sera pas ajouté dans le datastore</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="205"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="237"/>
         <source>OGR error while copying geovector file source
 The datastore item will not be added</source>
         <translation>Erreur OGR pendant la copie du fichier source
 L&apos;élément ne sera pas ajouté dans le datastore</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="231"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="263"/>
         <source>GDAL error while copying georaster file source
 The datastore item will not be added</source>
         <translation>Erreur GDAL pendant la copie du fichier source
 L&apos;élément ne sera pas ajouté dans le datastore</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="242"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="274"/>
         <source>GDAL driver error while opening georaster file source to copy
 The datastore item will not be added</source>
         <translation>Erreur de driver GDAL pendant la copie du fichier source
 L&apos;élément ne sera pas ajouté dans le datastore</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="252"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="284"/>
         <source>GDAL error while opening georaster file source to copy
 The datastore item will not be added</source>
         <translation>Erreur de driver OGR pendant l&apos;ouverture du fichier source
 L&apos;élément ne sera pas ajouté dans le datastore</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="317"/>
+        <location filename="../../src/apps/openfluid-builder/datastore/DatastoreWidget.cpp" line="351"/>
         <source>You are removing %1 item from datastore.
 This item will not be available anymore, but data will be kept on disk.
 
@@ -2479,7 +2506,7 @@ Toutes les valeurs %1 associées aux unités de la classe %2 seront perdues.
 Continuer quand même?</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1456"/>
+        <location filename="../../src/apps/openfluid-builder/spatial/SpatialDomainWidget.cpp" line="1454"/>
         <source>You are removing one or many spatial event(s).
 All associated informations will be lost.
 
