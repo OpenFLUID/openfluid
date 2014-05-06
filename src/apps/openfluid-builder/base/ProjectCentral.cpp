@@ -70,8 +70,6 @@ ProjectCentral::ProjectCentral(QString PrjPath):
     try
     {
       mp_FXDesc->loadFromDirectory(openfluid::base::ProjectManager::getInstance()->getInputDir());
-
-
     }
     catch (openfluid::base::Exception& E)
     {
@@ -112,13 +110,13 @@ ProjectCentral::~ProjectCentral()
 
 void ProjectCentral::deleteData()
 {
-  if (mp_AdvancedFXDesc == NULL)
+  if (mp_AdvancedFXDesc)
   {
     delete mp_AdvancedFXDesc;
     mp_AdvancedFXDesc = NULL;
   }
 
-  if (mp_FXDesc == NULL)
+  if (mp_FXDesc)
   {
     delete mp_FXDesc;
     mp_FXDesc = NULL;

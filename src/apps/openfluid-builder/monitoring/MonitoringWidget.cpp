@@ -39,9 +39,6 @@
  */
 
 
-#include <iostream>
-#include <QMessageBox>
-
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
 

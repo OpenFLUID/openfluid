@@ -38,14 +38,14 @@
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
+
 
 // =====================================================================
 // =====================================================================
 
-AdvancedFluidXDescriptor::AdvancedFluidXDescriptor(
-    openfluid::fluidx::FluidXDescriptor& FluidXDesc)
+
+AdvancedFluidXDescriptor::AdvancedFluidXDescriptor(openfluid::fluidx::FluidXDescriptor& FluidXDesc)
 {
   mp_Domain = new AdvancedDomainDescriptor(FluidXDesc.getDomainDescriptor());
   mp_Model = new AdvancedModelDescriptor(FluidXDesc.getModelDescriptor());
@@ -57,12 +57,17 @@ AdvancedFluidXDescriptor::AdvancedFluidXDescriptor(
       FluidXDesc.getMonitoringDescriptor());
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 AdvancedFluidXDescriptor::~AdvancedFluidXDescriptor()
 {
-
+  delete mp_Domain;
+  delete mp_Model;
+  delete mp_Datastore;
+  delete mp_Monitoring;
 }
 
 
@@ -174,7 +179,6 @@ const AdvancedMonitoringDescriptor& AdvancedFluidXDescriptor::getMonitoring() co
 {
   return *mp_Monitoring;
 }
-
 
 
 } } // namespaces

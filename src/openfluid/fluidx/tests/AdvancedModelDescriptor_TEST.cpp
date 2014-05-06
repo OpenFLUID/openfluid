@@ -75,9 +75,7 @@ BOOST_AUTO_TEST_CASE(check_duplicates)
   FXDesc.loadFromDirectory(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/OPENFLUID.IN.AdvancedDescriptors/duplicates");
 
-  BOOST_CHECK_THROW(
-      openfluid::fluidx::AdvancedModelDescriptor(FXDesc.getModelDescriptor()),
-      openfluid::base::FrameworkException);
+  BOOST_CHECK_NO_THROW(openfluid::fluidx::AdvancedModelDescriptor(FXDesc.getModelDescriptor()));
 }
 
 // =====================================================================
