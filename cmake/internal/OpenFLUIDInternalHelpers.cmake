@@ -141,7 +141,8 @@ MACRO(OPNFLD_ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
   SET_TARGET_PROPERTIES(${EXT_NAME}${OPENFLUID_BUILDEREXTS_SUFFIX} PROPERTIES 
                         PREFIX "" 
                         SUFFIX "${PLUGINS_BINARY_EXTENSION}"
-                        LIBRARY_OUTPUT_DIRECTORY "${EXT_BINDIR}")
+                        LIBRARY_OUTPUT_DIRECTORY "${EXT_BINDIR}"
+                        AUTOMOC ON)
 
   # Fix for win32 compatibility                                              
   IF(WIN32)

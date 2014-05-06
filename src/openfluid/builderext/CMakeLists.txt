@@ -27,6 +27,7 @@ SET_TARGET_PROPERTIES(openfluid-builderext PROPERTIES VERSION "${VERSION_MAJOR}.
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
+                                        AUTOMOC ON
                                         )
 
 TARGET_LINK_LIBRARIES(openfluid-builderext

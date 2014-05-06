@@ -360,16 +360,26 @@ void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::Da
     mp_LayerSource = DSList.front();
     ui->LayerSourceLabel->setText(QString::fromStdString(mp_LayerSource->getRelativePath()));
     ui->StyleParamsWidget->setEnabled(true);
-    ui->VisibleCheckBox->setChecked(true);
   }
   else
   {
-    ui->LayerSourceLabel->setText(tr("(none)"));
+    ui->LayerSourceLabel->setText(tr("(no layer to display)"));
     ui->StyleParamsWidget->setEnabled(false);
     ui->VisibleCheckBox->setChecked(false);
   }
 
   connect(ui->VisibleCheckBox,SIGNAL(toggled(bool)),this,SLOT(changeVisible()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsClassWidget::setLayerVisible()
+{
+  if (mp_LayerSource != NULL)
+    ui->VisibleCheckBox->setChecked(true);
 }
 
 

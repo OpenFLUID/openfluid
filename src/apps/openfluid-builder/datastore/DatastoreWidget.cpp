@@ -155,6 +155,8 @@ void DatastoreWidget::addItem()
   if (AddItemDlg.exec() == QDialog::Accepted)
   {
 
+    bool OKToCreateItem = true;
+
     // by default, the file associated to the item is in the inputdir path
     QString DSItemFile = AddItemDlg.getSourceFilePath();
 
@@ -181,12 +183,42 @@ void DatastoreWidget::addItem()
 
           if (CopyDriver != NULL)
           {
+            // creation of the destination directory if not exists
             QDir().mkpath(QFileInfo(DestFile).absolutePath());
 
-            OGRDataSource* DestDS = CopyDriver->CopyDataSource(SrcDS,
-                                                               DestFile.toStdString().c_str());
+            // temporary datasource to see if the file already exists
+            OGRDataSource* DestAlreadyExists = CopyDriver->Open(DestFile.toStdString().c_str());
 
-            OGRDataSource::DestroyDataSource(DestDS);
+            if (DestAlreadyExists)
+            {
+              OGRDataSource::DestroyDataSource(DestAlreadyExists);
+
+              OKToCreateItem =
+                  (QMessageBox::question(QApplication::activeWindow(),
+                                         "OpenFLUID-Builder",
+                                         tr("The file %1 is about to be copied in the input dataset,\n"
+                                             "as the source file for the added datastore item.\n"
+                                             "\n"
+                                             "A file with the same name already exists in the input dataset.\n"
+                                             "It will be replaced by the new file.\n"
+                                             "\n"
+                                             "Proceed anyway?").arg(SourceFilename),
+                                             QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok);
+              if (OKToCreateItem)
+              {
+                // if file already exists, it is deleted
+                CopyDriver->DeleteDataSource(DestFile.toStdString().c_str());
+              }
+            }
+
+            if (OKToCreateItem)
+            {
+              OGRDataSource* DestDS = CopyDriver->CopyDataSource(SrcDS,
+                                                                 DestFile.toStdString().c_str());
+              OGRDataSource::DestroyDataSource(DestDS);
+            }
+
+            OGRDataSource::DestroyDataSource(SrcDS);
           }
           else
           {
@@ -262,27 +294,29 @@ void DatastoreWidget::addItem()
     }
 
 
-    // creation of datastore item
+    if (OKToCreateItem)
+    {
+      // creation of datastore item
 
-    // build of the relative path for the file associated with the item
-    QString RelativeDSItemFile = QDir(QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()))
-                                     .relativeFilePath(DSItemFile);
+      // build of the relative path for the file associated with the item
+      QString RelativeDSItemFile = QDir(QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()))
+                                         .relativeFilePath(DSItemFile);
 
-    openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc =
-        new openfluid::fluidx::DatastoreItemDescriptor(AddItemDlg.getItemID().toStdString(),
-                                                       openfluid::base::RuntimeEnvironment::getInstance()->getInputDir(),
-                                                       RelativeDSItemFile.toStdString(),
-                                                       AddItemDlg.getItemType());
+      openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc =
+          new openfluid::fluidx::DatastoreItemDescriptor(AddItemDlg.getItemID().toStdString(),
+                                                         openfluid::base::RuntimeEnvironment::getInstance()->getInputDir(),
+                                                         RelativeDSItemFile.toStdString(),
+                                                         AddItemDlg.getItemType());
 
-    if (AddItemDlg.isUnitsClass())
-      DSItemDesc->setUnitClass(AddItemDlg.getUnitsClass().toStdString());
+      if (AddItemDlg.isUnitsClass())
+        DSItemDesc->setUnitClass(AddItemDlg.getUnitsClass().toStdString());
 
-    m_Datastore.appendItem(DSItemDesc);
+      m_Datastore.appendItem(DSItemDesc);
 
-    emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
+      emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_DATASTORE);
 
-    refresh();
-
+      refresh();
+    }
   }
 }
 

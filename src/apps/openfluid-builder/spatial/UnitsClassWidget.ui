@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>250</width>
-    <height>260</height>
+    <height>234</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -109,7 +109,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>6</height>
+       <height>8</height>
       </size>
      </property>
     </spacer>
@@ -134,7 +134,7 @@
     <widget class="QWidget" name="StyleWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <property name="leftMargin">
-       <number>20</number>
+       <number>16</number>
       </property>
       <property name="rightMargin">
        <number>0</number>
@@ -143,28 +143,22 @@
        <number>0</number>
       </property>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Layer source:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="LayerSourceLabel">
-          <property name="text">
-           <string notr="true">TextLabel</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="QLabel" name="LayerSourceLabel">
+        <property name="font">
+         <font>
+          <underline>false</underline>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">color : #909090;</string>
+        </property>
+        <property name="text">
+         <string notr="true">LayerSourceLabel</string>
+        </property>
+        <property name="indent">
+         <number>0</number>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QWidget" name="StyleParamsWidget" native="true">
@@ -179,7 +173,7 @@
           <number>0</number>
          </property>
          <property name="topMargin">
-          <number>0</number>
+          <number>6</number>
          </property>
          <property name="rightMargin">
           <number>0</number>

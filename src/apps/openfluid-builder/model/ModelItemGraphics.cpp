@@ -52,9 +52,6 @@
 #include <QGraphicsSceneMouseEvent>
 
 
-#include <iostream>
-
-
 QSize ModelItemGraphics::m_DefaultSize = QSize(200,70);
 
 QPointF ModelItemGraphics::m_RequiredIOFromCenter = QPoint(-60,-ModelItemGraphics::m_DefaultSize.height()/2);

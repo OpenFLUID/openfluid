@@ -43,11 +43,12 @@
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
-namespace openfluid {
-namespace fluidx {
+namespace openfluid { namespace fluidx {
+
 
 // =====================================================================
 // =====================================================================
+
 
 AdvancedModelDescriptor::AdvancedModelDescriptor(
     openfluid::fluidx::CoupledModelDescriptor& ModelDesc) :
@@ -56,18 +57,27 @@ AdvancedModelDescriptor::AdvancedModelDescriptor(
   checkModel();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 AdvancedModelDescriptor::~AdvancedModelDescriptor()
 {
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 void AdvancedModelDescriptor::checkModel() const
 {
+  // disabled to allow models to have the same generator
+  // or simulator more than once, but with only one enabled
+  // at the same time
+
+  /*
   std::set<std::string> UniqueIDs;
 
   std::list<openfluid::fluidx::ModelItemDescriptor*>& Items =
@@ -82,18 +92,23 @@ void AdvancedModelDescriptor::checkModel() const
           "AdvancedModelDescriptor::checkModel",
           "The simulator with ID \"" + ID + "\" is duplicate");
   }
+  */
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 const std::list<openfluid::fluidx::ModelItemDescriptor*>& AdvancedModelDescriptor::getItems() const
 {
   return mp_ModelDesc->getItems();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::getItemAt(
     unsigned int Index) const
@@ -115,8 +130,10 @@ openfluid::fluidx::ModelItemDescriptor* AdvancedModelDescriptor::getItemAt(
                                        "Bad index of item to get");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 int AdvancedModelDescriptor::getFirstItemIndex(std::string ItemID) const
 {
@@ -133,8 +150,10 @@ int AdvancedModelDescriptor::getFirstItemIndex(std::string ItemID) const
   return -1;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 int AdvancedModelDescriptor::getFirstItemIndex(
     openfluid::fluidx::ModelItemDescriptor* Item) const
@@ -151,8 +170,10 @@ int AdvancedModelDescriptor::getFirstItemIndex(
   return -1;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs() const
 {
@@ -168,8 +189,10 @@ std::vector<std::string> AdvancedModelDescriptor::getOrderedIDs() const
   return IDs;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string AdvancedModelDescriptor::getID(
     openfluid::fluidx::ModelItemDescriptor* Item) const
@@ -185,8 +208,10 @@ std::string AdvancedModelDescriptor::getID(
                                          "Unknown ware type");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedModelDescriptor::appendItem(
     openfluid::fluidx::ModelItemDescriptor* Item)
@@ -195,8 +220,10 @@ void AdvancedModelDescriptor::appendItem(
     mp_ModelDesc->appendItem(Item);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedModelDescriptor::insertItem(
     openfluid::fluidx::ModelItemDescriptor* Item, unsigned int Position)
@@ -220,8 +247,10 @@ void AdvancedModelDescriptor::insertItem(
                                        "Bad index of item to insert");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedModelDescriptor::setItems(
     std::list<openfluid::fluidx::ModelItemDescriptor*> SimulatorsList)
@@ -229,8 +258,10 @@ void AdvancedModelDescriptor::setItems(
   mp_ModelDesc->getItems() = SimulatorsList;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedModelDescriptor::removeItem(unsigned int Position)
 {
@@ -251,8 +282,10 @@ void AdvancedModelDescriptor::removeItem(unsigned int Position)
                                        "Bad index of item to delete");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void AdvancedModelDescriptor::moveItem(unsigned int From, unsigned int To)
 {
@@ -365,4 +398,4 @@ void AdvancedModelDescriptor::eraseGlobalParameter(
 // =====================================================================
 // =====================================================================
 
-}  } // namespaces)
+}  } // namespaces
