@@ -68,7 +68,7 @@ class AppCoordinator : public QObject
 
     void setCurrentModule(AbstractModule* Module);
 
-    void setProjectModule(const QString& ProjectPath);
+    bool setProjectModule(const QString& ProjectPath);
 
     bool createProject(const QString& Name, const QString& Path, const QString& Description, const QString& Authors,
                        NewProjectDialog::ImportType IType, const QString& ISource);

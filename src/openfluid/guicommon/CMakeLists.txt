@@ -4,16 +4,14 @@
 INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-FILE(GLOB OPENFLUID_GUICOMMON_CPP OpenProjectDialog.cpp
-                                  PreferencesManager.cpp
+FILE(GLOB OPENFLUID_GUICOMMON_CPP PreferencesManager.cpp
                                   RunSimulationDialog.cpp RunSimulationWorker.cpp
                                   MarketBuildOptionsDialog.cpp MarketClientAssistant.cpp MarketWizardPage.cpp 
                                   MarketPackWidget.cpp MarketPackWidgetFormat.cpp
                                   ViewLogFileWindow.cpp
                                   )
 
-FILE(GLOB OPENFLUID_GUICOMMON_HPP OpenProjectDialog.hpp
-                                  PreferencesManager.hpp
+FILE(GLOB OPENFLUID_GUICOMMON_HPP PreferencesManager.hpp
                                   RunSimulationDialog.hpp RunSimulationWorker.hpp
                                   MarketBuildOptionsDialog.hpp MarketClientAssistant.hpp MarketWizardPage.hpp 
                                   MarketPackWidget.hpp MarketPackWidgetFormat.hpp
