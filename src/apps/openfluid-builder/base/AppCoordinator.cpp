@@ -43,8 +43,8 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QApplication>
+#include <QFileDialog>
 
-#include <openfluid/guicommon/OpenProjectDialog.hpp>
 #include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 #include <openfluid/base/Exception.hpp>
@@ -207,7 +207,7 @@ void AppCoordinator::setHomeModule()
 // =====================================================================
 
 
-void AppCoordinator::setProjectModule(const QString& ProjectPath)
+bool AppCoordinator::setProjectModule(const QString& ProjectPath)
 {
   try
   {
@@ -265,7 +265,10 @@ void AppCoordinator::setProjectModule(const QString& ProjectPath)
   {
     QApplication::restoreOverrideCursor();
     QMessageBox::critical(NULL,tr("Project error"),QString(E.getMessage().c_str()));
+    return false;
   }
+
+  return true;
 }
 
 
@@ -324,9 +327,11 @@ void AppCoordinator::openProject(const QString& Name, const QString& Path)
         QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()),
         QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
 
-  setProjectModule(Path);
-  m_Actions.updateRecentProjectsActions();
-  m_MainWindow.setProjectName(Name);
+  if (setProjectModule(Path))
+  {
+    m_Actions.updateRecentProjectsActions();
+    m_MainWindow.setProjectName(Name);
+  }
 }
 
 
@@ -432,9 +437,7 @@ void AppCoordinator::whenOpenAsked()
 {
   if (mp_CurrentModule->whenOpenAsked() && closeProject())
   {
-    // TODO develop custom open project
-    /*openfluid::guicommon::OpenProjectDialog OpenPrjDlg(&m_MainWindow);
-    if (OpenPrjDlg.run()) setProjectModule(OpenPrjDlg.getProjectFolder());*/
+    // TODO develop custom dialog for opening projects
     QString SelectedDir = QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"),
                                                             openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
     if (SelectedDir !=  "")
