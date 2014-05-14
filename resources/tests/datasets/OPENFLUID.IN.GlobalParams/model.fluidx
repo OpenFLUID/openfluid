@@ -8,10 +8,10 @@
 			<param name="gparam3" value="0.1" />
 		</gparams>
 
-		<function fileID="tests.globalparams">
+		<simulator ID="tests.globalparams">
 			<param name="gparam1" value="1" />
 			<param name="lparam1" value="100" />
 			<param name="gparam2" value="nineteen" />
-		</function>
+		</simulator>
 	</model>
 </openfluid>

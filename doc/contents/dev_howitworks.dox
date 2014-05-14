@@ -1,0 +1,101 @@
+/**
+
+\page dev_howitworks General information
+
+
+
+\section genorg_ssec General organization
+ 
+The OpenFLUID libraries features are gathered together into the \ref openfluid "openfluid namespace", which is made of several parts. The three main parts are: 
+<ul>
+  <li>openfluid::core, defined in openfluid/core.hpp, gathers all the classes for the shared data between the OpenFLUID framework and the functions, and between the functions themselves
+  <li>openfluid::base, defined in openfluid/base.hpp, gathers all the classes for the dynamic linking between the OpenFLUID framework  and the functions, and in particular the openfluid::base::PluggableFunction class
+  <li>openfluid::tools, defined in openfluid/tools.hpp, gathers tools available for data processing, files reading, ...
+</ul>
+
+\n
+
+These libraries mainly rely on external libraries:
+<ul> 
+  <li>The boost libraries : http://www.boost.org/   
+  <li>The libXML2 library for XML file handling : http://xmlsoft.org/
+  <li>The C++ Standard Type Library (STL) for common data structures : http://www.sgi.com/tech/stl/ 
+  <li>The Glibmm/Gtkmm library for GUI development and convenience features: http://www.gtkmm.org/
+  <li>The libCURL library for networking capabilities : http://curl.haxx.se/
+</ul>
+\n
+\image html API_stack.png
+\image latex API_stack.png "API stack" width=14cm
+\n
+\n
+
+\section feat_sec Features 
+ 
+\subsection featplug_ssec Plug-in/framework software architecture
+
+The OpenFLUID framework provides a plugin interface for creating functions that can be used by any OpenFLUID software application.\n
+This involves the following classes and structures (non-exhaustive list): 
+<ul>
+  <li>openfluid::base::PluggableFunction 
+  <li>openfluid::base::SimulationStatus 
+  <li>openfluid::base::SimulationInfo
+</ul>
+ 
+\subsection featstruct_ssec Spatio-temporal data structure 
+
+In order to store and manage all the data handled to represent the spatial domain and the simulation information, the OpenFLUID framework defines a data structure for spatio-temporal data management.\n
+This involves the following class (non-exhaustive list): 
+<ul>
+  <li>openfluid::core::Unit
+</ul>   
+
+\subsection featparams_ssec Simulation parameters and input data 
+
+Models can be parameterized using functions parameters at simulation function level,
+or using input data associated to spatial units. 
+This involves the following classes and structures (non-exhaustive list):
+<ul>
+  <li>openfluid::core::FuncParamsMap_t
+  <li>openfluid::core::Value and its derived types  
+</ul>
+
+\see \ref values
+\see \ref simvardata
+
+\subsection featvars_ssec Simulation variables and events
+
+The simulation variables can be of any defined type. A date is associated to each value of simulation variables.
+Simulation functions can also handle discrete events, associated to spatial units.  
+This involves the following classes and structures (non-exhaustive list):
+<ul>
+  <li>openfluid::core::Value and its derived types
+  <li>openfluid::core::Event          
+  <li>openfluid::core::EventsCollection  
+  <li>openfluid::core::DateTime
+</ul>
+
+\see \ref values
+\see \ref simvardata
+
+
+  
+\subsection feattools_ssec Tools
+
+This involves the following classes and functions (non-exhaustive list): 
+<ul>
+  <li>openfluid::tools::ColumnTextParser
+  <li>openfluid::tools::DateTimeSerie
+  <li>openfluid::tools::DistributeInterpolate    
+  <li>openfluid::tools::IsCloseEnough    
+  <li>openfluid::tools::IsVeryClose    
+</ul>
+
+The FortranCPP.h header file make Fortran code encapsulation (into simulation functions) easier.
+
+
+
+\n
+\n 
+
+
+*/

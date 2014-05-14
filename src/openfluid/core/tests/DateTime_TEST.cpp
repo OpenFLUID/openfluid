@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -86,7 +71,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
 BOOST_AUTO_TEST_CASE(check_rawtime)
 {
   openfluid::core::DateTime DT,DT2;
-  openfluid::core::rawtime_t RawTime;
+  openfluid::core::RawTime_t RawTime;
   const unsigned int CasesCount = 4;
 
 
@@ -125,7 +110,7 @@ BOOST_AUTO_TEST_CASE(check_operations)
 
   openfluid::core::DateTime DTResult;
 
-  openfluid::core::rawtime_t DiffInSeconds;
+  openfluid::core::RawTime_t DiffInSeconds;
 
   DTResult = DT + 37;
   BOOST_REQUIRE_EQUAL(DTResult.getYear(),2008);
@@ -211,7 +196,7 @@ BOOST_AUTO_TEST_CASE(check_tofromstring)
   openfluid::core::DateTime DT;
   std::string DTStr;
 
-  DT.setFromISOString("2009-09-09 16:36:25");
+  BOOST_REQUIRE_EQUAL(DT.setFromISOString("2009-09-09 16:36:25"),true);
   BOOST_REQUIRE_EQUAL(DT.getYear(),2009);
   BOOST_REQUIRE_EQUAL(DT.getMonth(),9);
   BOOST_REQUIRE_EQUAL(DT.getDay(),9);
@@ -221,6 +206,33 @@ BOOST_AUTO_TEST_CASE(check_tofromstring)
 
   DTStr = DT.getAsISOString();
   BOOST_REQUIRE_EQUAL(DTStr,"2009-09-09 16:36:25");
+
+
+  BOOST_REQUIRE_EQUAL(DT.setFromString("2013xx06xxx25","%Yxx%mxxx%d"),true);
+  BOOST_REQUIRE_EQUAL(DT.getYear(),2013);
+  BOOST_REQUIRE_EQUAL(DT.getMonth(),6);
+  BOOST_REQUIRE_EQUAL(DT.getDay(),25);
+  BOOST_REQUIRE_EQUAL(DT.getHour(),0);
+  BOOST_REQUIRE_EQUAL(DT.getMinute(),0);
+  BOOST_REQUIRE_EQUAL(DT.getSecond(),0);
+
+  BOOST_REQUIRE_EQUAL(DT.setFromString("2013-08-06T17:37:53","%Y-%m-%dT%H:%M:%S"),true);
+  BOOST_REQUIRE_EQUAL(DT.getYear(),2013);
+  BOOST_REQUIRE_EQUAL(DT.getMonth(),8);
+  BOOST_REQUIRE_EQUAL(DT.getDay(),6);
+  BOOST_REQUIRE_EQUAL(DT.getHour(),17);
+  BOOST_REQUIRE_EQUAL(DT.getMinute(),37);
+  BOOST_REQUIRE_EQUAL(DT.getSecond(),53);
+
+  BOOST_REQUIRE_EQUAL(DT.setFromString("25/06/2012 12h35m06s","%d/%m/%Y %Hh%Mm%Ss"),true);
+  BOOST_REQUIRE_EQUAL(DT.getYear(),2012);
+  BOOST_REQUIRE_EQUAL(DT.getMonth(),6);
+  BOOST_REQUIRE_EQUAL(DT.getDay(),25);
+  BOOST_REQUIRE_EQUAL(DT.getHour(),12);
+  BOOST_REQUIRE_EQUAL(DT.getMinute(),35);
+  BOOST_REQUIRE_EQUAL(DT.getSecond(),6);
+
+  BOOST_REQUIRE_EQUAL(DT.setFromString("2013-06-25","%d %Hh%Mm%Ss"),false);
 }
 // =====================================================================
 // =====================================================================

@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <run>
+    <scheduling deltat="4753" constraint="none" />
+    <period begin="1997-01-02 11:15:48" end="2005-11-30 06:53:07" />
+    <simid>testrun</simid>    
+  </run>
+</openfluid>

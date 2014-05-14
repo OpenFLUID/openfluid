@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -68,23 +53,31 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-
-
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir(),"");
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir(),"");
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),"");
-  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().size(),0);
+  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths().size(),0);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir(),false);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize(),false);
-  BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID(),"");
 
-  std::cout << "InputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
-  std::cout << "OutputDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
-  std::cout << "TempDir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
-  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().size();i++) std::cout << "Plugins search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().at(i) << std::endl;
   std::cout << "Arch: " << openfluid::base::RuntimeEnvironment::getInstance()->getArch() << std::endl;
+  std::cout << "Hostname: " << openfluid::base::RuntimeEnvironment::getInstance()->getHostName() << std::endl;
+  std::cout << "UserID: " << openfluid::base::RuntimeEnvironment::getInstance()->getUserID() << std::endl;
+  std::cout << "Home dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getUserHomeDir() << std::endl;
+  std::cout << "User data path for foo: " << openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath("foo") << std::endl;
+  std::cout << "Default config file: " << openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile() << std::endl;
+  std::cout << "Input dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getInputDir() << std::endl;
+  std::cout << "Output dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir() << std::endl;
+  std::cout << "Temp dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getTempDir() << std::endl;
+  std::cout << "MarketBag dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagDir() << std::endl;
+  std::cout << "User examples dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getUserExamplesDir() << std::endl;
+  std::cout << "Provided examples dir: " << openfluid::base::RuntimeEnvironment::getInstance()->getProvidedExamplesDir() << std::endl;
+  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths().size();i++)
+    std::cout << "Simulators search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths().at(i) << std::endl;
+  for (unsigned int i=0;i<openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths().size();i++)
+    std::cout << "Observers search dir #" << (i+1) << " " << openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths().at(i) << std::endl;
 
 }
 
@@ -102,16 +95,28 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_NE(openfluid::base::RuntimeEnvironment::getInstance()->getTempDir(),"");
 
 
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths().size(),0);
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar");
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar/bar/bar");
-  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getPluginsPaths().size(),2);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths().size(),2);
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths().size(),0);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths("/bar/foo/foo/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths("/bar/foo/foo/bar/bar/bar");
+  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths().size(),2);
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths().size(),2);
 
-  openfluid::base::RuntimeEnvironment::getInstance()->resetExtraPluginsPaths();
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraPluginsPaths().size(),0);
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar");
-  openfluid::base::RuntimeEnvironment::getInstance()->addExtraPluginsPaths("/bar/foo/foo/bar/bar/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->resetExtraSimulatorsPluginsPaths();
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths().size(),0);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths("/bar/foo/foo/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths("/bar/foo/foo/bar/bar/bar");
+
+
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths().size(),0);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths("/bar/foo/foo/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths("/bar/foo/foo/bar/bar/bar");
+  BOOST_REQUIRE_GT(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths().size(),2);
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths().size(),2);
+
+  openfluid::base::RuntimeEnvironment::getInstance()->resetExtraObserversPluginsPaths();
+  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths().size(),0);
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths("/bar/foo/foo/bar");
+  openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths("/bar/foo/foo/bar/bar/bar");
 
 
 
@@ -124,44 +129,38 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::base::RuntimeEnvironment::getInstance()->setWriteSimReport(false);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport(),false);
 
-  openfluid::base::RuntimeEnvironment::getInstance()->setFilesBufferSize(2300);
   openfluid::base::RuntimeEnvironment::getInstance()->setValuesBufferSize(2345);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->isUserValuesBufferSize(),true);
   BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getValuesBufferSize(),2345);
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getFilesBufferSize(),2300);
-
-  openfluid::base::RuntimeEnvironment::getInstance()->setSimulationID("THESIMID-2");
-  BOOST_REQUIRE_EQUAL(openfluid::base::RuntimeEnvironment::getInstance()->getSimulationID(),"THESIMID-2");
 
 
 
-
-  openfluid::base::EnvironmentProperties* FuncEnv;
+  openfluid::base::EnvironmentProperties* SimEnv;
   bool BoolValue;
   std::string StrValue;
 
-  FuncEnv = openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment();
-  BOOST_REQUIRE(FuncEnv != NULL);
+  SimEnv = openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment();
+  BOOST_REQUIRE(SimEnv != NULL);
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("wrong.fake",&StrValue),false);
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("fake.wrong",&BoolValue),false);
+  BOOST_REQUIRE_EQUAL(SimEnv->getValue("wrong.fake",StrValue),false);
+  BOOST_REQUIRE_EQUAL(SimEnv->getValue("fake.wrong",BoolValue),false);
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.input",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(SimEnv->getValue("dir.input",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,openfluid::base::RuntimeEnvironment::getInstance()->getInputDir());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.output",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(SimEnv->getValue("dir.output",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,openfluid::base::RuntimeEnvironment::getInstance()->getOutputDir());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("dir.temp",&StrValue),true);
+  BOOST_REQUIRE_EQUAL(SimEnv->getValue("dir.temp",StrValue),true);
   BOOST_REQUIRE_EQUAL(StrValue,openfluid::base::RuntimeEnvironment::getInstance()->getTempDir());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.clearoutputdir",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(SimEnv->getValue("mode.clearoutputdir",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isClearOutputDir());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.saveresults",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(SimEnv->getValue("mode.saveresults",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isWriteResults());
 
-  BOOST_REQUIRE_EQUAL(FuncEnv->getValue("mode.writereport",&BoolValue),true);
+  BOOST_REQUIRE_EQUAL(SimEnv->getValue("mode.writereport",BoolValue),true);
   BOOST_REQUIRE_EQUAL(BoolValue,openfluid::base::RuntimeEnvironment::getInstance()->isWriteSimReport());
 
 }

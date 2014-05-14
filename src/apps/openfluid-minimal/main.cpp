@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -53,20 +38,24 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include <openfluid/io/IOListener.hpp>
-#include <openfluid/io/FluidXReader.hpp>
+#include <openfluid/base/IOListener.hpp>
+#include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/Init.hpp>
+#include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
+#include <openfluid/machine/MonitoringInstance.hpp>
 #include <openfluid/machine/Factory.hpp>
 
 
 
 int main(int argc, char **argv)
 {
+  INIT_OPENFLUID_APPLICATION(argc,argv);
+
   try
   {
     std::string InputDir = "";
@@ -80,41 +69,37 @@ int main(int argc, char **argv)
       PlugsDir = std::string(argv[3]);
     }
     else
-      throw openfluid::base::OFException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdir>");
-
-
-    openfluid::base::Init();
-
+      throw openfluid::base::ApplicationException("openfluid-minimal","Incorrect number of arguments, should be <inputdir> <outputdir> <pluginsdirs>");
 
     openfluid::machine::Engine* Engine;
     openfluid::machine::SimulationBlob SBlob;
     openfluid::base::RuntimeEnvironment* RunEnv;
-    openfluid::io::IOListener* IOListen = new openfluid::io::IOListener();
+    openfluid::base::IOListener* IOListen = new openfluid::base::IOListener();
     openfluid::machine::MachineListener* MachineListen = new openfluid::machine::MachineListener();
     openfluid::machine::ModelInstance Model(SBlob,MachineListen);
-    openfluid::io::FluidXReader FXReader(IOListen);
+    openfluid::machine::MonitoringInstance Monitoring(SBlob);
+    openfluid::fluidx::FluidXDescriptor FXDesc(IOListen);
 
 
     RunEnv = openfluid::base::RuntimeEnvironment::getInstance();
     RunEnv->setInputDir(InputDir);
     RunEnv->setOutputDir(OutputDir);
-    RunEnv->addExtraPluginsPaths(PlugsDir);
+    RunEnv->addExtraSimulatorsPluginsPaths(PlugsDir);
+    RunEnv->addExtraObserversPluginsPaths(PlugsDir);
 
 
-    FXReader.loadFromDirectory(InputDir);
+    FXDesc.loadFromDirectory(InputDir);
 
 
-    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXReader.getDomainDescriptor(),
-                                                                    FXReader.getRunDescriptor(),
-                                                                    FXReader.getOutputDescriptor(),
-                                                                    FXReader.getDatstoreDescriptor(),
-                                                                    SBlob);
+    openfluid::machine::Factory::buildSimulationBlobFromDescriptors(FXDesc,SBlob);
 
-    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXReader.getModelDescriptor(),
+    openfluid::machine::Factory::buildModelInstanceFromDescriptor(FXDesc.getModelDescriptor(),
                                                                   Model);
 
+    openfluid::machine::Factory::buildMonitoringInstanceFromDescriptor(FXDesc.getMonitoringDescriptor(),
+                                                                  Monitoring);
 
-    Engine = new openfluid::machine::Engine(SBlob, Model, MachineListen, IOListen);
+    Engine = new openfluid::machine::Engine(SBlob, Model, Monitoring, MachineListen);
 
     Engine->initialize();
 
@@ -122,7 +107,6 @@ int main(int argc, char **argv)
     Engine->prepareData();
     Engine->checkConsistency();
     Engine->run();
-    Engine->saveReports();
 
     Engine->finalize();
 
@@ -130,7 +114,7 @@ int main(int argc, char **argv)
 
     return 0;
   }
-  catch (openfluid::base::OFException& E)
+  catch (openfluid::base::Exception& E)
   {
     std::cerr << "ERROR: " + std::string(E.what()) << std::endl;
   }

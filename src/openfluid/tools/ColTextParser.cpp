@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -70,7 +55,7 @@
 namespace openfluid { namespace tools {
 
 
-ColumnTextParser::ColumnTextParser(std::string CommentLineSymbol, std::string Delimiter):
+ColumnTextParser::ColumnTextParser(const std::string& CommentLineSymbol, const std::string& Delimiter):
   m_Delimiter(Delimiter), m_CommentSymbol(CommentLineSymbol),
   m_LinesCount(0), m_ColsCount(0)
 {
@@ -95,7 +80,7 @@ ColumnTextParser::~ColumnTextParser()
 
 
 
-std::vector<std::string> ColumnTextParser::tokenizeLine(std::string Line)
+std::vector<std::string> ColumnTextParser::tokenizeLine(const std::string& Line)
 {
   std::vector<std::string> NewLine;
 
@@ -138,13 +123,13 @@ bool ColumnTextParser::checkContents()
 // =====================================================================
 
 
-bool ColumnTextParser::isCommentLineStr(std::string LineStr)
+bool ColumnTextParser::isCommentLineStr(const std::string& LineStr)
 {
 
   if (m_CommentSymbol.length() > 0)
   {
-    boost::trim_left(LineStr);
-    return boost::starts_with(LineStr,m_CommentSymbol.c_str());
+    std::string TmpStr = boost::trim_left_copy(LineStr);
+    return boost::starts_with(TmpStr,m_CommentSymbol.c_str());
   }
 
   return false;
@@ -157,12 +142,9 @@ bool ColumnTextParser::isCommentLineStr(std::string LineStr)
 // =====================================================================
 
 
-bool ColumnTextParser::isEmptyLineStr(std::string LineStr)
+bool ColumnTextParser::isEmptyLineStr(const std::string& LineStr)
 {
-
-  boost::trim(LineStr);
-
-  return (LineStr.length() == 0);
+  return (boost::trim_copy(LineStr).empty());
 }
 
 
@@ -172,7 +154,7 @@ bool ColumnTextParser::isEmptyLineStr(std::string LineStr)
 
 
 
-bool ColumnTextParser::loadFromFile(std::string Filename)
+bool ColumnTextParser::loadFromFile(const std::string& Filename)
 {
 
   std::string StrLine;
@@ -207,7 +189,7 @@ bool ColumnTextParser::loadFromFile(std::string Filename)
 // =====================================================================
 // =====================================================================
 
-bool ColumnTextParser::setFromString(std::string Contents, unsigned int ColumnsNbr)
+bool ColumnTextParser::setFromString(const std::string& Contents, unsigned int ColumnsNbr)
 {
   /** @internal
 
@@ -363,7 +345,7 @@ bool ColumnTextParser::getDoubleValue(unsigned int Line, unsigned int Column, do
 void ColumnTextParser::streamContents(std::ostream& OStream)
 {
   OStream << "" << std::endl;
-  int i,j;
+  unsigned int i,j;
 
   for (i=0;i<m_LinesCount;i++)
   {

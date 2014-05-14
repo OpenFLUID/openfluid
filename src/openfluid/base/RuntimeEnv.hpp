@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -61,7 +46,6 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/EnvProperties.hpp>
-#include <openfluid/base/SimulationProfiler.hpp>
 #include <openfluid/core/DateTime.hpp>
 
 
@@ -92,19 +76,32 @@ class DLLEXPORT RuntimeEnvironment
     std::string m_TempDir;
     std::string m_HomeDir;
     std::string m_MarketBagDir;
-    std::string m_MarketBagBinVersionDir;
-    std::string m_MarketBagSrcVersionDir;
+    std::string m_MarketBagVersionDir;
+
+    std::string m_MarketBagSimVersionDir;
+    std::string m_MarketBagObsVersionDir;
+    std::string m_MarketBagBuildVersionDir;
+    std::string m_MarketBagDataVersionDir;
+    std::string m_MarketBagBinSubDir;
+    std::string m_MarketBagSrcSubDir;
 
     std::string m_InstallPrefix;
 
-    std::vector<std::string> m_DefaultPlugsDirs;
-    std::vector<std::string> m_ExtraPlugsDirs;
+    std::vector<std::string> m_DefaultSimulatorsPlugsDirs;
+    std::vector<std::string> m_ExtraSimulatorsPlugsDirs;
+
+    std::vector<std::string> m_DefaultObserversPlugsDirs;
+    std::vector<std::string> m_ExtraObserversPlugsDirs;
+
+
+    std::string m_ProvidedExamplesDir;
+    std::string m_UserExamplesDir;
 
     std::string m_UserID;
     std::string m_HostName;
     std::string m_Arch;
 
-    unsigned int m_FunctionsMaxNumThreads;
+    unsigned int m_SimulatorsMaxNumThreads;
 
     std::string m_DefaultConfigFilePath;
 
@@ -114,19 +111,17 @@ class DLLEXPORT RuntimeEnvironment
 
     bool m_WriteSimReport;
 
+    bool m_Profiling;
+
     unsigned int m_ValuesBufferSize;
 
     bool m_IsUserValuesBufferSize;
 
-    unsigned int m_FilesBufferSize;
-
-    openfluid::base::EnvironmentProperties* mp_FuncEnv;
+    openfluid::base::EnvironmentProperties* mp_WareEnv;
 
     openfluid::base::EnvironmentProperties m_ExtraProperties;
 
     boost::posix_time::ptime m_IgnitionDateTime;
-
-    std::string m_SimulationID;
 
     boost::posix_time::time_duration m_EffectiveSimulationDuration;
 
@@ -180,7 +175,7 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] InputDir The input directory
     */
     void setInputDir(const std::string InputDir)
-      { m_InputDir = InputDir; mp_FuncEnv->setValue("dir.input",m_InputDir); };
+      { m_InputDir = InputDir; mp_WareEnv->setValue("dir.input",m_InputDir); };
 
     /**
       Returns the input directory
@@ -193,7 +188,7 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] OutputDir The output directory
     */
     void setOutputDir(const std::string OutputDir)
-      { m_OutputDir = OutputDir; mp_FuncEnv->setValue("dir.output",m_OutputDir); };
+      { m_OutputDir = OutputDir; mp_WareEnv->setValue("dir.output",m_OutputDir); };
 
     /**
       Returns the output directory
@@ -213,16 +208,39 @@ class DLLEXPORT RuntimeEnvironment
     inline std::string getMarketBagDir() const { return m_MarketBagDir; };
 
     /**
-      Returns the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/linux-i386/1.6.2~alpha1)
-      @return the market bag directory for the current version
-    */
-    inline std::string getMarketBagBinVersionDir() const { return m_MarketBagBinVersionDir; };
+      @return the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/2.0.0)
+     */
+    inline std::string getMarketBagVersionDir() const { return m_MarketBagVersionDir; };
 
     /**
-      Returns the market bag directory for the current OpenFLUID version (i.e. $HOME/.openfluid/market-bag/src/1.6)
-      @return the market bag directory for the current version
-    */
-    inline std::string getMarketBagSrcVersionDir() const { return m_MarketBagSrcVersionDir; };
+      @return the market bag directory for simulators of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/simulators)
+     */
+    inline std::string getMarketBagSimVersionDir() const { return m_MarketBagSimVersionDir; };
+
+    /**
+      @return the market bag directory for observers of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/observers)
+     */
+    inline std::string getMarketBagObsVersionDir() const { return m_MarketBagObsVersionDir; };
+
+    /**
+      @return the market bag directory for builderexts of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/builderexts)
+     */
+    inline std::string getMarketBagBuildVersionDir() const { return m_MarketBagBuildVersionDir; };
+
+    /**
+      @return the market bag directory for datasets of the current version (i.e. $HOME/.openfluid/market-bag/2.0.0/datasets)
+     */
+    inline std::string getMarketBagDataVersionDir() const { return m_MarketBagDataVersionDir; };
+
+    /**
+      @return the binairies market bag subdirectory
+     */
+    inline std::string getMarketBagBinSubDir() const { return m_MarketBagBinSubDir; };
+
+    /**
+      @return the sources market bag subdirectory
+     */
+    inline std::string getMarketBagSrcSubDir() const { return m_MarketBagSrcSubDir; };
 
     /**
       Returns the default config file path (i.e. $HOME/.openfluid/openfluid.conf)
@@ -238,6 +256,14 @@ class DLLEXPORT RuntimeEnvironment
     */
     std::string getConfigFilePath(std::string Filename) const
       { return boost::filesystem::path(m_UserDataDir + "/" + Filename).string(); };
+
+
+    /**
+      Returns the absolute path of the home directory
+      @return the absolute path
+    */
+    std::string getUserHomeDir() const
+      { return m_HomeDir; };
 
     /**
       Returns the absolute path for a given relative path in the user OpenFLUID directory (i.e. $HOME/.openfluid/RelativePath)
@@ -271,35 +297,68 @@ class DLLEXPORT RuntimeEnvironment
       { return boost::filesystem::path(m_OutputDir + "/" + Filename).string(); };
 
     /**
-      Returns the path for a given plugin file, taking into account the plugins path search order
-      @param[in] Filename The given plugin file name
-      @return the first path found for a given plugin file
+      Returns the path for a given simulator plugin file, taking into account the simulator plugins path search order
+      @param[in] Filename The given simulator plugin file name
+      @return the first path found for a given simulator plugin file
     */
-    std::string getPluginFullPath(std::string Filename);
+    std::string getSimulatorPluginFullPath(std::string Filename);
 
     /**
       Adds search paths for plugins, separated by semicolon characters (i.e. /path/to/plugs:another/path/to/plugs).
       These paths are added at the top of the search paths list.
       @param[in] SemicolonSeparatedPaths a collection of paths separated by semicolons, as a std::string
     */
-    void addExtraPluginsPaths(std::string SemicolonSeparatedPaths);
+    void addExtraSimulatorsPluginsPaths(std::string SemicolonSeparatedPaths);
 
-    inline void resetExtraPluginsPaths() { m_ExtraPlugsDirs.clear(); };
+    inline void resetExtraSimulatorsPluginsPaths() { m_ExtraSimulatorsPlugsDirs.clear(); };
 
-    inline std::vector<std::string> getDefaultPluginsPaths() const  { return m_DefaultPlugsDirs;  };
+    inline std::vector<std::string> getDefaultSimulatorsPluginsPaths() const  { return m_DefaultSimulatorsPlugsDirs;  };
 
-    inline std::vector<std::string> getExtraPluginsPaths() const  { return m_ExtraPlugsDirs;  };
+    inline std::vector<std::string> getExtraSimulatorsPluginsPaths() const  { return m_ExtraSimulatorsPlugsDirs;  };
 
     /**
-      Returns the ordered list of paths used to search for plugins
+      Returns the ordered list of paths used to search for simulator plugins
       @return the ordered list of paths
     */
-    inline std::vector<std::string> getPluginsPaths() const
+    inline std::vector<std::string> getSimulatorsPluginsPaths() const
     {
-      std::vector<std::string> ComposedPaths(m_ExtraPlugsDirs);
-      ComposedPaths.insert(ComposedPaths.end(), m_DefaultPlugsDirs.begin(), m_DefaultPlugsDirs.end());
+      std::vector<std::string> ComposedPaths(m_ExtraSimulatorsPlugsDirs);
+      ComposedPaths.insert(ComposedPaths.end(), m_DefaultSimulatorsPlugsDirs.begin(), m_DefaultSimulatorsPlugsDirs.end());
       return ComposedPaths;
     };
+
+    /**
+      Returns the path for a given observer plugin file, taking into account the observer plugins path search order
+      @param[in] Filename The given observer plugin file name
+      @return the first path found for a given observer plugin file
+    */
+    std::string getObserverPluginFullPath(std::string Filename);
+
+    /**
+      Adds search paths for plugins, separated by semicolon characters (i.e. /path/to/plugs:another/path/to/plugs).
+      These paths are added at the top of the search paths list.
+      @param[in] SemicolonSeparatedPaths a collection of paths separated by semicolons, as a std::string
+    */
+    void addExtraObserversPluginsPaths(std::string SemicolonSeparatedPaths);
+
+    inline void resetExtraObserversPluginsPaths() { m_ExtraObserversPlugsDirs.clear(); };
+
+    inline std::vector<std::string> getDefaultObserversPluginsPaths() const  { return m_DefaultObserversPlugsDirs;  };
+
+    inline std::vector<std::string> getExtraObserversPluginsPaths() const  { return m_ExtraObserversPlugsDirs;  };
+
+    /**
+      Returns the ordered list of paths used to search for observer plugins
+      @return the ordered list of paths
+    */
+    inline std::vector<std::string> getObserversPluginsPaths() const
+    {
+      std::vector<std::string> ComposedPaths(m_ExtraObserversPlugsDirs);
+      ComposedPaths.insert(ComposedPaths.end(), m_DefaultObserversPlugsDirs.begin(), m_DefaultObserversPlugsDirs.end());
+      return ComposedPaths;
+    };
+
+
 
     /**
       Returns the install prefix path.
@@ -344,6 +403,26 @@ class DLLEXPORT RuntimeEnvironment
     std::string getLocaleDir()const;
 
     /**
+      Returns the translations directory
+      @return the path for translationslocale directory
+    */
+    std::string getTranslationsDir() const;
+
+    /**
+      Returns the path for provided examples, taking into account the install prefix path
+      @return the path for provided examples
+     */
+    std::string getProvidedExamplesDir() const { return m_ProvidedExamplesDir; };
+
+
+    /**
+      Returns the path for examples in user's directory
+      @return the path for user's examples
+     */
+    std::string getUserExamplesDir() const { return m_UserExamplesDir; };
+
+
+    /**
       Returns the extra properties list
       @return the extra properties list
     */
@@ -360,7 +439,7 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] ClearDir The value of the flag
     */
     inline void setClearOutputDir(bool ClearDir)
-      { m_ClearOutputDir = ClearDir; mp_FuncEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
+      { m_ClearOutputDir = ClearDir; mp_WareEnv->setValue("mode.clearoutputdir",m_ClearOutputDir); };
 
     /**
       Returns the write results flag
@@ -374,7 +453,7 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] WriteIt The value of the flag
     */
     void setWriteResults(bool WriteIt)
-      { m_WriteResults = WriteIt; mp_FuncEnv->setValue("mode.saveresults",m_WriteResults); };
+      { m_WriteResults = WriteIt; mp_WareEnv->setValue("mode.saveresults",m_WriteResults); };
 
     /**
       Returns the write simulation report flag
@@ -387,26 +466,17 @@ class DLLEXPORT RuntimeEnvironment
       @param[in] WriteIt The value of the flag
     */
     void setWriteSimReport(bool WriteIt)
-      { m_WriteSimReport = WriteIt; mp_FuncEnv->setValue("mode.writereport",m_WriteSimReport); };
+      { m_WriteSimReport = WriteIt; mp_WareEnv->setValue("mode.writereport",m_WriteSimReport); };
 
-    openfluid::base::EnvironmentProperties* getFunctionEnvironment() const
-      { return mp_FuncEnv; };
+    openfluid::base::EnvironmentProperties* getWareEnvironment() const
+      { return mp_WareEnv; };
 
 
     boost::posix_time::ptime getIgnitionDateTime() const
       { return m_IgnitionDateTime; };
 
 
-    void resetSimulationID();
-
-
     void resetIgnitionDateTime();
-
-
-    inline std::string getSimulationID() const {return m_SimulationID; };
-
-
-    void setSimulationID(const std::string SimID) { m_SimulationID = SimID; };
 
 
     boost::posix_time::time_duration getEffectiveSimulationDuration() const
@@ -434,10 +504,10 @@ class DLLEXPORT RuntimeEnvironment
     */
     std::string getArch() const {return m_Arch; };
 
-    unsigned int getFunctionsMaxNumThreads() const { return m_FunctionsMaxNumThreads; };
+    unsigned int getSimulatorsMaxNumThreads() const { return m_SimulatorsMaxNumThreads; };
 
-    void setFunctionsMaxNumThreads(const unsigned int& MaxNumThreads)
-      { if (MaxNumThreads > 0) m_FunctionsMaxNumThreads = MaxNumThreads; };
+    void setSimulatorsMaxNumThreads(const unsigned int& MaxNumThreads)
+      { if (MaxNumThreads > 0) m_SimulatorsMaxNumThreads = MaxNumThreads; };
 
 
     void setSimulationTimeInformation(openfluid::core::DateTime StartTime,
@@ -462,12 +532,6 @@ class DLLEXPORT RuntimeEnvironment
 
     bool isUserValuesBufferSize() const { return m_IsUserValuesBufferSize; };
 
-    void setFilesBufferSize(const unsigned int Bytes)
-      { m_FilesBufferSize = Bytes; };
-
-    inline unsigned int getFilesBufferSize() const
-      { return m_FilesBufferSize; };
-
     inline void unsetUserValuesBufferSize()
       { m_IsUserValuesBufferSize = false; }
 
@@ -478,9 +542,9 @@ class DLLEXPORT RuntimeEnvironment
     bool isLinkedToProject()
       { return m_IsLinkedToProject; };
 
-    bool isSimulationProfilingEnabled() const { return SimulationProfiler::getInstance()->isEnabled(); };
+    bool isSimulationProfilingEnabled() const { return m_Profiling; };
 
-    void setSimulationProfilingEnabled(bool Profiling) { SimulationProfiler::getInstance()->setEnabled(Profiling); };
+    void setSimulationProfilingEnabled(bool Profiling) { m_Profiling = Profiling; };
 
 };
 

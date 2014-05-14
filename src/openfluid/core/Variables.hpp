@@ -1,9 +1,10 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
-  == GNU General Public License Usage ==
+ == GNU General Public License Usage ==
 
   OpenFLUID is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -16,34 +17,18 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
-  == Other Usage ==
+ == Other Usage ==
 
   Other Usage means a use of OpenFLUID that is inconsistent with the GPL
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
- */
+
+*/
+
 
 #ifndef __VARIABLES_HPP__
 #define __VARIABLES_HPP__
@@ -68,48 +53,63 @@ class DLLEXPORT Variables
 
     ~Variables();
 
-    bool createVariable(const VariableName_t aName);
+    bool createVariable(const VariableName_t& aName);
 
-    bool createVariable(const VariableName_t aName, const Value::Type aType);
+    bool createVariable(const VariableName_t& aName, const Value::Type& aType);
 
-    bool modifyValue(const VariableName_t aName, const TimeStep_t aStep,
+    bool modifyValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
         const Value& aValue);
 
-    bool appendValue(const VariableName_t aName, const Value& aValue);
+    bool modifyCurrentValue(const VariableName_t& aName, const Value& aValue);
 
-    bool getValue(const VariableName_t aName, const TimeStep_t aStep,
+    bool appendValue(const VariableName_t& aName, const TimeIndex_t& anIndex, const Value& aValue);
+
+    bool getValue(const VariableName_t& aName, const TimeIndex_t& anIndex,
         Value* aValue) const;
 
-    Value* getValue(const VariableName_t aName, const TimeStep_t aStep) const;
+    Value* getValue(const VariableName_t& aName, const TimeIndex_t& anIndex) const;
 
-    Value* getCurrentValue(const VariableName_t aName) const;
+    Value* getCurrentValue(const VariableName_t& aName) const;
 
-    bool getCurrentValue(const VariableName_t aName, Value* aValue) const;
+    bool getCurrentValue(const VariableName_t& aName, Value* aValue) const;
 
-    bool isVariableExist(const VariableName_t aName) const;
+    bool getLatestIndexedValue(const VariableName_t& aName, IndexedValue& IndValue) const;
 
-    bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep) const;
+    bool getLatestIndexedValues(const VariableName_t& aName, const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const;
 
-    bool isVariableExist(const VariableName_t aName, const TimeStep_t aStep,
+    bool getIndexedValues(const VariableName_t& aName,
+                          const TimeIndex_t& aBeginIndex, const TimeIndex_t& anEndIndex,
+                          IndexedValueList& IndValueList) const;
+
+    bool getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index, Value* aValue) const;
+
+    Value* getCurrentValueIfIndex(const VariableName_t& aName, const TimeIndex_t& Index) const;
+
+    bool isVariableExist(const VariableName_t& aName) const;
+
+    bool isVariableExist(const VariableName_t& aName, const TimeIndex_t& anIndex) const;
+
+    bool isVariableExist(const VariableName_t& aName, const TimeIndex_t& anIndex,
         Value::Type ValueType) const;
 
-    bool isTypedVariableExist(const VariableName_t aName, const Value::Type VarType) const;
+    bool isTypedVariableExist(const VariableName_t& aName, const Value::Type& VarType) const;
 
-    bool isTypedVariableExist(const VariableName_t aName, const TimeStep_t aStep,
-        Value::Type VarType) const;
+    bool isTypedVariableExist(const VariableName_t& aName, const TimeIndex_t& anIndex,
+        const Value::Type& VarType) const;
 
     std::vector<VariableName_t> getVariablesNames() const;
 
-    unsigned int getVariableValuesCount(const VariableName_t aName) const;
+    int getVariableValuesCount(const VariableName_t& aName) const;
 
     bool isAllVariablesCount(unsigned int Count) const;
 
     void clear();
 
+    void displayContent(const VariableName_t& aName, std::ostream& OStream) const;
+
 };
 
-}
-} // namespaces
+}  } // namespaces
 
 
 #endif /* __VARIABLES_H_ */

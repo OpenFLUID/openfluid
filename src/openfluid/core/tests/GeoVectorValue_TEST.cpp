@@ -1,49 +1,33 @@
 /*
- This file is part of OpenFLUID software
- Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
- In addition, as a special exception, INRA gives You the additional right
- to dynamically link the code of OpenFLUID with code not covered
- under the GNU General Public License ("Non-GPL Code") and to distribute
- linked combinations including the two, subject to the limitations in this
- paragraph. Non-GPL Code permitted under this exception must only link to
- the code of OpenFLUID dynamically through the OpenFLUID libraries
- interfaces, and only for building OpenFLUID plugins. The files of
- Non-GPL Code may be link to the OpenFLUID libraries without causing the
- resulting work to be covered by the GNU General Public License. You must
- obey the GNU General Public License in all respects for all of the
- OpenFLUID code and other code used in conjunction with OpenFLUID
- except the Non-GPL Code covered by this exception. If you modify
- this OpenFLUID, you may extend this exception to your version of the file,
- but you are not obligated to do so. If you do not wish to provide this
- exception without modification, you must delete this exception statement
- from your version and license this OpenFLUID solely under the GPL without
- exception.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
- */
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
+  
+*/
 
 /**
  \file GeoVectorValue_TEST.cpp
@@ -60,46 +44,52 @@
 #include <boost/test/auto_unit_test.hpp>
 #include <boost/filesystem/path.hpp>
 #include <tests-config.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/core/GeoVectorValue.hpp>
 
 // =====================================================================
 // =====================================================================
 
-
 class GeoVectorValueSub: public openfluid::core::GeoVectorValue
 {
   public:
 
-    GeoVectorValueSub(std::string PrefixPath,std::string RelativePath) :
-      openfluid::core::GeoVectorValue(PrefixPath,RelativePath)
+    GeoVectorValueSub(std::string PrefixPath, std::string RelativePath) :
+        openfluid::core::GeoVectorValue(PrefixPath, RelativePath)
     {
 
     }
 
     OGRDataSource* getData()
     {
-      return m_Data;
+      return mp_Data;
     }
 
     std::string getAbsolutePath()
     {
-      return openfluid::core::GeoVectorValue::getAbsolutePath();
+      return computeAbsolutePath(m_FilePath, m_FileName);
     }
 
-    void tryOpeningSource()
+    void tryToOpenSource()
     {
-      openfluid::core::GeoVectorValue::tryOpeningSource();
+      openfluid::core::GeoVectorValue::tryToOpenSource();
     }
 };
 
+// =====================================================================
+// =====================================================================
+
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue");
 
-  BOOST_CHECK_EQUAL(Val->getType(),openfluid::core::UnstructuredValue::GeoVectorValue);
+  BOOST_CHECK_EQUAL(Val->getType(),
+                    openfluid::core::UnstructuredValue::GeoVectorValue);
 
-  BOOST_CHECK_EQUAL(Val->getAbsolutePath(),(boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR) / "GeoVectorValue").string());
+  BOOST_CHECK_EQUAL(
+      Val->getAbsolutePath(),
+      boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/GeoVectorValue").string());
 
   BOOST_CHECK(!Val->getData());
 
@@ -111,9 +101,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongDir)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"WrongDir");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "WrongDir");
 
-  BOOST_CHECK_THROW(Val->tryOpeningSource(),openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
@@ -125,9 +116,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongDir)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectDir)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue");
 
-  Val->tryOpeningSource();
+  Val->tryToOpenSource();
 
   BOOST_CHECK(Val->getData());
 
@@ -139,9 +131,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectDir)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/wrongfile");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/wrongfile");
 
-  BOOST_CHECK_THROW(Val->tryOpeningSource(),openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
@@ -153,9 +146,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile_NoExtension)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/SU");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU");
 
-  BOOST_CHECK_THROW(Val->tryOpeningSource(),openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
@@ -167,9 +161,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFile_NoExtension)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFileExtension)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/SU.aaa");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU.aaa");
 
-  BOOST_CHECK_THROW(Val->tryOpeningSource(),openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->tryToOpenSource(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
@@ -181,9 +176,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_WrongFileExtension)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shp)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/SU.shp");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU.shp");
 
-  Val->tryOpeningSource();
+  Val->tryToOpenSource();
 
   BOOST_CHECK(Val->getData());
 
@@ -195,9 +191,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shp)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Dbf)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/SU.dbf");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU.dbf");
 
-  Val->tryOpeningSource();
+  Val->tryToOpenSource();
 
   BOOST_CHECK(Val->getData());
 
@@ -209,9 +206,10 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Dbf)
 
 BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shx)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue/SU.shx");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU.shx");
 
-  Val->tryOpeningSource();
+  Val->tryToOpenSource();
 
   BOOST_CHECK(Val->getData());
 
@@ -223,7 +221,8 @@ BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_Shx)
 
 BOOST_AUTO_TEST_CASE(check_get_CorrectDir)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"GeoVectorValue");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue");
 
   BOOST_CHECK(Val->get());
 
@@ -235,11 +234,91 @@ BOOST_AUTO_TEST_CASE(check_get_CorrectDir)
 
 BOOST_AUTO_TEST_CASE(check_get_WrongDir)
 {
-  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,"WrongDir");
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "WrongDir");
 
-  BOOST_CHECK_THROW(Val->get(),openfluid::base::OFException);
+  BOOST_CHECK_THROW(Val->get(), openfluid::base::FrameworkException);
 
   BOOST_CHECK(!Val->getData());
 
   delete Val;
 }
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_Properties)
+{
+  GeoVectorValueSub* Val = new GeoVectorValueSub(
+      CONFIGTESTS_INPUT_DATASETS_DIR, "GeoVectorValue/SU.shp");
+
+  BOOST_CHECK(!Val->isLineType());
+  BOOST_CHECK(Val->isPolygonType());
+
+  BOOST_CHECK(Val->containsField("OFLD_ID"));
+  BOOST_CHECK(!Val->containsField("wrongField"));
+
+  BOOST_CHECK_EQUAL(Val->getFieldIndex("OFLD_ID"), 9);
+
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GeoJSON)
+{
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU.geojson");
+  Val->tryToOpenSource();
+
+  BOOST_CHECK(Val->getData());
+  BOOST_CHECK_EQUAL(Val->isPolygonType(),true);
+  BOOST_CHECK_EQUAL(Val->containsField("OFLD_ID"),true);
+  BOOST_CHECK_EQUAL(Val->get()->GetDriver()->GetName(),"GeoJSON");
+
+  GeoVectorValueSub* Val2 = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                  "GeoVectorValue/RS.geojson");
+  Val2->tryToOpenSource();
+
+  BOOST_CHECK(Val2->getData());
+  BOOST_CHECK_EQUAL(Val2->isLineType(),true);
+  BOOST_CHECK_EQUAL(Val2->containsField("OFLD_ID"),true);
+  BOOST_CHECK_EQUAL(Val2->get()->GetDriver()->GetName(),"GeoJSON");
+
+  delete Val2;
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_tryOpeningSource_CorrectFile_GML)
+{
+  GeoVectorValueSub* Val = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                 "GeoVectorValue/SU.gml");
+  Val->tryToOpenSource();
+
+  BOOST_CHECK(Val->getData());
+  BOOST_CHECK_EQUAL(Val->isPolygonType(),true);
+  BOOST_CHECK_EQUAL(Val->containsField("OFLD_ID"),true);
+  BOOST_CHECK_EQUAL(Val->get()->GetDriver()->GetName(),"GML");
+
+  GeoVectorValueSub* Val2 = new GeoVectorValueSub(CONFIGTESTS_INPUT_DATASETS_DIR,
+                                                  "GeoVectorValue/RS.gml");
+  Val2->tryToOpenSource();
+
+  BOOST_CHECK(Val2->getData());
+  BOOST_CHECK_EQUAL(Val2->isLineType(),true);
+  BOOST_CHECK_EQUAL(Val2->containsField("OFLD_ID"),true);
+  BOOST_CHECK_EQUAL(Val2->get()->GetDriver()->GetName(),"GML");
+
+  delete Val2;
+  delete Val;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+

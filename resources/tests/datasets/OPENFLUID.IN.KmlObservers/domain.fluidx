@@ -1,0 +1,131 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <domain>
+  <definition>
+   <unit class="RS" ID="10" pcsorder="1">
+    <to class="RS" ID="11" />
+   </unit>
+   <unit class="RS" ID="9" pcsorder="1">
+    <to class="RS" ID="11" />
+   </unit>
+   <unit class="RS" ID="7" pcsorder="1">
+    <to class="RS" ID="4" />
+   </unit>
+   <unit class="RS" ID="5" pcsorder="1">
+    <to class="RS" ID="4" />
+   </unit>
+   <unit class="RS" ID="3" pcsorder="1">
+    <to class="RS" ID="8" />
+   </unit>
+   <unit class="RS" ID="11" pcsorder="2">
+    <to class="RS" ID="12" />
+   </unit>
+   <unit class="RS" ID="4" pcsorder="2">
+    <to class="RS" ID="8" />
+   </unit>
+   <unit class="RS" ID="12" pcsorder="3">
+    <to class="RS" ID="6" />
+   </unit>
+   <unit class="RS" ID="8" pcsorder="3">
+    <to class="RS" ID="2" />
+   </unit>
+   <unit class="RS" ID="6" pcsorder="4">
+    <to class="RS" ID="13" />
+   </unit>
+   <unit class="RS" ID="2" pcsorder="4">
+    <to class="RS" ID="14" />
+   </unit>
+   <unit class="RS" ID="14" pcsorder="5">
+    <to class="RS" ID="1" />
+   </unit>
+   <unit class="RS" ID="13" pcsorder="5">
+    <to class="RS" ID="1" />
+   </unit>
+   <unit class="RS" ID="1" pcsorder="6">
+   </unit>
+   <unit class="SU" ID="14" pcsorder="1">
+    <to class="RS" ID="7" />
+   </unit>
+   <unit class="SU" ID="12" pcsorder="1">
+    <to class="RS" ID="8" />
+   </unit>
+   <unit class="SU" ID="11" pcsorder="1">
+    <to class="SU" ID="13" />
+   </unit>
+   <unit class="SU" ID="10" pcsorder="1">
+    <to class="SU" ID="2" />
+   </unit>
+   <unit class="SU" ID="9" pcsorder="1">
+    <to class="SU" ID="7" />
+   </unit>
+   <unit class="SU" ID="8" pcsorder="1">
+    <to class="RS" ID="2" />
+   </unit>
+   <unit class="SU" ID="6" pcsorder="1">
+    <to class="SU" ID="2" />
+   </unit>
+   <unit class="SU" ID="5" pcsorder="1">
+    <to class="SU" ID="4" />
+   </unit>
+   <unit class="SU" ID="1" pcsorder="1">
+    <to class="RS" ID="6" />
+   </unit>
+   <unit class="SU" ID="13" pcsorder="2">
+    <to class="SU" ID="15" />
+   </unit>
+   <unit class="SU" ID="7" pcsorder="2">
+    <to class="RS" ID="9" />
+   </unit>
+   <unit class="SU" ID="4" pcsorder="2">
+    <to class="SU" ID="3" />
+   </unit>
+   <unit class="SU" ID="2" pcsorder="2">
+    <to class="RS" ID="14" />
+   </unit>
+   <unit class="SU" ID="15" pcsorder="3">
+    <to class="RS" ID="7" />
+   </unit>
+   <unit class="SU" ID="3" pcsorder="3">
+    <to class="RS" ID="14" />
+   </unit>
+  </definition>
+  <attributes unitclass="RS" colorder="LENGTH;USR_HEIG;USR_SLOP;USR_WID">
+10	84.914517	1.12	0.152846	1.75
+9	128.942382	0.86	0.005001	1.08
+7	54.399554	1.5	0.067151	3
+5	68.340273	0.71	0.080567	1.23
+3	45.729328	0.43	0.022546	1.14
+11	32.449585	1.23	0.034349	1.91
+4	15.237339	1.14	0.0611	2.2
+12	75.33853	1.05	0.285481	1.45
+8	29.676103	1.19	0.013393	1.92
+6	51.575496	1.01	0.023907	1.58
+2	79.574197	1.1	0.043268	2.09
+14	135.497822	0.6	0.143842	1.75
+13	117.311143	1	0.091429	0.6
+1	17.980104	0.7	0.16864	1.6
+  </attributes>
+  <attributes unitclass="SU" colorder="AREA;FLOW_DST;USR_SLOP">
+14	2235.471466	21.7	0.02281
+12	2558.575302	31.1	0.0651
+11	10598.565178	43.4	0.05499
+10	2559.261559	44.1	0.20639
+9	8867.89624	80.6	0.11799
+8	8656.038666	41	0.04661
+6	7144.493736	85.4	0.11577
+5	5167.890732	52.3	0.02631
+1	5427.693909	41.6	0.02172
+13	3335.563385	51.7	0.01797
+7	7291.455818	38.6	0.16371
+4	3556.816467	51.4	0.0192
+2	16529.924492	49.2	0.0001
+15	5231.501724	40.5	0.06828
+3	3085.65168	26.7	0.01789
+  </attributes>
+  <calendar>
+  </calendar>
+ </domain>
+
+
+</openfluid>
+

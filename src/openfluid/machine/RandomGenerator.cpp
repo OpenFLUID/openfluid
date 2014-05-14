@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -62,7 +47,7 @@ namespace openfluid { namespace machine {
 
 
 RandomGenerator::RandomGenerator() :
-  Generator(), m_Min(0.0), m_Max(0.0)
+  Generator(), m_Min(0.0), m_Max(0.0), m_DeltaT(0)
 {
   m_RandomEngine.seed(std::time(0));
 }
@@ -83,16 +68,17 @@ RandomGenerator::~RandomGenerator()
 // =====================================================================
 
 
-bool RandomGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
+void RandomGenerator::initParams(const openfluid::ware::WareParams_t& Params)
 {
-  if (!OPENFLUID_GetFunctionParameter(Params,"min",m_Min))
-    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing min value for generator");
+  if (!OPENFLUID_GetSimulatorParameter(Params,"min",m_Min))
+    throw openfluid::base::FrameworkException("RandomGenerator::initParams","missing min value for generator");
 
-  if (!OPENFLUID_GetFunctionParameter(Params,"max",m_Max))
-    throw openfluid::base::OFException("OpenFLUID framework","RandomGenerator::initParams","missing max value for generator");
+  if (!OPENFLUID_GetSimulatorParameter(Params,"max",m_Max))
+    throw openfluid::base::FrameworkException("RandomGenerator::initParams","missing max value for generator");
 
-
-  return true;
+  std::string DeltaTStr;
+  if (OPENFLUID_GetSimulatorParameter(Params,"deltat",DeltaTStr) && !openfluid::tools::ConvertString(DeltaTStr,&m_DeltaT))
+    throw openfluid::base::FrameworkException("RandomGenerator::initParams","wrong value for deltat");
 };
 
 
@@ -100,12 +86,10 @@ bool RandomGenerator::initParams(openfluid::core::FuncParamsMap_t Params)
 // =====================================================================
 
 
-bool RandomGenerator::checkConsistency()
+void RandomGenerator::checkConsistency()
 {
   if ( m_Min > m_Max)
-    throw openfluid::base::OFException("OpenFLUID framework","FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
-
-  return true;
+    throw openfluid::base::FrameworkException("FixedGenerator::checkConsistency","max value must be greater or equal to min value for generator");
 }
 
 
@@ -113,31 +97,42 @@ bool RandomGenerator::checkConsistency()
 // =====================================================================
 
 
-bool RandomGenerator::initializeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
+openfluid::base::SchedulingRequest RandomGenerator::initializeRun()
 {
+  openfluid::core::Unit* LU;
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
+    if (isVectorVariable())
+    {
+      openfluid::core::VectorValue VV(m_VarSize,openfluid::core::DoubleValue(0.0));
+      OPENFLUID_InitializeVariable(LU,m_VarName,VV);
+    }
+    else
+      OPENFLUID_InitializeVariable(LU,m_VarName,openfluid::core::DoubleValue(0.0));
+  }
 
-  return true;
+  if (m_DeltaT > 0) return Duration(m_DeltaT);
+  else return DefaultDeltaT();
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStatus*/)
+openfluid::base::SchedulingRequest RandomGenerator::runStep()
 {
 
   openfluid::core::Unit* LU;
-  openfluid::core::DoubleValue Value;
 
   boost::uniform_real<> Distribution(m_Min, m_Max);
   boost::variate_generator<boost::mt19937&, boost::uniform_real<> > Random (m_RandomEngine, Distribution);
 
 
-  DECLARE_UNITS_ORDERED_LOOP(1);
 
-  BEGIN_UNITS_ORDERED_LOOP(1,m_UnitClass,LU)
-
-    Value = Random();
+  OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
+  {
+    openfluid::core::DoubleValue Value(Random());
 
     if (isVectorVariable())
     {
@@ -147,19 +142,10 @@ bool RandomGenerator::runStep(const openfluid::base::SimulationStatus* /*SimStat
     else
       OPENFLUID_AppendVariable(LU,m_VarName,Value);
 
-  END_LOOP
+  }
 
-  return true;
-}
-
-// =====================================================================
-// =====================================================================
-
-
-bool RandomGenerator::finalizeRun(const openfluid::base::SimulationInfo* /*SimInfo*/)
-{
-
-  return true;
+  if (m_DeltaT > 0) return Duration(m_DeltaT);
+  else return DefaultDeltaT();
 }
 
 

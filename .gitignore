@@ -2,6 +2,7 @@
 .project
 .pydevproject
 .settings
+.DS_Store
 _*
 CMake.in.local.config
 CMake.in.local.cmake

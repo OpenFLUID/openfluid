@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -59,7 +44,10 @@
 
 
 #include <openfluid/dllexport.hpp>
-#include <glibmm/ustring.h>
+#include <string>
+#include <QString>
+#include <QVariant>
+#include <QSettings>
 
 namespace openfluid { namespace base {
 
@@ -73,32 +61,37 @@ class DLLEXPORT ProjectManager
 
     static ProjectManager* mp_Singleton;
 
-    Glib::ustring m_Path;
+    QSettings* mp_PrjFile;
 
-    Glib::ustring m_Name;
-    Glib::ustring m_Description;
-    Glib::ustring m_Authors;
-    Glib::ustring m_CreationDate;
-    Glib::ustring m_LastModDate;
+    std::string m_Path;
+
+    std::string m_Name;
+    std::string m_Description;
+    std::string m_Authors;
+    std::string m_CreationDate;
+    std::string m_LastModDate;
     bool m_IsIncOutputDir;
 
-    Glib::ustring m_OutputDir;
-    Glib::ustring m_InputDir;
+    std::string m_OutputDir;
+    std::string m_InputDir;
 
     bool m_IsOpened;
 
-    Glib::ustring m_KeyFileGroupName;
+    static QString m_GroupName;
 
 
     ProjectManager();
 
-    Glib::ustring getNow();
+    static std::string getNow();
 
-    static std::string getFilePathFromProjectPath(Glib::ustring ProjectPath);
+    static std::string getFilePathFromProjectPath(std::string ProjectPath);
 
-    static std::string getInputDirFromProjectPath(Glib::ustring ProjectPath);
+    static std::string getInputDirFromProjectPath(std::string ProjectPath);
 
-    static std::string getOuputDirFromProjectPath(Glib::ustring ProjectPath);
+    static std::string getOuputDirFromProjectPath(std::string ProjectPath);
+
+    static bool checkProject(const std::string& ProjectPath);
+
 
   public:
 
@@ -106,42 +99,42 @@ class DLLEXPORT ProjectManager
 
     ~ProjectManager();
 
-    Glib::ustring getPath() const { return m_Path; };
+    std::string getPath() const { return m_Path; };
 
-    Glib::ustring getName() const { return m_Name; };
+    std::string getName() const { return m_Name; };
 
-    void setName(const Glib::ustring& Name) { m_Name = Name; };
+    void setName(const std::string& Name) { m_Name = Name; };
 
-    Glib::ustring getDescription() const { return m_Description; };
+    std::string getDescription() const { return m_Description; };
 
-    void setDescription(const Glib::ustring& Description) { m_Description = Description; };
+    void setDescription(const std::string& Description) { m_Description = Description; };
 
-    Glib::ustring getAuthors() const { return m_Authors; };
+    std::string getAuthors() const { return m_Authors; };
 
-    void setAuthors(const Glib::ustring& Authors) { m_Authors = Authors; };
+    void setAuthors(const std::string& Authors) { m_Authors = Authors; };
 
-    Glib::ustring getCreationDate() const { return m_CreationDate; };
+    std::string getCreationDate() const { return m_CreationDate; };
 
-    void setCreationDate(const Glib::ustring& CreationDate) { m_CreationDate = CreationDate; };
+    void setCreationDate(const std::string& CreationDate) { m_CreationDate = CreationDate; };
 
     void setCreationDateAsNow() { m_CreationDate = getNow(); };
 
-    Glib::ustring getLastModDate() const { return m_LastModDate; };
+    std::string getLastModDate() const { return m_LastModDate; };
 
-    void setLastModDate(const Glib::ustring& LastModDate) { m_LastModDate = LastModDate; };
+    void setLastModDate(const std::string& LastModDate) { m_LastModDate = LastModDate; };
 
-    Glib::ustring getOutputDir() { return m_OutputDir; };
+    std::string getOutputDir() { return m_OutputDir; };
 
-    Glib::ustring getInputDir() const { return m_InputDir; };
+    std::string getInputDir() const { return m_InputDir; };
 
     bool isIncrementalOutputDir() const { return m_IsIncOutputDir; };
 
     void setIncrementalOutputDir(const bool Inc) { m_IsIncOutputDir = Inc; };
 
-    bool open(const Glib::ustring& Path);
+    bool open(const std::string& Path);
 
-    bool create(const Glib::ustring& Path, const Glib::ustring& Name,
-                const Glib::ustring& Description, const Glib::ustring& Authors,
+    bool create(const std::string& Path, const std::string& Name,
+                const std::string& Description, const std::string& Authors,
                 const bool Inc);
 
     bool isOpened() const { return m_IsOpened; };
@@ -150,9 +143,17 @@ class DLLEXPORT ProjectManager
 
     void close();
 
-    static bool isProject(const Glib::ustring& Path);
+    static bool isProject(const std::string& Path);
+
+    static bool getProjectInfos(const std::string& Path,
+                                std::string& Name, std::string& Description, std::string& Authors,
+                                std::string& CreationDate, std::string& LastModDate);
 
     void updateOutputDir();
+
+    QVariant getConfigValue(const QString& Group, const QString& Key) const;
+
+    void setConfigValue(const QString& Group, const QString& Key, const QVariant& Value);
 
 };
 

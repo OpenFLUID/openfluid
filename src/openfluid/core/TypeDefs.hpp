@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -59,7 +44,6 @@
 #include <list>
 #include <map>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/deprecation.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
 #include <openfluid/core/StringValue.hpp>
@@ -85,19 +69,14 @@ typedef int PcsOrd_t;
 typedef std::string UnitClass_t;
 
 /**
-  Type definition for name of input data
+  Type definition for name of an attribute
 */
-typedef std::string InputDataName_t;
+typedef std::string AttributeName_t;
 
 /**
   Type definition for name of a variable
 */
 typedef std::string VariableName_t;
-
-/**
-  Type definition for a time step value
-*/
-typedef unsigned int TimeStep_t;
 
 
 typedef std::pair<UnitClass_t,UnitID_t> UnitClassID_t;
@@ -106,97 +85,68 @@ typedef std::pair<UnitClassID_t,UnitClassID_t> UnitsLink_t;
 
 
 /**
- Type definition for scalar values
- @deprecated
- */
-typedef DoubleValue ScalarValue OPENFLUID_DEPRECATED;
-
-/**
- Type definition for a time serie of scalar values
- @deprecated
- */
-typedef std::vector<double> SerieOfScalarValue OPENFLUID_DEPRECATED;
-
-/**
- Type definition for a time serie of double values
+ Type definition for a serie of DoubleValue
  */
 typedef std::vector<DoubleValue> SerieOfDoubleValue;
 
 
 /**
- Type definition for a time serie of vectorvalues
+ Type definition for a serie of VectorValue
  */
 typedef std::vector<VectorValue> SerieOfVectorValue;
 
-// =====================================================================
-// =====================================================================
-
-
-typedef std::string FuncParamKey_t;
-typedef openfluid::core::StringValue FuncParamValue_t;
-
-/**
-  Hash table for parameters (distributed properties, distributed initial conditions, ...)
-*/
-typedef std::map<FuncParamKey_t,FuncParamValue_t> FuncParamsMap_t;
-
 
 // =====================================================================
 // =====================================================================
+
 /**
-  Map associating a float value to a unit, indexed by its ID
+  Generic map container associating a unit ID to data
 */
-typedef std::map<UnitID_t,float> IDFloatMap;
+template<class T>
+struct IDMap
+{
+  typedef std::map<UnitID_t,T> Type;
+};
+
 
 /**
-  Map associating a double precision value to a unit, indexed by its ID
+  Map associating a float value to a unit ID
 */
-typedef std::map<UnitID_t,double> IDDoubleMap;
+typedef IDMap<float>::Type IDFloatMap;
 
 /**
-  Map associating an openfluid::core::ScalarValue value to a unit, indexed by its ID
-  @deprecated
+  Map associating a double precision value to a unit ID
 */
-typedef std::map<UnitID_t,double> IDScalarValueMap OPENFLUID_DEPRECATED;
+typedef IDMap<double>::Type IDDoubleMap;
 
 /**
-  Map associating a DoubleValue value to a unit, indexed by its ID
+  Map associating a DoubleValue value to a unit ID
 */
-typedef std::map<UnitID_t,DoubleValue> IDDoubleValueMap;
+typedef IDMap<DoubleValue>::Type IDDoubleValueMap;
 
 /**
-  Map associating an integer value to a unit, indexed by its ID
+  Map associating an integer value to a unit ID
 */
-typedef std::map<UnitID_t,int> IDIntMap;
+typedef IDMap<int>::Type IDIntMap;
 
 /**
-  Map associating a boolean value to a unit, indexed by its ID
+  Map associating a boolean value to a unit ID
 */
-typedef std::map<UnitID_t,bool> IDBoolMap;
+typedef IDMap<bool>::Type IDBoolMap;
 
 /**
-  Map associating an openfluid::core::VectorValue value to a unit, indexed by its ID
+  Map associating an openfluid::core::VectorValue value to a unit ID
 */
-typedef std::map<UnitID_t,VectorValue> IDVectorValueMap;
+typedef IDMap<VectorValue>::Type IDVectorValueMap;
 
 /**
-  Map associating a pointer to an openfluid::core::VectorValue value to a unit, indexed by its ID
+  Map associating a pointer to an openfluid::core::VectorValue value to a unit ID
 */
-typedef std::map<UnitID_t,VectorValue*> IDVectorValuePtrMap;
+typedef IDMap<VectorValue*>::Type IDVectorValuePtrMap;
 
-/**
-  @deprecated
-*/
-typedef std::map<UnitID_t,std::vector<double> > IDSerieOfScalarValueMap OPENFLUID_DEPRECATED;
+typedef IDMap<SerieOfDoubleValue>::Type IDSerieOfDoubleValueMap;
 
-typedef std::map<UnitID_t,SerieOfDoubleValue> IDSerieOfDoubleValueMap;
-
-/**
-  @deprecated
- */
-typedef std::map<UnitID_t,std::vector<double>* > IDSerieOfScalarValuePtrMap OPENFLUID_DEPRECATED;
-
-typedef std::map<UnitID_t,SerieOfDoubleValue*> IDSerieOfDoubleValuePtrMap;
+typedef IDMap<SerieOfDoubleValue*>::Type IDSerieOfDoubleValuePtrMap;
 
 
 

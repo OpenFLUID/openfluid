@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+
+      <simulator ID="tests.deltaTtime.prod" />
+   
+      <simulator ID="tests.variabletime.prod">
+        <param name="usedefaultdeltat" value="0" />
+      </simulator>       
+          
+    
+  </model>
+</openfluid>

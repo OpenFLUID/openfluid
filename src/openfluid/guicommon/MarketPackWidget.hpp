@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 /**
   \file MarketPackWidget.hpp
@@ -57,14 +42,10 @@
 #define __MARKETPACKWIDGET_HPP__
 
 
-#include <gtkmm/eventbox.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
-#include <gtkmm/box.h>
-#include <gtkmm/combobox.h>
-#include <gtkmm/button.h>
-#include <gtkmm/togglebutton.h>
-#include <gtkmm/liststore.h>
+#include <QLabel>
+#include <QGroupBox>
+#include <QBoxLayout>
+#include <QPushButton>
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/market/MarketInfos.hpp>
@@ -75,86 +56,68 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT MarketPackWidget : public Gtk::EventBox
+class DLLEXPORT MarketPackWidget : public QGroupBox
 {
-
-  public:
-    typedef sigc::signal<void> signal_install_modified_t;
+  Q_OBJECT
 
   private:
+    QLabel *mp_EmptyCartImage;
+    QLabel *mp_FullCartImage;
 
+    QLabel m_VersionLabel;
+
+    void setWidgetColor(QWidget *Widget);
+
+    //bool onButtonRelease(GdkEventButton* Event);
+
+  protected:
+    openfluid::market::PackageInfo::PackageType m_PackageType;
     openfluid::market::MetaPackageInfo m_MetaPackInfo;
 
-    std::string m_EditedBuildOptions;
+    QLabel m_IDLabel;
+    QLabel m_LicenseLabel;
 
-    Gtk::Image* m_EmptyCartImage;
-    Gtk::Image* m_FullCartImage;
+    QHBoxLayout m_MainHBox;
 
-    Gtk::Label m_IDLabel;
-    Gtk::HBox m_FormatHBox;
-    Gtk::Label m_FormatLabel;
-    Gtk::ComboBox m_FormatCombo;
-    Gtk::Button m_ConfigButton;
-    Gtk::VBox m_DetailsLeftVBox;
-    Gtk::HBox m_MainHBox;
-    Gtk::ToggleButton m_InstallToggle;
+    QPushButton m_InstallToggle;
 
-    Gtk::VBox m_DetailsRightVBox;
-    Gtk::Label m_LicenseLabel;
-    Gtk::Label m_VersionLabel;
+    QVBoxLayout m_DetailsLeftVBox;
+    QVBoxLayout m_DetailsRightVBox;
 
+    static QString replaceByUnknownIfEmpty(const QString& Str);
 
-    Glib::RefPtr<Gtk::ListStore> m_RefFormatComboBoxModel;
+    static QString replaceByNoneIfEmpty(const QString& Str);
 
-    class FormatComboColumns : public Gtk::TreeModel::ColumnRecord
-    {
-      public:
-
-        Gtk::TreeModelColumn<Glib::ustring> m_FormatName;
-        Gtk::TreeModelColumn<openfluid::market::MetaPackageInfo::SelectionType> m_SelType;
-
-        FormatComboColumns() { add(m_FormatName); add(m_SelType); }
-    };
-
-    FormatComboColumns m_FormatColumns;
+  protected slots:
 
     void onInstallModified();
 
-    void onConfigClicked();
+  signals:
 
-    bool onButtonRelease(GdkEventButton* Event);
-
-    static std::string replaceByUnknownIfEmpty(const std::string& Str);
-
-    static std::string replaceByNoneIfEmpty(const std::string& Str);
-
-
-  protected:
-    signal_install_modified_t m_signal_install_modified;
-
+    void installModified(openfluid::ware::WareID_t);
 
   public:
-    MarketPackWidget(const openfluid::market::MetaPackageInfo& MetaPackInfo);
+    MarketPackWidget(const openfluid::market::PackageInfo::PackageType& Type,const openfluid::market::MetaPackageInfo& MetaPackInfo);
 
     ~MarketPackWidget();
 
-    std::string getID() const { return m_MetaPackInfo.ID; };
+    QString getID() const { return QString::fromStdString(m_MetaPackInfo.ID); };
 
-    bool isInstall() const { return m_InstallToggle.get_active(); };
+    bool isInstall() const { return m_InstallToggle.isChecked(); };
 
-    void setInstall(bool Install) { m_InstallToggle.set_active(Install); };
+    void setInstall(bool Install) { m_InstallToggle.setChecked(Install); };
 
-    openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
+    /**
+     @return selected format in combobox
+    */
+    virtual openfluid::market::MetaPackageInfo::SelectionType getPackageFormat() const;
 
-    signal_install_modified_t signal_install_modified();
-
-    std::string getEditedBuildOptions() const { return m_EditedBuildOptions; };
-
-    void updateDisplayedInfos();
-
+    /**
+     Creates tooltip for market pack widget
+    */
+    virtual void updateDisplayedInfos();
 
 };
-
 
 } } //namespaces
 

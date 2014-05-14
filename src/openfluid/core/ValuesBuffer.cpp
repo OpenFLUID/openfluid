@@ -1,49 +1,33 @@
 /*
- This file is part of OpenFLUID software
- Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
- In addition, as a special exception, INRA gives You the additional right
- to dynamically link the code of OpenFLUID with code not covered
- under the GNU General Public License ("Non-GPL Code") and to distribute
- linked combinations including the two, subject to the limitations in this
- paragraph. Non-GPL Code permitted under this exception must only link to
- the code of OpenFLUID dynamically through the OpenFLUID libraries
- interfaces, and only for building OpenFLUID plugins. The files of
- Non-GPL Code may be link to the OpenFLUID libraries without causing the
- resulting work to be covered by the GNU General Public License. You must
- obey the GNU General Public License in all respects for all of the
- OpenFLUID code and other code used in conjunction with OpenFLUID
- except the Non-GPL Code covered by this exception. If you modify
- this OpenFLUID, you may extend this exception to your version of the file,
- but you are not obligated to do so. If you do not wish to provide this
- exception without modification, you must delete this exception statement
- from your version and license this OpenFLUID solely under the GPL without
- exception.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
- */
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
+  
+*/
 
 /**
  \file ValuesBuffer.cpp
@@ -61,16 +45,14 @@
 namespace openfluid {
 namespace core {
 
+
 // =====================================================================
 // =====================================================================
 
 
-ValuesBuffer::ValuesBuffer():
-  m_NextStep(0)
+ValuesBuffer::ValuesBuffer()
 {
-
   m_Data.set_capacity(BufferSize);
-
 }
 
 // =====================================================================
@@ -82,46 +64,100 @@ ValuesBuffer::~ValuesBuffer()
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool ValuesBuffer::TranslateStepNbrToIndex(const unsigned int& StepNbr,
-    unsigned int& Index) const
+ValuesBuffer::DataContainer_t::iterator ValuesBuffer::findAtIndex(const TimeIndex_t& anIndex)
 {
-  if (m_NextStep < BufferSize)
-  {
-    if (StepNbr < m_NextStep)
-    {
-      Index = StepNbr;
-      return true;
-    }
-  }
-  else
-  {
-    int StepsDelta = m_NextStep - StepNbr - 1;
+  if (m_Data.empty()) return m_Data.end();
 
-    if (StepsDelta < (int) BufferSize && StepsDelta >= 0)
-    {
-      Index = BufferSize - StepsDelta - 1;
-      return true;
-    }
+  if (anIndex < m_Data.front().m_Index || anIndex > m_Data.back().m_Index)
+    return m_Data.end();
+
+  if (anIndex == m_Data.front().m_Index)
+    return m_Data.begin();
+
+  if (anIndex == m_Data.back().m_Index)
+  {
+    ValuesBuffer::DataContainer_t::iterator TmpIt = m_Data.end();
+    --TmpIt;
+    return TmpIt;
   }
 
-  return false;
+
+  DataContainer_t::iterator Itb = m_Data.begin();
+  DataContainer_t::iterator Ite = m_Data.end();
+  DataContainer_t::iterator It = Itb;
+
+  while (It!=Ite)
+  {
+    if ((*It).m_Index == anIndex)
+      return It;
+
+    if ((*It).m_Index > anIndex)
+      return m_Data.end();
+
+    ++It;
+  }
+
+  return m_Data.end();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+ValuesBuffer::DataContainer_t::const_iterator ValuesBuffer::findAtIndex(const TimeIndex_t& anIndex) const
+{
+  if (m_Data.empty()) return m_Data.end();
+
+  if (anIndex < m_Data.front().m_Index || anIndex > m_Data.back().m_Index)
+    return m_Data.end();
+
+  if (anIndex == m_Data.front().m_Index)
+    return m_Data.begin();
+
+  if (anIndex == m_Data.back().m_Index)
+  {
+    ValuesBuffer::DataContainer_t::const_iterator TmpIt = m_Data.end();
+    --TmpIt;
+    return TmpIt;
+  }
+
+  DataContainer_t::const_iterator Itb = m_Data.begin();
+  DataContainer_t::const_iterator Ite = m_Data.end();
+  DataContainer_t::const_iterator It = Itb;
+
+  while (It!=Ite)
+  {
+    if ((*It).m_Index == anIndex)
+      return It;
+
+    if ((*It).m_Index > anIndex)
+      return m_Data.end();
+
+    It++;
+  }
+
+  return m_Data.end();
+
 }
 
 // =====================================================================
 // =====================================================================
 
 
-bool ValuesBuffer::getValue(const unsigned int StepNbr, Value* aValue) const
+bool ValuesBuffer::getValue(const TimeIndex_t& anIndex, Value* aValue) const
 {
-  unsigned int Index;
+  DataContainer_t::const_iterator It = findAtIndex(anIndex);
 
-  if (TranslateStepNbrToIndex(StepNbr, Index) && aValue->getType() == m_Data[Index]->getType())
+  if (It != m_Data.end() && aValue->getType() == (*It).m_Value.get()->getType())
   {
-    *aValue = *m_Data[Index];
+    *aValue = *((*It).m_Value);
 
     return true;
   }
@@ -134,13 +170,13 @@ bool ValuesBuffer::getValue(const unsigned int StepNbr, Value* aValue) const
 // =====================================================================
 
 
-Value* ValuesBuffer::getValue(const unsigned int StepNbr) const
+Value* ValuesBuffer::getValue(const TimeIndex_t& anIndex) const
 {
-  unsigned int Index;
+  DataContainer_t::const_iterator It = findAtIndex(anIndex);
 
-  if (TranslateStepNbrToIndex(StepNbr, Index))
+  if (It != m_Data.end())
   {
-    return m_Data[Index].get();
+    return (*It).m_Value.get();
   }
 
   return (Value*)0;
@@ -152,7 +188,7 @@ Value* ValuesBuffer::getValue(const unsigned int StepNbr) const
 
 Value* ValuesBuffer::getCurrentValue() const
 {
-  return m_Data.back().get();
+  return m_Data.back().m_Value.get();
 }
 
 
@@ -162,68 +198,181 @@ Value* ValuesBuffer::getCurrentValue() const
 
 bool ValuesBuffer::getCurrentValue(Value* aValue) const
 {
-  if(aValue->getType() == m_Data.back()->getType())
+  if(aValue->getType() == m_Data.back().m_Value->getType())
   {
-    *aValue = *m_Data.back();
+    *aValue = *m_Data.back().m_Value;
 
     return true;
   }
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool ValuesBuffer::modifyValue(const unsigned int StepNbr, const Value& aValue)
+bool ValuesBuffer::getLatestIndexedValue(IndexedValue& IndValue) const
 {
-  unsigned int Index;
-
-  if (TranslateStepNbrToIndex(StepNbr, Index))
+  if(!m_Data.empty())
   {
-    m_Data[Index].reset(aValue.clone());
+    IndValue.m_Index = m_Data.back().m_Index;
+    IndValue.m_Value.reset(m_Data.back().m_Value->clone());
+
     return true;
   }
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-bool ValuesBuffer::appendValue(const openfluid::core::Value& aValue)
+bool ValuesBuffer::getLatestIndexedValues(const TimeIndex_t& anIndex, IndexedValueList& IndValueList) const
 {
-  m_Data.push_back(boost::shared_ptr<Value>(aValue.clone()));
-  m_NextStep++;
+  IndValueList.clear();
+
+  if(!m_Data.empty())
+  {
+    DataContainer_t::const_reverse_iterator rIt = m_Data.rbegin();
+    DataContainer_t::const_reverse_iterator rIte = m_Data.rend();
+
+    while (rIt != rIte && (*rIt).getIndex() >= anIndex)
+    {
+      IndValueList.push_front(*rIt);
+      ++rIt;
+    }
+
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ValuesBuffer::getIndexedValues(const TimeIndex_t& aBeginIndex, const TimeIndex_t& anEndIndex,
+                                    IndexedValueList& IndValueList) const
+{
+  IndValueList.clear();
+
+  if(!m_Data.empty() && aBeginIndex <= anEndIndex)
+  {
+    DataContainer_t::const_reverse_iterator rIt = m_Data.rbegin();
+    DataContainer_t::const_reverse_iterator rIte = m_Data.rend();
+
+    while (rIt != rIte && (*rIt).getIndex() >= aBeginIndex)
+    {
+      if  ((*rIt).getIndex() <= anEndIndex) IndValueList.push_front(*rIt);
+      ++rIt;
+    }
+
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+TimeIndex_t ValuesBuffer::getCurrentIndex() const
+{
+  if (!m_Data.empty())
+  {
+    return m_Data.back().m_Index;
+  }
+  return -1;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ValuesBuffer::modifyValue(const TimeIndex_t& anIndex, const Value& aValue)
+{
+  DataContainer_t::iterator It = findAtIndex(anIndex);
+
+  if (It != m_Data.end())
+  {
+    (*It).m_Value.reset(aValue.clone());
+    return true;
+  }
+  return false;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool ValuesBuffer::modifyCurrentValue(const Value& aValue)
+{
+  if (m_Data.empty()) return false;
+
+  DataContainer_t::iterator It = m_Data.end();
+  It--;
+  (*It).m_Value.reset(aValue.clone());
 
   return true;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-unsigned int ValuesBuffer::getNextStep() const
+bool ValuesBuffer::appendValue(const TimeIndex_t& anIndex, const openfluid::core::Value& aValue)
 {
-  return m_NextStep;
+  if (!m_Data.empty() && anIndex <= m_Data.back().m_Index) return false;
+
+  m_Data.push_back(IndexedValue(anIndex,aValue));
+
+  return true;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void ValuesBuffer::displayStatus(std::ostream& OStream)
+void ValuesBuffer::displayStatus(std::ostream& OStream) const
 {
   OStream << "-- ValuesBuffer status --" << std::endl;
   OStream << "   BufferSize : " << BufferSize << std::endl;
   OStream << "   Size : " << m_Data.size() << std::endl;
-  //  OStream << "   Element size : " << sizeof(T) << std::endl;
-  OStream << "   Current storage step : " << m_NextStep - 1 << std::endl;
   OStream << "------------------------------" << std::endl;
 }
 
 // =====================================================================
 // =====================================================================
+
+
+void ValuesBuffer::displayContent(std::ostream& OStream) const
+{
+  OStream << "-- ValuesBuffer content --" << std::endl;
+
+  DataContainer_t::const_iterator Itb = m_Data.begin();
+  DataContainer_t::const_iterator Ite = m_Data.end();
+  DataContainer_t::const_iterator It = Itb;
+
+  while (It!=Ite)
+  {
+    OStream << "[" << (*It).m_Index << "|" << (*It).m_Value.get()->toString() << "]" << std::endl;
+    It++;
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 }
 }

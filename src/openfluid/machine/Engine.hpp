@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -59,29 +44,24 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+#include <openfluid/base/SimulationLogger.hpp>
 
 namespace openfluid {
 namespace base {
 class RuntimeEnvironment;
 class SimulationStatus;
-class SimulationInfo;
 }
 namespace core {
 class Value;
 class DateTime;
-}
-namespace io {
-class IOListener;
-class OutputsWriter;
-class MessagesWriter;
 }
 }
 
 
 namespace openfluid { namespace machine {
 
-class PluginManager;
 class ModelInstance;
+class MonitoringInstance;
 class MachineListener;
 class SimulationBlob;
 
@@ -95,24 +75,6 @@ class SimulationBlob;
 */
 class DLLEXPORT Engine
 {
-  public:
-
-    struct PretestInfos_t
-    {
-      bool Model;
-      std::string ModelMsg;
-
-      bool Inputdata;
-      std::string InputdataMsg;
-
-      bool ExtraFiles;
-      std::string ExtraFilesMsg;
-
-      PretestInfos_t() : Model(true), ModelMsg(""),
-          Inputdata(true), InputdataMsg(""),
-          ExtraFiles(true), ExtraFilesMsg("")
-        { };
-    };
 
   private:
 
@@ -122,17 +84,13 @@ class DLLEXPORT Engine
 
      openfluid::base::SimulationStatus* mp_SimStatus;
 
-
-
      MachineListener* mp_MachineListener;
-
-     openfluid::io::IOListener* mp_IOListener;
 
      ModelInstance& m_ModelInstance;
 
-     openfluid::io::OutputsWriter* mp_OutputsWriter;
+     MonitoringInstance& m_MonitoringInstance;
 
-     openfluid::io::MessagesWriter* mp_MessagesWriter;
+     openfluid::base::SimulationLogger* mp_SimLogger;
 
 
 
@@ -140,53 +98,45 @@ class DLLEXPORT Engine
 
      void checkModelConsistency();
 
-     void checkInputDataConsistency();
+     void checkAttributesConsistency();
 
      void checkExtraFilesConsistency();
 
-     void checkExistingVariable(openfluid::core::VariableName_t VarName,
-                                openfluid::core::Value::Type VarType,
-                                openfluid::core::UnitClass_t ClassName,
-                                std::string FunctionName);
+     void checkExistingVariable(const openfluid::core::VariableName_t& VarName,
+                                const openfluid::core::Value::Type& VarType,
+                                const openfluid::core::UnitClass_t& ClassName,
+                                const std::string& SimulatorID);
 
-     void createVariable(openfluid::core::VariableName_t VarName,
-                         openfluid::core::Value::Type VarType,
-                         openfluid::core::UnitClass_t ClassName,
+     void createVariable(const openfluid::core::VariableName_t& VarName,
+                         const openfluid::core::Value::Type& VarType,
+                         const openfluid::core::UnitClass_t& ClassName,
                          bool UpdateMode,
-                         std::string FunctionName);
+                         const std::string& SimulatorID);
 
-     void checkExistingInputData(openfluid::core::InputDataName_t DataName,
+     void checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
                                  openfluid::core::UnitClass_t ClassName,
-                                 std::string FunctionName);
+                                 const std::string& SimulatorID);
+
+     void createAttribute(openfluid::core::AttributeName_t AttrName,
+                          openfluid::core::UnitClass_t ClassName,
+                          const std::string& SimulatorID);
 
      void prepareOutputDir();
-
-     void initOutputs();
-
-     void prepareOutputs();
-
-     void saveOutputs(const openfluid::core::DateTime& CurrentDT);
-
-     void saveSimulationInfos();
-
-     void saveSimulationProfile();
 
 
   public:
     /**
       Constructor
     */
-    Engine(SimulationBlob& SimBlob, ModelInstance& MInstance,
-           openfluid::machine::MachineListener* MachineListener,
-           openfluid::io::IOListener* IOListener);
+    Engine(SimulationBlob& SimBlob,
+           ModelInstance& MInstance, MonitoringInstance& OLInstance,
+           openfluid::machine::MachineListener* MachineListener);
 
     /**
       Destructor
     */
     ~Engine();
 
-
-    void pretestConsistency(PretestInfos_t& PretestInfos);
 
     void initialize();
 
@@ -200,21 +150,15 @@ class DLLEXPORT Engine
 
     void finalize();
 
-    void saveReports();
-
-    void closeOutputs();
-
-    openfluid::base::SimulationInfo* getSimulationInfo() { return (openfluid::base::SimulationInfo*)mp_SimStatus; };
+    const openfluid::base::SimulationStatus* getSimulationStatus() { return mp_SimStatus; };
 
     SimulationBlob*  getSimulationBlob() { return &m_SimulationBlob; };
 
     MachineListener* getMachineListener() { return mp_MachineListener; };
 
-    openfluid::io::IOListener* getIOListener() { return mp_IOListener; };
-
     ModelInstance* getModelInstance() { return &m_ModelInstance; };
 
-
+    unsigned int getWarningsCount() const { return mp_SimLogger->getWarningsCount(); };
 };
 
 

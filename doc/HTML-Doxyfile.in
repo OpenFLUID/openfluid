@@ -1,0 +1,62 @@
+DOXYFILE_ENCODING      = UTF-8
+
+PROJECT_NAME           = @DOXYGEN_PROJECT_NAME@
+PROJECT_NUMBER         = @FULL_VERSION@
+
+OUTPUT_DIRECTORY       = @MAIN_DOC_OUTPUT_PATH@
+
+FULL_PATH_NAMES        = YES
+STRIP_FROM_PATH        = @DOC_SOURCES_DIR@
+STRIP_FROM_INC_PATH    = @DOC_SOURCES_DIR@
+
+
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_METHODS  = YES
+EXTRACT_ANON_NSPACES   = NO
+HIDE_UNDOC_MEMBERS     = NO
+HIDE_UNDOC_CLASSES     = NO
+
+
+INPUT                  = @DOC_SOURCES_DIR@ \
+                         @DOC_CONTENTS_DIR@
+INPUT_ENCODING         = UTF-8
+FILE_PATTERNS          = *.h \
+                         *.hh \
+                         *.hxx \
+                         *.hpp \
+                         *.h++ \
+                         *.dox
+RECURSIVE              = YES
+EXCLUDE                = .svn
+EXCLUDE_SYMLINKS       = NO
+IMAGE_PATH             = @DOC_CONTENTS_DIR@
+EXAMPLE_PATH             = @DOC_CONTENTS_DIR@
+
+GENERATE_MAN     	   = NO
+GENERATE_LATEX    	   = NO
+GENERATE_HTML     	   = YES
+GENERATE_HTMLHELP      = NO
+GENERATE_RTF           = NO
+GENERATE_XML           = NO
+SEARCHENGINE           = NO
+PDF_HYPERLINKS         = NO
+USE_PDFLATEX           = NO
+STRIP_CODE_COMMENTS    = NO
+
+HTML_FILE_EXTENSION    = .html
+HTML_HEADER            = @DOC_LAYOUT_DIR@/header.html
+HTML_FOOTER            = @DOC_LAYOUT_DIR@/footer.html
+HTML_EXTRA_STYLESHEET  = @DOC_LAYOUT_DIR@/stylesheet.css
+HTML_STYLESHEET        = @DOC_LAYOUT_DIR@/stylesheet.css
+HTML_OUTPUT            = html
+
+SEARCHENGINE		   = YES
+SERVER_BASED_SEARCH    = NO
+
+QUIET                  = YES
+WARNINGS               = YES
+WARN_IF_DOC_ERROR      = YES
+

@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <model>
+
+    <simulator ID="tests.exceptions">
+      <param name="part" value="initializerun" />
+    </simulator>
+    
+  </model>
+</openfluid>

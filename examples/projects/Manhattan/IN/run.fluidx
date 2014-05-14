@@ -1,0 +1,11 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <run>
+   <scheduling deltat="60" constraint="none" />
+    <period begin="2013-05-31 09:00:00" end="2013-05-31 17:00:00" />
+    <filesbuffer kbytes="2" />
+  </run>
+
+
+</openfluid>
+

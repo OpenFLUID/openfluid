@@ -1,0 +1,6 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <datastore>
+    <dataitem id="LandUnits" type="geovector" source="shapefiles/mesh_orb_250_topo_wgs84.shp" unitclass="LU" />
+  </datastore>
+</openfluid>

@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -67,7 +52,7 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::Unit TU("Test",25,3,openfluid::core::Unit::UNKNOWN);
+  openfluid::core::Unit TU("Test",25,3);
 
   BOOST_REQUIRE_EQUAL(TU.getClass(),"Test");
   BOOST_REQUIRE_EQUAL(TU.getID(),25);
@@ -77,13 +62,13 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE(TU.getParentUnits("TestParent") == NULL);
   BOOST_REQUIRE(TU.getChildrenUnits("TestChildren") == NULL);
   BOOST_REQUIRE_EQUAL(TU.getEvents()->getCount(),0);
-  BOOST_REQUIRE_EQUAL(TU.getInputData()->isDataExist("testidata"),false);
+  BOOST_REQUIRE_EQUAL(TU.getAttributes()->isAttributeExist("testattr"),false);
   BOOST_REQUIRE_EQUAL(TU.getVariables()->isVariableExist("testvar"),false);
 
 
   openfluid::core::Unit* pTU = NULL;
 
-  pTU = new openfluid::core::Unit("pTest",25,3,openfluid::core::Unit::UNKNOWN);
+  pTU = new openfluid::core::Unit("pTest",25,3);
 
   BOOST_REQUIRE_EQUAL(pTU->getClass(),"pTest");
   BOOST_REQUIRE_EQUAL(pTU->getID(),25);
@@ -93,7 +78,7 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE(pTU->getParentUnits("pTestParent") == NULL);
   BOOST_REQUIRE(pTU->getChildrenUnits("pTestChildren") == NULL);
   BOOST_REQUIRE_EQUAL(pTU->getEvents()->getCount(),0);
-  BOOST_REQUIRE_EQUAL(pTU->getInputData()->isDataExist("testidata"),false);
+  BOOST_REQUIRE_EQUAL(pTU->getAttributes()->isAttributeExist("testattr"),false);
   BOOST_REQUIRE_EQUAL(pTU->getVariables()->isVariableExist("testvar"),false);
 
   delete pTU;
@@ -113,26 +98,26 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   unsigned int UnitsCount;
 
 
-  openfluid::core::Unit TU("Test",35,17,openfluid::core::Unit::UNKNOWN);
+  openfluid::core::Unit TU("Test",35,17);
 
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",23,1,openfluid::core::Unit::UNKNOWN));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",2,5,openfluid::core::Unit::UNKNOWN));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",21,5,openfluid::core::Unit::UNKNOWN));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest",23,1));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest",2,5));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest",21,5));
 
-  TU.addFromUnit(new openfluid::core::Unit("FromTest2",1,1,openfluid::core::Unit::UNKNOWN));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest2",2,1,openfluid::core::Unit::UNKNOWN));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest2",1,1));
+  TU.addFromUnit(new openfluid::core::Unit("FromTest2",2,1));
 
 
-  TU.addToUnit(new openfluid::core::Unit("ToTest",1,1,openfluid::core::Unit::UNKNOWN));
-  TU.addToUnit(new openfluid::core::Unit("ToTest",2,1,openfluid::core::Unit::UNKNOWN));
+  TU.addToUnit(new openfluid::core::Unit("ToTest",1,1));
+  TU.addToUnit(new openfluid::core::Unit("ToTest",2,1));
 
-  TU.addToUnit(new openfluid::core::Unit("ToTest2",1,1,openfluid::core::Unit::UNKNOWN));
-  TU.addToUnit(new openfluid::core::Unit("ToTest2",2,1,openfluid::core::Unit::UNKNOWN));
+  TU.addToUnit(new openfluid::core::Unit("ToTest2",1,1));
+  TU.addToUnit(new openfluid::core::Unit("ToTest2",2,1));
 
-  TU.addParentUnit(new openfluid::core::Unit("ParentTest",55,1,openfluid::core::Unit::UNKNOWN));
+  TU.addParentUnit(new openfluid::core::Unit("ParentTest",55,1));
 
-  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",1,1,openfluid::core::Unit::UNKNOWN));
-  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",2,1,openfluid::core::Unit::UNKNOWN));
+  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",1,1));
+  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",2,1));
 
   BOOST_REQUIRE(TU.getFromUnits("FromTest") != NULL);
   BOOST_REQUIRE(TU.getFromUnits("FromTest2") != NULL);

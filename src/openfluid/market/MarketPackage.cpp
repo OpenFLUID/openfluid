@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -55,10 +40,12 @@
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/convenience.hpp>
+#include <fstream>
 
 #include <openfluid/config.hpp>
 #include <openfluid/market/MarketPackage.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
+#include <openfluid/tools/FileDownloader.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 
 
 namespace openfluid { namespace market {
@@ -70,21 +57,28 @@ const std::string MarketPackage::LOG_FILENAME = "packages_install.log";
 std::string MarketPackage::m_TempDir = "";
 std::string MarketPackage::m_TempBuildsDir = "";
 std::string MarketPackage::m_TempDownloadsDir = "";
-std::string MarketPackage::m_MarketBagBinDir = "";
-std::string MarketPackage::m_MarketBagSrcDir = "";
+std::string MarketPackage::m_MarketBagSimulatorDir = "";
+std::string MarketPackage::m_MarketBagObserverDir = "";
+std::string MarketPackage::m_MarketBagBuilderextDir = "";
+std::string MarketPackage::m_MarketBagDatasetDir = "";
+std::string MarketPackage::m_MarketBagBinSubDir = "";
+std::string MarketPackage::m_MarketBagSrcSubDir = "";
 std::string MarketPackage::m_LogFile = "";
 bool MarketPackage::m_IsLogEnabled = false;
 
-std::string MarketPackage::m_CMakeCommand = "";
-std::string MarketPackage::m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+openfluid::tools::ExternalProgram MarketPackage::m_CMakeProgram =
+    openfluid::tools::ExternalProgram::getRegisteredProgram(openfluid::tools::ExternalProgram::CMakeProgram);
+std::string MarketPackage::m_SimulatorBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_ObserverBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
+std::string MarketPackage::m_BuilderextBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
 
 bool MarketPackage::m_Initialized = false;
 
 
-MarketPackage::MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL)
+MarketPackage::MarketPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL)
               : m_ID(ID), m_PackageURL(PackageURL), m_Downloaded(false)
 {
-  m_PackageFilename = boost::filesystem::path(PackageURL).leaf();
+  m_PackageFilename = boost::filesystem::path(PackageURL).filename().string();
 }
 
 
@@ -104,28 +98,8 @@ MarketPackage::~MarketPackage()
 
 void MarketPackage::initialize(bool EnableLog = false)
 {
-  std::string CMakeProgram = "";
-
-#if defined __unix__ || defined __APPLE__
-  CMakeProgram = "cmake";
-#endif
-
-#if WIN32
-  CMakeProgram = "cmake.exe";
-#endif
-
-  if (CMakeProgram.empty())
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Unsupported system platform");
-
-
-  std::vector<std::string> CMakePaths = openfluid::tools::GetFileLocationsUsingPATHEnvVar(CMakeProgram);
-
-  if (!CMakePaths.empty())
-  {
-    m_CMakeCommand = boost::filesystem::path(CMakePaths[0]).string();
-  }
-  else
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::initialize()","Required CMake program not found");
+  if (!m_CMakeProgram.isFound())
+    throw openfluid::base::FrameworkException("MarketPackage::initialize()","Required CMake program not found");
 
   // TODO
   //m_CommonBuildConfigOptions = openfluid::config::MARKET_COMMONBUILDOPTS;
@@ -142,13 +116,24 @@ void MarketPackage::initialize(bool EnableLog = false)
 // =====================================================================
 
 
-void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir)
+void MarketPackage::setWorksDirs(const std::string& TempDir, const std::string& MarketBagSimulatorDir,
+                                 const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
+                                 const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir,
+                                 const std::string& MarketBagSrcSubDir)
 {
+  // Temporary directories
   m_TempDir = boost::filesystem::path(TempDir).string();
   m_TempBuildsDir = boost::filesystem::path(TempDir+"/"+BUILDS_SUBDIR).string();
   m_TempDownloadsDir = boost::filesystem::path(TempDir+"/"+DLOADS_SUBDIR).string();
-  m_MarketBagBinDir = boost::filesystem::path(MarketBagBinDir).string();
-  m_MarketBagSrcDir = boost::filesystem::path(MarketBagSrcDir).string();
+
+  // Installation directories
+  m_MarketBagSimulatorDir = boost::filesystem::path(MarketBagSimulatorDir).string();
+  m_MarketBagObserverDir = boost::filesystem::path(MarketBagObserverDir).string();
+  m_MarketBagBuilderextDir = boost::filesystem::path(MarketBagBuilderextDir).string();
+  m_MarketBagDatasetDir = boost::filesystem::path(MarketBagDatasetDir).string();
+  m_MarketBagBinSubDir = boost::filesystem::path(MarketBagBinSubDir).string();
+  m_MarketBagSrcSubDir = boost::filesystem::path(MarketBagSrcSubDir).string();
+
   m_LogFile = boost::filesystem::path(TempDir+"/"+LOG_FILENAME).string();
 
   m_Initialized = false;
@@ -159,13 +144,56 @@ void MarketPackage::setWorksDirs(std::string TempDir, std::string MarketBagBinDi
 // =====================================================================
 
 
-std::string MarketPackage::composeFullBuildOptions(std::string BuildOptions)
+std::string MarketPackage::getCommonBuildOptions(const PackageInfo::PackageType& Type)
+{
+  if (Type == PackageInfo::SIM)
+  {
+    return m_SimulatorBuildConfigOptions;
+  }
+  else if (Type == PackageInfo::OBS)
+  {
+    return m_ObserverBuildConfigOptions;
+  }
+  else if (Type == PackageInfo::BUILD)
+  {
+    return m_BuilderextBuildConfigOptions;
+  }
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MarketPackage::setCommonBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions)
+{
+  if (Type == PackageInfo::SIM)
+  {
+    m_SimulatorBuildConfigOptions = BuildOptions;
+  }
+  else if (Type == PackageInfo::OBS)
+  {
+    m_ObserverBuildConfigOptions = BuildOptions;
+  }
+  else if (Type == PackageInfo::BUILD)
+  {
+    m_BuilderextBuildConfigOptions = BuildOptions;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::string MarketPackage::composeFullBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions)
 {
   std::string FullOptions = "";
 
   if (!BuildOptions.empty()) FullOptions = " " + BuildOptions;
 
-  if (!m_CommonBuildConfigOptions.empty()) FullOptions = " " + m_CommonBuildConfigOptions + FullOptions;
+  if (!getCommonBuildOptions(Type).empty()) FullOptions = " " + getCommonBuildOptions(Type) + FullOptions;
 
   return FullOptions;
 }
@@ -176,15 +204,22 @@ std::string MarketPackage::composeFullBuildOptions(std::string BuildOptions)
 
 
 void MarketPackage::appendToLogFile(const std::string& PackageName,
+                                    const PackageInfo::PackageType& Type,
                                     const std::string& Action,
                                     const std::string& Str)
 {
   if (m_IsLogEnabled)
   {
+    std::string StrType;
+    if (Type == PackageInfo::SIM) StrType = "SIM";
+    else if (Type == PackageInfo::OBS) StrType = "OBS";
+    else if (Type == PackageInfo::BUILD) StrType = "BEXT";
+    else StrType = "DATA";
+
     std::ofstream LogFileStream;
     LogFileStream.open(boost::filesystem::path(m_LogFile).string().c_str(),std::ios_base::app);
     LogFileStream << "\n================================================================================\n";
-    LogFileStream << "  " << PackageName << " : " << Action << "\n";
+    LogFileStream << "  [" << StrType << "] " << PackageName << " : " << Action << "\n";
     LogFileStream << "================================================================================\n";
     LogFileStream << Str << "\n";
     LogFileStream.close();
@@ -232,16 +267,16 @@ void MarketPackage::download()
 {
 
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","package "+m_PackageFilename+" not initialized");
+    throw openfluid::base::FrameworkException("MarketPackage::download()","package "+m_PackageFilename+" not initialized");
 
   m_PackageDest = boost::filesystem::path(m_TempDownloadsDir+"/"+m_PackageFilename).string();
 
-  appendToLogFile(m_PackageFilename,"downloading","");
+  appendToLogFile(m_PackageFilename,getPackageType(),"downloading","");
 
-  if (openfluid::tools::CURLDownloader::downloadToFile(m_PackageURL, m_PackageDest) != openfluid::tools::CURLDownloader::NO_ERROR)
+  if (!openfluid::tools::FileDownloader::downloadToFile(m_PackageURL, m_PackageDest))
   {
     appendToLogFile("Error");
-    throw openfluid::base::OFException("OpenFLUID framework","MarketPackage::download()","error while downloading package "+m_PackageFilename);
+    throw openfluid::base::FrameworkException("MarketPackage::download()","error while downloading package "+m_PackageFilename);
   }
 
   appendToLogFile("OK");

@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 #ifndef __VECTOR_HPP__
@@ -52,7 +37,7 @@
 
 #include <iostream>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/base/OFException.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 
 namespace openfluid { namespace core {
@@ -196,7 +181,7 @@ Vector<T>::Vector(const Vector &A)
 {
   init();
 
-  if (!allocate(A.m_Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::Vector(const Vector)","Cannot allocate memory");
+  if (!allocate(A.m_Size)) throw openfluid::base::FrameworkException("Vector::Vector(const Vector)","Cannot allocate memory");
 
   std::copy(A.m_Data, A.m_Data + A.m_Size, m_Data);
 
@@ -211,7 +196,7 @@ Vector<T>::Vector(unsigned long Size)
 {
   init();
 
-  if (!allocate(Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::Vector(Size)","Cannot allocate memory");
+  if (!allocate(Size)) throw openfluid::base::FrameworkException("Vector::Vector(Size)","Cannot allocate memory");
 }
 
 
@@ -224,7 +209,7 @@ Vector<T>::Vector(unsigned long Size, T InitValue)
   init();
 
 
-  if (!allocate(Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::Vector(Size,T)","Cannot allocate memory");
+  if (!allocate(Size)) throw openfluid::base::FrameworkException("Vector::Vector(Size,T)","Cannot allocate memory");
 
 
   if (m_Data != NULL)
@@ -245,7 +230,7 @@ Vector<T>::Vector(T* Data, unsigned long Size)
 {
   init();
 
-  if (!allocate(Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::Vector(T*,Size)","Cannot allocate memory");
+  if (!allocate(Size)) throw openfluid::base::FrameworkException("Vector::Vector(T*,Size)","Cannot allocate memory");
 
   std::copy(Data, Data + Size, m_Data);
 
@@ -292,7 +277,7 @@ void Vector<T>::setData(T* Data, unsigned long Size)
 {
   clear();
 
-  if (!allocate(Size)) throw openfluid::base::OFException("OpenFLUID framework","Vector::setData","Cannot allocate memory");
+  if (!allocate(Size)) throw openfluid::base::FrameworkException("Vector::setData","Cannot allocate memory");
 
   if (m_Data != NULL) std::copy(Data, Data + Size, m_Data);
 
@@ -305,7 +290,7 @@ void Vector<T>::setData(T* Data, unsigned long Size)
 template <class T>
 T Vector<T>::getElement(unsigned long Index) const
 {
-  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::getElement","element access range error");
+  if (Index >= m_Size) throw openfluid::base::FrameworkException("Vector::getElement","element access range error");
   return m_Data[Index];
 }
 
@@ -316,7 +301,7 @@ T Vector<T>::getElement(unsigned long Index) const
 template <class T>
 void Vector<T>::setElement(unsigned long Index, T Element)
 {
-  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::setElement","element access range error");
+  if (Index >= m_Size) throw openfluid::base::FrameworkException("Vector::setElement","element access range error");
   m_Data[Index] = Element;
 }
 
@@ -328,7 +313,7 @@ void Vector<T>::setElement(unsigned long Index, T Element)
 template <class T>
 T& Vector<T>::operator[](unsigned long Index)
 {
-  if (Index >= m_Size) throw openfluid::base::OFException("OpenFLUID framework","Vector::operator[]","element access range error");
+  if (Index >= m_Size) throw openfluid::base::FrameworkException("Vector::operator[]","element access range error");
   return m_Data[Index];
 }
 

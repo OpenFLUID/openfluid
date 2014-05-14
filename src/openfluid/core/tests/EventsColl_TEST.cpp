@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -130,33 +115,21 @@ BOOST_AUTO_TEST_CASE(check_operations)
   Ev = openfluid::core::Event(openfluid::core::DateTime(2003,2,5,6,0,0));
   Ev.addInfo("test11","11");
   Ev.addInfo("test22","22");
-  Ev.setInstantiationType(openfluid::core::InstantiationInfo::DESCRIPTOR);
   EvColl3.addEvent(Ev);
 
   Ev = openfluid::core::Event(openfluid::core::DateTime(2023,2,5,6,0,0));
   Ev.addInfo("test111","111");
   Ev.addInfo("test222","222");
   Ev.addInfo("test333","333");
-  Ev.setInstantiationType(openfluid::core::InstantiationInfo::SIMULATION);
   EvColl3.addEvent(Ev);
 
   Ev = openfluid::core::Event(openfluid::core::DateTime(2010,7,31,16,30,0));
   Ev.addInfo("specialthing","wedding");
-  Ev.setInstantiationType(openfluid::core::InstantiationInfo::DESCRIPTOR);
   EvColl3.addEvent(Ev);
 
   BOOST_REQUIRE_EQUAL(EvColl3.getCount(),4);
 
-  EvColl3.clear(openfluid::core::InstantiationInfo::DESCRIPTOR);
-  BOOST_REQUIRE_EQUAL(EvColl3.getCount(),2);
-
-  EvColl3.clear(openfluid::core::InstantiationInfo::SIMULATION);
-  BOOST_REQUIRE_EQUAL(EvColl3.getCount(),1);
-
-  EvColl3.clear(openfluid::core::InstantiationInfo::UNKNOWN);
-  BOOST_REQUIRE_EQUAL(EvColl3.getCount(),0);
-
-  EvColl3.clear(openfluid::core::InstantiationInfo::UNKNOWN);
+  EvColl3.clear();
   BOOST_REQUIRE_EQUAL(EvColl3.getCount(),0);
 }
 

@@ -7,10 +7,21 @@
       <param name="fixedvalue" value="12.7" />
     </generator>
 
+    <generator varname="tests.fixeddt" unitclass="TestUnits" method="fixed">
+      <param name="fixedvalue" value="1.27" />
+      <param name="deltat" value="300" />
+    </generator>
+
     <generator varname="tests.random" unitclass="TestUnits" method="random">
       <param name="min" value="20.53" />
       <param name="max" value="50" />
     </generator>
+    
+    <generator varname="tests.randomdt" unitclass="TestUnits" method="random">
+      <param name="min" value="2.53" />
+      <param name="max" value="5" />
+      <param name="deltat" value="117" />      
+    </generator>    
 
     <generator varname="tests.interp" unitclass="TestUnits" method="interp">
       <param name="sources" value="sourcesinterp.xml" />
@@ -35,8 +46,13 @@
       <param name="distribution" value="distri.dat" />
     </generator>
 
+    <generator varname="tests.injectasync" unitclass="TestUnits" method="inject">
+      <param name="sources" value="sourcesinjectasync.xml" />
+      <param name="distribution" value="distri.dat" />
+    </generator>
 
-    <function fileID="tests.generators" />
+
+    <simulator ID="tests.generators" />
 
     <generator varname="tests.fixedprev" unitclass="TestUnits" varsize="11" method="fixed">
       <param name="fixedvalue" value="5.3" />
@@ -47,19 +63,26 @@
 
 
 
-  <output>
+  <monitoring>
 
-    <!-- dtformat can be predefined (6cols,iso) or using the strftime() format, default is iso -->
-    <!-- colsep default is \t -->
-    <files colsep=" " dtformat="%Y %m %d %H %M %S" commentchar="%">
-      <set name="full" unitsclass="TestUnits" unitsIDs="*" vars="*" />
-    </files>
+    <observer ID="export.vars.files.csv">
+    
+      <param name="format.f1.header" value="colnames-as-comment" />
+      <param name="format.f1.date" value="%Y-%m-%d %H:%M:%S" />
+      <param name="format.f1.precision" value="8" />
+                  
+      <param name="set.fullfull.unitclass" value="TestUnits" />
+      <param name="set.fullfull.unitsIDs" value="*" />
+      <param name="set.fullfull.vars" value="*" />
+      <param name="set.fullfull.format" value="f1" />
+            
+    </observer>
 
-  </output>
+  </monitoring>
 
 
   <run>
-    <deltat>60</deltat>
+    <scheduling deltat="60" constraint="none" />
     <period begin="2000-01-01 00:00:00" end="2000-01-01 01:00:00" />
   </run>
 

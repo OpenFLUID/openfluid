@@ -1,0 +1,183 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <domain>
+    <definition>
+      <unit class="TLU" ID="1" pcsorder="1">
+            <to class="RU" ID="28" /> 
+         </unit>
+      <unit class="TLU" ID="2" pcsorder="1">
+            <to class="RU" ID="18" />
+         </unit>
+      <unit class="TLU" ID="3" pcsorder="1">
+            <to class="RU" ID="12" />
+         </unit>
+      <unit class="TLU" ID="4" pcsorder="1">
+            <to class="RU" ID="25" />
+         </unit>
+      <unit class="TLU" ID="5" pcsorder="1">
+            <to class="RU" ID="5" />
+         </unit>
+      <unit class="TLU" ID="6" pcsorder="1">
+            <to class="RU" ID="32" />
+         </unit>
+      <unit class="RU" ID="1" pcsorder="11">
+           <to class="RU" ID="21" /> 
+           <to class="RU" ID="13" /> 
+         </unit>
+      <unit class="RU" ID="2" pcsorder="10">
+           <to class="RU" ID="1" /> 
+           <to class="RU" ID="3" /> 
+         </unit>   
+      <unit class="RU" ID="3" pcsorder="11">
+           <to class="RU" ID="4" /> 
+         </unit>
+      <unit class="RU" ID="4" pcsorder="18">
+           <to class="RU" ID="8" /> 
+         </unit>
+      <unit class="RU" ID="5" pcsorder="20">
+           <to class="RU" ID="11" /> 
+         </unit>
+      <unit class="RU" ID="6" pcsorder="2">
+           <to class="RU" ID="26" /> 
+           <to class="RU" ID="24" /> 
+         </unit>
+      <unit class="RU" ID="7" pcsorder="4">
+           <to class="RU" ID="10" /> 
+           <to class="RU" ID="9" /> 
+         </unit>
+      <unit class="RU" ID="8" pcsorder="19">
+           <to class="RU" ID="5" /> 
+         </unit>
+      <unit class="RU" ID="9" pcsorder="5">
+           <to class="RU" ID="14" /> 
+           <to class="RU" ID="16" /> 
+         </unit>
+      <unit class="RU" ID="10" pcsorder="5">
+           <to class="RU" ID="25" /> 
+         </unit>
+      <unit class="RU" ID="11" pcsorder="21">
+         </unit>
+      <unit class="RU" ID="12" pcsorder="17">
+           <to class="RU" ID="4" /> 
+         </unit>
+      <unit class="RU" ID="13" pcsorder="12">
+           <to class="RU" ID="12" /> 
+         </unit>
+      <unit class="RU" ID="14" pcsorder="6">
+           <to class="RU" ID="27" /> 
+         </unit>
+      <unit class="RU" ID="15" pcsorder="1">
+           <to class="RU" ID="6" /> 
+         </unit>
+      <unit class="RU" ID="16" pcsorder="6">
+           <to class="RU" ID="18" /> 
+         </unit>
+      <unit class="RU" ID="17" pcsorder="10">
+           <to class="RU" ID="8" /> 
+         </unit>
+      <unit class="RU" ID="18" pcsorder="9">
+           <to class="RU" ID="2" /> 
+           <to class="RU" ID="17" /> 
+         </unit>
+      <unit class="RU" ID="19" pcsorder="8">
+           <to class="RU" ID="18" /> 
+         </unit>
+      <unit class="RU" ID="20" pcsorder="1">
+           <to class="RU" ID="31" /> 
+         </unit>
+      <unit class="RU" ID="21" pcsorder="12">
+           <to class="RU" ID="29" /> 
+           <to class="RU" ID="30" /> 
+         </unit>
+      <unit class="RU" ID="22" pcsorder="8">
+           <to class="RU" ID="5" /> 
+         </unit>
+      <unit class="RU" ID="23" pcsorder="16">
+           <to class="RU" ID="12" /> 
+         </unit>
+      <unit class="RU" ID="24" pcsorder="3">
+           <to class="RU" ID="25" /> 
+         </unit>
+      <unit class="RU" ID="25" pcsorder="6">
+           <to class="RU" ID="27" /> 
+         </unit>
+      <unit class="RU" ID="26" pcsorder="3">
+           <to class="RU" ID="11" /> 
+         </unit>
+      <unit class="RU" ID="27" pcsorder="7">
+           <to class="RU" ID="19" /> 
+           <to class="RU" ID="22" /> 
+         </unit>
+      <unit class="RU" ID="28" pcsorder="3">
+           <to class="RU" ID="7" /> 
+         </unit>
+      <unit class="RU" ID="29" pcsorder="13">
+           <to class="RU" ID="33" /> 
+         </unit>
+      <unit class="RU" ID="30" pcsorder="13">
+           <to class="RU" ID="23" /> 
+         </unit>
+      <unit class="RU" ID="31" pcsorder="2">
+           <to class="RU" ID="28" /> 
+         </unit>
+      <unit class="RU" ID="32" pcsorder="15">
+           <to class="RU" ID="23" /> 
+         </unit>
+      <unit class="RU" ID="33" pcsorder="14">
+           <to class="RU" ID="32" /> 
+         </unit>
+
+
+    </definition>
+    <attributes unitclass="TLU" colorder="state;duration">
+1     false	300
+2     true	300
+3     true  300
+4     true  300
+5     false 300
+6     false 300
+    </attributes>
+    <attributes unitclass="RU" colorder="capacity;stockini">
+1     10	500    
+2     10	500    
+3     8     300
+4     6     300
+5     8     500
+6     2     500
+7     2     500
+8     2     300
+9     4     300
+10    12     300
+11    10     300
+12    12     300
+13    14     500
+14    12     300
+15    8     500
+16    6     200
+17    8     400
+18    16     200
+19    4     300     
+20    14     200
+21    18     300
+22    4     200
+23    6     500
+24    8     400
+25    8     200
+26    14     300
+27    16     500
+28    4     400
+29    10     300
+30    12     200
+31    8     400
+32    16     200
+33    18     300
+
+    </attributes>
+
+    <calendar>
+    </calendar>
+  </domain>
+
+
+</openfluid>
+

@@ -4,7 +4,7 @@
     <model>
 
    
-      <function fileID="tests.threadedloops" />       
+      <simulator ID="tests.threadedloops" />       
                 
     
   </model>

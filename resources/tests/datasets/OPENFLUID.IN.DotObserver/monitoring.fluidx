@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <monitoring>
+
+    <observer ID="export.spatial-graph.files.dot" >
+      <param name="style.OU.shape" value="egg" />
+      <param name="style.OU.style" value="filled" />
+      <param name="style.OU.fillcolor" value="cornsilk" />
+      
+      <param name="style.PU.style" value="filled" />
+      <param name="style.PU.fillcolor" value="plum" />
+      
+      <param name="title" value="test of the Dot observer" />
+      <param name="when.init" value="1" />
+      <param name="when.everytime" value="1" />
+      <param name="when.final" value="1" />
+    </observer>
+    
+  </monitoring>
+</openfluid>

@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -69,7 +54,19 @@ namespace openfluid { namespace core {
 /**
   Type for raw time (seconds since 4713BC)
 */
-typedef unsigned long long rawtime_t;
+typedef unsigned long long RawTime_t;
+
+/**
+  Type for time indexes (in seconds)
+*/
+typedef unsigned long long TimeIndex_t;
+
+
+/**
+  Type for durations (in seconds)
+*/
+typedef unsigned long long Duration_t;
+
 
 /**
   @brief Class for management of date and time information.
@@ -119,7 +116,7 @@ typedef unsigned long long rawtime_t;
   openfluid::core::DateTime FirstDate(2009,01,25,12,05,00);
   openfluid::core::DateTime SecondDate(2009,02,28,00,00,00);
 
-  openfluid::core::rawtime_t Diff;
+  openfluid::core::RawTime_t Diff;
 
   Diff = SecondDate - FirstDate;
 
@@ -156,7 +153,7 @@ class DLLEXPORT DateTime
     /**
       The date and time stored as number of seconds since 4713BC
     */
-    rawtime_t m_RawTime;
+    RawTime_t m_RawTime;
 
     void updateYMDHMSFromRawTime();
 
@@ -178,7 +175,7 @@ class DLLEXPORT DateTime
     /**
       Constructor
     */
-    DateTime(rawtime_t SecondsSince0000);
+    DateTime(RawTime_t SecondsSince0000);
 
     /**
       Destructor
@@ -194,13 +191,19 @@ class DLLEXPORT DateTime
       Sets the date and time from the number of seconds since first day of 4713BC
     */
 
-    void set(const rawtime_t& SecondsSince0000);
+    void set(const RawTime_t& SecondsSince0000);
 
 
     /**
       Sets the date and time from an ISO formatted string (YYYY-MM-DD hh:mm:ss)
     */
     bool setFromISOString(const std::string& DateTimeStr);
+
+
+    /**
+      Sets the date and time from a string using the given format
+    */
+    bool setFromString(const std::string& DateTimeStr, const std::string& FormatStr);
 
 
     /**
@@ -243,7 +246,7 @@ class DLLEXPORT DateTime
       Returns date-time in raw format (number of seconds since first day of 4713 BC)
       @return a rawtime_t
     */
-    rawtime_t getRawTime() const;
+    RawTime_t getRawTime() const;
 
 
     /**
@@ -276,17 +279,17 @@ class DLLEXPORT DateTime
     /**
       Adds the given seconds to the current date and time
     */
-    void addSeconds(const rawtime_t& Seconds);
+    void addSeconds(const RawTime_t& Seconds);
 
     /**
       Subtracts the given seconds from the current date and time
     */
-    void subtractSeconds(const rawtime_t& Seconds);
+    void subtractSeconds(const RawTime_t& Seconds);
 
     /**
       Returns the difference in seconds between the date-time and the given date-time (Self - Given)
     */
-    rawtime_t diffInSeconds(const DateTime& DT) const;
+    RawTime_t diffInSeconds(const DateTime& DT) const;
 
     /**
       Returns true if the date-time is between the two given date-time
@@ -337,52 +340,52 @@ class DLLEXPORT DateTime
     /**
       Add operator
     */
-    DateTime operator +(const rawtime_t& Seconds) const;
+    DateTime operator +(const RawTime_t& Seconds) const;
 
     /**
       Subtract operator
     */
-    DateTime operator -(const rawtime_t& Seconds) const;
+    DateTime operator -(const RawTime_t& Seconds) const;
 
     /**
       Returns the number of seconds for one minute
     */
-    static inline rawtime_t Minute() { return 60; };
+    static inline RawTime_t Minute() { return 60; };
 
     /**
       Returns the number of seconds for N minutes
     */
-    static inline rawtime_t Minutes(int N) { return (60*N); };
+    static inline RawTime_t Minutes(int N) { return (60*N); };
 
     /**
       Returns the number of seconds for one hour
     */
-    static inline rawtime_t Hour() { return 3600; };
+    static inline RawTime_t Hour() { return 3600; };
 
     /**
       Returns the number of seconds for N hours
     */
-    static inline rawtime_t Hours(int N) { return (3600*N); };
+    static inline RawTime_t Hours(int N) { return (3600*N); };
 
     /**
       Returns the number of seconds for one day
     */
-    static inline rawtime_t Day() { return 86400; };
+    static inline RawTime_t Day() { return 86400; };
 
     /**
       Returns the number of seconds for N days
     */
-    static inline rawtime_t Days(int N) { return (86400*N); };
+    static inline RawTime_t Days(int N) { return (86400*N); };
 
     /**
       Returns the number of seconds for one week
     */
-    static inline rawtime_t Week() { return 604800; };
+    static inline RawTime_t Week() { return 604800; };
 
     /**
       Returns the number of seconds for N weeks
     */
-    static inline rawtime_t Weeks(int N) { return (604800*N); };
+    static inline RawTime_t Weeks(int N) { return (604800*N); };
 
     /**
       Returns true if the given year is a leap year

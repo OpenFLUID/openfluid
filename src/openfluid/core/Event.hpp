@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -57,9 +42,9 @@
 
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/deprecation.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/InstantiationInfo.hpp>
 
 
 namespace openfluid { namespace core {
@@ -73,7 +58,7 @@ namespace openfluid { namespace core {
   @li Key is the name given to the information
   @li Value is the value of the information and can be numeric or text information
 */
-class DLLEXPORT Event : public InstantiationInfo
+class DLLEXPORT Event
 {
   public:
     typedef std::map<std::string, openfluid::core::StringValue> EventInfosMap_t;
@@ -208,15 +193,6 @@ class DLLEXPORT Event : public InstantiationInfo
       @return true if the key exists and the conversion to the requested type is correct
     */
     bool getInfoAsDouble(const std::string Key, double& Info) const;
-
-    /**
-      Gets an information as a ScalarValue (double)
-      @param[in] Key the requested information key
-      @param[out] Info the value corresponding to the requested key
-      @return true if the key exists and the conversion to the requested type is correct
-      @deprecated
-    */
-    bool getInfoAsScalarValue(const std::string Key, double* Info) const OPENFLUID_DEPRECATED;
 
     /**
       Gets an information as a DoubleValue

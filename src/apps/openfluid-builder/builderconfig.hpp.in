@@ -1,48 +1,32 @@
 /*
- This file is part of OpenFLUID software
- Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
- In addition, as a special exception, INRA gives You the additional right
- to dynamically link the code of OpenFLUID with code not covered
- under the GNU General Public License ("Non-GPL Code") and to distribute
- linked combinations including the two, subject to the limitations in this
- paragraph. Non-GPL Code permitted under this exception must only link to
- the code of OpenFLUID dynamically through the OpenFLUID libraries
- interfaces, and only for building OpenFLUID plugins. The files of
- Non-GPL Code may be link to the OpenFLUID libraries without causing the
- resulting work to be covered by the GNU General Public License. You must
- obey the GNU General Public License in all respects for all of the
- OpenFLUID code and other code used in conjunction with OpenFLUID
- except the Non-GPL Code covered by this exception. If you modify
- this OpenFLUID, you may extend this exception to your version of the file,
- but you are not obligated to do so. If you do not wish to provide this
- exception without modification, you must delete this exception statement
- from your version and license this OpenFLUID solely under the GPL without
- exception.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
+  
 */
 
 /**
@@ -53,24 +37,50 @@
  */
 
 
-#include <string>
+#include <QString>
 
 #ifndef __BUILDERCONFIG_HPP__
 #define __BUILDERCONFIG_HPP__
 
 
-const std::string BUILDER_LICENSE_TEXT = "@BUILDER_LICENSE_TEXT@";
-const std::string BUILDER_URL = "@BUILDER_URL_TEXT@";
-const std::string BUILDER_AUTHORS_TEXT = "@BUILDER_AUTHORS_TEXT@";
+const QString BUILDER_LICENSE_TEXT = "@BUILDER_LICENSE_TEXT@";
+const QString BUILDER_AUTHORS_TEXT = "@BUILDER_AUTHORS_TEXT@";
 
-const std::string BUILDER_EXTSDIR = "@BUILDER_EXTSDIR@";
-const std::string BUILDEREXT_INSTALL_PATH = "@BUILDEREXT_INSTALL_PATH@";
+const QString BUILDEREXT_PLUGINS_SUBDIR = "@OPENFLUID_EXTPLUGSDIR@";
+const QString BUILDEREXT_INSTALL_PATH = "@BUILDEREXT_INSTALL_PATH@";
 
-const std::string BUILDEREXTENSION_BINARY_EXTENSION = "@BUILDEREXTENSION_BINARY_EXTENSION@";
+const std::string BUILDEREXTS_PLUGINS_SUFFIX = "@OPENFLUID_BUILDEREXTS_SUFFIX@";
 
-const std::string BUILDER_URL_WEBSITE = "http://www.umr-lisah.fr/openfluid/";
-const std::string BUILDER_URL_COMMUNITY = "http://www.umr-lisah.fr/openfluid/community/";
-const std::string BUILDER_URL_DEV = "http://sourceforge.net/projects/openfluid/";
-const std::string BUILDER_URL_BUG = "http://sourceforge.net/apps/trac/openfluid/";
+const QString BUILDER_URL_WEBSITE = "http://www.openfluid-project.org";
+const QString BUILDER_URL_COMMUNITY = "http://www.openfluid-project.org/community";
+const QString BUILDER_URL_DEV = "https://github.com/OpenFLUID/";
+const QString BUILDER_URL_BUG = "https://github.com/OpenFLUID/openfluid/issues";
+const QString BUILDER_URL_EMAIL = "mailto:contact@openfluid-project.org";
+
+const QString BUILDER_TOOLBAR_BGCOLOR = "#2C3A4C";
+const QString BUILDER_TOOLBARBUTTON_BGCOLOR = "#3B4E66";
+const QString BUILDER_TOOLBARBUTTON_BORDERCOLOR = "#4B4B4B";
+const QString BUILDER_DIALOGBANNER_BGCOLOR = "#384A61";
+const QString BUILDER_DIALOGBANNER_WARNBGCOLOR = "#F59122";
+
+const QString BUILDER_TOOLTIP_BGCOLOR = "#2C3A4C";
+const QString BUILDER_TOOLTIP_BORDERCOLOR = "#676767";
+
+const QString BUILDER_SIMULATOR_BGCOLOR = "#ECF9B5";
+const QString BUILDER_GENERATOR_BGCOLOR = "#FDFEDE";
+const QString BUILDER_OBSERVER_BGCOLOR = "#E9F7FE";
+const QString BUILDER_DISABLEDWARE_BGCOLOR = "#CCCCCC";
+
+const QString BUILDER_NEWSLINE_BGCOLOR = "#F9F9F4";
+const QString BUILDER_NEWSLINE_TEXTCOLOR = "#444444";
+const QString BUILDER_NEWSLINE_LINKSCOLOR = "#0000FF"; //#617487
+const QString BUILDER_NEWSLINE_SOURCEURL = "http://www.openfluid-project.org/fluidhub.php";
+const QString BUILDER_NEWSLINE_CACHERELDIR = "network/hubs/openfluid-project.org";
+
+#define BUILDER_MODELVIEW_ACTIVECOLOR "#617487" 
+#define BUILDER_MODELVIEW_INACTIVECOLOR "#B7B7B7"
+#define BUILDER_MODELVIEW_BORDERCOLOR "#B7B7B7"
+#define BUILDER_MODELVIEW_CONNECTCOLOR "#96B4D1"
+
 
 #endif /* __BUILDERCONFIG_HPP__ */

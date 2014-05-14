@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -59,7 +44,7 @@
 #include <openfluid/machine/MachineListener.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
-#include <openfluid/machine/PluginManager.hpp>
+#include <openfluid/machine/SimulatorPluginsManager.hpp>
 #include <openfluid/machine/FixedGenerator.hpp>
 #include <openfluid/machine/RandomGenerator.hpp>
 #include <openfluid/machine/InterpGenerator.hpp>
@@ -70,38 +55,30 @@
 namespace openfluid { namespace machine {
 
 
-#define DECLARE_FUNCTION_PARSER \
-    std::list<ModelItemInstance*>::const_iterator _M_FuncIter; \
+#define DECLARE_SIMULATOR_PARSER \
+    std::list<ModelItemInstance*>::const_iterator _M_SimIter; \
 
 /**
-  Macro for parsing the functions list and calling the given method of each function of the list
-  @param[in] calledmethod the method to call on each function
+  Macro for parsing the simulators list and calling the given method of each simulator of the list
+  @param[in] calledmethod the method to call on each simulator
   @param[out] statevar the globalized return of the method calls
  */
-#define PARSE_FUNCTION_LIST(calledmethod,listenermethod,timeprofilepart,statevar) \
-    _M_FuncIter = m_ModelItems.begin(); \
-    while (_M_FuncIter != m_ModelItems.end() && statevar) \
+#define PARSE_SIMULATOR_LIST(calledmethod,listenermethod,timeprofilepart) \
+    _M_SimIter = m_ModelItems.begin(); \
+    while (_M_SimIter != m_ModelItems.end()) \
     { \
-      ModelItemInstance* _M_CurrentFunction = *_M_FuncIter; \
-      if (_M_CurrentFunction != NULL) \
+      ModelItemInstance* _M_CurrentSimulator = *_M_SimIter; \
+      if (_M_CurrentSimulator != NULL) \
       { \
-        mp_Listener->onFunction##listenermethod(_M_CurrentFunction->Signature->ID); \
+        mp_Listener->onSimulator##listenermethod(_M_CurrentSimulator->Signature->ID); \
         boost::posix_time::ptime _M_TimeProfileStart = boost::posix_time::microsec_clock::universal_time(); \
-        statevar = (statevar && _M_CurrentFunction->Function->calledmethod); \
-        openfluid::base::SimulationProfiler::getInstance()->addDuration(_M_CurrentFunction->Signature->ID,timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length()); \
-        if (!statevar) \
-        { \
-          mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::ERROR,_M_CurrentFunction->Signature->ID); \
-          throw openfluid::base::OFException("OpenFLUID framework","Bad return value while calling function method"); \
-        }  \
-        else \
-        { \
-          if (m_SimulationBlob.getExecutionMessages().isWarningFlag())  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::WARNING,_M_CurrentFunction->Signature->ID); \
-          else  mp_Listener->onFunction##listenermethod##Done(openfluid::machine::MachineListener::OK,_M_CurrentFunction->Signature->ID); \
-          m_SimulationBlob.getExecutionMessages().resetWarningFlag(); \
-        } \
+        _M_CurrentSimulator->Body->calledmethod; \
+        if (mp_SimProfiler != NULL) mp_SimProfiler->addDuration(_M_CurrentSimulator->Signature->ID,timeprofilepart,boost::posix_time::time_period(_M_TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length()); \
+        if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_WARNING,_M_CurrentSimulator->Signature->ID); \
+        else  mp_Listener->onSimulator##listenermethod##Done(openfluid::machine::MachineListener::LISTEN_OK,_M_CurrentSimulator->Signature->ID); \
+        mp_SimLogger->resetWarningFlag(); \
       } \
-      _M_FuncIter++; \
+      _M_SimIter++; \
     } \
 
 
@@ -111,7 +88,8 @@ namespace openfluid { namespace machine {
 
 ModelInstance::ModelInstance(openfluid::machine::SimulationBlob& SimulationBlob,
                              openfluid::machine::MachineListener* Listener)
-             : mp_Listener(Listener), m_SimulationBlob(SimulationBlob), m_Initialized(false)
+             : mp_Listener(Listener), mp_SimLogger(NULL), mp_SimProfiler(NULL),
+               m_SimulationBlob(SimulationBlob), m_Initialized(false)
 {
   if (mp_Listener == NULL) mp_Listener = new openfluid::machine::MachineListener();
 }
@@ -127,7 +105,7 @@ ModelInstance::~ModelInstance()
     finalize();
 
   if (m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::~ModelInstance()","Destroyed initialized ModelInstance");
+    throw openfluid::base::FrameworkException("ModelInstance::~ModelInstance()","Destroyed initialized ModelInstance");
 }
 
 
@@ -135,13 +113,76 @@ ModelInstance::~ModelInstance()
 // =====================================================================
 
 
-openfluid::core::FuncParamsMap_t ModelInstance::mergeParamsWithGlobalParams(const openfluid::core::FuncParamsMap_t& Params) const
+void ModelInstance::appendItemToTimePoint(openfluid::core::TimeIndex_t TimeIndex,
+                                          openfluid::machine::ModelItemInstance* Item)
 {
-  openfluid::core::FuncParamsMap_t MergedParams = m_GlobalParams;
-  openfluid::core::FuncParamsMap_t::const_iterator itParams;
 
-  for(itParams = Params.begin();itParams != Params.end();++itParams)
-    MergedParams[(*itParams).first] = (*itParams).second;
+  // no back in time nor iteration
+  if (TimeIndex <= m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex())
+    throw openfluid::base::FrameworkException("SimulationScheduler::appendItemToTimePoint","Cannot append simulation item before or on current time point");
+
+  // ignore time points after simulation end
+  if (TimeIndex > m_SimulationBlob.getSimulationStatus().getSimulationDuration())
+    return;
+
+  // add time point if no existing time point
+  if (m_TimePointList.empty())
+  {
+    m_TimePointList.push_back(ExecutionTimePoint(TimeIndex));
+    m_TimePointList.back().appendItem(Item);
+    return;
+  }
+
+  // add time point if after existing time points
+  if (TimeIndex > m_TimePointList.back().getTimeIndex())
+  {
+    m_TimePointList.push_back(ExecutionTimePoint(TimeIndex));
+    m_TimePointList.back().appendItem(Item);
+  }
+  else // search for the right time point insertion
+  {
+    bool TmpInserted = false;
+    std::list<ExecutionTimePoint>::iterator TPit = m_TimePointList.begin();
+
+    while (TPit != m_TimePointList.end() && !TmpInserted)
+    {
+      if ((*TPit).getTimeIndex() == TimeIndex)
+      {
+        (*TPit).appendItem(Item);
+        TmpInserted = true;
+      }
+      else if ((*TPit).getTimeIndex() > TimeIndex)
+      {
+        ExecutionTimePoint TmpPoint(TimeIndex);
+        TmpPoint.appendItem(Item);
+        m_TimePointList.insert(TPit,TmpPoint);
+        TmpInserted = true;
+      }
+      else
+      {
+        ++TPit;
+      }
+    }
+
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::ware::WareParams_t ModelInstance::mergeParamsWithGlobalParams(const openfluid::ware::WareParams_t& Params) const
+{
+  openfluid::ware::WareParams_t MergedParams = m_GlobalParams;
+
+  for(openfluid::ware::WareParams_t::const_iterator it = Params.begin();it != Params.end();++it)
+  {
+    if(!it->second.get().empty())
+      MergedParams[it->first] = it->second;
+    else if(!m_GlobalParams.count(it->first))
+      MergedParams[it->first] = it->second;
+  }
 
   return MergedParams;
 }
@@ -151,7 +192,7 @@ openfluid::core::FuncParamsMap_t ModelInstance::mergeParamsWithGlobalParams(cons
 // =====================================================================
 
 
-void ModelInstance::setGlobalParameter(const openfluid::core::FuncParamKey_t& Key, const openfluid::core::FuncParamKey_t& Value)
+void ModelInstance::setGlobalParameter(const openfluid::ware::WareParamKey_t& Key, const openfluid::ware::WareParamValue_t& Value)
 {
   m_GlobalParams[Key] = Value;
 }
@@ -164,7 +205,7 @@ void ModelInstance::setGlobalParameter(const openfluid::core::FuncParamKey_t& Ke
 void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 {
   if (m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::appendItem()","Trying to append model item after model initialization");
+    throw openfluid::base::FrameworkException("ModelInstance::appendItem()","Trying to append model item after model initialization");
 
   m_ModelItems.push_back(ItemInstance);
 }
@@ -177,7 +218,7 @@ void ModelInstance::appendItem(ModelItemInstance* ItemInstance)
 void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Position)
 {
   if (m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem()","Trying to insert model item after model initialization");
+    throw openfluid::base::FrameworkException("ModelInstance::insertItem()","Trying to insert model item after model initialization");
 
 
   if (Position == 0)
@@ -191,7 +232,7 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
       m_ModelItems.insert(it,ItemInstance);
     }
     else
-      throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::insertItem()","Bad index of item to insert");
+      throw openfluid::base::FrameworkException("ModelInstance::insertItem()","Bad index of item to insert");
   }
 
 }
@@ -204,7 +245,7 @@ void ModelInstance::insertItem(ModelItemInstance* ItemInstance, unsigned int Pos
 void ModelInstance::deleteItem(unsigned int Position)
 {
   if (m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::deleteItem()","Trying to delete model item after model initialization");
+    throw openfluid::base::FrameworkException("ModelInstance::deleteItem()","Trying to delete model item after model initialization");
 
   if (Position < m_ModelItems.size())
   {
@@ -213,7 +254,7 @@ void ModelInstance::deleteItem(unsigned int Position)
     m_ModelItems.erase(it);
   }
   else
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::deleteItem()","Bad index of item to delete");
+    throw openfluid::base::FrameworkException("ModelInstance::deleteItem()","Bad index of item to delete");
 }
 
 
@@ -224,13 +265,13 @@ void ModelInstance::deleteItem(unsigned int Position)
 void ModelInstance::clear()
 {
   if (m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::clear()","Trying to clear model after model initialization");
+    throw openfluid::base::FrameworkException("ModelInstance::clear()","Trying to clear model after model initialization");
 
   std::list<ModelItemInstance*>::iterator it;
 
   for (it=m_ModelItems.begin();it!=m_ModelItems.end();++it)
   {
-    if ((*it)->Function != NULL) delete (*it)->Function;
+    if ((*it)->Body != NULL) delete (*it)->Body;
     if ((*it)->Signature != NULL) delete (*it)->Signature;
   }
 
@@ -243,48 +284,59 @@ void ModelInstance::clear()
 // =====================================================================
 
 
-void ModelInstance::initialize()
+void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
 {
-  openfluid::machine::PluginManager* PlugMgr = openfluid::machine::PluginManager::getInstance();
+  mp_SimLogger = SimLogger;
 
-  std::list<ModelItemInstance*>::const_iterator FuncIter;
-  ModelItemInstance* CurrentFunction;
+  openfluid::machine::SimulationProfiler::WareIDSequence_t SimSequence;
 
-  FuncIter = m_ModelItems.begin();
-  while (FuncIter != m_ModelItems.end())
+  openfluid::machine::SimulatorPluginsManager* FPlugsMgr = openfluid::machine::SimulatorPluginsManager::getInstance();
+
+  std::list<ModelItemInstance*>::const_iterator SimIter;
+  ModelItemInstance* CurrentSimulator;
+
+  SimIter = m_ModelItems.begin();
+  while (SimIter != m_ModelItems.end())
   {
-    CurrentFunction = (*FuncIter);
+    CurrentSimulator = (*SimIter);
 
-    if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::PluggedFunction)
-      PlugMgr->completePluginWithFunction(CurrentFunction);
+    if(CurrentSimulator->ItemType == openfluid::fluidx::ModelItemDescriptor::PluggedSimulator)
+      FPlugsMgr->completeSignatureWithWareBody(CurrentSimulator);
 
-    if(CurrentFunction->ItemType == openfluid::base::ModelItemDescriptor::Generator && CurrentFunction->GeneratorInfo != NULL)
+    if(CurrentSimulator->ItemType == openfluid::fluidx::ModelItemDescriptor::Generator && CurrentSimulator->GeneratorInfo != NULL)
     {
-      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Fixed)
-        CurrentFunction->Function = new FixedGenerator();
+      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Fixed)
+        CurrentSimulator->Body = new FixedGenerator();
 
-      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Random)
-        CurrentFunction->Function = new RandomGenerator();
+      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Random)
+        CurrentSimulator->Body = new RandomGenerator();
 
-      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Inject)
-        CurrentFunction->Function = new InjectGenerator();
+      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Inject)
+        CurrentSimulator->Body = new InjectGenerator();
 
-      if (CurrentFunction->GeneratorInfo->GeneratorMethod == openfluid::base::GeneratorDescriptor::Interp)
-        CurrentFunction->Function = new InterpGenerator();
+      if (CurrentSimulator->GeneratorInfo->GeneratorMethod == openfluid::fluidx::GeneratorDescriptor::Interp)
+        CurrentSimulator->Body = new InterpGenerator();
 
-      ((openfluid::machine::Generator*)(CurrentFunction->Function))->setInfos(CurrentFunction->GeneratorInfo->VariableName,
-                                                                              CurrentFunction->GeneratorInfo->UnitClass,
-                                                                              CurrentFunction->GeneratorInfo->GeneratorMethod,
-                                                                              CurrentFunction->GeneratorInfo->VariableSize);
+      ((openfluid::machine::Generator*)(CurrentSimulator->Body))->setInfos(CurrentSimulator->GeneratorInfo->VariableName,
+                                                                              CurrentSimulator->GeneratorInfo->UnitClass,
+                                                                              CurrentSimulator->GeneratorInfo->GeneratorMethod,
+                                                                              CurrentSimulator->GeneratorInfo->VariableSize);
     }
 
+    CurrentSimulator->Body->linkToSimulationLogger(mp_SimLogger);
+    CurrentSimulator->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
+    CurrentSimulator->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
+    CurrentSimulator->Body->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
+    CurrentSimulator->Body->linkToDatastore(&(m_SimulationBlob.getDatastore()));
+    CurrentSimulator->Body->initializeWare(CurrentSimulator->Signature->ID,
+                                    openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsMaxNumThreads());
+    SimSequence.push_back(CurrentSimulator->Signature->ID);
 
-    CurrentFunction->Function->initializeFunction(&(m_SimulationBlob.getCoreRepository()),&(m_SimulationBlob.getExecutionMessages()),
-                                    openfluid::base::RuntimeEnvironment::getInstance()->getFunctionEnvironment(),
-                                    openfluid::base::RuntimeEnvironment::getInstance()->getFunctionsMaxNumThreads(),
-                                    CurrentFunction->Signature->ID);
-    FuncIter++;
+    SimIter++;
   }
+
+  if (openfluid::base::RuntimeEnvironment::getInstance()->isSimulationProfilingEnabled())
+    mp_SimProfiler = new SimulationProfiler(&(m_SimulationBlob.getSimulationStatus()), SimSequence);
 
   m_Initialized = true;
 }
@@ -298,27 +350,30 @@ void ModelInstance::initialize()
 void ModelInstance::finalize()
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::finalize()","Trying to finalize an uninitialized model");
+    throw openfluid::base::FrameworkException("ModelInstance::finalize()","Trying to finalize an uninitialized model");
 
-  std::list<ModelItemInstance*>::const_iterator FuncIter;
+  std::list<ModelItemInstance*>::const_iterator SimIter;
 
 
-  // call of finalizeFunction method on each function
-  FuncIter = m_ModelItems.begin();
-  while (FuncIter != m_ModelItems.end())
+  // call of finalizeWare method on each simulator
+  SimIter = m_ModelItems.begin();
+  while (SimIter != m_ModelItems.end())
   {
-    (*FuncIter)->Function->finalizeFunction();
-    FuncIter++;
+    (*SimIter)->Body->finalizeWare();
+    SimIter++;
   }
 
 
-  // destroy of each function
-  FuncIter = m_ModelItems.begin();
-  while (FuncIter != m_ModelItems.end())
+  // destroy of each simulator
+  SimIter = m_ModelItems.begin();
+  while (SimIter != m_ModelItems.end())
   {
-    delete (*FuncIter)->Function;
-    FuncIter++;
+    delete (*SimIter)->Body;
+    SimIter++;
   }
+
+  if (mp_SimProfiler != NULL) delete mp_SimProfiler;
+  mp_SimProfiler = NULL;
 
   m_Initialized = false;
 }
@@ -328,18 +383,14 @@ void ModelInstance::finalize()
 // =====================================================================
 
 
-bool ModelInstance::call_initParams() const
+void ModelInstance::call_initParams() const
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_initParams()","Model not initialized");
+    throw openfluid::base::FrameworkException("ModelInstance::call_initParams()","Model not initialized");
 
 
-  DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(initParams(mergeParamsWithGlobalParams(_M_CurrentFunction->Params)),InitParams,openfluid::base::SimulationProfiler::INITPARAMS,IsOK);
-
-  return IsOK;
+  DECLARE_SIMULATOR_PARSER;
+  PARSE_SIMULATOR_LIST(initParams(mergeParamsWithGlobalParams(_M_CurrentSimulator->Params)),InitParams,openfluid::base::SimulationStatus::INITPARAMS);
 }
 
 
@@ -347,18 +398,14 @@ bool ModelInstance::call_initParams() const
 // =====================================================================
 
 
-bool ModelInstance::call_prepareData() const
+void ModelInstance::call_prepareData() const
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_prepareData()","Model not initialized");
+    throw openfluid::base::FrameworkException("ModelInstance::call_prepareData()","Model not initialized");
 
 
-  DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(prepareData(),PrepareData,openfluid::base::SimulationProfiler::PREPAREDATA,IsOK);
-
-  return IsOK;
+  DECLARE_SIMULATOR_PARSER;
+  PARSE_SIMULATOR_LIST(prepareData(),PrepareData,openfluid::base::SimulationStatus::PREPAREDATA);
 }
 
 
@@ -366,18 +413,14 @@ bool ModelInstance::call_prepareData() const
 // =====================================================================
 
 
-bool ModelInstance::call_checkConsistency() const
+void ModelInstance::call_checkConsistency() const
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_checkConsistency()","Model not initialized");
+    throw openfluid::base::FrameworkException("ModelInstance::call_checkConsistency()","Model not initialized");
 
 
-  DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(checkConsistency(),CheckConsistency,openfluid::base::SimulationProfiler::CHECKCONSISTENCY,IsOK);
-
-  return IsOK;
+  DECLARE_SIMULATOR_PARSER;
+  PARSE_SIMULATOR_LIST(checkConsistency(),CheckConsistency,openfluid::base::SimulationStatus::CHECKCONSISTENCY);
 }
 
 
@@ -385,18 +428,25 @@ bool ModelInstance::call_checkConsistency() const
 // =====================================================================
 
 
-bool ModelInstance::call_initializeRun(const openfluid::base::SimulationInfo* SimInfo) const
+void ModelInstance::checkDeltaTMode(openfluid::base::SchedulingRequest& SReq, const openfluid::ware::WareID_t& ID)
 {
-  if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_initializeRun()","Model not initialized");
+  // check if "checked" DeltaT mode is respected
+  if (m_SimulationBlob.getSimulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTCHECKED)
+  {
+     if (!(SReq.RequestType == openfluid::base::SchedulingRequest::DURATION &&
+           SReq.Duration ==  m_SimulationBlob.getSimulationStatus().getDefaultDeltaT()))
+     {
+       std::string TIStr;
+       openfluid::tools::ConvertValue(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex(),&TIStr);
+       throw openfluid::base::FrameworkException("ModelInstance::checkDeltaTMode",
+                                          "DeltaT checked mode not respected by simulator " + ID + " at time index " + TIStr);
+     }
+  }
 
+  // check if "forced" DeltaT mode is respected
+  if (m_SimulationBlob.getSimulationStatus().getSchedulingConstraint() == openfluid::base::SimulationStatus::SCHED_DTFORCED)
+    SReq =  openfluid::base::SchedulingRequest(m_SimulationBlob.getSimulationStatus().getDefaultDeltaT());
 
-  DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(initializeRun(SimInfo),InitializeRun,openfluid::base::SimulationProfiler::INITIALIZERUN,IsOK);
-
-  return IsOK;
 }
 
 
@@ -404,18 +454,53 @@ bool ModelInstance::call_initializeRun(const openfluid::base::SimulationInfo* Si
 // =====================================================================
 
 
-bool ModelInstance::call_runStep(const openfluid::base::SimulationStatus* SimStatus) const
+void ModelInstance::call_initializeRun()
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_runStep()","Model not initialized");
+    throw openfluid::base::FrameworkException("ModelInstance::call_initializeRun()","Model not initialized");
+
+  std::list<ModelItemInstance*>::const_iterator SimIter;
 
 
-  DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
+  SimIter = m_ModelItems.begin();
+  while (SimIter != m_ModelItems.end())
+  {
+    ModelItemInstance* CurrentSimulator = *SimIter;
+    if (CurrentSimulator != NULL)
+    {
+      mp_Listener->onSimulatorInitializeRun(CurrentSimulator->Signature->ID);
 
-  PARSE_FUNCTION_LIST(runStep(SimStatus),RunStep,openfluid::base::SimulationProfiler::RUNSTEP,IsOK);
+      boost::posix_time::ptime TimeProfileStart = boost::posix_time::microsec_clock::universal_time();
+      openfluid::base::SchedulingRequest SchedReq = CurrentSimulator->Body->initializeRun();
+      if (mp_SimProfiler != NULL) mp_SimProfiler->addDuration(CurrentSimulator->Signature->ID,
+                                                              openfluid::base::SimulationStatus::INITIALIZERUN,
+                                                              boost::posix_time::time_period(TimeProfileStart,
+                                                                                             boost::posix_time::microsec_clock::universal_time()).length());
 
-  return IsOK;
+      if (mp_SimLogger->isWarningFlag())  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_WARNING,CurrentSimulator->Signature->ID);
+      else  mp_Listener->onSimulatorInitializeRunDone(openfluid::machine::MachineListener::LISTEN_OK,CurrentSimulator->Signature->ID);
+      mp_SimLogger->resetWarningFlag();
+
+      checkDeltaTMode(SchedReq,CurrentSimulator->Signature->ID);
+
+      // TODO optimize by testing DURATION before ATTHEEND
+      if (SchedReq.RequestType == openfluid::base::SchedulingRequest::ATTHEEND) // AtTheEnd();
+      {
+        appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getSimulationDuration(),
+                              CurrentSimulator);
+      }
+      else if (SchedReq.RequestType == openfluid::base::SchedulingRequest::DURATION) // != Never()
+      {
+        appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex()+SchedReq.Duration,
+                              CurrentSimulator);
+      }
+
+    }
+    else
+      throw openfluid::base::FrameworkException("ModelInstance::call_initializeRun","NULL model item instance!");
+
+    SimIter++;
+  }
 }
 
 
@@ -423,18 +508,68 @@ bool ModelInstance::call_runStep(const openfluid::base::SimulationStatus* SimSta
 // =====================================================================
 
 
-bool ModelInstance::call_finalizeRun(const openfluid::base::SimulationInfo* SimInfo) const
+void ModelInstance::processNextTimePoint()
+{
+
+  if (hasTimePointToProcess())
+    m_SimulationBlob.getSimulationStatus().setCurrentTimeIndex(m_TimePointList.front().getTimeIndex());
+  else
+    return;
+
+  m_TimePointList.front().sortByOriginalPosition();
+
+  mp_Listener->onRunStep(&m_SimulationBlob.getSimulationStatus());
+
+  while (m_TimePointList.front().hasItemsToProcess())
+  {
+    openfluid::machine::ModelItemInstance* NextItem = m_TimePointList.front().getNextItem();
+
+    mp_Listener->onSimulatorRunStep(NextItem->Signature->ID);
+    boost::posix_time::ptime TimeProfileStart = boost::posix_time::microsec_clock::universal_time();
+
+    openfluid::base::SchedulingRequest SchedReq = m_TimePointList.front().processNextItem();
+
+    if (mp_SimProfiler != NULL) mp_SimProfiler->addDuration(NextItem->Signature->ID,
+                                                            openfluid::base::SimulationStatus::RUNSTEP,
+                                                            boost::posix_time::time_period(TimeProfileStart,boost::posix_time::microsec_clock::universal_time()).length());
+    if (mp_SimLogger->isWarningFlag())
+      mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING,NextItem->Signature->ID);
+    else  mp_Listener->onSimulatorRunStepDone(openfluid::machine::MachineListener::LISTEN_OK,NextItem->Signature->ID);
+    mp_SimLogger->resetWarningFlag();
+
+    checkDeltaTMode(SchedReq,NextItem->Signature->ID);
+
+    if (SchedReq.RequestType == openfluid::base::SchedulingRequest::ATTHEEND) // AtTheEnd();
+    {
+      appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getSimulationDuration(),
+                                           NextItem);
+    }
+    else if (SchedReq.RequestType == openfluid::base::SchedulingRequest::DURATION) // != Never()
+    {
+      appendItemToTimePoint(m_SimulationBlob.getSimulationStatus().getCurrentTimeIndex()+SchedReq.Duration,
+                                     NextItem);
+    }
+  }
+
+  if (mp_SimLogger->isWarningFlag()) mp_Listener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_WARNING);
+      mp_Listener->onRunStepDone(openfluid::machine::MachineListener::LISTEN_OK);
+
+  m_TimePointList.pop_front();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelInstance::call_finalizeRun() const
 {
   if (!m_Initialized)
-    throw openfluid::base::OFException("OpenFLUID framework","ModelInstance::call_finalizeRun()","Model not initialized");
+    throw openfluid::base::FrameworkException("ModelInstance::call_finalizeRun()","Model not initialized");
 
 
-  DECLARE_FUNCTION_PARSER;
-  bool IsOK = true;
-
-  PARSE_FUNCTION_LIST(finalizeRun(SimInfo),FinalizeRun,openfluid::base::SimulationProfiler::FINALIZERUN,IsOK);
-
-  return IsOK;
+  DECLARE_SIMULATOR_PARSER;
+  PARSE_SIMULATOR_LIST(finalizeRun(),FinalizeRun,openfluid::base::SimulationStatus::FINALIZERUN);
 }
 
 

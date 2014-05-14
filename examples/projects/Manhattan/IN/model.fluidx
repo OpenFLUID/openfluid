@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <model>
+  <simulator ID="examples.trafficlight.state">
+  </simulator>
+  <simulator ID="examples.road.traffic">
+  </simulator>
+ </model>
+
+
+</openfluid>
+

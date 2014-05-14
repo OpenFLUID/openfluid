@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 /**
   @file
@@ -61,7 +46,6 @@
 #include <queue>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/tools/CURLDownloader.hpp>
 #include <openfluid/market/MarketInfos.hpp>
 #include <openfluid/market/MarketSrcPackage.hpp>
 #include <openfluid/market/MarketBinPackage.hpp>
@@ -70,6 +54,12 @@ namespace openfluid { namespace market {
 
 
 typedef std::map<std::string,std::string> MarketLicensesTexts_t;
+// List of catalog urls
+typedef std::map<PackageInfo::PackageType,std::string> CatalogsFileURL_t;
+// List of catalog data
+typedef std::map<PackageInfo::PackageType,std::string> CatalogsData_t;
+// List of MetaPackagesCatalogs
+typedef std::map<PackageInfo::PackageType,MetaPackagesCatalog_t> TypesMetaPackagesCatalogs_t;
 
 // =====================================================================
 // =====================================================================
@@ -84,7 +74,7 @@ class DLLEXPORT MarketClient
   private:
 
     MarketInfo m_MarketInfo;
-    MetaPackagesCatalog_t m_MetaPackagesCatalog;
+    TypesMetaPackagesCatalogs_t m_TypesMetaPackagesCatalogs;
     std::string m_TempDir;
 
     std::string m_URL;
@@ -105,11 +95,22 @@ class DLLEXPORT MarketClient
 
     void unlockMarketTemp();
 
-    void parseMarketSiteData(const std::string& SiteData);
+    void parseMarketSiteData(const std::string& SiteFile);
 
-    void parseCatalogData(const std::string& CatalogData);
+    /**
+     Store all type catalog data in MetaPackageCatalog
+     @param CatalogType Type of catalog read
+     @param CatalogData string with data read
+    */
+    void parseCatalogData(const PackageInfo::PackageType& CatalogType, const std::string& CatalogFile);
 
     void downloadAssociatedLicenses();
+
+    /**
+     @return string of SelectionType passed as parameter
+     @param SelectionType to convert
+    */
+    //std::string selectionTypeToString(const MetaPackageInfo::SelectionType& Selec) const;
 
   public:
 
@@ -117,7 +118,20 @@ class DLLEXPORT MarketClient
 
     ~MarketClient();
 
-    void connect(const std::string URL);
+    /**
+     @return string name of type passed as parameter
+     @param Type Type of package
+     @param Maj First letter in maj
+     @param Plural Return plural name
+    */
+    static std::string getTypeName(const PackageInfo::PackageType& Type, const bool Maj, const bool Plural);
+
+    /**
+     @return true if MetaPackagesCatalogs contain packages
+    */
+    bool catalogsContainPackages() const;
+
+    void connect(const std::string& URL);
 
     void disconnect();
 
@@ -125,13 +139,35 @@ class DLLEXPORT MarketClient
 
     const MarketLicensesTexts_t& getLicensesTexts();
 
-    const MetaPackagesCatalog_t& getMetaPackagesCatalog();
+    const TypesMetaPackagesCatalogs_t& getTypesMetaPackagesCatalogs();
 
-    bool setSelectionFlag(const openfluid::base::FuncID_t& ID, const MetaPackageInfo::SelectionType& Flag);
+    /**
+     Finds the ID package in m_TypesMetaPackagesCatalogs
+     @return iterator on ID package
+     @param ID Id of package to find
+    */
+    MetaPackagesCatalog_t::iterator findInTypesMetaPackagesCatalogs(const openfluid::ware::WareID_t& ID);
 
-    void setSRCBuildOptions(const openfluid::base::FuncID_t& ID, const std::string& BuildOpts);
+    /**
+     Set selected format of ID package with Flag
+     @return true Flag has been set as selected flag
+     @param ID Id of package to modify
+     @param Flag Flag to be set
+    */
+    bool setSelectionFlag(const openfluid::ware::WareID_t& ID, const MetaPackageInfo::SelectionType& Flag);
 
-    MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::base::FuncID_t& ID) const;
+    /**
+     Set build options of ID package for source format with BuildOpts
+     @param ID Id of package to modify
+     @param BuildOpts Build options to be set
+    */
+    void setSRCBuildOptions(const openfluid::ware::WareID_t& ID, const std::string& BuildOpts);
+
+    /**
+     @return selected format of ID package
+     @param ID Id of package to be got
+    */
+    MetaPackageInfo::SelectionType getSelectionFlag(const openfluid::ware::WareID_t& ID) const;
 
     void installSelection(const bool IgnoreMissing = true);
 
@@ -150,6 +186,11 @@ class DLLEXPORT MarketClient
     bool isConnected() const { return m_IsConnected; };
 
     void enableLog(bool Enabled) { m_IsLogEnabled = Enabled; };
+
+    /**
+     Display packages list of market-place in console
+    */
+    //void displayPackages() const;
 
 };
 

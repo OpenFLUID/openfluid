@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -58,7 +43,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Listener.hpp>
-#include <openfluid/base/SimStatus.hpp>
+#include <openfluid/base/SimulationStatus.hpp>
 #include <string>
 
 namespace openfluid { namespace machine {
@@ -82,37 +67,37 @@ class DLLEXPORT MachineListener : public openfluid::base::Listener
 
     virtual void onInitParamsDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onFunctionInitParams(const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorInitParams(const std::string& /*SimulatorID*/) {};
 
-    virtual void onFunctionInitParamsDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorInitParamsDone(const openfluid::base::Listener::Status& /*Status*/,
+                                          const std::string& /*SimulatorID*/) {};
 
     virtual void onPrepareData() {};
 
     virtual void onPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onFunctionPrepareData(const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorPrepareData(const std::string& /*SimulatorID*/) {};
 
-    virtual void onFunctionPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorPrepareDataDone(const openfluid::base::Listener::Status& /*Status*/,
+                                          const std::string& /*SimulatorID*/) {};
 
     virtual void onCheckConsistency() {};
 
     virtual void onCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onFunctionCheckConsistency(const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorCheckConsistency(const std::string& /*SimulatorID*/) {};
 
-    virtual void onFunctionCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorCheckConsistencyDone(const openfluid::base::Listener::Status& /*Status*/,
+                                          const std::string& /*SimulatorID*/) {};
 
     virtual void onInitializeRun() {};
 
     virtual void onInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onFunctionInitializeRun(const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorInitializeRun(const std::string& /*SimulatorID*/) {};
 
-    virtual void onFunctionInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorInitializeRunDone(const openfluid::base::Listener::Status& /*Status*/,
+                                          const std::string& /*SimulatorID*/) {};
 
     virtual void onBeforeRunSteps() {};
 
@@ -120,10 +105,10 @@ class DLLEXPORT MachineListener : public openfluid::base::Listener
 
     virtual void onRunStepDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onFunctionRunStep(const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorRunStep(const std::string& /*SimulatorID*/) {};
 
-    virtual void onFunctionRunStepDone(const openfluid::base::Listener::Status& /*Status*/,
-                                       const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorRunStepDone(const openfluid::base::Listener::Status& /*Status*/,
+                                       const std::string& /*SimulatorID*/) {};
 
     virtual void onAfterRunSteps() {};
 
@@ -131,10 +116,10 @@ class DLLEXPORT MachineListener : public openfluid::base::Listener
 
     virtual void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/) {};
 
-    virtual void onFunctionFinalizeRun(const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorFinalizeRun(const std::string& /*SimulatorID*/) {};
 
-    virtual void onFunctionFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/,
-                                          const std::string& /*FunctionID*/) {};
+    virtual void onSimulatorFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/,
+                                          const std::string& /*SimulatorID*/) {};
 
 };
 

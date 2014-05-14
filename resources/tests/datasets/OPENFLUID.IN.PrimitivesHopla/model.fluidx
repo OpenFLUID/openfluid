@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+
+   
+      <simulator ID="tests.primitives.time" />                  
+    
+  </model>
+</openfluid>

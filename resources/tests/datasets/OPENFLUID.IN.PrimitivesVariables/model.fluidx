@@ -1,0 +1,13 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+
+    <model>
+      
+    
+     <simulator ID="tests.primitives.variables.prod" />
+     
+     <simulator ID="tests.primitives.variables.use" />
+    
+    
+  </model>
+</openfluid>

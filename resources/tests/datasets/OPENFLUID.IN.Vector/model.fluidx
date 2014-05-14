@@ -4,9 +4,9 @@
     <model>
 
    
-      <function fileID="tests.vector.prod" />
+      <simulator ID="tests.vector.prod" />
       
-      <function fileID="tests.vector.use" />  
+      <simulator ID="tests.vector.use" />  
              
            
     

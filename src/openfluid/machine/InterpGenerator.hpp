@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -58,7 +43,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
-#include <openfluid/tools/DistribInterp.hpp>
+#include <openfluid/tools/DistributionBindings.hpp>
 
 namespace openfluid { namespace machine {
 
@@ -66,7 +51,6 @@ namespace openfluid { namespace machine {
 class DLLEXPORT InterpGenerator : public Generator
 {
   private:
-    openfluid::tools::DistributeInterpolate m_DataPool;
 
     bool m_IsMin;
     bool m_IsMax;
@@ -77,21 +61,26 @@ class DLLEXPORT InterpGenerator : public Generator
     std::string m_SourcesFile;
     std::string m_DistriFile;
 
+    openfluid::tools::DistributionBindings* m_DistriBindings;
+
+
   public:
 
     InterpGenerator();
 
     ~InterpGenerator();
 
-    bool initParams(openfluid::core::FuncParamsMap_t Params);
+    void initParams(const openfluid::ware::WareParams_t& Params);
 
-    bool checkConsistency();
+    void prepareData();
 
-    bool initializeRun(const openfluid::base::SimulationInfo* SimInfo);
+    void checkConsistency();
 
-    bool runStep(const openfluid::base::SimulationStatus* SimStatus);
+    openfluid::base::SchedulingRequest initializeRun();
 
-    bool finalizeRun(const openfluid::base::SimulationInfo* SimInfo);
+    openfluid::base::SchedulingRequest runStep();
+
+    void finalizeRun() {};
 
 };
 

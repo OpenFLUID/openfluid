@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -61,16 +46,12 @@
 #include <sstream>
 #include <cmath>
 
-#include <boost/algorithm/string.hpp>
-
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
 
-namespace openfluid {
-namespace core {
-class DateTime;
-}
-}
+namespace openfluid { namespace core {
+  class DateTime;
+} }
 
 
 #define STRINGIFY(x) XSTRINGIFY(x)
@@ -195,27 +176,35 @@ std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore,
                                                  bool ExtIncludeDot = false);
 
 /**
+  Get list of files with specified extension contained in the specified dir
+  @param[in] DirToExplore the directory to explore
+  @param[in] Ext the file extension
+  @param[in] WithPath return full path with file name if true, file name only otherwise
+  @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
+*/
+std::vector<std::string> DLLEXPORT GetFilesBySuffixAndExt(const std::string& DirToExplore,
+                                                          const std::string& Suffix,
+                                                          const std::string& Ext,
+                                                          bool WithPath = false,
+                                                          bool ExtIncludeDot = false);
+
+/**
   Splits the passed string into a std::string array, split using the given SepString
   @param[in] StrToSplit the string to split
   @param[in] Separators the string of separators used to split the string
   @param[in] ReturnsEmpty if true, the empty strings are returned
   @return a vector of strings
 */
-inline std::vector<std::string> /*DLLEXPORT*/ SplitString(const std::string StrToSplit,
-                                               const std::string Separators,
-                                               bool ReturnsEmpty = false)
-{
-	std::vector<std::string> SplitParts;
-
-	boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
-	if (ReturnsEmpty) TokCompress = boost::token_compress_off;
-
-	boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
-
-	return SplitParts;
-}
+std::vector<std::string> DLLEXPORT SplitString(const std::string& StrToSplit,
+                                               const std::string& Separators,
+                                               bool ReturnsEmpty = false);
 
 bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
+
+/**
+  @action Store all the paths of the files existing in dir passed as parameter
+*/
+std::vector<std::string> DLLEXPORT getFilesRecursively(const std::string& DirPath);
 
 std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr, const std::string& ReplaceStr);
 
@@ -223,15 +212,13 @@ std::string DLLEXPORT RemoveTrailingSlashes(std::string Str);
 
 void DLLEXPORT printSTDOUT(std::vector<std::string> Strings, std::string Sep);
 
-openfluid::core::DateTime DLLEXPORT GenerateDateTimeFromStep(openfluid::core::DateTime DT0, openfluid::core::TimeStep_t TS, unsigned int CurrentStep);
-
 void DLLEXPORT CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
 
-std::vector<std::string> DLLEXPORT GetFileLocationsUsingPATHEnvVar(const std::string Filename);
+void DLLEXPORT CopyDirectoryContentsRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
 
 
 /**
-  Compare 2 OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
+  Compare two OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
   @param[in] VersionA the first version number
   @param[in] VersionB the second version number
   @param[in] Strict If true, the comparison include the status part of the version (it ignores it otherwise)
@@ -239,8 +226,11 @@ std::vector<std::string> DLLEXPORT GetFileLocationsUsingPATHEnvVar(const std::st
 */
 int DLLEXPORT CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
 
-
-bool DLLEXPORT OpenURLInBrowser(const std::string& URL);
+/*
+  Suspend execution for microseconds
+  @param[in] MSec the microseconds interval
+*/
+void DLLEXPORT Sleep(const unsigned int MSec);
 
 
 } } //namespaces

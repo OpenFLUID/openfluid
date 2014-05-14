@@ -1,0 +1,159 @@
+/**
+
+\page dev_signature Declaration of the simulation function signature
+
+
+
+The signature can be automatically generated through the OpenFLUID plugin for Eclipse, included in the SDK. However it is possible to write the signature "from scratch".
+
+The signature has to be defined between the #BEGIN_SIGNATURE_HOOK and #END_SIGNATURE_HOOK macros.  
+
+\section signid_ssec Identification
+
+The identification part of the signature must contain at least the ID of the simulation function. 
+This ID will be used by the framework to load functions. It is declared in 
+the signature using the #DECLARE_SIGNATURE_ID macro.\n 
+The others information that can be included for identification are:
+<ul>
+<li>the function name, declared through the #DECLARE_SIGNATURE_NAME macro
+<li>the function description, declared through the #DECLARE_SIGNATURE_DESCRIPTION macro
+<li>the name of the author, declared through the #DECLARE_SIGNATURE_AUTHORNAME macro
+<li>the email of the author, declared through the #DECLARE_SIGNATURE_AUTHOREMAIL macro
+<li>the software version of the function, declared through the #DECLARE_SIGNATURE_VERSION macro
+<li>the software status of the function, declared through the #DECLARE_SIGNATURE_STATUS macro (can be openfluid::base::EXPERIMENTAL, openfluid::base::BETA or openfluid::base::STABLE)
+</ul>
+
+\section signapp_ssec Applications range
+
+The informations about applications range is just indicative. It has no effects on coherence or computation. These information are :
+<ul>
+<li> the domain in which the function can be applied, declared through the #DECLARE_SIGNATURE_DOMAIN macro
+<li> the processes simulated by the function, declared through the #DECLARE_SIGNATURE_PROCESS macro
+<li> the numerical methods used by the function, declared through the #DECLARE_SIGNATURE_METHOD macro
+</ul>
+
+\section signdata_ssec Handled data and units graph
+
+The data handled by the simulation functions are function data or spatially distributed data, can be read by the function, appended by the function, and/or modified by the function.\n
+The function data are parameters passed to the simulation function, they usually are computation parameters. The distributed input data are attached to spatial units, and can be simulation variables or units properties.\n
+The spatial units graph representing the landscape can also be modified by simulation functions dynamically during simulations.\n   
+\n
+Read data must have rules associated when they are declared. These rules are:
+<ul>
+<li>REQUIRED, this means that data must be available or produced on the same time step
+<li>REQUIRED_PREV, this means that data must be available or produced on a previous time step
+<li>USED, this means that data are used only if they are available or produced on the same time step
+<li>USED_PREV,  this means that data are used only if they are available or produced on a previous time step
+</ul> 
+
+\subsection signdatafunc_ssec Function parameters
+
+Function parameters are attached to functions. The declaration macro takes 3 arguments: the name of the parameter, the description of the parameter, and the SI unit of the parameter.
+<ul>
+<li>#DECLARE_SIMULATOR_PARAM
+</ul>
+
+\subsection signdatadistri_ssec Input data
+
+Input data are invariant information attached to units. Simulation functions declares handling input data on each unit class. The declaration macros take 4 arguments: the name of the data, the concerned unit class, the description of the data (not required), and the SI unit of the data (not required).
+<ul>
+<li>#DECLARE_REQUIRED_INPUTDATA, #DECLARE_USED_INPUTDATA
+</ul>
+
+\subsection signdatavars_ssec Simulation variables
+
+Simulation variables are produced, read and modified by functions, and attached to distributed units.
+The declaration macros take 4 arguments: the name of the variable, the concerned unit class, the description of the variable, and the SI unit of the variable.
+
+To declare read variables:
+<ul>
+<li>for required or used vars on the current time step, the declaration macros are #DECLARE_REQUIRED_VAR, #DECLARE_USED_VAR
+<li>for required or used vars on a previous time step, the declaration macros are #DECLARE_REQUIRED_PREVVAR, #DECLARE_USED_PREVVAR
+</ul>
+
+To declare produced or modified variables:
+<ul>
+<li>for produced vars, the declaration macros are #DECLARE_PRODUCED_VAR
+<li>for modified vars, the declaration macros are #DECLARE_UPDATED_VAR
+</ul>
+
+
+These variables can be typed or untyped. When they are declared in the signature, the variables names suffixed by the [] symbol with a type name enclosed are typed, i.e. each value for the variable must match the type of the variable. If no type is mentioned, values for the variable can be of any type.\n
+In case of typed variables, the type of a required or used variable by a simulation function must match the type of the variable when it is produced.   
+
+Examples:
+<ul>
+<li> simulation function A produced an \e untyped variable var1, simulation function B requires/uses/updates an \e untyped variable var1 : OK
+<li> simulation function A produced a \e typed variable var1, simulation function B requires/uses/updates an \e untyped variable var1 : OK
+<li> simulation function A produced a \e typed variable var1 of type \e double, simulation function B requires/uses/updates a \e typed variable var1 of type \e double : OK
+<li> simulation function A produced an \e untyped variable var1, simulation function B requires/uses/updates a \e typed variable var1 : Fails!
+<li> simulation function A produced a \e typed variable var1 of type \e double, simulation function B requires/uses/updates a \e typed variable var1 of type \e matrix : Fails! 
+</ul>
+
+\subsection signdataevts_ssec Distributed discrete events
+
+If the simulation function uses distributed discrete events, they must be declared in the signature. The declaration macro takes 1 argument: the concerned unit class.
+
+To declare the use of discrete events:
+<ul>
+<li>#DECLARE_USED_EVENTS
+</ul>
+
+\subsection signdatafiles_ssec Extra files
+
+The simulation function can declare files that it loads.
+This can help users to furnish the files needed by the function, and also  
+indicates to the OpenFLUID framework to check the presence of the file if required.
+
+To declare extra files:
+<ul>
+<li>#DECLARE_USED_EXTRAFILE for files used if they are present.
+<li>#DECLARE_REQUIRED_EXTRAFILE for files that must be present. The presence is checked by the framework.
+</ul>
+
+\subsection signdatalandgraph_ssec Spatial units graph
+
+The spatial units graph representing the landscape can be modified by simulations functions. These modifications must be declared in the signature function using the following macros: 
+<ul>
+<li>#DECLARE_UPDATED_UNITSGRAPH for declaration of the global units graph modification that will occur during simulation.
+<li>#DECLARE_UPDATED_UNITSCLASS for declaration of which units classes will be affected, and how. 
+</ul>
+
+\section signexample_ssec Example
+
+\code
+
+BEGIN_SIGNATURE_HOOK
+
+  DECLARE_SIGNATURE_ID("water.surf-uz.runoff-infiltration.mseytoux")
+  DECLARE_SIGNATURE_NAME("Morel-Seytoux production on surface units")
+  DECLARE_SIGNATURE_DESCRIPTION("Production function computing infiltration and runoff at the surface of a unit 
+                                 using the Morel-Seytoux method, based on the Green and Ampt method.")
+  DECLARE_SIGNATURE_DOMAIN("hydrology")
+  DECLARE_SIGNATURE_STATUS(openfluid::base::BETA)
+
+  DECLARE_SIGNATURE_AUTHORNAME("Moussa R., Fabre J.-C.")
+  DECLARE_SIGNATURE_AUTHOREMAIL("moussa@supagro.inra.fr, fabrejc@supagro.inra.fr")
+
+  DECLARE_REQUIRED_VAR("water.atm-surf.H.rain[double]","SU","rainfall height on SU","m")
+
+  DECLARE_PRODUCED_VAR("water.surf.H.runoff[double]","SU","runoff on the surface of the unit","m")
+  DECLARE_PRODUCED_VAR("water.surf.H.infiltration[double]","SU","infiltration through the surface of the unit","m")
+
+  DECLARE_USED_PREVVAR("water.surf.Q.downstream-su[double]","SU","output volume at the outlet of the upstream SUs","m3/s")
+
+  DECLARE_REQUIRED_INPUTDATA("ks","SU","hydraulic conductivity when saturated","m/s")
+  DECLARE_REQUIRED_INPUTDATA("thetares","SU","","m3/m3")
+  DECLARE_REQUIRED_INPUTDATA("thetasat","SU","","m3/m3")
+  DECLARE_REQUIRED_INPUTDATA("betaMS","SU","","")
+  DECLARE_REQUIRED_INPUTDATA("hc","SU","","m")
+
+  DECLARE_REQUIRED_INPUTDATA("thetaisurf","SU","","m3/m3")
+
+  DECLARE_SIMULATOR_PARAM("resstep","numerical resolution step for ponding time","")
+
+END_SIGNATURE_HOOK
+
+\endcode
+
+*/

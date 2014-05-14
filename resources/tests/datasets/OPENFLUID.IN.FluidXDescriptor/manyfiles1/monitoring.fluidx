@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <monitoring>
+
+     <observer ID="output.files.csv">
+
+      <param name="format.ft1.colsep" value=" " />
+      <param name="format.ft1.dtformat" value="%Y %m %d %H %M %S" />
+      <param name="format.ft1.commentchar" value="%" />
+      <param name="set.full.format" value="ft1" />
+      <param name="set.full.unitsclass" value="XU" />
+      <param name="set.full.unitsIDs" value="*" />
+      <param name="set.full.vars" value="*" />
+      <param name="set.2vars.format" value="ft1" />
+      <param name="set.2vars.unitsclass" value="YU" />
+      <param name="set.2vars.unitsIDs" value="*" />
+      <param name="set.2vars.vars" value="var1;var2[]" />
+      <param name="set.2vars.precision" value="3" />
+      <param name="set.3units.format" value="ft1" />
+      <param name="set.3units.unitsclass" value="ZU" />
+      <param name="set.3units.unitsIDs" value="5;197;73" />
+      <param name="set.3units.vars" value="*" />
+      <param name="set.3units.precision" value="5" />      
+    
+      <param name="format.ft2.colsep" value=";" />
+      <param name="format.ft2.dtformat" value="%Y%m%dT%H%M%S" />
+      <param name="format.ft2.commentchar" value="#" />
+      <param name="set.full2.format" value="ft2" />
+      <param name="set.full2.unitsclass" value="KU" />
+      <param name="set.full2.unitsIDs" value="*" />
+      <param name="set.full2.vars" value="*" />
+      <param name="set.full2.precision" value="9" />
+      <param name="set.3vars.format" value="ft2" />  
+      <param name="set.3vars.unitsclass" value="LU" />
+      <param name="set.3vars.unitsIDs" value="*" />
+      <param name="set.3vars.vars" value="var1;var2[];var5" />
+      <param name="set.2units.format" value="ft2" />  
+      <param name="set.2units.unitsclass" value="MU" />
+      <param name="set.2units.unitsIDs" value="2;1" />
+      <param name="set.2units.vars" value="*" />
+      
+	  <param name="set.full3.format" value="ft3" />  
+      <param name="set.full3.unitsclass" value="UU" />
+      <param name="set.full3.unitsIDs" value="*" />
+      <param name="set.full3.vars" value="*" />
+      
+      <param name="format.ft4.dtformat" value="iso" />
+	  <param name="set.full4.format" value="ft4" />  
+      <param name="set.full4.unitsclass" value="UU" />
+      <param name="set.full4.unitsIDs" value="*" />
+      <param name="set.full4.vars" value="*" />
+      
+      <param name="format.ft5.dtformat" value="6cols" />
+	  <param name="set.full5.format" value="ft5" />  
+      <param name="set.full5.unitsclass" value="UU" />
+      <param name="set.full5.unitsIDs" value="*" />
+      <param name="set.full5.vars" value="*" />
+
+    </observer>
+    
+    <observer ID='output.files.kml' />
+
+    <observer ID='output.files.kml-dynamic'>
+      <param name="configfile" value='kmloutput.conf' />
+    </observer>
+
+    <observer ID='output.files.vtk'>
+      <param name="DEMfile" value='DEMs/virtualdem.tif' />
+      <param name="serie.vtk1.unitclass" value='SU' />
+      <param name="serie.vtk1.var" value='tests.var1' />
+      <param name="serie.vtk1.shapefile" value='shapefiles/SU.shp' />
+      <param name="serie.vtk1.step" value='1' />
+      <param name="serie.vtk7.unitclass" value='RS' />
+      <param name="serie.vtk7.var" value='tests.var3' />
+      <param name="serie.vtk7.shapefile" value='shapefiles/RS.shp' />
+      <param name="serie.vtk7.step" value='10' />
+      <param name="visitfile.create" value='1' />	
+    </observer>
+    
+  </monitoring>
+</openfluid>

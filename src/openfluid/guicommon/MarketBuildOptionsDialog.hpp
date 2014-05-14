@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 /**
   \file MarketBuildOptionsDialog.hpp
@@ -56,9 +41,9 @@
 #ifndef __MARKETBUILDOPTIONSDIALOG_HPP__
 #define __MARKETBUILDOPTIONSDIALOG_HPP__
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <string>
+#include <QDialog>
+#include <QLineEdit>
+#include <QString>
 
 
 namespace openfluid { namespace guicommon {
@@ -67,24 +52,26 @@ namespace openfluid { namespace guicommon {
 // =====================================================================
 
 
-class MarketBuildOptionsDialog : public Gtk::Dialog
+class MarketBuildOptionsDialog : public QDialog
 {
+  Q_OBJECT;
+
   private:
 
-    std::string m_CommonBuildOptions;
-    std::string m_BuildOptions;
+    QString m_CommonBuildOptions;
+    QString m_BuildOptions;
 
-    std::string m_FuncID;
-    Gtk::Entry m_OptionsEntry;
+    QString m_SimID;
+    QLineEdit m_OptionsEntry;
 
   public:
 
-    MarketBuildOptionsDialog(const std::string& CommonBuildOptions, const std::string& BuildOptions,
-                             const std::string FuncID = "");
+    MarketBuildOptionsDialog(const QString& CommonBuildOptions, const QString& BuildOptions,
+                             const QString& SimID = "");
 
     ~MarketBuildOptionsDialog() {};
 
-    std::string getEditedOptions() const { return m_OptionsEntry.get_text(); };
+    QString getEditedOptions() const { return m_OptionsEntry.text(); };
 };
 
 

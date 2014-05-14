@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -77,18 +62,18 @@ class DLLEXPORT ColumnTextParser
     std::string m_Delimiter;
     std::string m_CommentSymbol;
 
-    int m_LinesCount;
-    int m_ColsCount;
+    unsigned int m_LinesCount;
+    unsigned int m_ColsCount;
 
     std::vector<std::vector<std::string> > m_Contents;
 
-    std::vector<std::string> tokenizeLine(std::string Line);
+    std::vector<std::string> tokenizeLine(const std::string& Line);
 
     bool checkContents();
 
-    bool isCommentLineStr(std::string LineStr);
+    bool isCommentLineStr(const std::string& LineStr);
 
-    bool isEmptyLineStr(std::string LineStr);
+    bool isEmptyLineStr(const std::string& LineStr);
 
 
   public:
@@ -96,7 +81,7 @@ class DLLEXPORT ColumnTextParser
     /**
       Constructor
     */
-    ColumnTextParser(std::string CommentLineSymbol = "", std::string Delimiter = " \t\r\n");
+    ColumnTextParser(const std::string& CommentLineSymbol = "", const std::string& Delimiter = " \t\r\n");
 
     /**
       Destructor
@@ -109,7 +94,7 @@ class DLLEXPORT ColumnTextParser
       @param[in] Filename the full path of the file to load
       @return true if everything went fine
     */
-    bool loadFromFile(std::string Filename);
+    bool loadFromFile(const std::string& Filename);
 
     /**
       Parses a one-line delimiter-separated string to set contents
@@ -118,7 +103,7 @@ class DLLEXPORT ColumnTextParser
       @param[in] ColumnsNbr the number of columns (for splitting the sting into lines)
       @return true if everything went fine
     */
-    bool setFromString(std::string Contents, unsigned int ColumnsNbr);
+    bool setFromString(const std::string& Contents, unsigned int ColumnsNbr);
 
     /**
       Returns the value at a specified row-column, as a string
@@ -167,13 +152,13 @@ class DLLEXPORT ColumnTextParser
       Returns the number of lines
       @return the number of lines
     */
-    inline int getLinesCount() const { return m_LinesCount;};
+    inline unsigned int getLinesCount() const { return m_LinesCount;};
 
     /**
       Returns the number of columns
       @return the number of columns
     */
-    inline int getColsCount() const { return m_ColsCount;};
+    inline unsigned int getColsCount() const { return m_ColsCount;};
 
     void streamContents(std::ostream& OStream);
 

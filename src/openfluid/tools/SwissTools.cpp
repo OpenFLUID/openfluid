@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,21 +26,24 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 #include <openfluid/tools/SwissTools.hpp>
 
 #include <boost/filesystem/operations.hpp>
-//#include <boost/algorithm/string.hpp>
-#include <glibmm/spawn.h>
+#include <boost/algorithm/string.hpp>
 
 #include <openfluid/core/DateTime.hpp>
 
-#ifdef G_OS_WIN32
-#include <windows.h>
-#endif
 
+#if WIN32
+#include <windows.h> // for Sleep
+#else
+#include <time.h>
+#endif
 
 namespace openfluid { namespace tools {
 
@@ -172,8 +158,8 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
 
       if (boost::filesystem::is_regular(it->status()) && boost::ends_with(it->path().string(),FileExt))
       {
-        if (WithPath) FileList.push_back(it->string());
-        else FileList.push_back(it->path().leaf());
+        if (WithPath) FileList.push_back(it->path().string());
+        else FileList.push_back(it->path().filename().string());
       }
     }
   }
@@ -183,9 +169,74 @@ std::vector<std::string> GetFilesByExt(const std::string DirToExplore, const std
 }
 
 
+
 // =====================================================================
 // =====================================================================
 
+
+std::vector<std::string> GetFilesBySuffixAndExt(const std::string& DirToExplore,
+                                                const std::string& Suffix,
+                                                const std::string& Ext,
+                                                bool WithPath,
+                                                bool ExtIncludeDot)
+
+{
+
+  std::vector<std::string> FileList;
+
+
+  std::string FileEnd = Suffix+Ext;
+  if (!ExtIncludeDot) FileEnd = Suffix+"."+Ext;
+
+  boost::filesystem::path PathToExplore(DirToExplore);
+
+  if (boost::filesystem::is_directory(PathToExplore))
+  {
+
+    boost::filesystem::directory_iterator it;
+
+    std::string FoundFile;
+
+    for (it = boost::filesystem::directory_iterator(PathToExplore);it != boost::filesystem::directory_iterator(); ++it)
+    {
+
+      // lists files with specified extension
+
+      if (boost::filesystem::is_regular(it->status()) && boost::ends_with(it->path().string(),FileEnd))
+      {
+        if (WithPath) FileList.push_back(it->path().string());
+        else FileList.push_back(it->path().filename().string());
+      }
+    }
+  }
+
+  return FileList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> SplitString(const std::string& StrToSplit,
+                                     const std::string& Separators,
+                                     bool ReturnsEmpty)
+{
+  std::vector<std::string> SplitParts;
+
+  boost::algorithm::token_compress_mode_type TokCompress = boost::token_compress_on;
+  if (ReturnsEmpty) TokCompress = boost::token_compress_off;
+
+  boost::split(SplitParts, StrToSplit, boost::is_any_of(Separators),TokCompress);
+
+  return SplitParts;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+// TODO to be fixed: should not delete the given path, may not work on win32
 bool EmptyDirectoryRecursively(const std::string DirPath)
 {
 
@@ -196,6 +247,38 @@ bool EmptyDirectoryRecursively(const std::string DirPath)
   return boost::filesystem::create_directory(PathToEmpty);
 
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+std::vector<std::string> getFilesRecursively(const std::string& DirPath)
+{
+  std::vector<std::string> FileNames;
+
+  boost::filesystem::directory_iterator It;
+
+  for (It = boost::filesystem::directory_iterator(DirPath); It != boost::filesystem::directory_iterator(); ++It)
+  {
+    // Regular file
+    if (boost::filesystem::is_regular(It->status()))
+      FileNames.push_back(DirPath + "/" + It->path().filename().string());
+
+    // Directory
+    if (boost::filesystem::is_directory(It->status()))
+    {
+      std::vector<std::string> SubDirFiles = getFilesRecursively(It->path().string());
+      std::vector<std::string>::const_iterator It;
+
+      for (It = SubDirFiles.begin(); It != SubDirFiles.end(); ++It)
+        FileNames.push_back(*It);
+    }
+  }
+
+  return FileNames;
+}
+
 
 // =====================================================================
 // =====================================================================
@@ -228,8 +311,10 @@ std::string RemoveTrailingSlashes(std::string Str)
   return Str;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void OutputToStream(std::vector<std::string> Strings, std::string Sep, std::ostream& OStream)
 {
@@ -237,15 +322,6 @@ void OutputToStream(std::vector<std::string> Strings, std::string Sep, std::ostr
   OStream << std::endl;
 }
 
-// =====================================================================
-// =====================================================================
-
-
-openfluid::core::DateTime GenerateDateTimeFromStep(openfluid::core::DateTime DT0, openfluid::core::TimeStep_t TS, unsigned int CurrentStep)
-{
-  DT0.addSeconds(TS*CurrentStep);
-  return DT0;
-}
 
 // =====================================================================
 // =====================================================================
@@ -256,7 +332,7 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
 
   boost::filesystem::path SourceDirPath(SourceDir);
   boost::filesystem::path IntoDirPath(IntoDir);
-  boost::filesystem::path DestDirPath(IntoDir+"/"+SourceDirPath.leaf());
+  boost::filesystem::path DestDirPath(IntoDir+"/"+SourceDirPath.filename().string());
 
 
   if (boost::filesystem::is_directory(DestDirPath)) boost::filesystem::remove_all(DestDirPath);
@@ -270,12 +346,12 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
 
     if (boost::filesystem::is_regular(it->status()))
     {
-      boost::filesystem::copy_file(it->path(),boost::filesystem::path(DestDirPath.string()+"/"+it->path().leaf()));
+      boost::filesystem::copy_file(it->path(),boost::filesystem::path(DestDirPath.string()+"/"+it->path().filename().string()));
     }
 
     if (boost::filesystem::is_directory(it->status()))
     {
-      if (!DontCopyDotDirs || (DontCopyDotDirs && !boost::starts_with(it->path().leaf(),".")))
+      if (!DontCopyDotDirs || (DontCopyDotDirs && !boost::starts_with(it->path().filename().string(),".")))
       {
         CopyDirectoryRecursively(it->path().string(),DestDirPath.string(), DontCopyDotDirs);
       }
@@ -288,36 +364,34 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
 // =====================================================================
 
 
-std::vector<std::string> GetFileLocationsUsingPATHEnvVar(const std::string Filename)
+void CopyDirectoryContentsRecursively(const std::string SourceDir, const std::string IntoDir, const bool DontCopyDotDirs)
 {
 
-  std::vector<std::string> FileLocations;
-  char *PATHEnvVar;
+  boost::filesystem::path SourceDirPath(SourceDir);
+  boost::filesystem::path IntoDirPath(IntoDir);
 
-  PATHEnvVar = std::getenv("PATH");
+  if (boost::filesystem::is_directory(IntoDirPath)) boost::filesystem::remove_all(IntoDirPath);
 
-  if (PATHEnvVar != NULL)
+  boost::filesystem::create_directory(IntoDirPath);
+
+  boost::filesystem::directory_iterator it;
+
+  for (it = boost::filesystem::directory_iterator(SourceDirPath);it != boost::filesystem::directory_iterator(); ++it)
   {
-    std::vector<std::string> PATHItems;
 
-#if defined __unix__ || defined __APPLE__
-    PATHItems = SplitString(std::string(PATHEnvVar), ":", false);
-#endif
-
-#ifdef WIN32
-    PATHItems = SplitString(std::string(PATHEnvVar), ";", false);
-#endif
-
-    for (unsigned int i=0;i<PATHItems.size();i++)
+    if (boost::filesystem::is_regular(it->status()))
     {
-      boost::filesystem::path PathToTest(PATHItems[i]+"/"+Filename);
-      if (boost::filesystem::exists(PathToTest)) FileLocations.push_back(PathToTest.string());
+      boost::filesystem::copy_file(it->path(),boost::filesystem::path(IntoDirPath.string()+"/"+it->path().filename().string()));
     }
 
+    if (boost::filesystem::is_directory(it->status()))
+    {
+      if (!DontCopyDotDirs || (DontCopyDotDirs && !boost::starts_with(it->path().filename().string(),".")))
+      {
+        CopyDirectoryRecursively(it->path().string(),IntoDirPath.string(), DontCopyDotDirs);
+      }
+    }
   }
-
-  return FileLocations;
-
 }
 
 
@@ -395,65 +469,13 @@ int CompareVersions(const std::string& VersionA, const std::string& VersionB, bo
 // =====================================================================
 
 
-bool OpenURLInBrowser(const std::string& URL)
+void Sleep(const unsigned int MSec)
 {
-  if (URL.empty()) return false;
-
-#ifdef G_OS_WIN32
-
-  std::string URLTmp = URL;
-  if (URLTmp.find("file://") == 0)
-  {
-    URLTmp = URLTmp.substr(7);
-  }
-  return ((int)(ShellExecute(NULL, "open", LPCSTR(URLTmp.c_str()), NULL, NULL, SW_SHOWNORMAL)) > 32);
-
-  #endif
-
-#ifdef G_OS_UNIX
-
-  std::vector<std::string> Args(2,"");
-
-  Args[0] = "xdg-open";
-  Args[1] = URL;
-
-  try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-  catch (Glib::SpawnError& E)
-  {
-    Args[0] = "firefox";
-    try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-    catch (Glib::SpawnError& E)
-    {
-      Args[0] = "chrome";
-      try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-      catch (Glib::SpawnError& E)
-      {
-        Args[0] = "opera";
-        try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-        catch (Glib::SpawnError& E)
-        {
-          Args[0] = "mozilla";
-          try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-          catch (Glib::SpawnError& E)
-          {
-            Args[0] = "netscape";
-            try { Glib::spawn_async("", Args, Glib::SPAWN_SEARCH_PATH); }
-            catch (Glib::SpawnError& E)
-            {
-              return false;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return true;
+#if WIN32
+  Sleep(MSec);
+#else
+  usleep(MSec);
 #endif
-
-
-  return false;
 }
-
 
 } } // namespaces

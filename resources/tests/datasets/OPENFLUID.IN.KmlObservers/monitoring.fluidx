@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <monitoring>
+
+    <observer ID="export.vars.files.kml-plot" >      
+      <param name="title" value="test of the kml plot export" />
+      <param name="tryopengearth" value="0" />
+      
+      <param name="layers.1.unitclass" value="SU" />
+      <param name="layers.1.sourcetype" value="file" />
+      <param name="layers.1.sourcefile" value="data/extractroujan_su_wgs84.shp" />
+      <param name="layers.1.varslist" value="tests.random" />
+      <param name="layers.1.defaultcolor" value="8f316A23" />
+      <param name="layers.1.plottedcolor" value="8f33ff00" />
+      <param name="layers.1.linewidth" value="2" />
+
+
+      <param name="layers.2.unitclass" value="RS" />
+      <param name="layers.2.sourcetype" value="file" />
+      <param name="layers.2.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
+      <param name="layers.2.varslist" value="*" />
+      <param name="layers.2.defaultcolor" value="ff6a3423" />
+      <param name="layers.2.plottedcolor" value="ffff6632" />
+      <param name="layers.2.linewidth" value="5" />
+
+    </observer>
+
+
+    <observer ID="export.vars.files.kml-plot" >      
+      <param name="title" value="Plot of SU and RS values" />
+      <param name="tryopengearth" value="0" />
+      
+      <param name="kmzfilename" value="SURSplots.kmz" /> 
+      
+      <param name="layers.1.unitclass" value="SU" />
+      <param name="layers.1.sourcetype" value="file" />
+      <param name="layers.1.sourcefile" value="data/extractroujan_su_wgs84.shp" />
+      <param name="layers.1.varslist" value="*" />
+      <param name="layers.1.defaultcolor" value="8f316A23" />
+      <param name="layers.1.plottedcolor" value="8f33ff00" />
+      <param name="layers.1.linewidth" value="2" />
+
+
+      <param name="layers.2.unitclass" value="RS" />
+      <param name="layers.2.sourcetype" value="file" />
+      <param name="layers.2.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
+      <param name="layers.2.varslist" value="*" />
+      <param name="layers.2.defaultcolor" value="ff6a3423" />
+      <param name="layers.2.plottedcolor" value="ffff6632" />
+      <param name="layers.2.linewidth" value="5" />
+
+    </observer>
+
+
+    <observer ID="export.vars.files.kml-anim" >
+      <param name="title" value="test of the kml anim export" />
+      <param name="kmzfilename" value="RS.kmz" /> 
+      <param name="tryopengearth" value="0" />
+      
+      <param name="layers.anim.unitclass" value="RS" />
+      <param name="layers.anim.varname" value="tests.random" />
+      <param name="layers.anim.sourcetype" value="file" />
+      <param name="layers.anim.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
+      <param name="layers.anim.linewidth" value="4" />
+      <param name="layers.anim.colorscale" value="ff00ff00;14;ff00ff76;18;ff00ffdc;22;ff00faff;26;ff0099ff;28;ff001cff"/>
+
+      <param name="layers.static.1.unitclass" value="SU" />
+      <param name="layers.static.1.sourcetype" value="file" />
+      <param name="layers.static.1.sourcefile" value="data/extractroujan_su_wgs84.shp" />
+      <param name="layers.static.1.linewidth" value="3" />
+      <param name="layers.static.1.color" value="ffffffff" />
+    </observer>
+
+    <observer ID="export.vars.files.kml-anim" >
+      <param name="title" value="test of the kml anim export for variable tests.random on SU units" />
+      <param name="kmzfilename" value="SU.kmz" /> 
+      <param name="tryopengearth" value="0" />
+      
+      <param name="layers.anim.unitclass" value="SU" />
+      <param name="layers.anim.varname" value="tests.random" />
+      <param name="layers.anim.sourcetype" value="file" />
+      <param name="layers.anim.sourcefile" value="data/extractroujan_su_wgs84.shp" />
+      <param name="layers.anim.linewidth" value="4" />
+      <param name="layers.anim.colorscale" value="9f00ff00;60;9f00ff76;70;9f00ffdc;80;9f00faff;90;9f0099ff;95;9f001cff"/>
+
+    </observer>
+
+    
+  </monitoring>
+</openfluid>

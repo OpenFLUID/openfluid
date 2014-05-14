@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -54,8 +39,7 @@
 */
 
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_NO_MAIN
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE unittest_marketclient
 #include <boost/test/unit_test.hpp>
@@ -66,6 +50,7 @@
 #include <openfluid/market/MarketClient.hpp>
 
 #include <tests-config.hpp>
+#include <QCoreApplication>
 
 // =====================================================================
 // =====================================================================
@@ -88,78 +73,122 @@ BOOST_AUTO_TEST_CASE(check_operations)
   openfluid::market::MarketInfo MI;
 
   std::string TmpDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/temp").string();
-  std::string MarketBagBinDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-bin").string();;
-  std::string MarketBagSrcDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-src").string();;
+  std::string MarketBagSimulatorDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-simulators").string();
+  std::string MarketBagObserverDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-observers").string();
+  std::string MarketBagBuilderextDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-builderexts").string();
+  std::string MarketBagDatasetDir = boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/market/repository/market-datasets").string();
+  std::string MarketBagBinSubDir = "bin";
+  std::string MarketBagSrcSubDir = "src";
 
 //  openfluid::market::MarketPackage::initialize(false);
 
-  openfluid::market::MarketPackage::setWorksDirs(TmpDir,MarketBagBinDir,MarketBagSrcDir);
+  openfluid::market::MarketPackage::setWorksDirs(TmpDir, MarketBagSimulatorDir, MarketBagObserverDir,
+      MarketBagBuilderextDir, MarketBagDatasetDir, MarketBagBinSubDir, MarketBagSrcSubDir);
 
   boost::filesystem::remove_all(boost::filesystem::path(TmpDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBinDir));
-  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSrcDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSimulatorDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagObserverDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBuilderextDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagDatasetDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagBinSubDir));
+  boost::filesystem::remove_all(boost::filesystem::path(MarketBagSrcSubDir));
 
   MC.enableLog(true);
 
 
-  MC.connect("file://"+boost::filesystem::path(CONFIGTESTS_INPUT_DATASETS_DIR+"/market/repository").string());
+  MC.connect("file://"+boost::filesystem::path(CONFIGTESTS_OUTPUT_DATA_DIR+"/marketplace").string());
 
   BOOST_REQUIRE_EQUAL(MC.isConnected(),true);
 
   MC.getMarketInfo(MI);
-  BOOST_REQUIRE_EQUAL(MI.Name,"OpenFLUID-Market for tests");
+  BOOST_REQUIRE_EQUAL(MI.Name,"OpenFLUID-Market generated automatically");
 
-  openfluid::market::MetaPackagesCatalog_t PC = MC.getMetaPackagesCatalog();
+  openfluid::market::TypesMetaPackagesCatalogs_t TPC = MC.getTypesMetaPackagesCatalogs();
 
-  std::cout << "Meta-packages count: " << PC.size() << std::endl;
-
+  openfluid::market::TypesMetaPackagesCatalogs_t::iterator TPCit;
   openfluid::market::MetaPackagesCatalog_t::iterator PCit;
 
 
-  for (PCit = PC.begin(); PCit!=PC.end(); ++PCit)
+  for (TPCit = TPC.begin(); TPCit != TPC.end(); ++TPCit)
   {
-    std::cout << "############ " << PCit->first << " ############" << std::endl;
-    std::cout << "ID: " << PCit->second.ID << std::endl;
+    //std::cout << "Meta-packages count: " << TPCit->second.size() << std::endl;
 
-    if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != PCit->second.AvailablePackages.end())
+    for (PCit = TPCit->second.begin(); PCit != TPCit->second.end(); ++PCit)
     {
-      std::cout << "BIN | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].URL << std::endl;
-/*      std::cout << "BIN | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Name << std::endl;
-      std::cout << "BIN | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Description << std::endl;
-      std::cout << "BIN | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Authors << std::endl;*/
-      std::cout << "BIN | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].License << std::endl;
+      //std::cout << "############ " << PCit->first << " ############" << std::endl;
+      //std::cout << "ID: " << PCit->second.ID << std::endl;
+
+      if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::BIN) != PCit->second.AvailablePackages.end())
+      {
+  /*      std::cout << "BIN | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].URL << std::endl;
+        std::cout << "BIN | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Name << std::endl;
+        std::cout << "BIN | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Description << std::endl;
+        std::cout << "BIN | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].Authors << std::endl;
+        std::cout << "BIN | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::BIN].License << std::endl;
+*/
+      }
+
+      if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != PCit->second.AvailablePackages.end())
+      {
+  /*      std::cout << "SRC | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].URL << std::endl;
+        std::cout << "SRC | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Name << std::endl;
+        std::cout << "SRC | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Description << std::endl;
+        std::cout << "SRC | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;
+        std::cout << "SRC | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].License << std::endl;
+*/      }
+
+      BOOST_REQUIRE_EQUAL(PCit->second.Selected,openfluid::market::MetaPackageInfo::NONE);
 
     }
-
-    if (PCit->second.AvailablePackages.find(openfluid::market::MetaPackageInfo::SRC) != PCit->second.AvailablePackages.end())
-    {
-      std::cout << "SRC | URL: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].URL << std::endl;
-/*      std::cout << "SRC | Name: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Name << std::endl;
-      std::cout << "SRC | Desc: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Description << std::endl;
-      std::cout << "SRC | Authors: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].Authors << std::endl;*/
-      std::cout << "SRC | License: " << PCit->second.AvailablePackages[openfluid::market::MetaPackageInfo::SRC].License << std::endl;
-    }
-
-    BOOST_REQUIRE_EQUAL(PCit->second.Selected,openfluid::market::MetaPackageInfo::NONE);
-
   }
 
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.dummy"),openfluid::market::MetaPackageInfo::BIN);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::SRC));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.dummy"),openfluid::market::MetaPackageInfo::SRC);
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.dummy"),openfluid::market::MetaPackageInfo::NONE);
+  /** Simulators **/
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim"),openfluid::market::MetaPackageInfo::BIN);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim",openfluid::market::MetaPackageInfo::SRC));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim"),openfluid::market::MetaPackageInfo::SRC);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.sim"),openfluid::market::MetaPackageInfo::NONE);
 
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.binonly",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.sim.srconly",openfluid::market::MetaPackageInfo::SRC));
 
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.dummy",openfluid::market::MetaPackageInfo::NONE));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.binonly.dummy",openfluid::market::MetaPackageInfo::BIN));
-  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.srconly.dummy",openfluid::market::MetaPackageInfo::SRC));
+  /** Observers **/
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs"),openfluid::market::MetaPackageInfo::BIN);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs",openfluid::market::MetaPackageInfo::SRC));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs"),openfluid::market::MetaPackageInfo::SRC);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.obs"),openfluid::market::MetaPackageInfo::NONE);
 
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.binonly",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.obs.srconly",openfluid::market::MetaPackageInfo::SRC));
+
+  /** Buildexts **/
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext",openfluid::market::MetaPackageInfo::BIN));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.bext"),openfluid::market::MetaPackageInfo::BIN);
+  //BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext",openfluid::market::MetaPackageInfo::SRC));
+  //BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.bext"),openfluid::market::MetaPackageInfo::SRC);
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.bext"),openfluid::market::MetaPackageInfo::NONE);
+
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext",openfluid::market::MetaPackageInfo::NONE));
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext.binonly",openfluid::market::MetaPackageInfo::BIN));
+  //BOOST_REQUIRE(MC.setSelectionFlag("tests.market.bext.srconly",openfluid::market::MetaPackageInfo::SRC));
+
+  /** Datasets **/
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data",openfluid::market::MetaPackageInfo::FLUIDX));
+  BOOST_REQUIRE_EQUAL(MC.getSelectionFlag("tests.market.data"),openfluid::market::MetaPackageInfo::FLUIDX);
+
+  BOOST_REQUIRE(MC.setSelectionFlag("tests.market.data",openfluid::market::MetaPackageInfo::FLUIDX));
 
   //MC.addBuildConfigOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
-  openfluid::market::MarketPackage::setCommonBuildOptions(CONFIGTESTS_OPTIONS_FOR_CMAKE);
+  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::SIM, CONFIGTESTS_OPTIONS_FOR_CMAKE);
+  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::OBS, CONFIGTESTS_OPTIONS_FOR_CMAKE);
+  openfluid::market::MarketPackage::setCommonBuildOptions(openfluid::market::PackageInfo::BUILD, CONFIGTESTS_OPTIONS_FOR_CMAKE);
 
   MC.installSelection();
 
@@ -168,5 +197,12 @@ BOOST_AUTO_TEST_CASE(check_operations)
   BOOST_REQUIRE_EQUAL(MC.isConnected(),false);
 }
 
+// =====================================================================
+// =====================================================================
 
+int main(int argc, char *argv[])
+{
+  QCoreApplication app(argc, argv);
 
+  return ::boost::unit_test::unit_test_main( &init_unit_test, argc, argv );
+}

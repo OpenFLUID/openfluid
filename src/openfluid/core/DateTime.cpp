@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 
 /**
@@ -57,9 +42,11 @@
 #include <openfluid/core/DateTime.hpp>
 
 #include <iostream>
+#include <sstream>
 #include <cstring>
 #include <cstdio>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 
 namespace openfluid { namespace core {
@@ -84,7 +71,7 @@ DateTime::DateTime(int Year, int Month, int Day, int Hour, int Minute, int Secon
 // =====================================================================
 
 
-DateTime::DateTime(rawtime_t SecondsSince0000)
+DateTime::DateTime(RawTime_t SecondsSince0000)
 {
   set(SecondsSince0000);
 }
@@ -137,17 +124,36 @@ bool DateTime::setFromISOString(const std::string& DateTimeStr)
 
 
   // scan of the input string to break it down
-  sscanf(DateTimeStr.c_str(),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec);
-
-  return set(Year, Month, Day, Hour, Min, Sec);
+  return (sscanf(DateTimeStr.c_str(),"%4d-%2d-%2d %2d:%2d:%2d",&Year,&Month,&Day,&Hour,&Min,&Sec) == 6 &&
+          set(Year, Month, Day, Hour, Min, Sec));
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void DateTime::set(const rawtime_t& SecondsSince0000)
+bool DateTime::setFromString(const std::string& DateTimeStr, const std::string& FormatStr)
+{
+  boost::posix_time::time_input_facet* Facet = new  boost::posix_time::time_input_facet(FormatStr);
+
+  std::istringstream StrS(DateTimeStr);
+  StrS.imbue(std::locale(std::locale::classic(),Facet));
+  boost::posix_time::ptime Time(boost::posix_time::not_a_date_time);
+  StrS >> Time;
+
+  return (Time != boost::posix_time::not_a_date_time &&
+          set(Time.date().year(), Time.date().month(),Time.date().day(),Time.time_of_day().hours(),
+              Time.time_of_day().minutes(), Time.time_of_day().seconds()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void DateTime::set(const RawTime_t& SecondsSince0000)
 {
   m_RawTime = SecondsSince0000;
 
@@ -172,10 +178,10 @@ void DateTime::updateYMDHMSFromRawTime()
   */
 
 
-  rawtime_t n, c, y, m, a, Year, Month, Day;
+  RawTime_t n, c, y, m, a, Year, Month, Day;
 
-  rawtime_t JDN = (rawtime_t)(m_RawTime / 86400) + 1721059;  // added to set refererence to JDN base
-  rawtime_t SecsLeft = (rawtime_t)(m_RawTime % 86400);
+  RawTime_t JDN = (RawTime_t)(m_RawTime / 86400) + 1721059;  // added to set refererence to JDN base
+  RawTime_t SecsLeft = (RawTime_t)(m_RawTime % 86400);
 
   //n = JDN + 32082;
 
@@ -196,11 +202,11 @@ void DateTime::updateYMDHMSFromRawTime()
   m_TM.tm_mon = (int)Month - 1;
   m_TM.tm_year = (int)Year - 1900;
 
-  m_TM.tm_hour = (rawtime_t)(SecsLeft / 3600);
-  SecsLeft = (rawtime_t)(SecsLeft % 3600);
+  m_TM.tm_hour = (RawTime_t)(SecsLeft / 3600);
+  SecsLeft = (RawTime_t)(SecsLeft % 3600);
 
-  m_TM.tm_min = (rawtime_t)(SecsLeft / 60);
-  SecsLeft = (rawtime_t)(SecsLeft % 60);
+  m_TM.tm_min = (RawTime_t)(SecsLeft / 60);
+  SecsLeft = (RawTime_t)(SecsLeft % 60);
 
   m_TM.tm_sec = SecsLeft;
 
@@ -233,7 +239,7 @@ void DateTime::updateRawTimeFromYMDHMS()
   */
 
 
-  rawtime_t JDN;
+  RawTime_t JDN;
 
   int Day,Year,Month;
 
@@ -241,9 +247,9 @@ void DateTime::updateRawTimeFromYMDHMS()
   Year = m_TM.tm_year+1900;
   Month = m_TM.tm_mon+1;
 
-  JDN = (rawtime_t)((Day-32075+1461*(Year+4800+(Month-14)/12)/4+367*(Month-2-(Month-14)/12*12)/12-3*((Year+4900+(Month-14)/12)/100)/4)-1721059);
+  JDN = (RawTime_t)((Day-32075+1461*(Year+4800+(Month-14)/12)/4+367*(Month-2-(Month-14)/12*12)/12-3*((Year+4900+(Month-14)/12)/100)/4)-1721059);
 
-  m_RawTime = (rawtime_t)((JDN*86400) + (m_TM.tm_hour*3600) + (m_TM.tm_min*60) + m_TM.tm_sec);
+  m_RawTime = (RawTime_t)((JDN*86400) + (m_TM.tm_hour*3600) + (m_TM.tm_min*60) + m_TM.tm_sec);
 
   #if 0
   std::cerr << "JDN: " << JDN << "    RawTime: " << m_RawTime << std::endl;
@@ -257,7 +263,7 @@ void DateTime::updateRawTimeFromYMDHMS()
 // =====================================================================
 
 
-rawtime_t DateTime::getRawTime() const
+RawTime_t DateTime::getRawTime() const
 {
 
 
@@ -349,7 +355,7 @@ std::string DateTime::getTimeAsISOString() const
 // =====================================================================
 
 
-void DateTime::addSeconds(const rawtime_t& Seconds)
+void DateTime::addSeconds(const RawTime_t& Seconds)
 {
   m_RawTime = m_RawTime + Seconds;
   updateYMDHMSFromRawTime();
@@ -359,7 +365,7 @@ void DateTime::addSeconds(const rawtime_t& Seconds)
 // =====================================================================
 
 
-void DateTime::subtractSeconds(const rawtime_t& Seconds)
+void DateTime::subtractSeconds(const RawTime_t& Seconds)
 {
   m_RawTime = m_RawTime - Seconds;
   updateYMDHMSFromRawTime();
@@ -388,7 +394,7 @@ bool DateTime::isStrictlyBetween(const DateTime& FirstDT, const DateTime& Second
 // =====================================================================
 
 
-rawtime_t DateTime::diffInSeconds(const DateTime& DT) const
+RawTime_t DateTime::diffInSeconds(const DateTime& DT) const
 {
   return (m_RawTime - DT.getRawTime());
 }
@@ -458,7 +464,7 @@ bool DateTime::operator <=(const DateTime &Right) const
 // =====================================================================
 
 
-DateTime DateTime::operator +(const rawtime_t& Seconds) const
+DateTime DateTime::operator +(const RawTime_t& Seconds) const
 {
   DateTime DT(m_RawTime+Seconds);
 
@@ -469,7 +475,7 @@ DateTime DateTime::operator +(const rawtime_t& Seconds) const
 // =====================================================================
 
 
-DateTime DateTime::operator -(const rawtime_t& Seconds) const
+DateTime DateTime::operator -(const RawTime_t& Seconds) const
 {
   DateTime DT(m_RawTime-Seconds);
 

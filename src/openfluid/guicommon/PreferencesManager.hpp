@@ -1,49 +1,33 @@
 /*
- This file is part of OpenFLUID software
- Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+
+  This file is part of OpenFLUID software
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
 
- OpenFLUID is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
+  OpenFLUID is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
- OpenFLUID is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  OpenFLUID is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
- along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
- In addition, as a special exception, INRA gives You the additional right
- to dynamically link the code of OpenFLUID with code not covered
- under the GNU General Public License ("Non-GPL Code") and to distribute
- linked combinations including the two, subject to the limitations in this
- paragraph. Non-GPL Code permitted under this exception must only link to
- the code of OpenFLUID dynamically through the OpenFLUID libraries
- interfaces, and only for building OpenFLUID plugins. The files of
- Non-GPL Code may be link to the OpenFLUID libraries without causing the
- resulting work to be covered by the GNU General Public License. You must
- obey the GNU General Public License in all respects for all of the
- OpenFLUID code and other code used in conjunction with OpenFLUID
- except the Non-GPL Code covered by this exception. If you modify
- this OpenFLUID, you may extend this exception to your version of the file,
- but you are not obligated to do so. If you do not wish to provide this
- exception without modification, you must delete this exception statement
- from your version and license this OpenFLUID solely under the GPL without
- exception.
+  You should have received a copy of the GNU General Public License
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
 
- Other Usage means a use of OpenFLUID that is inconsistent with the GPL
- license, and requires a written agreement between You and INRA.
- Licensees for Other Usage of OpenFLUID may use this file in accordance
- with the terms contained in the written agreement between You and INRA.
- */
+  Other Usage means a use of OpenFLUID that is inconsistent with the GPL
+  license, and requires a written agreement between You and INRA.
+  Licensees for Other Usage of OpenFLUID may use this file in accordance
+  with the terms contained in the written agreement between You and INRA.
+  
+*/
 
 /**
  \file PreferencesManager.hpp
@@ -56,12 +40,17 @@
 #define __PREFERENCESMANAGER_HPP__
 
 #include <openfluid/dllexport.hpp>
+#include <openfluid/core/DateTime.hpp>
 
 #include <map>
-#include <iostream>
-#include <glibmm/keyfile.h>
+#include <vector>
+
+
+#include <QSettings>
+
 
 namespace openfluid { namespace guicommon {
+
 
 // =====================================================================
 // =====================================================================
@@ -69,84 +58,177 @@ namespace openfluid { namespace guicommon {
 
 class DLLEXPORT PreferencesManager
 {
+
   private:
 
     static PreferencesManager* mp_Instance;
 
-    static std::string m_FileName;
+    static QString m_FileName;
 
-    Glib::KeyFile* mp_KFile;
+    QSettings* mp_ConfFile;
 
     PreferencesManager();
 
     void setDefaultValues();
 
-    void loadKeyFile();
+    void setExtraPaths(const QString& Key, const QStringList& Paths);
+
+    void addExtraPath(const QString& Key, const QString& Path);
+
+    void removeExtraPath(const QString& Key, const QString& Path);
+
+    QStringList getExtraPaths(const QString& Key);
+
+    static QString guessLang();
+
 
   public:
 
-    typedef std::map<std::string, std::string> MarketPlaces_t;
+    static const int RecentProjectsLimit;
+
+    class RecentProject_t
+    {
+      public:
+        QString Name;
+        QString Path;
+    };
+
+    typedef std::vector<RecentProject_t> RecentProjectsList_t;
+
+    typedef std::map<QString, QString> MarketPlaces_t;
 
     static PreferencesManager* getInstance();
 
     ~PreferencesManager();
 
-    bool save();
-
     /* Used only if we want to set another file name for the conf file
      * instead of the default one (for tests eg.)
      * To be set before the first call of getInstance().
      */
-    static void setFileName(Glib::ustring AbsoluteFileName);
-    std::string getFileName();
+    static void setFileName(const QString& AbsoluteFileName);
 
-    bool isValidKey(std::string Group, std::string Key);
+    QString getFileName();
 
-    void setLang(Glib::ustring Lang);
-    Glib::ustring getLang();
+    bool isValidKey(const QString& Group, const QString& Key);
 
-    void setRecentMax(unsigned int RecentMax);
+
+    void setLang(const QString& Lang);
+
+    QString getLang();
+
+    static QStringList getAvailableLangs();
+
+    static bool isAvailableLang(const QString& Lang);
+
+    void setRecentMax(int RecentMax);
+
     int getRecentMax();
 
-    bool
-    addRecentProject(std::string ProjectPath, std::string ProjectName = "");
+    bool addRecentProject(const QString& ProjectName, const QString& ProjectPath = "");
+
+    RecentProjectsList_t getRecentProjects();
+
     void clearRecentProjects();
-    std::vector<std::pair<std::string, std::string> > getRecentProjects();
 
-    void setWorkdir(Glib::ustring Workdir);
-    Glib::ustring getWorkdir();
+    void adaptRecentProjects();
 
-    void setExtraPlugPaths(std::vector<Glib::ustring> ExtraPlugPaths);
-    void addExtraPlugPath(Glib::ustring Path);
-    void removeExtraPlugPath(Glib::ustring Path);
-    std::vector<std::string> getExtraPlugPaths();
 
-    void setExtraExtensionPaths(std::vector<Glib::ustring> ExtraExtPaths);
-    void addExtraExtensionPath(Glib::ustring Path);
-    void removeExtraExtensionPath(Glib::ustring Path);
-    std::vector<std::string> getExtraExtensionPaths();
+    void setWorkdir(const QString& Workdir);
 
-    void setDeltaT(unsigned int DeltaT);
-    int getDeltaT();
+    QString getWorkdir();
 
-    void setBegin(std::string Begin);
-    std::string getBegin();
 
-    void setEnd(std::string End);
-    std::string getEnd();
+    void setExtraSimulatorsPaths(const QStringList& Paths);
 
-    void setOutFilesBufferInKB(unsigned int Buffer);
-    int getOutFilesBufferInKB();
+    void addExtraSimulatorsPath(const QString& Path);
 
-    bool
-    addMarketplace(Glib::ustring PlaceName, Glib::ustring PlaceUrl);
-    void removeMarketplace(Glib::ustring PlaceName);
+    void removeExtraSimulatorsPath(const QString& Path);
+
+    QStringList getExtraSimulatorsPaths();
+
+
+    void setExtraExtensionsPaths(const QStringList& Paths);
+
+    void addExtraExtensionsPath(const QString& Path);
+
+    void removeExtraExtensionsPath(const QString& Path);
+
+    QStringList getExtraExtensionsPaths();
+
+
+    void setExtraObserversPaths(const QStringList& Paths);
+
+    void addExtraObserversPath(const QString& Path);
+
+    void removeExtraObserversPath(const QString& Path);
+
+    QStringList getExtraObserversPaths();
+
+
+    void setDeltaT(openfluid::core::Duration_t DeltaT);
+
+    openfluid::core::Duration_t getDeltaT();
+
+
+    void setBegin(const QString& Begin);
+
+    QString getBegin();
+
+    void setEnd(const QString& End);
+
+    QString getEnd();
+
+
+    bool addMarketplace(const QString& PlaceName, const QString& PlaceUrl);
+
+    void removeMarketplace(const QString& PlaceName);
+
     MarketPlaces_t getMarketplaces();
 
-    bool isPluginValueExist(std::string PluginName, std::string Key);
-    std::string getPluginValue(std::string PluginName, std::string Key);
-    void setPluginValue(std::string PluginName, std::string Key,
-        std::string Value);
+
+    bool isExtensionValueExist(const QString& PluginName, const QString& Key);
+
+    QString getExtensionValue(const QString& PluginName, const QString& Key);
+
+    void setExtensionValue(const QString& PluginName, const QString& Key, const QString& Value);
+
+
+    Qt::DockWidgetArea getDockPosition();
+
+    void setDockPosition(Qt::DockWidgetArea Position);
+
+    Qt::ToolBarArea getToolBarPosition();
+
+    void setToolBarPosition(Qt::ToolBarArea Position);
+
+
+    bool isItemRemovalConfirm();
+
+    void setItemRemovalConfirm(bool Confirm);
+
+    bool isParamRemovalConfirm();
+
+    void setParamRemovalConfirm(bool Confirm);
+
+    bool isWaresWatchersActive();
+
+    void setWaresWatchersActive(bool Active);
+
+    bool isAutomaticSaveBeforeRun();
+
+    void setAutomaticSaveBeforeRun(bool AutoSave);
+
+    bool isSpatialUnitsRemovalConfirm();
+
+    void setSpatialUnitsRemovalConfirm(bool Confirm);
+
+    bool isSpatialConnsRemovalConfirm();
+
+    void setSpatialConnsRemovalConfirm(bool Confirm);
+
+    bool isSpatialAttrsRemovalConfirm();
+
+    void setSpatialAttrsRemovalConfirm(bool Confirm);
 
 };
 

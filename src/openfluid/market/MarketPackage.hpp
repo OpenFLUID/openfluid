@@ -1,6 +1,7 @@
 /*
+
   This file is part of OpenFLUID software
-  Copyright (c) 2007-2010 INRA-Montpellier SupAgro
+  Copyright(c) 2007, INRA - Montpellier SupAgro
 
 
  == GNU General Public License Usage ==
@@ -16,25 +17,7 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with OpenFLUID.  If not, see <http://www.gnu.org/licenses/>.
-
-  In addition, as a special exception, INRA gives You the additional right
-  to dynamically link the code of OpenFLUID with code not covered
-  under the GNU General Public License ("Non-GPL Code") and to distribute
-  linked combinations including the two, subject to the limitations in this
-  paragraph. Non-GPL Code permitted under this exception must only link to
-  the code of OpenFLUID dynamically through the OpenFLUID libraries
-  interfaces, and only for building OpenFLUID plugins. The files of
-  Non-GPL Code may be link to the OpenFLUID libraries without causing the
-  resulting work to be covered by the GNU General Public License. You must
-  obey the GNU General Public License in all respects for all of the
-  OpenFLUID code and other code used in conjunction with OpenFLUID
-  except the Non-GPL Code covered by this exception. If you modify
-  this OpenFLUID, you may extend this exception to your version of the file,
-  but you are not obligated to do so. If you do not wish to provide this
-  exception without modification, you must delete this exception statement
-  from your version and license this OpenFLUID solely under the GPL without
-  exception.
+  along with OpenFLUID. If not, see <http://www.gnu.org/licenses/>.
 
 
  == Other Usage ==
@@ -43,7 +26,9 @@
   license, and requires a written agreement between You and INRA.
   Licensees for Other Usage of OpenFLUID may use this file in accordance
   with the terms contained in the written agreement between You and INRA.
+  
 */
+
 
 /**
   \file MarketPackage.hpp
@@ -60,6 +45,7 @@
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/market/MarketInfos.hpp>
+#include <openfluid/tools/ExternalProgram.hpp>
 
 
 namespace openfluid { namespace market {
@@ -76,19 +62,67 @@ class DLLEXPORT MarketPackage
     static const std::string LOG_FILENAME;
 
 
+    /*
+     * Temporary dir for openfluid-market
+    */
     static std::string m_TempDir;
 
+    /**
+     * Temporary dir for building packages
+    */
     static std::string m_TempBuildsDir;
 
+    /**
+     * Temporary dir for downloaded packages
+    */
     static std::string m_TempDownloadsDir;
 
-    static std::string m_MarketBagBinDir;
+    /**
+     * Market-bag dir for simulators
+    */
+    static std::string m_MarketBagSimulatorDir;
 
-    static std::string m_MarketBagSrcDir;
+    /**
+     * Market-bag dir for observers
+    */
+    static std::string m_MarketBagObserverDir;
 
-    static std::string m_CMakeCommand;
+    /**
+     * Market-bag dir for builder extensions
+    */
+    static std::string m_MarketBagBuilderextDir;
 
-    static std::string m_CommonBuildConfigOptions;
+    /**
+     * Market-bag dir for datasets
+    */
+    static std::string m_MarketBagDatasetDir;
+
+    /**
+     * Market-bag subdir for binary packages of current type
+    */
+    static std::string m_MarketBagBinSubDir;
+
+    /**
+     * Market-bag subdir for source packages of current type
+    */
+    static std::string m_MarketBagSrcSubDir;
+
+    static openfluid::tools::ExternalProgram m_CMakeProgram;
+
+    /**
+     * Common build options for simulators
+    */
+    static std::string m_SimulatorBuildConfigOptions;
+
+    /**
+     * Common build options for observers
+    */
+    static std::string m_ObserverBuildConfigOptions;
+
+    /**
+     * Common build options for builder extensions
+    */
+    static std::string m_BuilderextBuildConfigOptions;
 
     static std::string m_LogFile;
 
@@ -98,7 +132,7 @@ class DLLEXPORT MarketPackage
 
 
 
-    openfluid::base::FuncID_t m_ID;
+    openfluid::ware::WareID_t m_ID;
 
     std::string m_PackageURL;
 
@@ -111,6 +145,7 @@ class DLLEXPORT MarketPackage
     static void resetLogFile();
 
     static void appendToLogFile(const std::string& PackageName,
+        const PackageInfo::PackageType& Type,
         const std::string& Action,
         const std::string& Str);
 
@@ -119,17 +154,31 @@ class DLLEXPORT MarketPackage
 
   public:
 
-    MarketPackage(openfluid::base::FuncID_t ID, std::string PackageURL);
+    MarketPackage(const openfluid::ware::WareID_t& ID, const std::string& PackageURL);
 
     virtual ~MarketPackage();
 
     static void initialize(bool EnableLog);
 
-    static void setWorksDirs(std::string TempDir, std::string MarketBagBinDir, std::string MarketBagSrcDir);
+    /**
+     Set directory paths attributes with paths passed as parameter
+    */
+    static void setWorksDirs(const std::string& TempDir, const std::string& MarketBagSimulatorDir,
+                             const std::string& MarketBagObserverDir, const std::string& MarketBagBuilderextDir,
+                             const std::string& MarketBagDatasetDir, const std::string& MarketBagBinSubDir,
+                             const std::string& MarketBagSrcSubDir);
 
-    static std::string getMarketBagBinDir() { return m_MarketBagBinDir; };
+    static std::string getMarketBagSimulatorDir() { return m_MarketBagSimulatorDir; };
 
-    static std::string getMarketBagSrcDir() { return m_MarketBagSrcDir; };
+    static std::string getMarketBagObserverDir() { return m_MarketBagObserverDir; };
+
+    static std::string getMarketBagBuilderextDir() { return m_MarketBagBuilderextDir; };
+
+    static std::string getMarketBagDatasetDir() { return m_MarketBagDatasetDir; };
+
+    static std::string getMarketBagBinSubDir() { return m_MarketBagBinSubDir; };
+
+    static std::string getMarketBagSrcSubDir() { return m_MarketBagSrcSubDir; };
 
     static std::string getTempDir() { return m_TempDir; };
 
@@ -139,15 +188,41 @@ class DLLEXPORT MarketPackage
 
     static std::string getLogFile() { return m_LogFile; };
 
-    static std::string getCommonBuildOptions() { return m_CommonBuildConfigOptions; };
+    /**
+     @return build options of package type passed as parameter
+     @param Type of options
+    */
+    static std::string getCommonBuildOptions(const PackageInfo::PackageType& Type);
 
-    static void setCommonBuildOptions(std::string BuildOptions) { m_CommonBuildConfigOptions = BuildOptions; };
+    /**
+     Sets build options of package type passed as parameter with BuildOptions
+     @param Type of options
+     @param Build options to store
+    */
+    static void setCommonBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 
-    static std::string composeFullBuildOptions(std::string BuildOptions);
+    /**
+     Adds BuildOptions to options of package type
+     @return Common build options of package type with BuildOptions
+     @param Type of package
+     @param Options to add
+    */
+    static std::string composeFullBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 
-    openfluid::base::FuncID_t getID() const { return m_ID; };
+    openfluid::ware::WareID_t getID() const { return m_ID; };
 
     virtual MetaPackageInfo::SelectionType getFormat() const = 0;
+
+
+    /**
+     @return the market-bag path directory for the package type class
+    */
+    virtual std::string getInstallPath() const = 0;
+
+    /**
+     @return type of current package
+    */
+    virtual PackageInfo::PackageType getPackageType() const = 0;
 
     virtual void process() = 0;
 

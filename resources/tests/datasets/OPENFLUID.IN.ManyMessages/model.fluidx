@@ -4,9 +4,9 @@
     <model>
 
    
-      <function fileID="tests.messages">
+      <simulator ID="tests.messages">
         <param name="rptmsgs" value="100" />
-      </function>                  
+      </simulator>                  
     
   </model>
 </openfluid>

@@ -5,10 +5,6 @@ FILE(GLOB OPENFLUID_BASE_CPP *.cpp)
 FILE(GLOB OPENFLUID_BASE_HPP *.hpp)
 
 
-LINK_DIRECTORIES(${LibXML2_LIBRARY_DIRS})
-LINK_DIRECTORIES(${GLIBMM_LIBRARY_DIRS} ${GTHREAD_LIBRARY_DIRS})
-
-
 ADD_LIBRARY(openfluid-base SHARED ${OPENFLUID_BASE_CPP} ${OPENFLUID_BASE_HPP})
 
 SET_TARGET_PROPERTIES(openfluid-base PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
@@ -21,7 +17,7 @@ TARGET_LINK_LIBRARIES(openfluid-base
                       openfluid-core
                       openfluid-tools
                       ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY}
-                      ${Boost_DATE_TIME_LIBRARY} ${GLIBMM_LIBRARIES} ${GTHREAD_LIBRARIES})
+                      ${Boost_DATE_TIME_LIBRARY})
 
 
 
