@@ -2,7 +2,11 @@
 
 \page use_examples Examples projects
 
+\todo
+
 \section user_examples_primitives Primitives
+
+\todo
 
 This example is based on a flux model involving 3 simulation functions, 
 applied to a spatial domain composed of 13 units distributed into 2 unit classes. 
@@ -34,6 +38,8 @@ The flux model is defined in the model.fluidx file.
 
 \subsection user_examples_primitives_domain Spatial domain
 
+\todo
+
 The spatial domain is composed of 13 units, distributed into 2 unit classes 
 (class A and class B). The connections between 
 units are defined for each unit independently, as "to" units. The process order 
@@ -47,6 +53,8 @@ The spatial domain is defined in *.ddef.xml file(s).
 
 \subsection user_examples_primitives_simulation Simulation
 
+\todo
+
 The simulation will run from January 1st, 2001, at 00:00:00 to January 15th, 2001, at 08:01:02.
 The fixed time step is 3600 seconds (1 hour).
 
@@ -58,6 +66,7 @@ configuration is defined in the output.xml file.
 
 \subsection user_examples_primitives_run Run this example
 
+\todo
 
 In order to run a simulation using these example functions, the command to run is:\n
 <tt>openfluid-engine -i /path/to/inputdata -o /path/to/outputdir</tt>

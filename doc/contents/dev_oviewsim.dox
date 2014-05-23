@@ -2,43 +2,71 @@
 
 \page dev_oviewsim Overview of an OpenFLUID simulator
 
+Technically speaking, an OpenFLUID simulator is made of two main parts: 
+The signature and a C++ class containing the computational code.
+
+
 \section dev_oviewsim_signature Simulator signature 
+
+The signature of a simulator contains meta-informations about the simulator.
+These informations will be mainly used for automatic coupling 
+and consistency checking of simulators.
+To get more informations about the simulators signatures, see part \ref dev_signature.
+  
 
 \section dev_oviewsim_cppclass Simulator C++ class
 
-A simulation function is defined by a class, inherited from the openfluid::base::PluggableFunction class.
-The simulation code have to be written into the different methods provided by the \link openfluid::base::PluggableFunction PluggableFunction\endlink class.
-You can also develop other methods in order to organize your source code.
-To see how the C++ class structure of a simulation function, see part \ref emptyfunc.
+The computational part of a simulator is defined by a class, 
+inherited from the openfluid::ware::PluggableSimulator class.
+The simulation code have to be written into the different methods
+provided by the openfluid::ware::PluggableSimulator class.
+You can also develop other methods in order to structure your source code.\n
+To get more information about the C++ class of a simulator, see part \ref dev_createsim.
+
 
 \subsection dev_oviewsim_cppclass_cstrdstr Constructor and destructor
 
-The constructor of the simulation function is called when the function is loaded. You may put here the initialization of your object attributes.\n
-The destructor of the simulation function is called when the function is freed, at the end of the execution of the OpenFLUID application. You may put here instruction to free the memory you allocate for the needs of the simulation function (other objects, pointed vars, ...).
+The constructor of the simulator is called when the simulator is loaded.
+You may put here the initialization of your private members.\n
+The destructor of the simulator is called when the simulator is released after simulation,
+at the end of the execution of the OpenFLUID application.
+You may put here instruction to free the memory you allocated 
+for the needs of the computational code (other objects, pointed vars, ...).
+
 
 \subsection dev_oviewsim_cppclass_methodsOverview Required methods to define
 
-The class defining a simulation function must compound the following methods:
+The class defining a simulator must compound the following methods:
 <ul>
-<li>\link openfluid::base::PluggableFunction::initParams initParams \endlink
-<li>\link openfluid::base::PluggableFunction::prepareData prepareData \endlink
-<li>\link openfluid::base::PluggableFunction::checkConsistency checkConsistency \endlink
-<li>\link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink
-<li>\link openfluid::base::PluggableFunction::runStep runStep \endlink
-<li>\link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink
+<li>\link openfluid::ware::PluggableSimulator::initParams initParams \endlink
+<li>\link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink
+<li>\link openfluid::ware::PluggableSimulator::checkConsistency checkConsistency \endlink
+<li>\link openfluid::ware::PluggableSimulator::initializeRun initializeRun \endlink
+<li>\link openfluid::ware::PluggableSimulator::runStep runStep \endlink
+<li>\link openfluid::ware::PluggableSimulator::finalizeRun finalizeRun \endlink
 </ul> 
 
-The \link openfluid::base::PluggableFunction::initParams initParams \endlink method should be used to retreive function parameters, read from the model.fluidx file (See \ref funcparams_sec). Once read, the values should be stored into class attributes to be accessed by other methods.  
+The \link openfluid::ware::PluggableSimulator::initParams initParams \endlink 
+method should be used to retreive the parameters of the simulator, 
+read from the model.fluidx file or filled from the OpenFLUID-Builder interface (See \ref user_fluidx_sections_model). 
+Once read, the values should be stored into private attributes to be accessed by other methods.  
 
-The \link openfluid::base::PluggableFunction::prepareData prepareData \endlink method should be used to do data pre-processing before the consistency checking.
+The \link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink 
+method should be used to do data pre-processing before the consistency checking.
 
-The \link openfluid::base::PluggableFunction::checkConsistency checkConsistency \endlink method is called during the global consistency checking phase. It should be used to add function own consistency checking. 
+The \link openfluid::ware::PluggableSimulator::checkConsistency checkConsistency \endlink 
+method is called during the global consistency checking phase.
+It should be used to add specific consistency checking for the simulator. 
 
-The \link openfluid::base::PluggableFunction::initializeRun initializeRun \endlink method should be used to do data initialization, or to compute values that do not change during simulation.  
+The \link openfluid::ware::PluggableSimulator::initializeRun initializeRun \endlink 
+method must be used for initialization of simulation variables, 
+or to compute initialization data.
 
-The \link openfluid::base::PluggableFunction::runStep runStep \endlink method is called at each exchange time step. It should contain the computation code.
+The \link openfluid::ware::PluggableSimulator::runStep runStep \endlink 
+method is called at each exchange time step. It should contain the computational code.
 
-The \link openfluid::base::PluggableFunction::finalizeRun finalizeRun \endlink method should be used to do post-processing after simulation. It is the last method ran.
+The \link openfluid::ware::PluggableSimulator::finalizeRun finalizeRun \endlink 
+method should be used to do post-processing after simulation. It is the last method ran.
 
 
 */

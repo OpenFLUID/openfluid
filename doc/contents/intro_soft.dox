@@ -1,23 +1,16 @@
 /**
 
-\page intro_soft OpenFLUID software framework
+\page intro_soft OpenFLUID software
 
 
 
-kernel/plugin architecture
+\section intro_soft_framework OpenFLUID framework
 
+\todo
 
-applications
-
+spatio temporal architecture
  
-The OpenFLUID libraries features are gathered together into the \ref openfluid "openfluid namespace", which is made of several parts. The three main parts are: 
-<ul>
-  <li>openfluid::core, defined in openfluid/core.hpp, gathers all the classes for the shared data between the OpenFLUID framework and the functions, and between the functions themselves
-  <li>openfluid::base, defined in openfluid/base.hpp, gathers all the classes for the dynamic linking between the OpenFLUID framework  and the functions, and in particular the openfluid::base::PluggableFunction class
-  <li>openfluid::tools, defined in openfluid/tools.hpp, gathers tools available for data processing, files reading, ...
-</ul>
-
-\n
+kernel/plugin architecture
 
 These libraries mainly rely on external libraries:
 <ul> 
@@ -35,14 +28,15 @@ These libraries mainly rely on external libraries:
 
 
 
-spatio temporal architecture
- 
+\section intro_soft_wares OpenFLUID wares
+
+\todo
+
 development environment 
- 
-The FortranCPP.h header file make Fortran code encapsulation (into simulation functions) easier.
 
 
+\section intro_soft_apps OpenFLUID applications
 
-
+\todo
 
 */

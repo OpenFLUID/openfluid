@@ -100,7 +100,7 @@
 
 \part{Introduction to OpenFLUID}
 \chapter{\-Overview and main concepts}\label{intro_oview}\hypertarget{intro_oview}{}\input{intro_oview}
-\chapter{\-OpenFLUID software framework}\label{intro_soft}\hypertarget{intro_soft}{}\input{intro_soft}
+\chapter{\-OpenFLUID software}\label{intro_soft}\hypertarget{intro_soft}{}\input{intro_soft}
 \chapter{\-Installation and resources}\label{intro_install}\hypertarget{intro_install}{}\input{intro_inst}
 
 \part{Running simulations with OpenFLUID}
@@ -112,7 +112,7 @@
 \part{Development of OpenFLUID simulators}
 \chapter{\-Overview of an OpenFLUID simulator}\label{dev_oviewsim}\hypertarget{dev_oviewsim}{}\input{dev_oviewsim}
 \chapter{\-Creation of an empty simulator}\label{dev_createsim}\hypertarget{dev_createsim}{}\input{dev_createsim}
-\chapter{\-Definition of the simulator signature}\label{dev_signature}\hypertarget{dev_signature}{}\input{dev_signature}
+\chapter{\-Declaration of the simulator signature}\label{dev_signature}\hypertarget{dev_signature}{}\input{dev_signature}
 \chapter{\-Development of the simulator source code}\label{dev_srccode}\hypertarget{dev_srccode}{}\input{dev_srccode}
 \chapter{\-Documenting your simulators}\label{dev_sim2doc}\hypertarget{dev_sim2doc}{}\input{dev_sim2doc}
 

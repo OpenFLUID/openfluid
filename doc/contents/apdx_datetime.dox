@@ -2,6 +2,8 @@
 
 \page apdx_datetime Datetime formats
 
+TODO
+
 The output.xml file can use the ANSI strftime() standards formats for date time, through a format string. 
 The format string consists of zero or more conversion specifications and ordinary characters.
 A conversion specification consists of a \% character and a terminating conversion character that determines the conversion specification's behaviour.

@@ -60,3 +60,6 @@ QUIET                  = YES
 WARNINGS               = YES
 WARN_IF_DOC_ERROR      = YES
 
+
+ENABLED_SECTIONS       = doc-is-html
+

@@ -2,6 +2,8 @@
 
 \page use_buddies OpenFLUID buddies
 
+\todo
+
 Buddies are small tools that help scientific developers in order to complete
 the modelling and/or development works. They are usable from the command line,
 using the \c --buddyhelp, \c --buddy and

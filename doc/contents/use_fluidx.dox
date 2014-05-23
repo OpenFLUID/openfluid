@@ -2,6 +2,8 @@
 
 \page use_fluidx Formats of input datasets
 
+\todo
+
 This part of the manual describes the FluidX file(s) format. Refer to the "Usage"
 part of this manual to run the simulation.
 
@@ -30,6 +32,8 @@ specialized sotware, such as spreadsheets or Geographic Information Systems
 
 
 \section user_fluidx_overview Overview
+
+\todo
 
 The FluidX file format is an XML based format for OpenFLUID input file(s).
 The OpenFLUID input information can be provided by a one or many files using
@@ -78,6 +82,8 @@ Summary view of the XML tree for FluidX files:
 
 
 \subsection user_fluidx_sections_model Model
+
+\todo
 
 The flux model is defined by an ordered set of data generators and simulations
 functions that will be plugged to the OpenFLUID. It defines the model
@@ -172,6 +178,8 @@ The flux model must be defined in a section delimited by the
 
 \subsubsection user_fluidx_sections_spatialdomain_def Definition and relationships
 
+\todo
+
 The spatial domain is defined by a set of spatial units that are connected each others.
 These spatial units are defined by a numerical identifier (ID) and a class.
 They also include information about the processing order of the unit in the class.
@@ -225,6 +233,8 @@ tag, and must be structured following these rules:
 
 \subsubsection user_fluidx_sections_spatialdomain_indata Input data
 
+\todo
+
 The spatial domain input data are static data brought by units, usually properties and initial conditions for each unit.\\
 \noindent The spatial domain input data must be defined in a section delimited
 by the \c <inputdata>} tag, which is a sub-section of the \c domain}
@@ -270,6 +280,8 @@ tag, and must be structured following these rules:
 
 
 \subsubsection user_fluidx_sections_spatialdomain_events Discrete events
+
+\todo
 
 The discrete events are events occuring on units, and that can be processed by simulation functions. 
 \noindent The spatial events must be defined in a section delimited
@@ -321,6 +333,8 @@ tag, and must be structured following these rules:
 
 \subsection user_fluidx_sections_datastore Datastore
 
+\todo
+
 The datastore lists external data which is available during the simulation.\\
 \noindent The datastore content must be defined in a section delimited by the
 \c <datastore>} tag, and must be structured following these rules:
@@ -349,6 +363,8 @@ The datastore lists external data which is available during the simulation.\\
 
 
 \subsection user_fluidx_sections_run Run configuration
+
+\todo
 
 The configuration of the simulation gives the simulation period, the data
 exchange time step, and the optionnal progressive output parameters.\\
@@ -391,6 +407,8 @@ exchange time step, and the optionnal progressive output parameters.\\
 
 
 \subsection user_fluidx_sections_outputs Outputs configuration
+
+\todo
 
 The configuration of the simulation outputs gives the description of the saved
 results.\\
@@ -450,6 +468,8 @@ the \c <output>} tag, and must be structured following these rules:
 
 
 \section use_fluidx_exmpl Example of an input dataset as a single FluidX file
+
+\todo
 
 \code
 <?xml version="1.0" standalone="yes"?>

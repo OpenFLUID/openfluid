@@ -2,16 +2,19 @@
 
 \page apdx_obsparams Observers parameters
 
-
 \section apdx_obsparams_csv "CSV" observer
 
 \subsection apdx_obsparams_csv_headers Header types examples
+
+\todo
 
 The following examples show output files for 2 variables (var1 and var2) extracted from a 6
 hours simulation ran at a time step of an hour.
 
 
 \subsubsection apdx_obsparams_csv_headers_none none
+
+\todo
 
 \code
 2000-01-01 00:00:00;0.00000;1.00000 
@@ -24,6 +27,8 @@ hours simulation ran at a time step of an hour.
 
 
 \subsubsection apdx_obsparams_csv_headers_info info
+
+\todo
 
 \code
 % simulation ID: 20110905-VZIRXC
@@ -43,6 +48,8 @@ hours simulation ran at a time step of an hour.
 
 \subsubsection apdx_obsparams_csv_headers_colnames colnames-as-data
 
+\todo
+
 \code
 datetime;var1;var2
 2000-01-01 00:00:00;0.00000;1.00000 
@@ -54,6 +61,8 @@ datetime;var1;var2
 \endcode
 
 \subsubsection apdx_obsparams_csv_headers_full full
+
+\todo
 
 \code
 % simulation ID: 20110905-VZIRXC
@@ -75,12 +84,19 @@ datetime;var1;var2
 
 \section apdx_obsparams_gnuplot "GNUplot" observer
 
+\todo
+
 \section apdx_obsparams_kmlanim "KML with animations" observer
+
+\todo
 
 \section apdx_obsparams_kmlplot "KML with plots" observer
 
+\todo
+
 \section apdx_obsparams_dot "Dot" observer
 
+\todo
 
 
 */

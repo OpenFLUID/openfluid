@@ -2,7 +2,11 @@
 
 \page apdx_optenv Command line options and environment variables
 
+\todo
+
 \section apdx_optenv_cmdopt Command line options
+
+\todo
 
 \begin{center}
 \begin{tabularx}{\linewidth}{lX}
@@ -33,6 +37,7 @@
 
 \section apdx_optenv_envvar Environment variables
 
+\todo
 
 The OpenFLUID \ framework takes into account the following environment
 variables (if they are set):

@@ -2,6 +2,8 @@
 
 \page apdx_prj Structure of an openfluid project
 
+\todo
+
 An OpenFLUID project can be run using OpenFLUID-Engine or OpenFLUID-Builder software.
 It is a directory including:
 \begin{itemize}

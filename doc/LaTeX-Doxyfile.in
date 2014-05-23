@@ -27,9 +27,11 @@ USE_PDFLATEX           = YES
 STRIP_CODE_COMMENTS    = NO
 
 
-LATEX_OUTPUT            = latex
+LATEX_OUTPUT           = latex
 
 QUIET                  = YES
 WARNINGS               = YES
 WARN_IF_DOC_ERROR      = YES
+
+ENABLED_SECTIONS       = doc-is-latex
 

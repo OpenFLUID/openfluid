@@ -14,4 +14,12 @@ This documentation is made of several parts
 \li a guide for running spatial simulations using OpenFLUID, including the construction of input datasets
 \li a guide for developping your own simulators for OpenFLUID, either using existing source code or "from scratch"   
 \li an appendix giving useful reference informations
+
+\if doc-is-latex
+\n
+\n
+\n
+More information is available on the official OpenFLUID web site, notably detailed informations on how to develop simulators including API documentation.\n
+http://www.openfluid-project.org  
+\endif
 */

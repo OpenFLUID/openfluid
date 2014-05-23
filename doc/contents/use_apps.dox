@@ -5,8 +5,10 @@
 
 \section use_apps_cmd Command-line Interface 
 
+\todo
+
 To run the simulation, if the dataset is located in the default searched directory, 
-simply run the command <tt>openfluid-engine</tt> in your favorite terminal. 
+simply run the command <tt>openfluid</tt> in your favorite terminal. 
 To specify a different input dataset directory, use the \c -i or <tt>--input-dir</tt> command line option.
 
 You can also run a simulation from an OpenFLUID project, using the \c -w 
@@ -20,7 +22,12 @@ It can be created by hand, or using the OpenFLUID-Builder software.
 
 \section use_apps_builder Graphical User Interface - OpenFLUID-Builder 
 
+\todo
+
+
 \section use_apps_R From within the GNU R environment - ROpenFLUID
+
+\todo
 
 
 */
