@@ -2,6 +2,8 @@
 
 \page dev_signature Declaration of the simulator signature
 
+\todo use if doc-is-latex for macros names with sharp character
+
 The signature can be automatically generated through the OpenFLUID plugin for Eclipse.
 However it is possible to write the signature \e de \e novo, or complete it manually.
 

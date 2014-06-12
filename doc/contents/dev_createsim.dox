@@ -2,7 +2,7 @@
 
 \page dev_createsim Creation of an empty simulator
 
-As mentioned in the previous part, a simulator must contain two parts :
+As mentioned in the previous section (see \ref dev_oviewsim), a simulator must contain two parts :
 <ul>
   <li>A signature giving information about the simulator, 
   and used by the OpenFLUID framework to identify and couple simulators 

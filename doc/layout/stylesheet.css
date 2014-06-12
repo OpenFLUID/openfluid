@@ -19,11 +19,13 @@ h1 {
 }
 
 h2 {
+    margin-top: 35px;
 	font-size: 120%;
 }
 
 h3 {
 	font-size: 100%;
+	margin-top: 20px;
 }
 
 dt {

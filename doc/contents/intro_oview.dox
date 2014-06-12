@@ -7,16 +7,17 @@
 
 \section intro_oview_digiland Representation of landscapes
 
-\todo
+\todo graph, spatial attributes, ...
 
 
 \section intro_oview_processes Modelling of spatial processes
 
-\todo
+\todo models, coupling by variables, events, variable time
 
 
 \section intro_oview_simobs Simulations and observations
 
-\todo
+\todo simulation period, productions of variables over the graph, observers, 
+rendering of results, ...
 
 */

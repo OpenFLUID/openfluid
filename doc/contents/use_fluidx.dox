@@ -81,7 +81,7 @@ Summary view of the XML tree for FluidX files:
 \section user_fluidx_sections Sections
 
 
-\subsection user_fluidx_sections_model Model
+\subsection user_fluidx_sections_model Model section
 
 \todo
 
@@ -174,7 +174,7 @@ The flux model must be defined in a section delimited by the
 
 
 
-\subsection user_fluidx_sections_spatialdomain Spatial domain
+\subsection user_fluidx_sections_spatialdomain Spatial domain section
 
 \subsubsection user_fluidx_sections_spatialdomain_def Definition and relationships
 
@@ -231,7 +231,7 @@ tag, and must be structured following these rules:
 \bigskip
 
 
-\subsubsection user_fluidx_sections_spatialdomain_indata Input data
+\subsubsection user_fluidx_sections_spatialdomain_attrs Attributes
 
 \todo
 
@@ -331,7 +331,7 @@ tag, and must be structured following these rules:
 
 
 
-\subsection user_fluidx_sections_datastore Datastore
+\subsection user_fluidx_sections_datastore Datastore section
 
 \todo
 
@@ -362,7 +362,7 @@ The datastore lists external data which is available during the simulation.\\
 
 
 
-\subsection user_fluidx_sections_run Run configuration
+\subsection user_fluidx_sections_run Run configuration section
 
 \todo
 

@@ -34,9 +34,9 @@ You may put here instruction to free the memory you allocated
 for the needs of the computational code (other objects, pointed vars, ...).
 
 
-\subsection dev_oviewsim_cppclass_methodsOverview Required methods to define
+\subsection dev_oviewsim_cppclass_methods Mandatory methods to be defined
 
-The class defining a simulator must compound the following methods:
+The class defining a simulator must define the following methods:
 <ul>
 <li>\link openfluid::ware::PluggableSimulator::initParams initParams \endlink
 <li>\link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink
