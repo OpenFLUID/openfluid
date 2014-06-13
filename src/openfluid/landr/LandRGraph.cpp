@@ -194,9 +194,7 @@ void LandRGraph::addEntitiesFromEntityList(
   LandRGraph::Entities_t::const_iterator it = Entities.begin();
   LandRGraph::Entities_t::const_iterator ite = Entities.end();
   for (; it != ite; ++it)
-  {
-    addEntity(getNewEntity((*it)->getGeometry()->clone(), (*it)->getOfldId()));
-  }
+      addEntity(getNewEntity((*it)->getGeometry()->clone(), (*it)->getOfldId()));
 
   removeUnusedNodes();
 }
