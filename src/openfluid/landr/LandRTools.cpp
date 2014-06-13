@@ -57,6 +57,9 @@
 #include <geos/util/TopologyException.h>
 #include <geos/planargraph/Node.h>
 #include <geos/planargraph/DirectedEdge.h>
+#include <geos/geom/PrecisionModel.h>
+#include <geos/precision/SimpleGeometryPrecisionReducer.h>
+
 
 namespace openfluid {
 namespace landr {
@@ -168,11 +171,18 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(
 
 std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
     geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2,
-    double SnapTolerance)
+    double SnapTolerance,double PrecisionReducer)
 {
   try
   {
-    geos::geom::Geometry* UnionGeom = computeSnapOverlayUnion(*Geom1, *Geom2,
+    geos::geom::PrecisionModel *precision=new geos::geom::PrecisionModel(PrecisionReducer);
+    geos::precision::SimpleGeometryPrecisionReducer reducer(precision);
+    std::auto_ptr<geos::geom::Geometry> reducerGeom1 ( reducer.reduce(Geom1) );
+    geos::geom::Geometry* Geom1Simple = reducerGeom1.release();
+    std::auto_ptr<geos::geom::Geometry> reducerGeom2 ( reducer.reduce(Geom2) );
+    geos::geom::Geometry* Geom2Simple = reducerGeom2.release();
+
+    geos::geom::Geometry* UnionGeom = computeSnapOverlayUnion(*Geom1Simple, *Geom2Simple,
                                                               SnapTolerance);
 
     std::list<geos::geom::LineString*> ExistingLines;
@@ -194,6 +204,11 @@ std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
         lm.add(Line);
       }
     }
+    delete reducerGeom1.release();
+    delete reducerGeom2.release();
+    delete precision;
+    delete Geom1Simple;
+    delete Geom2Simple;
 
     return lm.getMergedLineStrings();
 
@@ -219,34 +234,24 @@ geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
     double SnapTolerance)
 {
   GEOM_PTR_PAIR PrepGeom;
-  GEOM_PTR_PAIR RemGeom;
 
-  std::auto_ptr<geos::precision::CommonBitsRemover> cbr;
-  cbr.reset(new geos::precision::CommonBitsRemover());
-  cbr->add(&Geom1);
-  cbr->add(&Geom2);
-  RemGeom.first.reset(cbr->removeCommonBits(Geom1.clone()));
-  RemGeom.second.reset(cbr->removeCommonBits(Geom2.clone()));
 
-  geos::operation::overlay::snap::GeometrySnapper::snap(*RemGeom.first,
-                                                        *RemGeom.second,
+  geos::operation::overlay::snap::GeometrySnapper::snap(Geom1,
+                                                        Geom2,
                                                         SnapTolerance,
                                                         PrepGeom);
 
-  std::auto_ptr<geos::geom::Geometry> Result(
-      geos::operation::overlay::OverlayOp::overlayOp(
-          PrepGeom.first.get(), PrepGeom.second.get(),
-          geos::operation::overlay::OverlayOp::opUNION));
+    std::auto_ptr<geos::geom::Geometry> Result(geos::operation::overlay::OverlayOp::overlayOp(
+                                               PrepGeom.first.get(), PrepGeom.second.get(),
+                                               geos::operation::overlay::OverlayOp::opUNION));
 
-  cbr->addCommonBits(&(*Result));
-  delete cbr.release();
   delete PrepGeom.first.release();
   delete PrepGeom.second.release();
-  delete RemGeom.first.release();
-  delete RemGeom.second.release();
 
   return Result.release();
 }
+
+
 
 // =====================================================================
 // =====================================================================
@@ -269,10 +274,9 @@ bool LandRTools::exists(geos::geom::LineString* Line,
 // =====================================================================
 // =====================================================================
 
-void LandRTools::polygonizeGeometry(
-    std::vector<geos::geom::Geometry*>& Lines,
-    std::vector<geos::geom::Polygon*>& Polygons,
-    std::vector<const geos::geom::LineString*>& Dangles)
+void LandRTools::polygonizeGeometry(std::vector<geos::geom::Geometry*>& Lines,
+                                       std::vector<geos::geom::Polygon*>& Polygons,
+                                       std::vector<const geos::geom::LineString*>& Dangles)
 {
   geos::operation::polygonize::Polygonizer* P =
       new geos::operation::polygonize::Polygonizer();
@@ -377,7 +381,9 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::geom::LineString& Entity,  geos::geom::Point& Point,double SnapTolerance)
+std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::geom::LineString& Entity,
+                                                                         geos::geom::Point& Point,
+                                                                         double SnapTolerance)
 
 {
   if (SnapTolerance<=0.0)
@@ -480,8 +486,10 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint( geos::g
 // =====================================================================
 
 
-void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,std::vector<geos::geom::Point*>&Points,
-                                         double SnapTolerance,std::vector<geos::geom::LineString*>&vLines,unsigned int step)
+void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,
+                                             std::vector<geos::geom::Point*>&Points,
+                                             double SnapTolerance,std::vector<geos::geom::LineString*>&vLines,
+                                             unsigned int step)
 {
 
   if (SnapTolerance<=0.0)

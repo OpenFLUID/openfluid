@@ -116,11 +116,12 @@ class DLLEXPORT LandRTools
      * @param Geom1 The geos::geom::Geometry to node with Geom2.
      * @param Geom2 The other geos::geom::Geometry.
      * @param SnapTolerance The tolerance to use while computing intersections and equality of lines.
+     * @param PrecisionReducer The PrecisionModel value for reducing coordinates precision, default is 10000000 (7 digits).
      * @return A vector of geos::geom::LineString, representing all input lines, cut at each node.
      */
     static std::vector<geos::geom::LineString*>* getNodedLines(
         geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2,
-        double SnapTolerance = 0);
+        double SnapTolerance = 0,double PrecisionReducer=10000000);
 
     /**
      * @brief Same as from geos::operation::overlay::snap::SnapOverlayOp::Union(),
@@ -128,12 +129,13 @@ class DLLEXPORT LandRTools
      *
      * @param Geom1 The geos::geom::Geometry to join with Geom2.
      * @param Geom2 The other geos::geom::Geometry.
-     * @param SnapTolerance The tolerance to use.
+     * @param SnapTolerance The tolerance to use, default is 0.
      * @return A new geos::geom::Geometry representing the union of Geom1 and Geom2 according to SnapTolerance value.
      */
     static geos::geom::Geometry* computeSnapOverlayUnion(
         geos::geom::Geometry& Geom1, geos::geom::Geometry& Geom2,
         double SnapTolerance = 0);
+
 
     /**
      * @brief Returns true if a geos::geom::LineString is exactly equals of an element of a list of geos::geom::LineString, up to a specified tolerance.

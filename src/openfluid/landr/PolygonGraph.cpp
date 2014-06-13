@@ -479,15 +479,8 @@ void PolygonGraph::setAttributeFromMeanRasterValues(const std::string& Attribute
     {
       double* PixelVal = ((double*) itPix->first->getUserData());
 
-      if (!PixelVal)
-      {
-        std::ostringstream s;
-        s << "No raster value for a raster pixel overlapping entity "
-            << (*it)->getOfldId() << " .";
-
-        throw openfluid::base::FrameworkException(
-            "PolygonGraph::setAttributeFromMeanRasterValues", s.str());
-      }
+      if (isnan(*PixelVal))
+        *PixelVal = 1;
 
       float OverlappingArea = itPix->second;
 
@@ -562,9 +555,8 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::computeLineStringNeighbours(
-    LineStringGraph& Graph, openfluid::landr::LandRTools::Relationship Relation,
-    double BufferDistance,double ContactLength)
+void PolygonGraph::computeLineStringNeighbours(LineStringGraph& Graph, openfluid::landr::LandRTools::Relationship Relation,
+                                                   double BufferDistance,double ContactLength)
 {
   if (Relation == LandRTools::TOUCHES && ContactLength==0)
     throw openfluid::base::FrameworkException(
@@ -578,7 +570,7 @@ void PolygonGraph::computeLineStringNeighbours(
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   for (; it != ite; ++it)
     dynamic_cast<PolygonEntity*>(*it)->computeLineStringNeighbours(
-        Graph, Relation, BufferDistance,ContactLength);
+        Graph, Relation, BufferDistance, ContactLength);
 }
 
 // =====================================================================
