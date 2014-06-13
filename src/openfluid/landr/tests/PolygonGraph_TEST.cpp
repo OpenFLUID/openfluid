@@ -2422,3 +2422,34 @@ BOOST_AUTO_TEST_CASE(check_construction_from_MultiPolygon)
 // =====================================================================
 // =====================================================================
 
+
+BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_With_NoData)
+{
+  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU_dem_Nodata.shp");
+
+  openfluid::core::GeoRasterValue* Raster = new openfluid::core::GeoRasterValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/GeoRasterValue", "dem2.Gtiff");
+
+  openfluid::landr::PolygonGraph* Graph =
+      openfluid::landr::PolygonGraph::create(*Vector);
+
+  Graph->addAGeoRasterValue(*Raster);
+
+  Graph->setAttributeFromMeanRasterValues("test_val");
+
+  openfluid::core::DoubleValue Val;
+
+  Graph->getEntity(1)->getAttributeValue("test_val", Val);
+  BOOST_CHECK( openfluid::tools::IsVeryClose(Val.get(), 76.7213));
+
+  delete Graph;
+  delete Vector;
+  delete Raster;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
