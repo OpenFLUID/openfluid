@@ -93,23 +93,6 @@ OPENFLUID_ADD_TEST(NAME observers-KmlFiles
 ###########################################################################
 
                         
-OPENFLUID_ADD_TEST(NAME observers-VtkFiles 
-                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
-                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.VtkObserver"
-                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver" 
-                        "-p${TEST_OUTPUT_PATH}"
-                        "-n${TEST_OUTPUT_PATH}"
-                   PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver"
-                   POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver/VTKseries/RS_tests.random/RS_tests.random_t0.vtu"
-                             CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver/VTKseries/RS_tests.random/RS_tests.random_t345600.vtu"
-                             CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver/VTKseries/SU_tests.fixed/SU_tests.fixed_t57600.vtu"
-                             CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.VtkObserver/VTKseries/SU_tests.random/SU_tests.random_t57600.vtu"                                                          
-                  ) 
-
-
-###########################################################################
-
-                        
 OPENFLUID_ADD_TEST(NAME observers-GNUplot 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.GNUplotObserver"
