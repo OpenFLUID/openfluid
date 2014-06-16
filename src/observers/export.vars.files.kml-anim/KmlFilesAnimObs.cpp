@@ -139,6 +139,10 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     openfluid::core::DateTime m_UpdateBeginDate;
 
+    openfluid::core::Duration_t m_MinSamplingDelay;
+
+    openfluid::core::TimeIndex_t m_LatestSamplingIndex;
+
 
     // =====================================================================
     // =====================================================================
@@ -266,7 +270,8 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
   public:
 
-    KmlFilesAnimObserver() : KmlObserverBase()
+    KmlFilesAnimObserver() : KmlObserverBase(),
+      m_MinSamplingDelay(0),m_LatestSamplingIndex(0)
     {
       m_OutputFileName = "kmlanim.kmz";
       m_TmpSubDir = "export.vars.files.kml-anim";
@@ -310,6 +315,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
       m_Title = ParamsPT.get("title",m_Title);
       m_OutputFileName = ParamsPT.get("kmzfilename",m_OutputFileName);
       m_TryOpenGEarth = ParamsPT.get<bool>("tryopengearth",m_TryOpenGEarth);
+      m_MinSamplingDelay = ParamsPT.get("minsamplingdelay",m_MinSamplingDelay);
 
 
       // anim layer
@@ -542,7 +548,12 @@ class KmlFilesAnimObserver : public KmlObserverBase
     {
       if(!m_OKToGo) return;
 
-      updateKmlFile();
+
+      if (m_LatestSamplingIndex + m_MinSamplingDelay <= OPENFLUID_GetCurrentTimeIndex())
+      {
+        m_LatestSamplingIndex = OPENFLUID_GetCurrentTimeIndex();
+        updateKmlFile();
+      }
     }
 
 
