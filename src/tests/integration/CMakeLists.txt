@@ -326,6 +326,7 @@ OPENFLUID_ADD_TEST(NAME integration-CMakeModuleSimulatorConfigure
                              "-DOpenFLUID_ROOT_DIR=${BUILD_OUTPUT_PATH}"
                              "-DOpenFLUID_EXTRA_SEARCH_PATHS=${CMAKE_BINARY_DIR}/src"
                              "-DSIM_INCLUDE_DIRS=${CMAKE_SOURCE_DIR}/src"
+                             "-DSIM_SIM2DOC_MODE=auto"
                    PRE_TEST EMPTY_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/tests.sim.cmake")                                                                                          
 
 
