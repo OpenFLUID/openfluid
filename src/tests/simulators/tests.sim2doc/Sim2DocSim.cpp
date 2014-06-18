@@ -78,7 +78,8 @@ DEFINE_SIMULATOR_CLASS(Sim2DocSimulator)
 BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
 
   DECLARE_NAME("test simulator for ofefunc2doc");
-  DECLARE_DESCRIPTION("This function is a test for the ofefunc2doc doc extraction tool. Do not use it in a model.");
+  DECLARE_DESCRIPTION("This function is a test for the ofefunc2doc doc extraction tool. "
+      "Do not use it in a model.");
 
   DECLARE_VERSION("1.0");
   DECLARE_SDKVERSION;
@@ -88,9 +89,19 @@ BEGIN_SIMULATOR_SIGNATURE("tests.ofefunc2doc")
   DECLARE_PROCESS("No process");
   DECLARE_METHOD("No method");
   DECLARE_AUTHOR("JC Fabre","fabrejc@supagro.inra.fr");
+  DECLARE_AUTHOR("Manuel Chataigner","manuel.chataigner@supagro.inra.fr");
 
   DECLARE_SIMULATOR_PARAM("testparam","a param just for test","kg/m3")
   DECLARE_SIMULATOR_PARAM("dummy_param","a dummy param just for test","snail/m2")
+
+
+  /**
+   *  Multiple lines of comments
+   *  to test the ignoring of linemarkers
+   *  inserted by the preprocessor to mean
+   *  the original position of lines in the source file.
+  */
+
 
   DECLARE_PRODUCED_VAR("tests.prodvector[]","TestUnits","produced vector on TestUnits","");
   DECLARE_PRODUCED_VAR("tests.prodscalar","TestUnits","produced scalar on TestUnits","joker/batman");

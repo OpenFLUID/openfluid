@@ -96,8 +96,9 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
     std::string m_SimID;
     std::string m_SimName;
     std::string m_SimVersion;
-    std::string m_SimAuthorName;
-    std::string m_SimAuthorEmail;
+    std::string m_SimStatus;
+    std::vector<std::string> m_SimAuthorsNames;
+    std::vector<std::string> m_SimAuthorsEmails;
     std::string m_SimDomain;
     std::string m_SimDescription;
     std::string m_SimData;
@@ -107,8 +108,8 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
     std::string m_BeginSim2DocTag;
     std::string m_EndSim2DocTag;
 
-    std::string m_KeyValue;
-    std::string m_BuiltParam;
+    std::string m_CurrentKeyValue;
+    std::string m_CurrentBuiltParam;
 
     std::string m_HTMLPackageLatexCommand;
 
@@ -142,53 +143,74 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
 
     void cpreprocessCPP();
 
-    /**
-      @action Create a new member of UnitsClass vector
-    */
-    void addVectorMember(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass);
+    /** Methods called by simulator signature parser **/
 
     /**
-      @action Store data parsed in correct attribute of UnitsClass
+      Builds a signature parameter with parsed elements
+      @param[in] First, Last Pointers to the beginning and the end of the parsed element
     */
-    void storeInUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass, int Att);
+    void buildParsedParam(const char* First, const char* Last);
 
     /**
-      @action Store the new key value parsed for SignatureData attribute
+      Clears the string containing the parameter built with parsing
     */
-    void storeKey(SignatureData_t *SignatureData, std::string State);
+    void clearParsedParam();
 
     /**
-      @action Add data parsed in SignatureData attribute received as parameter
+      Stores data parsed in the string parameter
+      @param[out] Str Pointer to the string receiving the value
     */
-    void storeIntoSignatureData(SignatureData_t *SignatureData);
+    void storeDataIntoString(std::string *Str);
 
     /**
-      @action Build a signature parameter with parsed elements
-    */
-    void buildParam(const char* First, const char* Last);
+      Adds data parsed in the list parameter
+      @param[out] List Pointer to the vector receiving the value
+     */
+    void storeDataIntoVector(std::vector<std::string> *List);
 
     /**
-      @action Store data built with parsing in attribute parameter
+      Stores the new key value parsed into SignatureData parameter
+      @param[out] SignatureData Pointer to the map receiving the key value
+      @param[in] State of the attribute or variable stored into the map
+              (required, used, produced, updated)
     */
-    void storeData(std::string *Param);
+    void storeDataIntoKey(SignatureData_t *SignatureData, const std::string& State);
 
     /**
-      @action Check parsed status
+      Adds data parsed in the SignatureData attribute received as parameter
+      @param[out] SignatureData Pointer to the map receiving the value
     */
-    void storeStatus();
+    void storeDataIntoSignatureData(SignatureData_t *SignatureData);
 
     /**
-      @action Set fixed scheduling of TimeScheduling attribute
+      Checks data parsed and stores it into status attribute
+    */
+    void storeDataIntoStatus();
+
+    /**
+      Stores data parsed in a new UnitsClass item
+      @param[out] UpdatedUnitsClass Vector of Units class
+      @param[in] Attr Attribute of the new UnitsClass receiving the value
+    */
+    void storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass,
+            int Attr);
+
+    /**
+      Sets fixed scheduling of TimeScheduling attribute
+      @param[in] Val Value of scheduling
     */
     void setSchedulingFixed(double Val);
 
     /**
-      @action Set range scheduling of TimeScheduling attribute
+      Sets range scheduling of TimeScheduling attribute
+      @param[in] Max Maximum value of the range
     */
     void setSchedulingRange(double Max);
 
+    /** ********************************** **/
+
     /**
-      @action Apply latex syntax to the attributes
+      Applies latex syntax to the attributes
     */
     void turnIntoLatexSyntax();
 
@@ -202,7 +224,6 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
 
     void buildHTML();
 
-
   public:
 
     Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener);
@@ -213,18 +234,19 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
 
 
     /**
-     * Grammar class for parsing simulator signature
+     * Grammar class used to parse simulator signature
     */
     struct SimSignatureGrammar : public grammar<SimSignatureGrammar>
     {
-      Sim2DocBuddy *m_Owner;
-      SimSignatureGrammar(Sim2DocBuddy *Owner) : m_Owner(Owner) {}
+      Sim2DocBuddy *mp_Owner;       // Object of the class containing methods to be called
+      SimSignatureGrammar(Sim2DocBuddy *Owner) : mp_Owner(Owner) {}
+
 
       template <typename ScannerT>
       struct definition
       {
-        // List of parsing rules
-        rule<ScannerT> blank, endLine, escapedQuote, string, varName, element, parameters, signature,
+        /** List of parsing rules **/
+        rule<ScannerT> blank, linemarker, endLine, escapedQuote, string, varName, element, parameters, signature,
                         IDRule, NameRule, DescriptionRule, VersionRule, StatusRule, DomainRule, AuthorRule,
                         SimulatorParamRule, ProducedVarRule, UpdatedVarRule, RequiredVarRule, UsedVarRule,
                         ProducedAttributeRule, RequiredAttributeRule, UsedAttributeRule,
@@ -232,105 +254,127 @@ class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
                         UpdatedUnitsGraphRule, UpdatedUnitsClassRule;
 
         /**
-         * @action Define the different rules of content to parse
+         * Defines the different rules of content to parse or ignore
+         *
+         * boost::bind is used to execute a method after parsing of an element or a rule.
+         * Its parameters are the method to call, the object with which the method is executed
+         * and the different parameters of this method (_1 and _2 are used to send the parsed element).
+         *
+         * The different parsers which can be used :
+         * http://www.boost.org/doc/libs/1_39_0/libs/spirit/classic/doc/quickref.html
         */
         definition(SimSignatureGrammar const& self)
         {
-          std::string *Tmp = 0;
-          signature = str_p("BEGIN_SIMULATOR_SIGNATURE(") >> IDRule >> ')' >> endLine
-                  >> *(str_p("DECLARE_NAME(") >> NameRule >> ')' >> endLine
-                    | str_p("DECLARE_DESCRIPTION(") >> DescriptionRule >> ')' >> endLine
-                    | str_p("DECLARE_VERSION(") >> VersionRule >> ')' >> endLine
+          /** Initial rule **/
+
+          signature = str_p("BEGIN_SIMULATOR_SIGNATURE") >> *blank >> '(' >> IDRule >> ')' >> endLine
+                >> *(str_p("DECLARE_NAME") >> *blank >> '(' >> NameRule >> ')' >> endLine
+                    | str_p("DECLARE_DESCRIPTION") >> *blank >> '(' >> DescriptionRule >> ')' >> endLine
+                    | str_p("DECLARE_VERSION") >> *blank >> '(' >> VersionRule >> ')' >> endLine
                     | str_p("DECLARE_SDKVERSION") >> endLine
-                    | str_p("DECLARE_STATUS(") >> StatusRule >> ')' >> endLine
-                    | str_p("DECLARE_DOMAIN(") >> DomainRule >> ')' >> endLine
-                    | str_p("DECLARE_PROCESS(") >> parameters >> ')' >> endLine
-                    | str_p("DECLARE_METHOD(") >> parameters >> ')' >> endLine
-                    | str_p("DECLARE_AUTHOR(") >> AuthorRule >> ')' >> endLine
-                    | str_p("DECLARE_SIMULATOR_PARAM(") >> SimulatorParamRule >> ')' >> endLine
-                    | str_p("DECLARE_PRODUCED_VAR(") >> ProducedVarRule >> ')' >> endLine
-                    | str_p("DECLARE_UPDATED_VAR(") >> UpdatedVarRule >> ')' >> endLine
-                    | str_p("DECLARE_REQUIRED_VAR(") >> RequiredVarRule >> ')' >> endLine
-                    | str_p("DECLARE_USED_VAR(") >> UsedVarRule >> ')' >> endLine
-                    | str_p("DECLARE_PRODUCED_ATTRIBUTE(") >> ProducedAttributeRule >> ')' >> endLine
-                    | str_p("DECLARE_REQUIRED_ATTRIBUTE(") >> RequiredAttributeRule >> ')' >> endLine
-                    | str_p("DECLARE_USED_ATTRIBUTE(") >> UsedAttributeRule >> ')' >> endLine
-                    | str_p("DECLARE_USED_EVENTS(") >> UsedEventsRule >> ')' >> endLine
-                    | str_p("DECLARE_USED_EXTRAFILE(") >> UsedExtraFilesRule >> ')' >> endLine
-                    | str_p("DECLARE_REQUIRED_EXTRAFILE(") >> RequiredExtraFilesRule >> ')' >> endLine
-                    | str_p("DECLARE_UPDATED_UNITSGRAPH(") >> UpdatedUnitsGraphRule >> ')' >> endLine
-                    | str_p("DECLARE_UPDATED_UNITSCLASS(")[boost::bind(&Sim2DocBuddy::addVectorMember,
-                        self.m_Owner, &self.m_Owner->m_UnitsGraph.UpdatedUnitsClass)] >> UpdatedUnitsClassRule >> ')' >> endLine
+                    | str_p("DECLARE_STATUS") >> *blank >> '(' >> StatusRule >> ')' >> endLine
+                    | str_p("DECLARE_DOMAIN") >> *blank >> '(' >> DomainRule >> ')' >> endLine
+                    | str_p("DECLARE_PROCESS") >> *blank >> '(' >> parameters >> ')' >> endLine
+                    | str_p("DECLARE_METHOD") >> *blank >> '(' >> parameters >> ')' >> endLine
+                    | str_p("DECLARE_AUTHOR") >> *blank >> '(' >> AuthorRule >> ')' >> endLine
+
+                    | str_p("DECLARE_SIMULATOR_PARAM") >> *blank >> '(' >> SimulatorParamRule >> ')' >> endLine
+
+                    | str_p("DECLARE_PRODUCED_VAR") >> *blank >> '(' >> ProducedVarRule >> ')' >> endLine
+                    | str_p("DECLARE_UPDATED_VAR") >> *blank >> '(' >> UpdatedVarRule >> ')' >> endLine
+                    | str_p("DECLARE_REQUIRED_VAR") >> *blank >> '(' >> RequiredVarRule >> ')' >> endLine
+                    | str_p("DECLARE_USED_VAR") >> *blank >> '(' >> UsedVarRule >> ')' >> endLine
+
+                    | str_p("DECLARE_PRODUCED_ATTRIBUTE") >> *blank >> '(' >> ProducedAttributeRule >> ')' >> endLine
+                    | str_p("DECLARE_REQUIRED_ATTRIBUTE") >> *blank >> '(' >> RequiredAttributeRule >> ')' >> endLine
+                    | str_p("DECLARE_USED_ATTRIBUTE") >> *blank >> '(' >> UsedAttributeRule >> ')' >> endLine
+
+                    | str_p("DECLARE_USED_EVENTS") >> *blank >> '(' >> UsedEventsRule >> ')' >> endLine
+                    | str_p("DECLARE_USED_EXTRAFILE") >> *blank >> '(' >> UsedExtraFilesRule >> ')' >> endLine
+                    | str_p("DECLARE_REQUIRED_EXTRAFILE") >> *blank >> '(' >> RequiredExtraFilesRule >> ')' >> endLine
+
+                    | str_p("DECLARE_UPDATED_UNITSGRAPH") >> *blank >> '(' >> UpdatedUnitsGraphRule >> ')' >> endLine
+                    | str_p("DECLARE_UPDATED_UNITSCLASS") >> *blank >> '(' >> UpdatedUnitsClassRule >> ')' >> endLine
 
                     | str_p("DECLARE_SCHEDULING_UNDEFINED")[boost::bind(&ware::SignatureTimeScheduling::setAsUndefined,
-                        &self.m_Owner->m_TimeScheduling)] >> endLine
+                        &self.mp_Owner->m_TimeScheduling)] >> endLine
                     | str_p("DECLARE_SCHEDULING_DEFAULT")[boost::bind(&ware::SignatureTimeScheduling::setAsDefaultDeltaT,
-                        &self.m_Owner->m_TimeScheduling)] >> endLine
-                    | str_p("DECLARE_SCHEDULING_FIXED(") >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingFixed, self.m_Owner, _1)]
+                        &self.mp_Owner->m_TimeScheduling)] >> endLine
+                    | str_p("DECLARE_SCHEDULING_FIXED") >> *blank >> '(' >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingFixed, self.mp_Owner, _1)]
                             >> *blank >> ')' >> endLine
-                    | str_p("DECLARE_SCHEDULING_RANGE(") >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingFixed, self.m_Owner, _1)]
-                            >> *blank >> ',' >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingRange, self.m_Owner, _1)] >> *blank >>  ')' >> endLine
+                    | str_p("DECLARE_SCHEDULING_RANGE") >> *blank >> '(' >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingFixed, self.mp_Owner, _1)]
+                            >> *blank >> ',' >> *blank >> real_p[boost::bind(&Sim2DocBuddy::setSchedulingRange, self.mp_Owner, _1)] >> *blank >>  ')' >> endLine
+
+                    | linemarker >> endLine
                   )
               >> str_p("END_SIMULATOR_SIGNATURE") >> endLine
           ;
 
           /** List of common rules **/
 
-          blank = blank_p | eol_p;    // Parse all spaces, tabs or end of line
+
+          /* Ignoring of inserted lines by the preprocessor which mean
+           * the original position of lines in source file.
+          */
+          linemarker =  '#' >> *(anychar_p - eol_p) >> eol_p;
+
+          blank = blank_p | eol_p;                        // Parse all spaces, tabs and newlines
           endLine = *(blank | ';');
           escapedQuote = str_p("\\\"");
 
-          // String content composed to all characters
-          string = *(escapedQuote | (anychar_p - '"'));
+          string = *(escapedQuote | (anychar_p - '"'));   // String content composed to all characters
 
           varName = *(print_p - ')');
 
           // Parameter of a method surrounded by quotes (string) or not (var name)
-          element = (+(*blank >> '"' >> string[boost::bind(&Sim2DocBuddy::buildParam, self.m_Owner, _1, _2)] >> '"' >> *blank))
-                      | (*blank >> varName[boost::bind(&Sim2DocBuddy::buildParam, self.m_Owner, _1, _2)] >> *blank);
+          element = (+(*blank >> '"' >> string[boost::bind(&Sim2DocBuddy::buildParsedParam, self.mp_Owner, _1, _2)] >> '"' >> *blank))
+                      | (*blank >> varName[boost::bind(&Sim2DocBuddy::buildParsedParam, self.mp_Owner, _1, _2)] >> *blank);
 
-          // List of parameters of a method stored in a temp variable
-          parameters = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, Tmp)]
-           >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, Tmp)]);
+          // List of parameters of a declaration (here not stored)
+          parameters = element[boost::bind(&Sim2DocBuddy::clearParsedParam, self.mp_Owner)]
+           >> *(',' >> element[boost::bind(&Sim2DocBuddy::clearParsedParam, self.mp_Owner)]);
 
 
 
           /** List of rules for the different lines of signature **/
 
-          IDRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimID)];
-          NameRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimName)];
-          DescriptionRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimDescription)];
-          VersionRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimVersion)];
-          StatusRule = element[boost::bind(&Sim2DocBuddy::storeStatus, self.m_Owner)];
-          DomainRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimDomain)];
-          AuthorRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimAuthorName)]
-             >> ',' >> element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_SimAuthorEmail)];
+          IDRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimID)];
+          NameRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimName)];
+          DescriptionRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimDescription)];
+          VersionRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimVersion)];
 
-          SimulatorParamRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_ParamsData, "")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeIntoSignatureData, self.m_Owner, &self.m_Owner->m_ParamsData)]);
-          ProducedVarRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_OutVars, "produced")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeIntoSignatureData, self.m_Owner, &self.m_Owner->m_OutVars)]);
-          UpdatedVarRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_OutVars, "updated")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeIntoSignatureData, self.m_Owner, &self.m_Owner->m_OutVars)]);
-          RequiredVarRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_InVars, "required")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeIntoSignatureData, self.m_Owner, &self.m_Owner->m_InVars)]);
-          UsedVarRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_InVars, "used")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeIntoSignatureData, self.m_Owner, &self.m_Owner->m_InVars)]);
+          StatusRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoStatus, self.mp_Owner)];
 
-          ProducedAttributeRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_OutAttrs, "produced")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeIntoSignatureData, self.m_Owner, &self.m_Owner->m_OutAttrs)]);
-          RequiredAttributeRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_InAttrs, "required")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeIntoSignatureData, self.m_Owner, &self.m_Owner->m_InAttrs)]);
-          UsedAttributeRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_InAttrs, "used")]
-                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeIntoSignatureData, self.m_Owner, &self.m_Owner->m_InAttrs)]);
+          DomainRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_SimDomain)];
+          AuthorRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoVector, self.mp_Owner, &self.mp_Owner->m_SimAuthorsNames)]
+             >> ',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoVector, self.mp_Owner, &self.mp_Owner->m_SimAuthorsEmails)];
 
-          UsedEventsRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_Events, "")];
-          UsedExtraFilesRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_ExtraFiles, "used")];
-          RequiredExtraFilesRule = element[boost::bind(&Sim2DocBuddy::storeKey, self.m_Owner, &self.m_Owner->m_ExtraFiles, "required")];
+          SimulatorParamRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_ParamsData, "")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_ParamsData)]);
 
-          UpdatedUnitsGraphRule = element[boost::bind(&Sim2DocBuddy::storeData, self.m_Owner, &self.m_Owner->m_UnitsGraph.UpdatedUnitsGraph)];
-          UpdatedUnitsClassRule = element[boost::bind(&Sim2DocBuddy::storeInUnitsClass, self.m_Owner, &self.m_Owner->m_UnitsGraph.UpdatedUnitsClass, 1)]
-                  >> ',' >> element[boost::bind(&Sim2DocBuddy::storeInUnitsClass, self.m_Owner, &self.m_Owner->m_UnitsGraph.UpdatedUnitsClass, 2)];
+          ProducedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_OutVars, "produced")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_OutVars)]);
+          UpdatedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_OutVars, "updated")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_OutVars)]);
+          RequiredVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_InVars, "required")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_InVars)]);
+          UsedVarRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_InVars, "used")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_InVars)]);
+
+          ProducedAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_OutAttrs, "produced")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_OutAttrs)]);
+          RequiredAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_InAttrs, "required")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_InAttrs)]);
+          UsedAttributeRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_InAttrs, "used")]
+                   >> *(',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoSignatureData, self.mp_Owner, &self.mp_Owner->m_InAttrs)]);
+
+          UsedEventsRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_Events, "")];
+          UsedExtraFilesRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_ExtraFiles, "used")];
+          RequiredExtraFilesRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoKey, self.mp_Owner, &self.mp_Owner->m_ExtraFiles, "required")];
+
+          UpdatedUnitsGraphRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoString, self.mp_Owner, &self.mp_Owner->m_UnitsGraph.UpdatedUnitsGraph)];
+          UpdatedUnitsClassRule = element[boost::bind(&Sim2DocBuddy::storeDataIntoUnitsClass, self.mp_Owner, &self.mp_Owner->m_UnitsGraph.UpdatedUnitsClass, 1)]
+                  >> ',' >> element[boost::bind(&Sim2DocBuddy::storeDataIntoUnitsClass, self.mp_Owner, &self.mp_Owner->m_UnitsGraph.UpdatedUnitsClass, 2)];
         }
 
         /**

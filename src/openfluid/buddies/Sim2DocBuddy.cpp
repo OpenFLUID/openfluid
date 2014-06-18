@@ -80,13 +80,13 @@ Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
   m_OtherOptionsHelp["tplfile"] = "path to template file";
 
 
-  m_Title = "Unknown title";
-  m_SimID = "unknown.id";
-  m_SimName = "Unknown simulator Name";
-  m_SimVersion = "Unknown version";
-  m_SimAuthorName = "Unknown simulator Author";
-  m_SimAuthorEmail = "Unknown simulator Author Email";
-  m_SimDomain = "Unknown simulator Domain";
+  m_Title = "No title";
+  m_SimID = "undefined.id";
+  m_SimName = "Not available";
+  m_SimVersion = "Undefined";
+  m_SimStatus = "Unknown status";
+  m_SimDomain = "Undefined";
+  m_SimDescription = "Not available";
   m_NewCommands = "";
 
   m_HTMLPackageLatexCommand = "";
@@ -97,8 +97,8 @@ Sim2DocBuddy::Sim2DocBuddy(openfluid::buddies::BuddiesListener* Listener) :
   m_BeginSim2DocTag = "<sim2doc>";
   m_EndSim2DocTag = "</sim2doc>";
 
-  m_KeyValue = "";
-  m_BuiltParam = "";
+  m_CurrentKeyValue = "";
+  m_CurrentBuiltParam = "";
 }
 
 
@@ -316,69 +316,16 @@ std::vector<std::string> Sim2DocBuddy::searchStringLitterals(std::string StrToPa
 // =====================================================================
 
 
-void Sim2DocBuddy::addVectorMember(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass)
-{
-  UpdatedUnitsClass->push_back(openfluid::ware::SignatureHandledUnitsClassItem());
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Sim2DocBuddy::storeInUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass,
-    int Att)
-{
-  if (!UpdatedUnitsClass->empty())
-  {
-    if (Att == 1)
-      UpdatedUnitsClass->back().UnitsClass = m_BuiltParam;
-    else
-      UpdatedUnitsClass->back().Description = m_BuiltParam;
-  }
-  m_BuiltParam.erase();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Sim2DocBuddy::storeKey(SignatureData_t *SignatureData, std::string State)
-{
-  m_KeyValue = toLatexFriendly(m_BuiltParam);
-  if (!State.empty())
-    (*SignatureData)[m_KeyValue].push_back(State);
-  else
-    (*SignatureData)[m_KeyValue].clear();
-  m_BuiltParam.erase();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Sim2DocBuddy::storeIntoSignatureData(SignatureData_t *SignatureData)
-{
-  (*SignatureData)[m_KeyValue].push_back(m_BuiltParam);
-  m_BuiltParam.erase();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void Sim2DocBuddy::buildParam(const char* First, const char* Last)
+void Sim2DocBuddy::buildParsedParam(const char* First, const char* Last)
 {
   std::string Str(First, Last);
   std::size_t Found;
 
+  // Removing of backslashs used as escape characters
   while ((Found = Str.find("\\\"")) != std::string::npos)
     Str.erase(Found, 1);
 
-  m_BuiltParam += Str;
+  m_CurrentBuiltParam += Str;
 }
 
 
@@ -386,12 +333,9 @@ void Sim2DocBuddy::buildParam(const char* First, const char* Last)
 // =====================================================================
 
 
-void Sim2DocBuddy::storeData(std::string *Param)
+void Sim2DocBuddy::clearParsedParam()
 {
-  if (Param != 0)
-    *Param = m_BuiltParam;
-
-  m_BuiltParam.erase();
+  m_CurrentBuiltParam.clear();
 }
 
 
@@ -399,24 +343,120 @@ void Sim2DocBuddy::storeData(std::string *Param)
 // =====================================================================
 
 
-void Sim2DocBuddy::storeStatus()
+void Sim2DocBuddy::storeDataIntoString(std::string *Str)
+{
+  if (!m_CurrentBuiltParam.empty())
+  {
+    if (Str)
+      *Str = m_CurrentBuiltParam;
+
+    clearParsedParam();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeDataIntoVector(std::vector<std::string> *List)
+{
+  if (!m_CurrentBuiltParam.empty())
+  {
+    if (List)
+      List->push_back(m_CurrentBuiltParam);
+
+    clearParsedParam();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeDataIntoKey(SignatureData_t *SignatureData, const std::string& State)
+{
+  m_CurrentKeyValue.clear();
+
+  if (!m_CurrentBuiltParam.empty())
+  {
+    if (SignatureData)
+    {
+      m_CurrentKeyValue = toLatexFriendly(m_CurrentBuiltParam);
+      if (!State.empty())
+        (*SignatureData)[m_CurrentKeyValue].push_back(State);
+      else
+        (*SignatureData)[m_CurrentKeyValue].clear();
+    }
+
+    clearParsedParam();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeDataIntoSignatureData(SignatureData_t *SignatureData)
+{
+  if (!m_CurrentKeyValue.empty())
+  {
+    if (SignatureData)
+      (*SignatureData)[m_CurrentKeyValue].push_back(m_CurrentBuiltParam);
+  }
+
+  clearParsedParam();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeDataIntoStatus()
 {
   std::string ParsedStatus = "";
   std::string DataToStore = "";
-  std::size_t Found = m_BuiltParam.rfind(':');
+  std::size_t Found = m_CurrentBuiltParam.rfind(':');
 
   // Get ware status
   if (Found != std::string::npos)
-    ParsedStatus = m_BuiltParam.substr(Found+1, m_BuiltParam.length()-Found);
+    ParsedStatus = m_CurrentBuiltParam.substr(Found+1, m_CurrentBuiltParam.length()-Found);
 
   if (ParsedStatus == "EXPERIMENTAL")
-    DataToStore = "Experimental";
+    m_SimStatus = "Experimental";
   else if (ParsedStatus == "BETA")
-    DataToStore = "Beta";
+    m_SimStatus = "Beta";
   else if (ParsedStatus == "STABLE")
-    DataToStore = "Stable";
+    m_SimStatus = "Stable";
 
-  m_BuiltParam.erase();
+  clearParsedParam();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void Sim2DocBuddy::storeDataIntoUnitsClass(std::vector<openfluid::ware::SignatureHandledUnitsClassItem> *UpdatedUnitsClass,
+    int Attr)
+{
+  if (UpdatedUnitsClass)
+  {
+    if (Attr == 1)
+    {
+      UpdatedUnitsClass->push_back(openfluid::ware::SignatureHandledUnitsClassItem());
+      UpdatedUnitsClass->back().UnitsClass = m_CurrentBuiltParam;
+    }
+    else
+    {
+      UpdatedUnitsClass->back().Description = m_CurrentBuiltParam;
+    }
+
+    clearParsedParam();
+  }
 }
 
 
@@ -458,8 +498,28 @@ void Sim2DocBuddy::turnIntoLatexSyntax()
 
   m_SimDescription = toLatexFriendly(m_SimDescription);
   m_SimDomain = toLatexFriendly(m_SimDomain);
-  m_SimAuthorName = toLatexFriendly(m_SimAuthorName);
-  m_SimAuthorEmail = toLatexFriendly(m_SimAuthorEmail);
+
+  std::vector<std::string>::iterator AuthorIt;
+
+  if (m_SimAuthorsNames.empty())
+  {
+    m_SimAuthorsNames.push_back(toLatexFriendly("No author"));
+  }
+  else
+  {
+    for (AuthorIt = m_SimAuthorsNames.begin(); AuthorIt != m_SimAuthorsNames.end(); ++AuthorIt)
+      *AuthorIt = toLatexFriendly(*AuthorIt);
+  }
+
+  if (m_SimAuthorsEmails.empty())
+  {
+    m_SimAuthorsEmails.push_back(toLatexFriendly("No author email"));
+  }
+  else
+  {
+    for (AuthorIt = m_SimAuthorsEmails.begin(); AuthorIt != m_SimAuthorsEmails.end(); ++AuthorIt)
+      *AuthorIt = toLatexFriendly(*AuthorIt);
+  }
 
   SignatureData_t::iterator ParamIt;
   unsigned int i;
@@ -657,12 +717,22 @@ void Sim2DocBuddy::generateLatex()
     addLatexDataCatEnd(m_SimData);
   }
 
+  // creating list with authors names
+
+  std::string AuthorsList = "";
+  std::vector<std::string>::iterator AuthorIt;
+
+  for (AuthorIt = m_SimAuthorsNames.begin(); AuthorIt != m_SimAuthorsNames.end(); ++AuthorIt)
+    AuthorsList += *AuthorIt + ", ";
+
+  AuthorsList.resize(AuthorsList.size() - 2);
+
   // replacing values
 
   boost::algorithm::replace_all(m_LatexOutFile,"#htmlpackage#",m_HTMLPackageLatexCommand);
   boost::algorithm::replace_all(m_LatexOutFile,"#title#",m_Title);
   boost::algorithm::replace_all(m_LatexOutFile,"#version#",m_SimVersion);
-  boost::algorithm::replace_all(m_LatexOutFile,"#author#",m_SimAuthorName);
+  boost::algorithm::replace_all(m_LatexOutFile,"#author#",AuthorsList);
   boost::algorithm::replace_all(m_LatexOutFile,"#newcommands#",m_NewCommands);
   boost::algorithm::replace_all(m_LatexOutFile,"#name#",m_SimName);
   boost::algorithm::replace_all(m_LatexOutFile,"#domain#",m_SimDomain);
