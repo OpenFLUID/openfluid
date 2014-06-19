@@ -144,6 +144,10 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
   ui->FillColorButton->setStyleSheet(QString(m_ColorButtonStyleSheet).arg(m_FillColor.name()));
   ui->LineWidthSpinBox->setValue(m_LineWidth);
 
+  // TODO re-enable line width settings
+  ui->LineWidthLabel->setVisible(false);
+  ui->LineWidthSpinBox->setVisible(false);
+
   connect(ui->VisibleCheckBox,SIGNAL(toggled(bool)),this,SLOT(changeVisible()));
   connect(ui->LineColorButton,SIGNAL(clicked()),this,SLOT(changeLineColor()));
   connect(ui->FillColorButton,SIGNAL(clicked()),this,SLOT(changeFillColor()));
