@@ -2,9 +2,9 @@
 
 \page apdx_datetime Datetime formats
 
-TODO
 
-The output.xml file can use the ANSI strftime() standards formats for date time, through a format string. 
+OpenFLUID uses the ANSI strftime() standards formats for date time formatting to and from a format string.
+As an example, this format string can be used in CSV observer in parameters to customize date formats.\n
 The format string consists of zero or more conversion specifications and ordinary characters.
 A conversion specification consists of a \% character and a terminating conversion character that determines the conversion specification's behaviour.
 All ordinary characters (including the terminating null byte) are copied unchanged into the array.

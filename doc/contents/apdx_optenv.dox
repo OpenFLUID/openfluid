@@ -2,50 +2,51 @@
 
 \page apdx_optenv Command line options and environment variables
 
-\todo
 
 \section apdx_optenv_cmdopt Command line options
 
-\todo
-
-\begin{center}
-\begin{tabularx}{\linewidth}{lX}
-\texttt{-a}, \verb?---?\texttt{auto-output-dir}&generate automatic results output directory\\
-\texttt{-b}, \verb?---?\texttt{buddy <arg>}&run specified OpenFLUID buddy\\
-\verb?---?\texttt{buddyhelp <arg>}&display help message for specified OpenFLUID buddy\\
-\verb?---?\texttt{buddyopts <arg>}&set options for specified OpenFLUID buddy\\
-\texttt{-c}, \verb?---?\texttt{clean-output-dir}&clean results output directory by removing existing files\\
-\texttt{-f}, \verb?---?\texttt{functions-list}&list available functions (do not run the simulation)\\
-\texttt{-h}, \verb?---?\texttt{help}&display help message\\
-\texttt{-i}, \verb?---?\texttt{input-dir <arg>}&set dataset input directory\\
-\texttt{-k}, \verb?---?\texttt{enable-simulation-profiling}&enable time profiling for functions\\
-\texttt{-o}, \verb?---?\texttt{output-dir <arg>}&set results output directory\\
-\texttt{-p}, \verb?---?\texttt{functions-paths <arg>}&add extra functions research paths\\
-\texttt{-q}, \verb?---?\texttt{quiet}&quiet display during simulation run\\
-\texttt{-r}, \verb?---?\texttt{functions-report}&print a report of available functions, with details (do not run the simulation)\\
-\texttt{-s}, \verb?---?\texttt{no-simreport}&do not generate simulation report\\
-\verb?---?\texttt{show-paths}&print the used paths (do not run the simulation)\\
-\texttt{-u}, \verb?---?\texttt{matching-functions-report <arg>}&print a report of functions matching the given wildcard-based pattern (do not run the simulation)\\
-\texttt{-v}, \verb?---?\texttt{verbose}&verbose display during simulation\\
-\verb?---?\texttt{version}&get version (do not run the simulation)\\
-\texttt{-w}, \verb?---?\texttt{project <arg>}&set project directory\\
-\texttt{-x}, \verb?---?\texttt{xml-functions-report}&print a report of available functions in xml format, with details (do not run the simulation)\\
-\texttt{-z}, \verb?---?\texttt{no-result}&do not write results files\\
-\end{tabularx}
-\end{center}
+Command line options for the <tt>openfluid</tt> command line program:
+<ul>
+<li><tt>-a</tt>, <tt>--auto-output-dir</tt> : generate automatic results output directory
+<li><tt>-b</tt>, <tt>--buddy</tt> <tt><arg></tt> : run specified OpenFLUID buddy
+<li><tt>--buddyhelp</tt> <tt><arg></tt> : display help message for specified OpenFLUID buddy
+<li><tt>--buddyopts</tt> <tt><arg></tt> : set options for specified OpenFLUID  buddy
+<li><tt>-c</tt>, <tt>--clean-output-dir</tt> : clean results output directory by removing existing files
+<li><tt>-e</tt>, <tt>--observers-list</tt> : list available observers (do not run the simulation)
+<li><tt>-f</tt>, <tt>--simulators-list</tt> : list available simulators (do not run the simulation)
+<li><tt>-h</tt>, <tt>--help</tt> : display help message
+<li><tt>-i</tt>, <tt>--input-dir</tt> <tt><arg></tt> : set input dataset directory
+<li><tt>-k</tt>, <tt>--enable-simulation-profiling</tt> : enable time profiling for simulators
+<li><tt>-l</tt>, <tt>--observers-report</tt> : print a report of available observers, with details (do not run the simulation)
+<li><tt>-n</tt>, <tt>--observers-paths</tt> <tt><arg></tt> : add extra observers search paths (colon separated)
+<li><tt>-o</tt>, <tt>--output-dir</tt> <tt><arg></tt> : set results output directory
+<li><tt>-p</tt>, <tt>--simulators-paths</tt> <tt><arg></tt> : add extra simulators search paths (colon separated)
+<li><tt>-q</tt>, <tt>--quiet</tt> : quiet display during simulation run
+<li><tt>-r</tt>, <tt>--simulators-report</tt> : print a report of available simulators, with details (do not run the simulation)
+<li><tt>-s</tt>, <tt>--no-simreport</tt> : do not generate simulation report
+<li><tt>--show-paths</tt> : print the used paths (do not run the simulation)
+<li><tt>-t</tt>, <tt>--max-threads</tt> <tt><arg></tt> : change maximum number of threads for threaded spatial loops (default is 4)
+<li><tt>-u</tt>, <tt>--matching-simulators-report</tt> <tt><arg></tt> : print a report of simulators matching the given wildcard-based pattern (do not run the simulation)
+<li><tt>-v</tt>, <tt>--verbose</tt> : verbose display during simulation
+<li><tt>-w</tt>, <tt>--project</tt> <tt><arg></tt> : set project directory
+<li><tt>--version</tt> : get version (do not run the simulation)
+<li><tt>-z</tt>, <tt>--no-result</tt> : do not write results files
+</ul>
 
 
 \section apdx_optenv_envvar Environment variables
 
-\todo
-
-The OpenFLUID \ framework takes into account the following environment
-variables (if they are set):
-\begin{itemize}
-\item \texttt{OPENFLUID\_FUNCS\_PATH}: extra search paths for \OFname \ simulation functions. The path are separated by colon on UNIX systems, and by semicolon on Windows systems. 
-\item \texttt{OPENFLUID\_INSTALL\_PREFIX}: overrides automatic detection of install path, useful on Windows systems.
-\end{itemize}
-
+The OpenFLUID framework takes into account the following environment
+variables (if they are set in the current running environment):
+<ul>
+<li><tt>OPENFLUID_INSTALL_PREFIX</tt>: overrides automatic detection of install path, useful on Windows systems.
+<li><tt>OPENFLUID_USERDATA_PATH</tt>: overrides the default user data home directory (set by default to <tt>$HOME/.openfluid</tt> on Unix systems)
+<li><tt>OPENFLUID_TEMP_PATH</tt>: overrides the default OpenFLUID temporary directory, used by OpenFLUID software components for temporary data.
+<li><tt>OPENFLUID_SIMS_PATH</tt>: extra search paths for OpenFLUID simulators. 
+The path are separated by colon on UNIX systems, and by semicolon on Windows systems. 
+<li><tt>OPENFLUID_OBSS_PATH</tt>: extra search paths for OpenFLUID observers. 
+The path are separated by colon on UNIX systems, and by semicolon on Windows systems. 
+</ul>
 
 
 */
