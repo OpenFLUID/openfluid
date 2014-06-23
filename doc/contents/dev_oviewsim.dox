@@ -17,9 +17,9 @@ To get more informations about the simulators signatures, see part \ref dev_sign
 \section dev_oviewsim_cppclass Simulator C++ class
 
 The computational part of a simulator is defined by a class, 
-inherited from the openfluid::ware::PluggableSimulator class.
+inherited from the \if doc-is-latex \b \endif openfluid::ware::PluggableSimulator class.
 The simulation code have to be written into the different methods
-provided by the openfluid::ware::PluggableSimulator class.
+provided by the \if doc-is-latex \b \endif openfluid::ware::PluggableSimulator class.
 You can also develop other methods in order to structure your source code.\n
 To get more information about the C++ class of a simulator, see part \ref dev_createsim.
 
@@ -38,34 +38,35 @@ for the needs of the computational code (other objects, pointed vars, ...).
 
 The class defining a simulator must define the following methods:
 <ul>
-<li>\link openfluid::ware::PluggableSimulator::initParams initParams \endlink
-<li>\link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink
-<li>\link openfluid::ware::PluggableSimulator::checkConsistency checkConsistency \endlink
-<li>\link openfluid::ware::PluggableSimulator::initializeRun initializeRun \endlink
-<li>\link openfluid::ware::PluggableSimulator::runStep runStep \endlink
-<li>\link openfluid::ware::PluggableSimulator::finalizeRun finalizeRun \endlink
+<li>\if doc-is-latex \b initParams \else \link openfluid::ware::PluggableSimulator::initParams initParams \endlink \endif
+<li>\if doc-is-latex \b prepareData \else \link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink \endif
+<li>\if doc-is-latex \b checkConsistency \else \link openfluid::ware::PluggableSimulator::checkConsistency checkConsistency \endlink \endif
+<li>\if doc-is-latex \b initializeRun \else \link openfluid::ware::PluggableSimulator::initializeRun initializeRun \endlink \endif
+<li>\if doc-is-latex \b runStep \else \link openfluid::ware::PluggableSimulator::runStep runStep \endlink \endif
+<li>\if doc-is-latex \b finalizeRun \else \link openfluid::ware::PluggableSimulator::finalizeRun finalizeRun \endlink \endif
 </ul> 
 
-The \link openfluid::ware::PluggableSimulator::initParams initParams \endlink 
+\n
+The \if doc-is-latex \b initParams \else \link openfluid::ware::PluggableSimulator::initParams initParams \endlink \endif 
 method should be used to retreive the parameters of the simulator, 
 read from the model.fluidx file or filled from the OpenFLUID-Builder interface (See \ref user_fluidx_sections_model). 
 Once read, the values should be stored into private attributes to be accessed by other methods.  
 
-The \link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink 
+The \if doc-is-latex \b prepareData \else \link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink \endif
 method should be used to do data pre-processing before the consistency checking.
 
-The \link openfluid::ware::PluggableSimulator::checkConsistency checkConsistency \endlink 
+The \if doc-is-latex \b checkConsistency \else \link openfluid::ware::PluggableSimulator::checkConsistency checkConsistency \endlink \endif
 method is called during the global consistency checking phase.
 It should be used to add specific consistency checking for the simulator. 
 
-The \link openfluid::ware::PluggableSimulator::initializeRun initializeRun \endlink 
+The \if doc-is-latex \b initializeRun \else \link openfluid::ware::PluggableSimulator::initializeRun initializeRun \endlink \endif
 method must be used for initialization of simulation variables, 
 or to compute initialization data.
 
-The \link openfluid::ware::PluggableSimulator::runStep runStep \endlink 
+The \if doc-is-latex \b runStep \else \link openfluid::ware::PluggableSimulator::runStep runStep \endlink \endif
 method is called at each exchange time step. It should contain the computational code.
 
-The \link openfluid::ware::PluggableSimulator::finalizeRun finalizeRun \endlink 
+The \if doc-is-latex \b finalizeRun \else \link openfluid::ware::PluggableSimulator::finalizeRun finalizeRun \endlink \endif
 method should be used to do post-processing after simulation. It is the last method ran.
 
 

@@ -235,10 +235,10 @@ A process defined as a method of simulator class can be applied to the spatial g
 following the process order, using the following methods:
 <ul>
 <li> 
-\if doc-is-latex \b APPLY_UNITS_ORDERED_LOOP_THREADED \else#APPLY_UNITS_ORDERED_LOOP_THREADED\endif
-for applying a process to a given units class. Extra arguments can be passed (see example below). 
-<li>\if doc-is-latex \b APPLY_ALLUNITS_ORDERED_LOOP_THREADED \else #APPLY_ALLUNITS_ORDERED_LOOP_THREADED\endif
-for applying a process to a all units of the spatial domain.
+\if doc-is-latex \b APPLY_UNITS_ORDERED_LOOP_THREADED \else #APPLY_UNITS_ORDERED_LOOP_THREADED \endif
+ for applying a process to a given units class. Extra arguments can be passed (see example below). 
+<li>\if doc-is-latex \b APPLY_ALLUNITS_ORDERED_LOOP_THREADED \else #APPLY_ALLUNITS_ORDERED_LOOP_THREADED \endif
+ for applying a process to a all units of the spatial domain.
 Extra arguments can also be passed (see example below).\n 
 </ul>
 The fist argument of the the method passed to the macro must be an openfluid::core::Unit*

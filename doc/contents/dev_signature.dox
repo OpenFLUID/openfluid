@@ -2,28 +2,36 @@
 
 \page dev_signature Declaration of the simulator signature
 
-\todo use if doc-is-latex for macros names with sharp character
 
 The signature can be automatically generated through the OpenFLUID plugin for Eclipse.
 However it is possible to write the signature \e de \e novo, or complete it manually.
 
-The signature has to be defined between the #BEGIN_SIMULATOR_SIGNATURE and the #END_SIMULATOR_SIGNATURE macros.  
+The signature has to be defined between the \if doc-is-latex \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
+ and the \if doc-is-latex \b END_SIMULATOR_SIGNATURE \else #END_SIMULATOR_SIGNATURE \endif 
+ macros.  
 
 \section dev_signature_id Identification
 
 The identification part of the signature must contain at least the ID of the simulator. 
-This ID will be used by the framework to load simukators. It is declared in 
-the signature as an agrument of the #BEGIN_SIMULATOR_SIGNATURE macro.\n 
+This ID will be used by the framework to load simulators. It is declared in 
+the signature as an argument of the \if doc-is-latex \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
+ macro.\n 
 Other optional informations can be included for better description of the simulator:
 <ul>
-<li>the simulator name, declared through the #DECLARE_NAME macro,
+<li>the simulator name, declared through the \if doc-is-latex \b DECLARE_NAME \else #DECLARE_NAME \endif
+ macro,
 allowing to assign a long name to the simulator
-<li>the simulator description, declared through the #DECLARE_DESCRIPTION macro,
+<li>the simulator description, declared through the \if doc-is-latex \b DECLARE_DESCRIPTION \else #DECLARE_DESCRIPTION \endif
+ macro,
 allowing to provide a detailed description of what the simulator actually does 
-<li>the name(s) of the author(s) and it email address, declared through the #DECLARE_AUTHOR macro.
-There may be multiple #DECLARE_AUTHOR macros in the signature in case of multiple authors
-<li>the software version of the simulator, declared through the #DECLARE_VERSION macro
-<li>the software status of the simulator, declared through the #DECLARE_STATUS macro. The value can be
+<li>the name(s) of the author(s) and it email address, declared through the \if doc-is-latex \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
+ macro.
+There may be multiple \if doc-is-latex \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
+ macros in the signature in case of multiple authors
+<li>the software version of the simulator, declared through the \if doc-is-latex \b DECLARE_VERSION \else #DECLARE_VERSION \endif
+ macro
+<li>the software status of the simulator, declared through the \if doc-is-latex \b DECLARE_STATUS \else #DECLARE_STATUS \endif
+ macro. The value can be
 openfluid::base::EXPERIMENTAL, openfluid::base::BETA or openfluid::base::STABLE
 </ul>
 
@@ -36,9 +44,12 @@ The informations about scientific applications is only indicative.
 It has no effects on simulator consistency or computational code.
 These information can be :
 <ul>
-<li> the domain in which the simulator can be applied, declared through the #DECLARE_DOMAIN macro
-<li> the processes simulated by the simulator, declared through the #DECLARE_PROCESS macro
-<li> the numerical methods used by the simulator, declared through the #DECLARE_METHOD macro
+<li> the domain in which the simulator can be applied, declared through the \if doc-is-latex \b DECLARE_DOMAIN \else #DECLARE_DOMAIN \endif
+ macro
+<li> the processes simulated by the simulator, declared through the \if doc-is-latex \b DECLARE_PROCESS \else #DECLARE_PROCESS \endif
+ macro
+<li> the numerical methods used by the simulator, declared through the \if doc-is-latex \b DECLARE_METHOD \else #DECLARE_METHOD \endif
+ macro
 </ul>
 
 \section dev_signature_data Data and spatial graph 
@@ -50,7 +61,7 @@ The data used by the simulators can be:
 <li> Simulation variables that are attached to spatial units, representing the dynamics of modeled processes
 over the spatial units
 <li> Discrete events that are attached to spatial units, 
-representing the events occuring at a given date and time on a given spatial unit
+representing the events occurring at a given date and time on a given spatial unit
 <li> Specific file(s) loaded by the simulator 
 </ul>
 These data can be accessed, appended and/or modified by the simulator.\n
@@ -67,7 +78,8 @@ The declarations of spatial data access include rules:
 \subsection dev_signature_data_simparams Simulators parameters
 
 Simulators parameters are values provided to each simulator, 
-and are declared using the #DECLARE_SIMULATOR_PARAM macro.
+and are declared using the \if doc-is-latex \b DECLARE_SIMULATOR_PARAM \else #DECLARE_SIMULATOR_PARAM \endif
+ macro.
 This macro takes 3 arguments
 <ul>
 <li>the name of the parameter
@@ -84,7 +96,10 @@ Example of simulator parameter declaration:
 \subsection dev_signature_data_attrs Spatial attributes
 
 Spatial attributes are constant properties attached to each spatial units, 
-and are declared using #DECLARE_REQUIRED_ATTRIBUTE or #DECLARE_USED_ATTRIBUTE macros
+and are declared using \if doc-is-latex \b DECLARE_REQUIRED_ATTRIBUTE
+\else #DECLARE_REQUIRED_ATTRIBUTE \endif or \if doc-is-latex \b DECLARE_USED_ATTRIBUTE
+\else #DECLARE_USED_ATTRIBUTE \endif
+ macros
 
 These macros take 4 arguments:
 <ul>
@@ -106,9 +121,17 @@ Example of attributes declaration:
 
 Simulation variables are attached to spatial units. They are produced, accessed and modified
 by simulators during simulations.\n
-Accessed variables are declared using #DECLARE_REQUIRED_VAR or #DECLARE_USED_VAR macros,
-produced variables are declared using #DECLARE_PRODUCED_VAR macro, 
-updated variables are declared using #DECLARE_UPDATED_VAR macro.
+Accessed variables are declared using \if doc-is-latex \b DECLARE_REQUIRED_VAR
+\else #DECLARE_REQUIRED_VAR \endif
+or \if doc-is-latex \b DECLARE_USED_VAR
+\else #DECLARE_USED_VAR \endif
+ macros,
+produced variables are declared using \if doc-is-latex \b DECLARE_PRODUCED_VAR
+\else #DECLARE_PRODUCED_VAR \endif
+ macro, 
+updated variables are declared using \if doc-is-latex \b DECLARE_UPDATED_VAR
+\else #DECLARE_UPDATED_VAR \endif
+ macro.
 
 These macros take 4 arguments:
 <ul>
@@ -166,7 +189,9 @@ Example of variables declarations
 \subsection dev_signature_data_events Discrete events
 
 Discrete events are attached to spatail units, They are accessed or appended by simulators during simulations,
-and are declared using the #DECLARE_USED_EVENTS macro.\n
+and are declared using the \if doc-is-latex \b DECLARE_USED_EVENTS
+\else #DECLARE_USED_EVENTS \endif
+ macro.\n
 
 The declaration macro takes 1 argument: the units class.
 
@@ -180,7 +205,11 @@ Example of events declaration:
 
 Simulators can declare files that they load and manage. This helps users to provide the needed files, and also  
 notifiesthe OpenFLUID framework to check the presence of the file if it is required.\n 
-These files are declared using the #DECLARE_USED_EXTRAFILE or #DECLARE_REQUIRED_EXTRAFILE macros. 
+These files are declared using the \if doc-is-latex \b DECLARE_USED_EXTRAFILE
+\else #DECLARE_USED_EXTRAFILE \endif
+ or \if doc-is-latex \b DECLARE_REQUIRED_EXTRAFILE
+\else #DECLARE_REQUIRED_EXTRAFILE \endif
+ macros. 
 
 The declaration macro takes 1 argument: the file name with relative path to the dataset path.
 
@@ -196,11 +225,15 @@ Example of extra file declarations:
 The spatial units graph representing the landscape can be modified by simulators.
 These modifications are declared in the signature function using two macros.\n
  
-The #DECLARE_UPDATED_UNITSGRAPH macro is used for declaration of the global units graph modification
+The \if doc-is-latex \b DECLARE_UPDATED_UNITSGRAPH
+\else #DECLARE_UPDATED_UNITSGRAPH \endif
+ macro is used for declaration of the global units graph modification
 that will occur during simulation. 
 It is for information purpose only, and takes a description as a single arguments.\n
  
-The #DECLARE_UPDATED_UNITSCLASS macro is used for declaration of units classes that will be affected, and how.
+The \if doc-is-latex \b DECLARE_UPDATED_UNITSCLASS
+\else DECLARE_UPDATED_UNITSCLASS \endif 
+ macro is used for declaration of units classes that will be affected, and how.
 It takes two arguments:
 <ul>
 <li>the units class
