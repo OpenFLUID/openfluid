@@ -98,16 +98,22 @@
 
 \mainmatter
 
-\part{Introduction to OpenFLUID}
-\chapter{\-Overview and main concepts}\label{intro_oview}\hypertarget{intro_oview}{}\input{intro_oview}
-\chapter{\-OpenFLUID software}\label{intro_soft}\hypertarget{intro_soft}{}\input{intro_soft}
-\chapter{\-Installation and resources}\label{intro_install}\hypertarget{intro_install}{}\input{intro_inst}
+% TODO to be completed
+%\part{Introduction to OpenFLUID}
+% TODO to be completed
+%\chapter{\-Overview and main concepts}\label{intro_oview}\hypertarget{intro_oview}{}\input{intro_oview}
+% TODO to be completed
+%\chapter{\-OpenFLUID software}\label{intro_soft}\hypertarget{intro_soft}{}\input{intro_soft}
+% TODO to be completed
+%\chapter{\-Installation and resources}\label{intro_install}\hypertarget{intro_install}{}\input{intro_inst}
 
 \part{Running simulations with OpenFLUID}
 \chapter{\-Usage of OpenFLUID applications}\label{use_apps}\hypertarget{use_apps}{}\input{use_apps}
 \chapter{\-Format of input datasets}\label{use_fluidx}\hypertarget{use_fluidx}{}\input{use_fluidx}
-\chapter{\-OpenFLUID buddies}\label{use_buddies}\hypertarget{use_buddies}{}\input{use_buddies}
-\chapter{\-Examples projects}\label{use_examples}\hypertarget{use_examples}{}\input{use_examples}
+% TODO to be completed
+%\chapter{\-OpenFLUID buddies}\label{use_buddies}\hypertarget{use_buddies}{}\input{use_buddies}
+% TODO to be completed
+%\chapter{\-Examples projects}\label{use_examples}\hypertarget{use_examples}{}\input{use_examples}
 
 \part{Development of OpenFLUID simulators}
 \chapter{\-Overview of an OpenFLUID simulator}\label{dev_oviewsim}\hypertarget{dev_oviewsim}{}\input{dev_oviewsim}
@@ -119,10 +125,12 @@
 \appendix
 \part{Appendix}
 \chapter{\-Command line options and environment variables}\label{apdx_optenv}\hypertarget{apdx_optenv}{}\input{apdx_optenv}
-\chapter{\-Structure of an openfluid project}\label{apdx_prj}\hypertarget{apdx_prj}{}\input{apdx_prj}
+% TODO to be completed
+%\chapter{\-Structure of an openfluid project}\label{apdx_prj}\hypertarget{apdx_prj}{}\input{apdx_prj}
 \chapter{\-Datetime formats}\label{apdx_datetime}\hypertarget{apdx_datetime}{}\input{apdx_datetime}
 \chapter{\-File formats for generators}\label{apdx_generators}\hypertarget{apdx_generators}{}\input{apdx_generators}
-\chapter{\-Observers parameters}\label{apdx_obsparams}\hypertarget{apdx_obsparams}{}\input{apdx_obsparams}
+% TODO to be completed
+%\chapter{\-Observers parameters}\label{apdx_obsparams}\hypertarget{apdx_obsparams}{}\input{apdx_obsparams}
 
 %% pages
 

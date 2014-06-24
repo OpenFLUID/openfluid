@@ -7,6 +7,7 @@ This manual is made of different parts.
 \n
 \n
 
+\if todo-is-done
 <h3>Introduction to OpenFLUID</h3>
 <ul>
   <li> \subpage intro_oview
@@ -14,16 +15,17 @@ This manual is made of different parts.
   <li> \subpage intro_inst
 </ul>
 \n
-\n
+\endif
 
 <h3>Running simulations with OpenFLUID</h3>
 <ul>
   <li> \subpage use_apps
   <li> \subpage use_fluidx
+\if todo-is-done  
   <li> \subpage use_buddies
   <li> \subpage use_examples
+\endif  
 </ul>
-\n
 \n
 
 <h3>Development of OpenFLUID simulators</h3>
@@ -35,15 +37,18 @@ This manual is made of different parts.
   <li> \subpage dev_sim2doc
 </ul>
 \n
-\n
 
 <h3>Appendix</h3>
 <ul>
   <li> \subpage apdx_optenv
+\if todo-is-done  
   <li> \subpage apdx_prj
+\endif  
   <li> \subpage apdx_datetime
   <li> \subpage apdx_generators
+\if todo-is-done  
   <li> \subpage apdx_obsparams
+\endif  
 </ul>
 \n
 \n
