@@ -39,7 +39,7 @@
  */
 
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 
 #include "ui_SaveAsDialog.h"
@@ -55,7 +55,7 @@ SaveAsDialog::SaveAsDialog(QWidget* Parent) :
 {
   ui->setupUi(this);
 
-  ui->DirectoryLabel->setText(openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
+  ui->DirectoryLabel->setText(openfluid::base::PreferencesManager::getInstance()->getWorkdir());
   ui->ProjectNameEdit->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
 
   projectChanged();

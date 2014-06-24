@@ -43,7 +43,7 @@
 
 #include "OpenFLUIDDialog.hpp"
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 
 namespace Ui
@@ -70,7 +70,7 @@ class EditMarketplaceDialog : public OpenFLUIDDialog
 
     QString m_OriginalName;
 
-    const openfluid::guicommon::PreferencesManager::MarketPlaces_t m_MPlaces;
+    const openfluid::base::PreferencesManager::MarketPlaces_t m_MPlaces;
 
     void setMessage(const QString& Msg = "");
 
@@ -79,7 +79,7 @@ class EditMarketplaceDialog : public OpenFLUIDDialog
   public:
 
     EditMarketplaceDialog(QWidget* Parent, const QString& Name, const QString& URL,
-                          const openfluid::guicommon::PreferencesManager::MarketPlaces_t& MPlaces);
+                          const openfluid::base::PreferencesManager::MarketPlaces_t& MPlaces);
 
     virtual ~EditMarketplaceDialog();
 

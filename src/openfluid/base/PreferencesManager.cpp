@@ -33,6 +33,7 @@
  \file PreferencesManager.cpp
  \brief Implements ...
 
+ \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
@@ -47,7 +48,8 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/FrameworkException.hpp>
 
-namespace openfluid { namespace guicommon {
+
+namespace openfluid { namespace base {
 
 PreferencesManager* PreferencesManager::mp_Instance = NULL;
 QString PreferencesManager::m_FileName = "";
@@ -75,8 +77,6 @@ PreferencesManager::PreferencesManager():
   if (m_FileName.isEmpty())
   {
     m_FileName = QString(openfluid::base::RuntimeEnvironment::getInstance()->getDefaultConfigFile().c_str());
-    // TODO qt suffix to remove
-    m_FileName += "qt";
   }
 
 

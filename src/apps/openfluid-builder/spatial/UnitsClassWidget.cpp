@@ -44,7 +44,7 @@
 #include "AppTools.hpp"
 
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 #include <QColorDialog>
 #include <QMessageBox>
@@ -242,7 +242,7 @@ void UnitsClassWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->isSpatialUnitsRemovalConfirm())
+  if (openfluid::base::PreferencesManager::getInstance()->isSpatialUnitsRemovalConfirm())
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",

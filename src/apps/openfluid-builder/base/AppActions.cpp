@@ -43,7 +43,7 @@
 #include <QToolBar>
 
 #include <openfluid/base/ApplicationException.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 #include "AppActions.hpp"
 #include "ExtensionsRegistry.hpp"
@@ -79,11 +79,11 @@ AppActions::~AppActions()
 
 void AppActions::updateRecentProjectsActions()
 {
-  openfluid::guicommon::PreferencesManager::RecentProjectsList_t RPList;
+  openfluid::base::PreferencesManager::RecentProjectsList_t RPList;
 
-  RPList = openfluid::guicommon::PreferencesManager::getInstance()->getRecentProjects();
+  RPList = openfluid::base::PreferencesManager::getInstance()->getRecentProjects();
 
-  int RFCount = qMin(int(RPList.size()),openfluid::guicommon::PreferencesManager::RecentProjectsLimit);
+  int RFCount = qMin(int(RPList.size()),openfluid::base::PreferencesManager::RecentProjectsLimit);
 
   for (int i=0; i<RFCount;i++)
   {
@@ -92,7 +92,7 @@ void AppActions::updateRecentProjectsActions()
     m_RecentProjectsActions[i]->setVisible(true);
   }
 
-  for (int i=RFCount;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+  for (int i=RFCount;i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
     m_RecentProjectsActions[i]->setVisible(false);
 
   if (mp_RecentProjectsMenu != NULL)
@@ -182,7 +182,7 @@ void AppActions::createActions()
   m_Actions["MarketAccess"]->setIcon(QIcon(":/icons/market.png"));
 
 
-  for (int i=0; i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+  for (int i=0; i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
   {
     m_RecentProjectsActions.push_back(new QAction(this));
     m_RecentProjectsActions.back()->setVisible(false);
@@ -353,7 +353,7 @@ void AppActions::createMenus(MainWindow& MainWin)
 
   // recents
   mp_RecentProjectsMenu = Menu->addMenu(tr("Open recent"));
-  for (int i=0;i<openfluid::guicommon::PreferencesManager::RecentProjectsLimit;i++)
+  for (int i=0;i<openfluid::base::PreferencesManager::RecentProjectsLimit;i++)
     mp_RecentProjectsMenu->addAction(m_RecentProjectsActions[i]);
 
   Menu->addAction(getAction("ProjectReload"));
@@ -447,7 +447,7 @@ void AppActions::createToolbar(MainWindow& MainWin)
                                               BUILDER_TOOLBARBUTTON_BORDERCOLOR));
   }
 
-  MainWin.addToolBar(openfluid::guicommon::PreferencesManager::getInstance()->getToolBarPosition(),
+  MainWin.addToolBar(openfluid::base::PreferencesManager::getInstance()->getToolBarPosition(),
                      mp_MainToolbar);
 }
 

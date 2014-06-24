@@ -44,7 +44,7 @@
 #include "BuilderApp.hpp"
 
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 
 #include "ExtensionsRegistry.hpp"
@@ -77,8 +77,8 @@ void BuilderApp::initialize()
 {
   qsrand((uint)QTime::currentTime().msec());
 
-  openfluid::guicommon::PreferencesManager* PrefsMgr =
-    openfluid::guicommon::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefsMgr =
+    openfluid::base::PreferencesManager::getInstance();
 
 
   // TODO see if this is moved into ProjectCoordinator or ProjectModule

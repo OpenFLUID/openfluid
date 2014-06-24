@@ -43,7 +43,7 @@
 #include <QFileSystemModel>
 
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 #include "ui_NewProjectDialog.h"
 #include "NewProjectDialog.hpp"
@@ -56,7 +56,7 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
 {
   ui->setupUi(this);
 
-  ui->WorkdirLabel->setText(openfluid::guicommon::PreferencesManager::getInstance()->getWorkdir());
+  ui->WorkdirLabel->setText(openfluid::base::PreferencesManager::getInstance()->getWorkdir());
 
 
   connect(ui->WorkdirButton,SIGNAL(clicked()),this,SLOT(onWorkdirButtonClicked()));

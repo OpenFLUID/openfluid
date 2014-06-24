@@ -48,7 +48,7 @@
 
 EditMarketplaceDialog::EditMarketplaceDialog(QWidget* Parent,
                                              const QString& Name, const QString& URL,
-                                             const openfluid::guicommon::PreferencesManager::MarketPlaces_t& MPlaces):
+                                             const openfluid::base::PreferencesManager::MarketPlaces_t& MPlaces):
   OpenFLUIDDialog(Parent), ui(new Ui::EditMarketplaceDialog),
   m_IsEditMode(!Name.isEmpty() && !URL.isEmpty()), m_OriginalName(Name),
   m_MPlaces(MPlaces)

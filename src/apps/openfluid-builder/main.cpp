@@ -50,7 +50,7 @@
 #include <QTranslator>
 #include <QLibraryInfo>
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/config.hpp>
 
 #include <iostream>
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 #endif
 
     // translations management
-    QString Lang = openfluid::guicommon::PreferencesManager::getInstance()->getLang();
+    QString Lang = openfluid::base::PreferencesManager::getInstance()->getLang();
 
     QTranslator QtTranslator;
     QTranslator OpenFLUIDTranslator;

@@ -51,9 +51,9 @@
 
 #include <boost/foreach.hpp>
 
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/guicommon/MarketBuildOptionsDialog.hpp>
 #include <openfluid/guicommon/ViewLogFileWindow.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
 #include <openfluid/guicommon/MarketPackWidgetFormat.hpp>
 
 
@@ -127,9 +127,9 @@ void MarketClientAssistant::setupSelectionPage()
   m_RefURLComboBoxModel.appendRow(m_URLColumns);
 
 
-  openfluid::guicommon::PreferencesManager::MarketPlaces_t MarketPlaces = openfluid::guicommon::PreferencesManager::getInstance()->getMarketplaces();
+  openfluid::base::PreferencesManager::MarketPlaces_t MarketPlaces = openfluid::base::PreferencesManager::getInstance()->getMarketplaces();
 
-  BOOST_FOREACH(openfluid::guicommon::PreferencesManager::MarketPlaces_t::value_type &PlaceIt, MarketPlaces)
+  BOOST_FOREACH(openfluid::base::PreferencesManager::MarketPlaces_t::value_type &PlaceIt, MarketPlaces)
   {
     m_URLColumns.mp_Name = new QStandardItem(PlaceIt.first + " (" + PlaceIt.second + ")");
     m_URLColumns.mp_URL = new QStandardItem(PlaceIt.second);

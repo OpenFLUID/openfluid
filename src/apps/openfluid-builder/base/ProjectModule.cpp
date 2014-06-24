@@ -43,7 +43,7 @@
 #include <QMainWindow>
 
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/ProjectManager.hpp>
 
 #include <openfluid/builderext/PluggableModalExtension.hpp>
@@ -141,7 +141,7 @@ void ProjectModule::updateWatchersPaths()
   if (!mp_SimulatorsPlugsWatcher->directories().isEmpty())
     mp_SimulatorsPlugsWatcher->removePaths(mp_SimulatorsPlugsWatcher->directories());
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->isWaresWatchersActive())
+  if (openfluid::base::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
     Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths())
           << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
@@ -162,7 +162,7 @@ void ProjectModule::updateWatchersPaths()
   if (!mp_ObserversPlugsWatcher->directories().isEmpty())
     mp_ObserversPlugsWatcher->removePaths(mp_ObserversPlugsWatcher->directories());
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->isWaresWatchersActive())
+  if (openfluid::base::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
 
     Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths())
@@ -373,8 +373,8 @@ void ProjectModule::whenPreferencesAsked()
   PreferencesDialog PrefsDlg(QApplication::activeWindow());
   PrefsDlg.exec();
 
-  openfluid::guicommon::PreferencesManager* PrefsMgr =
-    openfluid::guicommon::PreferencesManager::getInstance();
+  openfluid::base::PreferencesManager* PrefsMgr =
+    openfluid::base::PreferencesManager::getInstance();
 
   if (PrefsDlg.isSimPathsChanged())
   {
@@ -436,7 +436,7 @@ void ProjectModule::whenRecentProjectsActionsChanged()
 
 void ProjectModule::whenRunAsked()
 {
-  if (openfluid::guicommon::PreferencesManager::getInstance()->isAutomaticSaveBeforeRun())
+  if (openfluid::base::PreferencesManager::getInstance()->isAutomaticSaveBeforeRun())
     whenSaveAsked();
 
   emit simulationStarted();

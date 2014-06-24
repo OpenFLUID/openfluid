@@ -33,6 +33,7 @@
  \file PreferencesManager.hpp
  \brief Header of ...
 
+ \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
@@ -49,7 +50,7 @@
 #include <QSettings>
 
 
-namespace openfluid { namespace guicommon {
+namespace openfluid { namespace base {
 
 
 // =====================================================================

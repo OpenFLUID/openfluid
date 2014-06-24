@@ -38,7 +38,7 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 #include "ui_ParameterWidget.h"
 #include "ParameterWidget.hpp"
@@ -100,7 +100,7 @@ void ParameterWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->isParamRemovalConfirm())
+  if (openfluid::base::PreferencesManager::getInstance()->isParamRemovalConfirm())
   {
     OK = (QMessageBox::question(QApplication::activeWindow(),
                                 "OpenFLUID-Builder",

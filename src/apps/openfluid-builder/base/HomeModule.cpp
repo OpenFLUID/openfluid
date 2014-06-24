@@ -38,7 +38,7 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/guicommon/MarketClientAssistant.hpp>
 
 #include "HomeModule.hpp"

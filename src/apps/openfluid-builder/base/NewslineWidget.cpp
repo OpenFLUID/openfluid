@@ -39,7 +39,7 @@
  */
 
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 #include "ui_NewslineWidget.h"
 #include "NewslineWidget.hpp"
@@ -68,8 +68,8 @@ NewslineWidget::NewslineWidget(QWidget* Parent):
   ui->NewslineContents->setStyleSheet(QString("QWidget#NewslineContents { background-color : %1;}")
                                       .arg(BUILDER_NEWSLINE_BGCOLOR));
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->getLang() != "default")
-    NewsItemWidget::setLocale(QLocale(openfluid::guicommon::PreferencesManager::getInstance()->getLang()));
+  if (openfluid::base::PreferencesManager::getInstance()->getLang() != "default")
+    NewsItemWidget::setLocale(QLocale(openfluid::base::PreferencesManager::getInstance()->getLang()));
   else
     NewsItemWidget::setLocale(QLocale(QLocale::English));
 

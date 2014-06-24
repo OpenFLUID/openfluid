@@ -38,7 +38,7 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/guicommon/PreferencesManager.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
 
 #include "builderconfig.hpp"
 
@@ -240,7 +240,7 @@ void WareWidget::notifyRemoveClicked()
 {
   bool OK = true;
 
-  if (openfluid::guicommon::PreferencesManager::getInstance()->isItemRemovalConfirm())
+  if (openfluid::base::PreferencesManager::getInstance()->isItemRemovalConfirm())
   {
     QString TypeStr = tr("the generator");
 
