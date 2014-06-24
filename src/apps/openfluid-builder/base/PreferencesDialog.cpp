@@ -116,7 +116,7 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent):
   connect(ui->AttributesRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmAttributesRemoval(bool)));
 
 
-  connect(ui->WorkDirButton,SIGNAL(clicked()),this,SLOT(updateWorkDir()));
+  connect(ui->WorkspacePathButton,SIGNAL(clicked()),this,SLOT(updateWorkspacePath()));
 
   connect(ui->DeltaTSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateDeltaT(int)));
   connect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(updatePeriodBegin(const QDateTime&)));
@@ -196,7 +196,7 @@ void PreferencesDialog::initialize()
   ui->AttributesRemovalCheckBox->setChecked(PrefsMan->isSpatialAttrsRemovalConfirm());
 
   // Paths
-  ui->WorkDirEdit->setText(PrefsMan->getWorkdir());
+  ui->WorkspacePathEdit->setText(PrefsMan->getWorkspacePath());
   mp_SimSearchPaths->initialize(PrefsMan->getExtraSimulatorsPaths(),StringVectorToQStringList(RunEnv->getDefaultSimulatorsPluginsPaths()));
   mp_ObsSearchPaths->initialize(PrefsMan->getExtraObserversPaths(),StringVectorToQStringList(RunEnv->getDefaultObserversPluginsPaths()));
   mp_BExtSearchPaths->initialize(PrefsMan->getExtraExtensionsPaths(),
@@ -453,14 +453,14 @@ void PreferencesDialog::enableAutoSaveBeforeRun(bool AutoSave)
 // =====================================================================
 
 
-void PreferencesDialog::updateWorkDir()
+void PreferencesDialog::updateWorkspacePath()
 {
   QString SelectedDir = QFileDialog::getExistingDirectory(this,tr("Select working directory"));
 
   if (SelectedDir !=  "")
   {
-    ui->WorkDirEdit->setText(SelectedDir);
-    openfluid::base::PreferencesManager::getInstance()->setWorkdir(SelectedDir);
+    ui->WorkspacePathEdit->setText(SelectedDir);
+    openfluid::base::PreferencesManager::getInstance()->setWorkspacePath(SelectedDir);
   }
 }
 

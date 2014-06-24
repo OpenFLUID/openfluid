@@ -56,7 +56,7 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
 {
   ui->setupUi(this);
 
-  ui->WorkdirLabel->setText(openfluid::base::PreferencesManager::getInstance()->getWorkdir());
+  ui->WorkdirLabel->setText(openfluid::base::PreferencesManager::getInstance()->getProjectsPath());
 
 
   connect(ui->WorkdirButton,SIGNAL(clicked()),this,SLOT(onWorkdirButtonClicked()));

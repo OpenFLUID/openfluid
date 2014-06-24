@@ -351,29 +351,41 @@ PreferencesManager::RecentProjectsList_t PreferencesManager::getRecentProjects()
 // =====================================================================
 
 
-void PreferencesManager::setWorkdir(const QString& Workdir)
+void PreferencesManager::setWorkspacePath(const QString& WorkPath)
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
-  mp_ConfFile->setValue("workdir",Workdir);
+  mp_ConfFile->setValue("workspace",WorkPath);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-QString PreferencesManager::getWorkdir()
+QString PreferencesManager::getWorkspacePath()
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
-  QString Dir = mp_ConfFile->value("workdir").toString();
+  QString Dir = mp_ConfFile->value("workspace").toString();
   mp_ConfFile->endGroup();
 
   if (Dir.isEmpty())
   {
-    Dir = QString(openfluid::base::RuntimeEnvironment::getInstance()->getUserHomeDir().c_str())+"/OpenFLUID-Projects";
+    Dir =
+        QString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(openfluid::config::WORKSPACE_SUBDIR).c_str());
   }
   return Dir;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getProjectsPath()
+{
+  return getWorkspacePath()+"/"+QString::fromStdString(openfluid::config::PROJECTS_SUBDIR);
 }
 
 

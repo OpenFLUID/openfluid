@@ -439,7 +439,7 @@ void AppCoordinator::whenOpenAsked()
   {
     // TODO develop custom dialog for opening projects
     QString SelectedDir = QFileDialog::getExistingDirectory(&m_MainWindow,tr("Open project"),
-                                                            openfluid::base::PreferencesManager::getInstance()->getWorkdir());
+                                                            openfluid::base::PreferencesManager::getInstance()->getProjectsPath());
     if (SelectedDir !=  "")
     {
       if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))

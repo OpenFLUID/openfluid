@@ -84,7 +84,7 @@ class PreferencesDialog : public OpenFLUIDDialog
 
     void enableAutoSaveBeforeRun(bool AutoSave);
 
-    void updateWorkDir();
+    void updateWorkspacePath();
 
     void updateDeltaT(int Val);
 

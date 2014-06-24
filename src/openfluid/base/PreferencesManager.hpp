@@ -134,9 +134,11 @@ class DLLEXPORT PreferencesManager
     void adaptRecentProjects();
 
 
-    void setWorkdir(const QString& Workdir);
+    void setWorkspacePath(const QString& WorkPath);
 
-    QString getWorkdir();
+    QString getWorkspacePath();
+
+    QString getProjectsPath();
 
 
     void setExtraSimulatorsPaths(const QStringList& Paths);

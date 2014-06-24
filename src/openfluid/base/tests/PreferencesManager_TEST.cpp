@@ -90,14 +90,14 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
 
   PrefMgr->setLang("oc");
   PrefMgr->setRecentMax(10);
-  PrefMgr->setWorkdir("aa/bb/cc");
+  PrefMgr->setWorkspacePath("aa/bb/cc");
   PrefMgr->setDeltaT(777);
   PrefMgr->setBegin("2222-11-11T00:11:22");
   PrefMgr->setEnd("2221-12-12=11;22;33");
 
   BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),10);
   BOOST_CHECK(PrefMgr->getLang() == "oc");
-  BOOST_CHECK(PrefMgr->getWorkdir() == "aa/bb/cc");
+  BOOST_CHECK(PrefMgr->getWorkspacePath() == "aa/bb/cc");
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),777);
   BOOST_CHECK(PrefMgr->getBegin() == "2222-11-11T00:11:22");
   BOOST_CHECK(PrefMgr->getEnd() == "2221-12-12=11;22;33");

@@ -107,7 +107,7 @@ font : bold;
         </sizepolicy>
        </property>
        <property name="currentIndex">
-        <number>2</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="InterfacePage">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -275,18 +275,18 @@ font : bold;
             </sizepolicy>
            </property>
            <property name="title">
-            <string>Working directory</string>
+            <string>Workspace directory</string>
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item>
-             <widget class="QLineEdit" name="WorkDirEdit">
+             <widget class="QLineEdit" name="WorkspacePathEdit">
               <property name="readOnly">
                <bool>true</bool>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="WorkDirButton">
+             <widget class="QPushButton" name="WorkspacePathButton">
               <property name="text">
                <string>Browse...</string>
               </property>
@@ -433,7 +433,7 @@ font : bold;
                <date>
                 <year>1752</year>
                 <month>8</month>
-                <day>31</day>
+                <day>30</day>
                </date>
               </property>
               <property name="displayFormat">

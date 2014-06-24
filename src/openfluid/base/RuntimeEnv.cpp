@@ -246,7 +246,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // user dir
   m_DefaultSimulatorsPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::SIMULATORS_PLUGINS_SUBDIR).string());
+      + openfluid::config::SIMULATORS_PLUGINS_USRDIR).string());
 
   // market-bag dir (for current version)
   m_DefaultSimulatorsPlugsDirs.push_back(boost::filesystem::path(m_MarketBagSimVersionDir
@@ -277,7 +277,7 @@ RuntimeEnvironment::RuntimeEnvironment() :
 
   // user dir
   m_DefaultObserversPlugsDirs.push_back(boost::filesystem::path(m_UserDataDir + "/"
-      + openfluid::config::OBSERVERS_PLUGINS_SUBDIR).string());
+      + openfluid::config::OBSERVERS_PLUGINS_USRDIR).string());
 
   // market-bag dir (for current version)
    m_DefaultObserversPlugsDirs.push_back(boost::filesystem::path(m_MarketBagObsVersionDir
@@ -469,16 +469,6 @@ std::string RuntimeEnvironment::getAppResourceFilePath(std::string AppName,
   return boost::filesystem::path(m_InstallPrefix + "/"
       + openfluid::config::SHARE_APPS_INSTALL_PATH + "/" + AppName + "/"
       + RelativeFilePath).string();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-std::string RuntimeEnvironment::getLocaleDir() const
-{
-  return boost::filesystem::path(m_InstallPrefix + "/" + openfluid::config::NLS_SHARE_LOCALE_PATH).string();
 }
 
 

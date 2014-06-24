@@ -72,15 +72,15 @@ class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<Ex
       for (int i=0; i <ExtraSearchPaths.size();i++)
         m_SearchPaths.push_back(ExtraSearchPaths[i].toStdString());
 
-      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDEREXT_PLUGINS_SUBDIR.toStdString()));
+      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDEREXTS_PLUGINS_USRDIR.toStdString()));
       m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getInstallPrefix()+
                               "/"+
-                              BUILDEREXT_INSTALL_PATH.toStdString());
+                              BUILDEREXTS_INSTALL_PATH.toStdString());
 
-      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDEREXT_PLUGINS_SUBDIR.toStdString()));
+      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDEREXTS_PLUGINS_USRDIR.toStdString()));
       m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getInstallPrefix()+
                                       "/"+
-                                      BUILDEREXT_INSTALL_PATH.toStdString());
+                                      BUILDEREXTS_INSTALL_PATH.toStdString());
     };
 
 
@@ -106,6 +106,7 @@ class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<Ex
 
       return mp_Singleton;
     }
+
 
     // =====================================================================
     // =====================================================================
