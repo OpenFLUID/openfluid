@@ -2,24 +2,22 @@
 
 \page apdx_generators File formats for "interp" or "inject" generators
 
-\todo
-
 
 \section apdx_generators_sources Sources file
 
 The sources file format is an XML based format which defines a list of sources
-files associated to an unique ID.\\
-\noindent The sources must be defined in a section delimited by the
-\texttt{<datasources>} tag, inside an \texttt{<openfluid>} tag and must be
+files associated to an unique ID.\n
+The sources must be defined in a section delimited by the
+<tt><datasources></tt> tag, inside an <tt><openfluid></tt> tag and must be
 structured following these rules:
-\begin{itemize}
-  \item Inside the \texttt{<datasources>} tag, there must be a set of
-  \texttt{<filesource>} tags
-  \item Each \texttt{<filesource>} tag must bring an \texttt{ID}
-  attribute giving the identifier of source, and an \texttt{file}
+<ul>
+<li>Inside the <tt><datasources></tt> tag, there must be a set of
+  <tt><filesource></tt> tags
+<li>Each <tt><filesource></tt> tag must bring an <tt>ID</tt>
+  attribute giving the identifier of source, and an <tt>file</tt>
   attribute giving the name of the file containing the source of data. The files
   must be placed in the input directory of the simulation.
-\end{itemize}
+</ul>
 
 \code
 <?xml version="1.0" standalone="yes"?>
@@ -34,23 +32,23 @@ structured following these rules:
 \endcode
 
 \n
-An associated source data file is a seven columns text file, containing a serie
-of values in time. The six first columns are the date using the following format
-\texttt{YYYY MM DD HH MM SS}. The 7$^{th}$ column is the value itself.
+An associated source data file is a two columns text file, containing a serie
+of values in time. The first column is the date using the ISO format
+<tt>YYYY-MM-DD'T'HH:MM:SS</tt>. The second column is the value itself.
 
 \code
-1999 12 31 12 00 00 -1.0
-1999 12 31 23 00 00 -5.0
-2000 01 01 00 30 00 -15.0
-2000 01 01 00 40 00 -5.0
-2000 01 01 01 30 00 -15.0
+1999-12-31T12:00:00 -1.0
+1999-12-31T23:00:00 -5.0
+2000-01-01T00:30:00 -15.0
+2000-01-01T00:40:00 -5.0
+2000-01-01T01:30:00 -15.0
 \endcode
 
 
 \section apdx_generators_distri Distribution file
 
 A distribution file is a two column file associating a unit ID
-(1$^{st}$column) to a source ID (2$^{nd}$column).
+(first column) to a source ID (second column).
 \code
 1 1
 2 2

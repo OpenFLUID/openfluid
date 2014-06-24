@@ -2,32 +2,67 @@
 
 \page use_apps Usage of OpenFLUID applications
 
+OpenFLUID simulations can be run either using the command line interface (<tt>openfluid</tt> program),
+the graphical user interface (<tt>openfluid-builder</tt> program),
+or using the R environment through the ROpenFLUID package.\n
+All these programs and packages uses the same input dataset format,
+and proposes all concepts and features of the OpenFLUID software environment,
+as they share the same OpenFLUID software framework.
 
-\section use_apps_cmd Command-line Interface 
 
-\todo
+\section use_apps_builder Graphical User Interface - OpenFLUID-Builder 
 
-To run the simulation, if the dataset is located in the default searched directory, 
-simply run the command <tt>openfluid</tt> in your favorite terminal. 
-To specify a different input dataset directory, use the \c -i or <tt>--input-dir</tt> command line option.
+The OpenFLUID-Builder user interface proposes a graphical environment to
+prepare, parameterize, execute and exploits simulations with OpenFLUID.
+It is a good starting point for beginners who discover the OpenFLUID concepts and environment.
+Once OpenFLUID installed, it can be run either from the program menu of your system
+or from a console using the <tt>openfluid-builder</tt> command.
+
+\todo 1 or 2 screenshots of OpenFLUID-Builder
+
+
+\section use_apps_cmd Command-line interface 
+
+The OpenFLUID command line interface allows to run OpenFLUID simulations from a terminal, 
+using the <tt>openfluid</tt> command. 
+This usage is particularly useful for running multiple simulations in batch
+or on compute systems such as compute clusters\n
+To run the simulation, execute the <tt>openfluid</tt> command with adapted command line options.
+You can run a simulation givint the input dataset path and the results output path:
+\code
+openfluid -i </path/to/dataset> -o </path/to/results>
+\endcode 
 
 You can also run a simulation from an OpenFLUID project, using the \c -w 
-or <tt>--project</tt> command line option, followed by the path to the project directory. 
-In this case, the project must be a valid OpenFLUID project. Its structure is described in the appendix section.
-It can be created by hand, or using the OpenFLUID-Builder software.
+or <tt>--project</tt> command line option, followed by the path to the project path.
+In this case, the project must be a valid OpenFLUID project, 
+usually created using the OpenFLUID-Builder user interface, or by hand. 
+
+See \ref apdx_optenv_cmdopt or run <tt>openfluid --help</tt> to get the list of available options. 
+
+
+\todo Update screenshot
 
 \image html oferun.png
 \image latex oferun.png "OpenFLUID simulation using command line" width=10cm
 
 
-\section use_apps_builder Graphical User Interface - OpenFLUID-Builder 
-
-\todo
-
-
 \section use_apps_R From within the GNU R environment - ROpenFLUID
 
-\todo
+OpenFLUID can be used from within the GNU R environment with the ROpenFLUID package.
+This package allows to load an input dataset, 
+parameterize and run a simulation, exploits simulation results.\n
+It is really useful for taking benefit of all R features and packages for sensitivity analysis, 
+optimization, uncertainty propagation analysis, and more.
 
+Example of a simulation launch in R using the ROpenFLUID package:
+\code
+library('ROpenFLUID')
+ofsim = OpenFLUID.loadDataset('/path/to/dataset')
+OpenFLUID.runSimulation(ofsim)
+data = OpenFLUID.loadResult(ofsim,'TestUnits',15,'var.name')
+\endcode 
+
+More details are available in the specific ROpenFLUID documentation, available on the OpenFLUID web site.
 
 */

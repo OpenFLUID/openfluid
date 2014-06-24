@@ -2,7 +2,70 @@
 
 \page dev_sim2doc Documenting your simulators
 
-\todo
+The scientific documentation of simulators is very important to clearly understand
+the scientific concepts and methods applied in source code of simulators.
+In order to facilitate the writing and maintenance of these documentation,
+OpenFLUID provides the Sim2Doc system for simulators designers and developers.\n
+
+The Sim2Doc system uses the simulator signature and an optional
+\if doc-is-latex \latexonly \LaTeX \endlatexonly
+\else 
+LaTeX 
+\endif 
+ formatted text to build a PDF or HTML document. If present, the 
+if doc-is-latex \latexonly \LaTeX \endlatexonly
+\else 
+LaTeX 
+\endif 
+ formatted text must be placed in the main file of the simulator source code, 
+ into a single C++ comment block, and between the \c <sim2doc> and </sim2doc> tags.\n
+
+
+Example of a part of source code including sim2doc informations:
+\code
+/*
+<sim2doc>
+This part of the documentation will be included in the 
+It can be formatted using \LaTeX and is fully compatible with all \LaTeX commands,
+including tables, scientific formulae, figures, and many more.
+</sim2doc>
+*/
+
+BEGIN_SIMULATOR_SIGNATURE("example.simulator")
+
+  DECLARE_NAME("Example simulator");
+  DECLARE_DESCRIPTION("This simulator is an example");
+  DECLARE_VERSION("13.05");
+  DECLARE_STATUS(openfluid::ware::EXPERIMENTAL);
+  DECLARE_AUTHOR("John","john@foobar.org");
+  DECLARE_AUTHOR("Dave","dave@foobar.org");
+  DECLARE_AUTHOR("Mike","mike@foobar.org");
+  
+  DECLARE_SIMULATOR_PARAM("meanspeed","mean speed to use","m/s")
+  
+  DECLARE_REQUIRED_ATTRIBUTE("area","TU","area of the Test Units","m")
+  DECLARE_USED_ATTRIBUTE("landuse","OU","landuse of the Other Units","")
+  
+  DECLARE_REQUIRED_VAR("varA[double]","TU","","m")
+  DECLARE_USED_VAR("varB","OU","simple var on Other Units","kg")
+  DECLARE_PRODUCED_VAR("VarB[vector]","TU","vectorized var on Test Units","kg")
+  DECLARE_UPDATED_VAR("VarC","TU","","")
+  
+  DECLARE_USED_EVENTS("TU")
+  
+END_SIMULATOR_SIGNATURE
+\endcode
+
+\n
+
+The the final document can be generated using the OpenFLUID Sim2Doc buddy, 
+included in the OpenFLUID command line program. See also \ref apdx_optenv_cmdopt for available options.
+
+Example of generation of the PDF document using Sim2Doc tool:
+\code
+openfluid --buddy sim2doc --buddyopts inputcpp=MySimFile.cpp,pdf=1
+\endcode
+
 
 
 */
