@@ -8,16 +8,22 @@ In order to facilitate the writing and maintenance of these documentation,
 OpenFLUID provides the Sim2Doc system for simulators designers and developers.\n
 
 The Sim2Doc system uses the simulator signature and an optional
-\if doc-is-latex \latexonly \LaTeX \endlatexonly
+\if doc-is-latex
+\latexonly
+\LaTeX 
+ \endlatexonly
 \else 
 LaTeX 
 \endif 
- formatted text to build a PDF or HTML document. If present, the 
-if doc-is-latex \latexonly \LaTeX \endlatexonly
+-formatted text to build a PDF or HTML document. If present, the 
+\if doc-is-latex
+\latexonly
+ \LaTeX 
+  \endlatexonly
 \else 
 LaTeX 
 \endif 
- formatted text must be placed in the main file of the simulator source code, 
+-formatted text must be placed in the main file of the simulator source code, 
  into a single C++ comment block, and between the \c <sim2doc> and </sim2doc> tags.\n
 
 
@@ -58,7 +64,7 @@ END_SIMULATOR_SIGNATURE
 
 \n
 
-The the final document can be generated using the OpenFLUID Sim2Doc buddy, 
+The final document can be generated using the OpenFLUID Sim2Doc buddy, 
 included in the OpenFLUID command line program. See also \ref apdx_optenv_cmdopt for available options.
 
 Example of generation of the PDF document using Sim2Doc tool:

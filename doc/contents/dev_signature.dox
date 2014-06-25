@@ -42,7 +42,7 @@ See the \ref dev_signature_exmpl part for detailed example.
 
 The informations about scientific applications is only indicative.
 It has no effects on simulator consistency or computational code.
-These information can be :
+These informations can be :
 <ul>
 <li> the domain in which the simulator can be applied, declared through the \if doc-is-latex \b DECLARE_DOMAIN \else #DECLARE_DOMAIN \endif
  macro
@@ -75,9 +75,9 @@ The declarations of spatial data access include rules:
 <li>USED, this means that the data are used only if they are available or already produced
 </ul> 
 
-\subsection dev_signature_data_simparams Simulators parameters
+\subsection dev_signature_data_simparams Simulator parameters
 
-Simulators parameters are values provided to each simulator, 
+Simulator parameters are values provided to each simulator, 
 and are declared using the \if doc-is-latex \b DECLARE_SIMULATOR_PARAM \else #DECLARE_SIMULATOR_PARAM \endif
  macro.
 This macro takes 3 arguments
@@ -142,7 +142,7 @@ These macros take 4 arguments:
 </ul>
 
 These variables can be typed or untyped. 
-When they are declared in the signature, the variables names suffixed by the [] symbol with a type name enclosed
+When they are declared in the signature, the variable names suffixed by the [] symbol with a type name enclosed
 are typed, i.e. each value for the variable must match the type of the variable.
 If no type is mentioned, values for the variable can be of any type.\n
 In case of typed variables, the type of a required or used variable by a simulator
@@ -159,25 +159,25 @@ The type name for a declaration of a variable can be:
 <li> \c map for associative keys-value data
 </ul>
 
-These scenarios of variable exchanges between two simulators run successfully:
+These scenarios of variable exchanges between two A and B simulators run successfully:
 <ul>
-<li> simulator A produced an \e untyped variable var1,
+<li> simulator A produces an \e untyped variable var1,
 simulator B requires/uses/updates an \e untyped variable var1
-<li> simulator A produced a \e typed variable var1, 
+<li> simulator A produces a \e typed variable var1, 
 simulator B requires/uses/updates an \e untyped variable var1
-<li> simulator A produced a \e typed variable var1 of type \c double, 
+<li> simulator A produces a \e typed variable var1 of type \c double, 
 simulator B requires/uses/updates a \e typed variable var1 of type \c double
 </ul>
 
 These scenarios of variable exchanges between two simulators are failing:
 <ul>
-<li> simulator A produced an \e untyped variable var1, 
+<li> simulator A produces an \e untyped variable var1, 
 simulator B requires/uses/updates a \e typed variable var1
-<li> simulator A produced a \e typed variable var1 of type \c double, 
+<li> simulator A produces a \e typed variable var1 of type \c double, 
 simulator B requires/uses/updates a \e typed variable var1 of type \c matrix 
 </ul>
 
-Example of variables declarations
+Example of variable declarations
 \code  
   DECLARE_REQUIRED_VAR("varA[double]","TU","","m")
   DECLARE_USED_VAR("varB","OU","simple var on Other Units","kg")
@@ -188,7 +188,7 @@ Example of variables declarations
 
 \subsection dev_signature_data_events Discrete events
 
-Discrete events are attached to spatail units, They are accessed or appended by simulators during simulations,
+Discrete events are attached to spatial units, They are accessed or appended by simulators during simulations,
 and are declared using the \if doc-is-latex \b DECLARE_USED_EVENTS
 \else #DECLARE_USED_EVENTS \endif
  macro.\n
@@ -204,7 +204,7 @@ Example of events declaration:
 \subsection dev_signature_data_extrafiles Extra files
 
 Simulators can declare files that they load and manage. This helps users to provide the needed files, and also  
-notifiesthe OpenFLUID framework to check the presence of the file if it is required.\n 
+notifies the OpenFLUID framework to check the presence of the file if it is required.\n 
 These files are declared using the \if doc-is-latex \b DECLARE_USED_EXTRAFILE
 \else #DECLARE_USED_EXTRAFILE \endif
  or \if doc-is-latex \b DECLARE_REQUIRED_EXTRAFILE
@@ -229,7 +229,7 @@ The \if doc-is-latex \b DECLARE_UPDATED_UNITSGRAPH
 \else #DECLARE_UPDATED_UNITSGRAPH \endif
  macro is used for declaration of the global units graph modification
 that will occur during simulation. 
-It is for information purpose only, and takes a description as a single arguments.\n
+It is for information purpose only, and takes a description as a single argument.\n
  
 The \if doc-is-latex \b DECLARE_UPDATED_UNITSCLASS
 \else DECLARE_UPDATED_UNITSCLASS \endif 

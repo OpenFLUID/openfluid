@@ -5,9 +5,10 @@
 OpenFLUID simulations can be run either using the command line interface (<tt>openfluid</tt> program),
 the graphical user interface (<tt>openfluid-builder</tt> program),
 or using the R environment through the ROpenFLUID package.\n
-All these programs and packages uses the same input dataset format,
-and proposes all concepts and features of the OpenFLUID software environment,
-as they share the same OpenFLUID software framework.
+All these programs and packages use the same input dataset format (See \ref use_fluidx),
+and propose all concepts and features of the OpenFLUID software environment,
+as they share the same OpenFLUID software framework. 
+A simulation input dataset can be executed using any of the following OpenFLUID software programs. 
 
 
 \section use_apps_builder Graphical User Interface - OpenFLUID-Builder 
@@ -44,7 +45,7 @@ available from a local or an internet server.
 The OpenFLUID command line interface allows to run OpenFLUID simulations from a terminal, 
 using the <tt>openfluid</tt> command. 
 This usage is particularly useful for running multiple simulations in batch
-or on compute systems such as compute clusters\n
+or on compute systems such as compute clusters.\n
 To run the simulation, execute the <tt>openfluid</tt> command with adapted command line options.
 You can run a simulation by giving the input dataset path and the results output path:
 \code

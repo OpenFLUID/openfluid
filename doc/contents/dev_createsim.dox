@@ -14,13 +14,14 @@ They must be compiled before using it in the OpenFLUID environment.
 
 \section dev_createsim_env Development environment
 
-In order to build and develop a simulator, we recommends the use of the following tools:
+In order to build and develop a simulator, it is recommended to use the following tools:
 <ul>
  <li>GCC as the C++/C/Fortran compiler</li>
  <li>CMake as the build configuration tool (see http://www.cmake.org).\n
  OpenFLUID provides a CMake module to ease the build of simulators.
  <li>Eclipse as the integrated development environment (see http://www.eclipse.org).\n
- OpenFLUID provides an Eclipse plugin to assist the developer when creating a simulator. 
+ OpenFLUID provides an Eclipse plugin to assist the developer when creating a simulator 
+ (Available in the downloads section of the OpenFLUID web site). 
 </ul>
 
 Moreover, the required libraries must be installed in order to achieve the build of a simulator.
@@ -43,7 +44,9 @@ The informations included in the signature are :
 </ul>   
 
 Usually, the signature is declared and implemented at the beginning of the .cpp file. 
-It starts with the #BEGIN_SIMULATOR_SIGNATURE macro and ends with the #END_SIMULATOR_SIGNATURE macro.
+It starts with the \if doc-is-latex \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
+ macro and ends with the \if doc-is-latex \b END_SIMULATOR_SIGNATURE \else #END_SIMULATOR_SIGNATURE \endif
+ macro.
 The minimal signature must include identification information. See part \ref dev_signature for details on how to write the signature. \n
 \n
 \n
@@ -58,14 +61,14 @@ The \ref dev_srccode part gives details about how to develop the computational c
 
 \section dev_createsim_build Building the simulator
 
-Any OpenFLUID simulator must be compiled using the gcc C++ compiler (g++)
+Any OpenFLUID simulator must be compiled using the GCC C++ compiler (g++)
 and must be linked to the OpenFLUID libraries and dependencies.\n 
 The recommended way to build your simulator is to use the CMake build system 
-with the OpenFLUID CMake module, and provide CMake configuration files (CMakeLists.txt CMake.in.config).\n
-The operations can be performed automatically using the OpenFLUID plugin for the Eclipse IDE.\n
+with the OpenFLUID CMake module, and provide CMake configuration files (CMakeLists.txt, CMake.in.config).\n
+These operations can be performed automatically using the OpenFLUID plugin for the Eclipse IDE.\n
 \n
 
-The operations can also be performed manually, with the following steps: 
+These operations can also be performed manually, with the following steps: 
 <ol>
 <li> Create a build directory in your source directory (e.g. <tt>_build</tt>)
 <li> Go to this build directory
@@ -78,7 +81,7 @@ These steps are for Linux systems, and must be slightly adapted for other system
 \section dev_createsim_exmpl Complete example 
 
 The example below show a complete example of an empty simulator, 
-including source code and build configuration using the OpenFLUID cmake module.\n
+including source code and build configuration using the OpenFLUID CMake module.\n
 \n
 
 \subsection dev_createsim_exmpl_cpp File ExampleSimulator.cpp containing the simulator source code
@@ -209,11 +212,11 @@ DEFINE_SIMULATOR_CLASS(ExampleSimulator);
  
 \verbatim
 # Simulator ID
-SET(SIM_ID simulator.example)
+SET(SIM_ID example.simulator)
 
 
 # list of CPP files, the sim2doc tag must be contained in the first one
-SET(SIM_CPP SimulatorExample.cpp)
+SET(SIM_CPP ExampleSimulator.cpp)
 
 # list of Fortran files, if any
 # ex: SET(SIM_FORTRAN Calc.f)
@@ -233,7 +236,7 @@ SET(SIM_CPP SimulatorExample.cpp)
 #SET(SIM_LINK_LIBS )
 
 # set this to add definitions
-# ex: SET(SIM_DEFINITIONS "-DDebug")
+# ex: SET(SIM_DEFINITIONS "-DDefinition")
 #SET(SIM_DEFINITIONS )
 
 

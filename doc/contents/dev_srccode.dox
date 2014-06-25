@@ -113,7 +113,7 @@ usually \b DefaultDeltaT() .
 
 \subsection dev_srccode_general_datatypes OpenFLUID data types
 
-Simulation data exchanged through the OpenpenFLUID framework should be typed with an OpenFLUID defined type.\n
+Simulation data exchanged through the OpenFLUID framework should be typed with an OpenFLUID defined type.\n
 The available simple types are:
 <ul>
 <li>\b openfluid::core::BooleanValue for storing boolean values
@@ -197,9 +197,9 @@ To parse a specific list of of spatial units, you can use the macro:
 
 \n
 The source code below shows spatial graph parsing examples. 
-The first part shows how to browse all units of the SU units class, 
-and browse the \"From\" units for each SU unit.
-The second part show how to browse all units of the second part. 
+The first part of the source code shows how to browse all units of the SU units class, 
+and how to browse the \"From\" units for each SU unit.
+The second part of the source code shows how to browse all units of the spatial domain. 
 \code
 openfluid::base::SchedulingRequest runStep()
 {
@@ -241,8 +241,9 @@ following the process order, using the following methods:
  for applying a process to a all units of the spatial domain.
 Extra arguments can also be passed (see example below).\n 
 </ul>
-The fist argument of the the method passed to the macro must be an openfluid::core::Unit*
-as it represents the currently processed spatial unit. 
+The first argument of the method passed to the macro must be
+a pointer to an \if doc-is-latex \b openfluid::core::Unit \endif
+ as it represents the currently processed spatial unit. 
 
 \n
 The code below shows how to apply a method in parallel over the spatial graph:
@@ -475,7 +476,7 @@ of the simulator, using the following methods:
 <li>\b OPENFLUID_GetCurrentTimeIndex 
 returns the current time index (in seconds) of the simulation,
 and is available from the initializeRun(), runStep() and finalizeRun() methods of the simulator
-<li>\b OPENFLUID_GetCurrentDate returns the current time index (in seconds) of the simulation,
+<li>\b OPENFLUID_GetCurrentDate returns the current date of the simulation,
 and is available from the initializeRun(), runStep() and finalizeRun() methods of the simulator
 <li>\b OPENFLUID_GetPreviousRunTimeIndex returns the time index
 corresponding to the previous execution of the simulator,
@@ -486,7 +487,8 @@ and is available from the runStep() and finalizeRun() methods of the simulator
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_GetCurrentTimeIndex OPENFLUID_GetCurrentTimeIndex \endlink
 returns the current time index (in seconds) of the simulation,
 and is available from the initializeRun(), runStep() and finalizeRun() methods of the simulator
-<li>\link openfluid::ware::PluggableSimulator::OPENFLUID_GetCurrentDate OPENFLUID_GetCurrentDate \endlink returns the current time index (in seconds) of the simulation,
+<li>\link openfluid::ware::PluggableSimulator::OPENFLUID_GetCurrentDate OPENFLUID_GetCurrentDate \endlink 
+returns the current date of the simulation,
 and is available from the initializeRun(), runStep() and finalizeRun() methods of the simulator
 <li>\link openfluid::ware::PluggableSimulator::OPENFLUID_GetPreviousRunTimeIndex OPENFLUID_GetPreviousRunTimeIndex \endlink returns the time index
 corresponding to the previous execution of the simulator,
@@ -532,7 +534,7 @@ Values of simulators parameters can be retreived using:
 The requested parameter name must be the same as the one used in the model.fluidx file (see \ref user_fluidx_sections_model), 
 or be filled from the OpenFLUID-Builder graphical interface.\n
 \n
-Example of initParam method:
+Example of initParams method:
 \code
 void initParams(const openfluid::ware::WareParams_t& Params)
 {
@@ -544,13 +546,13 @@ void initParams(const openfluid::ware::WareParams_t& Params)
 To be reused in other part of the simulator, 
 the variable storing a simulator parameter should be declared as class member.
 The types of parameters can be string, double, integer, boolean, vector of string, vector of double
-(see definitions of 
+(see API documentation of 
 \if doc-is-latex
-\OPENFLUID_GetSimulatorParameter
+OPENFLUID_GetSimulatorParameter
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_GetSimulatorParameter OPENFLUID_GetSimulatorParameter \endlink
 \endif
- methods to get more informations about other available types). 
+ method to get more informations about other available types, available on OpenFLUID web site). 
 
 
 \section dev_srccode_attrs Spatial attributes
@@ -572,9 +574,9 @@ to to test if an attribute exists
 \endif
 </ul>
 
-The methods to test if an attribute exists or to access to attributes values 
+The methods to test if an attribute exists or to access to an attribute value 
 are usable from any simulators part except from the initParams() part.
-The methods to update attributes values are only usable 
+The methods to update an attribute value are only usable 
 from the prepareData() and checkConsistency() parts of the simulator.\n
 The names of the attributes must match the names in the input dataset (see \ref user_fluidx_sections_spatialdomain), 
 or the name of an attribute created by a simulator.
@@ -676,7 +678,8 @@ openfluid::base::SchedulingRequest runStep()
 
 \section dev_srccode_events Events
 
-A discrete event is defined by the \if doc-is-latex \b \endif openfluid::core::Event class. It is made of a date and a set of key-value informations
+A discrete event is defined by the \if doc-is-latex \b openfluid::core::Event \endif
+ class. It is made of a date and a set of key-value informations
 that can be accessed by methods proposed by the openfluid::core::Event class.\n 
 A collection of discrete events can be contained in an \if doc-is-latex \b \endif openfluid::core::EventsCollection class.\n
 \n
@@ -688,7 +691,8 @@ A collection of events occuring during a period on a given spatial unit can be a
 \link openfluid::ware::PluggableSimulator::OPENFLUID_GetEvents OPENFLUID_GetEvents \endlink
 \endif
 </ul>
-This method returns an openfluid::core::EventsCollection that can be processed.\n
+This method returns an \if doc-is-latex \b openfluid::core::EventsCollection \endif
+ that can be processed.\n
 The returned event collection can be parsed using the specific loop macro: 
 <ul>
 <li>
@@ -831,7 +835,7 @@ The keys for requesting runtime environment information are:
 <ul>
 <li>dir.input [string] : the current input directory
 <li>dir.output [string] : the current output directory
-<li>dir.temp [string] : the dirrectory for temporary files
+<li>dir.temp [string] : the directory for temporary files
 <li>mode.cleanoutput [boolean] : cleaning output dir before data saving is enabled/disabled
 <li>mode.saveresults [boolean] : result saving in output directory is enabled/disabled
 <li>mode.writereport [boolean] : simulation report saving is enabled/disabled
@@ -905,14 +909,14 @@ openfluid::base::SchedulingRequest runStep()
 \subsection dev_srccode_msgs_warnerr Raise warnings and errors
 
 In order to trace errors and warnings during the run of a simulation, simulators 
-can raise errors and warnings messages that are autmatically notice the OpeNFLUID framework 
-that something wrong or critical had happened. An error stops the simulation the 
+can raise errors and warnings messages. These messages autmatically notice
+the OpenFLUID framework that something wrong or critical had happened. An error stops the simulation the 
 next time the OpenFLUID framework has the control, a warning does 
 not stop the simulation. Error and warnings are reported in the simulation report. 
 (openfluid-messages.log file). They both can be dated with the number of the current time index
 when the warning or error occurs.\n  
 
-Errors and warning can be raised using:
+Errors and warnings can be raised using:
 <ul>
 <li>
 \if doc-is-latex
@@ -954,7 +958,7 @@ void checkConsistency()
 
 \section dev_srccode_debug Debugging
 
-Debugging macros adds informations on standard output stream (usually displayed on screen).
+Debugging macros add informations on standard output stream (usually displayed on screen).
 It allows developpers to trace various information during simulations.\n 
 They are enabled only when debug is enabled at simulators builds.
 They are ignored for other build types.\n 
@@ -1032,10 +1036,10 @@ The C++ - Fortran interface is defined in the openfluid/tools/FortranCPP.hpp fil
 In order to execute Fortran code from a simulator,
 this Fortran source code have to be wrapped into subroutines 
 that will be called from the C++ code of the simulation function.\n
-To help programmers to achieve this wrapping operation, 
-the FortranCPP.h file defines macros. 
+To help developers of simulators to achieve this wrapping operation, 
+the FortranCPP.hpp file defines macros. 
 These macros allows calls of Fortran77 and Fortran90 source code. 
-You are invited to read the FortranCPP.h file to get more information about these macros.\n
+You are invited to read the FortranCPP.hpp file to get more information about these macros.\n
 
 \n
 Example of Fortran source code (FSubr.f90):
@@ -1090,11 +1094,13 @@ when adding fortran source files to the SIM_FORTRAN variable in the CMake.in.con
 These tools have been developped to help simulators developpers 
 in their setup of data processing or numerical computation. 
 They are available in the namespace openfluid::tools.
-To get more information on theses tools and how to you use it, 
-your are invited to read the provided header files (.hpp), 
+In order to use these tools, the corresponding headers 
+files must be included in the simulator source code.
+
+As they are not detailed here in this manual, more informations 
+about these tools are available in the provided header files (.hpp), 
 located in the include/openfluid/tools include directory.
 
-In order to use these tools, the corresponding headers files must be included in the simulator source code.
 
 \see openfluid::tools namespace
 

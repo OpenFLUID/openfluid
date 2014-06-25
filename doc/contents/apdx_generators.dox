@@ -14,7 +14,7 @@ structured following these rules:
 <li>Inside the <tt><datasources></tt> tag, there must be a set of
   <tt><filesource></tt> tags
 <li>Each <tt><filesource></tt> tag must bring an <tt>ID</tt>
-  attribute giving the identifier of source, and an <tt>file</tt>
+  attribute giving the identifier of source, and a <tt>file</tt>
   attribute giving the name of the file containing the source of data. The files
   must be placed in the input directory of the simulation.
 </ul>

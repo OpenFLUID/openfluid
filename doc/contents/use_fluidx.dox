@@ -2,8 +2,8 @@
 
 \page use_fluidx Formats of input datasets
 
-This part of the manual describes the FluidX file(s) format. Refer to the "Usage"
-part of this manual to run the simulation.
+This part of the manual describes the FluidX file(s) format. Refer to the 
+\ref use_apps part of this manual to run the simulation.
 
 Before running the simulation, the input dataset must be built.
 An OpenFLUID input dataset includes different informations, defined in one or
@@ -17,8 +17,10 @@ many files:
 
 All files must be placed into a directory that can be reached by the
 OpenFLUID program used.\n
-In order to create these files, we encouraged you to use a text
-editor. You can also use custom scripts or macros in
+As OpenFLUID-Builder uses the FluidX format natively, 
+the entire input dataset  can be created through the OpenFLUID-Builder software.\n
+However, these FluidX files can be created by hand or using external tools.
+In this case, it is encouraged to write custom scripts in
 specialized software, such as Geographic Information Systems
 (GIS) or scientific environments such as R, to generate automatically the input dataset.
 
@@ -105,21 +107,17 @@ The coupled model must be defined in a section delimited by the
   attribute can be set in order to produce a vector variable instead of a scalar variable.
   <li> Each \c <generator> tag may include zero to many \c <param>
   tags giving parameters to the generator. Each \c <param> tag must bring
-  a \c name attribute giving the name of the parameter and a \c value} 
+  a \c name attribute giving the name of the parameter and a \c value 
   attribute giving the value of the parameter.
   <li> A generator using the \c fixed method must provide a
   param named \c fixedvalue for the value to produce.
   <li> A generator using the \c random method must provide a
   param named \c min and a param named \c max delimiting the
   random range for the value to produce.
-  <li> A generator using the \c interp method must provide a
+  <li> A generator using the \c inject or \c interp method must provide a
   param named \c sources giving the data sources filename and a param
   named \c distribution giving the distribution filename for the value to
   produce (see also \ref apdx_generators).
-  <li> A generator using the \c inject method must provide a
-  param named \c sources giving the data sources filename and a param
-  named \c distribution giving the distribution filename for the value to
-  produce (see also \ref apdx_generators).  
   <li> Each \c <gparams> tag may include zero to many \c <param>
   tags giving the global parameters. Each \c <param> tag
   must bring a \c name attribute giving the name of the parameter and a \c value 
@@ -221,18 +219,18 @@ tag, and must be structured following these rules:
 \subsubsection user_fluidx_sections_spatialdomain_attrs Attributes
 
 The spatial attributes are static data associated to each spatial unit,
-usually properties and initial conditions.\\
+usually properties and initial conditions.\n
 The spatial domain attributes must be defined in a section delimited
 by the \c <attributes> tag, which is a sub-section of the \c domain
 tag, and must be structured following these rules:
 <ul>
-  <li> The \c <attributes> tag must bring a \c unitclass
+  <li> The \c <attributes> tag must bring an \c unitclass
   attribute giving the unit class to which the attributes must be attached, and a
   \c colorder attribute giving the order of the contained column-formatted
   data
   <li> Inside the \c <attributes> tag, there must be the attributes as 
   row-column text. As a rule, the first column is the ID of the unit in the class
-  given through the the \c unitclass attribute of \c <attributes>
+  given through the \c unitclass attribute of \c <attributes>
   tag, the following columns are values following the column order given
   through the \c colorder attribute of the \c <attributes> tag.
   Values for the data can be real, integer, string, vector or matrix.
@@ -260,19 +258,17 @@ tag, and must be structured following these rules:
 
 \subsubsection user_fluidx_sections_spatialdomain_events Discrete events
 
-The discrete events are events occurring on units, and that can be processed by simulators. 
+The discrete events are events occurring on units, and can be processed by simulators. 
 The spatial events must be defined in a section delimited
 by the \c <calendar> tag, which is a sub-section of the \c <domain>
 tag, and must be structured following these rules:
 
 <ul>
   <li> Inside the \c <calendar> tag, there must be a set of \c <event> tags 
-  <li> Each \c <event> tag must bring a \c unitID and a 
+  <li> Each \c <event> tag must bring an \c unitID and an 
   \c unitclass attribute giving the unit on which occurs the event, a 
   \c date attribute giving the date and time of the event. The date
-  format must be "YYYY-MM-DD hh:mm:ss". The \c <event> tag may bring a
-  \c name attribute and a a \c category attribute, but they are
-  actually ignored.
+  format must be "YYYY-MM-DD hh:mm:ss".
   <li> Each \c <event> tag may include zero to many \c <info> tags.
   <li> Each \c <info> tag give information about the event and must
   bring a \c key attribute giving the name (the "key") of the info, and a
@@ -317,9 +313,8 @@ The datastore content must be defined in a section delimited by the
   <li> Inside the \c <datastore> tag, there must be a set of \c <dataitem> tags
   <li> Each \c <dataitem> tag must bring an \c ID attribute giving
   the unique identifier of the dataitem, a \c type attribute giving the type
-  of the dataitem (only the geovector type is usable right now), and a \c source 
-  attribute giving the source of the dataitem (only the geovector file path relative
-  to the dataset is usable right now). An optional \c unitclass 
+  of the dataitem (only the geovector and georaster types are currently available), and a \c source 
+  attribute giving the source of the dataitem. An optional \c unitclass 
   attribute is possible for giving the spatial unit class associated to the data. 
 </ul>
 
@@ -331,6 +326,7 @@ The datastore content must be defined in a section delimited by the
     <dataitem id="TUlayer" type="geovector" source="TestUnits_wgs84.shp" 
               unitclass="TestUnits" />
     <dataitem id="Ground" type="geovector" source="data/ground.shp" />
+    <dataitem id="Ground" type="georaster" source="data/DEM.tiff" />
 
   </datastore>
 </openfluid>
@@ -342,7 +338,7 @@ The datastore content must be defined in a section delimited by the
 
 The monitoring is defined by a set of observers that will be automatically 
 plugged and executed by the OpenFLUID environment.
-Observers are usually for exporting formatted data from the simulation or performs
+Observers are usually used for exporting formatted data from the simulation or performs
 continuous control during the simulation.\n
 
 \note OpenFLUID provides observers for exporting data to CSV formatted files,
@@ -435,8 +431,8 @@ The run configuration must be defined in a section delimited by the
   giving the simulation period.
   <li> The \c <period> tag must bring a \c begin and an
   \c end attributes, giving the dates of the beginning and the end of the
-  simulation period. The dates formats for these attributes must be
-  \c YYYY-MM-DD hh:mm:ss
+  simulation period. The date format for these attributes must be
+  <tt>YYYY-MM-DD hh:mm:ss</tt>
   <li> Inside the \c <run> tag, there may be a \c <valuesbuffer>
   tag for the number of produced values kept in memory. The number of values is given
   through a \c size attribute. If not present, all values are kept in memory.

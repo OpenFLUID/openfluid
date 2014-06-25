@@ -48,26 +48,26 @@ The class defining a simulator must define the following methods:
 
 \n
 The \if doc-is-latex \b initParams \else \link openfluid::ware::PluggableSimulator::initParams initParams \endlink \endif 
-method should be used to retreive the parameters of the simulator, 
+ method should be used to retreive the parameters of the simulator, 
 read from the model.fluidx file or filled from the OpenFLUID-Builder interface (See \ref user_fluidx_sections_model). 
 Once read, the values should be stored into private attributes to be accessed by other methods.  
 
 The \if doc-is-latex \b prepareData \else \link openfluid::ware::PluggableSimulator::prepareData prepareData \endlink \endif
-method should be used to do data pre-processing before the consistency checking.
+ method should be used to do data pre-processing before the consistency checking.
 
 The \if doc-is-latex \b checkConsistency \else \link openfluid::ware::PluggableSimulator::checkConsistency checkConsistency \endlink \endif
-method is called during the global consistency checking phase.
+ method is called during the global consistency checking phase.
 It should be used to add specific consistency checking for the simulator. 
 
 The \if doc-is-latex \b initializeRun \else \link openfluid::ware::PluggableSimulator::initializeRun initializeRun \endlink \endif
-method must be used for initialization of simulation variables, 
+ method must be used for initialization of simulation variables, 
 or to compute initialization data.
 
 The \if doc-is-latex \b runStep \else \link openfluid::ware::PluggableSimulator::runStep runStep \endlink \endif
-method is called at each exchange time step. It should contain the computational code.
+ method is called at each exchange time step. It should contain the computational code.
 
 The \if doc-is-latex \b finalizeRun \else \link openfluid::ware::PluggableSimulator::finalizeRun finalizeRun \endlink \endif
-method should be used to do post-processing after simulation. It is the last method ran.
+ method should be used to do post-processing after simulation. It is the last method ran.
 
 
 */
