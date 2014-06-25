@@ -18,7 +18,25 @@ It is a good starting point for beginners who discover the OpenFLUID concepts an
 Once OpenFLUID installed, it can be run either from the program menu of your system
 or from a console using the <tt>openfluid-builder</tt> command.
 
-\todo 1 or 2 screenshots of OpenFLUID-Builder
+\image html screenshot_builder_model_html.png "Screenshot of the model view in OpenFLUID-Builder"
+\image latex screenshot_builder_model.png "Screenshot of the model view in OpenFLUID-Builder" width=11.5cm
+
+\if doc-is-html
+\htmlonly <br><br> \endhtmlonly  
+\endif
+
+
+\image html screenshot_builder_map_html.png "Screenshot of the spatial domain map view in OpenFLUID-Builder"
+\image latex screenshot_builder_map.png "Screenshot of the spatial domain map view in OpenFLUID-Builder" width=11.5cm
+
+
+OpenFLUID-Builder functionalities can be extended by Builder-extensions 
+which are graphical plugins for this user interface. 
+By default, OpenFLUID is provided with two Builder-extensions:
+a graph viewer representing the spatial domain as a connected graph, 
+and a spatial data importer to create a spatial domain from standard GIS data file formats
+(such as Shapefiles) or from a WFS service (Web Feature Service) 
+available from a local or an internet server.  
 
 
 \section use_apps_cmd Command-line interface 
@@ -28,7 +46,7 @@ using the <tt>openfluid</tt> command.
 This usage is particularly useful for running multiple simulations in batch
 or on compute systems such as compute clusters\n
 To run the simulation, execute the <tt>openfluid</tt> command with adapted command line options.
-You can run a simulation givint the input dataset path and the results output path:
+You can run a simulation by giving the input dataset path and the results output path:
 \code
 openfluid -i </path/to/dataset> -o </path/to/results>
 \endcode 
@@ -40,11 +58,8 @@ usually created using the OpenFLUID-Builder user interface, or by hand.
 
 See \ref apdx_optenv_cmdopt or run <tt>openfluid --help</tt> to get the list of available options. 
 
-
-\todo Update screenshot
-
-\image html oferun.png
-\image latex oferun.png "OpenFLUID simulation using command line" width=10cm
+\image html screenshot_cmdline.png "OpenFLUID simulation using command line"
+\image latex screenshot_cmdline.png "OpenFLUID simulation using command line" width=10cm
 
 
 \section use_apps_R From within the GNU R environment - ROpenFLUID
