@@ -479,7 +479,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(const std::string& Attribute
     {
       double* PixelVal = ((double*) itPix->first->getUserData());
 
-      if (isnan(*PixelVal))
+      if (std::isnan(*PixelVal))
         *PixelVal = 1;
 
       float OverlappingArea = itPix->second;
