@@ -30,6 +30,10 @@
   * Updated standard fields names for external spatial data
   * Added observers and datasets as packages for OpenFLUID-market deployment
     system
+  * Updated doc as a completely rewritten manual for usage 
+    and simulators development
+  * Reorganized storage of wares in user directory
+  * Added workspace directory for future development system of wares     
   * Added environment variables for overriding default user and temp paths
   * Switched to version 3 of the Boost filesystem library  
   * Deeply refactored OpenFLUID source code, with many internal improvements
