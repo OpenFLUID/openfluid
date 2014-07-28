@@ -42,7 +42,8 @@
 #include "OGRGDALHelpers.hpp"
 
 #include <ogrsf_frmts.h>
-
+#include <openfluid/tools/GDALHelpers.hpp>
+#include <QFileInfo>
 
 
 DataProcessingWorker::DataProcessingWorker(const SourcesInfosList_t& SourcesInfos,
@@ -532,9 +533,11 @@ bool DataProcessingWorker::runCheck(int StartStep)
 
   emit stepEntered(tr("Checking configuration of files copies and datastore..."));
 
+
+  std::set<std::string> ExtsList = openfluid::tools::getOGRFilesExtensionsForOpenFLUID();
+
   for (int i=0; i<m_SourcesInfos.size();i++)
   {
-
     // check if dataset import file is not empty
     if (m_SourcesInfos[i].IsDatasetImport && m_SourcesInfos[i].RelativeDatasetPath.isEmpty())
     {
@@ -544,6 +547,26 @@ bool DataProcessingWorker::runCheck(int StartStep)
       return false;
     }
 
+    QFileInfo DatasetFile(m_SourcesInfos[i].RelativeDatasetPath);
+    QString Ext = DatasetFile.suffix();
+
+    // check if dataset import file contains an extension
+    if (Ext.isEmpty())
+    {
+      emit stepCompleted(StartStep,getStyledText(tr("[Error] Missing file extension for layer \"%1\"")
+                                                  .arg(m_SourcesInfos[i].LayerName),
+                                                  "red"));
+      return false;
+    }
+
+    // check if dataset import file extension exists in drivers
+    if (ExtsList.find(Ext.toStdString()) == ExtsList.end())
+    {
+      emit stepCompleted(StartStep,getStyledText(tr("[Error] Wrong file extension for layer \"%1\"")
+                                                  .arg(m_SourcesInfos[i].LayerName),
+                                                  "red"));
+      return false;
+    }
 
     // check if datastore ID is not empty
     if (m_SourcesInfos[i].IsDatastore && m_SourcesInfos[i].DatastoreID.isEmpty())

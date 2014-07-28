@@ -119,4 +119,31 @@ const GDALDriversFilesExts_t getGDALFilesDriversForOpenFLUID()
 }
 
 
+// =====================================================================
+// =====================================================================
+
+
+const std::set<std::string> DLLEXPORT getOGRFilesExtensionsForOpenFLUID()
+{
+  std::set<std::string> ExtsList;
+
+  // getting files drivers list
+  openfluid::tools::GDALDriversFilesExts_t Drivers = openfluid::tools::getOGRFilesDriversForOpenFLUID();
+  openfluid::tools::GDALDriversFilesExts_t::const_iterator DriversIt;
+
+  // adding extensions in set
+  for (DriversIt = Drivers.begin(); DriversIt != Drivers.end(); ++DriversIt)
+  {
+    std::vector<std::string>::const_iterator ExtsIt;
+
+    for (ExtsIt = DriversIt->second.FilesExts.begin(); ExtsIt != DriversIt->second.FilesExts.end(); ++ExtsIt)
+    {
+      ExtsList.insert(*ExtsIt);
+    }
+  }
+
+  return ExtsList;
+}
+
+
 } } // namespaces

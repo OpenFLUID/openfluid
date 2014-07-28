@@ -44,6 +44,7 @@
 
 #include <vector>
 #include <map>
+#include <set>
 #include <QString>
 
 
@@ -66,6 +67,8 @@ typedef std::map<std::string,GDALDriverInfos_t> GDALDriversFilesExts_t;
 const GDALDriversFilesExts_t DLLEXPORT getOGRFilesDriversForOpenFLUID();
 
 const GDALDriversFilesExts_t DLLEXPORT getGDALFilesDriversForOpenFLUID();
+
+const std::set<std::string> DLLEXPORT getOGRFilesExtensionsForOpenFLUID();
 
 
 } } // namespaces
