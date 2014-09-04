@@ -1,5 +1,9 @@
 2.0.1
 
+  * Improved display of paths with correct paths separators 
+  * Fixed storage of XML special characters in parameters when saving
+    in .fluidx files    
+  * Fixed resizing problems
   * Fixed crash in spatial import extension when missing 
     filename extension in selected file to import
 
