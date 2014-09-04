@@ -1,3 +1,10 @@
+2.0.1
+
+  * Fixed crash in spatial import extension when missing 
+    filename extension in selected file to import
+
+
+
 2.0.0
 
   * Updated simulation engine for variable time coupling, 
