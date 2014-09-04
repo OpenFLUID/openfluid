@@ -84,9 +84,11 @@ OutputsWidget::~OutputsWidget()
 
 void OutputsWidget::refreshOutputDir() const
 {
-  ui->OutputDirLabel->setText(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
-  ui->OutputDirLabel->setToolTip(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
-  ui->OutputDirView->setRootIndex(mp_FSModel->setRootPath(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str())));
+  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getOutputDir()));
+
+  ui->OutputDirLabel->setText(NativePath);
+  ui->OutputDirLabel->setToolTip(NativePath);
+  ui->OutputDirView->setRootIndex(mp_FSModel->setRootPath(NativePath));
 }
 
 

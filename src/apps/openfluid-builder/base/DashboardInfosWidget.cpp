@@ -43,6 +43,8 @@
 #include "ui_DashboardInfosWidget.h"
 #include "DashboardInfosWidget.hpp"
 
+#include <QDir>
+
 
 DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::AdvancedFluidXDescriptor& Desc, QWidget* Parent):
   DashboardWidget(Parent), ui(new Ui::DashboardInfosWidget), m_AdvFluidxDesc(Desc)
@@ -129,7 +131,9 @@ void DashboardInfosWidget::refresh()
 
 void DashboardInfosWidget::refreshProjectInfos()
 {
+  QString NativePath = QDir::toNativeSeparators(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
+
   ui->TitleLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
-  ui->PathLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
-  ui->PathLabel->setToolTip(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
+  ui->PathLabel->setText(NativePath);
+  ui->PathLabel->setToolTip(NativePath);
 }

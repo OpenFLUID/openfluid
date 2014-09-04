@@ -56,7 +56,7 @@ NewProjectDialog::NewProjectDialog(QWidget *Parent):
 {
   ui->setupUi(this);
 
-  ui->WorkdirLabel->setText(openfluid::base::PreferencesManager::getInstance()->getProjectsPath());
+  ui->WorkdirLabel->setText(QDir::toNativeSeparators(openfluid::base::PreferencesManager::getInstance()->getProjectsPath()));
 
 
   connect(ui->WorkdirButton,SIGNAL(clicked()),this,SLOT(onWorkdirButtonClicked()));
@@ -149,8 +149,10 @@ void NewProjectDialog::onWorkdirButtonClicked()
   QString SelectedDir = QFileDialog::getExistingDirectory(this,tr("Select working directory"));
   if (SelectedDir !=  "")
   {
-    ui->WorkdirLabel->setText(SelectedDir);
-    ui->WorkdirLabel->setToolTip(SelectedDir);
+    QString NativePath = QDir::toNativeSeparators(SelectedDir);
+
+    ui->WorkdirLabel->setText(NativePath);
+    ui->WorkdirLabel->setToolTip(NativePath);
 
     onGlobalCheck();
   }
@@ -166,17 +168,19 @@ void NewProjectDialog::onProjectButtonClicked()
   QString SelectedDir = QFileDialog::getExistingDirectory(this,tr("Select project"));
   if (SelectedDir !=  "")
   {
+    QString NativePath = QDir::toNativeSeparators(SelectedDir);
+
     if (openfluid::base::ProjectManager::isProject(SelectedDir.toStdString()))
     {
-      ui->ProjectLabel->setText(SelectedDir);
-      ui->ProjectLabel->setToolTip(SelectedDir);
+      ui->ProjectLabel->setText(NativePath);
+      ui->ProjectLabel->setToolTip(NativePath);
       ui->ProjectLabel->setStyleSheet("font: normal;");
       onGlobalCheck();
     }
     else
       QMessageBox::critical(this,
                             tr("Project error"),
-                            tr("%1\n\nis not a valid OpenFLUID project").arg(SelectedDir));
+                            tr("%1\n\nis not a valid OpenFLUID project").arg(NativePath));
   }
 }
 
@@ -190,16 +194,16 @@ void NewProjectDialog::onDatadirButtonClicked()
   QString SelectedDir = QFileDialog::getExistingDirectory(this,tr("Select directory"));
   if (SelectedDir !=  "")
   {
-    ui->DirectoryLabel->setText(SelectedDir);
-    ui->DirectoryLabel->setToolTip(SelectedDir);
+    QString NativePath = QDir::toNativeSeparators(SelectedDir);
+
+    ui->DirectoryLabel->setText(NativePath);
+    ui->DirectoryLabel->setToolTip(NativePath);
     ui->DirectoryLabel->setStyleSheet("font: normal;");
     onGlobalCheck();
 
-    mp_DirectoryModel->setRootPath(SelectedDir);
+    mp_DirectoryModel->setRootPath(NativePath);
     ui->DirectoryView->setModel(mp_DirectoryModel);
-    ui->DirectoryView->setRootIndex(mp_DirectoryModel->setRootPath(SelectedDir));
-
-
+    ui->DirectoryView->setRootIndex(mp_DirectoryModel->setRootPath(NativePath));
   }
 }
 
