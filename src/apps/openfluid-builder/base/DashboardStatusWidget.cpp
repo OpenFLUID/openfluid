@@ -52,6 +52,7 @@ DashboardStatusWidget::DashboardStatusWidget(const ProjectCentral* PrjCentral,QW
   ui->setupUi(this);
 
   ui->TitleLabel->setStyleSheet("color:white; font:bold;");
+  ui->TitleLabel->setElideMode(Qt::ElideRight);
 
   ui->NoMessageLabel->setStyleSheet("color:white; font:italic;");
 

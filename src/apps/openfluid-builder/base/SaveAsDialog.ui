@@ -16,6 +16,12 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>0</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string notr="true"/>
   </property>
@@ -146,7 +152,7 @@ font : bold;
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLabel" name="DirectoryLabel">
+      <widget class="ElidedLabel" name="DirectoryLabel">
        <property name="font">
         <font>
          <weight>75</weight>
@@ -165,6 +171,13 @@ font : bold;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ElidedLabel</class>
+   <extends>QLabel</extends>
+   <header>ElidedLabel.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -220,7 +220,7 @@
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QLabel" name="WorkdirLabel">
+      <widget class="ElidedLabel" name="WorkdirLabel">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -296,6 +296,13 @@ font : bold;
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ElidedLabel</class>
+   <extends>QLabel</extends>
+   <header>ElidedLabel.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

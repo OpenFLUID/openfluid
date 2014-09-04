@@ -60,6 +60,11 @@ DashboardInfosWidget::DashboardInfosWidget(const openfluid::fluidx::AdvancedFlui
   ui->TitleLabel->setStyleSheet("color: white;");
   ui->PathLabel->setStyleSheet("color: white;");
 
+  // Improve size of project title by 2 points
+  QFont TmpFont = ui->TitleLabel->font();
+  TmpFont.setPointSize(TmpFont.pointSize()+2);
+  ui->TitleLabel->setFont(TmpFont);
+
   ui->ModelLabel->setStyleSheet("color: white;");
   ui->SpatialLabel->setStyleSheet("color: white;");
   ui->DatastoreLabel->setStyleSheet("color: white;");
@@ -124,6 +129,7 @@ void DashboardInfosWidget::refresh()
 
 void DashboardInfosWidget::refreshProjectInfos()
 {
-  ui->TitleLabel->setText(QString("<b><big>%1</big></b>").arg(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName())));
+  ui->TitleLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getName()));
   ui->PathLabel->setText(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
+  ui->PathLabel->setToolTip(QString::fromStdString(openfluid::base::ProjectManager::getInstance()->getPath()));
 }

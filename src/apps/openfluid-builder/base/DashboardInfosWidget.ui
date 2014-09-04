@@ -23,16 +23,7 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
+   <property name="margin">
     <number>0</number>
    </property>
    <item>
@@ -65,9 +56,22 @@
          <number>12</number>
         </property>
         <item>
-         <widget class="QLabel" name="TitleLabel">
+         <widget class="ElidedLabel" name="TitleLabel">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+            <underline>false</underline>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string notr="true"/>
+          </property>
           <property name="text">
            <string notr="true">TitleLabel</string>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
           </property>
           <property name="wordWrap">
            <bool>true</bool>
@@ -75,11 +79,14 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="PathLabel">
+         <widget class="ElidedLabel" name="PathLabel">
           <property name="font">
            <font>
             <pointsize>9</pointsize>
            </font>
+          </property>
+          <property name="toolTip">
+           <string notr="true"/>
           </property>
           <property name="text">
            <string notr="true">PathLabel</string>
@@ -149,6 +156,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ElidedLabel</class>
+   <extends>QLabel</extends>
+   <header>ElidedLabel.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

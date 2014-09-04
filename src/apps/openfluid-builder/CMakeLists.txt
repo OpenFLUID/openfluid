@@ -68,7 +68,7 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
 ### COMMON #
 
 SET(BUILDER_COMMON_CPP common/AppTools.cpp
-                       common/ClickableLabel.cpp common/ActionLabel.cpp
+                       common/ClickableLabel.cpp common/ActionLabel.cpp common/ElidedLabel.cpp
                        common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
                        common/AddWareDialog.cpp
                        common/AddParamDialog.cpp
@@ -78,7 +78,7 @@ SET(BUILDER_COMMON_CPP common/AppTools.cpp
 SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
                        common/WorkspaceWidget.hpp
                        common/AppTools.hpp
-                       common/ClickableLabel.hpp common/ActionLabel.hpp
+                       common/ClickableLabel.hpp common/ActionLabel.hpp common/ElidedLabel.hpp
                        common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
                        common/AddWareDialog.hpp
                        common/AddParamDialog.hpp

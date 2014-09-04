@@ -85,6 +85,7 @@ OutputsWidget::~OutputsWidget()
 void OutputsWidget::refreshOutputDir() const
 {
   ui->OutputDirLabel->setText(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
+  ui->OutputDirLabel->setToolTip(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str()));
   ui->OutputDirView->setRootIndex(mp_FSModel->setRootPath(QString(openfluid::base::ProjectManager::getInstance()->getOutputDir().c_str())));
 }
 
