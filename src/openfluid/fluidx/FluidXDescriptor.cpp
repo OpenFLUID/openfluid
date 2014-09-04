@@ -42,9 +42,11 @@
 #include <boost/filesystem/operations.hpp>
 #include <openfluid/base/IOListener.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include <QDomDocument>
 #include <QFile>
+
 
 #include <fstream>
 
@@ -904,8 +906,13 @@ std::string FluidXDescriptor::getParamsAsStr(
 
   for (openfluid::ware::WareParams_t::const_iterator it = Params.begin();
       it != Params.end(); ++it)
-  ParamsStr += (m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
-      + it->first + "\" value=\"" + it->second.get() + "\"/>\n");
+  {
+    std::string EscapedValueStr =
+        openfluid::tools::escapeXMLEntities(QString::fromStdString(it->second.get())).toStdString();
+
+    ParamsStr += (m_IndentStr + m_IndentStr + m_IndentStr + "<param name=\""
+                 + it->first + "\" value=\"" + EscapedValueStr + "\"/>\n");
+  }
 
   return ParamsStr;
 }

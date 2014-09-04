@@ -691,3 +691,44 @@ BOOST_AUTO_TEST_CASE(check_write_operations_for_integration_tests)
   FXDesc.writeToManyFiles(OutputDirMany);
   FXDesc.writeToSingleFile(OutputDirSingle+"/all.fluidx");
 }
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_write_read_operations_of_xml_entities)
+{
+  std::string DatasetDir = CONFIGTESTS_OUTPUT_DATA_DIR+"/OPENFLUID.OUT.FluidXWriterXMLEntities";
+
+  std::string RefParamStr = "< ' > && \"hula hoop\"";
+
+  openfluid::fluidx::ObserverDescriptor* ObsDesc = NULL;
+  {
+    openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
+
+    FXDesc.getRunDescriptor().setBeginDate(openfluid::core::DateTime(2014,9,4,17,0,0));
+    FXDesc.getRunDescriptor().setEndDate(openfluid::core::DateTime(2014,9,4,18,0,0));
+    FXDesc.getRunDescriptor().setDeltaT(60);
+
+    FXDesc.getRunDescriptor().setFilled(true);
+
+    ObsDesc = new openfluid::fluidx::ObserverDescriptor("tests.observer");
+    ObsDesc->setParameter("param1",openfluid::core::StringValue(RefParamStr));
+
+    FXDesc.getMonitoringDescriptor().getItems().push_back(ObsDesc);
+
+    FXDesc.writeToManyFiles(DatasetDir);
+  }
+  delete ObsDesc;
+
+
+  {
+    openfluid::fluidx::FluidXDescriptor FXDesc(new openfluid::base::IOListener());
+
+    FXDesc.loadFromDirectory(DatasetDir);
+
+    openfluid::ware::WareParams_t Params = FXDesc.getMonitoringDescriptor().getItems().front()->getParameters();
+
+    BOOST_REQUIRE_EQUAL(Params["param1"].toString(),RefParamStr);
+  }
+
+}

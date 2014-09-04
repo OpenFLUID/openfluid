@@ -70,6 +70,8 @@ std::list<std::string> DLLEXPORT toStdStringList(const QStringList& StrList);
 QString DLLEXPORT getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
                                                    const QString& AllFormatsLabel);
 
+QString DLLEXPORT escapeXMLEntities(const QString& Str);
+
 } } // namespaces
 
 
