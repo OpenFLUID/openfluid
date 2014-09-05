@@ -13,7 +13,7 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get install -qq openssh-server openssh-client g++ gfortran cmake libboost-all-dev libqt4-dev libgdal1-dev libgeos++-dev p7zip-full gnuplot graphviz
+  - sudo apt-get install -qq openssh-server openssh-client g++ gfortran cmake libboost-all-dev libqt4-dev libgdal1h libgdal1-dev libgeos++-dev p7zip-full gnuplot graphviz
 
 before_script:
   - mkdir _build
