@@ -178,6 +178,9 @@ class DLLEXPORT PolygonEntity: public LandREntity
      */
     std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
 
+    // get the PolygonEntitty which share the same Edge
+    PolygonEntity * getNeighbourWithCommonEdge(PolygonEdge * Edge);
+
     /**
      * @brief Gets the boundary of this PolygonEntity polygon, with a buffer of BufferDistance.
      * @param BufferDistance The buffer distance.
@@ -203,6 +206,21 @@ class DLLEXPORT PolygonEntity: public LandREntity
     void computeLineStringNeighbours(LineStringGraph& Graph,
                                      LandRTools::Relationship Relation,
                                      double BufferDistance,double ContactLength=0);
+
+    /**
+     * @brief Computes the relations between this PolygonEntity and its PolygonEntities Neighbours by using
+     * the LineStringEntity of an input LineStringGraph which are considered as barriers.
+     * @details A barrier between two PolygonEntity will avoid to considered them as neighbours.
+     * @details A LineStringEntity is considered as a barrier if it lies within the buffer of this PolygonEntity polygon boundary.
+     *
+     * @param Graph The LineStringGraph to compare to.
+     * @param Relation The Relationship to use for comparison, the LandRTools::Relationship INTERSECTS is not allowed.
+     * @param BufferDistance The distance below which we consider that two elements are related.
+     * @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
+     */
+    void computeNeighboursWithBarriers(LineStringGraph& Graph,
+    		LandRTools::Relationship Relation,
+    		double BufferDistance,double ContactLength=0);
 
     /**
      * @brief Return the a map of the LineStringEntity neighbours of this PolygonEntity.

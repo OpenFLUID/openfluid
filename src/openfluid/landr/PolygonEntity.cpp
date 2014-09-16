@@ -466,6 +466,117 @@ geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge, PolygonEdge
 // =====================================================================
 
 
+void PolygonEntity::computeNeighboursWithBarriers(
+		LineStringGraph& Graph, LandRTools::Relationship Relation,
+		double BufferDistance,double ContactLength)
+{
+	if (Relation == LandRTools::TOUCHES && ContactLength==0)
+		throw openfluid::base::FrameworkException(
+				"PolygonEntity::computeNeighboursWithBarriers",
+				"ContactLength must be superior to 0 for LandRTools::Relationship TOUCHES ");
+
+	if (Relation == LandRTools::INTERSECTS)
+		throw openfluid::base::FrameworkException(
+				"PolygonEntity::computeNeighboursWithBarriers",
+				"LandRTools::Relationship INTERSECTS is not allowed");
+
+
+	if (!mp_NeighboursMap)
+		computeNeighbours();
+
+
+	geos::geom::Geometry* PolyBuff = getBufferedBoundary(BufferDistance);
+
+	openfluid::landr::LandRGraph::Entities_t LSs = Graph.getEntities();
+
+	openfluid::landr::LandRGraph::Entities_t::const_iterator it = LSs.begin();
+	openfluid::landr::LandRGraph::Entities_t::const_iterator ite = LSs.end();
+	for (; it != ite; ++it)
+	{
+		LineStringEntity* LS = dynamic_cast<LineStringEntity*>(*it);
+
+		if (Relation == LandRTools::CONTAINS && LS->getLine()->within(PolyBuff))
+		{
+			geos::geom::Geometry* EdgeBuff;
+			unsigned int jEnd=m_PolyEdges.size();
+			for (unsigned int j = 0; j < jEnd; j++)
+			{
+				EdgeBuff = m_PolyEdges[j]->getLine()->buffer(BufferDistance);
+				if (LS->getLine()->within(EdgeBuff))
+				{
+					// remove from mp_Neighbours and mp_NeighboursMap the polygon which share this Edge
+					mp_Neighbours->erase(getNeighbourWithCommonEdge(m_PolyEdges[j]));
+					mp_NeighboursMap->erase(getNeighbourWithCommonEdge(m_PolyEdges[j]));
+				}
+				delete EdgeBuff;
+			}
+
+		}
+
+		else if (Relation == LandRTools::TOUCHES
+				&& LS->getLine()->intersects(PolyBuff))
+
+		{
+			geos::geom::Geometry* EdgeBuff;
+			unsigned int jEnd=m_PolyEdges.size();
+			for (unsigned int j = 0; j < jEnd; j++)
+			{
+				EdgeBuff = m_PolyEdges[j]->getLine()->buffer(BufferDistance);
+
+				geos::geom::Geometry * Inter=LS->getLine()->intersection(EdgeBuff);
+				double lengthInter=0.0;
+				unsigned int iEnd=Inter->getNumGeometries();
+				for (unsigned int i = 0; i < iEnd; i++)
+				{
+					geos::geom::LineString* LineIntersect =
+							dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(Inter->getGeometryN(
+									i)));
+					lengthInter=lengthInter+LineIntersect->getLength();
+				}
+
+				if (lengthInter>ContactLength)
+				{
+
+					// remove from mp_Neighbours and mp_NeighboursMap the polygon which share this Edge
+					mp_Neighbours->erase(getNeighbourWithCommonEdge(m_PolyEdges[j]));
+					mp_NeighboursMap->erase(getNeighbourWithCommonEdge(m_PolyEdges[j]));
+				}
+				delete EdgeBuff;
+			}
+
+		}
+
+	}
+
+	delete PolyBuff;
+}
+
+// =====================================================================
+// =====================================================================
+
+PolygonEntity * PolygonEntity::getNeighbourWithCommonEdge(PolygonEdge * Edge)
+{
+  if (!mp_NeighboursMap)
+    computeNeighbours();
+
+  NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
+  NeighboursMap_t::iterator ite = mp_NeighboursMap->end();
+  for (; it != ite; ++it)
+  {
+    std::vector<PolygonEdge*> vEdges=(*it).second;
+    std::vector<PolygonEdge*>::iterator jt;
+
+    jt = find (vEdges.begin(), vEdges.end(), Edge);
+    if (jt != vEdges.end())
+      return (*it).first;
+
+  }
+  return (PolygonEntity*) 0;
+
+}
+// =====================================================================
+// =====================================================================
+
 
 
 

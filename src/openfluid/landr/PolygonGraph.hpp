@@ -218,6 +218,22 @@ class DLLEXPORT PolygonGraph: public LandRGraph
         double BufferDistance,double ContactLength=0);
 
     /**
+     * @brief Computes the neighbours between the PolygonEntity elements of this PolygonGraph by using
+     * the LineStringEntity of an input LineStringGraph which are considered as barriers.
+     * @details A barrier between two PolygonEntity will avoid to considered them as neighbours.
+     * @details A LineStringEntity is considered as a barrier if it lies within the buffer of this PolygonEntity polygon boundary.
+     *
+     * @param Graph The LineStringGraph to compare to.
+     * @param Relation The Relationship to use for comparison, the LandRTools::Relationship INTERSECTS is not allowed.
+     * @param BufferDistance The distance below which we consider that two elements are related.
+     * @param ContactLength Min Length of the LineString in intersection with polygon Buffered Boundaries to be taking acccount (only for LandRTools::TOUCHES RelationShip)
+     */
+    void computeNeighboursWithBarriers(
+    		LineStringGraph& Graph,
+    		openfluid::landr::LandRTools::Relationship Relation,
+    		double BufferDistance,double ContactLength=0);
+
+    /**
      * @brief Creates attribute for the PolygonEdge of this PolygonGraph.
      * @details Doesn't reset if the AttributeName already exists.
      * @param AttributeName The name of the PolygonEdge attribute.

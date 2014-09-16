@@ -2453,3 +2453,88 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_With_NoData)
 // =====================================================================
 
 
+BOOST_AUTO_TEST_CASE(check_computeNeighboursWithBarriers)
+{
+
+  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "POLY_TEST.shp");
+
+  openfluid::landr::PolygonGraph* SUGraph =
+      openfluid::landr::PolygonGraph::create(*ValSU);
+
+  openfluid::core::GeoVectorValue* ValBarriers = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/", "Barriers.shp");
+
+  openfluid::landr::LineStringGraph* BarriersGraph =
+      openfluid::landr::LineStringGraph::create(*ValBarriers);
+
+  SUGraph->computeNeighbours();
+
+
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(1)->getOrderedNeighbourOfldIds().size(),2);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(2)->getOrderedNeighbourOfldIds().size(),2);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(3)->getOrderedNeighbourOfldIds().size(),2);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(4)->getOrderedNeighbourOfldIds().size(),2);
+
+
+
+  BOOST_CHECK_THROW(SUGraph->computeNeighboursWithBarriers(*BarriersGraph,
+                                     openfluid::landr::LandRTools::INTERSECTS,0.01),
+                    openfluid::base::FrameworkException);
+
+  SUGraph->computeNeighboursWithBarriers(*BarriersGraph,
+                                       openfluid::landr::LandRTools::CONTAINS,0.01);
+
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(1)->getOrderedNeighbourOfldIds().size(),1);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(1)->getOrderedNeighbourOfldIds().at(0),2);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(2)->getOrderedNeighbourOfldIds().size(),2);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(4)->getOrderedNeighbourOfldIds().size(),1);
+
+
+
+    BOOST_CHECK_EQUAL(SUGraph->getEntity(2)->getOrderedNeighbourOfldIds().size(),2);
+
+
+
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(3)->getOrderedNeighbourOfldIds().size(),0);
+
+  SUGraph->computeNeighboursWithBarriers(*BarriersGraph,
+                                     openfluid::landr::LandRTools::TOUCHES,0.01,0.2);
+
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(2)->getOrderedNeighbourOfldIds().size(),1);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(2)->getOrderedNeighbourOfldIds().at(0),1);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(4)->getOrderedNeighbourOfldIds().size(),0);
+
+  SUGraph->computeNeighboursWithBarriers(*BarriersGraph,
+		  openfluid::landr::LandRTools::TOUCHES,0.1,0.2);
+
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(1)->getOrderedNeighbourOfldIds().size(),0);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(2)->getOrderedNeighbourOfldIds().size(),0);
+
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+		  CONFIGTESTS_INPUT_DATASETS_DIR + "/landr/", "LINE_TEST4.shp");
+
+  openfluid::landr::LineStringGraph* RSGraph =
+		  openfluid::landr::LineStringGraph::create(*ValRS);
+
+  SUGraph->computeLineStringNeighbours(*RSGraph,
+		  openfluid::landr::LandRTools::INTERSECTS,0.01);
+
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(1)->getOrderedNeighbourOfldIds().size(),0);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(1)->getLineStringNeighbours()->size(),4);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(2)->getOrderedNeighbourOfldIds().size(),0);
+  BOOST_CHECK_EQUAL(SUGraph->getEntity(2)->getLineStringNeighbours()->size(),5);
+
+  delete ValSU;
+  delete SUGraph;
+  delete ValBarriers;
+  delete BarriersGraph;
+  delete ValRS;
+  delete RSGraph;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+

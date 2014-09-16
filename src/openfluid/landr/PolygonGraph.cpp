@@ -1011,6 +1011,34 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompact
 // =====================================================================
 // =====================================================================
 
+void PolygonGraph::computeNeighboursWithBarriers(LineStringGraph& Graph, openfluid::landr::LandRTools::Relationship Relation,
+		double BufferDistance,double ContactLength)
+{
+	if (Relation == LandRTools::TOUCHES && ContactLength==0)
+		throw openfluid::base::FrameworkException(
+				"PolygonGraph::computeNeighboursWithBarriers",
+				"ContactLength must be superior to 0 for LandRTools::TOUCHES RelationShip");
+
+	if (Relation == LandRTools::INTERSECTS)
+		throw openfluid::base::FrameworkException(
+				"PolygonGraph::computeNeighboursWithBarriers",
+				"LandRTools::INTERSECTS RelationShip not allowed");
+
+
+
+
+	LandRGraph::Entities_t::iterator it = m_Entities.begin();
+	LandRGraph::Entities_t::iterator ite = m_Entities.end();
+	for (; it != ite; ++it)
+		dynamic_cast<PolygonEntity*>(*it)->computeNeighboursWithBarriers(
+				Graph, Relation, BufferDistance, ContactLength);
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
 
 }// namespace landr
 } /* namespace openfluid */
