@@ -556,24 +556,25 @@ void PolygonEntity::computeNeighboursWithBarriers(
 
 PolygonEntity * PolygonEntity::getNeighbourWithCommonEdge(PolygonEdge * Edge)
 {
-  if (!mp_NeighboursMap)
-    computeNeighbours();
+	if (!mp_NeighboursMap)
+		computeNeighbours();
 
-  NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
-  NeighboursMap_t::iterator ite = mp_NeighboursMap->end();
-  for (; it != ite; ++it)
-  {
-    std::vector<PolygonEdge*> vEdges=(*it).second;
-    std::vector<PolygonEdge*>::iterator jt;
+	NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
+	NeighboursMap_t::iterator ite = mp_NeighboursMap->end();
+	for (; it != ite; ++it)
+	{
+		std::vector<PolygonEdge*> vEdges=(*it).second;
+		std::vector<PolygonEdge*>::iterator jt;
 
-    jt = find (vEdges.begin(), vEdges.end(), Edge);
-    if (jt != vEdges.end())
-      return (*it).first;
+		jt = find (vEdges.begin(), vEdges.end(), Edge);
+		if (jt != vEdges.end())
+			return (*it).first;
 
-  }
-  return (PolygonEntity*) 0;
+	}
+	return (PolygonEntity*) 0;
 
 }
+
 // =====================================================================
 // =====================================================================
 

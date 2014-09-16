@@ -178,7 +178,11 @@ class DLLEXPORT PolygonEntity: public LandREntity
      */
     std::vector<PolygonEdge*> getCommonEdgesWith(PolygonEntity& Other);
 
-    // get the PolygonEntitty which share the same Edge
+    /**
+     * @brief Gets the PolygonEntity which share the same Edge with the current PolygonEntity.
+     * @param Edge A PolygonEdge.
+     * @return A vector a PolygonEntity.
+     */
     PolygonEntity * getNeighbourWithCommonEdge(PolygonEdge * Edge);
 
     /**
