@@ -49,7 +49,6 @@ STRIP_CODE_COMMENTS    = NO
 HTML_FILE_EXTENSION    = .html
 HTML_HEADER            = @DOC_LAYOUT_DIR@/header.html
 HTML_FOOTER            = @DOC_LAYOUT_DIR@/footer.html
-HTML_EXTRA_STYLESHEET  = @DOC_LAYOUT_DIR@/stylesheet.css
 HTML_STYLESHEET        = @DOC_LAYOUT_DIR@/stylesheet.css
 HTML_OUTPUT            = html
 
