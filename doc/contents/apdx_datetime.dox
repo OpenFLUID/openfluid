@@ -15,7 +15,7 @@ For example, the nineteenth of April, two-thousand seven, at eleven hours, ten m
 <ul>
 <li><tt>\%d/\%m/\%Y \%H:\%M:\%S</tt> will give <tt>19/04/2007 10:11:25</tt>
 <li><tt>\%Y-\%m-\%d \%H.\%M</tt> will give <tt>2007-04-19 10.11</tt>
-<li><tt>\%Y\t\%m\t\%d\t\%H\t\%M\t\%S</tt> will give <tt>2007 04  19  10  11  25</tt>
+<li><tt>\%Y\\t\%m\\t\%d\\t\%H\\t\%M\\t\%S</tt> will give <tt>2007 04  19  10  11  25</tt>
 </ul>
 
 List of available conversion specifications:

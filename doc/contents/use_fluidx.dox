@@ -34,13 +34,13 @@ this FluidX format.
 Whatever the input information is put into one or many files, the following
 sections must be defined in the input file(s) set:
 <ul>
-  <li> The <i>model</i> section defined by the \c <model> tag
-  <li> The <i>spatial domain</i> section defined by the \c <domain> tag
-  <li> The <i>run configuration</i> section defined by the \c <run> tag
-  <li> The <i>monitoring</i> section defined by the \c <monitoring> tag  
+  <li> The <i>model</i> section defined by the \c \<model\> tag
+  <li> The <i>spatial domain</i> section defined by the \c \<domain\> tag
+  <li> The <i>run configuration</i> section defined by the \c \<run\> tag
+  <li> The <i>monitoring</i> section defined by the \c \<monitoring\> tag  
 </ul>
 The order of these sections is not significant. All of these sections must be
-inclosed into an \a openfluid section defined by the \c <openfluid>
+inclosed into an \a openfluid section defined by the \c \<openfluid\>
 tag.
 
 \n
@@ -84,29 +84,29 @@ be overridden by local parameters of simulators or generators.
 
 
 The coupled model must be defined in a section delimited by the
-\c <model> tag, and must be structured following these rules:
+\c \<model\> tag, and must be structured following these rules:
 <ul>
-  <li> Inside the \c <model> tag, there must be a set of
-  \c <simulator>, \c <generator> and \c <gparams> tags
-  <li> Each \c <simulator> tag must bring an \c ID attribute giving
+  <li> Inside the \c \<model\> tag, there must be a set of
+  \c \<simulator\>, \c \<generator\> and \c \<gparams\> tags
+  <li> Each \c \<simulator\> tag must bring an \c ID attribute giving
   the identifier of the simulator; the value of the \c ID
   attribute must match the ID of an available and
   pluggable simulator.
-  <li> Each \c <simulator> tag may include zero to many \c <param> tags giving
-  parameters to the simulator. Each \c <param> tag must bring a \c name attribute giving
+  <li> Each \c \<simulator\> tag may include zero to many \c \<param\> tags giving
+  parameters to the simulator. Each \c \<param\> tag must bring a \c name attribute giving
   the name of the parameter and a \c value attribute giving the value of the parameter.
   These parameters can be scalar or vector of integer values, floating point values, string values.
   In case of vector, the values of the vector are separated by a \c ; (semicolon).
-  <li> Each \c <generator> tag must bring a \c varname attribute giving 
+  <li> Each \c \<generator\> tag must bring a \c varname attribute giving 
   the name of the produced variable, a \c unitclass attribute giving the 
   unit class of the produced variable, a \c method attribute giving the 
   method used to produce the variable (\c fixed for constant value,
   \c random for random value in a range, \c interp for a time-interpolated
   value from given data series, \c inject for an
-  injected value -no time interpolation- from given data series). An optional \c <varsize>
+  injected value -no time interpolation- from given data series). An optional \c \<varsize\>
   attribute can be set in order to produce a vector variable instead of a scalar variable.
-  <li> Each \c <generator> tag may include zero to many \c <param>
-  tags giving parameters to the generator. Each \c <param> tag must bring
+  <li> Each \c \<generator\> tag may include zero to many \c \<param\>
+  tags giving parameters to the generator. Each \c \<param\> tag must bring
   a \c name attribute giving the name of the parameter and a \c value 
   attribute giving the value of the parameter.
   <li> A generator using the \c fixed method must provide a
@@ -118,8 +118,8 @@ The coupled model must be defined in a section delimited by the
   param named \c sources giving the data sources filename and a param
   named \c distribution giving the distribution filename for the value to
   produce (see also \ref apdx_generators).
-  <li> Each \c <gparams> tag may include zero to many \c <param>
-  tags giving the global parameters. Each \c <param> tag
+  <li> Each \c \<gparams\> tag may include zero to many \c \<param\>
+  tags giving the global parameters. Each \c \<param\> tag
   must bring a \c name attribute giving the name of the parameter and a \c value 
   attribute giving the value of the parameter.
 </ul>
@@ -157,7 +157,7 @@ The coupled model must be defined in a section delimited by the
 
 \warning There must be only one model definition in the input dataset.
 
-\warning The order of the simulators and data generators in the \c <model> section is important : 
+\warning The order of the simulators and data generators in the \c \<model\> section is important : 
 this order will be the call order at initialization time, and the permanent call order in synchronized 
 coupled model (not applicable for variable time coupled models)
 
@@ -172,21 +172,21 @@ These spatial units are defined by a numerical identifier (ID) and a class.
 They also include information about the processing order of the unit in the class.
 Each unit can be connected to zero or many other units from the same or a different unit class.
 The spatial domain definition must be defined in a section delimited
-by the \c <definition> tag, which is a sub-section of the \c domain
+by the \c \<definition\> tag, which is a sub-section of the \c domain
 tag, and must be structured following these rules:
 <ul>
-  <li> Inside the \c <definition> tag, there must be a set of
-  \c <unit> tags
-  <li> Each \c <unit> tag must bring an \c ID attribute giving
+  <li> Inside the \c \<definition\> tag, there must be a set of
+  \c \<unit\> tags
+  <li> Each \c \<unit\> tag must bring an \c ID attribute giving
   the identifier of the unit, a \c class attribute giving the class of
   the unit, a \c pcsorder attribute giving the process order in the
   class of the unit
-  <li> Each \c <unit> tag may include zero or many \c <to> tags giving
-  the outgoing connections to other units. Each \c <to> tag must bring an
+  <li> Each \c \<unit\> tag may include zero or many \c \<to\> tags giving
+  the outgoing connections to other units. Each \c \<to\> tag must bring an
   \c ID attribute giving the identifier of the connected unit and a
   \c class attribute giving the class of the connected unit
-  <li> Each \c <unit> tag may include zero or many \c <childof>
-  tags giving the parent units. Each \c <childof> tag must bring an
+  <li> Each \c \<unit\> tag may include zero or many \c \<childof\>
+  tags giving the parent units. Each \c \<childof\> tag must bring an
   \c ID attribute giving the identifier of the parent unit and a
   \c class attribute giving the class of the parent unit   
 </ul>
@@ -221,18 +221,18 @@ tag, and must be structured following these rules:
 The spatial attributes are static data associated to each spatial unit,
 usually properties and initial conditions.\n
 The spatial domain attributes must be defined in a section delimited
-by the \c <attributes> tag, which is a sub-section of the \c domain
+by the \c \<attributes\> tag, which is a sub-section of the \c domain
 tag, and must be structured following these rules:
 <ul>
-  <li> The \c <attributes> tag must bring an \c unitclass
+  <li> The \c \<attributes\> tag must bring an \c unitclass
   attribute giving the unit class to which the attributes must be attached, and a
   \c colorder attribute giving the order of the contained column-formatted
   data
-  <li> Inside the \c <attributes> tag, there must be the attributes as 
+  <li> Inside the \c \<attributes\> tag, there must be the attributes as 
   row-column text. As a rule, the first column is the ID of the unit in the class
-  given through the \c unitclass attribute of \c <attributes>
+  given through the \c unitclass attribute of \c \<attributes\>
   tag, the following columns are values following the column order given
-  through the \c colorder attribute of the \c <attributes> tag.
+  through the \c colorder attribute of the \c \<attributes\> tag.
   Values for the data can be real, integer, string, vector or matrix.
 </ul>
 
@@ -260,17 +260,17 @@ tag, and must be structured following these rules:
 
 The discrete events are events occurring on units, and can be processed by simulators. 
 The spatial events must be defined in a section delimited
-by the \c <calendar> tag, which is a sub-section of the \c <domain>
+by the \c \<calendar\> tag, which is a sub-section of the \c \<domain\>
 tag, and must be structured following these rules:
 
 <ul>
-  <li> Inside the \c <calendar> tag, there must be a set of \c <event> tags 
-  <li> Each \c <event> tag must bring an \c unitID and an 
+  <li> Inside the \c \<calendar\> tag, there must be a set of \c \<event\> tags 
+  <li> Each \c \<event\> tag must bring an \c unitID and an 
   \c unitclass attribute giving the unit on which occurs the event, a 
   \c date attribute giving the date and time of the event. The date
   format must be "YYYY-MM-DD hh:mm:ss".
-  <li> Each \c <event> tag may include zero to many \c <info> tags.
-  <li> Each \c <info> tag give information about the event and must
+  <li> Each \c \<event\> tag may include zero to many \c \<info\> tags.
+  <li> Each \c \<info\> tag give information about the event and must
   bring a \c key attribute giving the name (the "key") of the info, and a
   \c value attribute giving the value for this key.
 </ul>  
@@ -308,10 +308,10 @@ tag, and must be structured following these rules:
 
 The datastore lists external data which is available during the simulation.
 The datastore content must be defined in a section delimited by the
-\c <datastore> tag, and must be structured following these rules:
+\c \<datastore\> tag, and must be structured following these rules:
 <ul>
-  <li> Inside the \c <datastore> tag, there must be a set of \c <dataitem> tags
-  <li> Each \c <dataitem> tag must bring an \c ID attribute giving
+  <li> Inside the \c \<datastore\> tag, there must be a set of \c \<dataitem\> tags
+  <li> Each \c \<dataitem\> tag must bring an \c ID attribute giving
   the unique identifier of the dataitem, a \c type attribute giving the type
   of the dataitem (only the geovector and georaster types are currently available), and a \c source 
   attribute giving the source of the dataitem. An optional \c unitclass 
@@ -346,16 +346,16 @@ KML formatted files (for use with Google Earth), and DOT formatted files (for gr
 
 
 The monitoring must be defined in a section delimited by the
-\c <monitoring> tag, and must be structured following these rules:
+\c \<monitoring\> tag, and must be structured following these rules:
 <ul>
-  <li> Inside the \c <monitoring> tag, there may be a set of
-  \c <observer> tags
-  <li> Each \c <observer> tag must bring an \c ID attribute giving
+  <li> Inside the \c \<monitoring\> tag, there may be a set of
+  \c \<observer\> tags
+  <li> Each \c \<observer\> tag must bring an \c ID attribute giving
   the identifier of the observer; the value of the \c ID
   attribute must match the ID of an available and
   pluggable observer.
-  <li> Each \c <observer> tag may include zero to many \c <param> tags giving
-  parameters to the observer. Each \c <param> tag must bring a \c name attribute giving
+  <li> Each \c \<observer\> tag may include zero to many \c \<param\> tags giving
+  parameters to the observer. Each \c \<param\> tag must bring a \c name attribute giving
   the name of the parameter and a \c value attribute giving the value of the parameter.
   These parameters can be scalar or vector of integer values, floating point values, string values.
 </ul>
@@ -416,24 +416,24 @@ The monitoring must be defined in a section delimited by the
 The configuration of the simulation gives the simulation period, the default coupling time step
 and the optional coupling constraint.
 The run configuration must be defined in a section delimited by the
-\c <run> tag, and must be structured following these rules:
+\c \<run\> tag, and must be structured following these rules:
 <ul>
-  <li> Inside the \c <run> tag, there must be a \c <scheduling> tag
+  <li> Inside the \c \<run\> tag, there must be a \c \<scheduling\> tag
   giving the scheduling informations of the model coupling.
-  <li> The \c <scheduling> tag must bring a \c deltat attribute 
+  <li> The \c \<scheduling\> tag must bring a \c deltat attribute 
   giving the number of second for the default DeltaT time step, 
   and a \c constraint attribute giving an optional constraint applied to the coupling.
   The values for the \c constraint attribute can be \c none for no constraint,
   \c dt-checked to check that coupling is synchronized with the default DeltaT time step,
   \c dt-forced to force coupling at the default DeltaT time step 
   ignoring the scheduling requests from simulators or generators.
-  <li> Inside the \c <run> tag, there must be a \c <period> tag
+  <li> Inside the \c \<run\> tag, there must be a \c \<period\> tag
   giving the simulation period.
-  <li> The \c <period> tag must bring a \c begin and an
+  <li> The \c \<period\> tag must bring a \c begin and an
   \c end attributes, giving the dates of the beginning and the end of the
   simulation period. The date format for these attributes must be
   <tt>YYYY-MM-DD hh:mm:ss</tt>
-  <li> Inside the \c <run> tag, there may be a \c <valuesbuffer>
+  <li> Inside the \c \<run\> tag, there may be a \c \<valuesbuffer\>
   tag for the number of produced values kept in memory. The number of values is given
   through a \c size attribute. If not present, all values are kept in memory.
 </ul>

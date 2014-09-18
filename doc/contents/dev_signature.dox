@@ -96,9 +96,8 @@ Example of simulator parameter declaration:
 \subsection dev_signature_data_attrs Spatial attributes
 
 Spatial attributes are constant properties attached to each spatial units, 
-and are declared using \if doc-is-latex \b DECLARE_REQUIRED_ATTRIBUTE
-\else #DECLARE_REQUIRED_ATTRIBUTE \endif or \if doc-is-latex \b DECLARE_USED_ATTRIBUTE
-\else #DECLARE_USED_ATTRIBUTE \endif
+and are declared using \if doc-is-latex \b DECLARE_REQUIRED_ATTRIBUTE or \b DECLARE_USED_ATTRIBUTE
+\else #DECLARE_REQUIRED_ATTRIBUTE or #DECLARE_USED_ATTRIBUTE \endif
  macros
 
 These macros take 4 arguments:
@@ -121,10 +120,8 @@ Example of attributes declaration:
 
 Simulation variables are attached to spatial units. They are produced, accessed and modified
 by simulators during simulations.\n
-Accessed variables are declared using \if doc-is-latex \b DECLARE_REQUIRED_VAR
-\else #DECLARE_REQUIRED_VAR \endif
-or \if doc-is-latex \b DECLARE_USED_VAR
-\else #DECLARE_USED_VAR \endif
+Accessed variables are declared using \if doc-is-latex \b DECLARE_REQUIRED_VAR or \b DECLARE_USED_VAR
+\else #DECLARE_REQUIRED_VAR or #DECLARE_USED_VAR \endif
  macros,
 produced variables are declared using \if doc-is-latex \b DECLARE_PRODUCED_VAR
 \else #DECLARE_PRODUCED_VAR \endif

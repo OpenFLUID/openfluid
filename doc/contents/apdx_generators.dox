@@ -8,12 +8,12 @@
 The sources file format is an XML based format which defines a list of sources
 files associated to an unique ID.\n
 The sources must be defined in a section delimited by the
-<tt><datasources></tt> tag, inside an <tt><openfluid></tt> tag and must be
+<tt>\<datasources\></tt> tag, inside an <tt>\<openfluid\></tt> tag and must be
 structured following these rules:
 <ul>
-<li>Inside the <tt><datasources></tt> tag, there must be a set of
-  <tt><filesource></tt> tags
-<li>Each <tt><filesource></tt> tag must bring an <tt>ID</tt>
+<li>Inside the <tt>\<datasources\></tt> tag, there must be a set of
+  <tt>\<filesource\></tt> tags
+<li>Each <tt>\<filesource\></tt> tag must bring an <tt>ID</tt>
   attribute giving the identifier of source, and a <tt>file</tt>
   attribute giving the name of the file containing the source of data. The files
   must be placed in the input directory of the simulation.

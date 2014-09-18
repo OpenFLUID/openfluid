@@ -156,7 +156,7 @@ class DLLEXPORT RasterDataset
                                        unsigned int RasterBandIndex = 1);
     /**
      * @brief Returns a vector of the pixel values of a column of this RasterDataset.
-     * @param LineIndex The column index to get the pixel values.
+     * @param ColIndex The column index to get the pixel values.
      * @param RasterBandIndex The raster band index (default is 1).
      * @return A vector of pixel values.
      */

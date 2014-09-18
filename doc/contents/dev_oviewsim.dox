@@ -44,7 +44,8 @@ The class defining a simulator must define the following methods:
 <li>\if doc-is-latex \b initializeRun \else \link openfluid::ware::PluggableSimulator::initializeRun initializeRun \endlink \endif
 <li>\if doc-is-latex \b runStep \else \link openfluid::ware::PluggableSimulator::runStep runStep \endlink \endif
 <li>\if doc-is-latex \b finalizeRun \else \link openfluid::ware::PluggableSimulator::finalizeRun finalizeRun \endlink \endif
-</ul> 
+
+</ul>
 
 \n
 The \if doc-is-latex \b initParams \else \link openfluid::ware::PluggableSimulator::initParams initParams \endlink \endif 

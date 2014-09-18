@@ -24,7 +24,7 @@ General usage is:\n
 
 The \c func2doc buddy extracts scientific information from the source code
 of simulation functions. It uses the function signature and LaTeX-formatted text
-placed between the \c <func2doc> and \c </func2doc> tags into C++ comments.
+placed between the \c \<func2doc\> and \c \</func2doc\> tags into C++ comments.
 From these sources of information, it builds a LaTeX
 document which could be compiled into a PDF document and/or HTML pages.\n
 The \c func2doc buddy can also use information from an optional

@@ -19,13 +19,13 @@ Among these methods, the
 \if doc-is-latex 
 \b initializeRun()
 \else
-\link openfluid::ware::PluggableSimulator::initializeRun initializeRun() \endlink
+\link openfluid::ware::PluggableSimulator::initializeRun initializeRun()\endlink
 \endif
 and 
 \if doc-is-latex 
 \b runStep()
 \else
-\link openfluid::ware::PluggableSimulator::runStep runStep() \endlink
+\link openfluid::ware::PluggableSimulator::runStep runStep()\endlink
 \endif 
 methods have a special behaviour:  
 these two methods must return the simulation time when the simulator will be called again.
@@ -36,7 +36,7 @@ This simulation time can be
 <li>\if doc-is-latex 
 \b Duration()
 \else
-\link openfluid::ware::PluggableSimulator::Duration() Duration() \endlink
+\link openfluid::ware::PluggableSimulator::Duration() Duration()\endlink
 \endif
 to be called in a number of seconds given as parameter
 <li>\if doc-is-latex 
@@ -151,7 +151,7 @@ Each data type can be converted to and from openfluid::core::StringValue (as far
 
 
 Simulation variables can be typed or untyped. 
-This is set at the declaration of these variables (see \ref dev_signature_data_vars \endlink).\n
+This is set at the declaration of these variables (see \ref dev_signature_data_vars).\n
 In case of typed variables, each value of the variable must be of the type of the variable.
 In case of untyped variables, values for the variable can be of any type. 
 

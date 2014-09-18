@@ -24,7 +24,7 @@ LaTeX
 LaTeX 
 \endif 
 -formatted text must be placed in the main file of the simulator source code, 
- into a single C++ comment block, and between the \c <sim2doc> and </sim2doc> tags.\n
+ into a single C++ comment block, and between the \c \<sim2doc\> and \c \</sim2doc\> tags.\n
 
 
 Example of a part of source code including sim2doc informations:

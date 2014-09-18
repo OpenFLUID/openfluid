@@ -6,13 +6,13 @@
 
 An OpenFLUID project can be run using OpenFLUID-Engine or OpenFLUID-Builder software.
 It is a directory including:
-\begin{itemize}
-  \item a \texttt{.openfluidprj} file containing informations about the project,  
-  \item an \texttt{IN} subdirectory containing the input dataset,
-  \item an \texttt{OUT} subdirectory as the default output directory, containing the simulation results if any. 
-\end{itemize}
+<ul>
+<li><tt>.openfluidprj</tt> file containing informations about the project,  
+<li>an <tt>IN</tt> subdirectory containing the input dataset,
+<li><tt>OUT</tt> subdirectory as the default output directory, containing the simulation results if any. 
+</ul>
 
-The \texttt{.openfluidprj} contains the name of the project, the description of the project, the authors,
+The <tt>.openfluidprj</tt> contains the name of the project, the description of the project, the authors,
 the creation date, the date of the latest modification, and a flag for
 incremental output directory (this feature is currently disabled). 
 
@@ -28,9 +28,9 @@ LastModDate=20110530T151431
 
 \n
 
-For example, if you wish to run a simulation with \texttt{openfluid-engine}, using the project located in
-\texttt{/absolute/path/to/workdir/a\_dummy\_project}, the command line to use is:\\
-\texttt{openfluid-engine -w /absolute/path/to/workdir/a\_dummy\_project}\\
+For example, if you wish to run a simulation with <tt>openfluid-engine</tt>, using the project located in
+<tt>/absolute/path/to/workdir/a_dummy_project</tt>, the command line to use is:\n
+<tt>openfluid-engine -w /absolute/path/to/workdir/a_dummy_project</tt>\n
 
 \n
 

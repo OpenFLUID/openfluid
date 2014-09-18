@@ -8,27 +8,27 @@
 Command line options for the <tt>openfluid</tt> command line program:
 <ul>
 <li><tt>-a</tt>, <tt>--auto-output-dir</tt> : generate automatic results output directory
-<li><tt>-b</tt>, <tt>--buddy</tt> <tt><arg></tt> : run specified OpenFLUID buddy
-<li><tt>--buddyhelp</tt> <tt><arg></tt> : display help message for specified OpenFLUID buddy
-<li><tt>--buddyopts</tt> <tt><arg></tt> : set options for specified OpenFLUID  buddy
+<li><tt>-b</tt>, <tt>--buddy</tt> <tt>\<arg\></tt> : run specified OpenFLUID buddy
+<li><tt>--buddyhelp</tt> <tt>\<arg\></tt> : display help message for specified OpenFLUID buddy
+<li><tt>--buddyopts</tt> <tt>\<arg\></tt> : set options for specified OpenFLUID  buddy
 <li><tt>-c</tt>, <tt>--clean-output-dir</tt> : clean results output directory by removing existing files
 <li><tt>-e</tt>, <tt>--observers-list</tt> : list available observers (do not run the simulation)
 <li><tt>-f</tt>, <tt>--simulators-list</tt> : list available simulators (do not run the simulation)
 <li><tt>-h</tt>, <tt>--help</tt> : display help message
-<li><tt>-i</tt>, <tt>--input-dir</tt> <tt><arg></tt> : set input dataset directory
+<li><tt>-i</tt>, <tt>--input-dir</tt> <tt>\<arg\></tt> : set input dataset directory
 <li><tt>-k</tt>, <tt>--enable-simulation-profiling</tt> : enable time profiling for simulators
 <li><tt>-l</tt>, <tt>--observers-report</tt> : print a report of available observers, with details (do not run the simulation)
-<li><tt>-n</tt>, <tt>--observers-paths</tt> <tt><arg></tt> : add extra observers search paths (colon separated)
-<li><tt>-o</tt>, <tt>--output-dir</tt> <tt><arg></tt> : set results output directory
-<li><tt>-p</tt>, <tt>--simulators-paths</tt> <tt><arg></tt> : add extra simulators search paths (colon separated)
+<li><tt>-n</tt>, <tt>--observers-paths</tt> <tt>\<arg\></tt> : add extra observers search paths (colon separated)
+<li><tt>-o</tt>, <tt>--output-dir</tt> <tt>\<arg\></tt> : set results output directory
+<li><tt>-p</tt>, <tt>--simulators-paths</tt> <tt>\<arg\></tt> : add extra simulators search paths (colon separated)
 <li><tt>-q</tt>, <tt>--quiet</tt> : quiet display during simulation run
 <li><tt>-r</tt>, <tt>--simulators-report</tt> : print a report of available simulators, with details (do not run the simulation)
 <li><tt>-s</tt>, <tt>--no-simreport</tt> : do not generate simulation report
 <li><tt>--show-paths</tt> : print the used paths (do not run the simulation)
-<li><tt>-t</tt>, <tt>--max-threads</tt> <tt><arg></tt> : change maximum number of threads for threaded spatial loops (default is 4)
-<li><tt>-u</tt>, <tt>--matching-simulators-report</tt> <tt><arg></tt> : print a report of simulators matching the given wildcard-based pattern (do not run the simulation)
+<li><tt>-t</tt>, <tt>--max-threads</tt> <tt>\<arg\></tt> : change maximum number of threads for threaded spatial loops (default is 4)
+<li><tt>-u</tt>, <tt>--matching-simulators-report</tt> <tt>\<arg\></tt> : print a report of simulators matching the given wildcard-based pattern (do not run the simulation)
 <li><tt>-v</tt>, <tt>--verbose</tt> : verbose display during simulation
-<li><tt>-w</tt>, <tt>--project</tt> <tt><arg></tt> : set project directory
+<li><tt>-w</tt>, <tt>--project</tt> <tt>\<arg\></tt> : set project directory
 <li><tt>--version</tt> : get version (do not run the simulation)
 <li><tt>-z</tt>, <tt>--no-result</tt> : do not write results files
 </ul>
