@@ -171,5 +171,40 @@ bool GeoVectorValue::isFieldOfType(std::string FieldName, OGRFieldType FieldType
 // =====================================================================
 // =====================================================================
 
+bool GeoVectorValue::isPointType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbPoint;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isMultiPolygonType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbMultiPolygon;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isMultiLineType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbMultiLineString;
+}
+
+// =====================================================================
+// =====================================================================
+
+bool GeoVectorValue::isMultiPointType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbMultiPoint;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
 }
 } // namespaces

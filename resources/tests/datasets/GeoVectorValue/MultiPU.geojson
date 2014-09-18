@@ -1,0 +1,9 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "OFLD_ID": 2 }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 679153.458642, 132736.603652 ], [ 679314.492092, 132222.830265 ] ] } }
+,
+{ "type": "Feature", "properties": { "OFLD_ID": 1 }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 679018.497275, 132241.234088 ], [ 679742.380972, 132715.132525 ] ] } }
+
+]
+}

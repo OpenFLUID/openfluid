@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "OFLD_ID": 1 }, "geometry": { "type": "MultiLineString", "coordinates": [ [ [ 679808.328004, 132689.060443 ], [ 679271.549839, 132001.984391 ] ], [ [ 679592.083086, 132770.343994 ], [ 678917.276249, 132262.705214 ] ] ] } }
+
+]
+}

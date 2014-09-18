@@ -174,6 +174,41 @@ class DLLEXPORT GeoVectorValue: public openfluid::core::GeoValue
      bool isFieldOfType(std::string FieldName, OGRFieldType FieldType,
                         unsigned int LayerIndex = 0);
 
+     /**
+      * @brief Returns true if the GeoVectorValue is point type, false otherwise.
+      * @param LayerIndex The index of the layer to compare the type, default 0.
+      * @return True if the type of the layer LayerIndex is wkbPoint, false otherwise.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      */
+     bool isPointType(unsigned int LayerIndex = 0);
+
+     /**
+      * @brief Returns true if the GeoVectorValue is MultiPolygon type, false otherwise.
+      * @param LayerIndex The index of the layer to compare the type, default 0.
+      * @return True if the type of the layer LayerIndex is wkbMultiPolygon, false otherwise.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      */
+     bool isMultiPolygonType(unsigned int LayerIndex = 0);
+
+     /**
+      * @brief Returns true if the GeoVectorValue is MultiLine type, false otherwise.
+      * @param LayerIndex The index of the layer to compare the type, default 0.
+      * @return True if the type of the layer LayerIndex is wkbMultiLineString, false otherwise.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      */
+     bool isMultiLineType(unsigned int LayerIndex = 0);
+
+     /**
+      * @brief Returns true if the GeoVectorValue is MultiPoint type, false otherwise.
+      * @param LayerIndex The index of the layer to compare the type, default 0.
+      * @return True if the type of the layer LayerIndex is wkbMultiPoint, false otherwise.
+      * @throw openfluid::base::OFException if OGR doesn't succeed to open the datasource.
+      */
+     bool isMultiPointType(unsigned int LayerIndex = 0);
+
+
+
+
 };
 
 }
