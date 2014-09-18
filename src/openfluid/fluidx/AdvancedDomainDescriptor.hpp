@@ -255,7 +255,7 @@ class DLLEXPORT AdvancedDomainDescriptor
 
     /**
       Returns a pointer to the event descriptor corresponding to the event ID
-      @param[in] EventID The ID of the event to delete
+      @param[in] ID The ID of the event to delete
     */
     openfluid::fluidx::EventDescriptor* getEventDescriptor(const openfluid::fluidx::EventID_t& ID);
 

@@ -54,6 +54,9 @@ namespace openfluid { namespace tools {
 typedef std::pair<openfluid::core::DateTime,double> ChronItem_t;
 
 
+/**
+  Container for a chronological data serie
+*/
 class DLLEXPORT ChronologicalSerie : public std::list<ChronItem_t>
 {
   private:
@@ -64,12 +67,25 @@ class DLLEXPORT ChronologicalSerie : public std::list<ChronItem_t>
 
   public:
 
+    /**
+      Default constructor
+    */
     ChronologicalSerie() : std::list<ChronItem_t>(), m_InternalIterator(begin()), m_PreviousInternalIterator(begin())
     { }
 
+    /**
+      Resets the internal iterator
+    */
     void reset();
 
-
+    /**
+      Finds the two surrending values for a given date. If the given date is exactly found in the serie,
+      the two surrounding values are the same.
+      @param[in] DT The date to find surrounding values
+      @param[out] Before The closest date before the given date
+      @param[out] After The closest date after the given date
+      @return true if the closest dates before and after have been found
+    */
     bool getSurroundingValues(const openfluid::core::DateTime& DT, ChronItem_t& Before, ChronItem_t& After);
 
 };

@@ -64,6 +64,9 @@ class DLLEXPORT EventsCollection
 
   public:
 
+    /**
+      Default constructor
+    */
     EventsCollection();
 
     virtual ~EventsCollection();

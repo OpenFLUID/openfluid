@@ -302,7 +302,6 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       Gets the distributed variable value for a unit at the current time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
-      @param[in] Index the time index for the value of the requested variable
       @param[out] Val the value of the requested variable
     */
     void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
@@ -334,7 +333,8 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       Gets the latest available variables for a unit since the given time index
       @param[in] UnitPtr a Unit
       @param[in] VarName the name of the requested variable
-      @param[out] IndVal the value and timeindex of the requested variable
+      @param[in] BeginIndex The beginning time index of the search period
+      @param[out] IndValList the list of time-indexed values of the requested variable
     */
     void OPENFLUID_GetLatestVariables(const openfluid::core::Unit* UnitPtr,
                                      const openfluid::core::VariableName_t& VarName,
@@ -348,7 +348,7 @@ class DLLEXPORT SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[in] BeginIndex the time index for the beginning of the period
       @param[in] EndIndex the time index for the end of the period
-      @param[out] IndVal the value and timeindex of the requested variable
+      @param[out] IndValList the list of time-indexed values of the requested variable
     */
     void OPENFLUID_GetVariables(const openfluid::core::Unit* UnitPtr,
                                 const openfluid::core::VariableName_t& VarName,

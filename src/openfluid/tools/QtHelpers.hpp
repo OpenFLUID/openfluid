@@ -54,23 +54,48 @@
 
 namespace openfluid { namespace tools {
 
+/**
+  Transforms the given string to a string compatible with the INI files managed with QSettings.
+  @param[in] Str the string to transform
+  @return The transformed string
+*/
 QString DLLEXPORT toIniCompatible(const std::string& Str);
 
+
+/**
+  Transforms the given variable from an INI file managed with QSettings to a string
+  @param[in] Var the variable to transform
+  @return The variable transformed into a string
+*/
 std::string DLLEXPORT fromIniCompatible(const QVariant& Var);
 
+
+/**
+  Transforms a QStringList into a std::list of std::string
+  @param[in] StrList the QStringList to transform
+  @return The QStringList transformed into a std::list of std::string
+*/
 std::list<std::string> DLLEXPORT toStdStringList(const QStringList& StrList);
+
 
 /**
   Returns the available GDAL/OGR formats as a QFileDialog formats string.
   The string is built according to GDAL/OGR available drivers.
   The OGRRegisterAll() and/or GDALAllRegister() instruction must be called before using this function.
+  @param[in] Drivers The available extensions list
   @param[in] AllFormatsLabel the label displayed for all formats
   @return the format string (e.g. "All vector files (*.shp *.mif *.tab);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif *.tab)")
 */
 QString DLLEXPORT getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
                                                    const QString& AllFormatsLabel);
 
+/**
+  Escapes characters in the given string to be compatible with the XML format.
+  @param[in] Str the string to escape
+  @return The escaped string
+*/
 QString DLLEXPORT escapeXMLEntities(const QString& Str);
+
 
 } } // namespaces
 

@@ -67,21 +67,46 @@ class IndexedValue
 
   public:
 
+    /**
+      Default constructor
+    */
     IndexedValue():
       m_Index(0),m_Value(boost::shared_ptr<Value>(new NullValue())) {};
 
+    /**
+      Constructor from a time index and a value
+    */
     IndexedValue(const TimeIndex_t& Ind, const Value& Val):
       m_Index(Ind),m_Value(boost::shared_ptr<Value>(Val.clone())) {};
 
+    /**
+      Copy constructor
+    */
     IndexedValue(const IndexedValue& IndValue):
           m_Index(IndValue.m_Index),m_Value(boost::shared_ptr<Value>(IndValue.m_Value.get()->clone())) {};
 
+    /**
+      Returns the time index of the indexed value
+      @return the time index
+    */
     inline TimeIndex_t getIndex() const { return m_Index; };
 
+    /**
+      Returns a pointer to the value of the indexed value
+      @return a pointer to the value
+    */
     inline Value* getValue() const { return m_Value.get(); };
 
+    /**
+      Returns a pointer to the value of the indexed value
+      @return a pointer to the value
+    */
     inline Value* getValue() { return m_Value.get(); };
 
+    /**
+      Clears the content of the indexed value. The time index is set to 0,
+      and the value is set to an openfluid::core::NullValue.
+    */
     inline void clear() { m_Index = 0; m_Value.reset(new NullValue()); };
 
 };

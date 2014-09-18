@@ -60,8 +60,9 @@ namespace openfluid { namespace core {
 
 namespace openfluid { namespace tools {
 
+
 /**
-  Template function for string to other type conversion
+  Converts a string to another type
   @param[in] StrToConvert the string to convert
   @param[out] Converted the result of the conversion
   @return true if the conversion is correct
@@ -74,11 +75,9 @@ inline bool ConvertString(const std::string& StrToConvert, T* Converted)
   return ((iss >> (*Converted)) && !iss.get(c));
 }
 
-// =====================================================================
-// =====================================================================
 
 /**
-  Template function for value to string conversion
+  Converts a value to a string
   @param[in] ValueToConvert the value to convert
   @param[out] StrConverted the result of the conversion
   @return true if the conversion is correct
@@ -95,9 +94,6 @@ inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
 }
 
 
-// =====================================================================
-// =====================================================================
-
 /**
   Function for tokenizing string into a vector of tokens
   @param[in] StrToTokenize the string to tokenize
@@ -107,9 +103,6 @@ inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
 void DLLEXPORT TokenizeString(const std::string& StrToTokenize,
                               std::vector<std::string>& Tokens,
                               const std::string& Delimiters);
-
-// =====================================================================
-// =====================================================================
 
 
 /**
@@ -122,15 +115,13 @@ void DLLEXPORT TokenizeString(const std::string& StrToTokenize,
   @see http://www.parashift.com/c++-faq-lite/floating-point-arith.html
   @see http://www.boost.org/doc/libs/1_38_0/libs/test/doc/html/utf/testing-tools/floating_point_comparison.html
 */
+
+
 inline bool IsCloseEnough(double A, double B, double Epsilon = 0.00001)
 {
   // see Knuth section 4.2.2 pages 217-218
   return ((std::fabs(A - B)) <= (Epsilon * std::fabs(A)));
 }
-
-
-// =====================================================================
-// =====================================================================
 
 
 /**
@@ -150,21 +141,17 @@ inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001)
 }
 
 
-// =====================================================================
-// =====================================================================
-
-
-bool DLLEXPORT WildcardMatching(const std::string Pattern, const std::string Str);
-
-
-
-// =====================================================================
-// =====================================================================
-
+/**
+  Checks if the given string matches the given pattern, including * and ? wildcards
+  @param[in] Pattern The pattern to match
+  @param[in] Str The string to test
+  @return true if the given string matches the given pattern
+*/
+bool DLLEXPORT WildcardMatching(const std::string& Pattern, const std::string& Str);
 
 
 /**
-  Get list of files with specified extension contained in the specified dir
+  Gets the list of files with specified extension contained in the specified directory
   @param[in] DirToExplore the directory to explore
   @param[in] Ext the file extension
   @param[in] WithPath return full path with file name if true, file name only otherwise
@@ -175,10 +162,12 @@ std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore,
                                                  bool WithPath = false,
                                                  bool ExtIncludeDot = false);
 
+
 /**
   Get list of files with specified extension contained in the specified dir
   @param[in] DirToExplore the directory to explore
   @param[in] Ext the file extension
+  @param[in] Suffix the file suffix
   @param[in] WithPath return full path with file name if true, file name only otherwise
   @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
 */
@@ -187,6 +176,7 @@ std::vector<std::string> DLLEXPORT GetFilesBySuffixAndExt(const std::string& Dir
                                                           const std::string& Ext,
                                                           bool WithPath = false,
                                                           bool ExtIncludeDot = false);
+
 
 /**
   Splits the passed string into a std::string array, split using the given SepString
@@ -199,32 +189,80 @@ std::vector<std::string> DLLEXPORT SplitString(const std::string& StrToSplit,
                                                const std::string& Separators,
                                                bool ReturnsEmpty = false);
 
-bool DLLEXPORT EmptyDirectoryRecursively(const std::string DirPath);
 
 /**
-  @action Store all the paths of the files existing in dir passed as parameter
+  Recursively removes all files and directories contained in the given directory.
+  It deletes the directory and recreates it.
+  @param[in] DirPath the directory to empty
+  @return true if successful
 */
-std::vector<std::string> DLLEXPORT getFilesRecursively(const std::string& DirPath);
+bool DLLEXPORT EmptyDirectoryRecursively(const std::string& DirPath);
 
-std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr, const std::string& ReplaceStr);
 
+/**
+  Recursively finds all the paths of the files that exist exist
+  in the given directory and subdirectories
+  @param[in] DirPath the directory to explore
+  @return a vector containing all files paths
+*/
+std::vector<std::string> DLLEXPORT GetFilesRecursively(const std::string& DirPath);
+
+
+/**
+  Replaces a string by another string if it is empty
+  @param[in] SourceStr the source string to process
+  @param[in] ReplaceStr the replacement string to use
+  @return the processed string
+*/
+std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr,
+		                                 const std::string& ReplaceStr);
+
+
+/**
+  Removes trailing slashes if any, useful for cleaning paths
+  @param[in] Str the string to process
+  @return the processed string
+*/
 std::string DLLEXPORT RemoveTrailingSlashes(std::string Str);
 
+
+// TODO check if it has to be removed
 void DLLEXPORT printSTDOUT(std::vector<std::string> Strings, std::string Sep);
-
-void DLLEXPORT CopyDirectoryRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
-
-void DLLEXPORT CopyDirectoryContentsRecursively(const std::string SourcePath, const std::string IntoPath, const bool DontCopyDotDirs = false);
 
 
 /**
-  Compare two OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
+  Copies a source directory to destination path, including the root of the source directory.
+  If the destination path does not exists, it is created.
+  @param[in] SourcePath the source directory to copy
+  @param[in] IntoPath the destination directory
+  @param[in] DontCopyDotDirs flag for copying dot ('.*') directories. Default is false.
+*/
+void DLLEXPORT CopyDirectoryRecursively(const std::string& SourcePath,
+		                                const std::string& IntoPath,
+		                                const bool DontCopyDotDirs = false);
+
+
+/**
+  Copies a source directory to destination path, not including the root of the source directory.
+  If the destination path does not exists, it is created.
+  @param[in] SourcePath the source directory to copy
+  @param[in] IntoPath the destination directory
+  @param[in] DontCopyDotDirs flag for copying dot ('.*') directories. Default is false.
+*/
+void DLLEXPORT CopyDirectoryContentsRecursively(const std::string& SourcePath,
+		                                        const std::string& IntoPath,
+		                                        const bool DontCopyDotDirs = false);
+
+
+/**
+  Compares two OpenFLUID software versions. Version number must be formed as major.minor.patch[~status]
   @param[in] VersionA the first version number
   @param[in] VersionB the second version number
   @param[in] Strict If true, the comparison include the status part of the version (it ignores it otherwise)
   @return 1 if VersionA is greater than VersionB, -1 if VersionB is greater than VersionA, 0 if versions are equals, -2 if a version format is not well-formed
 */
 int DLLEXPORT CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
+
 
 /*
   Suspend execution for microseconds

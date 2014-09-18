@@ -80,7 +80,6 @@ bool ProgressiveColumnFileReader::getNextLine(std::vector<std::string>& Values)
 {
   std::string TmpStr;
 
-
   if (getNextLine(TmpStr))
   {
     Values = openfluid::tools::SplitString(TmpStr,m_ColSeparators,false);

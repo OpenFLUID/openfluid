@@ -73,7 +73,7 @@ void TokenizeString(const std::string& StrToTokenize,
 // =====================================================================
 
 
-bool WildcardMatching(const std::string Pattern, const std::string Str)
+bool WildcardMatching(const std::string& Pattern, const std::string& Str)
 {
 
   // source : http://www.codeproject.com/KB/string/wildcmp.aspx
@@ -124,6 +124,7 @@ bool WildcardMatching(const std::string Pattern, const std::string Str)
   {
     WildStr++;
   }
+
   return !*WildStr;
 }
 
@@ -237,7 +238,7 @@ std::vector<std::string> SplitString(const std::string& StrToSplit,
 // =====================================================================
 
 // TODO to be fixed: should not delete the given path, may not work on win32
-bool EmptyDirectoryRecursively(const std::string DirPath)
+bool EmptyDirectoryRecursively(const std::string& DirPath)
 {
 
   boost::filesystem::path PathToEmpty(DirPath);
@@ -253,7 +254,7 @@ bool EmptyDirectoryRecursively(const std::string DirPath)
 // =====================================================================
 
 
-std::vector<std::string> getFilesRecursively(const std::string& DirPath)
+std::vector<std::string> GetFilesRecursively(const std::string& DirPath)
 {
   std::vector<std::string> FileNames;
 
@@ -268,7 +269,7 @@ std::vector<std::string> getFilesRecursively(const std::string& DirPath)
     // Directory
     if (boost::filesystem::is_directory(It->status()))
     {
-      std::vector<std::string> SubDirFiles = getFilesRecursively(It->path().string());
+      std::vector<std::string> SubDirFiles = GetFilesRecursively(It->path().string());
       std::vector<std::string>::const_iterator It;
 
       for (It = SubDirFiles.begin(); It != SubDirFiles.end(); ++It)
@@ -283,7 +284,9 @@ std::vector<std::string> getFilesRecursively(const std::string& DirPath)
 // =====================================================================
 // =====================================================================
 
-std::string ReplaceEmptyString(std::string SourceStr, const std::string& ReplaceStr)
+
+std::string ReplaceEmptyString(std::string SourceStr,
+		                       const std::string& ReplaceStr)
 {
   if (SourceStr.empty()) SourceStr = ReplaceStr;
   return SourceStr;
@@ -316,6 +319,7 @@ std::string RemoveTrailingSlashes(std::string Str)
 // =====================================================================
 
 
+// TODO check if it has to be removed
 void OutputToStream(std::vector<std::string> Strings, std::string Sep, std::ostream& OStream)
 {
   for (unsigned int i=0; i< Strings.size(); i++) OStream << Strings[i] << Sep;
@@ -327,7 +331,9 @@ void OutputToStream(std::vector<std::string> Strings, std::string Sep, std::ostr
 // =====================================================================
 
 
-void CopyDirectoryRecursively(const std::string SourceDir, const std::string IntoDir, const bool DontCopyDotDirs)
+void CopyDirectoryRecursively(const std::string& SourceDir,
+		                      const std::string& IntoDir,
+		                      const bool DontCopyDotDirs)
 {
 
   boost::filesystem::path SourceDirPath(SourceDir);
@@ -364,7 +370,9 @@ void CopyDirectoryRecursively(const std::string SourceDir, const std::string Int
 // =====================================================================
 
 
-void CopyDirectoryContentsRecursively(const std::string SourceDir, const std::string IntoDir, const bool DontCopyDotDirs)
+void CopyDirectoryContentsRecursively(const std::string& SourceDir,
+		                              const std::string& IntoDir,
+		                              const bool DontCopyDotDirs)
 {
 
   boost::filesystem::path SourceDirPath(SourceDir);

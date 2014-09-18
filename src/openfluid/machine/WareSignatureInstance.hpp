@@ -31,7 +31,7 @@
 
 
 /**
-  \file WareInstance.hpp
+  \file WareSignatureInstance.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>

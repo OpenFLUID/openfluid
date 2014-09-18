@@ -54,7 +54,9 @@
 
 namespace openfluid { namespace tools {
 
-
+/**
+  Management of data downloads over network
+*/
 class DLLEXPORT FileDownloader : public QObject
 {
   Q_OBJECT
@@ -65,8 +67,8 @@ class DLLEXPORT FileDownloader : public QObject
     QByteArray m_FileContent;
     bool m_ContentDownloaded;
 
-
     FileDownloader();
+
     ~FileDownloader();
 
     /**
@@ -85,8 +87,8 @@ class DLLEXPORT FileDownloader : public QObject
     bool contentIsDownloaded() const;
 
     /**
-      @action Write content stored in a file
-      @param File path
+      Writes content stored in a file
+      @param FilePath Path where the file will be written
     */
     void writeToFile(const std::string& FilePath) const;
 
@@ -94,7 +96,7 @@ class DLLEXPORT FileDownloader : public QObject
   signals:
 
     /**
-     * Signal emitted when store of downloaded file content is finished
+      Signal emitted when store of downloaded file content is finished
     */
     void processFinished();
 
@@ -102,15 +104,26 @@ class DLLEXPORT FileDownloader : public QObject
   public slots:
 
     /**
-      @action Store file content downloaded in attribute
-      @param Reply of sent request
+      Stores file content downloaded in attribute
+      @param[in] Reply Reply of sent request
     */
     void downloadFinished(QNetworkReply *Reply);
 
+
   public:
 
+    /**
+     Downloads URL contents to string
+     @param[in] URL The URL for the download
+     @param[out] Contents The string containing the downloaded contents
+    */
     static bool downloadToString(const std::string& URL, std::string& Contents);
 
+    /**
+     Downloads URL contents to file
+     @param[in] URL The URL for the download
+     @param[out] FilePath The path of the file to store the downloaded contents
+    */
     static bool downloadToFile(const std::string& URL, const std::string& FilePath);
 
 };

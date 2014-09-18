@@ -31,10 +31,10 @@
 
 
 /**
-  \file TimePoint.hpp
-  \brief Header of ...
+  @file ExecutionTimePoint.hpp
+  @brief Header of ...
 
-  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 

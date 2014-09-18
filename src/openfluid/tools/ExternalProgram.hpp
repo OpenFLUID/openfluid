@@ -48,6 +48,9 @@
 
 namespace openfluid { namespace tools {
 
+/**
+  Management of external programs
+*/
 class DLLEXPORT ExternalProgram
 {
   private:
@@ -63,28 +66,66 @@ class DLLEXPORT ExternalProgram
 
   public:
 
+    /**
+      List of pre-registered external programs
+    */
     enum RegisteredPrograms { CMakeProgram, ZipProgram, SevenZipProgram,
                               GnuplotProgram, GoogleEarthProgram, GccProgram,
                               PdfLatexProgram, BibTexProgram, Latex2HTMLProgram };
 
+    /**
+      Constructor for a given external programs. Automatically searches for the program at construction
+      @param[in] Program The program to find
+      @param[in] SearchPaths The list of paths to search. Default value is an empty list
+      @param[in] UsePathEnv Enable the use of PATH environment variable to search for the program. Default value is true.
+    */
     ExternalProgram(const QString& Program,
                     const QStringList& SearchPaths = QStringList(),
                     bool UsePathEnv = true);
 
     ~ExternalProgram();
 
+    /**
+      Returns an ExternalProgram object initialized with the registered program to find
+      @param[in] Prog The registered program to find
+      @param[in] SearchPaths The list of paths to search. Default value is an empty list
+      @param[in] UsePathEnv Enable the use of PATH environment variable to search for the registered program. Default value is true.
+      @return An ExternalProgram object initialized with the registered program to find
+    */
     static ExternalProgram getRegisteredProgram(RegisteredPrograms Prog,
                                                 const QStringList& SearchPaths = QStringList(),
                                                 bool UsePathEnv = true);
 
+    /**
+      Finds a program using the PATH environment variable
+      @param[in] Program The command of the program to find
+      @return The full path of the first found program
+    */
     static QString findUsingPATHEnvVar(const QString& Program);
 
+    /**
+      Finds a program using a given paths list
+      @param[in] Program The program to find
+      @param[in] PathsList The list of paths to search
+      @return The full path of the first found program
+    */
     static QString findUsingPathsList(const QString& Program, const QStringList& PathsList);
 
+    /**
+      Returns true if the current program has been found
+      @return true if the current program has been found
+    */
     bool isFound() const { return !m_FullProgramPath.isEmpty(); };
 
+    /**
+      Searches for the program
+    */
     void searchForProgram();
 
+    /**
+      Returns the full path of the program
+      @return the full path of the program if it has been found, otherwise an empty string
+    */
     QString getFullProgramPath() const { return m_FullProgramPath; };
 
 };

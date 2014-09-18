@@ -106,7 +106,7 @@ class DLLEXPORT MarketClient
 
     void downloadAssociatedLicenses();
 
-    /**
+    /*
      @return string of SelectionType passed as parameter
      @param SelectionType to convert
     */

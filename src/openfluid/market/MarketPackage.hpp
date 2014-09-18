@@ -197,7 +197,7 @@ class DLLEXPORT MarketPackage
     /**
      Sets build options of package type passed as parameter with BuildOptions
      @param Type of options
-     @param Build options to store
+     @param BuildOptions options to store
     */
     static void setCommonBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 
@@ -205,7 +205,7 @@ class DLLEXPORT MarketPackage
      Adds BuildOptions to options of package type
      @return Common build options of package type with BuildOptions
      @param Type of package
-     @param Options to add
+     @param BuildOptions to add
     */
     static std::string composeFullBuildOptions(const PackageInfo::PackageType& Type, const std::string& BuildOptions);
 

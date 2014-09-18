@@ -50,24 +50,45 @@
 
 namespace openfluid { namespace tools {
 
-
+/**
+  Structure associating a driver label with a list of corresponding files extensions
+*/
 struct GDALDriverInfos_t {
+	/** Label of the driver */
     std::string Label;
+
+    /** Vector of files extensions */
     std::vector<std::string> FilesExts;
 };
 
 
+/**
+  Map of drivercode => openfluid::tools::GDALDriverInfos_t
+*/
 typedef std::map<std::string,GDALDriverInfos_t> GDALDriversFilesExts_t;
 
 
 // =====================================================================
 // =====================================================================
 
-
+/**
+  Returns a list of OGR drivers available in OpenFLUID for GIS vector files
+  @return an openfluid::tools::GDALDriversFilesExts_t
+*/
 const GDALDriversFilesExts_t DLLEXPORT getOGRFilesDriversForOpenFLUID();
 
+
+/**
+  Returns a list of GDAL drivers available in OpenFLUID for GIS vector files
+  @return an openfluid::tools::GDALDriversFilesExts_t
+*/
 const GDALDriversFilesExts_t DLLEXPORT getGDALFilesDriversForOpenFLUID();
 
+
+/**
+  Returns a set of GIS vector files extensions available in OpenFLUID
+  @return a set of files extensions
+*/
 const std::set<std::string> DLLEXPORT getOGRFilesExtensionsForOpenFLUID();
 
 

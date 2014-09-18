@@ -50,7 +50,9 @@
 
 namespace openfluid { namespace tools {
 
-
+/**
+  Progressive reader for column text files
+*/
 class DLLEXPORT ProgressiveColumnFileReader
 {
   private:
@@ -59,6 +61,7 @@ class DLLEXPORT ProgressiveColumnFileReader
 
     std::string m_ColSeparators;
 
+
   protected:
 
     std::string m_FileName;
@@ -66,17 +69,41 @@ class DLLEXPORT ProgressiveColumnFileReader
 
   public:
 
-    ProgressiveColumnFileReader(const std::string& FileName, const std::string& ColSeparators = " \t\r\n");
+    /**
+      Constructor
+      @param[in] FileName the file to open
+      @param[in] ColSeparators a list of columns separators. Default value is " \t\r\n"
+    */
+    ProgressiveColumnFileReader(const std::string& FileName,
+    		                    const std::string& ColSeparators = " \t\r\n");
 
     virtual ~ProgressiveColumnFileReader()
     { };
 
+    /**
+      Gets the next line of data in the file, as a single string
+      @param[out] Line the read line
+      @return true if the next line has been read, false otherwise
+    */
     bool getNextLine(std::string& Line);
 
+    /**
+      Gets the next line of data in the file, as a vector of strings
+      @param[out] Values the vector of read values
+      @return true if the next line has been read and splitted into a vector of strings,
+      false otherwise
+    */
     bool getNextLine(std::vector<std::string>& Values);
 
+    /**
+      Resets the internal iterator of the file
+    */
     void reset();
 
+    /**
+      Returns the file name
+      @return the file name
+    */
     std::string getFileName() const { return m_FileName; };
 
 };

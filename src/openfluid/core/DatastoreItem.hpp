@@ -73,7 +73,7 @@ class DLLEXPORT DatastoreItem
      * Tries to create a new resource item and its associated UnstructuredValue,
      * depending on the given type.
      *
-     * @param Id The ID of the item.
+     * @param ID The ID of the item.
      * @param PrefixPath The prefix path of the item, usually the IN directory of the project.
      * @param RelativePath The relative path of the item from the PrefixPath
      * @param Type The type of the item.
