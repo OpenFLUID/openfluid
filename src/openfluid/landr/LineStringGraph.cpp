@@ -774,7 +774,7 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
 // =====================================================================
 // =====================================================================
 
-std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntitiesByMinLength(double MinLength,bool rmDangle)
+std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntitiesByMinLength(double MinLength,bool rmDangle, bool HighDegree)
 {
   if (MinLength<=0.0)
     throw  openfluid::base::FrameworkException(
@@ -793,9 +793,11 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
 
       int StartDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getStartNode()->getDegree();
       int EndDegree=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getEndNode()->getDegree();
-
+      bool LineCounted=true;
       //is Line between two confluences ? StartNode and EndNode are in contact with three or more Edges
-      if (!(StartDegree>=3 && EndDegree>=3))
+      if(HighDegree &&(StartDegree>=3 && EndDegree>=3))
+        LineCounted=false;
+      if(LineCounted)
       {
         // is Line a dangle ? postulate : LineStringGraph  is not well-oriented.
         //A dangle has StartNode in contact with one Edge and EndNode with three or more Edges
@@ -814,6 +816,93 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
 
 // =====================================================================
 // =====================================================================
+
+void LineStringGraph::setOrientationByOfldId(int OfldId)
+{
+
+  if (!this->isLineStringGraphArborescence())
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::setOrientationByOfldID : "
+        "The LineStringGraph is not a correct arborescence.");
+
+  // get the node of this edge
+  openfluid::landr::LineStringEntity* lineEntity=this->getEntity(OfldId);
+
+  if(!lineEntity)
+  {
+    std::ostringstream s;
+    s << "Entity " << OfldId<< " is not a correct Line  entity.";
+
+    throw openfluid::base::FrameworkException(
+        "LineStringGraph::setOrientationByOfldID : "
+        +s.str());
+  }
+
+  if (lineEntity->getStartNode()->getDegree()==1)
+    this->reverseLineStringEntity(*lineEntity);    // reverse the outlet if necessary
+
+  // mark all nodes as non marked
+
+  geos::planargraph::PlanarGraph *planGraph=dynamic_cast<geos::planargraph::PlanarGraph*>(this);;
+  std::vector<geos::planargraph::Node *> vNode;
+  planGraph->getNodes(vNode);
+
+  std::vector<geos::planargraph::Node*>::iterator it=vNode.begin();
+  std::vector<geos::planargraph::Node*>::iterator ite=vNode.end();
+  for (; it!=ite;it++)
+    (*it)->setVisited(false);
+
+  // mark all edges as non marked
+  std::vector<geos::planargraph::Edge *> *vEdge= planGraph->getEdges();
+
+  std::vector<geos::planargraph::Edge*>::iterator itEdge=vEdge->begin();
+  std::vector<geos::planargraph::Edge*>::iterator itEdgeE=vEdge->end();
+  for (; itEdge!=itEdgeE;itEdge++)
+    (*itEdge)->setVisited(false);
+
+
+
+  lineEntity=this->getEntity(OfldId);
+  geos::planargraph::Node * firstNode=lineEntity->getEndNode();
+  std::vector<int> vectIdent;
+
+  openfluid::landr::LandRTools::markInvertedLineStringEntityUsingDFS(firstNode,vectIdent);
+
+  // mark all node as non marked
+  planGraph=dynamic_cast<geos::planargraph::PlanarGraph*>(this);;
+  vNode.clear();
+  planGraph->getNodes(vNode);
+
+  it=vNode.begin();
+  ite=vNode.end();
+  for (; it!=ite;it++)
+    (*it)->setVisited(false);
+
+  // mark all edges as non marked
+  vEdge->clear();
+  vEdge= planGraph->getEdges();
+
+  itEdge=vEdge->begin();
+  itEdgeE=vEdge->end();
+  for (; itEdge!=itEdgeE;itEdge++)
+    (*itEdge)->setVisited(false);
+
+
+  // reverse the lineStringEntity
+  std::vector<int>::iterator itV=vectIdent.begin();
+  std::vector<int>::iterator itVe=vectIdent.end();
+  for (; itV!=itVe;itV++)
+    this->reverseLineStringEntity(*(this->getEntity(*itV)));
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
+
+
 
 } // namespace landr
 } /* namespace openfluid */

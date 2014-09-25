@@ -287,14 +287,23 @@ public:
 
 
 	/**
-	 * @brief Gets a map of small LineStringEntity under length threshold and only if the LineStringEntity is
-	 * not between two confluences.
+	 * @brief Gets a map of small LineStringEntity under length threshold
 	 *
 	 * @param MinLength The length threshold (in map units).
 	 * @param rmDangle : if true, get also dangles under the threshold.
+	 * @param HighDegree : if true, do not get the if StartNode and EndNode of this LineStringEntitiy are Degree>=3.
 	 * @return a multimap of LineStringEntity with key is the length of each LineStringEntity.
 	 */
-	std::multimap<double,  LineStringEntity*> getLineStringEntitiesByMinLength(double MinLength,bool rmDangle=true);
+	std::multimap<double,  LineStringEntity*> getLineStringEntitiesByMinLength(double MinLength,bool rmDangle=true,bool HighDegree=true);
+
+	/**
+	 * @brief Set the orientation of the LineStringGraph with outlet identification by OFLD_ID identifier.
+	 * Only for LineStringGraph of arborescence type
+	 *
+	 * @param OfldId The identifier of the outlet.
+	 */
+	void setOrientationByOfldId(int OfldId);
+
 
 
 

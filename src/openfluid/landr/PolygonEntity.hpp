@@ -41,6 +41,7 @@
 
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/landr/LandRTools.hpp>
+#include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/dllexport.hpp>
 #include <vector>
 
@@ -164,6 +165,12 @@ class DLLEXPORT PolygonEntity: public LandREntity
     std::vector<int> getOrderedNeighbourOfldIds();
 
     /**
+     * @brief Returns a multimap of the length of the shared boundary of each neighbour of this PolygonEntity and each PolygonEntity neighbour,
+     *  ascending ordered by length shared boundary (shortest to longest boundary).
+     */
+    std::multimap<double,PolygonEntity*> getOrderedNeighboursByLengthBoundary();
+
+    /**
      * @brief Check if this PolygonEntity is complete, that is if all PolygonEdge of this PolygonEntity,
      * merged in a LineString, equals this PolygonEntity polygon exterior ring.
      *
@@ -240,6 +247,30 @@ class DLLEXPORT PolygonEntity: public LandREntity
      * @return A geos::geom:LineString which have the geometry of the merged PolygonEdge.
      */
     geos::geom::LineString*  mergeEdges(PolygonEdge* Edge, PolygonEdge* EdgeToMerge);
+
+    /**
+     * @brief Find the LandREntity neighbour of this PolygonEntity by using
+     * a line VectorDataset which indicates the neighbour relationship
+     *
+     *    **************    Following the directions of the
+     *    *   |-*-->   *    lines of the VectorDataset,
+     *    *  1  *   3  *    the neighbour of PolygonEntity 2 is
+     *    *     *      *    the PolygonEntity 1 and the neighbour
+     *    *  ^  ********    of PolygonEntity 1 is the PolygonEntity
+     *    *  |  *           3. If a line of the VectorDataset crosses
+     *    *******           a LineStringNeighbour of the PolygonEntity,
+     *    *  |  *           it becomes the neighbour :e.g, if LineStringNeighbour
+     *    *  -  *           exists between PolygonEntity 1 and 2, the neighbour
+     *    *  2  *           of PolygonEntity becomes this LineStringNeighbour
+     *    *     *
+     *    *******
+     *
+     *
+     * @param LineTopology A line VectorDataset
+     * @return A openfluid::landr:landREntity or an empty entity if not found.
+     *
+     */
+    LandREntity *getNeighbourByLineTopology(VectorDataset LineTopology);
 
 
 

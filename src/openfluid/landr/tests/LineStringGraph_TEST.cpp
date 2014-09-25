@@ -52,6 +52,7 @@
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/landr/LineStringGraph.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
+#include <openfluid/landr/LandRTools.hpp>
 #include <openfluid/tools.hpp>
 #include <geos/planargraph/DirectedEdge.h>
 #include <geos/planargraph/Node.h>
@@ -963,15 +964,27 @@ BOOST_AUTO_TEST_CASE(check_getLineStringEntityByMinLength)
 
   BOOST_CHECK_THROW(Graph->getLineStringEntitiesByMinLength(-1),
                     openfluid::base::FrameworkException);
-  mEntities=Graph->getLineStringEntitiesByMinLength(100,false);
+  mEntities=Graph->getLineStringEntitiesByMinLength(100,false,true);
   BOOST_CHECK_EQUAL(mEntities.size(), 0);
 
   mEntities.clear();
-  mEntities=Graph->getLineStringEntitiesByMinLength(100,true);
+  mEntities=Graph->getLineStringEntitiesByMinLength(100,true,true);
   BOOST_CHECK_EQUAL(mEntities.size(), 1);
 
   mEntities.clear();
-  mEntities=Graph->getLineStringEntitiesByMinLength(175,true);
+  mEntities=Graph->getLineStringEntitiesByMinLength(175,true,true);
+  BOOST_CHECK_EQUAL(mEntities.size(), 3);
+
+  mEntities.clear();
+    mEntities=Graph->getLineStringEntitiesByMinLength(175,false,true);
+    BOOST_CHECK_EQUAL(mEntities.size(), 2);
+
+  mEntities.clear();
+  mEntities=Graph->getLineStringEntitiesByMinLength(175,true,false);
+  BOOST_CHECK_EQUAL(mEntities.size(), 4);
+
+  mEntities.clear();
+  mEntities=Graph->getLineStringEntitiesByMinLength(175,false,false);
   BOOST_CHECK_EQUAL(mEntities.size(), 3);
 
   delete Graph;
@@ -996,4 +1009,30 @@ BOOST_AUTO_TEST_CASE(check_construction_from_MultiLineString)
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(setOrientationByOfldId)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Val);
+
+  Graph->setOrientationByOfldId(1);
+
+  openfluid::landr::LineStringEntity * lineEntity=Graph->getEntity(1);
+  geos::planargraph::Node * firstNode=lineEntity->getEndNode();
+  std::vector<int> vectIdent;
+
+  openfluid::landr::LandRTools::markInvertedLineStringEntityUsingDFS(firstNode,vectIdent);
+  BOOST_CHECK_EQUAL(vectIdent.size(),0);
+
+  delete Val;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+
 

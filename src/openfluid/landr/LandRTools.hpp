@@ -215,6 +215,24 @@ class DLLEXPORT LandRTools
     static std::vector<geos::geom::LineString*>* cleanLineStrings(
         std::vector<geos::geom::LineString*> vLines,double SnapTolerance);
 
+    /**
+     * @brief Returns the nodes of a vector of geos::geom::LineString.
+     *
+     * @param NodedLines A vector of geos::geom::LineString.
+     * @return A vector of geos::geom::Point.
+     */
+    static std::vector<geos::geom::Point*> getNodesFromVectorOfLines(std::vector<geos::geom::LineString*>& NodedLines);
+
+    /**
+     * @brief Returns the inverted openfluid::landr::LineStringEntity of a geos::planargraph using a recursive method.
+     *
+     * @param Node A geos::planargraph::node of a geos::planargraph.
+     * @param vectIdent A vector which will contain the identifier of each inverted openfluid::landr::LinestringEntity.
+     */
+    static void markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* Node,std::vector<int>& vectIdent);
+
+
+
 };
 
 }

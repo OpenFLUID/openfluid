@@ -584,6 +584,94 @@ std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(
 // =====================================================================
 // =====================================================================
 
+std::vector<geos::geom::Point*> LandRTools::getNodesFromVectorOfLines(std::vector<geos::geom::LineString*>& NodedLines)
+{
+  std::vector<geos::geom::Point*>vPoints;
+
+  std::vector<geos::geom::LineString*>::iterator it=NodedLines.begin();
+  std::vector<geos::geom::LineString*>::iterator ite=NodedLines.end();
+  for (;it!=ite;++it)
+  {
+    geos::geom::Point* StartPoint=(*it)->getStartPoint();
+    geos::geom::Point* EndPoint=(*it)->getEndPoint();
+    std::vector<geos::geom::Point*>::iterator jt=vPoints.begin();
+    std::vector<geos::geom::Point*>::iterator jte=vPoints.end();
+    bool equalGeom=false;
+    while (jt<jte&&!equalGeom)
+    {
+      if ((*jt)->equals(StartPoint))
+        equalGeom=true;
+      else
+        ++jt;
+    }
+
+    if (!equalGeom)
+      vPoints.push_back(StartPoint);
+    else
+      delete StartPoint;
+
+
+    jt=vPoints.begin();
+    jte=vPoints.end();
+    equalGeom=false;
+    while (jt<jte&&!equalGeom)
+    {
+      if ((*jt)->equals(EndPoint))
+        equalGeom=true;
+      else
+        ++jt;
+    }
+
+    if (!equalGeom)
+      vPoints.push_back(EndPoint);
+    else
+      delete EndPoint;
+
+  }
+
+  return vPoints;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+void LandRTools::markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* Node,std::vector<int>& vectIdent )
+{
+  Node->setVisited(true);
+
+  geos::planargraph::DirectedEdgeStar *DEdge=Node->getOutEdges();
+
+  std::vector<geos::planargraph::DirectedEdge*>::iterator it=DEdge->begin();
+  std::vector<geos::planargraph::DirectedEdge*>::iterator ite=DEdge->end();
+  for (; it != ite; ++it)
+  {
+
+    if (!(*it)->getEdge()->isVisited())
+    {
+
+      geos::planargraph::Node * theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getStartNode();
+
+      if ((Node->getCoordinate()).equals(theNextNode->getCoordinate()))
+      {
+        theNextNode=static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getEndNode();
+        int OfldId = static_cast<openfluid::landr::LineStringEntity*>((*it)->getEdge())->getOfldId();
+        vectIdent.push_back(OfldId);
+      }
+
+      (*it)->getEdge()->setVisited(true);
+
+      if (!theNextNode->isVisited())
+        markInvertedLineStringEntityUsingDFS(theNextNode,vectIdent);
+    }
+  }
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
 
 }
 } /* namespace openfluid */

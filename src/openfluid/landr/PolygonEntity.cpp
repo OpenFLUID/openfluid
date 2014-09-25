@@ -578,6 +578,114 @@ PolygonEntity * PolygonEntity::getNeighbourWithCommonEdge(PolygonEdge * Edge)
 // =====================================================================
 // =====================================================================
 
+std::multimap<double,PolygonEntity*> PolygonEntity::getOrderedNeighboursByLengthBoundary()
+{
+
+  if (!mp_NeighboursMap)
+      computeNeighbours();
+
+  PolygonEntity::NeighboursMap_t::iterator it = mp_NeighboursMap->begin();
+  PolygonEntity::NeighboursMap_t::iterator ite = mp_NeighboursMap->end();
+  std::multimap<double, PolygonEntity*> mNeighbours;
+
+  for (; it != ite; ++it)
+  {
+    std::vector<PolygonEdge*>::iterator jt=it->second.begin();
+    std::vector<PolygonEdge*>::iterator jte=it->second.end();
+    double length=0.0;
+    for (; jt != jte; ++jt)
+    {
+      length=length+(*jt)->getLine()->getLength();
+    }
+    mNeighbours.insert ( std::pair<double,PolygonEntity*>(length,&(*it->first) ));
+  }
+  return mNeighbours;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+LandREntity *PolygonEntity::getNeighbourByLineTopology(VectorDataset LineTopology)
+{
+  if (!LineTopology.isLineType())
+    throw openfluid::base::FrameworkException(
+        "PolygonEntity::getNeighbourByLineTopology",
+        "The VectorDataset is not Line Type ");
+
+  if (!mp_NeighboursMap)
+    computeNeighbours();
+
+  // no Intersection between this PolygonEntity and the lines of the VectorDataset
+  if (!(getGeometry()->intersects(LineTopology.getGeometries())))
+    return (LandREntity*) 0;
+
+  geos::geom::Geometry* PtIntersect=(LineTopology.getGeometries());
+  geos::geom::LineString* Line=0;
+  bool cover=false;
+  unsigned int i=0;
+  while (i<PtIntersect->getNumGeometries()&&!cover)
+  {
+    const geos::geom::Geometry* GeomL=PtIntersect->getGeometryN(i);
+    Line = dynamic_cast<geos::geom::LineString*>(const_cast<geos::geom::Geometry*>(GeomL));
+    geos::geom::Point* Point=Line->getStartPoint();
+
+    if (getGeometry()->covers(Point))
+      cover=true;
+    else
+      i++;
+    delete Point;
+
+  }
+
+  if (!cover)
+    return (LandREntity*) 0;
+
+  geos::geom::Point* EndPoint=Line->getEndPoint();
+  bool downUnit=false;
+  openfluid::landr::LandREntity* Down=0;
+  NeighboursMap_t::iterator jt = mp_NeighboursMap->begin();
+  NeighboursMap_t::iterator jte = mp_NeighboursMap->end();
+
+  while (jt != jte&&!downUnit)
+  {
+    if (((*jt).first->getGeometry())->covers(EndPoint)&& (getOfldId()!=(*jt).first->getOfldId()))
+    {
+      Down=(*jt).first;
+      downUnit=true;
+    }
+    else
+      ++jt;
+  }
+
+  // check if this PolygonEntity has LineString neighbours and if Line intersects a LineString Neighbour
+
+  if (mp_LineStringNeighboursMap)
+  {
+
+    LineStringNeighboursMap_t::iterator ht = mp_LineStringNeighboursMap->begin();
+    LineStringNeighboursMap_t::iterator hte = mp_LineStringNeighboursMap->end();
+    downUnit=false;
+    while (ht != hte&&!downUnit)
+    {
+      if ((*ht).first->getLine()->intersects(Line))
+      {
+        Down=(*ht).first;
+        downUnit=true;
+      }
+      else
+        ++ht;
+    }
+  }
+
+  delete EndPoint;
+
+  return Down;
+
+}
+
+// =====================================================================
+// =====================================================================
 
 
 

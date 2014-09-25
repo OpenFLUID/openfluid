@@ -1129,12 +1129,91 @@ delete ValRS;
 delete RSGraph;
 
 
+}
 
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_getOrderedNeighboursByLengthBoundary)
+{
+
+  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::PolygonGraph* SUGraph =
+      openfluid::landr::PolygonGraph::create(*ValSU);
+
+  openfluid::landr::PolygonEntity* SU9 = SUGraph->getEntity(9);
+
+  std::multimap<double, openfluid::landr::PolygonEntity*> mNeighbours;
+  mNeighbours=SU9->getOrderedNeighboursByLengthBoundary();
+
+  std::multimap<double, openfluid::landr::PolygonEntity*> ::iterator it=mNeighbours.begin();
+  BOOST_CHECK_EQUAL((*it).second->getOfldId(),11);
+  ++it;
+  BOOST_CHECK_EQUAL((*it).second->getOfldId(),10);
+  ++it;
+  BOOST_CHECK_EQUAL((*it).second->getOfldId(),12);
+  ++it;
+  BOOST_CHECK_EQUAL((*it).second->getOfldId(),7);
+
+  delete ValSU;
 
 }
 
 // =====================================================================
 // =====================================================================
+
+BOOST_AUTO_TEST_CASE(check_getNeighbourByLineTopology)
+{
+
+  openfluid::core::GeoVectorValue* ValSU = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::core::GeoVectorValue ValTopo(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                          "SUTopoLine.shp");
+
+  openfluid::landr::VectorDataset* VectTopo = new openfluid::landr::VectorDataset(
+      ValTopo);
+
+  openfluid::core::GeoVectorValue* ValRS = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::PolygonGraph* SUGraph =
+      openfluid::landr::PolygonGraph::create(*ValSU);
+
+  openfluid::landr::PolygonEntity* SU9 = SUGraph->getEntity(9);
+
+  BOOST_CHECK_EQUAL(SU9->getNeighbourByLineTopology(*VectTopo)->getOfldId(),12);
+
+  openfluid::landr::LineStringGraph* RSGraph =
+      openfluid::landr::LineStringGraph::create(*ValRS);
+  SU9->computeLineStringNeighbours(*RSGraph,
+                                   openfluid::landr::LandRTools::INTERSECTS, 0.1);
+
+  BOOST_CHECK_EQUAL(SU9->getNeighbourByLineTopology(*VectTopo)->getOfldId(),5);
+
+  openfluid::landr::PolygonEntity* SU10 = SUGraph->getEntity(10);
+
+  openfluid::landr::LandREntity * NeighbourFalse=SU10->getNeighbourByLineTopology(*VectTopo);
+  BOOST_CHECK(!NeighbourFalse);
+
+  openfluid::landr::PolygonEntity* SU8 = SUGraph->getEntity(8);
+
+  openfluid::landr::LandREntity * NoNeighbour=SU8->getNeighbourByLineTopology(*VectTopo);
+  BOOST_CHECK(!NoNeighbour);
+
+
+
+  delete ValSU;
+  delete ValRS;
+
+}
+
+// =====================================================================
+// =====================================================================
+
 
 
 

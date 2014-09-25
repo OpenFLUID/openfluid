@@ -1094,3 +1094,49 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
 // =====================================================================
 // =====================================================================
 
+BOOST_AUTO_TEST_CASE(check_getNodesFromVectorOfLines)
+{
+
+  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
+                                      "RS.shp");
+
+  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
+      Val);
+
+  std::vector<geos::geom::LineString*> Geoms =
+      openfluid::landr::LandRTools::getVectorOfLines(*Vect);
+
+  std::vector<geos::geom::Point*> Points=openfluid::landr::LandRTools::getNodesFromVectorOfLines(Geoms);
+  BOOST_CHECK_EQUAL(Points.size(),9);
+
+  delete Vect;
+}
+
+// =====================================================================
+// =====================================================================
+
+BOOST_AUTO_TEST_CASE(markInvertedLineStringEntityUsingDFS)
+{
+  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "badRS_misdirected.shp");
+
+  openfluid::landr::LineStringGraph* Graph =
+      openfluid::landr::LineStringGraph::create(*Val);
+
+  openfluid::landr::LineStringEntity * lineEntity=Graph->getEntity(1);
+  Graph->reverseLineStringEntity(*lineEntity);    // reverse the outlet
+  lineEntity=Graph->getEntity(1);
+  geos::planargraph::Node * firstNode=lineEntity->getEndNode();
+  std::vector<int> vectIdent;
+
+  openfluid::landr::LandRTools::markInvertedLineStringEntityUsingDFS(firstNode,vectIdent);
+  BOOST_CHECK_EQUAL(vectIdent.size(),3);
+
+  delete Val;
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
