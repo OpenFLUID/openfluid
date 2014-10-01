@@ -39,16 +39,14 @@
 
 
 #include "MultiPointGraphics.hpp"
-#include <QPen>
 
 
-MultiPointGraphics::MultiPointGraphics(OGRMultiPoint* OGRMultiPt, const QBrush& Brush):
-  PunctualGraphics(Brush.color())
+MultiPointGraphics::MultiPointGraphics(OGRMultiPoint* OGRMultiPt, const QPen& Pen):
+  PunctualGraphics(Pen.color())
 {
   QPainterPath Path;
 
-  setPen(QPen(Brush.color()));
-  setBrush(Brush);
+  setPen(Pen);
 
   for (int i=0; i<OGRMultiPt->getNumGeometries();i++)
   {

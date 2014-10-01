@@ -41,12 +41,14 @@
 #define __MULTIPOINTGRAPHICS_HPP__
 
 #include "PunctualGraphics.hpp"
+#include <QPen>
+
 
 class MultiPointGraphics : public PunctualGraphics
 {
   public:
 
-    MultiPointGraphics(OGRMultiPoint* OGRMultiPt, const QBrush& Brush);
+    MultiPointGraphics(OGRMultiPoint* OGRMultiPt, const QPen& Pen);
 
 };
 

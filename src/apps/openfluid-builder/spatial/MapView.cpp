@@ -48,7 +48,7 @@ MapView::MapView(QWidget* Parent):
   QGraphicsView(Parent), m_AutomaticViewEnabled(true)
 {
   setRenderHints(QPainter::TextAntialiasing | QPainter::Antialiasing);
-  scale(1,-1);
+  scale(1.0,-1.0);
 }
 
 
@@ -66,8 +66,8 @@ void MapView::wheelEvent(QWheelEvent* Event)
     if (Event->delta() < 0) scale(0.9,0.9);
     else scale(1.1,1.1);
   }
-//  Event->ignore();
-  QGraphicsView::wheelEvent(Event);
+  else
+    QGraphicsView::wheelEvent(Event);
 }
 
 
