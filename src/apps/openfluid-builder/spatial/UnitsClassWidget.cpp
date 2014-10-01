@@ -334,6 +334,8 @@ void UnitsClassWidget::changeLineWidth(int Width)
 
   openfluid::base::ProjectManager::getInstance()->setConfigValue("builder.spatial.unitsclasses",
                                                                  m_ClassName+".linewidth",m_LineWidth);
+
+  //emit styleChanged(m_ClassName);
 }
 
 

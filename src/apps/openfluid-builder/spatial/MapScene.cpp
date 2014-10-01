@@ -97,9 +97,10 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
     {
       OGRLayer* Layer = VectorData->getLayer();
 
-      // TODO fix for correct line width with QPen FeaturePen(QBrush(LineColor),LineWidth), FeaturePen.setCosmetic(true);
+      // TODO fix for correct line width
       QPen FeaturePen(QBrush(LineColor),0);
       QBrush FeatureBrush(FillColor);
+
       std::string StdClassName = DSItemDesc->getUnitClass();
 
       OGRFeature *Feature;
@@ -117,7 +118,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
           if (GeomType == wkbPoint)
           {
             PointGraphics* PointG = new PointGraphics(dynamic_cast<OGRPoint*>(Geometry),
-                                                      FeatureBrush);
+                                                      FeaturePen);
             PointG->setZValue(ZLayer);
             PointG->setUnitID(ID);
             addItem(PointG);
@@ -144,7 +145,7 @@ void MapScene::addLayer(const openfluid::fluidx::DatastoreItemDescriptor* DSItem
           else if (GeomType == wkbMultiPoint)
           {
             MultiPointGraphics* MultiPointG = new MultiPointGraphics(dynamic_cast<OGRMultiPoint*>(Geometry),
-                                                                     FeatureBrush);
+                                                                     FeaturePen);
             MultiPointG->setZValue(ZLayer);
             MultiPointG->setUnitID(ID);
             addItem(MultiPointG);

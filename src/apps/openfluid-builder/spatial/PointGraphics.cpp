@@ -41,13 +41,12 @@
 #include <QPen>
 
 
-PointGraphics::PointGraphics(OGRPoint* OGRPt, const QBrush& Brush):
-  PunctualGraphics(Brush.color())
+PointGraphics::PointGraphics(OGRPoint* OGRPt, const QPen& Pen):
+  PunctualGraphics(Pen.color())
 {
   QPainterPath Path;
 
-  setPen(QPen(Brush.color()));
-  setBrush(Brush);
+  setPen(Pen);
 
   drawPoint(Path,OGRPt);
 

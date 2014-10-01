@@ -50,7 +50,7 @@ class PointGraphics : public PunctualGraphics
 {
   public:
 
-    PointGraphics(OGRPoint* OGRPt, const QBrush& Brush);
+    PointGraphics(OGRPoint* OGRPt, const QPen& Pen);
 
 };
 
