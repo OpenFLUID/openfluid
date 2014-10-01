@@ -124,8 +124,10 @@ QT4_WRAP_UI(BUILDER_MODEL_UI model/ModelWidget.ui
 SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
                         spatial/UnitsClassWidget.cpp
                         spatial/MapScene.cpp spatial/MapView.cpp
-                        spatial/MapItemGraphics.cpp spatial/LinearGraphics.cpp spatial/SurfacicGraphics.cpp
-                        spatial/LineStringGraphics.cpp
+                        spatial/MapItemGraphics.cpp 
+                        spatial/PunctualGraphics.cpp spatial/LinearGraphics.cpp spatial/SurfacicGraphics.cpp
+                        spatial/PointGraphics.cpp spatial/MultiPointGraphics.cpp
+                        spatial/LineStringGraphics.cpp spatial/MultiLineStringGraphics.cpp 
                         spatial/PolygonGraphics.cpp spatial/MultiPolygonGraphics.cpp 
                         spatial/EditAttributesValuesDialog.cpp
                         spatial/EditAttributeNameDialog.cpp
@@ -138,9 +140,11 @@ SET(BUILDER_SPATIAL_CPP spatial/SpatialDomainWidget.cpp
 SET(BUILDER_SPATIAL_HPP spatial/SpatialDomainWidget.hpp
                         spatial/UnitsClassWidget.hpp
                         spatial/MapScene.hpp spatial/MapView.hpp
-                        spatial/MapItemGraphics.cpp spatial/LinearGraphics.hpp spatial/SurfacicGraphics.hpp
-                        spatial/LineStringGraphics.hpp
-                        spatial/PolygonGraphics.hpp spatial/MultiPolygonGraphics.hpp
+                        spatial/MapItemGraphics.hpp 
+                        spatial/PunctualGraphics.hpp spatial/LinearGraphics.hpp spatial/SurfacicGraphics.hpp
+                        spatial/PointGraphics.hpp spatial/MultiPointGraphics.hpp
+                        spatial/LineStringGraphics.hpp spatial/MultiLineStringGraphics.hpp 
+                        spatial/PolygonGraphics.hpp spatial/MultiPolygonGraphics.hpp 
                         spatial/EditAttributesValuesDialog.hpp
                         spatial/EditAttributeNameDialog.hpp
                         spatial/AddUnitDialog.hpp spatial/AddUnitsClassDialog.hpp spatial/AddUnitToClassDialog.hpp
