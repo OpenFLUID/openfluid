@@ -534,7 +534,6 @@ bool DataProcessingWorker::runCheck(int StartStep)
   emit stepEntered(tr("Checking configuration of files copies and datastore..."));
 
 
-  std::set<std::string> ExtsList = openfluid::tools::getOGRFilesExtensionsForOpenFLUID();
 
   for (int i=0; i<m_SourcesInfos.size();i++)
   {
@@ -549,9 +548,10 @@ bool DataProcessingWorker::runCheck(int StartStep)
 
     QFileInfo DatasetFile(m_SourcesInfos[i].RelativeDatasetPath);
     QString Ext = DatasetFile.suffix();
+    std::set<std::string> RegisteredExtsList = openfluid::tools::getOGRFilesExtensionsForOpenFLUID();
 
     // check if dataset import file contains an extension
-    if (Ext.isEmpty())
+    if (m_SourcesInfos[i].IsDatasetImport && Ext.isEmpty())
     {
       emit stepCompleted(StartStep,getStyledText(tr("[Error] Missing file extension for layer \"%1\"")
                                                   .arg(m_SourcesInfos[i].LayerName),
@@ -560,7 +560,7 @@ bool DataProcessingWorker::runCheck(int StartStep)
     }
 
     // check if dataset import file extension exists in drivers
-    if (ExtsList.find(Ext.toStdString()) == ExtsList.end())
+    if (m_SourcesInfos[i].IsDatasetImport && RegisteredExtsList.find(Ext.toStdString()) == RegisteredExtsList.end())
     {
       emit stepCompleted(StartStep,getStyledText(tr("[Error] Wrong file extension for layer \"%1\"")
                                                   .arg(m_SourcesInfos[i].LayerName),
