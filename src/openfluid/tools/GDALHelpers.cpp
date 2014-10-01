@@ -70,6 +70,13 @@ const GDALDriversFilesExts_t getOGRFilesDriversForOpenFLUID()
     Drivers["GML"].FilesExts.push_back("gml");
   }
 
+  if (OGRGetDriverByName("MapInfo File"))
+  {
+    Drivers["MapInfo File"].Label = "MapInfo";
+    Drivers["MapInfo File"].FilesExts.push_back("mif");
+    Drivers["MapInfo File"].FilesExts.push_back("tab");
+  }
+
   return Drivers;
 }
 
