@@ -41,6 +41,8 @@
 #include "ui_SourceAddDialog.h"
 #include "FileSourceAddDialog.hpp"
 
+#include <openfluid/tools/QtHelpers.hpp>
+
 #include <QFileDialog>
 
 
@@ -73,14 +75,12 @@ FileSourceAddDialog::~FileSourceAddDialog()
 
 void FileSourceAddDialog::selectFile()
 {
-  // TODO add most commonly used formats
-
-  m_CurrentSourceURI = QFileDialog::getOpenFileName(this,
-                                                    tr("Open file"),
-                                                    m_InputDir,
-                                                    tr("All vector files (*.shp *.mif *.tab);;"
-                                                        "ESRI Shapefiles (*.shp);;"
-                                                        "Mapinfo (*.mif *.tab)"));
+  m_CurrentSourceURI =
+      QFileDialog::getOpenFileName(this,
+                                   tr("Open file"),
+                                   m_InputDir,
+                                   openfluid::tools::getOGRGDALFormatsForQFileDialogs(openfluid::tools::getOGRFilesDriversForOpenFLUID(),
+                                                                                      tr("All vector files")));
 
   m_CurrentSourceDisplay = m_CurrentSourceURI;
 
