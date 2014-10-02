@@ -43,7 +43,6 @@
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
-#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/ware/GeneratorSignature.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
@@ -51,6 +50,7 @@
 #include <openfluid/tools/SwissTools.hpp>
 
 #include "ProjectCentral.hpp"
+#include "AppTools.hpp"
 
 
 
@@ -106,6 +106,21 @@ ProjectCentral::~ProjectCentral()
 
 // =====================================================================
 // =====================================================================
+
+
+QStringList ProjectCentral::convertUpdatedUnitsClassesToQStringList(const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>& UnitsClassesVector)
+{
+  QStringList QSL;
+  for (unsigned int i=0; i<UnitsClassesVector.size();++i)
+    QSL.append(QString::fromStdString(UnitsClassesVector[i].UnitsClass));
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
 
 
 void ProjectCentral::deleteData()
@@ -366,6 +381,8 @@ void ProjectCentral::checkModel()
 
   openfluid::ware::SimulatorSignature* Sign;
 
+  QStringList UpdatedUnitsClass;
+
   std::set<std::pair<std::string, std::string> > AttrsUnits;
 
   bool AtLeastOneEnabled = false;
@@ -499,6 +516,9 @@ void ProjectCentral::checkModel()
         }
 
 
+        // populate updated units classes (created, modified)
+        UpdatedUnitsClass.append(convertUpdatedUnitsClassesToQStringList(Sign->HandledUnitsGraph.UpdatedUnitsClass));
+
 
         // check required attributes
 
@@ -506,7 +526,8 @@ void ProjectCentral::checkModel()
 
         for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt = ReqData.begin(); itt != ReqData.end(); ++itt)
         {
-          if (!Domain.isClassNameExists(itt->UnitClass))
+          if (!Domain.isClassNameExists(itt->UnitClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itt->UnitClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
@@ -533,7 +554,8 @@ void ProjectCentral::checkModel()
 
         for (std::vector<openfluid::ware::SignatureHandledDataItem>::iterator itt = ProdData.begin(); itt != ProdData.end(); ++itt)
         {
-          if (!Domain.isClassNameExists(itt->UnitClass))
+          if (!Domain.isClassNameExists(itt->UnitClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itt->UnitClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALATTRS)
@@ -603,7 +625,8 @@ void ProjectCentral::checkModel()
         for (itt = ProdVars.begin(); itt != ProdVars.end(); ++itt)
         {
 
-          if (!Domain.isClassNameExists(itt->UnitClass))
+          if (!Domain.isClassNameExists(itt->UnitClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itt->UnitClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
@@ -635,7 +658,8 @@ void ProjectCentral::checkModel()
           openfluid::fluidx::GeneratorDescriptor* GenDesc =
               dynamic_cast<openfluid::fluidx::GeneratorDescriptor*>(*it);
 
-          if (!Domain.isClassNameExists(GenDesc->getUnitClass()))
+          if (!Domain.isClassNameExists(GenDesc->getUnitClass()) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itt->UnitClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
@@ -667,7 +691,8 @@ void ProjectCentral::checkModel()
             Sign->HandledData.UpdatedVars;
         for (itt = UpVars.begin(); itt != UpVars.end(); ++itt)
         {
-          if (!Domain.isClassNameExists(itt->UnitClass))
+          if (!Domain.isClassNameExists(itt->UnitClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itt->UnitClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)
@@ -707,7 +732,8 @@ void ProjectCentral::checkModel()
 
         for (itt = ReqVars.begin(); itt != ReqVars.end(); ++itt)
         {
-          if (!Domain.isClassNameExists(itt->UnitClass))
+          if (!Domain.isClassNameExists(itt->UnitClass) &&
+              !UpdatedUnitsClass.contains(QString::fromStdString(itt->UnitClass)))
           {
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT).setStatus(PRJ_ERROR);
             m_CheckInfos.part(ProjectCheckInfos::PART_SPATIALSTRUCT)

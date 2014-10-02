@@ -151,6 +151,8 @@ OPENFLUID_ADD_TEST(NAME simulators-PrimitivesVariables
 
 
 OPNFLD_ADD_SIMULATOR(tests.primitives.land tests.primitives.land ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_SIMULATOR(tests.primitives.land.prod tests.primitives.land.prod ${TEST_OUTPUT_PATH})
+OPNFLD_ADD_SIMULATOR(tests.primitives.land.use tests.primitives.land.use ${TEST_OUTPUT_PATH})
 OPENFLUID_ADD_TEST(NAME simulators-PrimitivesLand 
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                            "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.PrimitivesLand"

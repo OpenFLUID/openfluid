@@ -43,9 +43,12 @@
 
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
+#include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/base/IOListener.hpp>
 
 #include "ProjectCheckInfos.hpp"
+
+
 
 
 
@@ -90,6 +93,8 @@ class ProjectCentral : QObject
 
     double getParamAsDouble(openfluid::fluidx::ModelItemDescriptor* Item,
                             const std::string& ParamName);
+
+    static QStringList convertUpdatedUnitsClassesToQStringList(const std::vector<openfluid::ware::SignatureHandledUnitsClassItem>& UnitsClassesVector);
 
 
   public:

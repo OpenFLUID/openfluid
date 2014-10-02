@@ -312,7 +312,7 @@ class DLLEXPORT SignatureHandledTypedDataItem : public SignatureHandledDataItem
 /**
   Class for storage of the definition of spatial units handled by the simulator.
 */
-class SignatureHandledUnitsClassItem
+class DLLEXPORT SignatureHandledUnitsClassItem
 {
   public:
 
