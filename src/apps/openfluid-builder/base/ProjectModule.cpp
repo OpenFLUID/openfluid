@@ -75,6 +75,7 @@
 
 
 #define BUILDER_WARE_WATCHERS_DELAY 2000
+#define BUILDER_INPUTDIR_WATCHERS_DELAY 2000
 
 
 // =====================================================================
@@ -110,7 +111,19 @@ ProjectModule::ProjectModule(const QString& ProjectPath):
   connect(mp_ObserversPlugsUpdateTimer,SIGNAL(timeout()),SLOT(updateObserversWares()));
 
 
-  updateWatchersPaths();
+  updateWaresWatchersPaths();
+
+  // watcher for input directory
+  mp_InputDirWatcher = new QFileSystemWatcher(this);
+
+  mp_InputDirUpdateTimer = new QTimer(this);
+  mp_InputDirUpdateTimer->setInterval(BUILDER_INPUTDIR_WATCHERS_DELAY);
+  mp_InputDirUpdateTimer->setSingleShot(true);
+
+  connect(mp_InputDirWatcher,SIGNAL(directoryChanged(const QString&)),mp_InputDirUpdateTimer,SLOT(start()));
+  connect(mp_InputDirUpdateTimer,SIGNAL(timeout()),SLOT(checkInputDir()));
+
+  resetInputDirWatcher();
 }
 
 
@@ -125,6 +138,7 @@ ProjectModule::~ProjectModule()
   delete mp_ProjectCentral;
   mp_SimulatorsPlugsWatcher->deleteLater();
   mp_ObserversPlugsWatcher->deleteLater();
+  mp_InputDirWatcher->deleteLater();
 }
 
 
@@ -132,7 +146,7 @@ ProjectModule::~ProjectModule()
 // =====================================================================
 
 
-void ProjectModule::updateWatchersPaths()
+void ProjectModule::updateWaresWatchersPaths()
 {
   QStringList Paths;
 
@@ -176,6 +190,26 @@ void ProjectModule::updateWatchersPaths()
         mp_ObserversPlugsWatcher->addPath(P);
     }
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::disableInputDirWatcher()
+{
+  mp_InputDirWatcher->removePaths(mp_InputDirWatcher->directories());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::resetInputDirWatcher()
+{
+  mp_InputDirWatcher->addPath(m_ProjectPath+"/IN");
 }
 
 
@@ -303,10 +337,12 @@ bool ProjectModule::whenReloadAsked()
 void ProjectModule::whenSaveAsked()
 {
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  disableInputDirWatcher();
   if (mp_ProjectCentral->save())
   {
     emit savePerformed();
   }
+  resetInputDirWatcher();
   QApplication::restoreOverrideCursor();
 }
 
@@ -321,14 +357,18 @@ bool ProjectModule::whenSaveAsAsked()
 
   if (SaveAsDlg.exec() == QDialog::Accepted)
   {
+    disableInputDirWatcher();
     if (mp_ProjectCentral->saveAs(SaveAsDlg.getProjectName(),
                                   SaveAsDlg.getProjectFullPath()))
     {
+      m_ProjectPath = SaveAsDlg.getProjectFullPath();
       mp_DashboardFrame->refreshProjectInfos();
       mp_OutputsTab->refreshOutputDir();
+      resetInputDirWatcher();
       emit savePerformed();
       return true;
     }
+    resetInputDirWatcher();
   }
   return false;
 }
@@ -384,7 +424,7 @@ void ProjectModule::whenPreferencesAsked()
     for (int i=0;i<ExtraPaths.size(); i++)
       openfluid::base::RuntimeEnvironment::getInstance()->addExtraSimulatorsPluginsPaths(ExtraPaths[i].toStdString());
 
-    updateWatchersPaths();
+    updateWaresWatchersPaths();
     WaresWatchingUpdated = true;
 
     updateSimulatorsWares();
@@ -398,7 +438,7 @@ void ProjectModule::whenPreferencesAsked()
     for (int i=0;i<ExtraPaths.size(); i++)
       openfluid::base::RuntimeEnvironment::getInstance()->addExtraObserversPluginsPaths(ExtraPaths[i].toStdString());
 
-    updateWatchersPaths();
+    updateWaresWatchersPaths();
     WaresWatchingUpdated = true;
 
     updateObserversWares();
@@ -406,7 +446,7 @@ void ProjectModule::whenPreferencesAsked()
 
   if (PrefsDlg.isWaresWatchingChanged() && !WaresWatchingUpdated)
   {
-    updateWatchersPaths();
+    updateWaresWatchersPaths();
 
     if (PrefsMgr->isWaresWatchersActive())
     {
@@ -693,6 +733,16 @@ void ProjectModule::updateObserversWares()
   openfluid::machine::ObserverSignatureRegistry::getInstance()->update();
   mp_MonitoringTab->updateWares();
 
+  doCheck();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::checkInputDir()
+{
   doCheck();
 }
 

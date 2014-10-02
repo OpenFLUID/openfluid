@@ -100,13 +100,21 @@ class ProjectModule : public AbstractModule
 
     QFileSystemWatcher* mp_ObserversPlugsWatcher;
 
+    QFileSystemWatcher* mp_InputDirWatcher;
+
     QTimer* mp_SimulatorsPlugsUpdateTimer;
 
     QTimer* mp_ObserversPlugsUpdateTimer;
 
-    void updateWatchersPaths();
+    QTimer* mp_InputDirUpdateTimer;
+
+    void updateWaresWatchersPaths();
 
     void doCheck();
+
+    void disableInputDirWatcher();
+
+    void resetInputDirWatcher();
 
 
   signals:
@@ -135,6 +143,8 @@ class ProjectModule : public AbstractModule
     void updateSimulatorsWares();
 
     void updateObserversWares();
+
+    void checkInputDir();
 
 
   public:
