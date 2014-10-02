@@ -196,7 +196,7 @@ void PreferencesDialog::initialize()
   ui->AttributesRemovalCheckBox->setChecked(PrefsMan->isSpatialAttrsRemovalConfirm());
 
   // Paths
-  ui->WorkspacePathEdit->setText(PrefsMan->getWorkspacePath());
+  ui->WorkspacePathEdit->setText(QDir::toNativeSeparators(PrefsMan->getWorkspacePath()));
   mp_SimSearchPaths->initialize(PrefsMan->getExtraSimulatorsPaths(),StringVectorToQStringList(RunEnv->getDefaultSimulatorsPluginsPaths()));
   mp_ObsSearchPaths->initialize(PrefsMan->getExtraObserversPaths(),StringVectorToQStringList(RunEnv->getDefaultObserversPluginsPaths()));
   mp_BExtSearchPaths->initialize(PrefsMan->getExtraExtensionsPaths(),
@@ -260,7 +260,7 @@ QStringList PreferencesDialog::extractSearchPath(WaresSearchPathsWidget* W)
 
   for (int i =0; i < W->ui->UserListWidget->count();++i)
   {
-    QSL.append(W->ui->UserListWidget->item(i)->text());
+    QSL.append(QDir::fromNativeSeparators(W->ui->UserListWidget->item(i)->text()));
   }
 
   return QSL;
@@ -277,7 +277,7 @@ bool PreferencesDialog::addSearchPath(WaresSearchPathsWidget* W)
 
   if (SelectedDir !=  "")
   {
-    W->ui->UserListWidget->addItem(SelectedDir);
+    W->ui->UserListWidget->addItem(QDir::toNativeSeparators(SelectedDir));
     return true;
   }
   return false;
@@ -459,8 +459,8 @@ void PreferencesDialog::updateWorkspacePath()
 
   if (SelectedDir !=  "")
   {
-    ui->WorkspacePathEdit->setText(SelectedDir);
-    openfluid::base::PreferencesManager::getInstance()->setWorkspacePath(SelectedDir);
+    ui->WorkspacePathEdit->setText(QDir::toNativeSeparators(SelectedDir));
+    openfluid::base::PreferencesManager::getInstance()->setWorkspacePath(QDir::fromNativeSeparators(SelectedDir));
   }
 }
 

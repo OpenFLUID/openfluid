@@ -48,6 +48,7 @@
 
 #include <QColorDialog>
 #include <QMessageBox>
+#include <QDir>
 
 
 QString UnitsClassWidget::m_ColorButtonStyleSheet =
@@ -364,7 +365,7 @@ void UnitsClassWidget::linkToDatastoreItem(const std::list<openfluid::fluidx::Da
   if (!DSList.empty())
   {
     mp_LayerSource = DSList.front();
-    ui->LayerSourceLabel->setText(QString::fromStdString(mp_LayerSource->getRelativePath()));
+    ui->LayerSourceLabel->setText(QDir::toNativeSeparators(QString::fromStdString(mp_LayerSource->getRelativePath())));
     ui->StyleParamsWidget->setEnabled(true);
   }
   else

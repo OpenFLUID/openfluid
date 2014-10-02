@@ -104,7 +104,7 @@ void SaveAsDialog::projectChanged()
 {
   ui->ProjectNameEdit->setText(ui->ProjectNameEdit->text().replace(QRegExp("[^\\w]"),"_"));
 
-  m_PrjDir.setPath(ui->DirectoryLabel->text()+"/"+ui->ProjectNameEdit->text());
+  m_PrjDir.setPath(QDir::fromNativeSeparators(ui->DirectoryLabel->text()+"/"+ui->ProjectNameEdit->text()));
 
   checkGlobal();
 }

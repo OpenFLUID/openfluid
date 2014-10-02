@@ -42,6 +42,7 @@
 #include <openfluid/base/ProjectManager.hpp>
 
 #include "AppTools.hpp"
+#include <QDir>
 
 
 QDateTime convertToQDateTime(openfluid::core::DateTime DT)
@@ -150,7 +151,7 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath)
     InfosStr += "<i>Creation:</i><br>"+QString(CreationDate.c_str())+"<hr/>";
     InfosStr += "<i>Last modification:</i><br>"+QString(LastModDate.c_str());
     if (IncludeFullPath)
-      InfosStr += "<hr/><i>Project location:</i><br>"+ProjectPath;
+      InfosStr += "<hr/><i>Project location:</i><br>"+QDir::toNativeSeparators(ProjectPath);
   }
 
   return InfosStr;

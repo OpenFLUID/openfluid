@@ -41,6 +41,7 @@
 
 #include <QMenuBar>
 #include <QToolBar>
+#include <QDir>
 
 #include <openfluid/base/ApplicationException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
@@ -87,8 +88,8 @@ void AppActions::updateRecentProjectsActions()
 
   for (int i=0; i<RFCount;i++)
   {
-    m_RecentProjectsActions[i]->setText(RPList[i].Name+" - " +RPList[i].Path);
-    m_RecentProjectsActions[i]->setData(RPList[i].Path);
+    m_RecentProjectsActions[i]->setText(RPList[i].Name+" - " +QDir::toNativeSeparators(RPList[i].Path));
+    m_RecentProjectsActions[i]->setData(QDir::fromNativeSeparators(RPList[i].Path));
     m_RecentProjectsActions[i]->setVisible(true);
   }
 

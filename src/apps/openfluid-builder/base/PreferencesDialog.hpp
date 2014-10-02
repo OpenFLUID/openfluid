@@ -143,7 +143,7 @@ class PreferencesDialog : public OpenFLUIDDialog
 
     void updateMarketplacesList();
 
-    QStringList extractSearchPath(WaresSearchPathsWidget* W);
+    static QStringList extractSearchPath(WaresSearchPathsWidget* W);
 
     bool addSearchPath(WaresSearchPathsWidget* W);
 
@@ -152,6 +152,7 @@ class PreferencesDialog : public OpenFLUIDDialog
     bool moveupSearchPath(WaresSearchPathsWidget* W);
 
     bool movedownSearchPath(WaresSearchPathsWidget* W);
+
 
   public:
 

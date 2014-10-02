@@ -84,8 +84,9 @@ WaresSearchPathsWidget::~WaresSearchPathsWidget()
 void WaresSearchPathsWidget::initialize(const QStringList& UserPaths, const QStringList& PredefPaths)
 {
   for (int i=0;i<UserPaths.size();++i)
-    new QListWidgetItem(UserPaths[i],ui->UserListWidget);
+    new QListWidgetItem(QDir::toNativeSeparators(UserPaths[i]),ui->UserListWidget);
 
   for (int i=0;i<PredefPaths.size();++i)
-    new QListWidgetItem(PredefPaths[i],ui->PredefListWidget);
+    new QListWidgetItem(QDir::toNativeSeparators(PredefPaths[i]),ui->PredefListWidget);
 }
+

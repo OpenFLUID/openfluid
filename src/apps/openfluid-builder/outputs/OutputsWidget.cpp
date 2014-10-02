@@ -88,7 +88,7 @@ void OutputsWidget::refreshOutputDir() const
 
   ui->OutputDirLabel->setText(NativePath);
   ui->OutputDirLabel->setToolTip(NativePath);
-  ui->OutputDirView->setRootIndex(mp_FSModel->setRootPath(NativePath));
+  ui->OutputDirView->setRootIndex(mp_FSModel->setRootPath(QDir::fromNativeSeparators(NativePath)));
 }
 
 

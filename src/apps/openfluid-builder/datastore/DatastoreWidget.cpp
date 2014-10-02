@@ -132,7 +132,7 @@ void DatastoreWidget::refresh()
     Item = new QTableWidgetItem(QString::fromStdString((*it)->getUnitClass()));
     ui->DatastoreTableWidget->setItem(CurrentRow, 2, Item);
 
-    Item = new QTableWidgetItem(QString::fromStdString((*it)->getRelativePath()));
+    Item = new QTableWidgetItem(QDir::toNativeSeparators(QString::fromStdString((*it)->getRelativePath())));
     ui->DatastoreTableWidget->setItem(CurrentRow, 3, Item);
 
     CurrentRow++;
@@ -165,17 +165,18 @@ void DatastoreWidget::addItem()
     {
       // Prepare copy in dataset
 
-      QString Subdir = AddItemDlg.getCopySubdir();
-      QString SourceFilename = QFileInfo(AddItemDlg.getSourceFilePath()).fileName();
+      QString Subdir = QDir::fromNativeSeparators(AddItemDlg.getCopySubdir());
+      QString SourceFilename = QDir::fromNativeSeparators(QFileInfo(AddItemDlg.getSourceFilePath()).fileName());
 
-      QString DestFile = QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()) +
-                         "/"+Subdir+"/"+SourceFilename;
+      QString DestFile = QDir::fromNativeSeparators(QString::fromStdString(openfluid::base::RuntimeEnvironment::getInstance()->getInputDir()) +
+                                                    "/"+Subdir+"/"+SourceFilename);
 
       if (AddItemDlg.getItemType() == openfluid::core::UnstructuredValue::GeoVectorValue)
       {
         // copy vector file
-        OGRDataSource* SrcDS = OGRSFDriverRegistrar::Open(AddItemDlg.getSourceFilePath().toStdString().c_str(),
-                                                          FALSE);
+        OGRDataSource* SrcDS = OGRSFDriverRegistrar::Open(
+            QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str(),
+            FALSE);
 
         if (SrcDS != NULL)
         {
@@ -244,8 +245,9 @@ void DatastoreWidget::addItem()
       {
         // copy raster file
 
-        GDALDataset* SrcDS = (GDALDataset *)GDALOpen(AddItemDlg.getSourceFilePath().toStdString().c_str(),
-                                                     GA_ReadOnly);
+        GDALDataset* SrcDS = (GDALDataset *)GDALOpen(
+            QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str(),
+            GA_ReadOnly);
 
         if (SrcDS != NULL)
         {
@@ -256,7 +258,7 @@ void DatastoreWidget::addItem()
             QDir().mkpath(QFileInfo(DestFile).absolutePath());
 
             if (CopyDriver->CopyFiles(DestFile.toStdString().c_str(),
-                                  AddItemDlg.getSourceFilePath().toStdString().c_str()) == CE_Failure)
+                                      QDir::fromNativeSeparators(AddItemDlg.getSourceFilePath()).toStdString().c_str()) == CE_Failure)
             {
               QMessageBox::critical(QApplication::activeWindow(),
                                     "OpenFLUID-Builder",
@@ -305,7 +307,7 @@ void DatastoreWidget::addItem()
       openfluid::fluidx::DatastoreItemDescriptor* DSItemDesc =
           new openfluid::fluidx::DatastoreItemDescriptor(AddItemDlg.getItemID().toStdString(),
                                                          openfluid::base::RuntimeEnvironment::getInstance()->getInputDir(),
-                                                         RelativeDSItemFile.toStdString(),
+                                                         QDir::fromNativeSeparators(RelativeDSItemFile).toStdString(),
                                                          AddItemDlg.getItemType());
 
       if (AddItemDlg.isUnitsClass())

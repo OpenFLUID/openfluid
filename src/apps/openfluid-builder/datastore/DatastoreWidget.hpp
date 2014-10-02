@@ -57,6 +57,7 @@ class DatastoreWidget : public WorkspaceWidget
 {
   Q_OBJECT
 
+
   private slots:
 
     void addItem();

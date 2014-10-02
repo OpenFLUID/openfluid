@@ -224,7 +224,7 @@ QString NewProjectDialog::getProjectName() const
 
 QString NewProjectDialog::getProjectFullPath() const
 {
-  return QDir(getWorkingDir()+"/"+getProjectName()).path();
+  return QDir::fromNativeSeparators(QDir(getWorkingDir()+"/"+getProjectName()).path());
 }
 
 

@@ -43,6 +43,7 @@
 
 
 #include <QWidget>
+#include <QDir>
 
 
 namespace Ui
