@@ -194,9 +194,6 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
       long RefLong;
       bool RefBool;
       std::string RefString;
-      unsigned long RefVectorSize = 40;
-      unsigned long RefMatrixColsNb = 4;
-      unsigned long RefMatrixRowsNb = 3;
 
       double VarDouble;
       long VarLong;

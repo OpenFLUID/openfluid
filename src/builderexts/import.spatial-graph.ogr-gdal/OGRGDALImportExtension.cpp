@@ -67,9 +67,9 @@ END_BUILDEREXT_SIGNATURE
 // =====================================================================
 
 
-void CPLOGRGDALErrorHandler(CPLErr ErrClass,
-                            int Error,
-                            const char *ErrorMsg)
+void CPLOGRGDALErrorHandler(CPLErr /*ErrClass*/,
+                            int /*Error*/,
+                            const char* /*ErrorMsg*/)
 {
   // TODO redirect errors
 }

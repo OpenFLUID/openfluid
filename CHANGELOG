@@ -1,11 +1,19 @@
 2.0.1
-
-  * Improved display of paths with correct paths separators 
+  
+  * Added display of points, multipoints and multilines
+    in map view of OpenFLUID-Builder
+  * Improved display of paths with correct paths separators
+  * Improved management of file formats for geospatial data
+    in OpenFLUID-Builder datastore and extension for geospatial data import     
+  * Fixed project consistency checking in OpenFLUID-Builder, 
+    now takes into account dynamic landscape creation
+    and extra files add and delete
   * Fixed storage of XML special characters in parameters when saving
     in .fluidx files    
-  * Fixed resizing problems
-  * Fixed crash in spatial import extension when missing 
+  * Fixed resizing problemsin OpenFLUID-Builder
+  * Fixed crash in Builder spatial import extension when missing 
     filename extension in selected file to import
+  * Cleaned code  
 
 
 

@@ -110,7 +110,7 @@ void PrecheckImportDialog::handleStepCompleted(int StepNbr, QString Message)
 // =====================================================================
 
 
-void PrecheckImportDialog::handleCompleted(QString Message, bool IsCloseRequired)
+void PrecheckImportDialog::handleCompleted(QString Message, bool /*IsCloseRequired*/)
 {
   ui->ProgressBar->setValue(ui->ProgressBar->maximum());
   ui->MessagesTextEdit->insertHtml("<br/>"+Message+"<br/>");
