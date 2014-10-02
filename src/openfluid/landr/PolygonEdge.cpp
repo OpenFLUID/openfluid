@@ -47,16 +47,23 @@
 #include <geos/planargraph/DirectedEdge.h>
 #include <algorithm>
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
+
+
+// =====================================================================
+// =====================================================================
+
 
 PolygonEdge::PolygonEdge(geos::geom::LineString& Line) :
     geos::planargraph::Edge(), m_Line(Line)
 {
+
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 PolygonEdge::~PolygonEdge()
 {
@@ -65,16 +72,20 @@ PolygonEdge::~PolygonEdge()
     delete dirEdge[i];
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 geos::geom::LineString* PolygonEdge::getLine()
 {
   return &m_Line;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonEdge::addFace(PolygonEntity& NewFace)
 {
@@ -104,8 +115,10 @@ void PolygonEdge::addFace(PolygonEntity& NewFace)
   m_Faces.push_back(&NewFace);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool PolygonEdge::isLineInFace(PolygonEntity& Face)
 {
@@ -114,16 +127,20 @@ bool PolygonEdge::isLineInFace(PolygonEntity& Face)
                         "***"));
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const std::vector<PolygonEntity*> PolygonEdge::getFaces()
 {
   return m_Faces;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonEdge::removeFace(PolygonEntity* Face)
 {
@@ -133,6 +150,7 @@ void PolygonEdge::removeFace(PolygonEntity* Face)
   if (it != m_Faces.end())
     m_Faces.erase(it);
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -153,8 +171,10 @@ bool PolygonEdge::getAttributeValue(const std::string& AttributeName,
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool PolygonEdge::setAttributeValue(const std::string& AttributeName,
                                     const core::Value* Value)
@@ -173,8 +193,10 @@ bool PolygonEdge::setAttributeValue(const std::string& AttributeName,
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonEdge::removeAttribute(const std::string& AttributeName)
 {
@@ -191,8 +213,10 @@ void PolygonEdge::removeAttribute(const std::string& AttributeName)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool PolygonEdge::isCoincident(PolygonEdge *Edge)
 {
@@ -217,8 +241,9 @@ bool PolygonEdge::isCoincident(PolygonEdge *Edge)
   return Coincident;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}// namespace landr
-} /* namespace openfluid */
+
+} } // namespace landr, openfluid

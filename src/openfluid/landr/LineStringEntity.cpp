@@ -44,11 +44,12 @@
 #include <geos/planargraph/Node.h>
 #include <openfluid/base/FrameworkException.hpp>
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
+
 
 // =====================================================================
 // =====================================================================
+
 
 LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
                                    unsigned int OfldId) :
@@ -73,8 +74,10 @@ LineStringEntity::LineStringEntity(const geos::geom::Geometry* NewLine,
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringEntity::~LineStringEntity()
 {
@@ -86,40 +89,50 @@ LineStringEntity::~LineStringEntity()
   delete mp_LODownNeighbours;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringEntity* LineStringEntity::clone()
 {
   return new LineStringEntity(mp_Geom->clone(), m_OfldId);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const geos::geom::LineString* LineStringEntity::getLine() const
 {
   return mp_Line;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 geos::planargraph::Node* LineStringEntity::getStartNode()
 {
   return getDirEdge(0)->getFromNode();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 geos::planargraph::Node* LineStringEntity::getEndNode()
 {
   return getDirEdge(0)->getToNode();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LineStringEntity::computeNeighbours()
 {
@@ -153,8 +166,10 @@ void LineStringEntity::computeNeighbours()
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<LineStringEntity*> LineStringEntity::getLineOrientUpNeighbours()
 {
@@ -164,8 +179,10 @@ std::vector<LineStringEntity*> LineStringEntity::getLineOrientUpNeighbours()
   return *mp_LOUpNeighbours;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LineStringEntity::computeLineOrientUpNeighbours()
 {
@@ -188,8 +205,10 @@ void LineStringEntity::computeLineOrientUpNeighbours()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<LineStringEntity*> LineStringEntity::getLineOrientDownNeighbours()
 {
@@ -199,8 +218,10 @@ std::vector<LineStringEntity*> LineStringEntity::getLineOrientDownNeighbours()
   return *mp_LODownNeighbours;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LineStringEntity::computeLineOrientDownNeighbours()
 {
@@ -223,8 +244,9 @@ void LineStringEntity::computeLineOrientDownNeighbours()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}// namespace landr
-} /* namespace openfluid */
+
+} } // namespace landr, openfluid

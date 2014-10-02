@@ -55,12 +55,13 @@
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
 #include <geos/geom/Polygon.h>
-#include <geos/geom/Point.h>
 #include <geos/geom/CoordinateArraySequenceFactory.h>
 #include <geos/geom/GeometryFactory.h>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
@@ -93,49 +94,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   delete Vect;
 }
 
-// =====================================================================
-// =====================================================================
-
-//BOOST_AUTO_TEST_CASE(check_clone)
-//{
-//  openfluid::core::GeoVectorValue Val(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr",
-//                                      "SU.shp");
-//
-//  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(
-//      Val);
-//
-//  OGRFeature* FirstFeature = Vect->getLayer(0)->GetFeature(0);
-//  OGRGeometry* OGRGeom = FirstFeature->GetGeometryRef();
-//
-//  geos::geom::Geometry* GeosGeom =
-//      (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-//
-//  openfluid::landr::PolygonEntity* Entity = new openfluid::landr::PolygonEntity(
-//      dynamic_cast<geos::geom::Polygon*>(GeosGeom->clone()),
-//      FirstFeature->GetFieldAsInteger("OFLD_ID"));
-//
-//  OGRFeature::DestroyFeature(FirstFeature);
-//  delete GeosGeom;
-//  delete Vect;
-//
-//  openfluid::landr::PolygonEntity* CopyEntity = Entity->clone();
-//
-//  BOOST_CHECK(Entity->getPolygon()->equals(CopyEntity->getPolygon()));
-//  BOOST_CHECK_EQUAL(Entity->getOfldId(), CopyEntity->getOfldId());
-//
-//  std::string EntityPolyStr = Entity->getPolygon()->toString();
-//
-//  delete Entity;
-//
-//  std::string CopyEntityPolyStr = CopyEntity->getPolygon()->toString();
-//
-//  BOOST_CHECK_EQUAL(EntityPolyStr, CopyEntityPolyStr);
-//
-//  delete CopyEntity;
-//}
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_neighbours)
 {
@@ -183,8 +145,10 @@ BOOST_AUTO_TEST_CASE(check_neighbours)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_OneLineIntersection)
 {
@@ -229,8 +193,10 @@ BOOST_AUTO_TEST_CASE(check_OneLineIntersection)
   delete Shared;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
 {
@@ -272,8 +238,10 @@ BOOST_AUTO_TEST_CASE(check_NoLineIntersection)
   BOOST_CHECK_EQUAL(Ent1.getLineIntersectionsWith(Ent2).size(), 0);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_addRemoveEdge_isComplete)
 {
@@ -335,8 +303,10 @@ BOOST_AUTO_TEST_CASE(check_addRemoveEdge_isComplete)
   BOOST_CHECK(!Entity.isComplete());
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
 {
@@ -411,8 +381,10 @@ BOOST_AUTO_TEST_CASE(check_findEdgeIntersecting)
   delete WrongLS;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getCommonEdgesWith)
 {
@@ -445,8 +417,10 @@ BOOST_AUTO_TEST_CASE(check_getCommonEdgesWith)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getNeighbour_MinDistCentroCentro)
 {
@@ -469,8 +443,10 @@ BOOST_AUTO_TEST_CASE(check_getNeighbour_MinDistCentroCentro)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Contains)
 {
@@ -528,8 +504,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Contains)
   delete ValSU;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Intersect)
 {
@@ -581,6 +559,7 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_Intersect)
   delete ValRS;
   delete ValSU;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -699,8 +678,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Contains)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Intersects)
 {
@@ -852,8 +833,11 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Intersects)
   delete ValSU;
 
 }
+
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
 {
@@ -975,15 +959,13 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighbours_RelationShip_Touches)
   BOOST_CHECK_EQUAL((*jt),10);
 
 
-
-
-
   delete RSGraph;
   delete SUGraph;
   delete ValRS;
   delete ValSU;
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -1035,7 +1017,6 @@ BOOST_AUTO_TEST_CASE(check_getNeighbourWithCommonEdge)
 
 // =====================================================================
 // =====================================================================
-
 
 
 BOOST_AUTO_TEST_CASE(check_computeNeighboursWithBarriers)
@@ -1128,8 +1109,8 @@ delete BarriersGraph;
 delete ValRS;
 delete RSGraph;
 
-
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -1162,8 +1143,10 @@ BOOST_AUTO_TEST_CASE(check_getOrderedNeighboursByLengthBoundary)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getNeighbourByLineTopology)
 {
@@ -1211,9 +1194,7 @@ BOOST_AUTO_TEST_CASE(check_getNeighbourByLineTopology)
 
 }
 
+
 // =====================================================================
 // =====================================================================
-
-
-
 

@@ -52,11 +52,12 @@
 #include <geos/planargraph/DirectedEdge.h>
 #include <algorithm>
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
+
 
 // =====================================================================
 // =====================================================================
+
 
 PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
                              unsigned int OfldId) :
@@ -84,8 +85,10 @@ PolygonEntity::PolygonEntity(const geos::geom::Geometry* NewPolygon,
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonEntity::~PolygonEntity()
 {
@@ -93,8 +96,10 @@ PolygonEntity::~PolygonEntity()
   delete mp_LineStringNeighboursMap;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonEntity* PolygonEntity::clone()
 {
@@ -105,16 +110,20 @@ PolygonEntity* PolygonEntity::clone()
   return Clone;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const geos::geom::Polygon* PolygonEntity::getPolygon() const
 {
   return mp_Polygon;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonEntity::addEdge(PolygonEdge& Edge)
 {
@@ -125,8 +134,10 @@ void PolygonEntity::addEdge(PolygonEdge& Edge)
   mp_NeighboursMap = 0;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonEntity::removeEdge(PolygonEdge* Edge)
 {
@@ -146,11 +157,12 @@ void PolygonEntity::removeEdge(PolygonEdge* Edge)
   delete Edge;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(
-    PolygonEntity& Other)
+
+std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(PolygonEntity& Other)
 {
   std::vector<geos::geom::LineString*> Lines;
 
@@ -169,11 +181,12 @@ std::vector<geos::geom::LineString*> PolygonEntity::getLineIntersectionsWith(
   return Lines;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(
-    geos::geom::LineString& Segment)
+
+PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(geos::geom::LineString& Segment)
 {
   std::vector<PolygonEdge*>::iterator it = m_PolyEdges.begin();
   std::vector<PolygonEdge*>::iterator ite = m_PolyEdges.end();
@@ -188,8 +201,10 @@ PolygonEdge* PolygonEntity::findEdgeLineIntersectingWith(
   return (PolygonEdge*) 0;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const PolygonEntity::NeighboursMap_t* PolygonEntity::getNeighboursAndEdges()
 {
@@ -199,8 +214,10 @@ const PolygonEntity::NeighboursMap_t* PolygonEntity::getNeighboursAndEdges()
   return mp_NeighboursMap;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<int> PolygonEntity::getOrderedNeighbourOfldIds()
 {
@@ -219,8 +236,10 @@ std::vector<int> PolygonEntity::getOrderedNeighbourOfldIds()
   return Ids;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonEntity::computeNeighbours()
 {
@@ -251,8 +270,10 @@ void PolygonEntity::computeNeighbours()
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool PolygonEntity::isComplete()
 {
@@ -277,11 +298,12 @@ bool PolygonEntity::isComplete()
   return Complete;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<PolygonEdge*> PolygonEntity::getCommonEdgesWith(
-    PolygonEntity& Other)
+
+std::vector<PolygonEdge*> PolygonEntity::getCommonEdgesWith(PolygonEntity& Other)
 {
   std::vector<PolygonEdge*> Edges;
 
@@ -294,25 +316,30 @@ std::vector<PolygonEdge*> PolygonEntity::getCommonEdgesWith(
   return Edges;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 geos::geom::Geometry* PolygonEntity::getBufferedBoundary(double BufferDistance)
 {
   return mp_Polygon->getBoundary()->buffer(BufferDistance);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void PolygonEntity::computeLineStringNeighbours(
-    LineStringGraph& Graph, LandRTools::Relationship Relation,
-    double BufferDistance,double ContactLength)
+
+void PolygonEntity::computeLineStringNeighbours(LineStringGraph& Graph,
+                                                LandRTools::Relationship Relation,
+                                                double BufferDistance,
+                                                double ContactLength)
 {
   if (Relation == LandRTools::TOUCHES && ContactLength==0)
     throw openfluid::base::FrameworkException(
         "PolygonEntity::computeLineStringNeighbours",
-        "ContactLength must be superior to 0 for LandRTools::TOUCHES RelationShip");
+        "ContactLength must be superior to 0 for LandRTools::TOUCHES Relationship");
 
   if (!mp_NeighboursMap)
     computeNeighbours();
@@ -393,18 +420,23 @@ void PolygonEntity::computeLineStringNeighbours(
   delete PolyBuff;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonEntity::LineStringNeighboursMap_t* PolygonEntity::getLineStringNeighbours()
 {
   return mp_LineStringNeighboursMap;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge, PolygonEdge* EdgeToMerge)
+
+geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge,
+                                                  PolygonEdge* EdgeToMerge)
 {
 
   //ensure that the two PolygonEdges are coincident
@@ -462,13 +494,15 @@ geos::geom::LineString* PolygonEntity::mergeEdges(PolygonEdge* Edge, PolygonEdge
   return NewLine;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void PolygonEntity::computeNeighboursWithBarriers(
-		LineStringGraph& Graph, LandRTools::Relationship Relation,
-		double BufferDistance,double ContactLength)
+void PolygonEntity::computeNeighboursWithBarriers(LineStringGraph& Graph,
+                                                  LandRTools::Relationship Relation,
+                                                  double BufferDistance,
+                                                  double ContactLength)
 {
 	if (Relation == LandRTools::TOUCHES && ContactLength==0)
 		throw openfluid::base::FrameworkException(
@@ -551,8 +585,10 @@ void PolygonEntity::computeNeighboursWithBarriers(
 	delete PolyBuff;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonEntity * PolygonEntity::getNeighbourWithCommonEdge(PolygonEdge * Edge)
 {
@@ -575,8 +611,10 @@ PolygonEntity * PolygonEntity::getNeighbourWithCommonEdge(PolygonEdge * Edge)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::multimap<double,PolygonEntity*> PolygonEntity::getOrderedNeighboursByLengthBoundary()
 {
@@ -603,8 +641,10 @@ std::multimap<double,PolygonEntity*> PolygonEntity::getOrderedNeighboursByLength
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandREntity *PolygonEntity::getNeighbourByLineTopology(VectorDataset LineTopology)
 {
@@ -684,10 +724,9 @@ LandREntity *PolygonEntity::getNeighbourByLineTopology(VectorDataset LineTopolog
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-
-}// namespace landr
-} /* namespace openfluid */
+} } // namespace landr, openfluid

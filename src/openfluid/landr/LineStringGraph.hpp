@@ -97,13 +97,12 @@
 		} \
 		}
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
 
 class VectorDataset;
 
 /**
- * @brief A LandRGraph composed of LineStringEntities.
+ @brief A LandRGraph composed of LineStringEntities.
  */
 class DLLEXPORT LineStringGraph: public LandRGraph
 {
@@ -116,30 +115,28 @@ protected:
 	LineStringGraph();
 
 	/**
-	 * @brief Creates a new LineStringGraph initialized from a core::GeoVectorValue.
+	 @brief Creates a new LineStringGraph initialized from a core::GeoVectorValue.
 	 */
 	LineStringGraph(openfluid::core::GeoVectorValue& Val);
 
 	/**
-	 * @brief Creates a new LineStringGraph initialized from a VectorDataset.
+	 @brief Creates a new LineStringGraph initialized from a VectorDataset.
 	 */
 	LineStringGraph(openfluid::landr::VectorDataset& Vect);
 
 	/**
-	 * @brief Adds a LandREntity into this LineStringGraph.
+	 @brief Adds a LandREntity into this LineStringGraph.
 	 */
 	virtual void addEntity(LandREntity* Entity);
 
 	/**
-	 * @brief Creates a new LineStringEntity.
-	 *
-	 * @param Geom The geos::geom::Geometry of the new LineStringEntity to create.
-	 * @param OfldId The identifier of the new LineStringEntity.
-	 *
-	 * @return A new LandREntity.
+	 @brief Creates a new LineStringEntity.
+	 @param Geom The geos::geom::Geometry of the new LineStringEntity to create.
+	 @param OfldId The identifier of the new LineStringEntity.
+	 @return A new LandREntity.
 	 */
 	virtual LandREntity* getNewEntity(const geos::geom::Geometry* Geom,
-			unsigned int OfldId);
+	                                  unsigned int OfldId);
 
 
 
@@ -147,171 +144,135 @@ protected:
 public:
 
 	/**
-	 * @brief Creates a new LineStringGraph initialized from a core::GeoVectorValue.
-	 * @param Val A core::GeoVectorValue which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
+	 @brief Creates a new LineStringGraph initialized from a core::GeoVectorValue.
+	 @param Val A core::GeoVectorValue which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
 	 */
 	static LineStringGraph* create(openfluid::core::GeoVectorValue& Val);
 
 	/**
-	 * @brief Creates a new LineStringGraph initialized from a VectorDataset.
-	 * @param Vect A VectorDataset which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
+	 @brief Creates a new LineStringGraph initialized from a VectorDataset.
+	 @param Vect A VectorDataset which must be composed of one or many LineStrings, and each of them must contain a "OFLD_ID" attribute.
 	 */
 	static LineStringGraph* create(openfluid::landr::VectorDataset& Vect);
 
 	/**
-	 * @brief Creates a new LineStringGraph initialized with a list of LandREntity.
-	 * @param Entities A list of LandREntity which must be LineStringEntity.
+	 @brief Creates a new LineStringGraph initialized with a list of LandREntity.
+	 @param Entities A list of LandREntity which must be LineStringEntity.
 	 */
 	static LineStringGraph* create(const LandRGraph::Entities_t& Entities);
 
 	virtual ~LineStringGraph();
 
 	/**
-	 * @brief Returns the type of graph.
+	 @brief Returns the type of graph.
 	 */
 	LandRGraph::GraphType getType();
 
 	/**
-	 * @brief Returns a LineStringEntity with OFLD_ID, or 0 if it doesn't exist.
+	 @brief Returns a LineStringEntity with OFLD_ID, or 0 if it doesn't exist.
 	 */
 	LineStringEntity* getEntity(int OfldId);
 
 	/**
-	 * @brief Removes from this LineStringGraph the LineStringEntity with OFLD_ID and its associated nodes.
-	 * @param OfldId The identifier.
+	 @brief Removes from this LineStringGraph the LineStringEntity with OFLD_ID and its associated nodes.
+	 @param OfldId The identifier.
 	 */
 	virtual void removeEntity(int OfldId);
 
 	/**
-	 * @brief Returns the last LineStringEntity of this LineStringGraph, according to the LineStringEntity orientations,
-	 * ie the one that has no down neighbour.
-	 *
-	 * @return The last LineStringEntity or 0 if there is zero or more than one LineStringEntity whith no down neighbour.
+	 @brief Returns the last LineStringEntity of this LineStringGraph, according to the LineStringEntity orientations,
+	 ie the one that has no down neighbour.
+	 @return The last LineStringEntity or 0 if there is zero or more than one LineStringEntity whith no down neighbour.
 	 */
 	LineStringEntity* getLastLineStringEntity();
 
 	/**
-	 * @brief Returns a vector of LineStringEntity that have no down neighbour, according to the LineStringEntity orientations.
+	 @brief Returns a vector of LineStringEntity that have no down neighbour, according to the LineStringEntity orientations.
 	 */
 	std::vector<LineStringEntity*> getEndLineStringEntities();
 
 	/**
-	 * @brief Returns a vector of LineStringEntity that have no up neighbour, according to the LineStringEntity orientations.
+	 @brief Returns a vector of LineStringEntity that have no up neighbour, according to the LineStringEntity orientations.
 	 */
 	std::vector<LineStringEntity*> getStartLineStringEntities();
 
 	/**
-	 * @brief Fetch the associated raster value corresponding to the LineStringEntity StartNode coordinate.
-	 *
-	 * @param Entity The LineStringEntity to get the StartNode coordinate from.
-	 * @return The raster value corresponding to the LineStringEntity StartNode coordinate.
+	 @brief Fetch the associated raster value corresponding to the LineStringEntity StartNode coordinate.
+	 @param Entity The LineStringEntity to get the StartNode coordinate from.
+	 @return The raster value corresponding to the LineStringEntity StartNode coordinate.
 	 */
 	float* getRasterValueForEntityStartNode(LineStringEntity& Entity);
 
 	/**
-	 * @brief Fetch the associated raster value corresponding to the LineStringEntity EndNode coordinate.
-	 *
-	 * @param Entity The LineStringEntity to get the EndNode coordinate from.
-	 * @return The raster value corresponding to the LineStringEntity EndNode coordinate.
+	 @brief Fetch the associated raster value corresponding to the LineStringEntity EndNode coordinate.
+	 @param Entity The LineStringEntity to get the EndNode coordinate from.
+	 @return The raster value corresponding to the LineStringEntity EndNode coordinate.
 	 */
 	float* getRasterValueForEntityEndNode(LineStringEntity& Entity);
 
 	/**
-	 * @brief Creates a new attribute for these LineStringGraph entities, and set for each LineStringEntity
-	 * this attribute value as the associated raster values corresponding to the StartNode LineStringEntity coordinates.
-	 *
-	 * @param AttributeName The name of the attribute to create for the StartNode
+	 @brief Creates a new attribute for these LineStringGraph entities, and set for each LineStringEntity
+	 this attribute value as the associated raster values corresponding to the StartNode LineStringEntity coordinates.
+	 @param AttributeName The name of the attribute to create for the StartNode
 	 */
 	void setAttributeFromRasterValueAtStartNode(const std::string& AttributeName);
 
 	/**
-	 * @brief Creates a new attribute for these LineStringGraph entities, and set for each LineStringEntity
-	 * this attribute value as the associated raster values corresponding to the EndNode LineStringEntity coordinates.
-	 *
-	 * @param AttributeName The name of the attribute to create for the EndNode
+	 @brief Creates a new attribute for these LineStringGraph entities, and set for each LineStringEntity
+	 this attribute value as the associated raster values corresponding to the EndNode LineStringEntity coordinates.
+	 @param AttributeName The name of the attribute to create for the EndNode
 	 */
 	void setAttributeFromRasterValueAtEndNode(const std::string& AttributeName);
 
 	/**
-	 * @brief Reverse a LineStringEntity orientation.
-	 *
-	 * @param Entity The LineStringEntity to reverse.
+	 @brief Reverse a LineStringEntity orientation.
+	 @param Entity The LineStringEntity to reverse.
 	 */
 	void reverseLineStringEntity(LineStringEntity& Entity);
 
 	/**
-	 * @brief Returns true if this LineStringGraph is an arborescence, false otherwise.
-	 * @details An arborescence is a graph with no loop; edges can be well directed or not.
+	 @brief Returns true if this LineStringGraph is an arborescence, false otherwise.
+	 @details An arborescence is a graph with no loop; edges can be well directed or not.
 	 */
 	bool isLineStringGraphArborescence();
 
 	/**
-	 * @brief Creates a new attribute for this LineStringGraph entities, and set for each LineStringEntity
-	 * this attribute value as the mean of the StartNode altitude and the EndNode altitude.
-	 * @param AttributeName The name of the attribute to create.
+	 @brief Creates a new attribute for this LineStringGraph entities, and set for each LineStringEntity
+	 this attribute value as the mean of the StartNode altitude and the EndNode altitude.
+	 @param AttributeName The name of the attribute to create.
 	 */
 	virtual void setAttributeFromMeanRasterValues(const std::string& AttributeName);
 
 	/**
-	 * @brief Creates a new attribute for this LineStringGraph entities, and set for each LineStringEntity
-	 * this attribute value as the vector value corresponding to the Vector Entity Geometry.
-	 *
-	 * @param AttributeName The name of the attribute to create.
-	 * @param Vector The Name of the core::GeoVectorValue.
-	 * @param Column The column of the core::GeoVectorValue to upload.
-	 * @param Thresh The threshold of minimum distance between the core::GeoVectorValue geometry and the LineStringGraph geometry.
+	 @brief Merges a LineStringEntity into an other one.
+	 @details The LineStringEntity to merge is deleted.
+	 @param Entity An existent LineStringEntity.
+	 @param EntityToMerge The LineStringEntity which will be merged into Entity and will be deleted.
 	 */
-	virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
-	                                            const std::string& Column,double Thresh=0.0001);
-
-	/**
-	 * @brief Creates a new attribute for this LineStringGraph entities, and set for each LineStringEntity.
-	 * this attribute value as the vector value corresponding to the Vector Entity Geometry
-	 *
-	 * @param AttributeName The name of the attribute to create.
-	 * @param Vector The Name of the VectorDataset.
-	 * @param Column The column of the VectorDataset to upload.
-	 * @param Thresh The threshold of minimum distance between the VectorDataset geometry and the LineStringGraph geometry.
-	 */
-	virtual void setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
-	                                            const std::string& Column,double Thresh=0.0001);
-
-	/**
-	 * @brief Merges a LineStringEntity into an other one.
-	 * @details The LineStringEntity to merge is deleted.
-	 *
-	 * @param Entity An existent LineStringEntity.
-	 * @param EntityToMerge The LineStringEntity which will be merged into Entity and will be deleted.
-	 */
-	void mergeLineStringEntities(LineStringEntity& Entity, LineStringEntity& EntityToMerge);
+	void mergeLineStringEntities(LineStringEntity& Entity,
+	                             LineStringEntity& EntityToMerge);
 
 
 	/**
-	 * @brief Gets a map of small LineStringEntity under length threshold
-	 *
-	 * @param MinLength The length threshold (in map units).
-	 * @param rmDangle : if true, get also dangles under the threshold.
-	 * @param HighDegree : if true, do not get the if StartNode and EndNode of this LineStringEntitiy are Degree>=3.
-	 * @return a multimap of LineStringEntity with key is the length of each LineStringEntity.
+	 @brief Gets a map of small LineStringEntity under length threshold
+	 @param MinLength The length threshold (in map units).
+	 @param rmDangle : if true, get also dangles under the threshold.
+	 @param HighDegree : if true, do not get the if StartNode and EndNode of this LineStringEntitiy are Degree>=3.
+	 @return a multimap of LineStringEntity with key is the length of each LineStringEntity.
 	 */
-	std::multimap<double,  LineStringEntity*> getLineStringEntitiesByMinLength(double MinLength,bool rmDangle=true,bool HighDegree=true);
+	std::multimap<double,  LineStringEntity*> getLineStringEntitiesByMinLength(double MinLength,
+	                                                                           bool rmDangle=true,
+	                                                                           bool HighDegree=true);
 
 	/**
-	 * @brief Set the orientation of the LineStringGraph with outlet identification by OFLD_ID identifier.
-	 * Only for LineStringGraph of arborescence type
-	 *
-	 * @param OfldId The identifier of the outlet.
+	 @brief Set the orientation of the LineStringGraph with outlet identification by OFLD_ID identifier.
+	 Only for LineStringGraph of arborescence type
+	 @param OfldId The identifier of the outlet.
 	 */
 	void setOrientationByOfldId(int OfldId);
 
-
-
-
-
-
 };
 
-} // namespace landr
-} /* namespace openfluid */
+} } // namespace landr, openfluid
 
 #endif /* LINESTRINGGRAPH_HPP_ */

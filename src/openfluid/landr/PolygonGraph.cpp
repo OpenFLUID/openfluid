@@ -58,11 +58,12 @@
 #include <algorithm>
 #include <complex>
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
+
 
 // =====================================================================
 // =====================================================================
+
 
 PolygonGraph::PolygonGraph() :
                 LandRGraph()
@@ -70,8 +71,10 @@ PolygonGraph::PolygonGraph() :
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonGraph::PolygonGraph(openfluid::core::GeoVectorValue& Val) :
                 LandRGraph(Val)
@@ -79,8 +82,10 @@ PolygonGraph::PolygonGraph(openfluid::core::GeoVectorValue& Val) :
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonGraph::PolygonGraph(openfluid::landr::VectorDataset& Vect) :
                 LandRGraph(Vect)
@@ -88,8 +93,10 @@ PolygonGraph::PolygonGraph(openfluid::landr::VectorDataset& Vect) :
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
 {
@@ -108,8 +115,10 @@ PolygonGraph* PolygonGraph::create(openfluid::core::GeoVectorValue& Val)
   return Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonGraph* PolygonGraph::create(openfluid::landr::VectorDataset& Vect)
 {
@@ -128,8 +137,10 @@ PolygonGraph* PolygonGraph::create(openfluid::landr::VectorDataset& Vect)
   return Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonGraph* PolygonGraph::create(const LandRGraph::Entities_t& Entities)
 {
@@ -139,8 +150,10 @@ PolygonGraph* PolygonGraph::create(const LandRGraph::Entities_t& Entities)
   return Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonGraph::~PolygonGraph()
 {
@@ -149,24 +162,20 @@ PolygonGraph::~PolygonGraph()
     delete edges[i];
 }
 
-// =====================================================================
-// =====================================================================
-
-//PolygonGraph* PolygonGraph::clone()
-//{
-//  return PolygonGraph::create(*mp_Vector);
-//}
 
 // =====================================================================
 // =====================================================================
+
 
 LandRGraph::GraphType PolygonGraph::getType()
 {
   return POLYGON;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonGraph::addEntity(LandREntity* Entity)
 {
@@ -238,8 +247,10 @@ void PolygonGraph::addEntity(LandREntity* Entity)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandREntity* PolygonGraph::getNewEntity(const geos::geom::Geometry* Geom,
                                         unsigned int OfldId)
@@ -247,8 +258,10 @@ LandREntity* PolygonGraph::getNewEntity(const geos::geom::Geometry* Geom,
   return new PolygonEntity(Geom, OfldId);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonEdge* PolygonGraph::createEdge(geos::geom::LineString& LineString)
 {
@@ -286,8 +299,10 @@ PolygonEdge* PolygonGraph::createEdge(geos::geom::LineString& LineString)
   return NewEdge;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonGraph::removeSegment(PolygonEntity* Entity,
                                  geos::geom::LineString* Segment)
@@ -345,16 +360,20 @@ void PolygonGraph::removeSegment(PolygonEntity* Entity,
   Entity->removeEdge(OldEdge);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 PolygonEntity* PolygonGraph::getEntity(int OfldId)
 {
   return dynamic_cast<PolygonEntity*>(LandRGraph::getEntity(OfldId));
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool PolygonGraph::isComplete()
 {
@@ -369,8 +388,10 @@ bool PolygonGraph::isComplete()
   return true;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool PolygonGraph::hasIsland()
 {
@@ -408,11 +429,13 @@ bool PolygonGraph::hasIsland()
   }
   return false;
 }
+
+
 // =====================================================================
 // =====================================================================
 
-PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
-    PolygonEntity& Entity)
+
+PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(PolygonEntity& Entity)
 {
   const geos::geom::Polygon* RefPoly = Entity.getPolygon();
 
@@ -452,8 +475,10 @@ PolygonGraph::RastValByRastPoly_t PolygonGraph::getRasterPolyOverlapping(
   return IntersectPolys;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonGraph::setAttributeFromMeanRasterValues(const std::string& AttributeName)
 {
@@ -491,8 +516,10 @@ void PolygonGraph::setAttributeFromMeanRasterValues(const std::string& Attribute
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonGraph::createVectorRepresentation(std::string FilePath,
                                               std::string FileName)
@@ -552,11 +579,15 @@ void PolygonGraph::createVectorRepresentation(std::string FilePath,
   delete OutVector;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::computeLineStringNeighbours(LineStringGraph& Graph, openfluid::landr::LandRTools::Relationship Relation,
-                                                   double BufferDistance,double ContactLength)
+
+void PolygonGraph::computeLineStringNeighbours(LineStringGraph& Graph,
+                                               openfluid::landr::LandRTools::Relationship Relation,
+                                               double BufferDistance,
+                                               double ContactLength)
 {
   if (Relation == LandRTools::TOUCHES && ContactLength==0)
     throw openfluid::base::FrameworkException(
@@ -573,11 +604,13 @@ void PolygonGraph::computeLineStringNeighbours(LineStringGraph& Graph, openfluid
         Graph, Relation, BufferDistance, ContactLength);
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void PolygonGraph::createEdgeAttribute(std::string AttributeName, core::Value &Value)
+void PolygonGraph::createEdgeAttribute(std::string AttributeName,
+                                       core::Value &Value)
 {
   LandRGraph::Entities_t::iterator it = m_Entities.begin();
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
@@ -595,8 +628,10 @@ void PolygonGraph::createEdgeAttribute(std::string AttributeName, core::Value &V
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonGraph::removeEdgeAttribute(std::string AttributeName)
 {
@@ -614,8 +649,10 @@ void PolygonGraph::removeEdgeAttribute(std::string AttributeName)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<std::string> PolygonGraph::getEdgeAttributeNames()
 {
@@ -632,159 +669,10 @@ std::vector<std::string> PolygonGraph::getEdgeAttributeNames()
   return Names;
 }
 
-// =====================================================================
-// =====================================================================
-
-void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
-                                                  const std::string& Column,double Thresh)
-{
-  if (!Vector.isPolygonType())
-    throw openfluid::base::FrameworkException(
-        "PolygonGraph::setAttributeFromVectorLocation",
-        "Vector is not a Polygon type");
-
-
-  if (!Vector.containsField(Column))
-  {
-    std::ostringstream s;
-    s << "Unable to find the column " << Column << " in GeoVector.";
-    throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorLocation", s.str());
-  }
-
-  addAttribute(AttributeName);
-
-  setlocale(LC_NUMERIC, "C");
-
-  OGRLayer* Layer0 = Vector.getLayer(0);
-  Layer0->ResetReading();
-
-  int columnIndex=Vector.getFieldIndex(Column);
-
-
-  LandRGraph::Entities_t::iterator it = m_Entities.begin();
-  LandRGraph::Entities_t::iterator ite = m_Entities.end();
-
-  for (; it != ite; ++it)
-  {
-    geos::geom::Point* Centroid=(*it)->getCentroid();
-
-    OGRFeature* Feat;
-    while ((Feat = Layer0->GetNextFeature()) != NULL)
-    {
-      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-      // c++ cast doesn't work (have to use the C API instead)
-      geos::geom::Geometry* GeosGeom =
-          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-      if (GeosGeom->contains(Centroid))
-      {
-        if (Vector.isFieldOfType(Column, OFTInteger))
-        {
-          int value=Feat->GetFieldAsInteger(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
-        }
-        else if (Vector.isFieldOfType(Column, OFTReal))
-        {
-          double value=Feat->GetFieldAsDouble(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
-        }
-        else
-        {
-          std::string value=Feat->GetFieldAsString(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
-        }
-
-      }
-      // destroying the feature destroys also the associated OGRGeom
-      OGRFeature::DestroyFeature(Feat);
-      delete GeosGeom;
-
-    }
-    Layer0->ResetReading();
-
-  }
-
-}
 
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
-                                                  const std::string& Column,double Thresh)
-{
-  if (!Vector.isPolygonType())
-    throw openfluid::base::FrameworkException(
-        "PolygonGraph::setAttributeFromVectorLocation",
-        "Vector is not a Polygon type");
-
-
-  if (!Vector.containsField(Column))
-  {
-    std::ostringstream s;
-    s << "Unable to find the column " << Column << " in GeoVector.";
-    throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorLocation", s.str());
-  }
-
-  addAttribute(AttributeName);
-
-  setlocale(LC_NUMERIC, "C");
-
-  OGRLayer* Layer0 = Vector.getLayer(0);
-  Layer0->ResetReading();
-
-  int columnIndex=Vector.getFieldIndex(Column);
-
-
-  LandRGraph::Entities_t::iterator it = m_Entities.begin();
-  LandRGraph::Entities_t::iterator ite = m_Entities.end();
-
-  for (; it != ite; ++it)
-  {
-    geos::geom::Point* Centroid=(*it)->getCentroid();
-
-    OGRFeature* Feat;
-    while ((Feat = Layer0->GetNextFeature()) != NULL)
-    {
-      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-      // c++ cast doesn't work (have to use the C API instead)
-      geos::geom::Geometry* GeosGeom =
-          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-      if (GeosGeom->contains(Centroid))
-      {
-        if (Vector.isFieldOfType(Column, OFTInteger))
-        {
-          int value=Feat->GetFieldAsInteger(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
-        }
-        else if (Vector.isFieldOfType(Column, OFTReal))
-        {
-          double value=Feat->GetFieldAsDouble(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
-        }
-        else
-        {
-          std::string value=Feat->GetFieldAsString(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
-        }
-
-      }
-      // destroying the feature destroys also the associated OGRGeom
-      OGRFeature::DestroyFeature(Feat);
-      delete GeosGeom;
-
-    }
-    Layer0->ResetReading();
-  }
-
-}
-
-// =====================================================================
-// =====================================================================
 
 void PolygonGraph::removeEntity(int OfldId)
 {
@@ -855,8 +743,10 @@ void PolygonGraph::removeEntity(int OfldId)
   removeUnusedNodes();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PolygonGraph::cleanEdges(PolygonEntity & Entity)
 {
@@ -924,8 +814,10 @@ void PolygonGraph::cleanEdges(PolygonEntity & Entity)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea(double MinArea)
 {
@@ -947,10 +839,13 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByMinArea
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& EntityToMerge)
+
+void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity,
+                                        PolygonEntity& EntityToMerge)
 {
 
   //ensure that the two PolygonEntities are neighbours
@@ -984,8 +879,10 @@ void PolygonGraph::mergePolygonEntities(PolygonEntity& Entity, PolygonEntity& En
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompactness(double Compactness)
 {
@@ -1008,11 +905,15 @@ std::multimap<double,  PolygonEntity*> PolygonGraph::getPolygonEntitiesByCompact
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void PolygonGraph::computeNeighboursWithBarriers(LineStringGraph& Graph, openfluid::landr::LandRTools::Relationship Relation,
-		double BufferDistance,double ContactLength)
+
+void PolygonGraph::computeNeighboursWithBarriers(LineStringGraph& Graph,
+                                                 openfluid::landr::LandRTools::Relationship Relation,
+                                                 double BufferDistance,
+                                                 double ContactLength)
 {
 	if (Relation == LandRTools::TOUCHES && ContactLength==0)
 		throw openfluid::base::FrameworkException(
@@ -1034,11 +935,9 @@ void PolygonGraph::computeNeighboursWithBarriers(LineStringGraph& Graph, openflu
 				Graph, Relation, BufferDistance, ContactLength);
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-
-
-}// namespace landr
-} /* namespace openfluid */
+} }// namespace landr, openfluid

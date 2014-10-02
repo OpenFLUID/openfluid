@@ -65,8 +65,10 @@
 #include <geos/geom/MultiLineString.h>
 #include <geos/planargraph/Node.h>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 {
@@ -96,8 +98,10 @@ BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 {
@@ -144,8 +148,10 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_onePolygon)
 {
@@ -187,8 +193,10 @@ BOOST_AUTO_TEST_CASE(check_construction_onePolygon)
   delete Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
 {
@@ -249,8 +257,10 @@ BOOST_AUTO_TEST_CASE(check_construction_twoSimplePolygons)
   delete Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
 {
@@ -326,8 +336,10 @@ BOOST_AUTO_TEST_CASE(check_construction_anIsolatedPolygon)
   delete Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
 {
@@ -425,8 +437,10 @@ BOOST_AUTO_TEST_CASE(check_construction_aFullEnclosedPolygon)
   delete TmpGraph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
 {
@@ -484,8 +498,10 @@ BOOST_AUTO_TEST_CASE(check_construction_twoNonIntersectingPolygons)
   delete Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_linesContact)
 {
@@ -510,8 +526,10 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_linesContact)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_pointContact)
 {
@@ -536,32 +554,10 @@ BOOST_AUTO_TEST_CASE(check_construction_horseshoeShapedPolygons_pointContact)
   delete Val;
 }
 
-// =====================================================================
-// =====================================================================
-
-//BOOST_AUTO_TEST_CASE(check_clone)
-//{
-//  openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
-//      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-//
-//  openfluid::landr::PolygonGraph* Graph =
-//      openfluid::landr::PolygonGraph::create(*Val);
-//
-//  openfluid::landr::PolygonGraph* Copy = Graph->clone();
-//
-//  BOOST_CHECK_EQUAL(Graph->getSize(), Copy->getSize());
-//  BOOST_CHECK_EQUAL(Graph->getEdges()->size(), Copy->getEdges()->size());
-//  BOOST_CHECK_EQUAL(Graph->getEntities().size(), Copy->getEntities().size());
-//
-//  BOOST_CHECK(Graph->isComplete());
-//
-//  delete Graph;
-//  delete Copy;
-//  delete Val;
-//}
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getEntity)
 {
@@ -580,8 +576,10 @@ BOOST_AUTO_TEST_CASE(check_getEntity)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 {
@@ -645,8 +643,10 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getOfldIdOrderedEntities)
 {
@@ -668,8 +668,10 @@ BOOST_AUTO_TEST_CASE(check_getOfldIdOrderedEntities)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
 {
@@ -711,8 +713,10 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingPolygonsOnly)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
 {
@@ -751,8 +755,10 @@ BOOST_AUTO_TEST_CASE(check_getRasterPolyOverlapping_gettingAlsoMultiPolygon)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
 {
@@ -782,8 +788,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelType)
 {
@@ -813,8 +821,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelTyp
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelType)
 {
@@ -844,8 +854,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelTyp
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
 {
@@ -875,8 +887,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
 {
@@ -906,8 +920,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
 {
@@ -937,8 +953,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_createVectorRepresentation)
 {
@@ -965,8 +983,10 @@ BOOST_AUTO_TEST_CASE(check_createVectorRepresentation)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains)
 {
@@ -1025,8 +1045,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains)
   delete ValSU;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersect)
 {
@@ -1079,8 +1101,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersect)
   delete ValSU;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_polygon_has_islands)
 {
@@ -1114,6 +1138,7 @@ BOOST_AUTO_TEST_CASE(check_polygon_has_islands)
   delete GraphHole;
   delete PolHole;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -1157,65 +1182,6 @@ BOOST_AUTO_TEST_CASE(check_addRemoveEdgeAttribute)
   delete Val;
 }
 
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph)
-{
-  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "field.shp");
-
-  openfluid::landr::PolygonGraph* Graph =
-      openfluid::landr::PolygonGraph::create(*Vector);
-
-  openfluid::core::GeoVectorValue* LineVector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
-
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*LineVector, "OFLD_ID"),openfluid::base::FrameworkException);
-
-  openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
-
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
-
-  Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "type");
-  std::vector<std::string> vAttributes=Graph->getAttributeNames();
-  BOOST_CHECK_EQUAL(vAttributes.empty(),false);
-
-  openfluid::landr::PolygonEntity* Entity=Graph->getEntity(1);
-  openfluid::core::StringValue StringValue("");
-  Entity->getAttributeValue("attribut", StringValue);
-  BOOST_CHECK_EQUAL( StringValue.get(), "soil1");
-
-  Entity=Graph->getEntity(6);
-  Entity->getAttributeValue("attribut", StringValue);
-  BOOST_CHECK_EQUAL( StringValue.get(), "soil4");
-
-  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "soil.shp");
-
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
-  Graph->setAttributeFromVectorLocation("attribut",*Vect, "id");
-  openfluid::core::IntegerValue IntegerValue(0);
-  Entity=Graph->getEntity(2);
-  Entity->getAttributeValue("attribut", IntegerValue);
-  BOOST_CHECK_EQUAL( IntegerValue.get(), 3);
-
-  Graph->setAttributeFromVectorLocation("attribut",*Vect, "val");
-  openfluid::core::DoubleValue DoubleValue(0);
-  Entity=Graph->getEntity(2);
-  Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 12.89));
-
-
-
-
-  delete Graph;
-  delete Vector;
-  delete OtherVector;
-  delete LineVector;
-  delete Vect;
-
-}
 
 // =====================================================================
 // =====================================================================
@@ -1273,8 +1239,10 @@ BOOST_AUTO_TEST_CASE(check_remove_PolygonEntity)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getPolygonEntityByMinArea)
 {
@@ -1304,8 +1272,10 @@ BOOST_AUTO_TEST_CASE(check_getPolygonEntityByMinArea)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_mergePolygonEntities)
 {
@@ -1334,6 +1304,7 @@ BOOST_AUTO_TEST_CASE(check_mergePolygonEntities)
   delete Vector;
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -1367,6 +1338,7 @@ BOOST_AUTO_TEST_CASE(check_getPolygonEntityByCompactness)
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -1397,6 +1369,7 @@ BOOST_AUTO_TEST_CASE(check_construction_from_Bad_Geometry)
 
   delete Vect;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -1578,8 +1551,10 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Contains_wi
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_with_Complex_LineString)
 {
@@ -2098,6 +2073,7 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Intersects_
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -2403,6 +2379,7 @@ BOOST_AUTO_TEST_CASE(check_computeLineStringNeighboursOfPolygonGraph_Touches_wit
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -2412,12 +2389,14 @@ BOOST_AUTO_TEST_CASE(check_construction_from_MultiPolygon)
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "MultiPolygon.shp");
 
-  openfluid::landr::PolygonGraph* Graph;
+  openfluid::landr::PolygonGraph* Graph=0;
+
   BOOST_CHECK_THROW( Graph =
       openfluid::landr::PolygonGraph::create(*Val),openfluid::base::FrameworkException);
 
   delete Val;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -2534,7 +2513,7 @@ BOOST_AUTO_TEST_CASE(check_computeNeighboursWithBarriers)
 
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 

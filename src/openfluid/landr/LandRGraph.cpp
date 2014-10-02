@@ -52,13 +52,14 @@
 #include <geos/geom/GeometryFactory.h>
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
 
 int LandRGraph::FileNum = 0;
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandRGraph::LandRGraph() :
         geos::planargraph::PlanarGraph(), mp_Vector(0), mp_Factory(
@@ -68,8 +69,10 @@ LandRGraph::LandRGraph() :
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
         geos::planargraph::PlanarGraph(), mp_Factory(
@@ -89,8 +92,10 @@ LandRGraph::LandRGraph(openfluid::core::GeoVectorValue& Val) :
         "GeoVector file must contain a \"OFLD_ID\" field.");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
         geos::planargraph::PlanarGraph(), mp_Factory(
@@ -110,8 +115,10 @@ LandRGraph::LandRGraph(const openfluid::landr::VectorDataset& Vect) :
         "GeoVector file must contain a \"OFLD_ID\" field.");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandRGraph::~LandRGraph()
 {
@@ -140,8 +147,10 @@ LandRGraph::~LandRGraph()
   delete mp_Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRGraph::addEntitiesFromGeoVector()
 {
@@ -182,14 +191,15 @@ void LandRGraph::addEntitiesFromGeoVector()
     delete GeosGeom;
   }
 
-  removeUnusedNodes();
+ removeUnusedNodes();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void LandRGraph::addEntitiesFromEntityList(
-    const LandRGraph::Entities_t& Entities)
+
+void LandRGraph::addEntitiesFromEntityList(const LandRGraph::Entities_t& Entities)
 {
   LandRGraph::Entities_t::const_iterator it = Entities.begin();
   LandRGraph::Entities_t::const_iterator ite = Entities.end();
@@ -199,11 +209,12 @@ void LandRGraph::addEntitiesFromEntityList(
   removeUnusedNodes();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-geos::planargraph::Node* LandRGraph::getNode(
-    const geos::geom::Coordinate& Coordinate)
+
+geos::planargraph::Node* LandRGraph::getNode(const geos::geom::Coordinate& Coordinate)
 {
   geos::planargraph::Node* Node = findNode(Coordinate);
 
@@ -216,8 +227,10 @@ geos::planargraph::Node* LandRGraph::getNode(
   return Node;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRGraph::removeUnusedNodes()
 {
@@ -228,10 +241,13 @@ void LandRGraph::removeUnusedNodes()
     remove(Unused->at(i));
 
   delete Unused;
+
 }
+
 
 // =====================================================================
 // =====================================================================
+
 
 LandREntity* LandRGraph::getEntity(int OfldId)
 {
@@ -241,16 +257,20 @@ LandREntity* LandRGraph::getEntity(int OfldId)
   return (LandREntity*) 0;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::list<LandREntity*> LandRGraph::getEntities()
 {
   return m_Entities;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandRGraph::Entities_t LandRGraph::getOfldIdOrderedEntities()
 {
@@ -264,24 +284,30 @@ LandRGraph::Entities_t LandRGraph::getOfldIdOrderedEntities()
   return Entities;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::map<int, LandREntity*> LandRGraph::getEntitiesByOfldId()
 {
   return m_EntitiesByOfldId;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 unsigned int LandRGraph::getSize() const
 {
   return m_Entities.size();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRGraph::addAttribute(const std::string& AttributeName)
 {
@@ -294,8 +320,10 @@ void LandRGraph::addAttribute(const std::string& AttributeName)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRGraph::removeAttribute(const std::string& AttributeName)
 {
@@ -308,8 +336,10 @@ void LandRGraph::removeAttribute(const std::string& AttributeName)
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<std::string> LandRGraph::getAttributeNames()
 {
@@ -329,8 +359,10 @@ std::vector<std::string> LandRGraph::getAttributeNames()
   return Names;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
 {
@@ -341,8 +373,10 @@ void LandRGraph::addAGeoRasterValue(openfluid::core::GeoRasterValue& Raster)
   mp_RasterPolygonizedPolys = 0;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRGraph::addAGeoRasterValue(const openfluid::landr::RasterDataset& Raster)
 {
@@ -353,16 +387,20 @@ void LandRGraph::addAGeoRasterValue(const openfluid::landr::RasterDataset& Raste
   mp_RasterPolygonizedPolys = 0;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool LandRGraph::hasAnAssociatedRaster()
 {
   return (mp_Raster != 0);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 openfluid::landr::VectorDataset* LandRGraph::getRasterPolygonized()
 {
@@ -384,8 +422,10 @@ openfluid::landr::VectorDataset* LandRGraph::getRasterPolygonized()
   return mp_RasterPolygonized;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
 {
@@ -436,8 +476,10 @@ std::vector<geos::geom::Polygon*>* LandRGraph::getRasterPolygonizedPolys()
   return mp_RasterPolygonizedPolys;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 float* LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
 {
@@ -454,11 +496,12 @@ float* LandRGraph::getRasterValueForEntityCentroid(const LandREntity& Entity)
   return Val;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void LandRGraph::setAttributeFromRasterValueAtCentroid(
-    const std::string& AttributeName)
+
+void LandRGraph::setAttributeFromRasterValueAtCentroid(const std::string& AttributeName)
 {
   addAttribute(AttributeName);
 
@@ -484,21 +527,27 @@ void LandRGraph::setAttributeFromRasterValueAtCentroid(
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRGraph::computeNeighbours()
 {
-  LandRGraph::Entities_t::iterator it = m_Entities.begin();
-  LandRGraph::Entities_t::iterator ite = m_Entities.end();
-  for (; it != ite; ++it)
-    (*it)->computeNeighbours();
+    LandRGraph::Entities_t::iterator it = m_Entities.begin();
+    LandRGraph::Entities_t::iterator ite = m_Entities.end();
+    for (; it != ite; ++it)
+      (*it)->computeNeighbours();
+
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void LandRGraph::exportToShp(const std::string& FilePath, const std::string& FileName)
+
+void LandRGraph::exportToShp(const std::string& FilePath,
+                             const std::string& FileName)
 {
   openfluid::landr::VectorDataset* Out = new openfluid::landr::VectorDataset(
       FileName);
@@ -515,7 +564,7 @@ void LandRGraph::exportToShp(const std::string& FilePath, const std::string& Fil
       delete Out;
       throw openfluid::base::FrameworkException(
           "LandRGraph::exportToShp",
-          "Unable to export graph as a shapefile : is not POLYGON nor LINESTRING typed");
+          "Unable to export graph as a shapefile : is not POLYGON, nor LINESTRING typed");
       break;
   }
 
@@ -561,11 +610,14 @@ void LandRGraph::exportToShp(const std::string& FilePath, const std::string& Fil
   delete Out;
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
-                                          openfluid::core::GeoVectorValue& Vector, const std::string& Column)
+                                          openfluid::core::GeoVectorValue& Vector,
+                                          const std::string& Column)
 {
   if (!Vector.containsField(Column))
   {
@@ -614,12 +666,14 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
 void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
-                                          openfluid::landr::VectorDataset& Vector, const std::string& Column)
+                                          openfluid::landr::VectorDataset& Vector,
+                                          const std::string& Column)
 {
   if (!Vector.containsField(Column))
   {
@@ -668,12 +722,13 @@ void LandRGraph::setAttributeFromVectorId(const std::string& AttributeName,
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRGraph::snapVertices(double snapTolerance)
 {
-
   LandRGraph::Entities_t::iterator it = m_Entities.begin();
   LandRGraph::Entities_t::iterator ite = m_Entities.end();
   std::list<int> listOfldId;
@@ -691,7 +746,7 @@ void LandRGraph::snapVertices(double snapTolerance)
     LandRGraph::Entities_t::iterator jte = m_Entities.end();
     for (; jt != jte; ++jt)
     {
-      if ((*li)!=(*jt)->getOfldId())
+      if (static_cast<unsigned>(*li)!=(*jt)->getOfldId())
         entitiesGeoms.push_back(const_cast<geos::geom::Geometry*>((*jt)->getGeometry()));
     }
 
@@ -711,12 +766,173 @@ void LandRGraph::snapVertices(double snapTolerance)
     delete entitiesGeom;
 
   }
+}
+
+
+
+// =====================================================================
+// =====================================================================
+
+
+void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName,
+                                                openfluid::core::GeoVectorValue& Vector,
+                                                const std::string& Column,
+                                                double Thresh)
+{
+  if (!Vector.isPolygonType()&&!Vector.isLineType())
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorLocation",
+        "Vector is not Line nor Polygon type");
+
+
+  if (!Vector.containsField(Column))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << Column << " in GeoVector.";
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorLocation", s.str());
+  }
+
+  addAttribute(AttributeName);
+
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 = Vector.getLayer(0);
+  Layer0->ResetReading();
+
+  int columnIndex=Vector.getFieldIndex(Column);
+
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
+  for (; it != ite; ++it)
+  {
+    geos::geom::Point* Centroid=(*it)->getCentroid();
+
+    OGRFeature* Feat;
+    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    {
+      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+      // c++ cast doesn't work (have to use the C API instead)
+      geos::geom::Geometry* GeosGeom =
+          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+      if (Centroid->isWithinDistance(GeosGeom,Thresh))
+      {
+        if (Vector.isFieldOfType(Column, OFTInteger))
+        {
+          int value=Feat->GetFieldAsInteger(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
+        }
+        else if (Vector.isFieldOfType(Column, OFTReal))
+        {
+          double value=Feat->GetFieldAsDouble(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
+        }
+        else
+        {
+          std::string value=Feat->GetFieldAsString(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
+        }
+
+      }
+      // destroying the feature destroys also the associated OGRGeom
+      OGRFeature::DestroyFeature(Feat);
+      delete GeosGeom;
+
+    }
+    Layer0->ResetReading();
+
+  }
 
 }
+
+
 // =====================================================================
 // =====================================================================
 
 
+void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName,
+                                                openfluid::landr::VectorDataset& Vector,
+                                                const std::string& Column,
+                                                double Thresh)
+{
+  if (!Vector.isPolygonType()&&!Vector.isLineType())
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorLocation",
+        "Vector is not Line nor Polygon type");
 
-}// namespace landr
-} /* namespace openfluid */
+
+  if (!Vector.containsField(Column))
+  {
+    std::ostringstream s;
+    s << "Unable to find the column " << Column << " in GeoVector.";
+    throw openfluid::base::FrameworkException(
+        "LandRGraph::setAttributeFromVectorLocation", s.str());
+  }
+
+  addAttribute(AttributeName);
+
+  setlocale(LC_NUMERIC, "C");
+
+  OGRLayer* Layer0 = Vector.getLayer(0);
+  Layer0->ResetReading();
+
+  int columnIndex=Vector.getFieldIndex(Column);
+
+
+  LandRGraph::Entities_t::iterator it = m_Entities.begin();
+  LandRGraph::Entities_t::iterator ite = m_Entities.end();
+
+
+  for (; it != ite; ++it)
+  {
+    geos::geom::Point* Centroid=(*it)->getCentroid();
+
+    OGRFeature* Feat;
+    while ((Feat = Layer0->GetNextFeature()) != NULL)
+    {
+      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
+
+      // c++ cast doesn't work (have to use the C API instead)
+      geos::geom::Geometry* GeosGeom =
+          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
+
+
+      if(Centroid->isWithinDistance(GeosGeom,Thresh))
+      {
+        if (Vector.isFieldOfType(Column, OFTInteger))
+        {
+          int value=Feat->GetFieldAsInteger(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
+        }
+        else if (Vector.isFieldOfType(Column, OFTReal))
+        {
+          double value=Feat->GetFieldAsDouble(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
+        }
+        else
+        {
+          std::string value=Feat->GetFieldAsString(columnIndex);
+          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
+        }
+
+      }
+      // destroying the feature destroys also the associated OGRGeom
+      OGRFeature::DestroyFeature(Feat);
+      delete GeosGeom;
+
+    }
+    Layer0->ResetReading();
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } // namespace landr, openfluid

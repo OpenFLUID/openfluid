@@ -53,8 +53,10 @@
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_isLineInFace)
 {
@@ -104,8 +106,10 @@ BOOST_AUTO_TEST_CASE(check_isLineInFace)
   BOOST_CHECK(!Edge.isLineInFace(WrongEntity));
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 {
@@ -166,15 +170,7 @@ BOOST_AUTO_TEST_CASE(check_addRemoveAttribute)
 
 }
 
+
 // =====================================================================
 // =====================================================================
-
-
-
-
-
-
-
-
-
 

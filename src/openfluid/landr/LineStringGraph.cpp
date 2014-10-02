@@ -58,11 +58,12 @@
 #include <algorithm>
 
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
+
 
 // =====================================================================
 // =====================================================================
+
 
 LineStringGraph::LineStringGraph() :
             LandRGraph()
@@ -70,8 +71,10 @@ LineStringGraph::LineStringGraph() :
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) :
             LandRGraph(Val)
@@ -79,8 +82,10 @@ LineStringGraph::LineStringGraph(openfluid::core::GeoVectorValue& Val) :
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringGraph::LineStringGraph(openfluid::landr::VectorDataset& Vect) :
             LandRGraph(Vect)
@@ -88,16 +93,20 @@ LineStringGraph::LineStringGraph(openfluid::landr::VectorDataset& Vect) :
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringGraph::~LineStringGraph()
 {
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
 {
@@ -107,8 +116,10 @@ LineStringGraph* LineStringGraph::create(openfluid::core::GeoVectorValue& Val)
   return Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringGraph* LineStringGraph::create(openfluid::landr::VectorDataset& Vect)
 {
@@ -118,8 +129,10 @@ LineStringGraph* LineStringGraph::create(openfluid::landr::VectorDataset& Vect)
   return Graph;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringGraph* LineStringGraph::create(const LandRGraph::Entities_t& Entities)
 {
@@ -129,27 +142,20 @@ LineStringGraph* LineStringGraph::create(const LandRGraph::Entities_t& Entities)
   return Graph;
 }
 
-// =====================================================================
-// =====================================================================
-
-//LineStringGraph* LineStringGraph::clone()
-//{
-//  if (mp_Vector)
-//    return LineStringGraph::create(*mp_Vector);
-//  else
-//    return LineStringGraph::create(getEntities());
-//}
 
 // =====================================================================
 // =====================================================================
+
 
 LandRGraph::GraphType LineStringGraph::getType()
 {
   return LINESTRING;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LineStringGraph::addEntity(LandREntity* Entity)
 {
@@ -187,8 +193,10 @@ void LineStringGraph::addEntity(LandREntity* Entity)
   delete Coordinates;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandREntity* LineStringGraph::getNewEntity(const geos::geom::Geometry* Geom,
                                            unsigned int OfldId)
@@ -196,8 +204,10 @@ LandREntity* LineStringGraph::getNewEntity(const geos::geom::Geometry* Geom,
   return new LineStringEntity(Geom, OfldId);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LineStringGraph::removeEntity(int OfldId)
 {
@@ -223,16 +233,20 @@ void LineStringGraph::removeEntity(int OfldId)
   removeUnusedNodes();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringEntity* LineStringGraph::getEntity(int OfldId)
 {
   return dynamic_cast<LineStringEntity*>(LandRGraph::getEntity(OfldId));
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LineStringEntity* LineStringGraph::getLastLineStringEntity()
 {
@@ -244,8 +258,10 @@ LineStringEntity* LineStringGraph::getLastLineStringEntity()
   return *EndEntities.begin();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<LineStringEntity*> LineStringGraph::getEndLineStringEntities()
 {
@@ -267,8 +283,10 @@ std::vector<LineStringEntity*> LineStringGraph::getEndLineStringEntities()
   return EndEntities;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
 {
@@ -290,11 +308,12 @@ std::vector<LineStringEntity*> LineStringGraph::getStartLineStringEntities()
   return StartEntities;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-float* LineStringGraph::getRasterValueForEntityStartNode(
-    LineStringEntity& Entity)
+
+float* LineStringGraph::getRasterValueForEntityStartNode(LineStringEntity& Entity)
 {
   float* Val = 0;
 
@@ -312,8 +331,10 @@ float* LineStringGraph::getRasterValueForEntityStartNode(
   return Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 float* LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
 {
@@ -332,11 +353,12 @@ float* LineStringGraph::getRasterValueForEntityEndNode(LineStringEntity& Entity)
   return Val;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::setAttributeFromRasterValueAtStartNode(
-    const std::string& AttributeName)
+
+void LineStringGraph::setAttributeFromRasterValueAtStartNode(const std::string& AttributeName)
 {
   addAttribute(AttributeName);
   LandRGraph::Entities_t::iterator it = m_Entities.begin();
@@ -361,11 +383,12 @@ void LineStringGraph::setAttributeFromRasterValueAtStartNode(
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::setAttributeFromRasterValueAtEndNode(
-    const std::string& AttributeName)
+
+void LineStringGraph::setAttributeFromRasterValueAtEndNode(const std::string& AttributeName)
 {
   addAttribute(AttributeName);
 
@@ -392,11 +415,12 @@ void LineStringGraph::setAttributeFromRasterValueAtEndNode(
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::reverseLineStringEntity(
-    LineStringEntity& Entity)
+
+void LineStringGraph::reverseLineStringEntity(LineStringEntity& Entity)
 {
 
   const geos::geom::LineString* Ent=Entity.getLine();
@@ -413,13 +437,12 @@ void LineStringGraph::reverseLineStringEntity(
         "LineStringGraph::reverseLineStringEntity",s.str());
   }
 
-
-
-
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool LineStringGraph::isLineStringGraphArborescence( )
 {
@@ -467,13 +490,14 @@ bool LineStringGraph::isLineStringGraphArborescence( )
       return false;
   }
 
-
   return true;
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& AttributeName)
 {
@@ -518,182 +542,13 @@ void LineStringGraph::setAttributeFromMeanRasterValues(const std::string& Attrib
   }
 }
 
-// =====================================================================
-// =====================================================================
-
-void LineStringGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::core::GeoVectorValue& Vector,
-                                                     const std::string& Column,double Thresh)
-{
-  if (!Vector.isLineType())
-    throw openfluid::base::FrameworkException(
-        "LineStringGraph::setAttributeFromVectorLocation",
-        "Vector is not a Line type");
-
-
-  if (!Vector.containsField(Column))
-  {
-    std::ostringstream s;
-    s << "Unable to find the column " << Column << " in GeoVector.";
-    throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorId", s.str());
-  }
-
-  addAttribute(AttributeName);
-
-  setlocale(LC_NUMERIC, "C");
-
-  OGRLayer* Layer0 = Vector.getLayer(0);
-  Layer0->ResetReading();
-
-  int columnIndex=Vector.getFieldIndex(Column);
-
-
-  LandRGraph::Entities_t::iterator it = m_Entities.begin();
-  LandRGraph::Entities_t::iterator ite = m_Entities.end();
-
-  for (; it != ite; ++it)
-  {
-
-    OGRFeature* Feat;
-    while ((Feat = Layer0->GetNextFeature()) != NULL)
-    {
-      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-      // c++ cast doesn't work (have to use the C API instead)
-      geos::geom::Geometry* GeosGeom =
-          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-      const  geos::geom::LineString*  Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getLine();
-      const geos::geom::Coordinate FirstCoord=Line->getCoordinateN(0);
-      const geos::geom::Coordinate SecondCoord=Line->getCoordinateN(1);
-      geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
-      geos::geom::Coordinate CoordInteriorPoint;
-      LineSegment.midPoint(CoordInteriorPoint);
-      geos::geom::Point* CentroLine=mp_Factory->createPoint(CoordInteriorPoint);
-
-      if (CentroLine->isWithinDistance(GeosGeom,Thresh))
-      {
-        if (Vector.isFieldOfType(Column, OFTInteger))
-        {
-          int value=Feat->GetFieldAsInteger(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
-          break;
-        }
-        else if (Vector.isFieldOfType(Column, OFTReal))
-        {
-          double value=Feat->GetFieldAsDouble(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
-          break;
-        }
-        else
-        {
-          std::string value=Feat->GetFieldAsString(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
-          break;
-        }
-
-      }
-      // destroying the feature destroys also the associated OGRGeom
-      OGRFeature::DestroyFeature(Feat);
-      delete GeosGeom;
-      delete CentroLine;
-
-    }
-    Layer0->ResetReading();
-  }
-
-}
 
 // =====================================================================
 // =====================================================================
 
-void LineStringGraph::setAttributeFromVectorLocation(const std::string& AttributeName, openfluid::landr::VectorDataset& Vector,
-                                                     const std::string& Column,double Thresh)
-{
-  if (!Vector.isLineType())
-    throw openfluid::base::FrameworkException(
-        "LineStringGraph::setAttributeFromVectorLocation",
-        "Vector is not a Line type");
 
-
-  if (!Vector.containsField(Column))
-  {
-    std::ostringstream s;
-    s << "Unable to find the column " << Column << " in GeoVector.";
-    throw openfluid::base::FrameworkException(
-        "LandRGraph::setAttributeFromVectorId", s.str());
-  }
-
-  addAttribute(AttributeName);
-
-  setlocale(LC_NUMERIC, "C");
-
-  OGRLayer* Layer0 = Vector.getLayer(0);
-  Layer0->ResetReading();
-
-  int columnIndex=Vector.getFieldIndex(Column);
-
-
-  LandRGraph::Entities_t::iterator it = m_Entities.begin();
-  LandRGraph::Entities_t::iterator ite = m_Entities.end();
-
-  for (; it != ite; ++it)
-  {
-
-    OGRFeature* Feat;
-    while ((Feat = Layer0->GetNextFeature()) != NULL)
-    {
-      OGRGeometry* OGRGeom = Feat->GetGeometryRef();
-
-      // c++ cast doesn't work (have to use the C API instead)
-      geos::geom::Geometry* GeosGeom =
-          (geos::geom::Geometry*) OGRGeom->exportToGEOS();
-
-      const  geos::geom::LineString*  Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getLine();
-      const geos::geom::Coordinate FirstCoord=Line->getCoordinateN(0);
-      const geos::geom::Coordinate SecondCoord=Line->getCoordinateN(1);
-      geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
-      geos::geom::Coordinate CoordInteriorPoint;
-      LineSegment.midPoint(CoordInteriorPoint);
-      geos::geom::Point* CentroLine=mp_Factory->createPoint(CoordInteriorPoint);
-
-      if (CentroLine->isWithinDistance(GeosGeom,Thresh))
-      {
-        if (Vector.isFieldOfType(Column, OFTInteger))
-        {
-          int value=Feat->GetFieldAsInteger(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::IntegerValue(value));
-          break;
-        }
-        else if (Vector.isFieldOfType(Column, OFTReal))
-        {
-          double value=Feat->GetFieldAsDouble(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::DoubleValue(value));
-          break;
-        }
-        else
-        {
-          std::string value=Feat->GetFieldAsString(columnIndex);
-          (*it)->setAttributeValue(AttributeName, new openfluid::core::StringValue(value));
-          break;
-        }
-
-      }
-      // destroying the feature destroys also the associated OGRGeom
-      OGRFeature::DestroyFeature(Feat);
-      delete GeosGeom;
-      delete CentroLine;
-
-    }
-    Layer0->ResetReading();
-  }
-
-}
-
-// =====================================================================
-// =====================================================================
-
-void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStringEntity& EntityToMerge)
+void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity,
+                                              LineStringEntity& EntityToMerge)
 {
 
   //ensure that the two LineStrings are coincident
@@ -771,10 +626,14 @@ void LineStringGraph::mergeLineStringEntities(LineStringEntity& Entity, LineStri
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntitiesByMinLength(double MinLength,bool rmDangle, bool HighDegree)
+
+std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntitiesByMinLength(double MinLength,
+                                                                                            bool rmDangle,
+                                                                                            bool HighDegree)
 {
   if (MinLength<=0.0)
     throw  openfluid::base::FrameworkException(
@@ -814,8 +673,10 @@ std::multimap<double,  LineStringEntity*> LineStringGraph::getLineStringEntities
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LineStringGraph::setOrientationByOfldId(int OfldId)
 {
@@ -896,14 +757,10 @@ void LineStringGraph::setOrientationByOfldId(int OfldId)
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-
-
-
-
-} // namespace landr
-} /* namespace openfluid */
+} } // namespace landr, openfluid
 

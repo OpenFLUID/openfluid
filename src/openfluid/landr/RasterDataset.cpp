@@ -48,8 +48,10 @@
 
 namespace openfluid { namespace landr {
 
+
 // =====================================================================
 // =====================================================================
+
 
 RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
     mp_GeoTransform(0)
@@ -72,8 +74,10 @@ RasterDataset::RasterDataset(openfluid::core::GeoRasterValue& Value) :
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 RasterDataset::RasterDataset(const RasterDataset& Other) :
     mp_GeoTransform(0)
@@ -97,8 +101,10 @@ RasterDataset::RasterDataset(const RasterDataset& Other) :
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 RasterDataset::~RasterDataset()
 {
@@ -106,35 +112,42 @@ RasterDataset::~RasterDataset()
   delete[] mp_GeoTransform;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GDALDataset* RasterDataset::getDataset()
 {
   return mp_Dataset;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GDALDataset* RasterDataset::getDataset() const
 {
   return mp_Dataset;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 GDALRasterBand* RasterDataset::getRasterBand(unsigned int RasterBandIndex)
 {
   return mp_Dataset->GetRasterBand(RasterBandIndex);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::pair<int, int> RasterDataset::getPixelFromCoordinate(
-    geos::geom::Coordinate Coo)
+
+std::pair<int, int> RasterDataset::getPixelFromCoordinate(geos::geom::Coordinate Coo)
 {
   int offsetX = int((Coo.x - getOrigin()->x) / getPixelWidth());
   int offsetY = int((Coo.y - getOrigin()->y) / getPixelHeight());
@@ -142,8 +155,10 @@ std::pair<int, int> RasterDataset::getPixelFromCoordinate(
   return std::make_pair(offsetX, offsetY);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 geos::geom::Coordinate* RasterDataset::getOrigin()
 {
@@ -153,8 +168,10 @@ geos::geom::Coordinate* RasterDataset::getOrigin()
   return new geos::geom::Coordinate(mp_GeoTransform[0], mp_GeoTransform[3]);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void RasterDataset::computeGeoTransform()
 {
@@ -166,8 +183,10 @@ void RasterDataset::computeGeoTransform()
         "Error while getting GeoTransform information");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 double RasterDataset::getPixelWidth()
 {
@@ -177,8 +196,10 @@ double RasterDataset::getPixelWidth()
   return mp_GeoTransform[1];
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 double RasterDataset::getPixelHeight()
 {
@@ -188,8 +209,10 @@ double RasterDataset::getPixelHeight()
   return mp_GeoTransform[5];
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<float> RasterDataset::getValuesOfLine(int LineIndex,
                                                   unsigned int RasterBandIndex)
@@ -212,11 +235,13 @@ std::vector<float> RasterDataset::getValuesOfLine(int LineIndex,
   return Val;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<float> RasterDataset::getValuesOfColumn(
-    int ColIndex, unsigned int RasterBandIndex)
+
+std::vector<float> RasterDataset::getValuesOfColumn(int ColIndex,
+                                                    unsigned int RasterBandIndex)
 {
   std::vector<float> Val;
 
@@ -236,10 +261,13 @@ std::vector<float> RasterDataset::getValuesOfColumn(
   return Val;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-float RasterDataset::getValueOfPixel(int ColIndex, int LineIndex,
+
+float RasterDataset::getValueOfPixel(int ColIndex,
+                                     int LineIndex,
                                      unsigned int RasterBandIndex)
 {
   float Val;
@@ -262,8 +290,10 @@ float RasterDataset::getValueOfPixel(int ColIndex, int LineIndex,
   return Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 float RasterDataset::getValueOfCoordinate(geos::geom::Coordinate Coo,
                                           unsigned int RasterBandIndex)
@@ -273,11 +303,14 @@ float RasterDataset::getValueOfCoordinate(geos::geom::Coordinate Coo,
   return getValueOfPixel(Pixel.first, Pixel.second, RasterBandIndex);
 }
 
+
 // =====================================================================
 // =====================================================================
 
-openfluid::landr::VectorDataset* RasterDataset::polygonize(
-    const std::string& FileName, std::string FieldName, unsigned int RasterBandIndex)
+
+openfluid::landr::VectorDataset* RasterDataset::polygonize(const std::string& FileName,
+                                                           std::string FieldName,
+                                                           unsigned int RasterBandIndex)
 {
   if (!mp_PolygonizedByRasterBandIndex.count(RasterBandIndex))
   {
@@ -314,16 +347,19 @@ openfluid::landr::VectorDataset* RasterDataset::polygonize(
   return mp_PolygonizedByRasterBandIndex.at(RasterBandIndex);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string RasterDataset::getDefaultPolygonizedFieldName()
 {
   return "PixelVal";
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}
-} // namespaces
+
+} } // namespaces landr openfluid

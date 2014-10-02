@@ -43,11 +43,12 @@
 #include <geos/geom/Point.h>
 #include <algorithm>
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
+
 
 // =====================================================================
 // =====================================================================
+
 
 LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int OfldId) :
     mp_Geom(Geom), m_OfldId(OfldId), mp_Neighbours(0)
@@ -57,8 +58,10 @@ LandREntity::LandREntity(const geos::geom::Geometry* Geom, unsigned int OfldId) 
   m_Lenght = mp_Geom->getLength();
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandREntity::~LandREntity()
 {
@@ -72,48 +75,60 @@ LandREntity::~LandREntity()
     delete it->second;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 const geos::geom::Geometry* LandREntity::getGeometry()
 {
   return mp_Geom;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 unsigned int LandREntity::getOfldId() const
 {
   return m_OfldId;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 geos::geom::Point* LandREntity::getCentroid() const
 {
   return mp_Centroid;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 double LandREntity::getArea() const
 {
   return m_Area;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 double LandREntity::getLength() const
 {
   return m_Lenght;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::set<LandREntity*>* LandREntity::getNeighbours()
 {
@@ -123,8 +138,10 @@ std::set<LandREntity*>* LandREntity::getNeighbours()
   return mp_Neighbours;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool LandREntity::getAttributeValue(const std::string& AttributeName,
                                     core::Value& Value) const
@@ -141,8 +158,10 @@ bool LandREntity::getAttributeValue(const std::string& AttributeName,
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool LandREntity::setAttributeValue(const std::string& AttributeName,
                                     const core::Value* Value)
@@ -161,16 +180,20 @@ bool LandREntity::setAttributeValue(const std::string& AttributeName,
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 double LandREntity::getDistCentroCentro(LandREntity& Other)
 {
   return mp_Centroid->distance(Other.getCentroid());
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 LandREntity* LandREntity::getNeighbour_MinDistCentroCentro()
 {
@@ -197,8 +220,9 @@ LandREntity* LandREntity::getNeighbour_MinDistCentroCentro()
                                                          (LandREntity*) 0;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-}// namespace landr
-} /* namespace openfluid */
+
+} }// namespaces landr, openfluid

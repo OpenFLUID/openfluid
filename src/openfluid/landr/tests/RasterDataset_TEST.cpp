@@ -54,8 +54,10 @@
 #include <openfluid/tools.hpp>
 #include <geos/geom/Coordinate.h>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_constructor)
 {
@@ -72,8 +74,10 @@ BOOST_AUTO_TEST_CASE(check_constructor)
   delete Rast;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_Properties)
 {
@@ -102,8 +106,10 @@ BOOST_AUTO_TEST_CASE(check_Properties)
   delete Rast;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_CoordinateToPixel)
 {
@@ -129,8 +135,10 @@ BOOST_AUTO_TEST_CASE(check_CoordinateToPixel)
   delete Rast;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getValues)
 {
@@ -194,8 +202,10 @@ BOOST_AUTO_TEST_CASE(check_getValues)
   delete Rast;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
 {
@@ -231,8 +241,10 @@ BOOST_AUTO_TEST_CASE(check_getValueOfCoordinate)
   delete Rast;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_Polygonize)
 {
@@ -284,6 +296,7 @@ BOOST_AUTO_TEST_CASE(check_Polygonize)
   delete Rast;
   delete VectorVal;
 }
+
 
 // =====================================================================
 // =====================================================================

@@ -60,15 +60,12 @@
 #include <geos/geom/LineString.h>
 #include <geos/geom/GeometryFactory.h>
 #include <geos/geom/LineSegment.h>
-#include <geos/geom/Point.h>
 #include <algorithm>
 
 
-
-
-
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
 {
@@ -85,8 +82,10 @@ BOOST_AUTO_TEST_CASE(check_construction_fromGeovectorValue)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
 {
@@ -132,8 +131,10 @@ BOOST_AUTO_TEST_CASE(check_construction_fromEntityVector)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
 {
@@ -183,8 +184,10 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 //BOOST_AUTO_TEST_CASE(check_clone)
 //{
@@ -205,8 +208,10 @@ BOOST_AUTO_TEST_CASE(check_cloneFromEntityVector)
 //  delete Val;
 //}
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_StartsEnds)
 {
@@ -230,8 +235,10 @@ BOOST_AUTO_TEST_CASE(check_StartsEnds)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getEntity)
 {
@@ -250,8 +257,10 @@ BOOST_AUTO_TEST_CASE(check_getEntity)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getOfldIdOrderedEntities)
 {
@@ -274,8 +283,10 @@ BOOST_AUTO_TEST_CASE(check_getOfldIdOrderedEntities)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_loopMacros)
 {
@@ -317,8 +328,10 @@ BOOST_AUTO_TEST_CASE(check_loopMacros)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_RemoveEntity)
 {
@@ -357,8 +370,10 @@ BOOST_AUTO_TEST_CASE(check_RemoveEntity)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_intPixelType)
 {
@@ -387,8 +402,11 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_intPixelType)
   delete Vector;
   delete Raster;
 }
+
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float32PixelType)
 {
@@ -418,8 +436,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float32PixelTy
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float64PixelType)
 {
@@ -448,8 +468,11 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtStartNode_float64PixelTy
   delete Vector;
   delete Raster;
 }
+
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_intPixelType)
 {
@@ -478,8 +501,11 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_intPixelType)
   delete Vector;
   delete Raster;
 }
+
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float32PixelType)
 {
@@ -509,8 +535,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float32PixelType
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType)
 {
@@ -539,8 +567,11 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtEndNode_float64PixelType
   delete Vector;
   delete Raster;
 }
+
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
 {
@@ -570,8 +601,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_intPixelType)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelType)
 {
@@ -601,8 +634,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float32PixelTyp
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelType)
 {
@@ -632,8 +667,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromRasterValueAtCentroid_float64PixelTyp
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_reverse_orientation_LineStringEntity)
 {
@@ -658,8 +695,10 @@ BOOST_AUTO_TEST_CASE(check_reverse_orientation_LineStringEntity)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
 {
@@ -708,9 +747,9 @@ BOOST_AUTO_TEST_CASE(check_isLineStringGraphArborescence)
 
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
@@ -741,8 +780,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_intPixelType)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
 {
@@ -772,8 +813,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float32PixelType)
   delete Raster;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
 {
@@ -803,82 +846,10 @@ BOOST_AUTO_TEST_CASE(check_setAttributeFromMeanRasterValues_float64PixelType)
   delete Raster;
 }
 
-// =====================================================================
-// =====================================================================
-
-BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGraph)
-{
-  openfluid::core::GeoVectorValue* Vector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
-
-  openfluid::landr::LineStringGraph* Graph =
-      openfluid::landr::LineStringGraph::create(*Vector);
-
-  openfluid::core::GeoVectorValue* PolygonVector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
-
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*PolygonVector, "OFLD_ID"),openfluid::base::FrameworkException);
-
-  openfluid::core::GeoVectorValue* OtherVector = new openfluid::core::GeoVectorValue(
-      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "reach2.shp");
-
-  BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
-
-  Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "TYPE",0.5);
-  std::vector<std::string> vAttributes=Graph->getAttributeNames();
-  BOOST_CHECK_EQUAL(vAttributes.empty(),false);
-
-  openfluid::landr::LineStringEntity* Entity=Graph->getEntity(1);
-  openfluid::core::IntegerValue IntegerValue(0);
-  Entity->getAttributeValue("attribut", IntegerValue);
-  BOOST_CHECK_EQUAL( IntegerValue.get(), 15);
-
-  Entity=Graph->getEntity(2);
-  Entity->getAttributeValue("attribut", IntegerValue);
-  BOOST_CHECK_EQUAL( IntegerValue.get(), 15);
-
-  Entity=Graph->getEntity(4);
-  Entity->getAttributeValue("attribut", IntegerValue);
-  BOOST_CHECK_EQUAL( IntegerValue.get(), 14);
-
-  openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "reach2.shp");
-
-  openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
-  Graph->setAttributeFromVectorLocation("attribut",*Vect, "myvalue",0.5);
-  openfluid::core::DoubleValue DoubleValue(0);
-
-  Entity=Graph->getEntity(7);
-  Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 154.26));
-
-  Entity=Graph->getEntity(1);
-  Entity->getAttributeValue("attribut", DoubleValue);
-  BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 17.14));
-
-
-  Graph->setAttributeFromVectorLocation("attribut",*Vect, "comment",0.5);
-  openfluid::core::StringValue StringValue("");
-
-  Entity=Graph->getEntity(7);
-  Entity->getAttributeValue("attribut", StringValue);
-  BOOST_CHECK_EQUAL( StringValue.get(), "reach5");
-
-  Entity=Graph->getEntity(1);
-  Entity->getAttributeValue("attribut", StringValue);
-  BOOST_CHECK_EQUAL( StringValue.get(), "reach1");
-
-
-
-  delete Graph;
-  delete Vector;
-  delete OtherVector;
-  delete PolygonVector;
-  delete Vect;
-
-}
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
 {
@@ -949,8 +920,10 @@ BOOST_AUTO_TEST_CASE(check_mergedLineStringEntity)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getLineStringEntityByMinLength)
 {
@@ -992,23 +965,27 @@ BOOST_AUTO_TEST_CASE(check_getLineStringEntityByMinLength)
 
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction_from_MultiLineString)
 {
   openfluid::core::GeoVectorValue* Val = new openfluid::core::GeoVectorValue(
       CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "MultiLine.shp");
 
-  openfluid::landr::LineStringGraph* Graph;
+  openfluid::landr::LineStringGraph* Graph=0;
   BOOST_CHECK_THROW( Graph =
       openfluid::landr::LineStringGraph::create(*Val),openfluid::base::FrameworkException);
 
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(setOrientationByOfldId)
 {
@@ -1030,9 +1007,7 @@ BOOST_AUTO_TEST_CASE(setOrientationByOfldId)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
-
-
-
 

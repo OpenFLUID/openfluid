@@ -51,8 +51,10 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <geos/geom/Geometry.h>
 
+
 // =====================================================================
 // =====================================================================
+
 
 void deleteIfExists(std::string Path)
 {
@@ -66,6 +68,7 @@ void deleteIfExists(std::string Path)
   }
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -127,6 +130,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_WrongVectorFormat)
 // =====================================================================
 // =====================================================================
 
+
 BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
 {
   openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR,
@@ -147,6 +151,7 @@ BOOST_AUTO_TEST_CASE(check_constructor_fromValue)
   delete Vect;
   delete Vect2;
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -188,8 +193,10 @@ BOOST_AUTO_TEST_CASE(check_copyToDisk)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_Properties)
 {
@@ -210,8 +217,10 @@ BOOST_AUTO_TEST_CASE(check_Properties)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_addField)
 {
@@ -232,8 +241,10 @@ BOOST_AUTO_TEST_CASE(check_addField)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_parse)
 {
@@ -292,3 +303,51 @@ BOOST_AUTO_TEST_CASE(check_parse)
   delete Vect;
   delete Geom;
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+BOOST_AUTO_TEST_CASE(check_Geometry_Properties)
+{
+  openfluid::core::GeoVectorValue ValuePolyg(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "SU.shp");
+
+  openfluid::landr::VectorDataset* VectPolyg = new openfluid::landr::VectorDataset(
+      ValuePolyg);
+
+  BOOST_CHECK(!VectPolyg->isLineType());
+  BOOST_CHECK(!VectPolyg->isPointType());
+  BOOST_CHECK(VectPolyg->isPolygonType());
+
+  openfluid::core::GeoVectorValue ValueLine(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS.shp");
+
+  openfluid::landr::VectorDataset* VectLine = new openfluid::landr::VectorDataset(
+      ValueLine);
+
+  BOOST_CHECK(VectLine->isLineType());
+  BOOST_CHECK(!VectLine->isPointType());
+  BOOST_CHECK(!VectLine->isPolygonType());
+
+  delete VectLine;
+
+  openfluid::core::GeoVectorValue ValuePoint(
+      CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "PU.shp");
+
+  openfluid::landr::VectorDataset* VectPoint = new openfluid::landr::VectorDataset(
+      ValuePoint);
+
+  BOOST_CHECK(!VectPoint->isLineType());
+  BOOST_CHECK(VectPoint->isPointType());
+  BOOST_CHECK(!VectPoint->isPolygonType());
+
+  delete VectPoint;
+
+}
+
+
+// =====================================================================
+// =====================================================================
+

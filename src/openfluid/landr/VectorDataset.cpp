@@ -55,6 +55,10 @@
 namespace openfluid { namespace landr {
 
 
+// =====================================================================
+// =====================================================================
+
+
 VectorDataset::VectorDataset(const std::string& FileName)
 {
   std::string DefaultDriverName="ESRI Shapefile";
@@ -96,8 +100,10 @@ VectorDataset::VectorDataset(const std::string& FileName)
   mp_DataSource->SetDriver(Driver);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
 {
@@ -138,8 +144,10 @@ VectorDataset::VectorDataset(openfluid::core::GeoVectorValue& Value)
         + "Creation of OGRDataSource failed.");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 VectorDataset::VectorDataset(const VectorDataset& Other)
 {
@@ -180,8 +188,10 @@ VectorDataset::VectorDataset(const VectorDataset& Other)
         + "Creation of OGRDataSource failed.");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string VectorDataset::getTimestampedPath(const std::string& OriginalFileName)
 {
@@ -198,8 +208,10 @@ std::string VectorDataset::getTimestampedPath(const std::string& OriginalFileNam
       + Ext);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::string VectorDataset::getInitializedTmpPath()
 {
@@ -212,8 +224,10 @@ std::string VectorDataset::getInitializedTmpPath()
   return TmpPath;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool VectorDataset::isAlreadyExisting(const std::string& Path)
 {
@@ -228,8 +242,10 @@ bool VectorDataset::isAlreadyExisting(const std::string& Path)
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 VectorDataset::~VectorDataset()
 {
@@ -244,26 +260,33 @@ VectorDataset::~VectorDataset()
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 OGRDataSource* VectorDataset::getDataSource()
 {
   return mp_DataSource;
 }
 
+
 // =======================================y==============================
 // =====================================================================
+
 
 OGRDataSource* VectorDataset::getDataSource() const
 {
   return mp_DataSource;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void VectorDataset::copyToDisk(const std::string& FilePath, const std::string& FileName,
+
+void VectorDataset::copyToDisk(const std::string& FilePath,
+                               const std::string& FileName,
                                bool ReplaceIfExists)
 {
   OGRSFDriver* Driver = mp_DataSource->GetDriver();
@@ -307,8 +330,10 @@ void VectorDataset::copyToDisk(const std::string& FilePath, const std::string& F
   OGRDataSource::DestroyDataSource(NewDS);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void VectorDataset::addALayer(std::string LayerName,
                               OGRwkbGeometryType LayerType,
@@ -343,26 +368,33 @@ void VectorDataset::addALayer(std::string LayerName,
         + "Opening of OGRDataSource failed.");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 OGRLayer* VectorDataset::getLayer(unsigned int LayerIndex)
 {
   return mp_DataSource->GetLayer(LayerIndex);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 OGRFeatureDefn* VectorDataset::getLayerDef(unsigned int LayerIndex)
 {
   return getLayer(LayerIndex)->GetLayerDefn();
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void VectorDataset::addAField(const std::string& FieldName, OGRFieldType FieldType,
+
+void VectorDataset::addAField(const std::string& FieldName,
+                              OGRFieldType FieldType,
                               unsigned int LayerIndex)
 {
   OGRFieldDefn Field(FieldName.c_str(), FieldType);
@@ -373,24 +405,30 @@ void VectorDataset::addAField(const std::string& FieldName, OGRFieldType FieldTy
         "Creating field \"" + FieldName + "\" failed.");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool VectorDataset::isLineType(unsigned int LayerIndex)
 {
   return getLayerDef(LayerIndex)->GetGeomType() == wkbLineString;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool VectorDataset::isPolygonType(unsigned int LayerIndex)
 {
   return getLayerDef(LayerIndex)->GetGeomType() == wkbPolygon;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 bool VectorDataset::containsField(const std::string& FieldName,
                                   unsigned int LayerIndex)
@@ -398,18 +436,24 @@ bool VectorDataset::containsField(const std::string& FieldName,
   return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str()) != -1;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-int VectorDataset::getFieldIndex(const std::string& FieldName, unsigned int LayerIndex)
+
+int VectorDataset::getFieldIndex(const std::string& FieldName,
+                                 unsigned int LayerIndex)
 {
   return getLayerDef(LayerIndex)->GetFieldIndex(FieldName.c_str());
 }
 
+
 // =====================================================================
 // =====================================================================
 
-bool VectorDataset::isFieldOfType(const std::string& FieldName, OGRFieldType FieldType,
+
+bool VectorDataset::isFieldOfType(const std::string& FieldName,
+                                  OGRFieldType FieldType,
                                   unsigned int LayerIndex)
 {
   if (!containsField(FieldName))
@@ -421,10 +465,13 @@ bool VectorDataset::isFieldOfType(const std::string& FieldName, OGRFieldType Fie
       == FieldType;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-bool VectorDataset::isIntValueSet(const std::string& FieldName, int Value,
+
+bool VectorDataset::isIntValueSet(const std::string& FieldName,
+                                  int Value,
                                   unsigned int LayerIndex)
 {
   if (!isFieldOfType(FieldName, OFTInteger, LayerIndex))
@@ -452,8 +499,10 @@ bool VectorDataset::isIntValueSet(const std::string& FieldName, int Value,
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 VectorDataset::FeaturesList_t VectorDataset::getFeatures(
     unsigned int LayerIndex)
@@ -464,8 +513,10 @@ VectorDataset::FeaturesList_t VectorDataset::getFeatures(
   return m_Features.at(LayerIndex);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 geos::geom::Geometry* VectorDataset::getGeometries(unsigned int LayerIndex)
 {
@@ -475,8 +526,10 @@ geos::geom::Geometry* VectorDataset::getGeometries(unsigned int LayerIndex)
   return m_Geometries.at(LayerIndex);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 // TODO add an option to allow choice of check validity or not (because it's time consuming)
 void VectorDataset::parse(unsigned int LayerIndex)
@@ -542,8 +595,20 @@ void VectorDataset::parse(unsigned int LayerIndex)
         + m_Geometries.at(LayerIndex)->toString());
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
+bool VectorDataset::isPointType(unsigned int LayerIndex)
+{
+  return getLayerDef(LayerIndex)->GetGeomType() == wkbPoint;
 }
-} // namespaces
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+} } // namespaces openfluid, landr

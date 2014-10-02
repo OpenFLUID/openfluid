@@ -52,10 +52,12 @@
 #include <geos/planargraph/Node.h>
 #include <geos/geom/Geometry.h>
 #include <geos/geom/LineString.h>
-#include <geos/geom/Point.h>
+
+
 
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
@@ -91,8 +93,10 @@ BOOST_AUTO_TEST_CASE(check_construction)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_clone)
 {
@@ -132,8 +136,10 @@ BOOST_AUTO_TEST_CASE(check_clone)
   delete CopyEntity;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_nodes)
 {
@@ -162,8 +168,10 @@ BOOST_AUTO_TEST_CASE(check_nodes)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_LineOrientNeighbours)
 {
@@ -223,8 +231,10 @@ BOOST_AUTO_TEST_CASE(check_LineOrientNeighbours)
   delete Val;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_Neighbours)
 {
@@ -250,6 +260,7 @@ BOOST_AUTO_TEST_CASE(check_Neighbours)
   delete Graph;
   delete Val;
 }
+
 
 // =====================================================================
 // =====================================================================

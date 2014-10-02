@@ -102,8 +102,10 @@
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
 #include <geos/operation/distance/DistanceOp.h>
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_MergesWith1ResultLine)
 {
@@ -148,8 +150,10 @@ BOOST_AUTO_TEST_CASE(check_MergesWith1ResultLine)
   delete MergedLS;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
 {
@@ -222,8 +226,10 @@ BOOST_AUTO_TEST_CASE(check_MergesWith2ResultLines)
   delete MergedLS2;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
 {
@@ -252,8 +258,10 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfExteriorRings)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
 {
@@ -281,8 +289,10 @@ BOOST_AUTO_TEST_CASE(check_getVectorOfLines)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
 {
@@ -326,8 +336,10 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_simple)
   delete VectRS;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
 {
@@ -384,8 +396,10 @@ BOOST_AUTO_TEST_CASE(check_getPolygonizedGeometry_simple)
   delete VectRS;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
 {
@@ -465,8 +479,10 @@ BOOST_AUTO_TEST_CASE(check_polygonize_simple_2SU2RS)
   delete VectRS2;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
 {
@@ -528,8 +544,10 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys)
   delete VectSU2;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
 {
@@ -618,8 +636,10 @@ BOOST_AUTO_TEST_CASE(check_polygonize_medium2Polys1Line)
   delete Vect3;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
 {
@@ -702,8 +722,10 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual)
   delete Vect3;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
 {
@@ -779,8 +801,10 @@ BOOST_AUTO_TEST_CASE(check_getNodedLines_virtual_snap)
   delete Vect2;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
 {
@@ -825,6 +849,8 @@ BOOST_AUTO_TEST_CASE(check_intersect_2Polygons)
 
 
 }
+
+
 // =====================================================================
 // =====================================================================
 
@@ -879,9 +905,9 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoint)
 
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 
 
 BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
@@ -945,11 +971,12 @@ BOOST_AUTO_TEST_CASE(check_splitLineStringByPoints)
   delete Point1;
   delete Point2;
 
-
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
 {
@@ -1025,8 +1052,8 @@ BOOST_AUTO_TEST_CASE(check_intersect_horseshoe_with_polygon)
   delete VectHole;
   delete VectIsland;
 
-
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -1088,11 +1115,12 @@ BOOST_AUTO_TEST_CASE(check_cleanLines_after_Intersect2Polys)
     delete cleanLines->at(i);
   delete cleanLines;
 
-
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(check_getNodesFromVectorOfLines)
 {
@@ -1112,8 +1140,10 @@ BOOST_AUTO_TEST_CASE(check_getNodesFromVectorOfLines)
   delete Vect;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 BOOST_AUTO_TEST_CASE(markInvertedLineStringEntityUsingDFS)
 {
@@ -1136,7 +1166,7 @@ BOOST_AUTO_TEST_CASE(markInvertedLineStringEntityUsingDFS)
 
 }
 
-// =====================================================================
-// =====================================================================
 
+// =====================================================================
+// =====================================================================
 

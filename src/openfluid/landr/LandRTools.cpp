@@ -61,14 +61,14 @@
 #include <geos/precision/SimpleGeometryPrecisionReducer.h>
 
 
-namespace openfluid {
-namespace landr {
+namespace openfluid { namespace landr {
+
 
 // =====================================================================
 // =====================================================================
 
-geos::geom::LineString* LandRTools::getMergedLineStringFromGeometry(
-    geos::geom::Geometry* Geom)
+
+geos::geom::LineString* LandRTools::getMergedLineStringFromGeometry(geos::geom::Geometry* Geom)
 {
   geos::geom::LineString* LS = 0;
 
@@ -89,11 +89,12 @@ geos::geom::LineString* LandRTools::getMergedLineStringFromGeometry(
   return LS;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::LineString*>* LandRTools::getMergedLineStringsFromGeometry(
-    geos::geom::Geometry* Geom)
+
+std::vector<geos::geom::LineString*>* LandRTools::getMergedLineStringsFromGeometry(geos::geom::Geometry* Geom)
 {
   std::vector<geos::geom::LineString*>* LS = 0;
 
@@ -118,11 +119,12 @@ std::vector<geos::geom::LineString*>* LandRTools::getMergedLineStringsFromGeomet
   return LS;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(
-    openfluid::landr::VectorDataset& Val)
+
+std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isPolygonType())
     throw openfluid::base::FrameworkException(
@@ -142,11 +144,12 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfExteriorRings(
   return Lines;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(
-    openfluid::landr::VectorDataset& Val)
+
+std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(openfluid::landr::VectorDataset& Val)
 {
   if (!Val.isLineType())
     throw openfluid::base::FrameworkException(
@@ -166,12 +169,15 @@ std::vector<geos::geom::LineString*> LandRTools::getVectorOfLines(
   return Lines;
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
-    geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2,
-    double SnapTolerance,double PrecisionReducer)
+
+std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(geos::geom::Geometry* Geom1,
+                                                                geos::geom::Geometry* Geom2,
+                                                                double SnapTolerance,
+                                                                double PrecisionReducer)
 {
   try
   {
@@ -225,13 +231,14 @@ std::vector<geos::geom::LineString*>* LandRTools::getNodedLines(
   return (std::vector<geos::geom::LineString*>*) 0;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
-    geos::geom::Geometry& Geom1, geos::geom::Geometry& Geom2,
-    double SnapTolerance)
+geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(geos::geom::Geometry& Geom1,
+                                                          geos::geom::Geometry& Geom2,
+                                                          double SnapTolerance)
 {
   GEOM_PTR_PAIR PrepGeom;
 
@@ -252,9 +259,9 @@ geos::geom::Geometry* LandRTools::computeSnapOverlayUnion(
 }
 
 
+// =====================================================================
+// =====================================================================
 
-// =====================================================================
-// =====================================================================
 
 bool LandRTools::exists(geos::geom::LineString* Line,
                         std::list<geos::geom::LineString*> RefLines,
@@ -271,8 +278,10 @@ bool LandRTools::exists(geos::geom::LineString* Line,
   return false;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRTools::polygonizeGeometry(std::vector<geos::geom::Geometry*>& Lines,
                                        std::vector<geos::geom::Polygon*>& Polygons,
@@ -294,8 +303,10 @@ void LandRTools::polygonizeGeometry(std::vector<geos::geom::Geometry*>& Lines,
   delete P;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
 {
@@ -325,11 +336,13 @@ void LandRTools::markVisitedNodesUsingDFS(geos::planargraph::Node* Node )
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(
-    geos::geom::Geometry* Geom1, geos::geom::Geometry* Geom2)
+
+std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(geos::geom::Geometry* Geom1,
+                                                                       geos::geom::Geometry* Geom2)
 {
   try
   {
@@ -378,8 +391,10 @@ std::vector<geos::geom::Polygon*> LandRTools::computeIntersectPolygons(
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::geom::LineString& Entity,
                                                                          geos::geom::Point& Point,
@@ -482,6 +497,7 @@ std::vector<geos::geom::LineString*> LandRTools::splitLineStringByPoint(geos::ge
   return vEntities;
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -521,12 +537,13 @@ void LandRTools::splitLineStringByPoints(geos::geom::LineString& Entity,
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(
-    std::vector<geos::geom::LineString*> vLines,double SnapTolerance)
+std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(std::vector<geos::geom::LineString*> vLines,
+                                                                   double SnapTolerance)
 {
   try
   {
@@ -581,12 +598,14 @@ std::vector<geos::geom::LineString*>* LandRTools::cleanLineStrings(
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
+
 std::vector<geos::geom::Point*> LandRTools::getNodesFromVectorOfLines(std::vector<geos::geom::LineString*>& NodedLines)
 {
-  std::vector<geos::geom::Point*>vPoints;
+  std::vector<geos::geom::Point*> vPoints;
 
   std::vector<geos::geom::LineString*>::iterator it=NodedLines.begin();
   std::vector<geos::geom::LineString*>::iterator ite=NodedLines.end();
@@ -633,10 +652,13 @@ std::vector<geos::geom::Point*> LandRTools::getNodesFromVectorOfLines(std::vecto
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
-void LandRTools::markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* Node,std::vector<int>& vectIdent )
+
+void LandRTools::markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* Node,
+                                                      std::vector<int>& vectIdent )
 {
   Node->setVisited(true);
 
@@ -668,12 +690,11 @@ void LandRTools::markInvertedLineStringEntityUsingDFS(geos::planargraph::Node* N
 
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-
-}
-} /* namespace openfluid */
+} } // namespace openfluid, landr
 
 
