@@ -54,7 +54,7 @@
   Macro for the beginning of definition of observer hook
 */
 #define BEGIN_OBSERVER_SIGNATURE(id) \
-  openfluid::ware::ObserverSignature* GetWareSignature() \
+  openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL() \
   { \
     openfluid::ware::ObserverSignature* Signature = new openfluid::ware::ObserverSignature(); \
     Signature->setABIVersion(openfluid::config::FULL_VERSION); \

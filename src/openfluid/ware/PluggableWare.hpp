@@ -57,19 +57,24 @@ namespace openfluid { namespace ware {
   Hook function name of ware plugin body
 */
 #define WAREBODY_PROC_NAME "GetWareBody"
+#define WAREBODY_PROC_DECL GetWareBody
 
 /**
   Hook function name of ware plugin signature
 */
 #define WARESIGNATURE_PROC_NAME "GetWareSignature"
+#define WARESIGNATURE_PROC_DECL GetWareSignature
 
 /**
   Hook function name of ware ABI version
 */
 #define WAREABIVERSION_PROC_NAME "GetWareABIVersion"
+#define WAREABIVERSION_PROC_DECL GetWareABIVersion
+
 
 // =====================================================================
 // =====================================================================
+
 
 typedef std::string WareParamKey_t;
 typedef openfluid::core::StringValue WareParamValue_t;

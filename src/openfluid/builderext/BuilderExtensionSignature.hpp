@@ -52,7 +52,7 @@
   Macro for the beginning of definition of signature hook
 */
 #define BEGIN_BUILDEREXT_SIGNATURE(id,exttype) \
-  openfluid::builderext::BuilderExtensionSignature* GetWareSignature() \
+  openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL() \
   { \
     openfluid::builderext::BuilderExtensionSignature* Signature = new openfluid::builderext::BuilderExtensionSignature(); \
     Signature->setABIVersion(openfluid::config::FULL_VERSION); \
@@ -89,9 +89,9 @@
 #define DECLARE_MENUTEXT(menutext) Signature->MenuText = (menutext);
 
 
+// =====================================================================
+// =====================================================================
 
-// =====================================================================
-// =====================================================================
 
 #include <QString>
 

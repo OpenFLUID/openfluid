@@ -56,7 +56,7 @@
   Macro for the beginning of definition of signature hook
 */
 #define BEGIN_SIMULATOR_SIGNATURE(id) \
-  openfluid::ware::SimulatorSignature* GetWareSignature() \
+  openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL() \
   { \
     openfluid::ware::SimulatorSignature* Signature = new openfluid::ware::SimulatorSignature(); \
     Signature->setABIVersion(openfluid::config::FULL_VERSION); \

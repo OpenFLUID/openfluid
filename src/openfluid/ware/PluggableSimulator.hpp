@@ -67,9 +67,9 @@
 #define DECLARE_SIMULATOR_PLUGIN \
   extern "C" \
   { \
-    DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::ware::PluggableSimulator* GetWareBody(); \
-    DLLEXPORT openfluid::ware::SimulatorSignature* GetWareSignature(); \
+    DLLEXPORT std::string WAREABIVERSION_PROC_DECL(); \
+    DLLEXPORT openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL(); \
+    DLLEXPORT openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL(); \
   }
 
 
@@ -82,12 +82,12 @@
   @param[in] pluginclassname The name of the class to instantiate
 */
 #define DEFINE_SIMULATOR_CLASS(pluginclassname) \
-  std::string GetWareABIVersion() \
+  std::string WAREABIVERSION_PROC_DECL() \
   { \
     return std::string(openfluid::config::FULL_VERSION); \
   } \
   \
-  openfluid::ware::PluggableSimulator* GetWareBody() \
+  openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL() \
   { \
     return new pluginclassname(); \
   }

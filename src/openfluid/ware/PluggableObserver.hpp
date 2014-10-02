@@ -57,9 +57,9 @@
 #define DECLARE_OBSERVER_PLUGIN \
   extern "C" \
   { \
-    DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::ware::PluggableObserver* GetWareBody(); \
-    DLLEXPORT openfluid::ware::ObserverSignature* GetWareSignature(); \
+    DLLEXPORT std::string WAREABIVERSION_PROC_DECL(); \
+    DLLEXPORT openfluid::ware::PluggableObserver* WAREBODY_PROC_DECL(); \
+    DLLEXPORT openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL(); \
   }
 
 
@@ -74,12 +74,12 @@
   @param[in] pluginclassname The name of the class to instantiate
 */
 #define DEFINE_OBSERVER_CLASS(pluginclassname) \
-  std::string GetWareABIVersion() \
+  std::string WAREABIVERSION_PROC_DECL() \
   { \
     return std::string(openfluid::config::FULL_VERSION); \
   } \
   \
-  openfluid::ware::PluggableObserver* GetWareBody() \
+  openfluid::ware::PluggableObserver* WAREBODY_PROC_DECL() \
   { \
     return new pluginclassname(); \
   }

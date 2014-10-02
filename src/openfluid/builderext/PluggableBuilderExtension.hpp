@@ -57,9 +57,9 @@
 #define DECLARE_BUILDEREXT_PLUGIN \
   extern "C" \
   { \
-    DLLEXPORT std::string GetWareABIVersion(); \
-    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* GetWareBody(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* GetWareSignature(); \
+    DLLEXPORT std::string WAREABIVERSION_PROC_DECL(); \
+    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* WAREBODY_PROC_DECL(); \
+    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL(); \
   }
 
 
@@ -74,12 +74,12 @@
   @param[in] pluginclassname The name of the class to instantiate
 */
 #define DEFINE_BUILDEREXT_CLASS(pluginclassname) \
-  std::string GetWareABIVersion() \
+  std::string WAREABIVERSION_PROC_DECL() \
   { \
     return std::string(openfluid::config::FULL_VERSION); \
   } \
   \
-  openfluid::builderext::PluggableBuilderExtension* GetWareBody() \
+  openfluid::builderext::PluggableBuilderExtension* WAREBODY_PROC_DECL() \
   { \
     return new pluginclassname(); \
   }
@@ -100,6 +100,7 @@ class DLLEXPORT PluggableBuilderExtension : public openfluid::ware::PluggableWar
     openfluid::fluidx::AdvancedFluidXDescriptor* mp_AdvancedDesc;
 
     openfluid::ware::WareParams_t m_Config;
+
 
   public:
 
