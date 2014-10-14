@@ -39,10 +39,10 @@
  */
 
 
-
-
 #include "ui_SignatureWidget.h"
 #include "SignatureWidget.hpp"
+
+#include <QDir>
 
 
 SignatureWidget::SignatureWidget(QWidget* Parent):
@@ -147,7 +147,7 @@ void SignatureWidget::updateGeneral(const openfluid::machine::ModelItemSignature
       Contents += convertStdString("");
 
     Contents += "<hr>";
-    Contents += "<b>" + tr("Plugin path") + ":</b> " + convertStdString(Signature->FileFullPath);
+    Contents += "<b>" + tr("Plugin path") + ":</b> " + QDir::toNativeSeparators(convertStdString(Signature->FileFullPath));
     Contents += "<hr>";
     Contents += "<b>" + tr("Version") + ":</b> " + convertStdString(Signature->Signature->Version) + "<br/>";
 
