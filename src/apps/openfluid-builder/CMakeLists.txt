@@ -230,8 +230,29 @@ SET(BUILDER_EXTENSIONS_HPP extensions/ExtensionPluginsManager.hpp
 QT4_WRAP_UI(BUILDER_EXTENSIONS_UI )
 
 
+### RESOURCES #
 
-QT4_ADD_RESOURCES(BUILDER_RC resources/openfluidbuilder.qrc)
+QT4_ADD_RESOURCES(BUILDER_QRC resources/openfluidbuilder.qrc)
+
+SET(BUILDER_WIN32RC)
+
+IF(WIN32)
+  IF(MINGW)
+    # resource compilation for MinGW
+    ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/resources/openfluidbuilder-win32.o
+                       COMMAND windres.exe 
+                       ARGS -I${CMAKE_CURRENT_SOURCE_DIR}/resources 
+                            -i${CMAKE_CURRENT_SOURCE_DIR}/resources/openfluidbuilder-win32.rc 
+                            -o${CMAKE_CURRENT_BINARY_DIR}/resources/openfluidbuilder-win32.o)
+    SET(BUILDER_WIN32RC ${CMAKE_CURRENT_BINARY_DIR}/resources/openfluidbuilder-win32.o)
+  ELSE()
+    SET(BUILDER_WIN32RC ${CMAKE_CURRENT_SOURCE_DIR}/resources/openfluidbuilder-win32.rc)
+  ENDIF()
+ENDIF()
+
+
+
+### MAIN LIB AND EXECUTABLE #
 
 ADD_DEFINITIONS(-DBUILDINGDLL)
 
@@ -245,7 +266,7 @@ ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP
                                           ${BUILDER_RUNCONFIG_CPP} ${BUILDER_RUNCONFIG_HPP} ${BUILDER_RUNCONFIG_UI}
                                           ${BUILDER_OUTPUTS_CPP} ${BUILDER_OUTPUTS_HPP} ${BUILDER_OUTPUTS_UI}
                                           ${BUILDER_EXTENSIONS_CPP} ${BUILDER_EXTENSIONS_HPP} ${BUILDER_EXTENSIONS_UI}
-                                          ${BUILDER_RC})
+                                          ${BUILDER_QRC})
 
 
 TARGET_LINK_LIBRARIES(openfluid-builder-main 
@@ -283,7 +304,7 @@ IF(WIN32)
   SET(BUILDER_GUI_OPTION WIN32)
 ENDIF()
 
-ADD_EXECUTABLE(openfluid-builder ${BUILDER_GUI_OPTION} main.cpp)
+ADD_EXECUTABLE(openfluid-builder ${BUILDER_GUI_OPTION} main.cpp ${BUILDER_WIN32RC})
 
 SET_TARGET_PROPERTIES(openfluid-builder PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${BIN_OUTPUT_PATH}"
                                                    AUTOMOC ON)

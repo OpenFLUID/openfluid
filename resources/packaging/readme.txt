@@ -20,7 +20,7 @@ Open a terminal and type the following command to get help
 
 
 Also refer to documentation available on the OpenFLUID web site:
-https://www.umr-lisah.fr/openfluid/
+http://www.openfluid-project.org/
 
 
 
