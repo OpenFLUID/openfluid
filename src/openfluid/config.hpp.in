@@ -31,8 +31,8 @@
 
 
 
-#ifndef __CONFIG_HPP__
-#define __CONFIG_HPP__
+#ifndef __OPENFLUID_CONFIG_HPP__
+#define __OPENFLUID_CONFIG_HPP__
 
 
 #include <string>
@@ -135,6 +135,7 @@ const unsigned int SIMULATORS_MAXNUMTHREADS = @OPENFLUID_SIMSMAXNUMTHREADS@;
 
 const std::string SHARE_TRANSLATIONS_PATH = "@SHARE_TRANSLATIONS_PATH@";
 const std::string TRANSLATIONS_FILEROOT = "@OPENFLUID_TRANSLATIONS_FILEROOT@";
+
 
 } } //namespaces
 
