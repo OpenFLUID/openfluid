@@ -88,16 +88,25 @@ BOOST_AUTO_TEST_CASE(test_SetSimpleValues)
   openfluid::base::PreferencesManager* PrefMgr = openfluid::base::PreferencesManager::getInstance();
 
 
+  QStringList WksPaths;
+  WksPaths.append("aa/bb/cc");
+  WksPaths.append("ii/jj/kk");
+  WksPaths.append("xx/yy/zz");
+
   PrefMgr->setLang("oc");
   PrefMgr->setRecentMax(10);
-  PrefMgr->setWorkspacePath("aa/bb/cc");
+  PrefMgr->setWorkspacesPaths(WksPaths);
   PrefMgr->setDeltaT(777);
   PrefMgr->setBegin("2222-11-11T00:11:22");
   PrefMgr->setEnd("2221-12-12=11;22;33");
 
   BOOST_CHECK_EQUAL(PrefMgr->getRecentMax(),10);
   BOOST_CHECK(PrefMgr->getLang() == "oc");
+  BOOST_CHECK_EQUAL(PrefMgr->getWorkspacesPaths().count(),3);
   BOOST_CHECK(PrefMgr->getWorkspacePath() == "aa/bb/cc");
+  BOOST_CHECK(PrefMgr->getWorkspacesPaths()[0] == "aa/bb/cc");
+  BOOST_CHECK(PrefMgr->getWorkspacesPaths()[2] == "xx/yy/zz");
+  BOOST_CHECK(PrefMgr->getProjectsPath() == "aa/bb/cc/projects");
   BOOST_CHECK_EQUAL(PrefMgr->getDeltaT(),777);
   BOOST_CHECK(PrefMgr->getBegin() == "2222-11-11T00:11:22");
   BOOST_CHECK(PrefMgr->getEnd() == "2221-12-12=11;22;33");

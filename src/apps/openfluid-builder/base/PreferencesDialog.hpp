@@ -84,8 +84,6 @@ class PreferencesDialog : public OpenFLUIDDialog
 
     void enableAutoSaveBeforeRun(bool AutoSave);
 
-    void updateWorkspacePath();
-
     void updateDeltaT(int Val);
 
     void updatePeriodBegin(const QDateTime& DT);
@@ -98,38 +96,18 @@ class PreferencesDialog : public OpenFLUIDDialog
 
     void removeMarketPlace();
 
-    void addSimSearchPath();
+    void processSimUserPathsUpdate();
 
-    void removeSimSearchPath();
+    void processObsUserPathsUpdate();
 
-    void moveupSimSearchPath();
+    void processBextUserPathsUpdate();
 
-    void movedownSimSearchPath();
-
-    void addObsSearchPath();
-
-    void removeObsSearchPath();
-
-    void moveupObsSearchPath();
-
-    void movedownObsSearchPath();
-
-    void addBExtSearchPath();
-
-    void removeBExtSearchPath();
-
-    void moveupBExtSearchPath();
-
-    void movedownBExtSearchPath();
+    void processWorkspacesPathsUpdate();
 
 
   private:
 
     Ui::PreferencesDialog *ui;
-
-    WaresSearchPathsWidget* mp_SimSearchPaths;
-    WaresSearchPathsWidget* mp_ObsSearchPaths;
-    WaresSearchPathsWidget* mp_BExtSearchPaths;
 
     bool m_RecentsChanged;
 
@@ -142,16 +120,6 @@ class PreferencesDialog : public OpenFLUIDDialog
     void initialize();
 
     void updateMarketplacesList();
-
-    static QStringList extractSearchPath(WaresSearchPathsWidget* W);
-
-    bool addSearchPath(WaresSearchPathsWidget* W);
-
-    bool removeSearchPath(WaresSearchPathsWidget* W);
-
-    bool moveupSearchPath(WaresSearchPathsWidget* W);
-
-    bool movedownSearchPath(WaresSearchPathsWidget* W);
 
 
   public:

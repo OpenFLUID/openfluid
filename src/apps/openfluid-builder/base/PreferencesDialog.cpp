@@ -39,7 +39,6 @@
  */
 
 
-#include <QFileDialog>
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -54,6 +53,8 @@
 #include "WaresSearchPathsWidget.hpp"
 #include "EditMarketplaceDialog.hpp"
 
+
+#include <QFileDialog>
 
 
 PreferencesDialog::PreferencesDialog(QWidget* Parent):
@@ -80,26 +81,21 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent):
   ui->RemoveMarketPlaceButton->setIcon(QIcon(":/icons/remove.png"));
   ui->RemoveMarketPlaceButton->setIconSize(QSize(20,20));
 
-
-  mp_SimSearchPaths = new WaresSearchPathsWidget();
-  mp_ObsSearchPaths = new WaresSearchPathsWidget();
-  mp_BExtSearchPaths = new WaresSearchPathsWidget();
-
-  ui->PathsTabWidget->addTab(mp_SimSearchPaths,tr("Simulators"));
-  ui->PathsTabWidget->addTab(mp_ObsSearchPaths,tr("Observers"));
-  ui->PathsTabWidget->addTab(mp_BExtSearchPaths,tr("Builder-extensions"));
-
-
   QTreeWidgetItem *PrefItem;
 
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0, tr("Interface"));
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
-  PrefItem->setText(0, tr("Paths"));
+  PrefItem->setText(0, tr("Workspaces"));
+  PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
+  PrefItem->setText(0, tr("Wares paths"));
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0, tr("Simulations"));
   PrefItem = new QTreeWidgetItem(ui->PrefsTreeWidget);
   PrefItem->setText(0, tr("Market"));
+
+  ui->WorkspacesPathsWidget->setAllowEmpty(false);
+  ui->WaresPathsTabWidget->setCurrentIndex(0);
 
   initialize();
 
@@ -116,24 +112,16 @@ PreferencesDialog::PreferencesDialog(QWidget* Parent):
   connect(ui->AttributesRemovalCheckBox,SIGNAL(toggled(bool)),this,SLOT(confirmAttributesRemoval(bool)));
 
 
-  connect(ui->WorkspacePathButton,SIGNAL(clicked()),this,SLOT(updateWorkspacePath()));
+  connect(ui->WorkspacesPathsWidget,SIGNAL(pathsUpdated()),this,SLOT(processWorkspacesPathsUpdate()));
+
+  connect(ui->SimulatorsSearchPathsWidget,SIGNAL(userPathsUpdated()),this,SLOT(processSimUserPathsUpdate()));
+  connect(ui->ObserversSearchPathsWidget,SIGNAL(userPathsUpdated()),this,SLOT(processObsUserPathsUpdate()));
+  connect(ui->BuilderextsSearchPathsWidget,SIGNAL(userPathsUpdated()),this,SLOT(processBextUserPathsUpdate()));
+
 
   connect(ui->DeltaTSpinBox,SIGNAL(valueChanged(int)),this,SLOT(updateDeltaT(int)));
   connect(ui->BeginDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(updatePeriodBegin(const QDateTime&)));
   connect(ui->EndDateEdit,SIGNAL(dateTimeChanged(const QDateTime&)),this,SLOT(updatePeriodEnd(const QDateTime&)));
-
-  connect(mp_SimSearchPaths->ui->AddButton,SIGNAL(clicked()),this,SLOT(addSimSearchPath()));
-  connect(mp_SimSearchPaths->ui->RemoveButton,SIGNAL(clicked()),this,SLOT(removeSimSearchPath()));
-  connect(mp_SimSearchPaths->ui->UpButton,SIGNAL(clicked()),this,SLOT(moveupSimSearchPath()));
-  connect(mp_SimSearchPaths->ui->DownButton,SIGNAL(clicked()),this,SLOT(movedownSimSearchPath()));
-  connect(mp_ObsSearchPaths->ui->AddButton,SIGNAL(clicked()),this,SLOT(addObsSearchPath()));
-  connect(mp_ObsSearchPaths->ui->RemoveButton,SIGNAL(clicked()),this,SLOT(removeObsSearchPath()));
-  connect(mp_ObsSearchPaths->ui->UpButton,SIGNAL(clicked()),this,SLOT(moveupObsSearchPath()));
-  connect(mp_ObsSearchPaths->ui->DownButton,SIGNAL(clicked()),this,SLOT(movedownObsSearchPath()));
-  connect(mp_BExtSearchPaths->ui->AddButton,SIGNAL(clicked()),this,SLOT(addBExtSearchPath()));
-  connect(mp_BExtSearchPaths->ui->RemoveButton,SIGNAL(clicked()),this,SLOT(removeBExtSearchPath()));
-  connect(mp_BExtSearchPaths->ui->UpButton,SIGNAL(clicked()),this,SLOT(moveupBExtSearchPath()));
-  connect(mp_BExtSearchPaths->ui->DownButton,SIGNAL(clicked()),this,SLOT(movedownBExtSearchPath()));
 
 
   connect(ui->AddMarketPlaceButton,SIGNAL(clicked()),this,SLOT(addMarketPlace()));
@@ -195,12 +183,18 @@ void PreferencesDialog::initialize()
   ui->ConnectionsRemovalCheckBox->setChecked(PrefsMan->isSpatialConnsRemovalConfirm());
   ui->AttributesRemovalCheckBox->setChecked(PrefsMan->isSpatialAttrsRemovalConfirm());
 
-  // Paths
-  ui->WorkspacePathEdit->setText(QDir::toNativeSeparators(PrefsMan->getWorkspacePath()));
-  mp_SimSearchPaths->initialize(PrefsMan->getExtraSimulatorsPaths(),StringVectorToQStringList(RunEnv->getDefaultSimulatorsPluginsPaths()));
-  mp_ObsSearchPaths->initialize(PrefsMan->getExtraObserversPaths(),StringVectorToQStringList(RunEnv->getDefaultObserversPluginsPaths()));
-  mp_BExtSearchPaths->initialize(PrefsMan->getExtraExtensionsPaths(),
-                                 StringVectorToQStringList(ExtensionPluginsManager::getInstance()->getPluginsStandardSearchPaths()));
+
+  // Workspaces paths
+  ui->WorkspacesPathsWidget->setPathsList(PrefsMan->getWorkspacesPaths());
+
+
+  // Wares search paths
+  ui->SimulatorsSearchPathsWidget->initialize(PrefsMan->getExtraSimulatorsPaths(),
+                                              StringVectorToQStringList(RunEnv->getDefaultSimulatorsPluginsPaths()));
+  ui->ObserversSearchPathsWidget->initialize(PrefsMan->getExtraObserversPaths(),
+                                             StringVectorToQStringList(RunEnv->getDefaultObserversPluginsPaths()));
+  ui->BuilderextsSearchPathsWidget->initialize(PrefsMan->getExtraExtensionsPaths(),
+                                               StringVectorToQStringList(ExtensionPluginsManager::getInstance()->getPluginsStandardSearchPaths()));
 
 
   // Simulations
@@ -247,91 +241,6 @@ void PreferencesDialog::updateMarketplacesList()
   }
 
   ui->MarketPlacesListWidget->sortItems();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QStringList PreferencesDialog::extractSearchPath(WaresSearchPathsWidget* W)
-{
-  QStringList QSL;
-
-  for (int i =0; i < W->ui->UserListWidget->count();++i)
-  {
-    QSL.append(QDir::fromNativeSeparators(W->ui->UserListWidget->item(i)->text()));
-  }
-
-  return QSL;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PreferencesDialog::addSearchPath(WaresSearchPathsWidget* W)
-{
-  QString SelectedDir = QFileDialog::getExistingDirectory(this,tr("Select search path"));
-
-  if (SelectedDir !=  "")
-  {
-    W->ui->UserListWidget->addItem(QDir::toNativeSeparators(SelectedDir));
-    return true;
-  }
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PreferencesDialog::removeSearchPath(WaresSearchPathsWidget* W)
-{
-  if (W->ui->UserListWidget->currentRow()>=0)
-  {
-    delete W->ui->UserListWidget->takeItem(W->ui->UserListWidget->currentRow());
-    return true;
-  }
-  return false;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PreferencesDialog::moveupSearchPath(WaresSearchPathsWidget* W)
-{
-  int Index = W->ui->UserListWidget->currentRow();
-
-  if (Index == 0) return false;
-
-  QListWidgetItem *Item = W->ui->UserListWidget->takeItem(Index);
-  W->ui->UserListWidget->insertItem(Index-1, Item);
-  W->ui->UserListWidget->setCurrentRow(Index-1);
-
-  return true;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool PreferencesDialog::movedownSearchPath(WaresSearchPathsWidget* W)
-{
-  int Index = W->ui->UserListWidget->currentRow();
-
-  if (Index == W->ui->UserListWidget->count()-1) return false;
-
-  QListWidgetItem *Item = W->ui->UserListWidget->takeItem(Index);
-  W->ui->UserListWidget->insertItem(Index+1, Item);
-  W->ui->UserListWidget->setCurrentRow(Index+1);
-
-  return true;
 }
 
 
@@ -453,22 +362,6 @@ void PreferencesDialog::enableAutoSaveBeforeRun(bool AutoSave)
 // =====================================================================
 
 
-void PreferencesDialog::updateWorkspacePath()
-{
-  QString SelectedDir = QFileDialog::getExistingDirectory(this,tr("Select working directory"));
-
-  if (SelectedDir !=  "")
-  {
-    ui->WorkspacePathEdit->setText(QDir::toNativeSeparators(SelectedDir));
-    openfluid::base::PreferencesManager::getInstance()->setWorkspacePath(QDir::fromNativeSeparators(SelectedDir));
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
 void PreferencesDialog::updateDeltaT(int Val)
 {
   openfluid::base::PreferencesManager::getInstance()->setDeltaT(Val);
@@ -562,13 +455,10 @@ void PreferencesDialog::removeMarketPlace()
 // =====================================================================
 
 
-void PreferencesDialog::addSimSearchPath()
+void PreferencesDialog::processSimUserPathsUpdate()
 {
-  if (addSearchPath(mp_SimSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraSimulatorsPaths(extractSearchPath(mp_SimSearchPaths));
-    m_SimPathsChanged = true;
-  }
+  openfluid::base::PreferencesManager::getInstance()->setExtraSimulatorsPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
+  m_SimPathsChanged = true;
 }
 
 
@@ -576,13 +466,10 @@ void PreferencesDialog::addSimSearchPath()
 // =====================================================================
 
 
-void PreferencesDialog::removeSimSearchPath()
+void PreferencesDialog::processObsUserPathsUpdate()
 {
-  if (removeSearchPath(mp_SimSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraSimulatorsPaths(extractSearchPath(mp_SimSearchPaths));
-    m_SimPathsChanged = true;
-  }
+  openfluid::base::PreferencesManager::getInstance()->setExtraObserversPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
+  m_ObsPathsChanged = true;
 }
 
 
@@ -590,13 +477,9 @@ void PreferencesDialog::removeSimSearchPath()
 // =====================================================================
 
 
-void PreferencesDialog::moveupSimSearchPath()
+void PreferencesDialog::processBextUserPathsUpdate()
 {
-  if (moveupSearchPath(mp_SimSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraSimulatorsPaths(extractSearchPath(mp_SimSearchPaths));
-    m_SimPathsChanged = true;
-  }
+  openfluid::base::PreferencesManager::getInstance()->setExtraExtensionsPaths(ui->BuilderextsSearchPathsWidget->getUserPaths());
 }
 
 
@@ -604,121 +487,7 @@ void PreferencesDialog::moveupSimSearchPath()
 // =====================================================================
 
 
-void PreferencesDialog::movedownSimSearchPath()
+void PreferencesDialog::processWorkspacesPathsUpdate()
 {
-  if (movedownSearchPath(mp_SimSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraSimulatorsPaths(extractSearchPath(mp_SimSearchPaths));
-    m_SimPathsChanged = true;
-  }
+  openfluid::base::PreferencesManager::getInstance()->setWorkspacesPaths(ui->WorkspacesPathsWidget->getPathsList());
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::addObsSearchPath()
-{
-  if (addSearchPath(mp_ObsSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraObserversPaths(extractSearchPath(mp_ObsSearchPaths));
-    m_ObsPathsChanged = true;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::removeObsSearchPath()
-{
-  if (removeSearchPath(mp_ObsSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraObserversPaths(extractSearchPath(mp_ObsSearchPaths));
-    m_ObsPathsChanged = true;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::moveupObsSearchPath()
-{
-  if (moveupSearchPath(mp_ObsSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraObserversPaths(extractSearchPath(mp_ObsSearchPaths));
-    m_ObsPathsChanged = true;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::movedownObsSearchPath()
-{
-  if (movedownSearchPath(mp_ObsSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraObserversPaths(extractSearchPath(mp_ObsSearchPaths));
-    m_ObsPathsChanged = true;
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::addBExtSearchPath()
-{
-  if (addSearchPath(mp_BExtSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraExtensionsPaths(extractSearchPath(mp_BExtSearchPaths));
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::removeBExtSearchPath()
-{
-  if (removeSearchPath(mp_BExtSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraExtensionsPaths(extractSearchPath(mp_BExtSearchPaths));
-  }
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::moveupBExtSearchPath()
-{
-  if (moveupSearchPath(mp_BExtSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraExtensionsPaths(extractSearchPath(mp_BExtSearchPaths));
-  }
-}
-
-// =====================================================================
-// =====================================================================
-
-
-void PreferencesDialog::movedownBExtSearchPath()
-{
-  if (movedownSearchPath(mp_BExtSearchPaths))
-  {
-    openfluid::base::PreferencesManager::getInstance()->setExtraExtensionsPaths(extractSearchPath(mp_BExtSearchPaths));
-  }
-}
-
-
-

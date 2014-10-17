@@ -48,22 +48,7 @@ WaresSearchPathsWidget::WaresSearchPathsWidget(QWidget* Parent):
 {
   ui->setupUi(this);
 
-  ui->AddButton->setText("");
-  ui->AddButton->setIcon(QIcon(":/icons/add.png"));
-  ui->AddButton->setIconSize(QSize(20,20));
-
-  ui->RemoveButton->setText("");
-  ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
-  ui->RemoveButton->setIconSize(QSize(20,20));
-
-  ui->UpButton->setText("");
-  ui->UpButton->setIcon(QIcon(":/icons/go-up.png"));
-  ui->UpButton->setIconSize(QSize(20,20));
-
-  ui->DownButton->setText("");
-  ui->DownButton->setIcon(QIcon(":/icons/go-down.png"));
-  ui->DownButton->setIconSize(QSize(20,20));
-
+  connect(ui->UserPathsWidget,SIGNAL(pathsUpdated()),this,SLOT(processUserPathsUpdate()));
 }
 
 
@@ -81,12 +66,32 @@ WaresSearchPathsWidget::~WaresSearchPathsWidget()
 // =====================================================================
 
 
+void WaresSearchPathsWidget::processUserPathsUpdate()
+{
+  emit userPathsUpdated();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WaresSearchPathsWidget::initialize(const QStringList& UserPaths, const QStringList& PredefPaths)
 {
-  for (int i=0;i<UserPaths.size();++i)
-    new QListWidgetItem(QDir::toNativeSeparators(UserPaths[i]),ui->UserListWidget);
+  ui->UserPathsWidget->setPathsList(UserPaths);
 
   for (int i=0;i<PredefPaths.size();++i)
     new QListWidgetItem(QDir::toNativeSeparators(PredefPaths[i]),ui->PredefListWidget);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList WaresSearchPathsWidget::getUserPaths() const
+{
+  return ui->UserPathsWidget->getPathsList();
+}
+
 

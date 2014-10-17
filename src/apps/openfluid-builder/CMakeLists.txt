@@ -23,7 +23,8 @@ SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/ProjectModule.cpp base/ProjectWidget.cpp                     
                      base/ProjectCentral.cpp base/ProjectCheckInfos.cpp
                      base/NewProjectDialog.cpp
-                     base/PreferencesDialog.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
+                     base/PreferencesDialog.cpp 
+                     base/PathsManagementWidget.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
                      base/AboutDialog.cpp
                      base/OpenExampleProjectDialog.cpp
                      base/StatusMessagesWidget.cpp
@@ -40,7 +41,8 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
                      base/ProjectCentral.hpp base/ProjectCheckInfos.hpp
                      base/NewProjectDialog.hpp
-                     base/PreferencesDialog.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
+                     base/PreferencesDialog.hpp
+                     base/PathsManagementWidget.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
                      base/AboutDialog.hpp
                      base/OpenExampleProjectDialog.hpp
                      base/StatusMessagesWidget.hpp
@@ -53,7 +55,8 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
 
 QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
                             base/NewProjectDialog.ui
-                            base/PreferencesDialog.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
+                            base/PreferencesDialog.ui
+                            base/PathsManagementWidget.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
                             base/AboutDialog.ui
                             base/OpenExampleProjectDialog.ui
                             base/StatusMessagesWidget.ui

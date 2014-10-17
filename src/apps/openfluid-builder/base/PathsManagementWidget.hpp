@@ -31,67 +31,82 @@
 
 
 /**
-  \file WaresSearchPathsWidget.hpp
+  \file PathsManagementWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __WARESSEARCHPATHSWIDGET_HPP__
-#define __WARESSEARCHPATHSWIDGET_HPP__
-
-
-#include <QWidget>
-#include <QDir>
+#ifndef __PATHSMANAGEMENTWIDGET_HPP__
+#define __PATHSMANAGEMENTWIDGET_HPP__
 
 
 namespace Ui
 {
-  class WaresSearchPathsWidget;
+  class PathsManagementWidget;
 }
 
+#include <QWidget>
 
-class WaresSearchPathsWidget : public QWidget
+
+class PathsManagementWidget : public QWidget
 {
-  Q_OBJECT;
-
-  private:
-
-    Ui::WaresSearchPathsWidget *ui;
-
+  Q_OBJECT
 
   private slots:
 
-    void processUserPathsUpdate();
+    void addPath();
+
+    void removePath();
+
+    void moveupPath();
+
+    void movedownPath();
+
+
+  private:
+
+    Ui::PathsManagementWidget* ui;
+
+    bool m_AllowEmpty;
 
 
   signals:
 
-    void userPathsUpdated();
+    void pathsUpdated();
 
 
   public:
 
-    WaresSearchPathsWidget(QWidget* Parent = 0);
+    PathsManagementWidget(QWidget* Parent = NULL);
 
-    virtual ~WaresSearchPathsWidget();
+    ~PathsManagementWidget();
+
 
     /**
-      Initializes the ordered list of user and predefined paths.
+      Returns the ordered list of paths
+      @return The ordered lists of paths
+    */
+    QStringList getPathsList() const;
+
+
+    /**
+      Sets the ordered list of paths.
       Existing paths in the list are removed before setting the paths list
-      @param[in] UserPaths The ordered lists of user paths
-      @param[in] PredefPaths The ordered lists of static predefined paths
+      @param[in] Paths The ordered lists of paths
     */
-    void initialize(const QStringList& UserPaths, const QStringList& PredefPaths);
+    void setPathsList(const QStringList& Paths);
 
     /**
-      Returns the ordered list of user paths
-      @return The ordered lists of user paths
+      Sets if empty paths list is allowed.
+      If set to false, at least one path must remains in the list and cannot be removed.
+      @param[in] Empty The flag to allow an empty paths list
     */
-    QStringList getUserPaths() const;
+    void setAllowEmpty(bool Empty)
+    { m_AllowEmpty = Empty; };
 
 };
 
 
-#endif /* __WARESSEARCHPATHSWIDGET_HPP__ */
+#endif /* __NEWSLINEWIDGET_HPP__ */

@@ -55,6 +55,7 @@ PreferencesManager* PreferencesManager::mp_Instance = NULL;
 QString PreferencesManager::m_FileName = "";
 const int PreferencesManager::RecentProjectsLimit = 10;
 
+
 // =====================================================================
 // =====================================================================
 
@@ -95,6 +96,7 @@ PreferencesManager::PreferencesManager():
   }
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -104,8 +106,10 @@ PreferencesManager::~PreferencesManager()
   mp_Instance = 0;
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void PreferencesManager::setDefaultValues()
 {
@@ -347,14 +351,15 @@ PreferencesManager::RecentProjectsList_t PreferencesManager::getRecentProjects()
   return RPL;
 }
 
+
 // =====================================================================
 // =====================================================================
 
 
-void PreferencesManager::setWorkspacePath(const QString& WorkPath)
+void PreferencesManager::setWorkspacesPaths(const QStringList& Paths)
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
-  mp_ConfFile->setValue("workspace",WorkPath);
+  mp_ConfFile->setValue("workspace",Paths);
   mp_ConfFile->endGroup();
   mp_ConfFile->sync();
 }
@@ -364,18 +369,33 @@ void PreferencesManager::setWorkspacePath(const QString& WorkPath)
 // =====================================================================
 
 
-QString PreferencesManager::getWorkspacePath()
+QStringList PreferencesManager::getWorkspacesPaths()
 {
   mp_ConfFile->beginGroup("openfluid.builder.paths");
-  QString Dir = mp_ConfFile->value("workspace").toString();
+  QStringList PathsList = mp_ConfFile->value("workspace").toStringList();
   mp_ConfFile->endGroup();
 
-  if (Dir.isEmpty())
+  if (PathsList.isEmpty())
   {
-    Dir =
-        QString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(openfluid::config::WORKSPACE_SUBDIR).c_str());
+    PathsList.append(QString(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(openfluid::config::WORKSPACE_SUBDIR).c_str()));
   }
-  return Dir;
+
+  return PathsList;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString PreferencesManager::getWorkspacePath()
+{
+  QStringList Paths = getWorkspacesPaths();
+
+  if (!Paths.isEmpty())
+    return Paths[0];
+  else
+    return "";
 }
 
 
@@ -593,6 +613,7 @@ void PreferencesManager::setDeltaT(openfluid::core::Duration_t DeltaT)
   mp_ConfFile->sync();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -650,6 +671,7 @@ QString PreferencesManager::getBegin()
 // =====================================================================
 // =====================================================================
 
+
 void PreferencesManager::setEnd(const QString& End)
 {
   mp_ConfFile->beginGroup("openfluid.builder.runconfig");
@@ -658,6 +680,7 @@ void PreferencesManager::setEnd(const QString& End)
   mp_ConfFile->sync();
 
 }
+
 
 // =====================================================================
 // =====================================================================
@@ -712,6 +735,7 @@ void PreferencesManager::removeMarketplace(const QString& PlaceName)
   mp_ConfFile->sync();
 }
 
+
 // =====================================================================
 // =====================================================================
 
@@ -730,6 +754,7 @@ PreferencesManager::MarketPlaces_t PreferencesManager::getMarketplaces()
 
   return Places;
 }
+
 
 // =====================================================================
 // =====================================================================
