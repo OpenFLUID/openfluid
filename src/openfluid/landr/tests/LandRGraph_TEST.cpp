@@ -429,7 +429,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
 
   BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
 
-  Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "TYPE",0.5);
+  Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "TYPE",5);
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
   BOOST_CHECK_EQUAL(vAttributes.empty(),false);
 
@@ -499,7 +499,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_LineStringGrap
 
   BOOST_CHECK_THROW(Graph->setAttributeFromVectorLocation("attribut",*Vector, "No_col"),openfluid::base::FrameworkException);
 
-  Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "OFLD_ID",0.5);
+  Graph->setAttributeFromVectorLocation("attribut",*OtherVector, "OFLD_ID",0.1);
   std::vector<std::string> vAttributes=Graph->getAttributeNames();
   BOOST_CHECK_EQUAL(vAttributes.empty(),false);
 
@@ -641,7 +641,7 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
 
   openfluid::core::GeoVectorValue Value(CONFIGTESTS_INPUT_DATASETS_DIR + "/landr", "RS_complex.shp");
   openfluid::landr::VectorDataset* Vect = new openfluid::landr::VectorDataset(Value);
-  Graph->setAttributeFromVectorLocation("attribut",*Vect, "USR_HEIG",50);
+  Graph->setAttributeFromVectorLocation("attribut",*Vect, "USR_HEIG",100);
   openfluid::core::DoubleValue DoubleValue(0);
 
   Entity=Graph->getEntity(24);
@@ -650,7 +650,6 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
   DoubleValue.set(0);
   Entity=Graph->getEntity(21);
   Entity->getAttributeValue("attribut", DoubleValue);
-
   BOOST_CHECK( openfluid::tools::IsVeryClose(DoubleValue.get(), 0));
 
 
@@ -664,4 +663,5 @@ BOOST_AUTO_TEST_CASE(check_get_AVectorAttribute_from_Location_for_PolygonGraph_f
 
 // =====================================================================
 // =====================================================================
+
 
