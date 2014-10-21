@@ -43,7 +43,7 @@
 #include "ui_AddUnitDialog.h"
 #include "AddUnitToClassDialog.hpp"
 
-#include "builderconfig.hpp"
+#include <openfluid/ui/config.hpp>
 
 #include <QPushButton>
 
@@ -129,7 +129,7 @@ void AddUnitToClassDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Add spatial units class"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -137,7 +137,7 @@ void AddUnitToClassDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

@@ -48,10 +48,10 @@ namespace Ui
 
 #include <openfluid/core/Event.hpp>
 
-#include "OpenFLUIDDialog.hpp"
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 
-class AddEventDialog : public OpenFLUIDDialog
+class AddEventDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

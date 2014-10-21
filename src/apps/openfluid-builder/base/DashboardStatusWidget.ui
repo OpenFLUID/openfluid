@@ -53,7 +53,7 @@
          <number>9</number>
         </property>
         <item>
-         <widget class="ElidedLabel" name="TitleLabel">
+         <widget class="openfluid::ui::common::ElidedLabel" name="TitleLabel">
           <property name="text">
            <string notr="true">TitleLabel</string>
           </property>
@@ -149,9 +149,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ElidedLabel</class>
+   <class>openfluid::ui::common::ElidedLabel</class>
    <extends>QLabel</extends>
-   <header>ElidedLabel.hpp</header>
+   <header location="global">openfluid/ui/common/ElidedLabel.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

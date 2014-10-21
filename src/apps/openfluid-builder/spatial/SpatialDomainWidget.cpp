@@ -39,7 +39,7 @@
  */
 
 
-#include "AppTools.hpp"
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include "ui_SpatialDomainWidget.h"
 #include "SpatialDomainWidget.hpp"
@@ -87,40 +87,40 @@ SpatialDomainWidget::SpatialDomainWidget(QWidget* Parent, openfluid::fluidx::Adv
   mp_MapScene = new MapScene(m_Domain,this);
   ui->GlobalMapView->setScene(mp_MapScene);
 
-  ui->AddUnitsClassButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddUnitsClassButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddUnitsClassButton->setIconSize(QSize(20,20));
 
-  ui->AddUnitButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddUnitButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddUnitButton->setIconSize(QSize(20,20));
 
-  ui->RemoveUnitButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveUnitButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveUnitButton->setIconSize(QSize(20,20));
 
-  ui->AddConnectionButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddConnectionButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddConnectionButton->setIconSize(QSize(20,20));
 
-  ui->RemoveConnectionButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveConnectionButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveConnectionButton->setIconSize(QSize(20,20));
 
-  ui->AddAttributeButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddAttributeButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddAttributeButton->setIconSize(QSize(20,20));
 
-  ui->EditAttributesButton->setIcon(QIcon(":/icons/modify.png"));
+  ui->EditAttributesButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
   ui->EditAttributesButton->setIconSize(QSize(20,20));
 
   ui->RenameAttributeButton->setIcon(QIcon(":/icons/rename-attribute.png"));
   ui->RenameAttributeButton->setIconSize(QSize(20,20));
 
-  ui->RemoveAttributeButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveAttributeButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveAttributeButton->setIconSize(QSize(20,20));
 
-  ui->AddEventButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddEventButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddEventButton->setIconSize(QSize(20,20));
 
-  ui->EditEventButton->setIcon(QIcon(":/icons/modify.png"));
+  ui->EditEventButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
   ui->EditEventButton->setIconSize(QSize(20,20));
 
-  ui->RemoveEventsButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveEventsButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveEventsButton->setIconSize(QSize(20,20));
 
 
@@ -205,7 +205,7 @@ void SpatialDomainWidget::refresh()
 {
   // -------- prepare classes list --------
 
-  QStringList OriginalClassesList = StringSetToQStringList(m_Domain.getClassNames());
+  QStringList OriginalClassesList = openfluid::tools::toQStringList(m_Domain.getClassNames());
 
   QStringList ClassesList;
 
@@ -561,8 +561,8 @@ void SpatialDomainWidget::refreshClassAttributes()
 
   if (!m_ActiveClass.isEmpty())
   {
-    QStringList AttrNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
-    QStringList IDs = IntSetToQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+    QStringList AttrNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+    QStringList IDs = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
     ui->AttributesTableWidget->setColumnCount(AttrNames.size());
     ui->AttributesTableWidget->setRowCount(IDs.size());
@@ -725,7 +725,7 @@ void SpatialDomainWidget::setAllMapLayersVisible()
 
 void SpatialDomainWidget::addUnitsClass()
 {
-  QStringList ExistingClasses = StringSetToQStringList(m_Domain.getClassNames());
+  QStringList ExistingClasses = openfluid::tools::toQStringList(m_Domain.getClassNames());
 
   AddUnitsClassDialog AddDlg(ExistingClasses,this);
   if (AddDlg.exec() == QDialog::Accepted)
@@ -833,9 +833,9 @@ void SpatialDomainWidget::removeUnitsClass(QString ClassName)
 
 void SpatialDomainWidget::addUnit()
 {
-  QStringList AttrsNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+  QStringList AttrsNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
 
-  QStringList UnitsIDs = IntSetToQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+  QStringList UnitsIDs = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
   AddUnitToClassDialog AddDlg(m_ActiveClass,AttrsNames,UnitsIDs,this);
   if (AddDlg.exec() == QDialog::Accepted)
@@ -1038,7 +1038,7 @@ void SpatialDomainWidget::removeConnection()
 
 void SpatialDomainWidget::addAttribute()
 {
-  QStringList AttrsNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+  QStringList AttrsNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
 
   EditAttributeNameDialog AddDlg(EditAttributeNameDialog::EDIT_ADD,AttrsNames,this);
   if (AddDlg.exec() == QDialog::Accepted)
@@ -1141,7 +1141,7 @@ void SpatialDomainWidget::editAttributesValues()
 
 void SpatialDomainWidget::renameAttribute()
 {
-  QStringList AttrsNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+  QStringList AttrsNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
 
   if (AttrsNames.isEmpty())
   {
@@ -1175,7 +1175,7 @@ void SpatialDomainWidget::removeAttribute()
 {
   bool OK = true;
 
-  QStringList AttrsNames = StringSetToQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
+  QStringList AttrsNames = openfluid::tools::toQStringList(m_Domain.getAttributesNames(m_ActiveClass.toStdString()));
 
   if (AttrsNames.isEmpty())
   {
@@ -1345,7 +1345,7 @@ void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
 
 void SpatialDomainWidget::addEvent()
 {
-  QStringList UnitsIDsList = IntSetToQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+  QStringList UnitsIDsList = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
   AddEventDialog AddEventDlg(m_ActiveClass,UnitsIDsList,
                               m_AdvFluidxDesc.getRunDescriptor().getBeginDate(),
@@ -1392,7 +1392,7 @@ void SpatialDomainWidget::editEvent()
 
     if (EvDesc)
     {
-      QStringList UnitsIDsList = IntSetToQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
+      QStringList UnitsIDsList = openfluid::tools::toQStringList(m_Domain.getIDsOfClass(m_ActiveClass.toStdString()));
 
       openfluid::core::UnitID_t OriginUnitID = ui->EventsTableWidget->item(Row,1)->text().toInt();
 

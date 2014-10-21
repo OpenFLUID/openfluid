@@ -39,17 +39,17 @@
  */
 
 
+#include <openfluid/ui/config.hpp>
+
 #include "ui_EditAttributesValuesDialog.h"
 #include "EditAttributesValuesDialog.hpp"
-
-#include "builderconfig.hpp"
 
 #include <QPushButton>
 #include <QDoubleValidator>
 
 
 EditAttributesValuesDialog::EditAttributesValuesDialog(QWidget* Parent):
-  OpenFLUIDDialog(Parent), ui(new Ui::EditAttributesValuesDialog)
+  openfluid::ui::common::OpenFLUIDDialog(Parent), ui(new Ui::EditAttributesValuesDialog)
 {
 
   ui->setupUi(this);
@@ -133,7 +133,7 @@ void EditAttributesValuesDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Edit values of selected attributes"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -141,7 +141,7 @@ void EditAttributesValuesDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

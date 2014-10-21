@@ -50,23 +50,23 @@ WaresManagementWidget::WaresManagementWidget(QWidget* Parent,
 {
   ui->setupUi(this);
 
-  mp_ExpandAllWaresLabel = new ActionLabel(tr("expand all"),this);
+  mp_ExpandAllWaresLabel = new openfluid::ui::common::ActionLabel(tr("expand all"),this);
   ui->WaresButtonsLayout->addWidget(mp_ExpandAllWaresLabel);
   connect(mp_ExpandAllWaresLabel,SIGNAL(clicked()),this,SLOT(expandAll()));
 
-  mp_CollapseAllWaresLabel = new ActionLabel(tr("collapse all"),this);
+  mp_CollapseAllWaresLabel = new openfluid::ui::common::ActionLabel(tr("collapse all"),this);
   ui->WaresButtonsLayout->addWidget(mp_CollapseAllWaresLabel);
   connect(mp_CollapseAllWaresLabel,SIGNAL(clicked()),this,SLOT(collapseAll()));
 
 
-  ui->AddWareFirstButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddWareFirstButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddWareFirstButton->setIconSize(QSize(20,20));
 
   ui->AddWareSecondButton->setVisible(WithSecondAddWareButton);
 
   if (WithSecondAddWareButton)
   {
-    ui->AddWareSecondButton->setIcon(QIcon(":/icons/add.png"));
+    ui->AddWareSecondButton->setIcon(QIcon(":/ui/common/icons/add.png"));
     ui->AddWareSecondButton->setIconSize(QSize(20,20));
 
   }

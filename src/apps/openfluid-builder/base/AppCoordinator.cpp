@@ -50,11 +50,11 @@
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 #include <openfluid/buddies/ExamplesBuddy.hpp>
+#include <openfluid/ui/common/AboutDialog.hpp>
 
 #include "AppCoordinator.hpp"
 #include "MainWindow.hpp"
 #include "AppActions.hpp"
-#include "AboutDialog.hpp"
 #include "OpenExampleProjectDialog.hpp"
 #include "HomeModule.hpp"
 #include "ProjectModule.hpp"
@@ -812,9 +812,9 @@ void AppCoordinator::whenRestoreExamplesAsked()
 
 void AppCoordinator::whenAboutAsked()
 {
-  AboutDialog AboutDlg(&m_MainWindow,
-                       m_Actions.getAction("HelpOnlineWeb"),
-                       m_Actions.getAction("HelpEmail"));
+  openfluid::ui::common::AboutDialog AboutDlg(&m_MainWindow,
+                                              m_Actions.getAction("HelpOnlineWeb"),
+                                              m_Actions.getAction("HelpEmail"));
 
   AboutDlg.exec();
 }

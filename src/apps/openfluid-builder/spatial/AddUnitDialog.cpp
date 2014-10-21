@@ -47,7 +47,7 @@
 
 
 AddUnitDialog::AddUnitDialog(QWidget* Parent):
-  OpenFLUIDDialog(Parent),ui(new Ui::AddUnitDialog)
+  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::AddUnitDialog)
 {
   ui->setupUi(this);
 

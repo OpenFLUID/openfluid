@@ -39,18 +39,18 @@
  */
 
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "ui_EditProjectPropertiesDialog.h"
 #include "EditProjectPropertiesDialog.hpp"
 
-#include "builderconfig.hpp"
 
 #include <QPushButton>
 #include <QDateTime>
 
 
 EditProjectPropertiesDialog::EditProjectPropertiesDialog(QWidget* Parent):
-  OpenFLUIDDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
+  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::EditProjectPropertiesDialog)
 {
   openfluid::base::ProjectManager* PrjMan =
       openfluid::base::ProjectManager::getInstance();
@@ -98,7 +98,7 @@ EditProjectPropertiesDialog::~EditProjectPropertiesDialog()
 void EditProjectPropertiesDialog::setMessage()
 {
   ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                  .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                  .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
   ui->MessageLabel->setText(tr("Edit project properties"));
   ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
 }

@@ -38,11 +38,11 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include "ui_AddConnectionDialog.h"
 #include "AddConnectionDialog.hpp"
-#include "AppTools.hpp"
-#include "builderconfig.hpp"
+#include <openfluid/ui/config.hpp>
 
 #include <QPushButton>
 
@@ -50,7 +50,7 @@
 AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString& SrcID,
                                          const openfluid::fluidx::AdvancedDomainDescriptor* Domain,
                                          QWidget* Parent):
-  OpenFLUIDDialog(Parent),ui(new Ui::AddConnectionDialog), mp_Domain(Domain)
+  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::AddConnectionDialog), mp_Domain(Domain)
 {
   ui->setupUi(this);
 
@@ -62,7 +62,7 @@ AddConnectionDialog::AddConnectionDialog(const QString& SrcClass, const QString&
   ui->ConnectionComboBox->addItem(tr("as parent of"),BUILDER_CONNCODE_PARENTOF);
   ui->ConnectionComboBox->addItem(tr("as child of"),BUILDER_CONNCODE_CHILDOF);
 
-  QStringList Classes = StringSetToQStringList(mp_Domain->getClassNames());
+  QStringList Classes = openfluid::tools::toQStringList(mp_Domain->getClassNames());
 
   foreach(QString ClassName, Classes)
     m_ClassID[ClassName] = QStringList();
@@ -100,7 +100,7 @@ void AddConnectionDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Add connection between spatial units"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -108,7 +108,7 @@ void AddConnectionDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }
@@ -139,7 +139,7 @@ void AddConnectionDialog::updateDestIDs()
 
   QString ClassName = ui->DestClassComboBox->currentText();
   if (m_ClassID[ClassName].isEmpty())
-    m_ClassID[ClassName] = IntSetToQStringList(mp_Domain->getIDsOfClass(ClassName.toStdString()));
+    m_ClassID[ClassName] = openfluid::tools::toQStringList(mp_Domain->getIDsOfClass(ClassName.toStdString()));
 
   ui->DestIDComboBox->clear();
   ui->DestIDComboBox->addItems(m_ClassID[ClassName]);

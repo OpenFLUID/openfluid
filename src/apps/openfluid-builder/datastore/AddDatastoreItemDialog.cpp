@@ -40,7 +40,7 @@
 
 #include "ui_EditDatastoreItemDialog.h"
 #include "AddDatastoreItemDialog.hpp"
-#include "builderconfig.hpp"
+#include <openfluid/ui/config.hpp>
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/tools/QtHelpers.hpp>
@@ -56,7 +56,7 @@
 
 AddDatastoreItemDialog::AddDatastoreItemDialog(const QStringList& ExistingUnitsClass,
   const QStringList& ExistingIDs, QWidget* Parent):
-  OpenFLUIDDialog(Parent),ui(new(Ui::EditDatastoreItemDialog)),
+  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new(Ui::EditDatastoreItemDialog)),
   m_ExistingIDs(ExistingIDs)
 {
   ui->setupUi(this);
@@ -161,7 +161,7 @@ void AddDatastoreItemDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Add of a datastore item"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -169,7 +169,7 @@ void AddDatastoreItemDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

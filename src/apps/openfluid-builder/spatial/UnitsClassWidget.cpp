@@ -72,13 +72,13 @@ UnitsClassWidget::UnitsClassWidget(const QString& ClassName,
 
   ui->UnitClassLabel->setText(ClassName);
 
-  ui->UpButton->setIcon(QIcon(":/icons/go-up.png"));
+  ui->UpButton->setIcon(QIcon(":/ui/common/icons/go-up.png"));
   ui->UpButton->setIconSize(QSize(16,16));
 
-  ui->DownButton->setIcon(QIcon(":/icons/go-down.png"));
+  ui->DownButton->setIcon(QIcon(":/ui/common/icons/go-down.png"));
   ui->DownButton->setIconSize(QSize(16,16));
 
-  ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveButton->setIconSize(QSize(16,16));
 
   connect(ui->UpButton,SIGNAL(clicked()),this,SLOT(notifyUpClicked()));

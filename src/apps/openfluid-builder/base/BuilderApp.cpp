@@ -53,8 +53,6 @@
 BuilderApp::BuilderApp():
   m_Coordinator(m_MainWindow,m_Actions)
 {
-  Q_INIT_RESOURCE(openfluidbuilder);
-
   QApplication::setAttribute((Qt::AA_DontShowIconsInMenus));
 }
 

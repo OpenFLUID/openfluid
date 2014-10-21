@@ -48,10 +48,10 @@ namespace Ui
 }
 
 
-#include "OpenFLUIDDialog.hpp"
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 
-class AddUnitDialog : public OpenFLUIDDialog
+class AddUnitDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

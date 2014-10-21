@@ -83,6 +83,90 @@ std::list<std::string> toStdStringList(const QStringList& StrList)
 // =====================================================================
 
 
+QDateTime toQDateTime(openfluid::core::DateTime DT)
+{
+  QDate D(DT.getYear(),DT.getMonth(),DT.getDay());
+  QTime T(DT.getHour(),DT.getMinute(),DT.getSecond());
+
+  return QDateTime(D,T,Qt::UTC);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList toQStringList(const std::vector<std::string>& StrVect)
+{
+  QStringList QSL;
+  for (unsigned int i=0; i<StrVect.size();++i)
+    QSL.append(QString(StrVect[i].c_str()));
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList toQStringList(const std::set<std::string>& StrSet)
+{
+  QStringList QSL;
+
+  std::set<std::string>::const_iterator it;
+  std::set<std::string>::const_iterator itb = StrSet.begin();
+  std::set<std::string>::const_iterator ite = StrSet.end();
+
+  for (it=itb;it!= ite;++it)
+    QSL.append(QString((*it).c_str()));
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList toQStringList(const std::list<std::string>& StrSet)
+{
+  QStringList QSL;
+
+  std::list<std::string>::const_iterator it;
+  std::list<std::string>::const_iterator itb = StrSet.begin();
+  std::list<std::string>::const_iterator ite = StrSet.end();
+
+  for (it=itb;it!= ite;++it)
+    QSL.append(QString((*it).c_str()));
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList toQStringList(const std::set<int>& IntSet)
+{
+  QStringList QSL;
+
+  std::set<int>::const_iterator it;
+  std::set<int>::const_iterator itb = IntSet.begin();
+  std::set<int>::const_iterator ite = IntSet.end();
+
+  for (it=itb;it!= ite;++it)
+    QSL.append(QString("%1").arg(*it));
+
+  return QSL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 QString getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
                                          const QString& AllFormatsLabel)
 {

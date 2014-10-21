@@ -41,29 +41,14 @@
 #ifndef __APPTOOLS_HPP__
 #define __APPTOOLS_HPP__
 
-#include <QDateTime>
+
+#include <QString>
 #include <QColor>
 
-#include <openfluid/core/DateTime.hpp>
-
-#include <QStringList>
-#include <string>
-#include <vector>
-#include <set>
-
-
-QDateTime convertToQDateTime(openfluid::core::DateTime DT);
-
-QStringList StringVectorToQStringList(const std::vector<std::string>& StrVect);
-
-QStringList StringSetToQStringList(const std::set<std::string>& StrSet);
-
-QStringList StringListToQStringList(const std::list<std::string>& StrSet);
-
-QStringList IntSetToQStringList(const std::set<int>& IntSet);
 
 QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath = false);
 
 QColor getRandomColor();
+
 
 #endif /* __APPTOOLS_HPP__ */

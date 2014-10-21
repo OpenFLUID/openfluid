@@ -58,18 +58,18 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, boo
   ui->IDLabel->setText(QString::fromStdString(m_ID));
 
   ui->UpButton->setText("");
-  ui->UpButton->setIcon(QIcon(":/icons/go-up.png"));
+  ui->UpButton->setIcon(QIcon(":/ui/common/icons/go-up.png"));
   ui->UpButton->setIconSize(QSize(16,16));
 
   ui->DownButton->setText("");
-  ui->DownButton->setIcon(QIcon(":/icons/go-down.png"));
+  ui->DownButton->setIcon(QIcon(":/ui/common/icons/go-down.png"));
   ui->DownButton->setIconSize(QSize(16,16));
 
   ui->RemoveButton->setText("");
-  ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveButton->setIconSize(QSize(16,16));
 
-  ui->AddParamButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddParamButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddParamButton->setIconSize(QSize(16,16));
 
 
@@ -77,7 +77,7 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, boo
   if (m_Enabled) ui->EnabledCheckBox->setCheckState(Qt::Checked);
   else ui->EnabledCheckBox->setCheckState(Qt::Unchecked);
 
-  mp_ShowHideParamsLabel = new ActionLabel(tr("show parameters and informations"),ui->ParamInfoTitleWidget);
+  mp_ShowHideParamsLabel = new openfluid::ui::common::ActionLabel(tr("show parameters and informations"),ui->ParamInfoTitleWidget);
   ((QBoxLayout*)(ui->ParamInfoTitleWidget->layout()))->insertWidget(0,mp_ShowHideParamsLabel);
 
   mp_SignatureWidget = new SignatureWidget(this);

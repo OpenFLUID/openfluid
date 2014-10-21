@@ -7,5 +7,5 @@ Name: openfluid
 Description: OpenFLUID framework (with GUI components)
 Version: @FULL_VERSION@
 Requires: openfluid
-Libs: -L${libdir} -lopenfluid-guicommon
+Libs: -L${libdir} -lopenfluid-ui-common
 Cflags: -I${includedir}

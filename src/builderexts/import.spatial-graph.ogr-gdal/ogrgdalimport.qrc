@@ -1,8 +1,0 @@
-<!DOCTYPE RCC>
-<RCC version="1.0">
-  <qresource>
-    <file alias="add.png">../../apps/openfluid-builder/resources/icons/add.png</file>
-    <file alias="modify.png">../../apps/openfluid-builder/resources/icons/modify.png</file>
-    <file alias="remove.png">../../apps/openfluid-builder/resources/icons/remove.png</file>
-  </qresource>
-</RCC>

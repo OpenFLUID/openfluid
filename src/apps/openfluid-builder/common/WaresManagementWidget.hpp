@@ -43,7 +43,7 @@
 
 
 #include <QWidget>
-#include "ActionLabel.hpp"
+#include <openfluid/ui/common/ActionLabel.hpp>
 
 
 namespace Ui {
@@ -64,9 +64,9 @@ class WaresManagementWidget : public QWidget
 
   private:
 
-    ActionLabel* mp_ExpandAllWaresLabel;
+    openfluid::ui::common::ActionLabel* mp_ExpandAllWaresLabel;
 
-    ActionLabel* mp_CollapseAllWaresLabel;
+    openfluid::ui::common::ActionLabel* mp_CollapseAllWaresLabel;
 
 
   signals:

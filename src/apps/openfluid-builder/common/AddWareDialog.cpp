@@ -47,7 +47,7 @@
 
 
 AddWareDialog::AddWareDialog(QWidget* Parent):
-  OpenFLUIDDialog(Parent),ui(new Ui::AddWareDialog)
+  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::AddWareDialog)
 {
   ui->setupUi(this);
 

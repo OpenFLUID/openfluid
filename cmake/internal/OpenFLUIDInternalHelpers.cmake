@@ -155,7 +155,6 @@ MACRO(OPNFLD_ADD_BUILDER_EXTENSION EXT_NAME EXT_SRCDIR EXT_BINDIR)
                         openfluid-base 
                         openfluid-tools                        
                         openfluid-ware
-                        openfluid-guicommon
                         openfluid-builderext                        
                         ${QT_QTCORE_LIBRARIES}
                         ${QT_QTGUI_LIBRARIES}                      

@@ -152,7 +152,7 @@ font : bold;
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="ElidedLabel" name="DirectoryLabel">
+      <widget class="openfluid::ui::common::ElidedLabel" name="DirectoryLabel">
        <property name="font">
         <font>
          <weight>75</weight>
@@ -173,9 +173,9 @@ font : bold;
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ElidedLabel</class>
+   <class>openfluid::ui::common::ElidedLabel</class>
    <extends>QLabel</extends>
-   <header>ElidedLabel.hpp</header>
+   <header location="global">openfluid/ui/common/ElidedLabel.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

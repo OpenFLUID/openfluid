@@ -33,8 +33,9 @@
  \file builderconfig.hpp
  \brief Header of ...
 
+ \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  \author Aline LIBRES <libres@supagro.inra.fr>
- */
+*/
 
 
 #include <QString>
@@ -42,9 +43,6 @@
 #ifndef __BUILDERCONFIG_HPP__
 #define __BUILDERCONFIG_HPP__
 
-
-const QString BUILDER_LICENSE_TEXT = "@BUILDER_LICENSE_TEXT@";
-const QString BUILDER_AUTHORS_TEXT = "@BUILDER_AUTHORS_TEXT@";
 
 const QString BUILDEREXTS_PLUGINS_SUBDIR = "@OPENFLUID_BEXTPLUGSDIR@";
 const QString BUILDEREXTS_PLUGINS_USRDIR = "@OPENFLUID_WARESBINDIR@/@OPENFLUID_BEXTPLUGSDIR@";
@@ -61,8 +59,6 @@ const QString BUILDER_URL_EMAIL = "mailto:contact@openfluid-project.org";
 const QString BUILDER_TOOLBAR_BGCOLOR = "#2C3A4C";
 const QString BUILDER_TOOLBARBUTTON_BGCOLOR = "#3B4E66";
 const QString BUILDER_TOOLBARBUTTON_BORDERCOLOR = "#4B4B4B";
-const QString BUILDER_DIALOGBANNER_BGCOLOR = "#384A61";
-const QString BUILDER_DIALOGBANNER_WARNBGCOLOR = "#F59122";
 
 const QString BUILDER_TOOLTIP_BGCOLOR = "#2C3A4C";
 const QString BUILDER_TOOLTIP_BORDERCOLOR = "#676767";

@@ -62,7 +62,7 @@ ParameterWidget::ParameterWidget(QWidget* Parent,
   if (Removable)
   {
     ui->RemoveButton->setText("");
-    ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
+    ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
     ui->RemoveButton->setIconSize(QSize(16,16));
 
     connect(ui->RemoveButton,SIGNAL(clicked()),this,SLOT(notifyRemoveClicked()));

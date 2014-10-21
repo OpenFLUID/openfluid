@@ -53,9 +53,12 @@
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 
+#include <openfluid/tools/QtHelpers.hpp>
+
+#include <openfluid/ui/common/PreferencesDialog.hpp>
+
 #include "ProjectCentral.hpp"
 #include "ProjectModule.hpp"
-#include "PreferencesDialog.hpp"
 #include "SaveAsDialog.hpp"
 #include "EditProjectPropertiesDialog.hpp"
 
@@ -70,8 +73,6 @@
 #include "DatastoreWidget.hpp"
 #include "RunConfigurationWidget.hpp"
 #include "OutputsWidget.hpp"
-
-#include "AppTools.hpp"
 
 
 #define BUILDER_WARE_WATCHERS_DELAY 2000
@@ -157,8 +158,8 @@ void ProjectModule::updateWaresWatchersPaths()
 
   if (openfluid::base::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
-    Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths())
-          << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
+    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsPluginsPaths())
+          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraSimulatorsPluginsPaths());
 
     Paths.removeDuplicates();
 
@@ -179,8 +180,8 @@ void ProjectModule::updateWaresWatchersPaths()
   if (openfluid::base::PreferencesManager::getInstance()->isWaresWatchersActive())
   {
 
-    Paths << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths())
-          << StringVectorToQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
+    Paths << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getObserversPluginsPaths())
+          << openfluid::tools::toQStringList(openfluid::base::RuntimeEnvironment::getInstance()->getExtraObserversPluginsPaths());
 
     Paths.removeDuplicates();
 
@@ -410,7 +411,8 @@ void ProjectModule::whenPreferencesAsked()
 {
   bool WaresWatchingUpdated = false;
 
-  PreferencesDialog PrefsDlg(QApplication::activeWindow());
+  openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),true);
+  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::getInstance()->getPluginsStandardSearchPaths()));
   PrefsDlg.exec();
 
   openfluid::base::PreferencesManager* PrefsMgr =

@@ -42,7 +42,7 @@
 #define __ADDPARAMDIALOG_HPP__
 
 
-#include "OpenFLUIDDialog.hpp"
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 #include <QCompleter>
 #include <QStringList>
@@ -54,7 +54,7 @@ namespace Ui
 }
 
 
-class AddParamDialog : public OpenFLUIDDialog
+class AddParamDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

@@ -44,6 +44,8 @@
 
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 
+#include <openfluid/tools/QtHelpers.hpp>
+
 #include "ui_WaresManagementWidget.h"
 #include "ui_ModelWidget.h"
 #include "ModelWidget.hpp"
@@ -53,8 +55,6 @@
 #include "AddSimulatorDialog.hpp"
 #include "AddGeneratorDialog.hpp"
 #include "AddParamDialog.hpp"
-
-#include "AppTools.hpp"
 
 #include <QMessageBox>
 #include <QImage>
@@ -74,12 +74,12 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
   mp_ModelScene = new ModelScene(m_Model,this);
   ui->GraphicalView->setScene(mp_ModelScene);
 
-  mp_ShowHideGlobalParamsLabel = new ActionLabel(tr("show"),ui->GlobalParamsWidget);
+  mp_ShowHideGlobalParamsLabel = new openfluid::ui::common::ActionLabel(tr("show"),ui->GlobalParamsWidget);
   ui->GlobalParamsTitleLayout->insertWidget(1,mp_ShowHideGlobalParamsLabel);
   ui->GlobalParamsManagementWidget->setVisible(false);
 
   ui->AddGlobalParamButton->setText("");
-  ui->AddGlobalParamButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddGlobalParamButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddGlobalParamButton->setIconSize(QSize(20,20));
 
   mp_WaresManWidget->ui->AddWareFirstButton->setText(tr("Add simulator"));
@@ -261,7 +261,7 @@ void ModelWidget::updateGlobalParams()
 void ModelWidget::addSimulator()
 {
 
-  QStringList SimList = StringVectorToQStringList(m_Model.getOrderedIDs());
+  QStringList SimList = openfluid::tools::toQStringList(m_Model.getOrderedIDs());
 
   AddSimulatorDialog AddSimDlg(SimList,this);
 

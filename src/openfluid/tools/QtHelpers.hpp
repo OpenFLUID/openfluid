@@ -43,14 +43,21 @@
 
 
 #include <openfluid/tools/GDALHelpers.hpp>
+#include <openfluid/core/DateTime.hpp>
 
+#include <string>
 #include <list>
+#include <vector>
+#include <set>
 
 #include <QVariant>
 #include <QString>
 #include <QStringList>
+#include <QDateTime>
+#include <QColor>
 
 #include <openfluid/dllexport.hpp>
+
 
 namespace openfluid { namespace tools {
 
@@ -76,6 +83,46 @@ std::string DLLEXPORT fromIniCompatible(const QVariant& Var);
   @return The QStringList transformed into a std::list of std::string
 */
 std::list<std::string> DLLEXPORT toStdStringList(const QStringList& StrList);
+
+
+/**
+  Transforms an OpenFLUID DateTime to a QDateTime
+  @param[in] DT The OpenFLUID DateTime to transform
+  @return The DT transformed into QDateTime
+*/
+QDateTime DLLEXPORT toQDateTime(openfluid::core::DateTime DT);
+
+
+/**
+  Transforms a std::vector of std::string into a QStringList
+  @param[in] StrVect the std::vector of std::string to transform
+  @return The StrVect transformed into a QStringList
+*/
+QStringList DLLEXPORT toQStringList(const std::vector<std::string>& StrVect);
+
+
+/**
+  Transforms a std::set of std::string into a QStringList
+  @param[in] StrSet the std::set of std::string to transform
+  @return The StrSet transformed into a QStringList
+*/
+QStringList DLLEXPORT toQStringList(const std::set<std::string>& StrSet);
+
+
+/**
+  Transforms a std::list of std::string into a QStringList
+  @param[in] StrList the std::list of std::string to transform
+  @return The StrList transformed into a QStringList
+*/
+QStringList DLLEXPORT toQStringList(const std::list<std::string>& StrSet);
+
+
+/**
+  Transforms a std::set of int into a QStringList
+  @param[in] IntSet the std::set of int to transform
+  @return The intSet transformed into a QStringList
+*/
+QStringList DLLEXPORT toQStringList(const std::set<int>& IntSet);
 
 
 /**

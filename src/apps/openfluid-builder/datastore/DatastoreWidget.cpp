@@ -42,10 +42,10 @@
 #include "ui_DatastoreWidget.h"
 #include "DatastoreWidget.hpp"
 #include "AddDatastoreItemDialog.hpp"
-#include "AppTools.hpp"
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include <gdal.h>
 #include <gdal_priv.h>
@@ -62,19 +62,19 @@ DatastoreWidget::DatastoreWidget(QWidget* Parent, openfluid::fluidx::AdvancedFlu
 {
   ui->setupUi(this);
 
-  ui->AddButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddButton->setIconSize(QSize(20,20));
 
-  ui->EditButton->setIcon(QIcon(":/icons/modify.png"));
+  ui->EditButton->setIcon(QIcon(":/ui/common/icons/modify.png"));
   ui->EditButton->setIconSize(QSize(20,20));
 
-  ui->RemoveButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveButton->setIconSize(QSize(20,20));
 
-  ui->UpButton->setIcon(QIcon(":/icons/go-up.png"));
+  ui->UpButton->setIcon(QIcon(":/ui/common/icons/go-up.png"));
   ui->UpButton->setIconSize(QSize(20,20));
 
-  ui->DownButton->setIcon(QIcon(":/icons/go-down.png"));
+  ui->DownButton->setIcon(QIcon(":/ui/common/icons/go-down.png"));
   ui->DownButton->setIconSize(QSize(20,20));
 
   // TODO to re-enable
@@ -148,8 +148,8 @@ void DatastoreWidget::refresh()
 
 void DatastoreWidget::addItem()
 {
-  AddDatastoreItemDialog AddItemDlg(StringSetToQStringList(m_AdvFluidxDesc.getDomain().getClassNames()),
-                                    StringListToQStringList(m_Datastore.getItemsIDs()),
+  AddDatastoreItemDialog AddItemDlg(openfluid::tools::toQStringList(m_AdvFluidxDesc.getDomain().getClassNames()),
+                                    openfluid::tools::toQStringList(m_Datastore.getItemsIDs()),
                                     this);
 
   if (AddItemDlg.exec() == QDialog::Accepted)

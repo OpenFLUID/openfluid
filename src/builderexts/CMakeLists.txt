@@ -11,4 +11,4 @@ TARGET_LINK_LIBRARIES(view.spatial-graph.graphviz${OPENFLUID_BUILDEREXTS_SUFFIX}
 
 OPNFLD_ADD_BUILDER_EXTENSION_WITH_INSTALL(import.spatial-graph.ogr-gdal import.spatial-graph.ogr-gdal ${BUILDEREXT_OUTPUT_PATH})
 TARGET_LINK_LIBRARIES(import.spatial-graph.ogr-gdal${OPENFLUID_BUILDEREXTS_SUFFIX}
-                      ${GDAL_LIBRARIES})
+                      ${GDAL_LIBRARIES} openfluid-ui-common)

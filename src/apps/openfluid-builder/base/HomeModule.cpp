@@ -39,10 +39,12 @@
  */
 
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/guicommon/MarketClientAssistant.hpp>
+#include <openfluid/tools/QtHelpers.hpp>
+#include <openfluid/ui/market/MarketClientAssistant.hpp>
+#include <openfluid/ui/common/PreferencesDialog.hpp>
 
 #include "HomeModule.hpp"
-#include "PreferencesDialog.hpp"
+#include "ExtensionPluginsManager.hpp"
 
 #include <QApplication>
 
@@ -163,7 +165,8 @@ bool HomeModule::whenCloseAsked()
 
 void HomeModule::whenPreferencesAsked()
 {
-  PreferencesDialog PrefsDlg(QApplication::activeWindow());
+  openfluid::ui::common::PreferencesDialog PrefsDlg(QApplication::activeWindow(),true);
+  PrefsDlg.initializeBuilderPrefs(openfluid::tools::toQStringList(ExtensionPluginsManager::getInstance()->getPluginsStandardSearchPaths()));
   PrefsDlg.exec();
 }
 
@@ -204,7 +207,7 @@ void HomeModule::whenExtensionAsked(const QString& /*ID*/)
 
 void HomeModule::whenMarketAsked()
 {
-  openfluid::guicommon::MarketClientAssistant MarketAssistant(QApplication::activeWindow());
+  openfluid::ui::market::MarketClientAssistant MarketAssistant(QApplication::activeWindow());
   MarketAssistant.exec();
 }
 

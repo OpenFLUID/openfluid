@@ -13,20 +13,9 @@
     <file>images/status-stable.png</file>
     <file>icons/openfluid_icon.png</file>
     <file>icons/openfluid_icon_about.png</file>
-    <file>icons/file-new.png</file>
-    <file>icons/file-open.png</file>
     <file>icons/file-open-example.png</file>
-    <file>icons/file-close.png</file>
-    <file>icons/file-save.png</file>
-    <file>icons/file-save-as.png</file>
     <file>icons/start.png</file>
-    <file>icons/refresh.png</file>
-    <file>icons/market.png</file>
-    <file>icons/add.png</file>
-    <file>icons/modify.png</file>
-    <file>icons/remove.png</file>
-    <file>icons/go-up.png</file>
-    <file>icons/go-down.png</file>
+    <file>icons/market.png</file>    
     <file>icons/rename-attribute.png</file>
   </qresource>
 </RCC>

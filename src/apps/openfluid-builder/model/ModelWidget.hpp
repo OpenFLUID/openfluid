@@ -44,9 +44,10 @@
 
 #include <QWidget>
 
+#include <openfluid/ui/common/ActionLabel.hpp>
+
 #include "WorkspaceWidget.hpp"
 #include "WaresManagementWidget.hpp"
-#include "ActionLabel.hpp"
 #include "ModelScene.hpp"
 
 
@@ -64,7 +65,7 @@ class ModelWidget : public WorkspaceWidget
 
     Ui::ModelWidget* ui;
 
-    ActionLabel* mp_ShowHideGlobalParamsLabel;
+    openfluid::ui::common::ActionLabel* mp_ShowHideGlobalParamsLabel;
 
     WaresManagementWidget* mp_WaresManWidget;
 

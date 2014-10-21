@@ -1,0 +1,16 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource prefix="/ui/common">
+    <file>icons/add.png</file>
+    <file>icons/remove.png</file>
+    <file>icons/go-up.png</file>
+    <file>icons/go-down.png</file>
+    <file>icons/file-new.png</file>
+    <file>icons/file-open.png</file>
+    <file>icons/file-close.png</file>
+    <file>icons/file-save.png</file>
+    <file>icons/file-save-as.png</file>
+    <file>icons/refresh.png</file>
+    <file>icons/modify.png</file>                
+  </qresource>
+</RCC>

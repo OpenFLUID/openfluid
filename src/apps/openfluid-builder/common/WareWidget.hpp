@@ -46,8 +46,8 @@
 #include <QWidget>
 
 #include <openfluid/ware/WareSignature.hpp>
+#include <openfluid/ui/common/ActionLabel.hpp>
 
-#include "ActionLabel.hpp"
 #include "SignatureWidget.hpp"
 
 
@@ -94,9 +94,9 @@ class WareWidget : public QWidget
 
     bool m_ParamsExpanded;
 
-    ActionLabel* mp_ShowHideParamsLabel;
+    openfluid::ui::common::ActionLabel* mp_ShowHideParamsLabel;
 
-    ClickableLabel* mp_EnableLabel;
+    openfluid::ui::common::ClickableLabel* mp_EnableLabel;
 
     SignatureWidget* mp_SignatureWidget;
 

@@ -30,7 +30,7 @@
       </widget>
      </item>
      <item>
-      <widget class="ElidedLabel" name="OutputDirLabel">
+      <widget class="openfluid::ui::common::ElidedLabel" name="OutputDirLabel">
        <property name="styleSheet">
         <string notr="true">font:bold;</string>
        </property>
@@ -74,9 +74,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ElidedLabel</class>
+   <class>openfluid::ui::common::ElidedLabel</class>
    <extends>QLabel</extends>
-   <header>ElidedLabel.hpp</header>
+   <header location="global">openfluid/ui/common/ElidedLabel.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

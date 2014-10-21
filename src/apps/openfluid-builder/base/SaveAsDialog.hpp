@@ -48,12 +48,13 @@ namespace Ui
 }
 
 
-#include "OpenFLUIDDialog.hpp"
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
+
 
 #include <QDir>
 
 
-class SaveAsDialog : public OpenFLUIDDialog
+class SaveAsDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

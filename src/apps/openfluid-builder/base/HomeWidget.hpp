@@ -46,7 +46,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-#include "ClickableLabel.hpp"
+#include <openfluid/ui/common/ClickableLabel.hpp>
 
 
 class AppActions;
@@ -56,7 +56,7 @@ class AppActions;
 // =====================================================================
 
 
-class RecentProjectLabel : public ClickableLabel
+class RecentProjectLabel : public openfluid::ui::common::ClickableLabel
 {
   Q_OBJECT;
 

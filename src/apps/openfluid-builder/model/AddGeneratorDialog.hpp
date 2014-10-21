@@ -44,7 +44,7 @@
 
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 
-#include "OpenFLUIDDialog.hpp"
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 #include <QStringList>
 
@@ -55,7 +55,7 @@ namespace Ui
 }
 
 
-class AddGeneratorDialog : public OpenFLUIDDialog
+class AddGeneratorDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

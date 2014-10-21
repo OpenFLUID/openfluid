@@ -87,19 +87,17 @@ OGRGDALImportExtension::OGRGDALImportExtension() :
   openfluid::builderext::PluggableModalExtension(), ui(new Ui::OGRGDALDialog),
   m_CurrentSrcIndex(-1), mp_PrecheckImportDlg(NULL)
 {
-  Q_INIT_RESOURCE(ogrgdalimport);
-
   ui->setupUi(this);
 
   setWindowTitle("Spatial data import (OGR/GDAL)");
 
-  ui->AddFileButton->setIcon(QIcon(":/add.png"));
+  ui->AddFileButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddFileButton->setIconSize(QSize(16,16));
 
-  ui->AddWFSButton->setIcon(QIcon(":/add.png"));
+  ui->AddWFSButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddWFSButton->setIconSize(QSize(16,16));
 
-  ui->RemoveButton->setIcon(QIcon(":/remove.png"));
+  ui->RemoveButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveButton->setIconSize(QSize(16,16));
 
   ui->PrecheckButton->setEnabled(false);

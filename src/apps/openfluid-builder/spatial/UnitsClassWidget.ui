@@ -115,7 +115,7 @@
     </spacer>
    </item>
    <item>
-    <widget class="ActionLabel" name="ShowHideStyleLabel">
+    <widget class="openfluid::ui::common::ActionLabel" name="ShowHideStyleLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
        <horstretch>0</horstretch>
@@ -277,9 +277,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ActionLabel</class>
+   <class>openfluid::ui::common::ActionLabel</class>
    <extends>QLabel</extends>
-   <header>ActionLabel.hpp</header>
+   <header location="global">openfluid/ui/common/ActionLabel.hpp</header>
   </customwidget>
  </customwidgets>
  <resources/>

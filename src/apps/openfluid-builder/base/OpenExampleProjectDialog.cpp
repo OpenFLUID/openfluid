@@ -50,11 +50,11 @@
 #include "OpenExampleProjectDialog.hpp"
 
 #include "AppTools.hpp"
-#include "builderconfig.hpp"
+#include <openfluid/ui/config.hpp>
 
 
 OpenExampleProjectDialog::OpenExampleProjectDialog(QWidget *Parent):
-  OpenFLUIDDialog(Parent), ui(new Ui::OpenExampleProjectDialog)
+  openfluid::ui::common::OpenFLUIDDialog(Parent), ui(new Ui::OpenExampleProjectDialog)
 {
   ui->setupUi(this);
 
@@ -112,7 +112,7 @@ void OpenExampleProjectDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Open an example project"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -120,7 +120,7 @@ void OpenExampleProjectDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

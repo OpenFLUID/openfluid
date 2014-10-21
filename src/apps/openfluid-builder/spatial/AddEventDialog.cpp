@@ -40,7 +40,7 @@
 
 #include "ui_EditEventDialog.h"
 #include "AddEventDialog.hpp"
-#include "builderconfig.hpp"
+#include <openfluid/ui/config.hpp>
 
 #include <QPushButton>
 
@@ -48,14 +48,14 @@
 AddEventDialog::AddEventDialog(const QString& ClassName, const QStringList& IDsList,
                                const openfluid::core::DateTime& CurrentDateTime,
                                QWidget* Parent):
-  OpenFLUIDDialog(Parent),ui(new Ui::EditEventDialog),m_DefaultMsg(tr("Add of a new event"))
+  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::EditEventDialog),m_DefaultMsg(tr("Add of a new event"))
 {
   ui->setupUi(this);
 
-  ui->AddInfoButton->setIcon(QIcon(":/icons/add.png"));
+  ui->AddInfoButton->setIcon(QIcon(":/ui/common/icons/add.png"));
   ui->AddInfoButton->setIconSize(QSize(20,20));
 
-  ui->RemoveInfoButton->setIcon(QIcon(":/icons/remove.png"));
+  ui->RemoveInfoButton->setIcon(QIcon(":/ui/common/icons/remove.png"));
   ui->RemoveInfoButton->setIconSize(QSize(20,20));
 
   ui->UnitsClassLabel->setText(ClassName);
@@ -125,7 +125,7 @@ void AddEventDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(m_DefaultMsg);
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -133,7 +133,7 @@ void AddEventDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

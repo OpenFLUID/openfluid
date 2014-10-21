@@ -111,27 +111,27 @@ void AppActions::createActions()
 
   m_Actions["ProjectNew"] = new QAction(tr("&New..."), this);
   m_Actions["ProjectNew"]->setShortcuts(QKeySequence::New);
-  m_Actions["ProjectNew"]->setIcon(QIcon(":/icons/file-new.png"));
+  m_Actions["ProjectNew"]->setIcon(QIcon(":/ui/common/icons/file-new.png"));
 
   m_Actions["ProjectOpen"] = new QAction(tr("&Open..."), this);
   m_Actions["ProjectOpen"]->setShortcuts(QKeySequence::Open);
-  m_Actions["ProjectOpen"]->setIcon(QIcon(":/icons/file-open.png"));
+  m_Actions["ProjectOpen"]->setIcon(QIcon(":/ui/common/icons/file-open.png"));
 
   m_Actions["ProjectReload"] = new QAction(tr("Reload"), this);
-  m_Actions["ProjectReload"]->setIcon(QIcon(":/icons/refresh.png"));
+  m_Actions["ProjectReload"]->setIcon(QIcon(":/ui/common/icons/refresh.png"));
 
   m_Actions["ProjectSave"] = new QAction(tr("&Save"), this);
   m_Actions["ProjectSave"]->setShortcuts(QKeySequence::Save);
-  m_Actions["ProjectSave"]->setIcon(QIcon(":/icons/file-save.png"));
+  m_Actions["ProjectSave"]->setIcon(QIcon(":/ui/common/icons/file-save.png"));
 
   m_Actions["ProjectSaveAs"] = new QAction(tr("Save as..."), this);
-  m_Actions["ProjectSaveAs"]->setIcon(QIcon(":/icons/file-save-as.png"));
+  m_Actions["ProjectSaveAs"]->setIcon(QIcon(":/ui/common/icons/file-save-as.png"));
 
   m_Actions["ProjectProperties"] = new QAction(tr("Properties"), this);
 
   m_Actions["ProjectClose"] = new QAction(tr("Close"), this);
   m_Actions["ProjectClose"]->setShortcuts(QKeySequence::Close);
-  m_Actions["ProjectClose"]->setIcon(QIcon(":/icons/file-close.png"));
+  m_Actions["ProjectClose"]->setIcon(QIcon(":/ui/common/icons/file-close.png"));
 
   m_Actions["ProjectQuit"] = new QAction(tr("Quit"), this);
   m_Actions["ProjectQuit"]->setShortcuts(QKeySequence::Quit);

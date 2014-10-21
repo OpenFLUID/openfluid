@@ -47,12 +47,12 @@
 
 #include "ui_NewProjectDialog.h"
 #include "NewProjectDialog.hpp"
-#include "builderconfig.hpp"
+#include <openfluid/ui/config.hpp>
 
 
 
 NewProjectDialog::NewProjectDialog(QWidget *Parent):
-  OpenFLUIDDialog(Parent), ui(new Ui::NewProjectDialog), mp_DirectoryModel(new QFileSystemModel(this))
+  openfluid::ui::common::OpenFLUIDDialog(Parent), ui(new Ui::NewProjectDialog), mp_DirectoryModel(new QFileSystemModel(this))
 {
   ui->setupUi(this);
 
@@ -126,7 +126,7 @@ void NewProjectDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Creation of a new OpenFLUID project"));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -134,7 +134,7 @@ void NewProjectDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

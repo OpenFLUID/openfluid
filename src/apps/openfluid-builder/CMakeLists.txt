@@ -1,13 +1,5 @@
 
 
-FILE(READ "${PROJECT_SOURCE_DIR}/COPYING" BUILDER_LICENSE_TEXT)
-STRING(REGEX REPLACE "\n" "\\\\n" BUILDER_LICENSE_TEXT "${BUILDER_LICENSE_TEXT}")
-STRING(REGEX REPLACE "\"" "''" BUILDER_LICENSE_TEXT "${BUILDER_LICENSE_TEXT}")
-
-FILE(READ "${PROJECT_SOURCE_DIR}/AUTHORS" BUILDER_AUTHORS_TEXT)
-STRING(REGEX REPLACE "\n" "\\\\n" BUILDER_AUTHORS_TEXT "${BUILDER_AUTHORS_TEXT}")
-STRING(REGEX REPLACE "\"" "''" BUILDER_AUTHORS_TEXT "${BUILDER_AUTHORS_TEXT}")
-
 CONFIGURE_FILE(builderconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/builderconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
@@ -23,9 +15,6 @@ SET(BUILDER_BASE_CPP base/AppCoordinator.cpp base/AppActions.cpp
                      base/ProjectModule.cpp base/ProjectWidget.cpp                     
                      base/ProjectCentral.cpp base/ProjectCheckInfos.cpp
                      base/NewProjectDialog.cpp
-                     base/PreferencesDialog.cpp 
-                     base/PathsManagementWidget.cpp base/WaresSearchPathsWidget.cpp base/EditMarketplaceDialog.cpp
-                     base/AboutDialog.cpp
                      base/OpenExampleProjectDialog.cpp
                      base/StatusMessagesWidget.cpp
                      base/DashboardFrame.cpp 
@@ -41,9 +30,6 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
                      base/ProjectModule.hpp base/ProjectWidget.hpp                     
                      base/ProjectCentral.hpp base/ProjectCheckInfos.hpp
                      base/NewProjectDialog.hpp
-                     base/PreferencesDialog.hpp
-                     base/PathsManagementWidget.hpp base/WaresSearchPathsWidget.hpp base/EditMarketplaceDialog.hpp
-                     base/AboutDialog.hpp
                      base/OpenExampleProjectDialog.hpp
                      base/StatusMessagesWidget.hpp
                      base/DashboardFrame.hpp 
@@ -55,9 +41,6 @@ SET(BUILDER_BASE_HPP base/AppCoordinator.hpp base/AppActions.hpp
 
 QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
                             base/NewProjectDialog.ui
-                            base/PreferencesDialog.ui
-                            base/PathsManagementWidget.ui base/WaresSearchPathsWidget.ui base/EditMarketplaceDialog.ui
-                            base/AboutDialog.ui
                             base/OpenExampleProjectDialog.ui
                             base/StatusMessagesWidget.ui
                             base/DashboardInfosWidget.ui base/DashboardStatusWidget.ui
@@ -70,22 +53,18 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
 
 ### COMMON #
 
-SET(BUILDER_COMMON_CPP common/AppTools.cpp
-                       common/ClickableLabel.cpp common/ActionLabel.cpp common/ElidedLabel.cpp
+SET(BUILDER_COMMON_CPP common/AppTools.cpp                       
                        common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
                        common/AddWareDialog.cpp
                        common/AddParamDialog.cpp
-                       common/OpenFLUIDDialog.cpp
                        )
                      
 SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
                        common/WorkspaceWidget.hpp
                        common/AppTools.hpp
-                       common/ClickableLabel.hpp common/ActionLabel.hpp common/ElidedLabel.hpp
                        common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
                        common/AddWareDialog.hpp
                        common/AddParamDialog.hpp
-                       common/OpenFLUIDDialog.hpp
                       )
 
 QT4_WRAP_UI(BUILDER_COMMON_UI common/WaresManagementWidget.ui common/WareWidget.ui common/SignatureWidget.ui common/ParameterWidget.ui
@@ -287,7 +266,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder-main
                       openfluid-ware
                       openfluid-tools
                       openfluid-market
-                      openfluid-guicommon
+                      openfluid-ui-common
+                      openfluid-ui-market
                       openfluid-builderext
                       openfluid-fluidx)
        
@@ -327,7 +307,8 @@ TARGET_LINK_LIBRARIES(openfluid-builder
                       openfluid-ware
                       openfluid-machine
                       openfluid-tools
-                      openfluid-guicommon
+                      openfluid-ui-common
+                      openfluid-ui-market
                       openfluid-builder-main
                       openfluid-fluidx)
                                    

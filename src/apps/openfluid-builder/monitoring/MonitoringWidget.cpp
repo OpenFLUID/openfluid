@@ -40,7 +40,7 @@
 
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
-
+#include <openfluid/tools/QtHelpers.hpp>
 
 #include "ui_WaresManagementWidget.h"
 #include "ui_MonitoringWidget.h"
@@ -48,7 +48,7 @@
 #include "MonitoringWidget.hpp"
 #include "ObserverWidget.hpp"
 #include "AddObserverDialog.hpp"
-#include "AppTools.hpp"
+
 
 
 MonitoringWidget::MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc):
@@ -84,7 +84,7 @@ MonitoringWidget::~MonitoringWidget()
 
 void MonitoringWidget::addObserver()
 {
-  QStringList ObsList = StringVectorToQStringList(m_Monitoring.getOrderedIDs());
+  QStringList ObsList = openfluid::tools::toQStringList(m_Monitoring.getOrderedIDs());
 
   AddObserverDialog AddObsDlg(ObsList,this);
 

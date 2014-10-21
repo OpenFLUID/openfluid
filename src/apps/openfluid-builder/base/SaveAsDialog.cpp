@@ -41,17 +41,18 @@
 
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/ui/config.hpp>
 
 #include "ui_SaveAsDialog.h"
 #include "SaveAsDialog.hpp"
-#include "builderconfig.hpp"
+
 
 #include <QPushButton>
 #include <QFileDialog>
 
 
 SaveAsDialog::SaveAsDialog(QWidget* Parent) :
-  OpenFLUIDDialog(Parent),ui(new Ui::SaveAsDialog)
+  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::SaveAsDialog)
 {
   ui->setupUi(this);
 
@@ -134,7 +135,7 @@ void SaveAsDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(tr("Save project as..."));
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -142,7 +143,7 @@ void SaveAsDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

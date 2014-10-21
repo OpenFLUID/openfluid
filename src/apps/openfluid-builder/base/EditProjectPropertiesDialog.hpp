@@ -48,10 +48,10 @@ namespace Ui
 }
 
 
-#include "OpenFLUIDDialog.hpp"
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 
-class EditProjectPropertiesDialog : public OpenFLUIDDialog
+class EditProjectPropertiesDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

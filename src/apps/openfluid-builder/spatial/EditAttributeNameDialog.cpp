@@ -38,11 +38,10 @@
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
+#include <openfluid/ui/config.hpp>
 
 #include "ui_EditAttributeNameDialog.h"
 #include "EditAttributeNameDialog.hpp"
-
-#include "builderconfig.hpp"
 
 #include <QPushButton>
 
@@ -50,7 +49,7 @@
 EditAttributeNameDialog::EditAttributeNameDialog(EditMode Mode,
                                                  const QStringList& AttrsList,
                                                  QWidget* Parent):
-  OpenFLUIDDialog(Parent),ui(new Ui::EditAttributeNameDialog),
+  openfluid::ui::common::OpenFLUIDDialog(Parent),ui(new Ui::EditAttributeNameDialog),
   m_Mode(Mode), m_AttrsNames(AttrsList)
 {
   ui->setupUi(this);
@@ -146,7 +145,7 @@ void EditAttributeNameDialog::setMessage(const QString& Msg)
   if (Msg.isEmpty())
   {
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_BGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_BGCOLOR));
     ui->MessageLabel->setText(m_DefaultMsg);
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
   }
@@ -154,7 +153,7 @@ void EditAttributeNameDialog::setMessage(const QString& Msg)
   {
     ui->ButtonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     ui->MessageFrame->setStyleSheet(QString("background-color: %1;")
-                                    .arg(BUILDER_DIALOGBANNER_WARNBGCOLOR));
+                                    .arg(openfluid::ui::config::DIALOGBANNER_WARNBGCOLOR));
     ui->MessageLabel->setText(Msg);
   }
 }

@@ -39,7 +39,7 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
-#include <openfluid/guicommon/RunSimulationDialog.hpp>
+#include <openfluid/ui/common/RunSimulationDialog.hpp>
 #include <openfluid/machine/SimulatorSignatureRegistry.hpp>
 #include <openfluid/machine/ObserverSignatureRegistry.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
@@ -157,7 +157,7 @@ void ProjectCentral::setDefaultDescriptors()
 
 void ProjectCentral::run()
 {
-  openfluid::guicommon::RunSimulationDialog RunDlg(QApplication::activeWindow(),mp_FXDesc);
+  openfluid::ui::common::RunSimulationDialog RunDlg(QApplication::activeWindow(),mp_FXDesc);
 
   RunDlg.execute();
 

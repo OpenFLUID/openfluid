@@ -40,7 +40,7 @@
 #ifndef __ADDDATASTOREITEMDIALOG_HPP__
 #define __ADDDATASTOREITEMDIALOG_HPP__
 
-#include "OpenFLUIDDialog.hpp"
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
 
 #include <QCompleter>
@@ -52,7 +52,7 @@ namespace Ui
 }
 
 
-class AddDatastoreItemDialog : public OpenFLUIDDialog
+class AddDatastoreItemDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 

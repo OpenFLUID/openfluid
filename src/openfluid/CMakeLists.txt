@@ -14,7 +14,7 @@ ADD_SUBDIRECTORY(market)
 ADD_SUBDIRECTORY(buddies)
 
 IF(OPENFLUID_ENABLE_GUI)
-  ADD_SUBDIRECTORY(guicommon)
+  ADD_SUBDIRECTORY(ui)
   IF (BUILD_APP_BUILDER)
     ADD_SUBDIRECTORY(builderext)
   ENDIF()
@@ -35,7 +35,7 @@ CONFIGURE_FILE(openfluid.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" @ONLY)
 CONFIGURE_FILE(openfluid-gui.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid-gui.pc" @ONLY)
 CONFIGURE_FILE(openfluid-other.pc.in "${PKGCONFIG_OUTPUT_PATH}/openfluid-other.pc" @ONLY)
 
-CONFIGURE_FILE(config.hpp.in "${PROJECT_BINARY_DIR}/src/openfluid/config.hpp" @ONLY)
+CONFIGURE_FILE(config.hpp.in config.hpp @ONLY)
 
 
 INSTALL(FILES "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc" 
@@ -43,6 +43,6 @@ INSTALL(FILES "${PKGCONFIG_OUTPUT_PATH}/openfluid.pc"
               "${PKGCONFIG_OUTPUT_PATH}/openfluid-other.pc"
         DESTINATION ${PKGCONFIG_INSTALL_PATH})
 
-INSTALL(FILES "${PROJECT_BINARY_DIR}/src/openfluid/config.hpp" 
+INSTALL(FILES "${CMAKE_CURRENT_BINARY_DIR}/config.hpp" 
         DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH})
                

@@ -41,7 +41,7 @@
 #ifndef __OPENEXAMPLEPROJECTDIALOG_HPP__
 #define __OPENEXAMPLEPROJECTDIALOG_HPP__
 
-#include "OpenFLUIDDialog.hpp"
+#include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
 #include <QListWidgetItem>
 
@@ -52,7 +52,7 @@ namespace Ui
 }
 
 
-class OpenExampleProjectDialog : public OpenFLUIDDialog
+class OpenExampleProjectDialog : public openfluid::ui::common::OpenFLUIDDialog
 {
   Q_OBJECT;
 
