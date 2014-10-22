@@ -80,15 +80,19 @@ bool SignatureHandledTypedDataItem::getVariableNameAndType(const std::string Sou
 // =====================================================================
 
 
-SignatureHandledTypedDataItem::SignatureHandledTypedDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
-    std::string DDescription, std::string DUnit)
+SignatureHandledTypedDataItem::SignatureHandledTypedDataItem(std::string DName,
+                                                             openfluid::core::UnitClass_t UClass,
+                                                             std::string DDescription,
+                                                             std::string DUnit):
+ SignatureHandledDataItem()
 {
   UnitClass = UClass;
   Description = DDescription;
   DataUnit = DUnit;
 
   if(!getVariableNameAndType(DName,DataName,DataType))
-    throw openfluid::base::FrameworkException("SignatureHandledTypedDataItem::SignatureHandledTypedDataItem","Variable " + DName + " is not well formated.");
+    throw openfluid::base::FrameworkException("SignatureHandledTypedDataItem::SignatureHandledTypedDataItem",
+                                              "Variable " + DName + " is not well formated.");
 }
 
 

@@ -38,14 +38,12 @@
 
 #include <openfluid/ware/GeneratorSignature.hpp>
 
-namespace openfluid {
-namespace ware {
 
-// =====================================================================
-// =====================================================================
+namespace openfluid { namespace ware {
 
-GeneratorSignature::GeneratorSignature(
-    openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod)
+
+GeneratorSignature::GeneratorSignature(openfluid::fluidx::GeneratorDescriptor::GeneratorMethod GeneratorMethod):
+    SimulatorSignature()
 {
   m_GeneratorMethod = GeneratorMethod;
   ID = openfluid::fluidx::GeneratorDescriptor::getGeneratorName(
@@ -73,8 +71,10 @@ GeneratorSignature::GeneratorSignature(
   }
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void GeneratorSignature::setFixedInfo()
 {
@@ -91,8 +91,10 @@ void GeneratorSignature::setFixedInfo()
           "s"));
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void GeneratorSignature::setRandomInfo()
 {
@@ -115,8 +117,10 @@ void GeneratorSignature::setRandomInfo()
           "s"));
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void GeneratorSignature::setInterpInfo()
 {
@@ -144,8 +148,10 @@ void GeneratorSignature::setInterpInfo()
       "Distribution for the value to produce, from \"distribution\" parameter");
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 void GeneratorSignature::setInjectInfo()
 {
@@ -174,8 +180,5 @@ void GeneratorSignature::setInjectInfo()
       "Distribution for the value to produce, from \"distribution\" parameter");
 }
 
-// =====================================================================
-// =====================================================================
 
-}
-} //namespaces
+} } //namespaces

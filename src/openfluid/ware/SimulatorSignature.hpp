@@ -302,7 +302,7 @@ class DLLEXPORT SignatureHandledTypedDataItem : public SignatureHandledDataItem
     openfluid::core::Value::Type DataType;
 
     SignatureHandledTypedDataItem() :
-      DataType(openfluid::core::Value::NONE) {}
+      SignatureHandledDataItem(), DataType(openfluid::core::Value::NONE) {}
 
     SignatureHandledTypedDataItem(std::string DName, openfluid::core::UnitClass_t UClass,
         std::string DDescription, std::string DUnit);
