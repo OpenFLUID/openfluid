@@ -2,6 +2,7 @@
   
   * Added display of points, multipoints and multilines
     in map view of OpenFLUID-Builder
+  * Added application icon for win32 systems  
   * Improved display of paths with correct paths separators
   * Improved management of file formats for geospatial data
     in OpenFLUID-Builder datastore and extension for geospatial data import     
