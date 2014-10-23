@@ -39,6 +39,7 @@
 #include "LandRGraph.hpp"
 
 #include <openfluid/landr/LandREntity.hpp>
+#include <openfluid/landr/LineStringEntity.hpp>
 #include <openfluid/landr/VectorDataset.hpp>
 #include <openfluid/landr/RasterDataset.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -49,6 +50,8 @@
 #include <geos/planargraph/Node.h>
 #include <geos/geom/Polygon.h>
 #include <geos/geom/Point.h>
+#include <geos/geom/LineString.h>
+#include <geos/geom/LineSegment.h>
 #include <geos/geom/GeometryFactory.h>
 #include <geos/operation/overlay/snap/GeometrySnapper.h>
 
@@ -808,7 +811,20 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
   for (; it != ite; ++it)
   {
-    geos::geom::Point* Centroid=(*it)->getCentroid();
+    geos::geom::Point* IntPoint;
+    if((*it)->getGeometry()->getDimension()==1)
+    {
+      const geos::geom::LineString* Line=dynamic_cast<openfluid::landr::LineStringEntity*>(*it)->getLine();
+      const geos::geom::Coordinate FirstCoord=Line->getCoordinateN(0);
+      const geos::geom::Coordinate SecondCoord=Line->getCoordinateN(1);
+      geos::geom::LineSegment LineSegment(FirstCoord,SecondCoord);
+      geos::geom::Coordinate CoordInteriorPoint;
+      LineSegment.midPoint(CoordInteriorPoint);
+      IntPoint=mp_Factory->createPoint(CoordInteriorPoint);
+
+    }
+    else
+      IntPoint=(*it)->getGeometry()->getInteriorPoint();
 
     OGRFeature* Feat;
     while ((Feat = Layer0->GetNextFeature()) != NULL)
@@ -819,7 +835,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
       geos::geom::Geometry* GeosGeom =
           (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
-      if (Centroid->isWithinDistance(GeosGeom,Thresh))
+      if (IntPoint->isWithinDistance(GeosGeom,Thresh))
       {
         if (Vector.isFieldOfType(Column, OFTInteger))
         {
@@ -889,7 +905,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
 
   for (; it != ite; ++it)
   {
-    geos::geom::Point* Centroid=(*it)->getCentroid();
+    geos::geom::Point* IntPoint=(*it)->getGeometry()->getInteriorPoint();
 
     OGRFeature* Feat;
     while ((Feat = Layer0->GetNextFeature()) != NULL)
@@ -901,7 +917,7 @@ void LandRGraph::setAttributeFromVectorLocation(const std::string& AttributeName
           (geos::geom::Geometry*) OGRGeom->exportToGEOS();
 
 
-      if(Centroid->isWithinDistance(GeosGeom,Thresh))
+      if(IntPoint->isWithinDistance(GeosGeom,Thresh))
       {
         if (Vector.isFieldOfType(Column, OFTInteger))
         {
