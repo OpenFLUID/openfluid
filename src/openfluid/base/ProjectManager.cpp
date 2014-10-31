@@ -43,10 +43,6 @@
 #include <openfluid/tools/QtHelpers.hpp>
 #include <openfluid/config.hpp>
 
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/convenience.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-
 
 namespace openfluid { namespace base {
 
@@ -94,8 +90,7 @@ ProjectManager* ProjectManager::getInstance()
 
 std::string ProjectManager::getNow()
 {
-  return boost::posix_time::to_iso_string(
-      boost::posix_time::second_clock::local_time());
+  return QDateTime::currentDateTime().toString("yyyyMMdd'T'hhmmss").toStdString();
 }
 
 
@@ -135,6 +130,19 @@ std::string ProjectManager::getOuputDirFromProjectPath(std::string ProjectPath)
 bool ProjectManager::checkProject(const std::string& ProjectPath)
 {
   QString PrjFilePath = QString::fromStdString(getFilePathFromProjectPath(ProjectPath));
+
+  // TODO to be removed in a later version (after mid-2015)
+  // try to convert a former .openfluidprj project
+  if (!QFile::exists(PrjFilePath))
+  {
+    QString FormerPrjFilePath = QString::fromStdString(ProjectPath)+"/.openfluidprj";
+
+    // Rename the former .openfluidprj file into the new name, only if exists
+    if (QFile::exists(FormerPrjFilePath))
+
+      QFile(FormerPrjFilePath).rename(PrjFilePath);
+  }
+
 
   if (!QFile::exists(PrjFilePath))
     return false;
@@ -202,7 +210,7 @@ bool ProjectManager::create(const std::string& Path,
 {
   if (m_IsOpened) return false;
 
-  if (boost::filesystem::create_directories(getInputDirFromProjectPath(Path)))
+  if (QDir().mkpath(QString::fromStdString(getInputDirFromProjectPath(Path))))
   {
     m_Path = Path;
     m_InputDir = getInputDirFromProjectPath(Path);
