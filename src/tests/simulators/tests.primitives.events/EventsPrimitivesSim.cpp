@@ -110,7 +110,20 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
     // =====================================================================
 
 
-    void prepareData() { }
+    void prepareData()
+    {
+      openfluid::core::Unit *aUnit;
+      openfluid::core::Event AddedEvent;
+      openfluid::core::DateTime BeginDate;
+
+      OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",aUnit)
+      {
+        AddedEvent = openfluid::core::Event(openfluid::core::DateTime(OPENFLUID_GetEndDate()+10*OPENFLUID_GetDefaultDeltaT()));
+        AddedEvent.addInfo("unused_event","true");
+
+        OPENFLUID_AppendEvent(aUnit,AddedEvent);
+      }
+    }
 
 
     // =====================================================================

@@ -49,7 +49,7 @@ namespace openfluid { namespace ware {
 
 
 bool SimulationInspectorWare::IsUnitIDInPtrList(const openfluid::core::UnitsPtrList_t* UnitsList,
-                                          const openfluid::core::UnitID_t& ID)
+                                                const openfluid::core::UnitID_t& ID)
 {
   if (UnitsList == NULL) return false;
 
