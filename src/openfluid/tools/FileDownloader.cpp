@@ -40,97 +40,116 @@
 
 #include <openfluid/tools/FileDownloader.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include <QEventLoop>
 #include <QFile>
 
-// =====================================================================
-// =====================================================================
 
 
 namespace openfluid { namespace tools {
 
 
-FileDownloader::FileDownloader() : QObject(), m_FileContent(""), m_ContentDownloaded(false)
+class FileDownloaderImpl : public QObject
 {
-  // Connect signal emitted by mangager when download is completed to the method which store content
-  connect(&m_Manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
-}
+  Q_OBJECT
+
+  private:
+
+    QNetworkAccessManager m_Manager;
+    QByteArray m_FileContent;
+    bool m_ContentDownloaded;
+
+
+  public slots:
+
+    /**
+      Stores file content downloaded in attribute
+      @param[in] Reply Reply of sent request
+    */
+    void downloadFinished(QNetworkReply *Reply)
+    {
+      if (!Reply->error())
+      {
+        m_FileContent = Reply->readAll();
+        m_ContentDownloaded = true;
+      }
+
+      emit processFinished();
+      Reply->deleteLater();
+    }
+
+
+  signals:
+
+      /**
+        Signal emitted when store of downloaded file content is finished
+      */
+      void processFinished();
+
+
+
+  public:
+
+    FileDownloaderImpl() : QObject(), m_FileContent(""), m_ContentDownloaded(false)
+    {
+      // Connect signal emitted by mangager when download is completed to the method which store content
+      connect(&m_Manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(downloadFinished(QNetworkReply*)));
+    }
+
+    ~FileDownloaderImpl()
+    { }
+
+    /**
+      @action Send request to get content of URL file
+    */
+    void downloadContent(const std::string& URL)
+    {
+      QNetworkRequest Request(QString(URL.c_str()));
+      m_Manager.get(Request);
+    }
+
+
+    /**
+      @return content stored in attribute
+    */
+    QByteArray getContent() const
+    {
+      return m_FileContent;
+    }
+
+
+    /**
+      @return true if file content is downloaded and stored
+    */
+    bool contentIsDownloaded() const
+    {
+      return m_ContentDownloaded;
+    }
+
+
+    /**
+      Writes content stored in a file
+      @param FilePath Path where the file will be written
+    */
+    void writeToFile(const std::string& FilePath) const
+    {
+      QFile File(QString(FilePath.c_str()));
+      if (!File.open(QIODevice::WriteOnly))
+        throw openfluid::base::FrameworkException("FileDownloader::writeToFile",
+             "Could not open "+FilePath+" : "+qPrintable(File.errorString()));
+
+      File.write(m_FileContent);
+      File.close();
+    }
+
+
+};
 
 
 // =====================================================================
 // =====================================================================
-
-
-FileDownloader::~FileDownloader()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void FileDownloader::downloadContent(const std::string& URL)
-{
-  QNetworkRequest Request(QString(URL.c_str()));
-  m_Manager.get(Request);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-QByteArray FileDownloader::getContent() const
-{
-  return m_FileContent;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-bool FileDownloader::contentIsDownloaded() const
-{
-  return m_ContentDownloaded;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void FileDownloader::writeToFile(const std::string& FilePath) const
-{
-  QFile File(QString(FilePath.c_str()));
-  if (!File.open(QIODevice::WriteOnly))
-    throw openfluid::base::FrameworkException("FileDownloader::writeToFile",
-         "Could not open "+FilePath+" : "+qPrintable(File.errorString()));
-
-  File.write(m_FileContent);
-  File.close();
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void FileDownloader::downloadFinished(QNetworkReply *Reply)
-{
-  if (!Reply->error())
-  {
-    m_FileContent = Reply->readAll();
-    m_ContentDownloaded = true;
-  }
-
-  emit processFinished();
-  Reply->deleteLater();
-}
-
-
 // =====================================================================
 // =====================================================================
 
@@ -139,7 +158,7 @@ bool FileDownloader::downloadToString(const std::string& URL, std::string& Conte
 {
   Contents.clear();
 
-  FileDownloader Downloader;
+  FileDownloaderImpl Downloader;
   Downloader.downloadContent(URL);
 
   QEventLoop Loop;
@@ -163,7 +182,7 @@ bool FileDownloader::downloadToString(const std::string& URL, std::string& Conte
 
 bool FileDownloader::downloadToFile(const std::string& URL, const std::string& FilePath)
 {
-  FileDownloader Downloader;
+  FileDownloaderImpl Downloader;
   Downloader.downloadContent(URL);
 
   QEventLoop Loop;
@@ -180,6 +199,8 @@ bool FileDownloader::downloadToFile(const std::string& URL, const std::string& F
 // =====================================================================
 // =====================================================================
 
+
+#include "FileDownloader.moc"
 
 } } // namespaces
 

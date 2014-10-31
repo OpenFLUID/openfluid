@@ -44,70 +44,19 @@
 
 #include <string>
 #include <openfluid/dllexport.hpp>
-#include <QNetworkAccessManager>
-#include <QNetworkRequest>
-#include <QNetworkReply>
 
 
 // =====================================================================
 // =====================================================================
+
 
 namespace openfluid { namespace tools {
 
 /**
   Management of data downloads over network
 */
-class DLLEXPORT FileDownloader : public QObject
+class DLLEXPORT FileDownloader
 {
-  Q_OBJECT
-
-  private:
-
-    QNetworkAccessManager m_Manager;
-    QByteArray m_FileContent;
-    bool m_ContentDownloaded;
-
-    FileDownloader();
-
-    ~FileDownloader();
-
-    /**
-      @action Send request to get content of URL file
-    */
-    void downloadContent(const std::string& URL);
-
-    /**
-      @return content stored in attribute
-    */
-    QByteArray getContent() const;
-
-    /**
-      @return true if file content is downloaded and stored
-    */
-    bool contentIsDownloaded() const;
-
-    /**
-      Writes content stored in a file
-      @param FilePath Path where the file will be written
-    */
-    void writeToFile(const std::string& FilePath) const;
-
-  // List of created Qt signals
-  signals:
-
-    /**
-      Signal emitted when store of downloaded file content is finished
-    */
-    void processFinished();
-
-  // List of created Qt slots
-  public slots:
-
-    /**
-      Stores file content downloaded in attribute
-      @param[in] Reply Reply of sent request
-    */
-    void downloadFinished(QNetworkReply *Reply);
 
 
   public:
