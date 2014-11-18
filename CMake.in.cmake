@@ -184,6 +184,9 @@ SET(BUILD_APP_MINIMAL 1)
 # set this to 1 to build openfluid-builder
 SET(BUILD_APP_BUILDER 1)
 
+# set this to 1 to build openfluid-devstudio
+SET(BUILD_APP_DEVSTUDIO 1)
+
 # set this to 1 to build openfluid-market-client
 SET(BUILD_APP_MARKETCLIENT 0)
 

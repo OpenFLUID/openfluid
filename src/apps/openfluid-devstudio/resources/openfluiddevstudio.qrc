@@ -1,0 +1,7 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+  <qresource>
+    <file>images/openfluid_official.png</file>
+    <file>icons/openfluid_icon.png</file>
+  </qresource>
+</RCC>

@@ -159,6 +159,12 @@ IF(BUILD_APP_BUILDER AND OPENFLUID_ENABLE_GUI)
 ELSE()
   MESSAGE(STATUS "Build openfluid-builder application : no")  
 ENDIF()
+
+IF(BUILD_APP_DEVSTUDIO AND OPENFLUID_ENABLE_GUI)
+  MESSAGE(STATUS "Build openfluid-devstudio application : yes")  
+ELSE()
+  MESSAGE(STATUS "Build openfluid-devstudio application : no")  
+ENDIF()
   
 IF(BUILD_APP_MARKETCLIENT AND OPENFLUID_ENABLE_GUI)
   MESSAGE(STATUS "Build openfluid-market-client application : yes")  
