@@ -39,8 +39,6 @@
 #include "WareSrcExplorer.hpp"
 #include "ui_WareSrcExplorer.h"
 
-// =====================================================================
-// =====================================================================
 
 WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
     QTreeView(Parent), ui(new Ui::WareSrcExplorer)
@@ -48,13 +46,16 @@ WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
   ui->setupUi(this);
 }
 
+
 // =====================================================================
 // =====================================================================
+
 
 WareSrcExplorer::~WareSrcExplorer()
 {
   delete ui;
 }
+
 
 // =====================================================================
 // =====================================================================

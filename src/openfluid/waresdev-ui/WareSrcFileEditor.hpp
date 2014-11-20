@@ -30,34 +30,37 @@
  */
 
 /**
- \file MainWindow.hpp
+ \file WareSrcFileEditor.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __MAINWINDOW_HPP__
-#define __MAINWINDOW_HPP__
+#ifndef __WARESRCFILEEDITOR_HPP__
+#define __WARESRCFILEEDITOR_HPP__
 
-#include <QMainWindow>
+#include <openfluid/dllexport.hpp>
 
-namespace Ui {
-class MainWindow;
-}
+#include <QPlainTextEdit>
 
-class MainWindow: public QMainWindow
+
+namespace openfluid { namespace waresdevui {
+
+class DLLEXPORT WareSrcFileEditor: public QPlainTextEdit
 {
   Q_OBJECT
 
   private:
 
-    Ui::MainWindow* ui;
 
   public:
 
-    MainWindow();
+    WareSrcFileEditor(QWidget* Parent = 0);
 
-    ~MainWindow();
+    ~WareSrcFileEditor();
 };
 
-#endif /* __MAINWINDOW_HPP__ */
+}
+} // namespaces
+
+#endif /* __WARESRCFILEEDITOR_HPP__ */

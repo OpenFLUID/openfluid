@@ -30,34 +30,37 @@
  */
 
 /**
- \file MainWindow.hpp
+ \file WareSrcToolbar.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __MAINWINDOW_HPP__
-#define __MAINWINDOW_HPP__
+#ifndef __WARESRCTOOLBAR_HPP__
+#define __WARESRCTOOLBAR_HPP__
 
-#include <QMainWindow>
+#include <openfluid/dllexport.hpp>
 
-namespace Ui {
-class MainWindow;
-}
+#include <QToolBar>
 
-class MainWindow: public QMainWindow
+
+namespace openfluid { namespace waresdevui {
+
+class DLLEXPORT WareSrcToolbar: public QToolBar
 {
   Q_OBJECT
 
   private:
 
-    Ui::MainWindow* ui;
 
   public:
 
-    MainWindow();
+    WareSrcToolbar(QWidget* Parent = 0);
 
-    ~MainWindow();
+    ~WareSrcToolbar();
 };
 
-#endif /* __MAINWINDOW_HPP__ */
+}
+} // namespaces
+
+#endif /* __WARESRCTOOLBAR_HPP__ */

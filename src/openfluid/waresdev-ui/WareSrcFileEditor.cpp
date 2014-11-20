@@ -30,35 +30,27 @@
  */
 
 /**
- \file MainWindow.cpp
+ \file WareSrcFileEditor.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "MainWindow.hpp"
-#include "ui_MainWindow.h"
-
-#include <QApplication>
-#include <QDesktopWidget>
-
-#include <openfluid/waresdev-ui/WareSrcToolbar.hpp>
-#include <openfluid/waresdev-ui/WareSrcWidget.hpp>
+#include "WareSrcFileEditor.hpp"
 
 
-MainWindow::MainWindow() : QMainWindow(), ui(new Ui::MainWindow)
+namespace openfluid { namespace waresdevui {
+
+
+// =====================================================================
+// =====================================================================
+
+
+WareSrcFileEditor::WareSrcFileEditor(QWidget* Parent) :
+    QPlainTextEdit(Parent)
 {
-  ui->setupUi(this);
 
-  QRect ScreenRect = QApplication::desktop()->screenGeometry();
-  resize(ScreenRect.width() * 0.9, ScreenRect.height() * 0.9);
-  move((ScreenRect.width() - width()) / 2,
-       (ScreenRect.height() - height()) / 2);
 
-  addToolBar(new openfluid::waresdevui::WareSrcToolbar(this));
-
-  ui->WareSrcCollection->addTab(new openfluid::waresdevui::WareSrcWidget(this),"a ware src widget");
-  ui->WareSrcCollection->addTab(new openfluid::waresdevui::WareSrcWidget(this),"another ware src widget");
 }
 
 
@@ -66,12 +58,13 @@ MainWindow::MainWindow() : QMainWindow(), ui(new Ui::MainWindow)
 // =====================================================================
 
 
-MainWindow::~MainWindow()
+WareSrcFileEditor::~WareSrcFileEditor()
 {
-  delete ui;
+
 }
 
 
 // =====================================================================
 // =====================================================================
 
+} } // namespaces

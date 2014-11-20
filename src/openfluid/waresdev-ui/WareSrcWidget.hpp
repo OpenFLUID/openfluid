@@ -30,34 +30,41 @@
  */
 
 /**
- \file MainWindow.hpp
+ \file WareSrcWidget.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __MAINWINDOW_HPP__
-#define __MAINWINDOW_HPP__
+#ifndef __WARESRCWIDGET_HPP__
+#define __WARESRCWIDGET_HPP__
 
-#include <QMainWindow>
+#include <openfluid/dllexport.hpp>
+
+#include <QWidget>
 
 namespace Ui {
-class MainWindow;
+class WareSrcWidget;
 }
 
-class MainWindow: public QMainWindow
+namespace openfluid { namespace waresdevui {
+
+class DLLEXPORT WareSrcWidget: public QWidget
 {
   Q_OBJECT
 
   private:
 
-    Ui::MainWindow* ui;
+    Ui::WareSrcWidget* ui;
 
   public:
 
-    MainWindow();
+    WareSrcWidget(QWidget* Parent = 0);
 
-    ~MainWindow();
+    ~WareSrcWidget();
+
 };
 
-#endif /* __MAINWINDOW_HPP__ */
+} } // namespaces
+
+#endif /* __WARESRCWIDGET_HPP__ */

@@ -30,35 +30,41 @@
  */
 
 /**
- \file MainWindow.cpp
+ \file WareSrcWidget.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "MainWindow.hpp"
-#include "ui_MainWindow.h"
+#include "WareSrcWidget.hpp"
+#include "ui_WareSrcWidget.h"
 
-#include <QApplication>
-#include <QDesktopWidget>
+#include <QList>
 
-#include <openfluid/waresdev-ui/WareSrcToolbar.hpp>
-#include <openfluid/waresdev-ui/WareSrcWidget.hpp>
+#include "WareSrcFileEditor.hpp"
+#include "WareSrcToolbar.hpp"
+
+namespace openfluid { namespace waresdevui {
 
 
-MainWindow::MainWindow() : QMainWindow(), ui(new Ui::MainWindow)
+// =====================================================================
+// =====================================================================
+
+
+WareSrcWidget::WareSrcWidget(QWidget* Parent) :
+    QWidget(Parent), ui(new Ui::WareSrcWidget)
 {
   ui->setupUi(this);
 
-  QRect ScreenRect = QApplication::desktop()->screenGeometry();
-  resize(ScreenRect.width() * 0.9, ScreenRect.height() * 0.9);
-  move((ScreenRect.width() - width()) / 2,
-       (ScreenRect.height() - height()) / 2);
+  ui->Toolbar_Layout->addWidget(new WareSrcToolbar(this));
 
-  addToolBar(new openfluid::waresdevui::WareSrcToolbar(this));
+  QList<int> Sizes;
+  Sizes << 1000 << 180;
+  ui->splitter->setSizes(Sizes);
 
-  ui->WareSrcCollection->addTab(new openfluid::waresdevui::WareSrcWidget(this),"a ware src widget");
-  ui->WareSrcCollection->addTab(new openfluid::waresdevui::WareSrcWidget(this),"another ware src widget");
+
+  ui->WareSrcFileCollection->addTab(new WareSrcFileEditor(this), "file1.txt");
+  ui->WareSrcFileCollection->addTab(new WareSrcFileEditor(this), "file2.txt");
 }
 
 
@@ -66,7 +72,7 @@ MainWindow::MainWindow() : QMainWindow(), ui(new Ui::MainWindow)
 // =====================================================================
 
 
-MainWindow::~MainWindow()
+WareSrcWidget::~WareSrcWidget()
 {
   delete ui;
 }
@@ -75,3 +81,4 @@ MainWindow::~MainWindow()
 // =====================================================================
 // =====================================================================
 
+} } // namespaces

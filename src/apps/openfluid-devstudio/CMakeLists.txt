@@ -38,7 +38,8 @@ ENDIF()
 ADD_DEFINITIONS(-DBUILDINGDLL)
 
 
-ADD_LIBRARY(openfluid-devstudio-main SHARED ${DEVSTUDIO_CPP} ${DEVSTUDIO_HPP} ${DEVSTUDIO_UI} ${DEVSTUDIO_QRC})
+ADD_LIBRARY(openfluid-devstudio-main SHARED ${DEVSTUDIO_CPP} ${DEVSTUDIO_HPP}
+                                            ${DEVSTUDIO_UI} ${DEVSTUDIO_QRC})
 
 
 TARGET_LINK_LIBRARIES(openfluid-devstudio-main 
@@ -59,6 +60,8 @@ TARGET_LINK_LIBRARIES(openfluid-devstudio-main
                       #openfluid-ui-market
                       #openfluid-builderext
                       #openfluid-fluidx
+                      openfluid-waresdev
+                      openfluid-waresdev-ui
                       )
        
        
@@ -101,6 +104,8 @@ TARGET_LINK_LIBRARIES(openfluid-devstudio
                       #openfluid-ui-market
                       openfluid-devstudio-main
                       #openfluid-fluidx
+                      openfluid-waresdev
+                      openfluid-waresdev-ui
                       )
                                    
 INSTALL(TARGETS openfluid-devstudio-main
