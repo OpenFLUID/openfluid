@@ -59,7 +59,7 @@ class DLLEXPORT WareSrcWidget: public QWidget
 
   public:
 
-    WareSrcWidget(QWidget* Parent = 0);
+    WareSrcWidget(bool IsStandalone, QWidget* Parent = 0);
 
     ~WareSrcWidget();
 

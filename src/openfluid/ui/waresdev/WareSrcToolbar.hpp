@@ -55,7 +55,7 @@ class DLLEXPORT WareSrcToolbar: public QToolBar
 
   public:
 
-    WareSrcToolbar(QWidget* Parent = 0);
+    WareSrcToolbar(bool IsIncluded, QWidget* Parent = 0);
 
     ~WareSrcToolbar();
 };

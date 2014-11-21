@@ -51,12 +51,13 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcWidget::WareSrcWidget(QWidget* Parent) :
+WareSrcWidget::WareSrcWidget(bool IsStandalone, QWidget* Parent) :
     QWidget(Parent), ui(new Ui::WareSrcWidget)
 {
   ui->setupUi(this);
 
-  ui->Toolbar_Layout->addWidget(new WareSrcToolbar(this));
+  if (IsStandalone)
+    ui->Toolbar_Layout->addWidget(new WareSrcToolbar(true, this));
 
   QList<int> Sizes;
   Sizes << 1000 << 180;

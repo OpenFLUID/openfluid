@@ -39,6 +39,8 @@
 
 #include <openfluid/ui/waresdev/WareSrcActions.hpp>
 
+#include <openfluid/base/ApplicationException.hpp>
+
 namespace openfluid { namespace ui { namespace waresdev {
 
 WareSrcActions* WareSrcActions::mp_Instance = 0;
@@ -49,8 +51,27 @@ WareSrcActions* WareSrcActions::mp_Instance = 0;
 
 WareSrcActions::WareSrcActions()
 {
+  m_Actions["NewSimulator"] = new QAction(tr("Simulator..."), this);
+  m_Actions["NewObserver"] = new QAction(tr("Observer..."), this);
+  m_Actions["NewExtension"] = new QAction(tr("Builder extension..."), this);
 
+  m_Actions["OpenSimulator"] = new QAction(tr("Simulator..."), this);
+  m_Actions["OpenObserver"] = new QAction(tr("Observer..."), this);
+  m_Actions["OpenExtension"] = new QAction(tr("Builder extension..."), this);
 
+  m_Actions["DeleteWare"] = new QAction(tr("Delete ware"), this);
+
+  m_Actions["NewFile"] = new QAction(QIcon(":/ui/common/icons/file-new.png"),
+                                     tr("New..."), this);
+  m_Actions["OpenFile"] = new QAction(QIcon(":/ui/common/icons/file-open.png"),
+                                      tr("Open..."), this);
+  m_Actions["SaveFile"] = new QAction(QIcon(":/ui/common/icons/file-save.png"),
+                                      tr("Save"), this);
+  m_Actions["SaveAsFile"] = new QAction(
+      QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
+  m_Actions["CloseFile"] = new QAction(
+      QIcon(":/ui/common/icons/file-close.png"), tr("Close"), this);
+  m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
 }
 
 
@@ -74,6 +95,21 @@ WareSrcActions* WareSrcActions::getInstance()
     mp_Instance = new WareSrcActions();
 
   return mp_Instance;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QAction* WareSrcActions::getAction(const QString& ActionName)
+{
+  if (m_Actions.contains(ActionName))
+    return m_Actions.value(ActionName);
+
+  throw openfluid::base::ApplicationException(
+      "openfluid-devstudio", "WareSrcActions::getAction",
+      "Action \"" + ActionName.toStdString() + "\" does'nt exist.");
 }
 
 

@@ -46,13 +46,15 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-class WareSrcActions
+class WareSrcActions: QObject
 {
+  Q_OBJECT
+
   private:
 
-    WareSrcActions* mp_Instance;
+    static WareSrcActions* mp_Instance;
 
-    QMap<QString, QAction> m_Actions;
+    QMap<QString, QAction*> m_Actions;
 
     WareSrcActions();
 
@@ -60,7 +62,15 @@ class WareSrcActions
 
   public:
 
-    WareSrcActions* getInstance();
+    static WareSrcActions* getInstance();
+
+    QAction* getAction(const QString& ActionName);
+
+    // TODO to remove after action implementation
+    QMap<QString, QAction*>& getActions()
+    {
+      return m_Actions;
+    }
 
 };
 

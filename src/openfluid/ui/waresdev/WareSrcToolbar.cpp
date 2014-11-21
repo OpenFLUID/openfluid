@@ -38,6 +38,10 @@
 
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 
+#include <QMenu>
+#include <QToolButton>
+#include <openfluid/ui/waresdev/WareSrcActions.hpp>
+
 namespace openfluid { namespace ui { namespace waresdev {
 
 
@@ -45,12 +49,42 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcToolbar::WareSrcToolbar(QWidget* Parent) :
+WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     QToolBar(Parent)
 {
+  if (!IsIncluded)
+  {
+    setIconSize(QSize(32, 32));
+    setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+  }
 
-  addAction("action1");
-  addAction("action2");
+  WareSrcActions* Actions =
+      openfluid::ui::waresdev::WareSrcActions::getInstance();
+  addAction(Actions->getAction("NewFile"));
+  addAction(Actions->getAction("OpenFile"));
+  addAction(Actions->getAction("SaveFile"));
+  addAction(Actions->getAction("SaveAsFile"));
+
+  if (IsIncluded)
+  {
+    QWidget* Spacer = new QWidget();
+    Spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    addWidget(Spacer);
+
+    QMenu* Menu = new QMenu();
+    Menu->addAction(Actions->getAction("NewFile"));
+    Menu->addAction(Actions->getAction("OpenFile"));
+    Menu->addAction(Actions->getAction("SaveFile"));
+    Menu->addAction(Actions->getAction("SaveAsFile"));
+    Menu->addAction(Actions->getAction("CloseFile"));
+    Menu->addAction(Actions->getAction("DeleteFile"));
+    QToolButton* MenuButton = new QToolButton(this);
+    MenuButton->setText(tr("Menu"));
+    MenuButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
+    MenuButton->setPopupMode(QToolButton::InstantPopup);
+    MenuButton->setMenu(Menu);
+    addWidget(MenuButton);
+  }
 }
 
 

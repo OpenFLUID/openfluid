@@ -40,10 +40,13 @@
 #define __MAINWINDOW_HPP__
 
 #include <QMainWindow>
+#include <QMap>
 
 namespace Ui {
 class MainWindow;
 }
+
+class QAction;
 
 class MainWindow: public QMainWindow
 {
@@ -52,6 +55,17 @@ class MainWindow: public QMainWindow
   private:
 
     Ui::MainWindow* ui;
+
+    QMap<QString, QAction*> m_Actions;
+
+    void createActions();
+
+    void createMenus();
+
+  private slots:
+
+    void showNotYetImplemented();
+
 
   public:
 

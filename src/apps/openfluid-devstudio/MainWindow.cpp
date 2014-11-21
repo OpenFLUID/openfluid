@@ -41,9 +41,12 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QAction>
+#include <QMessageBox>
 
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
+#include <openfluid/ui/waresdev/WareSrcActions.hpp>
 
 
 MainWindow::MainWindow() :
@@ -56,13 +59,28 @@ MainWindow::MainWindow() :
   move((ScreenRect.width() - width()) / 2,
        (ScreenRect.height() - height()) / 2);
 
-  addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(this));
+  createActions();
+  createMenus();
+  addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
+
+  connect(m_Actions.value("Quit"), SIGNAL(triggered()),
+  qApp,
+          SLOT(quit()));
+  connect(m_Actions.value("SwitchWorkspace"), SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+
+  QMap<QString, QAction*>& Actions =
+      openfluid::ui::waresdev::WareSrcActions::getInstance()->getActions();
+  foreach(QAction* Action,Actions)connect(Action, SIGNAL(triggered()), this,
+      SLOT(showNotYetImplemented()));
+
 
   ui->WareSrcCollection->addTab(
-      new openfluid::ui::waresdev::WareSrcWidget(this), "a ware src widget");
+      new openfluid::ui::waresdev::WareSrcWidget(false, this),
+      "a DevStudio ware src widget");
   ui->WareSrcCollection->addTab(
-      new openfluid::ui::waresdev::WareSrcWidget(this),
-      "another ware src widget");
+      new openfluid::ui::waresdev::WareSrcWidget(true, this),
+      "a Builder ware src widget");
 }
 
 
@@ -78,4 +96,64 @@ MainWindow::~MainWindow()
 
 // =====================================================================
 // =====================================================================
+
+
+void MainWindow::createActions()
+{
+  m_Actions["SwitchWorkspace"] = new QAction(tr("Switch workspace"), this);
+
+  m_Actions["Quit"] = new QAction(tr("Quit"), this);
+  m_Actions["Quit"]->setShortcuts(QKeySequence::Quit);
+
+  /* TODO check it, because :
+   "The menu role can only be changed before the actions are put into the menu bar in Mac OS X (usually just before the first application window is shown)."
+   (http://qt-project.org/doc/qt-4.8/qaction.html#menuRole-prop)*/
+  m_Actions["Quit"]->setMenuRole(QAction::QuitRole);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::createMenus()
+{
+  openfluid::ui::waresdev::WareSrcActions* Actions =
+      openfluid::ui::waresdev::WareSrcActions::getInstance();
+
+  QMenu* Menu;
+  QMenu* SubMenu;
+
+  Menu = menuBar()->addMenu(tr("File"));
+  SubMenu = Menu->addMenu(tr("New ware"));
+  SubMenu->addAction(Actions->getAction("NewSimulator"));
+  SubMenu->addAction(Actions->getAction("NewObserver"));
+  SubMenu->addAction(Actions->getAction("NewExtension"));
+  SubMenu = Menu->addMenu(tr("Open ware"));
+  SubMenu->addAction(Actions->getAction("OpenSimulator"));
+  SubMenu->addAction(Actions->getAction("OpenObserver"));
+  SubMenu->addAction(Actions->getAction("OpenExtension"));
+  Menu->addAction(Actions->getAction("DeleteWare"));
+  Menu->addSeparator();
+  Menu->addAction(Actions->getAction("NewFile"));
+  Menu->addAction(Actions->getAction("OpenFile"));
+  Menu->addAction(Actions->getAction("SaveFile"));
+  Menu->addAction(Actions->getAction("SaveAsFile"));
+  Menu->addAction(Actions->getAction("CloseFile"));
+  Menu->addAction(Actions->getAction("DeleteFile"));
+  Menu->addSeparator();
+  Menu->addAction(m_Actions.value("SwitchWorkspace"));
+  Menu->addAction(m_Actions.value("Quit"));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::showNotYetImplemented()
+{
+  QMessageBox::information(this, "", "Not yet implemented");
+}
+
 

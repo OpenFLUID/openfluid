@@ -82,7 +82,8 @@ int main(int argc, char** argv)
 //                                                "border: 1px solid %2; }")
 //                                        .arg(BUILDER_TOOLTIP_BGCOLOR,BUILDER_TOOLTIP_BORDERCOLOR));
 
-    OPENFLUID_APPLICATION.setAttribute((Qt::AA_DontShowIconsInMenus));
+    Q_INIT_RESOURCE(openfluiduicommon);
+    OPENFLUID_APPLICATION.setAttribute(Qt::AA_DontShowIconsInMenus);
 
     MainWindow m_MainWindow;
     m_MainWindow.show();

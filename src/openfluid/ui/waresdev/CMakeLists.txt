@@ -4,9 +4,9 @@
 INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp)
+SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp WareSrcActions.cpp)
 
-SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp)
+SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcActions.hpp)
 
 QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui)
                                    
@@ -33,6 +33,7 @@ TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       #openfluid-ware
                       #openfluid-tools                                           
                       #openfluid-fluidx
+                      openfluid-ui-common
                       ${QT_QTCORE_LIBRARIES}
                       ${QT_QTGUI_LIBRARIES}    
                      )
