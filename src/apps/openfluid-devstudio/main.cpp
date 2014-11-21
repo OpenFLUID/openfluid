@@ -46,7 +46,6 @@
 #include <openfluid/base/PreferencesManager.hpp>
 #include <openfluid/config.hpp>
 
-#include "devstudioconfig.hpp"
 #include "MainWindow.hpp"
 
 

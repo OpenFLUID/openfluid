@@ -4,22 +4,22 @@
 INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-FILE(GLOB OPENFLUID_WARESDEV_UI_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp)
+SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp)
 
-FILE(GLOB OPENFLUID_WARESDEV_UI_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp)
+SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp)
 
-QT4_WRAP_UI(OPENFLUID_WARESDEV_UI_UI WareSrcWidget.ui)
+QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui)
                                    
 
-QT4_ADD_RESOURCES(OPENFLUID_WARESDEV_UI_RC resources/openfluidwaresdevui.qrc)
+#QT4_ADD_RESOURCES(OPENFLUID_UI_WARESDEV_RC resources/openfluiduiwaresdev.qrc)
 
 
-ADD_LIBRARY(openfluid-waresdev-ui SHARED ${OPENFLUID_WARESDEV_UI_CPP} ${OPENFLUID_WARESDEV_UI_HPP}
-                                         ${OPENFLUID_WARESDEV_UI_UI}
-                                         ${OPENFLUID_WARESDEV_UI_RC}
+ADD_LIBRARY(openfluid-ui-waresdev SHARED ${OPENFLUID_UI_WARESDEV_CPP} ${OPENFLUID_UI_WARESDEV_HPP}
+                                         ${OPENFLUID_UI_WARESDEV_UI}
+                                         #${OPENFLUID_UI_WARESDEV_RC}
                                          )
 
-SET_TARGET_PROPERTIES(openfluid-waresdev-ui PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
+SET_TARGET_PROPERTIES(openfluid-ui-waresdev PROPERTIES VERSION "${VERSION_MAJOR}.${VERSION_MINOR}" 
                                         SOVERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
@@ -27,7 +27,7 @@ SET_TARGET_PROPERTIES(openfluid-waresdev-ui PROPERTIES VERSION "${VERSION_MAJOR}
                                         AUTOMOC ON
                                         )
 
-TARGET_LINK_LIBRARIES(openfluid-waresdev-ui
+TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       #openfluid-base
                       #openfluid-core
                       #openfluid-ware
@@ -39,13 +39,13 @@ TARGET_LINK_LIBRARIES(openfluid-waresdev-ui
 
 
 
-INSTALL(TARGETS openfluid-waresdev-ui
+INSTALL(TARGETS openfluid-ui-waresdev
         RUNTIME DESTINATION ${BIN_INSTALL_PATH}
         LIBRARY DESTINATION ${LIB_INSTALL_PATH}
         ARCHIVE DESTINATION ${LIB_INSTALL_PATH})
    
 
-INSTALL(FILES ${OPENFLUID_WARESDEV_UI_HPP} DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH}/waresdev-ui)
+INSTALL(FILES ${OPENFLUID_UI_WARESDEV_HPP} DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH}/ui/waresdev)
 
 
 

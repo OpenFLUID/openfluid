@@ -30,37 +30,41 @@
  */
 
 /**
- \file WareSrcFileEditor.hpp
- \brief Header of ...
+ \file WareSrcFileEditor.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCFILEEDITOR_HPP__
-#define __WARESRCFILEEDITOR_HPP__
-
-#include <openfluid/dllexport.hpp>
-
-#include <QPlainTextEdit>
+#include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 
 
-namespace openfluid { namespace waresdevui {
+namespace openfluid { namespace ui { namespace waresdev {
 
-class DLLEXPORT WareSrcFileEditor: public QPlainTextEdit
+
+// =====================================================================
+// =====================================================================
+
+
+WareSrcFileEditor::WareSrcFileEditor(QWidget* Parent) :
+    QPlainTextEdit(Parent)
 {
-  Q_OBJECT
 
-  private:
-
-
-  public:
-
-    WareSrcFileEditor(QWidget* Parent = 0);
-
-    ~WareSrcFileEditor();
-};
 
 }
-} // namespaces
 
-#endif /* __WARESRCFILEEDITOR_HPP__ */
+
+// =====================================================================
+// =====================================================================
+
+
+WareSrcFileEditor::~WareSrcFileEditor()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+} } }  // namespaces

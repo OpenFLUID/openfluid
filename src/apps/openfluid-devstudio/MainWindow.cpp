@@ -42,11 +42,12 @@
 #include <QApplication>
 #include <QDesktopWidget>
 
-#include <openfluid/waresdev-ui/WareSrcToolbar.hpp>
-#include <openfluid/waresdev-ui/WareSrcWidget.hpp>
+#include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
+#include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 
 
-MainWindow::MainWindow() : QMainWindow(), ui(new Ui::MainWindow)
+MainWindow::MainWindow() :
+    QMainWindow(), ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
 
@@ -55,10 +56,13 @@ MainWindow::MainWindow() : QMainWindow(), ui(new Ui::MainWindow)
   move((ScreenRect.width() - width()) / 2,
        (ScreenRect.height() - height()) / 2);
 
-  addToolBar(new openfluid::waresdevui::WareSrcToolbar(this));
+  addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(this));
 
-  ui->WareSrcCollection->addTab(new openfluid::waresdevui::WareSrcWidget(this),"a ware src widget");
-  ui->WareSrcCollection->addTab(new openfluid::waresdevui::WareSrcWidget(this),"another ware src widget");
+  ui->WareSrcCollection->addTab(
+      new openfluid::ui::waresdev::WareSrcWidget(this), "a ware src widget");
+  ui->WareSrcCollection->addTab(
+      new openfluid::ui::waresdev::WareSrcWidget(this),
+      "another ware src widget");
 }
 
 

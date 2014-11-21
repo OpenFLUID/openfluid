@@ -30,41 +30,41 @@
  */
 
 /**
- \file WareSrcWidget.hpp
- \brief Header of ...
+ \file WareSrcToolbar.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCWIDGET_HPP__
-#define __WARESRCWIDGET_HPP__
+#include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 
-#include <openfluid/dllexport.hpp>
+namespace openfluid { namespace ui { namespace waresdev {
 
-#include <QWidget>
 
-namespace Ui {
-class WareSrcWidget;
+// =====================================================================
+// =====================================================================
+
+
+WareSrcToolbar::WareSrcToolbar(QWidget* Parent) :
+    QToolBar(Parent)
+{
+
+  addAction("action1");
+  addAction("action2");
 }
 
-namespace openfluid { namespace waresdevui {
 
-class DLLEXPORT WareSrcWidget: public QWidget
+// =====================================================================
+// =====================================================================
+
+
+WareSrcToolbar::~WareSrcToolbar()
 {
-  Q_OBJECT
 
-  private:
+}
 
-    Ui::WareSrcWidget* ui;
 
-  public:
+// =====================================================================
+// =====================================================================
 
-    WareSrcWidget(QWidget* Parent = 0);
-
-    ~WareSrcWidget();
-
-};
-
-} } // namespaces
-
-#endif /* __WARESRCWIDGET_HPP__ */
+} } }  // namespaces

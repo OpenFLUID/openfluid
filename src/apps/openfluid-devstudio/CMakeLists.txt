@@ -7,9 +7,7 @@ SET(DEVSTUDIO_CPP MainWindow.cpp WareSrcExplorer.cpp)
                      
 SET(DEVSTUDIO_HPP MainWindow.hpp WareSrcExplorer.hpp)
 
-QT4_WRAP_UI(DEVSTUDIO_UI MainWindow.ui 
-WareSrcExplorer.ui
-)
+QT4_WRAP_UI(DEVSTUDIO_UI MainWindow.ui WareSrcExplorer.ui)
 
 ### RESOURCES #
 
@@ -61,7 +59,7 @@ TARGET_LINK_LIBRARIES(openfluid-devstudio-main
                       #openfluid-builderext
                       #openfluid-fluidx
                       openfluid-waresdev
-                      openfluid-waresdev-ui
+                      openfluid-ui-waresdev
                       )
        
        
@@ -105,7 +103,7 @@ TARGET_LINK_LIBRARIES(openfluid-devstudio
                       openfluid-devstudio-main
                       #openfluid-fluidx
                       openfluid-waresdev
-                      openfluid-waresdev-ui
+                      openfluid-ui-waresdev
                       )
                                    
 INSTALL(TARGETS openfluid-devstudio-main

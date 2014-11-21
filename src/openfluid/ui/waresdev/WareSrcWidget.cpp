@@ -44,7 +44,7 @@
 #include "WareSrcFileEditor.hpp"
 #include "WareSrcToolbar.hpp"
 
-namespace openfluid { namespace waresdevui {
+namespace openfluid { namespace ui { namespace waresdev {
 
 
 // =====================================================================
@@ -81,4 +81,4 @@ WareSrcWidget::~WareSrcWidget()
 // =====================================================================
 // =====================================================================
 
-} } // namespaces
+} } }  // namespaces

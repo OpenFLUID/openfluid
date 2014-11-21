@@ -47,7 +47,7 @@ class WareSrcExplorer;
 
 class WareSrcExplorer: public QTreeView
 {
-    Q_OBJECT
+  Q_OBJECT
 
   private:
 

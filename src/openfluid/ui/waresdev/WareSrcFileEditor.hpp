@@ -30,23 +30,23 @@
  */
 
 /**
- \file WareSrcToolbar.hpp
+ \file WareSrcFileEditor.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCTOOLBAR_HPP__
-#define __WARESRCTOOLBAR_HPP__
+#ifndef __WARESRCFILEEDITOR_HPP__
+#define __WARESRCFILEEDITOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 
-#include <QToolBar>
+#include <QPlainTextEdit>
 
 
-namespace openfluid { namespace waresdevui {
+namespace openfluid { namespace ui { namespace waresdev {
 
-class DLLEXPORT WareSrcToolbar: public QToolBar
+class DLLEXPORT WareSrcFileEditor: public QPlainTextEdit
 {
   Q_OBJECT
 
@@ -55,12 +55,11 @@ class DLLEXPORT WareSrcToolbar: public QToolBar
 
   public:
 
-    WareSrcToolbar(QWidget* Parent = 0);
+    WareSrcFileEditor(QWidget* Parent = 0);
 
-    ~WareSrcToolbar();
+    ~WareSrcFileEditor();
 };
 
-}
-} // namespaces
+} } }  // namespaces
 
-#endif /* __WARESRCTOOLBAR_HPP__ */
+#endif /* __WARESRCFILEEDITOR_HPP__ */
