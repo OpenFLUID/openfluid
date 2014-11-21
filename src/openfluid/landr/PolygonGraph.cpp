@@ -491,12 +491,12 @@ void PolygonGraph::setAttributeFromMeanRasterValues(const std::string& Attribute
     PolygonGraph::RastValByRastPoly_t RastPolys = getRasterPolyOverlapping(
         *dynamic_cast<PolygonEntity*>(*it));
 
-    float PolyArea = (*it)->getArea();
+    double PolyArea = (double)(*it)->getArea();
 
     if (!PolyArea)
       continue;
 
-    float Mean = 0;
+    double Mean = 0;
 
     PolygonGraph::RastValByRastPoly_t::iterator itPix = RastPolys.begin();
     PolygonGraph::RastValByRastPoly_t::iterator itPixE = RastPolys.end();
@@ -507,7 +507,7 @@ void PolygonGraph::setAttributeFromMeanRasterValues(const std::string& Attribute
       if (std::isnan(*PixelVal))
         *PixelVal = 1;
 
-      float OverlappingArea = itPix->second;
+      double OverlappingArea = (double)itPix->second;
 
       Mean += *PixelVal * (OverlappingArea / PolyArea);
     }
