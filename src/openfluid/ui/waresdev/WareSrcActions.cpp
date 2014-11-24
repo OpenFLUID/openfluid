@@ -41,6 +41,9 @@
 
 #include <openfluid/base/ApplicationException.hpp>
 
+#include <QActionGroup>
+#include <QMenu>
+
 namespace openfluid { namespace ui { namespace waresdev {
 
 WareSrcActions* WareSrcActions::mp_Instance = 0;
@@ -72,6 +75,32 @@ WareSrcActions::WareSrcActions()
   m_Actions["CloseFile"] = new QAction(
       QIcon(":/ui/common/icons/file-close.png"), tr("Close"), this);
   m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
+
+  m_Actions["Configure"] = new QAction(tr("Configure ware"), this);
+  m_Actions["ConfigureWMenu"] = new QAction(tr("Configure"), this);
+  QActionGroup* ConfigureGroup = new QActionGroup(this);
+  QMenu* Menu = new QMenu();
+  m_Actions["Release"] = new QAction(tr("Release"), ConfigureGroup);
+  m_Actions["Release"]->setCheckable(true);
+  m_Actions["Release"]->setChecked(true);
+  Menu->addAction(m_Actions["Release"]);
+  m_Actions["Debug"] = new QAction(tr("Debug"), ConfigureGroup);
+  m_Actions["Debug"]->setCheckable(true);
+  Menu->addAction(m_Actions["Debug"]);
+  m_Actions["ConfigureWMenu"]->setMenu(Menu);
+
+  m_Actions["Build"] = new QAction(tr("Build ware"), this);
+  m_Actions["BuildWMenu"] = new QAction(tr("Build"), this);
+  QActionGroup* BuildGroup = new QActionGroup(this);
+  Menu = new QMenu();
+  m_Actions["BuildInstall"] = new QAction(tr("Build and install"), BuildGroup);
+  m_Actions["BuildInstall"]->setCheckable(true);
+  m_Actions["BuildInstall"]->setChecked(true);
+  Menu->addAction(m_Actions["BuildInstall"]);
+  m_Actions["BuildOnly"] = new QAction(tr("Build only"), BuildGroup);
+  m_Actions["BuildOnly"]->setCheckable(true);
+  Menu->addAction(m_Actions["BuildOnly"]);
+  m_Actions["BuildWMenu"]->setMenu(Menu);
 }
 
 

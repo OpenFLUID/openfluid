@@ -64,6 +64,10 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
   addAction(Actions->getAction("OpenFile"));
   addAction(Actions->getAction("SaveFile"));
   addAction(Actions->getAction("SaveAsFile"));
+  addSeparator();
+
+  addAction(Actions->getAction("ConfigureWMenu"));
+  addAction(Actions->getAction("BuildWMenu"));
 
   if (IsIncluded)
   {
@@ -72,6 +76,7 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     addWidget(Spacer);
 
     QMenu* Menu = new QMenu();
+
     QMenu* SubMenu = Menu->addMenu(tr("File"));
     SubMenu->addAction(Actions->getAction("NewFile"));
     SubMenu->addAction(Actions->getAction("OpenFile"));
@@ -79,6 +84,17 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubMenu->addAction(Actions->getAction("SaveAsFile"));
     SubMenu->addAction(Actions->getAction("CloseFile"));
     SubMenu->addAction(Actions->getAction("DeleteFile"));
+
+    SubMenu = Menu->addMenu(tr("Build"));
+    SubMenu->addAction(Actions->getAction("Configure"));
+    QMenu* SubSubMenu = SubMenu->addMenu(tr("Set active configuration"));
+    SubSubMenu->addAction(Actions->getAction("Release"));
+    SubSubMenu->addAction(Actions->getAction("Debug"));
+    SubMenu->addAction(Actions->getAction("Build"));
+    SubSubMenu = SubMenu->addMenu(tr("Set active build action"));
+    SubSubMenu->addAction(Actions->getAction("BuildInstall"));
+    SubSubMenu->addAction(Actions->getAction("BuildOnly"));
+
     QToolButton* MenuButton = new QToolButton(this);
     MenuButton->setText(tr("Menu"));
     MenuButton->setToolButtonStyle(Qt::ToolButtonTextOnly);

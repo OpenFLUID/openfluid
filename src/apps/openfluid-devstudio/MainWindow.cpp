@@ -172,6 +172,17 @@ void MainWindow::createMenus()
   Menu->addAction(m_Actions.value("Find"));
   Menu->addAction(m_Actions.value("Replace"));
   Menu->addAction(m_Actions.value("GoToLine"));
+
+  Menu = menuBar()->addMenu(tr("Build"));
+  Menu->addAction(Actions->getAction("Configure"));
+  SubMenu = Menu->addMenu(tr("Set active configuration"));
+  SubMenu->addAction(Actions->getAction("Release"));
+  SubMenu->addAction(Actions->getAction("Debug"));
+  Menu->addAction(Actions->getAction("Build"));
+  SubMenu = Menu->addMenu(tr("Set active build action"));
+  SubMenu->addAction(Actions->getAction("BuildInstall"));
+  SubMenu->addAction(Actions->getAction("BuildOnly"));
+
 }
 
 
