@@ -3,11 +3,11 @@
 CONFIGURE_FILE(devstudioconfig.hpp.in "${CMAKE_CURRENT_BINARY_DIR}/devstudioconfig.hpp" @ONLY)
 INCLUDE_DIRECTORIES("${CMAKE_CURRENT_BINARY_DIR}")
 
-SET(DEVSTUDIO_CPP MainWindow.cpp WareSrcExplorer.cpp)
+SET(DEVSTUDIO_CPP MainWindow.cpp WareSrcExplorer.cpp DevStudioFileIconProvider.cpp)
                      
-SET(DEVSTUDIO_HPP MainWindow.hpp WareSrcExplorer.hpp)
+SET(DEVSTUDIO_HPP MainWindow.hpp WareSrcExplorer.hpp DevStudioFileIconProvider.hpp)
 
-QT4_WRAP_UI(DEVSTUDIO_UI MainWindow.ui WareSrcExplorer.ui)
+QT4_WRAP_UI(DEVSTUDIO_UI MainWindow.ui)
 
 ### RESOURCES #
 

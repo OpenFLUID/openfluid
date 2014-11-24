@@ -3,5 +3,8 @@
   <qresource>
     <file>images/openfluid_official.png</file>
     <file>icons/openfluid_icon.png</file>
+    <file>icons/cpp.png</file>
+    <file>icons/folder.png</file>
+    <file>icons/foldergreen.png</file>    
   </qresource>
 </RCC>

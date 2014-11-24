@@ -41,9 +41,9 @@
 
 #include <QTreeView>
 
-namespace Ui {
-class WareSrcExplorer;
-}
+#include <openfluid/waresdev/Tools.hpp>
+
+class QFileSystemModel;
 
 class WareSrcExplorer: public QTreeView
 {
@@ -51,13 +51,15 @@ class WareSrcExplorer: public QTreeView
 
   private:
 
-    Ui::WareSrcExplorer* ui;
+    QFileSystemModel* mp_Model;
 
   public:
 
     WareSrcExplorer(QWidget* Parent = 0);
 
     ~WareSrcExplorer();
+
+    void setType(openfluid::waresdev::Tools::SrcType Type);
 };
 
 #endif /* __WARESRCEXPLORER_HPP__ */

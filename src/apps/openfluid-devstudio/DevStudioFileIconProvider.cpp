@@ -26,38 +26,28 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file WareSrcExplorer.cpp
+ \file DevStudioFileIconProvider.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "WareSrcExplorer.hpp"
-
-#include <QFileSystemModel>
-
 #include "DevStudioFileIconProvider.hpp"
 
-WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
-    QTreeView(Parent)
-{
-  mp_Model = new QFileSystemModel();
-  setModel(mp_Model);
-  hideColumn(1);
-  hideColumn(2);
-  hideColumn(3);
-}
+#include <QDir>
 
 
 // =====================================================================
 // =====================================================================
 
 
-WareSrcExplorer::~WareSrcExplorer()
+DevStudioFileIconProvider::DevStudioFileIconProvider(const QString& DirPath) :
+    QFileIconProvider(), m_DirPath(DirPath)
 {
 
 }
@@ -67,13 +57,19 @@ WareSrcExplorer::~WareSrcExplorer()
 // =====================================================================
 
 
-void WareSrcExplorer::setType(openfluid::waresdev::Tools::SrcType Type)
+// TODO change content, it's for test only
+QIcon DevStudioFileIconProvider::icon(const QFileInfo& Info) const
 {
-  QString Path = openfluid::waresdev::Tools::getCurrentSrcDir(Type);
+  if (Info.completeSuffix() == "cpp")
+    return QIcon(":/icons/cpp.png");
 
-  mp_Model->setRootPath(Path);
-  setRootIndex(mp_Model->index(Path));
-  mp_Model->setIconProvider(new DevStudioFileIconProvider(Path));
+  if (Info.isDir() && Info.dir() == m_DirPath)
+    return QIcon(":/icons/foldergreen.png");
+
+  if (Info.isDir() && Info.fileName() == "_build")
+    return QIcon(":/icons/folder.png");
+
+  return QFileIconProvider::icon(Info);
 }
 
 

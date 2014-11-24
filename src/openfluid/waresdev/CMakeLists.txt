@@ -4,13 +4,9 @@
 INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-FILE(GLOB OPENFLUID_WARESDEV_CPP
+FILE(GLOB OPENFLUID_WARESDEV_CPP Tools.cpp)
 
-                                  )
-
-FILE(GLOB OPENFLUID_WARESDEV_HPP 
-                                                    
-                                  )
+FILE(GLOB OPENFLUID_WARESDEV_HPP Tools.hpp)
 
 
 ADD_LIBRARY(openfluid-waresdev SHARED ${OPENFLUID_WARESDEV_CPP} ${OPENFLUID_WARESDEV_HPP})

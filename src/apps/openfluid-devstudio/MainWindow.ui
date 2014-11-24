@@ -45,7 +45,7 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
-          <widget class="WareSrcExplorer" name="treeView"/>
+          <widget class="WareSrcExplorer" name="SimExplorer"/>
          </item>
         </layout>
        </widget>
@@ -55,7 +55,7 @@
           <x>0</x>
           <y>0</y>
           <width>653</width>
-          <height>412</height>
+          <height>442</height>
          </rect>
         </property>
         <attribute name="label">
@@ -63,7 +63,7 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="WareSrcExplorer" name="treeView_2"/>
+          <widget class="WareSrcExplorer" name="ObsExplorer"/>
          </item>
         </layout>
        </widget>
@@ -73,7 +73,7 @@
           <x>0</x>
           <y>0</y>
           <width>653</width>
-          <height>412</height>
+          <height>442</height>
          </rect>
         </property>
         <attribute name="label">
@@ -81,7 +81,7 @@
         </attribute>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="WareSrcExplorer" name="treeView_3"/>
+          <widget class="WareSrcExplorer" name="ExtExplorer"/>
          </item>
         </layout>
        </widget>

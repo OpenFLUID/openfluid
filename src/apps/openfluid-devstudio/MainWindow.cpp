@@ -47,7 +47,7 @@
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareSrcActions.hpp>
-
+#include <openfluid/waresdev/Tools.hpp>
 
 MainWindow::MainWindow() :
     QMainWindow(), ui(new Ui::MainWindow)
@@ -63,6 +63,9 @@ MainWindow::MainWindow() :
   createMenus();
   addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
 
+  ui->SimExplorer->setType(openfluid::waresdev::Tools::SRCTYPE_SIMULATOR);
+  ui->ObsExplorer->setType(openfluid::waresdev::Tools::SRCTYPE_OBSERVER);
+  ui->ExtExplorer->setType(openfluid::waresdev::Tools::SRCTYPE_BUILDEREXT);
 
   foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), this,
       SLOT(showNotYetImplemented()));
@@ -197,5 +200,9 @@ void MainWindow::showNotYetImplemented()
 {
   QMessageBox::information(this, "", "Not yet implemented");
 }
+
+
+// =====================================================================
+// =====================================================================
 
 

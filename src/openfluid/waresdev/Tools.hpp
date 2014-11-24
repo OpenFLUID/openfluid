@@ -26,58 +26,37 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file WareSrcExplorer.cpp
- \brief Implements ...
+ \file Tools.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "WareSrcExplorer.hpp"
 
-#include <QFileSystemModel>
+#ifndef SRC_OPENFLUID_WARESDEV_TOOLS_HPP_
+#define SRC_OPENFLUID_WARESDEV_TOOLS_HPP_
 
-#include "DevStudioFileIconProvider.hpp"
+class QString;
 
-WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
-    QTreeView(Parent)
+namespace openfluid { namespace waresdev {
+
+class Tools
 {
-  mp_Model = new QFileSystemModel();
-  setModel(mp_Model);
-  hideColumn(1);
-  hideColumn(2);
-  hideColumn(3);
-}
+  public:
 
+    enum SrcType
+    {
+      SRCTYPE_SIMULATOR, SRCTYPE_OBSERVER, SRCTYPE_BUILDEREXT
+    };
 
-// =====================================================================
-// =====================================================================
+    static QString getCurrentSrcDir(SrcType Type);
+};
 
+} } // namespaces
 
-WareSrcExplorer::~WareSrcExplorer()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcExplorer::setType(openfluid::waresdev::Tools::SrcType Type)
-{
-  QString Path = openfluid::waresdev::Tools::getCurrentSrcDir(Type);
-
-  mp_Model->setRootPath(Path);
-  setRootIndex(mp_Model->index(Path));
-  mp_Model->setIconProvider(new DevStudioFileIconProvider(Path));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
+#endif /* SRC_OPENFLUID_WARESDEV_TOOLS_HPP_ */

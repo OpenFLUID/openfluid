@@ -26,30 +26,67 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file WareSrcExplorer.cpp
+ \file Tools.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "WareSrcExplorer.hpp"
+#include <openfluid/waresdev/Tools.hpp>
 
-#include <QFileSystemModel>
+#include <QString>
+#include <QDir>
 
-#include "DevStudioFileIconProvider.hpp"
+#include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/PreferencesManager.hpp>
+#include <openfluid/config.hpp>
 
-WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
-    QTreeView(Parent)
+namespace openfluid { namespace waresdev {
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString Tools::getCurrentSrcDir(SrcType Type)
 {
-  mp_Model = new QFileSystemModel();
-  setModel(mp_Model);
-  hideColumn(1);
-  hideColumn(2);
-  hideColumn(3);
+  QString SrcTypeSubDir;
+
+  switch (Type)
+  {
+    case SRCTYPE_SIMULATOR:
+      SrcTypeSubDir = QString::fromStdString(
+          openfluid::config::SIMULATORS_PLUGINS_SUBDIR);
+      break;
+    case SRCTYPE_OBSERVER:
+      SrcTypeSubDir = QString::fromStdString(
+          openfluid::config::OBSERVERS_PLUGINS_SUBDIR);
+      break;
+    case SRCTYPE_BUILDEREXT:
+      SrcTypeSubDir = "builderexts";
+      break;
+    default:
+      throw openfluid::base::FrameworkException(
+          "waresdev::Tools::getCurrentDir", "wrong source type");
+      break;
+  }
+
+  QString Path = QString("%1/%2/%3").arg(
+      openfluid::base::PreferencesManager::getInstance()->getWorkspacePath())
+      .arg(QString::fromStdString(openfluid::config::WARESDEV_SUBDIR)).arg(
+      SrcTypeSubDir);
+
+  if (!QDir(Path).mkpath(Path))
+    throw openfluid::base::FrameworkException(
+        "waresdev::Tools::getCurrentSrcDir",
+        QString("unable to open or create %1 directory").arg(Path).toStdString());
+
+  return Path;
 }
 
 
@@ -57,27 +94,4 @@ WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
 // =====================================================================
 
 
-WareSrcExplorer::~WareSrcExplorer()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void WareSrcExplorer::setType(openfluid::waresdev::Tools::SrcType Type)
-{
-  QString Path = openfluid::waresdev::Tools::getCurrentSrcDir(Type);
-
-  mp_Model->setRootPath(Path);
-  setRootIndex(mp_Model->index(Path));
-  mp_Model->setIconProvider(new DevStudioFileIconProvider(Path));
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
+} } // namespaces
