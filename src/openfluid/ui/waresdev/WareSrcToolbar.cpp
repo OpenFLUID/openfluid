@@ -95,6 +95,10 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     SubSubMenu->addAction(Actions->getAction("BuildInstall"));
     SubSubMenu->addAction(Actions->getAction("BuildOnly"));
 
+    SubMenu = Menu->addMenu(tr("Tools"));
+    SubMenu->addAction(Actions->getAction("OpenTerminal"));
+    SubMenu->addAction(Actions->getAction("OpenExplorer"));
+
     QToolButton* MenuButton = new QToolButton(this);
     MenuButton->setText(tr("Menu"));
     MenuButton->setToolButtonStyle(Qt::ToolButtonTextOnly);

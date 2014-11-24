@@ -183,6 +183,9 @@ void MainWindow::createMenus()
   SubMenu->addAction(Actions->getAction("BuildInstall"));
   SubMenu->addAction(Actions->getAction("BuildOnly"));
 
+  Menu = menuBar()->addMenu(tr("Tools"));
+  Menu->addAction(Actions->getAction("OpenTerminal"));
+  Menu->addAction(Actions->getAction("OpenExplorer"));
 }
 
 

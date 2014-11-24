@@ -101,6 +101,9 @@ WareSrcActions::WareSrcActions()
   m_Actions["BuildOnly"]->setCheckable(true);
   Menu->addAction(m_Actions["BuildOnly"]);
   m_Actions["BuildWMenu"]->setMenu(Menu);
+
+  m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
+  m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
 }
 
 
