@@ -72,12 +72,13 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     addWidget(Spacer);
 
     QMenu* Menu = new QMenu();
-    Menu->addAction(Actions->getAction("NewFile"));
-    Menu->addAction(Actions->getAction("OpenFile"));
-    Menu->addAction(Actions->getAction("SaveFile"));
-    Menu->addAction(Actions->getAction("SaveAsFile"));
-    Menu->addAction(Actions->getAction("CloseFile"));
-    Menu->addAction(Actions->getAction("DeleteFile"));
+    QMenu* SubMenu = Menu->addMenu(tr("File"));
+    SubMenu->addAction(Actions->getAction("NewFile"));
+    SubMenu->addAction(Actions->getAction("OpenFile"));
+    SubMenu->addAction(Actions->getAction("SaveFile"));
+    SubMenu->addAction(Actions->getAction("SaveAsFile"));
+    SubMenu->addAction(Actions->getAction("CloseFile"));
+    SubMenu->addAction(Actions->getAction("DeleteFile"));
     QToolButton* MenuButton = new QToolButton(this);
     MenuButton->setText(tr("Menu"));
     MenuButton->setToolButtonStyle(Qt::ToolButtonTextOnly);
