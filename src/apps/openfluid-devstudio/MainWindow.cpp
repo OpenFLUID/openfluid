@@ -63,16 +63,19 @@ MainWindow::MainWindow() :
   createMenus();
   addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
 
-  connect(m_Actions.value("Quit"), SIGNAL(triggered()),
-  qApp,
-          SLOT(quit()));
-  connect(m_Actions.value("SwitchWorkspace"), SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
+
+  foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), this,
+      SLOT(showNotYetImplemented()));
 
   QMap<QString, QAction*>& Actions =
       openfluid::ui::waresdev::WareSrcActions::getInstance()->getActions();
   foreach(QAction* Action,Actions)connect(Action, SIGNAL(triggered()), this,
       SLOT(showNotYetImplemented()));
+
+  m_Actions.value("Quit")->disconnect();
+  connect(m_Actions.value("Quit"), SIGNAL(triggered()),
+  qApp,
+          SLOT(quit()));
 
 
   ui->WareSrcCollection->addTab(
@@ -109,6 +112,23 @@ void MainWindow::createActions()
    "The menu role can only be changed before the actions are put into the menu bar in Mac OS X (usually just before the first application window is shown)."
    (http://qt-project.org/doc/qt-4.8/qaction.html#menuRole-prop)*/
   m_Actions["Quit"]->setMenuRole(QAction::QuitRole);
+
+  m_Actions["Copy"] = new QAction(tr("Copy"), this);
+  m_Actions["Copy"]->setShortcuts(QKeySequence::Copy);
+
+  m_Actions["Cut"] = new QAction(tr("Cut"), this);
+  m_Actions["Cut"]->setShortcuts(QKeySequence::Cut);
+
+  m_Actions["Paste"] = new QAction(tr("Paste"), this);
+  m_Actions["Paste"]->setShortcuts(QKeySequence::Paste);
+
+  m_Actions["Find"] = new QAction(tr("Find"), this);
+  m_Actions["Find"]->setShortcuts(QKeySequence::Find);
+
+  m_Actions["Replace"] = new QAction(tr("Replace"), this);
+  m_Actions["Replace"]->setShortcuts(QKeySequence::Replace);
+
+  m_Actions["GoToLine"] = new QAction(tr("Go to line..."), this);
 }
 
 
@@ -144,6 +164,14 @@ void MainWindow::createMenus()
   Menu->addSeparator();
   Menu->addAction(m_Actions.value("SwitchWorkspace"));
   Menu->addAction(m_Actions.value("Quit"));
+
+  Menu = menuBar()->addMenu(tr("Edit"));
+  Menu->addAction(m_Actions.value("Copy"));
+  Menu->addAction(m_Actions.value("Cut"));
+  Menu->addAction(m_Actions.value("Paste"));
+  Menu->addAction(m_Actions.value("Find"));
+  Menu->addAction(m_Actions.value("Replace"));
+  Menu->addAction(m_Actions.value("GoToLine"));
 }
 
 
