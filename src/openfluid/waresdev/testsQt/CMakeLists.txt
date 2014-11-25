@@ -1,0 +1,36 @@
+
+INCLUDE_DIRECTORIES("${PROJECT_BINARY_DIR}/src/tests")
+
+FIND_PACKAGE(Qt5Test QUIET)
+
+IF(Qt5Test_FOUND)
+  
+  INCLUDE_DIRECTORIES(${QT_INCLUDES} ${Qt5Test_INCLUDE_DIRS}
+  #${Qt5Gui_INCLUDE_DIRS}
+  )
+  SET(QT_QTGUI_LIBRARIES ${Qt5Test_LIBRARIES})
+  
+  ADD_DEFINITIONS(${Qt5Test_DEFINITONS})
+  
+ELSE()
+
+  FIND_PACKAGE(Qt4 REQUIRED QtTest
+#   QtGui
+   )
+  
+  INCLUDE(${QT_USE_FILE})
+
+ENDIF()
+
+
+
+SET(UNITTEST_LINK_LIBRARIES 
+                       ${QT_QTCORE_LIBRARIES}
+                       ${QT_QTTEST_LIBRARY}
+#                       ${QT_QTGUI_LIBRARIES}
+                       openfluid-base openfluid-waresdev)
+
+SET(CMAKE_AUTOMOC ON)
+#SET(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+OPNFLD_DISCOVER_UNITTESTS(api)

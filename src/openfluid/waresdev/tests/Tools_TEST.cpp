@@ -26,67 +26,36 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
- 
+
  */
 
-
 /**
- \file Tools.cpp
+ \file Tools_TEST.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
+#define BOOST_TEST_MAIN
+#define BOOST_AUTO_TEST_MAIN
+#define BOOST_TEST_DYN_LINK
+#define BOOST_TEST_MODULE unittest_Tools
+#include <boost/test/unit_test.hpp>
+
 #include <openfluid/waresdev/Tools.hpp>
 
-#include <QString>
-#include <QDir>
-
-#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/config.hpp>
-
-namespace openfluid { namespace waresdev {
 
 
 // =====================================================================
 // =====================================================================
 
 
-QString Tools::getCurrentSrcDir(SrcType Type)
+BOOST_AUTO_TEST_CASE(getCurrentSrcDir)
 {
-  QString SrcTypeSubDir;
-
-  switch (Type)
-  {
-    case SRCTYPE_SIMULATOR:
-      SrcTypeSubDir = QString::fromStdString(
-          openfluid::config::SIMULATORS_PLUGINS_SUBDIR);
-      break;
-    case SRCTYPE_OBSERVER:
-      SrcTypeSubDir = QString::fromStdString(
-          openfluid::config::OBSERVERS_PLUGINS_SUBDIR);
-      break;
-    case SRCTYPE_BUILDEREXT:
-      SrcTypeSubDir = "builderexts";
-      break;
-    default:
-      throw openfluid::base::FrameworkException(
-          "waresdev::Tools::getCurrentSrcDir", "wrong source type");
-      break;
-  }
-
-  QString Path = QString("%1/%2/%3").arg(
-      openfluid::base::PreferencesManager::getInstance()->getWorkspacePath())
-      .arg(QString::fromStdString(openfluid::config::WARESDEV_SUBDIR)).arg(
-      SrcTypeSubDir);
-
-  if (!QDir(Path).mkpath(Path))
-    throw openfluid::base::FrameworkException(
-        "waresdev::Tools::getCurrentSrcDir",
-        QString("unable to open or create %1 directory").arg(Path).toStdString());
-
-  return Path;
+  BOOST_CHECK_EQUAL(
+      openfluid::waresdev::Tools::getCurrentSrcDir(openfluid::waresdev::Tools::SRCTYPE_SIMULATOR).toStdString(),
+      QString("%1/wares-dev/simulators").arg(openfluid::base::PreferencesManager::getInstance()->getWorkspacePath()).toStdString());
 }
 
 
@@ -94,4 +63,3 @@ QString Tools::getCurrentSrcDir(SrcType Type)
 // =====================================================================
 
 
-} } // namespaces

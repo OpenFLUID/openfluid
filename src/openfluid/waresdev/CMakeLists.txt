@@ -20,7 +20,7 @@ SET_TARGET_PROPERTIES(openfluid-waresdev PROPERTIES VERSION "${VERSION_MAJOR}.${
                                         )
 
 TARGET_LINK_LIBRARIES(openfluid-waresdev
-                      #openfluid-base
+                      openfluid-base
                       #openfluid-core
                       #openfluid-ware
                       #openfluid-tools                                           
@@ -39,6 +39,9 @@ INSTALL(TARGETS openfluid-waresdev
 
 INSTALL(FILES ${OPENFLUID_WARESDEV_HPP} DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH}/waresdev)
 
-
+IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
+  ADD_SUBDIRECTORY(tests)
+  ADD_SUBDIRECTORY(testsQt)
+ENDIF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))  
 
    
