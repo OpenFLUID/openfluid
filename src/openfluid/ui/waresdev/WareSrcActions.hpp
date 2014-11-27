@@ -46,7 +46,7 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-class WareSrcActions: QObject
+class WareSrcActions: public QObject
 {
   Q_OBJECT
 
@@ -66,11 +66,9 @@ class WareSrcActions: QObject
 
     QAction* getAction(const QString& ActionName);
 
-    // TODO to remove after action implementation
-    QMap<QString, QAction*>& getActions()
-    {
-      return m_Actions;
-    }
+  public slots:
+
+    void showNotYetImplemented();
 
 };
 

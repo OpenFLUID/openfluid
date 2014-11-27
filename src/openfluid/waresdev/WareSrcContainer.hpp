@@ -31,32 +31,35 @@
 
 
 /**
- \file Tools.hpp
+ \file WareSrcContainer.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef SRC_OPENFLUID_WARESDEV_TOOLS_HPP_
-#define SRC_OPENFLUID_WARESDEV_TOOLS_HPP_
+#ifndef SRC_OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP_
+#define SRC_OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP_
 
-class QString;
+#include <QString>
+
+#include <openfluid/waresdev/WareSrcManager.hpp>
+
 
 namespace openfluid { namespace waresdev {
 
-class Tools
+class WareSrcContainer
 {
   public:
 
-    enum SrcType
-    {
-      SRCTYPE_SIMULATOR, SRCTYPE_OBSERVER, SRCTYPE_BUILDEREXT
-    };
+    WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type,
+                     const QString& WareName);
 
-    static QString getCurrentSrcDir(SrcType Type);
+    ~WareSrcContainer();
 };
 
-} } // namespaces
 
-#endif /* SRC_OPENFLUID_WARESDEV_TOOLS_HPP_ */
+} }  // namespaces
+
+
+#endif /* SRC_OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP_ */

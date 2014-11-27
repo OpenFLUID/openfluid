@@ -26,40 +26,58 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file Tools_TEST.cpp
- \brief Implements ...
+ \file WareSrcWidgetCollection.hpp
+ \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#define BOOST_TEST_MAIN
-#define BOOST_AUTO_TEST_MAIN
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_Tools
-#include <boost/test/unit_test.hpp>
 
-#include <openfluid/waresdev/Tools.hpp>
+#ifndef SRC_OPENFLUID_UI_WARESDEV_WARESRCWIDGETCOLLECTION_HPP_
+#define SRC_OPENFLUID_UI_WARESDEV_WARESRCWIDGETCOLLECTION_HPP_
 
-#include <openfluid/base/PreferencesManager.hpp>
+#include <QMap>
+#include <QString>
 
-
-// =====================================================================
-// =====================================================================
+class QTabWidget;
 
 
-BOOST_AUTO_TEST_CASE(getCurrentSrcDir)
-{
-  BOOST_CHECK_EQUAL(
-      openfluid::waresdev::Tools::getCurrentSrcDir(openfluid::waresdev::Tools::SRCTYPE_SIMULATOR).toStdString(),
-      QString("%1/wares-dev/simulators").arg(openfluid::base::PreferencesManager::getInstance()->getWorkspacePath()).toStdString());
+namespace openfluid { namespace waresdev {
+class WareSrcManager;
 }
+namespace ui { namespace waresdev {
+
+class WareSrcWidget;
+
+class WareSrcWidgetCollection
+{
+  private:
+
+    openfluid::waresdev::WareSrcManager* mp_Manager;
+
+    /**
+     * List of opened ware widgets by their absolute path
+     */
+    QMap<QString, WareSrcWidget*> m_WareSrcWidgetByPath;
+
+  public:
+
+    WareSrcWidgetCollection();
+
+    ~WareSrcWidgetCollection();
+
+    void openPath(const QString& Path, bool IsStandalone,
+                  QTabWidget* TabWidget);
+
+    void setCurrent(const QString& Path, QTabWidget* TabWidget);
+};
+
+} } }  // namespaces
 
 
-// =====================================================================
-// =====================================================================
-
-
+#endif /* SRC_OPENFLUID_UI_WARESDEV_WARESRCWIDGETCOLLECTION_HPP_ */

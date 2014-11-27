@@ -42,11 +42,17 @@
 #include <QMainWindow>
 #include <QMap>
 
+#include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
+
 namespace Ui {
 class MainWindow;
 }
 
 class QAction;
+
+namespace openfluid { namespace ui { namespace waresdev {
+class WareSrcWidget;
+} } }
 
 class MainWindow: public QMainWindow
 {
@@ -58,14 +64,17 @@ class MainWindow: public QMainWindow
 
     QMap<QString, QAction*> m_Actions;
 
+    openfluid::ui::waresdev::WareSrcWidgetCollection m_Collection;
+
     void createActions();
 
     void createMenus();
 
   private slots:
 
-    void showNotYetImplemented();
+    void onOpenAsked(const QString& Path);
 
+    void onSetCurrentAsked(const QString& Path);
 
   public:
 

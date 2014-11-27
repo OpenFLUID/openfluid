@@ -42,6 +42,7 @@
 
 #include "DevStudioFileIconProvider.hpp"
 
+
 WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
     QTreeView(Parent)
 {
@@ -50,6 +51,12 @@ WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
   hideColumn(1);
   hideColumn(2);
   hideColumn(3);
+
+  connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this,
+          SLOT(onDoubleClicked(const QModelIndex&)));
+
+  connect(this, SIGNAL(clicked(const QModelIndex&)), this,
+          SLOT(onClicked(const QModelIndex&)));
 }
 
 
@@ -67,13 +74,37 @@ WareSrcExplorer::~WareSrcExplorer()
 // =====================================================================
 
 
-void WareSrcExplorer::setType(openfluid::waresdev::Tools::SrcType Type)
+void WareSrcExplorer::setType(
+    openfluid::waresdev::WareSrcManager::WareType Type)
 {
-  QString Path = openfluid::waresdev::Tools::getCurrentSrcDir(Type);
+  m_WareType = Type;
+
+  QString Path = openfluid::waresdev::WareSrcManager::getInstance()
+      ->getWareTypePath(m_WareType);
 
   mp_Model->setRootPath(Path);
   setRootIndex(mp_Model->index(Path));
   mp_Model->setIconProvider(new DevStudioFileIconProvider(Path));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onDoubleClicked(const QModelIndex& Index)
+{
+  emit openAsked(mp_Model->filePath(Index));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onClicked(const QModelIndex& Index)
+{
+  emit setCurrentAsked(mp_Model->filePath(Index));
 }
 
 

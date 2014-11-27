@@ -4,9 +4,9 @@
 INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp WareSrcActions.cpp)
+SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp WareSrcActions.cpp WareSrcWidgetCollection.cpp)
 
-SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcActions.hpp)
+SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcActions.hpp WareSrcWidgetCollection.hpp)
 
 QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui)
                                    

@@ -43,11 +43,18 @@
 
 #include <QWidget>
 
+#include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/waresdev/WareSrcContainer.hpp>
+
 namespace Ui {
 class WareSrcWidget;
 }
 
+
 namespace openfluid { namespace ui { namespace waresdev {
+
+class WareSrcFileEditor;
+
 
 class DLLEXPORT WareSrcWidget: public QWidget
 {
@@ -57,12 +64,24 @@ class DLLEXPORT WareSrcWidget: public QWidget
 
     Ui::WareSrcWidget* ui;
 
+    openfluid::waresdev::WareSrcContainer m_Container;
+
+
+    /**
+     * List of opened source file editors by file path relative to this ware directory
+     */
+    QMap<QString, WareSrcFileEditor*> m_WareSrcFilesByPath;
+
   public:
 
-    WareSrcWidget(bool IsStandalone, QWidget* Parent = 0);
+    WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info,
+                  bool IsStandalone, QWidget* Parent = 0);
 
     ~WareSrcWidget();
 
+    void openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
+
+    void openDefaultFiles();
 };
 
 } } }  // namespaces

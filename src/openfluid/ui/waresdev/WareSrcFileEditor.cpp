@@ -38,6 +38,8 @@
 
 #include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 
+#include <openfluid/base/FrameworkException.hpp>
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -46,11 +48,16 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcFileEditor::WareSrcFileEditor(QWidget* Parent) :
+WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
     QPlainTextEdit(Parent)
 {
+  QFile File(FilePath);
+  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+    emit openfluid::base::FrameworkException(
+        "WareSrcFileEditor constructor",
+        QString("Cannot open file %1").arg(FilePath).toStdString());
 
-
+  setPlainText(File.readAll());
 }
 
 
@@ -66,5 +73,6 @@ WareSrcFileEditor::~WareSrcFileEditor()
 
 // =====================================================================
 // =====================================================================
+
 
 } } }  // namespaces

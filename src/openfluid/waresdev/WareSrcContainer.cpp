@@ -31,20 +31,14 @@
 
 
 /**
- \file Tools.cpp
+ \file WareSrcContainer.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/waresdev/Tools.hpp>
+#include <openfluid/waresdev/WareSrcContainer.hpp>
 
-#include <QString>
-#include <QDir>
-
-#include <openfluid/base/FrameworkException.hpp>
-#include <openfluid/base/PreferencesManager.hpp>
-#include <openfluid/config.hpp>
 
 namespace openfluid { namespace waresdev {
 
@@ -53,40 +47,12 @@ namespace openfluid { namespace waresdev {
 // =====================================================================
 
 
-QString Tools::getCurrentSrcDir(SrcType Type)
+WareSrcContainer::WareSrcContainer(const QString& AbsolutePath,
+                                   WareSrcManager::WareType Type,
+                                   const QString& WareName)
 {
-  QString SrcTypeSubDir;
 
-  switch (Type)
-  {
-    case SRCTYPE_SIMULATOR:
-      SrcTypeSubDir = QString::fromStdString(
-          openfluid::config::SIMULATORS_PLUGINS_SUBDIR);
-      break;
-    case SRCTYPE_OBSERVER:
-      SrcTypeSubDir = QString::fromStdString(
-          openfluid::config::OBSERVERS_PLUGINS_SUBDIR);
-      break;
-    case SRCTYPE_BUILDEREXT:
-      SrcTypeSubDir = "builderexts";
-      break;
-    default:
-      throw openfluid::base::FrameworkException(
-          "waresdev::Tools::getCurrentSrcDir", "wrong source type");
-      break;
-  }
 
-  QString Path = QString("%1/%2/%3").arg(
-      openfluid::base::PreferencesManager::getInstance()->getWorkspacePath())
-      .arg(QString::fromStdString(openfluid::config::WARESDEV_SUBDIR)).arg(
-      SrcTypeSubDir);
-
-  if (!QDir(Path).mkpath(Path))
-    throw openfluid::base::FrameworkException(
-        "waresdev::Tools::getCurrentSrcDir",
-        QString("unable to open or create %1 directory").arg(Path).toStdString());
-
-  return Path;
 }
 
 
@@ -94,4 +60,14 @@ QString Tools::getCurrentSrcDir(SrcType Type)
 // =====================================================================
 
 
-} } // namespaces
+WareSrcContainer::~WareSrcContainer()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} }  // namespaces

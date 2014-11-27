@@ -41,9 +41,10 @@
 
 #include <QTreeView>
 
-#include <openfluid/waresdev/Tools.hpp>
+#include <openfluid/waresdev/WareSrcManager.hpp>
 
 class QFileSystemModel;
+
 
 class WareSrcExplorer: public QTreeView
 {
@@ -53,13 +54,27 @@ class WareSrcExplorer: public QTreeView
 
     QFileSystemModel* mp_Model;
 
+    openfluid::waresdev::WareSrcManager::WareType m_WareType;
+
+  private slots:
+
+    void onDoubleClicked(const QModelIndex& Index);
+
+    void onClicked(const QModelIndex& Index);
+
   public:
 
     WareSrcExplorer(QWidget* Parent = 0);
 
     ~WareSrcExplorer();
 
-    void setType(openfluid::waresdev::Tools::SrcType Type);
+    void setType(openfluid::waresdev::WareSrcManager::WareType Type);
+
+  signals:
+
+    void openAsked(const QString& FilePath);
+
+    void setCurrentAsked(const QString& FilePath);
 };
 
 #endif /* __WARESRCEXPLORER_HPP__ */

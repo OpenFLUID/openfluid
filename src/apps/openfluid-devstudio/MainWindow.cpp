@@ -42,12 +42,11 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QAction>
-#include <QMessageBox>
 
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
 #include <openfluid/ui/waresdev/WareSrcActions.hpp>
-#include <openfluid/waresdev/Tools.hpp>
+
 
 MainWindow::MainWindow() :
     QMainWindow(), ui(new Ui::MainWindow)
@@ -63,16 +62,16 @@ MainWindow::MainWindow() :
   createMenus();
   addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
 
-  ui->SimExplorer->setType(openfluid::waresdev::Tools::SRCTYPE_SIMULATOR);
-  ui->ObsExplorer->setType(openfluid::waresdev::Tools::SRCTYPE_OBSERVER);
-  ui->ExtExplorer->setType(openfluid::waresdev::Tools::SRCTYPE_BUILDEREXT);
+  int Half = ui->splitter->sizeHint().width() / 2;
+  QList<int> Sizes;
+  Sizes << Half << Half;
+  ui->splitter->setSizes(Sizes);
 
-  foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), this,
-      SLOT(showNotYetImplemented()));
+  ui->SimExplorer->setType(openfluid::waresdev::WareSrcManager::SIMULATOR);
+  ui->ObsExplorer->setType(openfluid::waresdev::WareSrcManager::OBSERVER);
+  ui->ExtExplorer->setType(openfluid::waresdev::WareSrcManager::BUILDEREXT);
 
-  QMap<QString, QAction*>& Actions =
-      openfluid::ui::waresdev::WareSrcActions::getInstance()->getActions();
-  foreach(QAction* Action,Actions)connect(Action, SIGNAL(triggered()), this,
+  foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), openfluid::ui::waresdev::WareSrcActions::getInstance(),
       SLOT(showNotYetImplemented()));
 
   m_Actions.value("Quit")->disconnect();
@@ -80,13 +79,19 @@ MainWindow::MainWindow() :
   qApp,
           SLOT(quit()));
 
+  connect(ui->SimExplorer, SIGNAL(openAsked(const QString&)), this,
+          SLOT(onOpenAsked(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(openAsked(const QString&)), this,
+          SLOT(onOpenAsked(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(openAsked(const QString&)), this,
+          SLOT(onOpenAsked(const QString&)));
 
-  ui->WareSrcCollection->addTab(
-      new openfluid::ui::waresdev::WareSrcWidget(false, this),
-      "a DevStudio ware src widget");
-  ui->WareSrcCollection->addTab(
-      new openfluid::ui::waresdev::WareSrcWidget(true, this),
-      "a Builder ware src widget");
+  connect(ui->SimExplorer, SIGNAL(setCurrentAsked(const QString&)), this,
+          SLOT(onSetCurrentAsked(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(setCurrentAsked(const QString&)), this,
+          SLOT(onSetCurrentAsked(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(setCurrentAsked(const QString&)), this,
+          SLOT(onSetCurrentAsked(const QString&)));
 }
 
 
@@ -196,9 +201,18 @@ void MainWindow::createMenus()
 // =====================================================================
 
 
-void MainWindow::showNotYetImplemented()
+void MainWindow::onOpenAsked(const QString& Path)
 {
-  QMessageBox::information(this, "", "Not yet implemented");
+  m_Collection.openPath(Path, false, ui->WareSrcCollection);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+void MainWindow::onSetCurrentAsked(const QString& Path)
+{
+  m_Collection.setCurrent(Path, ui->WareSrcCollection);
 }
 
 

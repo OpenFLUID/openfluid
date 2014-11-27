@@ -26,23 +26,24 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file WareSrcWidget.cpp
+ \file WareSrcWidgetCollection.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include "WareSrcWidget.hpp"
-#include "ui_WareSrcWidget.h"
+#include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 
-#include <QList>
+#include <QTabWidget>
 
-#include "WareSrcFileEditor.hpp"
-#include "WareSrcToolbar.hpp"
+#include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/ui/waresdev/WareSrcWidget.hpp>
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -51,21 +52,10 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcWidget::WareSrcWidget(
-    const openfluid::waresdev::WareSrcManager::PathInfo& Info,
-    bool IsStandalone, QWidget* Parent) :
-    QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(Info.m_AbsolutePath,
-                                                            Info.m_WareType,
-                                                            Info.m_WareName)
+WareSrcWidgetCollection::WareSrcWidgetCollection() :
+    mp_Manager(openfluid::waresdev::WareSrcManager::getInstance())
 {
-  ui->setupUi(this);
 
-  if (IsStandalone)
-    ui->Toolbar_Layout->addWidget(new WareSrcToolbar(true, this));
-
-  QList<int> Sizes;
-  Sizes << 1000 << 180;
-  ui->splitter->setSizes(Sizes);
 }
 
 
@@ -73,32 +63,72 @@ WareSrcWidget::WareSrcWidget(
 // =====================================================================
 
 
-WareSrcWidget::~WareSrcWidget()
+WareSrcWidgetCollection::~WareSrcWidgetCollection()
 {
-  delete ui;
+
 }
 
 
 // =====================================================================
 // =====================================================================
 
-void WareSrcWidget::openFile(
-    const openfluid::waresdev::WareSrcManager::PathInfo& Info)
+
+void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone,
+                                       QTabWidget* TabWidget)
 {
-  WareSrcFileEditor* Widget = m_WareSrcFilesByPath.value(
-      Info.m_RelativePathToWareDir, 0);
+  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(
+      Path);
+
+  // TODO manage other workspaces later
+  if (!Info.m_IsInCurrentWorkspace)
+    return;
+
+  if (Info.m_isAWare || Info.m_isAWareFile)
+  {
+    openfluid::ui::waresdev::WareSrcWidget* Widget =
+        m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
+
+    if (!Widget)
+    {
+      Widget = new WareSrcWidget(Info, IsStandalone, TabWidget);
+
+      TabWidget->addTab(Widget, Info.m_WareName);
+
+      m_WareSrcWidgetByPath[Info.m_AbsolutePathOfWare] = Widget;
+    }
+
+    if (Info.m_isAWareFile)
+      Widget->openFile(Info);
+    else
+      Widget->openDefaultFiles();
+
+    TabWidget->setCurrentWidget(Widget);
+  }
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::setCurrent(const QString& Path,
+                                         QTabWidget* TabWidget)
+{
+  openfluid::ui::waresdev::WareSrcWidget* Widget = m_WareSrcWidgetByPath.value(
+      Path, 0);
 
   if (!Widget)
   {
-    Widget = new WareSrcFileEditor(Info.m_AbsolutePath, this);
+    openfluid::waresdev::WareSrcManager::PathInfo Info =
+        mp_Manager->getPathInfo(Path);
 
-    int Pos = ui->WareSrcFileCollection->addTab(Widget, Info.m_FileName);
-    ui->WareSrcFileCollection->setTabToolTip(Pos, Info.m_RelativePathToWareDir);
-
-    m_WareSrcFilesByPath[Info.m_AbsolutePath] = Widget;
+    if (Info.m_isAWareFile)
+      Widget = m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
   }
 
-  ui->WareSrcFileCollection->setCurrentWidget(Widget);
+  if (Widget)
+    TabWidget->setCurrentWidget(Widget);
 }
 
 
@@ -106,14 +136,4 @@ void WareSrcWidget::openFile(
 // =====================================================================
 
 
-void WareSrcWidget::openDefaultFiles()
-{
-// TODO
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-} } }  // namespaces
+} } }  //namespaces

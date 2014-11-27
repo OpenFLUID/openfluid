@@ -55,7 +55,7 @@ class DLLEXPORT WareSrcFileEditor: public QPlainTextEdit
 
   public:
 
-    WareSrcFileEditor(QWidget* Parent = 0);
+    WareSrcFileEditor(const QString& FilePath, QWidget* Parent = 0);
 
     ~WareSrcFileEditor();
 };

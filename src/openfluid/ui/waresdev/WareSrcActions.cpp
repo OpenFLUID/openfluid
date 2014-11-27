@@ -43,6 +43,7 @@
 
 #include <QActionGroup>
 #include <QMenu>
+#include <QMessageBox>
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -104,6 +105,9 @@ WareSrcActions::WareSrcActions()
 
   m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
   m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
+
+  foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), this,
+      SLOT(showNotYetImplemented()));
 }
 
 
@@ -143,6 +147,20 @@ QAction* WareSrcActions::getAction(const QString& ActionName)
       "openfluid-devstudio", "WareSrcActions::getAction",
       "Action \"" + ActionName.toStdString() + "\" does'nt exist.");
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcActions::showNotYetImplemented()
+{
+  QMessageBox::information(0, "", "Not yet implemented");
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 } } }  // namespaces
