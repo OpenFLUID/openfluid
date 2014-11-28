@@ -1,3 +1,20 @@
+2.0.2
+
+  * Introduced management of multiple workspaces
+  * Added geographic file format observer based on GDAL, in order to export
+    simulations variables in geographic vector files
+  * Renamed information file of projects 
+    from openfluid.prj to openfluid-project.conf  
+  * Refactored UI components namespaces and organization
+  * Modified constraints on events appending from simulators,
+    now allowed in PREPAREDATA stage and later stages
+  * Refactored main packaging configurations
+  * Removed unwanted QtNetwork dependency from tools.hpp header  
+  * Fixed header guard of config.hpp file
+  * Fixed minor bugs
+
+
+
 2.0.1
   
   * Added display of points, multipoints and multilines
