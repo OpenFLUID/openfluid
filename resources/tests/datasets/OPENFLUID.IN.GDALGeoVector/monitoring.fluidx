@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+  <monitoring>
+
+    <observer ID="export.vars.files.geovector" >
+      <param name="format" value="ESRI Shapefile" />
+      <param name="outsubdir" value="geovector-continuous" />
+      <param name="geoserie.ContSU.sourcefile" value="data/extractroujan_su_wgs84.shp" />
+      <param name="geoserie.ContSU.vars" value="tests.random=>random;tests.fixed" />
+      <param name="geoserie.ContSU.unitsclass" value="SU" />
+      <param name="geoserie.ContRS.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
+      <param name="geoserie.ContRS.vars" value="tests.random=>rnd" />
+      <param name="geoserie.ContRS.unitsclass" value="SU" />
+      <param name="geoserie.ContRS.when" value="continuous" />
+    </observer>
+    
+
+    <observer ID="export.vars.files.geovector" >
+      <param name="format" value="GeoJSON" />
+      <param name="outsubdir" value="geovector-continuous-delay" />
+      <param name="geoserie.ContDelaySU.sourcefile" value="data/extractroujan_su_wgs84.shp" />
+      <param name="geoserie.ContDelaySU.vars" value="tests.random=>random;tests.fixed" />
+      <param name="geoserie.ContDelaySU.unitsclass" value="SU" />
+      <param name="geoserie.ContDelaySU.when" value="continuous;9999" />
+      <param name="geoserie.ContDelayRS.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
+      <param name="geoserie.ContDelayRS.vars" value="tests.random=>rnd" />
+      <param name="geoserie.ContDelayRS.unitsclass" value="SU" />
+      <param name="geoserie.ContDelayRS.when" value="continuous;8000" />
+    </observer>
+    
+    
+    <observer ID="export.vars.files.geovector" >
+      <param name="format" value="ESRI Shapefile" />
+      <param name="geoserie.ContDelaySU.sourcefile" value="data/extractroujan_su_wgs84.shp" />
+      <param name="geoserie.ContDelaySU.vars" value="tests.random;tests.fixed=>tfix" />
+      <param name="geoserie.ContDelaySU.unitsclass" value="SU" />
+      <param name="geoserie.ContDelaySU.when" value="init" />
+      <param name="geoserie.ContDelayRS.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
+      <param name="geoserie.ContDelayRS.vars" value="tests.random=>rnd;tests.fixed=>tfix" />
+      <param name="geoserie.ContDelayRS.unitsclass" value="SU" />
+      <param name="geoserie.ContDelayRS.when" value="final" />
+    </observer>    
+    
+    <observer ID="export.vars.files.geovector" >
+      <param name="format" value="ESRI Shapefile" />
+      <param name="geoserie.WrongFile.sourcefile" value="dot/foobar.shp" />
+      <param name="geoserie.WrongFile.vars" value="tests.fixed=>tfix" />
+      <param name="geoserie.WrongFile.unitsclass" value="SU" />
+    </observer>
+    
+  </monitoring>
+</openfluid>

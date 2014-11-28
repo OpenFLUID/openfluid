@@ -1,0 +1,10 @@
+<?xml version="1.0" standalone="yes"?>
+<openfluid>
+ <datastore>
+  <dataitem id="RSshape" type="geovector" source="data/extractroujan_rs_wgs84.shp" unitclass="RS" />
+  <dataitem id="SUshape" type="geovector" source="data/extractroujan_su_wgs84.shp" unitclass="SU" />
+ </datastore>
+
+
+</openfluid>
+

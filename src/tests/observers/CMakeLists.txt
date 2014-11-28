@@ -107,7 +107,7 @@ OPENFLUID_ADD_TEST(NAME observers-KmlAnimFilesMinDelay
 ###########################################################################
 
                         
-OPENFLUID_ADD_TEST(NAME observers-GNUplot 
+OPENFLUID_ADD_TEST(NAME observers-GNUplot
                    COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
                         "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.GNUplotObserver"
                         "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GNUplotObserver" 
@@ -119,4 +119,19 @@ OPENFLUID_ADD_TEST(NAME observers-GNUplot
                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GNUplotObserver/s2_data.gnuplot"
                              CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GNUplotObserver/s4_data.gnuplot"
                   )
-                                                
+                   
+                   
+###########################################################################
+
+                        
+OPENFLUID_ADD_TEST(NAME observers-GDALGeoVector
+                   COMMAND "${BIN_OUTPUT_PATH}/${OPENFLUID_CMD_APP}" 
+                        "-i${TESTS_DATASETS_PATH}/OPENFLUID.IN.GDALGeoVector"
+                        "-o${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GDALGeoVector" 
+                        "-p${TEST_OUTPUT_PATH}"
+                        "-n${TEST_OUTPUT_PATH}"
+                   PRE_TEST REMOVE_DIRECTORY "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GDALGeoVector"
+                   POST_TEST CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GDALGeoVector/ContDelaySU_init.shp"
+                             CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GDALGeoVector/geovector-continuous/ContSU_252000.shp"
+                             CHECK_FILE_EXIST "${TESTS_OUTPUTDATA_PATH}/OPENFLUID.OUT.GDALGeoVector/geovector-continuous-delay/ContDelayRS_324000.json"
+                  )                             
