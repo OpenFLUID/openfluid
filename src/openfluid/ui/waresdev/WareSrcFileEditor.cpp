@@ -53,7 +53,7 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
 {
   QFile File(FilePath);
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-    emit openfluid::base::FrameworkException(
+    throw openfluid::base::FrameworkException(
         "WareSrcFileEditor constructor",
         QString("Cannot open file %1").arg(FilePath).toStdString());
 

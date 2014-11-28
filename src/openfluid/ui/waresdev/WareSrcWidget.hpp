@@ -68,9 +68,12 @@ class DLLEXPORT WareSrcWidget: public QWidget
 
 
     /**
-     * List of opened source file editors by file path relative to this ware directory
+     * List of opened source file editors by their absolute path
      */
     QMap<QString, WareSrcFileEditor*> m_WareSrcFilesByPath;
+
+    void addNewFileTab(const QString& AbsolutePath, const QString& TabLabel,
+                       const QString& TabTooltip = "");
 
   public:
 
@@ -82,6 +85,13 @@ class DLLEXPORT WareSrcWidget: public QWidget
     void openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
 
     void openDefaultFiles();
+
+    /**
+     * Set the file editor for the absolute path of Info as the current tab
+     * @details Check if the file editor is already opened. If true, set this editor as the current tab. Otherwise does nothing.
+     * @return true if the file editor was already opened, false otherwise
+     */
+    bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
 };
 
 } } }  // namespaces

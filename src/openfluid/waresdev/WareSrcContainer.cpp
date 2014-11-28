@@ -39,6 +39,9 @@
 
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 
+#include <QDir>
+
+#include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid { namespace waresdev {
 
@@ -49,9 +52,35 @@ namespace openfluid { namespace waresdev {
 
 WareSrcContainer::WareSrcContainer(const QString& AbsolutePath,
                                    WareSrcManager::WareType Type,
-                                   const QString& WareName)
+                                   const QString& WareName) :
+    m_AbsolutePath(AbsolutePath), m_AbsoluteCMakeConfigPath(""), m_AbsoluteMainCppPath(
+        "")
 {
+  QDir Dir(AbsolutePath);
 
+  QString CMakeFilePath = Dir.absoluteFilePath("CMake.in.config");
+
+  if (QFile::exists(CMakeFilePath))
+  {
+    m_AbsoluteCMakeConfigPath = CMakeFilePath;
+
+    QFile File(m_AbsoluteCMakeConfigPath);
+    if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
+      throw openfluid::base::FrameworkException(
+          "WareSrcContainer constructor",
+          QString("Cannot open file %1").arg(m_AbsoluteCMakeConfigPath)
+              .toStdString());
+
+    QString MainCppFilename = searchMainCppFileName(File.readAll());
+
+    if (!MainCppFilename.isEmpty())
+    {
+      QString MainCppFilePath = Dir.absoluteFilePath(MainCppFilename);
+
+      if (QFile::exists(MainCppFilePath))
+        m_AbsoluteMainCppPath = MainCppFilePath;
+    }
+  }
 
 }
 
@@ -65,6 +94,58 @@ WareSrcContainer::~WareSrcContainer()
 
 }
 
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
+{
+  QStringList Lines = CMakeFileContent.split('\n');
+
+  // TODO check builder-ext tag
+  QRegExp RE(
+      "^\\s*SET\\s*\\((?:SIM|OBS|BUILDEREXT)_CPP\\s+(\\w+\\.cpp).*\\).*");
+
+  foreach(QString L,Lines){
+  if (RE.indexIn(L) > -1)
+  return RE.cap(1);
+}
+
+  return "";
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QStringList WareSrcContainer::getDefaultFiles()
+{
+  QStringList L;
+  bool SearchFirstCpp = false;
+
+  if (!m_AbsoluteCMakeConfigPath.isEmpty())
+    L << m_AbsoluteCMakeConfigPath;
+
+  if (!m_AbsoluteMainCppPath.isEmpty())
+    L << m_AbsoluteMainCppPath;
+  else
+  {
+    QDir Dir(m_AbsolutePath);
+
+    QStringList NameFilters;
+    NameFilters << "*.cpp";
+
+    QString FirstCpp =
+        Dir.entryList(NameFilters, QDir::Files, QDir::Name).value(0, "");
+
+    if (!FirstCpp.isEmpty())
+      L << Dir.absoluteFilePath(FirstCpp);
+  }
+
+  return L;
+}
 
 // =====================================================================
 // =====================================================================

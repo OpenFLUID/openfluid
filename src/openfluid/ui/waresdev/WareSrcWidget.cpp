@@ -40,9 +40,11 @@
 #include "ui_WareSrcWidget.h"
 
 #include <QList>
+#include <QDir>
 
 #include "WareSrcFileEditor.hpp"
 #include "WareSrcToolbar.hpp"
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -54,9 +56,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcWidget::WareSrcWidget(
     const openfluid::waresdev::WareSrcManager::PathInfo& Info,
     bool IsStandalone, QWidget* Parent) :
-    QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(Info.m_AbsolutePath,
-                                                            Info.m_WareType,
-                                                            Info.m_WareName)
+    QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(
+        Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName)
 {
   ui->setupUi(this);
 
@@ -85,20 +86,14 @@ WareSrcWidget::~WareSrcWidget()
 void WareSrcWidget::openFile(
     const openfluid::waresdev::WareSrcManager::PathInfo& Info)
 {
-  WareSrcFileEditor* Widget = m_WareSrcFilesByPath.value(
-      Info.m_RelativePathToWareDir, 0);
+  WareSrcFileEditor* Widget = m_WareSrcFilesByPath.value(Info.m_AbsolutePath,
+                                                         0);
 
-  if (!Widget)
-  {
-    Widget = new WareSrcFileEditor(Info.m_AbsolutePath, this);
-
-    int Pos = ui->WareSrcFileCollection->addTab(Widget, Info.m_FileName);
-    ui->WareSrcFileCollection->setTabToolTip(Pos, Info.m_RelativePathToWareDir);
-
-    m_WareSrcFilesByPath[Info.m_AbsolutePath] = Widget;
-  }
-
-  ui->WareSrcFileCollection->setCurrentWidget(Widget);
+  if (Widget)
+    ui->WareSrcFileCollection->setCurrentWidget(Widget);
+  else
+    addNewFileTab(Info.m_AbsolutePath, Info.m_FileName,
+                  Info.m_RelativePathToWareDir);
 }
 
 
@@ -106,9 +101,47 @@ void WareSrcWidget::openFile(
 // =====================================================================
 
 
+void WareSrcWidget::addNewFileTab(const QString& AbsolutePath,
+                                  const QString& TabLabel,
+                                  const QString& TabTooltip)
+{
+  WareSrcFileEditor* Widget = new WareSrcFileEditor(AbsolutePath, this);
+
+  int Pos = ui->WareSrcFileCollection->addTab(Widget, TabLabel);
+  ui->WareSrcFileCollection->setTabToolTip(Pos, TabTooltip);
+
+  m_WareSrcFilesByPath[AbsolutePath] = Widget;
+
+  ui->WareSrcFileCollection->setCurrentWidget(Widget);
+}
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcWidget::openDefaultFiles()
 {
-// TODO
+  foreach(QString F,m_Container.getDefaultFiles()){
+  QString FileName = QFileInfo(F).fileName();
+  addNewFileTab(F, FileName, FileName);
+}
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidget::setCurrent(
+    const openfluid::waresdev::WareSrcManager::PathInfo& Info)
+{
+  WareSrcFileEditor* Widget = m_WareSrcFilesByPath.value(Info.m_AbsolutePath,
+                                                         0);
+
+  if (Widget)
+    ui->WareSrcFileCollection->setCurrentWidget(Widget);
+
+  return Widget;
 }
 
 

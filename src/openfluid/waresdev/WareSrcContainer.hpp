@@ -50,12 +50,38 @@ namespace openfluid { namespace waresdev {
 
 class WareSrcContainer
 {
+  private:
+
+    QString m_AbsolutePath;
+
+    /**
+     * Absolute path of the CMake.in.config file if it exists, otherwise an empty string
+     */
+    QString m_AbsoluteCMakeConfigPath;
+
+    /**
+     * Absolute path of the main .cpp as set in the CMakeLists.txt file, if this .cpp file exists, otherwise an empty string
+     */
+    QString m_AbsoluteMainCppPath;
+
   public:
 
     WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type,
                      const QString& WareName);
 
     ~WareSrcContainer();
+
+    static QString searchMainCppFileName(const QString& CMakeFileContent);
+
+    /**
+     * Return the absolute paths of:
+     * - the CMake.in.config file if it exists on disk,
+     * - the main .cpp file as set in the CMakeLists.txt, if this .cpp exists on disk.
+     * If no .cpp file was found (because it doesn't exists, it wasn't found in CMake file, or CMake file doesn't exist):
+     * - the first .cpp file found in this ware directory (not recursive).
+     * @return a list of existing absolute paths into this ware directory. It can be empty.
+     */
+    QStringList getDefaultFiles();
 };
 
 

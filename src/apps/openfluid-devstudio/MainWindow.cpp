@@ -62,9 +62,9 @@ MainWindow::MainWindow() :
   createMenus();
   addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
 
-  int Half = ui->splitter->sizeHint().width() / 2;
+  int ExplorerWidth = ui->splitter->sizeHint().width() / 3;
   QList<int> Sizes;
-  Sizes << Half << Half;
+  Sizes << ExplorerWidth << ExplorerWidth*2;
   ui->splitter->setSizes(Sizes);
 
   ui->SimExplorer->setType(openfluid::waresdev::WareSrcManager::SIMULATOR);

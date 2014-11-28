@@ -115,20 +115,26 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone,
 void WareSrcWidgetCollection::setCurrent(const QString& Path,
                                          QTabWidget* TabWidget)
 {
-  openfluid::ui::waresdev::WareSrcWidget* Widget = m_WareSrcWidgetByPath.value(
-      Path, 0);
+  openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(
+      Path);
 
-  if (!Widget)
+  // TODO manage other workspaces later
+  if (!Info.m_IsInCurrentWorkspace)
+    return;
+
+  if (Info.m_isAWare || Info.m_isAWareFile)
   {
-    openfluid::waresdev::WareSrcManager::PathInfo Info =
-        mp_Manager->getPathInfo(Path);
+    openfluid::ui::waresdev::WareSrcWidget* Widget =
+        m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
 
-    if (Info.m_isAWareFile)
-      Widget = m_WareSrcWidgetByPath.value(Info.m_AbsolutePathOfWare, 0);
+    if (Widget)
+    {
+      if (Info.m_isAWare || Widget->setCurrent(Info))
+        TabWidget->setCurrentWidget(Widget);
+    }
+
   }
 
-  if (Widget)
-    TabWidget->setCurrentWidget(Widget);
 }
 
 
