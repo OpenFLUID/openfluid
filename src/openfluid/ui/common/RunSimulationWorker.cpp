@@ -43,6 +43,7 @@
 
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/base/ProjectManager.hpp>
+#include <openfluid/base/OtherException.hpp>
 #include <openfluid/machine/SimulationBlob.hpp>
 #include <openfluid/machine/Engine.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
@@ -54,11 +55,55 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 
+
+#define HANDLE_USER_PAUSE_ABORT \
+  { \
+    while (m_PausedByUser) \
+    { \
+      if (!m_ConfirmedPauseByUser) \
+      { \
+        m_ConfirmedPauseByUser = true; \
+        emit pauseConfirmed(); \
+      } \
+      if (m_AbortedByUser) \
+      { \
+        throw UserAbortException(); \
+      } \
+      openfluid::tools::Sleep(200); \
+    } \
+  }
+
 namespace openfluid { namespace ui { namespace common {
 
 
+class UserAbortException : public openfluid::base::Exception
+{
+  protected:
+
+    void buildFullMessage()
+    {
+      m_FullMessage = m_Message;
+    }
+
+
+  public:
+
+    UserAbortException() :
+      Exception("Aborted by user")
+    {
+      buildFullMessage();
+    }
+};
+
+
+// =====================================================================
+// =====================================================================
+
+
 RunSimulationListener::RunSimulationListener()
-  : m_Completed(false), m_SimDuration(0)
+  : m_Completed(false), m_SimDuration(0),
+    m_PausedByUser(false), m_ConfirmedPauseByUser(false),
+    m_AbortedByUser(false)
 {
 
 };
@@ -97,11 +142,41 @@ void RunSimulationListener::setInfos(const unsigned int& TotalSimulators, const 
 // =====================================================================
 
 
+bool RunSimulationListener::isPausedByUser()
+{
+  return m_PausedByUser;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationListener::requestAbort()
+{
+  m_AbortedByUser = true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationListener::requestSuspendResume()
+{
+  m_PausedByUser = !m_PausedByUser;
+  m_ConfirmedPauseByUser = !m_PausedByUser;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void RunSimulationListener::onInitParams()
 {
-/*  mp_RunDlg->setStage(RunSimulationDialog::RUNDLG_BEFORE);
-  mp_RunDlg->repaint();
-  QApplication::processEvents();*/
+  HANDLE_USER_PAUSE_ABORT;
+
   emit stageChanged(RUNW_BEFORE);
 };
 
@@ -112,10 +187,8 @@ void RunSimulationListener::onInitParams()
 
 void RunSimulationListener::onInitializeRun()
 {
-/*  mp_RunDlg->setStage(RunSimulationDialog::RUNDLG_INIT);
-  mp_RunDlg->setProgress(25);
-  mp_RunDlg->repaint();
-  QApplication::processEvents();*/
+  HANDLE_USER_PAUSE_ABORT;
+
   emit stageChanged(RUNW_INIT);
 };
 
@@ -126,15 +199,8 @@ void RunSimulationListener::onInitializeRun()
 
 void RunSimulationListener::onBeforeRunSteps()
 {
-/*  mp_RunDlg->setStage(RunSimulationDialog::RUNDLG_RUN);
-  mp_RunDlg->setProgress(50);
-  mp_RunDlg->repaint();
-  QCoreApplication::sendPostedEvents();
-  QApplication::processEvents();*/
-/*      m_CurrentIndex = 0;
-  openfluid::tools::ConvertValue(m_CurrentIndex,&m_CurrentIndexStr);
-  mp_RunStatusWidget->setRunstepRunning();
-  updateProgressBar();*/
+  HANDLE_USER_PAUSE_ABORT;
+
   emit stageChanged(RUNW_RUN);
   emit progressValueChanged(0);
 };
@@ -146,9 +212,8 @@ void RunSimulationListener::onBeforeRunSteps()
 
 void RunSimulationListener::onRunStep(const openfluid::base::SimulationStatus* SimStatus)
 {
-/*      m_CurrentIndex = SimStatus->getCurrentTimeIndex();
-  openfluid::tools::ConvertValue(m_CurrentIndex,&m_CurrentIndexStr);
-  updateProgressBar();*/
+  HANDLE_USER_PAUSE_ABORT;
+
   if (m_SimDuration == 0)
   {
     m_SimDuration = SimStatus->getSimulationDuration();
@@ -164,9 +229,7 @@ void RunSimulationListener::onRunStep(const openfluid::base::SimulationStatus* S
 
 void RunSimulationListener::onFinalizeRun()
 {
-/*  mp_RunDlg->setStage(RunSimulationDialog::RUNDLG_FINAL);
-  QApplication::processEvents();*/
-//  emit progressValueChanged(m_SimDuration);
+  HANDLE_USER_PAUSE_ABORT;
 };
 
 
@@ -176,11 +239,75 @@ void RunSimulationListener::onFinalizeRun()
 
 void RunSimulationListener::onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/)
 {
+  HANDLE_USER_PAUSE_ABORT;
+
   emit progressValueChanged(m_SimDuration);
   emit stageChanged(RUNW_AFTER);
 };
 
 
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationListener::onSimulatorInitParams(const std::string& /*SimulatorID*/)
+{
+  HANDLE_USER_PAUSE_ABORT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationListener::onSimulatorPrepareData(const std::string& /*SimulatorID*/)
+{
+  HANDLE_USER_PAUSE_ABORT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationListener::onSimulatorCheckConsistency(const std::string& /*SimulatorID*/)
+{
+  HANDLE_USER_PAUSE_ABORT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationListener::onSimulatorInitializeRun(const std::string& /*SimulatorID*/)
+{
+  HANDLE_USER_PAUSE_ABORT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationListener::onSimulatorRunStep(const std::string& /*SimulatorID*/)
+{
+  HANDLE_USER_PAUSE_ABORT;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationListener::onSimulatorFinalizeRun(const std::string& /*SimulatorID*/)
+{
+  HANDLE_USER_PAUSE_ABORT;
+}
+
+
+// =====================================================================
+// =====================================================================
 // =====================================================================
 // =====================================================================
 
@@ -243,13 +370,38 @@ void RunSimulationWorker::run()
 
     SimBlob.getCoreRepository().sortUnitsByProcessOrder();
 
+
+    // simulation begins -->
+
     Engine.initialize();
 
+    emit warningsChanged(Engine.getWarningsCount());
+
     Engine.initParams();
+
+    emit warningsChanged(Engine.getWarningsCount());
+
     Engine.prepareData();
+
+    emit warningsChanged(Engine.getWarningsCount());
+
     Engine.checkConsistency();
+
+    emit warningsChanged(Engine.getWarningsCount());
+
     Engine.run();
+
+    emit warningsChanged(Engine.getWarningsCount());
+
     Engine.finalize();
+
+    emit warningsChanged(Engine.getWarningsCount());
+
+    //  <-- simulation ends
+  }
+  catch (UserAbortException& E)
+  {
+    emit userAbort();
   }
   catch (openfluid::base::Exception& E)
   {

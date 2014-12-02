@@ -156,7 +156,7 @@ void AppActions::createActions()
   m_Actions["WaresRefresh"] = new QAction(tr("Reload simulators and observers"), this);
 
   m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
-  m_Actions["SimulationRun"]->setIcon(QIcon(":/icons/start.png"));
+  m_Actions["SimulationRun"]->setIcon(QIcon(":/ui/common/icons/start.png"));
 
   //View Menu
   m_Actions["ViewDashboard"] = new QAction(tr("Show/Hide project dashboard"), this);

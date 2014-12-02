@@ -85,6 +85,11 @@ class DLLEXPORT RunSimulationListener : public QObject, public openfluid::machin
 
     openfluid::core::Duration_t m_SimDuration;
 
+    bool m_PausedByUser;
+    bool m_ConfirmedPauseByUser;
+
+    bool m_AbortedByUser;
+
 
   signals:
 
@@ -93,6 +98,15 @@ class DLLEXPORT RunSimulationListener : public QObject, public openfluid::machin
     void progressValueChanged(int Index);
 
     void progressMaxChanged(int Index);
+
+    void pauseConfirmed();
+
+
+  public slots:
+
+    void requestAbort();
+
+    void requestSuspendResume();
 
 
   public:
@@ -104,21 +118,33 @@ class DLLEXPORT RunSimulationListener : public QObject, public openfluid::machin
 
     void setInfos(const unsigned int& TotalSimulators, const unsigned int& TotalTime);
 
+    bool isPausedByUser();
+
 
     void onInitParams();
 
-
     void onInitializeRun();
-
 
     void onBeforeRunSteps();
 
     void onRunStep(const openfluid::base::SimulationStatus* SimStatus);
 
-
     void onFinalizeRun();
 
     void onFinalizeRunDone(const openfluid::base::Listener::Status& /*Status*/);
+
+
+    void onSimulatorInitParams(const std::string& /*SimulatorID*/);
+
+    void onSimulatorPrepareData(const std::string& /*SimulatorID*/);
+
+    void onSimulatorCheckConsistency(const std::string& /*SimulatorID*/);
+
+    void onSimulatorInitializeRun(const std::string& /*SimulatorID*/);
+
+    void onSimulatorRunStep(const std::string& /*SimulatorID*/);
+
+    void onSimulatorFinalizeRun(const std::string& /*SimulatorID*/);
 
 };
 
@@ -138,20 +164,26 @@ class RunSimulationWorker : public QObject
 
     RunSimulationListener* mp_Listener;
 
+
   signals:
 
     void periodChanged(QString Begin, QString End, int Duration);
+
+    void warningsChanged(unsigned int Count);
 
     void finished();
 
     void error(QString Error);
 
+    void userAbort();
+
+
   public slots:
 
     void run();
 
-  public:
 
+  public:
 
     RunSimulationWorker(openfluid::fluidx::FluidXDescriptor* FXDesc, RunSimulationListener* Listener);
 
