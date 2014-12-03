@@ -65,7 +65,10 @@ class DLLEXPORT ObserverPluginsManager : public WarePluginsManager<ObserverSigna
 
     static ObserverPluginsManager* mp_Singleton;
 
-    ObserverPluginsManager() : WarePluginsManager()
+    ObserverPluginsManager() : WarePluginsManager<ObserverSignatureInstance,
+                                                  ObserverInstance,
+                                                  openfluid::ware::GetPluggableObserverSignatureProc,
+                                                  openfluid::ware::GetPluggableObserverBodyProc>()
     { };
 
 
