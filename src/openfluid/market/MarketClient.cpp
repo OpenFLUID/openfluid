@@ -297,7 +297,7 @@ void MarketClient::parseCatalogData(const PackageInfo::PackageType& CatalogType,
 
     if (!PackagesIDs.isEmpty())
     {
-      for (unsigned int i=0; i< PackagesIDs.size(); i++)
+      for (int i=0; i< PackagesIDs.size(); i++)
       {
         std::string TmpID = PackagesIDs[i].toStdString();
 

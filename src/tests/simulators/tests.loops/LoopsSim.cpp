@@ -413,7 +413,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
       // ===== process order =====
 
-      unsigned int LastPcsOrd;
+      openfluid::core::PcsOrd_t LastPcsOrd;
       std::string LastStr, CurrentStr, IDStr, ClassStr;
 
       LastPcsOrd = 0;
@@ -464,6 +464,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
       OPENFLUID_UNITS_ORDERED_LOOP("FakeUnits",FU)
       {
         OPENFLUID_RaiseError("error in ordered loop on fake units");
+        FU->getID();
       }
 
       OPENFLUID_UNITSLIST_LOOP(FakeList,FU)

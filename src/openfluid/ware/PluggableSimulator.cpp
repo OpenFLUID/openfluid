@@ -357,7 +357,7 @@ bool PluggableSimulator::OPENFLUID_GetSimulatorParameter(const openfluid::ware::
 // =====================================================================
 
 
-void PluggableSimulator::OPENFLUID_SetSimulatorMaxThreads(const unsigned int& MaxNumThreads)
+void PluggableSimulator::OPENFLUID_SetSimulatorMaxThreads(const int& MaxNumThreads)
 {
   if (MaxNumThreads > 0) m_MaxThreads = MaxNumThreads;
 }

@@ -122,7 +122,7 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
    // openfluid::core::CoreRepository* mp_InternalCoreData;
 
 
-    unsigned int m_MaxThreads;
+    int m_MaxThreads;
 
 
   protected:
@@ -251,13 +251,13 @@ class DLLEXPORT PluggableSimulator : public SimulationContributorWare
       Returns the maximum number of threads that can be concurrently run in threaded spatial loops
       @return the number of threads
     */
-    inline unsigned int OPENFLUID_GetSimulatorMaxThreads() const { return m_MaxThreads; };
+    inline int OPENFLUID_GetSimulatorMaxThreads() const { return m_MaxThreads; };
 
     /**
       Sets the maximum number of threads that can be concurrently run in threaded spatial loops
       @param[in] MaxNumThreads the number of threads
     */
-    void OPENFLUID_SetSimulatorMaxThreads(const unsigned int& MaxNumThreads);
+    void OPENFLUID_SetSimulatorMaxThreads(const int& MaxNumThreads);
 
 
     inline openfluid::base::SchedulingRequest AtTheEnd() const
