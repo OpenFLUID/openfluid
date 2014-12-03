@@ -187,7 +187,7 @@ font : bold;
        <item>
         <widget class="QLabel" name="StatusLabel">
          <property name="text">
-          <string>SimulationStatus</string>
+          <string notr="true">SimulationStatus</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -233,16 +233,7 @@ font : bold;
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
-     <property name="leftMargin">
-      <number>12</number>
-     </property>
-     <property name="topMargin">
-      <number>12</number>
-     </property>
-     <property name="rightMargin">
-      <number>12</number>
-     </property>
-     <property name="bottomMargin">
+     <property name="margin">
       <number>12</number>
      </property>
      <item>

@@ -1798,86 +1798,86 @@ Continuer quand même?</translation>
         <translation>Le paramètre %1 est plus grand ou égal au paramètre %2 pour %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="427"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="440"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="454"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="428"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="441"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="455"/>
         <source>File %1 required by generator %2 does not exist</source>
         <translation>Le fichier %1 requis par le générateur %2 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="487"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="489"/>
         <source>Parameter %1 for generator %2 is not set</source>
         <translation>Le paramètre %1 pour le générateur %2 n&apos;est pas défini</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="534"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="537"/>
         <source>Unit class %1 does not exist for attribute %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;attribut %2 requis par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="544"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="547"/>
         <source>Attribute %1 required on %2 units by %3 does not exist</source>
         <translation>L&apos;attribut %1 requis sur la classe d&apos;unité %2 par %3 n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="562"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="566"/>
         <source>Unit class %1 does not exist for attribute %2 produced by %3</source>
         <translation>La classe d&apos;unité %1 n&apos;existe pas pour l&apos;attribut %2 produit par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="576"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="580"/>
         <source>Attribute %1 produced on %2 units by %3 is already produced by another simulator</source>
         <translation>L&apos;attribut %1 produit sur la classe d&apos;unité %2 par %3 est déjà produit par un autre simulateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="587"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="591"/>
         <source>Simulator %1 is not available</source>
         <translation>Le simulateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="633"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="666"/>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="699"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="639"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="672"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="705"/>
         <source>Unit class %1 does not exist for variable %2 produced by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 produite par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="649"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="655"/>
         <source>Variable %1 on %2 produced by %3 cannot be created because it is created by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 ne peut être créée car elle est déjà crée par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="682"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="688"/>
         <source>Variable %1 on %2 produced by %3 is already produced by another simulator or generator</source>
         <translation>La variable %1 produite par %3 sur la classe d&apos;unités %2 est déjà produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="740"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="747"/>
         <source>Unit class %1 does not exist for variable %2 required by %3</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour la variable %2 requise par %3</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="754"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="761"/>
         <source>Variable %1 on %2 required by %3 is not produced by another simulator or generator</source>
         <translation>La variable %1 sur la classe d&apos;unités %2 requise par %3 n&apos;est pas produite par un autre simulateur ou générateur</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="768"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="775"/>
         <source>No simulator or generator is enabled in model</source>
         <translation>Aucun simulateur ou générateur n&apos;est actif dans le modèle</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="800"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="808"/>
         <source>Unit class %1 does not exist for datastore item %2</source>
         <translation>La classe d&apos;unités %1 n&apos;existe pas pour l&apos;élément du datastore %2</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="833"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="842"/>
         <source>Observer %1 is not available</source>
         <translation>L&apos;observateur %1 n&apos;est pas disponible</translation>
     </message>
     <message>
-        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="842"/>
+        <location filename="../../src/apps/openfluid-builder/base/ProjectCentral.cpp" line="852"/>
         <source>No observer is enabled in monitoring</source>
         <translation>Aucun observateur n&apos;est actif dans le monitoring</translation>
     </message>
@@ -2037,9 +2037,29 @@ L&apos;extension ne peut être instanciée.</translation>
         <translation type="obsolete">Exécution de la simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="166"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="84"/>
         <source>Run simulation</source>
         <translation>Exécution de la simulation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="107"/>
+        <source>Simulated duration:</source>
+        <translation>Durée simulée :</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="156"/>
+        <source>Stage:</source>
+        <translation>Phase :</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="183"/>
+        <source>Status:</source>
+        <translation>Etat :</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.ui" line="213"/>
+        <source>Warning(s):</source>
+        <translation>Avertissement(s) :</translation>
     </message>
     <message>
         <source>Run Simulation</source>
@@ -2756,27 +2776,27 @@ Continuer quand même?</translation>
 <context>
     <name>openfluid::ui::common::PreferencesDialog</name>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="90"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="88"/>
         <source>Interface</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="94"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="92"/>
         <source>Workspaces</source>
         <translation>Espaces de travail</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="98"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="96"/>
         <source>Wares paths</source>
         <translation>Chemins des wares</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="104"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="102"/>
         <source>Simulations</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="109"/>
+        <location filename="../../src/openfluid/ui/common/PreferencesDialog.cpp" line="107"/>
         <source>Market</source>
         <translation></translation>
     </message>
@@ -2790,57 +2810,139 @@ Continuer quand même?</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="87"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="95"/>
         <source>Run Simulation</source>
         <translation>Exécution de la simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="95"/>
         <source>Pre-simulation</source>
-        <translation>Pré-simulation</translation>
+        <translation type="obsolete">Pré-simulation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="96"/>
         <source>Initialization</source>
-        <translation>Initialisation</translation>
+        <translation type="obsolete">Initialisation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="97"/>
         <source>Run</source>
-        <translation>Exécution</translation>
+        <translation type="obsolete">Exécution</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="98"/>
         <source>Finalization</source>
-        <translation>Finalisation</translation>
+        <translation type="obsolete">Finalisation</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="156"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="176"/>
         <source> day(s), </source>
         <translation> jour(s), </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="156"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="176"/>
         <source> hour(s), </source>
         <translation> heure(s), </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="157"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="177"/>
+        <source> min(s), </source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="177"/>
+        <source> sec(s)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="189"/>
+        <source>You are requesting the simulation to abort.
+Simulation data not written on disk will be lost.
+
+Proceed anyway?</source>
+        <translation>Vous avez demandé un arrêt de la simulation.
+Les données de simulation non écrites sur disque seront perdues.
+
+Continuer quand même?</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="192"/>
+        <source>abort requested</source>
+        <translation>arrêt demandé</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="207"/>
+        <source>pause requested</source>
+        <translation>pause demandée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="216"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="306"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="312"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="318"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="324"/>
+        <source>running</source>
+        <translation>en cours</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="232"/>
+        <source>paused</source>
+        <translation>exécution en pause</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="299"/>
+        <source>not started</source>
+        <translation>exécution non démarrée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="304"/>
+        <source>pre-simulation</source>
+        <translation>pré-simulation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="310"/>
+        <source>initialization</source>
+        <translation>initialisation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="316"/>
+        <source>simulation</source>
+        <translation>simulation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="322"/>
+        <source>finalization</source>
+        <translation>finalisation</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="330"/>
+        <source>completed</source>
+        <translation>exécution terminée</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="347"/>
+        <source>failed due to simulation error</source>
+        <translation>exécution interrompue sur erreur de simulation</translation>
+    </message>
+    <message>
+        <source>failed on error</source>
+        <translation type="obsolete">en erreur</translation>
+    </message>
+    <message>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="361"/>
+        <source>aborted by user</source>
+        <translation>exécution arrêtée par l&apos;utilisateur</translation>
+    </message>
+    <message>
         <source> minute(s), </source>
-        <translation> minute(s), </translation>
+        <translation type="obsolete"> minute(s), </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="157"/>
         <source> second(s)</source>
-        <translation> seconde(s)</translation>
+        <translation type="obsolete"> seconde(s)</translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="201"/>
         <source>Simulated duration is </source>
-        <translation>La durée simulée est de </translation>
+        <translation type="obsolete">La durée simulée est de </translation>
     </message>
     <message>
-        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="263"/>
+        <location filename="../../src/openfluid/ui/common/RunSimulationDialog.cpp" line="344"/>
         <source>Simulation error</source>
         <translation>Erreur de simulation</translation>
     </message>

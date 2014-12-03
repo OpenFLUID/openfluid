@@ -70,10 +70,10 @@
 
 #define WARNINGS_STYLE_ANY "QLabel {font-weight: bold;}"
 #define STATUS_STYLE_NONE ""
-#define STATUS_STYLE_PAUSEREQUEST "QLabel {color: #3E7798;}"
-#define STATUS_STYLE_PAUSED "QLabel {color: #3E7798; font-weight: bold;}"
-#define STATUS_STYLE_ABORTREQUEST "QLabel {color: #873E98;}"
-#define STATUS_STYLE_ABORTED "QLabel {color: #873E98; font-weight: bold;}"
+#define STATUS_STYLE_PAUSEREQUEST "QLabel {color: #336DA5;}"
+#define STATUS_STYLE_PAUSED "QLabel {color: #336DA5; font-weight: bold;}"
+#define STATUS_STYLE_ABORTREQUEST "QLabel {color: #D11919;}"
+#define STATUS_STYLE_ABORTED "QLabel {color: #D11919; font-weight: bold;}"
 #define STATUS_STYLE_FAILED "QLabel {color: #D11919; font-weight: bold;} QToolTip {color: #D11919; background-color: #F7F7F7;} "
 #define STATUS_STYLE_SUCCEEDED "QLabel {color: #4E983E; font-weight: bold;}"
 
@@ -185,8 +185,8 @@ QString RunSimulationDialog::getDurationAsDaysHoursMinsSecsString(openfluid::cor
 void RunSimulationDialog::requestAbort()
 {
   if (QMessageBox::question(QApplication::activeWindow(),
-                                  "Abort simulation?",
-                                  tr("You are requesting the simulation to abort.\n""Simulation data not written on disk will be lost.\n\nProceed anyway?"),
+                                  "OpenFLUID",
+                                  tr("You are requesting the simulation to abort.\nSimulation data not written on disk will be lost.\n\nProceed anyway?"),
                                   QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
   {
     ui->StatusLabel->setText(tr("abort requested"));
@@ -297,7 +297,7 @@ void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener:
   {
     ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
     ui->StatusLabel->setText(tr("not started"));
-    ui->StageLabel->setText(tr("-"));
+    ui->StageLabel->setText("-");
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_PRESIM)
   {
@@ -325,7 +325,7 @@ void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener:
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_AFTER)
   {
-    ui->StageLabel->setText(tr("-"));
+    ui->StageLabel->setText("-");
     ui->StatusLabel->setStyleSheet(STATUS_STYLE_SUCCEEDED);
     ui->StatusLabel->setText(tr("completed"));
   }
@@ -344,7 +344,7 @@ void RunSimulationDialog::handleError(QString Msg)
   QMessageBox::critical(NULL,tr("Simulation error"),Msg);
 
   ui->StatusLabel->setStyleSheet(STATUS_STYLE_FAILED);
-  ui->StatusLabel->setText(tr("failed on error"));
+  ui->StatusLabel->setText(tr("failed due to simulation error"));
   ui->StatusLabel->setToolTip(Msg);
 }
 
