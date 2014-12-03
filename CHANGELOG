@@ -3,8 +3,10 @@
   * Introduced management of multiple workspaces
   * Added geographic file format observer based on GDAL, in order to export
     simulations variables in geographic vector files
+  * Updated simulation dialog in GUI applications
+    with control buttons and enhanced informations
   * Renamed information file of projects 
-    from openfluid.prj to openfluid-project.conf  
+    from openfluid.prj to openfluid-project.conf
   * Refactored UI components namespaces and organization
   * Modified constraints on events appending from simulators,
     now allowed in PREPAREDATA stage and later stages
