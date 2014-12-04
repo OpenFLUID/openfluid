@@ -65,7 +65,10 @@ class DLLEXPORT SimulatorPluginsManager : public WarePluginsManager<ModelItemSig
 
     static SimulatorPluginsManager* mp_Singleton;
 
-    SimulatorPluginsManager() : WarePluginsManager()
+    SimulatorPluginsManager() : WarePluginsManager<ModelItemSignatureInstance,
+                                                   ModelItemInstance,
+                                                   openfluid::ware::GetPluggableSimulatorSignatureProc,
+                                                   openfluid::ware::GetPluggableSimulatorBodyProc>()
     { };
 
 

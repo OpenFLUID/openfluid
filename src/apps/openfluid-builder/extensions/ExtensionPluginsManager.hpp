@@ -72,15 +72,21 @@ class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<Ex
       for (int i=0; i <ExtraSearchPaths.size();i++)
         m_SearchPaths.push_back(ExtraSearchPaths[i].toStdString());
 
-      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDEREXTS_PLUGINS_USRDIR.toStdString()));
+      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
+      m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBuildVersionDir()+
+                              "/"+
+                              openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinSubDir());
       m_SearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getInstallPrefix()+
                               "/"+
-                              BUILDEREXTS_INSTALL_PATH.toStdString());
+                              BUILDEREXTS_INSTALL_PATH);
 
-      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(BUILDEREXTS_PLUGINS_USRDIR.toStdString()));
+      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getUserDataPath(openfluid::config::BUILDEREXTS_PLUGINS_USRDIR));
+      m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBuildVersionDir()+
+                                      "/"+
+                                      openfluid::base::RuntimeEnvironment::getInstance()->getMarketBagBinSubDir());
       m_StandardSearchPaths.push_back(openfluid::base::RuntimeEnvironment::getInstance()->getInstallPrefix()+
                                       "/"+
-                                      BUILDEREXTS_INSTALL_PATH.toStdString());
+                                      BUILDEREXTS_INSTALL_PATH);
     };
 
 
@@ -148,7 +154,7 @@ class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<Ex
 
     std::string getPluginFilenameSuffix()
     {
-      return BUILDEREXTS_PLUGINS_SUFFIX;
+      return openfluid::config::BUILDEREXTS_PLUGINS_SUFFIX;
     }
 
 

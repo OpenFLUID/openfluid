@@ -114,7 +114,7 @@ QStringList DLLEXPORT toQStringList(const std::set<std::string>& StrSet);
   @param[in] StrList the std::list of std::string to transform
   @return The StrList transformed into a QStringList
 */
-QStringList DLLEXPORT toQStringList(const std::list<std::string>& StrSet);
+QStringList DLLEXPORT toQStringList(const std::list<std::string>& StrList);
 
 
 /**

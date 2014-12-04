@@ -67,10 +67,18 @@
 
 #include <iostream>
 
+
+#define WARNINGS_STYLE_ANY "QLabel {font-weight: bold;}"
+#define STATUS_STYLE_NONE ""
+#define STATUS_STYLE_PAUSEREQUEST "QLabel {color: #336DA5;}"
+#define STATUS_STYLE_PAUSED "QLabel {color: #336DA5; font-weight: bold;}"
+#define STATUS_STYLE_ABORTREQUEST "QLabel {color: #D11919;}"
+#define STATUS_STYLE_ABORTED "QLabel {color: #D11919; font-weight: bold;}"
+#define STATUS_STYLE_FAILED "QLabel {color: #D11919; font-weight: bold;} QToolTip {color: #D11919; background-color: #F7F7F7;} "
+#define STATUS_STYLE_SUCCEEDED "QLabel {color: #4E983E; font-weight: bold;}"
+
+
 namespace openfluid { namespace ui { namespace common {
-
-
-
 
 RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::FluidXDescriptor* FXDesc):
   QDialog(Parent,Qt::CustomizeWindowHint|Qt::WindowTitleHint), ui(new Ui::RunSimulationDialog), mp_FXDesc(FXDesc),
@@ -92,10 +100,16 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   ui->SimulationBar->setMinimum(0);
   ui->SimulationBar->setMaximum(100);
 
-  ui->PresimLabel->setText(tr("Pre-simulation"));
-  ui->InitLabel->setText(tr("Initialization"));
-  ui->RunLabel->setText(tr("Run"));
-  ui->FinalLabel->setText(tr("Finalization"));
+  ui->PauseButton->setIcon(QIcon(":/ui/common/icons/pause.png"));
+  ui->PauseButton->setIconSize(QSize(16,16));
+
+  ui->StopButton->setIcon(QIcon(":/ui/common/icons/stop.png"));
+  ui->StopButton->setIconSize(QSize(16,16));
+  ui->StopButton->setEnabled(false);
+
+  ui->StatusLabel->setText("");
+
+  ui->WarningsLabel->setText("0");
 
   ui->ButtonBox->button(QDialogButtonBox::Close)->setEnabled(false);
 
@@ -107,6 +121,7 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   Worker->moveToThread(WThread);
 
   connect(Worker, SIGNAL(error(QString)), this, SLOT(handleError(QString)));
+  connect(Worker, SIGNAL(userAbort()), this, SLOT(handleUserAbort()));
   connect(Worker, SIGNAL(finished()), this, SLOT(handleFinish()));
   connect(WThread, SIGNAL(started()), Worker, SLOT(run()));
   connect(Worker, SIGNAL(finished()), WThread, SLOT(quit()));
@@ -118,6 +133,8 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   qRegisterMetaType<openfluid::core::TimeIndex_t>("openfluid::core::TimeIndex_t");
 
   connect(Worker, SIGNAL(periodChanged(QString,QString,int)), this, SLOT(setPeriod(QString,QString,int)));
+  connect(Worker, SIGNAL(warningsChanged(unsigned int)), this, SLOT(setWarningsCount(unsigned int)));
+
   connect(mp_Listener,SIGNAL(stageChanged(openfluid::ui::common::RunSimulationListener::Stage)),
           this,SLOT(setStage(openfluid::ui::common::RunSimulationListener::Stage)));
   connect(mp_Listener,SIGNAL(progressValueChanged(int)),this,
@@ -125,7 +142,10 @@ RunSimulationDialog::RunSimulationDialog(QWidget *Parent, openfluid::fluidx::Flu
   connect(mp_Listener,SIGNAL(progressMaxChanged(int)),this,
           SLOT(setProgressMax(int)));
 
-  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  connect(ui->StopButton, SIGNAL(clicked()), this, SLOT(requestAbort()));
+  connect(ui->PauseButton, SIGNAL(clicked()), this, SLOT(requestSuspendResume()));
+  connect(mp_Listener, SIGNAL(pauseConfirmed()), this, SLOT(validateSuspend()));
+
   WThread->start();
 }
 
@@ -154,7 +174,63 @@ QString RunSimulationDialog::getDurationAsDaysHoursMinsSecsString(openfluid::cor
   int Hours = (int) (Duration % 24);
   int Days = (int) (Duration / 24);
   return QString::number(Days)+tr(" day(s), ")+QString::number(Hours)+tr(" hour(s), ")+
-         QString::number(Minutes)+tr(" minute(s), ")+QString::number(Seconds)+tr(" second(s)");
+         QString::number(Minutes)+tr(" min(s), ")+QString::number(Seconds)+tr(" sec(s)");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationDialog::requestAbort()
+{
+  if (QMessageBox::question(QApplication::activeWindow(),
+                                  "OpenFLUID",
+                                  tr("You are requesting the simulation to abort.\nSimulation data not written on disk will be lost.\n\nProceed anyway?"),
+                                  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok)
+  {
+    ui->StatusLabel->setText(tr("abort requested"));
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_ABORTREQUEST);
+    mp_Listener->requestAbort();
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationDialog::requestSuspendResume()
+{
+  if (!mp_Listener->isPausedByUser())
+  {
+    ui->StatusLabel->setText(tr("pause requested"));
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_PAUSEREQUEST);
+    ui->PauseButton->setEnabled(false);
+  }
+  else
+  {
+    ui->StopButton->setEnabled(false);
+    ui->PauseButton->setIcon(QIcon(":/ui/common/icons/pause.png"));
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
+    ui->StatusLabel->setText(tr("running"));
+  }
+
+  mp_Listener->requestSuspendResume();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationDialog::validateSuspend()
+{
+  ui->PauseButton->setIcon(QIcon(":/ui/common/icons/start.png"));
+  ui->PauseButton->setEnabled(true);
+  ui->StopButton->setEnabled(true);
+  ui->StatusLabel->setText(tr("paused"));
+  ui->StatusLabel->setStyleSheet(STATUS_STYLE_PAUSED);
 }
 
 
@@ -179,7 +255,6 @@ void RunSimulationDialog::setProgressValue(int Index)
 }
 
 
-
 // =====================================================================
 // =====================================================================
 
@@ -194,11 +269,21 @@ void RunSimulationDialog::setProgressMax(int Duration)
 // =====================================================================
 
 
+void RunSimulationDialog::setWarningsCount(unsigned int Count)
+{
+  if (Count)
+    ui->WarningsLabel->setStyleSheet(WARNINGS_STYLE_ANY);
+  ui->WarningsLabel->setText(QString("%1").arg(Count));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void RunSimulationDialog::setPeriod(QString /*Begin*/, QString /*End*/, int Duration)
 {
-  // TODO check if better to display period in message box
-//  ui->MessageLabel->setText(ui->MessageLabel->text()+tr(" from ")+Begin+tr(" to ")+End);
-  ui->DurationLabel->setText(tr("Simulated duration is ")+getDurationAsDaysHoursMinsSecsString(Duration));
+  ui->DurationLabel->setText(getDurationAsDaysHoursMinsSecsString(Duration));
 }
 
 
@@ -210,45 +295,39 @@ void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener:
 {
   if (S == openfluid::ui::common::RunSimulationListener::RUNW_BEFORE)
   {
-    ui->PresimLabel->setStyleSheet("");
-    ui->InitLabel->setStyleSheet("");
-    ui->RunLabel->setStyleSheet("");
-    ui->FinalLabel->setStyleSheet("");
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
+    ui->StatusLabel->setText(tr("not started"));
+    ui->StageLabel->setText("-");
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_PRESIM)
   {
-    ui->PresimLabel->setStyleSheet("font : bold; text-decoration : underline;");
-    ui->InitLabel->setStyleSheet("");
-    ui->RunLabel->setStyleSheet("");
-    ui->FinalLabel->setStyleSheet("");
+    ui->StageLabel->setText(tr("pre-simulation"));
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
+    ui->StatusLabel->setText(tr("running"));
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_INIT)
   {
-    ui->PresimLabel->setStyleSheet("font : bold;");
-    ui->InitLabel->setStyleSheet("font : bold; text-decoration : underline;");
-    ui->RunLabel->setStyleSheet("");
-    ui->FinalLabel->setStyleSheet("");
+    ui->StageLabel->setText(tr("initialization"));
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
+    ui->StatusLabel->setText(tr("running"));
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_RUN)
   {
-    ui->PresimLabel->setStyleSheet("font : bold;");
-    ui->InitLabel->setStyleSheet("font : bold;");
-    ui->RunLabel->setStyleSheet("font : bold; text-decoration : underline;");
-    ui->FinalLabel->setStyleSheet("");
+    ui->StageLabel->setText(tr("simulation"));
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
+    ui->StatusLabel->setText(tr("running"));
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_FINAL)
   {
-    ui->PresimLabel->setStyleSheet("font : bold;");
-    ui->InitLabel->setStyleSheet("font : bold;");
-    ui->RunLabel->setStyleSheet("font : bold;");
-    ui->FinalLabel->setStyleSheet("font : bold; text-decoration : underline;");
+    ui->StageLabel->setText(tr("finalization"));
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_NONE);
+    ui->StatusLabel->setText(tr("running"));
   }
   else if (S == openfluid::ui::common::RunSimulationListener::RUNW_AFTER)
   {
-    ui->PresimLabel->setStyleSheet("font : bold;");
-    ui->InitLabel->setStyleSheet("font : bold;");
-    ui->RunLabel->setStyleSheet("font : bold;");
-    ui->FinalLabel->setStyleSheet("font : bold;");
+    ui->StageLabel->setText("-");
+    ui->StatusLabel->setStyleSheet(STATUS_STYLE_SUCCEEDED);
+    ui->StatusLabel->setText(tr("completed"));
   }
 }
 
@@ -259,9 +338,28 @@ void RunSimulationDialog::setStage(openfluid::ui::common::RunSimulationListener:
 
 void RunSimulationDialog::handleError(QString Msg)
 {
-  QApplication::restoreOverrideCursor();
+  ui->PauseButton->setEnabled(false);
+  ui->StopButton->setEnabled(false);
+
   QMessageBox::critical(NULL,tr("Simulation error"),Msg);
-  reject();
+
+  ui->StatusLabel->setStyleSheet(STATUS_STYLE_FAILED);
+  ui->StatusLabel->setText(tr("failed due to simulation error"));
+  ui->StatusLabel->setToolTip(Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void RunSimulationDialog::handleUserAbort()
+{
+  ui->PauseButton->setEnabled(false);
+  ui->StopButton->setEnabled(false);
+
+  ui->StatusLabel->setText(tr("aborted by user"));
+  ui->StatusLabel->setStyleSheet(STATUS_STYLE_ABORTED);
 }
 
 
@@ -271,8 +369,11 @@ void RunSimulationDialog::handleError(QString Msg)
 
 void RunSimulationDialog::handleFinish()
 {
-  QApplication::restoreOverrideCursor();
+  ui->PauseButton->setEnabled(false);
+  ui->StopButton->setEnabled(false);
+
   ui->ButtonBox->button(QDialogButtonBox::Close)->setEnabled(true);
+
   m_Success = true;
 }
 

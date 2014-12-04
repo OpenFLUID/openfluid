@@ -11,6 +11,9 @@
     <file>icons/file-save.png</file>
     <file>icons/file-save-as.png</file>
     <file>icons/refresh.png</file>
-    <file>icons/modify.png</file>                
+    <file>icons/modify.png</file>
+    <file>icons/start.png</file>
+    <file>icons/stop.png</file>
+    <file>icons/pause.png</file> 
   </qresource>
 </RCC>

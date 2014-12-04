@@ -86,9 +86,10 @@ class KmlAnimLayerInfo : public KmlLayerInfo<KmlUnitInfo>
 
     std::vector<std::pair<std::string,double> > ColorScale;
 
-    KmlAnimLayerInfo() : KmlLayerInfo(),
-                         OutputFileName("")
-      {};
+    KmlAnimLayerInfo() :
+      KmlLayerInfo<KmlUnitInfo>(),
+      OutputFileName("")
+    { };
 
     int getColorScaleIndexForValue(const double& Val)
     {
@@ -116,8 +117,10 @@ class KmlStaticLayerInfo : public KmlLayerInfo<KmlUnitInfo>
 
     std::string Color;
 
-    KmlStaticLayerInfo() : KmlLayerInfo(), Color("00000000")
-      {};
+    KmlStaticLayerInfo() :
+      KmlLayerInfo<KmlUnitInfo>(),
+      Color("00000000")
+    { };
 
 };
 

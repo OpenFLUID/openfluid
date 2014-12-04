@@ -14,7 +14,6 @@
     <file>icons/openfluid_icon.png</file>
     <file>icons/openfluid_icon_about.png</file>
     <file>icons/file-open-example.png</file>
-    <file>icons/start.png</file>
     <file>icons/market.png</file>    
     <file>icons/rename-attribute.png</file>
   </qresource>

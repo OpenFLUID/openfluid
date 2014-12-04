@@ -129,13 +129,13 @@ QStringList toQStringList(const std::set<std::string>& StrSet)
 // =====================================================================
 
 
-QStringList toQStringList(const std::list<std::string>& StrSet)
+QStringList toQStringList(const std::list<std::string>& StrList)
 {
   QStringList QSL;
 
   std::list<std::string>::const_iterator it;
-  std::list<std::string>::const_iterator itb = StrSet.begin();
-  std::list<std::string>::const_iterator ite = StrSet.end();
+  std::list<std::string>::const_iterator itb = StrList.begin();
+  std::list<std::string>::const_iterator ite = StrList.end();
 
   for (it=itb;it!= ite;++it)
     QSL.append(QString((*it).c_str()));

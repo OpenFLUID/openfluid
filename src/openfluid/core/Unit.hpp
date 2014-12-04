@@ -144,9 +144,8 @@ class DLLEXPORT Unit
 
     /**
       Returns the process order of the unit
-      TODO use openfluid::core::PcsOrd_t instead
     */
-    inline unsigned int getProcessOrder() const { return m_PcsOrder; };
+    inline PcsOrd_t getProcessOrder() const { return m_PcsOrder; };
 
     /**
       Returns the ID of the unit

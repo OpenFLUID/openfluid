@@ -188,7 +188,6 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
 
       openfluid::core::Unit* TU;
       unsigned int TUID;
-      unsigned int CurrIndex;
 
       double RefDouble;
       long RefLong;
@@ -211,9 +210,7 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
 
       OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
       {
-
         TUID = TU->getID();
-        CurrIndex = OPENFLUID_GetCurrentTimeIndex();
 
         RefDouble = (double)TUID/10;
         RefLong = TUID;

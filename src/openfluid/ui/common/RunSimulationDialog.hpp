@@ -87,7 +87,8 @@ class DLLEXPORT RunSimulationDialog : public QDialog
 
     static QString getDurationAsDaysHoursMinsSecsString(openfluid::core::Duration_t Duration);
 
-  public slots:
+
+  private slots:
 
     void setPeriod(QString Begin, QString End, int Duration);
 
@@ -97,9 +98,19 @@ class DLLEXPORT RunSimulationDialog : public QDialog
 
     void setProgressMax(int Index);
 
+    void setWarningsCount(unsigned int Count);
+
+    void requestAbort();
+
+    void requestSuspendResume();
+
+    void validateSuspend();
+
     void handleError(QString Msg);
 
     void handleFinish();
+
+    void handleUserAbort();
 
 
   public:
