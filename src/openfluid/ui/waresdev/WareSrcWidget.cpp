@@ -93,7 +93,7 @@ void WareSrcWidget::openFile(
     ui->WareSrcFileCollection->setCurrentWidget(Widget);
   else
     addNewFileTab(Info.m_AbsolutePath, Info.m_FileName,
-                  Info.m_RelativePathToWareDir);
+                  QDir::toNativeSeparators(Info.m_RelativePathToWareDir));
 }
 
 
@@ -123,7 +123,7 @@ void WareSrcWidget::openDefaultFiles()
 {
   foreach(QString F,m_Container.getDefaultFiles()){
   QString FileName = QFileInfo(F).fileName();
-  addNewFileTab(F, FileName, FileName);
+  addNewFileTab(F, FileName, QDir::toNativeSeparators(FileName));
 }
 }
 
