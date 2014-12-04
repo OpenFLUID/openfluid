@@ -95,12 +95,13 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone,
       TabWidget->addTab(Widget, Info.m_WareName);
 
       m_WareSrcWidgetByPath[Info.m_AbsolutePathOfWare] = Widget;
+
+      if (Info.m_isAWare)
+        Widget->openDefaultFiles();
     }
 
     if (Info.m_isAWareFile)
       Widget->openFile(Info);
-    else
-      Widget->openDefaultFiles();
 
     TabWidget->setCurrentWidget(Widget);
   }
