@@ -43,7 +43,7 @@
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 
-class QFileSystemModel;
+class WareSrcExplorerModel;
 
 
 class WareSrcExplorer: public QTreeView
@@ -52,7 +52,7 @@ class WareSrcExplorer: public QTreeView
 
   private:
 
-    QFileSystemModel* mp_Model;
+  	WareSrcExplorerModel* mp_Model;
 
     openfluid::waresdev::WareSrcManager::WareType m_WareType;
 

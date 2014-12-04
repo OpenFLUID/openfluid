@@ -26,25 +26,25 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
- 
+
  */
 
 
 /**
- \file DevStudioFileIconProvider.hpp
+ \file WareSrcExplorerModel.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef DEVSTUDIOFILEICONPROVIDER_HPP_
-#define DEVSTUDIOFILEICONPROVIDER_HPP_
+#ifndef WARESRCEXPLORERMODEL_HPP_
+#define WARESRCEXPLORERMODEL_HPP_
 
-#include <QFileIconProvider>
+#include <QFileSystemModel>
 
 
-class DevStudioFileIconProvider: public QFileIconProvider
+class WareSrcExplorerModel: public QFileSystemModel
 {
   private:
 
@@ -52,9 +52,10 @@ class DevStudioFileIconProvider: public QFileIconProvider
 
   public:
 
-    DevStudioFileIconProvider(const QString& DirPath);
+    WareSrcExplorerModel(const QString& Path);
 
-    QIcon icon(const QFileInfo& Info) const;
+    QVariant data(const QModelIndex& Index, int Role) const;
 };
 
-#endif /* DEVSTUDIOFILEICONPROVIDER_HPP_ */
+
+#endif /* WARESRCEXPLORERMODEL_HPP_ */

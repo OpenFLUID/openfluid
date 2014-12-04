@@ -38,20 +38,12 @@
 
 #include "WareSrcExplorer.hpp"
 
-#include <QFileSystemModel>
-
-#include "DevStudioFileIconProvider.hpp"
+#include "WareSrcExplorerModel.hpp"
 
 
 WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
-    QTreeView(Parent)
+    QTreeView(Parent),mp_Model(0)
 {
-  mp_Model = new QFileSystemModel();
-  setModel(mp_Model);
-  hideColumn(1);
-  hideColumn(2);
-  hideColumn(3);
-
   connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this,
           SLOT(onDoubleClicked(const QModelIndex&)));
 
@@ -82,9 +74,15 @@ void WareSrcExplorer::setType(
   QString Path = openfluid::waresdev::WareSrcManager::getInstance()
       ->getWareTypePath(m_WareType);
 
-  mp_Model->setRootPath(Path);
+  mp_Model = new WareSrcExplorerModel(Path);
+
+  setModel(mp_Model);
+
+  hideColumn(1);
+  hideColumn(2);
+  hideColumn(3);
+
   setRootIndex(mp_Model->index(Path));
-  mp_Model->setIconProvider(new DevStudioFileIconProvider(Path));
 }
 
 

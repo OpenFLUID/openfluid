@@ -82,6 +82,11 @@ class WareSrcContainer
      * @return a list of existing absolute paths into this ware directory. It can be empty.
      */
     QStringList getDefaultFiles();
+
+    /**
+     * Return the absolute path of the main .cpp as set in the CMakeLists.txt file, if this .cpp file exists, otherwise an empty string
+     */
+    QString getMainCppFile();
 };
 
 
