@@ -55,6 +55,8 @@
 
 struct F
 {
+    QString m_CMakeConfigFile;
+
     QString m_WorkspacePath;
     QString m_WaresdevPath;
     QString m_SimulatorsPath;
@@ -64,8 +66,9 @@ struct F
 
     F()
     {
-      m_WorkspacePath = openfluid::base::PreferencesManager::getInstance()
-          ->getWorkspacePath();
+      m_CMakeConfigFile = QString::fromStdString(openfluid::config::WARESDEV_CMAKE_USERFILE);
+
+      m_WorkspacePath = openfluid::base::PreferencesManager::getInstance()->getWorkspacePath();
 
       m_WaresdevPath = QString("%1/%2").arg(m_WorkspacePath).arg(
           QString::fromStdString(openfluid::config::WARESDEV_SUBDIR));
@@ -74,17 +77,17 @@ struct F
           QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
 
       m_RealDirs.insert(0, QString("%1/ware_ok").arg(m_SimulatorsPath));
-      m_RealFiles.insert(0, QString("%1/ware_ok/CMake.in.config").arg(m_SimulatorsPath)); // right CMake content
+      m_RealFiles.insert(0, QString("%1/ware_ok/%2").arg(m_SimulatorsPath).arg(m_CMakeConfigFile)); // right CMake content
       m_RealFiles.insert(1, QString("%1/ware_ok/main.cpp").arg(m_SimulatorsPath));
       m_RealFiles.insert(2, QString("%1/ware_ok/other.cpp").arg(m_SimulatorsPath));
 
       m_RealDirs.insert(1, QString("%1/ware_wrongcmake").arg(m_SimulatorsPath));
-      m_RealFiles.insert(3, QString("%1/ware_wrongcmake/CMake.in.config").arg(m_SimulatorsPath)); // wrong CMake content
+      m_RealFiles.insert(3, QString("%1/ware_wrongcmake/%2").arg(m_SimulatorsPath).arg(m_CMakeConfigFile)); // wrong CMake content
       m_RealFiles.insert(4, QString("%1/ware_wrongcmake/main.cpp").arg(m_SimulatorsPath));
       m_RealFiles.insert(5, QString("%1/ware_wrongcmake/other.txt").arg(m_SimulatorsPath));
 
       m_RealDirs.insert(2, QString("%1/ware_nomaincpp").arg(m_SimulatorsPath));
-      m_RealFiles.insert(6, QString("%1/ware_nomaincpp/CMake.in.config").arg(m_SimulatorsPath)); // right CMake content
+      m_RealFiles.insert(6, QString("%1/ware_nomaincpp/%2").arg(m_SimulatorsPath).arg(m_CMakeConfigFile)); // right CMake content
       m_RealFiles.insert(7, QString("%1/ware_nomaincpp/other.cpp").arg(m_SimulatorsPath));
 
       m_RealDirs.insert(3, QString("%1/ware_nocmake").arg(m_SimulatorsPath));
@@ -92,13 +95,13 @@ struct F
       m_RealFiles.insert(9, QString("%1/ware_nocmake/other.cpp").arg(m_SimulatorsPath));
 
       m_RealDirs.insert(4, QString("%1/ware_nocpp").arg(m_SimulatorsPath));
-      m_RealFiles.insert(10, QString("%1/ware_nocpp/CMake.in.config").arg(m_SimulatorsPath)); // right CMake content
+      m_RealFiles.insert(10, QString("%1/ware_nocpp/%2").arg(m_SimulatorsPath).arg(m_CMakeConfigFile)); // right CMake content
 
       m_RealDirs.insert(5, QString("%1/ware_empty").arg(m_SimulatorsPath));
 
       m_RealDirs.insert(6, QString("%1/ware_empty2").arg(m_SimulatorsPath));
       m_RealDirs.insert(7, QString("%1/ware_empty2/subdir").arg(m_SimulatorsPath));
-      m_RealFiles.insert(11, QString("%1/ware_empty2/subdir/CMake.in.config").arg(m_SimulatorsPath));
+      m_RealFiles.insert(11, QString("%1/ware_empty2/subdir/%2").arg(m_SimulatorsPath).arg(m_CMakeConfigFile));
     }
 
     ~F()
@@ -196,17 +199,17 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(0),openfluid::waresdev::WareSrcManager::SIMULATOR,"").getDefaultFiles();
   BOOST_CHECK_EQUAL(List.count(),2);
-  BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(),"CMake.in.config");
+  BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(),m_CMakeConfigFile.toStdString());
   BOOST_CHECK_EQUAL(QFileInfo(List.value(1)).fileName().toStdString(),"main.cpp");
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(1),openfluid::waresdev::WareSrcManager::SIMULATOR,"").getDefaultFiles();
   BOOST_CHECK_EQUAL(List.count(),2);
-  BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(),"CMake.in.config");
+  BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(),m_CMakeConfigFile.toStdString());
   BOOST_CHECK_EQUAL(QFileInfo(List.value(1)).fileName().toStdString(),"main.cpp");
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(2),openfluid::waresdev::WareSrcManager::SIMULATOR,"").getDefaultFiles();
   BOOST_CHECK_EQUAL(List.count(),2);
-  BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(),"CMake.in.config");
+  BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(),m_CMakeConfigFile.toStdString());
   BOOST_CHECK_EQUAL(QFileInfo(List.value(1)).fileName().toStdString(),"other.cpp");
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(3),openfluid::waresdev::WareSrcManager::SIMULATOR,"").getDefaultFiles();
@@ -215,7 +218,7 @@ BOOST_FIXTURE_TEST_CASE(getDefaultFiles,F)
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(4),openfluid::waresdev::WareSrcManager::SIMULATOR,"").getDefaultFiles();
   BOOST_CHECK_EQUAL(List.count(),1);
-  BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(),"CMake.in.config");
+  BOOST_CHECK_EQUAL(QFileInfo(List.value(0)).fileName().toStdString(),m_CMakeConfigFile.toStdString());
 
   List = openfluid::waresdev::WareSrcContainer(m_RealDirs.at(5),openfluid::waresdev::WareSrcManager::SIMULATOR,"").getDefaultFiles();
   BOOST_CHECK_EQUAL(List.count(),0);

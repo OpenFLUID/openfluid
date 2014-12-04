@@ -55,7 +55,7 @@ class WareSrcContainer
     QString m_AbsolutePath;
 
     /**
-     * Absolute path of the CMake.in.config file if it exists, otherwise an empty string
+     * Absolute path of the CMake config file if it exists, otherwise an empty string
      */
     QString m_AbsoluteCMakeConfigPath;
 
@@ -75,7 +75,7 @@ class WareSrcContainer
 
     /**
      * Return the absolute paths of:
-     * - the CMake.in.config file if it exists on disk,
+     * - the CMake config file if it exists on disk,
      * - the main .cpp file as set in the CMakeLists.txt, if this .cpp exists on disk.
      * If no .cpp file was found (because it doesn't exists, it wasn't found in CMake file, or CMake file doesn't exist):
      * - the first .cpp file found in this ware directory (not recursive).

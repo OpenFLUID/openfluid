@@ -104,8 +104,9 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
       .arg(m_WaresdevDirName).arg(
       QString::fromStdString(openfluid::config::OBSERVERS_PLUGINS_SUBDIR));
 
-  m_WareTypePathByWareType[BUILDEREXT] = QString("%1/%2/builderexts").arg(
-      m_WorkspacePath).arg(m_WaresdevDirName);
+  m_WareTypePathByWareType[BUILDEREXT] = QString("%1/%2/%3").arg(
+      m_WorkspacePath).arg(m_WaresdevDirName).arg(
+      QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR));
 
   foreach(QString Path,m_WareTypePathByWareType){
   if (!QDir(Path).mkpath(Path))

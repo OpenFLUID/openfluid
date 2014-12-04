@@ -42,6 +42,7 @@
 #include <QDir>
 
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/config.hpp>
 
 namespace openfluid { namespace waresdev {
 
@@ -58,7 +59,8 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath,
 {
   QDir Dir(AbsolutePath);
 
-  QString CMakeFilePath = Dir.absoluteFilePath("CMake.in.config");
+  QString CMakeFilePath = Dir.absoluteFilePath(
+      QString::fromStdString(openfluid::config::WARESDEV_CMAKE_USERFILE));
 
   if (QFile::exists(CMakeFilePath))
   {
@@ -103,9 +105,14 @@ QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
 {
   QStringList Lines = CMakeFileContent.split('\n');
 
-  // TODO check builder-ext tag
   QRegExp RE(
-      "^\\s*SET\\s*\\((?:SIM|OBS|BUILDEREXT)_CPP\\s+(\\w+\\.cpp).*\\).*");
+      QString("^\\s*SET\\s*\\((?:%1|%2|%3)\\s+(\\w+\\.cpp).*\\).*").arg(
+          QString::fromStdString(openfluid::config::WARESDEV_CMAKE_SIMCPPVAR))
+          .arg(
+          QString::fromStdString(openfluid::config::WARESDEV_CMAKE_OBSCPPVAR))
+          .arg(
+          QString::fromStdString(
+              openfluid::config::WARESDEV_CMAKE_BEXTCPPVAR)));
 
   foreach(QString L,Lines){
   if (RE.indexIn(L) > -1)
@@ -123,7 +130,6 @@ QString WareSrcContainer::searchMainCppFileName(const QString& CMakeFileContent)
 QStringList WareSrcContainer::getDefaultFiles()
 {
   QStringList L;
-  bool SearchFirstCpp = false;
 
   if (!m_AbsoluteCMakeConfigPath.isEmpty())
     L << m_AbsoluteCMakeConfigPath;
