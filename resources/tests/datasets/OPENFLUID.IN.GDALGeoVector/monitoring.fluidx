@@ -10,10 +10,9 @@
       <param name="geoserie.ContSU.unitsclass" value="SU" />
       <param name="geoserie.ContRS.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
       <param name="geoserie.ContRS.vars" value="tests.random=>rnd" />
-      <param name="geoserie.ContRS.unitsclass" value="SU" />
+      <param name="geoserie.ContRS.unitsclass" value="RS" />
       <param name="geoserie.ContRS.when" value="continuous" />
     </observer>
-    
 
     <observer ID="export.vars.files.geovector" >
       <param name="format" value="GeoJSON" />
@@ -24,10 +23,9 @@
       <param name="geoserie.ContDelaySU.when" value="continuous;9999" />
       <param name="geoserie.ContDelayRS.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
       <param name="geoserie.ContDelayRS.vars" value="tests.random=>rnd" />
-      <param name="geoserie.ContDelayRS.unitsclass" value="SU" />
+      <param name="geoserie.ContDelayRS.unitsclass" value="RS" />
       <param name="geoserie.ContDelayRS.when" value="continuous;8000" />
     </observer>
-    
     
     <observer ID="export.vars.files.geovector" >
       <param name="format" value="ESRI Shapefile" />
@@ -37,7 +35,7 @@
       <param name="geoserie.ContDelaySU.when" value="init" />
       <param name="geoserie.ContDelayRS.sourcefile" value="data/extractroujan_rs_wgs84.shp" />
       <param name="geoserie.ContDelayRS.vars" value="tests.random=>rnd;tests.fixed=>tfix" />
-      <param name="geoserie.ContDelayRS.unitsclass" value="SU" />
+      <param name="geoserie.ContDelayRS.unitsclass" value="RS" />
       <param name="geoserie.ContDelayRS.when" value="final" />
     </observer>    
     
@@ -45,7 +43,7 @@
       <param name="format" value="ESRI Shapefile" />
       <param name="geoserie.WrongFile.sourcefile" value="dot/foobar.shp" />
       <param name="geoserie.WrongFile.vars" value="tests.fixed=>tfix" />
-      <param name="geoserie.WrongFile.unitsclass" value="SU" />
+      <param name="geoserie.WrongFile.unitsclass" value="XU" />
     </observer>
     
   </monitoring>
