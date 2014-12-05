@@ -41,9 +41,12 @@
 
 #include <QList>
 #include <QDir>
+#include <QDesktopServices>
+#include <QUrl>
 
 #include "WareSrcFileEditor.hpp"
 #include "WareSrcToolbar.hpp"
+#include "WareSrcActions.hpp"
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -62,7 +65,13 @@ WareSrcWidget::WareSrcWidget(
   ui->setupUi(this);
 
   if (IsStandalone)
+  {
     ui->Toolbar_Layout->addWidget(new WareSrcToolbar(true, this));
+    connect(
+        openfluid::ui::waresdev::WareSrcActions::getInstance()->getAction(
+            "OpenExplorer"),
+        SIGNAL(triggered()), this, SLOT(openExplorer()));
+  }
 
   QList<int> Sizes;
   Sizes << 1000 << 180;
@@ -148,5 +157,14 @@ bool WareSrcWidget::setCurrent(
 // =====================================================================
 // =====================================================================
 
+void WareSrcWidget::openExplorer()
+{
+  QDesktopServices::openUrl(QUrl::fromLocalFile(m_Container.getAbsolutePath()));
+}
 
-} } }  // namespaces
+
+// =====================================================================
+// =====================================================================
+
+
+} } } // namespaces

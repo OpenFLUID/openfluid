@@ -92,6 +92,10 @@ class DLLEXPORT WareSrcWidget: public QWidget
      * @return true if the file editor was already opened, false otherwise
      */
     bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
+
+  public slots:
+
+    void openExplorer();
 };
 
 } } }  // namespaces

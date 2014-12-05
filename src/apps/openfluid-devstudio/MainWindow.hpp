@@ -66,7 +66,7 @@ class MainWindow: public QMainWindow
 
     openfluid::ui::waresdev::WareSrcWidgetCollection m_Collection;
 
-    void createActions();
+    void createLocalActions();
 
     void createMenus();
 
@@ -75,6 +75,8 @@ class MainWindow: public QMainWindow
     void onOpenAsked(const QString& Path);
 
     void onSetCurrentAsked(const QString& Path);
+
+    void onOpenExplorerAsked();
 
   public:
 

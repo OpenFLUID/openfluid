@@ -75,6 +75,8 @@ class WareSrcWidgetCollection
                   QTabWidget* TabWidget);
 
     void setCurrent(const QString& Path, QTabWidget* TabWidget);
+
+    void openExplorer(QTabWidget* TabWidget);
 };
 
 } } }  // namespaces

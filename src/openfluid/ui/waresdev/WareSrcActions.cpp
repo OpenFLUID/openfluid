@@ -106,6 +106,7 @@ WareSrcActions::WareSrcActions()
   m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
   m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
 
+  // TODO delete when actions will be implemented
   foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), this,
       SLOT(showNotYetImplemented()));
 }

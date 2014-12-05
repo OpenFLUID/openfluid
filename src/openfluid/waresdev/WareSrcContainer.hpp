@@ -87,6 +87,8 @@ class WareSrcContainer
      * Return the absolute path of the main .cpp as set in the CMakeLists.txt file, if this .cpp file exists, otherwise an empty string
      */
     QString getMainCppFile();
+
+    QString getAbsolutePath() const;
 };
 
 

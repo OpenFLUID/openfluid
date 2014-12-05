@@ -58,26 +58,33 @@ MainWindow::MainWindow() :
   move((ScreenRect.width() - width()) / 2,
        (ScreenRect.height() - height()) / 2);
 
-  createActions();
+  createLocalActions();
   createMenus();
   addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
 
-  int ExplorerWidth = ui->splitter->sizeHint().width() / 3;
   QList<int> Sizes;
-  Sizes << ExplorerWidth << ExplorerWidth*2;
+  Sizes << 180 << 1000;
   ui->splitter->setSizes(Sizes);
 
   ui->SimExplorer->setType(openfluid::waresdev::WareSrcManager::SIMULATOR);
   ui->ObsExplorer->setType(openfluid::waresdev::WareSrcManager::OBSERVER);
   ui->ExtExplorer->setType(openfluid::waresdev::WareSrcManager::BUILDEREXT);
 
+  // TODO delete those connections when local actions will be implemented
   foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), openfluid::ui::waresdev::WareSrcActions::getInstance(),
       SLOT(showNotYetImplemented()));
 
+  // TODO delete those disconnections when all actions will be implemented
   m_Actions.value("Quit")->disconnect();
+  openfluid::ui::waresdev::WareSrcActions::getInstance()->getAction(
+      "OpenExplorer")->disconnect();
   connect(m_Actions.value("Quit"), SIGNAL(triggered()),
   qApp,
           SLOT(quit()));
+  connect(
+      openfluid::ui::waresdev::WareSrcActions::getInstance()->getAction(
+          "OpenExplorer"),
+      SIGNAL(triggered()), this, SLOT(onOpenExplorerAsked()));
 
   connect(ui->SimExplorer, SIGNAL(openAsked(const QString&)), this,
           SLOT(onOpenAsked(const QString&)));
@@ -109,7 +116,7 @@ MainWindow::~MainWindow()
 // =====================================================================
 
 
-void MainWindow::createActions()
+void MainWindow::createLocalActions()
 {
   m_Actions["SwitchWorkspace"] = new QAction(tr("Switch workspace"), this);
 
@@ -210,9 +217,20 @@ void MainWindow::onOpenAsked(const QString& Path)
 // =====================================================================
 // =====================================================================
 
+
 void MainWindow::onSetCurrentAsked(const QString& Path)
 {
   m_Collection.setCurrent(Path, ui->WareSrcCollection);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MainWindow::onOpenExplorerAsked()
+{
+  m_Collection.openExplorer(ui->WareSrcCollection);
 }
 
 

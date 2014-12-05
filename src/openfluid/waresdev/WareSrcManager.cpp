@@ -96,16 +96,17 @@ void WareSrcManager::switchWorkspace(const QString& NewAbsoluteWorkspacePath)
 {
   m_WorkspacePath = QDir(NewAbsoluteWorkspacePath).absolutePath();
 
-  m_WareTypePathByWareType[SIMULATOR] = QString("%1/%2/%3").arg(m_WorkspacePath)
-      .arg(m_WaresdevDirName).arg(
-      QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
+  m_WaresdevPath = QString("%1/%2").arg(m_WorkspacePath).arg(m_WaresdevDirName);
 
-  m_WareTypePathByWareType[OBSERVER] = QString("%1/%2/%3").arg(m_WorkspacePath)
-      .arg(m_WaresdevDirName).arg(
+  m_WareTypePathByWareType[SIMULATOR] =
+      QString("%1/%2").arg(m_WaresdevPath).arg(
+          QString::fromStdString(openfluid::config::SIMULATORS_PLUGINS_SUBDIR));
+
+  m_WareTypePathByWareType[OBSERVER] = QString("%1/%2").arg(m_WaresdevPath).arg(
       QString::fromStdString(openfluid::config::OBSERVERS_PLUGINS_SUBDIR));
 
-  m_WareTypePathByWareType[BUILDEREXT] = QString("%1/%2/%3").arg(
-      m_WorkspacePath).arg(m_WaresdevDirName).arg(
+  m_WareTypePathByWareType[BUILDEREXT] = QString("%1/%2").arg(m_WaresdevPath)
+      .arg(
       QString::fromStdString(openfluid::config::BUILDEREXTS_PLUGINS_SUBDIR));
 
   foreach(QString Path,m_WareTypePathByWareType){
@@ -185,4 +186,14 @@ WareSrcManager::PathInfo WareSrcManager::getPathInfo(const QString& Path)
 // =====================================================================
 
 
-} }  // namespaces
+QString WareSrcManager::getWaresdevPath()
+{
+  return m_WaresdevPath;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } // namespaces

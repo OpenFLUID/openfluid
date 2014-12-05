@@ -86,6 +86,8 @@ class WareSrcManager
 
     QString m_WorkspacePath;
 
+    QString m_WaresdevPath;
+
     /**
      * Absolute paths of each ware type sub-directory in the current workspace
      */
@@ -114,6 +116,8 @@ class WareSrcManager
      * @return A new PathInfo
      */
     PathInfo getPathInfo(const QString& Path);
+
+    QString getWaresdevPath();
 };
 
 } }  // namespaces

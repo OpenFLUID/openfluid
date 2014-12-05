@@ -40,6 +40,9 @@
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
 
 #include <QTabWidget>
+#include <QDesktopServices>
+#include <QUrl>
+#include <QApplication>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
@@ -143,4 +146,19 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path,
 // =====================================================================
 
 
-} } }  //namespaces
+void WareSrcWidgetCollection::openExplorer(QTabWidget* TabWidget)
+{
+  if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
+      TabWidget->currentWidget()))
+    Widget->openExplorer();
+  else
+    QDesktopServices::openUrl(
+        QUrl::fromLocalFile(mp_Manager->getWaresdevPath()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } } //namespaces
