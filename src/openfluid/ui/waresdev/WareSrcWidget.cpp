@@ -64,18 +64,15 @@ WareSrcWidget::WareSrcWidget(
 {
   ui->setupUi(this);
 
-  if (IsStandalone)
-  {
-    ui->Toolbar_Layout->addWidget(new WareSrcToolbar(true, this));
-    connect(
-        openfluid::ui::waresdev::WareSrcActions::getInstance()->getAction(
-            "OpenExplorer"),
-        SIGNAL(triggered()), this, SLOT(openExplorer()));
-  }
-
   QList<int> Sizes;
   Sizes << 1000 << 180;
   ui->splitter->setSizes(Sizes);
+
+  if (IsStandalone)
+  {
+    ui->Toolbar_Layout->addWidget(new WareSrcToolbar(true, this));
+  }
+
 }
 
 
@@ -157,9 +154,10 @@ bool WareSrcWidget::setCurrent(
 // =====================================================================
 // =====================================================================
 
-void WareSrcWidget::openExplorer()
+
+const openfluid::waresdev::WareSrcContainer& WareSrcWidget::getWareSrcContainer()
 {
-  QDesktopServices::openUrl(QUrl::fromLocalFile(m_Container.getAbsolutePath()));
+  return m_Container;
 }
 
 

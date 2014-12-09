@@ -38,17 +38,25 @@
 
 #include "WareSrcExplorer.hpp"
 
+#include <QAction>
+
 #include "WareSrcExplorerModel.hpp"
 
 
 WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
-    QTreeView(Parent),mp_Model(0)
+    QTreeView(Parent), mp_Model(0)
 {
   connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this,
           SLOT(onDoubleClicked(const QModelIndex&)));
 
   connect(this, SIGNAL(clicked(const QModelIndex&)), this,
           SLOT(onClicked(const QModelIndex&)));
+
+  QAction* A = new QAction("OpenExplorer", this);
+  connect(A, SIGNAL(triggered()), this, SLOT(onOpenExplorerAsked()));
+  addAction(A);
+
+  setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 
@@ -103,6 +111,34 @@ void WareSrcExplorer::onDoubleClicked(const QModelIndex& Index)
 void WareSrcExplorer::onClicked(const QModelIndex& Index)
 {
   emit setCurrentAsked(mp_Model->filePath(Index));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onOpenExplorerAsked()
+{
+  emit openExplorerAsked(getCurrentDir());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcExplorer::getCurrentDir()
+{
+  if (currentIndex().isValid())
+  {
+    if (mp_Model->isDir(currentIndex()))
+      return mp_Model->filePath(currentIndex());
+
+    return mp_Model->fileInfo(currentIndex()).dir().absolutePath();
+  }
+
+  return "";
 }
 
 

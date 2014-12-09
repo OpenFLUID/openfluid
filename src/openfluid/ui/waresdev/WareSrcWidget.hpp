@@ -93,9 +93,7 @@ class DLLEXPORT WareSrcWidget: public QWidget
      */
     bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
 
-  public slots:
-
-    void openExplorer();
+    const openfluid::waresdev::WareSrcContainer& getWareSrcContainer();
 };
 
 } } }  // namespaces

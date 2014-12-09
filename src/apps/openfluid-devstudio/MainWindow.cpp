@@ -58,13 +58,13 @@ MainWindow::MainWindow() :
   move((ScreenRect.width() - width()) / 2,
        (ScreenRect.height() - height()) / 2);
 
-  createLocalActions();
-  createMenus();
-  addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
-
   QList<int> Sizes;
   Sizes << 180 << 1000;
   ui->splitter->setSizes(Sizes);
+
+  createLocalActions();
+  createMenus();
+  addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
 
   ui->SimExplorer->setType(openfluid::waresdev::WareSrcManager::SIMULATOR);
   ui->ObsExplorer->setType(openfluid::waresdev::WareSrcManager::OBSERVER);
@@ -74,17 +74,14 @@ MainWindow::MainWindow() :
   foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), openfluid::ui::waresdev::WareSrcActions::getInstance(),
       SLOT(showNotYetImplemented()));
 
+  mp_Collection = new openfluid::ui::waresdev::WareSrcWidgetCollection(
+      ui->WareSrcCollection);
+
   // TODO delete those disconnections when all actions will be implemented
   m_Actions.value("Quit")->disconnect();
-  openfluid::ui::waresdev::WareSrcActions::getInstance()->getAction(
-      "OpenExplorer")->disconnect();
   connect(m_Actions.value("Quit"), SIGNAL(triggered()),
   qApp,
           SLOT(quit()));
-  connect(
-      openfluid::ui::waresdev::WareSrcActions::getInstance()->getAction(
-          "OpenExplorer"),
-      SIGNAL(triggered()), this, SLOT(onOpenExplorerAsked()));
 
   connect(ui->SimExplorer, SIGNAL(openAsked(const QString&)), this,
           SLOT(onOpenAsked(const QString&)));
@@ -93,12 +90,19 @@ MainWindow::MainWindow() :
   connect(ui->ExtExplorer, SIGNAL(openAsked(const QString&)), this,
           SLOT(onOpenAsked(const QString&)));
 
-  connect(ui->SimExplorer, SIGNAL(setCurrentAsked(const QString&)), this,
-          SLOT(onSetCurrentAsked(const QString&)));
-  connect(ui->ObsExplorer, SIGNAL(setCurrentAsked(const QString&)), this,
-          SLOT(onSetCurrentAsked(const QString&)));
-  connect(ui->ExtExplorer, SIGNAL(setCurrentAsked(const QString&)), this,
-          SLOT(onSetCurrentAsked(const QString&)));
+  connect(ui->SimExplorer, SIGNAL(setCurrentAsked(const QString&)),
+          mp_Collection, SLOT(setCurrent(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(setCurrentAsked(const QString&)),
+          mp_Collection, SLOT(setCurrent(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(setCurrentAsked(const QString&)),
+          mp_Collection, SLOT(setCurrent(const QString&)));
+
+  connect(ui->SimExplorer, SIGNAL(openExplorerAsked(const QString&)),
+          mp_Collection, SLOT(openExplorer(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(openExplorerAsked(const QString&)),
+          mp_Collection, SLOT(openExplorer(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(openExplorerAsked(const QString&)),
+          mp_Collection, SLOT(openExplorer(const QString&)));
 }
 
 
@@ -210,27 +214,7 @@ void MainWindow::createMenus()
 
 void MainWindow::onOpenAsked(const QString& Path)
 {
-  m_Collection.openPath(Path, false, ui->WareSrcCollection);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::onSetCurrentAsked(const QString& Path)
-{
-  m_Collection.setCurrent(Path, ui->WareSrcCollection);
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-void MainWindow::onOpenExplorerAsked()
-{
-  m_Collection.openExplorer(ui->WareSrcCollection);
+  mp_Collection->openPath(Path, false);
 }
 
 

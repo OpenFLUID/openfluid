@@ -41,6 +41,7 @@
 #ifndef SRC_OPENFLUID_UI_WARESDEV_WARESRCWIDGETCOLLECTION_HPP_
 #define SRC_OPENFLUID_UI_WARESDEV_WARESRCWIDGETCOLLECTION_HPP_
 
+#include <QObject>
 #include <QMap>
 #include <QString>
 
@@ -54,9 +55,13 @@ namespace ui { namespace waresdev {
 
 class WareSrcWidget;
 
-class WareSrcWidgetCollection
+class WareSrcWidgetCollection: public QObject
 {
+  Q_OBJECT
+
   private:
+
+    QTabWidget* mp_TabWidget;
 
     openfluid::waresdev::WareSrcManager* mp_Manager;
 
@@ -65,18 +70,21 @@ class WareSrcWidgetCollection
      */
     QMap<QString, WareSrcWidget*> m_WareSrcWidgetByPath;
 
+    QString getCurrentPath();
+
   public:
 
-    WareSrcWidgetCollection();
+    WareSrcWidgetCollection(QTabWidget* TabWidget);
 
     ~WareSrcWidgetCollection();
 
-    void openPath(const QString& Path, bool IsStandalone,
-                  QTabWidget* TabWidget);
+    void openPath(const QString& Path, bool IsStandalone);
 
-    void setCurrent(const QString& Path, QTabWidget* TabWidget);
+  public slots:
 
-    void openExplorer(QTabWidget* TabWidget);
+    void setCurrent(const QString& Path);
+
+    void openExplorer(const QString& Path = "");
 };
 
 } } }  // namespaces

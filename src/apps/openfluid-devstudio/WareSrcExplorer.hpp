@@ -56,11 +56,15 @@ class WareSrcExplorer: public QTreeView
 
     openfluid::waresdev::WareSrcManager::WareType m_WareType;
 
+    QString getCurrentDir();
+
   private slots:
 
     void onDoubleClicked(const QModelIndex& Index);
 
     void onClicked(const QModelIndex& Index);
+
+    void onOpenExplorerAsked();
 
   public:
 
@@ -75,6 +79,8 @@ class WareSrcExplorer: public QTreeView
     void openAsked(const QString& FilePath);
 
     void setCurrentAsked(const QString& FilePath);
+
+    void openExplorerAsked(const QString& FilePath);
 };
 
 #endif /* __WARESRCEXPLORER_HPP__ */

@@ -46,6 +46,7 @@
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
+#include <openfluid/ui/waresdev/WareSrcActions.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -55,10 +56,16 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcWidgetCollection::WareSrcWidgetCollection() :
-    mp_Manager(openfluid::waresdev::WareSrcManager::getInstance())
+WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget) :
+    mp_TabWidget(TabWidget), mp_Manager(
+        openfluid::waresdev::WareSrcManager::getInstance())
 {
+  QAction* A = WareSrcActions::getInstance()->getAction("OpenExplorer");
 
+  // TODO delete those disconnections when all actions will be implemented
+  A->disconnect();
+
+  connect(A, SIGNAL(triggered()), this, SLOT(openExplorer()));
 }
 
 
@@ -76,13 +83,12 @@ WareSrcWidgetCollection::~WareSrcWidgetCollection()
 // =====================================================================
 
 
-void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone,
-                                       QTabWidget* TabWidget)
+void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone)
 {
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(
       Path);
 
-  // TODO manage other workspaces later
+// TODO manage other workspaces later
   if (!Info.m_IsInCurrentWorkspace)
     return;
 
@@ -93,9 +99,9 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone,
 
     if (!Widget)
     {
-      Widget = new WareSrcWidget(Info, IsStandalone, TabWidget);
+      Widget = new WareSrcWidget(Info, IsStandalone, mp_TabWidget);
 
-      TabWidget->addTab(Widget, Info.m_WareName);
+      mp_TabWidget->addTab(Widget, Info.m_WareName);
 
       m_WareSrcWidgetByPath[Info.m_AbsolutePathOfWare] = Widget;
 
@@ -106,7 +112,7 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone,
     if (Info.m_isAWareFile)
       Widget->openFile(Info);
 
-    TabWidget->setCurrentWidget(Widget);
+    mp_TabWidget->setCurrentWidget(Widget);
   }
 
 }
@@ -116,13 +122,12 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone,
 // =====================================================================
 
 
-void WareSrcWidgetCollection::setCurrent(const QString& Path,
-                                         QTabWidget* TabWidget)
+void WareSrcWidgetCollection::setCurrent(const QString& Path)
 {
   openfluid::waresdev::WareSrcManager::PathInfo Info = mp_Manager->getPathInfo(
       Path);
 
-  // TODO manage other workspaces later
+// TODO manage other workspaces later
   if (!Info.m_IsInCurrentWorkspace)
     return;
 
@@ -134,7 +139,7 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path,
     if (Widget)
     {
       if (Info.m_isAWare || Widget->setCurrent(Info))
-        TabWidget->setCurrentWidget(Widget);
+        mp_TabWidget->setCurrentWidget(Widget);
     }
 
   }
@@ -146,14 +151,37 @@ void WareSrcWidgetCollection::setCurrent(const QString& Path,
 // =====================================================================
 
 
-void WareSrcWidgetCollection::openExplorer(QTabWidget* TabWidget)
+void WareSrcWidgetCollection::openExplorer(const QString& Path)
+{
+  QString FileToOpen;
+
+  if (!Path.isEmpty())
+    FileToOpen = Path;
+  else
+  {
+    QString Current = getCurrentPath();
+
+    if (!Current.isEmpty())
+      FileToOpen = Current;
+    else
+      FileToOpen = mp_Manager->getWaresdevPath();
+  }
+
+  QDesktopServices::openUrl(QUrl::fromLocalFile(FileToOpen));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcWidgetCollection::getCurrentPath()
 {
   if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
-      TabWidget->currentWidget()))
-    Widget->openExplorer();
-  else
-    QDesktopServices::openUrl(
-        QUrl::fromLocalFile(mp_Manager->getWaresdevPath()));
+      mp_TabWidget->currentWidget()))
+    return Widget->getWareSrcContainer().getAbsolutePath();
+
+  return "";
 }
 
 

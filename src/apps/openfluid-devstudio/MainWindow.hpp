@@ -64,7 +64,7 @@ class MainWindow: public QMainWindow
 
     QMap<QString, QAction*> m_Actions;
 
-    openfluid::ui::waresdev::WareSrcWidgetCollection m_Collection;
+    openfluid::ui::waresdev::WareSrcWidgetCollection* mp_Collection;
 
     void createLocalActions();
 
@@ -73,10 +73,6 @@ class MainWindow: public QMainWindow
   private slots:
 
     void onOpenAsked(const QString& Path);
-
-    void onSetCurrentAsked(const QString& Path);
-
-    void onOpenExplorerAsked();
 
   public:
 
