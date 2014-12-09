@@ -70,14 +70,8 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
 
     if (Info.isDir())
     {
-      if (Info.fileName().startsWith("_build"))
-      {
-        if (Role == Qt::ForegroundRole)
-          return QVariant(QColor("#CACACA"));
-
-        if (Role == QFileSystemModel::FileIconRole)
-          return QIcon(":/icons/folder.png");
-      }
+      if (Info.fileName().startsWith("_build") && Role == Qt::ForegroundRole)
+        return QVariant(QColor("#A3A3A3"));
       else if (Info.dir() == m_DirPath
           && Role == QFileSystemModel::FileIconRole)
         return QIcon(":/icons/foldergreen.png");
