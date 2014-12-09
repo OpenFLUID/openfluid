@@ -43,6 +43,8 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QApplication>
+#include <QProcess>
+#include <QMessageBox>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
@@ -61,11 +63,14 @@ WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget) :
         openfluid::waresdev::WareSrcManager::getInstance())
 {
   QAction* A = WareSrcActions::getInstance()->getAction("OpenExplorer");
+  QAction* B = WareSrcActions::getInstance()->getAction("OpenTerminal");
 
   // TODO delete those disconnections when all actions will be implemented
   A->disconnect();
+  B->disconnect();
 
   connect(A, SIGNAL(triggered()), this, SLOT(openExplorer()));
+  connect(B, SIGNAL(triggered()), this, SLOT(openTerminal()));
 }
 
 
@@ -168,6 +173,44 @@ void WareSrcWidgetCollection::openExplorer(const QString& Path)
   }
 
   QDesktopServices::openUrl(QUrl::fromLocalFile(FileToOpen));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::openTerminal(const QString& Path)
+{
+  QString FileToOpen;
+
+  if (!Path.isEmpty())
+    FileToOpen = Path;
+  else
+  {
+    QString Current = getCurrentPath();
+
+    if (!Current.isEmpty())
+      FileToOpen = Current;
+    else
+      FileToOpen = mp_Manager->getWaresdevPath();
+  }
+
+  bool TermFound = true;
+
+  // TODO test on Mac and not Debian-based distros
+#if defined(Q_OS_UNIX) || defined(Q_OS_MAC)
+  if (!QProcess::startDetached("x-terminal-emulator", QStringList(),
+                               FileToOpen))
+    TermFound = QProcess::startDetached("xterm", QStringList(), FileToOpen);
+#elif defined(Q_OS_WIN32)
+  TermFound = QProcess::startDetached("cmd.exe",QStringList(),FileToOpen);
+#else
+  TermFound = false;
+#endif
+
+  if (!TermFound)
+    QMessageBox::warning(0, "Error", "No terminal found");
 }
 
 

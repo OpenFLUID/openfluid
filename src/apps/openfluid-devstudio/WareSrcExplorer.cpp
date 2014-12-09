@@ -52,9 +52,13 @@ WareSrcExplorer::WareSrcExplorer(QWidget* Parent) :
   connect(this, SIGNAL(clicked(const QModelIndex&)), this,
           SLOT(onClicked(const QModelIndex&)));
 
-  QAction* A = new QAction("OpenExplorer", this);
-  connect(A, SIGNAL(triggered()), this, SLOT(onOpenExplorerAsked()));
-  addAction(A);
+  QAction* OpenExplorerAction = new QAction("Open a file explorer", this);
+  connect(OpenExplorerAction, SIGNAL(triggered()), this, SLOT(onOpenExplorerAsked()));
+  addAction(OpenExplorerAction);
+
+  QAction* OpenTerminaAction = new QAction("Open a terminal", this);
+  connect(OpenTerminaAction, SIGNAL(triggered()), this, SLOT(onOpenTerminalAsked()));
+  addAction(OpenTerminaAction);
 
   setContextMenuPolicy(Qt::ActionsContextMenu);
 }
@@ -121,6 +125,16 @@ void WareSrcExplorer::onClicked(const QModelIndex& Index)
 void WareSrcExplorer::onOpenExplorerAsked()
 {
   emit openExplorerAsked(getCurrentDir());
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcExplorer::onOpenTerminalAsked()
+{
+  emit openTerminalAsked(getCurrentDir());
 }
 
 

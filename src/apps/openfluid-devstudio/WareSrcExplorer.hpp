@@ -66,6 +66,8 @@ class WareSrcExplorer: public QTreeView
 
     void onOpenExplorerAsked();
 
+    void onOpenTerminalAsked();
+
   public:
 
     WareSrcExplorer(QWidget* Parent = 0);
@@ -81,6 +83,8 @@ class WareSrcExplorer: public QTreeView
     void setCurrentAsked(const QString& FilePath);
 
     void openExplorerAsked(const QString& FilePath);
+
+    void openTerminalAsked(const QString& FilePath);
 };
 
 #endif /* __WARESRCEXPLORER_HPP__ */

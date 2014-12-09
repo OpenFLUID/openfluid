@@ -85,6 +85,8 @@ class WareSrcWidgetCollection: public QObject
     void setCurrent(const QString& Path);
 
     void openExplorer(const QString& Path = "");
+
+    void openTerminal(const QString& Path = "");
 };
 
 } } }  // namespaces

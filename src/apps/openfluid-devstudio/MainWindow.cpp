@@ -103,6 +103,13 @@ MainWindow::MainWindow() :
           mp_Collection, SLOT(openExplorer(const QString&)));
   connect(ui->ExtExplorer, SIGNAL(openExplorerAsked(const QString&)),
           mp_Collection, SLOT(openExplorer(const QString&)));
+
+  connect(ui->SimExplorer, SIGNAL(openTerminalAsked(const QString&)),
+          mp_Collection, SLOT(openTerminal(const QString&)));
+  connect(ui->ObsExplorer, SIGNAL(openTerminalAsked(const QString&)),
+          mp_Collection, SLOT(openTerminal(const QString&)));
+  connect(ui->ExtExplorer, SIGNAL(openTerminalAsked(const QString&)),
+          mp_Collection, SLOT(openTerminal(const QString&)));
 }
 
 
