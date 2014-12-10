@@ -4,9 +4,11 @@
 INCLUDE_DIRECTORIES(${QT_INCLUDES})
 
 
-SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp WareSrcActions.cpp WareSrcWidgetCollection.cpp)
+SET(OPENFLUID_UI_WARESDEV_CPP WareSrcWidget.cpp WareSrcToolbar.cpp WareSrcFileEditor.cpp WareSrcActions.cpp WareSrcWidgetCollection.cpp
+                              WareSrcSyntaxHighlighter.cpp WareSrcSyntaxManager.cpp)
 
-SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcActions.hpp WareSrcWidgetCollection.hpp)
+SET(OPENFLUID_UI_WARESDEV_HPP WareSrcWidget.hpp WareSrcToolbar.hpp WareSrcFileEditor.hpp WareSrcActions.hpp WareSrcWidgetCollection.hpp
+                              WareSrcSyntaxHighlighter.hpp WareSrcSyntaxManager.hpp)
 
 QT4_WRAP_UI(OPENFLUID_UI_WARESDEV_UI WareSrcWidget.ui)
                                    
@@ -34,6 +36,7 @@ TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       #openfluid-tools                                           
                       #openfluid-fluidx
                       openfluid-ui-common
+                      openfluid-waresdev
                       ${QT_QTCORE_LIBRARIES}
                       ${QT_QTGUI_LIBRARIES}    
                      )
@@ -48,6 +51,9 @@ INSTALL(TARGETS openfluid-ui-waresdev
 
 INSTALL(FILES ${OPENFLUID_UI_WARESDEV_HPP} DESTINATION ${INCLUDE_OPENFLUID_INSTALL_PATH}/ui/waresdev)
 
+IF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))
+  ADD_SUBDIRECTORY(tests)
+ENDIF(NOT (CMAKE_BUILD_TYPE MATCHES "Release"))  
 
 
    

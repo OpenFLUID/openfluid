@@ -26,21 +26,17 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file WareSrcFileEditor.cpp
+ \file WareSrcSyntaxHighlighter.cpp
  \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
-
-#include <QDir>
-
-#include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
 
 
@@ -51,53 +47,75 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
-    QPlainTextEdit(Parent)
+WareSrcSyntaxHighlighter::WareSrcSyntaxHighlighter(QTextDocument* Document,
+                                                   const QString& FileType) :
+    QSyntaxHighlighter(Document)
 {
-  QFile File(FilePath);
-  if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
-    throw openfluid::base::FrameworkException(
-        "WareSrcFileEditor constructor",
-        QString("Cannot open file %1").arg(FilePath).toStdString());
+  m_HighlightingRules = WareSrcSyntaxManager::getInstance()
+      ->getHighlightingRules(FileType);
+}
 
-  QMap<QString, QString> FileTypes;
-  FileTypes["cpp"] =
-      "*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc";
-  FileTypes["fortran"] =
-      "*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95";
-  FileTypes["cmake"] = "CMakeLists.txt;CMake.in.config;*.cmake";
-  FileTypes["latex"] = "*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.bib";
 
-  QString FileName = QFileInfo(File).fileName();
-  for (QMap<QString, QString>::iterator it = FileTypes.begin();
-      it != FileTypes.end(); ++it)
+// =====================================================================
+// =====================================================================
+
+
+WareSrcSyntaxHighlighter::~WareSrcSyntaxHighlighter()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcSyntaxHighlighter::highlightBlock(const QString& Text)
+{
+  foreach(const WareSrcSyntaxManager::HighlightingRule& Rule, m_HighlightingRules){
+
+  QRegExp Expression(Rule.Pattern);
+
+  if(Rule.EndPattern == QRegExp())
   {
-    if (QDir::match(it.value(), FileName))
+    int Index = Expression.indexIn(Text);
+    while (Index >= 0)
     {
-      new WareSrcSyntaxHighlighter(document(), it.key());
-      break;
+      int Length = Expression.matchedLength();
+      setFormat(Index, Length, Rule.Format);
+      Index = Expression.indexIn(Text, Index + Length);
+    }
+  }
+  else
+  {
+    QRegExp EndExpression(Rule.EndPattern);
+
+    setCurrentBlockState(0);
+
+    int StartIndex = 0;
+    if (previousBlockState() != 1)
+    StartIndex = Expression.indexIn(Text);
+
+    while (StartIndex >= 0)
+    {
+      int EndIndex = EndExpression.indexIn(Text, StartIndex);
+      int MatchedLength;
+      if (EndIndex == -1)
+      {
+        setCurrentBlockState(1);
+        MatchedLength = Text.length() - StartIndex;
+      }
+      else
+      {
+        MatchedLength = EndIndex - StartIndex
+        + EndExpression.matchedLength();
+      }
+      setFormat(StartIndex, MatchedLength, Rule.Format);
+      StartIndex = Expression.indexIn(Text, StartIndex + MatchedLength);
     }
   }
 
-  // TODO get defaults from conf file
-  // setStyleSheet("fFont: 11pt \"Courier\";");
-  QFont Font;
-  Font.setFamily("Courier");
-  Font.setFixedPitch(true);
-  Font.setPointSize(11);
-  setFont(Font);
-
-
-  setPlainText(File.readAll());
 }
-
-
-// =====================================================================
-// =====================================================================
-
-
-WareSrcFileEditor::~WareSrcFileEditor()
-{
 
 }
 
@@ -106,4 +124,4 @@ WareSrcFileEditor::~WareSrcFileEditor()
 // =====================================================================
 
 
-} } }  // namespaces
+} } } // namespaces

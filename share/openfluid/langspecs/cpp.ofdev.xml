@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid>
+  <waresdev>
+    <language name="cpp">
+        
+      <highlighting>
+      <!-- Order matters: first the functions, then the words, then the quotations, then finally the comments -->
+        
+        <rule name="functions-methods" style="function">
+               <pattern value="\w+\s*(?=\()" />
+        </rule> 
+        
+        <list name="lang-keywords" style="keyword">
+		      <item>asm</item>
+	        <item>break</item>
+	        <item>case</item>
+	        <item>catch</item>
+	        <item>class</item>
+	        <item>constexpr</item>
+	        <item>const_cast</item>
+	        <item>continue</item>
+	        <item>decltype</item>
+	        <item>default</item>
+	        <item>delete</item>
+	        <item>do</item>
+	        <item>dynamic_cast</item>
+	        <item>else</item>
+	        <item>enum</item>
+	        <item>explicit</item>
+	        <item>export</item>
+	        <item>extern</item>
+	        <item>false</item>
+	        <item>final</item>
+	        <item>friend</item>
+	        <item>for</item>
+	        <item>goto</item>
+	        <item>if</item>
+	        <item>inline</item>
+	        <item>namespace</item>
+	        <item>new</item>
+	        <item>nullptr</item>
+	        <item>operator</item>
+	        <item>override</item>
+	        <item>private</item>
+	        <item>protected</item>
+	        <item>public</item>
+	        <item>qobject_cast</item>
+	        <item>reinterpret_cast</item>
+	        <item>return</item>
+	        <item>sizeof</item>
+	        <item>static_assert</item>
+	        <item>static_cast</item>
+	        <item>struct</item>
+	        <item>switch</item>
+	        <item>template</item>
+	        <item>this</item>
+	        <item>throw</item>
+	        <item>true</item>
+	        <item>try</item>
+	        <item>typedef</item>
+	        <item>typeid</item>
+	        <item>type_info</item>
+	        <item>typename</item>
+	        <item>union</item>
+	        <item>using</item>
+	        <item>virtual</item>
+	        <item>while</item>
+	
+	        <item>and</item>
+	        <item>and_eq</item>
+	        <item>bad_cast</item>
+	        <item>bad_typeid</item>
+	        <item>bitand</item>
+	        <item>bitor</item>
+	        <item>compl</item>
+	        <item>not</item>
+	        <item>not_eq</item>
+	        <item>or</item>
+	        <item>or_eq</item>
+	        <item>xor</item>
+	        <item>xor_eq</item>
+        </list>
+        
+        <list name="extensions" style="keyword">
+          <item>K_DCOP</item>
+          <item>Q_ARG</item>
+          <item>Q_ASSERT</item>
+          <item>Q_ASSERT_X</item>
+          <item>Q_CHECK_PTR</item>
+          <item>Q_CLASSINFO</item>
+          <item>Q_CLEANUP_RESOURCE</item>
+          <item>Q_D</item>
+          <item>Q_DECLARE_FLAGS</item>
+          <item>Q_DECLARE_FLAGS</item>
+          <item>Q_DECLARE_INTERFACE</item>
+          <item>Q_DECLARE_METATYPE</item>
+          <item>Q_DECLARE_OPERATORS_FOR_FLAGS</item>
+          <item>Q_DECLARE_PRIVATE</item>
+          <item>Q_DECLARE_PUBLIC</item>
+          <item>Q_DECLARE_SHARED</item>
+          <item>Q_DECLARE_TYPEINFO</item>
+          <item>Q_DISABLE_COPY</item>
+          <item>Q_ENUMS</item>
+          <item>Q_EXPORT</item>
+          <item>Q_FLAGS</item>
+          <item>Q_FOREACH</item>
+          <item>Q_FOREVER</item>
+          <item>Q_GADGET</item>
+          <item>Q_GLOBAL_STATIC</item>
+          <item>Q_GLOBAL_STATIC_WITH_ARGS</item>
+          <item>Q_INIT_RESOURCE</item>
+          <item>Q_INTERFACES</item>
+          <item>Q_INVOKABLE</item>
+          <item>Q_NOREPLY</item>
+          <item>Q_OBJECT</item>
+          <item>Q_OVERRIDE</item>
+          <item>Q_PRIVATE_SLOT</item>
+          <item>Q_PROPERTY</item>
+          <item>Q_Q</item>
+          <item>Q_RETURN_ARG</item>
+          <item>Q_SCRIPTABLE</item>
+          <item>Q_SETS</item>
+          <item>Q_SIGNALS</item>
+          <item>Q_SLOTS</item>
+          <item>Q_UNUSED</item>
+          <item>SIGNAL</item>
+          <item>SLOT</item>
+          <item>TRUE</item>
+          <item>FALSE</item>
+          <item>connect</item>
+          <item>disconnect</item>
+          <item>emit</item>
+          <item>signals</item>
+          <item>slots</item>
+          <item>foreach</item>
+          <item>forever</item>
+
+          <item>qint8</item>
+          <item>qint16</item>
+          <item>qint32</item>
+          <item>qint64</item>
+          <item>qlonglong</item>
+          <item>qptrdiff</item>
+          <item>qreal</item>
+          <item>quint8</item>
+          <item>quint16</item>
+          <item>quint32</item>
+          <item>quint64</item>
+          <item>quintptr</item>
+          <item>qulonglong</item>
+        </list>
+        
+        <list name="types" style="datatype">
+          <item>auto</item>
+          <item>bool</item>
+          <item>char</item>
+          <item>char16_t</item>
+          <item>char32_t</item>
+          <item>const</item>
+          <item>double</item>
+          <item>float</item>
+          <item>int</item>
+          <item>long</item>
+          <item>mutable</item>
+          <item>register</item>
+          <item>short</item>
+          <item>signed</item>
+          <item>static</item>
+          <item>unsigned</item>
+          <item>void</item>
+          <item>volatile</item>
+          <item>uchar</item>
+          <item>uint</item>
+          <item>int8_t</item>
+          <item>int16_t</item>
+          <item>int32_t</item>
+          <item>int64_t</item>
+          <item>uint8_t</item>
+          <item>uint16_t</item>
+          <item>uint32_t</item>
+          <item>uint64_t</item>
+          <item>wchar_t</item>
+        </list>
+
+        <rule name="preprocessor-keywords" style="preprocessor">
+          <pattern value="^\s*#\s*\w+" />
+        </rule>
+
+        <rule name="openfluid-keywords" style="keyword">
+          <pattern value="\bOPENFLUID_\w+\b" />
+          <pattern value="\bOpenFLUID_\w+\b" />
+        </rule>
+
+        <rule name="deprecated-keywords" style="deprecated">
+          <pattern value="" />          
+        </rule>
+        
+        <rule name="string" style="quoted">
+          <pattern value='\".*\"' />
+          <pattern value="\'.*\'" />
+        </rule>
+        
+        <rule name="comment-singleline" style="comment">
+          <pattern value="//.*$" />
+        </rule>
+
+        <rule name="comment-multiline" style="comment">
+          <pattern start="/\*" end="\*/" />
+        </rule>
+
+      </highlighting>
+      
+    </language>
+  </waresdev>
+</openfluid>
