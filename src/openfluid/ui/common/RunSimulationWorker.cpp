@@ -55,6 +55,18 @@
 #include <openfluid/fluidx/FluidXDescriptor.hpp>
 
 
+// =====================================================================
+// =====================================================================
+
+
+class QThreadWithPublicSleep : public QThread
+{
+  public:
+
+    static void millisleep(unsigned long msecs)
+    { msleep(msecs); }
+};
+
 
 #define HANDLE_USER_PAUSE_ABORT \
   { \
@@ -69,9 +81,14 @@
       { \
         throw UserAbortException(); \
       } \
-      openfluid::tools::Sleep(200); \
+      QThreadWithPublicSleep::millisleep(200); \
     } \
   }
+
+
+// =====================================================================
+// =====================================================================
+
 
 namespace openfluid { namespace ui { namespace common {
 
