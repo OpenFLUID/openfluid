@@ -505,7 +505,7 @@ void PreferencesDialog::processSimUserPathsUpdate()
 
 void PreferencesDialog::processObsUserPathsUpdate()
 {
-  openfluid::base::PreferencesManager::getInstance()->setExtraObserversPaths(ui->SimulatorsSearchPathsWidget->getUserPaths());
+  openfluid::base::PreferencesManager::getInstance()->setExtraObserversPaths(ui->ObserversSearchPathsWidget->getUserPaths());
   m_ObsPathsChanged = true;
 }
 

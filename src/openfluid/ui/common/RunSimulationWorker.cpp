@@ -69,7 +69,7 @@
       { \
         throw UserAbortException(); \
       } \
-      openfluid::tools::Sleep(200); \
+      QThread::msleep(200); \
     } \
   }
 
