@@ -22,7 +22,7 @@ or from a console using the <tt>openfluid-builder</tt> command.
 \image html screenshot_builder_model_html.png "Screenshot of the model view in OpenFLUID-Builder"
 \image latex screenshot_builder_model.png "Screenshot of the model view in OpenFLUID-Builder" width=11.5cm
 
-\if doc-is-html
+\if DocIsHTML
 \htmlonly <br><br> \endhtmlonly  
 \endif
 

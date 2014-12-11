@@ -15,9 +15,9 @@ IF(DOXYGEN)
     OUTPUT "${MAIN_DOC_OUTPUT_PATH}/html/index.html"
     DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile"
     COMMAND "${DOXYGEN}"
-    ARGS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile")
+       ARGS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile")
 
-  ADD_CUSTOM_TARGET(openfluid-html-doc ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile"
+  ADD_CUSTOM_TARGET(openfluid-doc-html ALL DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/HTML-Doxyfile"
     "${MAIN_DOC_OUTPUT_PATH}/html/index.html" VERBATIM)
 
 
@@ -45,22 +45,20 @@ IF(DOXYGEN)
       OUTPUT "${DOC_BUILD_DIR}/latex/main.pdf"
       DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/LaTeX-Doxyfile"
       COMMAND "${DOXYGEN}"
-      ARGS "${CMAKE_CURRENT_BINARY_DIR}/LaTeX-Doxyfile"
-      COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR}/latex ${PDFLATEX_COMPILER}
-      ARGS "-interaction=nonstopmode" "main.tex"       
-      COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR}/latex ${PDFLATEX_COMPILER}
-      ARGS "-interaction=nonstopmode" "main.tex"
-      COMMAND ${CMAKE_COMMAND} -E chdir ${DOC_BUILD_DIR}/latex ${PDFLATEX_COMPILER}
-      ARGS "-interaction=nonstopmode" "main.tex")
+         ARGS "${CMAKE_CURRENT_BINARY_DIR}/LaTeX-Doxyfile"
+      COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_COMMAND} 
+              "-DDOC_BUILD_DIR=${DOC_BUILD_DIR}" "-DPDFLATEX_COMPILER=${PDFLATEX_COMPILER}"
+              "-P" "BuildPDF.cmake"       
+    )
 
-  ADD_CUSTOM_COMMAND(    
-    OUTPUT  "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf"
-    DEPENDS "${DOC_BUILD_DIR}/latex/main.pdf"      
-    COMMAND ${CMAKE_COMMAND} -E copy "${DOC_BUILD_DIR}/latex/main.pdf" "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf"       
+    ADD_CUSTOM_COMMAND(    
+      OUTPUT  "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf"
+      DEPENDS "${DOC_BUILD_DIR}/latex/main.pdf"      
+      COMMAND ${CMAKE_COMMAND} -E copy "${DOC_BUILD_DIR}/latex/main.pdf" "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf"       
     )  
 
 
-    ADD_CUSTOM_TARGET(openfluid-pdf-doc ALL DEPENDS "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf" VERBATIM)   
+    ADD_CUSTOM_TARGET(openfluid-doc-pdf ALL DEPENDS "${MAIN_DOC_OUTPUT_PATH}/openfluid_manual_${FULL_VERSION}.pdf" VERBATIM)   
 
   ENDIF() 
     

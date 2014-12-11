@@ -5,7 +5,7 @@ This manual is made of different parts.
 \n
 \n
 
-\if todo-is-done
+\if TodoIsDone
 <h3>Introduction to OpenFLUID</h3>
 <ul>
   <li> \subpage intro_oview
@@ -19,7 +19,7 @@ This manual is made of different parts.
 <ul>
   <li> \subpage use_apps
   <li> \subpage use_fluidx
-\if todo-is-done  
+\if TodoIsDone  
   <li> \subpage use_buddies
   <li> \subpage use_examples
 \endif  
@@ -39,12 +39,12 @@ This manual is made of different parts.
 <h3>Appendix</h3>
 <ul>
   <li> \subpage apdx_optenv
-\if todo-is-done  
+\if TodoIsDone  
   <li> \subpage apdx_prj
 \endif  
   <li> \subpage apdx_datetime
   <li> \subpage apdx_generators
-\if todo-is-done  
+\if TodoIsDone  
   <li> \subpage apdx_obsparams
 \endif  
 </ul>

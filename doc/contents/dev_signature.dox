@@ -6,31 +6,31 @@
 The signature can be automatically generated through the OpenFLUID plugin for Eclipse.
 However it is possible to write the signature \e de \e novo, or complete it manually.
 
-The signature has to be defined between the \if doc-is-latex \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
- and the \if doc-is-latex \b END_SIMULATOR_SIGNATURE \else #END_SIMULATOR_SIGNATURE \endif 
+The signature has to be defined between the \if DocIsLaTeX \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
+ and the \if DocIsLaTeX \b END_SIMULATOR_SIGNATURE \else #END_SIMULATOR_SIGNATURE \endif 
  macros.  
 
 \section dev_signature_id Identification
 
 The identification part of the signature must contain at least the ID of the simulator. 
 This ID will be used by the framework to load simulators. It is declared in 
-the signature as an argument of the \if doc-is-latex \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
+the signature as an argument of the \if DocIsLaTeX \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
  macro.\n 
 Other optional informations can be included for better description of the simulator:
 <ul>
-<li>the simulator name, declared through the \if doc-is-latex \b DECLARE_NAME \else #DECLARE_NAME \endif
+<li>the simulator name, declared through the \if DocIsLaTeX \b DECLARE_NAME \else #DECLARE_NAME \endif
  macro,
 allowing to assign a long name to the simulator
-<li>the simulator description, declared through the \if doc-is-latex \b DECLARE_DESCRIPTION \else #DECLARE_DESCRIPTION \endif
+<li>the simulator description, declared through the \if DocIsLaTeX \b DECLARE_DESCRIPTION \else #DECLARE_DESCRIPTION \endif
  macro,
 allowing to provide a detailed description of what the simulator actually does 
-<li>the name(s) of the author(s) and it email address, declared through the \if doc-is-latex \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
+<li>the name(s) of the author(s) and it email address, declared through the \if DocIsLaTeX \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
  macro.
-There may be multiple \if doc-is-latex \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
+There may be multiple \if DocIsLaTeX \b DECLARE_AUTHOR \else #DECLARE_AUTHOR \endif
  macros in the signature in case of multiple authors
-<li>the software version of the simulator, declared through the \if doc-is-latex \b DECLARE_VERSION \else #DECLARE_VERSION \endif
+<li>the software version of the simulator, declared through the \if DocIsLaTeX \b DECLARE_VERSION \else #DECLARE_VERSION \endif
  macro
-<li>the software status of the simulator, declared through the \if doc-is-latex \b DECLARE_STATUS \else #DECLARE_STATUS \endif
+<li>the software status of the simulator, declared through the \if DocIsLaTeX \b DECLARE_STATUS \else #DECLARE_STATUS \endif
  macro. The value can be
 openfluid::base::EXPERIMENTAL, openfluid::base::BETA or openfluid::base::STABLE
 </ul>
@@ -44,11 +44,11 @@ The informations about scientific applications is only indicative.
 It has no effects on simulator consistency or computational code.
 These informations can be :
 <ul>
-<li> the domain in which the simulator can be applied, declared through the \if doc-is-latex \b DECLARE_DOMAIN \else #DECLARE_DOMAIN \endif
+<li> the domain in which the simulator can be applied, declared through the \if DocIsLaTeX \b DECLARE_DOMAIN \else #DECLARE_DOMAIN \endif
  macro
-<li> the processes simulated by the simulator, declared through the \if doc-is-latex \b DECLARE_PROCESS \else #DECLARE_PROCESS \endif
+<li> the processes simulated by the simulator, declared through the \if DocIsLaTeX \b DECLARE_PROCESS \else #DECLARE_PROCESS \endif
  macro
-<li> the numerical methods used by the simulator, declared through the \if doc-is-latex \b DECLARE_METHOD \else #DECLARE_METHOD \endif
+<li> the numerical methods used by the simulator, declared through the \if DocIsLaTeX \b DECLARE_METHOD \else #DECLARE_METHOD \endif
  macro
 </ul>
 
@@ -78,7 +78,7 @@ The declarations of spatial data access include rules:
 \subsection dev_signature_data_simparams Simulator parameters
 
 Simulator parameters are values provided to each simulator, 
-and are declared using the \if doc-is-latex \b DECLARE_SIMULATOR_PARAM \else #DECLARE_SIMULATOR_PARAM \endif
+and are declared using the \if DocIsLaTeX \b DECLARE_SIMULATOR_PARAM \else #DECLARE_SIMULATOR_PARAM \endif
  macro.
 This macro takes 3 arguments
 <ul>
@@ -96,7 +96,7 @@ Example of simulator parameter declaration:
 \subsection dev_signature_data_attrs Spatial attributes
 
 Spatial attributes are constant properties attached to each spatial units, 
-and are declared using \if doc-is-latex \b DECLARE_REQUIRED_ATTRIBUTE or \b DECLARE_USED_ATTRIBUTE
+and are declared using \if DocIsLaTeX \b DECLARE_REQUIRED_ATTRIBUTE or \b DECLARE_USED_ATTRIBUTE
 \else #DECLARE_REQUIRED_ATTRIBUTE or #DECLARE_USED_ATTRIBUTE \endif
  macros
 
@@ -120,13 +120,13 @@ Example of attributes declaration:
 
 Simulation variables are attached to spatial units. They are produced, accessed and modified
 by simulators during simulations.\n
-Accessed variables are declared using \if doc-is-latex \b DECLARE_REQUIRED_VAR or \b DECLARE_USED_VAR
+Accessed variables are declared using \if DocIsLaTeX \b DECLARE_REQUIRED_VAR or \b DECLARE_USED_VAR
 \else #DECLARE_REQUIRED_VAR or #DECLARE_USED_VAR \endif
  macros,
-produced variables are declared using \if doc-is-latex \b DECLARE_PRODUCED_VAR
+produced variables are declared using \if DocIsLaTeX \b DECLARE_PRODUCED_VAR
 \else #DECLARE_PRODUCED_VAR \endif
  macro, 
-updated variables are declared using \if doc-is-latex \b DECLARE_UPDATED_VAR
+updated variables are declared using \if DocIsLaTeX \b DECLARE_UPDATED_VAR
 \else #DECLARE_UPDATED_VAR \endif
  macro.
 
@@ -186,7 +186,7 @@ Example of variable declarations
 \subsection dev_signature_data_events Discrete events
 
 Discrete events are attached to spatial units, They are accessed or appended by simulators during simulations,
-and are declared using the \if doc-is-latex \b DECLARE_USED_EVENTS
+and are declared using the \if DocIsLaTeX \b DECLARE_USED_EVENTS
 \else #DECLARE_USED_EVENTS \endif
  macro.\n
 
@@ -202,9 +202,9 @@ Example of events declaration:
 
 Simulators can declare files that they load and manage. This helps users to provide the needed files, and also  
 notifies the OpenFLUID framework to check the presence of the file if it is required.\n 
-These files are declared using the \if doc-is-latex \b DECLARE_USED_EXTRAFILE
+These files are declared using the \if DocIsLaTeX \b DECLARE_USED_EXTRAFILE
 \else #DECLARE_USED_EXTRAFILE \endif
- or \if doc-is-latex \b DECLARE_REQUIRED_EXTRAFILE
+ or \if DocIsLaTeX \b DECLARE_REQUIRED_EXTRAFILE
 \else #DECLARE_REQUIRED_EXTRAFILE \endif
  macros. 
 
@@ -222,13 +222,13 @@ Example of extra file declarations:
 The spatial units graph representing the landscape can be modified by simulators.
 These modifications are declared in the signature function using two macros.\n
  
-The \if doc-is-latex \b DECLARE_UPDATED_UNITSGRAPH
+The \if DocIsLaTeX \b DECLARE_UPDATED_UNITSGRAPH
 \else #DECLARE_UPDATED_UNITSGRAPH \endif
  macro is used for declaration of the global units graph modification
 that will occur during simulation. 
 It is for information purpose only, and takes a description as a single argument.\n
  
-The \if doc-is-latex \b DECLARE_UPDATED_UNITSCLASS
+The \if DocIsLaTeX \b DECLARE_UPDATED_UNITSCLASS
 \else DECLARE_UPDATED_UNITSCLASS \endif 
  macro is used for declaration of units classes that will be affected, and how.
 It takes two arguments:

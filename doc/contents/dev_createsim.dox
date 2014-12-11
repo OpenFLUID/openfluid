@@ -44,8 +44,8 @@ The informations included in the signature are :
 </ul>   
 
 Usually, the signature is declared and implemented at the beginning of the .cpp file. 
-It starts with the \if doc-is-latex \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
- macro and ends with the \if doc-is-latex \b END_SIMULATOR_SIGNATURE \else #END_SIMULATOR_SIGNATURE \endif
+It starts with the \if DocIsLaTeX \b BEGIN_SIMULATOR_SIGNATURE \else #BEGIN_SIMULATOR_SIGNATURE \endif
+ macro and ends with the \if DocIsLaTeX \b END_SIMULATOR_SIGNATURE \else #END_SIMULATOR_SIGNATURE \endif
  macro.
 The minimal signature must include identification information. See part \ref dev_signature for details on how to write the signature. \n
 \n

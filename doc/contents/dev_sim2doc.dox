@@ -8,7 +8,7 @@ In order to facilitate the writing and maintenance of these documentation,
 OpenFLUID provides the Sim2Doc system for simulators designers and developers.\n
 
 The Sim2Doc system uses the simulator signature and an optional
-\if doc-is-latex
+\if DocIsLaTeX
 \latexonly
 \LaTeX 
  \endlatexonly
@@ -16,7 +16,7 @@ The Sim2Doc system uses the simulator signature and an optional
 LaTeX 
 \endif 
 -formatted text to build a PDF or HTML document. If present, the 
-\if doc-is-latex
+\if DocIsLaTeX
 \latexonly
  \LaTeX 
   \endlatexonly
