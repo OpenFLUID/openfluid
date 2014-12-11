@@ -39,6 +39,7 @@
 #include <openfluid/ui/waresdev/WareSrcFileEditor.hpp>
 
 #include <QDir>
+#include <QPainter>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
@@ -54,12 +55,25 @@ namespace openfluid { namespace ui { namespace waresdev {
 WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
     QPlainTextEdit(Parent)
 {
+  mp_lineNumberArea = new LineNumberArea(this);
+
+  connect(this, SIGNAL(blockCountChanged(int)), this,
+          SLOT(updateLineNumberAreaWidth(int)));
+  connect(this, SIGNAL(updateRequest(QRect,int)), this,
+          SLOT(updateLineNumberArea(QRect,int)));
+  connect(this, SIGNAL(cursorPositionChanged()), this,
+          SLOT(highlightCurrentLine()));
+
+  updateLineNumberAreaWidth(0);
+  highlightCurrentLine();
+
   QFile File(FilePath);
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
     throw openfluid::base::FrameworkException(
         "WareSrcFileEditor constructor",
         QString("Cannot open file %1").arg(FilePath).toStdString());
 
+  // TODO move this and use it for the explorer icons
   QMap<QString, QString> FileTypes;
   FileTypes["cpp"] =
       "*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc";
@@ -106,4 +120,124 @@ WareSrcFileEditor::~WareSrcFileEditor()
 // =====================================================================
 
 
-} } }  // namespaces
+int WareSrcFileEditor::lineNumberAreaWidth()
+{
+  int Digits = 1;
+  int Max = qMax(1, blockCount());
+  while (Max >= 10)
+  {
+    Max /= 10;
+    ++Digits;
+  }
+
+  int Space = 3 + fontMetrics().width(QLatin1Char('9')) * Digits;
+
+  return Space;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::updateLineNumberAreaWidth(int /*NewBlockCount*/)
+{
+  setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::updateLineNumberArea(const QRect& Rect, int dy)
+{
+  if (dy)
+    mp_lineNumberArea->scroll(0, dy);
+  else
+    mp_lineNumberArea->update(0, Rect.y(), mp_lineNumberArea->width(),
+                              Rect.height());
+
+  if (Rect.contains(viewport()->rect()))
+    updateLineNumberAreaWidth(0);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::resizeEvent(QResizeEvent* Event)
+{
+  QPlainTextEdit::resizeEvent(Event);
+
+  QRect CR = contentsRect();
+  mp_lineNumberArea->setGeometry(
+      QRect(CR.left(), CR.top(), lineNumberAreaWidth(), CR.height()));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::highlightCurrentLine()
+{
+  QList<QTextEdit::ExtraSelection> ExtraSelections;
+
+  if (!isReadOnly())
+  {
+    QTextEdit::ExtraSelection Selection;
+
+    QColor LineColor = QColor(Qt::yellow).lighter(160);
+
+    Selection.format.setBackground(LineColor);
+    Selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+    Selection.cursor = textCursor();
+    Selection.cursor.clearSelection();
+    ExtraSelections.append(Selection);
+  }
+
+  setExtraSelections(ExtraSelections);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
+{
+  QPainter painter(mp_lineNumberArea);
+  painter.fillRect(Event->rect(), Qt::lightGray);
+
+
+  QTextBlock Block = firstVisibleBlock();
+  int BlockNumber = Block.blockNumber();
+  int Top =
+      (int) blockBoundingGeometry(Block).translated(contentOffset()).top();
+  int Bottom = Top + (int) blockBoundingRect(Block).height();
+
+  while (Block.isValid() && Top <= Event->rect().bottom())
+  {
+    if (Block.isVisible() && Bottom >= Event->rect().top())
+    {
+      QString Number = QString::number(BlockNumber + 1);
+      painter.setPen(Qt::black);
+      painter.drawText(0, Top, mp_lineNumberArea->width(),
+                       fontMetrics().height(), Qt::AlignRight, Number);
+    }
+
+    Block = Block.next();
+    Top = Bottom;
+    Bottom = Top + (int) blockBoundingRect(Block).height();
+    ++BlockNumber;
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } } // namespaces

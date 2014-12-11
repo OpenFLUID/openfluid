@@ -52,14 +52,65 @@ class DLLEXPORT WareSrcFileEditor: public QPlainTextEdit
 
   private:
 
+    QWidget* mp_lineNumberArea;
+
+  private slots:
+
+    void updateLineNumberAreaWidth(int NewBlockCount);
+
+    void highlightCurrentLine();
+
+    void updateLineNumberArea(const QRect& Rect, int);
+
+  protected:
+
+    void resizeEvent(QResizeEvent* Event);
 
   public:
 
     WareSrcFileEditor(const QString& FilePath, QWidget* Parent = 0);
 
     ~WareSrcFileEditor();
+
+    void lineNumberAreaPaintEvent(QPaintEvent* Event);
+
+    int lineNumberAreaWidth();
+
 };
 
-} } }  // namespaces
+
+// =====================================================================
+// =====================================================================
+
+
+class LineNumberArea: public QWidget
+{
+  private:
+
+    WareSrcFileEditor* mp_Editor;
+
+  protected:
+
+    void paintEvent(QPaintEvent* Event)
+    {
+      mp_Editor->lineNumberAreaPaintEvent(Event);
+    }
+
+  public:
+
+    LineNumberArea(WareSrcFileEditor* Editor) :
+        QWidget(Editor)
+    {
+      mp_Editor = Editor;
+    }
+
+    QSize sizeHint() const
+    {
+      return QSize(mp_Editor->lineNumberAreaWidth(), 0);
+    }
+};
+
+
+} } } // namespaces
 
 #endif /* __WARESRCFILEEDITOR_HPP__ */
