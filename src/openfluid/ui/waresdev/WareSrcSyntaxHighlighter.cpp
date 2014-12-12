@@ -47,12 +47,12 @@ namespace openfluid { namespace ui { namespace waresdev {
 // =====================================================================
 
 
-WareSrcSyntaxHighlighter::WareSrcSyntaxHighlighter(QTextDocument* Document,
-                                                   const QString& FileType) :
-    QSyntaxHighlighter(Document)
+WareSrcSyntaxHighlighter::WareSrcSyntaxHighlighter(
+    QTextDocument* Document,
+    WareSrcFiletypeManager::HighlightingRules_t HighlightingRules) :
+    QSyntaxHighlighter(Document), m_HighlightingRules(HighlightingRules)
 {
-  m_HighlightingRules = WareSrcSyntaxManager::getInstance()
-      ->getHighlightingRules(FileType);
+
 }
 
 
@@ -72,7 +72,7 @@ WareSrcSyntaxHighlighter::~WareSrcSyntaxHighlighter()
 
 void WareSrcSyntaxHighlighter::highlightBlock(const QString& Text)
 {
-  foreach(const WareSrcSyntaxManager::HighlightingRule& Rule, m_HighlightingRules){
+  foreach(const WareSrcFiletypeManager::HighlightingRule& Rule, m_HighlightingRules){
 
   QRegExp Expression(Rule.Pattern);
 

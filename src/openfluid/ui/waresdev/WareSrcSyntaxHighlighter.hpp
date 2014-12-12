@@ -41,9 +41,9 @@
 #ifndef SRC_OPENFLUID_UI_WARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP_
 #define SRC_OPENFLUID_UI_WARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP_
 
+#include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <QSyntaxHighlighter>
 
-#include <openfluid/ui/waresdev/WareSrcSyntaxManager.hpp>
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -54,7 +54,7 @@ class WareSrcSyntaxHighlighter: public QSyntaxHighlighter
 
   private:
 
-  WareSrcSyntaxManager::HighlightingRules_t m_HighlightingRules;
+    WareSrcFiletypeManager::HighlightingRules_t m_HighlightingRules;
 
   protected:
 
@@ -62,7 +62,9 @@ class WareSrcSyntaxHighlighter: public QSyntaxHighlighter
 
   public:
 
-    WareSrcSyntaxHighlighter(QTextDocument* Document, const QString& FileType);
+    WareSrcSyntaxHighlighter(
+        QTextDocument* Document,
+        WareSrcFiletypeManager::HighlightingRules_t HighlightingRules);
 
     ~WareSrcSyntaxHighlighter();
 };

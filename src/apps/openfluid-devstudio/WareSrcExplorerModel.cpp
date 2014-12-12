@@ -44,7 +44,7 @@
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/waresdev/WareSrcContainer.hpp>
-
+#include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 
 // =====================================================================
 // =====================================================================
@@ -53,6 +53,9 @@
 WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
     QFileSystemModel(), m_DirPath(Path)
 {
+  m_Icons = openfluid::ui::waresdev::WareSrcFiletypeManager::getInstance()
+      ->getIconsByFileExtensionList();
+
   setRootPath(m_DirPath);
 }
 
@@ -76,10 +79,17 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
           && Role == QFileSystemModel::FileIconRole)
         return QIcon(":/icons/foldergreen.png");
     }
-    else if (Info.isFile() && Info.completeSuffix() == "cpp")
+    else if (Info.isFile())
     {
       if (Role == QFileSystemModel::FileIconRole)
-        return QIcon(":/icons/cpp.png");
+      {
+        for (QMap<QString, QString>::const_iterator it = m_Icons.begin();
+            it != m_Icons.end(); ++it)
+        {
+          if (QDir::match(it.key(), Info.fileName()))
+            return QIcon(it.value());
+        }
+      }
 
       if (Role == Qt::FontRole)
       {

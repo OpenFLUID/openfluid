@@ -39,10 +39,10 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_WareSrcSyntaxManager
+#define BOOST_TEST_MODULE unittest_WareSrcFiletypeManager
 #include <boost/test/unit_test.hpp>
 
-#include <openfluid/ui/waresdev/WareSrcSyntaxManager.hpp>
+#include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 
 #include <QRegExp>
 
@@ -53,14 +53,11 @@
 
 BOOST_AUTO_TEST_CASE(parseSyntaxFile)
 {
-  openfluid::ui::waresdev::WareSrcSyntaxManager* Manager =
-      openfluid::ui::waresdev::WareSrcSyntaxManager::getInstance();
+  openfluid::ui::waresdev::WareSrcFiletypeManager* Manager =
+      openfluid::ui::waresdev::WareSrcFiletypeManager::getInstance();
 
-  BOOST_CHECK(!Manager->parseSyntaxFile("wrongtype").isEmpty());
-
-  BOOST_CHECK_EQUAL(qPrintable(Manager->parseSyntaxFile("cpp")), "");
-
-  BOOST_CHECK(!Manager->getHighlightingRules("cpp").isEmpty());
+  BOOST_CHECK(Manager->getHighlightingRules(QFile("file.wrongtype")).isEmpty());
+  BOOST_CHECK(!Manager->getHighlightingRules(QFile("file.cpp")).isEmpty());
 }
 
 

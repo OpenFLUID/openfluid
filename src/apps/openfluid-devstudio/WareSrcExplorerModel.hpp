@@ -50,6 +50,9 @@ class WareSrcExplorerModel: public QFileSystemModel
 
     QString m_DirPath;
 
+    // set here to speed up display
+    QMap<QString, QString> m_Icons;
+
   public:
 
     WareSrcExplorerModel(const QString& Path);

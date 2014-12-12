@@ -38,17 +38,20 @@
  */
 
 
-#ifndef SRC_OPENFLUID_UI_WARESDEV_WARESRCSYNTAXMANAGER_HPP_
-#define SRC_OPENFLUID_UI_WARESDEV_WARESRCSYNTAXMANAGER_HPP_
+#ifndef SRC_OPENFLUID_UI_WARESDEV_WARESRCFILETYPEMANAGER_HPP_
+#define SRC_OPENFLUID_UI_WARESDEV_WARESRCFILETYPEMANAGER_HPP_
 
 #include <QTextCharFormat>
 #include <QMap>
 #include <QRegExp>
+#include <QDomElement>
+#include <QFile>
 
 namespace openfluid { namespace ui { namespace waresdev {
 
+class WareSrcFiletype;
 
-class WareSrcSyntaxManager
+class WareSrcFiletypeManager
 {
   public:
 
@@ -60,7 +63,6 @@ class WareSrcSyntaxManager
         HighlightingRule()
         {
         }
-        ;
         HighlightingRule(QRegExp APattern, QTextCharFormat AFormat) :
             Pattern(APattern), EndPattern(QRegExp()), Format(AFormat)
         {
@@ -76,25 +78,61 @@ class WareSrcSyntaxManager
 
   private:
 
-    static WareSrcSyntaxManager* mp_Instance;
+    struct WareSrcFiletype
+    {
+        QString m_Extensions;
+
+        QString m_IconPath;
+
+        QString m_HlFilename;
+        QString m_ComplFilename;
+
+        WareSrcFiletypeManager::HighlightingRules_t m_HlRules;
+    };
+
+    static WareSrcFiletypeManager* mp_Instance;
 
     QMap<QString, QTextCharFormat> m_Formats;
 
-    QMap<QString, HighlightingRules_t> m_HighlightingRulesByFileType;
+    QMap<QString, QString> m_IconsByFileExtensionList;
 
-    WareSrcSyntaxManager();
+    QMap<QString, WareSrcFiletype> m_WareSrcFiletypes;
+
+    WareSrcFiletypeManager();
+
+    /**
+     * @throw openfluid::base::FrameworkException
+     */
+    QDomElement openWaresdevFile(const QString& FilePath);
+
+    /**
+     * @throw openfluid::base::FrameworkException
+     */
+    void parseFiletypeFile(const QString& FilePath);
+
+    /**
+     * @throw openfluid::base::FrameworkException
+     */
+    HighlightingRules_t parseSyntaxFile(const QString& FilePath);
+
+    QString getFileType(const QString& FileName);
 
   public:
 
-    ~WareSrcSyntaxManager();
+    ~WareSrcFiletypeManager();
 
-    static WareSrcSyntaxManager* getInstance();
+    static WareSrcFiletypeManager* getInstance();
 
-    QString parseSyntaxFile(const QString&FileTypeName);
+    QMap<QString, QString> getIconsByFileExtensionList();
 
-    HighlightingRules_t getHighlightingRules(const QString& FileTypeName);
+    HighlightingRules_t getHighlightingRules(const QFile& File);
 };
+
+
+// =====================================================================
+// =====================================================================
+
 
 } } } // namespaces
 
-#endif /* SRC_OPENFLUID_UI_WARESDEV_WARESRCSYNTAXMANAGER_HPP_ */
+#endif /* SRC_OPENFLUID_UI_WARESDEV_WARESRCFILETYPEMANAGER_HPP_ */

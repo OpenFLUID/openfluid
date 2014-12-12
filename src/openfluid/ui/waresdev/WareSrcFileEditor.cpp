@@ -73,25 +73,9 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
         "WareSrcFileEditor constructor",
         QString("Cannot open file %1").arg(FilePath).toStdString());
 
-  // TODO move this and use it for the explorer icons
-  QMap<QString, QString> FileTypes;
-  FileTypes["cpp"] =
-      "*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc";
-  FileTypes["fortran"] =
-      "*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95";
-  FileTypes["cmake"] = "CMakeLists.txt;CMake.in.config;*.cmake";
-  FileTypes["latex"] = "*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.bib";
-
-  QString FileName = QFileInfo(File).fileName();
-  for (QMap<QString, QString>::iterator it = FileTypes.begin();
-      it != FileTypes.end(); ++it)
-  {
-    if (QDir::match(it.value(), FileName))
-    {
-      new WareSrcSyntaxHighlighter(document(), it.key());
-      break;
-    }
-  }
+  new WareSrcSyntaxHighlighter(
+      document(),
+      WareSrcFiletypeManager::getInstance()->getHighlightingRules(File));
 
   // TODO get defaults from conf file
   // setStyleSheet("fFont: 11pt \"Courier\";");
@@ -100,7 +84,6 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   Font.setFixedPitch(true);
   Font.setPointSize(11);
   setFont(Font);
-
 
   setPlainText(File.readAll());
 }

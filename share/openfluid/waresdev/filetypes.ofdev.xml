@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openfluid>
+  <waresdev>
+    <filetypes>
+
+      <filetype name="cpp">
+        <extensions>*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc</extensions>
+        <icon qresname=":/icons/cpp.png" />
+        <edition internal="yes">
+          <highlighting specsfile="cpp.syntaxhl.ofdev.xml" />
+          <completion specsfile="cpp.comp.ofdev.xml" />
+        </edition>
+      </filetype>
+
+      <filetype name="cmake">
+        <extensions>CMakeLists.txt;CMake.in.config;*.cmake</extensions>
+        <edition internal="yes">
+          <highlighting specsfile="cmake.syntaxhl.ofdev.xml" />
+        </edition>
+      </filetype>
+      
+      <filetype name="fortran">
+        <extensions>*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95</extensions>
+        <edition internal="no">
+          <highlighting specsfile="fortran.syntaxhl.ofdev.xml" />
+        </edition>
+      </filetype>
+      
+      <filetype name="latex">
+        <extensions>*.tex;*.ltx;*.dtx;*.sty;*.cls;*.bbx;*.cbx;*.lbx;*.bib</extensions>
+        <edition internal="no">
+          <highlighting specsfile="latex.syntaxhl.ofdev.xml" />
+        </edition>
+      </filetype>
+      
+      <filetype name="image">
+        <extensions>*.png;*.jpg;*.tif</extensions>
+        <edition internal="no" />
+        <icon qresname=":/icons/image.png" />
+      </filetype>      
+
+    </filetypes>    
+  </waresdev>
+</openfluid>
+
+
+        
+
