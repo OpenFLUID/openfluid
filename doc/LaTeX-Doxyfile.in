@@ -22,16 +22,16 @@ GENERATE_HTML     	   = NO
 GENERATE_HTMLHELP      = NO
 GENERATE_RTF           = NO
 GENERATE_XML           = NO
-PDF_HYPERLINKS         = NO
+PDF_HYPERLINKS         = YES
 USE_PDFLATEX           = YES
 STRIP_CODE_COMMENTS    = NO
 
-
 LATEX_OUTPUT           = latex
+LATEX_SOURCE_CODE	   = NO
 
 QUIET                  = YES
 WARNINGS               = YES
 WARN_IF_DOC_ERROR      = YES
 
-ENABLED_SECTIONS       = doc-is-latex
+ENABLED_SECTIONS       = DocIsLaTeX
 

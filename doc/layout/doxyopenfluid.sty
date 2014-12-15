@@ -97,10 +97,11 @@
 
 % Used by @code ... @endcode
 \newenvironment{DoxyCode}{%
+  \par%
   \footnotesize%
-  \verbatim%
+  \begin{alltt}%
 }{%
-  \endverbatim%
+  \end{alltt}%
   \normalsize%
 }
 

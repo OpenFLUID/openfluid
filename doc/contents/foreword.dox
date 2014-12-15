@@ -14,7 +14,7 @@ This documentation is made of several parts
 \li a guide for development of simulators for OpenFLUID, either using existing source code or creating source code <i>de novo</i>   
 \li an appendix giving useful reference informations
 
-\if doc-is-latex
+\if DocIsLaTeX
 \n
 \n
 \n

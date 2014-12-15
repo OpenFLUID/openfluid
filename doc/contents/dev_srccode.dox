@@ -16,13 +16,13 @@ following the interactions sequence in the figure below.
 \image latex openfluid_sequence.pdf "Interactions sequence between the OpenFLUID framework and the simulators" width=11.5cm
 
 Among these methods, the 
-\if doc-is-latex 
+\if DocIsLaTeX 
 \b initializeRun()
 \else
 \link openfluid::ware::PluggableSimulator::initializeRun initializeRun()\endlink
 \endif
 and 
-\if doc-is-latex 
+\if DocIsLaTeX 
 \b runStep()
 \else
 \link openfluid::ware::PluggableSimulator::runStep runStep()\endlink
@@ -33,32 +33,32 @@ these two methods must return the simulation time when the simulator will be cal
 
 This simulation time can be
 <ul>
-<li>\if doc-is-latex 
+<li>\if DocIsLaTeX 
 \b Duration()
 \else
 \link openfluid::ware::PluggableSimulator::Duration() Duration()\endlink
 \endif
 to be called in a number of seconds given as parameter
-<li>\if doc-is-latex 
+<li>\if DocIsLaTeX 
 \b DefaultDeltaT()
 \else
 \link openfluid::ware::PluggableSimulator::DefaultDeltaT() DefaultDeltaT() \endlink
 \endif
 to be called in a number of seconds given as default DeltaT in the input dataset
-<li>\if doc-is-latex 
+<li>\if DocIsLaTeX 
 \b MultipliedDefaultDeltaT()
 \else
 \link openfluid::ware::PluggableSimulator::MultipliedDefaultDeltaT() MultipliedDefaultDeltaT() \endlink
 \endif
 to be called in a number of seconds given as default DeltaT in the input dataset,
 multiplied by a the value given as parameter
-<li>\if doc-is-latex 
+<li>\if DocIsLaTeX 
 \b AtTheEnd()
 \else
 \link openfluid::ware::PluggableSimulator::AtTheEnd() AtTheEnd() \endlink
 \endif
 to be called only once at the end of simulation duration
-<li>\if doc-is-latex 
+<li>\if DocIsLaTeX 
 \b Never()
 \else
 \link openfluid::ware::PluggableSimulator::Never() Never() \endlink
@@ -170,14 +170,14 @@ This graph can be browsed using predefined macros.\n
 Spatial units can be parsed following the process order by using the following OpenFLUID macros:
 <ul>
 <li>
-\if doc-is-latex 
+\if DocIsLaTeX 
 \b OPENFLUID_UNITS_ORDERED_LOOP
 \else
 #OPENFLUID_UNITS_ORDERED_LOOP
 \endif
 for parsing spatial units of a given units class
 <li>
-\if doc-is-latex 
+\if DocIsLaTeX 
 \b OPENFLUID_ALLUNITS_ORDERED_LOOP
 \else
 #OPENFLUID_ALLUNITS_ORDERED_LOOP
@@ -188,7 +188,7 @@ for parsing of all units in the spatial domain
 To parse a specific list of of spatial units, you can use the macro:
 <ul>
 <li>
-\if doc-is-latex 
+\if DocIsLaTeX 
 \b OPENFLUID_UNITSLIST_LOOP
 \else
 #OPENFLUID_UNITSLIST_LOOP
@@ -235,14 +235,14 @@ A process defined as a method of simulator class can be applied to the spatial g
 following the process order, using the following methods:
 <ul>
 <li> 
-\if doc-is-latex \b APPLY_UNITS_ORDERED_LOOP_THREADED \else #APPLY_UNITS_ORDERED_LOOP_THREADED \endif
+\if DocIsLaTeX \b APPLY_UNITS_ORDERED_LOOP_THREADED \else #APPLY_UNITS_ORDERED_LOOP_THREADED \endif
  for applying a process to a given units class. Extra arguments can be passed (see example below). 
-<li>\if doc-is-latex \b APPLY_ALLUNITS_ORDERED_LOOP_THREADED \else #APPLY_ALLUNITS_ORDERED_LOOP_THREADED \endif
+<li>\if DocIsLaTeX \b APPLY_ALLUNITS_ORDERED_LOOP_THREADED \else #APPLY_ALLUNITS_ORDERED_LOOP_THREADED \endif
  for applying a process to a all units of the spatial domain.
 Extra arguments can also be passed (see example below).\n 
 </ul>
 The first argument of the method passed to the macro must be
-a pointer to an \if doc-is-latex \b openfluid::core::Unit \endif
+a pointer to an \if DocIsLaTeX \b openfluid::core::Unit \endif
  as it represents the currently processed spatial unit. 
 
 \n
@@ -293,7 +293,7 @@ The spatial domain graph can be queried during simulations, in order to get
 informations about spatial units and connections.
 
 The following methods are available:
-\if doc-is-latex
+\if DocIsLaTeX
 <ul>
 <li>\b OPENFLUID_IsUnitExist
 <li>\b OPENFLUID_IsUnitClassExist
@@ -330,7 +330,7 @@ please fill the signature with the correct directives. See \ref dev_signature_da
 \subsubsection dev_srccode_space_mod_units Creating and deleting spatial units
 
 In order to create and delete units, you can use the following methods:
-\if doc-is-latex
+\if DocIsLaTeX
 <ul>
 <li>\b OPENFLUID_AddUnit
 <li>\b OPENFLUID_DeleteUnit
@@ -352,7 +352,7 @@ Connections between spatial units can be of two types:
 </ul>
 
 In order to add and remove connections, you can use the following methods, whenever during simulations:
-\if doc-is-latex
+\if DocIsLaTeX
 <ul>
 <li>\b OPENFLUID_AddFromToConnection
 <li>\b OPENFLUID_AddChildParentConnection
@@ -428,7 +428,7 @@ void prepareData()
 
 Generators can help to automatically build a spatial domain graph, or to extend an existing one.\n
 Currently, only one spatial domain generator is available:
-\if doc-is-latex
+\if DocIsLaTeX
 <ul>
 <li>\b OPENFLUID_BuildUnitsMatrix
 </ul>
@@ -447,7 +447,7 @@ and evolutive informations such as current time index.
 
 Constant informations about simulation time can be accessed from any part of the simulator
 (except from the constructor), using the following methods:
-\if doc-is-latex
+\if DocIsLaTeX
 <ul>
 <li>\b OPENFLUID_GetBeginDate returns the beginning date of the simulation
 <li>\b OPENFLUID_GetEndDate returns the end date of the simulation
@@ -471,7 +471,7 @@ given in the input dataset
 
 Evolutive informations about simulation time can be accessed only from specific parts 
 of the simulator, using the following methods:
-\if doc-is-latex
+\if DocIsLaTeX
 <ul>
 <li>\b OPENFLUID_GetCurrentTimeIndex 
 returns the current time index (in seconds) of the simulation,
@@ -516,7 +516,7 @@ openfluid::base::SchedulingRequest runStep()
 
 Simulators parameters are passed through the model.fluidx file.
 They can be accessed in the source code from the
-\if doc-is-latex
+\if DocIsLaTeX
 initParams
 \else
 \link openfluid::ware::PluggableSimulator::initParams initParams \endlink
@@ -525,7 +525,7 @@ method of the simulator.
 Values of simulators parameters can be retreived using:
 <ul>
 <li>
-\if doc-is-latex
+\if DocIsLaTeX
 \b OPENFLUID_GetSimulatorParameter.
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_GetSimulatorParameter OPENFLUID_GetSimulatorParameter\endlink.
@@ -547,7 +547,7 @@ To be reused in other part of the simulator,
 the variable storing a simulator parameter should be declared as class member.
 The types of parameters can be string, double, integer, boolean, vector of string, vector of double
 (see API documentation of 
-\if doc-is-latex
+\if DocIsLaTeX
 OPENFLUID_GetSimulatorParameter
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_GetSimulatorParameter OPENFLUID_GetSimulatorParameter \endlink
@@ -560,7 +560,7 @@ OPENFLUID_GetSimulatorParameter
 In order to access or update values of spatial attributes, or to test if a spatial attribute is present,
 you can use the following methods:
 <ul>
-\if doc-is-latex
+\if DocIsLaTeX
 <li>\b OPENFLUID_GetAttribute to get the value of an attribute
 <li>\b OPENFLUID_SetAttribute to set the value of an attribute
 <li>\b OPENFLUID_IsAttributeExist to test if an attribute exists
@@ -604,19 +604,19 @@ The values for the simulation variables are attached to the spatial units.
 
 The available methods to access to simulation variables are:
 <ul>
-<li>\if doc-is-latex \b OPENFLUID_GetVariable
+<li>\if DocIsLaTeX \b OPENFLUID_GetVariable
 \else \link openfluid::ware::PluggableSimulator::OPENFLUID_GetVariable OPENFLUID_GetVariable \endlink
 \endif
 to get the value of a variable at the current time index or at a given time index
-<li>\if doc-is-latex \b OPENFLUID_GetVariables
+<li>\if DocIsLaTeX \b OPENFLUID_GetVariables
 \else \link openfluid::ware::PluggableSimulator::OPENFLUID_GetVariables OPENFLUID_GetVariables \endlink
 \endif
 to get values of a variable between two times indexes
-<li>\if doc-is-latex \b OPENFLUID_GetLatestVariable
+<li>\if DocIsLaTeX \b OPENFLUID_GetLatestVariable
 \else \link openfluid::ware::PluggableSimulator::OPENFLUID_GetLatestVariable OPENFLUID_GetLatestVariable \endlink
 \endif
 to get the latest available value for the variable
-<li>\if doc-is-latex \b OPENFLUID_GetLatestVariables
+<li>\if DocIsLaTeX \b OPENFLUID_GetLatestVariables
 \else \link openfluid::ware::PluggableSimulator::OPENFLUID_GetLatestVariables OPENFLUID_GetLatestVariables \endlink
 \endif
 to get the latest values of a variable since a given time index
@@ -624,12 +624,12 @@ to get the latest values of a variable since a given time index
 
 The available methods to add or update a value of a simulation variable are:
 <ul>
-<li>\if doc-is-latex \b OPENFLUID_AppendVariable
+<li>\if DocIsLaTeX \b OPENFLUID_AppendVariable
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_AppendVariable OPENFLUID_AppendVariable \endlink
 \endif
 to add a value to a variable for the current time index
-<li>\if doc-is-latex \b OPENFLUID_SetVariable
+<li>\if DocIsLaTeX \b OPENFLUID_SetVariable
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_SetVariable OPENFLUID_SetVariable \endlink
 \endif
@@ -639,11 +639,11 @@ to update the value of a variable for the current time index
 
 The available methods to test if a simulation variable exists are:
 <ul>
-<li>\if doc-is-latex \b OPENFLUID_IsVariableExist
+<li>\if DocIsLaTeX \b OPENFLUID_IsVariableExist
 \else \link openfluid::ware::PluggableSimulator::OPENFLUID_IsVariableExist OPENFLUID_IsVariableExist \endlink
 \endif
 to test if a variable exists or if a value for this variable exists at the given time index 
-<li>\if doc-is-latex \b OPENFLUID_IsTypedVariableExist
+<li>\if DocIsLaTeX \b OPENFLUID_IsTypedVariableExist
 \else \link openfluid::ware::PluggableSimulator::OPENFLUID_IsTypedVariableExist OPENFLUID_IsTypedVariableExist \endlink
 \endif
 to test if a variable exists or if a value for this variable exists at the given time index,
@@ -678,25 +678,25 @@ openfluid::base::SchedulingRequest runStep()
 
 \section dev_srccode_events Events
 
-A discrete event is defined by the \if doc-is-latex \b openfluid::core::Event \endif
+A discrete event is defined by the \if DocIsLaTeX \b openfluid::core::Event \endif
  class. It is made of a date and a set of key-value informations
 that can be accessed by methods proposed by the openfluid::core::Event class.\n 
-A collection of discrete events can be contained in an \if doc-is-latex \b \endif openfluid::core::EventsCollection class.\n
+A collection of discrete events can be contained in an \if DocIsLaTeX \b \endif openfluid::core::EventsCollection class.\n
 \n
 A collection of events occuring during a period on a given spatial unit can be acessed using 
 <ul>
 <li>
-\if doc-is-latex \b OPENFLUID_GetEvents
+\if DocIsLaTeX \b OPENFLUID_GetEvents
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_GetEvents OPENFLUID_GetEvents \endlink
 \endif
 </ul>
-This method returns an \if doc-is-latex \b openfluid::core::EventsCollection \endif
+This method returns an \if DocIsLaTeX \b openfluid::core::EventsCollection \endif
  that can be processed.\n
 The returned event collection can be parsed using the specific loop macro: 
 <ul>
 <li>
-\if doc-is-latex \b OPENFLUID_EVENT_COLLECTION_LOOP
+\if DocIsLaTeX \b OPENFLUID_EVENT_COLLECTION_LOOP
 \else #OPENFLUID_EVENT_COLLECTION_LOOP
 \endif
 </ul>
@@ -705,7 +705,7 @@ At each loop iteration, the next event can be processed.\n
 An event can be added on a specific spatial unit at a given date using:
 <ul>
 <li>
-\if doc-is-latex \b OPENFLUID_AppendEvent
+\if DocIsLaTeX \b OPENFLUID_AppendEvent
 \else \link openfluid::ware::PluggableSimulator::OPENFLUID_AppendEvent OPENFLUID_AppendEvent \endlink
 \endif
 </ul>
@@ -751,15 +751,15 @@ The class members are persistant during the whole life of the simulator.\n
 To store distributed values, data structures are available to associate a spatial unit ID to a storedvalue.
 These data structures exist for different types of data:   
 <ul>
-<li>\if doc-is-latex \b \endif openfluid::core::IDFloatMap
-<li>\if doc-is-latex \b \endif openfluid::core::IDDoubleMap
-<li>\if doc-is-latex \b \endif openfluid::core::IDIntMap
-<li>\if doc-is-latex \b \endif openfluid::core::IDBoolMap
-<li>\if doc-is-latex \b \endif openfluid::core::IDDoubleValueMap
-<li>\if doc-is-latex \b \endif openfluid::core::IDVectorValueMap
-<li>\if doc-is-latex \b \endif openfluid::core::IDVectorValuePtrMap
-<li>\if doc-is-latex \b \endif openfluid::core::IDSerieOfDoubleValueMap
-<li>\if doc-is-latex \b \endif openfluid::core::IDSerieOfDoubleValuePtrMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDFloatMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDDoubleMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDIntMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDBoolMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDDoubleValueMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDVectorValueMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDVectorValuePtrMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDSerieOfDoubleValueMap
+<li>\if DocIsLaTeX \b \endif openfluid::core::IDSerieOfDoubleValuePtrMap
 </ul>
 
 
@@ -809,7 +809,7 @@ the simulation: input and output directories, temporary directory,...\n
 They are accessible from simulators using:
 <ul>
 <li>
-\if doc-is-latex
+\if DocIsLaTeX
 \b OPENFLUID_GetRunEnvironment
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_GetRunEnvironment OPENFLUID_GetRunEnvironment \endlink method.
@@ -847,7 +847,7 @@ The keys for requesting runtime environment information are:
 \subsection dev_srccode_msgs_log Log messages from simulators
 
 Simulators can log messages to both console and files using
-\if doc-is-latex
+\if DocIsLaTeX
 \b OpenFLUID_Logger
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_Logger OpenFLUID_Logger\endlink
@@ -855,21 +855,21 @@ Simulators can log messages to both console and files using
 :
 <ul>
 <li>
-\if doc-is-latex
+\if DocIsLaTeX
 \b OpenFLUID_Logger.getFile()
 \else
 \link openfluid::base::StdoutAndFileOutputStream::getFile() OpenFLUID_Logger.getFile() \endlink
 \endif
 to log messages to file only
 <li>
-\if doc-is-latex
+\if DocIsLaTeX
 \b OpenFLUID_Logger.getStdout()
 \else
 \link openfluid::base::StdoutAndFileOutputStream::getStdout() OpenFLUID_Logger.getStdout() \endlink
 \endif
 to log messages to console only
 <li>
-\if doc-is-latex
+\if DocIsLaTeX
 \b OpenFLUID_Logger.get()
 \else
 \link openfluid::base::StdoutAndFileOutputStream::get() OpenFLUID_Logger.get() \endlink
@@ -919,14 +919,14 @@ when the warning or error occurs.\n
 Errors and warnings can be raised using:
 <ul>
 <li>
-\if doc-is-latex
+\if DocIsLaTeX
 \b OPENFLUID_RaiseWarning
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_RaiseWarning OPENFLUID_RaiseWarning\endlink
 \endif
 for a warning notification
 <li>
-\if doc-is-latex
+\if DocIsLaTeX
 \b OPENFLUID_RaiseError
 \else
 \link openfluid::ware::PluggableSimulator::OPENFLUID_RaiseError OPENFLUID_RaiseError\endlink
@@ -975,27 +975,27 @@ This debug build mode is disabled using the release build mode, with the option 
 
 The following macros are available for debugging:
 <ul>
-<li>\if doc-is-latex \b OFDBG_LOCATE
+<li>\if DocIsLaTeX \b OFDBG_LOCATE
 \else #OFDBG_LOCATE
 \endif
 for file/line location where the macro is called 
-<li>\if doc-is-latex \b OFDBG_MESSAGE
+<li>\if DocIsLaTeX \b OFDBG_MESSAGE
 \else #OFDBG_MESSAGE
 \endif
 adding the message given as an argument 
-<li>\if doc-is-latex \b OFDBG_UNIT
+<li>\if DocIsLaTeX \b OFDBG_UNIT
 \else #OFDBG_UNIT
 \endif
 for information about the unit given as an argument
-<li>\if doc-is-latex \b OFDBG_UNIT_EXTENDED
+<li>\if DocIsLaTeX \b OFDBG_UNIT_EXTENDED
 \else #OFDBG_UNIT_EXTENDED
 \endif
 for extended information about the unit given as an argument
-<li>\if doc-is-latex \b OFDBG_EVENT
+<li>\if DocIsLaTeX \b OFDBG_EVENT
 \else #OFDBG_EVENT
 \endif
 for information about the event given as an argument
-<li>\if doc-is-latex \b OFDBG_EVENTCOLLECTION
+<li>\if DocIsLaTeX \b OFDBG_EVENTCOLLECTION
 \else #OFDBG_EVENTCOLLECTION
 \endif
 for information about the event collection given as an argument

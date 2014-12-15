@@ -54,11 +54,12 @@ HTML_OUTPUT            = html
 
 SEARCHENGINE		   = YES
 SERVER_BASED_SEARCH    = NO
+SHORT_NAMES			   = YES
 
 QUIET                  = YES
 WARNINGS               = YES
 WARN_IF_DOC_ERROR      = YES
 
 
-ENABLED_SECTIONS       = doc-is-html
+ENABLED_SECTIONS       = DocIsHTML
 
