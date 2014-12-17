@@ -50,7 +50,7 @@
 namespace openfluid { namespace buddies {
 
 
-class DLLEXPORT NewDataBuddy : public OpenFLUIDBuddy
+class OPENFLUID_API NewDataBuddy : public OpenFLUIDBuddy
 {
   private:
 

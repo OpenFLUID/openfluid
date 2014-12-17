@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MAPVIEW_HPP__
-#define __MAPVIEW_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MAPVIEW_HPP__
+#define __OPENFLUID_BUILDERAPP_MAPVIEW_HPP__
 
 
 #include <QGraphicsView>
@@ -80,4 +80,4 @@ class MapView : public QGraphicsView
 };
 
 
-#endif /* __MAPVIEW_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MAPVIEW_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ABOUTDIALOG_HPP__
-#define __ABOUTDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_ABOUTDIALOG_HPP__
+#define __OPENFLUID_UICOMMON_ABOUTDIALOG_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -59,7 +59,7 @@ class ClickableLabel;
 class ActionLabel;
 
 
-class DLLEXPORT AboutDialog : public QDialog
+class OPENFLUID_API AboutDialog : public QDialog
 {
   Q_OBJECT;
 
@@ -95,4 +95,4 @@ class DLLEXPORT AboutDialog : public QDialog
 
 } } } // namespaces
 
-#endif /* __ABOUTDIALOG_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_ABOUTDIALOG_HPP__ */

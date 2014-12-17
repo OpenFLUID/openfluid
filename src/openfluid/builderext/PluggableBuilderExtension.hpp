@@ -39,8 +39,8 @@
 
 
 
-#ifndef __PLUGGABLEBUILDEREXTENSION_HPP__
-#define __PLUGGABLEBUILDEREXTENSION_HPP__
+#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEBUILDEREXTENSION_HPP__
+#define __OPENFLUID_BUILDEREXT_PLUGGABLEBUILDEREXTENSION_HPP__
 
 
 
@@ -57,9 +57,9 @@
 #define DECLARE_BUILDEREXT_PLUGIN \
   extern "C" \
   { \
-    DLLEXPORT std::string WAREABIVERSION_PROC_DECL(); \
-    DLLEXPORT openfluid::builderext::PluggableBuilderExtension* WAREBODY_PROC_DECL(); \
-    DLLEXPORT openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL(); \
+    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL(); \
+    OPENFLUID_PLUGIN openfluid::builderext::PluggableBuilderExtension* WAREBODY_PROC_DECL(); \
+    OPENFLUID_PLUGIN openfluid::builderext::BuilderExtensionSignature* WARESIGNATURE_PROC_DECL(); \
   }
 
 
@@ -92,7 +92,7 @@
 namespace openfluid { namespace builderext {
 
 
-class DLLEXPORT PluggableBuilderExtension : public openfluid::ware::PluggableWare
+class OPENFLUID_API PluggableBuilderExtension : public openfluid::ware::PluggableWare
 {
 
   protected:
@@ -155,4 +155,4 @@ typedef BuilderExtensionSignature* (*GetPluggableBuilderExtensionSignatureProc)(
 } } // namespaces
 
 
-#endif /* __PLUGGABLEBUILDEREXTENSION_HPP__ */
+#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEBUILDEREXTENSION_HPP__ */

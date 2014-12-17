@@ -49,14 +49,14 @@
 
 namespace openfluid { namespace core {
 
-class DLLEXPORT Event;
+class Event;
 
 typedef std::list<Event> EventsList_t;
 
 /**
   @brief Class defining a collection of discrete events
 */
-class DLLEXPORT EventsCollection
+class OPENFLUID_API EventsCollection
 {
   private:
 

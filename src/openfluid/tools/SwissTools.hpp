@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __SWISSTOOLS_HPP__
-#define __SWISSTOOLS_HPP__
+#ifndef __OPENFLUID_TOOLS_SWISSTOOLS_HPP__
+#define __OPENFLUID_TOOLS_SWISSTOOLS_HPP__
 
 #include <vector>
 #include <string>
@@ -100,7 +100,7 @@ inline bool ConvertValue(const T ValueToConvert, std::string * StrConverted)
   @param[out] Tokens the resulting tokens
   @param[in] Delimiters the string delimiter
 */
-void DLLEXPORT TokenizeString(const std::string& StrToTokenize,
+void OPENFLUID_API TokenizeString(const std::string& StrToTokenize,
                               std::vector<std::string>& Tokens,
                               const std::string& Delimiters);
 
@@ -147,7 +147,7 @@ inline bool IsVeryClose(double A, double B, double Epsilon = 0.00001)
   @param[in] Str The string to test
   @return true if the given string matches the given pattern
 */
-bool DLLEXPORT WildcardMatching(const std::string& Pattern, const std::string& Str);
+bool OPENFLUID_API WildcardMatching(const std::string& Pattern, const std::string& Str);
 
 
 /**
@@ -157,7 +157,7 @@ bool DLLEXPORT WildcardMatching(const std::string& Pattern, const std::string& S
   @param[in] WithPath return full path with file name if true, file name only otherwise
   @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
 */
-std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore,
+std::vector<std::string> OPENFLUID_API GetFilesByExt(const std::string DirToExplore,
                                                  const std::string Ext,
                                                  bool WithPath = false,
                                                  bool ExtIncludeDot = false);
@@ -171,7 +171,7 @@ std::vector<std::string> DLLEXPORT GetFilesByExt(const std::string DirToExplore,
   @param[in] WithPath return full path with file name if true, file name only otherwise
   @param[in] ExtIncludeDot if true, the given extension through Ext parameter is suffixed by a dot
 */
-std::vector<std::string> DLLEXPORT GetFilesBySuffixAndExt(const std::string& DirToExplore,
+std::vector<std::string> OPENFLUID_API GetFilesBySuffixAndExt(const std::string& DirToExplore,
                                                           const std::string& Suffix,
                                                           const std::string& Ext,
                                                           bool WithPath = false,
@@ -185,7 +185,7 @@ std::vector<std::string> DLLEXPORT GetFilesBySuffixAndExt(const std::string& Dir
   @param[in] ReturnsEmpty if true, the empty strings are returned
   @return a vector of strings
 */
-std::vector<std::string> DLLEXPORT SplitString(const std::string& StrToSplit,
+std::vector<std::string> OPENFLUID_API SplitString(const std::string& StrToSplit,
                                                const std::string& Separators,
                                                bool ReturnsEmpty = false);
 
@@ -196,7 +196,7 @@ std::vector<std::string> DLLEXPORT SplitString(const std::string& StrToSplit,
   @param[in] DirPath the directory to empty
   @return true if successful
 */
-bool DLLEXPORT EmptyDirectoryRecursively(const std::string& DirPath);
+bool OPENFLUID_API EmptyDirectoryRecursively(const std::string& DirPath);
 
 
 /**
@@ -205,7 +205,7 @@ bool DLLEXPORT EmptyDirectoryRecursively(const std::string& DirPath);
   @param[in] DirPath the directory to explore
   @return a vector containing all files paths
 */
-std::vector<std::string> DLLEXPORT GetFilesRecursively(const std::string& DirPath);
+std::vector<std::string> OPENFLUID_API GetFilesRecursively(const std::string& DirPath);
 
 
 /**
@@ -214,7 +214,7 @@ std::vector<std::string> DLLEXPORT GetFilesRecursively(const std::string& DirPat
   @param[in] ReplaceStr the replacement string to use
   @return the processed string
 */
-std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr,
+std::string OPENFLUID_API ReplaceEmptyString(std::string SourceStr,
 		                                 const std::string& ReplaceStr);
 
 
@@ -223,11 +223,11 @@ std::string DLLEXPORT ReplaceEmptyString(std::string SourceStr,
   @param[in] Str the string to process
   @return the processed string
 */
-std::string DLLEXPORT RemoveTrailingSlashes(std::string Str);
+std::string OPENFLUID_API RemoveTrailingSlashes(std::string Str);
 
 
 // TODO check if it has to be removed
-void DLLEXPORT printSTDOUT(std::vector<std::string> Strings, std::string Sep);
+void OPENFLUID_API printSTDOUT(std::vector<std::string> Strings, std::string Sep);
 
 
 /**
@@ -237,7 +237,7 @@ void DLLEXPORT printSTDOUT(std::vector<std::string> Strings, std::string Sep);
   @param[in] IntoPath the destination directory
   @param[in] DontCopyDotDirs flag for copying dot ('.*') directories. Default is false.
 */
-void DLLEXPORT CopyDirectoryRecursively(const std::string& SourcePath,
+void OPENFLUID_API CopyDirectoryRecursively(const std::string& SourcePath,
 		                                const std::string& IntoPath,
 		                                const bool DontCopyDotDirs = false);
 
@@ -249,7 +249,7 @@ void DLLEXPORT CopyDirectoryRecursively(const std::string& SourcePath,
   @param[in] IntoPath the destination directory
   @param[in] DontCopyDotDirs flag for copying dot ('.*') directories. Default is false.
 */
-void DLLEXPORT CopyDirectoryContentsRecursively(const std::string& SourcePath,
+void OPENFLUID_API CopyDirectoryContentsRecursively(const std::string& SourcePath,
 		                                        const std::string& IntoPath,
 		                                        const bool DontCopyDotDirs = false);
 
@@ -261,14 +261,14 @@ void DLLEXPORT CopyDirectoryContentsRecursively(const std::string& SourcePath,
   @param[in] Strict If true, the comparison include the status part of the version (it ignores it otherwise)
   @return 1 if VersionA is greater than VersionB, -1 if VersionB is greater than VersionA, 0 if versions are equals, -2 if a version format is not well-formed
 */
-int DLLEXPORT CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
+int OPENFLUID_API CompareVersions(const std::string& VersionA, const std::string& VersionB, bool Strict = true);
 
 
 /*
   Suspend execution for microseconds
   @param[in] MSec the microseconds interval
 */
-void DLLEXPORT Sleep(const unsigned int MSec);
+void OPENFLUID_API Sleep(const unsigned int MSec);
 
 
 } } //namespaces

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SCHEDULINGREQUEST_HPP__
-#define __SCHEDULINGREQUEST_HPP__
+#ifndef __OPENFLUID_BASE_SCHEDULINGREQUEST_HPP__
+#define __OPENFLUID_BASE_SCHEDULINGREQUEST_HPP__
 
 #include <openfluid/core/DateTime.hpp>
 
@@ -71,4 +71,4 @@ class SchedulingRequest
 
 } }  // namespaces
 
-#endif /* __SCHEDULINGREQUEST_HPP__ */
+#endif /* __OPENFLUID_BASE_SCHEDULINGREQUEST_HPP__ */

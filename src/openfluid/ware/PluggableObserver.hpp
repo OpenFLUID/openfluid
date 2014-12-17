@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PLUGGABLEOBSERVER_HPP__
-#define __PLUGGABLEOBSERVER_HPP__
+#ifndef __OPENFLUID_WARE_PLUGGABLEOBSERVER_HPP__
+#define __OPENFLUID_WARE_PLUGGABLEOBSERVER_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationInspectorWare.hpp>
@@ -57,9 +57,9 @@
 #define DECLARE_OBSERVER_PLUGIN \
   extern "C" \
   { \
-    DLLEXPORT std::string WAREABIVERSION_PROC_DECL(); \
-    DLLEXPORT openfluid::ware::PluggableObserver* WAREBODY_PROC_DECL(); \
-    DLLEXPORT openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL(); \
+    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL(); \
+    OPENFLUID_PLUGIN openfluid::ware::PluggableObserver* WAREBODY_PROC_DECL(); \
+    OPENFLUID_PLUGIN openfluid::ware::ObserverSignature* WARESIGNATURE_PROC_DECL(); \
   }
 
 
@@ -92,7 +92,7 @@
 namespace openfluid { namespace ware {
 
 
-class DLLEXPORT PluggableObserver : public SimulationInspectorWare
+class OPENFLUID_API PluggableObserver : public SimulationInspectorWare
 {
 
   public:
@@ -144,4 +144,4 @@ typedef ObserverSignature* (*GetPluggableObserverSignatureProc)();
 
 
 
-#endif /* __PLUGGABLEOBSERVER_HPP__ */
+#endif /* __OPENFLUID_WARE_PLUGGABLEOBSERVER_HPP__ */

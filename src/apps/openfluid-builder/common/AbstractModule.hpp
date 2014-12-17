@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ABSTRACTMODULE_HPP__
-#define __ABSTRACTMODULE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ABSTRACTMODULE_HPP__
+#define __OPENFLUID_BUILDERAPP_ABSTRACTMODULE_HPP__
 
 #include <QWidget>
 #include <QString>
@@ -104,4 +104,4 @@ class AbstractModule : public QObject
 };
 
 
-#endif /* __ABSTRACTMODULE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ABSTRACTMODULE_HPP__ */

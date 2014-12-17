@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MODELINSTANCE_HPP__
-#define __MODELINSTANCE_HPP__
+#ifndef __OPENFLUID_MACHINE_MODELINSTANCE_HPP__
+#define __OPENFLUID_MACHINE_MODELINSTANCE_HPP__
 
 #include <list>
 
@@ -65,7 +65,7 @@ class SimulationBlob;
 class ModelItemInstance;
 
 
-class DLLEXPORT ModelInstance
+class OPENFLUID_API ModelInstance
 {
   private:
 

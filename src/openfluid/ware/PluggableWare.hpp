@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PLUGGABLEWARE_HPP__
-#define __PLUGGABLEWARE_HPP__
+#ifndef __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
+#define __OPENFLUID_WARE_PLUGGABLEWARE_HPP__
 
 #include <boost/filesystem/path.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -86,7 +86,7 @@ typedef std::map<WareParamKey_t, WareParamValue_t> WareParams_t;
 // =====================================================================
 
 
-class DLLEXPORT PluggableWare
+class OPENFLUID_API PluggableWare
 {
   public:
 
@@ -172,4 +172,4 @@ class DLLEXPORT PluggableWare
 
 
 
-#endif /* __PLUGGABLEWARE_HPP__ */
+#endif /* __OPENFLUID_WARE_PLUGGABLEWARE_HPP__ */

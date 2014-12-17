@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __COMPOUNDVALUE_HPP___
-#define __COMPOUNDVALUE_HPP___
+#ifndef __OPENFLUID_CORE_COMPOUNDVALUE_HPP__
+#define __OPENFLUID_CORE_COMPOUNDVALUE_HPP__
 
 #include <vector>
 
@@ -50,7 +50,7 @@
 
 namespace openfluid { namespace core {
 
-class DLLEXPORT CompoundValue : public Value
+class OPENFLUID_API CompoundValue : public Value
 {
   public:
 
@@ -76,4 +76,4 @@ class DLLEXPORT CompoundValue : public Value
 
 
 
-#endif /* __COMPOUNDVALUE_HPP___ */
+#endif /* __OPENFLUID_CORE_COMPOUNDVALUE_HPP__ */

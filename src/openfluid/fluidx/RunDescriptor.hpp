@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __RUNDESCRIPTOR_HPP__
-#define __RUNDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_RUNDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_RUNDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
@@ -48,7 +48,7 @@
 
 namespace openfluid { namespace fluidx {
 
-class DLLEXPORT RunDescriptor
+class OPENFLUID_API RunDescriptor
 {
   private:
 
@@ -112,4 +112,4 @@ class DLLEXPORT RunDescriptor
 } } // namespaces
 
 
-#endif /* __RUNDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_RUNDESCRIPTOR_HPP__ */

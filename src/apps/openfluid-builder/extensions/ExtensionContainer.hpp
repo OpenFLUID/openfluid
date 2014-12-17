@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __EXTENSIONCONTAINER_HPP__
-#define __EXTENSIONCONTAINER_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_EXTENSIONCONTAINER_HPP__
+#define __OPENFLUID_BUILDERAPP_EXTENSIONCONTAINER_HPP__
 
 
 #include <openfluid/builderext/PluggableBuilderExtension.hpp>
@@ -67,4 +67,4 @@ class ExtensionContainer
 };
 
 
-#endif /* __EXTENSIONCONTAINER_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_EXTENSIONCONTAINER_HPP__ */

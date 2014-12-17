@@ -37,8 +37,8 @@
  *      Author: Manuel CHATAIGNER
  */
 
-#ifndef __MARKETDATASETPACKAGE_HPP__
-#define __MARKETDATASETPACKAGE_HPP__
+#ifndef __OPENFLUID_MARKET_MARKETDATASETPACKAGE_HPP__
+#define __OPENFLUID_MARKET_MARKETDATASETPACKAGE_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace market {
 
 
-class DLLEXPORT MarketDatasetPackage : public MarketPackage
+class OPENFLUID_API MarketDatasetPackage : public MarketPackage
 {
   public:
 
@@ -68,4 +68,4 @@ class DLLEXPORT MarketDatasetPackage : public MarketPackage
 } } // namespaces
 
 
-#endif /* __MARKETDATASETPACKAGE_HPP__ */
+#endif /* __OPENFLUID_MARKET_MARKETDATASETPACKAGE_HPP__ */

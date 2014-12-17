@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __POINTGRAPHICS_HPP__
-#define __POINTGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_POINTGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_POINTGRAPHICS_HPP__
 
 
 #include "PunctualGraphics.hpp"
@@ -57,4 +57,4 @@ class PointGraphics : public PunctualGraphics
 
 
 
-#endif /* __POINTGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_POINTGRAPHICS_HPP__ */

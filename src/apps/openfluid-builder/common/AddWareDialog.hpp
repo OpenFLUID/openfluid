@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ADDWAREDIALOG_HPP__
-#define __ADDWAREDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDWAREDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDWAREDIALOG_HPP__
 
 
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
@@ -76,4 +76,4 @@ class AddWareDialog : public openfluid::ui::common::OpenFLUIDDialog
 };
 
 
-#endif /* __ADDWAREDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDWAREDIALOG_HPP__ */

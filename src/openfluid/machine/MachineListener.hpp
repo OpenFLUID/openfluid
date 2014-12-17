@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __MACHINELISTENER_HPP__
-#define __MACHINELISTENER_HPP__
+#ifndef __OPENFLUID_MACHINE_MACHINELISTENER_HPP__
+#define __OPENFLUID_MACHINE_MACHINELISTENER_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Listener.hpp>
@@ -52,7 +52,7 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-class DLLEXPORT MachineListener : public openfluid::base::Listener
+class OPENFLUID_API MachineListener : public openfluid::base::Listener
 {
   private:
 
@@ -126,4 +126,4 @@ class DLLEXPORT MachineListener : public openfluid::base::Listener
 
 } } //namespaces
 
-#endif /* __MACHINELISTENER_HPP__ */
+#endif /* __OPENFLUID_MACHINE_MACHINELISTENER_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ADDSIMULATORDIALOG_HPP__
-#define __ADDSIMULATORDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDSIMULATORDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDSIMULATORDIALOG_HPP__
 
 
 #include "AddWareDialog.hpp"
@@ -67,4 +67,4 @@ class AddSimulatorDialog : public AddWareDialog
 };
 
 
-#endif /* __ADDSIMULATORDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDSIMULATORDIALOG_HPP__ */

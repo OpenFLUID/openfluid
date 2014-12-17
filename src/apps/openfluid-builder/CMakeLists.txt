@@ -236,9 +236,6 @@ ENDIF()
 
 ### MAIN LIB AND EXECUTABLE #
 
-ADD_DEFINITIONS(-DBUILDINGDLL)
-
-
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP} ${BUILDER_BASE_UI}
                                           ${BUILDER_COMMON_CPP} ${BUILDER_COMMON_HPP} ${BUILDER_COMMON_UI}
                                           ${BUILDER_MODEL_CPP} ${BUILDER_MODEL_HPP} ${BUILDER_MODEL_UI}
@@ -278,7 +275,9 @@ SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        AUTOMOC ON)
+                                        AUTOMOC ON
+                                        COMPILE_DEFINITIONS "OPENFLUID_DLL"
+                                        DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 
 SET(BUILDER_GUI_OPTION)

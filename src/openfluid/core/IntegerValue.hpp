@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __INTEGERVALUE_HPP___
-#define __INTEGERVALUE_HPP___
+#ifndef __OPENFLUID_CORE_INTEGERVALUE_HPP__
+#define __OPENFLUID_CORE_INTEGERVALUE_HPP__
 
 
 
@@ -103,7 +103,7 @@ IntegerValue is a container for a signed long integer value.\n
   std::string StdStrVal = Val1.toString();
 @endcode
 */
-class DLLEXPORT IntegerValue : public SimpleValue
+class OPENFLUID_API IntegerValue : public SimpleValue
 {
   private:
 
@@ -165,4 +165,4 @@ class DLLEXPORT IntegerValue : public SimpleValue
 } }  // namespaces
 
 
-#endif /* __INTEGERVALUE_HPP___ */
+#endif /* __OPENFLUID_CORE_INTEGERVALUE_HPP__ */

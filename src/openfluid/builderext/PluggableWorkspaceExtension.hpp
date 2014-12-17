@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PLUGGABLEWORKSPACEEXTENSION_HPP__
-#define __PLUGGABLEWORKSPACEEXTENSION_HPP__
+#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__
+#define __OPENFLUID_BUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__
 
 #include <QWidget>
 
@@ -49,7 +49,7 @@
 
 namespace openfluid { namespace builderext {
 
-class DLLEXPORT PluggableWorkspaceExtension : public QWidget, public PluggableBuilderExtension
+class OPENFLUID_API PluggableWorkspaceExtension : public QWidget, public PluggableBuilderExtension
 {
   Q_OBJECT;
 
@@ -82,4 +82,4 @@ class DLLEXPORT PluggableWorkspaceExtension : public QWidget, public PluggableBu
 } } // namespaces
 
 
-#endif /* __PLUGGABLEWORKSPACEEXTENSION_HPP__ */
+#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEWORKSPACEEXTENSION_HPP__ */

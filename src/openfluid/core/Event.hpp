@@ -37,8 +37,8 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#ifndef __EVENT_HPP__
-#define __EVENT_HPP__
+#ifndef __OPENFLUID_CORE_EVENT_HPP__
+#define __OPENFLUID_CORE_EVENT_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -58,7 +58,7 @@ namespace openfluid { namespace core {
   @li Key is the name given to the information
   @li Value is the value of the information and can be numeric or text information
 */
-class DLLEXPORT Event
+class OPENFLUID_API Event
 {
   public:
     typedef std::map<std::string, openfluid::core::StringValue> EventInfosMap_t;
@@ -219,4 +219,4 @@ class DLLEXPORT Event
 
 } } // namespace openfluid::core
 
-#endif /* __EVENT_HPP__ */
+#endif /* __OPENFLUID_CORE_EVENT_HPP__ */

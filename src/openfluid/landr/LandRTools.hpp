@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef LANDRTOOLS_HPP_
-#define LANDRTOOLS_HPP_
+#ifndef __OPENFLUID_LANDR_LANDRTOOLS_HPP__
+#define __OPENFLUID_LANDR_LANDRTOOLS_HPP__
 
 #include <vector>
 #include <list>
@@ -58,7 +58,7 @@ class VectorDataset;
 /**
  @brief Set of tools to manage LandR elements.
  */
-class DLLEXPORT LandRTools
+class OPENFLUID_API LandRTools
 {
   public:
 
@@ -215,4 +215,4 @@ class DLLEXPORT LandRTools
 };
 
 } } // namespace openfluid, landr
-#endif /* LANDRTOOLS_HPP_ */
+#endif /* __OPENFLUID_LANDR_LANDRTOOLS_HPP__ */

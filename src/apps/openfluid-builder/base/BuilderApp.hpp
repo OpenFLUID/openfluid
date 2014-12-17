@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __BUILDERAPP_HPP__
-#define __BUILDERAPP_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_BUILDERAPP_HPP__
+#define __OPENFLUID_BUILDERAPP_BUILDERAPP_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -48,7 +48,7 @@
 #include "AppCoordinator.hpp"
 
 
-class DLLEXPORT BuilderApp
+class OPENFLUID_API BuilderApp
 {
 
   private:
@@ -73,4 +73,4 @@ class DLLEXPORT BuilderApp
 };
 
 
-#endif /* __BUILDERAPP_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_BUILDERAPP_HPP__ */

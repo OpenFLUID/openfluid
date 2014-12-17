@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __THREADEDLOOPMACROS_HPP__
-#define __THREADEDLOOPMACROS_HPP__
+#ifndef __OPENFLUID_BASE_THREADEDLOOPMACROS_HPP__
+#define __OPENFLUID_BASE_THREADEDLOOPMACROS_HPP__
 
 #include <QtGlobal>
 
@@ -156,4 +156,4 @@
 // =====================================================================
 
 
-#endif /* __THREADEDLOOPMACROS_HPP__ */
+#endif /* __OPENFLUID_BASE_THREADEDLOOPMACROS_HPP__ */

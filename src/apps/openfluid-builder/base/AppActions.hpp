@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __APPACTIONS_HPP__
-#define __APPACTIONS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_APPACTIONS_HPP__
+#define __OPENFLUID_BUILDERAPP_APPACTIONS_HPP__
 
 #include <QAction>
 
@@ -114,4 +114,4 @@ class AppActions : QObject
 };
 
 
-#endif /* __APPACTIONS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_APPACTIONS_HPP__ */

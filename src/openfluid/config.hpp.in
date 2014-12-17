@@ -153,5 +153,5 @@ const std::string TRANSLATIONS_FILEROOT = "@OPENFLUID_TRANSLATIONS_FILEROOT@";
 
 } } //namespaces
 
-#endif
+#endif  /* __OPENFLUID_CONFIG_HPP__ */
 

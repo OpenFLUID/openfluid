@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __VERBOSEMACHINELISTENER_HPP__
-#define __VERBOSEMACHINELISTENER_HPP__
+#ifndef __OPENFLUID_CMDLINEAPP_VERBOSEMACHINELISTENER_HPP__
+#define __OPENFLUID_CMDLINEAPP_VERBOSEMACHINELISTENER_HPP__
 
 
 #include "DefaultMachineListener.hpp"
@@ -173,4 +173,4 @@ class VerboseMachineListener : public DefaultMachineListener
 };
 
 
-#endif /* __VERBOSEMACHINELISTENER_HPP__ */
+#endif /* __OPENFLUID_CMDLINEAPP_VERBOSEMACHINELISTENER_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ADDCONNECTIONDIALOG_HPP__
-#define __ADDCONNECTIONDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDCONNECTIONDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDCONNECTIONDIALOG_HPP__
 
 
 
@@ -98,4 +98,4 @@ class AddConnectionDialog : public openfluid::ui::common::OpenFLUIDDialog
 };
 
 
-#endif /* __ADDCONNECTIONDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDCONNECTIONDIALOG_HPP__ */

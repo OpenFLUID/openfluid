@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef POLYGONENTITY_HPP_
-#define POLYGONENTITY_HPP_
+#ifndef __OPENFLUID_LANDR_POLYGONENTITY_HPP__
+#define __OPENFLUID_LANDR_POLYGONENTITY_HPP__
 
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/landr/LandRTools.hpp>
@@ -61,7 +61,7 @@ class LineStringEntity;
  @brief A LandREntity representing a geos::geom::Polygon.
  @details A PolygonEntity has at least a PolygonEdge, all edges representing the Polygon exterior ring.
  */
-class DLLEXPORT PolygonEntity: public LandREntity
+class OPENFLUID_API PolygonEntity: public LandREntity
 {
   private:
 
@@ -268,4 +268,4 @@ class DLLEXPORT PolygonEntity: public LandREntity
 };
 
 } } // namespace landr, openfluid
-#endif /* POLYGONENTITY_HPP_ */
+#endif /* __OPENFLUID_LANDR_POLYGONENTITY_HPP__ */

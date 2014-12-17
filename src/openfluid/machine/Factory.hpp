@@ -39,8 +39,8 @@
 
 
 
-#ifndef __FACTORY_HPP__
-#define __FACTORY_HPP__
+#ifndef __OPENFLUID_MACHINE_FACTORY_HPP__
+#define __OPENFLUID_MACHINE_FACTORY_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -73,7 +73,7 @@ class ModelInstance;
 class MonitoringInstance;
 
 
-class DLLEXPORT Factory
+class OPENFLUID_API Factory
 {
   public:
 
@@ -117,4 +117,4 @@ class DLLEXPORT Factory
 } } //namespaces
 
 
-#endif /* __FACTORY_HPP__ */
+#endif /* __OPENFLUID_MACHINE_FACTORY_HPP__ */

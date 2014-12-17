@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __RUNSIMULATIONDIALOG_HPP__
-#define __RUNSIMULATIONDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_RUNSIMULATIONDIALOG_HPP__
+#define __OPENFLUID_UICOMMON_RUNSIMULATIONDIALOG_HPP__
 
 #include <QObject>
 #include <QDialog>
@@ -69,7 +69,7 @@ namespace fluidx {
 namespace ui { namespace common {
 
 
-class DLLEXPORT RunSimulationDialog : public QDialog
+class OPENFLUID_API RunSimulationDialog : public QDialog
 {
   Q_OBJECT;
 
@@ -128,4 +128,4 @@ class DLLEXPORT RunSimulationDialog : public QDialog
 } } } // namespaces
 
 
-#endif /* __RUNSIMULATIONDIALOG_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_RUNSIMULATIONDIALOG_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __HOMEWIDGET_HPP__
-#define __HOMEWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_HOMEWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_HOMEWIDGET_HPP__
 
 #include <QWidget>
 #include <QLabel>
@@ -112,4 +112,4 @@ class HomeWidget : public QWidget
 };
 
 
-#endif /* __HOMEWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_HOMEWIDGET_HPP__ */

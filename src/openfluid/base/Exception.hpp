@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __EXCEPTION_HPP__
-#define __EXCEPTION_HPP__
+#ifndef __OPENFLUID_BASE_EXCEPTION_HPP__
+#define __OPENFLUID_BASE_EXCEPTION_HPP__
 
 #include <exception>
 #include <string>
@@ -95,4 +95,4 @@ class Exception : public std::exception
 
 } } // namespace
 
-#endif
+#endif  /* __OPENFLUID_BASE_EXCEPTION_HPP__ */

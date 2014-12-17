@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __GENERATORWIDGET_HPP__
-#define __GENERATORWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_GENERATORWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_GENERATORWIDGET_HPP__
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -85,4 +85,4 @@ class GeneratorWidget : public WareWidget
 
 
 
-#endif /* __GENERATORWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_GENERATORWIDGET_HPP__ */

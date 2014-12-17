@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PLUGGABLEMODELESSEXTENSION_HPP__
-#define __PLUGGABLEMODELESSEXTENSION_HPP__
+#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__
+#define __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__
 
 #include <QDialog>
 #include <QCloseEvent>
@@ -50,7 +50,7 @@
 
 namespace openfluid { namespace builderext {
 
-class DLLEXPORT PluggableModelessExtension : public QDialog, public PluggableBuilderExtension
+class OPENFLUID_API PluggableModelessExtension : public QDialog, public PluggableBuilderExtension
 {
   Q_OBJECT;
 
@@ -98,4 +98,4 @@ class DLLEXPORT PluggableModelessExtension : public QDialog, public PluggableBui
 
 
 
-#endif /* __PLUGGABLEMODELESSEXTENSION_HPP__ */
+#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEMODELESSEXTENSION_HPP__ */

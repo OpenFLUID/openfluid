@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __GDALHELPERS_HPP__
-#define __GDALHELPERS_HPP__
+#ifndef __OPENFLUID_TOOLS_GDALHELPERS_HPP__
+#define __OPENFLUID_TOOLS_GDALHELPERS_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -75,24 +75,24 @@ typedef std::map<std::string,GDALDriverInfos_t> GDALDriversFilesExts_t;
   Returns a list of OGR drivers available in OpenFLUID for GIS vector files
   @return an openfluid::tools::GDALDriversFilesExts_t
 */
-const GDALDriversFilesExts_t DLLEXPORT getOGRFilesDriversForOpenFLUID();
+const GDALDriversFilesExts_t OPENFLUID_API getOGRFilesDriversForOpenFLUID();
 
 
 /**
   Returns a list of GDAL drivers available in OpenFLUID for GIS vector files
   @return an openfluid::tools::GDALDriversFilesExts_t
 */
-const GDALDriversFilesExts_t DLLEXPORT getGDALFilesDriversForOpenFLUID();
+const GDALDriversFilesExts_t OPENFLUID_API getGDALFilesDriversForOpenFLUID();
 
 
 /**
   Returns a set of GIS vector files extensions available in OpenFLUID
   @return a set of files extensions
 */
-const std::set<std::string> DLLEXPORT getOGRFilesExtensionsForOpenFLUID();
+const std::set<std::string> OPENFLUID_API getOGRFilesExtensionsForOpenFLUID();
 
 
 } } // namespaces
 
 
-#endif /* __GDALHELPERS_HPP__ */
+#endif /* __OPENFLUID_TOOLS_GDALHELPERS_HPP__ */

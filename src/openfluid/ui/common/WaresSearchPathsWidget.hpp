@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __WARESSEARCHPATHSWIDGET_HPP__
-#define __WARESSEARCHPATHSWIDGET_HPP__
+#ifndef __OPENFLUID_UICOMMON_WARESSEARCHPATHSWIDGET_HPP__
+#define __OPENFLUID_UICOMMON_WARESSEARCHPATHSWIDGET_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -56,7 +56,7 @@ namespace Ui
 namespace openfluid { namespace ui { namespace common {
 
 
-class DLLEXPORT WaresSearchPathsWidget : public QWidget
+class OPENFLUID_API WaresSearchPathsWidget : public QWidget
 {
   Q_OBJECT;
 
@@ -100,4 +100,4 @@ class DLLEXPORT WaresSearchPathsWidget : public QWidget
 
 } } } // namespaces
 
-#endif /* __WARESSEARCHPATHSWIDGET_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_WARESSEARCHPATHSWIDGET_HPP__ */

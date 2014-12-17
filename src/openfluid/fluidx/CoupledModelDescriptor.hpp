@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __COUPLEDMODELDESCRIPTOR_HPP__
-#define __COUPLEDMODELDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_COUPLEDMODELDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_COUPLEDMODELDESCRIPTOR_HPP__
 
 
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
@@ -48,9 +48,9 @@
 
 namespace openfluid { namespace fluidx {
 
-typedef DLLEXPORT WareSetDescriptor<ModelItemDescriptor> CoupledModelDescriptor;
+typedef WareSetDescriptor<ModelItemDescriptor> CoupledModelDescriptor;
 
 } } // namespaces
 
 
-#endif /* __MODELDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_MODELDESCRIPTOR_HPP__ */

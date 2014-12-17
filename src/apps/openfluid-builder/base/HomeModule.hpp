@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__
+#define __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__
 
 #include "AbstractModule.hpp"
 #include "HomeWidget.hpp"
@@ -97,4 +97,4 @@ class HomeModule : public AbstractModule
 };
 
 
-#endif /* __HOMEMODULE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__ */

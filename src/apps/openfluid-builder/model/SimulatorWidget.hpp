@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIMULATORWIDGET_HPP__
-#define __SIMULATORWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_SIMULATORWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_SIMULATORWIDGET_HPP__
 
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
@@ -86,4 +86,4 @@ class SimulatorWidget : public WareWidget
 };
 
 
-#endif /* __SIMULATORWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_SIMULATORWIDGET_HPP__ */

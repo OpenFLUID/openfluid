@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MAINWINDOW_HPP__
-#define __MAINWINDOW_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
+#define __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__
 
 #include <QMainWindow>
 #include <QAction>
@@ -74,4 +74,4 @@ class MainWindow : public QMainWindow
 };
 
 
-#endif /* __MAINWINDOW_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MAINWINDOW_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MACHINE_HPP___
-#define __MACHINE_HPP___
+#ifndef __OPENFLUID_MACHINE_HPP__
+#define __OPENFLUID_MACHINE_HPP__
 
 
 
@@ -61,4 +61,4 @@
 
 
 
-#endif /* __MACHINE_HPP___ */
+#endif /* __OPENFLUID_MACHINE_HPP__ */

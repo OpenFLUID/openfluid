@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OBSERVERSIGNATURE_HPP__
-#define __OBSERVERSIGNATURE_HPP__
+#ifndef __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__
+#define __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__
 
 #include <openfluid/config.hpp>
 #include <openfluid/dllexport.hpp>
@@ -75,7 +75,7 @@
 
 namespace openfluid { namespace ware {
 
-class DLLEXPORT ObserverSignature : public WareSignature
+class OPENFLUID_API ObserverSignature : public WareSignature
 {
 
   public:
@@ -89,4 +89,4 @@ class DLLEXPORT ObserverSignature : public WareSignature
 } }  // namespaces
 
 
-#endif /* __OBSERVERSIGNATURE_HPP__ */
+#endif /* __OPENFLUID_WARE_OBSERVERSIGNATURE_HPP__ */

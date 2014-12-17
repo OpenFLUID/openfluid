@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __VALUE_HPP___
-#define __VALUE_HPP___
+#ifndef __OPENFLUID_CORE_VALUE_HPP__
+#define __OPENFLUID_CORE_VALUE_HPP__
 
 #include <iostream>
 
@@ -61,7 +61,7 @@ class MatrixValue;
 class MapValue;
 
 
-class DLLEXPORT Value
+class OPENFLUID_API Value
 {
   public:
 
@@ -184,4 +184,4 @@ class DLLEXPORT Value
 } }  // namespaces
 
 
-#endif /* __VALUE_HPP___ */
+#endif /* __OPENFLUID_CORE_VALUE_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DEBUG_HPP__
-#define __DEBUG_HPP__
+#ifndef __OPENFLUID_DEBUG_HPP__
+#define __OPENFLUID_DEBUG_HPP__
 
 // =====================================================================
 // =====================================================================
@@ -200,4 +200,4 @@
 #endif
 
 
-#endif /* __DEBUG_HPP__ */
+#endif /* __OPENFLUID_DEBUG_HPP__ */

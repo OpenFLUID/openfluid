@@ -38,6 +38,9 @@
 */
 
 
+#ifndef __OPENFLUID_CMDLINEAPP_OPENFLUID_HPP__
+#define __OPENFLUID_CMDLINEAPP_OPENFLUID_HPP__
+
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -130,6 +133,6 @@ class OpenFLUIDApp
 };
 
 
-
+#endif /* __OPENFLUID_CMDLINEAPP_OPENFLUID_HPP__ */
 
 

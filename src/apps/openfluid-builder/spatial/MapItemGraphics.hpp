@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MAPITEMGRAPHICS_HPP__
-#define __MAPITEMGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MAPITEMGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_MAPITEMGRAPHICS_HPP__
 
 
 #include <openfluid/core/TypeDefs.hpp>
@@ -72,4 +72,4 @@ class MapItemGraphics : public QGraphicsPathItem
 
 
 
-#endif /* __MAPITEMGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MAPITEMGRAPHICS_HPP__ */

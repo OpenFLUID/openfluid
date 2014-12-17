@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DISTRIBUTIONBINDINGS_HPP__
-#define __DISTRIBUTIONBINDINGS_HPP__
+#ifndef __OPENFLUID_TOOLS_DISTRIBUTIONBINDINGS_HPP__
+#define __OPENFLUID_TOOLS_DISTRIBUTIONBINDINGS_HPP__
 
 #include <openfluid/tools/DistributionTables.hpp>
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
@@ -68,7 +68,7 @@ class ReaderNextValue
 // =====================================================================
 
 
-class DLLEXPORT DistributionBindings
+class OPENFLUID_API DistributionBindings
 {
   public:
 
@@ -104,4 +104,4 @@ class DLLEXPORT DistributionBindings
 
 
 
-#endif /* __DISTRIBUTIONBINDINGS_HPP__ */
+#endif /* __OPENFLUID_TOOLS_DISTRIBUTIONBINDINGS_HPP__ */

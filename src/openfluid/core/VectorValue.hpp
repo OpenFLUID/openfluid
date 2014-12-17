@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __VECTORVALUE_HPP___
-#define __VECTORVALUE_HPP___
+#ifndef __OPENFLUID_CORE_VECTORVALUE_HPP__
+#define __OPENFLUID_CORE_VECTORVALUE_HPP__
 
 #include <openfluid/core/CompoundValue.hpp>
 #include <openfluid/core/Vector.hpp>
@@ -116,7 +116,7 @@ namespace openfluid { namespace core {
   std::string StdStrVal = Val1.toString();
 @endcode
 */
-class DLLEXPORT VectorValue : public CompoundValue, public Vector<double>
+class OPENFLUID_API VectorValue : public CompoundValue, public Vector<double>
 {
 
   public:
@@ -163,4 +163,4 @@ class DLLEXPORT VectorValue : public CompoundValue, public Vector<double>
 
 
 
-#endif /* __VECTORVALUE_HPP___ */
+#endif /* __OPENFLUID_CORE_VECTORVALUE_HPP__ */

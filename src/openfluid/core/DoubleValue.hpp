@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __DOUBLEVALUE_HPP___
-#define __DOUBLEVALUE_HPP___
+#ifndef __OPENFLUID_CORE_DOUBLEVALUE_HPP__
+#define __OPENFLUID_CORE_DOUBLEVALUE_HPP__
 
 #include <openfluid/core/SimpleValue.hpp>
 #include <openfluid/dllexport.hpp>
@@ -100,7 +100,7 @@ DoubleValue is a container for a signed double precision floating point value.\n
   std::string StdStrVal = Val1.toString();
 @endcode
 */
-class DLLEXPORT DoubleValue : public SimpleValue
+class OPENFLUID_API DoubleValue : public SimpleValue
 {
   private:
 
@@ -163,4 +163,4 @@ class DLLEXPORT DoubleValue : public SimpleValue
 } }  // namespaces
 
 
-#endif /* __DOUBLEVALUE_HPP___ */
+#endif /* __OPENFLUID_CORE_DOUBLEVALUE_HPP__ */

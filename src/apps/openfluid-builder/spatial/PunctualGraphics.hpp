@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __PUNCTUALGRAPHICS_HPP__
-#define __PUNCTUALGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_PUNCTUALGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_PUNCTUALGRAPHICS_HPP__
 
 
 #include "MapItemGraphics.hpp"
@@ -66,4 +66,4 @@ class PunctualGraphics : public MapItemGraphics
 
 
 
-#endif /* __PUNCTUALGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_PUNCTUALGRAPHICS_HPP__ */

@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __WAREWIDGET_HPP__
-#define __WAREWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_WAREWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_WAREWIDGET_HPP__
 
 
 #include <QWidget>
@@ -151,4 +151,4 @@ class WareWidget : public QWidget
 
 };
 
-#endif /* __WAREWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_WAREWIDGET_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DATASTOREWIDGET_HPP__
-#define __DATASTOREWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_DATASTOREWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_DATASTOREWIDGET_HPP__
 
 #include <QWidget>
 
@@ -91,4 +91,4 @@ class DatastoreWidget : public WorkspaceWidget
 };
 
 
-#endif /* __DATASTOREWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_DATASTOREWIDGET_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DASHBOARDFRAME_HPP__
-#define __DASHBOARDFRAME_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_DASHBOARDFRAME_HPP__
+#define __OPENFLUID_BUILDERAPP_DASHBOARDFRAME_HPP__
 
 #include "ProjectCentral.hpp"
 
@@ -84,4 +84,4 @@ class DashboardFrame : public QFrame
 };
 
 
-#endif /* __DASHBOARDWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_DASHBOARDWIDGET_HPP__ */

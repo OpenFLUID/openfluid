@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __RUNSIMULATIONWORKER_HPP__
-#define __RUNSIMULATIONWORKER_HPP__
+#ifndef __OPENFLUID_UICOMMON_RUNSIMULATIONWORKER_HPP__
+#define __OPENFLUID_UICOMMON_RUNSIMULATIONWORKER_HPP__
 
 #include <QApplication>
 #include <QtDeclarative>
@@ -60,7 +60,7 @@ namespace fluidx {
 namespace ui { namespace common {
 
 
-class DLLEXPORT RunSimulationListener : public QObject, public openfluid::machine::MachineListener
+class OPENFLUID_API RunSimulationListener : public QObject, public openfluid::machine::MachineListener
 {
   Q_OBJECT;
 
@@ -198,4 +198,4 @@ class RunSimulationWorker : public QObject
 Q_DECLARE_METATYPE(openfluid::ui::common::RunSimulationListener::Stage);
 
 
-#endif /* __RUNSIMULATIONWORKER_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_RUNSIMULATIONWORKER_HPP__ */

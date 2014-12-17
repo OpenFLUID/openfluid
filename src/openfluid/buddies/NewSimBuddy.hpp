@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __NEWSIMBUDDY_HPP__
-#define __NEWSIMBUDDY_HPP__
+#ifndef __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__
+#define __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace buddies {
 
 
-class DLLEXPORT NewSimulatorBuddy : public OpenFLUIDBuddy
+class OPENFLUID_API NewSimulatorBuddy : public OpenFLUIDBuddy
 {
   private:
     void writeSimulatorCPP();
@@ -66,4 +66,4 @@ class DLLEXPORT NewSimulatorBuddy : public OpenFLUIDBuddy
 
 } } //namespaces
 
-#endif /* __NEWSIMBUDDY_HPP__ */
+#endif /* __OPENFLUID_BUDDIES_NEWSIMBUDDY_HPP__ */

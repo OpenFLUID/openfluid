@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __ELIDEDLABEL_HPP__
-#define __ELIDEDLABEL_HPP__
+#ifndef __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
+#define __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -51,7 +51,7 @@ namespace openfluid { namespace ui { namespace common {
 /**
   Single line elided label class, based on QLabel
 */
-class DLLEXPORT ElidedLabel : public QLabel
+class OPENFLUID_API ElidedLabel : public QLabel
 {
   Q_OBJECT
 
@@ -94,4 +94,4 @@ class DLLEXPORT ElidedLabel : public QLabel
 
 } } } // namespaces
 
-#endif /* __ELIDEDLABEL_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_ELIDEDLABEL_HPP__ */

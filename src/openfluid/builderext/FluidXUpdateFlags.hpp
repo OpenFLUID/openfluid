@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __FLUIDXUPDATEFLAGS_HPP__
-#define __FLUIDXUPDATEFLAGS_HPP__
+#ifndef __OPENFLUID_BUILDEREXT_FLUIDXUPDATEFLAGS_HPP__
+#define __OPENFLUID_BUILDEREXT_FLUIDXUPDATEFLAGS_HPP__
 
 
 #include <QFlags>
@@ -50,7 +50,7 @@
 namespace openfluid { namespace builderext {
 
 
-class DLLEXPORT FluidXUpdateFlags
+class OPENFLUID_API FluidXUpdateFlags
 {
   public:
 
@@ -76,4 +76,4 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(FluidXUpdateFlags::Flags)
 } }  // namespaces
 
 
-#endif /* __FLUIDXUPDATEFLAGS_HPP__ */
+#endif /* __OPENFLUID_BUILDEREXT_FLUIDXUPDATEFLAGS_HPP__ */

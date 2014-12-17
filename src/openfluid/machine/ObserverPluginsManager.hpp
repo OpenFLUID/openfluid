@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OBSERVERPLUGINSMANAGER_HPP__
-#define __OBSERVERPLUGINSMANAGER_HPP__
+#ifndef __OPENFLUID_MACHINE_OBSERVERPLUGINSMANAGER_HPP__
+#define __OPENFLUID_MACHINE_OBSERVERPLUGINSMANAGER_HPP__
 
 #include <openfluid/ware/PluggableObserver.hpp>
 #include <openfluid/ware/ObserverSignature.hpp>
@@ -56,7 +56,7 @@ class ObserverInstance;
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT ObserverPluginsManager : public WarePluginsManager<ObserverSignatureInstance,ObserverInstance,
+class OPENFLUID_API ObserverPluginsManager : public WarePluginsManager<ObserverSignatureInstance,ObserverInstance,
                                                          openfluid::ware::GetPluggableObserverSignatureProc,
                                                          openfluid::ware::GetPluggableObserverBodyProc>
 {
@@ -116,4 +116,4 @@ class DLLEXPORT ObserverPluginsManager : public WarePluginsManager<ObserverSigna
 } }  // namespaces
 
 
-#endif /* __OBSERVERPLUGINSMANAGER_HPP__ */
+#endif /* __OPENFLUID_MACHINE_OBSERVERPLUGINSMANAGER_HPP__ */

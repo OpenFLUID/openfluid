@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __WAREPLUGINSMANAGER_HPP__
-#define __WAREPLUGINSMANAGER_HPP__
+#ifndef __OPENFLUID_MACHINE_WAREPLUGINSMANAGER_HPP__
+#define __OPENFLUID_MACHINE_WAREPLUGINSMANAGER_HPP__
 
 #include <vector>
 #include <map>
@@ -71,7 +71,7 @@ typedef std::string (*GetWareABIVersionProc)();
   @tparam BP procedure definition for instantiation of the body
 */
 template<class S, class M, typename SP, typename BP>
-class DLLEXPORT WarePluginsManager
+class OPENFLUID_API WarePluginsManager
 {
   private:
 
@@ -355,4 +355,4 @@ class DLLEXPORT WarePluginsManager
 
 
 
-#endif /* __WAREPLUGINSMANAGER_HPP__ */
+#endif /* __OPENFLUID_MACHINE_WAREPLUGINSMANAGER_HPP__ */

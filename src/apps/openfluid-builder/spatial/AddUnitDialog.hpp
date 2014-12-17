@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ADDUNITDIALOG_HPP__
-#define __ADDUNITDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDUNITDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDUNITDIALOG_HPP__
 
 
 namespace Ui
@@ -68,4 +68,4 @@ class AddUnitDialog : public openfluid::ui::common::OpenFLUIDDialog
 };
 
 
-#endif /* __ADDUNITDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDUNITDIALOG_HPP__ */

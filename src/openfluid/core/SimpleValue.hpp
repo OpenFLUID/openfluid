@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIMPLEVALUE_HPP__
-#define __SIMPLEVALUE_HPP__
+#ifndef __OPENFLUID_CORE_SIMPLEVALUE_HPP__
+#define __OPENFLUID_CORE_SIMPLEVALUE_HPP__
 
 #include <openfluid/core/Value.hpp>
 #include <openfluid/dllexport.hpp>
@@ -47,7 +47,7 @@
 
 namespace openfluid { namespace core {
 
-class DLLEXPORT SimpleValue : public Value
+class OPENFLUID_API SimpleValue : public Value
 {
 
   public:
@@ -65,4 +65,4 @@ class DLLEXPORT SimpleValue : public Value
 // =====================================================================
 
 
-#endif /* __SIMPLEVALUE_HPP__ */
+#endif /* __OPENFLUID_CORE_SIMPLEVALUE_HPP__ */

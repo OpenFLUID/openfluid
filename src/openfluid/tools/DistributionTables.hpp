@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DISTRIBUTIONTABLES_HPP__
-#define __DISTRIBUTIONTABLES_HPP__
+#ifndef __OPENFLUID_TOOLS_DISTRIBUTIONTABLES_HPP__
+#define __OPENFLUID_TOOLS_DISTRIBUTIONTABLES_HPP__
 
 #include <map>
 #include <string>
@@ -50,7 +50,7 @@
 namespace openfluid { namespace tools {
 
 
-class DLLEXPORT DistributionTables
+class OPENFLUID_API DistributionTables
 {
   public:
 
@@ -79,4 +79,4 @@ class DLLEXPORT DistributionTables
 } }
 
 
-#endif /* __DISTRIBUTIONTABLES_HPP__ */
+#endif /* __OPENFLUID_TOOLS_DISTRIBUTIONTABLES_HPP__ */

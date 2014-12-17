@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __LINESTRINGGRAPHICS_HPP__
-#define __LINESTRINGGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_LINESTRINGGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_LINESTRINGGRAPHICS_HPP__
 
 #include "LinearGraphics.hpp"
 
@@ -55,4 +55,4 @@ class LineStringGraphics : public LinearGraphics
 };
 
 
-#endif /* __LINESTRINGGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_LINESTRINGGRAPHICS_HPP__ */

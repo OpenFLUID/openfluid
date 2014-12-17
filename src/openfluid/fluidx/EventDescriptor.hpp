@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __EVENTDESCRIPTOR_HPP__
-#define __EVENTDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_EVENTDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_EVENTDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
@@ -50,7 +50,7 @@ namespace openfluid { namespace fluidx {
 
 typedef unsigned long long EventID_t;
 
-class DLLEXPORT EventDescriptor
+class OPENFLUID_API EventDescriptor
 {
   private:
 
@@ -92,4 +92,4 @@ class DLLEXPORT EventDescriptor
 
 } } // namespaces
 
-#endif /* __EVENTDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_EVENTDESCRIPTOR_HPP__ */

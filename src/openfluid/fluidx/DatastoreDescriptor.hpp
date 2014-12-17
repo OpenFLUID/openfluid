@@ -36,8 +36,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DATASTOREDESCRIPTOR_HPP__
-#define __DATASTOREDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_DATASTOREDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_DATASTOREDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -48,7 +48,7 @@
 namespace openfluid {
 namespace fluidx {
 
-class DLLEXPORT DatastoreDescriptor
+class OPENFLUID_API DatastoreDescriptor
 {
   public:
 
@@ -75,4 +75,4 @@ class DLLEXPORT DatastoreDescriptor
 }
 } // namespaces
 
-#endif /* __DATASTOREDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_DATASTOREDESCRIPTOR_HPP__ */

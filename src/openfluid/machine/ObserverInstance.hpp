@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OBSERVERINSTANCE_HPP__
-#define __OBSERVERINSTANCE_HPP__
+#ifndef __OPENFLUID_MACHINE_OBSERVERINSTANCE_HPP__
+#define __OPENFLUID_MACHINE_OBSERVERINSTANCE_HPP__
 
 #include <openfluid/ware/ObserverSignature.hpp>
 #include <openfluid/ware/PluggableObserver.hpp>
@@ -48,7 +48,7 @@
 
 namespace openfluid { namespace machine {
 
-class DLLEXPORT ObserverSignatureInstance : public WareSignatureInstance
+class OPENFLUID_API ObserverSignatureInstance : public WareSignatureInstance
 {
   public:
     openfluid::ware::ObserverSignature* Signature;
@@ -63,7 +63,7 @@ class DLLEXPORT ObserverSignatureInstance : public WareSignatureInstance
 // =====================================================================
 
 
-class DLLEXPORT ObserverInstance : public ObserverSignatureInstance
+class OPENFLUID_API ObserverInstance : public ObserverSignatureInstance
 {
   public:
     openfluid::ware::WareParams_t Params;
@@ -79,4 +79,4 @@ class DLLEXPORT ObserverInstance : public ObserverSignatureInstance
 
 
 
-#endif /* __OBSERVERINSTANCE_HPP__ */
+#endif /* __OPENFLUID_MACHINE_OBSERVERINSTANCE_HPP__ */

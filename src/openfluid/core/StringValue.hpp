@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __STRINGVALUE_HPP___
-#define __STRINGVALUE_HPP___
+#ifndef __OPENFLUID_CORE_STRINGVALUE_HPP__
+#define __OPENFLUID_CORE_STRINGVALUE_HPP__
 
 
 #include <string>
@@ -88,7 +88,7 @@ StringValue is a container for a std::string value, with methods for conversion 
   Val1.set("Have a nice day");
 @endcode
 */
-class DLLEXPORT StringValue : public SimpleValue
+class OPENFLUID_API StringValue : public SimpleValue
 {
   private:
 
@@ -254,4 +254,4 @@ class DLLEXPORT StringValue : public SimpleValue
 
 
 
-#endif /* __STRINGVALUE_HPP___ */
+#endif /* __OPENFLUID_CORE_STRINGVALUE_HPP__ */

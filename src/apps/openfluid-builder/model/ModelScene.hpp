@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MODELSCENE_HPP__
-#define __MODELSCENE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__
+#define __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__
 
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include <QGraphicsScene>
@@ -82,4 +82,4 @@ class ModelScene : public QGraphicsScene
 
 
 
-#endif /* __MODELSCENE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__ */

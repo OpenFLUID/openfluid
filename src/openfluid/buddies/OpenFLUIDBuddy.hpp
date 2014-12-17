@@ -51,7 +51,7 @@
 namespace openfluid { namespace buddies {
 
 
-class DLLEXPORT OpenFLUIDBuddy
+class OPENFLUID_API OpenFLUIDBuddy
 {
   protected:
     std::map<std::string,std::string> m_Options;
@@ -82,4 +82,4 @@ class DLLEXPORT OpenFLUIDBuddy
 
 } } //namespaces
 
-#endif // __OFBUDDY_HPP__
+#endif // __OPENFLUID_BUDDIES_OFBUDDY_HPP__

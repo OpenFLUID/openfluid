@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __EXECUTIONTIMEPOINT_HPP__
-#define __EXECUTIONTIMEPOINT_HPP__
+#ifndef __OPENFLUID_MACHINE_EXECUTIONTIMEPOINT_HPP__
+#define __OPENFLUID_MACHINE_EXECUTIONTIMEPOINT_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -66,7 +66,7 @@ struct SortModelItemsByOriginalPosition
 
 
 
-class DLLEXPORT ExecutionTimePoint
+class OPENFLUID_API ExecutionTimePoint
 {
   private:
     std::list<ModelItemInstance*> m_ItemsPtrList;
@@ -105,4 +105,4 @@ class DLLEXPORT ExecutionTimePoint
 
 
 
-#endif /* __EXECUTIONTIMEPOINT_HPP__ */
+#endif /* __OPENFLUID_MACHINE_EXECUTIONTIMEPOINT_HPP__ */

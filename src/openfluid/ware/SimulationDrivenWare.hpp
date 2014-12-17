@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIMULATIONDRIVENWARE_HPP__
-#define __SIMULATIONDRIVENWARE_HPP__
+#ifndef __OPENFLUID_WARE_SIMULATIONDRIVENWARE_HPP__
+#define __OPENFLUID_WARE_SIMULATIONDRIVENWARE_HPP__
 
 
 #include <openfluid/ware/PluggableWare.hpp>
@@ -67,7 +67,7 @@
 namespace openfluid { namespace ware {
 
 
-class DLLEXPORT SimulationDrivenWare : public PluggableWare
+class OPENFLUID_API SimulationDrivenWare : public PluggableWare
 {
   private:
 
@@ -200,4 +200,4 @@ class DLLEXPORT SimulationDrivenWare : public PluggableWare
 
 
 
-#endif /* __SIMULATIONDRIVENWARE_HPP__ */
+#endif /* __OPENFLUID_WARE_SIMULATIONDRIVENWARE_HPP__ */

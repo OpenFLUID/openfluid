@@ -207,7 +207,7 @@ QString getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
 // =====================================================================
 
 
-QString DLLEXPORT escapeXMLEntities(const QString& Str)
+QString escapeXMLEntities(const QString& Str)
 {
   QString EscapedStr = Str;
   EscapedStr.replace("&","&amp;").replace(">","&gt;").replace("<","&lt;").replace("\"","&quot;");

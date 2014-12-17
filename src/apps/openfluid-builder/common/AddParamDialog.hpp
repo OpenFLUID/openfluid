@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ADDPARAMDIALOG_HPP__
-#define __ADDPARAMDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDPARAMDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDPARAMDIALOG_HPP__
 
 
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
@@ -92,4 +92,4 @@ class AddParamDialog : public openfluid::ui::common::OpenFLUIDDialog
 
 
 
-#endif /* __ADDPARAMDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDPARAMDIALOG_HPP__ */

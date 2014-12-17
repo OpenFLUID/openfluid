@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __NEWPROJECTDIALOG_HPP__
-#define __NEWPROJECTDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_NEWPROJECTDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_NEWPROJECTDIALOG_HPP__
 
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
@@ -100,4 +100,4 @@ class NewProjectDialog : public openfluid::ui::common::OpenFLUIDDialog
 };
 
 
-#endif /* __NEWPROJECTDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_NEWPROJECTDIALOG_HPP__ */

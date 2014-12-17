@@ -63,7 +63,7 @@ class AttributesDescriptor;
 // =====================================================================
 
 
-class DLLEXPORT AdvancedUnitDescriptor
+class OPENFLUID_API AdvancedUnitDescriptor
 {
 
   public:
@@ -86,7 +86,7 @@ class DLLEXPORT AdvancedUnitDescriptor
 // =====================================================================
 
 
-class DLLEXPORT AdvancedDomainDescriptor
+class OPENFLUID_API AdvancedDomainDescriptor
 {
   public:
 

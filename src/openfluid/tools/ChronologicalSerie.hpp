@@ -39,8 +39,8 @@
 
 
 
-#ifndef __CHRONOLOGICALSERIE_HPP__
-#define __CHRONOLOGICALSERIE_HPP__
+#ifndef __OPENFLUID_TOOLS_CHRONOLOGICALSERIE_HPP__
+#define __OPENFLUID_TOOLS_CHRONOLOGICALSERIE_HPP__
 
 
 #include <list>
@@ -57,7 +57,7 @@ typedef std::pair<openfluid::core::DateTime,double> ChronItem_t;
 /**
   Container for a chronological data serie
 */
-class DLLEXPORT ChronologicalSerie : public std::list<ChronItem_t>
+class OPENFLUID_API ChronologicalSerie : public std::list<ChronItem_t>
 {
   private:
 
@@ -93,4 +93,4 @@ class DLLEXPORT ChronologicalSerie : public std::list<ChronItem_t>
 } } // namespaces
 
 
-#endif /* __CHRONOLOGICALSERIE_HPP__ */
+#endif /* __OPENFLUID_TOOLS_CHRONOLOGICALSERIE_HPP__ */

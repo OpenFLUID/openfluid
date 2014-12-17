@@ -36,8 +36,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __GENERATORSIGNATURE_HPP__
-#define __GENERATORSIGNATURE_HPP__
+#ifndef __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__
+#define __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__
 
 #include <openfluid/ware/SimulatorSignature.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
@@ -46,7 +46,7 @@
 namespace openfluid {
 namespace ware {
 
-class DLLEXPORT GeneratorSignature: public openfluid::ware::SimulatorSignature
+class OPENFLUID_API GeneratorSignature: public openfluid::ware::SimulatorSignature
 {
   private:
 
@@ -69,4 +69,4 @@ class DLLEXPORT GeneratorSignature: public openfluid::ware::SimulatorSignature
 
 }} //namespaces
 
-#endif /* __GENERATORSIGNATURE_HPP__ */
+#endif /* __OPENFLUID_WARE_GENERATORSIGNATURE_HPP__ */

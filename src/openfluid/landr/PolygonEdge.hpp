@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef POLYGONEDGE_HPP_
-#define POLYGONEDGE_HPP_
+#ifndef __OPENFLUID_LANDR_POLYGONEDGE_HPP__
+#define __OPENFLUID_LANDR_POLYGONEDGE_HPP__
 
 #include <geos/planargraph/Edge.h>
 #include <openfluid/dllexport.hpp>
@@ -66,7 +66,7 @@ class PolygonEntity;
  @brief A part of a PolygonEntity exterior ring, that may be share between to adjacent PolygonEntity.
  @details A PolygonEdge  has one or two Faces. The Faces are the PolygonEntity that share this PolygonEdge.
  */
-class DLLEXPORT PolygonEdge: public geos::planargraph::Edge
+class OPENFLUID_API PolygonEdge: public geos::planargraph::Edge
 {
   private:
 
@@ -159,4 +159,4 @@ class DLLEXPORT PolygonEdge: public geos::planargraph::Edge
 };
 
 } } // namespace landr, openfluid
-#endif /* POLYGONEDGE_HPP_ */
+#endif /* __OPENFLUID_LANDR_POLYGONEDGE_HPP__ */

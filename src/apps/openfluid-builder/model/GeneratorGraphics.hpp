@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __GENERATORGRAPHICS_HPP__
-#define __GENERATORGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_GENERATORGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_GENERATORGRAPHICS_HPP__
 
 
 #include "ModelItemGraphics.hpp"
@@ -64,4 +64,4 @@ class GeneratorGraphics : public ModelItemGraphics
 
 
 
-#endif /* __GENERATORGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_GENERATORGRAPHICS_HPP__ */

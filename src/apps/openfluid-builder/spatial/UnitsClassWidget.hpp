@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __UNITSCLASSWIDGET_HPP__
-#define __UNITSCLASSWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_UNITSCLASSWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_UNITSCLASSWIDGET_HPP__
 
 
 namespace Ui
@@ -151,4 +151,4 @@ class UnitsClassWidget : public QFrame
 
 
 
-#endif /* __UNITSCLASSWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_UNITSCLASSWIDGET_HPP__ */

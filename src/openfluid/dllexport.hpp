@@ -38,19 +38,53 @@
  */
 
 
-#ifndef __DLLEXPORT_HPP___
-#define __DLLEXPORT_HPP___
+#ifndef __OPENFLUID_DLLEXPORT_HPP__
+#define __OPENFLUID_DLLEXPORT_HPP__
 
-#ifdef __WIN32__
-  #ifdef BUILDINGDLL
-    #define DLLEXPORT __declspec(dllexport)
-  #else
-    #define DLLEXPORT __declspec(dllimport)
-  #endif
+
+// Adapted from https://gcc.gnu.org/wiki/Visibility
+
+
+// Generic helper definitions for shared library support
+#if defined _WIN32 || defined __CYGWIN__
+  #define OPENFLUID_HELPER_DLL_IMPORT __declspec(dllimport)
+  #define OPENFLUID_HELPER_DLL_EXPORT __declspec(dllexport)
+  #define OPENFLUID_HELPER_DLL_LOCAL
 #else
-  #define DLLEXPORT
+  #if __GNUC__ >= 4
+    #define OPENFLUID_HELPER_DLL_IMPORT __attribute__ ((visibility ("default")))
+    #define OPENFLUID_HELPER_DLL_EXPORT __attribute__ ((visibility ("default")))
+    #define OPENFLUID_HELPER_DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+  #else
+    #define OPENFLUID_HELPER_DLL_IMPORT
+    #define OPENFLUID_HELPER_DLL_EXPORT
+    #define OPENFLUID_HELPER_DLL_LOCAL
+  #endif
 #endif
 
 
+// =====================================================================
+// =====================================================================
 
-#endif /* __DLLEXPORT_HPP___ */
+
+// Now we use the generic helper definitions above to define OPENFLUID_API, OPENFLUID_LOCAL and OPENFLUID_PLUGIN
+// OPENFLUID_API is used for the public API symbols.
+// OPENFLUID_LOCAL is used for non-api symbols.
+// OPENFLUID_PLUGIN is used for plugins symbols (in simulators, observers, ...).
+
+#ifdef OPENFLUID_DLL // lib is a DLL
+  #ifdef OPENFLUID_DLL_EXPORTS // defined if we are building the DLL (instead of using it)
+    #define OPENFLUID_API OPENFLUID_HELPER_DLL_EXPORT
+  #else
+    #define OPENFLUID_API OPENFLUID_HELPER_DLL_IMPORT
+  #endif
+  #define OPENFLUID_LOCAL OPENFLUID_HELPER_DLL_LOCAL
+  #define OPENFLUID_PLUGIN OPENFLUID_HELPER_DLL_EXPORT
+#else // lib is static
+  #define OPENFLUID_API
+  #define OPENFLUID_LOCAL
+  #define OPENFLUID_PLUGIN OPENFLUID_HELPER_DLL_EXPORT
+#endif
+
+
+#endif /* __OPENFLUID_DLLEXPORT_HPP__ */

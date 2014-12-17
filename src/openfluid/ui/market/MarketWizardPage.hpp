@@ -37,8 +37,8 @@
  *      Author: Manuel CHATAIGNER
  */
 
-#ifndef __MARKETWIZARDPAGE_HPP__
-#define __MARKETWIZARDPAGE_HPP__
+#ifndef __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__
+#define __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <QWizardPage>
@@ -47,7 +47,7 @@
 namespace openfluid { namespace ui { namespace market {
 
 
-class DLLEXPORT MarketWizardPage : public QWizardPage
+class OPENFLUID_API MarketWizardPage : public QWizardPage
 {
   Q_OBJECT;
 
@@ -72,4 +72,4 @@ class DLLEXPORT MarketWizardPage : public QWizardPage
 } } } // namespaces
 
 
-#endif /* __MARKETWIZARDPAGE_HPP__ */
+#endif /* __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__ */

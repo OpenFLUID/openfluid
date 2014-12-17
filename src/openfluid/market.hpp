@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MARKET_HPP__
-#define __MARKET_HPP__
+#ifndef __OPENFLUID_MARKET_HPP__
+#define __OPENFLUID_MARKET_HPP__
 
 #include <openfluid/market/MarketBinPackage.hpp>
 #include <openfluid/market/MarketClient.hpp>
@@ -47,4 +47,4 @@
 #include <openfluid/market/MarketPackage.hpp>
 #include <openfluid/market/MarketSrcPackage.hpp>
 
-#endif /* __MARKET_HPP__ */
+#endif /* __OPENFLUID_MARKET_HPP__ */

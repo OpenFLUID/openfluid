@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __RANDOMGENERATOR_HPP__
-#define __RANDOMGENERATOR_HPP__
+#ifndef __OPENFLUID_MACHINE_RANDOMGENERATOR_HPP__
+#define __OPENFLUID_MACHINE_RANDOMGENERATOR_HPP__
 
 #include <boost/random.hpp>
 
@@ -51,7 +51,7 @@
 namespace openfluid { namespace machine {
 
 
-class DLLEXPORT RandomGenerator : public Generator
+class OPENFLUID_API RandomGenerator : public Generator
 {
   private:
     openfluid::core::DoubleValue m_Min;

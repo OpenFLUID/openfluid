@@ -36,8 +36,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __GEOVECTORVALUE_HPP__
-#define __GEOVECTORVALUE_HPP__
+#ifndef __OPENFLUID_CORE_GEOVECTORVALUE_HPP__
+#define __OPENFLUID_CORE_GEOVECTORVALUE_HPP__
 
 #include <openfluid/core/GeoValue.hpp>
 #include <openfluid/dllexport.hpp>
@@ -51,7 +51,7 @@ namespace core {
  * @brief Container class for geospatial vector data,
  * represented by an OGR datasource.
  */
-class DLLEXPORT GeoVectorValue: public openfluid::core::GeoValue
+class OPENFLUID_API GeoVectorValue: public openfluid::core::GeoValue
 {
   protected:
 
@@ -214,4 +214,4 @@ class DLLEXPORT GeoVectorValue: public openfluid::core::GeoValue
 }
 } // namespaces
 
-#endif /* __GEOVECTORVALUE_HPP__ */
+#endif /* __OPENFLUID_CORE_GEOVECTORVALUE_HPP__ */

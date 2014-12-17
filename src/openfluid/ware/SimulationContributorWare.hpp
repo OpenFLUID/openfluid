@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIMULATIONCONTRIBUTORWARE_HPP__
-#define __SIMULATIONCONTRIBUTORWARE_HPP__
+#ifndef __OPENFLUID_WARE_SIMULATIONCONTRIBUTORWARE_HPP__
+#define __OPENFLUID_WARE_SIMULATIONCONTRIBUTORWARE_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationInspectorWare.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace ware {
 
 
-class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
+class OPENFLUID_API SimulationContributorWare : public SimulationInspectorWare
 {
   private:
 
@@ -415,4 +415,4 @@ class DLLEXPORT SimulationContributorWare : public SimulationInspectorWare
 
 
 
-#endif /* __SIMULATIONCONTRIBUTORWARE_HPP__ */
+#endif /* __OPENFLUID_WARE_SIMULATIONCONTRIBUTORWARE_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DASHBOARDWIDGET_HPP__
-#define __DASHBOARDWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_DASHBOARDWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_DASHBOARDWIDGET_HPP__
 
 
 
@@ -66,4 +66,4 @@ class DashboardWidget : public QWidget
 
 
 
-#endif /* __DASHBOARDWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_DASHBOARDWIDGET_HPP__ */

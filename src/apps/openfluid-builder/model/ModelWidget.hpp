@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MODELWIDGET_HPP__
-#define __MODELWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MODELWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_MODELWIDGET_HPP__
 
 
 #include <QWidget>
@@ -117,4 +117,4 @@ class ModelWidget : public WorkspaceWidget
 
 
 
-#endif /* __MODELWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MODELWIDGET_HPP__ */

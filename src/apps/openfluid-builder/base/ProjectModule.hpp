@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PROJECTMODULE_HPP__
-#define __PROJECTMODULE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__
+#define __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__
 
 
 #include "AbstractModule.hpp"
@@ -192,4 +192,4 @@ class ProjectModule : public AbstractModule
 };
 
 
-#endif /* __PROJECTMODULE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__ */

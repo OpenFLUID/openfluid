@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OBSERVERWIDGET_HPP__
-#define __OBSERVERWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_OBSERVERWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_OBSERVERWIDGET_HPP__
 
 
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
@@ -90,4 +90,4 @@ class ObserverWidget : public WareWidget
 
 
 
-#endif /* __OBSERVERWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_OBSERVERWIDGET_HPP__ */

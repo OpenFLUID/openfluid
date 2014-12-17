@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MARKETBUILDOPTIONSDIALOG_HPP__
-#define __MARKETBUILDOPTIONSDIALOG_HPP__
+#ifndef __OPENFLUID_UIMARKET_MARKETBUILDOPTIONSDIALOG_HPP__
+#define __OPENFLUID_UIMARKET_MARKETBUILDOPTIONSDIALOG_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <QDialog>
@@ -53,7 +53,7 @@ namespace openfluid { namespace ui { namespace market {
 // =====================================================================
 
 
-class DLLEXPORT MarketBuildOptionsDialog : public QDialog
+class OPENFLUID_API MarketBuildOptionsDialog : public QDialog
 {
   Q_OBJECT;
 
@@ -79,4 +79,4 @@ class DLLEXPORT MarketBuildOptionsDialog : public QDialog
 } } } // namespaces
 
 
-#endif /* __MARKETBUILDOPTIONSDIALOG_HPP__ */
+#endif /* __OPENFLUID_UIMARKET_MARKETBUILDOPTIONSDIALOG_HPP__ */

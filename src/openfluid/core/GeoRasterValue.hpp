@@ -36,8 +36,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __GEORASTERVALUE_HPP__
-#define __GEORASTERVALUE_HPP__
+#ifndef __OPENFLUID_CORE_GEORASTERVALUE_HPP__
+#define __OPENFLUID_CORE_GEORASTERVALUE_HPP__
 
 #include <openfluid/core/GeoValue.hpp>
 #include <openfluid/dllexport.hpp>
@@ -52,7 +52,7 @@ namespace core {
  * @brief Container class for geospatial raster data,
  * represented by a GDAL dataset.
  */
-class DLLEXPORT GeoRasterValue: public openfluid::core::GeoValue
+class OPENFLUID_API GeoRasterValue: public openfluid::core::GeoValue
 {
 
   protected:
@@ -113,4 +113,4 @@ class DLLEXPORT GeoRasterValue: public openfluid::core::GeoValue
 
 }
 } // namespaces
-#endif /* __GEORASTERVALUE_HPP__ */
+#endif /* __OPENFLUID_CORE_GEORASTERVALUE_HPP__ */

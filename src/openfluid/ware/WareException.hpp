@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __WAREEXCEPTION_HPP__
-#define __WAREEXCEPTION_HPP__
+#ifndef __OPENFLUID_WARE_WAREEXCEPTION_HPP__
+#define __OPENFLUID_WARE_WAREEXCEPTION_HPP__
 
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
@@ -50,7 +50,7 @@
 namespace openfluid { namespace ware {
 
 
-class DLLEXPORT WareException : public openfluid::base::Exception
+class OPENFLUID_API WareException : public openfluid::base::Exception
 {
   protected:
 
@@ -183,4 +183,4 @@ class DLLEXPORT WareException : public openfluid::base::Exception
 
 
 
-#endif /* __WAREEXCEPTION_HPP__ */
+#endif /* __OPENFLUID_WARE_WAREEXCEPTION_HPP__ */

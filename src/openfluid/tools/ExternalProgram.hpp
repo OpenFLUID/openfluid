@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __EXTERNALPROGRAM_HPP__
-#define __EXTERNALPROGRAM_HPP__
+#ifndef __OPENFLUID_TOOLS_EXTERNALPROGRAM_HPP__
+#define __OPENFLUID_TOOLS_EXTERNALPROGRAM_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -51,7 +51,7 @@ namespace openfluid { namespace tools {
 /**
   Management of external programs
 */
-class DLLEXPORT ExternalProgram
+class OPENFLUID_API ExternalProgram
 {
   private:
 
@@ -133,4 +133,4 @@ class DLLEXPORT ExternalProgram
 
 } } // namespaces
 
-#endif /* __EXTERNALPROGRAM_HPP__ */
+#endif /* __OPENFLUID_TOOLS_EXTERNALPROGRAM_HPP__ */

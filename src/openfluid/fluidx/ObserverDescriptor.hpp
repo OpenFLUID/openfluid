@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OBSERVERDESCRIPTOR_HPP__
-#define __OBSERVERDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_OBSERVERDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_OBSERVERDESCRIPTOR_HPP__
 
 #include <openfluid/fluidx/WareDescriptor.hpp>
 
@@ -65,4 +65,4 @@ class ObserverDescriptor : public WareDescriptor
 } } // namespaces
 
 
-#endif /* __OBSERVERDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_OBSERVERDESCRIPTOR_HPP__ */

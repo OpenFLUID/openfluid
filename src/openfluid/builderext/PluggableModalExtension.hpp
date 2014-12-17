@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PLUGGABLEMODALEXTENSION_HPP__
-#define __PLUGGABLEMODALEXTENSION_HPP__
+#ifndef __OPENFLUID_BUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__
+#define __OPENFLUID_BUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__
 
 #include <QDialog>
 
@@ -50,7 +50,7 @@
 
 namespace openfluid { namespace builderext {
 
-class DLLEXPORT PluggableModalExtension : public QDialog, public PluggableBuilderExtension
+class OPENFLUID_API PluggableModalExtension : public QDialog, public PluggableBuilderExtension
 {
   Q_OBJECT;
 
@@ -89,4 +89,4 @@ class DLLEXPORT PluggableModalExtension : public QDialog, public PluggableBuilde
 } } // namespaces
 
 
-#endif /* __PLUGGABLEMODALEXTENSION_HPP__ */
+#endif /* __OPENFLUID_BUILDEREXT_PLUGGABLEMODALEXTENSION_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __TOOLS_HPP___
-#define __TOOLS_HPP___
+#ifndef __OPENFLUID_TOOLS_HPP__
+#define __OPENFLUID_TOOLS_HPP__
 
 #include <openfluid/tools/ColTextParser.hpp>
 #include <openfluid/tools/DistributionBindings.hpp>
@@ -47,4 +47,4 @@
 #include <openfluid/tools/ProgressiveChronFileReader.hpp>
 #include <openfluid/tools/SwissTools.hpp>
 
-#endif /* __TOOLS_HPP___ */
+#endif /* __OPENFLUID_TOOLS_HPP__ */

@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __ENGINE_HPP__
-#define __ENGINE_HPP__
+#ifndef __OPENFLUID_MACHINE_ENGINE_HPP__
+#define __OPENFLUID_MACHINE_ENGINE_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -73,7 +73,7 @@ class SimulationBlob;
 /**
   Computation engine class
 */
-class DLLEXPORT Engine
+class OPENFLUID_API Engine
 {
 
   private:

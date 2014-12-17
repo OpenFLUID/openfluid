@@ -48,7 +48,7 @@ namespace core {
 /**
  * @brief Abstract class for geospatial data.
  */
-class DLLEXPORT GeoValue: public openfluid::core::UnstructuredValue
+class OPENFLUID_API GeoValue: public openfluid::core::UnstructuredValue
 {
   protected:
 

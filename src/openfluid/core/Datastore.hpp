@@ -36,8 +36,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DATASTORE_HPP__
-#define __DATASTORE_HPP__
+#ifndef __OPENFLUID_CORE_DATASTORE_HPP__
+#define __OPENFLUID_CORE_DATASTORE_HPP__
 
 #include <map>
 #include <string>
@@ -51,7 +51,7 @@ class DatastoreItem;
  * @brief Container class for holding information about additional resources
  * relating to a project.
  */
-class DLLEXPORT Datastore
+class OPENFLUID_API Datastore
 {
   public:
 
@@ -111,4 +111,4 @@ class DLLEXPORT Datastore
 
 } } // namespaces
 
-#endif /* __DATASTORE_HPP__ */
+#endif /* __OPENFLUID_CORE_DATASTORE_HPP__ */

@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __DEFAULTBUDDIESLISTENER_HPP__
-#define __DEFAULTBUDDIESLISTENER_HPP__
+#ifndef __OPENFLUID_CMDLINEAPP_DEFAULTBUDDIESLISTENER_HPP__
+#define __OPENFLUID_CMDLINEAPP_DEFAULTBUDDIESLISTENER_HPP__
 
 
 #include <openfluid/buddies/BuddiesListener.hpp>
@@ -110,4 +110,4 @@ class DefaultBuddiesListener : public openfluid::buddies::BuddiesListener
 };
 
 
-#endif /* __DEFAULTBUDDIESLISTENER_HPP__ */
+#endif /* __OPENFLUID_CMDLINEAPP_DEFAULTBUDDIESLISTENER_HPP__ */

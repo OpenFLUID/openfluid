@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __BUDDIESLISTENER_HPP__
-#define __BUDDIESLISTENER_HPP__
+#ifndef __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__
+#define __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/base/Listener.hpp>
@@ -52,7 +52,7 @@ namespace openfluid { namespace buddies {
 // =====================================================================
 
 
-class DLLEXPORT BuddiesListener : public openfluid::base::Listener
+class OPENFLUID_API BuddiesListener : public openfluid::base::Listener
 {
   private:
 
@@ -80,4 +80,4 @@ class DLLEXPORT BuddiesListener : public openfluid::base::Listener
 
 } } //namespaces
 
-#endif /* __BUDDIESLISTENER_HPP__ */
+#endif /* __OPENFLUID_BUDDIES_BUDDIESLISTENER_HPP__ */

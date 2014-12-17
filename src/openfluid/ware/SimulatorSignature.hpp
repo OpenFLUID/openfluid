@@ -37,8 +37,8 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#ifndef __SIMULATORSIGNATURE_HPP__
-#define __SIMULATORSIGNATURE_HPP__
+#ifndef __OPENFLUID_WARE_SIMULATORSIGNATURE_HPP__
+#define __OPENFLUID_WARE_SIMULATORSIGNATURE_HPP__
 
 
 #include <openfluid/config.hpp>
@@ -271,7 +271,7 @@ typedef std::string SimDomain_t;
 /**
 Class for storage of the definition of data handled by the simulator.
 */
-class DLLEXPORT SignatureHandledDataItem
+class OPENFLUID_API SignatureHandledDataItem
 {
   public:
 
@@ -292,7 +292,7 @@ class DLLEXPORT SignatureHandledDataItem
 /**
 Class for storage of the definition of typed data handled by the simulator.
 */
-class DLLEXPORT SignatureHandledTypedDataItem : public SignatureHandledDataItem
+class OPENFLUID_API SignatureHandledTypedDataItem : public SignatureHandledDataItem
 {
 
   public:
@@ -312,7 +312,7 @@ class DLLEXPORT SignatureHandledTypedDataItem : public SignatureHandledDataItem
 /**
   Class for storage of the definition of spatial units handled by the simulator.
 */
-class DLLEXPORT SignatureHandledUnitsClassItem
+class OPENFLUID_API SignatureHandledUnitsClassItem
 {
   public:
 
@@ -331,7 +331,7 @@ class DLLEXPORT SignatureHandledUnitsClassItem
 /**
   Class for storage of the definition of the data handled by the simulator. This is part of the signature.
 */
-class DLLEXPORT SignatureHandledData
+class OPENFLUID_API SignatureHandledData
 {
   public:
 
@@ -366,7 +366,7 @@ class DLLEXPORT SignatureHandledData
 };
 
 
-class DLLEXPORT SignatureHandledUnitsGraph
+class OPENFLUID_API SignatureHandledUnitsGraph
 {
   public:
 
@@ -381,7 +381,7 @@ class DLLEXPORT SignatureHandledUnitsGraph
 };
 
 
-class DLLEXPORT SignatureTimeScheduling
+class OPENFLUID_API SignatureTimeScheduling
 {
   public:
 
@@ -432,7 +432,7 @@ class DLLEXPORT SignatureTimeScheduling
   Class encapsulating the plugin signature,
   returned from the plugin to the host app for registering
 */
-class DLLEXPORT SimulatorSignature : public WareSignature
+class OPENFLUID_API SimulatorSignature : public WareSignature
 {
 
   public:

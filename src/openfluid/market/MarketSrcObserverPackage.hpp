@@ -37,8 +37,8 @@
  *      Author: Manuel CHATAIGNER
 */
 
-#ifndef __MARKETSRCOBSERVERPACKAGE_HPP__
-#define __MARKETSRCOBSERVERPACKAGE_HPP__
+#ifndef __OPENFLUID_MARKET_MARKETSRCOBSERVERPACKAGE_HPP__
+#define __OPENFLUID_MARKET_MARKETSRCOBSERVERPACKAGE_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace market {
 
 
-class DLLEXPORT MarketSrcObserverPackage : public MarketSrcPackage
+class OPENFLUID_API MarketSrcObserverPackage : public MarketSrcPackage
 {
   public:
 
@@ -64,4 +64,4 @@ class DLLEXPORT MarketSrcObserverPackage : public MarketSrcPackage
 } } // namespaces
 
 
-#endif /* __MARKETSRCOBSERVERPACKAGE_HPP__ */
+#endif /* __OPENFLUID_MARKET_MARKETSRCOBSERVERPACKAGE_HPP__ */

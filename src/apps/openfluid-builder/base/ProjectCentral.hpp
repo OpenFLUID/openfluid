@@ -35,8 +35,8 @@
  \author Jean-Christophe Fabre <fabrejc@supagro.inra.fr>
  */
 
-#ifndef __PROJECTCENTRAL_HPP__
-#define __PROJECTCENTRAL_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_PROJECTCENTRAL_HPP__
+#define __OPENFLUID_BUILDERAPP_PROJECTCENTRAL_HPP__
 
 
 #include <QObject>
@@ -122,5 +122,5 @@ class ProjectCentral : QObject
 
 };
 
-#endif /* __PROJECTCENTRAL_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_PROJECTCENTRAL_HPP__ */
 
