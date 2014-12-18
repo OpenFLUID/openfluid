@@ -147,6 +147,11 @@ class ProjectModule : public AbstractModule
     void checkInputDir();
 
 
+  public slots:
+
+    void whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType);
+
+
   public:
 
     ProjectModule(const QString& ProjectPath);
@@ -186,6 +191,16 @@ class ProjectModule : public AbstractModule
     void whenWaresRefreshAsked();
 
     bool whenOpenExampleAsked();
+
+    void whenNewSimulatorSrcAsked();
+
+    void whenOpenSimulatorSrcAsked();
+
+    void whenNewObserverSrcAsked();
+
+    void whenOpenObserverSrcAsked();
+
+    void whenLaunchDevStudioAsked();
 
     bool isOkForSimulation() const;
 

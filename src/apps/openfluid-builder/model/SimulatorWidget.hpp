@@ -43,10 +43,10 @@
 
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include "WareWidget.hpp"
+#include "ClickableWareWidget.hpp"
 
 
-class SimulatorWidget : public WareWidget
+class SimulatorWidget : public ClickableWareWidget
 {
   Q_OBJECT;
 

@@ -54,6 +54,12 @@ class HomeModule : public AbstractModule
 
      const AppActions* mp_Actions;
 
+
+  public slots:
+
+    void whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType);
+
+
   public:
 
     HomeModule(const AppActions* Actions);
@@ -94,6 +100,17 @@ class HomeModule : public AbstractModule
     void whenWaresRefreshAsked();
 
     bool whenOpenExampleAsked();
+
+    void whenNewSimulatorSrcAsked();
+
+    void whenOpenSimulatorSrcAsked();
+
+    void whenNewObserverSrcAsked();
+
+    void whenOpenObserverSrcAsked();
+
+    void whenLaunchDevStudioAsked();
+
 };
 
 

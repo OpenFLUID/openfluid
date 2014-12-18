@@ -54,7 +54,8 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
 ### COMMON #
 
 SET(BUILDER_COMMON_CPP common/AppTools.cpp                       
-                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
+                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/ClickableWareWidget.cpp 
+                       common/SignatureWidget.cpp common/ParameterWidget.cpp
                        common/AddWareDialog.cpp
                        common/AddParamDialog.cpp
                        )
@@ -62,7 +63,8 @@ SET(BUILDER_COMMON_CPP common/AppTools.cpp
 SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
                        common/WorkspaceWidget.hpp
                        common/AppTools.hpp
-                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
+                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/ClickableWareWidget.hpp 
+                       common/SignatureWidget.hpp common/ParameterWidget.hpp  
                        common/AddWareDialog.hpp
                        common/AddParamDialog.hpp
                       )
@@ -233,8 +235,13 @@ IF(WIN32)
 ENDIF()
 
 
-
 ### MAIN LIB AND EXECUTABLE #
+
+
+IF(ENABLE_WARESDEV_BUILDER_INTEGRATION)
+  ADD_DEFINITIONS(-DENABLE_WARESDEV_INTEGRATION)
+ENDIF()  
+
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP} ${BUILDER_BASE_UI}
                                           ${BUILDER_COMMON_CPP} ${BUILDER_COMMON_HPP} ${BUILDER_COMMON_UI}

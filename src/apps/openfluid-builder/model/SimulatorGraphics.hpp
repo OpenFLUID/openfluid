@@ -45,11 +45,20 @@
 #include "ModelItemGraphics.hpp"
 
 
-class SimulatorGraphics : public ModelItemGraphics
+class SimulatorGraphics : public QObject, public ModelItemGraphics
 {
+  Q_OBJECT;
+
   protected:
 
     static QPointF m_ProducedIOFromCenter;
+
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* Event);
+
+
+  signals:
+
+    void srcEditAsked(const QString&);
 
 
   public:

@@ -44,13 +44,16 @@
 #include <QWidget>
 #include <QString>
 
+#include <openfluid/ware/PluggableWare.hpp>
+
 
 class AbstractModule : public QObject
 {
   Q_OBJECT;
 
-  private:
+  public slots:
 
+    virtual void whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType) = 0;
 
 
   public:
@@ -99,6 +102,15 @@ class AbstractModule : public QObject
 
     virtual bool whenOpenExampleAsked() = 0;
 
+    virtual void whenNewSimulatorSrcAsked() = 0;
+
+    virtual void whenOpenSimulatorSrcAsked() = 0;
+
+    virtual void whenNewObserverSrcAsked() = 0;
+
+    virtual void whenOpenObserverSrcAsked() = 0;
+
+    virtual void whenLaunchDevStudioAsked() = 0;
 
 
 };

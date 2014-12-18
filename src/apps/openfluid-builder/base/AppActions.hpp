@@ -60,6 +60,8 @@ class AppActions : QObject
 
     std::map<openfluid::ware::WareID_t,QAction*> m_ExtensionsActions;
 
+    QMenu* mp_DevelopmentMenu;
+
     QMenu* mp_SimulationMenu;
 
     QMenu* mp_ExtensionsMenu;

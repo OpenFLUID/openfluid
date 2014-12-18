@@ -124,6 +124,16 @@ class AppCoordinator : public QObject
 
     void whenAboutAsked();
 
+    void whenNewSimulatorSrcAsked();
+
+    void whenOpenSimulatorSrcAsked();
+
+    void whenNewObserverSrcAsked();
+
+    void whenOpenObserverSrcAsked();
+
+    void whenLaunchDevStudioAsked();
+
     void enableSave();
 
     void disableSave();

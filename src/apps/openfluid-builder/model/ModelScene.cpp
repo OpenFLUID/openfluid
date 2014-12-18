@@ -68,6 +68,16 @@ ModelScene::~ModelScene()
 // =====================================================================
 
 
+void ModelScene::notifySrcEditAsked(const QString& ID)
+{
+  emit srcEditAsked(ID);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void ModelScene::refresh()
 {
   // clear existing scene
@@ -133,6 +143,7 @@ void ModelScene::refresh()
         SimCount++;
         SimG->initialize();
         m_GraphicsItems.append(SimG);
+        connect(SimG,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
       }
       if ((*it)->getType() == openfluid::fluidx::WareDescriptor::Generator)
       {

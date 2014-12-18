@@ -94,11 +94,6 @@ class WareWidget : public QWidget
 
     bool m_ParamsExpanded;
 
-    openfluid::ui::common::ActionLabel* mp_ShowHideParamsLabel;
-
-    openfluid::ui::common::ClickableLabel* mp_EnableLabel;
-
-    SignatureWidget* mp_SignatureWidget;
 
     virtual void setAvailableWare(bool Available);
 

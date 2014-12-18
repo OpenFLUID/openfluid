@@ -31,77 +31,35 @@
 
 
 /**
-  \file MonitoringWidget.hpp
-  \brief Header of ...
+  \file ClickableWareWidget.cpp
+  \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __OPENFLUID_BUILDERAPP_MONITORINGWIDGET_HPP__
-#define __OPENFLUID_BUILDERAPP_MONITORINGWIDGET_HPP__
+#include "ClickableWareWidget.hpp"
 
 
-#include <QWidget>
 
-#include "WorkspaceWidget.hpp"
-#include "WaresManagementWidget.hpp"
+ClickableWareWidget::ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
+                                         bool Enabled, const QString& BGColor):
+  WareWidget(Parent,ID,Enabled,BGColor)
 
-
-namespace Ui
 {
-  class MonitoringWidget;
+
 }
 
 
-class MonitoringWidget : public WorkspaceWidget
+// =====================================================================
+// =====================================================================
+
+
+void ClickableWareWidget::mouseDoubleClickEvent(QMouseEvent* Event)
 {
-  Q_OBJECT
+#ifdef ENABLE_WARESDEV_INTEGRATION
+  emit srcEditAsked(QString::fromStdString(m_ID));
+#endif
 
-  private:
-
-    Ui::MonitoringWidget* ui;
-
-    WaresManagementWidget* mp_WaresManWidget;
-
-    openfluid::fluidx::AdvancedMonitoringDescriptor& m_Monitoring;
-
-
-  private slots:
-
-    void addObserver();
-
-    void moveModelItemUp(const QString& ID);
-
-    void moveModelItemDown(const QString& ID);
-
-    void removeModelItem(const QString& ID);
-
-    void dispatchChangesFromChildren();
-
-
-  public slots:
-
-    void refresh();
-
-    void notifySrcEditAsked(const QString& ID);
-
-
-    signals:
-
-      void srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType);
-
-
-  public:
-
-    MonitoringWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescriptor& AFXDesc);
-
-    virtual ~MonitoringWidget();
-
-    void updateWares();
-};
-
-
-
-
-#endif /* __OPENFLUID_BUILDERAPP_MONITORINGWIDGET_HPP__ */
+  QWidget::mousePressEvent(Event);
+}

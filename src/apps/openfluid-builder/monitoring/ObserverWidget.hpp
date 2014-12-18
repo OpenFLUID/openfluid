@@ -43,10 +43,10 @@
 
 
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
-#include "WareWidget.hpp"
+#include "ClickableWareWidget.hpp"
 
 
-class ObserverWidget : public WareWidget
+class ObserverWidget : public ClickableWareWidget
 {
   Q_OBJECT;
 

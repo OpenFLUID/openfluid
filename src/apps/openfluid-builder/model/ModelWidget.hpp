@@ -100,6 +100,13 @@ class ModelWidget : public WorkspaceWidget
 
     void dispatchChangesFromChildren();
 
+    void notifySrcEditAsked(const QString& ID);
+
+
+  signals:
+
+    void srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType);
+
 
   public slots:
 

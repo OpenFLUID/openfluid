@@ -55,6 +55,7 @@ GeneratorWidget::GeneratorWidget(QWidget* Parent,
   WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_GENERATOR_BGCOLOR),mp_Desc(Desc), mp_SignInstance(SignInstance)
 {
   ui->AddParamButton->setVisible(false);
+
   refresh();
 }
 
@@ -115,7 +116,7 @@ void GeneratorWidget::refresh()
     ui->NameLabel->setText(QString::fromStdString(mp_SignInstance->Signature->Name));
 
     // TODO add produced variable in signature
-    mp_SignatureWidget->update(mp_SignInstance);
+    ui->InfosWidget->update(mp_SignInstance);
 
     updateParams();
   }

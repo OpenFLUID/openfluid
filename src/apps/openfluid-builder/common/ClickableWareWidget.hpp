@@ -29,51 +29,30 @@
   
 */
 
-
 /**
-  \file ModelScene.hpp
+  \file ClickableWareWidget.hpp
   \brief Header of ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
 
-#ifndef __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__
-#define __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__
 
-#include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
-#include <QGraphicsScene>
+#ifndef __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__
 
-#include "ModelItemGraphics.hpp"
+#include "WareWidget.hpp"
+
+#include <QMouseEvent>
 
 
-class ModelScene : public QGraphicsScene
+class ClickableWareWidget : public WareWidget
 {
   Q_OBJECT;
 
-  private slots:
+  protected:
 
-    void notifySrcEditAsked(const QString& ID);
-
-
-  private:
-
-    const openfluid::fluidx::AdvancedModelDescriptor& m_Model;
-
-    QList<ModelItemGraphics*> m_GraphicsItems;
-
-    QList<ConnectorGraphics*> m_GraphicsConnections;
-
-    void buildConnections();
-
-    void addConnection(ModelItemGraphics* FromItem, ConnectorGraphics::OutNodeType FromOutNode,
-                       ModelItemGraphics* ToItem, ConnectorGraphics::InNodeType ToInNode,
-                       const QString& UnitClass, const QString& VarName);
-
-
-  public slots:
-
-    void showVariables(bool Show);
+    void mouseDoubleClickEvent(QMouseEvent* Event);
 
 
   signals:
@@ -83,15 +62,9 @@ class ModelScene : public QGraphicsScene
 
   public:
 
-    ModelScene(const openfluid::fluidx::AdvancedModelDescriptor& ModelDesc, QObject* Parent = 0);
-
-    ~ModelScene();
-
-    void refresh();
-
+    ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, bool Enabled, const QString& BGColor);
 
 };
 
 
-
-#endif /* __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__ */

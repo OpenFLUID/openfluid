@@ -51,7 +51,7 @@
 
 SimulatorWidget::SimulatorWidget(QWidget* Parent, openfluid::fluidx::ModelItemDescriptor* Desc,
                                  const openfluid::ware::WareID_t& ID):
-  WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR), mp_Desc(Desc)
+  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_SIMULATOR_BGCOLOR), mp_Desc(Desc)
 {
   refresh();
 
@@ -139,7 +139,7 @@ void SimulatorWidget::refresh()
   {
     setAvailableWare(true);
     ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
-    mp_SignatureWidget->update(Signature);
+    ui->InfosWidget->update(Signature);
 
     updateParams(Signature);
   }
