@@ -134,7 +134,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
     void prepareData()
     {
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
@@ -185,7 +185,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     openfluid::base::SchedulingRequest initializeRun()
     {
 
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
@@ -208,7 +208,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     // =====================================================================
 
 
-    double getWindCoefficient(openfluid::core::Unit* U)
+    double getWindCoefficient(openfluid::core::SpatialUnit* U)
     {
       openfluid::core::UnitsPtrList_t* ParentAU = U->getParentUnits("AU");
 
@@ -239,7 +239,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     // =====================================================================
 
 
-    void updateStock(openfluid::core::Unit* U)
+    void updateStock(openfluid::core::SpatialUnit* U)
     {
 
       openfluid::core::IntegerValue Stock;
@@ -285,7 +285,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
     // =====================================================================
 
 
-    void updateStatus(openfluid::core::Unit* U)
+    void updateStatus(openfluid::core::SpatialUnit* U)
     {
       openfluid::core::UnitsPtrList_t* FromLU = U->getFromUnits("LU");
 
@@ -320,7 +320,7 @@ class FireProductionSpreadingSimulator : public openfluid::ware::PluggableSimula
 
     openfluid::base::SchedulingRequest runStep()
     {
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {

@@ -161,4 +161,4 @@ class OPENFLUID_API ModelInstance
 } } //namespaces
 
 
-#endif /* __MODELINSTANCE_H__ */
+#endif /* __OPENFLUID_MACHINE_MODELINSTANCE_HPP__ */

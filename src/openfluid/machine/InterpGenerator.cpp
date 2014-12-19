@@ -158,7 +158,7 @@ openfluid::base::SchedulingRequest InterpGenerator::initializeRun()
   m_DistriBindings->advanceToTime(CurrentDT);
 
   openfluid::core::DoubleValue Value;
-  openfluid::core::Unit* LU;
+  openfluid::core::SpatialUnit* LU;
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
   {
@@ -204,7 +204,7 @@ openfluid::base::SchedulingRequest InterpGenerator::runStep()
   m_DistriBindings->advanceToTime(CurrentDT);
 
   openfluid::core::DoubleValue Value;
-  openfluid::core::Unit* LU;
+  openfluid::core::SpatialUnit* LU;
 
   OPENFLUID_UNITS_ORDERED_LOOP(m_UnitClass,LU)
   {

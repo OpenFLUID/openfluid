@@ -38,8 +38,7 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-
-#include <openfluid/fluidx/DomainDescriptor.hpp>
+#include <openfluid/fluidx/SpatialUnitDescriptor.hpp>
 
 namespace openfluid { namespace fluidx {
 
@@ -48,7 +47,8 @@ namespace openfluid { namespace fluidx {
 // =====================================================================
 
 
-DomainDescriptor::DomainDescriptor()
+SpatialUnitDescriptor::SpatialUnitDescriptor():
+  m_UnitID(0), m_UnitClass(""), m_PcsOrder(1)
 {
 
 }
@@ -57,7 +57,7 @@ DomainDescriptor::DomainDescriptor()
 // =====================================================================
 
 
-DomainDescriptor::~DomainDescriptor()
+SpatialUnitDescriptor::~SpatialUnitDescriptor()
 {
 
 }

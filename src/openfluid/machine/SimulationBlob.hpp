@@ -41,10 +41,10 @@
 #ifndef __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
 #define __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
 
-#include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
 
 namespace openfluid { namespace machine {
 
@@ -52,7 +52,7 @@ class OPENFLUID_API SimulationBlob
 {
   private:
 
-    openfluid::core::CoreRepository m_CoreRepos;
+    openfluid::core::SpatialGraph m_SpatialGraph;
 
     openfluid::fluidx::RunDescriptor m_RunDescriptor;
 
@@ -66,7 +66,7 @@ class OPENFLUID_API SimulationBlob
 
     ~SimulationBlob();
 
-    inline openfluid::core::CoreRepository& getCoreRepository() { return m_CoreRepos; };
+    inline openfluid::core::SpatialGraph& getSpatialGraph() { return m_SpatialGraph; };
 
     inline openfluid::fluidx::RunDescriptor& getRunDescriptor() {return  m_RunDescriptor; };
 
@@ -74,7 +74,7 @@ class OPENFLUID_API SimulationBlob
 
     inline openfluid::core::Datastore& getDatastore() { return m_Datastore; };
 
-    inline const openfluid::core::CoreRepository& getCoreRepository() const { return m_CoreRepos; };
+    inline const openfluid::core::SpatialGraph& getSpatialGraph() const { return m_SpatialGraph; };
 
     inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const {return  m_RunDescriptor; };
 

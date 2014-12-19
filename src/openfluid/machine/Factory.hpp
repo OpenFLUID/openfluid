@@ -55,11 +55,11 @@ class ExecutionMessages;
 class OutputDescriptor;
 }
 namespace core {
-class CoreRepository;
+class SpatialGraph;
 class Datastore;
 }
 namespace fluidx {
-class DomainDescriptor;
+class SpatialDomainDescriptor;
 class RunDescriptor;
 class DatastoreDescriptor;
 }
@@ -77,8 +77,8 @@ class OPENFLUID_API Factory
 {
   public:
 
-    static void buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Descriptor,
-                                          openfluid::core::CoreRepository& CoreRepos);
+    static void buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
+                                          openfluid::core::SpatialGraph& SGraph);
 
     static void buildDatastoreFromDescriptor(openfluid::fluidx::DatastoreDescriptor& Descriptor,
                                              openfluid::core::Datastore& Store);

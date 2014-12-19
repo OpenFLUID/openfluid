@@ -31,54 +31,54 @@
 
 
 
-/**
-  @file
-
-  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
- */
+#ifndef __OPENFLUID_CORE_UNITSCOLLECTION_HPP__
+#define __OPENFLUID_CORE_UNITSCOLLECTION_HPP__
 
 
-#ifndef __OPENFLUID_FLUIDX_DOMAINDESCRIPTOR_HPP__
-#define __OPENFLUID_FLUIDX_DOMAINDESCRIPTOR_HPP__
+
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/fluidx/UnitDescriptor.hpp>
-#include <openfluid/fluidx/AttributesDescriptor.hpp>
-#include <openfluid/fluidx/EventDescriptor.hpp>
+#include <openfluid/core/TypeDefs.hpp>
+//#include <openfluid/core/Unit.hpp>
 
 
-namespace openfluid { namespace fluidx {
+namespace openfluid { namespace core {
 
 
-class OPENFLUID_API DomainDescriptor
+class /*DLLEXPORT*/ SpatialUnit;
+
+/**
+  Type definition for a list of units
+*/
+typedef std::list<SpatialUnit> UnitsList_t;
+
+
+class OPENFLUID_API UnitsCollection
 {
-  private:
+  private :
 
-    std::list<UnitDescriptor> m_DefDescriptor;
-
-    std::list<AttributesDescriptor> m_AttrsDescriptor;
-
-    std::list<EventDescriptor> m_EventsDescriptor;
+    UnitsList_t m_Data;
 
 
-  public:
+  public :
 
-    DomainDescriptor();
+    UnitsCollection();
 
-    ~DomainDescriptor();
+    ~UnitsCollection();
 
-    inline std::list<UnitDescriptor>& getUnits() { return m_DefDescriptor; };
+    SpatialUnit* getUnit(UnitID_t aUnitID);
 
-    inline const std::list<UnitDescriptor>& getUnits() const { return m_DefDescriptor; };
+    SpatialUnit* addUnit(SpatialUnit aUnit);
 
-    inline std::list<AttributesDescriptor>& getAttributes() { return m_AttrsDescriptor; };
+    void sortByProcessOrder();
 
-    inline std::list<EventDescriptor>& getEvents() { return m_EventsDescriptor; };
+    inline const UnitsList_t* getList() const { return &m_Data; };
 
+    inline UnitsList_t* getList() { return &m_Data; };
 
 };
 
-
 } } // namespaces
 
-#endif /* __OPENFLUID_FLUIDX_DOMAINDESCRIPTOR_HPP__ */
+
+#endif /* __OPENFLUID_CORE_UNITSCOLLECTION_HPP__ */

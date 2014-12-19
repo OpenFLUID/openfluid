@@ -405,7 +405,7 @@ class GeoVectorFilesObserver : public openfluid::ware::PluggableObserver
 
 
         OGRFeature* SourceFeature;
-        openfluid::core::Unit* UU;
+        openfluid::core::SpatialUnit* UU;
 
         Serie.GeoLayer->ResetReading();
         while ((SourceFeature = Serie.GeoLayer->GetNextFeature()) != NULL)

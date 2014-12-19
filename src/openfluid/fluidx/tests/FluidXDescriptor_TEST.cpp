@@ -221,7 +221,7 @@ void TestDataset(std::string DatasetPath)
   // Domain definition
   // ====================================================================
 
-  std::list<openfluid::fluidx::UnitDescriptor>::iterator UnitsIt;
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator UnitsIt;
 
   BOOST_REQUIRE_EQUAL(FXDesc.getDomainDescriptor().getUnits().size(), 14);
 

@@ -103,7 +103,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
 
     void checkConsistency()
     {
-      openfluid::core::Unit * TLU;
+      openfluid::core::SpatialUnit * TLU;
       openfluid::core::StringValue Period;
       openfluid::core::IntegerValue PeriodInt;
 
@@ -142,7 +142,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
     {
 
       bool StateBool;
-      openfluid::core::Unit * pTLU;
+      openfluid::core::SpatialUnit * pTLU;
       openfluid::core::StringValue PeriodString;
       openfluid::core::IntegerValue PeriodInt;
       openfluid::core::StringValue State;
@@ -166,7 +166,7 @@ class TLUSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest runStep()
     {
-      openfluid::core::Unit * pTLU;
+      openfluid::core::SpatialUnit * pTLU;
       openfluid::core::StringValue PeriodString;
       openfluid::core::IntegerValue PeriodInt;
       openfluid::core::IntegerValue NextPeriod;

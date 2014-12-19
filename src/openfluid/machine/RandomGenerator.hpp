@@ -84,4 +84,4 @@ class OPENFLUID_API RandomGenerator : public Generator
 
 
 
-#endif /* __RANDOMGENERATOR_H___ */
+#endif /* __OPENFLUID_MACHINE_RANDOMGENERATOR_HPP__ */

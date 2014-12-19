@@ -31,21 +31,21 @@
 
 
 
-#ifndef __OPENFLUID_CORE_COREREPOSITORY_HPP__
-#define __OPENFLUID_CORE_COREREPOSITORY_HPP__
+#ifndef __OPENFLUID_CORE_SPATIALGRAPH_HPP__
+#define __OPENFLUID_CORE_SPATIALGRAPH_HPP__
 
 
+#include <openfluid/core/SpatialUnit.hpp>
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core/Unit.hpp>
 
 
 namespace openfluid { namespace core {
 
-class Unit;
+class SpatialUnit;
 class UnitsCollection;
 
 
-class OPENFLUID_API CoreRepository
+class OPENFLUID_API SpatialGraph
 {
   private:
 
@@ -58,21 +58,21 @@ class OPENFLUID_API CoreRepository
 
   public:
 
-    CoreRepository();
+    SpatialGraph();
 
-    bool addUnit(const Unit aUnit);
+    bool addUnit(const SpatialUnit aUnit);
 
-    bool deleteUnit(Unit* aUnit);
+    bool deleteUnit(SpatialUnit* aUnit);
 
-    bool removeFromToConnection(Unit* FromUnit,
-                                Unit* ToUnit);
+    bool removeFromToConnection(SpatialUnit* FromUnit,
+                                SpatialUnit* ToUnit);
 
-    bool removeChildParentConnection(Unit* ChildUnit,
-                                     Unit* ParentUnit);
+    bool removeChildParentConnection(SpatialUnit* ChildUnit,
+                                     SpatialUnit* ParentUnit);
 
     bool sortUnitsByProcessOrder();
 
-    Unit* getUnit(UnitClass_t UnitClass, UnitID_t UnitID);
+    SpatialUnit* getUnit(UnitClass_t UnitClass, UnitID_t UnitID);
 
     UnitsCollection* getUnits(UnitClass_t UnitClass);
 
@@ -104,5 +104,5 @@ class OPENFLUID_API CoreRepository
 } } // namespaces
 
 
-#endif /* COREREPOSITORY_HPP_ */
+#endif /* __OPENFLUID_CORE_SPATIALGRAPH_HPP__ */
 

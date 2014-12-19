@@ -88,4 +88,4 @@ class OPENFLUID_API InterpGenerator : public Generator
 
 
 
-#endif /* __INTERPGENERATOR_H___ */
+#endif /* __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__ */

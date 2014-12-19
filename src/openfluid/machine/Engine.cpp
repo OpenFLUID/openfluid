@@ -111,7 +111,7 @@ void Engine::checkExistingVariable(const openfluid::core::VariableName_t& VarNam
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  if (m_SimulationBlob.getSpatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getSpatialGraph().getUnits(ClassName)->getList();
   else throw openfluid::base::FrameworkException("Engine::checkExistingVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable required by " + SimulatorID);
 
   bool Status = true;
@@ -147,7 +147,7 @@ void Engine::createVariable(const openfluid::core::VariableName_t& VarName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  if (m_SimulationBlob.getSpatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getSpatialGraph().getUnits(ClassName)->getList();
   else throw openfluid::base::FrameworkException("Engine::createVariable","Unit class " + ClassName + " does not exist for " + VarName + " variable produced by " + SimulatorID);
 
   bool Status = true;
@@ -187,7 +187,7 @@ void Engine::checkExistingAttribute(openfluid::core::AttributeName_t AttrName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  if (m_SimulationBlob.getSpatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getSpatialGraph().getUnits(ClassName)->getList();
   else throw openfluid::base::FrameworkException("Engine::checkExistingAttribute","Unit " + ClassName + " class does not exist for " + AttrName + " attribute required by " + SimulatorID);
 
   bool Status = true;
@@ -216,7 +216,7 @@ void Engine::createAttribute(openfluid::core::AttributeName_t AttrName,
   openfluid::core::UnitsList_t* UnitList;
 
   UnitList = NULL;
-  if (m_SimulationBlob.getCoreRepository().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getCoreRepository().getUnits(ClassName)->getList();
+  if (m_SimulationBlob.getSpatialGraph().isUnitsClassExist(ClassName)) UnitList = m_SimulationBlob.getSpatialGraph().getUnits(ClassName)->getList();
   else throw openfluid::base::FrameworkException("Engine::createAttribute","Unit class " + ClassName + " does not exist for " + AttrName + " attribute produced by " + SimulatorID);
 
 
@@ -241,7 +241,7 @@ void Engine::checkSimulationVarsProduction(int ExpectedVarsCount)
   std::vector<std::string> VarsNames;
 
 
-  AllUnits = m_SimulationBlob.getCoreRepository().getUnitsByClass();
+  AllUnits = m_SimulationBlob.getSpatialGraph().getUnitsByClass();
 
   for (UnitsClassesIter = AllUnits->begin(); UnitsClassesIter != AllUnits->end();++UnitsClassesIter)
   {

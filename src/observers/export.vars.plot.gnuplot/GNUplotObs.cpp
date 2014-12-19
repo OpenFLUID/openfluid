@@ -111,7 +111,7 @@ class SerieInfo
 
     openfluid::core::UnitID_t UnitID;
 
-    openfluid::core::Unit* Unit;
+    openfluid::core::SpatialUnit* Unit;
 
     std::string Label;
 
@@ -231,8 +231,8 @@ class GNUplotObserver : public openfluid::ware::PluggableObserver
 
         if (!SInfo.VarName.empty() && !SInfo.UnitClass.empty() && openfluid::tools::ConvertString(UnitIDStr,&SInfo.UnitID))
         {
-          openfluid::core::Unit* TmpU;
-          TmpU = mp_CoreData->getUnit(SInfo.UnitClass,SInfo.UnitID);
+          openfluid::core::SpatialUnit* TmpU;
+          TmpU = mp_SpatialData->getUnit(SInfo.UnitClass,SInfo.UnitID);
           if (TmpU != NULL)
           {
             SInfo.Type = SerieInfo::SERIE_VAR;

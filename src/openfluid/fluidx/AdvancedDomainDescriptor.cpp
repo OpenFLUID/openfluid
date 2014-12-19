@@ -38,9 +38,9 @@
 
 #include <openfluid/fluidx/AdvancedDomainDescriptor.hpp>
 
-#include <openfluid/fluidx/DomainDescriptor.hpp>
-#include <openfluid/fluidx/UnitDescriptor.hpp>
 #include <openfluid/fluidx/AttributesDescriptor.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
+#include <openfluid/fluidx/SpatialUnitDescriptor.hpp>
 #include <stdexcept>
 #include <algorithm>
 
@@ -48,7 +48,7 @@ namespace openfluid { namespace fluidx {
 
 
 AdvancedDomainDescriptor::AdvancedDomainDescriptor(
-    openfluid::fluidx::DomainDescriptor& DomainDesc) :
+    openfluid::fluidx::SpatialDomainDescriptor& DomainDesc) :
     mp_DomainDesc(&DomainDesc)
 {
   dispatchUnits();
@@ -77,10 +77,10 @@ AdvancedDomainDescriptor::~AdvancedDomainDescriptor()
 
 void AdvancedDomainDescriptor::dispatchUnits()
 {
-  std::list<openfluid::fluidx::UnitDescriptor>* Units =
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>* Units =
       &(mp_DomainDesc->getUnits());
 
-  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+  for (std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator it =
       Units->begin(); it != Units->end(); ++it)
   {
     if (!m_Units[it->getUnitClass()].insert(
@@ -97,10 +97,10 @@ void AdvancedDomainDescriptor::dispatchUnits()
 
 void AdvancedDomainDescriptor::checkUnitRelations() const
 {
-  std::list<openfluid::fluidx::UnitDescriptor>* Units =
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>* Units =
       &(mp_DomainDesc->getUnits());
 
-  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+  for (std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator it =
       Units->begin(); it != Units->end(); ++it)
   {
     checkUnitRelations(*it);
@@ -114,7 +114,7 @@ void AdvancedDomainDescriptor::checkUnitRelations() const
 
 
 void AdvancedDomainDescriptor::checkUnitRelations(
-    openfluid::fluidx::UnitDescriptor& Unit) const
+    openfluid::fluidx::SpatialUnitDescriptor& Unit) const
 {
   std::list<openfluid::core::UnitClassID_t>::iterator it;
 
@@ -334,7 +334,7 @@ const AdvancedUnitDescriptor& AdvancedDomainDescriptor::getUnit(const std::strin
 // =====================================================================
 
 
-const openfluid::fluidx::UnitDescriptor& AdvancedDomainDescriptor::getUnitDescriptor(const std::string& ClassName,
+const openfluid::fluidx::SpatialUnitDescriptor& AdvancedDomainDescriptor::getUnitDescriptor(const std::string& ClassName,
                                                                                      int ID) const
 {
   return *(getUnit(ClassName, ID).UnitDescriptor);
@@ -400,14 +400,14 @@ unsigned int AdvancedDomainDescriptor::getUnitsCount() const
 // =====================================================================
 
 
-void AdvancedDomainDescriptor::addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc)
+void AdvancedDomainDescriptor::addUnit(openfluid::fluidx::SpatialUnitDescriptor* UnitDesc)
 {
   std::string ClassName = UnitDesc->getUnitClass();
   int ID = UnitDesc->getUnitID();
 
   // add in DomainDesc - to do first to fetch the newly added pointer
   mp_DomainDesc->getUnits().push_back(*UnitDesc);
-  openfluid::fluidx::UnitDescriptor* NewUnitDesc =
+  openfluid::fluidx::SpatialUnitDescriptor* NewUnitDesc =
       &mp_DomainDesc->getUnits().back();
 
   // add in m_Units
@@ -485,10 +485,10 @@ void AdvancedDomainDescriptor::deleteUnit(const std::string& ClassName, int ID)
   }
 
   // delete in UnitDesc list and in other units relations
-  std::list<openfluid::fluidx::UnitDescriptor>& Units =
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>& Units =
       mp_DomainDesc->getUnits();
   openfluid::core::UnitClassID_t Unit = std::make_pair(ClassName, ID);
-  std::list<openfluid::fluidx::UnitDescriptor>::iterator it = Units.begin();
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator it = Units.begin();
   while (it != Units.end())
   {
     if (it->getUnitClass() == ClassName && (int) it->getUnitID() == ID)
@@ -955,11 +955,11 @@ std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsFrom
 {
   std::list<openfluid::core::UnitClassID_t> Froms;
 
-  std::list<openfluid::fluidx::UnitDescriptor>* Units =
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>* Units =
       &(mp_DomainDesc->getUnits());
   std::list<openfluid::core::UnitClassID_t>* Tos;
 
-  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+  for (std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator it =
       Units->begin(); it != Units->end(); ++it)
   {
     Tos = &(it->getUnitsTos());
@@ -985,11 +985,11 @@ std::list<openfluid::core::UnitClassID_t> AdvancedDomainDescriptor::getUnitsChil
 {
   std::list<openfluid::core::UnitClassID_t> Children;
 
-  std::list<openfluid::fluidx::UnitDescriptor>* Units =
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>* Units =
       &(mp_DomainDesc->getUnits());
   std::list<openfluid::core::UnitClassID_t>* Parents;
 
-  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+  for (std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator it =
       Units->begin(); it != Units->end(); ++it)
   {
     Parents = &(it->getUnitsParents());
@@ -1014,7 +1014,7 @@ void AdvancedDomainDescriptor::addFromToRelation(
     const openfluid::core::UnitClassID_t FromUnit,
     const openfluid::core::UnitClassID_t ToUnit)
 {
-  openfluid::fluidx::UnitDescriptor* UFrom;
+  openfluid::fluidx::SpatialUnitDescriptor* UFrom;
 
   try
   {
@@ -1058,7 +1058,7 @@ void AdvancedDomainDescriptor::removeFromToRelation(
     const openfluid::core::UnitClassID_t FromUnit,
     const openfluid::core::UnitClassID_t ToUnit)
 {
-  openfluid::fluidx::UnitDescriptor* UFrom;
+  openfluid::fluidx::SpatialUnitDescriptor* UFrom;
 
   try
   {
@@ -1112,7 +1112,7 @@ void AdvancedDomainDescriptor::addParentChildRelation(
     const openfluid::core::UnitClassID_t ParentUnit,
     const openfluid::core::UnitClassID_t ChildUnit)
 {
-  openfluid::fluidx::UnitDescriptor* UChild;
+  openfluid::fluidx::SpatialUnitDescriptor* UChild;
 
   try
   {
@@ -1155,7 +1155,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
     const openfluid::core::UnitClassID_t ParentUnit,
     const openfluid::core::UnitClassID_t ChildUnit)
 {
-  openfluid::fluidx::UnitDescriptor* UChild;
+  openfluid::fluidx::SpatialUnitDescriptor* UChild;
 
   try
   {
@@ -1207,7 +1207,7 @@ void AdvancedDomainDescriptor::removeParentChildRelation(
 void AdvancedDomainDescriptor::clearRelations(
     const openfluid::core::UnitClassID_t Unit)
 {
-  openfluid::fluidx::UnitDescriptor* U;
+  openfluid::fluidx::SpatialUnitDescriptor* U;
 
   try
   {

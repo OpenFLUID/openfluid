@@ -134,7 +134,7 @@ class CouplingBSimulator : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest initializeRun()
   {
 
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {
@@ -158,7 +158,7 @@ class CouplingBSimulator : public openfluid::ware::PluggableSimulator
   openfluid::base::SchedulingRequest runStep()
   {
 
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {

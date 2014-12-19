@@ -159,7 +159,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("tests.primitives.land","incorrect total number of units");
 
 
-      openfluid::core::Unit* CurrentUnit = NULL;
+      openfluid::core::SpatialUnit* CurrentUnit = NULL;
 
       CurrentUnit = OPENFLUID_GetUnit("TU",1);
       if (!OPENFLUID_IsUnitConnectedTo(CurrentUnit,"TU",22))
@@ -204,7 +204,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
         OPENFLUID_RaiseError("tests.primitives.land","incorrect parent-child connection for unit OU#5");
 
 
-      openfluid::core::Unit* TU;
+      openfluid::core::SpatialUnit* TU;
 
 
       OPENFLUID_UNITS_ORDERED_LOOP("TU", TU)
@@ -288,7 +288,7 @@ class LandPrimitivesSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest initializeRun()
     {
-      openfluid::core::Unit* TU;
+      openfluid::core::SpatialUnit* TU;
       double DblValue;
       std::string StrValue;
 

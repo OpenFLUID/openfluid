@@ -40,16 +40,16 @@
 
 #include <openfluid/machine/Factory.hpp>
 
-#include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreItemDescriptor.hpp>
-#include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/Datastore.hpp>
 #include <openfluid/core/DatastoreItem.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <openfluid/machine/ModelInstance.hpp>
 #include <openfluid/machine/ModelItemInstance.hpp>
 #include <openfluid/machine/ObserverInstance.hpp>
@@ -68,21 +68,21 @@ namespace openfluid { namespace machine {
 // =====================================================================
 
 
-void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Descriptor,
-                                        openfluid::core::CoreRepository& CoreRepos)
+void Factory::buildDomainFromDescriptor(openfluid::fluidx::SpatialDomainDescriptor& Descriptor,
+                                        openfluid::core::SpatialGraph& SGraph)
 {
 
   // ============== Domain definition ==============
 
-  std::list<openfluid::fluidx::UnitDescriptor>::iterator itUnits;
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator itUnits;
   std::list<openfluid::core::UnitClassID_t>::iterator itLinkedUnits;
 
-  openfluid::core::Unit *FromUnit, *ToUnit, *ParentUnit, *ChildUnit;
+  openfluid::core::SpatialUnit *FromUnit, *ToUnit, *ParentUnit, *ChildUnit;
 
   // creating units
   for (itUnits = Descriptor.getUnits().begin();itUnits != Descriptor.getUnits().end();++itUnits)
   {
-    CoreRepos.addUnit(openfluid::core::Unit((*itUnits).getUnitClass(),
+    SGraph.addUnit(openfluid::core::SpatialUnit((*itUnits).getUnitClass(),
                                                (*itUnits).getUnitID(),
                                                (*itUnits).getProcessOrder()));
   }
@@ -93,8 +93,8 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
 
     for (itLinkedUnits = (*itUnits).getUnitsTos().begin();itLinkedUnits != (*itUnits).getUnitsTos().end();++itLinkedUnits)
     {
-      FromUnit = CoreRepos.getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
-      ToUnit = CoreRepos.getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
+      FromUnit = SGraph.getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
+      ToUnit = SGraph.getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
 
       if (ToUnit != NULL)
       {
@@ -117,8 +117,8 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
 
     for (itLinkedUnits = (*itUnits).getUnitsParents().begin();itLinkedUnits != (*itUnits).getUnitsParents().end();++itLinkedUnits)
     {
-      ChildUnit = CoreRepos.getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
-      ParentUnit = CoreRepos.getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
+      ChildUnit = SGraph.getUnit((*itUnits).getUnitClass(),(*itUnits).getUnitID());
+      ParentUnit = SGraph.getUnit((*itLinkedUnits).first,(*itLinkedUnits).second);
 
       if (ParentUnit != NULL)
       {
@@ -135,7 +135,7 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
   }
 
 
-  CoreRepos.sortUnitsByProcessOrder();
+  SGraph.sortUnitsByProcessOrder();
 
 
 
@@ -148,11 +148,11 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
   {
 
     openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t Data = (*itAttrs).getAttributes();
-    openfluid::core::Unit* TheUnit;
+    openfluid::core::SpatialUnit* TheUnit;
 
     for (openfluid::fluidx::AttributesDescriptor::UnitIDAttribute_t::const_iterator itUnit=Data.begin();itUnit!=Data.end();++itUnit)
     {
-      TheUnit = CoreRepos.getUnit((*itAttrs).getUnitsClass(),itUnit->first);
+      TheUnit = SGraph.getUnit((*itAttrs).getUnitsClass(),itUnit->first);
 
       if (TheUnit != NULL)
       {
@@ -169,12 +169,12 @@ void Factory::buildDomainFromDescriptor(openfluid::fluidx::DomainDescriptor& Des
 
 
   std::list<openfluid::fluidx::EventDescriptor>::iterator itEvent;
-  openfluid::core::Unit* EventUnit;
+  openfluid::core::SpatialUnit* EventUnit;
 
   for (itEvent = Descriptor.getEvents().begin();itEvent != Descriptor.getEvents().end();++itEvent)
   {
 
-    EventUnit = CoreRepos.getUnit((*itEvent).getUnitClass(),(*itEvent).getUnitID());
+    EventUnit = SGraph.getUnit((*itEvent).getUnitClass(),(*itEvent).getUnitID());
 
     if (EventUnit != NULL)
     {
@@ -354,7 +354,7 @@ void Factory::fillRunEnvironmentFromDescriptor(openfluid::fluidx::RunDescriptor&
 void Factory::buildSimulationBlobFromDescriptors(openfluid::fluidx::FluidXDescriptor& FluidXDesc,
     SimulationBlob& SimBlob)
 {
-  buildDomainFromDescriptor(FluidXDesc.getDomainDescriptor(),SimBlob.getCoreRepository());
+  buildDomainFromDescriptor(FluidXDesc.getDomainDescriptor(),SimBlob.getSpatialGraph());
 
   buildDatastoreFromDescriptor(FluidXDesc.getDatastoreDescriptor(),SimBlob.getDatastore());
 

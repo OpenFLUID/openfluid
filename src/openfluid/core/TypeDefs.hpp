@@ -37,8 +37,9 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#ifndef __TYPEDEFS_H__
-#define __TYPEDEFS_H__
+#ifndef __OPENFLUID_CORE_TYPEDEFS_HPP__
+#define __OPENFLUID_CORE_TYPEDEFS_HPP__
+
 
 #include <vector>
 #include <list>
@@ -154,4 +155,4 @@ typedef IDMap<SerieOfDoubleValue*>::Type IDSerieOfDoubleValuePtrMap;
 } } // namespaces
 
 
-#endif /*__TYPEDEFS_H__*/
+#endif  /* __OPENFLUID_CORE_TYPEDEFS_HPP__ */

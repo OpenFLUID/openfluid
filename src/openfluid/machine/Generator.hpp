@@ -92,4 +92,4 @@ class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 
 
 
-#endif /* __GENERATOR_H___ */
+#endif /* __OPENFLUID_MACHINE_GENERATOR_HPP__ */

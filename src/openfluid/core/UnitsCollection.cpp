@@ -31,61 +31,89 @@
 
 
 
-/**
-  \file OFEFunc2DocSim.h
-  \brief Header of ...
-*/
-
-#ifndef __SIM2DOCSIM_H__
-#define __SIM2DOCSIM_H__
-
-#include <openfluid/ware/PluggableSimulator.hpp>
+#include <openfluid/core/SpatialUnit.hpp>
+#include <openfluid/core/UnitsCollection.hpp>
 
 
-// =====================================================================
-// =====================================================================
+
+namespace openfluid { namespace core {
 
 
-DECLARE_SIMULATOR_PLUGIN
 
-
-// =====================================================================
-// =====================================================================
-
-
-/**
-
-*/
-class Sim2DocSimulator : public openfluid::ware::PluggableSimulator
+struct SortByProcessOrder
 {
-  private:
-
-    int m_RepeatMessages;
-
-  public:
-    /**
-      Constructor
-    */
-    Sim2DocSimulator();
-
-    /**
-      Destructor
-    */
-    ~Sim2DocSimulator();
-
-    void initParams(const openfluid::ware::WareParams_t& Params);
-
-    void prepareData();
-
-    void checkConsistency();
-
-    openfluid::base::SchedulingRequest initializeRun();
-
-    openfluid::base::SchedulingRequest runStep();
-
-    void finalizeRun();
+  bool operator ()(SpatialUnit& U1,SpatialUnit& U2) const
+  {
+    return (U1.getProcessOrder() <= U2.getProcessOrder());
+  }
 
 };
 
 
-#endif  /* __SIM2DOCSIM_H__ */
+// =====================================================================
+// =====================================================================
+
+
+UnitsCollection::UnitsCollection()
+{
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+UnitsCollection::~UnitsCollection()
+{
+
+}
+
+// =====================================================================
+// =====================================================================
+
+
+SpatialUnit* UnitsCollection::getUnit(UnitID_t aUnitID)
+{
+  UnitsList_t::iterator it;
+
+  for (it=m_Data.begin();it!=m_Data.end();++it)
+  {
+    if (it->getID() == aUnitID) return &(*it);
+  }
+
+  return NULL;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+
+SpatialUnit* UnitsCollection::addUnit(SpatialUnit aUnit)
+{
+
+  if (getUnit(aUnit.getID()) == NULL)
+  {
+    m_Data.push_back(aUnit);
+    return &(m_Data.back());
+  }
+  else return NULL;
+}
+
+// =====================================================================
+// =====================================================================
+
+
+void UnitsCollection::sortByProcessOrder()
+{
+  m_Data.sort(SortByProcessOrder());
+}
+
+
+
+
+
+} } // namespaces
+

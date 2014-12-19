@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __UNITDESCRIPTOR_H___
-#define __UNITDESCRIPTOR_H___
+#ifndef __OPENFLUID_FLUIDX_SPATIALUNITDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_SPATIALUNITDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace fluidx {
 
 
-class OPENFLUID_API UnitDescriptor
+class OPENFLUID_API SpatialUnitDescriptor
 {
   private:
 
@@ -60,9 +60,9 @@ class OPENFLUID_API UnitDescriptor
 
   public:
 
-   UnitDescriptor();
+   SpatialUnitDescriptor();
 
-    ~UnitDescriptor();
+    ~SpatialUnitDescriptor();
 
 
     inline openfluid::core::UnitID_t& getUnitID() { return m_UnitID; };
@@ -85,4 +85,4 @@ class OPENFLUID_API UnitDescriptor
 } } // namespaces
 
 
-#endif /* __OPENFLUID_FLUIDX_UNITDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_SPATIALUNITDESCRIPTOR_HPP__ */

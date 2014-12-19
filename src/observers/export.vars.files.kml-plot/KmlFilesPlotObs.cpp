@@ -469,7 +469,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
       {
         if ((*it).VarsListStr == "*")
         {
-          (*it).VarsList = mp_CoreData->getUnits((*it).UnitsClass)->getList()->front().getVariables()->getVariablesNames();
+          (*it).VarsList = mp_SpatialData->getUnits((*it).UnitsClass)->getList()->front().getVariables()->getVariablesNames();
         }
         else
         {
@@ -506,7 +506,7 @@ class KmlFilesPlotObserver : public KmlObserverBase
 
       if (!m_OKToGo) return;
 
-      openfluid::core::Unit* UU;
+      openfluid::core::SpatialUnit* UU;
 
 
       // write data files

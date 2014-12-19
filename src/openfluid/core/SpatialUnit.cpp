@@ -31,7 +31,7 @@
 
 
 
-#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/SpatialUnit.hpp>
 
 namespace openfluid { namespace core {
 
@@ -40,8 +40,8 @@ namespace openfluid { namespace core {
 // =====================================================================
 
 
-Unit::Unit(const UnitClass_t aClass, const UnitID_t anID,
-           const PcsOrd_t aPcsOrder) :
+SpatialUnit::SpatialUnit(const UnitClass_t aClass, const UnitID_t anID,
+                         const PcsOrd_t aPcsOrder) :
   m_ID(anID), m_Class(aClass), m_PcsOrder(aPcsOrder)
 {
 
@@ -52,7 +52,7 @@ Unit::Unit(const UnitClass_t aClass, const UnitID_t anID,
 // =====================================================================
 
 
-Unit::~Unit()
+SpatialUnit::~SpatialUnit()
 {
 
 }
@@ -61,7 +61,7 @@ Unit::~Unit()
 // =====================================================================
 
 
-bool Unit::addToUnit(Unit* aUnit)
+bool SpatialUnit::addToUnit(SpatialUnit* aUnit)
 {
   m_ToUnits[aUnit->getClass()].push_back(aUnit);
   return true;
@@ -71,7 +71,7 @@ bool Unit::addToUnit(Unit* aUnit)
 // =====================================================================
 
 
-bool Unit::addFromUnit(Unit* aUnit)
+bool SpatialUnit::addFromUnit(SpatialUnit* aUnit)
 {
   m_FromUnits[aUnit->getClass()].push_back(aUnit);
   return true;
@@ -82,7 +82,7 @@ bool Unit::addFromUnit(Unit* aUnit)
 // =====================================================================
 
 
-bool Unit::addParentUnit(Unit* aUnit)
+bool SpatialUnit::addParentUnit(SpatialUnit* aUnit)
 {
   m_ParentUnits[aUnit->getClass()].push_back(aUnit);
   return true;
@@ -92,7 +92,7 @@ bool Unit::addParentUnit(Unit* aUnit)
 // =====================================================================
 
 
-bool Unit::addChildUnit(Unit* aUnit)
+bool SpatialUnit::addChildUnit(SpatialUnit* aUnit)
 {
   m_ChildrenUnits[aUnit->getClass()].push_back(aUnit);
   return true;
@@ -103,7 +103,7 @@ bool Unit::addChildUnit(Unit* aUnit)
 // =====================================================================
 
 
-const UnitsPtrList_t* Unit::getToUnits(const UnitClass_t aClass) const
+const UnitsPtrList_t* SpatialUnit::getToUnits(const UnitClass_t aClass) const
 {
   return const_cast<UnitsPtrList_t*>(getToUnits(aClass));
 
@@ -113,7 +113,7 @@ const UnitsPtrList_t* Unit::getToUnits(const UnitClass_t aClass) const
 // =====================================================================
 
 
-const UnitsPtrList_t* Unit::getChildrenUnits(const UnitClass_t aClass) const
+const UnitsPtrList_t* SpatialUnit::getChildrenUnits(const UnitClass_t aClass) const
 {
   return const_cast<UnitsPtrList_t*>(getChildrenUnits(aClass));
 }
@@ -123,7 +123,7 @@ const UnitsPtrList_t* Unit::getChildrenUnits(const UnitClass_t aClass) const
 // =====================================================================
 
 
-const UnitsPtrList_t* Unit::getParentUnits(const UnitClass_t aClass) const
+const UnitsPtrList_t* SpatialUnit::getParentUnits(const UnitClass_t aClass) const
 {
   return const_cast<UnitsPtrList_t*>(getParentUnits(aClass));
 
@@ -133,7 +133,7 @@ const UnitsPtrList_t* Unit::getParentUnits(const UnitClass_t aClass) const
 // =====================================================================
 
 
-const UnitsPtrList_t* Unit::getFromUnits(const UnitClass_t aClass) const
+const UnitsPtrList_t* SpatialUnit::getFromUnits(const UnitClass_t aClass) const
 {
   return const_cast<UnitsPtrList_t*>(getFromUnits(aClass));
 }
@@ -143,7 +143,7 @@ const UnitsPtrList_t* Unit::getFromUnits(const UnitClass_t aClass) const
 // =====================================================================
 
 
-UnitsPtrList_t* Unit::getToUnits(const UnitClass_t aClass)
+UnitsPtrList_t* SpatialUnit::getToUnits(const UnitClass_t aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ToUnits.find(aClass);
 
@@ -156,7 +156,7 @@ UnitsPtrList_t* Unit::getToUnits(const UnitClass_t aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* Unit::getFromUnits(const UnitClass_t aClass)
+UnitsPtrList_t* SpatialUnit::getFromUnits(const UnitClass_t aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_FromUnits.find(aClass);
 
@@ -169,7 +169,7 @@ UnitsPtrList_t* Unit::getFromUnits(const UnitClass_t aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* Unit::getParentUnits(const UnitClass_t aClass)
+UnitsPtrList_t* SpatialUnit::getParentUnits(const UnitClass_t aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ParentUnits.find(aClass);
 
@@ -182,7 +182,7 @@ UnitsPtrList_t* Unit::getParentUnits(const UnitClass_t aClass)
 // =====================================================================
 
 
-UnitsPtrList_t* Unit::getChildrenUnits(const UnitClass_t aClass)
+UnitsPtrList_t* SpatialUnit::getChildrenUnits(const UnitClass_t aClass)
 {
   LinkedUnitsListByClassMap_t::iterator it = m_ChildrenUnits.find(aClass);
 
@@ -196,7 +196,7 @@ UnitsPtrList_t* Unit::getChildrenUnits(const UnitClass_t aClass)
 
 
 
-void Unit::streamContents(std::ostream& OStream)
+void SpatialUnit::streamContents(std::ostream& OStream)
 {
   UnitsPtrList_t::iterator IDIt;
   LinkedUnitsListByClassMap_t::iterator ClassIt;

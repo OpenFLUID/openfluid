@@ -82,7 +82,7 @@ bool ImportWorker::importLayer(int Step,int Index)
   {
     It.next();
 
-    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
+    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
 
     UDesc->getUnitClass() = UnitsClass.toStdString();
     UDesc->getUnitID() = It.key();

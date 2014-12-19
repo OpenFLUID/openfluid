@@ -50,10 +50,10 @@
 #include <openfluid/base/SchedulingRequest.hpp>
 #include <openfluid/base/LoopMacros.hpp>
 #include <openfluid/core/DateTime.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
+#include <openfluid/core/EventsCollection.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
+#include <openfluid/core/SpatialUnit.hpp>
 #include <openfluid/ware/SimulationContributorWare.hpp>
 
 
@@ -119,7 +119,7 @@ class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
       Pointer to the core repository, for internal use only
     */
     // TODO check here
-   // openfluid::core::CoreRepository* mp_InternalCoreData;
+   // openfluid::core::SpatialGraph* mp_InternalSpatialGraph;
 
 
     int m_MaxThreads;

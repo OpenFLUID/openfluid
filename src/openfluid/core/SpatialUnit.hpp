@@ -38,18 +38,18 @@
 
 
 
-#ifndef __UNIT_H__
-#define __UNIT_H__
+#ifndef __OPENFLUID_CORE_SPATIALUNIT_HPP__
+#define __OPENFLUID_CORE_SPATIALUNIT_HPP__
 
 
 #include <map>
 #include <string>
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/core/UnitsColl.hpp>
 #include <openfluid/core/Attributes.hpp>
+#include <openfluid/core/EventsCollection.hpp>
 #include <openfluid/core/Variables.hpp>
-#include <openfluid/core/EventsColl.hpp>
+#include <openfluid/core/UnitsCollection.hpp>
 
 
 
@@ -69,7 +69,7 @@ typedef std::map<UnitClass_t,UnitsCollection> UnitsListByClassMap_t;
 /**
   Type for a list of pointers on Unit
 */
-typedef std::list<Unit*> UnitsPtrList_t;
+typedef std::list<SpatialUnit*> UnitsPtrList_t;
 
 /**
   Type for a map associating a unit class to a list of pointers on Unit
@@ -81,8 +81,8 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
 
   example of use:
   @code
-  openfluid::core::Unit aUnit;
-  openfluid::core::Unit* aUnitPtr;
+  openfluid::core::SpatialUnit aUnit;
+  openfluid::core::SpatialUnit* aUnitPtr;
   openfluid::core::UnitClass_t aUnitClass;
   openfluid::core::UnitID_t aUnitID;
   openfluid::core::UnitsPtrList_t* aUnitListPtr;
@@ -104,7 +104,7 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   aUnitListPtr = aUnit.getFromUnits("bar");
   @endcode
 */
-class OPENFLUID_API Unit
+class OPENFLUID_API SpatialUnit
 {
   private:
 
@@ -134,13 +134,13 @@ class OPENFLUID_API Unit
       @param[in] anID the ID of the unit
       @param[in] aPcsOrder the process order of the unit
         */
-    Unit(const UnitClass_t aClass, const UnitID_t anID,
+    SpatialUnit(const UnitClass_t aClass, const UnitID_t anID,
          const PcsOrd_t aPcsOrder);
 
     /*
           Destructor
         */
-    ~Unit();
+    ~SpatialUnit();
 
     /**
       Returns the process order of the unit
@@ -158,13 +158,13 @@ class OPENFLUID_API Unit
     */
     inline UnitClass_t getClass() const { return m_Class; };
 
-    bool addToUnit(Unit* aUnit);
+    bool addToUnit(SpatialUnit* aUnit);
 
-    bool addFromUnit(Unit* aUnit);
+    bool addFromUnit(SpatialUnit* aUnit);
 
-    bool addParentUnit(Unit* aUnit);
+    bool addParentUnit(SpatialUnit* aUnit);
 
-    bool addChildUnit(Unit* aUnit);
+    bool addChildUnit(SpatialUnit* aUnit);
 
     /**
       Returns a list of units, of the requested class, connected to this unit.
@@ -224,8 +224,11 @@ class OPENFLUID_API Unit
 };
 
 
+typedef SpatialUnit Unit OPENFLUID_DEPRECATED;
+
+
 } } // namespace openfluid::core
 
 
-#endif /* __UNIT_H__ */
+#endif /* __OPENFLUID_CORE_SPATIALUNIT_HPP__ */
 

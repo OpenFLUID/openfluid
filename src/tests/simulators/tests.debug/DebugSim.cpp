@@ -139,7 +139,7 @@ class DebugSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
     openfluid::core::DateTime BeginDate,EndDate;
     openfluid::core::EventsCollection EvColl;
 

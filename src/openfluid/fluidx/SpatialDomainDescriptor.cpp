@@ -31,40 +31,24 @@
 
 
 
-#include <openfluid/core/UnitsColl.hpp>
+/**
+  @file
+  @brief Implements ...
 
-#include <openfluid/core/Unit.hpp>
+  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
+ */
 
 
-namespace openfluid { namespace core {
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 
-
-
-struct SortByProcessOrder
-{
-  bool operator ()(Unit& U1,Unit& U2) const
-  {
-    return (U1.getProcessOrder() <= U2.getProcessOrder());
-  }
-
-};
+namespace openfluid { namespace fluidx {
 
 
 // =====================================================================
 // =====================================================================
 
 
-UnitsCollection::UnitsCollection()
-{
-
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-UnitsCollection::~UnitsCollection()
+SpatialDomainDescriptor::SpatialDomainDescriptor()
 {
 
 }
@@ -73,46 +57,10 @@ UnitsCollection::~UnitsCollection()
 // =====================================================================
 
 
-Unit* UnitsCollection::getUnit(UnitID_t aUnitID)
-{
-  UnitsList_t::iterator it;
-
-  for (it=m_Data.begin();it!=m_Data.end();++it)
-  {
-    if (it->getID() == aUnitID) return &(*it);
-  }
-
-  return NULL;
-}
-
-
-// =====================================================================
-// =====================================================================
-
-
-
-Unit* UnitsCollection::addUnit(Unit aUnit)
+SpatialDomainDescriptor::~SpatialDomainDescriptor()
 {
 
-  if (getUnit(aUnit.getID()) == NULL)
-  {
-    m_Data.push_back(aUnit);
-    return &(m_Data.back());
-  }
-  else return NULL;
 }
-
-// =====================================================================
-// =====================================================================
-
-
-void UnitsCollection::sortByProcessOrder()
-{
-  m_Data.sort(SortByProcessOrder());
-}
-
-
-
 
 
 } } // namespaces

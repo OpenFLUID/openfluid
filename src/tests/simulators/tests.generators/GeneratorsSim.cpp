@@ -141,7 +141,7 @@ class GeneratorsSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     openfluid::core::DoubleValue SValue;
     openfluid::core::VectorValue VValue;

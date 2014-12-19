@@ -112,7 +112,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
     void prepareData()
     {
-      openfluid::core::Unit *aUnit;
+      openfluid::core::SpatialUnit *aUnit;
       openfluid::core::Event AddedEvent;
       openfluid::core::DateTime BeginDate;
 
@@ -139,7 +139,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest initializeRun()
     {
-      openfluid::core::Unit* aUnit;
+      openfluid::core::SpatialUnit* aUnit;
       openfluid::core::EventsCollection EvColl;
       openfluid::core::Event* Event;
       std::string Info;
@@ -231,7 +231,7 @@ class EventsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
 
-      openfluid::core::Unit *aUnit;
+      openfluid::core::SpatialUnit *aUnit;
       openfluid::core::EventsCollection EvColl;
       openfluid::core::Event *Event, AddedEvent;
       std::string Info, TmpStr;

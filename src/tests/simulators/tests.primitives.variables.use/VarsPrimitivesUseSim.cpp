@@ -184,7 +184,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
       // untyped
 
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
         unsigned int CurrIndex;
 
@@ -624,7 +624,7 @@ class VarsPrimitivesUseSimulator : public openfluid::ware::PluggableSimulator
 
       // typed
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
         unsigned int CurrIndex;
 

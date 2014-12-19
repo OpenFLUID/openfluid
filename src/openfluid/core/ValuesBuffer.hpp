@@ -50,8 +50,7 @@
 #include <iostream>
 #include <list>
 
-namespace openfluid {
-namespace core {
+namespace openfluid { namespace core {
 
 
 class IndexedValue

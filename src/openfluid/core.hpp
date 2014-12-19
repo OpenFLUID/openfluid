@@ -42,22 +42,22 @@
 #define __OPENFLUID_CORE_HPP__
 
 
-#include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/DateTime.hpp>
 #include <openfluid/core/Event.hpp>
-#include <openfluid/core/EventsColl.hpp>
 #include <openfluid/core/Attributes.hpp>
 #include <openfluid/core/TypeDefs.hpp>
-#include <openfluid/core/Unit.hpp>
-#include <openfluid/core/UnitsColl.hpp>
 #include <openfluid/core/NullValue.hpp>
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/DoubleValue.hpp>
+#include <openfluid/core/EventsCollection.hpp>
 #include <openfluid/core/IntegerValue.hpp>
 #include <openfluid/core/StringValue.hpp>
 #include <openfluid/core/VectorValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/core/MapValue.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
+#include <openfluid/core/SpatialUnit.hpp>
+#include <openfluid/core/UnitsCollection.hpp>
 #include <openfluid/core/ValuesBuffer.hpp>
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/Vector.hpp>

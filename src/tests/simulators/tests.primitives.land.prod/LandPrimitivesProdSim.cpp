@@ -97,7 +97,7 @@ class LandPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest initializeRun()
     {
-      openfluid::core::Unit* U;
+      openfluid::core::SpatialUnit* U;
 
       OPENFLUID_UNITS_ORDERED_LOOP("TU",U)
       {
@@ -119,7 +119,7 @@ class LandPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest runStep()
     {
-      openfluid::core::Unit* U;
+      openfluid::core::SpatialUnit* U;
 
       OPENFLUID_UNITS_ORDERED_LOOP("TU",U)
       {

@@ -139,7 +139,7 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     openfluid::core::NullValue TheNull;
     long VectorSize = 40;
@@ -180,7 +180,7 @@ class VariableTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     openfluid::core::NullValue TheNull;
     long VectorSize = 40;

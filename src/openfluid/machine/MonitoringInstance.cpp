@@ -101,7 +101,7 @@ void MonitoringInstance::initialize(openfluid::base::SimulationLogger* SimLogger
     CurrentObserver->Body->linkToSimulationLogger(SimLogger);
     CurrentObserver->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
     CurrentObserver->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
-    CurrentObserver->Body->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
+    CurrentObserver->Body->linkToSpatialGraph(&(m_SimulationBlob.getSpatialGraph()));
     CurrentObserver->Body->linkToDatastore(&(m_SimulationBlob.getDatastore()));
     CurrentObserver->Body->initializeWare(CurrentObserver->Signature->ID);
 

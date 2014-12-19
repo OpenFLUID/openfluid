@@ -232,8 +232,8 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 
 
 
-#ifndef __FORTRAN2CPP_HPP__
-#define __FORTRAN2CPP_HPP__
+#ifndef __OPENFLUID_TOOLS_FORTRAN2CPP_HPP__
+#define __OPENFLUID_TOOLS_FORTRAN2CPP_HPP__
 
 
 #ifdef __cplusplus
@@ -366,5 +366,5 @@ bool FortranFunction::runStep(const openfluid::base::SimulationStatus* SimStatus
 #define STD2FSTRINGFULL(str) strdup((str).c_str()),strlen((str).c_str())
 
 
-#endif /*__FORTRAN2CPP_H__*/
+#endif  /* __OPENFLUID_TOOLS_FORTRAN2CPP_HPP__ */
 

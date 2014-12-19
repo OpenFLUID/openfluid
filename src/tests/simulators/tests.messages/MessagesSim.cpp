@@ -141,7 +141,7 @@ openfluid::base::SchedulingRequest MessagesSimulator::initializeRun()
 
 openfluid::base::SchedulingRequest MessagesSimulator::runStep()
 {
-  openfluid::core::Unit* TU;
+  openfluid::core::SpatialUnit* TU;
 
   int i = 0;
 

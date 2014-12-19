@@ -99,5 +99,5 @@ class OPENFLUID_API ModelItemInstance : public ModelItemSignatureInstance
 } } //namespaces
 
 
-#endif /* __MODELITEMINSTANCE_H___ */
+#endif /* __OPENFLUID_MACHINE_MODELITEMINSTANCE_HPP__ */
 

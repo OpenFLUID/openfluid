@@ -196,7 +196,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest initializeRun()
     {
 
-      openfluid::core::Unit* CurrentUnit;
+      openfluid::core::SpatialUnit* CurrentUnit;
       const openfluid::core::UnitsListByClassMap_t* UnitsByClass;
       const openfluid::core::UnitsList_t* UnitsList;
       const openfluid::core::UnitsPtrList_t* ToUnitsPtrList;
@@ -210,7 +210,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
 
 
-      UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_CoreData->getUnitsByClass());
+      UnitsByClass = const_cast<openfluid::core::UnitsListByClassMap_t*>(mp_SpatialData->getUnitsByClass());
 
       std::cout << std::endl;
       std::cout.flush();
@@ -231,7 +231,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
-          CurrentUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+          CurrentUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
 
           std::string SrcClassStr = CurrentUnit->getClass();
           std::string SrcIDStr = "";
@@ -268,7 +268,7 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
-          CurrentUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+          CurrentUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
 
           std::string SrcClassStr = CurrentUnit->getClass();
           std::string SrcIDStr = "";
@@ -306,12 +306,12 @@ class LoopsSimulator : public openfluid::ware::PluggableSimulator
 
     openfluid::base::SchedulingRequest runStep()
     {
-      openfluid::core::Unit *TU = NULL;
-      openfluid::core::Unit *OU = NULL;
-      openfluid::core::Unit *ZU = NULL;
-      openfluid::core::Unit *FU = NULL;
-      openfluid::core::Unit *ToUnit = NULL;
-      openfluid::core::Unit *FromUnit = NULL;
+      openfluid::core::SpatialUnit *TU = NULL;
+      openfluid::core::SpatialUnit *OU = NULL;
+      openfluid::core::SpatialUnit *ZU = NULL;
+      openfluid::core::SpatialUnit *FU = NULL;
+      openfluid::core::SpatialUnit *ToUnit = NULL;
+      openfluid::core::SpatialUnit *FromUnit = NULL;
       openfluid::core::UnitsPtrList_t *ToList = NULL;
       openfluid::core::UnitsPtrList_t *FromList = NULL;
       openfluid::core::UnitsPtrList_t *FakeList = NULL;

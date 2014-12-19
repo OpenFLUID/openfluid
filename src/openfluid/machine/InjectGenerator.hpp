@@ -94,4 +94,4 @@ class OPENFLUID_API InjectGenerator : public Generator
 
 
 
-#endif /* __INJECTGENERATOR_H___ */
+#endif /* __OPENFLUID_MACHINE_INJECTGENERATOR_HPP__ */

@@ -99,7 +99,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 {
   private:
 
-    typedef openfluid::core::IDMap<std::vector<openfluid::core::Unit*> >::Type Connections_t;
+    typedef openfluid::core::IDMap<std::vector<openfluid::core::SpatialUnit*> >::Type Connections_t;
 
     boost::mt19937 m_RandomEngine;
 
@@ -141,13 +141,13 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     void prepareData()
     {
 
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       // preparation of the lookup table for connections
 
       OPENFLUID_UNITS_ORDERED_LOOP("LU",LU)
       {
-        m_PotentialConnections[LU->getID()].assign(8,(openfluid::core::Unit*)NULL);
+        m_PotentialConnections[LU->getID()].assign(8,(openfluid::core::SpatialUnit*)NULL);
 
         long int TargetID;
 
@@ -211,7 +211,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     // =====================================================================
 
 
-    void updateLandConnections(openfluid::core::Unit* U, const openfluid::core::IntegerValue& WindDir)
+    void updateLandConnections(openfluid::core::SpatialUnit* U, const openfluid::core::IntegerValue& WindDir)
     {
 
       // computation of the target land unit for fire, according to wind direction
@@ -221,7 +221,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
 
 
       openfluid::core::UnitsPtrList_t* ChildrenLUs = U->getChildrenUnits("LU");
-      openfluid::core::Unit* LU;
+      openfluid::core::SpatialUnit* LU;
 
       OPENFLUID_UNITSLIST_LOOP(ChildrenLUs,LU)
       {
@@ -249,7 +249,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest initializeRun()
     {
 
-      openfluid::core::Unit* AU;
+      openfluid::core::SpatialUnit* AU;
 
       OPENFLUID_UNITS_ORDERED_LOOP("AU",AU)
       {
@@ -267,7 +267,7 @@ class WindFireConnectSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
 
-      openfluid::core::Unit* AU;
+      openfluid::core::SpatialUnit* AU;
       openfluid::core::IndexedValue LatestMainWindDir;
 
       OPENFLUID_UNITS_ORDERED_LOOP("AU",AU)

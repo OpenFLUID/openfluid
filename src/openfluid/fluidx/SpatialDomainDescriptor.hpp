@@ -33,35 +33,52 @@
 
 /**
   @file
-  @brief Implements ...
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#include <openfluid/fluidx/UnitDescriptor.hpp>
+
+#ifndef __OPENFLUID_FLUIDX_SPATIALDOMAINDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_SPATIALDOMAINDESCRIPTOR_HPP__
+
+#include <openfluid/dllexport.hpp>
+#include <openfluid/fluidx/AttributesDescriptor.hpp>
+#include <openfluid/fluidx/EventDescriptor.hpp>
+#include <openfluid/fluidx/SpatialUnitDescriptor.hpp>
+
 
 namespace openfluid { namespace fluidx {
 
 
-// =====================================================================
-// =====================================================================
-
-
-UnitDescriptor::UnitDescriptor():
-  m_UnitID(0), m_UnitClass(""), m_PcsOrder(1)
+class OPENFLUID_API SpatialDomainDescriptor
 {
+  private:
 
-}
+    std::list<SpatialUnitDescriptor> m_DefDescriptor;
 
-// =====================================================================
-// =====================================================================
+    std::list<AttributesDescriptor> m_AttrsDescriptor;
+
+    std::list<EventDescriptor> m_EventsDescriptor;
 
 
-UnitDescriptor::~UnitDescriptor()
-{
+  public:
 
-}
+    SpatialDomainDescriptor();
+
+    ~SpatialDomainDescriptor();
+
+    inline std::list<SpatialUnitDescriptor>& getUnits() { return m_DefDescriptor; };
+
+    inline const std::list<SpatialUnitDescriptor>& getUnits() const { return m_DefDescriptor; };
+
+    inline std::list<AttributesDescriptor>& getAttributes() { return m_AttrsDescriptor; };
+
+    inline std::list<EventDescriptor>& getEvents() { return m_EventsDescriptor; };
+
+
+};
 
 
 } } // namespaces
 
+#endif /* __OPENFLUID_FLUIDX_SPATIALDOMAINDESCRIPTOR_HPP__ */

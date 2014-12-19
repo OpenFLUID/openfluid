@@ -40,14 +40,13 @@
 #define FLUIDXDESCRIPTOR_HPP_
 
 #include <openfluid/dllexport.hpp>
-#include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
 #include <openfluid/fluidx/DatastoreDescriptor.hpp>
 #include <openfluid/fluidx/MonitoringDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
 #include <openfluid/dllexport.hpp>
-
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
 #include <QDomElement>
 
 
@@ -65,7 +64,7 @@ class OPENFLUID_API FluidXDescriptor
 
     openfluid::fluidx::CoupledModelDescriptor m_ModelDescriptor;
 
-    openfluid::fluidx::DomainDescriptor m_DomainDescriptor;
+    openfluid::fluidx::SpatialDomainDescriptor m_DomainDescriptor;
 
     openfluid::fluidx::RunDescriptor m_RunDescriptor;
 
@@ -153,7 +152,7 @@ class OPENFLUID_API FluidXDescriptor
     inline openfluid::fluidx::CoupledModelDescriptor& getModelDescriptor()
     { return m_ModelDescriptor; }
 
-    inline openfluid::fluidx::DomainDescriptor& getDomainDescriptor()
+    inline openfluid::fluidx::SpatialDomainDescriptor& getDomainDescriptor()
     { return m_DomainDescriptor; }
 
     inline openfluid::fluidx::RunDescriptor& getRunDescriptor()
@@ -168,7 +167,7 @@ class OPENFLUID_API FluidXDescriptor
     inline const openfluid::fluidx::CoupledModelDescriptor& getModelDescriptor() const
     { return m_ModelDescriptor; }
 
-    inline const openfluid::fluidx::DomainDescriptor& getDomainDescriptor() const
+    inline const openfluid::fluidx::SpatialDomainDescriptor& getDomainDescriptor() const
     { return m_DomainDescriptor; }
 
     inline const openfluid::fluidx::RunDescriptor& getRunDescriptor() const

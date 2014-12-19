@@ -54,8 +54,8 @@ class Event;
 
 namespace fluidx {
 
-class DomainDescriptor;
-class UnitDescriptor;
+class SpatialDomainDescriptor;
+class SpatialUnitDescriptor;
 class AttributesDescriptor;
 
 
@@ -68,13 +68,13 @@ class OPENFLUID_API AdvancedUnitDescriptor
 
   public:
 
-    openfluid::fluidx::UnitDescriptor* UnitDescriptor;
+    openfluid::fluidx::SpatialUnitDescriptor* UnitDescriptor;
 
     std::map<openfluid::core::AttributeName_t, std::string*> Attributes;
 
     std::list<openfluid::fluidx::EventDescriptor*> EventsDescriptors;
 
-    AdvancedUnitDescriptor(openfluid::fluidx::UnitDescriptor& UnitDesc) :
+    AdvancedUnitDescriptor(openfluid::fluidx::SpatialUnitDescriptor& UnitDesc) :
         UnitDescriptor(&UnitDesc)
     {
     }
@@ -94,7 +94,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
 
   private:
 
-    openfluid::fluidx::DomainDescriptor* mp_DomainDesc;
+    openfluid::fluidx::SpatialDomainDescriptor* mp_DomainDesc;
 
     /**
      * Units by ID by ClassName
@@ -109,7 +109,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
 
     void checkUnitRelations() const;
 
-    void checkUnitRelations(openfluid::fluidx::UnitDescriptor& Unit) const;
+    void checkUnitRelations(openfluid::fluidx::SpatialUnitDescriptor& Unit) const;
 
     void checkAttributesConsistency() const;
 
@@ -118,7 +118,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
 
   public:
 
-    AdvancedDomainDescriptor(openfluid::fluidx::DomainDescriptor& DomainDesc);
+    AdvancedDomainDescriptor(openfluid::fluidx::SpatialDomainDescriptor& DomainDesc);
 
     ~AdvancedDomainDescriptor();
 
@@ -144,7 +144,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
      * @param ID
      * @return
      */
-    const openfluid::fluidx::UnitDescriptor& getUnitDescriptor(
+    const openfluid::fluidx::SpatialUnitDescriptor& getUnitDescriptor(
         const std::string& ClassName, int ID) const;
 
     /**
@@ -171,7 +171,7 @@ class OPENFLUID_API AdvancedDomainDescriptor
      * @throw openfluid::base::OFException if Unit already exists or if Unit has a relation with a non-existent Unit
      * @param UnitDesc
      */
-    void addUnit(openfluid::fluidx::UnitDescriptor* UnitDesc);
+    void addUnit(openfluid::fluidx::SpatialUnitDescriptor* UnitDesc);
 
     /**
      * Does nothing if Unit doesn't exist

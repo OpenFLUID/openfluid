@@ -133,7 +133,7 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest initializeRun()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     openfluid::core::NullValue TheNull;
     long VectorSize = 5;
@@ -164,7 +164,7 @@ class DeltaTTimeProdSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     openfluid::core::NullValue TheNull;
     long VectorSize = 40;

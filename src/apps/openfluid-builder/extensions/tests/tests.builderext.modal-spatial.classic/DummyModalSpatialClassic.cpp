@@ -107,7 +107,7 @@ void DummyModalSpatialClassic::addUnitClass()
 
   if (OK && !UnitClass.isEmpty())
   {
-    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
+    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
     UDesc->getUnitClass() = UnitClass.toStdString();
     UDesc->getUnitID() = 1;
     UDesc->getProcessOrder() = 1;

@@ -443,8 +443,8 @@ void FluidXDescriptor::extractDomainDefinitionFromNode(QDomElement& Node)
 
       if (!xmlUnitID.isNull() && !xmlUnitClass.isNull() && !xmlPcsOrd.isNull())
       {
-        openfluid::fluidx::UnitDescriptor* UnitDesc =
-            new openfluid::fluidx::UnitDescriptor();
+        openfluid::fluidx::SpatialUnitDescriptor* UnitDesc =
+            new openfluid::fluidx::SpatialUnitDescriptor();
         openfluid::core::PcsOrd_t PcsOrder;
         openfluid::core::UnitID_t UnitID;
 
@@ -799,7 +799,7 @@ void FluidXDescriptor::loadFromDirectory(std::string DirPath)
 
   m_ModelDescriptor = openfluid::fluidx::CoupledModelDescriptor();
   m_RunDescriptor = openfluid::fluidx::RunDescriptor();
-  m_DomainDescriptor = openfluid::fluidx::DomainDescriptor();
+  m_DomainDescriptor = openfluid::fluidx::SpatialDomainDescriptor();
   m_DatastoreDescriptor = openfluid::fluidx::DatastoreDescriptor();
   m_MonitoringDescriptor = openfluid::fluidx::MonitoringDescriptor();
 
@@ -972,12 +972,12 @@ void FluidXDescriptor::writeDomainDefinitionToStream(std::ostream& Contents)
 {
   Contents << m_IndentStr << m_IndentStr << "<definition>\n";
 
-  std::list<openfluid::fluidx::UnitDescriptor>& Units =
+  std::list<openfluid::fluidx::SpatialUnitDescriptor>& Units =
       m_DomainDescriptor.getUnits();
 
   std::list<openfluid::core::UnitClassID_t>::iterator itRel;
 
-  for (std::list<openfluid::fluidx::UnitDescriptor>::iterator it =
+  for (std::list<openfluid::fluidx::SpatialUnitDescriptor>::iterator it =
       Units.begin(); it != Units.end(); ++it)
   {
     Contents << m_IndentStr << m_IndentStr << m_IndentStr << "<unit class=\""

@@ -326,7 +326,7 @@ void ModelInstance::initialize(openfluid::base::SimulationLogger* SimLogger)
     CurrentSimulator->Body->linkToSimulationLogger(mp_SimLogger);
     CurrentSimulator->Body->linkToSimulation(&(m_SimulationBlob.getSimulationStatus()));
     CurrentSimulator->Body->linkToRunEnvironment(openfluid::base::RuntimeEnvironment::getInstance()->getWareEnvironment());
-    CurrentSimulator->Body->linkToCoreRepository(&(m_SimulationBlob.getCoreRepository()));
+    CurrentSimulator->Body->linkToSpatialGraph(&(m_SimulationBlob.getSpatialGraph()));
     CurrentSimulator->Body->linkToDatastore(&(m_SimulationBlob.getDatastore()));
     CurrentSimulator->Body->initializeWare(CurrentSimulator->Signature->ID,
                                     openfluid::base::RuntimeEnvironment::getInstance()->getSimulatorsMaxNumThreads());

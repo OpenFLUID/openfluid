@@ -108,7 +108,7 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableSimulator
   
     openfluid::base::SchedulingRequest initializeRun()
     {
-      openfluid::core::Unit* A;
+      openfluid::core::SpatialUnit* A;
 
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsA",A)
@@ -129,7 +129,7 @@ class ExampleUnitsAProduction : public openfluid::ware::PluggableSimulator
   
     openfluid::base::SchedulingRequest runStep()
     {
-      openfluid::core::Unit* A;
+      openfluid::core::SpatialUnit* A;
       openfluid::core::DoubleValue Value1;
 
       unsigned int CurrentTimeIndex = (OPENFLUID_GetCurrentTimeIndex());

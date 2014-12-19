@@ -552,13 +552,13 @@ void OpenFLUIDApp::runSimulation()
   std::cout << std::endl;
 
   unsigned int UnitsCount = 0;
-  for (UnitsIt = m_SimBlob.getCoreRepository().getUnitsByClass()->begin(); UnitsIt != m_SimBlob.getCoreRepository().getUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = m_SimBlob.getSpatialGraph().getUnitsByClass()->begin(); UnitsIt != m_SimBlob.getSpatialGraph().getUnitsByClass()->end();++UnitsIt )
   {
     UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
   }
 
   std::cout << "Spatial domain, " << UnitsCount << " units :"<< std::endl;
-  for (UnitsIt = m_SimBlob.getCoreRepository().getUnitsByClass()->begin(); UnitsIt != m_SimBlob.getCoreRepository().getUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = m_SimBlob.getSpatialGraph().getUnitsByClass()->begin(); UnitsIt != m_SimBlob.getSpatialGraph().getUnitsByClass()->end();++UnitsIt )
   {
     std::cout << "  - " << (*UnitsIt).first << ", " << (*UnitsIt).second.getList()->size() << " units" << std::endl;
   }

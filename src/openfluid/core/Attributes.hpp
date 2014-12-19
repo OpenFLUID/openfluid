@@ -29,8 +29,8 @@
   
 */
 
-#ifndef __ATTRIBUTES_H__
-#define __ATTRIBUTES_H__
+#ifndef __OPENFLUID_CORE_ATTRIBUTES_HPP__
+#define __OPENFLUID_CORE_ATTRIBUTES_HPP__
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/dllexport.hpp>
@@ -85,4 +85,4 @@ class OPENFLUID_API Attributes
 } } // namespaces
 
 
-#endif /* __ATTRIBUTES_H__ */
+#endif /* __OPENFLUID_CORE_ATTRIBUTES_HPP__ */

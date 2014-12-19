@@ -77,4 +77,4 @@ class OPENFLUID_API FixedGenerator : public Generator
 
 
 
-#endif /* __FIXEDGENERATOR_H___ */
+#endif /* __OPENFLUID_MACHINE_FIXEDGENERATOR_HPP__ */

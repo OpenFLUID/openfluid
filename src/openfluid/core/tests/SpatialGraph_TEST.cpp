@@ -32,7 +32,7 @@
 
 
 /**
-  \file CoreRepository_TEST.cpp
+  \file SpatialGraph_TEST.cpp
   \brief Implements ...
 
   \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
@@ -41,10 +41,10 @@
 #define BOOST_TEST_MAIN
 #define BOOST_AUTO_TEST_MAIN
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE unittest_corerepository
+#define BOOST_TEST_MODULE unittest_spatialgraph
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/core/CoreRepository.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
 
 
 // =====================================================================
@@ -53,9 +53,9 @@
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::CoreRepository* Repos;
+  openfluid::core::SpatialGraph* Repos;
 
-  Repos = new openfluid::core::CoreRepository();
+  Repos = new openfluid::core::SpatialGraph();
 
   delete Repos;
 }
@@ -65,25 +65,25 @@ BOOST_AUTO_TEST_CASE(check_construction)
 
 BOOST_AUTO_TEST_CASE(check_operations)
 {
-  openfluid::core::CoreRepository* Repos;
+  openfluid::core::SpatialGraph* Repos;
   int i, PcsOrder;
   openfluid::core::UnitsCollection* UnitsColl;
   openfluid::core::UnitsList_t::iterator UnitsIt, PrevUnitsIt;
-  openfluid::core::Unit* U;
+  openfluid::core::SpatialUnit* U;
 
 
-  Repos = new openfluid::core::CoreRepository();
+  Repos = new openfluid::core::SpatialGraph();
 
   for (i=1;i<=250;i++)
   {
     PcsOrder = (i%7)+1;
-    Repos->addUnit(openfluid::core::Unit("UnitClassA",i,PcsOrder));
+    Repos->addUnit(openfluid::core::SpatialUnit("UnitClassA",i,PcsOrder));
   }
 
   for (i=1;i<=7325;i++)
   {
     PcsOrder = (i%31)+1;
-    Repos->addUnit(openfluid::core::Unit("UnitClassB",i,PcsOrder));
+    Repos->addUnit(openfluid::core::SpatialUnit("UnitClassB",i,PcsOrder));
   }
 
   Repos->sortUnitsByProcessOrder();

@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __EVENTSCOLL_H__
-#define __EVENTSCOLL_H__
+#ifndef __OPENFLUID_CORE_EVENTSCOLLECTION_HPP__
+#define __OPENFLUID_CORE_EVENTSCOLLECTION_HPP__
 
 #include <openfluid/core/Event.hpp>
 #include <openfluid/dllexport.hpp>
@@ -121,4 +121,4 @@ class OPENFLUID_API EventsCollection
 
 
 
-#endif /* __EVENTSCOLL_H__*/
+#endif /* __OPENFLUID_CORE_EVENTSCOLLECTION_HPP__*/

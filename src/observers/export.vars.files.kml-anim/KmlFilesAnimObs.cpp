@@ -153,7 +153,7 @@ class KmlFilesAnimObserver : public KmlObserverBase
 
     void updateKmlFile()
     {
-      openfluid::core::Unit* UU;
+      openfluid::core::SpatialUnit* UU;
 
       openfluid::core::TimeIndex_t CurrentTI = OPENFLUID_GetCurrentTimeIndex();
 

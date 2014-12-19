@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIM2DOCBUDDY_H___
-#define __SIM2DOCBUDDY_H___
+#ifndef __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__
+#define __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__
 
 
 #ifndef __APPLE__
@@ -391,4 +391,4 @@ class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
 
 #endif /* __APPLE__ */
 
-#endif /* __SIM2DOCBUDDY_HPP__ */
+#endif  /* __OPENFLUID_BUDDIES_SIM2DOCBUDDY_HPP__ */

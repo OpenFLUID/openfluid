@@ -110,7 +110,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
   
     openfluid::base::SchedulingRequest initializeRun()
     {
-      openfluid::core::Unit *B;
+      openfluid::core::SpatialUnit *B;
 
       OPENFLUID_UNITS_ORDERED_LOOP("unitsB",B)
       {
@@ -128,7 +128,7 @@ class ExampleUnitsBProduction : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
 
-      openfluid::core::Unit *FromA, *FromB, *B;
+      openfluid::core::SpatialUnit *FromA, *FromB, *B;
       openfluid::core::UnitsPtrList_t *FromAList, *FromBList;
       openfluid::core::DoubleValue Value5, AuxValue;
 

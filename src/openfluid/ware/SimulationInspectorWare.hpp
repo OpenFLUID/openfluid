@@ -43,10 +43,10 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulationDrivenWare.hpp>
-#include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/core/BooleanValue.hpp>
 #include <openfluid/core/MatrixValue.hpp>
 #include <openfluid/core/Datastore.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
 
 
 namespace openfluid { namespace ware {
@@ -69,10 +69,10 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
     /**
          Pointer to the core repository (const). It should be used with care. Prefer to use the OPENFLUID_Xxxx methods.
      */
-    openfluid::core::CoreRepository* mp_CoreData;
+    openfluid::core::SpatialGraph* mp_SpatialData;
 
 
-    virtual bool isLinked() const { return (SimulationDrivenWare::isLinked() && mp_CoreData != NULL && mp_Datastore != NULL); };
+    virtual bool isLinked() const { return (SimulationDrivenWare::isLinked() && mp_SpatialData != NULL && mp_Datastore != NULL); };
 
 
     /**
@@ -80,7 +80,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] UnitPtr a Unit
       @param[in] AttrName the name of the queried attribute
     */
-    bool OPENFLUID_IsAttributeExist(const openfluid::core::Unit *UnitPtr,
+    bool OPENFLUID_IsAttributeExist(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::AttributeName_t& AttrName) const;
 
     /**
@@ -89,7 +89,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the requested attribute
       @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::StringValue& Val) const;
 
@@ -99,7 +99,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the requested attribute
       @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::DoubleValue& Val) const;
 
@@ -109,7 +109,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the requested attribute
       @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::VectorValue& Val) const;
 
@@ -119,7 +119,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the requested attribute
       @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 openfluid::core::MatrixValue& Val) const;
 
@@ -129,7 +129,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the requested attribute
       @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 double& Val) const;
 
@@ -139,7 +139,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the requested attribute
       @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 long& Val) const;
 
@@ -149,7 +149,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] AttrName the name of the requested attribute
       @param[out] Val the value of the requested attribute
     */
-    void OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+    void OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                 const openfluid::core::AttributeName_t& AttrName,
                                 std::string& Val) const;
 
@@ -158,7 +158,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
        @param[in] UnitPtr a Unit
        @param[in] VarName the name of the requested variable
      */
-     bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+     bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::VariableName_t& VarName) const;
 
     /**
@@ -167,7 +167,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
        @param[in] VarName the name of the requested variable
        @param[in] Index the time index for the value of the variable
      */
-     bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+     bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::VariableName_t& VarName,
                                     const openfluid::core::TimeIndex_t Index) const;
 
@@ -179,7 +179,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] Index the time index for the value of the variable
         @param[in] ValueType the type of the value
       */
-      bool OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+      bool OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                      const openfluid::core::VariableName_t& VarName,
                                      const openfluid::core::TimeIndex_t Index,
                                      const openfluid::core::Value::Type ValueType) const;
@@ -191,7 +191,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] VarName the name of the requested variable
         @param[in] VarType the type of the variable
       */
-     bool OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+     bool OPENFLUID_IsTypedVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::VariableName_t& VarName,
                                     const openfluid::core::Value::Type VarType) const;
 
@@ -203,7 +203,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] Index the time index for the value of the variable
         @param[in] VarType the type of the variable
       */
-      bool OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+      bool OPENFLUID_IsTypedVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                      const openfluid::core::VariableName_t& VarName,
                                      const openfluid::core::TimeIndex_t Index,
                                      const openfluid::core::Value::Type VarType) const;
@@ -215,7 +215,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] Index the time index for the value of the requested variable
         @param[out] Val the value of the requested variable
       */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  const openfluid::core::TimeIndex_t Index,
                                  openfluid::core::Value& Val) const;
@@ -227,7 +227,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] Index the time index for the value of the requested variable
         @param[out] Val the value of the requested variable
       */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  const openfluid::core::TimeIndex_t Index,
                                  double& Val) const;
@@ -239,7 +239,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] Index the time index for the value of the requested variable
         @param[out] Val the value of the requested variable
       */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  const openfluid::core::TimeIndex_t Index,
                                  long& Val) const;
@@ -251,7 +251,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] Index the time index for the value of the requested variable
         @param[out] Val the value of the requested variable
       */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  const openfluid::core::TimeIndex_t Index,
                                  bool& Val) const;
@@ -263,7 +263,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] Index the time index for the value of the requested variable
         @param[out] Val the value of the requested variable
       */
-      void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+      void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  const openfluid::core::TimeIndex_t Index,
                                  std::string& Val) const;
@@ -274,7 +274,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[out] Val the value of the requested variable
     */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                openfluid::core::Value& Val) const;
 
@@ -284,7 +284,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[out] Val the value of the requested variable
     */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                double& Val) const;
 
@@ -294,7 +294,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[out] Val the value of the requested variable
     */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                long& Val) const;
 
@@ -304,7 +304,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[out] Val the value of the requested variable
     */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                bool& Val) const;
 
@@ -314,7 +314,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[out] Val the value of the requested variable
     */
-    void OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+    void OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                std::string& Val) const;
 
@@ -325,7 +325,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] VarName the name of the requested variable
       @param[out] IndVal the value and timeindex of the requested variable
     */
-    void OPENFLUID_GetLatestVariable(const openfluid::core::Unit* UnitPtr,
+    void OPENFLUID_GetLatestVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                      const openfluid::core::VariableName_t& VarName,
                                      openfluid::core::IndexedValue& IndVal);
 
@@ -336,7 +336,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] BeginIndex The beginning time index of the search period
       @param[out] IndValList the list of time-indexed values of the requested variable
     */
-    void OPENFLUID_GetLatestVariables(const openfluid::core::Unit* UnitPtr,
+    void OPENFLUID_GetLatestVariables(const openfluid::core::SpatialUnit* UnitPtr,
                                      const openfluid::core::VariableName_t& VarName,
                                      const openfluid::core::TimeIndex_t BeginIndex,
                                      openfluid::core::IndexedValueList& IndValList);
@@ -350,7 +350,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       @param[in] EndIndex the time index for the end of the period
       @param[out] IndValList the list of time-indexed values of the requested variable
     */
-    void OPENFLUID_GetVariables(const openfluid::core::Unit* UnitPtr,
+    void OPENFLUID_GetVariables(const openfluid::core::SpatialUnit* UnitPtr,
                                 const openfluid::core::VariableName_t& VarName,
                                 const openfluid::core::TimeIndex_t BeginIndex,
                                 const openfluid::core::TimeIndex_t EndIndex,
@@ -363,7 +363,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] EndDate the ending of the time period
         @param[out] Events the collection of event corresponding to the request
       */
-      void OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+      void OPENFLUID_GetEvents(const openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::DateTime BeginDate,
                                const openfluid::core::DateTime EndDate,
                                openfluid::core::EventsCollection& Events) const;
@@ -406,9 +406,9 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
       */
       bool OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
                              const openfluid::core::UnitID_t& ID,
-                             openfluid::core::Unit* aUnit) const;
+                             openfluid::core::SpatialUnit* aUnit) const;
 
-      openfluid::core::Unit* OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+      openfluid::core::SpatialUnit* OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
                                                const openfluid::core::UnitID_t& ID) const;
 
       /**
@@ -418,7 +418,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] IDTo the ID of the other unit to test
         @return true if the given unit is connected "to" the other unit
       */
-      bool OPENFLUID_IsUnitConnectedTo(openfluid::core::Unit* aUnit,
+      bool OPENFLUID_IsUnitConnectedTo(openfluid::core::SpatialUnit* aUnit,
                                        const openfluid::core::UnitClass_t& ClassNameTo,
                                        const openfluid::core::UnitID_t& IDTo) const;
 
@@ -430,7 +430,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] IDFrom the ID of the other unit to test
         @return true if the given unit is connected "from" the other unit
       */
-      bool OPENFLUID_IsUnitConnectedFrom(openfluid::core::Unit* aUnit,
+      bool OPENFLUID_IsUnitConnectedFrom(openfluid::core::SpatialUnit* aUnit,
                                          const openfluid::core::UnitClass_t& ClassNameFrom,
                                          const openfluid::core::UnitID_t& IDFrom) const;
 
@@ -442,7 +442,7 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] IDParent the ID of the other unit to test
         @return true if the given unit is "a child of" the other unit
       */
-      bool OPENFLUID_IsUnitChildOf(openfluid::core::Unit* aUnit,
+      bool OPENFLUID_IsUnitChildOf(openfluid::core::SpatialUnit* aUnit,
                                    const openfluid::core::UnitClass_t& ClassNameParent,
                                    const openfluid::core::UnitID_t& IDParent) const;
 
@@ -454,12 +454,12 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
         @param[in] IDChild the ID of the other unit to test
         @return true if the given unit is "parent of" the other unit
       */
-      bool OPENFLUID_IsUnitParentOf(openfluid::core::Unit* aUnit,
+      bool OPENFLUID_IsUnitParentOf(openfluid::core::SpatialUnit* aUnit,
                                     const openfluid::core::UnitClass_t& ClassNameChild,
                                     const openfluid::core::UnitID_t& IDChild) const;
 
 
-      SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType), mp_Datastore(NULL), mp_CoreData(NULL)
+      SimulationInspectorWare(WareType WType) : SimulationDrivenWare(WType), mp_Datastore(NULL), mp_SpatialData(NULL)
       {};
 
 
@@ -467,9 +467,9 @@ class OPENFLUID_API SimulationInspectorWare : public SimulationDrivenWare
 
     virtual ~SimulationInspectorWare() {};
 
-    void linkToCoreRepository(openfluid::core::CoreRepository* CoreRepos)
+    void linkToSpatialGraph(openfluid::core::SpatialGraph* SGraph)
     {
-      mp_CoreData = CoreRepos;
+      mp_SpatialData = SGraph;
     };
 
     void linkToDatastore(openfluid::core::Datastore* DStore)

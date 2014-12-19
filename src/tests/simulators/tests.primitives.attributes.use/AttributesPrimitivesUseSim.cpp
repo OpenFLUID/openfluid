@@ -144,7 +144,7 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
 
     void prepareData()
     {
-      openfluid::core::Unit* TU;
+      openfluid::core::SpatialUnit* TU;
 
       openfluid::core::DoubleValue VarDoubleVal;
       openfluid::core::VectorValue VarVectorVal;
@@ -186,7 +186,7 @@ class AttributesPrimitivesUseSimulator : public openfluid::ware::PluggableSimula
     void checkAttributes()
     {
 
-      openfluid::core::Unit* TU;
+      openfluid::core::SpatialUnit* TU;
       unsigned int TUID;
 
       double RefDouble;

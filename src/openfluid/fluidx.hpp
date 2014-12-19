@@ -44,7 +44,6 @@
 
 #include <openfluid/fluidx/FluidXReader.hpp>
 #include <openfluid/fluidx/FluidXWriter.hpp>
-#include <openfluid/fluidx/DomainDescriptor.hpp>
 #include <openfluid/fluidx/EventDescriptor.hpp>
 #include <openfluid/fluidx/SimulatorDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
@@ -52,7 +51,8 @@
 #include <openfluid/fluidx/CoupledModelDescriptor.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
-#include <openfluid/fluidx/UnitDescriptor.hpp>
+#include <openfluid/fluidx/SpatialDomainDescriptor.hpp>
+#include <openfluid/fluidx/SpatialUnitDescriptor.hpp>
 
 
 #endif /* __OPENFLUID_FLUIDX_HPP__ */

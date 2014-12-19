@@ -38,7 +38,7 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#include <openfluid/core/EventsColl.hpp>
+#include <openfluid/core/EventsCollection.hpp>
 #include <iostream>
 
 namespace openfluid { namespace core

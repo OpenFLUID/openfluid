@@ -730,7 +730,7 @@ void SpatialDomainWidget::addUnitsClass()
   AddUnitsClassDialog AddDlg(ExistingClasses,this);
   if (AddDlg.exec() == QDialog::Accepted)
   {
-    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
+    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
     UDesc->getUnitClass() = AddDlg.getClassName().toStdString();
     UDesc->getUnitID() = AddDlg.getUnitID();
     UDesc->getProcessOrder() = AddDlg.getUnitPcsOrd();
@@ -843,7 +843,7 @@ void SpatialDomainWidget::addUnit()
     int ID = AddDlg.getUnitID();
 
     // create unit in FluidX descriptor
-    openfluid::fluidx::UnitDescriptor* UDesc = new openfluid::fluidx::UnitDescriptor();
+    openfluid::fluidx::SpatialUnitDescriptor* UDesc = new openfluid::fluidx::SpatialUnitDescriptor();
     UDesc->getUnitClass() = m_ActiveClass.toStdString();
     UDesc->getUnitID() = ID;
     UDesc->getProcessOrder() = AddDlg.getUnitPcsOrd();
@@ -1333,7 +1333,7 @@ void SpatialDomainWidget::updateFluidXAttributeFromCellValue(int Row, int Column
 void SpatialDomainWidget::updateFluidXProcessOrder(int PcsOrd)
 {
   int ID = ui->IDsListWidget->currentItem()->text().toInt();
-  (&const_cast<openfluid::fluidx::UnitDescriptor&>(m_Domain.getUnitDescriptor(m_ActiveClass.toStdString(),ID)))->getProcessOrder() = PcsOrd;
+  (&const_cast<openfluid::fluidx::SpatialUnitDescriptor&>(m_Domain.getUnitDescriptor(m_ActiveClass.toStdString(),ID)))->getProcessOrder() = PcsOrd;
 
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_SPATIALSTRUCT);
 }

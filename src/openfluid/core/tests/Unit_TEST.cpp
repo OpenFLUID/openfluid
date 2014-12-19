@@ -46,13 +46,13 @@
 #define BOOST_TEST_MODULE unittest_unit
 #include <boost/test/unit_test.hpp>
 #include <boost/test/auto_unit_test.hpp>
-#include <openfluid/core/Unit.hpp>
+#include <openfluid/core/SpatialUnit.hpp>
 
 
 
 BOOST_AUTO_TEST_CASE(check_construction)
 {
-  openfluid::core::Unit TU("Test",25,3);
+  openfluid::core::SpatialUnit TU("Test",25,3);
 
   BOOST_REQUIRE_EQUAL(TU.getClass(),"Test");
   BOOST_REQUIRE_EQUAL(TU.getID(),25);
@@ -66,9 +66,9 @@ BOOST_AUTO_TEST_CASE(check_construction)
   BOOST_REQUIRE_EQUAL(TU.getVariables()->isVariableExist("testvar"),false);
 
 
-  openfluid::core::Unit* pTU = NULL;
+  openfluid::core::SpatialUnit* pTU = NULL;
 
-  pTU = new openfluid::core::Unit("pTest",25,3);
+  pTU = new openfluid::core::SpatialUnit("pTest",25,3);
 
   BOOST_REQUIRE_EQUAL(pTU->getClass(),"pTest");
   BOOST_REQUIRE_EQUAL(pTU->getID(),25);
@@ -98,26 +98,26 @@ BOOST_AUTO_TEST_CASE(check_from_to)
   unsigned int UnitsCount;
 
 
-  openfluid::core::Unit TU("Test",35,17);
+  openfluid::core::SpatialUnit TU("Test",35,17);
 
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",23,1));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",2,5));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest",21,5));
+  TU.addFromUnit(new openfluid::core::SpatialUnit("FromTest",23,1));
+  TU.addFromUnit(new openfluid::core::SpatialUnit("FromTest",2,5));
+  TU.addFromUnit(new openfluid::core::SpatialUnit("FromTest",21,5));
 
-  TU.addFromUnit(new openfluid::core::Unit("FromTest2",1,1));
-  TU.addFromUnit(new openfluid::core::Unit("FromTest2",2,1));
+  TU.addFromUnit(new openfluid::core::SpatialUnit("FromTest2",1,1));
+  TU.addFromUnit(new openfluid::core::SpatialUnit("FromTest2",2,1));
 
 
-  TU.addToUnit(new openfluid::core::Unit("ToTest",1,1));
-  TU.addToUnit(new openfluid::core::Unit("ToTest",2,1));
+  TU.addToUnit(new openfluid::core::SpatialUnit("ToTest",1,1));
+  TU.addToUnit(new openfluid::core::SpatialUnit("ToTest",2,1));
 
-  TU.addToUnit(new openfluid::core::Unit("ToTest2",1,1));
-  TU.addToUnit(new openfluid::core::Unit("ToTest2",2,1));
+  TU.addToUnit(new openfluid::core::SpatialUnit("ToTest2",1,1));
+  TU.addToUnit(new openfluid::core::SpatialUnit("ToTest2",2,1));
 
-  TU.addParentUnit(new openfluid::core::Unit("ParentTest",55,1));
+  TU.addParentUnit(new openfluid::core::SpatialUnit("ParentTest",55,1));
 
-  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",1,1));
-  TU.addChildUnit(new openfluid::core::Unit("ChildrenTest",2,1));
+  TU.addChildUnit(new openfluid::core::SpatialUnit("ChildrenTest",1,1));
+  TU.addChildUnit(new openfluid::core::SpatialUnit("ChildrenTest",2,1));
 
   BOOST_REQUIRE(TU.getFromUnits("FromTest") != NULL);
   BOOST_REQUIRE(TU.getFromUnits("FromTest2") != NULL);

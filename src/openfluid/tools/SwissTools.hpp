@@ -41,6 +41,7 @@
 #ifndef __OPENFLUID_TOOLS_SWISSTOOLS_HPP__
 #define __OPENFLUID_TOOLS_SWISSTOOLS_HPP__
 
+
 #include <vector>
 #include <string>
 #include <sstream>
@@ -48,6 +49,7 @@
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
+
 
 namespace openfluid { namespace core {
   class DateTime;
@@ -274,5 +276,5 @@ void OPENFLUID_API Sleep(const unsigned int MSec);
 } } //namespaces
 
 
-#endif // __SWISSTOOLS_H__
+#endif // __OPENFLUID_TOOLS_SWISSTOOLS_HPP__
 

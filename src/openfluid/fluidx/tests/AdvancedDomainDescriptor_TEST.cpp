@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.getDomainDescriptor());
 
-  openfluid::fluidx::UnitDescriptor U;
+  openfluid::fluidx::SpatialUnitDescriptor U;
   U.getUnitClass() = "unitsA";
   U.getUnitID() = 1;
 
@@ -218,7 +218,7 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   BOOST_CHECK(Domain.getClassNames().count("unitsA"));
   BOOST_CHECK(Domain.getClassNames().count("unitsZ"));
 
-  openfluid::fluidx::UnitDescriptor U2;
+  openfluid::fluidx::SpatialUnitDescriptor U2;
   U2.getUnitClass() = "unitsB";
   U2.getUnitID() = 99;
   Domain.addUnit(&U2);
@@ -228,7 +228,7 @@ BOOST_AUTO_TEST_CASE(check_addUnit)
   BOOST_CHECK_EQUAL(Domain.getAttribute("unitsB",99,"indataB1"), "-");
   BOOST_CHECK_EQUAL(Domain.getAttribute("unitsB",99,"indataB1"), "-");
 
-  openfluid::fluidx::UnitDescriptor U3;
+  openfluid::fluidx::SpatialUnitDescriptor U3;
   U3.getUnitClass() = "unitsB";
   U3.getUnitID() = 999;
   U3.getUnitsParents().push_back(std::make_pair("unitsB", 555));
@@ -523,7 +523,7 @@ BOOST_AUTO_TEST_CASE(check_operations_on_events)
   openfluid::fluidx::AdvancedDomainDescriptor Domain(
       FXDesc.getDomainDescriptor());
 
-  openfluid::fluidx::UnitDescriptor UnitDesc;
+  openfluid::fluidx::SpatialUnitDescriptor UnitDesc;
   UnitDesc.getUnitClass() = "TU";
   UnitDesc.getUnitID() = 1;
 
@@ -660,11 +660,11 @@ BOOST_AUTO_TEST_CASE(check_operations_on_relations_afterAdd)
   openfluid::core::UnitClassID_t A1 = std::make_pair("unitsA", 1);
   openfluid::core::UnitClassID_t A2 = std::make_pair("unitsA", 2);
 
-  openfluid::fluidx::UnitDescriptor U1;
+  openfluid::fluidx::SpatialUnitDescriptor U1;
   U1.getUnitClass() = "unitsA";
   U1.getUnitID() = 1;
 
-  openfluid::fluidx::UnitDescriptor U2;
+  openfluid::fluidx::SpatialUnitDescriptor U2;
   U2.getUnitClass() = "unitsA";
   U2.getUnitID() = 2;
 

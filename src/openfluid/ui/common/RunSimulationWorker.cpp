@@ -385,7 +385,7 @@ void RunSimulationWorker::run()
     openfluid::machine::Factory::fillRunEnvironmentFromDescriptor(
         mp_FXDesc->getRunDescriptor());
 
-    SimBlob.getCoreRepository().sortUnitsByProcessOrder();
+    SimBlob.getSpatialGraph().sortUnitsByProcessOrder();
 
 
     // simulation begins -->

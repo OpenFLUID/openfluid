@@ -70,7 +70,7 @@ bool SimulationInspectorWare::IsUnitIDInPtrList(const openfluid::core::UnitsPtrL
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                             const openfluid::core::AttributeName_t& AttrName,
                             openfluid::core::StringValue& Val) const
 {
@@ -90,7 +90,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::AttributeName_t& AttrName,
                                     openfluid::core::DoubleValue& Val) const
 {
@@ -104,7 +104,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::AttributeName_t& AttrName,
                                     openfluid::core::VectorValue& Val) const
 {
@@ -118,7 +118,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                             const openfluid::core::AttributeName_t& AttrName,
                             openfluid::core::MatrixValue& Val) const
 {
@@ -132,7 +132,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::AttributeName_t& AttrName,
                                     double& Val) const
 {
@@ -152,7 +152,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::AttributeName_t& AttrName,
                                     long& Val) const
 {
@@ -172,7 +172,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::SpatialUnit *UnitPtr,
                                     const openfluid::core::AttributeName_t& AttrName,
                                     std::string& Val) const
 {
@@ -192,7 +192,7 @@ void SimulationInspectorWare::OPENFLUID_GetAttribute(const openfluid::core::Unit
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsAttributeExist(const openfluid::core::Unit *UnitPtr,
+bool SimulationInspectorWare::OPENFLUID_IsAttributeExist(const openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::AttributeName_t& AttrName) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::PREPAREDATA,
@@ -210,7 +210,7 @@ bool SimulationInspectorWare::OPENFLUID_IsAttributeExist(const openfluid::core::
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit *UnitPtr,
                                         const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::TimeIndex_t Index,
                                         openfluid::core::Value& Val) const
@@ -235,7 +235,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit 
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        const openfluid::core::TimeIndex_t Index,
                                        double& Val) const
@@ -250,7 +250,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        const openfluid::core::TimeIndex_t Index,
                                        long& Val) const
@@ -265,7 +265,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        const openfluid::core::TimeIndex_t Index,
                                        bool& Val) const
@@ -280,7 +280,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        const openfluid::core::TimeIndex_t Index,
                                        std::string& Val) const
@@ -295,7 +295,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit *UnitPtr,
                                         const openfluid::core::VariableName_t& VarName,
                                         openfluid::core::Value& Val) const
 {
@@ -319,7 +319,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit 
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        double& Val) const
 {
@@ -333,7 +333,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        long& Val) const
 {
@@ -347,7 +347,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        bool& Val) const
 {
@@ -361,7 +361,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                        const openfluid::core::VariableName_t& VarName,
                                        std::string& Val) const
 {
@@ -375,7 +375,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariable(const openfluid::core::Unit*
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetLatestVariable(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetLatestVariable(const openfluid::core::SpatialUnit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  openfluid::core::IndexedValue& IndVal)
 {
@@ -400,7 +400,7 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariable(const openfluid::core:
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetLatestVariables(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetLatestVariables(const openfluid::core::SpatialUnit* UnitPtr,
                                  const openfluid::core::VariableName_t& VarName,
                                  const openfluid::core::TimeIndex_t BeginIndex,
                                  openfluid::core::IndexedValueList& IndValList)
@@ -425,7 +425,7 @@ void SimulationInspectorWare::OPENFLUID_GetLatestVariables(const openfluid::core
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetVariables(const openfluid::core::Unit* UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetVariables(const openfluid::core::SpatialUnit* UnitPtr,
                             const openfluid::core::VariableName_t& VarName,
                             const openfluid::core::TimeIndex_t BeginIndex,
                             const openfluid::core::TimeIndex_t EndIndex,
@@ -451,7 +451,7 @@ void SimulationInspectorWare::OPENFLUID_GetVariables(const openfluid::core::Unit
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                         const openfluid::core::VariableName_t& VarName) const
 {
   REQUIRE_SIMULATION_STAGE_GE(openfluid::base::SimulationStatus::INITIALIZERUN,
@@ -465,7 +465,7 @@ bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::U
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                         const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::TimeIndex_t Index) const
 {
@@ -480,7 +480,7 @@ bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::U
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::Unit *UnitPtr,
+bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                const openfluid::core::VariableName_t& VarName,
                                const openfluid::core::TimeIndex_t Index,
                                const openfluid::core::Value::Type ValueType) const
@@ -496,7 +496,7 @@ bool SimulationInspectorWare::OPENFLUID_IsVariableExist(const openfluid::core::U
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                         const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::Value::Type VarType) const
 {
@@ -511,7 +511,7 @@ bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::co
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::core::Unit *UnitPtr,
+bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::core::SpatialUnit *UnitPtr,
                                         const openfluid::core::VariableName_t& VarName,
                                         const openfluid::core::TimeIndex_t Index,
                                         const openfluid::core::Value::Type VarType) const
@@ -527,7 +527,7 @@ bool SimulationInspectorWare::OPENFLUID_IsTypedVariableExist(const openfluid::co
 // =====================================================================
 
 
-void SimulationInspectorWare::OPENFLUID_GetEvents(const openfluid::core::Unit *UnitPtr,
+void SimulationInspectorWare::OPENFLUID_GetEvents(const openfluid::core::SpatialUnit *UnitPtr,
                                             const openfluid::core::DateTime BeginDate,
                                             const openfluid::core::DateTime EndDate,
                                             openfluid::core::EventsCollection& Events) const
@@ -550,7 +550,7 @@ void SimulationInspectorWare::OPENFLUID_GetEvents(const openfluid::core::Unit *U
 bool SimulationInspectorWare::OPENFLUID_IsUnitExist(openfluid::core::UnitClass_t ClassName,
                                               openfluid::core::UnitID_t ID) const
 {
-  return (mp_CoreData->getUnit(ClassName,ID) != NULL);
+  return (mp_SpatialData->getUnit(ClassName,ID) != NULL);
 }
 
 
@@ -560,7 +560,7 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitExist(openfluid::core::UnitClass_t
 
 bool SimulationInspectorWare::OPENFLUID_IsUnitClassExist(openfluid::core::UnitClass_t ClassName) const
 {
-  return mp_CoreData->isUnitsClassExist(ClassName);
+  return mp_SpatialData->isUnitsClassExist(ClassName);
 }
 
 
@@ -572,9 +572,9 @@ bool SimulationInspectorWare::OPENFLUID_GetUnitsCount(const openfluid::core::Uni
                                                 unsigned int& UnitsCount) const
 {
   UnitsCount = 0;
-  if (mp_CoreData->isUnitsClassExist(ClassName))
+  if (mp_SpatialData->isUnitsClassExist(ClassName))
   {
-    UnitsCount = mp_CoreData->getUnits(ClassName)->getList()->size();
+    UnitsCount = mp_SpatialData->getUnits(ClassName)->getList()->size();
     return true;
   }
   else return false;
@@ -590,7 +590,7 @@ void SimulationInspectorWare::OPENFLUID_GetUnitsCount(unsigned int& UnitsCount) 
   UnitsCount = 0;
   openfluid::core::UnitsListByClassMap_t::const_iterator UnitsIt;
 
-  for (UnitsIt = mp_CoreData->getUnitsByClass()->begin(); UnitsIt != mp_CoreData->getUnitsByClass()->end();++UnitsIt )
+  for (UnitsIt = mp_SpatialData->getUnitsByClass()->begin(); UnitsIt != mp_SpatialData->getUnitsByClass()->end();++UnitsIt )
   {
     UnitsCount = UnitsCount + (*UnitsIt).second.getList()->size();
   }
@@ -603,9 +603,9 @@ void SimulationInspectorWare::OPENFLUID_GetUnitsCount(unsigned int& UnitsCount) 
 
 bool SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
                                           const openfluid::core::UnitID_t& ID,
-                                          openfluid::core::Unit* aUnit) const
+                                          openfluid::core::SpatialUnit* aUnit) const
 {
-  aUnit =  const_cast<openfluid::core::Unit*>(mp_CoreData->getUnit(ClassName,ID));
+  aUnit =  const_cast<openfluid::core::SpatialUnit*>(mp_SpatialData->getUnit(ClassName,ID));
   return (aUnit != NULL);
 }
 
@@ -614,21 +614,21 @@ bool SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitClass
 // =====================================================================
 
 
-openfluid::core::Unit* SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
+openfluid::core::SpatialUnit* SimulationInspectorWare::OPENFLUID_GetUnit(const openfluid::core::UnitClass_t& ClassName,
                                                             const openfluid::core::UnitID_t& ID) const
 {
-  return mp_CoreData->getUnit(ClassName,ID);
+  return mp_SpatialData->getUnit(ClassName,ID);
 }
 
 
 // =====================================================================
 // =====================================================================
 
-bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedTo(openfluid::core::Unit* aUnit,
+bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedTo(openfluid::core::SpatialUnit* aUnit,
                                                     const openfluid::core::UnitClass_t& ClassNameTo,
                                                     const openfluid::core::UnitID_t& IDTo) const
 {
-  if (aUnit == NULL || !mp_CoreData->isUnitsClassExist(ClassNameTo)) return false;
+  if (aUnit == NULL || !mp_SpatialData->isUnitsClassExist(ClassNameTo)) return false;
   return IsUnitIDInPtrList(aUnit->getToUnits(ClassNameTo),IDTo);
 }
 
@@ -637,11 +637,11 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedTo(openfluid::core::Unit*
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedFrom(openfluid::core::Unit* aUnit,
+bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedFrom(openfluid::core::SpatialUnit* aUnit,
                                                       const openfluid::core::UnitClass_t& ClassNameFrom,
                                                       const openfluid::core::UnitID_t& IDFrom) const
 {
-  if (aUnit == NULL || !mp_CoreData->isUnitsClassExist(ClassNameFrom)) return false;
+  if (aUnit == NULL || !mp_SpatialData->isUnitsClassExist(ClassNameFrom)) return false;
   return IsUnitIDInPtrList(aUnit->getFromUnits(ClassNameFrom),IDFrom);
 }
 
@@ -650,11 +650,11 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitConnectedFrom(openfluid::core::Uni
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsUnitChildOf(openfluid::core::Unit* aUnit,
+bool SimulationInspectorWare::OPENFLUID_IsUnitChildOf(openfluid::core::SpatialUnit* aUnit,
                                                 const openfluid::core::UnitClass_t& ClassNameParent,
                                                 const openfluid::core::UnitID_t& IDParent) const
 {
-  if (aUnit == NULL || !mp_CoreData->isUnitsClassExist(ClassNameParent)) return false;
+  if (aUnit == NULL || !mp_SpatialData->isUnitsClassExist(ClassNameParent)) return false;
   return IsUnitIDInPtrList(aUnit->getParentUnits(ClassNameParent),IDParent);
 }
 
@@ -663,11 +663,11 @@ bool SimulationInspectorWare::OPENFLUID_IsUnitChildOf(openfluid::core::Unit* aUn
 // =====================================================================
 
 
-bool SimulationInspectorWare::OPENFLUID_IsUnitParentOf(openfluid::core::Unit* aUnit,
+bool SimulationInspectorWare::OPENFLUID_IsUnitParentOf(openfluid::core::SpatialUnit* aUnit,
                                                  const openfluid::core::UnitClass_t& ClassNameChild,
                                                  const openfluid::core::UnitID_t& IDChild) const
 {
-  if (aUnit == NULL || !mp_CoreData->isUnitsClassExist(ClassNameChild)) return false;
+  if (aUnit == NULL || !mp_SpatialData->isUnitsClassExist(ClassNameChild)) return false;
   return IsUnitIDInPtrList(aUnit->getChildrenUnits(ClassNameChild),IDChild);
 }
 

@@ -156,7 +156,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
       // untyped
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
 
         double TheDouble;
@@ -210,7 +210,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
       // typed
 
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
 
         double TheDouble;
@@ -278,7 +278,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
     openfluid::base::SchedulingRequest runStep()
     {
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
 
         double TheDouble;
@@ -642,7 +642,7 @@ class VarsPrimitivesProdSimulator : public openfluid::ware::PluggableSimulator
 
 
       {
-        openfluid::core::Unit* TU;
+        openfluid::core::SpatialUnit* TU;
         unsigned int TUID;
 
         double TheDouble;

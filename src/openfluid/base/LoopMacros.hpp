@@ -64,7 +64,7 @@
 
 
 #define _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitclass,unitptr,id) \
-    openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_CoreData->getUnits(unitclass)->getList(); \
+    openfluid::core::UnitsList_t* _UNITSLISTID(id) = mp_SpatialData->getUnits(unitclass)->getList(); \
     if (_UNITSLISTID(id) != NULL && !(_UNITSLISTID(id)->empty())) \
       for (openfluid::core::UnitsList_t::iterator _UNITSLISTITERID(id) = _UNITSLISTID(id)->begin(); \
            unitptr = &(*_UNITSLISTITERID(id)),_UNITSLISTITERID(id) != _UNITSLISTID(id)->end(); \
@@ -73,7 +73,7 @@
 /**
   Macro for a loop processing all units of a class, following their process order
   @param[in] unitclass name of the unit class
-  @param[out] unitptr pointer to a openfluid::core::Unit objects, automatically pointing to the current processed unit
+  @param[out] unitptr pointer to a openfluid::core::SpatialUnit object, automatically pointing to the current processed unit
 */
 #define OPENFLUID_UNITS_ORDERED_LOOP(unitclass,unitptr) \
     _OPENFLUID_UNITS_ORDERED_LOOP_WITHID(unitclass,unitptr,__LINE__)
@@ -82,14 +82,14 @@
 
 
 #define _OPENFLUID_ALLUNITS_ORDERED_LOOP_WITHID(unitptr,id) \
-    openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_CoreData->getUnitsGlobally(); \
+    openfluid::core::UnitsPtrList_t* _UNITSPTRLISTID(id) = mp_SpatialData->getUnitsGlobally(); \
     for (openfluid::core::UnitsPtrList_t::iterator _UNITSPTRLISTITERID(id) = _UNITSPTRLISTID(id)->begin(); \
          unitptr = (*_UNITSPTRLISTITERID(id)),_UNITSPTRLISTITERID(id) != _UNITSPTRLISTID(id)->end(); \
          ++_UNITSPTRLISTITERID(id))
 
 /**
   Macro for a loop processing all units, following their process order
-  @param[out] unitptr pointer to a openfluid::core::Unit objects, automatically pointing to the current processed unit
+  @param[out] unitptr pointer to a openfluid::core::SpatialUnit object, automatically pointing to the current processed unit
 */
 #define OPENFLUID_ALLUNITS_ORDERED_LOOP(unitptr) \
     _OPENFLUID_ALLUNITS_ORDERED_LOOP_WITHID(unitptr,__LINE__)
@@ -105,7 +105,7 @@
 /**
   Macro for a loop processing a list of units
   @param[in] unitslist pointer to a list of openfluid::core::Unit
-  @param[out] unitptr pointer to a openfluid::core::Unit objects, pointing to the current processed unit
+  @param[out] unitptr unitptr pointer to a openfluid::core::SpatialUnit object, pointing to the current processed unit
 */#define OPENFLUID_UNITSLIST_LOOP(unitslist,unitptr) \
     _OPENFLUID_UNITSLIST_LOOP_WITHID(unitslist,unitptr,__LINE__)
 

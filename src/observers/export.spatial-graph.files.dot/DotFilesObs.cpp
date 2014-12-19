@@ -127,10 +127,10 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
       std::ofstream DotFile;
       std::string OutputDir;
-      const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_CoreData->getUnitsByClass();
+      const openfluid::core::UnitsListByClassMap_t* UnitsByClass = mp_SpatialData->getUnitsByClass();
       const openfluid::core::UnitsList_t* UnitsList = NULL;
       std::vector<openfluid::core::UnitClass_t> ClassVector;
-      openfluid::core::Unit* TheUnit;
+      openfluid::core::SpatialUnit* TheUnit;
 
       openfluid::core::UnitsListByClassMap_t::const_iterator itUnitsClass;
       openfluid::core::UnitsList_t::const_iterator itUnitsList;
@@ -177,7 +177,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
-          TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+          TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
           std::string IDStr = "";
           openfluid::tools::ConvertValue(TheUnit->getID(),&IDStr);
           DotFile << generateDotNode(ClassStr,IDStr,Options) << "\n";
@@ -193,7 +193,7 @@ class DotFilesObserver : public openfluid::ware::PluggableObserver
 
         for (itUnitsList=UnitsList->begin();itUnitsList!=UnitsList->end();++itUnitsList)
         {
-          TheUnit = const_cast<openfluid::core::Unit*>(&(*itUnitsList));
+          TheUnit = const_cast<openfluid::core::SpatialUnit*>(&(*itUnitsList));
           std::string SrcClassStr = TheUnit->getClass();
           std::string SrcIDStr = "";
           openfluid::tools::ConvertValue(TheUnit->getID(),&SrcIDStr);

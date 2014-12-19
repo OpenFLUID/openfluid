@@ -142,7 +142,7 @@ class LoggerSimulator : public openfluid::ware::PluggableSimulator
 
   openfluid::base::SchedulingRequest runStep()
   {
-    openfluid::core::Unit* TU;
+    openfluid::core::SpatialUnit* TU;
 
     OPENFLUID_UNITS_ORDERED_LOOP("TestUnits",TU)
     {

@@ -32,9 +32,8 @@
 
 
 
-#include <openfluid/core/CoreRepository.hpp>
-
 #include <boost/foreach.hpp>
+#include <openfluid/core/SpatialGraph.hpp>
 
 
 namespace openfluid { namespace core {
@@ -47,7 +46,7 @@ namespace openfluid { namespace core {
 
 struct SortUnitsPtrByProcessOrder
 {
-  bool operator ()(Unit*& U1,Unit*& U2) const
+  bool operator ()(SpatialUnit*& U1,SpatialUnit*& U2) const
   {
     return (U1->getProcessOrder() <= U2->getProcessOrder());
   }
@@ -57,7 +56,7 @@ struct SortUnitsPtrByProcessOrder
 // =====================================================================
 // =====================================================================
 
-CoreRepository::CoreRepository()
+SpatialGraph::SpatialGraph()
 {
 
 }
@@ -66,7 +65,7 @@ CoreRepository::CoreRepository()
 // =====================================================================
 // =====================================================================
 
-bool CoreRepository::removeUnitFromList(UnitsPtrList_t* UnitsList,
+bool SpatialGraph::removeUnitFromList(UnitsPtrList_t* UnitsList,
                                         const UnitID_t& UnitID)
 {
 
@@ -91,9 +90,9 @@ bool CoreRepository::removeUnitFromList(UnitsPtrList_t* UnitsList,
 // =====================================================================
 
 
-bool CoreRepository::addUnit(Unit aUnit)
+bool SpatialGraph::addUnit(SpatialUnit aUnit)
 {
-  Unit* TheUnit = m_PcsOrderedUnitsByClass[aUnit.getClass()].addUnit(aUnit);
+  SpatialUnit* TheUnit = m_PcsOrderedUnitsByClass[aUnit.getClass()].addUnit(aUnit);
   if (TheUnit != NULL)
   {
     m_PcsOrderedUnitsGlobal.push_back(TheUnit);
@@ -107,7 +106,7 @@ bool CoreRepository::addUnit(Unit aUnit)
 // =====================================================================
 
 
-bool CoreRepository::deleteUnit(Unit* aUnit)
+bool SpatialGraph::deleteUnit(SpatialUnit* aUnit)
 {
 
   std::vector<openfluid::core::UnitClass_t> ClassVector;
@@ -196,8 +195,8 @@ bool CoreRepository::deleteUnit(Unit* aUnit)
 // =====================================================================
 
 
-bool CoreRepository::removeFromToConnection(Unit* FromUnit,
-                                            Unit* ToUnit)
+bool SpatialGraph::removeFromToConnection(SpatialUnit* FromUnit,
+                                            SpatialUnit* ToUnit)
 {
   if (FromUnit != NULL && ToUnit != NULL)
   {
@@ -212,8 +211,8 @@ bool CoreRepository::removeFromToConnection(Unit* FromUnit,
 // =====================================================================
 
 
-bool CoreRepository::removeChildParentConnection(Unit* ChildUnit,
-                                                 Unit* ParentUnit)
+bool SpatialGraph::removeChildParentConnection(SpatialUnit* ChildUnit,
+                                                 SpatialUnit* ParentUnit)
 {
   if (ChildUnit != NULL && ParentUnit != NULL)
   {
@@ -228,7 +227,7 @@ bool CoreRepository::removeChildParentConnection(Unit* ChildUnit,
 // =====================================================================
 
 
-bool CoreRepository::isUnitsClassExist(UnitClass_t UnitClass) const
+bool SpatialGraph::isUnitsClassExist(UnitClass_t UnitClass) const
 {
   return m_PcsOrderedUnitsByClass.find(UnitClass) != m_PcsOrderedUnitsByClass.end();
 }
@@ -237,7 +236,7 @@ bool CoreRepository::isUnitsClassExist(UnitClass_t UnitClass) const
 // =====================================================================
 
 
-Unit* CoreRepository::getUnit(UnitClass_t UnitClass, UnitID_t UnitID)
+SpatialUnit* SpatialGraph::getUnit(UnitClass_t UnitClass, UnitID_t UnitID)
 {
   UnitsListByClassMap_t::iterator it;
 
@@ -256,7 +255,7 @@ Unit* CoreRepository::getUnit(UnitClass_t UnitClass, UnitID_t UnitID)
 // =====================================================================
 
 
-UnitsCollection* CoreRepository::getUnits(UnitClass_t UnitClass)
+UnitsCollection* SpatialGraph::getUnits(UnitClass_t UnitClass)
 {
   UnitsListByClassMap_t::iterator it;
 
@@ -271,7 +270,7 @@ UnitsCollection* CoreRepository::getUnits(UnitClass_t UnitClass)
 // =====================================================================
 
 
-const UnitsCollection* CoreRepository::getUnits(UnitClass_t UnitClass) const
+const UnitsCollection* SpatialGraph::getUnits(UnitClass_t UnitClass) const
 {
   UnitsListByClassMap_t::const_iterator it;
 
@@ -287,7 +286,7 @@ const UnitsCollection* CoreRepository::getUnits(UnitClass_t UnitClass) const
 // =====================================================================
 
 
-bool CoreRepository::sortUnitsByProcessOrder()
+bool SpatialGraph::sortUnitsByProcessOrder()
 {
   UnitsListByClassMap_t::iterator it;
   UnitsCollection* Units;
@@ -309,7 +308,7 @@ bool CoreRepository::sortUnitsByProcessOrder()
 // =====================================================================
 
 
-void CoreRepository::streamContents(std::ostream& OStream)
+void SpatialGraph::streamContents(std::ostream& OStream)
 {
   UnitsListByClassMap_t::iterator ClassIt;
 
@@ -345,9 +344,9 @@ void CoreRepository::streamContents(std::ostream& OStream)
 // =====================================================================
 
 
-void CoreRepository::clearAllVariables()
+void SpatialGraph::clearAllVariables()
 {
-  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
     CurrentUnit->getVariables()->clear();
   }
@@ -358,9 +357,9 @@ void CoreRepository::clearAllVariables()
 // =====================================================================
 
 
-void CoreRepository::clearAllAttributes()
+void SpatialGraph::clearAllAttributes()
 {
-  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
     CurrentUnit->getAttributes()->clear();
   }
@@ -371,9 +370,9 @@ void CoreRepository::clearAllAttributes()
 // =====================================================================
 
 
-void CoreRepository::clearAllEvents()
+void SpatialGraph::clearAllEvents()
 {
-  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
     CurrentUnit->getEvents()->clear();
   }
@@ -384,9 +383,9 @@ void CoreRepository::clearAllEvents()
 // =====================================================================
 
 
-void CoreRepository::clearAllData()
+void SpatialGraph::clearAllData()
 {
-  BOOST_FOREACH(openfluid::core::Unit* CurrentUnit,m_PcsOrderedUnitsGlobal)
+  BOOST_FOREACH(openfluid::core::SpatialUnit* CurrentUnit,m_PcsOrderedUnitsGlobal)
   {
     CurrentUnit->getVariables()->clear();
     CurrentUnit->getAttributes()->clear();
@@ -399,7 +398,7 @@ void CoreRepository::clearAllData()
 // =====================================================================
 
 
-void CoreRepository::clearUnits()
+void SpatialGraph::clearUnits()
 {
   UnitsPtrList_t::iterator UnitPtrIt = m_PcsOrderedUnitsGlobal.begin();
 
