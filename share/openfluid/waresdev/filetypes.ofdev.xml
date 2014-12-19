@@ -4,8 +4,16 @@
     <filetypes>
 
       <filetype name="cpp">
-        <extensions>*.c++;*.cxx;*.cpp;*.cc;*.C;*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc;*.moc</extensions>
+        <extensions>*.c++;*.cxx;*.cpp;*.cc;*.C;*.moc;*.c</extensions>
         <icon qresname=":/icons/cpp.png" />
+        <edition internal="yes">
+          <highlighting specsfile="cpp.syntaxhl.ofdev.xml" />
+          <completion specsfile="cpp.comp.ofdev.xml" />
+        </edition>
+      </filetype>
+      
+      <filetype name="hpp">
+        <extensions>*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc</extensions>
         <edition internal="yes">
           <highlighting specsfile="cpp.syntaxhl.ofdev.xml" />
           <completion specsfile="cpp.comp.ofdev.xml" />

@@ -336,7 +336,6 @@ QString WareSrcFiletypeManager::getFileType(const QString& FileName)
 
 QMap<QString, QString> WareSrcFiletypeManager::getIconsByFileExtensionList()
 {
-
   return m_IconsByFileExtensionList;
 }
 
