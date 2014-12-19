@@ -44,6 +44,7 @@
 #include <openfluid/base/RuntimeEnv.hpp>
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/config.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -78,12 +79,13 @@ WareSrcFiletypeManager::WareSrcFiletypeManager()
   m_Formats["comment"].setForeground(QColor("#00FF00"));
   m_Formats["comment"].setFontItalic(true);
 
-  // TODO replace with CMake-defined path
   QDir WaresdevDir(
-      QString("%1/share/openfluid/waresdev").arg(
+      QString("%1/%2").arg(
           QString::fromStdString(
               openfluid::base::RuntimeEnvironment::getInstance()
-                  ->getInstallPrefix())));
+                  ->getInstallPrefix())).arg(
+          QString::fromStdString(
+              openfluid::config::SHARE_WARESDEV_INSTALL_PATH)));
 
   parseFiletypeFile(WaresdevDir.filePath("filetypes.ofdev.xml"));
 

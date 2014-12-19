@@ -53,7 +53,15 @@
 WareSrcExplorerModel::WareSrcExplorerModel(const QString& Path) :
     QFileSystemModel(), m_DirPath(Path)
 {
-  m_Icons = openfluid::ui::waresdev::WareSrcFiletypeManager::getInstance()
+  m_DefaultIcons["*.c++;*.cxx;*.cpp;*.cc;*.C;*.moc;*.c"] = ":/icons/cpp.png";
+  m_DefaultIcons["*.h;*.hh;*.H;*.h++;*.hxx;*.hpp;*.hcc"] = ":/icons/hpp.png";
+  m_DefaultIcons["CMake.in.config"] = ":/icons/cmake-config.png";
+  m_DefaultIcons["CMakeLists.txt;*.cmake"] = ":/icons/cmakelists.png";
+  m_DefaultIcons["*.f;*.F;*.for;*.FOR;*.f90;*.F90;*.fpp;*.FPP;*.f95;*.F95"] = ":/icons/fortran.png";
+  m_DefaultIcons["*.ui"] = ":/icons/qt-ui.png";
+  m_DefaultIcons["wareshub.json"] = ":/icons/wareshub.png";
+
+  m_UserIcons = openfluid::ui::waresdev::WareSrcFiletypeManager::getInstance()
       ->getIconsByFileExtensionList();
 
   setRootPath(m_DirPath);
@@ -77,18 +85,27 @@ QVariant WareSrcExplorerModel::data(const QModelIndex& Index, int Role) const
         return QVariant(QColor("#A3A3A3"));
       else if (Info.dir() == m_DirPath
           && Role == QFileSystemModel::FileIconRole)
-        return QIcon(":/icons/foldergreen.png");
+        return QIcon(":/icons/waredir.png");
     }
     else if (Info.isFile())
     {
       if (Role == QFileSystemModel::FileIconRole)
       {
-        for (QMap<QString, QString>::const_iterator it = m_Icons.begin();
-            it != m_Icons.end(); ++it)
+        for (QMap<QString, QString>::const_iterator it = m_UserIcons.begin();
+            it != m_UserIcons.end(); ++it)
         {
           if (QDir::match(it.key(), Info.fileName()))
             return QIcon(it.value());
         }
+
+        for (QMap<QString, QString>::const_iterator it = m_DefaultIcons.begin();
+            it != m_DefaultIcons.end(); ++it)
+        {
+          if (QDir::match(it.key(), Info.fileName()))
+            return QIcon(it.value());
+        }
+
+        return QIcon(":/icons/notype.png");
       }
 
       if (Role == Qt::FontRole)
