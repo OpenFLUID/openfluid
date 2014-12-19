@@ -29,43 +29,44 @@
 
  */
 
+
 /**
- \file WareSrcToolbar.hpp
+ \file WareSrcMsgStream.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCTOOLBAR_HPP__
-#define __WARESRCTOOLBAR_HPP__
 
-#include <openfluid/dllexport.hpp>
+#ifndef SRC_OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP_
+#define SRC_OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP_
 
-#include <QToolBar>
+#include <QString>
 
-#include <QAction>
 
-namespace openfluid { namespace ui { namespace waresdev {
+namespace openfluid { namespace waresdev {
 
-class DLLEXPORT WareSrcToolbar: public QToolBar
+
+class WareSrcMsgStream
 {
-  Q_OBJECT
-
-  private:
-
-    QMap<QString, QAction*> m_Actions;
-
-    void createActions();
-
   public:
 
-    WareSrcToolbar(bool IsIncluded, QWidget* Parent = 0);
+    enum MessageType
+    {
+      MSG_COMMAND, MSG_STANDARD, MSG_WARNING, MSG_ERROR,
+    };
 
-    ~WareSrcToolbar();
+    virtual ~WareSrcMsgStream()
+    {
+    }
 
-    QAction* getAction(const QString& ActionName);
+    virtual void clear() = 0;
+    
+    virtual void write(const QString& Msg, MessageType Type) = 0;
 };
 
-} } }  // namespaces
 
-#endif /* __WARESRCTOOLBAR_HPP__ */
+} } // namespaces
+
+
+#endif /* SRC_OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP_ */

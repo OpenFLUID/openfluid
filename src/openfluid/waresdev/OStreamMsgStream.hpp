@@ -31,47 +31,39 @@
 
 
 /**
- \file WareSrcActions.hpp
+ \file OStreamMsgStream.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
 
-#ifndef SRC_OPENFLUID_WARESDEV_UI_WARESRCACTIONS_HPP_
-#define SRC_OPENFLUID_WARESDEV_UI_WARESRCACTIONS_HPP_
+#ifndef SRC_OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP_
+#define SRC_OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP_
 
-#include <QAction>
+#include <openfluid/waresdev/WareSrcMsgStream.hpp>
+
+#include <iostream>
 
 
-namespace openfluid { namespace ui { namespace waresdev {
+namespace openfluid { namespace waresdev {
 
-class WareSrcActions: public QObject
+
+class OStreamMsgStream: public WareSrcMsgStream
 {
-  Q_OBJECT
-
   private:
 
-    static WareSrcActions* mp_Instance;
-
-    QMap<QString, QAction*> m_Actions;
-
-    WareSrcActions();
-
-    ~WareSrcActions();
+    std::ostream& m_Stream;
 
   public:
 
-    static WareSrcActions* getInstance();
+    OStreamMsgStream(std::ostream& Stream = std::cout);
 
-    QAction* getAction(const QString& ActionName);
+    void clear();
 
-  public slots:
-
-    void showNotYetImplemented();
-
+    void write(const QString& Msg, MessageType Type);
 };
 
-} } }  // namespaces
+} } // namespaces
 
-#endif /* SRC_OPENFLUID_WARESDEV_UI_WARESRCACTIONS_HPP_ */
+#endif /* SRC_OPENFLUID_WARESDEV_OSTREAMMSGSTREAM_HPP_ */

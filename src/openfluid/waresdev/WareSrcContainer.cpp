@@ -40,8 +40,12 @@
 #include <openfluid/waresdev/WareSrcContainer.hpp>
 
 #include <QDir>
+#include <QProcess>
 
 #include <openfluid/base/FrameworkException.hpp>
+#include <openfluid/base/RuntimeEnv.hpp>
+#include <openfluid/tools/ExternalProgram.hpp>
+#include <openfluid/tools/SwissTools.hpp>
 #include <openfluid/config.hpp>
 
 namespace openfluid { namespace waresdev {
@@ -51,11 +55,11 @@ namespace openfluid { namespace waresdev {
 // =====================================================================
 
 
-WareSrcContainer::WareSrcContainer(const QString& AbsolutePath,
-                                   WareSrcManager::WareType Type,
-                                   const QString& WareName) :
-    m_AbsolutePath(AbsolutePath), m_AbsoluteCMakeConfigPath(""), m_AbsoluteMainCppPath(
-        "")
+WareSrcContainer::WareSrcContainer(
+    const QString& AbsolutePath, WareSrcManager::WareType Type,
+    const QString& WareName, openfluid::waresdev::WareSrcMsgStream& Stream) :
+    QObject(), m_AbsolutePath(AbsolutePath), m_AbsoluteCMakeConfigPath(""), m_AbsoluteMainCppPath(
+        ""), m_CMakePath(""), mp_Stream(&Stream), mp_Process(new QProcess())
 {
   QDir Dir(AbsolutePath);
 
@@ -84,6 +88,20 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath,
     }
   }
 
+  m_OFVersion =
+      QString::fromStdString(
+          openfluid::base::RuntimeEnvironment::getInstance()
+              ->getMajorMinorVersion());
+
+  setConfigMode(CONFIG_RELEASE);
+  setBuildMode(BUILD_WITHINSTALL);
+
+  connect(mp_Process, SIGNAL(readyReadStandardOutput()), this,
+          SLOT(processOutput()));
+  connect(mp_Process, SIGNAL(readyReadStandardError()), this,
+          SLOT(processOutput()));
+  connect(mp_Process, SIGNAL(finished(int, QProcess::ExitStatus)), this,
+          SLOT(processFinishedOutput(int)));
 }
 
 
@@ -93,7 +111,10 @@ WareSrcContainer::WareSrcContainer(const QString& AbsolutePath,
 
 WareSrcContainer::~WareSrcContainer()
 {
+  if (mp_Process->state() != QProcess::NotRunning)
+    mp_Process->close();
 
+  delete mp_Process;
 }
 
 
@@ -177,6 +198,174 @@ QString WareSrcContainer::getAbsolutePath() const
 // =====================================================================
 // =====================================================================
 
+
+void WareSrcContainer::setMsgStream(
+    openfluid::waresdev::WareSrcMsgStream& Stream)
+{
+  mp_Stream = &Stream;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::setConfigMode(ConfigMode Mode)
+{
+  m_ConfigMode = Mode;
+
+  QString ConfigTag;
+  switch (m_ConfigMode)
+  {
+    case CONFIG_RELEASE:
+      ConfigTag = "-release";
+      break;
+    case CONFIG_DEBUG:
+      ConfigTag = "-debug";
+      break;
+    default:
+      ConfigTag = "";
+      break;
+  }
+
+  m_BuildDirPath = QDir(m_AbsolutePath).filePath(
+      QString("_build%1-%2").arg(ConfigTag).arg(m_OFVersion));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::setBuildMode(BuildMode Mode)
+{
+  m_BuildMode = Mode;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::findCMake()
+{
+  openfluid::tools::ExternalProgram CMakeProg =
+      openfluid::tools::ExternalProgram::getRegisteredProgram(
+          openfluid::tools::ExternalProgram::CMakeProgram);
+
+  if (!CMakeProg.isFound())
+    throw openfluid::base::FrameworkException("WareSrcContainer::findCMake",
+                                              "unable to find CMake program");
+
+  m_CMakePath = CMakeProg.getFullProgramPath();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::configure()
+{
+  if (m_CMakePath.isEmpty())
+    findCMake();
+
+  mp_Stream->clear();
+
+  QFile BuildDir(m_BuildDirPath);
+  if (BuildDir.exists())
+    openfluid::tools::EmptyDirectoryRecursively(
+        QString(m_BuildDirPath).toStdString());
+  else if (!QDir().mkpath(m_BuildDirPath))
+    throw openfluid::base::FrameworkException(
+        "WareSrcContainer::configure", "unable to create build directory");
+
+  QString Options = QString(" -DCMAKE_BUILD_TYPE=%1").arg(
+      m_ConfigMode == CONFIG_RELEASE ? "Release" : "Debug");
+
+#ifdef Q_OS_WIN32
+  Options.prepend(" -G \"MinGW Makefiles\"");
+#endif
+
+  QString Command = QString("%1 -E chdir %2 %1 %3 %4").arg(m_CMakePath).arg(
+      m_BuildDirPath).arg(m_AbsolutePath).arg(Options);
+
+  runCommand(Command);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::build()
+{
+  if (m_CMakePath.isEmpty())
+    findCMake();
+
+  mp_Stream->clear();
+
+  if (!QFile(m_BuildDirPath).exists())
+  {
+    configure();
+    mp_Process->waitForFinished(-1);
+  }
+
+  QString Command = QString("%1 -E chdir %2 %1 --build . %3").arg(m_CMakePath)
+      .arg(m_BuildDirPath).arg(
+      m_BuildMode == BUILD_WITHINSTALL ? "--target install" : "");
+
+  runCommand(Command);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::processOutput()
+{
+//TODO fix accentuation pb, qprintable not sufficient
+  mp_Stream->write(qPrintable(mp_Process->readAllStandardOutput()),
+                   openfluid::waresdev::WareSrcMsgStream::MSG_STANDARD);
+  mp_Stream->write(qPrintable(mp_Process->readAllStandardError()),
+                   openfluid::waresdev::WareSrcMsgStream::MSG_ERROR);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::processFinishedOutput(int ExitCode)
+{
+  if (!ExitCode)
+    mp_Stream->write(tr("Command ended\n\n"),
+                     openfluid::waresdev::WareSrcMsgStream::MSG_COMMAND);
+  else
+    mp_Stream->write(tr("Command ended with error\n\n"),
+                     openfluid::waresdev::WareSrcMsgStream::MSG_ERROR);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcContainer::runCommand(const QString& Command)
+{
+  if (mp_Process->state() != QProcess::NotRunning)
+    mp_Process->close();
+
+  mp_Stream->write(QString("%1\n").arg(Command),
+                   openfluid::waresdev::WareSrcMsgStream::MSG_COMMAND);
+
+  mp_Process->start(Command);
+}
+
+
+// =====================================================================
+// =====================================================================
 
 
 } } // namespaces

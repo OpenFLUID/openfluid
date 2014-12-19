@@ -40,7 +40,7 @@
 
 #include <QMenu>
 #include <QToolButton>
-#include <openfluid/ui/waresdev/WareSrcActions.hpp>
+#include <openfluid/base/FrameworkException.hpp>
 
 namespace openfluid { namespace ui { namespace waresdev {
 
@@ -58,16 +58,14 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
   }
 
-  WareSrcActions* Actions =
-      openfluid::ui::waresdev::WareSrcActions::getInstance();
-  addAction(Actions->getAction("NewFile"));
-  addAction(Actions->getAction("OpenFile"));
-  addAction(Actions->getAction("SaveFile"));
-  addAction(Actions->getAction("SaveAsFile"));
-  addSeparator();
+  createActions();
 
-  addAction(Actions->getAction("ConfigureWMenu"));
-  addAction(Actions->getAction("BuildWMenu"));
+  addAction(m_Actions["NewFile"]);
+  addAction(m_Actions["OpenFile"]);
+  addAction(m_Actions["SaveFile"]);
+  addAction(m_Actions["SaveAsFile"]);
+  addAction(m_Actions["ConfigureWMenu"]);
+  addAction(m_Actions["BuildWMenu"]);
 
   if (IsIncluded)
   {
@@ -78,26 +76,26 @@ WareSrcToolbar::WareSrcToolbar(bool IsIncluded, QWidget* Parent) :
     QMenu* Menu = new QMenu();
 
     QMenu* SubMenu = Menu->addMenu(tr("File"));
-    SubMenu->addAction(Actions->getAction("NewFile"));
-    SubMenu->addAction(Actions->getAction("OpenFile"));
-    SubMenu->addAction(Actions->getAction("SaveFile"));
-    SubMenu->addAction(Actions->getAction("SaveAsFile"));
-    SubMenu->addAction(Actions->getAction("CloseFile"));
-    SubMenu->addAction(Actions->getAction("DeleteFile"));
+    SubMenu->addAction(m_Actions["NewFile"]);
+    SubMenu->addAction(m_Actions["OpenFile"]);
+    SubMenu->addAction(m_Actions["SaveFile"]);
+    SubMenu->addAction(m_Actions["SaveAsFile"]);
+    SubMenu->addAction(m_Actions["CloseFile"]);
+    SubMenu->addAction(m_Actions["DeleteFile"]);
 
     SubMenu = Menu->addMenu(tr("Build"));
-    SubMenu->addAction(Actions->getAction("Configure"));
+    SubMenu->addAction(m_Actions["Configure"]);
     QMenu* SubSubMenu = SubMenu->addMenu(tr("Set active configuration"));
-    SubSubMenu->addAction(Actions->getAction("Release"));
-    SubSubMenu->addAction(Actions->getAction("Debug"));
-    SubMenu->addAction(Actions->getAction("Build"));
+    SubSubMenu->addAction(m_Actions["Release"]);
+    SubSubMenu->addAction(m_Actions["Debug"]);
+    SubMenu->addAction(m_Actions["Build"]);
     SubSubMenu = SubMenu->addMenu(tr("Set active build action"));
-    SubSubMenu->addAction(Actions->getAction("BuildInstall"));
-    SubSubMenu->addAction(Actions->getAction("BuildOnly"));
+    SubSubMenu->addAction(m_Actions["BuildInstall"]);
+    SubSubMenu->addAction(m_Actions["BuildOnly"]);
 
     SubMenu = Menu->addMenu(tr("Tools"));
-    SubMenu->addAction(Actions->getAction("OpenTerminal"));
-    SubMenu->addAction(Actions->getAction("OpenExplorer"));
+    SubMenu->addAction(m_Actions["OpenTerminal"]);
+    SubMenu->addAction(m_Actions["OpenExplorer"]);
 
     QToolButton* MenuButton = new QToolButton(this);
     MenuButton->setText(tr("Menu"));
@@ -122,4 +120,74 @@ WareSrcToolbar::~WareSrcToolbar()
 // =====================================================================
 // =====================================================================
 
-} } }  // namespaces
+
+void WareSrcToolbar::createActions()
+{
+  m_Actions["NewFile"] = new QAction(QIcon(":/ui/common/icons/file-new.png"),
+                                     tr("New..."), this);
+  m_Actions["OpenFile"] = new QAction(QIcon(":/ui/common/icons/file-open.png"),
+                                      tr("Open..."), this);
+  m_Actions["SaveFile"] = new QAction(QIcon(":/ui/common/icons/file-save.png"),
+                                      tr("Save"), this);
+  m_Actions["SaveAsFile"] = new QAction(
+      QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
+
+  m_Actions["CloseFile"] = new QAction(
+      QIcon(":/ui/common/icons/file-close.png"), tr("Close"), this);
+  m_Actions["DeleteFile"] = new QAction(tr("Delete"), this);
+
+  m_Actions["Configure"] = new QAction(tr("Configure ware"), this);
+  m_Actions["ConfigureWMenu"] = new QAction(tr("Configure"), this);
+  QActionGroup* ConfigureGroup = new QActionGroup(this);
+  QMenu* Menu = new QMenu();
+  m_Actions["Release"] = new QAction(tr("Release"), ConfigureGroup);
+  m_Actions["Release"]->setCheckable(true);
+  m_Actions["Release"]->setChecked(true);
+  Menu->addAction(m_Actions["Release"]);
+  m_Actions["Debug"] = new QAction(tr("Debug"), ConfigureGroup);
+  m_Actions["Debug"]->setCheckable(true);
+  Menu->addAction(m_Actions["Debug"]);
+  m_Actions["ConfigureWMenu"]->setMenu(Menu);
+  connect(m_Actions["ConfigureWMenu"], SIGNAL(triggered()),
+          m_Actions["Configure"], SLOT(trigger()));
+
+  m_Actions["Build"] = new QAction(tr("Build ware"), this);
+  m_Actions["BuildWMenu"] = new QAction(tr("Build"), this);
+  QActionGroup* BuildGroup = new QActionGroup(this);
+  Menu = new QMenu();
+  m_Actions["BuildInstall"] = new QAction(tr("Build and install"), BuildGroup);
+  m_Actions["BuildInstall"]->setCheckable(true);
+  m_Actions["BuildInstall"]->setChecked(true);
+  Menu->addAction(m_Actions["BuildInstall"]);
+  m_Actions["BuildOnly"] = new QAction(tr("Build only"), BuildGroup);
+  m_Actions["BuildOnly"]->setCheckable(true);
+  Menu->addAction(m_Actions["BuildOnly"]);
+  m_Actions["BuildWMenu"]->setMenu(Menu);
+  connect(m_Actions["BuildWMenu"], SIGNAL(triggered()), m_Actions["Build"],
+          SLOT(trigger()));
+
+  m_Actions["OpenTerminal"] = new QAction(tr("Open terminal"), this);
+  m_Actions["OpenExplorer"] = new QAction(tr("Open file explorer"), this);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QAction* WareSrcToolbar::getAction(const QString& ActionName)
+{
+  if (m_Actions.contains(ActionName))
+    return m_Actions.value(ActionName);
+
+  throw openfluid::base::FrameworkException(
+      "WareSrcToolbar::getAction",
+      "Action \"" + ActionName.toStdString() + "\" does'nt exist.");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } } // namespaces

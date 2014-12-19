@@ -43,6 +43,7 @@
 #include <QMap>
 
 #include <openfluid/ui/waresdev/WareSrcWidgetCollection.hpp>
+#include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 
 namespace Ui {
 class MainWindow;
@@ -54,6 +55,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 class WareSrcWidget;
 } } }
 
+
 class MainWindow: public QMainWindow
 {
   Q_OBJECT
@@ -62,9 +64,11 @@ class MainWindow: public QMainWindow
 
     Ui::MainWindow* ui;
 
-    QMap<QString, QAction*> m_Actions;
+    openfluid::ui::waresdev::WareSrcToolbar* mp_Toolbar;
 
     openfluid::ui::waresdev::WareSrcWidgetCollection* mp_Collection;
+
+    QMap<QString, QAction*> m_Actions;
 
     void createLocalActions();
 
@@ -73,6 +77,8 @@ class MainWindow: public QMainWindow
   private slots:
 
     void onOpenAsked(const QString& Path);
+
+    void showNotYetImplemented();
 
   public:
 

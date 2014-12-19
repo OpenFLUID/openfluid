@@ -26,46 +26,46 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file WareSrcToolbar.hpp
+ \file TextEditMsgStream.hpp
  \brief Header of ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCTOOLBAR_HPP__
-#define __WARESRCTOOLBAR_HPP__
 
-#include <openfluid/dllexport.hpp>
+#ifndef SRC_OPENFLUID_WARESDEV_TEXTEDITMSGSTREAM_HPP_
+#define SRC_OPENFLUID_WARESDEV_TEXTEDITMSGSTREAM_HPP_
 
-#include <QToolBar>
+#include <openfluid/waresdev/WareSrcMsgStream.hpp>
 
-#include <QAction>
+#include <QPlainTextEdit>
+
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-class DLLEXPORT WareSrcToolbar: public QToolBar
-{
-  Q_OBJECT
 
+class TextEditMsgStream : public openfluid::waresdev::WareSrcMsgStream
+{
   private:
 
-    QMap<QString, QAction*> m_Actions;
+    QPlainTextEdit* mp_Edit;
 
-    void createActions();
+    QMap<openfluid::waresdev::WareSrcMsgStream::MessageType, QTextCharFormat> m_FormatByMsgType;
 
   public:
 
-    WareSrcToolbar(bool IsIncluded, QWidget* Parent = 0);
+    TextEditMsgStream(QPlainTextEdit* Edit);
 
-    ~WareSrcToolbar();
+    void clear();
 
-    QAction* getAction(const QString& ActionName);
+    void write(const QString& Msg,openfluid::waresdev::WareSrcMsgStream::MessageType Type);
 };
 
-} } }  // namespaces
+} } } // namespaces
 
-#endif /* __WARESRCTOOLBAR_HPP__ */
+#endif /* SRC_OPENFLUID_WARESDEV_TEXTEDITMSGSTREAM_HPP_ */

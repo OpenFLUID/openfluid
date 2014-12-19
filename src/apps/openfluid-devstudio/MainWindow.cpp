@@ -42,10 +42,10 @@
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QAction>
+#include <QMessageBox>
 
 #include <openfluid/ui/waresdev/WareSrcToolbar.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
-#include <openfluid/ui/waresdev/WareSrcActions.hpp>
 
 
 MainWindow::MainWindow() :
@@ -62,26 +62,82 @@ MainWindow::MainWindow() :
   Sizes << 180 << 1000;
   ui->splitter->setSizes(Sizes);
 
-  createLocalActions();
-  createMenus();
-  addToolBar(new openfluid::ui::waresdev::WareSrcToolbar(false, this));
+  mp_Toolbar = new openfluid::ui::waresdev::WareSrcToolbar(false, this);
+  addToolBar(mp_Toolbar);
 
   ui->SimExplorer->setType(openfluid::waresdev::WareSrcManager::SIMULATOR);
   ui->ObsExplorer->setType(openfluid::waresdev::WareSrcManager::OBSERVER);
   ui->ExtExplorer->setType(openfluid::waresdev::WareSrcManager::BUILDEREXT);
 
-  // TODO delete those connections when local actions will be implemented
-  foreach(QAction* Action,m_Actions)connect(Action, SIGNAL(triggered()), openfluid::ui::waresdev::WareSrcActions::getInstance(),
-      SLOT(showNotYetImplemented()));
-
   mp_Collection = new openfluid::ui::waresdev::WareSrcWidgetCollection(
       ui->WareSrcCollection);
 
-  // TODO delete those disconnections when all actions will be implemented
-  m_Actions.value("Quit")->disconnect();
+  createLocalActions();
+  createMenus();
+
+  connect(m_Actions["NewSimulator"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["NewObserver"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["NewExtension"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["OpenSimulator"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["OpenObserver"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["OpenExtension"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["DeleteWare"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["SwitchWorkspace"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+
   connect(m_Actions.value("Quit"), SIGNAL(triggered()),
   qApp,
           SLOT(quit()));
+
+  connect(mp_Toolbar->getAction("NewFile"), SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->getAction("OpenFile"), SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->getAction("SaveFile"), SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->getAction("SaveAsFile"), SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->getAction("CloseFile"), SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->getAction("DeleteFile"), SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+
+  connect(m_Actions["Copy"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["Cut"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["Paste"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["Find"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["Replace"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+  connect(m_Actions["GoToLine"], SIGNAL(triggered()), this,
+          SLOT(showNotYetImplemented()));
+
+  connect(mp_Toolbar->getAction("Release"), SIGNAL(triggered()), mp_Collection,
+          SLOT(setReleaseMode()));
+  connect(mp_Toolbar->getAction("Debug"), SIGNAL(triggered()), mp_Collection,
+          SLOT(setDebugMode()));
+  connect(mp_Toolbar->getAction("BuildInstall"), SIGNAL(triggered()),
+          mp_Collection, SLOT(setBuildWithInstallMode()));
+  connect(mp_Toolbar->getAction("BuildOnly"), SIGNAL(triggered()),
+          mp_Collection, SLOT(setBuildNoInstallMode()));
+  connect(mp_Toolbar->getAction("Configure"), SIGNAL(triggered()),
+          mp_Collection, SLOT(configure()));
+  connect(mp_Toolbar->getAction("Build"), SIGNAL(triggered()), mp_Collection,
+          SLOT(build()));
+  connect(mp_Toolbar->getAction("OpenExplorer"), SIGNAL(triggered()),
+          mp_Collection, SLOT(openExplorer()));
+  connect(mp_Toolbar->getAction("OpenTerminal"), SIGNAL(triggered()),
+          mp_Collection, SLOT(openTerminal()));
 
   connect(ui->SimExplorer, SIGNAL(openAsked(const QString&)), this,
           SLOT(onOpenAsked(const QString&)));
@@ -129,6 +185,16 @@ MainWindow::~MainWindow()
 
 void MainWindow::createLocalActions()
 {
+  m_Actions["NewSimulator"] = new QAction(tr("Simulator..."), this);
+  m_Actions["NewObserver"] = new QAction(tr("Observer..."), this);
+  m_Actions["NewExtension"] = new QAction(tr("Builder extension..."), this);
+
+  m_Actions["OpenSimulator"] = new QAction(tr("Simulator..."), this);
+  m_Actions["OpenObserver"] = new QAction(tr("Observer..."), this);
+  m_Actions["OpenExtension"] = new QAction(tr("Builder extension..."), this);
+
+  m_Actions["DeleteWare"] = new QAction(tr("Delete ware"), this);
+
   m_Actions["SwitchWorkspace"] = new QAction(tr("Switch workspace"), this);
 
   m_Actions["Quit"] = new QAction(tr("Quit"), this);
@@ -164,29 +230,26 @@ void MainWindow::createLocalActions()
 
 void MainWindow::createMenus()
 {
-  openfluid::ui::waresdev::WareSrcActions* Actions =
-      openfluid::ui::waresdev::WareSrcActions::getInstance();
-
   QMenu* Menu;
   QMenu* SubMenu;
 
   Menu = menuBar()->addMenu(tr("File"));
   SubMenu = Menu->addMenu(tr("New ware"));
-  SubMenu->addAction(Actions->getAction("NewSimulator"));
-  SubMenu->addAction(Actions->getAction("NewObserver"));
-  SubMenu->addAction(Actions->getAction("NewExtension"));
+  SubMenu->addAction(m_Actions["NewSimulator"]);
+  SubMenu->addAction(m_Actions["NewObserver"]);
+  SubMenu->addAction(m_Actions["NewExtension"]);
   SubMenu = Menu->addMenu(tr("Open ware"));
-  SubMenu->addAction(Actions->getAction("OpenSimulator"));
-  SubMenu->addAction(Actions->getAction("OpenObserver"));
-  SubMenu->addAction(Actions->getAction("OpenExtension"));
-  Menu->addAction(Actions->getAction("DeleteWare"));
+  SubMenu->addAction(m_Actions["OpenSimulator"]);
+  SubMenu->addAction(m_Actions["OpenObserver"]);
+  SubMenu->addAction(m_Actions["OpenExtension"]);
+  Menu->addAction(m_Actions["DeleteWare"]);
   Menu->addSeparator();
-  Menu->addAction(Actions->getAction("NewFile"));
-  Menu->addAction(Actions->getAction("OpenFile"));
-  Menu->addAction(Actions->getAction("SaveFile"));
-  Menu->addAction(Actions->getAction("SaveAsFile"));
-  Menu->addAction(Actions->getAction("CloseFile"));
-  Menu->addAction(Actions->getAction("DeleteFile"));
+  Menu->addAction(mp_Toolbar->getAction("NewFile"));
+  Menu->addAction(mp_Toolbar->getAction("OpenFile"));
+  Menu->addAction(mp_Toolbar->getAction("SaveFile"));
+  Menu->addAction(mp_Toolbar->getAction("SaveAsFile"));
+  Menu->addAction(mp_Toolbar->getAction("CloseFile"));
+  Menu->addAction(mp_Toolbar->getAction("DeleteFile"));
   Menu->addSeparator();
   Menu->addAction(m_Actions.value("SwitchWorkspace"));
   Menu->addAction(m_Actions.value("Quit"));
@@ -200,18 +263,18 @@ void MainWindow::createMenus()
   Menu->addAction(m_Actions.value("GoToLine"));
 
   Menu = menuBar()->addMenu(tr("Build"));
-  Menu->addAction(Actions->getAction("Configure"));
+  Menu->addAction(mp_Toolbar->getAction("Configure"));
   SubMenu = Menu->addMenu(tr("Set active configuration"));
-  SubMenu->addAction(Actions->getAction("Release"));
-  SubMenu->addAction(Actions->getAction("Debug"));
-  Menu->addAction(Actions->getAction("Build"));
+  SubMenu->addAction(mp_Toolbar->getAction("Release"));
+  SubMenu->addAction(mp_Toolbar->getAction("Debug"));
+  Menu->addAction(mp_Toolbar->getAction("Build"));
   SubMenu = Menu->addMenu(tr("Set active build action"));
-  SubMenu->addAction(Actions->getAction("BuildInstall"));
-  SubMenu->addAction(Actions->getAction("BuildOnly"));
+  SubMenu->addAction(mp_Toolbar->getAction("BuildInstall"));
+  SubMenu->addAction(mp_Toolbar->getAction("BuildOnly"));
 
   Menu = menuBar()->addMenu(tr("Tools"));
-  Menu->addAction(Actions->getAction("OpenTerminal"));
-  Menu->addAction(Actions->getAction("OpenExplorer"));
+  Menu->addAction(mp_Toolbar->getAction("OpenTerminal"));
+  Menu->addAction(mp_Toolbar->getAction("OpenExplorer"));
 }
 
 
@@ -228,4 +291,12 @@ void MainWindow::onOpenAsked(const QString& Path)
 // =====================================================================
 // =====================================================================
 
+
+void MainWindow::showNotYetImplemented()
+{
+  QMessageBox::information(0, "", "Not yet implemented");
+}
+
+// =====================================================================
+// =====================================================================
 

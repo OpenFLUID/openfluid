@@ -42,14 +42,31 @@
 #define SRC_OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP_
 
 #include <QString>
+#include <QObject>
 
 #include <openfluid/waresdev/WareSrcManager.hpp>
+#include <openfluid/waresdev/OStreamMsgStream.hpp>
 
+class QProcess;
 
 namespace openfluid { namespace waresdev {
 
-class WareSrcContainer
+class WareSrcContainer: public QObject
 {
+  Q_OBJECT
+
+  public:
+
+    enum ConfigMode
+    {
+      CONFIG_DEBUG, CONFIG_RELEASE
+    };
+
+    enum BuildMode
+    {
+      BUILD_WITHINSTALL, BUILD_NOINSTALL
+    };
+
   private:
 
     QString m_AbsolutePath;
@@ -64,10 +81,39 @@ class WareSrcContainer
      */
     QString m_AbsoluteMainCppPath;
 
+    QString m_CMakePath;
+
+    openfluid::waresdev::WareSrcMsgStream* mp_Stream;
+
+    ConfigMode m_ConfigMode;
+
+    BuildMode m_BuildMode;
+
+    QString m_BuildDirPath;
+
+    QProcess* mp_Process;
+
+    QString m_OFVersion;
+
+    /**
+     * @throw openfluid::base::FrameworkException
+     */
+    void findCMake();
+
+    void runCommand(const QString& Command);
+
+  private slots:
+
+    void processOutput();
+
+    void processFinishedOutput(int ExitCode);
+
   public:
 
     WareSrcContainer(const QString& AbsolutePath, WareSrcManager::WareType Type,
-                     const QString& WareName);
+                     const QString& WareName,
+                     openfluid::waresdev::WareSrcMsgStream& Stream =
+                         *new openfluid::waresdev::OStreamMsgStream());
 
     ~WareSrcContainer();
 
@@ -89,6 +135,16 @@ class WareSrcContainer
     QString getMainCppFile();
 
     QString getAbsolutePath() const;
+
+    void setMsgStream(openfluid::waresdev::WareSrcMsgStream& Stream);
+
+    void setConfigMode(ConfigMode Mode);
+
+    void setBuildMode(BuildMode Mode);
+
+    void configure();
+
+    void build();
 };
 
 

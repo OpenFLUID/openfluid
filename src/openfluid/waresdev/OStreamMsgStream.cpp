@@ -26,46 +26,56 @@
  license, and requires a written agreement between You and INRA.
  Licensees for Other Usage of OpenFLUID may use this file in accordance
  with the terms contained in the written agreement between You and INRA.
-
+ 
  */
 
+
 /**
- \file WareSrcToolbar.hpp
- \brief Header of ...
+ \file OStreamMsgStream.cpp
+ \brief Implements ...
 
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCTOOLBAR_HPP__
-#define __WARESRCTOOLBAR_HPP__
+#include <openfluid/waresdev/OStreamMsgStream.hpp>
 
-#include <openfluid/dllexport.hpp>
 
-#include <QToolBar>
+namespace openfluid { namespace waresdev {
 
-#include <QAction>
 
-namespace openfluid { namespace ui { namespace waresdev {
+// =====================================================================
+// =====================================================================
 
-class DLLEXPORT WareSrcToolbar: public QToolBar
+
+OStreamMsgStream::OStreamMsgStream(std::ostream& Stream) :
+    m_Stream(Stream)
 {
-  Q_OBJECT
 
-  private:
+}
 
-    QMap<QString, QAction*> m_Actions;
 
-    void createActions();
+// =====================================================================
+// =====================================================================
 
-  public:
 
-    WareSrcToolbar(bool IsIncluded, QWidget* Parent = 0);
+void OStreamMsgStream::clear()
+{
+  m_Stream << std::endl;
+}
 
-    ~WareSrcToolbar();
 
-    QAction* getAction(const QString& ActionName);
-};
+// =====================================================================
+// =====================================================================
 
-} } }  // namespaces
 
-#endif /* __WARESRCTOOLBAR_HPP__ */
+void OStreamMsgStream::write(const QString& Msg, MessageType /*Type*/)
+{
+  m_Stream << qPrintable(Msg);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+} } // namespaces

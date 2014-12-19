@@ -43,10 +43,11 @@
 #include <QDir>
 #include <QDesktopServices>
 #include <QUrl>
+#include <QMessageBox>
 
 #include "WareSrcFileEditor.hpp"
 #include "WareSrcToolbar.hpp"
-#include "WareSrcActions.hpp"
+#include "TextEditMsgStream.hpp"
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -58,7 +59,8 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 WareSrcWidget::WareSrcWidget(
     const openfluid::waresdev::WareSrcManager::PathInfo& Info,
-    bool IsStandalone, QWidget* Parent) :
+    bool IsStandalone, openfluid::waresdev::WareSrcContainer::ConfigMode Config,
+    openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent) :
     QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(
         Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName)
 {
@@ -70,9 +72,42 @@ WareSrcWidget::WareSrcWidget(
 
   if (IsStandalone)
   {
-    ui->Toolbar_Layout->addWidget(new WareSrcToolbar(true, this));
+    WareSrcToolbar* TB = new WareSrcToolbar(true, this);
+
+    ui->Toolbar_Layout->addWidget(TB);
+
+    connect(TB->getAction("NewFile"), SIGNAL(triggered()), this,
+            SLOT(showNotYetImplemented()));
+    connect(TB->getAction("OpenFile"), SIGNAL(triggered()), this,
+            SLOT(showNotYetImplemented()));
+    connect(TB->getAction("SaveFile"), SIGNAL(triggered()), this,
+            SLOT(showNotYetImplemented()));
+    connect(TB->getAction("SaveAsFile"), SIGNAL(triggered()), this,
+            SLOT(showNotYetImplemented()));
+    connect(TB->getAction("CloseFile"), SIGNAL(triggered()), this,
+            SLOT(showNotYetImplemented()));
+    connect(TB->getAction("DeleteFile"), SIGNAL(triggered()), this,
+            SLOT(showNotYetImplemented()));
+
+    connect(TB->getAction("Release"), SIGNAL(triggered()), this,
+            SLOT(setReleaseMode()));
+    connect(TB->getAction("Debug"), SIGNAL(triggered()), this,
+            SLOT(setDebugMode()));
+    connect(TB->getAction("BuildInstall"), SIGNAL(triggered()), this,
+            SLOT(setBuildWithInstallMode()));
+    connect(TB->getAction("BuildOnly"), SIGNAL(triggered()), this,
+            SLOT(setBuildNoInstallMode()));
+    connect(TB->getAction("Configure"), SIGNAL(triggered()), this,
+            SLOT(configure()));
+    connect(TB->getAction("Build"), SIGNAL(triggered()), this, SLOT(build()));
   }
 
+  m_Container.setConfigMode(Config);
+  m_Container.setBuildMode(Build);
+
+  mp_TextEditMsgStream = new openfluid::ui::waresdev::TextEditMsgStream(
+      ui->WareSrcMessageWidget);
+  m_Container.setMsgStream(*mp_TextEditMsgStream);
 }
 
 
@@ -82,6 +117,7 @@ WareSrcWidget::WareSrcWidget(
 
 WareSrcWidget::~WareSrcWidget()
 {
+  delete mp_TextEditMsgStream;
   delete ui;
 }
 
@@ -155,9 +191,88 @@ bool WareSrcWidget::setCurrent(
 // =====================================================================
 
 
-const openfluid::waresdev::WareSrcContainer& WareSrcWidget::getWareSrcContainer()
+openfluid::waresdev::WareSrcContainer& WareSrcWidget::getWareSrcContainer()
 {
   return m_Container;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::setReleaseMode()
+{
+  m_Container.setConfigMode(
+      openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::setDebugMode()
+
+{
+  m_Container.setConfigMode(
+      openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::setBuildWithInstallMode()
+
+{
+  m_Container.setBuildMode(
+      openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::setBuildNoInstallMode()
+
+{
+  m_Container.setBuildMode(
+      openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::configure()
+
+{
+  m_Container.configure();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::build()
+
+{
+  m_Container.build();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::showNotYetImplemented()
+{
+  QMessageBox::information(0, "", "Not yet implemented");
 }
 
 

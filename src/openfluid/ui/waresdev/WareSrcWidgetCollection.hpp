@@ -45,6 +45,8 @@
 #include <QMap>
 #include <QString>
 
+#include <openfluid/waresdev/WareSrcContainer.hpp>
+
 class QTabWidget;
 
 
@@ -70,7 +72,15 @@ class WareSrcWidgetCollection: public QObject
      */
     QMap<QString, WareSrcWidget*> m_WareSrcWidgetByPath;
 
+    openfluid::waresdev::WareSrcContainer::ConfigMode m_DefaultConfigMode;
+    openfluid::waresdev::WareSrcContainer::BuildMode m_DefaultBuildMode;
+
     QString getCurrentPath();
+
+    /**
+     * @throw openfluid::base::FrameworkException
+     */
+    openfluid::waresdev::WareSrcContainer& getCurrentWidgetContainer();
 
   public:
 
@@ -87,6 +97,18 @@ class WareSrcWidgetCollection: public QObject
     void openExplorer(const QString& Path = "");
 
     void openTerminal(const QString& Path = "");
+
+    void setReleaseMode();
+
+    void setDebugMode();
+
+    void setBuildWithInstallMode();
+
+    void setBuildNoInstallMode();
+
+    void configure();
+
+    void build();
 };
 
 } } }  // namespaces

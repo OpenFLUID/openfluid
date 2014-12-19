@@ -46,9 +46,10 @@
 #include <QProcess>
 #include <QMessageBox>
 
+#include <openfluid/base/FrameworkException.hpp>
+
 #include <openfluid/waresdev/WareSrcManager.hpp>
 #include <openfluid/ui/waresdev/WareSrcWidget.hpp>
-#include <openfluid/ui/waresdev/WareSrcActions.hpp>
 
 
 namespace openfluid { namespace ui { namespace waresdev {
@@ -60,17 +61,11 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget) :
     mp_TabWidget(TabWidget), mp_Manager(
-        openfluid::waresdev::WareSrcManager::getInstance())
+        openfluid::waresdev::WareSrcManager::getInstance()), m_DefaultConfigMode(
+        openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE), m_DefaultBuildMode(
+        openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL)
 {
-  QAction* A = WareSrcActions::getInstance()->getAction("OpenExplorer");
-  QAction* B = WareSrcActions::getInstance()->getAction("OpenTerminal");
 
-  // TODO delete those disconnections when all actions will be implemented
-  A->disconnect();
-  B->disconnect();
-
-  connect(A, SIGNAL(triggered()), this, SLOT(openExplorer()));
-  connect(B, SIGNAL(triggered()), this, SLOT(openTerminal()));
 }
 
 
@@ -104,7 +99,8 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone)
 
     if (!Widget)
     {
-      Widget = new WareSrcWidget(Info, IsStandalone, mp_TabWidget);
+      Widget = new WareSrcWidget(Info, IsStandalone, m_DefaultConfigMode,
+                                 m_DefaultBuildMode, mp_TabWidget);
 
       mp_TabWidget->addTab(Widget, Info.m_WareName);
 
@@ -220,11 +216,112 @@ void WareSrcWidgetCollection::openTerminal(const QString& Path)
 
 QString WareSrcWidgetCollection::getCurrentPath()
 {
+  try
+  {
+    return getCurrentWidgetContainer().getAbsolutePath();
+  }
+  catch (openfluid::base::FrameworkException& e)
+  {
+    return "";
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+openfluid::waresdev::WareSrcContainer& WareSrcWidgetCollection::getCurrentWidgetContainer()
+{
   if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
       mp_TabWidget->currentWidget()))
-    return Widget->getWareSrcContainer().getAbsolutePath();
+    return Widget->getWareSrcContainer();
 
-  return "";
+  throw openfluid::base::FrameworkException(
+      "WareSrcWidgetCollection::getCurrentWidgetContainer",
+      "unable to get current ware widget");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::setReleaseMode()
+{
+  m_DefaultConfigMode = openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE;
+
+  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)Ware->setReleaseMode();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::setDebugMode()
+{
+  m_DefaultConfigMode = openfluid::waresdev::WareSrcContainer::CONFIG_DEBUG;
+
+  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)Ware->setDebugMode();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::setBuildWithInstallMode()
+{
+  m_DefaultBuildMode = openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL;
+
+  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)Ware->setBuildWithInstallMode();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::setBuildNoInstallMode()
+{
+  m_DefaultBuildMode = openfluid::waresdev::WareSrcContainer::BUILD_NOINSTALL;
+
+  foreach(WareSrcWidget* Ware,m_WareSrcWidgetByPath)Ware->setBuildNoInstallMode();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::configure()
+{
+  try
+  {
+    getCurrentWidgetContainer().configure();
+  }
+  catch (openfluid::base::FrameworkException& e)
+  {
+    QMessageBox::warning(0, "No ware open", "Open a ware first");
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::build()
+{
+  try
+  {
+    getCurrentWidgetContainer().build();
+  }
+  catch (openfluid::base::FrameworkException& e)
+  {
+    QMessageBox::warning(0, "No ware open", "Open a ware first");
+  }
 }
 
 

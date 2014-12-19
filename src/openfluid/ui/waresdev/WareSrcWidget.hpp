@@ -54,6 +54,7 @@ class WareSrcWidget;
 namespace openfluid { namespace ui { namespace waresdev {
 
 class WareSrcFileEditor;
+class TextEditMsgStream;
 
 
 class DLLEXPORT WareSrcWidget: public QWidget
@@ -66,11 +67,12 @@ class DLLEXPORT WareSrcWidget: public QWidget
 
     openfluid::waresdev::WareSrcContainer m_Container;
 
-
     /**
      * List of opened source file editors by their absolute path
      */
     QMap<QString, WareSrcFileEditor*> m_WareSrcFilesByPath;
+
+    openfluid::ui::waresdev::TextEditMsgStream* mp_TextEditMsgStream;
 
     void addNewFileTab(const QString& AbsolutePath, const QString& TabLabel,
                        const QString& TabTooltip = "");
@@ -78,7 +80,10 @@ class DLLEXPORT WareSrcWidget: public QWidget
   public:
 
     WareSrcWidget(const openfluid::waresdev::WareSrcManager::PathInfo& Info,
-                  bool IsStandalone, QWidget* Parent = 0);
+                  bool IsStandalone,
+                  openfluid::waresdev::WareSrcContainer::ConfigMode Config,
+                  openfluid::waresdev::WareSrcContainer::BuildMode Build,
+                  QWidget* Parent = 0);
 
     ~WareSrcWidget();
 
@@ -93,7 +98,23 @@ class DLLEXPORT WareSrcWidget: public QWidget
      */
     bool setCurrent(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
 
-    const openfluid::waresdev::WareSrcContainer& getWareSrcContainer();
+    openfluid::waresdev::WareSrcContainer& getWareSrcContainer();
+
+  public slots:
+
+    void setReleaseMode();
+
+    void setDebugMode();
+
+    void setBuildWithInstallMode();
+
+    void setBuildNoInstallMode();
+
+    void configure();
+
+    void build();
+
+    void showNotYetImplemented();
 };
 
 } } }  // namespaces
