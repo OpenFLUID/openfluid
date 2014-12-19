@@ -33,9 +33,6 @@ ENDIF()
 
 ### MAIN LIB AND EXECUTABLE #
 
-ADD_DEFINITIONS(-DBUILDINGDLL)
-
-
 ADD_LIBRARY(openfluid-devstudio-main SHARED ${DEVSTUDIO_CPP} ${DEVSTUDIO_HPP}
                                             ${DEVSTUDIO_UI} ${DEVSTUDIO_QRC})
 
@@ -69,7 +66,9 @@ SET_TARGET_PROPERTIES(openfluid-devstudio-main PROPERTIES VERSION "${VERSION_MAJ
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        AUTOMOC ON)
+                                        AUTOMOC ON
+                                        COMPILE_DEFINITIONS "OPENFLUID_DLL"
+                                        DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 
 SET(DEVSTUDIO_GUI_OPTION)

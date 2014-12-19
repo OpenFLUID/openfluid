@@ -38,10 +38,12 @@
  */
 
 
-#ifndef SRC_OPENFLUID_WARESDEV_TEXTEDITMSGSTREAM_HPP_
-#define SRC_OPENFLUID_WARESDEV_TEXTEDITMSGSTREAM_HPP_
+#ifndef __OPENFLUID_UIWARESDEV_TEXTEDITMSGSTREAM_HPP__
+#define __OPENFLUID_UIWARESDEV_TEXTEDITMSGSTREAM_HPP__
 
 #include <openfluid/waresdev/WareSrcMsgStream.hpp>
+
+#include <openfluid/dllexport.hpp>
 
 #include <QPlainTextEdit>
 
@@ -49,7 +51,7 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class TextEditMsgStream : public openfluid::waresdev::WareSrcMsgStream
+class OPENFLUID_API TextEditMsgStream : public openfluid::waresdev::WareSrcMsgStream
 {
   private:
 
@@ -68,4 +70,4 @@ class TextEditMsgStream : public openfluid::waresdev::WareSrcMsgStream
 
 } } } // namespaces
 
-#endif /* SRC_OPENFLUID_WARESDEV_TEXTEDITMSGSTREAM_HPP_ */
+#endif /* __OPENFLUID_UIWARESDEV_TEXTEDITMSGSTREAM_HPP__ */

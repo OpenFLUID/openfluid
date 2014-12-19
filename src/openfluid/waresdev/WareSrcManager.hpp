@@ -38,8 +38,10 @@
  */
 
 
-#ifndef SRC_OPENFLUID_WARESDEV_WARESRCMANAGER_HPP_
-#define SRC_OPENFLUID_WARESDEV_WARESRCMANAGER_HPP_
+#ifndef __OPENFLUID_WARESDEV_WARESRCMANAGER_HPP__
+#define __OPENFLUID_WARESDEV_WARESRCMANAGER_HPP__
+
+#include <openfluid/dllexport.hpp>
 
 #include <QString>
 #include <QMap>
@@ -47,7 +49,7 @@
 
 namespace openfluid { namespace waresdev {
 
-class WareSrcManager
+class OPENFLUID_API WareSrcManager
 {
   public:
 
@@ -123,4 +125,4 @@ class WareSrcManager
 } }  // namespaces
 
 
-#endif /* SRC_OPENFLUID_WARESDEV_WARESRCMANAGER_HPP_ */
+#endif /* __OPENFLUID_WARESDEV_WARESRCMANAGER_HPP__ */

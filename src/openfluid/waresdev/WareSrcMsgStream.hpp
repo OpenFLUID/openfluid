@@ -38,8 +38,10 @@
  */
 
 
-#ifndef SRC_OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP_
-#define SRC_OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP_
+#ifndef __OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP__
+#define __OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP__
+
+#include <openfluid/dllexport.hpp>
 
 #include <QString>
 
@@ -47,7 +49,7 @@
 namespace openfluid { namespace waresdev {
 
 
-class WareSrcMsgStream
+class OPENFLUID_API WareSrcMsgStream
 {
   public:
 
@@ -69,4 +71,4 @@ class WareSrcMsgStream
 } } // namespaces
 
 
-#endif /* SRC_OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP_ */
+#endif /* __OPENFLUID_WARESDEV_WARESRCMSGSTREAM_HPP__ */

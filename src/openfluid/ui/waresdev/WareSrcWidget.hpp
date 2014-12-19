@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCWIDGET_HPP__
-#define __WARESRCWIDGET_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -57,7 +57,7 @@ class WareSrcFileEditor;
 class TextEditMsgStream;
 
 
-class DLLEXPORT WareSrcWidget: public QWidget
+class OPENFLUID_API WareSrcWidget : public QWidget
 {
   Q_OBJECT
 
@@ -119,4 +119,4 @@ class DLLEXPORT WareSrcWidget: public QWidget
 
 } } }  // namespaces
 
-#endif /* __WARESRCWIDGET_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCWIDGET_HPP__ */

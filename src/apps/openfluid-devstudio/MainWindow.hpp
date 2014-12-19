@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __MAINWINDOW_HPP__
-#define __MAINWINDOW_HPP__
+#ifndef __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__
+#define __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__
 
 #include <QMainWindow>
 #include <QMap>
@@ -87,4 +87,4 @@ class MainWindow: public QMainWindow
     ~MainWindow();
 };
 
-#endif /* __MAINWINDOW_HPP__ */
+#endif /* __OPENFLUID_DEVSTUDIOAPP_MAINWINDOW_HPP__ */

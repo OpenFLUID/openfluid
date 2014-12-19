@@ -38,8 +38,10 @@
  */
 
 
-#ifndef SRC_OPENFLUID_UI_WARESDEV_WARESRCFILETYPEMANAGER_HPP_
-#define SRC_OPENFLUID_UI_WARESDEV_WARESRCFILETYPEMANAGER_HPP_
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCFILETYPEMANAGER_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCFILETYPEMANAGER_HPP__
+
+#include <openfluid/dllexport.hpp>
 
 #include <QTextCharFormat>
 #include <QMap>
@@ -51,7 +53,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 class WareSrcFiletype;
 
-class WareSrcFiletypeManager
+class OPENFLUID_API WareSrcFiletypeManager
 {
   public:
 
@@ -135,4 +137,4 @@ class WareSrcFiletypeManager
 
 } } } // namespaces
 
-#endif /* SRC_OPENFLUID_UI_WARESDEV_WARESRCFILETYPEMANAGER_HPP_ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCFILETYPEMANAGER_HPP__ */

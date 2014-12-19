@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCEXPLORER_HPP__
-#define __WARESRCEXPLORER_HPP__
+#ifndef __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORER_HPP__
+#define __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORER_HPP__
 
 #include <QTreeView>
 
@@ -87,4 +87,4 @@ class WareSrcExplorer: public QTreeView
     void openTerminalAsked(const QString& FilePath);
 };
 
-#endif /* __WARESRCEXPLORER_HPP__ */
+#endif /* __OPENFLUID_DEVSTUDIOAPP_WARESRCEXPLORER_HPP__ */

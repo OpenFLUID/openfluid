@@ -27,7 +27,8 @@ SET_TARGET_PROPERTIES(openfluid-ui-waresdev PROPERTIES VERSION "${VERSION_MAJOR}
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         AUTOMOC ON
-                                        )
+                                        COMPILE_DEFINITIONS "OPENFLUID_DLL"
+                                        DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 TARGET_LINK_LIBRARIES(openfluid-ui-waresdev
                       #openfluid-base

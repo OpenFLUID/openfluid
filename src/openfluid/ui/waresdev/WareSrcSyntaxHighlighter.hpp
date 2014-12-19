@@ -38,8 +38,10 @@
  */
 
 
-#ifndef SRC_OPENFLUID_UI_WARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP_
-#define SRC_OPENFLUID_UI_WARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP_
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP__
+
+#include <openfluid/dllexport.hpp>
 
 #include <openfluid/ui/waresdev/WareSrcFiletypeManager.hpp>
 #include <QSyntaxHighlighter>
@@ -48,7 +50,7 @@
 namespace openfluid { namespace ui { namespace waresdev {
 
 
-class WareSrcSyntaxHighlighter: public QSyntaxHighlighter
+class OPENFLUID_API WareSrcSyntaxHighlighter: public QSyntaxHighlighter
 {
   Q_OBJECT
 
@@ -71,4 +73,4 @@ class WareSrcSyntaxHighlighter: public QSyntaxHighlighter
 
 } } } // namespaces
 
-#endif /* SRC_OPENFLUID_UI_WARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP_ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCSYNTAXHIGHLIGHTER_HPP__ */

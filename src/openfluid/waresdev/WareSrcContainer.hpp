@@ -38,8 +38,10 @@
  */
 
 
-#ifndef SRC_OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP_
-#define SRC_OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP_
+#ifndef __OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP__
+#define __OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP__
+
+#include <openfluid/dllexport.hpp>
 
 #include <QString>
 #include <QObject>
@@ -51,7 +53,7 @@ class QProcess;
 
 namespace openfluid { namespace waresdev {
 
-class WareSrcContainer: public QObject
+class OPENFLUID_API WareSrcContainer: public QObject
 {
   Q_OBJECT
 
@@ -151,4 +153,4 @@ class WareSrcContainer: public QObject
 } }  // namespaces
 
 
-#endif /* SRC_OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP_ */
+#endif /* __OPENFLUID_WARESDEV_WARESRCCONTAINER_HPP__ */

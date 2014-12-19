@@ -38,8 +38,10 @@
  */
 
 
-#ifndef SRC_OPENFLUID_UI_WARESDEV_WARESRCWIDGETCOLLECTION_HPP_
-#define SRC_OPENFLUID_UI_WARESDEV_WARESRCWIDGETCOLLECTION_HPP_
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCWIDGETCOLLECTION_HPP_
+#define __OPENFLUID_UIWARESDEV_WARESRCWIDGETCOLLECTION_HPP_
+
+#include <openfluid/dllexport.hpp>
 
 #include <QObject>
 #include <QMap>
@@ -57,7 +59,7 @@ namespace ui { namespace waresdev {
 
 class WareSrcWidget;
 
-class WareSrcWidgetCollection: public QObject
+class OPENFLUID_API WareSrcWidgetCollection: public QObject
 {
   Q_OBJECT
 
@@ -114,4 +116,4 @@ class WareSrcWidgetCollection: public QObject
 } } }  // namespaces
 
 
-#endif /* SRC_OPENFLUID_UI_WARESDEV_WARESRCWIDGETCOLLECTION_HPP_ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCWIDGETCOLLECTION_HPP_ */

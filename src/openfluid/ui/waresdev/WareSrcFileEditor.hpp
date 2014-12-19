@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __WARESRCFILEEDITOR_HPP__
-#define __WARESRCFILEEDITOR_HPP__
+#ifndef __OPENFLUID_UIWARESDEV_WARESRCFILEEDITOR_HPP__
+#define __OPENFLUID_UIWARESDEV_WARESRCFILEEDITOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -46,7 +46,7 @@
 
 namespace openfluid { namespace ui { namespace waresdev {
 
-class DLLEXPORT WareSrcFileEditor: public QPlainTextEdit
+class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 {
   Q_OBJECT
 
@@ -113,4 +113,4 @@ class LineNumberArea: public QWidget
 
 } } } // namespaces
 
-#endif /* __WARESRCFILEEDITOR_HPP__ */
+#endif /* __OPENFLUID_UIWARESDEV_WARESRCFILEEDITOR_HPP__ */
