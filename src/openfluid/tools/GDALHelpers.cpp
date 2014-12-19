@@ -130,7 +130,7 @@ const GDALDriversFilesExts_t getGDALFilesDriversForOpenFLUID()
 // =====================================================================
 
 
-const std::set<std::string> DLLEXPORT getOGRFilesExtensionsForOpenFLUID()
+const std::set<std::string> getOGRFilesExtensionsForOpenFLUID()
 {
   std::set<std::string> ExtsList;
 

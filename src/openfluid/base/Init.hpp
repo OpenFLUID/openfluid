@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __INIT_HPP__
-#define __INIT_HPP__
+#ifndef __OPENFLUID_BASE_INIT_HPP__
+#define __OPENFLUID_BASE_INIT_HPP__
 
 
 
@@ -71,4 +71,4 @@
 
 
 
-#endif /* __INIT_HPP__ */
+#endif /* __OPENFLUID_BASE_INIT_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __GENERATORDESCRIPTOR_HPP__
-#define __GENERATORDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_GENERATORDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_GENERATORDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
@@ -47,7 +47,7 @@
 namespace openfluid { namespace fluidx {
 
 
-class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
+class OPENFLUID_API GeneratorDescriptor : public ModelItemDescriptor
 {
   public:
     enum GeneratorMethod { NoGenMethod, Fixed, Random, Interp, Inject };
@@ -97,4 +97,4 @@ class DLLEXPORT GeneratorDescriptor : public ModelItemDescriptor
 
 } } // namespaces
 
-#endif /* __GENERATORDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_GENERATORDESCRIPTOR_HPP__ */

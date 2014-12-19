@@ -37,15 +37,15 @@
  */
 
 
-#ifndef __VALUESBUFFERPROPERTIES_HPP__
-#define __VALUESBUFFERPROPERTIES_HPP__
+#ifndef __OPENFLUID_CORE_VALUESBUFFERPROPERTIES_HPP__
+#define __OPENFLUID_CORE_VALUESBUFFERPROPERTIES_HPP__
 
 #include <openfluid/dllexport.hpp>
 
 
 namespace openfluid { namespace core {
 
-class DLLEXPORT ValuesBufferProperties
+class OPENFLUID_API ValuesBufferProperties
 {
   protected:
     static unsigned int BufferSize;
@@ -66,4 +66,4 @@ class DLLEXPORT ValuesBufferProperties
 
 
 
-#endif /* __VALUESBUFFERPROPERTIES_HPP__ */
+#endif /* __OPENFLUID_CORE_VALUESBUFFERPROPERTIES_HPP__ */

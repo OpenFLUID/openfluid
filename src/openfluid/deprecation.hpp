@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DEPRECATION_HPP__
-#define __DEPRECATION_HPP__
+#ifndef __OPENFLUID_DEPRECATION_HPP__
+#define __OPENFLUID_DEPRECATION_HPP__
 
 
 // =====================================================================
@@ -57,4 +57,4 @@
 
 
 
-#endif /* __DEPRECATION_HPP__ */
+#endif /* __OPENFLUID_DEPRECATION_HPP__ */

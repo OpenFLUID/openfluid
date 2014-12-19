@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef RASTERDATASET_HPP_
-#define RASTERDATASET_HPP_
+#ifndef __OPENFLUID_LANDR_RASTERDATASET_HPP__
+#define __OPENFLUID_LANDR_RASTERDATASET_HPP__
 
 #include <map>
 #include "gdal_priv.h"
@@ -60,7 +60,7 @@ class VectorDataset;
  @brief Interface for managing Raster Data format.
  *
  */
-class DLLEXPORT RasterDataset
+class OPENFLUID_API RasterDataset
 {
   private:
 
@@ -198,4 +198,4 @@ class DLLEXPORT RasterDataset
 
 } } // namespaces openfluid, landr
 
-#endif /* RASTERDATASET_HPP_ */
+#endif /* __OPENFLUID_LANDR_RASTERDATASET_HPP__ */

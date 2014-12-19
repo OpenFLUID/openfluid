@@ -232,6 +232,8 @@ QWidget* ProjectModule::getMainWidget(QWidget* Parent)
   mp_ModelTab = new ModelWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
   connect(mp_ModelTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
+  connect(mp_ModelTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)),
+          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)));
 
   mp_SpatialTab = new SpatialDomainWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
   connect(mp_SpatialTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
@@ -244,6 +246,8 @@ QWidget* ProjectModule::getMainWidget(QWidget* Parent)
   mp_MonitoringTab = new MonitoringWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
   connect(mp_MonitoringTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
           this,SLOT(dispatchChanges(openfluid::builderext::FluidXUpdateFlags::Flags)));
+  connect(mp_MonitoringTab,SIGNAL(srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)),
+          this,SLOT(whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType)));
 
   mp_RunConfigTab = new RunConfigurationWidget(NULL,mp_ProjectCentral->getAdvancedDescriptors());
   connect(mp_RunConfigTab,SIGNAL(changed(openfluid::builderext::FluidXUpdateFlags::Flags)),
@@ -644,6 +648,81 @@ void ProjectModule::whenWaresRefreshAsked()
 bool ProjectModule::whenOpenExampleAsked()
 {
   return true;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType)
+{
+  QString TypeStr = "unknown ware type";
+
+  if (WType == openfluid::ware::PluggableWare::SIMULATOR)
+    TypeStr = "simulator";
+  else if (WType == openfluid::ware::PluggableWare::OBSERVER)
+    TypeStr = "observer";
+
+  QMessageBox::critical(QApplication::activeWindow(),
+                                tr("Source code edition error"),
+                                tr("Edition of source code for %1\n%2\nis not implemented.").arg(TypeStr).arg(ID),
+                                QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenNewSimulatorSrcAsked()
+{
+  // TODO to be replaced
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenOpenSimulatorSrcAsked()
+{
+  // TODO to be replaced
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenNewObserverSrcAsked()
+{
+  // TODO to be replaced
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenOpenObserverSrcAsked()
+{
+  // TODO to be replaced
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ProjectModule::whenLaunchDevStudioAsked()
+{
+  // TODO to be replaced
+  QMessageBox::critical(QApplication::activeWindow(),QString(__PRETTY_FUNCTION__),QString("not implemented"),QMessageBox::Close);
 }
 
 

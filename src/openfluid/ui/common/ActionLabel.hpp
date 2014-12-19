@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ACTIONLABEL_HPP__
-#define __ACTIONLABEL_HPP__
+#ifndef __OPENFLUID_UICOMMON_ACTIONLABEL_HPP__
+#define __OPENFLUID_UICOMMON_ACTIONLABEL_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/common/ClickableLabel.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace ui { namespace common {
 
 
-class DLLEXPORT ActionLabel : public ClickableLabel
+class OPENFLUID_API ActionLabel : public ClickableLabel
 {
   public:
 
@@ -61,4 +61,4 @@ class DLLEXPORT ActionLabel : public ClickableLabel
 } } } // namespaces
 
 
-#endif /* __ACTIONLABEL_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_ACTIONLABEL_HPP__ */

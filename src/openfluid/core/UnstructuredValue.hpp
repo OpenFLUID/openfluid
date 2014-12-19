@@ -36,8 +36,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __UNSTRUCTUREDVALUE_HPP__
-#define __UNSTRUCTUREDVALUE_HPP__
+#ifndef __OPENFLUID_CORE_UNSTRUCTUREDVALUE_HPP__
+#define __OPENFLUID_CORE_UNSTRUCTUREDVALUE_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -46,7 +46,7 @@
 namespace openfluid {
 namespace core {
 
-class DLLEXPORT UnstructuredValue
+class OPENFLUID_API UnstructuredValue
 {
   public:
 
@@ -84,4 +84,4 @@ class DLLEXPORT UnstructuredValue
 } // namespaces
 
 
-#endif /* __UNSTRUCTUREDVALUE_HPP__ */
+#endif /* __OPENFLUID_CORE_UNSTRUCTUREDVALUE_HPP__ */

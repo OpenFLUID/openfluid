@@ -39,8 +39,8 @@
  */
 
 
-#ifndef GEOSCOMPAT_HPP_
-#define GEOSCOMPAT_HPP_
+#ifndef __OPENFLUID_LANDR_GEOSCOMPAT_HPP__
+#define __OPENFLUID_LANDR_GEOSCOMPAT_HPP__
 
 #include <openfluid/config.hpp>
 
@@ -66,4 +66,4 @@ namespace landr {
 }}
 
 
-#endif /* GEOSCOMPAT_HPP_ */
+#endif /* __OPENFLUID_LANDR_GEOSCOMPAT_HPP__ */

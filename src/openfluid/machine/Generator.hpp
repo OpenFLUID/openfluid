@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __GENERATOR_HPP__
-#define __GENERATOR_HPP__
+#ifndef __OPENFLUID_MACHINE_GENERATOR_HPP__
+#define __OPENFLUID_MACHINE_GENERATOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableSimulator.hpp>
@@ -47,7 +47,7 @@
 
 namespace openfluid { namespace machine {
 
-class DLLEXPORT Generator : public openfluid::ware::PluggableSimulator
+class OPENFLUID_API Generator : public openfluid::ware::PluggableSimulator
 {
   protected:
 

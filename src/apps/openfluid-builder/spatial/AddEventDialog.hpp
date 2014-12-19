@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __ADDEVENTDIALOG_HPP__
-#define __ADDEVENTDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDEVENTDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDEVENTDIALOG_HPP__
 
 namespace Ui
 {
@@ -89,4 +89,4 @@ class AddEventDialog : public openfluid::ui::common::OpenFLUIDDialog
 
 };
 
-#endif /* __ADDEVENTDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDEVENTDIALOG_HPP__ */

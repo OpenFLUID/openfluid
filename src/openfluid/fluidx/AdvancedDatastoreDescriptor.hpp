@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __ADVANCEDDATASTOREDESCRIPTOR_HPP__
-#define __ADVANCEDDATASTOREDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__
 
 #include <list>
 #include <string>
@@ -51,7 +51,7 @@ namespace openfluid { namespace fluidx {
 class DatastoreDescriptor;
 class DatastoreItemDescriptor;
 
-class DLLEXPORT AdvancedDatastoreDescriptor
+class OPENFLUID_API AdvancedDatastoreDescriptor
 {
   private:
 
@@ -117,4 +117,4 @@ class DLLEXPORT AdvancedDatastoreDescriptor
 
 } } // namespaces
 
-#endif /* __ADVANCEDDATASTOREDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_ADVANCEDDATASTOREDESCRIPTOR_HPP__ */

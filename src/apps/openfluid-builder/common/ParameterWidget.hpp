@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PARAMETERWIDGET_HPP__
-#define __PARAMETERWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_PARAMETERWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_PARAMETERWIDGET_HPP__
 
 
 #include <QWidget>
@@ -82,4 +82,4 @@ class ParameterWidget : public QWidget
     QString getName();
 };
 
-#endif /* __PARAMETERWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_PARAMETERWIDGET_HPP__ */

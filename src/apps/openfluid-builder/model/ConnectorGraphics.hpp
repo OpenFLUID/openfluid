@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __CONNECTORGRAPHICS_HPP__
-#define __CONNECTORGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_CONNECTORGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_CONNECTORGRAPHICS_HPP__
 
 class ModelItemGraphics;
 
@@ -99,4 +99,4 @@ class ConnectorGraphics : public QGraphicsPathItem
 };
 
 
-#endif /* __CONNECTORGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_CONNECTORGRAPHICS_HPP__ */

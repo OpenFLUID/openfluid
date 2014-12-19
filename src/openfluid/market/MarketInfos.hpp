@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MARKETINFOS_HPP__
-#define __MARKETINFOS_HPP__
+#ifndef __OPENFLUID_MARKET_MARKETINFOS_HPP__
+#define __OPENFLUID_MARKET_MARKETINFOS_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
@@ -51,7 +51,7 @@ namespace openfluid { namespace market {
 // =====================================================================
 
 
-class DLLEXPORT MarketInfo
+class OPENFLUID_API MarketInfo
 {
   public:
 
@@ -86,7 +86,7 @@ class DLLEXPORT MarketInfo
 // =====================================================================
 
 
-class DLLEXPORT PackageInfo
+class OPENFLUID_API PackageInfo
 {
   public:
 
@@ -121,7 +121,7 @@ class DLLEXPORT PackageInfo
 // =====================================================================
 
 
-class DLLEXPORT MetaPackageInfo
+class OPENFLUID_API MetaPackageInfo
 {
   public:
 
@@ -173,4 +173,4 @@ typedef std::map<openfluid::ware::WareID_t,MetaPackageInfo> MetaPackagesCatalog_
 } } // namespaces
 
 
-#endif /* __MARKETINFOS_HPP__ */
+#endif /* __OPENFLUID_MARKET_MARKETINFOS_HPP__ */

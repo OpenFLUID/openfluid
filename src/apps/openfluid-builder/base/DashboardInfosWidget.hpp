@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DASHBOARDINFOSWIDGET_HPP__
-#define __DASHBOARDINFOSWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_DASHBOARDINFOSWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_DASHBOARDINFOSWIDGET_HPP__
 
 
 #include <openfluid/fluidx/AdvancedFluidXDescriptor.hpp>
@@ -76,4 +76,4 @@ class DashboardInfosWidget : public DashboardWidget
 };
 
 
-#endif /* __DASHBOARDINFOSWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_DASHBOARDINFOSWIDGET_HPP__ */

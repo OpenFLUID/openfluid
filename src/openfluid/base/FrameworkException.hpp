@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __FRAMEWORKEXCEPTION_HPP__
-#define __FRAMEWORKEXCEPTION_HPP__
+#ifndef __OPENFLUID_BASE_FRAMEWORKEXCEPTION_HPP__
+#define __OPENFLUID_BASE_FRAMEWORKEXCEPTION_HPP__
 
 #include <openfluid/base/Exception.hpp>
 
@@ -79,4 +79,4 @@ class FrameworkException : public Exception
 
 } } // namespaces
 
-#endif /* __FRAMEWORKEXCEPTION_HPP__ */
+#endif /* __OPENFLUID_BASE_FRAMEWORKEXCEPTION_HPP__ */

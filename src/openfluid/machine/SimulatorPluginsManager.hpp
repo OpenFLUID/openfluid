@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIMULATORPLUGINSMANAGER_HPP__
-#define __SIMULATORPLUGINSMANAGER_HPP__
+#ifndef __OPENFLUID_MACHINE_SIMULATORPLUGINSMANAGER_HPP__
+#define __OPENFLUID_MACHINE_SIMULATORPLUGINSMANAGER_HPP__
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/ware/SimulatorSignature.hpp>
@@ -56,7 +56,7 @@ class ModelItemInstance;
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT SimulatorPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
+class OPENFLUID_API SimulatorPluginsManager : public WarePluginsManager<ModelItemSignatureInstance,ModelItemInstance,
                                                          openfluid::ware::GetPluggableSimulatorSignatureProc,
                                                          openfluid::ware::GetPluggableSimulatorBodyProc>
 {
@@ -115,4 +115,4 @@ class DLLEXPORT SimulatorPluginsManager : public WarePluginsManager<ModelItemSig
 
 } }  // namespaces
 
-#endif /* __SIMULATORPLUGINSMANAGER_HPP__ */
+#endif /* __OPENFLUID_MACHINE_SIMULATORPLUGINSMANAGER_HPP__ */

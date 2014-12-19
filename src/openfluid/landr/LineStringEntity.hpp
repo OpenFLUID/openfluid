@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef LINESTRINGENTITY_HPP_
-#define LINESTRINGENTITY_HPP_
+#ifndef __OPENFLUID_LANDR_LINESTRINGENTITY_HPP__
+#define __OPENFLUID_LANDR_LINESTRINGENTITY_HPP__
 
 #include <openfluid/landr/LandREntity.hpp>
 #include <openfluid/dllexport.hpp>
@@ -54,7 +54,7 @@ namespace openfluid { namespace landr {
  @brief A LandREntity representing a geos::geom::LineString.
  @details A LineStringEntity has a StartNode and an EndNode, relatives to its LineString orientation.
  */
-class DLLEXPORT LineStringEntity: public LandREntity, public geos::planargraph::Edge
+class OPENFLUID_API LineStringEntity: public LandREntity, public geos::planargraph::Edge
 {
   private:
 
@@ -135,4 +135,4 @@ class DLLEXPORT LineStringEntity: public LandREntity, public geos::planargraph::
 
 } } // namespace landr, openfluid
 
-#endif /* LINESTRINGENTITY_HPP_ */
+#endif /* __OPENFLUID_LANDR_LINESTRINGENTITY_HPP__ */

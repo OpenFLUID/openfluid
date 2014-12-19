@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PREFERENCESDIALOG_HPP__
-#define __PREFERENCESDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_PREFERENCESDIALOG_HPP__
+#define __OPENFLUID_UICOMMON_PREFERENCESDIALOG_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
@@ -60,7 +60,7 @@ class WaresSearchPathsWidget;
 namespace openfluid { namespace ui { namespace common {
 
 
-class DLLEXPORT PreferencesDialog : public OpenFLUIDDialog
+class OPENFLUID_API PreferencesDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 
@@ -158,4 +158,4 @@ class DLLEXPORT PreferencesDialog : public OpenFLUIDDialog
 } } } // namespaces
 
 
-#endif /* __PREFERENCESDIALOG_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_PREFERENCESDIALOG_HPP__ */

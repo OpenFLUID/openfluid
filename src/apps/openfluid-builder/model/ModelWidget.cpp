@@ -99,6 +99,8 @@ ModelWidget::ModelWidget(QWidget* Parent, openfluid::fluidx::AdvancedFluidXDescr
   refresh();
 
   connect(ui->ShowVarsCheckBox,SIGNAL(clicked(bool)),mp_ModelScene,SLOT(showVariables(bool)));
+
+  connect(mp_ModelScene,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
 }
 
 
@@ -276,6 +278,7 @@ void ModelWidget::addSimulator()
     SimulatorWidget* SimWidget = new SimulatorWidget(this,SimDesc,ID.toStdString());
 
     connect(SimWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
+    connect(SimWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
     connect(SimWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
     connect(SimWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
     connect(SimWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
@@ -461,6 +464,7 @@ void ModelWidget::updateCoupledModel()
       if (it == itl) SimWidget->setDownButtonEnabled(false);
 
       connect(SimWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
+      connect(SimWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
       connect(SimWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
       connect(SimWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
       connect(SimWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
@@ -497,6 +501,16 @@ void ModelWidget::dispatchChangesFromChildren()
   mp_ModelScene->refresh();
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MODELDEF |
                openfluid::builderext::FluidXUpdateFlags::FLUIDX_MODELPARAMS);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void ModelWidget::notifySrcEditAsked(const QString& ID)
+{
+  emit srcEditAsked(ID,openfluid::ware::PluggableWare::SIMULATOR);
 }
 
 

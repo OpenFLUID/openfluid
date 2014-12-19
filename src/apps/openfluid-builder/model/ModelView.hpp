@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MODELVIEW_HPP__
-#define __MODELVIEW_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MODELVIEW_HPP__
+#define __OPENFLUID_BUILDERAPP_MODELVIEW_HPP__
 
 #include <QGraphicsView>
 
@@ -69,4 +69,4 @@ class ModelView : public QGraphicsView
 
 
 
-#endif /* __MODELVIEW_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MODELVIEW_HPP__ */

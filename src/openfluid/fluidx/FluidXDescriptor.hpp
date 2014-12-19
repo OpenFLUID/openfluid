@@ -59,7 +59,7 @@ class IOListener;
 
 namespace fluidx {
 
-class DLLEXPORT FluidXDescriptor
+class OPENFLUID_API FluidXDescriptor
 {
   private:
 

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MODELITEMINSTANCE_HPP__
-#define __MODELITEMINSTANCE_HPP__
+#ifndef __OPENFLUID_MACHINE_MODELITEMINSTANCE_HPP__
+#define __OPENFLUID_MACHINE_MODELITEMINSTANCE_HPP__
 
 #include <string>
 
@@ -54,7 +54,7 @@
 
 namespace openfluid { namespace machine {
 
-class DLLEXPORT GeneratorExtraInfo
+class OPENFLUID_API GeneratorExtraInfo
 {
   public:
 
@@ -69,7 +69,7 @@ class DLLEXPORT GeneratorExtraInfo
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT ModelItemSignatureInstance : public WareSignatureInstance
+class OPENFLUID_API ModelItemSignatureInstance : public WareSignatureInstance
 {
   public:
     openfluid::ware::SimulatorSignature* Signature;
@@ -85,7 +85,7 @@ class DLLEXPORT ModelItemSignatureInstance : public WareSignatureInstance
 // =====================================================================
 
 
-class DLLEXPORT ModelItemInstance : public ModelItemSignatureInstance
+class OPENFLUID_API ModelItemInstance : public ModelItemSignatureInstance
 {
   public:
     openfluid::ware::WareParams_t Params;

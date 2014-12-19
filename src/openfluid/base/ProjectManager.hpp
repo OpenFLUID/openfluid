@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __PROJECTMANAGER_HPP___
-#define __PROJECTMANAGER_HPP___
+#ifndef __OPENFLUID_BASE_PROJECTMANAGER_HPP__
+#define __OPENFLUID_BASE_PROJECTMANAGER_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -55,7 +55,7 @@ namespace openfluid { namespace base {
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT ProjectManager
+class OPENFLUID_API ProjectManager
 {
   private:
 
@@ -161,4 +161,4 @@ class DLLEXPORT ProjectManager
 } } //namespaces
 
 
-#endif /* __PROJECTMANAGER_HPP___ */
+#endif /* __OPENFLUID_BASE_PROJECTMANAGER_HPP__ */

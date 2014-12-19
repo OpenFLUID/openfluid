@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __DATETIME_HPP__
-#define __DATETIME_HPP__
+#ifndef __OPENFLUID_CORE_DATETIME_HPP__
+#define __OPENFLUID_CORE_DATETIME_HPP__
 
 
 #include <sys/types.h>
@@ -128,7 +128,7 @@ typedef unsigned long long Duration_t;
 
 
 */
-class DLLEXPORT DateTime
+class OPENFLUID_API DateTime
 {
   private:
 

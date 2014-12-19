@@ -31,8 +31,8 @@
 
 
 
-#ifndef __VECTOR_HPP__
-#define __VECTOR_HPP__
+#ifndef __OPENFLUID_CORE_VECTOR_HPP__
+#define __OPENFLUID_CORE_VECTOR_HPP__
 
 
 #include <iostream>
@@ -47,7 +47,7 @@ namespace openfluid { namespace core {
   Template class for vector data
 */
 template <class T>
-class DLLEXPORT Vector
+class OPENFLUID_API Vector
 {
   protected :
     T* m_Data;

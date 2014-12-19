@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __APPTOOLS_HPP__
-#define __APPTOOLS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_APPTOOLS_HPP__
+#define __OPENFLUID_BUILDERAPP_APPTOOLS_HPP__
 
 
 #include <QString>
@@ -51,4 +51,4 @@ QString getProjectInfosAsHTML(const QString& ProjectPath, bool IncludeFullPath =
 QColor getRandomColor();
 
 
-#endif /* __APPTOOLS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_APPTOOLS_HPP__ */

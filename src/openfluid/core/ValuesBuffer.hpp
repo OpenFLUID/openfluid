@@ -35,8 +35,8 @@
  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#ifndef __VALUESBUFFER_HPP__
-#define __VALUESBUFFER_HPP__
+#ifndef __OPENFLUID_CORE_VALUESBUFFER_HPP__
+#define __OPENFLUID_CORE_VALUESBUFFER_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/ValuesBufferProperties.hpp>
@@ -122,7 +122,7 @@ typedef std::list<IndexedValue> IndexedValueList;
 // =====================================================================
 
 
-class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
+class OPENFLUID_API ValuesBuffer: public ValuesBufferProperties
 {
 
   public:
@@ -189,4 +189,4 @@ class DLLEXPORT ValuesBuffer: public ValuesBufferProperties
 } // namespaces
 
 
-#endif /* __VALUESBUFFER_HPP__ */
+#endif /* __OPENFLUID_CORE_VALUESBUFFER_HPP__ */

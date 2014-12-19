@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __VIEWLOGFILEWINDOW_HPP__
-#define __VIEWLOGFILEWINDOW_HPP__
+#ifndef __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__
+#define __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__
 
 #include <QDialog>
 #include <QString>
@@ -57,7 +57,7 @@ namespace openfluid { namespace ui { namespace common {
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT ViewLogFileWindow : public QDialog
+class OPENFLUID_API ViewLogFileWindow : public QDialog
 {
   Q_OBJECT
 
@@ -78,4 +78,4 @@ class DLLEXPORT ViewLogFileWindow : public QDialog
 
 
 
-#endif /* __VIEWLOGFILEWINDOW_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_VIEWLOGFILEWINDOW_HPP__ */

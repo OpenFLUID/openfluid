@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIMULATIONSTATUS_HPP__
-#define __SIMULATIONSTATUS_HPP__
+#ifndef __OPENFLUID_BASE_SIMULATIONSTATUS_HPP__
+#define __OPENFLUID_BASE_SIMULATIONSTATUS_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -53,7 +53,7 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-class DLLEXPORT SimulationStatus
+class OPENFLUID_API SimulationStatus
 {
   public:
 
@@ -115,4 +115,4 @@ class DLLEXPORT SimulationStatus
 }  }  // namespaces
 
 
-#endif /* __SIMULATIONSTATUS_HPP__ */
+#endif /* __OPENFLUID_BASE_SIMULATIONSTATUS_HPP__ */

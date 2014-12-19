@@ -31,8 +31,8 @@
 
 
 
-#ifndef __COREREPOSITORY_HPP__
-#define __COREREPOSITORY_HPP__
+#ifndef __OPENFLUID_CORE_COREREPOSITORY_HPP__
+#define __OPENFLUID_CORE_COREREPOSITORY_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -45,7 +45,7 @@ class Unit;
 class UnitsCollection;
 
 
-class DLLEXPORT CoreRepository
+class OPENFLUID_API CoreRepository
 {
   private:
 

@@ -48,7 +48,7 @@ namespace fluidx {
 
 
 // TODO refactor this for enable the possibility to have the same observer twice in the monitoring list
-class DLLEXPORT AdvancedMonitoringDescriptor
+class OPENFLUID_API AdvancedMonitoringDescriptor
 {
   private:
 

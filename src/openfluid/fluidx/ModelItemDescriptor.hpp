@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MODELITEMDESCRIPTOR_HPP__
-#define __MODELITEMDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_MODELITEMDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_MODELITEMDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/WareDescriptor.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace fluidx {
 
 
-class DLLEXPORT ModelItemDescriptor : public WareDescriptor
+class OPENFLUID_API ModelItemDescriptor : public WareDescriptor
 {
   public:
     ModelItemDescriptor() : WareDescriptor()
@@ -62,4 +62,4 @@ class DLLEXPORT ModelItemDescriptor : public WareDescriptor
 } } // namespaces
 
 
-#endif /* __MODELITEMDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_MODELITEMDESCRIPTOR_HPP__ */

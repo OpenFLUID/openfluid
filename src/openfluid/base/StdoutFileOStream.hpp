@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __STDOUTFILEOSTREAM_HPP__
-#define __STDOUTFILEOSTREAM_HPP__
+#ifndef __OPENFLUID_BASE_STDOUTFILEOSTREAM_HPP__
+#define __OPENFLUID_BASE_STDOUTFILEOSTREAM_HPP__
 
 #include <iostream>
 #include <fstream>
@@ -57,7 +57,7 @@
 namespace openfluid { namespace base {
 
 
-class DLLEXPORT StdoutAndFileOutputStream
+class OPENFLUID_API StdoutAndFileOutputStream
 {
   private:
 
@@ -114,4 +114,4 @@ class DLLEXPORT StdoutAndFileOutputStream
 } }  // namespaces
 
 
-#endif /* __STDOUTFILEOSTREAM_HPP__ */
+#endif /* __OPENFLUID_BASE_STDOUTFILEOSTREAM_HPP__ */

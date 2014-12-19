@@ -41,8 +41,8 @@
 #include <openfluid/tools/SwissTools.hpp>
 
 
-#ifndef __WARESIGNATURE_HPP__
-#define __WARESIGNATURE_HPP__
+#ifndef __OPENFLUID_WARE_WARESIGNATURE_HPP__
+#define __OPENFLUID_WARE_WARESIGNATURE_HPP__
 
 
 /**
@@ -116,7 +116,7 @@ enum WareStatus_t
 // =====================================================================
 
 
-class DLLEXPORT WareSignature
+class OPENFLUID_API WareSignature
 {
   public:
 
@@ -193,4 +193,4 @@ class DLLEXPORT WareSignature
 
 
 
-#endif /* __WARESIGNATURE_HPP__ */
+#endif /* __OPENFLUID_WARE_WARESIGNATURE_HPP__ */

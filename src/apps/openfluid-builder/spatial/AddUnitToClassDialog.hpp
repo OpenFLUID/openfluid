@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ADDUNITTOCLASSDIALOG_HPP__
-#define __ADDUNITTOCLASSDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDUNITTOCLASSDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDUNITTOCLASSDIALOG_HPP__
 
 #include "AddUnitDialog.hpp"
 
@@ -84,4 +84,4 @@ class AddUnitToClassDialog : public AddUnitDialog
 
 
 
-#endif /* __ADDUNITTOCLASSDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDUNITTOCLASSDIALOG_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __APPLICATIONEXCEPTION_HPP__
-#define __APPLICATIONEXCEPTION_HPP__
+#ifndef __OPENFLUID_BASE_APPLICATIONEXCEPTION_HPP__
+#define __OPENFLUID_BASE_APPLICATIONEXCEPTION_HPP__
 
 #include <openfluid/base/Exception.hpp>
 
@@ -80,4 +80,4 @@ class ApplicationException : public Exception
 
 } } // namespaces
 
-#endif /* __FRAMEWORKEXCEPTION_HPP__ */
+#endif /* __OPENFLUID_BASE_APPLICATIONEXCEPTION_HPP__ */

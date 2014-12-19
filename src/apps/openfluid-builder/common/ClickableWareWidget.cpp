@@ -30,46 +30,36 @@
 */
 
 
-/*
- * MarketWizardPage.hpp
- *
- *  Created on: 9 août 2013
- *      Author: Manuel CHATAIGNER
+/**
+  \file ClickableWareWidget.cpp
+  \brief Implements ...
+
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#ifndef __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__
-#define __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__
 
-#include <openfluid/dllexport.hpp>
-#include <QWizardPage>
+#include "ClickableWareWidget.hpp"
 
 
-namespace openfluid { namespace ui { namespace market {
 
+ClickableWareWidget::ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID,
+                                         bool Enabled, const QString& BGColor):
+  WareWidget(Parent,ID,Enabled,BGColor)
 
-class OPENFLUID_API MarketWizardPage : public QWizardPage
 {
-  Q_OBJECT;
 
-  private:
-
-    bool m_PackagesSelected;
-    bool m_LicensesRadioAccepted;
-    bool m_InstallationFinished;
-
-    bool isSelectionPage() const { return nextId() == 1; };
-    bool isLicensesnPage() const { return nextId() == 2; };
-    bool isInstallPage() const { return nextId() == -1; };
-
-  public:
-
-    MarketWizardPage(QWidget *Parent = 0);
-    virtual bool isComplete() const;
-    void setPageComplete(bool Complete);
-};
+}
 
 
-} } } // namespaces
+// =====================================================================
+// =====================================================================
 
 
-#endif /* __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__ */
+void ClickableWareWidget::mouseDoubleClickEvent(QMouseEvent* Event)
+{
+#ifdef ENABLE_WARESDEV_INTEGRATION
+  emit srcEditAsked(QString::fromStdString(m_ID));
+#endif
+
+  QWidget::mousePressEvent(Event);
+}

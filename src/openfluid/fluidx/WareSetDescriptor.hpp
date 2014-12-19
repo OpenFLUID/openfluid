@@ -35,8 +35,8 @@
  @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#ifndef __WARESETDESCRIPTOR_HPP__
-#define __WARESETDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_WARESETDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_WARESETDESCRIPTOR_HPP__
 
 #include <list>
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
@@ -46,7 +46,7 @@ namespace openfluid {
 namespace fluidx {
 
 template<class T>
-class DLLEXPORT WareSetDescriptor
+class OPENFLUID_API WareSetDescriptor
 {
   public:
     typedef std::list<T*> SetDescription_t;
@@ -127,4 +127,4 @@ class DLLEXPORT WareSetDescriptor
 }
 } // namespaces
 
-#endif /* __MODELDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_MODELDESCRIPTOR_HPP__ */

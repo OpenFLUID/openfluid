@@ -38,15 +38,15 @@
  */
 
 
-#ifndef __SIMULATORWIDGET_HPP__
-#define __SIMULATORWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_SIMULATORWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_SIMULATORWIDGET_HPP__
 
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
-#include "WareWidget.hpp"
+#include "ClickableWareWidget.hpp"
 
 
-class SimulatorWidget : public WareWidget
+class SimulatorWidget : public ClickableWareWidget
 {
   Q_OBJECT;
 
@@ -86,4 +86,4 @@ class SimulatorWidget : public WareWidget
 };
 
 
-#endif /* __SIMULATORWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_SIMULATORWIDGET_HPP__ */

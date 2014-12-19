@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PROJECTMODULE_HPP__
-#define __PROJECTMODULE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__
+#define __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__
 
 
 #include "AbstractModule.hpp"
@@ -147,6 +147,11 @@ class ProjectModule : public AbstractModule
     void checkInputDir();
 
 
+  public slots:
+
+    void whenSrcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType);
+
+
   public:
 
     ProjectModule(const QString& ProjectPath);
@@ -187,9 +192,19 @@ class ProjectModule : public AbstractModule
 
     bool whenOpenExampleAsked();
 
+    void whenNewSimulatorSrcAsked();
+
+    void whenOpenSimulatorSrcAsked();
+
+    void whenNewObserverSrcAsked();
+
+    void whenOpenObserverSrcAsked();
+
+    void whenLaunchDevStudioAsked();
+
     bool isOkForSimulation() const;
 
 };
 
 
-#endif /* __PROJECTMODULE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_PROJECTMODULE_HPP__ */

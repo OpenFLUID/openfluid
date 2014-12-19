@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __ENVPROPERTIES_HPP__
-#define __ENVPROPERTIES_HPP__
+#ifndef __OPENFLUID_BASE_ENVPROPERTIES_HPP__
+#define __OPENFLUID_BASE_ENVPROPERTIES_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <map>
@@ -50,7 +50,7 @@ namespace openfluid { namespace base {
 /**
   Class containing execution environment information for funtions
 */
-class DLLEXPORT EnvironmentProperties
+class OPENFLUID_API EnvironmentProperties
 {
   private:
 
@@ -106,4 +106,4 @@ class DLLEXPORT EnvironmentProperties
 
 } } // namespaces
 
-#endif /* __ENVPROPERTIES_HPP__ */
+#endif /* __OPENFLUID_BASE_ENVPROPERTIES_HPP__ */

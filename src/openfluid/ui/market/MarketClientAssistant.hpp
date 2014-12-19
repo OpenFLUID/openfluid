@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MARKETCLIENTASSISTANT_HPP__
-#define __MARKETCLIENTASSISTANT_HPP__
+#ifndef __OPENFLUID_UIMARKET_MARKETCLIENTASSISTANT_HPP__
+#define __OPENFLUID_UIMARKET_MARKETCLIENTASSISTANT_HPP__
 
 #include <QWizard>
 #include <QBoxLayout>
@@ -66,7 +66,7 @@ namespace openfluid { namespace ui { namespace market {
 class MarketPackWidget;
 
 // TODO review parenting of all widgets
-class DLLEXPORT MarketClientAssistant : public QWizard
+class OPENFLUID_API MarketClientAssistant : public QWizard
 {
   Q_OBJECT
 
@@ -305,4 +305,4 @@ class DLLEXPORT MarketClientAssistant : public QWizard
 } } } // namespaces
 
 
-#endif /* __MARKETCLIENTASSISTANT_HPP__ */
+#endif /* __OPENFLUID_UIMARKET_MARKETCLIENTASSISTANT_HPP__ */

@@ -50,7 +50,7 @@
 namespace openfluid { namespace ui { namespace market {
 
 
-class DLLEXPORT MarketPackWidgetFormat : public MarketPackWidget
+class OPENFLUID_API MarketPackWidgetFormat : public MarketPackWidget
 {
   Q_OBJECT
 
@@ -101,4 +101,4 @@ class DLLEXPORT MarketPackWidgetFormat : public MarketPackWidget
 } } } // namespaces
 
 
-#endif /* __MARKETPACKWIDGETFORMAT_HPP__ */
+#endif /* __OPENFLUID_UIMARKET_MARKETPACKWIDGETFORMAT_HPP__ */

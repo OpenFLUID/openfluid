@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef LINESTRINGGRAPH_HPP_
-#define LINESTRINGGRAPH_HPP_
+#ifndef __OPENFLUID_LANDR_LINESTRINGGRAPH_HPP__
+#define __OPENFLUID_LANDR_LINESTRINGGRAPH_HPP__
 
 #include <openfluid/landr/LandRGraph.hpp>
 #include <openfluid/dllexport.hpp>
@@ -104,7 +104,7 @@ class VectorDataset;
 /**
  @brief A LandRGraph composed of LineStringEntities.
  */
-class DLLEXPORT LineStringGraph: public LandRGraph
+class OPENFLUID_API LineStringGraph: public LandRGraph
 {
 private:
 
@@ -275,4 +275,4 @@ public:
 
 } } // namespace landr, openfluid
 
-#endif /* LINESTRINGGRAPH_HPP_ */
+#endif /* __OPENFLUID_LANDR_LINESTRINGGRAPH_HPP__ */

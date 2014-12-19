@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __WARE_HPP__
-#define __WARE_HPP__
+#ifndef __OPENFLUID_WARE_HPP__
+#define __OPENFLUID_WARE_HPP__
 
 
 #include <openfluid/ware/SimulatorSignature.hpp>
@@ -48,4 +48,4 @@
 #include <openfluid/ware/PluggableObserver.hpp>
 
 
-#endif /* __WARE_HPP__ */
+#endif /* __OPENFLUID_WARE_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OTHEREXCEPTION_HPP__
-#define __OTHEREXCEPTION_HPP__
+#ifndef __OPENFLUID_BASE_OTHEREXCEPTION_HPP__
+#define __OPENFLUID_BASE_OTHEREXCEPTION_HPP__
 
 #include <openfluid/base/Exception.hpp>
 #include <openfluid/dllexport.hpp>
@@ -47,7 +47,7 @@
 namespace openfluid { namespace base {
 
 
-class DLLEXPORT OtherException : public Exception
+class OPENFLUID_API OtherException : public Exception
 {
   protected:
 
@@ -69,4 +69,4 @@ class DLLEXPORT OtherException : public Exception
 
 } } // namespaces
 
-#endif /* __FRAMEWORKEXCEPTION_HPP__ */
+#endif /* __OPENFLUID_BASE_FRAMEWORKEXCEPTION_HPP__ */

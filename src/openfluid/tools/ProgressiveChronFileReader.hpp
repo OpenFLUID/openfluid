@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PROGRESSIVECHRONFILEREADER_HPP__
-#define __PROGRESSIVECHRONFILEREADER_HPP__
+#ifndef __OPENFLUID_TOOLS_PROGRESSIVECHRONFILEREADER_HPP__
+#define __OPENFLUID_TOOLS_PROGRESSIVECHRONFILEREADER_HPP__
 
 
 #include <openfluid/tools/ProgressiveColumnFileReader.hpp>
@@ -50,7 +50,7 @@
 namespace openfluid { namespace tools {
 
 
-class DLLEXPORT ProgressiveChronFileReader : public ProgressiveColumnFileReader
+class OPENFLUID_API ProgressiveChronFileReader : public ProgressiveColumnFileReader
 {
   private:
 
@@ -73,4 +73,4 @@ class DLLEXPORT ProgressiveChronFileReader : public ProgressiveColumnFileReader
 } } // namespaces
 
 
-#endif /* __PROGRESSIVECHRONFILEREADER_HPP__ */
+#endif /* __OPENFLUID_TOOLS_PROGRESSIVECHRONFILEREADER_HPP__ */

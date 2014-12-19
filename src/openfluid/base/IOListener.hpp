@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __IOLISTENER_HPP__
-#define __IOLISTENER_HPP__
+#ifndef __OPENFLUID_BASE_IOLISTENER_HPP__
+#define __OPENFLUID_BASE_IOLISTENER_HPP__
 
 #include <string>
 #include <iostream>
@@ -84,4 +84,4 @@ class IOListener : public openfluid::base::Listener
 
 } } //namespaces
 
-#endif /* __IOLISTENER_HPP__ */
+#endif /* __OPENFLUID_BASE_IOLISTENER_HPP__ */

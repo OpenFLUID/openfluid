@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __WARESIGNATUREINSTANCE_HPP__
-#define __WARESIGNATUREINSTANCE_HPP__
+#ifndef __OPENFLUID_MACHINE_WARESIGNATUREINSTANCE_HPP__
+#define __OPENFLUID_MACHINE_WARESIGNATUREINSTANCE_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -48,7 +48,7 @@
 
 namespace openfluid { namespace machine {
 
-class DLLEXPORT WareSignatureInstance
+class OPENFLUID_API WareSignatureInstance
 {
   public:
 
@@ -67,4 +67,4 @@ class DLLEXPORT WareSignatureInstance
 
 
 
-#endif /* __WAREINSTANCE_HPP__ */
+#endif /* __OPENFLUID_MACHINE_WAREINSTANCE_HPP__ */

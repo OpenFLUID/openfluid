@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __APPACTIONS_HPP__
-#define __APPACTIONS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_APPACTIONS_HPP__
+#define __OPENFLUID_BUILDERAPP_APPACTIONS_HPP__
 
 #include <QAction>
 
@@ -59,6 +59,8 @@ class AppActions : QObject
     std::vector<QAction*> m_RecentProjectsActions;
 
     std::map<openfluid::ware::WareID_t,QAction*> m_ExtensionsActions;
+
+    QMenu* mp_DevelopmentMenu;
 
     QMenu* mp_SimulationMenu;
 
@@ -114,4 +116,4 @@ class AppActions : QObject
 };
 
 
-#endif /* __APPACTIONS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_APPACTIONS_HPP__ */

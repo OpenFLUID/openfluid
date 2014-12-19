@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __DEFAULTMACHINELISTENER_HPP__
-#define __DEFAULTMACHINELISTENER_HPP__
+#ifndef __OPENFLUID_CMDLINEAPP_DEFAULTMACHINELISTENER_HPP__
+#define __OPENFLUID_CMDLINEAPP_DEFAULTMACHINELISTENER_HPP__
 
 
 #include <openfluid/machine/MachineListener.hpp>
@@ -209,4 +209,4 @@ class DefaultMachineListener : public openfluid::machine::MachineListener
 };
 
 
-#endif /* __DEFAULTMACHINELISTENER_HPP__ */
+#endif /* __OPENFLUID_CMDLINEAPP_DEFAULTMACHINELISTENER_HPP__ */

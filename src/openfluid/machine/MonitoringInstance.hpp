@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MONITORINGINSTANCE_HPP__
-#define __MONITORINGINSTANCE_HPP__
+#ifndef __OPENFLUID_MACHINE_MONITORINGINSTANCE_HPP__
+#define __OPENFLUID_MACHINE_MONITORINGINSTANCE_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ware/PluggableWare.hpp>
@@ -53,7 +53,7 @@ namespace openfluid { namespace machine {
 class SimulationBlob;
 class ObserverInstance;
 
-class DLLEXPORT MonitoringInstance
+class OPENFLUID_API MonitoringInstance
 {
   private:
 
@@ -92,4 +92,4 @@ class DLLEXPORT MonitoringInstance
 } }  // namespaces
 
 
-#endif /* __MONITORINGINSTANCE_HPP__ */
+#endif /* __OPENFLUID_MACHINE_MONITORINGINSTANCE_HPP__ */

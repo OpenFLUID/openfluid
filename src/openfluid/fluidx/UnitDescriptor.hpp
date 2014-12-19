@@ -48,7 +48,7 @@
 namespace openfluid { namespace fluidx {
 
 
-class DLLEXPORT UnitDescriptor
+class OPENFLUID_API UnitDescriptor
 {
   private:
 
@@ -85,4 +85,4 @@ class DLLEXPORT UnitDescriptor
 } } // namespaces
 
 
-#endif /* __UNITDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_UNITDESCRIPTOR_HPP__ */

@@ -36,8 +36,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __DATASTOREITEM_HPP__
-#define __DATASTOREITEM_HPP__
+#ifndef __OPENFLUID_CORE_DATASTOREITEM_HPP__
+#define __OPENFLUID_CORE_DATASTOREITEM_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -51,7 +51,7 @@ namespace core {
 /**
  * @brief Item of a Datastore, giving information about an additional resource.
  */
-class DLLEXPORT DatastoreItem
+class OPENFLUID_API DatastoreItem
 {
   private:
 
@@ -116,4 +116,4 @@ class DLLEXPORT DatastoreItem
 }
 } // namespaces
 
-#endif /* __DATASTOREITEM_HPP__ */
+#endif /* __OPENFLUID_CORE_DATASTOREITEM_HPP__ */

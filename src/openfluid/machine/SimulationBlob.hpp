@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIMULATIONBLOB_HPP__
-#define __SIMULATIONBLOB_HPP__
+#ifndef __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
+#define __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__
 
 #include <openfluid/core/CoreRepository.hpp>
 #include <openfluid/fluidx/RunDescriptor.hpp>
@@ -48,7 +48,7 @@
 
 namespace openfluid { namespace machine {
 
-class DLLEXPORT SimulationBlob
+class OPENFLUID_API SimulationBlob
 {
   private:
 
@@ -95,4 +95,4 @@ class DLLEXPORT SimulationBlob
 
 
 
-#endif /* __SIMULATIONBLOB_HPP__ */
+#endif /* __OPENFLUID_MACHINE_SIMULATIONBLOB_HPP__ */

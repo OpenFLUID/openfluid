@@ -54,7 +54,8 @@ QT4_WRAP_UI(BUILDER_BASE_UI base/HomeWidget.ui base/ProjectWidget.ui
 ### COMMON #
 
 SET(BUILDER_COMMON_CPP common/AppTools.cpp                       
-                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/SignatureWidget.cpp common/ParameterWidget.cpp
+                       common/WaresManagementWidget.cpp common/WareWidget.cpp common/ClickableWareWidget.cpp 
+                       common/SignatureWidget.cpp common/ParameterWidget.cpp
                        common/AddWareDialog.cpp
                        common/AddParamDialog.cpp
                        )
@@ -62,7 +63,8 @@ SET(BUILDER_COMMON_CPP common/AppTools.cpp
 SET(BUILDER_COMMON_HPP common/AbstractModule.hpp
                        common/WorkspaceWidget.hpp
                        common/AppTools.hpp
-                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/SignatureWidget.hpp common/ParameterWidget.hpp  
+                       common/WaresManagementWidget.hpp common/WareWidget.hpp common/ClickableWareWidget.hpp 
+                       common/SignatureWidget.hpp common/ParameterWidget.hpp  
                        common/AddWareDialog.hpp
                        common/AddParamDialog.hpp
                       )
@@ -233,10 +235,12 @@ IF(WIN32)
 ENDIF()
 
 
-
 ### MAIN LIB AND EXECUTABLE #
 
-ADD_DEFINITIONS(-DBUILDINGDLL)
+
+IF(ENABLE_WARESDEV_BUILDER_INTEGRATION)
+  ADD_DEFINITIONS(-DENABLE_WARESDEV_INTEGRATION)
+ENDIF()  
 
 
 ADD_LIBRARY(openfluid-builder-main SHARED ${BUILDER_BASE_CPP} ${BUILDER_BASE_HPP} ${BUILDER_BASE_UI}
@@ -278,7 +282,9 @@ SET_TARGET_PROPERTIES(openfluid-builder-main PROPERTIES VERSION "${VERSION_MAJOR
                                         LIBRARY_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         RUNTIME_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
                                         ARCHIVE_OUTPUT_DIRECTORY "${LIB_OUTPUT_PATH}"
-                                        AUTOMOC ON)
+                                        AUTOMOC ON
+                                        COMPILE_DEFINITIONS "OPENFLUID_DLL"
+                                        DEFINE_SYMBOL "OPENFLUID_DLL_EXPORTS")
 
 
 SET(BUILDER_GUI_OPTION)

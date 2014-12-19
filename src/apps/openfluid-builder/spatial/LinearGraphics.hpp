@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __LINEARGRAPHICS_HPP__
-#define __LINEARGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_LINEARGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_LINEARGRAPHICS_HPP__
 
 
 #include "MapItemGraphics.hpp"
@@ -57,4 +57,4 @@ class LinearGraphics : public MapItemGraphics
 };
 
 
-#endif /* __LINEARGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_LINEARGRAPHICS_HPP__ */

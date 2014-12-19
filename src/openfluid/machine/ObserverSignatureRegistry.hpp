@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef __OBSERVERSIGNATUREREGISTRY_HPP__
-#define __OBSERVERSIGNATUREREGISTRY_HPP__
+#ifndef __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__
+#define __OPENFLUID_MACHINE_OBSERVERSIGNATUREREGISTRY_HPP__
 
 #include <vector>
 #include <string>
@@ -49,7 +49,7 @@ namespace openfluid { namespace machine {
 class ObserverSignatureInstance;
 
 
-class DLLEXPORT ObserverSignatureRegistry
+class OPENFLUID_API ObserverSignatureRegistry
 {
   private:
 

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MODELITEMGRAPHICS_HPP__
-#define __MODELITEMGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MODELITEMGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_MODELITEMGRAPHICS_HPP__
 
 
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -138,6 +138,6 @@ class ModelItemGraphics : public QGraphicsRectItem
 
 };
 
-#endif /* __MODELITEMGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MODELITEMGRAPHICS_HPP__ */
 
 

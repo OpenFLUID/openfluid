@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __INTERPGENERATOR_HPP__
-#define __INTERPGENERATOR_HPP__
+#ifndef __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__
+#define __OPENFLUID_MACHINE_INTERPGENERATOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/machine/Generator.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace machine {
 
 
-class DLLEXPORT InterpGenerator : public Generator
+class OPENFLUID_API InterpGenerator : public Generator
 {
   private:
 

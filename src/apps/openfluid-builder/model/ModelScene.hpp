@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MODELSCENE_HPP__
-#define __MODELSCENE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__
+#define __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__
 
 #include <openfluid/fluidx/AdvancedModelDescriptor.hpp>
 #include <QGraphicsScene>
@@ -50,6 +50,11 @@
 class ModelScene : public QGraphicsScene
 {
   Q_OBJECT;
+
+  private slots:
+
+    void notifySrcEditAsked(const QString& ID);
+
 
   private:
 
@@ -65,9 +70,16 @@ class ModelScene : public QGraphicsScene
                        ModelItemGraphics* ToItem, ConnectorGraphics::InNodeType ToInNode,
                        const QString& UnitClass, const QString& VarName);
 
+
   public slots:
 
     void showVariables(bool Show);
+
+
+  signals:
+
+    void srcEditAsked(const QString&);
+
 
   public:
 
@@ -82,4 +94,4 @@ class ModelScene : public QGraphicsScene
 
 
 
-#endif /* __MODELSCENE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MODELSCENE_HPP__ */

@@ -56,6 +56,7 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, boo
 
   ui->setupUi(this);
   ui->IDLabel->setText(QString::fromStdString(m_ID));
+  ui->NameLabel->setElideMode(Qt::ElideRight);
 
   ui->UpButton->setText("");
   ui->UpButton->setIcon(QIcon(":/ui/common/icons/go-up.png"));
@@ -77,17 +78,14 @@ WareWidget::WareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, boo
   if (m_Enabled) ui->EnabledCheckBox->setCheckState(Qt::Checked);
   else ui->EnabledCheckBox->setCheckState(Qt::Unchecked);
 
-  mp_ShowHideParamsLabel = new openfluid::ui::common::ActionLabel(tr("show parameters and informations"),ui->ParamInfoTitleWidget);
-  ((QBoxLayout*)(ui->ParamInfoTitleWidget->layout()))->insertWidget(0,mp_ShowHideParamsLabel);
+  ui->ShowHideParamsLabel->setText(tr("show parameters and informations"));
 
-  mp_SignatureWidget = new SignatureWidget(this);
-  ui->ParamInfoSplitter->addWidget(mp_SignatureWidget);
 
   QList<int> SplitSizes;
   SplitSizes << 300 << 300;
   ui->ParamInfoSplitter->setSizes(SplitSizes);
 
-  connect(mp_ShowHideParamsLabel,SIGNAL(clicked()),this,SLOT(updateShowHideParams()));
+  connect(ui->ShowHideParamsLabel,SIGNAL(clicked()),this,SLOT(updateShowHideParams()));
   connect(ui->EnabledCheckBox,SIGNAL(toggled(bool)),this,SLOT(setEnabledWare(bool)));
 
   connect(ui->UpButton,SIGNAL(clicked()),this,SLOT(notifyUpClicked()));
@@ -186,9 +184,9 @@ void WareWidget::displayParams()
 {
   ui->ParamInfoWidget->setVisible(m_ParamsExpanded);
   if (m_ParamsExpanded)
-    mp_ShowHideParamsLabel->setText(tr("hide parameters and informations"));
+    ui->ShowHideParamsLabel->setText(tr("hide parameters and informations"));
   else
-    mp_ShowHideParamsLabel->setText(tr("show parameters and informations"));
+    ui->ShowHideParamsLabel->setText(tr("show parameters and informations"));
 }
 
 

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SPATIALDOMAINWIDGET_HPP__
-#define __SPATIALDOMAINWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_SPATIALDOMAINWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_SPATIALDOMAINWIDGET_HPP__
 
 
 #include <QWidget>
@@ -152,4 +152,4 @@ class SpatialDomainWidget : public WorkspaceWidget
 };
 
 
-#endif /* __SPATIALDOMAINWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_SPATIALDOMAINWIDGET_HPP__ */

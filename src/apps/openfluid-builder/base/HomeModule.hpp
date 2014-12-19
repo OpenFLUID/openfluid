@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __HOMEMODULE_HPP__
-#define __HOMEMODULE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__
+#define __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__
 
 #include "AbstractModule.hpp"
 #include "HomeWidget.hpp"
@@ -53,6 +53,12 @@ class HomeModule : public AbstractModule
      HomeWidget* mp_Widget;
 
      const AppActions* mp_Actions;
+
+
+  public slots:
+
+    void whenSrcEditAsked(const QString& ID,openfluid::ware::PluggableWare::WareType WType);
+
 
   public:
 
@@ -94,7 +100,18 @@ class HomeModule : public AbstractModule
     void whenWaresRefreshAsked();
 
     bool whenOpenExampleAsked();
+
+    void whenNewSimulatorSrcAsked();
+
+    void whenOpenSimulatorSrcAsked();
+
+    void whenNewObserverSrcAsked();
+
+    void whenOpenObserverSrcAsked();
+
+    void whenLaunchDevStudioAsked();
+
 };
 
 
-#endif /* __HOMEMODULE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_HOMEMODULE_HPP__ */

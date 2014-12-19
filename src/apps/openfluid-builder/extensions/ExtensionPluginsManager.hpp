@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __EXTENSIONPLUGINSMANAGER_HPP__
-#define __EXTENSIONPLUGINSMANAGER_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_EXTENSIONPLUGINSMANAGER_HPP__
+#define __OPENFLUID_BUILDERAPP_EXTENSIONPLUGINSMANAGER_HPP__
 
 #include <QFileInfo>
 #include <QStringList>
@@ -172,4 +172,4 @@ class ExtensionPluginsManager : public openfluid::machine::WarePluginsManager<Ex
 
 
 
-#endif /* __EXTENSIONPLUGINSMANAGER_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_EXTENSIONPLUGINSMANAGER_HPP__ */

@@ -69,7 +69,7 @@ namespace openfluid { namespace buddies {
 class BuddiesListener;
 
 
-class DLLEXPORT Sim2DocBuddy : public OpenFLUIDBuddy
+class OPENFLUID_API Sim2DocBuddy : public OpenFLUIDBuddy
 {
   private:
     typedef std::map< std::string,std::vector<std::string> > SignatureData_t;

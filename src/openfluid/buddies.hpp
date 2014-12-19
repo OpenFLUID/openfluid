@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __BUDDIES_HPP___
-#define __BUDDIES_HPP___
+#ifndef __OPENFLUID_BUDDIES_HPP__
+#define __OPENFLUID_BUDDIES_HPP__
 
 
 #include <openfluid/buddies/Sim2DocBuddy.hpp>
@@ -49,4 +49,4 @@
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
 #include <openfluid/buddies/BuddiesListener.hpp>
 
-#endif /* __BUDDIES_HPP___ */
+#endif /* __OPENFLUID_BUDDIES_HPP__ */

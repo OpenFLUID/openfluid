@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __BOOLEANVALUE_HPP___
-#define __BOOLEANVALUE_HPP___
+#ifndef __OPENFLUID_CORE_BOOLEANVALUE_HPP__
+#define __OPENFLUID_CORE_BOOLEANVALUE_HPP__
 
 #include <openfluid/core/SimpleValue.hpp>
 #include <openfluid/dllexport.hpp>
@@ -101,7 +101,7 @@ BooleanValue is a container for a true/false value.\n
   std::string StdStrVal = Val1.toString();
 @endcode
 */
-class DLLEXPORT BooleanValue : public SimpleValue
+class OPENFLUID_API BooleanValue : public SimpleValue
 {
   private:
 
@@ -164,4 +164,4 @@ class DLLEXPORT BooleanValue : public SimpleValue
 
 
 
-#endif /* __BOOLEANVALUE_HPP___ */
+#endif /* __OPENFLUID_CORE_BOOLEANVALUE_HPP__ */

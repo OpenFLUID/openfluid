@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __WAREWIDGET_HPP__
-#define __WAREWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_WAREWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_WAREWIDGET_HPP__
 
 
 #include <QWidget>
@@ -94,11 +94,6 @@ class WareWidget : public QWidget
 
     bool m_ParamsExpanded;
 
-    openfluid::ui::common::ActionLabel* mp_ShowHideParamsLabel;
-
-    openfluid::ui::common::ClickableLabel* mp_EnableLabel;
-
-    SignatureWidget* mp_SignatureWidget;
 
     virtual void setAvailableWare(bool Available);
 
@@ -151,4 +146,4 @@ class WareWidget : public QWidget
 
 };
 
-#endif /* __WAREWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_WAREWIDGET_HPP__ */

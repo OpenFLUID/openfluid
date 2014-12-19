@@ -46,7 +46,7 @@
 namespace openfluid {
 namespace fluidx {
 
-class DLLEXPORT AdvancedModelDescriptor
+class OPENFLUID_API AdvancedModelDescriptor
 {
   protected:
 

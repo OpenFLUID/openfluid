@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __MULTIPOINTGRAPHICS_HPP__
-#define __MULTIPOINTGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MULTIPOINTGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_MULTIPOINTGRAPHICS_HPP__
 
 #include "PunctualGraphics.hpp"
 #include <QPen>
@@ -54,4 +54,4 @@ class MultiPointGraphics : public PunctualGraphics
 
 
 
-#endif /* __MULTIPOINTGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MULTIPOINTGRAPHICS_HPP__ */

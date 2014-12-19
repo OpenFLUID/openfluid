@@ -37,8 +37,8 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#ifndef __RUNTIMEENV_HPP__
-#define __RUNTIMEENV_HPP__
+#ifndef __OPENFLUID_BASE_RUNTIMEENV_HPP__
+#define __OPENFLUID_BASE_RUNTIMEENV_HPP__
 
 #include <string>
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -60,7 +60,7 @@ namespace openfluid { namespace base {
 /**
 
 */
-class DLLEXPORT RuntimeEnvironment
+class OPENFLUID_API RuntimeEnvironment
 {
   private:
 

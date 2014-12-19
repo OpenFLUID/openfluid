@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __LISTENER_HPP__
-#define __LISTENER_HPP__
+#ifndef __OPENFLUID_BASE_LISTENER_HPP__
+#define __OPENFLUID_BASE_LISTENER_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -49,7 +49,7 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-class DLLEXPORT Listener
+class OPENFLUID_API Listener
 {
   private:
 
@@ -67,4 +67,4 @@ class DLLEXPORT Listener
 
 } } //namespaces
 
-#endif /* __LISTENER_HPP__ */
+#endif /* __OPENFLUID_BASE_LISTENER_HPP__ */

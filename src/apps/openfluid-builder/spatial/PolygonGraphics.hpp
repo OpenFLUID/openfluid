@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __POLYGONGRAPHICS_HPP__
-#define __POLYGONGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_POLYGONGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_POLYGONGRAPHICS_HPP__
 
 
 #include "SurfacicGraphics.hpp"
@@ -56,4 +56,4 @@ class PolygonGraphics : public SurfacicGraphics
 };
 
 
-#endif /* __POLYGONGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_POLYGONGRAPHICS_HPP__ */

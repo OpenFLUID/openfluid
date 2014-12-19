@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __CORE_HPP___
-#define __CORE_HPP___
+#ifndef __OPENFLUID_CORE_HPP__
+#define __OPENFLUID_CORE_HPP__
 
 
 #include <openfluid/core/CoreRepository.hpp>
@@ -62,4 +62,4 @@
 #include <openfluid/core/Variables.hpp>
 #include <openfluid/core/Vector.hpp>
 
-#endif /* __CORE_HPP___ */
+#endif /* __OPENFLUID_CORE_HPP__ */

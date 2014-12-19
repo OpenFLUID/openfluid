@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __WORKSPACEWIDGET_HPP__
-#define __WORKSPACEWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_WORKSPACEWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_WORKSPACEWIDGET_HPP__
 
 #include <openfluid/builderext/FluidXUpdateFlags.hpp>
 
@@ -75,4 +75,4 @@ class WorkspaceWidget : public QWidget
 };
 
 
-#endif /* __WORKSPACEWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_WORKSPACEWIDGET_HPP__ */

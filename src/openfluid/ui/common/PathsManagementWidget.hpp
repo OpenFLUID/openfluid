@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PATHSMANAGEMENTWIDGET_HPP__
-#define __PATHSMANAGEMENTWIDGET_HPP__
+#ifndef __OPENFLUID_UICOMMON_PATHSMANAGEMENTWIDGET_HPP__
+#define __OPENFLUID_UICOMMON_PATHSMANAGEMENTWIDGET_HPP__
 
 #include <openfluid/dllexport.hpp>
 
@@ -54,7 +54,7 @@ namespace Ui
 namespace openfluid { namespace ui { namespace common {
 
 
-class DLLEXPORT PathsManagementWidget : public QWidget
+class OPENFLUID_API PathsManagementWidget : public QWidget
 {
   Q_OBJECT
 
@@ -116,4 +116,4 @@ class DLLEXPORT PathsManagementWidget : public QWidget
 } } } // namespaces
 
 
-#endif /* __NEWSLINEWIDGET_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_NEWSLINEWIDGET_HPP__ */

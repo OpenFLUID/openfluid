@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ATTRIBUTESDESCRIPTOR_HPP__
-#define __ATTRIBUTESDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_ATTRIBUTESDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_ATTRIBUTESDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/TypeDefs.hpp>
@@ -47,7 +47,7 @@
 namespace openfluid { namespace fluidx {
 
 
-class DLLEXPORT AttributesDescriptor
+class OPENFLUID_API AttributesDescriptor
 {
   public:
     typedef std::map<openfluid::core::AttributeName_t,std::string> AttributeNameValue_t;
@@ -86,4 +86,4 @@ class DLLEXPORT AttributesDescriptor
 } } // namespaces
 
 
-#endif /* __ATTRIBUTESDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_ATTRIBUTESDESCRIPTOR_HPP__ */

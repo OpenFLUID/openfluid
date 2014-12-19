@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OUTPUTSWIDGET_HPP__
-#define __OUTPUTSWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_OUTPUTSWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_OUTPUTSWIDGET_HPP__
 
 
 #include "WorkspaceWidget.hpp"
@@ -89,4 +89,4 @@ class OutputsWidget : public WorkspaceWidget
 };
 
 
-#endif /* __OUTPUTSWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_OUTPUTSWIDGET_HPP__ */

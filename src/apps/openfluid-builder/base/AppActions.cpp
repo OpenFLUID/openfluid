@@ -51,6 +51,7 @@
 
 
 AppActions::AppActions():
+  mp_DevelopmentMenu(NULL),
   mp_SimulationMenu(NULL),
   mp_ExtensionsMenu(NULL),
   mp_SpatialExtensionsMenu(NULL), mp_ModelExtensionsMenu(NULL),
@@ -108,7 +109,6 @@ void AppActions::updateRecentProjectsActions()
 void AppActions::createActions()
 {
   // Project menu
-
   m_Actions["ProjectNew"] = new QAction(tr("&New..."), this);
   m_Actions["ProjectNew"]->setShortcuts(QKeySequence::New);
   m_Actions["ProjectNew"]->setIcon(QIcon(":/ui/common/icons/file-new.png"));
@@ -152,11 +152,22 @@ void AppActions::createActions()
   m_Actions["EditPreferences"]->setMenuRole(QAction::PreferencesRole);
 
 
+  //Development menu
+  m_Actions["DevNewSimulator"] = new QAction(tr("New simulator..."), this);
+  m_Actions["DevNewObserver"] = new QAction(tr("New observer..."), this);
+
+  m_Actions["DevOpenSimulator"] = new QAction(tr("Open simulator..."), this);
+  m_Actions["DevOpenObserver"] = new QAction(tr("Open observer..."), this);
+
+  m_Actions["DevLaunchDevStudio"] = new QAction(tr("OpenFLUID-DevStudio"), this);
+
+
   //Simulation menu
   m_Actions["WaresRefresh"] = new QAction(tr("Reload simulators and observers"), this);
 
   m_Actions["SimulationRun"] = new QAction(tr("Run simulation"), this);
   m_Actions["SimulationRun"]->setIcon(QIcon(":/ui/common/icons/start.png"));
+
 
   //View Menu
   m_Actions["ViewDashboard"] = new QAction(tr("Show/Hide project dashboard"), this);
@@ -175,7 +186,6 @@ void AppActions::createActions()
 
   m_Actions["HelpAbout"] = new QAction(tr("About"), this);
   m_Actions["HelpAbout"]->setMenuRole(QAction::AboutRole);
-
 
 
   //Other
@@ -225,6 +235,12 @@ void AppActions::setProjectMode()
 
   m_Actions["HelpExamplesRestore"]->setVisible(false);
 
+#ifdef ENABLE_WARESDEV_INTEGRATION
+  mp_DevelopmentMenu->menuAction()->setVisible(true);
+#else
+  mp_DevelopmentMenu->menuAction()->setVisible(false);
+#endif
+
   mp_SimulationMenu->menuAction()->setVisible(true);
   mp_ViewMenu->menuAction()->setVisible(true);
   mp_ExtensionsMenu->menuAction()->setVisible(true);
@@ -251,6 +267,7 @@ void AppActions::setHomeMode()
   m_Actions["ProjectReload"]->setVisible(false);
   m_Actions["ProjectClose"]->setVisible(false);
 
+  mp_DevelopmentMenu->menuAction()->setVisible(false);
   mp_SimulationMenu->menuAction()->setVisible(false);
   mp_ViewMenu->menuAction()->setVisible(false);
   mp_ExtensionsMenu->menuAction()->setVisible(false);
@@ -374,15 +391,20 @@ void AppActions::createMenus(MainWindow& MainWin)
   Menu->addAction(getAction("EditPreferences"));
 
 
+  mp_DevelopmentMenu = MainWin.menuBar()->addMenu(tr("&Development"));
+  mp_DevelopmentMenu->addAction(getAction("DevNewSimulator"));
+  mp_DevelopmentMenu->addAction(getAction("DevNewObserver"));
+  mp_DevelopmentMenu->addSeparator();
+  mp_DevelopmentMenu->addAction(getAction("DevOpenSimulator"));
+  mp_DevelopmentMenu->addAction(getAction("DevOpenObserver"));
+  mp_DevelopmentMenu->addSeparator();
+  mp_DevelopmentMenu->addAction(getAction("DevLaunchDevStudio"));
+
+
   mp_SimulationMenu = MainWin.menuBar()->addMenu(tr("&Simulation"));
   mp_SimulationMenu->addAction(getAction("WaresRefresh"));
   mp_SimulationMenu->addSeparator();
   mp_SimulationMenu->addAction(getAction("SimulationRun"));
-
-
-  mp_ViewMenu = MainWin.menuBar()->addMenu(tr("&View"));
-  mp_ViewMenu->addAction(getAction("ViewDashboard"));
-  mp_ViewMenu->addAction(getAction("ViewRestore"));
 
 
   mp_ExtensionsMenu = MainWin.menuBar()->addMenu(tr("&Extensions"));
@@ -392,6 +414,10 @@ void AppActions::createMenus(MainWindow& MainWin)
   mp_ResultsExtensionsMenu = mp_ExtensionsMenu->addMenu(tr("Results"));
   mp_OtherExtensionsMenu = mp_ExtensionsMenu->addMenu(tr("Other"));
 
+
+  mp_ViewMenu = MainWin.menuBar()->addMenu(tr("&View"));
+  mp_ViewMenu->addAction(getAction("ViewDashboard"));
+  mp_ViewMenu->addAction(getAction("ViewRestore"));
 
 
   Menu = MainWin.menuBar()->addMenu(tr("&Help"));

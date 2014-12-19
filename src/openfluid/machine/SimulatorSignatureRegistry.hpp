@@ -36,8 +36,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __SIMULATORSIGNATUREREGISTRY_HPP__
-#define __SIMULATORSIGNATUREREGISTRY_HPP__
+#ifndef __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__
+#define __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__
 
 #include <openfluid/fluidx/ModelItemDescriptor.hpp>
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
@@ -53,7 +53,7 @@ class GeneratorSignature;
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT SimulatorSignatureRegistry
+class OPENFLUID_API SimulatorSignatureRegistry
 {
   public:
 
@@ -112,4 +112,4 @@ class DLLEXPORT SimulatorSignatureRegistry
 
 } } //namespaces
 
-#endif /* __SIMULATORSIGNATUREREGISTRY_HPP__ */
+#endif /* __OPENFLUID_MACHINE_SIMULATORSIGNATUREREGISTRY_HPP__ */

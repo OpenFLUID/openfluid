@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __EXAMPLESBUDDY_HPP__
-#define __EXAMPLESBUDDY_HPP__
+#ifndef __OPENFLUID_BUDDIES_EXAMPLESBUDDY_HPP__
+#define __OPENFLUID_BUDDIES_EXAMPLESBUDDY_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/buddies/OpenFLUIDBuddy.hpp>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace buddies {
 
 
-class DLLEXPORT ExamplesBuddy : public OpenFLUIDBuddy
+class OPENFLUID_API ExamplesBuddy : public OpenFLUIDBuddy
 {
   public:
 
@@ -69,4 +69,4 @@ class DLLEXPORT ExamplesBuddy : public OpenFLUIDBuddy
 } } // namespaces
 
 
-#endif /* __EXAMPLESBUDDY_HPP__ */
+#endif /* __OPENFLUID_BUDDIES_EXAMPLESBUDDY_HPP__ */

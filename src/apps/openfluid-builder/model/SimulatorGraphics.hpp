@@ -38,18 +38,27 @@
  */
 
 
-#ifndef __SIMULATORGRAPHICS_HPP__
-#define __SIMULATORGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__
 
 
 #include "ModelItemGraphics.hpp"
 
 
-class SimulatorGraphics : public ModelItemGraphics
+class SimulatorGraphics : public QObject, public ModelItemGraphics
 {
+  Q_OBJECT;
+
   protected:
 
     static QPointF m_ProducedIOFromCenter;
+
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent* Event);
+
+
+  signals:
+
+    void srcEditAsked(const QString&);
 
 
   public:
@@ -65,4 +74,4 @@ class SimulatorGraphics : public ModelItemGraphics
 
 
 
-#endif /* __SIMULATORGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_SIMULATORGRAPHICS_HPP__ */

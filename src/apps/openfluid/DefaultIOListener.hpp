@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __DEFAULTIOLISTENER_HPP__
-#define __DEFAULTIOLISTENER_HPP__
+#ifndef __OPENFLUID_CMDLINEAPP_DEFAULTIOLISTENER_HPP__
+#define __OPENFLUID_CMDLINEAPP_DEFAULTIOLISTENER_HPP__
 
 
 #include <openfluid/base/IOListener.hpp>
@@ -79,4 +79,4 @@ class DefaultIOListener : public openfluid::base::IOListener
 };
 
 
-#endif /* __DEFAULTIOLISTENER_HPP__ */
+#endif /* __OPENFLUID_CMDLINEAPP_DEFAULTIOLISTENER_HPP__ */

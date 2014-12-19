@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PROJECTWIDGET_HPP__
-#define __PROJECTWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_PROJECTWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_PROJECTWIDGET_HPP__
 
 #include <QWidget>
 #include <QTabWidget>
@@ -91,4 +91,4 @@ class ProjectWidget : public QWidget
 
 
 
-#endif /* __PROJECTWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_PROJECTWIDGET_HPP__ */

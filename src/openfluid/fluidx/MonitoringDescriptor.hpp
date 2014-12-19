@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MONITORINGDESCRIPTOR_HPP__
-#define __MONITORINGDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_MONITORINGDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_MONITORINGDESCRIPTOR_HPP__
 
 #include <openfluid/fluidx/WareSetDescriptor.hpp>
 #include <openfluid/fluidx/ObserverDescriptor.hpp>
@@ -47,9 +47,9 @@
 
 namespace openfluid { namespace fluidx {
 
-typedef DLLEXPORT WareSetDescriptor<ObserverDescriptor> MonitoringDescriptor;
+typedef WareSetDescriptor<ObserverDescriptor> MonitoringDescriptor;
 
 } } // namespaces
 
 
-#endif /* __MONITORINGDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_MONITORINGDESCRIPTOR_HPP__ */

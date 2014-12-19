@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __EDITMARKETPLACEDIALOG_HPP__
-#define __EDITMARKETPLACEDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_EDITMARKETPLACEDIALOG_HPP__
+#define __OPENFLUID_UICOMMON_EDITMARKETPLACEDIALOG_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
@@ -55,7 +55,7 @@ namespace Ui
 namespace openfluid { namespace ui { namespace common {
 
 
-class DLLEXPORT EditMarketplaceDialog : public OpenFLUIDDialog
+class OPENFLUID_API EditMarketplaceDialog : public OpenFLUIDDialog
 {
   Q_OBJECT;
 
@@ -97,4 +97,4 @@ class DLLEXPORT EditMarketplaceDialog : public OpenFLUIDDialog
 } } } // namespaces
 
 
-#endif /* __EDITMARKETPLACEDIALOG_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_EDITMARKETPLACEDIALOG_HPP__ */

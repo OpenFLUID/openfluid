@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __BASE_HPP___
-#define __BASE_HPP___
+#ifndef __OPENFLUID_BASE_HPP__
+#define __OPENFLUID_BASE_HPP__
 
 
 #include <openfluid/base/EnvProperties.hpp>
@@ -54,4 +54,4 @@
 #include <openfluid/base/StdoutFileOStream.hpp>
 
 
-#endif /* __BASE_HPP___ */
+#endif /* __OPENFLUID_BASE_HPP__ */

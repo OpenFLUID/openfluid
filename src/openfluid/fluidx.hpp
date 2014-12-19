@@ -39,8 +39,8 @@
  */
 
 
-#ifndef FLUIDX_HPP_
-#define FLUIDX_HPP_
+#ifndef __OPENFLUID_FLUIDX_HPP__
+#define __OPENFLUID_FLUIDX_HPP__
 
 #include <openfluid/fluidx/FluidXReader.hpp>
 #include <openfluid/fluidx/FluidXWriter.hpp>
@@ -55,4 +55,4 @@
 #include <openfluid/fluidx/UnitDescriptor.hpp>
 
 
-#endif /* FLUIDX_HPP_ */
+#endif /* __OPENFLUID_FLUIDX_HPP__ */

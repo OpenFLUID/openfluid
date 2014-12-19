@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __INJECTGENERATOR_HPP__
-#define __INJECTGENERATOR_HPP__
+#ifndef __OPENFLUID_MACHINE_INJECTGENERATOR_HPP__
+#define __OPENFLUID_MACHINE_INJECTGENERATOR_HPP__
 
 #include <queue>
 #include <map>
@@ -52,7 +52,7 @@
 namespace openfluid { namespace machine {
 
 
-class DLLEXPORT InjectGenerator : public Generator
+class OPENFLUID_API InjectGenerator : public Generator
 {
   private:
 

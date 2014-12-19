@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DOMAINDESCRIPTOR_HPP__
-#define __DOMAINDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_DOMAINDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_DOMAINDESCRIPTOR_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/fluidx/UnitDescriptor.hpp>
@@ -50,7 +50,7 @@
 namespace openfluid { namespace fluidx {
 
 
-class DLLEXPORT DomainDescriptor
+class OPENFLUID_API DomainDescriptor
 {
   private:
 
@@ -81,4 +81,4 @@ class DLLEXPORT DomainDescriptor
 
 } } // namespaces
 
-#endif /* __DOMAINDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_DOMAINDESCRIPTOR_HPP__ */

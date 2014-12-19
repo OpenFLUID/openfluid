@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef LANDRGRAPH_HPP_
-#define LANDRGRAPH_HPP_
+#ifndef __OPENFLUID_LANDR_LANDRGRAPH_HPP__
+#define __OPENFLUID_LANDR_LANDRGRAPH_HPP__
 
 #include <geos/planargraph/PlanarGraph.h>
 #include <openfluid/dllexport.hpp>
@@ -75,7 +75,7 @@ class RasterDataset;
 /**
  @brief Interface for a graph composed of LandREntity.
  */
-class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
+class OPENFLUID_API LandRGraph: public geos::planargraph::PlanarGraph
 {
   public:
 
@@ -355,4 +355,4 @@ class DLLEXPORT LandRGraph: public geos::planargraph::PlanarGraph
 
 } } // namespace landr, openfluid
 
-#endif /* LANDRGRAPH_HPP_ */
+#endif /* __OPENFLUID_LANDR_LANDRGRAPH_HPP__ */

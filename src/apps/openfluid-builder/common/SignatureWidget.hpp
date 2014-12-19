@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SIGNATUREWIDGET_HPP__
-#define __SIGNATUREWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_SIGNATUREWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_SIGNATUREWIDGET_HPP__
 
 
 #include <openfluid/machine/ModelItemInstance.hpp>
@@ -106,4 +106,4 @@ class SignatureWidget : public QWidget
 };
 
 
-#endif /* __SIGNATUREWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_SIGNATUREWIDGET_HPP__ */

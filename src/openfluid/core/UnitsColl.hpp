@@ -53,7 +53,7 @@ class /*DLLEXPORT*/ Unit;
 typedef std::list<Unit> UnitsList_t;
 
 
-class DLLEXPORT UnitsCollection
+class OPENFLUID_API UnitsCollection
 {
   private :
 

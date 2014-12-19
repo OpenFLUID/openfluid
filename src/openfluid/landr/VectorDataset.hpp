@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef VECTORDATASET_HPP_
-#define VECTORDATASET_HPP_
+#ifndef __OPENFLUID_LANDR_VECTORDATASET_HPP__
+#define __OPENFLUID_LANDR_VECTORDATASET_HPP__
 
 #include <string>
 #include <map>
@@ -62,7 +62,7 @@ namespace landr {
  *
  */
 
-class DLLEXPORT VectorDataset
+class OPENFLUID_API VectorDataset
 {
   public:
 
@@ -279,4 +279,4 @@ class DLLEXPORT VectorDataset
 } } // namespaces openfluid, landr
 
 
-#endif /* VECTORDATASET_HPP_ */
+#endif /* __OPENFLUID_LANDR_VECTORDATASET_HPP__ */

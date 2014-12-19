@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef LANDRENTITY_HPP_
-#define LANDRENTITY_HPP_
+#ifndef __OPENFLUID_LANDR_LANDRENTITY_HPP__
+#define __OPENFLUID_LANDR_LANDRENTITY_HPP__
 
 #include <geos/planargraph/GraphComponent.h>
 #include <map>
@@ -60,7 +60,7 @@ namespace landr {
 /**
  @brief Interface for a landscape representation element.
  */
-class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
+class OPENFLUID_API LandREntity: public geos::planargraph::GraphComponent
 {
   private:
 
@@ -182,4 +182,4 @@ class DLLEXPORT LandREntity: public geos::planargraph::GraphComponent
 
 } } // namespaces landr, openfluid
 
-#endif /* LANDRENTITY_HPP_ */
+#endif /* __OPENFLUID_LANDR_LANDRENTITY_HPP__ */

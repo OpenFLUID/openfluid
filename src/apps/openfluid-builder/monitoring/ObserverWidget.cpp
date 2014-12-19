@@ -53,7 +53,7 @@
 ObserverWidget::ObserverWidget(QWidget* Parent,
                                openfluid::fluidx::ObserverDescriptor* Desc,
                                const openfluid::ware::WareID_t& ID):
-  WareWidget(Parent,ID,Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR), mp_Desc(Desc)
+  ClickableWareWidget(Parent,ID,Desc->isEnabled(),BUILDER_OBSERVER_BGCOLOR), mp_Desc(Desc)
 {
   refresh();
 
@@ -84,7 +84,7 @@ void ObserverWidget::refresh()
   {
     setAvailableWare(true);
     ui->NameLabel->setText(QString::fromStdString(Signature->Signature->Name));
-    mp_SignatureWidget->update(Signature);
+    ui->InfosWidget->update(Signature);
 
     updateParams();
   }

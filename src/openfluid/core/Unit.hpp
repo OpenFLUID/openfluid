@@ -55,7 +55,7 @@
 
 namespace openfluid { namespace core {
 
-//class DLLEXPORT UnitsCollection;
+//class OPENFLUID_API UnitsCollection;
 
 
 
@@ -64,7 +64,7 @@ namespace openfluid { namespace core {
 */
 typedef std::map<UnitClass_t,UnitsCollection> UnitsListByClassMap_t;
 
-//class DLLEXPORT Unit;
+//class OPENFLUID_API Unit;
 
 /**
   Type for a list of pointers on Unit
@@ -104,7 +104,7 @@ typedef std::map<UnitClass_t,UnitsPtrList_t> LinkedUnitsListByClassMap_t;
   aUnitListPtr = aUnit.getFromUnits("bar");
   @endcode
 */
-class DLLEXPORT Unit
+class OPENFLUID_API Unit
 {
   private:
 

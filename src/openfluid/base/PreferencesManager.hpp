@@ -37,8 +37,8 @@
  \author Aline LIBRES <libres@supagro.inra.fr>
  */
 
-#ifndef __PREFERENCESMANAGER_HPP__
-#define __PREFERENCESMANAGER_HPP__
+#ifndef __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__
+#define __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <openfluid/core/DateTime.hpp>
@@ -57,7 +57,7 @@ namespace openfluid { namespace base {
 // =====================================================================
 
 
-class DLLEXPORT PreferencesManager
+class OPENFLUID_API PreferencesManager
 {
 
   private:
@@ -239,4 +239,4 @@ class DLLEXPORT PreferencesManager
 
 } } //namespaces
 
-#endif /* __PREFERENCESMANAGER_HPP__ */
+#endif /* __OPENFLUID_BASE_PREFERENCESMANAGER_HPP__ */

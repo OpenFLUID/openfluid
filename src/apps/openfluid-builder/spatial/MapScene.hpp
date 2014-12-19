@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MAPSCENE_HPP__
-#define __MAPSCENE_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MAPSCENE_HPP__
+#define __OPENFLUID_BUILDERAPP_MAPSCENE_HPP__
 
 #include "MapItemGraphics.hpp"
 
@@ -88,4 +88,4 @@ class MapScene : public QGraphicsScene
 };
 
 
-#endif /* __MAPSCENE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MAPSCENE_HPP__ */

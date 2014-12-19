@@ -36,8 +36,8 @@
  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#ifndef __WAREDESCRIPTOR_HPP__
-#define __WAREDESCRIPTOR_HPP__
+#ifndef __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__
+#define __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__
 
 #include <openfluid/ware/PluggableWare.hpp>
 #include <openfluid/dllexport.hpp>
@@ -45,7 +45,7 @@
 namespace openfluid {
 namespace fluidx {
 
-class DLLEXPORT WareDescriptor
+class OPENFLUID_API WareDescriptor
 {
   public:
 
@@ -94,4 +94,4 @@ class DLLEXPORT WareDescriptor
 }
 }  // namespaces
 
-#endif /* __WAREDESCRIPTOR_HPP__ */
+#endif /* __OPENFLUID_FLUIDX_WAREDESCRIPTOR_HPP__ */

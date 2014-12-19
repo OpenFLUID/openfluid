@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __NEWSITEMWIDGET_HPP__
-#define __NEWSITEMWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_NEWSITEMWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_NEWSITEMWIDGET_HPP__
 
 
 namespace Ui
@@ -92,4 +92,4 @@ class NewsItemWidget : public QWidget
 
 };
 
-#endif // __NEWSITEMWIDGET_HPP__
+#endif // __OPENFLUID_BUILDERAPP_NEWSITEMWIDGET_HPP__

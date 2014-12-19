@@ -98,6 +98,7 @@ void MonitoringWidget::addObserver()
     ObserverWidget* ObsWidget = new ObserverWidget(this,&m_Monitoring.getDescriptor(ID),ID);
 
     connect(ObsWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
+    connect(ObsWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
     connect(ObsWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
     connect(ObsWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
     connect(ObsWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
@@ -193,6 +194,7 @@ void MonitoringWidget::refresh()
     if (it == itl) ObsWidget->setDownButtonEnabled(false);
 
     connect(ObsWidget,SIGNAL(changed()),this,SLOT(dispatchChangesFromChildren()));
+    connect(ObsWidget,SIGNAL(srcEditAsked(const QString&)),this,SLOT(notifySrcEditAsked(const QString&)));
     connect(ObsWidget,SIGNAL(upClicked(const QString&)),this,SLOT(moveModelItemUp(const QString&)));
     connect(ObsWidget,SIGNAL(downClicked(const QString&)),this,SLOT(moveModelItemDown(const QString&)));
     connect(ObsWidget,SIGNAL(removeClicked(const QString&)),this,SLOT(removeModelItem(const QString&)));
@@ -209,6 +211,16 @@ void MonitoringWidget::refresh()
 void MonitoringWidget::dispatchChangesFromChildren()
 {
   emit changed(openfluid::builderext::FluidXUpdateFlags::FLUIDX_MONITORING);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void MonitoringWidget::notifySrcEditAsked(const QString& ID)
+{
+  emit srcEditAsked(ID,openfluid::ware::PluggableWare::OBSERVER);
 }
 
 

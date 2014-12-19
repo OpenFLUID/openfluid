@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SAVEASDIALOG_HPP__
-#define __SAVEASDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_SAVEASDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_SAVEASDIALOG_HPP__
 
 
 namespace Ui
@@ -88,4 +88,4 @@ class SaveAsDialog : public openfluid::ui::common::OpenFLUIDDialog
 
 };
 
-#endif /* __SAVEASDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_SAVEASDIALOG_HPP__ */

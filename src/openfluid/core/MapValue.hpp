@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MAPVALUE_HPP__
-#define __MAPVALUE_HPP__
+#ifndef __OPENFLUID_CORE_MAPVALUE_HPP__
+#define __OPENFLUID_CORE_MAPVALUE_HPP__
 
 
 #include <map>
@@ -131,7 +131,7 @@ namespace openfluid { namespace core {
   std::string StdStrVal = Val1.toString();
 @endcode
 */
-class DLLEXPORT MapValue : public CompoundValue
+class OPENFLUID_API MapValue : public CompoundValue
 {
   public:
     typedef std::map<std::string,boost::shared_ptr<Value> > Map_t;
@@ -316,4 +316,4 @@ class DLLEXPORT MapValue : public CompoundValue
 // =====================================================================
 
 
-#endif /* __MAPVALUE_HPP__ */
+#endif /* __OPENFLUID_CORE_MAPVALUE_HPP__ */

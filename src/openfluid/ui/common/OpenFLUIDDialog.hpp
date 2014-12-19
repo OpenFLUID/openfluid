@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OPENFLUIDDIALOG_HPP__
-#define __OPENFLUIDDIALOG_HPP__
+#ifndef __OPENFLUID_UICOMMON_OPENFLUIDDIALOG_HPP__
+#define __OPENFLUID_UICOMMON_OPENFLUIDDIALOG_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <QDialog>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace ui { namespace common {
 
 
-class DLLEXPORT OpenFLUIDDialog : public QDialog
+class OPENFLUID_API OpenFLUIDDialog : public QDialog
 {
   public:
 
@@ -60,4 +60,4 @@ class DLLEXPORT OpenFLUIDDialog : public QDialog
 } } } // namespaces
 
 
-#endif /* __OPENFLUIDDIALOG_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_OPENFLUIDDIALOG_HPP__ */

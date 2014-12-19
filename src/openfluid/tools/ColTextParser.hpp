@@ -37,8 +37,8 @@
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
 
-#ifndef __COLFILEPARSER_HPP__
-#define __COLFILEPARSER_HPP__
+#ifndef __OPENFLUID_TOOLS_COLFILEPARSER_HPP__
+#define __OPENFLUID_TOOLS_COLFILEPARSER_HPP__
 
 
 #include <vector>
@@ -52,7 +52,7 @@ namespace openfluid { namespace tools {
 /**
   Class for column file management and handling
 */
-class DLLEXPORT ColumnTextParser
+class OPENFLUID_API ColumnTextParser
 {
 
   protected:

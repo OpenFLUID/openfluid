@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PROGRESSIVECOLUMNFILEREADER_HPP__
-#define __PROGRESSIVECOLUMNFILEREADER_HPP__
+#ifndef __OPENFLUID_TOOLS_PROGRESSIVECOLUMNFILEREADER_HPP__
+#define __OPENFLUID_TOOLS_PROGRESSIVECOLUMNFILEREADER_HPP__
 
 
 #include <fstream>
@@ -53,7 +53,7 @@ namespace openfluid { namespace tools {
 /**
   Progressive reader for column text files
 */
-class DLLEXPORT ProgressiveColumnFileReader
+class OPENFLUID_API ProgressiveColumnFileReader
 {
   private:
 
@@ -112,4 +112,4 @@ class DLLEXPORT ProgressiveColumnFileReader
 } } // namespaces
 
 
-#endif /* __PROGRESSIVECOLUMNFILEREADER_HPP__ */
+#endif /* __OPENFLUID_TOOLS_PROGRESSIVECOLUMNFILEREADER_HPP__ */

@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __MATRIX_HPP___
-#define __MATRIX_HPP___
+#ifndef __OPENFLUID_CORE_MATRIX_HPP__
+#define __OPENFLUID_CORE_MATRIX_HPP__
 
 
 
@@ -56,7 +56,7 @@ namespace openfluid { namespace core {
   Template class for matrix data
 */
 template <class T>
-class DLLEXPORT Matrix
+class OPENFLUID_API Matrix
 {
   protected :
 
@@ -307,4 +307,4 @@ void Matrix<T>::clear()
 
 } }
 
-#endif /* __MATRIX_HPP___ */
+#endif /* __OPENFLUID_CORE_MATRIX_HPP__ */

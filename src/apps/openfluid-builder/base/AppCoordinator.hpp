@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __APPCOORDINATOR_HPP__
-#define __APPCOORDINATOR_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_APPCOORDINATOR_HPP__
+#define __OPENFLUID_BUILDERAPP_APPCOORDINATOR_HPP__
 
 #include <QObject>
 #include <QDockWidget>
@@ -124,6 +124,16 @@ class AppCoordinator : public QObject
 
     void whenAboutAsked();
 
+    void whenNewSimulatorSrcAsked();
+
+    void whenOpenSimulatorSrcAsked();
+
+    void whenNewObserverSrcAsked();
+
+    void whenOpenObserverSrcAsked();
+
+    void whenLaunchDevStudioAsked();
+
     void enableSave();
 
     void disableSave();
@@ -146,4 +156,4 @@ class AppCoordinator : public QObject
 };
 
 
-#endif /* __APPCOORDINATOR_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_APPCOORDINATOR_HPP__ */

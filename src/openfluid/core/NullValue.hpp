@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __NULLVALUE_HPP___
-#define __NULLVALUE_HPP___
+#ifndef __OPENFLUID_CORE_NULLVALUE_HPP__
+#define __OPENFLUID_CORE_NULLVALUE_HPP__
 
 
 
@@ -56,7 +56,7 @@ NullValue is a container for null value, containing no data.\n
 
 \see Value
 */
-class DLLEXPORT NullValue : public Value
+class OPENFLUID_API NullValue : public Value
 {
   public:
 
@@ -88,4 +88,4 @@ class DLLEXPORT NullValue : public Value
 
 
 
-#endif /* __NULLVALUE_HPP___ */
+#endif /* __OPENFLUID_CORE_NULLVALUE_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ADDGENERATORDIALOG_HPP__
-#define __ADDGENERATORDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDGENERATORDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDGENERATORDIALOG_HPP__
 
 
 #include <openfluid/fluidx/GeneratorDescriptor.hpp>
@@ -101,4 +101,4 @@ class AddGeneratorDialog : public openfluid::ui::common::OpenFLUIDDialog
 
 
 
-#endif /* __ADDGENERATORDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDGENERATORDIALOG_HPP__ */

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MATRIXVALUE_HPP__
-#define __MATRIXVALUE_HPP__
+#ifndef __OPENFLUID_CORE_MATRIXVALUE_HPP__
+#define __OPENFLUID_CORE_MATRIXVALUE_HPP__
 
 #include <openfluid/core/CompoundValue.hpp>
 #include <openfluid/core/Matrix.hpp>
@@ -112,7 +112,7 @@ namespace openfluid { namespace core {
   std::string StdStrVal = Val1.toString();
 @endcode
 */
-class DLLEXPORT MatrixValue : public CompoundValue, public Matrix<double>
+class OPENFLUID_API MatrixValue : public CompoundValue, public Matrix<double>
 {
 
   public:
@@ -154,4 +154,4 @@ class DLLEXPORT MatrixValue : public CompoundValue, public Matrix<double>
 
 
 
-#endif /* __MATRIXVALUE_HPP__ */
+#endif /* __OPENFLUID_CORE_MATRIXVALUE_HPP__ */

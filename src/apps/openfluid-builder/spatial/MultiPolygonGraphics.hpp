@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MULTIPOLYGONGRAPHICS_HPP__
-#define __MULTIPOLYGONGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MULTIPOLYGONGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_MULTIPOLYGONGRAPHICS_HPP__
 
 
 #include "SurfacicGraphics.hpp"
@@ -58,4 +58,4 @@ class MultiPolygonGraphics : public SurfacicGraphics
 
 
 
-#endif /* __MULTIPOLYGONGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MULTIPOLYGONGRAPHICS_HPP__ */

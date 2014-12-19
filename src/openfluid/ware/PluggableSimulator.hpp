@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __PLUGGABLESIMULATOR_HPP__
-#define __PLUGGABLESIMULATOR_HPP__
+#ifndef __OPENFLUID_WARE_PLUGGABLESIMULATOR_HPP__
+#define __OPENFLUID_WARE_PLUGGABLESIMULATOR_HPP__
 
 
 #include <string>
@@ -67,9 +67,9 @@
 #define DECLARE_SIMULATOR_PLUGIN \
   extern "C" \
   { \
-    DLLEXPORT std::string WAREABIVERSION_PROC_DECL(); \
-    DLLEXPORT openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL(); \
-    DLLEXPORT openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL(); \
+    OPENFLUID_PLUGIN std::string WAREABIVERSION_PROC_DECL(); \
+    OPENFLUID_PLUGIN openfluid::ware::PluggableSimulator* WAREBODY_PROC_DECL(); \
+    OPENFLUID_PLUGIN openfluid::ware::SimulatorSignature* WARESIGNATURE_PROC_DECL(); \
   }
 
 
@@ -110,7 +110,7 @@ namespace openfluid { namespace ware {
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
-class DLLEXPORT PluggableSimulator : public SimulationContributorWare
+class OPENFLUID_API PluggableSimulator : public SimulationContributorWare
 {
 
   private:
@@ -331,4 +331,4 @@ typedef SimulatorSignature* (*GetPluggableSimulatorSignatureProc)();
 } } // namespaces
 
 
-#endif /* __PLUGGABLESIMULATOR_HPP__ */
+#endif /* __OPENFLUID_WARE_PLUGGABLESIMULATOR_HPP__ */

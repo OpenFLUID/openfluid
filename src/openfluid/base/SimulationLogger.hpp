@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __SIMULATIONLOGGER_HPP__
-#define __SIMULATIONLOGGER_HPP__
+#ifndef __OPENFLUID_BASE_SIMULATIONLOGGER_HPP__
+#define __OPENFLUID_BASE_SIMULATIONLOGGER_HPP__
 
 #include <string>
 #include <fstream>
@@ -58,7 +58,7 @@ namespace openfluid { namespace base {
 
   @author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
 */
-class DLLEXPORT SimulationLogger
+class OPENFLUID_API SimulationLogger
 {
 
   private:
@@ -155,5 +155,5 @@ class DLLEXPORT SimulationLogger
 } } // namespaces
 
 
-#endif /*__SIMULATIONLOGGER_HPP__*/
+#endif /*__OPENFLUID_BASE_SIMULATIONLOGGER_HPP__*/
 

@@ -36,8 +36,8 @@
  \author Aline LIBRES <aline.libres@gmail.com>
  */
 
-#ifndef POLYGONGRAPH_HPP_
-#define POLYGONGRAPH_HPP_
+#ifndef __OPENFLUID_LANDR_POLYGONGRAPH_HPP__
+#define __OPENFLUID_LANDR_POLYGONGRAPH_HPP__
 
 #include <openfluid/core/Value.hpp>
 #include <openfluid/core/DoubleValue.hpp>
@@ -55,7 +55,7 @@ class VectorDataset;
 /**
  @brief A LandRGraph composed of PolygonEntities.
  */
-class DLLEXPORT PolygonGraph: public LandRGraph
+class OPENFLUID_API PolygonGraph: public LandRGraph
 {
   public:
 
@@ -286,4 +286,4 @@ class DLLEXPORT PolygonGraph: public LandRGraph
 };
 
 } } // namespace landr, openfluid
-#endif /* POLYGONGRAPH_HPP_ */
+#endif /* __OPENFLUID_LANDR_POLYGONGRAPH_HPP__ */

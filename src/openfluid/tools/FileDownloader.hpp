@@ -39,8 +39,8 @@
 
 
 
-#ifndef __FILEDOWNLOADER_HPP__
-#define __FILEDOWNLOADER_HPP__
+#ifndef __OPENFLUID_TOOLS_FILEDOWNLOADER_HPP__
+#define __OPENFLUID_TOOLS_FILEDOWNLOADER_HPP__
 
 #include <string>
 #include <openfluid/dllexport.hpp>
@@ -55,7 +55,7 @@ namespace openfluid { namespace tools {
 /**
   Management of data downloads over network
 */
-class DLLEXPORT FileDownloader
+class OPENFLUID_API FileDownloader
 {
 
 
@@ -82,5 +82,5 @@ class DLLEXPORT FileDownloader
 
 
 
-#endif /* __FILEDOWNLOADER_HPP__ */
+#endif /* __OPENFLUID_TOOLS_FILEDOWNLOADER_HPP__ */
 

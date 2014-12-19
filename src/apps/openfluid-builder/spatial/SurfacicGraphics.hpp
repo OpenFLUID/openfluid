@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __SURFACICGRAPHICS_HPP__
-#define __SURFACICGRAPHICS_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_SURFACICGRAPHICS_HPP__
+#define __OPENFLUID_BUILDERAPP_SURFACICGRAPHICS_HPP__
 
 #include "MapItemGraphics.hpp"
 
@@ -57,4 +57,4 @@ class SurfacicGraphics : public MapItemGraphics
 
 
 
-#endif /* __SURFACICGRAPHICS_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_SURFACICGRAPHICS_HPP__ */

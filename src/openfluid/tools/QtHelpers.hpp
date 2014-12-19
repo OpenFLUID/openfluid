@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __QTHELPERS_HPP__
-#define __QTHELPERS_HPP__
+#ifndef __OPENFLUID_TOOLS_QTHELPERS_HPP__
+#define __OPENFLUID_TOOLS_QTHELPERS_HPP__
 
 
 #include <openfluid/tools/GDALHelpers.hpp>
@@ -66,7 +66,7 @@ namespace openfluid { namespace tools {
   @param[in] Str the string to transform
   @return The transformed string
 */
-QString DLLEXPORT toIniCompatible(const std::string& Str);
+QString OPENFLUID_API toIniCompatible(const std::string& Str);
 
 
 /**
@@ -74,7 +74,7 @@ QString DLLEXPORT toIniCompatible(const std::string& Str);
   @param[in] Var the variable to transform
   @return The variable transformed into a string
 */
-std::string DLLEXPORT fromIniCompatible(const QVariant& Var);
+std::string OPENFLUID_API fromIniCompatible(const QVariant& Var);
 
 
 /**
@@ -82,7 +82,7 @@ std::string DLLEXPORT fromIniCompatible(const QVariant& Var);
   @param[in] StrList the QStringList to transform
   @return The QStringList transformed into a std::list of std::string
 */
-std::list<std::string> DLLEXPORT toStdStringList(const QStringList& StrList);
+std::list<std::string> OPENFLUID_API toStdStringList(const QStringList& StrList);
 
 
 /**
@@ -90,7 +90,7 @@ std::list<std::string> DLLEXPORT toStdStringList(const QStringList& StrList);
   @param[in] DT The OpenFLUID DateTime to transform
   @return The DT transformed into QDateTime
 */
-QDateTime DLLEXPORT toQDateTime(openfluid::core::DateTime DT);
+QDateTime OPENFLUID_API toQDateTime(openfluid::core::DateTime DT);
 
 
 /**
@@ -98,7 +98,7 @@ QDateTime DLLEXPORT toQDateTime(openfluid::core::DateTime DT);
   @param[in] StrVect the std::vector of std::string to transform
   @return The StrVect transformed into a QStringList
 */
-QStringList DLLEXPORT toQStringList(const std::vector<std::string>& StrVect);
+QStringList OPENFLUID_API toQStringList(const std::vector<std::string>& StrVect);
 
 
 /**
@@ -106,7 +106,7 @@ QStringList DLLEXPORT toQStringList(const std::vector<std::string>& StrVect);
   @param[in] StrSet the std::set of std::string to transform
   @return The StrSet transformed into a QStringList
 */
-QStringList DLLEXPORT toQStringList(const std::set<std::string>& StrSet);
+QStringList OPENFLUID_API toQStringList(const std::set<std::string>& StrSet);
 
 
 /**
@@ -114,7 +114,7 @@ QStringList DLLEXPORT toQStringList(const std::set<std::string>& StrSet);
   @param[in] StrList the std::list of std::string to transform
   @return The StrList transformed into a QStringList
 */
-QStringList DLLEXPORT toQStringList(const std::list<std::string>& StrList);
+QStringList OPENFLUID_API toQStringList(const std::list<std::string>& StrList);
 
 
 /**
@@ -122,7 +122,7 @@ QStringList DLLEXPORT toQStringList(const std::list<std::string>& StrList);
   @param[in] IntSet the std::set of int to transform
   @return The intSet transformed into a QStringList
 */
-QStringList DLLEXPORT toQStringList(const std::set<int>& IntSet);
+QStringList OPENFLUID_API toQStringList(const std::set<int>& IntSet);
 
 
 /**
@@ -133,7 +133,7 @@ QStringList DLLEXPORT toQStringList(const std::set<int>& IntSet);
   @param[in] AllFormatsLabel the label displayed for all formats
   @return the format string (e.g. "All vector files (*.shp *.mif *.tab);;ESRI Shapefiles (*.shp);;Mapinfo (*.mif *.tab)")
 */
-QString DLLEXPORT getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
+QString OPENFLUID_API getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t& Drivers,
                                                    const QString& AllFormatsLabel);
 
 /**
@@ -141,10 +141,10 @@ QString DLLEXPORT getOGRGDALFormatsForQFileDialogs(const GDALDriversFilesExts_t&
   @param[in] Str the string to escape
   @return The escaped string
 */
-QString DLLEXPORT escapeXMLEntities(const QString& Str);
+QString OPENFLUID_API escapeXMLEntities(const QString& Str);
 
 
 } } // namespaces
 
 
-#endif /* __QTHELPERS_HPP__ */
+#endif /* __OPENFLUID_TOOLS_QTHELPERS_HPP__ */

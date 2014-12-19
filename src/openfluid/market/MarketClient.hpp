@@ -39,8 +39,8 @@
 
 
 
-#ifndef __MARKETCLIENT_HPP__
-#define __MARKETCLIENT_HPP__
+#ifndef __OPENFLUID_MARKET_MARKETCLIENT_HPP__
+#define __OPENFLUID_MARKET_MARKETCLIENT_HPP__
 
 #include <string>
 #include <queue>
@@ -65,7 +65,7 @@ typedef std::map<PackageInfo::PackageType,MetaPackagesCatalog_t> TypesMetaPackag
 // =====================================================================
 
 
-class DLLEXPORT MarketClient
+class OPENFLUID_API MarketClient
 {
   public:
 
@@ -198,5 +198,5 @@ class DLLEXPORT MarketClient
 } } // namespaces
 
 
-#endif /* __MARKETCLIENT_HPP__ */
+#endif /* __OPENFLUID_MARKET_MARKETCLIENT_HPP__ */
 

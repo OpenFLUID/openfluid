@@ -98,3 +98,18 @@ QPointF SimulatorGraphics::getProducedIOPosition()
 {
   return scenePos()+getCenterFromOrigin()+QPoint(-30,m_DefaultSize.height()/2);
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+void SimulatorGraphics::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* Event)
+{
+#ifdef ENABLE_WARESDEV_INTEGRATION
+  emit srcEditAsked(m_ID);
+#endif
+
+  QGraphicsItem::mousePressEvent(Event);
+}
+

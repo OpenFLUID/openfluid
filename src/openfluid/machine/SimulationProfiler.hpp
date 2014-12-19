@@ -39,8 +39,8 @@
  */
 
 
-#ifndef __SIMULATIONPROFILER_HPP___
-#define __SIMULATIONPROFILER_HPP___
+#ifndef __OPENFLUID_MACHINE_SIMULATIONPROFILER_HPP__
+#define __OPENFLUID_MACHINE_SIMULATIONPROFILER_HPP__
 
 #include <openfluid/ware/PluggableSimulator.hpp>
 #include <openfluid/base/SimulationStatus.hpp>
@@ -60,7 +60,7 @@ namespace openfluid { namespace machine {
 
 
 
-class DLLEXPORT SimulationProfiler
+class OPENFLUID_API SimulationProfiler
 {
   public:
 
@@ -113,4 +113,4 @@ class DLLEXPORT SimulationProfiler
 } } //namespaces
 
 
-#endif /* __SIMULATIONPROFILER_HPP___ */
+#endif /* __OPENFLUID_MACHINE_SIMULATIONPROFILER_HPP__ */

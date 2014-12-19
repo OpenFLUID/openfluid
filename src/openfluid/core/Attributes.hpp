@@ -42,7 +42,7 @@
 namespace openfluid {
 namespace core {
 
-class DLLEXPORT Attributes
+class OPENFLUID_API Attributes
 {
   private:
 

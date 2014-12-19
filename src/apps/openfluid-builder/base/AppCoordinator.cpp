@@ -68,6 +68,8 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
 {
   m_Actions.getAction("ProjectSave")->setEnabled(false);
 
+
+  // Project
   connect(m_Actions.getAction("ProjectQuit"), SIGNAL(triggered()),
           this, SLOT(whenQuitAsked()));
   connect(m_Actions.getAction("ProjectNew"), SIGNAL(triggered()),
@@ -85,19 +87,35 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   connect(m_Actions.getAction("ProjectClose"), SIGNAL(triggered()),
           this, SLOT(whenCloseAsked()));
 
+  // Edit
   connect(m_Actions.getAction("EditPreferences"), SIGNAL(triggered()),
           this, SLOT(whenPreferencesAsked()));
 
+  // Development
+  connect(m_Actions.getAction("DevNewSimulator"), SIGNAL(triggered()),
+          this, SLOT(whenNewSimulatorSrcAsked()));
+  connect(m_Actions.getAction("DevOpenSimulator"), SIGNAL(triggered()),
+          this, SLOT(whenOpenSimulatorSrcAsked()));
+  connect(m_Actions.getAction("DevNewObserver"), SIGNAL(triggered()),
+          this, SLOT(whenNewObserverSrcAsked()));
+  connect(m_Actions.getAction("DevOpenObserver"), SIGNAL(triggered()),
+          this, SLOT(whenOpenObserverSrcAsked()));
+  connect(m_Actions.getAction("DevLaunchDevStudio"), SIGNAL(triggered()),
+          this, SLOT(whenLaunchDevStudioAsked()));
+
+  // Simulation
   connect(m_Actions.getAction("SimulationRun"), SIGNAL(triggered()),
           this, SLOT(whenRunAsked()));
   connect(m_Actions.getAction("WaresRefresh"), SIGNAL(triggered()),
           this, SLOT(whenWaresRefreshAsked()));
 
+  // View
   connect(m_Actions.getAction("ViewDashboard"), SIGNAL(triggered()),
           this, SLOT(whenViewDashboardAsked()));
   connect(m_Actions.getAction("ViewRestore"), SIGNAL(triggered()),
           this, SLOT(whenViewRestoreAsked()));
 
+  // Help
   connect(m_Actions.getAction("HelpOnlineWeb"), SIGNAL(triggered()),
           this, SLOT(whenOnlineWebAsked()));
   connect(m_Actions.getAction("HelpOnlineCommunity"), SIGNAL(triggered()),
@@ -111,6 +129,7 @@ AppCoordinator::AppCoordinator(MainWindow& MainWin, AppActions& Actions):
   connect(m_Actions.getAction("HelpAbout"), SIGNAL(triggered()),
           this, SLOT(whenAboutAsked()));
 
+  // Market
   connect(m_Actions.getAction("MarketAccess"), SIGNAL(triggered()),
           this, SLOT(whenMarketAsked()));
 
@@ -817,6 +836,57 @@ void AppCoordinator::whenAboutAsked()
                                               m_Actions.getAction("HelpEmail"));
 
   AboutDlg.exec();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenNewSimulatorSrcAsked()
+{
+  mp_CurrentModule->whenNewSimulatorSrcAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenOpenSimulatorSrcAsked()
+{
+  mp_CurrentModule->whenOpenSimulatorSrcAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenNewObserverSrcAsked()
+{
+  mp_CurrentModule->whenNewObserverSrcAsked();
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenOpenObserverSrcAsked()
+{
+  mp_CurrentModule->whenOpenObserverSrcAsked();
+
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void AppCoordinator::whenLaunchDevStudioAsked()
+{
+  mp_CurrentModule->whenLaunchDevStudioAsked();
 }
 
 

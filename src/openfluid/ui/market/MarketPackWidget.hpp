@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MARKETPACKWIDGET_HPP__
-#define __MARKETPACKWIDGET_HPP__
+#ifndef __OPENFLUID_UIMARKET_MARKETPACKWIDGET_HPP__
+#define __OPENFLUID_UIMARKET_MARKETPACKWIDGET_HPP__
 
 
 #include <QLabel>
@@ -56,7 +56,7 @@ namespace openfluid { namespace ui { namespace market {
 // =====================================================================
 // =====================================================================
 
-class DLLEXPORT MarketPackWidget : public QGroupBox
+class OPENFLUID_API MarketPackWidget : public QGroupBox
 {
   Q_OBJECT
 
@@ -122,4 +122,4 @@ class DLLEXPORT MarketPackWidget : public QGroupBox
 } } } // namespaces
 
 
-#endif /* __MARKETPACKWIDGET_HPP__ */
+#endif /* __OPENFLUID_UIMARKET_MARKETPACKWIDGET_HPP__ */

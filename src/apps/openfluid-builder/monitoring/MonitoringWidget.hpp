@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MONITORINGWIDGET_HPP__
-#define __MONITORINGWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_MONITORINGWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_MONITORINGWIDGET_HPP__
 
 
 #include <QWidget>
@@ -84,6 +84,13 @@ class MonitoringWidget : public WorkspaceWidget
 
     void refresh();
 
+    void notifySrcEditAsked(const QString& ID);
+
+
+    signals:
+
+      void srcEditAsked(const QString&,openfluid::ware::PluggableWare::WareType WType);
+
 
   public:
 
@@ -97,4 +104,4 @@ class MonitoringWidget : public WorkspaceWidget
 
 
 
-#endif /* __MONITORINGWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_MONITORINGWIDGET_HPP__ */

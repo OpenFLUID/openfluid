@@ -29,47 +29,42 @@
   
 */
 
+/**
+  \file ClickableWareWidget.hpp
+  \brief Header of ...
 
-/*
- * MarketWizardPage.hpp
- *
- *  Created on: 9 août 2013
- *      Author: Manuel CHATAIGNER
+  \author Jean-Christophe FABRE <fabrejc@supagro.inra.fr>
  */
 
-#ifndef __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__
-#define __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__
-
-#include <openfluid/dllexport.hpp>
-#include <QWizardPage>
 
 
-namespace openfluid { namespace ui { namespace market {
+#ifndef __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__
+
+#include "WareWidget.hpp"
+
+#include <QMouseEvent>
 
 
-class OPENFLUID_API MarketWizardPage : public QWizardPage
+class ClickableWareWidget : public WareWidget
 {
   Q_OBJECT;
 
-  private:
+  protected:
 
-    bool m_PackagesSelected;
-    bool m_LicensesRadioAccepted;
-    bool m_InstallationFinished;
+    void mouseDoubleClickEvent(QMouseEvent* Event);
 
-    bool isSelectionPage() const { return nextId() == 1; };
-    bool isLicensesnPage() const { return nextId() == 2; };
-    bool isInstallPage() const { return nextId() == -1; };
+
+  signals:
+
+    void srcEditAsked(const QString&);
+
 
   public:
 
-    MarketWizardPage(QWidget *Parent = 0);
-    virtual bool isComplete() const;
-    void setPageComplete(bool Complete);
+    ClickableWareWidget(QWidget* Parent, const openfluid::ware::WareID_t& ID, bool Enabled, const QString& BGColor);
+
 };
 
 
-} } } // namespaces
-
-
-#endif /* __OPENFLUID_UIMARKET_MARKETWIZARDPAGE_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_CLICKABLEWAREWIDGET_HPP__ */

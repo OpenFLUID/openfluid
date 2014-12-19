@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __MARKETPACKAGE_HPP__
-#define __MARKETPACKAGE_HPP__
+#ifndef __OPENFLUID_MARKET_MARKETPACKAGE_HPP__
+#define __OPENFLUID_MARKET_MARKETPACKAGE_HPP__
 
 
 #include <openfluid/dllexport.hpp>
@@ -51,7 +51,7 @@
 namespace openfluid { namespace market {
 
 
-class DLLEXPORT MarketPackage
+class OPENFLUID_API MarketPackage
 {
   protected:
 
@@ -237,4 +237,4 @@ class DLLEXPORT MarketPackage
 } } // namespaces
 
 
-#endif /* __MARKETPACKAGE_HPP__ */
+#endif /* __OPENFLUID_MARKET_MARKETPACKAGE_HPP__ */

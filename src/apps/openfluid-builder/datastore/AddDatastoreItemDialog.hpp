@@ -37,8 +37,8 @@
  */
 
 
-#ifndef __ADDDATASTOREITEMDIALOG_HPP__
-#define __ADDDATASTOREITEMDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDDATASTOREITEMDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDDATASTOREITEMDIALOG_HPP__
 
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 #include <openfluid/core/UnstructuredValue.hpp>
@@ -104,4 +104,4 @@ class AddDatastoreItemDialog : public openfluid::ui::common::OpenFLUIDDialog
 };
 
 
-#endif /* __ADDDATASTOREITEMDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDDATASTOREITEMDIALOG_HPP__ */

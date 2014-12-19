@@ -38,8 +38,8 @@
 */
 
 
-#ifndef __CLICKABLELABEL_HPP__
-#define __CLICKABLELABEL_HPP__
+#ifndef __OPENFLUID_UICOMMON_CLICKABLELABEL_HPP__
+#define __OPENFLUID_UICOMMON_CLICKABLELABEL_HPP__
 
 #include <openfluid/dllexport.hpp>
 #include <QLabel>
@@ -48,7 +48,7 @@
 namespace openfluid { namespace ui { namespace common {
 
 
-class DLLEXPORT ClickableLabel : public QLabel
+class OPENFLUID_API ClickableLabel : public QLabel
 {
   Q_OBJECT;
 
@@ -76,4 +76,4 @@ class DLLEXPORT ClickableLabel : public QLabel
 } } } // namespaces
 
 
-#endif /* __CLICKABLELABEL_HPP__ */
+#endif /* __OPENFLUID_UICOMMON_CLICKABLELABEL_HPP__ */

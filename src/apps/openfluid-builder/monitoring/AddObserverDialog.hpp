@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __ADDOBSERVERDIALOG_HPP__
-#define __ADDOBSERVERDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_ADDOBSERVERDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_ADDOBSERVERDIALOG_HPP__
 
 
 #include "AddWareDialog.hpp"
@@ -69,4 +69,4 @@ class AddObserverDialog : public AddWareDialog
 
 
 
-#endif /* __ADDOBSERVERDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_ADDOBSERVERDIALOG_HPP__ */

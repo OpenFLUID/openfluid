@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __OPENEXAMPLEPROJECTDIALOG_HPP__
-#define __OPENEXAMPLEPROJECTDIALOG_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__
+#define __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__
 
 #include <openfluid/ui/common/OpenFLUIDDialog.hpp>
 
@@ -80,4 +80,4 @@ class OpenExampleProjectDialog : public openfluid::ui::common::OpenFLUIDDialog
 
 
 
-#endif /* __OPENEXAMPLEPROJECTDIALOG_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_OPENEXAMPLEPROJECTDIALOG_HPP__ */

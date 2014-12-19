@@ -30,8 +30,8 @@
 */
 
 
-#ifndef __VARIABLES_HPP__
-#define __VARIABLES_HPP__
+#ifndef __OPENFLUID_CORE_VARIABLES_HPP__
+#define __OPENFLUID_CORE_VARIABLES_HPP__
 
 #include <openfluid/core/TypeDefs.hpp>
 #include <openfluid/core/ValuesBuffer.hpp>
@@ -40,7 +40,7 @@
 namespace openfluid {
 namespace core {
 
-class DLLEXPORT Variables
+class OPENFLUID_API Variables
 {
   private:
 

@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __BUILDEREXTENSIONSIGNATURE_HPP__
-#define __BUILDEREXTENSIONSIGNATURE_HPP__
+#ifndef __OPENFLUID_BUILDEREXT_BUILDEREXTENSIONSIGNATURE_HPP__
+#define __OPENFLUID_BUILDEREXT_BUILDEREXTENSIONSIGNATURE_HPP__
 
 
 #include <openfluid/ware/WareSignature.hpp>
@@ -104,7 +104,7 @@ enum ExtensionCategory { CAT_SPATIAL, CAT_MODEL, CAT_RESULTS, CAT_OTHER };
 enum ExtensionType { TYPE_UNKNOWN, TYPE_MODAL, TYPE_MODELESS, TYPE_WORKSPACE};
 
 
-class DLLEXPORT BuilderExtensionSignature : public openfluid::ware::WareSignature
+class OPENFLUID_API BuilderExtensionSignature : public openfluid::ware::WareSignature
 {
   public:
 
@@ -125,4 +125,4 @@ class DLLEXPORT BuilderExtensionSignature : public openfluid::ware::WareSignatur
 
 } } // namespaces
 
-#endif /* __BUILDEREXTENSIONSIGNATURE_HPP__ */
+#endif /* __OPENFLUID_BUILDEREXT_BUILDEREXTENSIONSIGNATURE_HPP__ */

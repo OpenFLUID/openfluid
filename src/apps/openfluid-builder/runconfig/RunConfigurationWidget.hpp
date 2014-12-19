@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __RUNCONFIGURATIONWIDGET_HPP__
-#define __RUNCONFIGURATIONWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_RUNCONFIGURATIONWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_RUNCONFIGURATIONWIDGET_HPP__
 
 
 #include "WorkspaceWidget.hpp"
@@ -89,4 +89,4 @@ class RunConfigurationWidget : public WorkspaceWidget
 
 
 
-#endif /* __RUNCONFIGURATIONWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_RUNCONFIGURATIONWIDGET_HPP__ */

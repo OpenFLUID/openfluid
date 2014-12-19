@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __CHRONFILEINTERPOLATOR_HPP__
-#define __CHRONFILEINTERPOLATOR_HPP__
+#ifndef __OPENFLUID_TOOLS_CHRONFILEINTERPOLATOR_HPP__
+#define __OPENFLUID_TOOLS_CHRONFILEINTERPOLATOR_HPP__
 
 #include <list>
 #include <iostream>
@@ -50,7 +50,7 @@
 namespace openfluid { namespace tools {
 
 
-class DLLEXPORT ChronFileInterpolator
+class OPENFLUID_API ChronFileInterpolator
 {
   public:
 
@@ -212,4 +212,4 @@ class DLLEXPORT ChronFileInterpolator
 } } // namespaces
 
 
-#endif /* __CHRONFILEINTERPOLATOR_HPP__ */
+#endif /* __OPENFLUID_TOOLS_CHRONFILEINTERPOLATOR_HPP__ */

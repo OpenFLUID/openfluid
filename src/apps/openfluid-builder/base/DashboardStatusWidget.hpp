@@ -38,8 +38,8 @@
  */
 
 
-#ifndef __DASHBOARDSTATUSWIDGET_HPP__
-#define __DASHBOARDSTATUSWIDGET_HPP__
+#ifndef __OPENFLUID_BUILDERAPP_DASHBOARDSTATUSWIDGET_HPP__
+#define __OPENFLUID_BUILDERAPP_DASHBOARDSTATUSWIDGET_HPP__
 
 
 #include "ProjectCentral.hpp"
@@ -87,4 +87,4 @@ class DashboardStatusWidget : public DashboardWidget
 
 
 
-#endif /* __DASHBOARDSTATUSWIDGET_HPP__ */
+#endif /* __OPENFLUID_BUILDERAPP_DASHBOARDSTATUSWIDGET_HPP__ */
