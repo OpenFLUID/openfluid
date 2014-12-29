@@ -40,6 +40,7 @@
 
 #include <QDir>
 #include <QPainter>
+#include <QTextStream>
 
 #include <openfluid/base/FrameworkException.hpp>
 #include <openfluid/ui/waresdev/WareSrcSyntaxHighlighter.hpp>
@@ -85,7 +86,8 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   Font.setPointSize(11);
   setFont(Font);
 
-  setPlainText(File.readAll());
+  QTextStream In(&File);
+  setPlainText(In.readAll());
 
   connect(document(), SIGNAL(modificationChanged ( bool )), this,
           SLOT(onChanged(bool)));

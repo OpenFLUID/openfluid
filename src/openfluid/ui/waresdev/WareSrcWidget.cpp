@@ -44,6 +44,9 @@
 #include <QDesktopServices>
 #include <QUrl>
 #include <QMessageBox>
+#include <QTextStream>
+
+#include <openfluid/base/FrameworkException.hpp>
 
 #include "WareSrcFileEditor.hpp"
 #include "WareSrcToolbar.hpp"
@@ -82,7 +85,7 @@ WareSrcWidget::WareSrcWidget(
     connect(TB->getAction("OpenFile"), SIGNAL(triggered()), this,
             SLOT(showNotYetImplemented()));
     connect(TB->getAction("SaveFile"), SIGNAL(triggered()), this,
-            SLOT(showNotYetImplemented()));
+            SLOT(saveCurrent()));
     connect(TB->getAction("SaveAsFile"), SIGNAL(triggered()), this,
             SLOT(showNotYetImplemented()));
     connect(TB->getAction("CloseFile"), SIGNAL(triggered()), this,
@@ -315,6 +318,34 @@ void WareSrcWidget::onEditorTxtChanged(WareSrcFileEditor* Editor, bool Changed)
 bool WareSrcWidget::isChanged()
 {
   return m_ChangedNb > 0;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::saveCurrent()
+{
+  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(
+      ui->WareSrcFileCollection->currentWidget()))
+  {
+    QString Path = m_WareSrcFilesByPath.key(Editor, "");
+    if (!Path.isEmpty())
+    {
+      QFile File(Path);
+      if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
+        throw openfluid::base::FrameworkException(
+            "WareSrcWidget::saveCurrent",
+            QString("Cannot open file %1 in write mode").arg(Path).toStdString());
+
+      QTextStream Str(&File);
+      Str << Editor->toPlainText();
+
+      Editor->document()->setModified(false);
+    }
+
+  }
 }
 
 

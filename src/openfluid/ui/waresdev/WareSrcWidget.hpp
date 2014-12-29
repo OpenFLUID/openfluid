@@ -120,6 +120,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void showNotYetImplemented();
 
+    void saveCurrent();
+
   private slots:
 
     void onEditorTxtChanged(WareSrcFileEditor* Editor, bool Changed);

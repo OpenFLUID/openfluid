@@ -100,8 +100,8 @@ MainWindow::MainWindow() :
           SLOT(showNotYetImplemented()));
   connect(mp_Toolbar->getAction("OpenFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
-  connect(mp_Toolbar->getAction("SaveFile"), SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->getAction("SaveFile"), SIGNAL(triggered()), mp_Collection,
+          SLOT(saveCurrent()));
   connect(mp_Toolbar->getAction("SaveAsFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
   connect(mp_Toolbar->getAction("CloseFile"), SIGNAL(triggered()), this,

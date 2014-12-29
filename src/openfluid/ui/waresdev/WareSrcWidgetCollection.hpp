@@ -116,6 +116,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void build();
 
+    void saveCurrent();
+
   private slots:
 
     void onWareTxtChanged(WareSrcWidget* Widget, bool Changed);

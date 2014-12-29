@@ -378,4 +378,18 @@ bool WareSrcWidgetCollection::isChanged()
 // =====================================================================
 
 
+void WareSrcWidgetCollection::saveCurrent()
+{
+  if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
+      mp_TabWidget->currentWidget()))
+    Widget->saveCurrent();
+  else
+    QMessageBox::warning(0, "No ware open", "Open a ware first");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 } } } //namespaces
