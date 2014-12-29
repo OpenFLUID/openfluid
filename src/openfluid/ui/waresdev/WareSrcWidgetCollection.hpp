@@ -77,12 +77,16 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     openfluid::waresdev::WareSrcContainer::ConfigMode m_DefaultConfigMode;
     openfluid::waresdev::WareSrcContainer::BuildMode m_DefaultBuildMode;
 
+    int m_ChangedNb;
+
     QString getCurrentPath();
 
     /**
      * @throw openfluid::base::FrameworkException
      */
     openfluid::waresdev::WareSrcContainer& getCurrentWidgetContainer();
+
+    bool isChanged();
 
   public:
 
@@ -111,6 +115,10 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
     void configure();
 
     void build();
+
+  private slots:
+
+    void onWareTxtChanged(WareSrcWidget* Widget, bool Changed);
 };
 
 } } }  // namespaces

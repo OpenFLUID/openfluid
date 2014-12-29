@@ -62,7 +62,8 @@ WareSrcWidget::WareSrcWidget(
     bool IsStandalone, openfluid::waresdev::WareSrcContainer::ConfigMode Config,
     openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent) :
     QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(
-        Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName)
+        Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName), m_ChangedNb(
+        0)
 {
   ui->setupUi(this);
 
@@ -155,6 +156,9 @@ void WareSrcWidget::addNewFileTab(const QString& AbsolutePath,
   m_WareSrcFilesByPath[AbsolutePath] = Widget;
 
   ui->WareSrcFileCollection->setCurrentWidget(Widget);
+
+  connect(Widget, SIGNAL(editorTxtChanged(WareSrcFileEditor*,bool)), this,
+          SLOT(onEditorTxtChanged(WareSrcFileEditor*,bool)));
 }
 
 // =====================================================================
@@ -273,6 +277,44 @@ void WareSrcWidget::build()
 void WareSrcWidget::showNotYetImplemented()
 {
   QMessageBox::information(0, "", "Not yet implemented");
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::onEditorTxtChanged(WareSrcFileEditor* Editor, bool Changed)
+{
+  int Pos = ui->WareSrcFileCollection->indexOf(Editor);
+  if (Pos > -1)
+  {
+    QString Label = ui->WareSrcFileCollection->tabText(Pos);
+
+    if (Changed)
+    {
+      m_ChangedNb++;
+      ui->WareSrcFileCollection->setTabText(Pos, Label.append("*"));
+    }
+    else
+    {
+      m_ChangedNb--;
+      Label.chop(1);
+      ui->WareSrcFileCollection->setTabText(Pos, Label);
+    }
+
+    emit wareTextChanged(this, isChanged());
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidget::isChanged()
+{
+  return m_ChangedNb > 0;
 }
 
 

@@ -57,7 +57,7 @@ class WareSrcFileEditor;
 class TextEditMsgStream;
 
 
-class OPENFLUID_API WareSrcWidget : public QWidget
+class OPENFLUID_API WareSrcWidget: public QWidget
 {
   Q_OBJECT
 
@@ -74,8 +74,12 @@ class OPENFLUID_API WareSrcWidget : public QWidget
 
     openfluid::ui::waresdev::TextEditMsgStream* mp_TextEditMsgStream;
 
+    int m_ChangedNb;
+
     void addNewFileTab(const QString& AbsolutePath, const QString& TabLabel,
                        const QString& TabTooltip = "");
+
+    bool isChanged();
 
   public:
 
@@ -115,6 +119,14 @@ class OPENFLUID_API WareSrcWidget : public QWidget
     void build();
 
     void showNotYetImplemented();
+
+  private slots:
+
+    void onEditorTxtChanged(WareSrcFileEditor* Editor, bool Changed);
+
+  signals:
+
+    void wareTextChanged(WareSrcWidget* Widget, bool Changed);
 };
 
 } } }  // namespaces

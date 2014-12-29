@@ -62,6 +62,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     void updateLineNumberArea(const QRect& Rect, int);
 
+    void onChanged(bool Changed);
+
   protected:
 
     void resizeEvent(QResizeEvent* Event);
@@ -75,6 +77,10 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     void lineNumberAreaPaintEvent(QPaintEvent* Event);
 
     int lineNumberAreaWidth();
+
+  signals :
+
+    void editorTxtChanged(WareSrcFileEditor* Editor, bool Changed);
 
 };
 

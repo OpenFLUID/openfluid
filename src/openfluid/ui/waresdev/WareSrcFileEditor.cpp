@@ -86,6 +86,10 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   setFont(Font);
 
   setPlainText(File.readAll());
+
+  connect(document(), SIGNAL(modificationChanged ( bool )), this,
+          SLOT(onChanged(bool)));
+
 }
 
 
@@ -216,6 +220,16 @@ void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
     Bottom = Top + (int) blockBoundingRect(Block).height();
     ++BlockNumber;
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcFileEditor::onChanged(bool Changed)
+{
+  emit editorTxtChanged(this, Changed);
 }
 
 

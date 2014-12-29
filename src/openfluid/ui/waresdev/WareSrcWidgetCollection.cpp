@@ -63,7 +63,8 @@ WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget) :
     mp_TabWidget(TabWidget), mp_Manager(
         openfluid::waresdev::WareSrcManager::getInstance()), m_DefaultConfigMode(
         openfluid::waresdev::WareSrcContainer::CONFIG_RELEASE), m_DefaultBuildMode(
-        openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL)
+        openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL), m_ChangedNb(
+        0)
 {
 
 }
@@ -108,6 +109,9 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone)
 
       if (Info.m_isAWare)
         Widget->openDefaultFiles();
+
+      connect(Widget, SIGNAL(wareTextChanged(WareSrcWidget*,bool)), this,
+              SLOT(onWareTxtChanged(WareSrcWidget*,bool)));
     }
 
     if (Info.m_isAWareFile)
@@ -322,6 +326,51 @@ void WareSrcWidgetCollection::build()
   {
     QMessageBox::warning(0, "No ware open", "Open a ware first");
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::onWareTxtChanged(WareSrcWidget* Widget,
+                                               bool Changed)
+{
+  int Pos = mp_TabWidget->indexOf(Widget);
+  if (Pos > -1)
+  {
+    QString Label = mp_TabWidget->tabText(Pos);
+    bool ChangedState = Label.endsWith("*");
+
+    if (Changed)
+    {
+      m_ChangedNb++;
+
+      if (!ChangedState)
+        mp_TabWidget->setTabText(Pos, Label.append("*"));
+    }
+    else
+    {
+      m_ChangedNb--;
+
+      if (ChangedState)
+      {
+        Label.chop(1);
+        mp_TabWidget->setTabText(Pos, Label);
+      }
+    }
+
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidgetCollection::isChanged()
+{
+  return m_ChangedNb > 0;
 }
 
 
