@@ -54,7 +54,7 @@ namespace openfluid { namespace ui { namespace waresdev {
 
 
 WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
-    QPlainTextEdit(Parent)
+    QPlainTextEdit(Parent), m_FilePath(FilePath)
 {
   mp_lineNumberArea = new LineNumberArea(this);
 
@@ -68,11 +68,11 @@ WareSrcFileEditor::WareSrcFileEditor(const QString& FilePath, QWidget* Parent) :
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
-  QFile File(FilePath);
+  QFile File(m_FilePath);
   if (!File.open(QIODevice::ReadOnly | QIODevice::Text))
     throw openfluid::base::FrameworkException(
         "WareSrcFileEditor constructor",
-        QString("Cannot open file %1").arg(FilePath).toStdString());
+        QString("Cannot open file %1").arg(m_FilePath).toStdString());
 
   new WareSrcSyntaxHighlighter(
       document(),
@@ -232,6 +232,16 @@ void WareSrcFileEditor::lineNumberAreaPaintEvent(QPaintEvent* Event)
 void WareSrcFileEditor::onChanged(bool Changed)
 {
   emit editorTxtChanged(this, Changed);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+QString WareSrcFileEditor::getFilePath()
+{
+  return m_FilePath;
 }
 
 

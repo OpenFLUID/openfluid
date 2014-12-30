@@ -54,6 +54,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
 
     QWidget* mp_lineNumberArea;
 
+    QString m_FilePath;
+
   private slots:
 
     void updateLineNumberAreaWidth(int NewBlockCount);
@@ -77,6 +79,8 @@ class OPENFLUID_API WareSrcFileEditor: public QPlainTextEdit
     void lineNumberAreaPaintEvent(QPaintEvent* Event);
 
     int lineNumberAreaWidth();
+
+    QString getFilePath();
 
   signals :
 

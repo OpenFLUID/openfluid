@@ -83,6 +83,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     bool isChanged();
 
+    void saveEditorContent(WareSrcFileEditor* Editor);
+
   protected:
 
     bool eventFilter(QObject* Obj, QEvent* Event);
@@ -131,6 +133,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
   private slots:
 
     void onEditorTxtChanged(WareSrcFileEditor* Editor, bool Changed);
+
+    void closeFileTab(int Index);
 
   signals:
 

@@ -106,6 +106,9 @@ WareSrcWidget::WareSrcWidget(
     connect(TB->getAction("Build"), SIGNAL(triggered()), this, SLOT(build()));
   }
 
+  connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this,
+          SLOT(closeFileTab(int)));
+
   m_Container.setConfigMode(Config);
   m_Container.setBuildMode(Build);
 
@@ -172,10 +175,54 @@ void WareSrcWidget::addNewFileTab(const QString& AbsolutePath,
 // =====================================================================
 
 
+void WareSrcWidget::closeFileTab(int Index)
+{
+  if (WareSrcFileEditor* Widget = qobject_cast<WareSrcFileEditor*>(
+      ui->WareSrcFileCollection->widget(Index)))
+  {
+    int Choice = QMessageBox::Discard;
+    bool IsModified = Widget->document()->isModified();
+
+    if (IsModified)
+    {
+      QMessageBox MsgBox;
+      MsgBox.setText(tr("The document has been modified."));
+      MsgBox.setInformativeText(tr("Do you want to save your changes?"));
+      MsgBox.setStandardButtons(
+          QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+      MsgBox.setDefaultButton(QMessageBox::Save);
+      Choice = MsgBox.exec();
+    }
+
+    switch (Choice)
+    {
+      case QMessageBox::Save:
+        saveEditorContent(Widget);
+      case QMessageBox::Discard:
+        m_WareSrcFilesByPath.remove(Widget->getFilePath());
+        ui->WareSrcFileCollection->removeTab(Index);
+        delete Widget;
+        if(IsModified)
+          m_ChangedNb --;
+        break;
+      case QMessageBox::Cancel:
+      default:
+        break;
+    }
+
+    emit wareTextChanged(this, isChanged());
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 bool WareSrcWidget::eventFilter(QObject* Obj, QEvent* Event)
 {
-  if (Event->type() == QEvent::ShortcutOverride &&
-      static_cast<QKeyEvent*>(Event)->matches(QKeySequence::Save))
+  if (Event->type() == QEvent::ShortcutOverride && static_cast<QKeyEvent*>(Event)
+      ->matches(QKeySequence::Save))
   {
     saveCurrent();
     Event->accept();
@@ -350,22 +397,30 @@ void WareSrcWidget::saveCurrent()
 {
   if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(
       ui->WareSrcFileCollection->currentWidget()))
+    saveEditorContent(Editor);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::saveEditorContent(WareSrcFileEditor* Editor)
+{
+  QString Path = m_WareSrcFilesByPath.key(Editor, "");
+
+  if (!Path.isEmpty())
   {
-    QString Path = m_WareSrcFilesByPath.key(Editor, "");
-    if (!Path.isEmpty())
-    {
-      QFile File(Path);
-      if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
-        throw openfluid::base::FrameworkException(
-            "WareSrcWidget::saveCurrent",
-            QString("Cannot open file %1 in write mode").arg(Path).toStdString());
+    QFile File(Path);
+    if (!File.open(QIODevice::WriteOnly | QIODevice::Text))
+      throw openfluid::base::FrameworkException(
+          "WareSrcWidget::saveEditorContent",
+          QString("Cannot open file %1 in write mode").arg(Path).toStdString());
 
-      QTextStream Str(&File);
-      Str << Editor->toPlainText();
+    QTextStream Str(&File);
+    Str << Editor->toPlainText();
 
-      Editor->document()->setModified(false);
-    }
-
+    Editor->document()->setModified(false);
   }
 }
 
