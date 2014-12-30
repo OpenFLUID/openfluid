@@ -107,7 +107,7 @@ WareSrcWidget::WareSrcWidget(
   }
 
   connect(ui->WareSrcFileCollection, SIGNAL(tabCloseRequested(int)), this,
-          SLOT(closeFileTab(int)));
+          SLOT(onCloseFileTabRequested(int)));
 
   m_Container.setConfigMode(Config);
   m_Container.setBuildMode(Build);
@@ -175,13 +175,13 @@ void WareSrcWidget::addNewFileTab(const QString& AbsolutePath,
 // =====================================================================
 
 
-void WareSrcWidget::closeFileTab(int Index)
+void WareSrcWidget::onCloseFileTabRequested(int Index)
 {
-  if (WareSrcFileEditor* Widget = qobject_cast<WareSrcFileEditor*>(
+  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(
       ui->WareSrcFileCollection->widget(Index)))
   {
     int Choice = QMessageBox::Discard;
-    bool IsModified = Widget->document()->isModified();
+    bool IsModified = Editor->document()->isModified();
 
     if (IsModified)
     {
@@ -197,13 +197,9 @@ void WareSrcWidget::closeFileTab(int Index)
     switch (Choice)
     {
       case QMessageBox::Save:
-        saveEditorContent(Widget);
+        saveEditorContent(Editor);
       case QMessageBox::Discard:
-        m_WareSrcFilesByPath.remove(Widget->getFilePath());
-        ui->WareSrcFileCollection->removeTab(Index);
-        delete Widget;
-        if(IsModified)
-          m_ChangedNb --;
+        closeFileTab(Editor);
         break;
       case QMessageBox::Cancel:
       default:
@@ -212,6 +208,48 @@ void WareSrcWidget::closeFileTab(int Index)
 
     emit wareTextChanged(this, isChanged());
   }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::closeFileTab(WareSrcFileEditor* Editor)
+{
+  ui->WareSrcFileCollection->removeTab(
+      ui->WareSrcFileCollection->indexOf(Editor));
+
+  m_WareSrcFilesByPath.remove(Editor->getFilePath());
+
+  if (Editor->document()->isModified())
+    m_ChangedNb--;
+
+  delete Editor;
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::saveAllFileTabs()
+{
+  foreach(WareSrcFileEditor* Editor,m_WareSrcFilesByPath){
+  saveEditorContent(Editor);
+}
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::closeAllFileTabs()
+{
+  foreach(WareSrcFileEditor* Editor,m_WareSrcFilesByPath){
+  closeFileTab(Editor);
+}
 }
 
 

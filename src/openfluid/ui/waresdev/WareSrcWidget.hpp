@@ -81,9 +81,9 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void addNewFileTab(const QString& AbsolutePath, const QString& TabLabel,
                        const QString& TabTooltip = "");
 
-    bool isChanged();
-
     void saveEditorContent(WareSrcFileEditor* Editor);
+
+    void closeFileTab(WareSrcFileEditor* Editor);
 
   protected:
 
@@ -112,6 +112,12 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     openfluid::waresdev::WareSrcContainer& getWareSrcContainer();
 
+    bool isChanged();
+
+    void saveAllFileTabs();
+
+    void closeAllFileTabs();
+
   public slots:
 
     void setReleaseMode();
@@ -134,7 +140,7 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     void onEditorTxtChanged(WareSrcFileEditor* Editor, bool Changed);
 
-    void closeFileTab(int Index);
+    void onCloseFileTabRequested(int Index);
 
   signals:
 

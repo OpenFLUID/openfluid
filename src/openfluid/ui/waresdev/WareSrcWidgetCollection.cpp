@@ -66,7 +66,8 @@ WareSrcWidgetCollection::WareSrcWidgetCollection(QTabWidget* TabWidget) :
         openfluid::waresdev::WareSrcContainer::BUILD_WITHINSTALL), m_ChangedNb(
         0)
 {
-
+  connect(mp_TabWidget, SIGNAL(tabCloseRequested(int)), this,
+          SLOT(onCloseWareTabRequested(int)));
 }
 
 
@@ -120,6 +121,63 @@ void WareSrcWidgetCollection::openPath(const QString& Path, bool IsStandalone)
     mp_TabWidget->setCurrentWidget(Widget);
   }
 
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::onCloseWareTabRequested(int Index)
+{
+  if (WareSrcWidget* Ware = qobject_cast<WareSrcWidget*>(
+      mp_TabWidget->widget(Index)))
+  {
+    int Choice = QMessageBox::Discard;
+    bool IsModified = Ware->isChanged();
+
+    if (IsModified)
+    {
+      QMessageBox MsgBox;
+      MsgBox.setText(tr("Documents have been modified."));
+      MsgBox.setInformativeText(tr("Do you want to save your changes?"));
+      MsgBox.setStandardButtons(
+          QMessageBox::SaveAll | QMessageBox::Discard | QMessageBox::Cancel);
+      MsgBox.setDefaultButton(QMessageBox::SaveAll);
+      Choice = MsgBox.exec();
+    }
+
+    switch (Choice)
+    {
+      case QMessageBox::SaveAll:
+        Ware->saveAllFileTabs();
+      case QMessageBox::Discard:
+        Ware->closeAllFileTabs();
+        closeWareTab(Ware);
+        break;
+      case QMessageBox::Cancel:
+      default:
+        break;
+    }
+
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::closeWareTab(WareSrcWidget* Ware)
+{
+  mp_TabWidget->removeTab(mp_TabWidget->indexOf(Ware));
+
+  m_WareSrcWidgetByPath.remove(Ware->getWareSrcContainer().getAbsolutePath());
+
+  if (Ware->isChanged())
+    m_ChangedNb--;
+
+  delete Ware;
 }
 
 

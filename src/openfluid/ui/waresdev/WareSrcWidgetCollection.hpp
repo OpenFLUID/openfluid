@@ -88,6 +88,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     bool isChanged();
 
+    void closeWareTab(WareSrcWidget* Ware);
+
   public:
 
     WareSrcWidgetCollection(QTabWidget* TabWidget);
@@ -121,6 +123,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
   private slots:
 
     void onWareTxtChanged(WareSrcWidget* Widget, bool Changed);
+
+    void onCloseWareTabRequested(int Index);
 };
 
 } } }  // namespaces
