@@ -76,10 +76,16 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     int m_ChangedNb;
 
+    bool m_IsStandalone;
+
     void addNewFileTab(const QString& AbsolutePath, const QString& TabLabel,
                        const QString& TabTooltip = "");
 
     bool isChanged();
+
+  protected:
+
+    bool eventFilter(QObject* Obj, QEvent* Event);
 
   public:
 

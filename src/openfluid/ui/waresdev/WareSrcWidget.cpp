@@ -66,7 +66,7 @@ WareSrcWidget::WareSrcWidget(
     openfluid::waresdev::WareSrcContainer::BuildMode Build, QWidget* Parent) :
     QWidget(Parent), ui(new Ui::WareSrcWidget), m_Container(
         Info.m_AbsolutePathOfWare, Info.m_WareType, Info.m_WareName), m_ChangedNb(
-        0)
+        0), m_IsStandalone(IsStandalone)
 {
   ui->setupUi(this);
 
@@ -74,7 +74,7 @@ WareSrcWidget::WareSrcWidget(
   Sizes << 1000 << 180;
   ui->splitter->setSizes(Sizes);
 
-  if (IsStandalone)
+  if (m_IsStandalone)
   {
     WareSrcToolbar* TB = new WareSrcToolbar(true, this);
 
@@ -160,9 +160,30 @@ void WareSrcWidget::addNewFileTab(const QString& AbsolutePath,
 
   ui->WareSrcFileCollection->setCurrentWidget(Widget);
 
+  if (m_IsStandalone)
+    Widget->installEventFilter(this);
+
   connect(Widget, SIGNAL(editorTxtChanged(WareSrcFileEditor*,bool)), this,
           SLOT(onEditorTxtChanged(WareSrcFileEditor*,bool)));
 }
+
+
+// =====================================================================
+// =====================================================================
+
+
+bool WareSrcWidget::eventFilter(QObject* Obj, QEvent* Event)
+{
+  if (Event->type() == QEvent::ShortcutOverride &&
+      static_cast<QKeyEvent*>(Event)->matches(QKeySequence::Save))
+  {
+    saveCurrent();
+    Event->accept();
+    return true;
+  }
+  return QObject::eventFilter(Obj, Event);
+}
+
 
 // =====================================================================
 // =====================================================================

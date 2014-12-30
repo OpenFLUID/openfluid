@@ -129,7 +129,7 @@ void WareSrcToolbar::createActions()
                                       tr("Open..."), this);
   m_Actions["SaveFile"] = new QAction(QIcon(":/ui/common/icons/file-save.png"),
                                       tr("Save"), this);
-  m_Actions["SaveFile"]->setShortcuts(QKeySequence::Save);
+  m_Actions["SaveFile"]->setShortcut(QKeySequence::Save);
 
   m_Actions["SaveAsFile"] = new QAction(
       QIcon(":/ui/common/icons/file-save-as.png"), tr("Save as..."), this);
