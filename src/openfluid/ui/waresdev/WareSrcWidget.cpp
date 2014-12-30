@@ -89,7 +89,7 @@ WareSrcWidget::WareSrcWidget(
     connect(TB->getAction("SaveAsFile"), SIGNAL(triggered()), this,
             SLOT(showNotYetImplemented()));
     connect(TB->getAction("CloseFile"), SIGNAL(triggered()), this,
-            SLOT(showNotYetImplemented()));
+            SLOT(closeCurrent()));
     connect(TB->getAction("DeleteFile"), SIGNAL(triggered()), this,
             SLOT(showNotYetImplemented()));
 
@@ -168,6 +168,16 @@ void WareSrcWidget::addNewFileTab(const QString& AbsolutePath,
 
   connect(Widget, SIGNAL(editorTxtChanged(WareSrcFileEditor*,bool)), this,
           SLOT(onEditorTxtChanged(WareSrcFileEditor*,bool)));
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::closeCurrent()
+{
+  onCloseFileTabRequested(ui->WareSrcFileCollection->currentIndex());
 }
 
 

@@ -446,6 +446,21 @@ void WareSrcWidgetCollection::saveCurrent()
 }
 
 
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidgetCollection::closeCurrent()
+{
+  if (WareSrcWidget* Widget = qobject_cast<WareSrcWidget*>(
+      mp_TabWidget->currentWidget()))
+    Widget->closeCurrent();
+  else
+    QMessageBox::warning(0, "No ware open", "Open a ware first");
+}
+
+
 // =====================================================================
 // =====================================================================
 

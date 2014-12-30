@@ -104,8 +104,8 @@ MainWindow::MainWindow() :
           SLOT(saveCurrent()));
   connect(mp_Toolbar->getAction("SaveAsFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
-  connect(mp_Toolbar->getAction("CloseFile"), SIGNAL(triggered()), this,
-          SLOT(showNotYetImplemented()));
+  connect(mp_Toolbar->getAction("CloseFile"), SIGNAL(triggered()), mp_Collection,
+          SLOT(closeCurrent()));
   connect(mp_Toolbar->getAction("DeleteFile"), SIGNAL(triggered()), this,
           SLOT(showNotYetImplemented()));
 
