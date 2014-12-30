@@ -78,12 +78,21 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     bool m_IsStandalone;
 
-    void addNewFileTab(const QString& AbsolutePath, const QString& TabLabel,
-                       const QString& TabTooltip = "");
+    void addNewFileTab(int Index, const QString& AbsolutePath,
+                       const QString& TabLabel, const QString& TabTooltip = "");
 
     void saveEditorContent(WareSrcFileEditor* Editor);
 
-    void closeFileTab(WareSrcFileEditor* Editor);
+    void saveEditorContentAs(WareSrcFileEditor* Editor);
+
+    void saveEditorContentToPath(WareSrcFileEditor* Editor,
+                                 const QString& Path);
+
+    /**
+     * Deletes Editor
+     * @return Editor index before it was removed
+     */
+    int closeFileTab(WareSrcFileEditor* Editor);
 
   protected:
 
@@ -99,7 +108,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
 
     ~WareSrcWidget();
 
-    void openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info);
+    void openFile(const openfluid::waresdev::WareSrcManager::PathInfo& Info,
+                  int Index = -1);
 
     void openDefaultFiles();
 
@@ -135,6 +145,8 @@ class OPENFLUID_API WareSrcWidget: public QWidget
     void showNotYetImplemented();
 
     void saveCurrent();
+
+    void saveCurrentAs();
 
     void closeCurrent();
 

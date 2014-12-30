@@ -45,6 +45,7 @@
 #include <QUrl>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QFileDialog>
 
 #include <openfluid/base/FrameworkException.hpp>
 
@@ -87,7 +88,7 @@ WareSrcWidget::WareSrcWidget(
     connect(TB->getAction("SaveFile"), SIGNAL(triggered()), this,
             SLOT(saveCurrent()));
     connect(TB->getAction("SaveAsFile"), SIGNAL(triggered()), this,
-            SLOT(showNotYetImplemented()));
+            SLOT(saveCurrentAs()));
     connect(TB->getAction("CloseFile"), SIGNAL(triggered()), this,
             SLOT(closeCurrent()));
     connect(TB->getAction("DeleteFile"), SIGNAL(triggered()), this,
@@ -133,7 +134,7 @@ WareSrcWidget::~WareSrcWidget()
 // =====================================================================
 
 void WareSrcWidget::openFile(
-    const openfluid::waresdev::WareSrcManager::PathInfo& Info)
+    const openfluid::waresdev::WareSrcManager::PathInfo& Info, int Index)
 {
   WareSrcFileEditor* Widget = m_WareSrcFilesByPath.value(Info.m_AbsolutePath,
                                                          0);
@@ -141,7 +142,7 @@ void WareSrcWidget::openFile(
   if (Widget)
     ui->WareSrcFileCollection->setCurrentWidget(Widget);
   else
-    addNewFileTab(Info.m_AbsolutePath, Info.m_FileName,
+    addNewFileTab(Index, Info.m_AbsolutePath, Info.m_FileName,
                   QDir::toNativeSeparators(Info.m_RelativePathToWareDir));
 }
 
@@ -150,13 +151,13 @@ void WareSrcWidget::openFile(
 // =====================================================================
 
 
-void WareSrcWidget::addNewFileTab(const QString& AbsolutePath,
+void WareSrcWidget::addNewFileTab(int Index, const QString& AbsolutePath,
                                   const QString& TabLabel,
                                   const QString& TabTooltip)
 {
   WareSrcFileEditor* Widget = new WareSrcFileEditor(AbsolutePath, this);
 
-  int Pos = ui->WareSrcFileCollection->addTab(Widget, TabLabel);
+  int Pos = ui->WareSrcFileCollection->insertTab(Index, Widget, TabLabel);
   ui->WareSrcFileCollection->setTabToolTip(Pos, TabTooltip);
 
   m_WareSrcFilesByPath[AbsolutePath] = Widget;
@@ -225,10 +226,11 @@ void WareSrcWidget::onCloseFileTabRequested(int Index)
 // =====================================================================
 
 
-void WareSrcWidget::closeFileTab(WareSrcFileEditor* Editor)
+int WareSrcWidget::closeFileTab(WareSrcFileEditor* Editor)
 {
-  ui->WareSrcFileCollection->removeTab(
-      ui->WareSrcFileCollection->indexOf(Editor));
+  int Index = ui->WareSrcFileCollection->indexOf(Editor);
+
+  ui->WareSrcFileCollection->removeTab(Index);
 
   m_WareSrcFilesByPath.remove(Editor->getFilePath());
 
@@ -236,6 +238,8 @@ void WareSrcWidget::closeFileTab(WareSrcFileEditor* Editor)
     m_ChangedNb--;
 
   delete Editor;
+
+  return Index;
 }
 
 
@@ -288,7 +292,7 @@ void WareSrcWidget::openDefaultFiles()
 {
   foreach(QString F,m_Container.getDefaultFiles()){
   QString FileName = QFileInfo(F).fileName();
-  addNewFileTab(F, FileName, QDir::toNativeSeparators(FileName));
+  addNewFileTab(-1,F, FileName, QDir::toNativeSeparators(FileName));
 }
 }
 
@@ -453,10 +457,70 @@ void WareSrcWidget::saveCurrent()
 // =====================================================================
 
 
+void WareSrcWidget::saveCurrentAs()
+{
+  if (WareSrcFileEditor* Editor = qobject_cast<WareSrcFileEditor*>(
+      ui->WareSrcFileCollection->currentWidget()))
+    saveEditorContentAs(Editor);
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::saveEditorContentAs(WareSrcFileEditor* Editor)
+{
+  QString CurrentPath = Editor->getFilePath();
+
+  QString NewPath = QFileDialog::getSaveFileName(this, tr("Save file as..."),
+                                                 m_Container.getAbsolutePath());
+
+  if (NewPath == CurrentPath)
+  {
+    saveEditorContentToPath(Editor, CurrentPath);
+    return;
+  }
+
+  if (!NewPath.isEmpty())
+  {
+    NewPath = QDir(NewPath).absolutePath();
+
+    saveEditorContentToPath(Editor, NewPath);
+
+    int AlreadyOpenIndex = -1;
+
+    // if new path to save to is already open
+    if (m_WareSrcFilesByPath.contains(NewPath))
+      AlreadyOpenIndex = closeFileTab(m_WareSrcFilesByPath.value(NewPath));
+
+    int Index = closeFileTab(Editor);
+
+    openFile(
+        openfluid::waresdev::WareSrcManager::getInstance()->getPathInfo(
+            NewPath),
+        AlreadyOpenIndex > -1 ? AlreadyOpenIndex : Index);
+  }
+}
+
+
+// =====================================================================
+// =====================================================================
+
+
 void WareSrcWidget::saveEditorContent(WareSrcFileEditor* Editor)
 {
-  QString Path = m_WareSrcFilesByPath.key(Editor, "");
+  saveEditorContentToPath(Editor, m_WareSrcFilesByPath.key(Editor, ""));
+}
 
+
+// =====================================================================
+// =====================================================================
+
+
+void WareSrcWidget::saveEditorContentToPath(WareSrcFileEditor* Editor,
+                                            const QString& Path)
+{
   if (!Path.isEmpty())
   {
     QFile File(Path);

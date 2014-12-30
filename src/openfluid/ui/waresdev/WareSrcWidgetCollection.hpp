@@ -120,6 +120,8 @@ class OPENFLUID_API WareSrcWidgetCollection: public QObject
 
     void saveCurrent();
 
+    void saveCurrentAs();
+
     void closeCurrent();
 
   private slots:
